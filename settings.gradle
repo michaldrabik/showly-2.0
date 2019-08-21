@@ -1,0 +1,2 @@
+include ':app', ':network'
+rootProject.name='Showly 2.0'
