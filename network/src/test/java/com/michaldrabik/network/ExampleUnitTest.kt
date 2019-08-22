@@ -1,4 +1,4 @@
-package com.michaldrabik.network2
+package com.michaldrabik.network
 
 import org.junit.Test
 

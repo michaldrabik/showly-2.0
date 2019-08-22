@@ -2,7 +2,7 @@ package com.michaldrabik.showly2
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.michaldrabik.network2.Cloud
+import com.michaldrabik.network.Cloud
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {

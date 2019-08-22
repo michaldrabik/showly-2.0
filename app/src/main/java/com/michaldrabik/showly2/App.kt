@@ -2,7 +2,7 @@ package com.michaldrabik.showly2
 
 import android.app.Activity
 import android.app.Application
-import com.michaldrabik.network2.di.DaggerCloudComponent
+import com.michaldrabik.network.di.DaggerCloudComponent
 import com.michaldrabik.showly2.di.AppComponent
 import com.michaldrabik.showly2.di.DaggerAppComponent
 
