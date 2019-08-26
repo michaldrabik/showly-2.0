@@ -8,6 +8,6 @@ open class BaseViewModel(
 
   override fun onCleared() {
     super.onCleared()
-    Log.i("ViewModel", "ViewModel cleared.")
+    Log.i("BaseViewModel", "ViewModel cleared.")
   }
 }

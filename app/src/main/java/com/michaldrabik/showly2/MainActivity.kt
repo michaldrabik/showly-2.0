@@ -16,12 +16,21 @@ class MainActivity : AppCompatActivity() {
 
   private fun setupNavigation() {
     bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+      if (bottomNavigationView.selectedItemId == item.itemId) {
+        return@setOnNavigationItemSelectedListener true
+      }
+
       val target = when (item.itemId) {
         R.id.menuWatchlist -> R.id.watchlistFragment
         R.id.menuDiscover -> R.id.discoverFragment
         else -> throw IllegalStateException("Invalid menu item.")
       }
-      navigationHost.findNavController().navigate(target)
+
+      navigationHost.findNavController().run {
+        popBackStack(R.id.navigationHost, true)
+        navigate(target)
+      }
+
       return@setOnNavigationItemSelectedListener true
     }
   }
