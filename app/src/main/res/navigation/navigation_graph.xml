@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/navigation_graph"
+  app:startDestination="@id/watchlistFragment"
+  >
+
+  <fragment
+    android:id="@+id/watchlistFragment"
+    android:name="com.michaldrabik.showly2.watchlist.WatchlistFragment"
+    android:label="fragment_watchlist"
+    tools:layout="@layout/fragment_watchlist"
+    />
+
+  <fragment
+    android:id="@+id/discoverFragment"
+    android:name="com.michaldrabik.showly2.discover.DiscoverFragment"
+    android:label="fragment_discover"
+    tools:layout="@layout/fragment_discover"
+    />
+
+</navigation>

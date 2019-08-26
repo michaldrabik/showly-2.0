@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">Showly 2.0</string>
+  <string name="app_name">Showly 2.0</string>
+
+  <string name="menuWatchlist">Watchlist</string>
+  <string name="menuDiscover">Discover</string>
+  <string name="menuSearch">Search</string>
+  <string name="menuPlaceholder">Placeholder</string>
+
 </resources>
