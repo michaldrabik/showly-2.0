@@ -3,7 +3,6 @@
 
   <string name="menuWatchlist">Watchlist</string>
   <string name="menuDiscover">Discover</string>
-  <string name="menuSearch">Search</string>
-  <string name="menuPlaceholder">Placeholder</string>
+  <string name="menuLists">My Lists</string>
 
 </resources>

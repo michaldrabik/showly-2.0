@@ -9,6 +9,15 @@
   tools:context=".MainActivity"
   >
 
+  <View
+    android:id="@+id/bottomNavigationSeparator"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/colorBottomMenuSeparator"
+    app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+    app:layout_constraintTop_toBottomOf="@+id/navigationHost"
+    />
+
   <com.google.android.material.bottomnavigation.BottomNavigationView
     android:id="@+id/bottomNavigationView"
     android:layout_width="match_parent"
@@ -19,6 +28,7 @@
     app:itemTextColor="@drawable/selector_bottom_menu"
     app:labelVisibilityMode="labeled"
     app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/bottomNavigationSeparator"
     app:menu="@menu/bottom_navigation_menu"
     />
 
@@ -28,7 +38,7 @@
     android:layout_width="0dp"
     android:layout_height="0dp"
     app:defaultNavHost="true"
-    app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+    app:layout_constraintBottom_toTopOf="@id/bottomNavigationSeparator"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
     app:layout_constraintTop_toTopOf="parent"

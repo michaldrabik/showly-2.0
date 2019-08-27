@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.watchlist
+package com.michaldrabik.showly2.ui.watchlist
 
 
 import android.os.Bundle

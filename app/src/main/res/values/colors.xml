@@ -3,12 +3,13 @@
   <color name="colorBackground">#121212</color>
   <color name="colorPrimary">#008577</color>
   <color name="colorPrimaryDark">#121212</color>
-  <color name="colorAccent">#D81B60</color>
-
-  <color name="colorBottomMenuBackground">#222327</color>
-  <color name="colorBottomMenuItemChecked">#FEFEFE</color>
-  <color name="colorBottomMenuItem">#AEAEAE</color>
+  <color name="colorAccent">#F44336</color>
 
   <color name="colorTextPrimary">#FEFEFE</color>
   <color name="colorTextSecondary">#B5B5B5</color>
+
+  <color name="colorBottomMenuBackground">#222327</color>
+  <color name="colorBottomMenuItemChecked">#FEFEFE</color>
+  <color name="colorBottomMenuItem">#A0A0A0</color>
+  <color name="colorBottomMenuSeparator">#464646</color>
 </resources>

@@ -23,9 +23,4 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment() {
     viewModel = createViewModel(viewModelFactory)
     return inflater.inflate(getLayoutResId(), container, false)
   }
-
-  override fun onDestroyView() {
-    viewModelStore.clear()
-    super.onDestroyView()
-  }
 }

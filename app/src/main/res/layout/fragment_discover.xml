@@ -4,14 +4,17 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".discover.DiscoverFragment"
+  tools:context=".ui.discover.DiscoverFragment"
   >
 
-  <!-- TODO: Update blank fragment layout -->
-  <TextView
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/discoverRecycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:text="Discover"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:padding="@dimen/spaceTiny"
+    android:scrollbars="none"
     />
 
 </FrameLayout>

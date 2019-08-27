@@ -7,18 +7,34 @@
   app:startDestination="@id/watchlistFragment"
   >
 
-  <fragment
-    android:id="@+id/watchlistFragment"
-    android:name="com.michaldrabik.showly2.watchlist.WatchlistFragment"
-    android:label="fragment_watchlist"
-    tools:layout="@layout/fragment_watchlist"
+  <action
+    android:id="@+id/actionNavigateWatchlistFragment"
+    app:destination="@id/watchlistFragment"
+    app:launchSingleTop="true"
+    app:popUpTo="@id/navigation_graph"
+    app:popUpToInclusive="true"
+    />
+
+  <action
+    android:id="@+id/actionNavigateDiscoverFragment"
+    app:destination="@id/discoverFragment"
+    app:launchSingleTop="true"
+    app:popUpTo="@id/navigation_graph"
+    app:popUpToInclusive="true"
     />
 
   <fragment
     android:id="@+id/discoverFragment"
-    android:name="com.michaldrabik.showly2.discover.DiscoverFragment"
+    android:name="com.michaldrabik.showly2.ui.discover.DiscoverFragment"
     android:label="fragment_discover"
     tools:layout="@layout/fragment_discover"
+    />
+
+  <fragment
+    android:id="@+id/watchlistFragment"
+    android:name="com.michaldrabik.showly2.ui.watchlist.WatchlistFragment"
+    android:label="fragment_watchlist"
+    tools:layout="@layout/fragment_watchlist"
     />
 
 </navigation>

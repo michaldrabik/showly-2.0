@@ -1,5 +1,6 @@
-package com.michaldrabik.showly2.discover
+package com.michaldrabik.showly2.ui.discover
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.BaseViewModel
@@ -10,9 +11,12 @@ class DiscoverViewModel @Inject constructor(
   private val cloud: Cloud
 ) : BaseViewModel() {
 
+  val uiStream by lazy { MutableLiveData<DiscoverUiModel>() }
+
   fun loadTrendingShows() {
     viewModelScope.launch {
-      val trendingShows = cloud.traktApi.fetchTrendingShows()
+      val shows = cloud.traktApi.fetchTrendingShows()
+      uiStream.value = DiscoverUiModel(shows)
     }
   }
 

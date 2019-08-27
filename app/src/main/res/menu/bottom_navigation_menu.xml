@@ -20,17 +20,10 @@
     app:showAsAction="always"
     />
   <item
-    android:id="@+id/menuSearch"
+    android:id="@+id/menuLists"
     android:enabled="true"
     android:icon="@drawable/ic_search"
-    android:title="@string/menuSearch"
-    app:showAsAction="always"
-    />
-  <item
-    android:id="@+id/menuMisc"
-    android:enabled="true"
-    android:icon="@drawable/ic_search"
-    android:title="@string/menuPlaceholder"
+    android:title="@string/menuLists"
     app:showAsAction="always"
     />
 </menu>

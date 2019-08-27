@@ -21,17 +21,23 @@ class MainActivity : AppCompatActivity() {
       }
 
       val target = when (item.itemId) {
-        R.id.menuWatchlist -> R.id.watchlistFragment
-        R.id.menuDiscover -> R.id.discoverFragment
+        R.id.menuWatchlist -> R.id.actionNavigateWatchlistFragment
+        R.id.menuDiscover -> R.id.actionNavigateDiscoverFragment
         else -> throw IllegalStateException("Invalid menu item.")
       }
 
-      navigationHost.findNavController().run {
-        popBackStack(R.id.navigationHost, true)
-        navigate(target)
-      }
-
+      navigationHost.findNavController().navigate(target)
       return@setOnNavigationItemSelectedListener true
+    }
+  }
+
+  override fun onBackPressed() {
+    navigationHost.findNavController().run {
+      if (currentDestination?.id != R.id.watchlistFragment) {
+        bottomNavigationView.selectedItemId = R.id.menuWatchlist
+        return
+      }
+      super.onBackPressed()
     }
   }
 }

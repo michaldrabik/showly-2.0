@@ -5,7 +5,7 @@ import retrofit2.http.GET
 
 interface TraktService {
 
-  @GET("shows/trending?extended=full,images")
+  @GET("shows/trending?extended=full&limit=100")
   suspend fun fetchTrendingShows(): List<TrendingResult>
 
 }
