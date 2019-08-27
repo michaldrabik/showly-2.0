@@ -12,12 +12,14 @@ import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.common.decorations.GridSpacingItemDecoration
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
 import com.michaldrabik.showly2.utilities.dimenToPx
+import com.michaldrabik.showly2.utilities.visibleIf
 import kotlinx.android.synthetic.main.fragment_discover.*
 
 class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
 
   private val adapter by lazy { DiscoverAdapter() }
-  private val layoutManager by lazy { GridLayoutManager(context, 3) }
+  private val gridSpan by lazy { resources.getInteger(R.integer.discoverGridSpan) }
+  private val layoutManager by lazy { GridLayoutManager(context, gridSpan) }
 
   override fun getLayoutResId() = R.layout.fragment_discover
 
@@ -53,5 +55,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
 
   private fun render(uiModel: DiscoverUiModel) {
     uiModel.trendingShows?.let { adapter.setItems(it) }
+    uiModel.showLoading?.let { discoverProgress.visibleIf(it) }
   }
 }

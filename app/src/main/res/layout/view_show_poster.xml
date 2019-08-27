@@ -14,4 +14,22 @@
     tools:background="@color/colorAccent"
     />
 
+  <TextView
+    android:id="@+id/showTileTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|start"
+    android:textColor="@color/colorWhite"
+    android:shadowColor="@color/colorBlack"
+    android:shadowDx="1"
+    android:shadowDy="1"
+    android:shadowRadius="2"
+    android:layout_margin="@dimen/spaceMicro"
+    android:textSize="12sp"
+    android:maxLines="1"
+    android:ellipsize="end"
+    android:visibility="gone"
+    tools:text="Game Of Thrones"
+    />
+
 </merge>
