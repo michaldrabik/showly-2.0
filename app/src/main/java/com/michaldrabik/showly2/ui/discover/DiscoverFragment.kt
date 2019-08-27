@@ -5,11 +5,11 @@ import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.michaldrabik.showly2.BaseFragment
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ViewModelFactory
 import com.michaldrabik.showly2.appComponent
-import com.michaldrabik.showly2.ui.common.GridSpacingItemDecoration
+import com.michaldrabik.showly2.ui.common.base.BaseFragment
+import com.michaldrabik.showly2.ui.common.decorations.GridSpacingItemDecoration
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
 import com.michaldrabik.showly2.utilities.dimenToPx
 import kotlinx.android.synthetic.main.fragment_discover.*
@@ -40,7 +40,12 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
   private fun setupRecycler() {
     discoverRecycler.apply {
       setHasFixedSize(true)
-      addItemDecoration(GridSpacingItemDecoration(3, dimenToPx(R.dimen.gridSpacing)))
+      addItemDecoration(
+        GridSpacingItemDecoration(
+          3,
+          dimenToPx(R.dimen.gridSpacing)
+        )
+      )
       adapter = this@DiscoverFragment.adapter
       layoutManager = this@DiscoverFragment.layoutManager
     }

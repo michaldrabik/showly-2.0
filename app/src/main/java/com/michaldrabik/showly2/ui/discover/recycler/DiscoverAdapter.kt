@@ -8,6 +8,7 @@ import com.michaldrabik.showly2.ui.common.ShowPosterView
 class DiscoverAdapter : RecyclerView.Adapter<DiscoverAdapter.ViewHolder>() {
 
   private val items: MutableList<Show> = mutableListOf()
+  private val imagesMap: MutableMap<Long, Int> = mutableMapOf()
 
   fun setItems(items: List<Show>) {
     this.items.apply {
@@ -21,7 +22,7 @@ class DiscoverAdapter : RecyclerView.Adapter<DiscoverAdapter.ViewHolder>() {
     ViewHolder(ShowPosterView(parent.context))
 
   override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-    (holder.itemView as ShowPosterView).bind(items[position])
+    (holder.itemView as ShowPosterView).bind(items[position], imagesMap)
   }
 
   override fun getItemCount() = items.size

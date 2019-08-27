@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2
+package com.michaldrabik.showly2.ui.common.base
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

@@ -3,7 +3,7 @@ package com.michaldrabik.showly2.ui.discover
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.showly2.BaseViewModel
+import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
