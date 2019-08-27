@@ -16,6 +16,10 @@ import com.michaldrabik.showly2.utilities.visible
 import com.michaldrabik.showly2.utilities.withFailListener
 import com.michaldrabik.showly2.utilities.withSuccessListener
 import kotlinx.android.synthetic.main.view_show_poster.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelChildren
 
 class ShowPosterView @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -24,6 +28,9 @@ class ShowPosterView @JvmOverloads constructor(
   companion object {
     private const val ASPECT_RATIO = 1.4705
   }
+
+  private val job = Job()
+  private val scope = CoroutineScope(Dispatchers.Default + job)
 
   private val cornerRadius by lazy { resources.getDimensionPixelSize(R.dimen.cornerShowTile) }
   private val gridSpacing by lazy { resources.getDimensionPixelSize(R.dimen.gridSpacing) }
@@ -88,5 +95,11 @@ class ShowPosterView @JvmOverloads constructor(
     showTileTitle.text = ""
     showTileTitle.gone()
     Glide.with(this).clear(showTileImage)
+    scope.coroutineContext.cancelChildren()
+  }
+
+  override fun onDetachedFromWindow() {
+    scope.coroutineContext.cancelChildren()
+    super.onDetachedFromWindow()
   }
 }
