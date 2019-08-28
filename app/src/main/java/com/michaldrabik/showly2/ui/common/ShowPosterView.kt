@@ -6,6 +6,7 @@ import android.widget.FrameLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.michaldrabik.network.trakt.model.Ids
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
@@ -56,6 +57,7 @@ class ShowPosterView @JvmOverloads constructor(
     Glide.with(this)
       .load(url)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
+      .transition(withCrossFade(200))
       .withFailListener { onImageLoadFail(item, missingImageListener) }
       .into(showTileImage)
   }
