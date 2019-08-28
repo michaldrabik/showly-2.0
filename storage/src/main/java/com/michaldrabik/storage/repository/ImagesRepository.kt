@@ -25,6 +25,7 @@ class ImagesRepository @Inject constructor(
       .apply()
   }
 
-  fun getPosterImageUrl(tvdbId: Long): String =
-    preferences.getString(tvdbPosterImageKey(tvdbId), "") ?: ""
+  fun getPosterImageUrl(tvdbId: Long): String {
+    return preferences.getString(tvdbPosterImageKey(tvdbId), "") ?: ""
+  }
 }

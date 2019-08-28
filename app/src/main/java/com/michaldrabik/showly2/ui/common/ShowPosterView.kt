@@ -10,6 +10,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.michaldrabik.network.trakt.model.Ids
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.model.ImageUrl.Status.UNAVAILABLE
+import com.michaldrabik.showly2.model.ImageUrl.Status.UNKNOWN
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.utilities.gone
 import com.michaldrabik.showly2.utilities.screenWidth
@@ -44,15 +46,14 @@ class ShowPosterView @JvmOverloads constructor(
   }
 
   private fun loadImage(item: DiscoverListItem, missingImageListener: (Ids, Boolean) -> Unit) {
-    val imageUrl = item.imageUrl
-    if (imageUrl == null) {
+    if (item.imageUrl.status == UNAVAILABLE) {
       showTileTitle.visible()
       return
     }
 
     val url = when {
-      imageUrl.isEmpty() -> "${TVDB_IMAGE_BASE_URL}_cache/posters/${item.show.ids.tvdb}-1.jpg"
-      else -> "$TVDB_IMAGE_BASE_URL$imageUrl"
+      item.imageUrl.status == UNKNOWN -> "${TVDB_IMAGE_BASE_URL}_cache/posters/${item.show.ids.tvdb}-1.jpg"
+      else -> "$TVDB_IMAGE_BASE_URL${item.imageUrl.url}"
     }
     Glide.with(this)
       .load(url)
@@ -63,7 +64,7 @@ class ShowPosterView @JvmOverloads constructor(
   }
 
   private fun onImageLoadFail(item: DiscoverListItem, missingImageListener: (Ids, Boolean) -> Unit) {
-    val force = item.imageUrl != null
+    val force = item.imageUrl.status != UNAVAILABLE
     missingImageListener(item.show.ids, force)
   }
 

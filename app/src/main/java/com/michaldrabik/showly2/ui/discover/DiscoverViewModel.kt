@@ -4,6 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.Ids
+import com.michaldrabik.showly2.model.ImageUrl
+import com.michaldrabik.showly2.model.ImageUrl.Status.AVAILABLE
+import com.michaldrabik.showly2.model.ImageUrl.Status.UNAVAILABLE
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.storage.repository.ImagesRepository
@@ -25,7 +28,7 @@ class DiscoverViewModel @Inject constructor(
       try {
         val shows = cloud.traktApi.fetchTrendingShows().map {
           val cachedImageUrl = imagesRepository.getPosterImageUrl(it.ids.tvdb)
-          DiscoverListItem(it, cachedImageUrl)
+          DiscoverListItem(it, ImageUrl.fromString(cachedImageUrl))
         }
         uiStream.value = DiscoverUiModel(trendingShows = shows)
       } catch (t: Throwable) {
@@ -37,18 +40,19 @@ class DiscoverViewModel @Inject constructor(
   }
 
   fun loadMissingImage(ids: Ids, force: Boolean) {
-    val cachedImageUrl = imagesRepository.getPosterImageUrl(ids.tvdb)
-    if (cachedImageUrl.isNotEmpty() && !force) {
+    val cachedImageUrl = ImageUrl.fromString(imagesRepository.getPosterImageUrl(ids.tvdb))
+    if (cachedImageUrl.status == AVAILABLE && !force) {
       uiStream.value = DiscoverUiModel(missingImage = Pair(ids, cachedImageUrl))
       return
     }
+
     viewModelScope.launch {
       try {
         checkAuthorization()
         val images = cloud.tvdbApi.fetchPosterImages(userRepository.tvdbToken, ids.tvdb)
-        val imageUrl = images.firstOrNull()?.thumbnail
-        if (imageUrl != null) {
-          imagesRepository.savePosterImageUrl(ids.tvdb, imageUrl)
+        val imageUrl = ImageUrl.fromString(images.firstOrNull()?.thumbnail)
+        if (imageUrl.status != UNAVAILABLE) {
+          imagesRepository.savePosterImageUrl(ids.tvdb, imageUrl.url)
         } else {
           imagesRepository.removePosterImageUrl(ids.tvdb)
         }

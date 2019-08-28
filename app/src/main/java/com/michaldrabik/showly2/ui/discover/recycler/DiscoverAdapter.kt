@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.discover.recycler
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.network.trakt.model.Ids
+import com.michaldrabik.showly2.model.ImageUrl
 import com.michaldrabik.showly2.ui.common.ShowPosterView
 
 class DiscoverAdapter : RecyclerView.Adapter<DiscoverAdapter.ViewHolder>() {
@@ -18,7 +19,7 @@ class DiscoverAdapter : RecyclerView.Adapter<DiscoverAdapter.ViewHolder>() {
     notifyItemRangeInserted(0, items.size)
   }
 
-  fun updateItemImageUrl(data: Pair<Ids, String?>) {
+  fun updateItemImageUrl(data: Pair<Ids, ImageUrl>) {
     val target = items.find { it.show.ids.tvdb == data.first.tvdb }
     target?.let {
       target.imageUrl = data.second
