@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.discover
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.network.Cloud
+import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.showly2.model.ImageUrl
 import com.michaldrabik.showly2.model.ImageUrl.Status.AVAILABLE
 import com.michaldrabik.showly2.model.ImageUrl.Status.UNAVAILABLE
@@ -28,18 +29,26 @@ class DiscoverViewModel @Inject constructor(
       uiStream.value = DiscoverUiModel(showLoading = true)
       try {
         val shows = cloud.traktApi.fetchTrendingShows()
-        val items = shows.mapIndexed { index, show ->
-          val itemType = if (index in (0..200 step 16) || index in (9..200 step 16)) FANART else POSTER
-          val cachedImageUrl = imagesRepository.getImageUrl(show.ids.tvdb, itemType.name)
-          DiscoverListItem(show, ImageUrl.fromString(cachedImageUrl), type = itemType)
-        }
-        uiStream.value = DiscoverUiModel(trendingShows = items)
+        prepareTrendingItems(shows)
       } catch (t: Throwable) {
         //TODO Errors
       } finally {
         uiStream.value = DiscoverUiModel(showLoading = false)
       }
     }
+  }
+
+  private fun prepareTrendingItems(shows: List<Show>) {
+    val items = shows.mapIndexed { index, show ->
+      val itemType =
+        when (index) {
+          in (0..200 step 16), in (9..200 step 16) -> FANART
+          else -> POSTER
+        }
+      val cachedImageUrl = imagesRepository.getImageUrl(show.ids.tvdb, itemType.name)
+      DiscoverListItem(show, ImageUrl.fromString(cachedImageUrl), type = itemType)
+    }
+    uiStream.value = DiscoverUiModel(trendingShows = items)
   }
 
   fun loadMissingImage(item: DiscoverListItem, force: Boolean) {

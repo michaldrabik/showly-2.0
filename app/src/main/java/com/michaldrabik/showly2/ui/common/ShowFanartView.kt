@@ -27,15 +27,15 @@ class ShowFanartView @JvmOverloads constructor(
   }
 
   private val cornerRadius by lazy { resources.getDimensionPixelSize(R.dimen.cornerShowTile) }
-  private val gridSpacing by lazy { resources.getDimensionPixelSize(R.dimen.gridSpacing) }
   private val gridPadding by lazy { resources.getDimensionPixelSize(R.dimen.gridPadding) }
   private val gridSpan by lazy { resources.getInteger(R.integer.discoverGridSpan).toFloat() }
 
   init {
     inflate(context, R.layout.view_show_fanart, this)
-    val width = ((screenWidth().toFloat() - (2.0 * gridPadding)) / gridSpan) * 2.0
-    val height = (width / 2.0) * ASPECT_RATIO
-    layoutParams = LayoutParams(width.toInt(), height.toInt())
+    val width = (screenWidth().toFloat() - (2.0 * gridPadding)) / gridSpan
+    val fullWidth = width * 2.0
+    val height = width * ASPECT_RATIO
+    layoutParams = LayoutParams(fullWidth.toInt(), height.toInt())
   }
 
   fun bind(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
