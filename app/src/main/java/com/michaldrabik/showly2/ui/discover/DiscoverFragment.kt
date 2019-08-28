@@ -29,9 +29,10 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
   }
 
   override fun createViewModel(factory: ViewModelFactory) =
-    ViewModelProvider(this, viewModelFactory).get(DiscoverViewModel::class.java).apply {
-      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-    }
+    ViewModelProvider(this, viewModelFactory).get(DiscoverViewModel::class.java)
+      .apply {
+        uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -43,18 +44,19 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
     discoverRecycler.apply {
       setHasFixedSize(true)
       addItemDecoration(
-        GridSpacingItemDecoration(
-          3,
-          dimenToPx(R.dimen.gridSpacing)
-        )
+        GridSpacingItemDecoration(3, dimenToPx(R.dimen.gridSpacing))
       )
       adapter = this@DiscoverFragment.adapter
       layoutManager = this@DiscoverFragment.layoutManager
+    }
+    adapter.missingImageListener = {
+      viewModel.loadMissingImage(it)
     }
   }
 
   private fun render(uiModel: DiscoverUiModel) {
     uiModel.trendingShows?.let { adapter.setItems(it) }
     uiModel.showLoading?.let { discoverProgress.visibleIf(it) }
+    uiModel.missingImage?.let { adapter.updateItemImageUrl(it) }
   }
 }

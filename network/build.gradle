@@ -16,21 +16,24 @@ android {
     consumerProguardFiles "consumer-rules.pro"
   }
 
-  buildTypes {
+  buildTypes.all {
     Properties properties = new Properties()
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
+    buildConfigField("String", "TRAKT_CLIENT_ID", properties.getProperty("traktClientId"))
+    buildConfigField("String", "TVDB_CLIENT_ID", properties.getProperty("tvdbClientId"))
+    buildConfigField("String", "TVDB_API_KEY", properties.getProperty("tvdbApiKey"))
+    buildConfigField("String", "TVDB_USERNAME", properties.getProperty("tvdbUsername"))
+  }
+
+  buildTypes {
     debug {
       minifyEnabled false
-
-      buildConfigField("String", "TRAKT_CLIENT_ID", properties.getProperty("traktClientId"))
     }
 
     release {
       minifyEnabled false
       proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-
-      buildConfigField("String", "TRAKT_CLIENT_ID", properties.getProperty("traktClientId"))
     }
   }
 }

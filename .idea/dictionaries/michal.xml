@@ -1,6 +1,7 @@
 <component name="ProjectDictionaryState">
   <dictionary name="michal">
     <words>
+      <w>apikey</w>
       <w>imdb</w>
       <w>michaldrabik</w>
       <w>showly</w>
@@ -9,6 +10,7 @@
       <w>trakt</w>
       <w>tvdb</w>
       <w>tvrage</w>
+      <w>userkey</w>
     </words>
   </dictionary>
 </component>
