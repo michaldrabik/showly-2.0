@@ -8,9 +8,10 @@ import com.michaldrabik.showly2.model.ImageUrl.Status.AVAILABLE
 import com.michaldrabik.showly2.model.ImageUrl.Status.UNAVAILABLE
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
+import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem.Type.FANART
+import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem.Type.POSTER
 import com.michaldrabik.storage.repository.ImagesRepository
 import com.michaldrabik.storage.repository.UserRepository
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,11 +27,13 @@ class DiscoverViewModel @Inject constructor(
     viewModelScope.launch {
       uiStream.value = DiscoverUiModel(showLoading = true)
       try {
-        val shows = cloud.traktApi.fetchTrendingShows().map {
-          val cachedImageUrl = imagesRepository.getPosterImageUrl(it.ids.tvdb)
-          DiscoverListItem(it, ImageUrl.fromString(cachedImageUrl))
+        val shows = cloud.traktApi.fetchTrendingShows()
+        val items = shows.mapIndexed { index, show ->
+          val itemType = if (index in (0..200 step 16) || index in (9..200 step 16)) FANART else POSTER
+          val cachedImageUrl = imagesRepository.getImageUrl(show.ids.tvdb, itemType.name)
+          DiscoverListItem(show, ImageUrl.fromString(cachedImageUrl), type = itemType)
         }
-        uiStream.value = DiscoverUiModel(trendingShows = shows)
+        uiStream.value = DiscoverUiModel(trendingShows = items)
       } catch (t: Throwable) {
         //TODO Errors
       } finally {
@@ -41,24 +44,33 @@ class DiscoverViewModel @Inject constructor(
 
   fun loadMissingImage(item: DiscoverListItem, force: Boolean) {
     val tvdbId = item.show.ids.tvdb
-    val cachedImageUrl = ImageUrl.fromString(imagesRepository.getPosterImageUrl(tvdbId))
+    val cachedImageUrl = ImageUrl.fromString(imagesRepository.getImageUrl(tvdbId, item.type.name))
     if (cachedImageUrl.status == AVAILABLE && !force) {
       uiStream.value = DiscoverUiModel(updateListItem = item.copy(imageUrl = cachedImageUrl))
       return
     }
-
     viewModelScope.launch {
       uiStream.value = DiscoverUiModel(updateListItem = item.copy(isLoading = true))
       try {
         checkAuthorization()
-        val images = cloud.tvdbApi.fetchPosterImages(userRepository.tvdbToken, tvdbId)
-        delay(2000)
-        val imageUrl = ImageUrl.fromString(images.firstOrNull()?.thumbnail)
+
+        val images =
+          when (item.type) {
+            POSTER -> cloud.tvdbApi.fetchPosterImages(userRepository.tvdbToken, tvdbId)
+            FANART -> cloud.tvdbApi.fetchFanartImages(userRepository.tvdbToken, tvdbId)
+          }
+
+        val imageUrl =
+          when (item.type) {
+            POSTER -> ImageUrl.fromString(images.firstOrNull()?.thumbnail)
+            FANART -> ImageUrl.fromString(images.firstOrNull()?.fileName)
+          }
         if (imageUrl.status != UNAVAILABLE) {
-          imagesRepository.savePosterImageUrl(tvdbId, imageUrl.url)
+          imagesRepository.saveImageUrl(tvdbId, imageUrl.url, item.type.name)
         } else {
-          imagesRepository.removePosterImageUrl(tvdbId)
+          imagesRepository.removeImageUrl(tvdbId, item.type.name)
         }
+
         uiStream.value = DiscoverUiModel(
           updateListItem = item.copy(imageUrl = imageUrl, isLoading = false)
         )

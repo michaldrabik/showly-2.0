@@ -14,7 +14,7 @@
     android:clipToPadding="false"
     android:overScrollMode="never"
     android:padding="@dimen/gridPadding"
-    android:scrollbars="none"
+    android:scrollbars="vertical"
     />
 
   <ProgressBar

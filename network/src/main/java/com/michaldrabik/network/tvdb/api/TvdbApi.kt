@@ -18,4 +18,7 @@ class TvdbApi(private val service: TvdbService) {
 
   suspend fun fetchPosterImages(token: String, tvdbId: Long) =
     service.fetchImages("Bearer $token", tvdbId, "poster").data
+
+  suspend fun fetchFanartImages(token: String, tvdbId: Long) =
+    service.fetchImages("Bearer $token", tvdbId, "fanart").data
 }

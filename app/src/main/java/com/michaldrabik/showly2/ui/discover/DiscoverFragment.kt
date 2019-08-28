@@ -9,9 +9,8 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ViewModelFactory
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
-import com.michaldrabik.showly2.ui.common.decorations.GridSpacingItemDecoration
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
-import com.michaldrabik.showly2.utilities.dimenToPx
+import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem.Type.FANART
 import com.michaldrabik.showly2.utilities.visibleIf
 import kotlinx.android.synthetic.main.fragment_discover.*
 
@@ -41,21 +40,27 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
   }
 
   private fun setupRecycler() {
-    discoverRecycler.apply {
-      setHasFixedSize(true)
-      addItemDecoration(
-        GridSpacingItemDecoration(3, dimenToPx(R.dimen.gridSpacing))
-      )
-      adapter = this@DiscoverFragment.adapter
-      layoutManager = this@DiscoverFragment.layoutManager
-    }
     adapter.missingImageListener = { ids, force ->
       viewModel.loadMissingImage(ids, force)
+    }
+    discoverRecycler.apply {
+      setHasFixedSize(true)
+//      addItemDecoration(GridSpacingItemDecoration(gridSpan, dimenToPx(R.dimen.gridSpacing)))
+      adapter = this@DiscoverFragment.adapter
+      layoutManager = this@DiscoverFragment.layoutManager
     }
   }
 
   private fun render(uiModel: DiscoverUiModel) {
-    uiModel.trendingShows?.let { adapter.setItems(it) }
+    uiModel.trendingShows?.let {
+      adapter.setItems(it)
+      layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+        override fun getSpanSize(position: Int) = when {
+          it[position].type == FANART -> 2
+          else -> 1
+        }
+      }
+    }
     uiModel.showLoading?.let { discoverProgress.visibleIf(it) }
     uiModel.updateListItem?.let { adapter.updateItem(it) }
   }

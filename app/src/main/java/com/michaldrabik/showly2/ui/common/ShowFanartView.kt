@@ -14,12 +14,11 @@ import com.michaldrabik.showly2.model.ImageUrl.Status.UNKNOWN
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.utilities.gone
 import com.michaldrabik.showly2.utilities.screenWidth
-import com.michaldrabik.showly2.utilities.visible
 import com.michaldrabik.showly2.utilities.visibleIf
 import com.michaldrabik.showly2.utilities.withFailListener
-import kotlinx.android.synthetic.main.view_show_poster.view.*
+import kotlinx.android.synthetic.main.view_show_fanart.view.*
 
-class ShowPosterView @JvmOverloads constructor(
+class ShowFanartView @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
@@ -33,27 +32,22 @@ class ShowPosterView @JvmOverloads constructor(
   private val gridSpan by lazy { resources.getInteger(R.integer.discoverGridSpan).toFloat() }
 
   init {
-    inflate(context, R.layout.view_show_poster, this)
-    val width = (screenWidth().toFloat() - (2.0 * gridPadding)) / gridSpan
-    val height = width * ASPECT_RATIO
+    inflate(context, R.layout.view_show_fanart, this)
+    val width = ((screenWidth().toFloat() - (2.0 * gridPadding)) / gridSpan) * 2.0
+    val height = (width / 2.0) * ASPECT_RATIO
     layoutParams = LayoutParams(width.toInt(), height.toInt())
   }
 
   fun bind(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
     clear()
-    showPosterTitle.text = item.show.title
-    showPosterProgress.visibleIf(item.isLoading)
+    showFanartTitle.text = item.show.title
+    showFanartProgress.visibleIf(item.isLoading)
     if (!item.isLoading) loadImage(item, missingImageListener)
   }
 
   private fun loadImage(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
-    if (item.imageUrl.status == UNAVAILABLE) {
-      showPosterTitle.visible()
-      return
-    }
-
     val url = when {
-      item.imageUrl.status == UNKNOWN -> "${TVDB_IMAGE_BASE_URL}_cache/posters/${item.show.ids.tvdb}-1.jpg"
+      item.imageUrl.status == UNKNOWN -> "${TVDB_IMAGE_BASE_URL}fanart/original/${item.show.ids.tvdb}-1.jpg"
       else -> "$TVDB_IMAGE_BASE_URL${item.imageUrl.url}"
     }
     Glide.with(this)
@@ -61,7 +55,7 @@ class ShowPosterView @JvmOverloads constructor(
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
       .transition(withCrossFade(200))
       .withFailListener { onImageLoadFail(item, missingImageListener) }
-      .into(showPosterImage)
+      .into(showFanartImage)
   }
 
   private fun onImageLoadFail(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
@@ -70,9 +64,8 @@ class ShowPosterView @JvmOverloads constructor(
   }
 
   private fun clear() {
-    showPosterTitle.text = ""
-    showPosterTitle.gone()
-    showPosterProgress.gone()
-    Glide.with(this).clear(showPosterImage)
+    showFanartTitle.text = ""
+    showFanartProgress.gone()
+    Glide.with(this).clear(showFanartImage)
   }
 }
