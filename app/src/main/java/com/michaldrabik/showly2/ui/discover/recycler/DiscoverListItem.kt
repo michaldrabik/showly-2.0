@@ -4,5 +4,5 @@ import com.michaldrabik.network.trakt.model.Show
 
 data class DiscoverListItem(
   val show: Show,
-  var imageUrl: String? = null
+  var imageUrl: String?
 )

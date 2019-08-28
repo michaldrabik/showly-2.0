@@ -36,16 +36,22 @@ class ShowPosterView @JvmOverloads constructor(
     layoutParams = LayoutParams(width.toInt(), height.toInt())
   }
 
-  fun bind(item: DiscoverListItem, missingImageListener: (Ids) -> Unit) {
+  fun bind(item: DiscoverListItem, missingImageListener: (Ids, Boolean) -> Unit) {
     clear()
     showTileTitle.text = item.show.title
     loadImage(item, missingImageListener)
   }
 
-  private fun loadImage(item: DiscoverListItem, missingImageListener: (Ids) -> Unit) {
+  private fun loadImage(item: DiscoverListItem, missingImageListener: (Ids, Boolean) -> Unit) {
+    val imageUrl = item.imageUrl
+    if (imageUrl == null) {
+      showTileTitle.visible()
+      return
+    }
+
     val url = when {
-      item.imageUrl == null -> "${TVDB_IMAGE_BASE_URL}_cache/posters/${item.show.ids.tvdb}-1.jpg"
-      else -> "$TVDB_IMAGE_BASE_URL${item.imageUrl}"
+      imageUrl.isEmpty() -> "${TVDB_IMAGE_BASE_URL}_cache/posters/${item.show.ids.tvdb}-1.jpg"
+      else -> "$TVDB_IMAGE_BASE_URL$imageUrl"
     }
     Glide.with(this)
       .load(url)
@@ -54,12 +60,9 @@ class ShowPosterView @JvmOverloads constructor(
       .into(showTileImage)
   }
 
-  private fun onImageLoadFail(item: DiscoverListItem, missingImageListener: (Ids) -> Unit) {
-    if (item.imageUrl == null) {
-      missingImageListener(item.show.ids)
-    } else {
-      showTileTitle.visible()
-    }
+  private fun onImageLoadFail(item: DiscoverListItem, missingImageListener: (Ids, Boolean) -> Unit) {
+    val force = item.imageUrl != null
+    missingImageListener(item.show.ids, force)
   }
 
   private fun clear() {

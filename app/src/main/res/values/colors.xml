@@ -12,6 +12,6 @@
 
   <color name="colorBottomMenuBackground">#222327</color>
   <color name="colorBottomMenuItemChecked">#FEFEFE</color>
-  <color name="colorBottomMenuItem">#A0A0A0</color>
+  <color name="colorBottomMenuItem">#838383</color>
   <color name="colorBottomMenuSeparator">#464646</color>
 </resources>

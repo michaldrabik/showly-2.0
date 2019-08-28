@@ -2,6 +2,8 @@ package com.michaldrabik.showly2.di
 
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.ViewModelFactory
+import com.michaldrabik.storage.repository.ImagesRepository
+import com.michaldrabik.storage.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 
@@ -11,8 +13,10 @@ object AppModule {
   @AppScope
   @JvmStatic
   @Provides
-  fun providesViewModelFactory(cloud: Cloud): ViewModelFactory {
-    return ViewModelFactory(cloud)
-  }
-
+  fun providesViewModelFactory(
+    cloud: Cloud,
+    userRepository: UserRepository,
+    imagesRepository: ImagesRepository
+  ): ViewModelFactory =
+    ViewModelFactory(cloud, userRepository, imagesRepository)
 }

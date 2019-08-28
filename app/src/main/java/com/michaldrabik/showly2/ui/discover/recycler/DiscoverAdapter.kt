@@ -8,7 +8,7 @@ import com.michaldrabik.showly2.ui.common.ShowPosterView
 class DiscoverAdapter : RecyclerView.Adapter<DiscoverAdapter.ViewHolder>() {
 
   private val items: MutableList<DiscoverListItem> = mutableListOf()
-  var missingImageListener: (Ids) -> Unit = {}
+  var missingImageListener: (Ids, Boolean) -> Unit = { _, _ -> }
 
   fun setItems(items: List<DiscoverListItem>) {
     this.items.apply {
@@ -18,7 +18,7 @@ class DiscoverAdapter : RecyclerView.Adapter<DiscoverAdapter.ViewHolder>() {
     notifyItemRangeInserted(0, items.size)
   }
 
-  fun updateItemImageUrl(data: Pair<Ids, String>) {
+  fun updateItemImageUrl(data: Pair<Ids, String?>) {
     val target = items.find { it.show.ids.tvdb == data.first.tvdb }
     target?.let {
       target.imageUrl = data.second

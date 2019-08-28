@@ -6,11 +6,15 @@ import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.Ids
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
+import com.michaldrabik.storage.repository.ImagesRepository
+import com.michaldrabik.storage.repository.UserRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class DiscoverViewModel @Inject constructor(
-  private val cloud: Cloud
+  private val cloud: Cloud,
+  private val userRepository: UserRepository,
+  private val imagesRepository: ImagesRepository
 ) : BaseViewModel() {
 
   val uiStream by lazy { MutableLiveData<DiscoverUiModel>() }
@@ -19,7 +23,10 @@ class DiscoverViewModel @Inject constructor(
     viewModelScope.launch {
       uiStream.value = DiscoverUiModel(showLoading = true)
       try {
-        val shows = cloud.traktApi.fetchTrendingShows().map { DiscoverListItem(it) }
+        val shows = cloud.traktApi.fetchTrendingShows().map {
+          val cachedImageUrl = imagesRepository.getPosterImageUrl(it.ids.tvdb)
+          DiscoverListItem(it, cachedImageUrl)
+        }
         uiStream.value = DiscoverUiModel(trendingShows = shows)
       } catch (t: Throwable) {
         //TODO Errors
@@ -29,17 +36,33 @@ class DiscoverViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingImage(ids: Ids) {
+  fun loadMissingImage(ids: Ids, force: Boolean) {
+    val cachedImageUrl = imagesRepository.getPosterImageUrl(ids.tvdb)
+    if (cachedImageUrl.isNotEmpty() && !force) {
+      uiStream.value = DiscoverUiModel(missingImage = Pair(ids, cachedImageUrl))
+      return
+    }
     viewModelScope.launch {
       try {
-        val token =
-          "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NjcwNjM2NDUsImlkIjoiU2hvd2x5IDIuMCIsIm9yaWdfaWF0IjoxNTY2OTc3MjQ1LCJ1c2VyaWQiOjQyNjU2MCwidXNlcm5hbWUiOiJkcmFiIn0.Cr-wuXJgHpe4VQhESk1Bixp41ZIBTeMdAelQXs6T178i94XTLwlP5rSLYthKjm7ok8z60fEWYlNFbOyois_3x1dYAmET8f5IOzawhtiy8Bh5LlE4kkjfaNtPK8xJJQPrOJx8-WPZ9hb6vTXs_jIAOiraMPBb7EBkj5C1MTurwp6NShB7vTvx7nAHGVfC20XA1Lot858qoLP1HAS_xqzaiZrISg2AQGjg1lmqAZCu06kJEVFWwm45LWgljx9H7Z-PGTYcgYLFlJ-qG4AqQNHpFBIaIO2i6N8xD9uAnuLyP6o34QkiZCpngUddmpzGVct1olsE-ersxQYvWA8jHJbmsg"
-        val images = cloud.tvdbApi.fetchPosterImages(token, ids.tvdb)
-        val imageUrl = images.firstOrNull()?.thumbnail ?: ""
+        checkAuthorization()
+        val images = cloud.tvdbApi.fetchPosterImages(userRepository.tvdbToken, ids.tvdb)
+        val imageUrl = images.firstOrNull()?.thumbnail
+        if (imageUrl != null) {
+          imagesRepository.savePosterImageUrl(ids.tvdb, imageUrl)
+        } else {
+          imagesRepository.removePosterImageUrl(ids.tvdb)
+        }
         uiStream.value = DiscoverUiModel(missingImage = Pair(ids, imageUrl))
       } catch (t: Throwable) {
         //TODO Errors
       }
+    }
+  }
+
+  private suspend fun checkAuthorization() {
+    if (!userRepository.isTvdbAuthorized) {
+      val token = cloud.tvdbApi.authorize()
+      userRepository.tvdbToken = token.token
     }
   }
 }

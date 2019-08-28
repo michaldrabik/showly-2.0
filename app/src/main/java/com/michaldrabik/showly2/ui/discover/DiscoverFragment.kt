@@ -49,8 +49,8 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
       adapter = this@DiscoverFragment.adapter
       layoutManager = this@DiscoverFragment.layoutManager
     }
-    adapter.missingImageListener = {
-      viewModel.loadMissingImage(it)
+    adapter.missingImageListener = { ids, force ->
+      viewModel.loadMissingImage(ids, force)
     }
   }
 
