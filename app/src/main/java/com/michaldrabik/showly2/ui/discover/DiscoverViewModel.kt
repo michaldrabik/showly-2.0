@@ -3,7 +3,6 @@ package com.michaldrabik.showly2.ui.discover
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.network.trakt.model.Ids
 import com.michaldrabik.showly2.model.ImageUrl
 import com.michaldrabik.showly2.model.ImageUrl.Status.AVAILABLE
 import com.michaldrabik.showly2.model.ImageUrl.Status.UNAVAILABLE
@@ -11,6 +10,7 @@ import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.storage.repository.ImagesRepository
 import com.michaldrabik.storage.repository.UserRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,24 +39,29 @@ class DiscoverViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingImage(ids: Ids, force: Boolean) {
-    val cachedImageUrl = ImageUrl.fromString(imagesRepository.getPosterImageUrl(ids.tvdb))
+  fun loadMissingImage(item: DiscoverListItem, force: Boolean) {
+    val tvdbId = item.show.ids.tvdb
+    val cachedImageUrl = ImageUrl.fromString(imagesRepository.getPosterImageUrl(tvdbId))
     if (cachedImageUrl.status == AVAILABLE && !force) {
-      uiStream.value = DiscoverUiModel(missingImage = Pair(ids, cachedImageUrl))
+      uiStream.value = DiscoverUiModel(updateListItem = item.copy(imageUrl = cachedImageUrl))
       return
     }
 
     viewModelScope.launch {
+      uiStream.value = DiscoverUiModel(updateListItem = item.copy(isLoading = true))
       try {
         checkAuthorization()
-        val images = cloud.tvdbApi.fetchPosterImages(userRepository.tvdbToken, ids.tvdb)
+        val images = cloud.tvdbApi.fetchPosterImages(userRepository.tvdbToken, tvdbId)
+        delay(2000)
         val imageUrl = ImageUrl.fromString(images.firstOrNull()?.thumbnail)
         if (imageUrl.status != UNAVAILABLE) {
-          imagesRepository.savePosterImageUrl(ids.tvdb, imageUrl.url)
+          imagesRepository.savePosterImageUrl(tvdbId, imageUrl.url)
         } else {
-          imagesRepository.removePosterImageUrl(ids.tvdb)
+          imagesRepository.removePosterImageUrl(tvdbId)
         }
-        uiStream.value = DiscoverUiModel(missingImage = Pair(ids, imageUrl))
+        uiStream.value = DiscoverUiModel(
+          updateListItem = item.copy(imageUrl = imageUrl, isLoading = false)
+        )
       } catch (t: Throwable) {
         //TODO Errors
       }

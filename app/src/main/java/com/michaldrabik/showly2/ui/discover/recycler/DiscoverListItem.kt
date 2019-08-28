@@ -5,5 +5,6 @@ import com.michaldrabik.showly2.model.ImageUrl
 
 data class DiscoverListItem(
   val show: Show,
-  var imageUrl: ImageUrl
+  var imageUrl: ImageUrl,
+  var isLoading: Boolean = false
 )

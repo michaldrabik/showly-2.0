@@ -7,16 +7,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.michaldrabik.network.trakt.model.Ids
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.ImageUrl.Status.UNAVAILABLE
 import com.michaldrabik.showly2.model.ImageUrl.Status.UNKNOWN
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
-import com.michaldrabik.showly2.utilities.gone
-import com.michaldrabik.showly2.utilities.screenWidth
-import com.michaldrabik.showly2.utilities.visible
-import com.michaldrabik.showly2.utilities.withFailListener
+import com.michaldrabik.showly2.utilities.*
 import kotlinx.android.synthetic.main.view_show_poster.view.*
 
 class ShowPosterView @JvmOverloads constructor(
@@ -39,13 +35,14 @@ class ShowPosterView @JvmOverloads constructor(
     layoutParams = LayoutParams(width.toInt(), height.toInt())
   }
 
-  fun bind(item: DiscoverListItem, missingImageListener: (Ids, Boolean) -> Unit) {
+  fun bind(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
     clear()
     showTileTitle.text = item.show.title
-    loadImage(item, missingImageListener)
+    showTileProgress.visibleIf(item.isLoading)
+    if (!item.isLoading) loadImage(item, missingImageListener)
   }
 
-  private fun loadImage(item: DiscoverListItem, missingImageListener: (Ids, Boolean) -> Unit) {
+  private fun loadImage(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
     if (item.imageUrl.status == UNAVAILABLE) {
       showTileTitle.visible()
       return
@@ -63,14 +60,15 @@ class ShowPosterView @JvmOverloads constructor(
       .into(showTileImage)
   }
 
-  private fun onImageLoadFail(item: DiscoverListItem, missingImageListener: (Ids, Boolean) -> Unit) {
+  private fun onImageLoadFail(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
     val force = item.imageUrl.status != UNAVAILABLE
-    missingImageListener(item.show.ids, force)
+    missingImageListener(item, force)
   }
 
   private fun clear() {
     showTileTitle.text = ""
     showTileTitle.gone()
+    showTileProgress.gone()
     Glide.with(this).clear(showTileImage)
   }
 }

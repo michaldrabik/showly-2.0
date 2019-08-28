@@ -11,7 +11,6 @@
     android:id="@+id/showTileImage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:background="@color/colorAccent"
     />
 
   <TextView
@@ -19,17 +18,26 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|start"
-    android:textColor="@color/colorWhite"
+    android:layout_margin="@dimen/spaceMicro"
+    android:ellipsize="end"
+    android:maxLines="1"
     android:shadowColor="@color/colorBlack"
     android:shadowDx="1"
     android:shadowDy="1"
     android:shadowRadius="2"
-    android:layout_margin="@dimen/spaceMicro"
+    android:textColor="@color/colorWhite"
     android:textSize="12sp"
-    android:maxLines="1"
-    android:ellipsize="end"
     android:visibility="gone"
     tools:text="Game Of Thrones"
+    />
+
+  <ProgressBar
+    android:id="@+id/showTileProgress"
+    android:layout_width="28dp"
+    android:layout_height="28dp"
+    android:indeterminateTint="@color/colorProgressGray"
+    android:layout_gravity="center"
+    android:visibility="gone"
     />
 
 </merge>

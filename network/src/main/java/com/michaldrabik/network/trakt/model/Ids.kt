@@ -12,5 +12,4 @@ data class Ids(
   companion object {
     val EMPTY = Ids(-1, "", -1, "", -1, -1)
   }
-
 }

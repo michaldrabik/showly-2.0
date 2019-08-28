@@ -57,6 +57,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
   private fun render(uiModel: DiscoverUiModel) {
     uiModel.trendingShows?.let { adapter.setItems(it) }
     uiModel.showLoading?.let { discoverProgress.visibleIf(it) }
-    uiModel.missingImage?.let { adapter.updateItemImageUrl(it) }
+    uiModel.updateListItem?.let { adapter.updateItem(it) }
   }
 }

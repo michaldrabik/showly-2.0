@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <color name="colorBackground">#121212</color>
-  <color name="colorPrimary">#008577</color>
+  <color name="colorPrimary">#222327</color>
   <color name="colorPrimaryDark">#121212</color>
   <color name="colorAccent">#F44336</color>
   <color name="colorBlack">#000000</color>
@@ -14,4 +14,6 @@
   <color name="colorBottomMenuItemChecked">#FEFEFE</color>
   <color name="colorBottomMenuItem">#838383</color>
   <color name="colorBottomMenuSeparator">#464646</color>
+
+  <color name="colorProgressGray">#333333</color>
 </resources>

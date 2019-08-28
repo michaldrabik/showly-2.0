@@ -2,14 +2,12 @@ package com.michaldrabik.showly2.ui.discover.recycler
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.network.trakt.model.Ids
-import com.michaldrabik.showly2.model.ImageUrl
 import com.michaldrabik.showly2.ui.common.ShowPosterView
 
 class DiscoverAdapter : RecyclerView.Adapter<DiscoverAdapter.ViewHolder>() {
 
   private val items: MutableList<DiscoverListItem> = mutableListOf()
-  var missingImageListener: (Ids, Boolean) -> Unit = { _, _ -> }
+  var missingImageListener: (DiscoverListItem, Boolean) -> Unit = { _, _ -> }
 
   fun setItems(items: List<DiscoverListItem>) {
     this.items.apply {
@@ -19,12 +17,12 @@ class DiscoverAdapter : RecyclerView.Adapter<DiscoverAdapter.ViewHolder>() {
     notifyItemRangeInserted(0, items.size)
   }
 
-  fun updateItemImageUrl(data: Pair<Ids, ImageUrl>) {
-    val target = items.find { it.show.ids.tvdb == data.first.tvdb }
-    target?.let {
-      target.imageUrl = data.second
-      notifyItemChanged(items.indexOf(target))
-    }
+  fun updateItem(updatedItem: DiscoverListItem) {
+    val target = items.find { it.show.ids == updatedItem.show.ids }
+    val index = items.indexOf(target)
+    items.removeAt(index)
+    items.add(index, updatedItem)
+    notifyItemChanged(index)
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
