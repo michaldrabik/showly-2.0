@@ -33,8 +33,8 @@ fun View.visibleIf(condition: Boolean) =
     gone()
   }
 
-fun View.fadeOut(duration: Long = 250, startDelay: Long = 0) {
-  animate().alpha(0F).setDuration(duration).setStartDelay(startDelay).start()
+fun View.fadeOut(duration: Long = 250, startDelay: Long = 0, endAction: () -> Unit = {}) {
+  animate().alpha(0F).setDuration(duration).setStartDelay(startDelay).withEndAction(endAction).start()
 }
 
 fun GridLayoutManager.withSpanSizeLookup(action: (Int) -> Int) {

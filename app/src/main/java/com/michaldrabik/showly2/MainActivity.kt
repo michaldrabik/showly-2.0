@@ -11,6 +11,7 @@ class MainActivity : AppCompatActivity() {
 
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
+  private val mainDestinations = arrayOf(R.id.watchlistFragment, R.id.discoverFragment)
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -38,13 +39,13 @@ class MainActivity : AppCompatActivity() {
 
   override fun onBackPressed() {
     navigationHost.findNavController().run {
-      if (currentDestination?.id != R.id.watchlistFragment) {
+      if (currentDestination?.id in mainDestinations) {
         bottomNavigationView.selectedItemId = R.id.menuWatchlist
-        showNavigation()
         return
       }
       super.onBackPressed()
     }
+    showNavigation()
   }
 
   fun hideNavigation() {

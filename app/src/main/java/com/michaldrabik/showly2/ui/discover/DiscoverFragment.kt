@@ -1,9 +1,11 @@
 package com.michaldrabik.showly2.ui.discover
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.michaldrabik.showly2.MainActivity
 import com.michaldrabik.showly2.R
@@ -21,9 +23,9 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
 
   override val layoutResId = R.layout.fragment_discover
 
-  private val adapter by lazy { DiscoverAdapter() }
   private val gridSpan by lazy { resources.getInteger(R.integer.discoverGridSpan) }
-  private val layoutManager by lazy { GridLayoutManager(context, gridSpan) }
+  private lateinit var adapter: DiscoverAdapter
+  private lateinit var layoutManager: GridLayoutManager
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -40,9 +42,12 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
     super.onViewCreated(view, savedInstanceState)
     setupRecycler()
     viewModel.loadTrendingShows()
+    Log.d("STATE", savedInstanceState.toString())
   }
 
   private fun setupRecycler() {
+    layoutManager = GridLayoutManager(context, gridSpan)
+    adapter = DiscoverAdapter()
     adapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
     adapter.itemClickListener = { openShowDetails(it) }
     discoverRecycler.apply {
@@ -59,8 +64,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
 
   private fun animateItemsExit(item: DiscoverListItem) {
     val clickedIndex = adapter.findItemIndex(item)
-    val clickedView = discoverRecycler.findViewHolderForAdapterPosition(clickedIndex)
-    clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350)
     (0..adapter.itemCount).forEach {
       if (it != clickedIndex) {
         val view = discoverRecycler.findViewHolderForAdapterPosition(it)
@@ -70,6 +73,10 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
         }
       }
     }
+    val clickedView = discoverRecycler.findViewHolderForAdapterPosition(clickedIndex)
+    clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350, endAction = {
+      findNavController().navigate(R.id.actionDiscoverFragmentToShowDetailsFragment)
+    })
   }
 
   private fun render(uiModel: DiscoverUiModel) {

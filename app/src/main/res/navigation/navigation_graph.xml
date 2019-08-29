@@ -3,7 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/navigation_graph"
+  android:id="@+id/navigationGraph"
   app:startDestination="@id/watchlistFragment"
   >
 
@@ -11,7 +11,7 @@
     android:id="@+id/actionNavigateWatchlistFragment"
     app:destination="@id/watchlistFragment"
     app:launchSingleTop="true"
-    app:popUpTo="@id/navigation_graph"
+    app:popUpTo="@id/navigationGraph"
     app:popUpToInclusive="true"
     />
 
@@ -19,21 +19,35 @@
     android:id="@+id/actionNavigateDiscoverFragment"
     app:destination="@id/discoverFragment"
     app:launchSingleTop="true"
-    app:popUpTo="@id/navigation_graph"
+    app:popUpTo="@id/navigationGraph"
     app:popUpToInclusive="true"
     />
 
   <fragment
     android:id="@+id/discoverFragment"
     android:name="com.michaldrabik.showly2.ui.discover.DiscoverFragment"
-    android:label="fragment_discover"
+    android:label="fragmentDiscover"
     tools:layout="@layout/fragment_discover"
-    />
+    >
+    <action
+      android:id="@+id/actionDiscoverFragmentToShowDetailsFragment"
+      app:destination="@id/showDetailsFragment"
+      app:popUpTo="@id/discoverFragment"
+      app:launchSingleTop="true"
+      />
+  </fragment>
 
   <fragment
     android:id="@+id/watchlistFragment"
     android:name="com.michaldrabik.showly2.ui.watchlist.WatchlistFragment"
-    android:label="fragment_watchlist"
+    android:label="fragmentWatchlist"
+    tools:layout="@layout/fragment_watchlist"
+    />
+
+  <fragment
+    android:id="@+id/showDetailsFragment"
+    android:name="com.michaldrabik.showly2.ui.ShowDetailsFragment"
+    android:label="fragmentShowDetails"
     tools:layout="@layout/fragment_watchlist"
     />
 

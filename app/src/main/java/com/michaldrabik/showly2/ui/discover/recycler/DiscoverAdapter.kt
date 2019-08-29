@@ -23,10 +23,12 @@ class DiscoverAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   fun updateItem(updatedItem: DiscoverListItem) {
     val target = items.find { it.show.ids == updatedItem.show.ids }
-    val index = items.indexOf(target)
-    items.removeAt(index)
-    items.add(index, updatedItem)
-    notifyItemChanged(index)
+    target?.let {
+      val index = items.indexOf(it)
+      items.removeAt(index)
+      items.add(index, updatedItem)
+      notifyItemChanged(index)
+    }
   }
 
   fun findItemIndex(item: DiscoverListItem) = items.indexOf(item)
