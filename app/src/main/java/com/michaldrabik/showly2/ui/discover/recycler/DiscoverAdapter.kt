@@ -11,6 +11,7 @@ class DiscoverAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   private val items: MutableList<DiscoverListItem> = mutableListOf()
   var missingImageListener: (DiscoverListItem, Boolean) -> Unit = { _, _ -> }
+  var itemClickListener: (DiscoverListItem) -> Unit = { }
 
   fun setItems(items: List<DiscoverListItem>) {
     this.items.apply {
@@ -36,8 +37,10 @@ class DiscoverAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (holder.itemViewType) {
-      POSTER.ordinal -> (holder.itemView as ShowPosterView).bind(items[position], missingImageListener)
-      FANART.ordinal -> (holder.itemView as ShowFanartView).bind(items[position], missingImageListener)
+      POSTER.ordinal ->
+        (holder.itemView as ShowPosterView).bind(items[position], missingImageListener, itemClickListener)
+      FANART.ordinal ->
+        (holder.itemView as ShowFanartView).bind(items[position], missingImageListener, itemClickListener)
     }
   }
 

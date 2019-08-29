@@ -25,10 +25,15 @@ class ShowFanartView @JvmOverloads constructor(
     layoutParams = LayoutParams((width * 2.0).toInt(), height.toInt())
   }
 
-  fun bind(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
+  fun bind(
+    item: DiscoverListItem,
+    missingImageListener: (DiscoverListItem, Boolean) -> Unit,
+    itemClickListener: (DiscoverListItem) -> Unit
+  ) {
     clear()
     showFanartTitle.text = item.show.title
     showFanartProgress.visibleIf(item.isLoading)
+    showFanartRoot.setOnClickListener { itemClickListener(item) }
     if (!item.isLoading) loadImage(item, missingImageListener)
   }
 

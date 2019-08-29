@@ -26,10 +26,15 @@ class ShowPosterView @JvmOverloads constructor(
     layoutParams = LayoutParams(width.toInt(), height.toInt())
   }
 
-  fun bind(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
+  fun bind(
+    item: DiscoverListItem,
+    missingImageListener: (DiscoverListItem, Boolean) -> Unit,
+    itemClickListener: (DiscoverListItem) -> Unit
+  ) {
     clear()
     showPosterTitle.text = item.show.title
     showPosterProgress.visibleIf(item.isLoading)
+    showPosterRoot.setOnClickListener { itemClickListener(item) }
     if (!item.isLoading) loadImage(item, missingImageListener)
   }
 

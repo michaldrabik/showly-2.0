@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.discover
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -42,6 +43,10 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
   private fun setupRecycler() {
     adapter.missingImageListener = { ids, force ->
       viewModel.loadMissingImage(ids, force)
+    }
+    adapter.itemClickListener = { item ->
+      //TODO
+      Toast.makeText(context, item.show.title, Toast.LENGTH_SHORT).show()
     }
     discoverRecycler.apply {
       setHasFixedSize(true)

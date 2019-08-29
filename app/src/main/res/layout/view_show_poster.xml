@@ -7,38 +7,47 @@
   tools:parentTag="android.widget.FrameLayout"
   >
 
-  <ImageView
-    android:id="@+id/showPosterImage"
+  <FrameLayout
+    android:id="@+id/showPosterRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/gridSpacing"
-    />
+    android:foreground="?android:attr/selectableItemBackground"
+    >
 
-  <TextView
-    android:id="@+id/showPosterTitle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|start"
-    android:layout_margin="@dimen/spaceSmall"
-    android:ellipsize="end"
-    android:maxLines="1"
-    android:shadowColor="@color/colorBlack"
-    android:shadowDx="3"
-    android:shadowDy="3"
-    android:shadowRadius="1"
-    android:textColor="@color/colorWhite"
-    android:textSize="12sp"
-    android:visibility="gone"
-    tools:text="Game Of Thrones"
-    />
+    <ImageView
+      android:id="@+id/showPosterImage"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      />
 
-  <ProgressBar
-    android:id="@+id/showPosterProgress"
-    android:layout_width="28dp"
-    android:layout_height="28dp"
-    android:indeterminateTint="@color/colorProgressGray"
-    android:layout_gravity="center"
-    android:visibility="gone"
-    />
+    <TextView
+      android:id="@+id/showPosterTitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom|start"
+      android:layout_margin="@dimen/spaceSmall"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:shadowColor="@color/colorBlack"
+      android:shadowDx="3"
+      android:shadowDy="3"
+      android:shadowRadius="1"
+      android:textColor="@color/colorWhite"
+      android:textSize="12sp"
+      android:visibility="gone"
+      tools:text="Game Of Thrones"
+      />
+
+    <ProgressBar
+      android:id="@+id/showPosterProgress"
+      android:layout_width="28dp"
+      android:layout_height="28dp"
+      android:indeterminateTint="@color/colorProgressGray"
+      android:layout_gravity="center"
+      android:visibility="gone"
+      />
+
+  </FrameLayout>
 
 </merge>
