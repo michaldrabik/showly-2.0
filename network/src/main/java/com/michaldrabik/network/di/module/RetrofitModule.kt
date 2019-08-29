@@ -6,6 +6,8 @@ import com.michaldrabik.network.Config.TVDB_BASE_URL
 import com.michaldrabik.network.trakt.TraktInterceptor
 import com.michaldrabik.network.trakt.converters.ShowConverter
 import com.michaldrabik.network.trakt.converters.TrendingResultConverter
+import com.michaldrabik.network.tvdb.converters.TvdbImageConverter
+import com.michaldrabik.network.tvdb.converters.TvdbImagesResultConverter
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -43,10 +45,14 @@ object RetrofitModule {
   fun providesMoshi(): Moshi {
     val showConverter = ShowConverter()
     val trendingResultConverter = TrendingResultConverter(showConverter)
+    val tvdbImageConverter = TvdbImageConverter()
+    val tvdbImageResultConverter = TvdbImagesResultConverter(tvdbImageConverter)
 
     return Moshi.Builder()
       .add(showConverter)
       .add(trendingResultConverter)
+      .add(tvdbImageConverter)
+      .add(tvdbImageResultConverter)
       .build()
   }
 
