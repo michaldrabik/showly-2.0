@@ -6,6 +6,8 @@ data class ImageUrl(
 ) {
 
   companion object {
+    val UNAVAILABLE = ImageUrl("", Status.UNAVAILABLE)
+
     fun fromString(urlString: String?) = when {
       urlString == null -> ImageUrl("", Status.UNAVAILABLE)
       urlString.isEmpty() -> ImageUrl("", Status.UNKNOWN)

@@ -2,16 +2,12 @@ package com.michaldrabik.showly2.ui.discover.recycler
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.showly2.ui.common.ShowFanartView
-import com.michaldrabik.showly2.ui.common.ShowPosterView
-import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem.Type.FANART
+import com.michaldrabik.showly2.ui.common.ImageType.FANART
+import com.michaldrabik.showly2.ui.common.ImageType.POSTER
+import com.michaldrabik.showly2.ui.common.views.ShowFanartView
+import com.michaldrabik.showly2.ui.common.views.ShowPosterView
 
 class DiscoverAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-  companion object {
-    private const val TYPE_POSTER = 0
-    private const val TYPE_FANART = 1
-  }
 
   private val items: MutableList<DiscoverListItem> = mutableListOf()
   var missingImageListener: (DiscoverListItem, Boolean) -> Unit = { _, _ -> }
@@ -32,28 +28,24 @@ class DiscoverAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     notifyItemChanged(index)
   }
 
-  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when {
-    viewType == TYPE_FANART -> ViewHolderWide(ShowFanartView(parent.context))
-    viewType == TYPE_POSTER -> ViewHolder(ShowPosterView(parent.context))
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+    POSTER.ordinal -> ViewHolderPoster(ShowPosterView(parent.context))
+    FANART.ordinal -> ViewHolderFanart(ShowFanartView(parent.context))
     else -> throw IllegalStateException("Unknown view type.")
   }
 
-
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (holder.itemViewType) {
-      TYPE_FANART -> (holder.itemView as ShowFanartView).bind(items[position], missingImageListener)
-      TYPE_POSTER -> (holder.itemView as ShowPosterView).bind(items[position], missingImageListener)
+      POSTER.ordinal -> (holder.itemView as ShowPosterView).bind(items[position], missingImageListener)
+      FANART.ordinal -> (holder.itemView as ShowFanartView).bind(items[position], missingImageListener)
     }
   }
 
   override fun getItemCount() = items.size
 
-  override fun getItemViewType(position: Int) = when {
-    items[position].type == FANART -> TYPE_FANART
-    else -> TYPE_POSTER
-  }
+  override fun getItemViewType(position: Int) = items[position].type.ordinal
 
-  class ViewHolder(itemView: ShowPosterView) : RecyclerView.ViewHolder(itemView)
+  class ViewHolderPoster(itemView: ShowPosterView) : RecyclerView.ViewHolder(itemView)
 
-  class ViewHolderWide(itemView: ShowFanartView) : RecyclerView.ViewHolder(itemView)
+  class ViewHolderFanart(itemView: ShowFanartView) : RecyclerView.ViewHolder(itemView)
 }

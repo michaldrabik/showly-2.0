@@ -8,6 +8,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.annotation.DimenRes
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -34,6 +35,12 @@ fun View.visibleIf(condition: Boolean) =
   } else {
     gone()
   }
+
+fun GridLayoutManager.withSpanSizeLookup(action: (Int) -> Int) {
+  spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+    override fun getSpanSize(position: Int) = action(position)
+  }
+}
 
 inline fun RequestBuilder<Drawable>.withFailListener(crossinline action: () -> Unit) =
   addListener(object : RequestListener<Drawable?> {

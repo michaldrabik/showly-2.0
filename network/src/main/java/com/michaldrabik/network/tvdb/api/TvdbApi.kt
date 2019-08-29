@@ -2,8 +2,11 @@ package com.michaldrabik.network.tvdb.api
 
 import com.michaldrabik.network.Config
 import com.michaldrabik.network.tvdb.model.AuthorizationRequest
+import com.michaldrabik.network.tvdb.model.TvdbImage
 
 class TvdbApi(private val service: TvdbService) {
+
+  private val allowedTypes = arrayOf("poster", "fanart")
 
   suspend fun authorize() = service.authorize(
     AuthorizationRequest(
@@ -16,9 +19,8 @@ class TvdbApi(private val service: TvdbService) {
   suspend fun refreshToken(token: String) =
     service.refreshToken("Bearer $token")
 
-  suspend fun fetchPosterImages(token: String, tvdbId: Long) =
-    service.fetchImages("Bearer $token", tvdbId, "poster").data
-
-  suspend fun fetchFanartImages(token: String, tvdbId: Long) =
-    service.fetchImages("Bearer $token", tvdbId, "fanart").data
+  suspend fun fetchImages(token: String, tvdbId: Long, type: String): List<TvdbImage> {
+    check(type in allowedTypes)
+    return service.fetchImages("Bearer $token", tvdbId, type).data
+  }
 }
