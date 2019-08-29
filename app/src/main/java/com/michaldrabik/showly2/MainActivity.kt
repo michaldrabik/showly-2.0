@@ -1,11 +1,16 @@
 package com.michaldrabik.showly2
 
 import android.os.Bundle
+import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
+import com.michaldrabik.showly2.utilities.dimenToPx
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+  private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
+  private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -35,9 +40,26 @@ class MainActivity : AppCompatActivity() {
     navigationHost.findNavController().run {
       if (currentDestination?.id != R.id.watchlistFragment) {
         bottomNavigationView.selectedItemId = R.id.menuWatchlist
+        showNavigation()
         return
       }
       super.onBackPressed()
     }
+  }
+
+  fun hideNavigation() {
+    bottomNavigationWrapper.animate()
+      .translationYBy(navigationHeight.toFloat())
+      .setDuration(400)
+      .setInterpolator(decelerateInterpolator)
+      .start()
+  }
+
+  fun showNavigation() {
+    bottomNavigationWrapper.animate()
+      .translationY(0F)
+      .setDuration(400)
+      .setInterpolator(decelerateInterpolator)
+      .start()
   }
 }

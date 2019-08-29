@@ -13,15 +13,15 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment() {
   @Inject lateinit var viewModelFactory: ViewModelFactory
   protected lateinit var viewModel: T
 
-  protected abstract fun createViewModel(factory: ViewModelFactory): T
+  protected abstract val layoutResId: Int
 
-  protected abstract fun getLayoutResId(): Int
+  protected abstract fun createViewModel(): T
 
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View? {
-    viewModel = createViewModel(viewModelFactory)
-    return inflater.inflate(getLayoutResId(), container, false)
+    viewModel = createViewModel()
+    return inflater.inflate(layoutResId, container, false)
   }
 }

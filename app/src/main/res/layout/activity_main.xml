@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<FrameLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
@@ -9,40 +9,40 @@
   tools:context=".MainActivity"
   >
 
-  <View
-    android:id="@+id/bottomNavigationSeparator"
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:background="@color/colorBottomMenuSeparator"
-    app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-    app:layout_constraintTop_toBottomOf="@+id/navigationHost"
-    />
-
-  <com.google.android.material.bottomnavigation.BottomNavigationView
-    android:id="@+id/bottomNavigationView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
-    android:background="@color/colorBottomMenuBackground"
-    app:itemIconTint="@drawable/selector_bottom_menu"
-    app:itemTextColor="@drawable/selector_bottom_menu"
-    app:labelVisibilityMode="labeled"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/bottomNavigationSeparator"
-    app:menu="@menu/bottom_navigation_menu"
-    />
-
   <fragment
     android:id="@+id/navigationHost"
     android:name="androidx.navigation.fragment.NavHostFragment"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     app:defaultNavHost="true"
-    app:layout_constraintBottom_toTopOf="@id/bottomNavigationSeparator"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
     app:navGraph="@navigation/navigation_graph"
     />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+  <LinearLayout
+    android:id="@+id/bottomNavigationWrapper"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="bottom"
+    >
+
+    <View
+      android:id="@+id/bottomNavigationSeparator"
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:background="@color/colorBottomMenuSeparator"
+      />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+      android:id="@+id/bottomNavigationView"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/bottomNavigationHeight"
+      android:background="@color/colorBottomMenuBackground"
+      app:itemIconTint="@drawable/selector_bottom_menu"
+      app:itemTextColor="@drawable/selector_bottom_menu"
+      app:labelVisibilityMode="labeled"
+      app:menu="@menu/bottom_navigation_menu"
+      />
+  </LinearLayout>
+
+</FrameLayout>

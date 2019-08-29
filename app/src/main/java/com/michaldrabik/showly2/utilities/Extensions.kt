@@ -7,7 +7,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.annotation.DimenRes
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.DataSource
@@ -16,8 +15,6 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 
 fun Context.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSize(dimenResId)
-
-fun Fragment.dimenToPx(@DimenRes dimenResId: Int) = requireContext().dimenToPx(dimenResId)
 
 fun screenWidth() = Resources.getSystem().displayMetrics.widthPixels
 
@@ -35,6 +32,10 @@ fun View.visibleIf(condition: Boolean) =
   } else {
     gone()
   }
+
+fun View.fadeOut(duration: Long = 250, startDelay: Long = 0) {
+  animate().alpha(0F).setDuration(duration).setStartDelay(startDelay).start()
+}
 
 fun GridLayoutManager.withSpanSizeLookup(action: (Int) -> Int) {
   spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {

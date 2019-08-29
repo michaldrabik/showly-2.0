@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.Show
+import com.michaldrabik.network.tvdb.model.TvdbImage
 import com.michaldrabik.showly2.model.ImageUrl
 import com.michaldrabik.showly2.model.ImageUrl.Status.AVAILABLE
 import com.michaldrabik.showly2.model.ImageUrl.Status.UNAVAILABLE
@@ -29,7 +30,7 @@ class DiscoverViewModel @Inject constructor(
       uiStream.value = DiscoverUiModel(showLoading = true)
       try {
         val shows = cloud.traktApi.fetchTrendingShows()
-        prepareTrendingItems(shows)
+        onTrendingItemsLoaded(shows)
       } catch (t: Throwable) {
         onError(t)
       } finally {
@@ -38,7 +39,7 @@ class DiscoverViewModel @Inject constructor(
     }
   }
 
-  private fun prepareTrendingItems(shows: List<Show>) {
+  private fun onTrendingItemsLoaded(shows: List<Show>) {
     val items = shows.mapIndexed { index, show ->
       val itemType =
         when (index) {
@@ -63,24 +64,28 @@ class DiscoverViewModel @Inject constructor(
       try {
         checkAuthorization()
         val images = cloud.tvdbApi.fetchImages(userRepository.tvdbToken, tvdbId, item.type.key)
-        val imageUrl =
-          when (item.type) {
-            POSTER -> ImageUrl.fromString(images.firstOrNull()?.thumbnail)
-            FANART -> ImageUrl.fromString(images.firstOrNull()?.fileName)
-          }
-        if (imageUrl.status != UNAVAILABLE) {
-          imagesCache.saveImageUrl(tvdbId, imageUrl.url, item.type.key)
-        } else {
-          imagesCache.removeImageUrl(tvdbId, item.type.key)
-        }
-        uiStream.value =
-          DiscoverUiModel(updateListItem = item.copy(imageUrl = imageUrl, isLoading = false))
+        onMissingImageLoaded(item, images, tvdbId)
       } catch (t: Throwable) {
         onError(t)
         uiStream.value =
           DiscoverUiModel(updateListItem = item.copy(isLoading = false, imageUrl = ImageUrl.UNAVAILABLE))
       }
     }
+  }
+
+  private fun onMissingImageLoaded(item: DiscoverListItem, images: List<TvdbImage>, tvdbId: Long) {
+    val imageUrl =
+      when (item.type) {
+        POSTER -> ImageUrl.fromString(images.firstOrNull()?.thumbnail)
+        FANART -> ImageUrl.fromString(images.firstOrNull()?.fileName)
+      }
+    if (imageUrl.status != UNAVAILABLE) {
+      imagesCache.saveImageUrl(tvdbId, imageUrl.url, item.type.key)
+    } else {
+      imagesCache.removeImageUrl(tvdbId, item.type.key)
+    }
+    uiStream.value =
+      DiscoverUiModel(updateListItem = item.copy(imageUrl = imageUrl, isLoading = false))
   }
 
   private suspend fun checkAuthorization() {

@@ -29,6 +29,8 @@ class DiscoverAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     notifyItemChanged(index)
   }
 
+  fun findItemIndex(item: DiscoverListItem) = items.indexOf(item)
+
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
     POSTER.ordinal -> ViewHolderPoster(ShowPosterView(parent.context))
     FANART.ordinal -> ViewHolderFanart(ShowFanartView(parent.context))

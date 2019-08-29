@@ -5,6 +5,8 @@
   <dimen name="spaceNormal">16dp</dimen>
 
   <dimen name="cornerShowTile">4dp</dimen>
+  <dimen name="bottomNavigationHeight">56dp</dimen>
+  <dimen name="bottomNavigationHeightPadded">60dp</dimen>
 
   <dimen name="gridSpacing">2dp</dimen>
   <dimen name="gridPadding">4dp</dimen>

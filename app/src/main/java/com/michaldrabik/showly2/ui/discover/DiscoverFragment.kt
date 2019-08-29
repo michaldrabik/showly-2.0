@@ -2,33 +2,35 @@ package com.michaldrabik.showly2.ui.discover
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.michaldrabik.showly2.MainActivity
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.ViewModelFactory
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
+import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
+import com.michaldrabik.showly2.utilities.fadeOut
 import com.michaldrabik.showly2.utilities.visibleIf
 import com.michaldrabik.showly2.utilities.withSpanSizeLookup
 import kotlinx.android.synthetic.main.fragment_discover.*
+import kotlin.random.Random
 
 class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
+
+  override val layoutResId = R.layout.fragment_discover
 
   private val adapter by lazy { DiscoverAdapter() }
   private val gridSpan by lazy { resources.getInteger(R.integer.discoverGridSpan) }
   private val layoutManager by lazy { GridLayoutManager(context, gridSpan) }
-
-  override fun getLayoutResId() = R.layout.fragment_discover
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     appComponent().inject(this)
   }
 
-  override fun createViewModel(factory: ViewModelFactory) =
+  override fun createViewModel() =
     ViewModelProvider(this, viewModelFactory).get(DiscoverViewModel::class.java)
       .apply {
         uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
@@ -41,17 +43,32 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
   }
 
   private fun setupRecycler() {
-    adapter.missingImageListener = { ids, force ->
-      viewModel.loadMissingImage(ids, force)
-    }
-    adapter.itemClickListener = { item ->
-      //TODO
-      Toast.makeText(context, item.show.title, Toast.LENGTH_SHORT).show()
-    }
+    adapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+    adapter.itemClickListener = { openShowDetails(it) }
     discoverRecycler.apply {
       setHasFixedSize(true)
       adapter = this@DiscoverFragment.adapter
       layoutManager = this@DiscoverFragment.layoutManager
+    }
+  }
+
+  private fun openShowDetails(item: DiscoverListItem) {
+    animateItemsExit(item)
+    (activity as MainActivity).hideNavigation()
+  }
+
+  private fun animateItemsExit(item: DiscoverListItem) {
+    val clickedIndex = adapter.findItemIndex(item)
+    val clickedView = discoverRecycler.findViewHolderForAdapterPosition(clickedIndex)
+    clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350)
+    (0..adapter.itemCount).forEach {
+      if (it != clickedIndex) {
+        val view = discoverRecycler.findViewHolderForAdapterPosition(it)
+        view?.let { v ->
+          val randomDelay = Random.nextLong(50, 200)
+          v.itemView.fadeOut(duration = 180, startDelay = randomDelay)
+        }
+      }
     }
   }
 
