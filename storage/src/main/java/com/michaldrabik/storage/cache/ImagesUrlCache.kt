@@ -33,7 +33,6 @@ class ImagesUrlCache @Inject constructor(
   }
 
   fun getImageUrl(tvdbId: Long, type: String): String {
-    check(tvdbId > 0)
     check(type in allowedKeys)
     return preferences.getString(tvdbImageKey(tvdbId, type), "") ?: ""
   }

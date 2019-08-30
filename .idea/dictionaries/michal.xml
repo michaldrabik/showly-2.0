@@ -11,6 +11,7 @@
       <w>trakt</w>
       <w>tvdb</w>
       <w>tvrage</w>
+      <w>upsert</w>
       <w>userkey</w>
     </words>
   </dictionary>

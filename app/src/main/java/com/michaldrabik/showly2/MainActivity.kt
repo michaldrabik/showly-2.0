@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
   override fun onBackPressed() {
     navigationHost.findNavController().run {
-      if (currentDestination?.id in mainDestinations) {
+      if (currentDestination?.id in mainDestinations && currentDestination?.id != R.id.watchlistFragment) {
         bottomNavigationView.selectedItemId = R.id.menuWatchlist
         return
       }

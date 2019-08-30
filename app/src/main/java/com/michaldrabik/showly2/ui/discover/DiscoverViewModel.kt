@@ -20,7 +20,8 @@ import javax.inject.Inject
 class DiscoverViewModel @Inject constructor(
   private val cloud: Cloud,
   private val userRepository: UserRepository,
-  private val imagesCache: ImagesUrlCache
+  private val imagesCache: ImagesUrlCache,
+  private val interactor: DiscoverInteractor
 ) : BaseViewModel() {
 
   val uiStream by lazy { MutableLiveData<DiscoverUiModel>() }
@@ -29,8 +30,8 @@ class DiscoverViewModel @Inject constructor(
     viewModelScope.launch {
       uiStream.value = DiscoverUiModel(showLoading = true)
       try {
-        val shows = cloud.traktApi.fetchTrendingShows()
-        onTrendingItemsLoaded(shows)
+        val shows = interactor.loadTrendingShows()
+        onShowsLoaded(shows)
       } catch (t: Throwable) {
         onError(t)
       } finally {
@@ -39,7 +40,7 @@ class DiscoverViewModel @Inject constructor(
     }
   }
 
-  private fun onTrendingItemsLoaded(shows: List<Show>) {
+  private fun onShowsLoaded(shows: List<Show>) {
     val items = shows.mapIndexed { index, show ->
       val itemType =
         when (index) {
