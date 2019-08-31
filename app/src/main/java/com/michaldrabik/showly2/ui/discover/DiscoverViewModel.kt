@@ -3,11 +3,11 @@ package com.michaldrabik.showly2.ui.discover
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.network.tvdb.model.TvdbImage
 import com.michaldrabik.showly2.model.ImageUrl
 import com.michaldrabik.showly2.model.ImageUrl.Status.AVAILABLE
 import com.michaldrabik.showly2.model.ImageUrl.Status.UNAVAILABLE
+import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.ImageType.FANART
 import com.michaldrabik.showly2.ui.common.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel

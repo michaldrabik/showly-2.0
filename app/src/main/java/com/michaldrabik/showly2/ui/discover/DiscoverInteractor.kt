@@ -1,61 +1,35 @@
 package com.michaldrabik.showly2.ui.discover
 
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.network.trakt.model.AirTime
-import com.michaldrabik.network.trakt.model.Ids
-import com.michaldrabik.network.trakt.model.Show
+import com.michaldrabik.showly2.Config
+import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.model.mappers.ShowMapper
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.TrendingShow
+import java.lang.System.currentTimeMillis
 import javax.inject.Inject
-import com.michaldrabik.storage.database.model.Show as ShowDb
 
+@AppScope
 class DiscoverInteractor @Inject constructor(
   private val cloud: Cloud,
-  private val database: AppDatabase
+  private val database: AppDatabase,
+  private val mapper: ShowMapper
 ) {
 
   suspend fun loadTrendingShows(): List<Show> {
-    val localShows = database.trendingShowsDao().getAll()
-    if (localShows.isNotEmpty()) {
-      return localShows.map {
-        Show(
-          Ids(it.idTrakt, it.idSlug ?: "", it.idTvdb ?: -1, it.idImdb ?: "", it.idTmdb ?: -1, -1),
-          it.title ?: "",
-          it.year ?: -1,
-          it.overview ?: "",
-          "",
-          1,
-          AirTime("", "", ""),
-          "",
-          "",
-          "",
-          "",
-          "",
-          "",
-          1F,
-          1L,
-          1L,
-          emptyList(),
-          1
-        )
-      }
+    val stamp = database.trendingShowsDao().getMostRecent()?.createdAt ?: 0
+    if (currentTimeMillis() - stamp < Config.TRENDING_SHOWS_CACHE_DURATION) {
+      return database.trendingShowsDao().getAll().map { mapper.fromDatabase(it) }
     }
 
-
-    val remoteShows = cloud.traktApi.fetchTrendingShows()
-    database.showsDao().upsert(remoteShows.map {
-      ShowDb(
-        it.ids.trakt,
-        it.ids.tvdb,
-        it.ids.tmdb,
-        it.ids.imdb,
-        it.ids.slug,
-        it.title,
-        it.year,
-        it.overview
-      )
+    val remoteShows = cloud.traktApi.fetchTrendingShows().map { mapper.fromNetwork(it) }
+    database.showsDao().upsert(remoteShows.map { mapper.toDatabase(it) })
+    val timestamp = currentTimeMillis()
+    database.trendingShowsDao().deleteAllAndInsert(remoteShows.map {
+      TrendingShow(idTrakt = it.ids.trakt, createdAt = timestamp, updatedAt = timestamp)
     })
-    database.trendingShowsDao().clearAndInsert(remoteShows.map { TrendingShow(idTrakt = it.ids.trakt) })
+
     return remoteShows
   }
 

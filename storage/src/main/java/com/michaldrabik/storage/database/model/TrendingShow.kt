@@ -7,5 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "shows_trending")
 data class TrendingShow(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
-  @ColumnInfo(name = "id_trakt") var idTrakt: Long
+  @ColumnInfo(name = "id_trakt", defaultValue = "-1") var idTrakt: Long,
+  @ColumnInfo(name = "created_at", defaultValue = "-1") var createdAt: Long,
+  @ColumnInfo(name = "updated_at", defaultValue = "-1") var updatedAt: Long
 )

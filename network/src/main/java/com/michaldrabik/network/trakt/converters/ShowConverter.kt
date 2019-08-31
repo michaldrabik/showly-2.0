@@ -13,11 +13,11 @@ class ShowConverter {
     Show(
       Ids(
         json.ids?.trakt ?: -1,
-        json.ids?.slug ?: "",
         json.ids?.tvdb ?: -1,
-        json.ids?.imdb ?: "",
         json.ids?.tmdb ?: -1,
-        json.ids?.tvrage ?: -1
+        json.ids?.tvrage ?: -1,
+        json.ids?.imdb ?: "",
+        json.ids?.slug ?: ""
       ),
       json.title ?: "",
       json.year ?: -1,
