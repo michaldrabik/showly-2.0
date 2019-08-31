@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui
+package com.michaldrabik.showly2.ui.shows
 
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel

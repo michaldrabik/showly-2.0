@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui
+package com.michaldrabik.showly2.ui.shows
 
 import android.os.Bundle
 import android.view.View
