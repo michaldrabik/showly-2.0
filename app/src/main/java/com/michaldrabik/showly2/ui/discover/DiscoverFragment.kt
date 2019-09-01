@@ -42,7 +42,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
     super.onViewCreated(view, savedInstanceState)
     setupRecycler()
     viewModel.loadTrendingShows()
-    Log.d("STATE", savedInstanceState.toString())
   }
 
   private fun setupRecycler() {
@@ -82,7 +81,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
   private fun render(uiModel: DiscoverUiModel) {
     uiModel.trendingShows?.let {
       adapter.setItems(it)
-      layoutManager.withSpanSizeLookup { pos -> it[pos].type.spanSize }
+      layoutManager.withSpanSizeLookup { pos -> it[pos].image.type.spanSize }
     }
     uiModel.showLoading?.let { discoverProgress.visibleIf(it) }
     uiModel.updateListItem?.let { adapter.updateItem(it) }

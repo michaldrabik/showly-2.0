@@ -8,8 +8,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.ImageUrl.Status.UNAVAILABLE
-import com.michaldrabik.showly2.model.ImageUrl.Status.UNKNOWN
+import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
+import com.michaldrabik.showly2.model.Image.Status.UNKNOWN
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.utilities.gone
 import com.michaldrabik.showly2.utilities.visible
@@ -39,14 +39,14 @@ class ShowPosterView @JvmOverloads constructor(
   }
 
   private fun loadImage(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
-    if (item.imageUrl.status == UNAVAILABLE) {
+    if (item.image.status == UNAVAILABLE) {
       showPosterTitle.visible()
       return
     }
 
     val url = when {
-      item.imageUrl.status == UNKNOWN -> "${TVDB_IMAGE_BASE_URL}_cache/posters/${item.show.ids.tvdb}-1.jpg"
-      else -> "$TVDB_IMAGE_BASE_URL${item.imageUrl.url}"
+      item.image.status == UNKNOWN -> "${TVDB_IMAGE_BASE_URL}_cache/posters/${item.show.ids.tvdb}-1.jpg"
+      else -> "$TVDB_IMAGE_BASE_URL${item.image.thumbnailUrl}"
     }
     Glide.with(this)
       .load(url)
@@ -57,7 +57,7 @@ class ShowPosterView @JvmOverloads constructor(
   }
 
   private fun onImageLoadFail(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
-    val force = item.imageUrl.status != UNAVAILABLE
+    val force = item.image.status != UNAVAILABLE
     missingImageListener(item, force)
   }
 

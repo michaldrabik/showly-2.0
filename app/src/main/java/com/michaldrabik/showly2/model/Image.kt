@@ -1,19 +1,13 @@
 package com.michaldrabik.showly2.model
 
-data class ImageUrl(
-  val url: String,
+data class Image(
+  val id: Long,
+  val idTvdb: Long,
+  val type: ImageType,
+  val fileUrl: String,
+  val thumbnailUrl: String,
   val status: Status
 ) {
-
-  companion object {
-    val UNAVAILABLE = ImageUrl("", Status.UNAVAILABLE)
-
-    fun fromString(urlString: String?) = when {
-      urlString == null -> ImageUrl("", Status.UNAVAILABLE)
-      urlString.isEmpty() -> ImageUrl("", Status.UNKNOWN)
-      else -> ImageUrl(urlString, Status.AVAILABLE)
-    }
-  }
 
   /**
    * AVAILABLE - image's web url is known to be valid when used the last time.
@@ -24,5 +18,11 @@ data class ImageUrl(
     AVAILABLE,
     UNKNOWN,
     UNAVAILABLE
+  }
+
+  companion object {
+    fun createUnknown(type: ImageType) = Image(0, 0, type, "", "", Status.UNKNOWN)
+
+    fun createUnavailable(type: ImageType) = Image(0, 0, type, "", "", Status.UNAVAILABLE)
   }
 }

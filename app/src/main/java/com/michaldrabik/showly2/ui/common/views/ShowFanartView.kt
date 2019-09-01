@@ -8,8 +8,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.ImageUrl.Status.UNAVAILABLE
-import com.michaldrabik.showly2.model.ImageUrl.Status.UNKNOWN
+import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
+import com.michaldrabik.showly2.model.Image.Status.UNKNOWN
+import com.michaldrabik.showly2.model.ImageType
+import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.utilities.gone
 import com.michaldrabik.showly2.utilities.visibleIf
@@ -22,7 +24,7 @@ class ShowFanartView @JvmOverloads constructor(
 
   init {
     inflate(context, R.layout.view_show_fanart, this)
-    layoutParams = LayoutParams((width * 2.0).toInt(), height.toInt())
+    layoutParams = LayoutParams((width * FANART.spanSize.toFloat()).toInt(), height.toInt())
   }
 
   fun bind(
@@ -39,8 +41,8 @@ class ShowFanartView @JvmOverloads constructor(
 
   private fun loadImage(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
     val url = when {
-      item.imageUrl.status == UNKNOWN -> "${TVDB_IMAGE_BASE_URL}fanart/original/${item.show.ids.tvdb}-1.jpg"
-      else -> "$TVDB_IMAGE_BASE_URL${item.imageUrl.url}"
+      item.image.status == UNKNOWN -> "${TVDB_IMAGE_BASE_URL}fanart/original/${item.show.ids.tvdb}-1.jpg"
+      else -> "$TVDB_IMAGE_BASE_URL${item.image.fileUrl}"
     }
     Glide.with(this)
       .load(url)
@@ -51,7 +53,7 @@ class ShowFanartView @JvmOverloads constructor(
   }
 
   private fun onImageLoadFail(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
-    val force = item.imageUrl.status != UNAVAILABLE
+    val force = item.image.status != UNAVAILABLE
     missingImageListener(item, force)
   }
 

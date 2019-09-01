@@ -2,8 +2,8 @@ package com.michaldrabik.showly2.ui.discover.recycler
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.showly2.ui.common.ImageType.FANART
-import com.michaldrabik.showly2.ui.common.ImageType.POSTER
+import com.michaldrabik.showly2.model.ImageType.FANART
+import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.views.ShowFanartView
 import com.michaldrabik.showly2.ui.common.views.ShowPosterView
 
@@ -50,7 +50,7 @@ class DiscoverAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   override fun getItemCount() = items.size
 
-  override fun getItemViewType(position: Int) = items[position].type.ordinal
+  override fun getItemViewType(position: Int) = items[position].image.type.ordinal
 
   class ViewHolderPoster(itemView: ShowPosterView) : RecyclerView.ViewHolder(itemView)
 
