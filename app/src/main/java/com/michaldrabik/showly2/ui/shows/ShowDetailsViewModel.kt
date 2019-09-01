@@ -20,6 +20,10 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       val show = interactor.loadShowDetails(id)
       uiStream.value = ShowDetailsUiModel(show)
+      val image = interactor.loadBackgroundImage(show)
+      if (image != null) {
+        uiStream.value = ShowDetailsUiModel(image = image)
+      }
     }
   }
 }

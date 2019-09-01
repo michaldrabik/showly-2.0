@@ -33,6 +33,8 @@
       android:id="@+id/actionDiscoverFragmentToShowDetailsFragment"
       app:destination="@id/showDetailsFragment"
       app:popUpTo="@id/discoverFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:popExitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
       />
   </fragment>
@@ -48,7 +50,7 @@
     android:id="@+id/showDetailsFragment"
     android:name="com.michaldrabik.showly2.ui.shows.ShowDetailsFragment"
     android:label="fragmentShowDetails"
-    tools:layout="@layout/fragment_watchlist"
+    tools:layout="@layout/fragment_show_details"
     />
 
 </navigation>

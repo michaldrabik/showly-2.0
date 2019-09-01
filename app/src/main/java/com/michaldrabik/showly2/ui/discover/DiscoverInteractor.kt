@@ -63,11 +63,11 @@ class DiscoverInteractor @Inject constructor(
 
     val image = when (remoteImage) {
       null -> Image.createUnavailable(type)
-      else -> Image(tvdbId, type, remoteImage.fileName, remoteImage.thumbnail, AVAILABLE)
+      else -> Image(cachedImage.id, tvdbId, type, remoteImage.fileName, remoteImage.thumbnail, AVAILABLE)
     }
 
     when (image.status) {
-      UNAVAILABLE -> database.imagesDao().deleteById(tvdbId)
+      UNAVAILABLE -> database.imagesDao().deleteById(tvdbId, image.type.key)
       else -> database.imagesDao().insert(mappers.image.toDatabase(image))
     }
 

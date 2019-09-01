@@ -1,7 +1,6 @@
 package com.michaldrabik.showly2.ui.discover
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -68,13 +67,14 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
         val view = discoverRecycler.findViewHolderForAdapterPosition(it)
         view?.let { v ->
           val randomDelay = Random.nextLong(50, 200)
-          v.itemView.fadeOut(duration = 180, startDelay = randomDelay)
+          v.itemView.fadeOut(duration = 150, startDelay = randomDelay)
         }
       }
     }
     val clickedView = discoverRecycler.findViewHolderForAdapterPosition(clickedIndex)
     clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350, endAction = {
-      findNavController().navigate(R.id.actionDiscoverFragmentToShowDetailsFragment)
+      val bundle = Bundle().apply { putLong("id", item.show.ids.trakt) }
+      findNavController().navigate(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
     })
   }
 

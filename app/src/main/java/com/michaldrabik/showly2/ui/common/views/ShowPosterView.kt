@@ -8,6 +8,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.model.Image.Status.AVAILABLE
 import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
 import com.michaldrabik.showly2.model.Image.Status.UNKNOWN
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
@@ -15,6 +16,7 @@ import com.michaldrabik.showly2.utilities.gone
 import com.michaldrabik.showly2.utilities.visible
 import com.michaldrabik.showly2.utilities.visibleIf
 import com.michaldrabik.showly2.utilities.withFailListener
+import com.michaldrabik.showly2.utilities.withSuccessListener
 import kotlinx.android.synthetic.main.view_show_poster.view.*
 
 class ShowPosterView @JvmOverloads constructor(
@@ -48,15 +50,18 @@ class ShowPosterView @JvmOverloads constructor(
       item.image.status == UNKNOWN -> "${TVDB_IMAGE_BASE_URL}_cache/posters/${item.show.ids.tvdb}-1.jpg"
       else -> "$TVDB_IMAGE_BASE_URL${item.image.thumbnailUrl}"
     }
+
     Glide.with(this)
       .load(url)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
       .transition(withCrossFade(200))
+      .withSuccessListener { showPosterTitle.gone() }
       .withFailListener { onImageLoadFail(item, missingImageListener) }
       .into(showPosterImage)
   }
 
   private fun onImageLoadFail(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
+    if (item.image.status == AVAILABLE) return
     val force = item.image.status != UNAVAILABLE
     missingImageListener(item, force)
   }
