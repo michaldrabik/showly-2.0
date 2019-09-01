@@ -16,8 +16,19 @@ interface ImagesDao {
   @Query("SELECT * FROM shows_images WHERE id_tvdb = :tvdbId AND type = :type")
   suspend fun getById(tvdbId: Long, type: String): Image?
 
+  @Transaction
+  suspend fun insert(image: Image) {
+    val localImage = getById(image.idTvdb, image.type)
+    if (localImage != null) {
+      val updated = image.copy(id = localImage.id)
+      upsert(updated)
+      return
+    }
+    upsert(image)
+  }
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(image: Image)
+  suspend fun upsert(image: Image)
 
   @Query("DELETE FROM shows_images WHERE id_tvdb = :id AND type = :type")
   suspend fun deleteById(id: Long, type: String)
