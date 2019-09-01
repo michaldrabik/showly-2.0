@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.discover
 
+import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.di.AppScope
@@ -30,11 +31,13 @@ class DiscoverInteractor @Inject constructor(
     }
 
     val remoteShows = cloud.traktApi.fetchTrendingShows().map { mappers.show.fromNetwork(it) }
-    database.showsDao().upsert(remoteShows.map { mappers.show.toDatabase(it) })
-    val timestamp = currentTimeMillis()
-    database.trendingShowsDao().deleteAllAndInsert(remoteShows.map {
-      TrendingShow(idTrakt = it.ids.trakt, createdAt = timestamp, updatedAt = timestamp)
-    })
+    database.withTransaction {
+      val timestamp = currentTimeMillis()
+      database.showsDao().upsert(remoteShows.map { mappers.show.toDatabase(it) })
+      database.trendingShowsDao().deleteAllAndInsert(remoteShows.map {
+        TrendingShow(idTrakt = it.ids.trakt, createdAt = timestamp, updatedAt = timestamp)
+      })
+    }
 
     return remoteShows
   }
@@ -43,7 +46,7 @@ class DiscoverInteractor @Inject constructor(
     val cachedImage = database.imagesDao().getById(show.ids.tvdb, type.key)
     return when (cachedImage) {
       null -> Image.createUnknown(type)
-      else -> mappers.image.fromDb(cachedImage).copy(type = type)
+      else -> mappers.image.fromDatabase(cachedImage).copy(type = type)
     }
   }
 
@@ -65,7 +68,7 @@ class DiscoverInteractor @Inject constructor(
 
     when (image.status) {
       UNAVAILABLE -> database.imagesDao().deleteById(tvdbId)
-      else -> database.imagesDao().insert(mappers.image.toDb(image))
+      else -> database.imagesDao().insert(mappers.image.toDatabase(image))
     }
 
     return image
@@ -76,9 +79,5 @@ class DiscoverInteractor @Inject constructor(
       val token = cloud.tvdbApi.authorize()
       userRepository.tvdbToken = token.token
     }
-  }
-
-  private fun onError(error: Throwable) {
-    //TODO
   }
 }

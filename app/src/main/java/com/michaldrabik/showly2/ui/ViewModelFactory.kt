@@ -5,13 +5,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.ui.discover.DiscoverInteractor
 import com.michaldrabik.showly2.ui.discover.DiscoverViewModel
+import com.michaldrabik.showly2.ui.shows.ShowDetailsInteractor
 import com.michaldrabik.showly2.ui.shows.ShowDetailsViewModel
 import com.michaldrabik.storage.repository.UserRepository
 
 class ViewModelFactory(
   private val cloud: Cloud,
   private val userRepository: UserRepository,
-  private val discoverInteractor: DiscoverInteractor
+  private val discoverInteractor: DiscoverInteractor,
+  private val showDetailsInteractor: ShowDetailsInteractor
 ) : ViewModelProvider.Factory {
 
   @Suppress("UNCHECKED_CAST")
@@ -20,7 +22,7 @@ class ViewModelFactory(
       DiscoverViewModel(discoverInteractor) as T
 
     modelClass.isAssignableFrom(ShowDetailsViewModel::class.java) ->
-      ShowDetailsViewModel(cloud, userRepository) as T
+      ShowDetailsViewModel(cloud, userRepository, showDetailsInteractor) as T
 
     else -> throw IllegalStateException("Unknown ViewModel class")
   }

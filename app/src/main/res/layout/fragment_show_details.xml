@@ -1,9 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@color/colorAccent"
+  android:fillViewport="true"
+  xmlns:tools="http://schemas.android.com/tools"
   >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <androidx.constraintlayout.widget.Guideline
+      android:id="@+id/guideline1"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      app:layout_constraintGuide_percent="0.35"
+      />
+
+    <ImageView
+      android:id="@+id/showDetailsImage"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintBottom_toTopOf="@id/guideline1"
+      />
+
+    <TextView
+      android:id="@+id/showDetailsTitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginBottom="16dp"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:shadowColor="@color/colorBlack"
+      android:shadowDx="3"
+      android:shadowDy="3"
+      android:shadowRadius="1"
+      android:textColor="@color/colorWhite"
+      android:textSize="20sp"
+      app:layout_constraintBottom_toTopOf="@id/guideline1"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      tools:text="Game Of Thrones"
+      />
+
+    <TextView
+      android:id="@+id/showDetailsExtraInfo"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textColor="@color/colorTextPrimary"
+      android:layout_margin="@dimen/spaceNormal"
+      android:textSize="14sp"
+      android:textStyle="bold"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/guideline1"
+      tools:text="Netflix | 60 min | Drama, SF"
+      />
+
+    <TextView
+      android:id="@+id/showDetailsStatus"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textColor="@color/colorTextSecondary"
+      android:layout_margin="@dimen/spaceNormal"
+      android:textStyle=""
+      android:textSize="14sp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/guideline1"
+      tools:text="Returning Series"
+      />
+
+    <TextView
+      android:id="@+id/showDetailsDescription"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/spaceNormal"
+      android:layout_marginStart="16dp"
+      android:textColor="@color/colorTextPrimary"
+      android:textSize="14sp"
+      android:maxLines="6"
+      android:ellipsize="end"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/showDetailsExtraInfo"
+      tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ligula leo, fermentum hendrerit rutrum ut, ullamcorper varius sem. Morbi in neque mattis, dapibus ex sit amet, pharetra orci. Donec quam nisi, sollicitudin sit amet elit sit amet, sagittis egestas lacus. Mauris tristique augue nunc, nec tincidunt leo rhoncus ac. Quisque scelerisque nisi et felis scelerisque eleifend. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ligula leo, fermentum hendrerit rutrum ut, ullamcorper varius sem. Morbi in neque mattis, dapibus ex sit amet, pharetra orci. Donec quam nisi, sollicitudin sit amet elit sit amet, sagittis egestas lacus. Mauris tristique augue nunc, nec tincidunt leo rhoncus ac. Quisque scelerisque nisi et felis scelerisque eleifend."
+      />
+
+    <TextView
+      android:id="@+id/showDetailsMoreButton"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:ellipsize="end"
+      android:maxLines="6"
+      android:textColor="@color/colorAccent"
+      android:textSize="14sp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
+      android:text="@string/buttonShowMore"
+      />
+
+    <ProgressBar
+      android:id="@+id/showDetailsImageProgress"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:indeterminateTint="@color/colorProgressGray"
+      app:layout_constraintBottom_toBottomOf="@+id/showDetailsImage"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@+id/showDetailsImage"
+      android:visibility="gone"
+      />
+
+    <View
+      android:id="@+id/separator1"
+      android:layout_width="0dp"
+      android:layout_height="1dp"
+      android:background="@color/colorSeparatorGray"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/showDetailsMoreButton"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
