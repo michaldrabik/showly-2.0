@@ -7,7 +7,7 @@ import com.michaldrabik.storage.database.model.Image as ImageDb
 
 class ImageMapper @Inject constructor() {
 
-  fun fromDb(imageDb: ImageDb): Image {
+  fun fromDatabase(imageDb: ImageDb): Image {
     return Image(
       imageDb.idTvdb,
       enumValueOf(imageDb.type.toUpperCase(ROOT)),
@@ -17,7 +17,7 @@ class ImageMapper @Inject constructor() {
     )
   }
 
-  fun toDb(image: Image): ImageDb =
+  fun toDatabase(image: Image): ImageDb =
     ImageDb(
       idTvdb = image.idTvdb,
       type = image.type.key,

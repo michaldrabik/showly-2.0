@@ -16,4 +16,5 @@
   <color name="colorBottomMenuSeparator">#464646</color>
 
   <color name="colorProgressGray">#333333</color>
+  <color name="colorSeparatorGray">#2C2C2C</color>
 </resources>

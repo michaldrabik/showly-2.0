@@ -12,6 +12,9 @@ interface ShowsDao {
   @Query("SELECT * FROM shows")
   suspend fun getAll(): List<Show>
 
+  @Query("SELECT * FROM shows WHERE id_trakt == :traktId")
+  suspend fun getById(traktId: Long): Show?
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun upsert(shows: List<Show>)
 
