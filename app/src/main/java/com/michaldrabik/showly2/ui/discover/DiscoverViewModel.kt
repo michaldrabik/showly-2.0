@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.FANART
+import com.michaldrabik.showly2.model.ImageType.FANART_WIDE
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
@@ -40,7 +41,8 @@ class DiscoverViewModel @Inject constructor(
     val items = shows.mapIndexed { index, show ->
       val itemType =
         when (index) {
-          in (0..200 step 16), in (9..200 step 16) -> FANART
+          in (0..500 step 14) -> FANART_WIDE
+          in (5..500 step 14), in (9..500 step 14) -> FANART
           else -> POSTER
         }
       val image = interactor.findCachedImage(show, itemType)

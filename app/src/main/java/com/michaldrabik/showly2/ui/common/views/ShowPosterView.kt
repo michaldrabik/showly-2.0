@@ -23,14 +23,14 @@ class ShowPosterView @JvmOverloads constructor(
 
   init {
     inflate(context, R.layout.view_show_poster, this)
-    layoutParams = LayoutParams(width.toInt(), height.toInt())
   }
 
-  fun bind(
+  override fun bind(
     item: DiscoverListItem,
     missingImageListener: (DiscoverListItem, Boolean) -> Unit,
     itemClickListener: (DiscoverListItem) -> Unit
   ) {
+    super.bind(item, missingImageListener, itemClickListener)
     clear()
     showPosterTitle.text = item.show.title
     showPosterProgress.visibleIf(item.isLoading)

@@ -1,6 +1,7 @@
 package com.michaldrabik.showly2.model.mappers
 
 import com.michaldrabik.showly2.model.Image
+import java.util.Locale.ROOT
 import javax.inject.Inject
 import com.michaldrabik.storage.database.model.Image as ImageDb
 
@@ -10,7 +11,7 @@ class ImageMapper @Inject constructor() {
     return Image(
       imageDb.id,
       imageDb.idTvdb,
-      enumValueOf(imageDb.type),
+      enumValueOf(imageDb.type.toUpperCase(ROOT)),
       imageDb.fileUrl,
       imageDb.thumbnailUrl,
       Image.Status.AVAILABLE
@@ -18,6 +19,10 @@ class ImageMapper @Inject constructor() {
   }
 
   fun toDb(image: Image): ImageDb =
-    ImageDb(0, image.idTvdb, image.type.key, image.fileUrl, image.thumbnailUrl)
-
+    ImageDb(
+      idTvdb = image.idTvdb,
+      type = image.type.key,
+      fileUrl = image.fileUrl,
+      thumbnailUrl = image.thumbnailUrl
+    )
 }

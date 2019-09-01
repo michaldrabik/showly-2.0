@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.utilities.screenWidth
 
 abstract class ShowView @JvmOverloads constructor(
@@ -15,10 +16,17 @@ abstract class ShowView @JvmOverloads constructor(
   }
 
   protected val cornerRadius by lazy { resources.getDimensionPixelSize(R.dimen.cornerShowTile) }
-  protected val gridSpacing by lazy { resources.getDimensionPixelSize(R.dimen.gridSpacing) }
   private val gridPadding by lazy { resources.getDimensionPixelSize(R.dimen.gridPadding) }
   private val gridSpan by lazy { resources.getInteger(R.integer.discoverGridSpan).toFloat() }
 
-  protected val width by lazy { (screenWidth().toFloat() - (2.0 * gridPadding)) / gridSpan }
-  protected val height by lazy { width * ASPECT_RATIO }
+  private val width by lazy { (screenWidth().toFloat() - (2.0 * gridPadding)) / gridSpan }
+  private val height by lazy { width * ASPECT_RATIO }
+
+  open fun bind(
+    item: DiscoverListItem,
+    missingImageListener: (DiscoverListItem, Boolean) -> Unit,
+    itemClickListener: (DiscoverListItem) -> Unit
+  ) {
+    layoutParams = LayoutParams((width * item.image.type.spanSize.toFloat()).toInt(), height.toInt())
+  }
 }

@@ -3,9 +3,11 @@ package com.michaldrabik.showly2.ui.discover.recycler
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.showly2.model.ImageType.FANART
+import com.michaldrabik.showly2.model.ImageType.FANART_WIDE
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.views.ShowFanartView
 import com.michaldrabik.showly2.ui.common.views.ShowPosterView
+import com.michaldrabik.showly2.ui.common.views.ShowView
 
 class DiscoverAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -34,17 +36,17 @@ class DiscoverAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   fun findItemIndex(item: DiscoverListItem) = items.indexOf(item)
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-    POSTER.ordinal -> ViewHolderPoster(ShowPosterView(parent.context))
-    FANART.ordinal -> ViewHolderFanart(ShowFanartView(parent.context))
+    POSTER.ordinal -> ViewHolderShow(ShowPosterView(parent.context))
+    FANART.ordinal, FANART_WIDE.ordinal -> ViewHolderShow(ShowFanartView(parent.context))
     else -> throw IllegalStateException("Unknown view type.")
   }
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (holder.itemViewType) {
       POSTER.ordinal ->
-        (holder.itemView as ShowPosterView).bind(items[position], missingImageListener, itemClickListener)
-      FANART.ordinal ->
-        (holder.itemView as ShowFanartView).bind(items[position], missingImageListener, itemClickListener)
+        (holder.itemView as ShowView).bind(items[position], missingImageListener, itemClickListener)
+      FANART.ordinal, FANART_WIDE.ordinal ->
+        (holder.itemView as ShowView).bind(items[position], missingImageListener, itemClickListener)
     }
   }
 
@@ -52,7 +54,5 @@ class DiscoverAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   override fun getItemViewType(position: Int) = items[position].image.type.ordinal
 
-  class ViewHolderPoster(itemView: ShowPosterView) : RecyclerView.ViewHolder(itemView)
-
-  class ViewHolderFanart(itemView: ShowFanartView) : RecyclerView.ViewHolder(itemView)
+  class ViewHolderShow(itemView: ShowView) : RecyclerView.ViewHolder(itemView)
 }

@@ -43,7 +43,7 @@ class DiscoverInteractor @Inject constructor(
     val cachedImage = database.imagesDao().getById(show.ids.tvdb, type.key)
     return when (cachedImage) {
       null -> Image.createUnknown(type)
-      else -> mappers.image.fromDb(cachedImage)
+      else -> mappers.image.fromDb(cachedImage).copy(type = type)
     }
   }
 
