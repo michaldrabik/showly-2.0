@@ -60,7 +60,7 @@ class DiscoverInteractor @Inject constructor(
 
     val image = when (remoteImage) {
       null -> Image.createUnavailable(type)
-      else -> Image(remoteImage.id, tvdbId, type, remoteImage.fileName, remoteImage.thumbnail, AVAILABLE)
+      else -> Image(tvdbId, type, remoteImage.fileName, remoteImage.thumbnail, AVAILABLE)
     }
 
     when (image.status) {

@@ -1,7 +1,6 @@
 package com.michaldrabik.showly2.model
 
 data class Image(
-  val id: Long,
   val idTvdb: Long,
   val type: ImageType,
   val fileUrl: String,
@@ -21,8 +20,8 @@ data class Image(
   }
 
   companion object {
-    fun createUnknown(type: ImageType) = Image(0, 0, type, "", "", Status.UNKNOWN)
+    fun createUnknown(type: ImageType) = Image(0, type, "", "", Status.UNKNOWN)
 
-    fun createUnavailable(type: ImageType) = Image(0, 0, type, "", "", Status.UNAVAILABLE)
+    fun createUnavailable(type: ImageType) = Image(0, type, "", "", Status.UNAVAILABLE)
   }
 }

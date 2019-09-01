@@ -9,7 +9,6 @@ class ImageMapper @Inject constructor() {
 
   fun fromDb(imageDb: ImageDb): Image {
     return Image(
-      imageDb.id,
       imageDb.idTvdb,
       enumValueOf(imageDb.type.toUpperCase(ROOT)),
       imageDb.fileUrl,
