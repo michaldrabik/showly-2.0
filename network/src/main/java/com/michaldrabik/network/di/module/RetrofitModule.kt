@@ -4,6 +4,7 @@ import com.michaldrabik.network.BuildConfig
 import com.michaldrabik.network.Config.TRAKT_BASE_URL
 import com.michaldrabik.network.Config.TVDB_BASE_URL
 import com.michaldrabik.network.trakt.TraktInterceptor
+import com.michaldrabik.network.trakt.converters.EpisodeConverter
 import com.michaldrabik.network.trakt.converters.ShowConverter
 import com.michaldrabik.network.trakt.converters.TrendingResultConverter
 import com.michaldrabik.network.tvdb.converters.TvdbImageConverter
@@ -47,12 +48,14 @@ object RetrofitModule {
     val trendingResultConverter = TrendingResultConverter(showConverter)
     val tvdbImageConverter = TvdbImageConverter()
     val tvdbImageResultConverter = TvdbImagesResultConverter(tvdbImageConverter)
+    val episodeConverter = EpisodeConverter()
 
     return Moshi.Builder()
       .add(showConverter)
       .add(trendingResultConverter)
       .add(tvdbImageConverter)
       .add(tvdbImageResultConverter)
+      .add(episodeConverter)
       .build()
   }
 

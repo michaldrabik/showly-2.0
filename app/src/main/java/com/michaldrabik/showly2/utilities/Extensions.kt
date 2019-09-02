@@ -13,6 +13,15 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
+import org.threeten.bp.Duration
+import org.threeten.bp.OffsetDateTime
+import org.threeten.bp.ZoneOffset.UTC
+
+fun nowUtc() = OffsetDateTime.now(UTC)
+
+fun Duration.toPrettyString(): String {
+  return ""
+}
 
 fun View.onClick(action: (View) -> Unit) = setOnClickListener { action(it) }
 
@@ -34,6 +43,12 @@ fun View.visibleIf(condition: Boolean) =
   } else {
     gone()
   }
+
+fun View.fadeIn(duration: Long = 250, startDelay: Long = 0, endAction: () -> Unit = {}) {
+  visibility = VISIBLE
+  alpha = 0F
+  animate().alpha(1F).setDuration(duration).setStartDelay(startDelay).withEndAction(endAction).start()
+}
 
 fun View.fadeOut(duration: Long = 250, startDelay: Long = 0, endAction: () -> Unit = {}) {
   animate().alpha(0F).setDuration(duration).setStartDelay(startDelay).withEndAction(endAction).start()

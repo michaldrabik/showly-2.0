@@ -3,6 +3,8 @@ package com.michaldrabik.showly2.ui.shows
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,11 +18,19 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         val show = interactor.loadShowDetails(id)
-        uiStream.value = ShowDetailsUiModel(show)
+        uiStream.value = ShowDetailsUiModel(show, imageLoading = true)
 
-        uiStream.value = ShowDetailsUiModel(imageLoading = true)
-        val image = interactor.loadBackgroundImage(show)
-        uiStream.value = ShowDetailsUiModel(image = image)
+        val image = async { interactor.loadBackgroundImage(show) }
+        val nextEpisodeAsync = async {
+          delay(350) //Added for UI transition to finish nicely
+          interactor.loadNextEpisode(show)
+        }
+
+        uiStream.value = ShowDetailsUiModel(image = image.await())
+        val nextEpisode = nextEpisodeAsync.await()
+        if (nextEpisode?.firstAired != null) {
+          uiStream.value = ShowDetailsUiModel(nextEpisode = nextEpisode)
+        }
       } catch (error: Throwable) {
         //TODO
         uiStream.value = ShowDetailsUiModel(imageLoading = false)

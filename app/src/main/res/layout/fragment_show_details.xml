@@ -94,19 +94,69 @@
       tools:text="7.62 (9239 votes)"
       />
 
+    <com.google.android.material.card.MaterialCardView
+      android:id="@+id/showDetailsEpisodeCard"
+      android:layout_width="match_parent"
+      android:visibility="gone"
+      tools:visibility="visible"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spaceMedium"
+      android:layout_marginLeft="@dimen/spaceNormal"
+      android:layout_marginRight="@dimen/spaceNormal"
+      app:cardCornerRadius="4dp"
+      app:cardBackgroundColor="@color/colorShowDetailsEpisodeBackground"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/showDetailsStatus"
+      >
+
+      <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_margin="@dimen/spaceTiny"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        >
+
+        <ImageView
+          android:id="@+id/showDetailsEpisodeIcon"
+          android:layout_width="20dp"
+          android:layout_height="20dp"
+          android:layout_marginStart="@dimen/spaceTiny"
+          android:layout_marginEnd="@dimen/spaceSmall"
+          android:layout_gravity="center_vertical"
+          android:tint="@color/colorAccent"
+          app:srcCompat="@drawable/ic_clock"
+          />
+
+        <TextView
+          android:id="@+id/showDetailsEpisodeText"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:textSize="13sp"
+          android:gravity="center"
+          android:textColor="@color/colorTextPrimary"
+          tools:text="Episode airs in 10 days."
+          />
+
+      </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
     <TextView
       android:id="@+id/showDetailsDescription"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_margin="@dimen/spaceNormal"
-      android:layout_marginStart="16dp"
+      android:layout_marginTop="@dimen/spaceMedium"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginEnd="@dimen/spaceNormal"
       android:ellipsize="end"
       android:maxLines="5"
       android:textColor="@color/colorTextPrimary"
       android:textSize="13sp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/showDetailsStatus"
+      app:layout_constraintTop_toBottomOf="@+id/showDetailsEpisodeCard"
       tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ligula leo, fermentum hendrerit rutrum ut, ullamcorper varius sem. Morbi in neque mattis, dapibus ex sit amet, pharetra orci. Donec quam nisi, sollicitudin sit amet elit sit amet, sagittis egestas lacus. Mauris tristique augue nunc, nec tincidunt leo rhoncus ac. Quisque scelerisque nisi et felis scelerisque eleifend. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ligula leo, fermentum hendrerit rutrum ut, ullamcorper varius sem. Morbi in neque mattis, dapibus ex sit amet, pharetra orci. Donec quam nisi, sollicitudin sit amet elit sit amet, sagittis egestas lacus. Mauris tristique augue nunc, nec tincidunt leo rhoncus ac. Quisque scelerisque nisi et felis scelerisque eleifend."
       />
 

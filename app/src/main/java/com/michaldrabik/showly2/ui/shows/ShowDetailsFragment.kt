@@ -14,6 +14,7 @@ import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.utilities.*
 import kotlinx.android.synthetic.main.fragment_show_details.*
+import org.threeten.bp.Duration
 
 @SuppressLint("SetTextI18n", "DefaultLocale")
 class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
@@ -57,9 +58,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         "${show.network} | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
       showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
     }
-
+    uiModel.nextEpisode?.let {
+      val timeToAir = Duration.between(nowUtc(), it.firstAired)
+      showDetailsEpisodeText.text = "${it.toDisplayString()} airs in ${timeToAir}."
+      showDetailsEpisodeCard.fadeIn()
+    }
     uiModel.imageLoading?.let { showDetailsImageProgress.visibleIf(it) }
-
     uiModel.image?.let {
       showDetailsImageProgress.visible()
       Glide.with(this)
