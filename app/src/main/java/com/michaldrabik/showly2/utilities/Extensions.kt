@@ -13,15 +13,10 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import org.threeten.bp.Duration
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.ZoneOffset.UTC
 
-fun nowUtc() = OffsetDateTime.now(UTC)
-
-fun Duration.toPrettyString(): String {
-  return ""
-}
+fun nowUtc(): OffsetDateTime = OffsetDateTime.now(UTC)
 
 fun View.onClick(action: (View) -> Unit) = setOnClickListener { action(it) }
 

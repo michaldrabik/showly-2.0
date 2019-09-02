@@ -48,7 +48,8 @@
       android:id="@+id/showDetailsExtraInfo"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_margin="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceMedium"
+      android:layout_marginStart="@dimen/spaceNormal"
       android:textColor="@color/colorTextPrimary"
       android:textSize="13sp"
       android:textStyle="bold"
@@ -111,32 +112,62 @@
       >
 
       <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_margin="@dimen/spaceTiny"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/spaceSmall"
         >
 
-        <ImageView
-          android:id="@+id/showDetailsEpisodeIcon"
-          android:layout_width="20dp"
-          android:layout_height="20dp"
-          android:layout_marginStart="@dimen/spaceTiny"
-          android:layout_marginEnd="@dimen/spaceSmall"
+
+        <LinearLayout
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
           android:layout_gravity="center_vertical"
-          android:tint="@color/colorAccent"
-          app:srcCompat="@drawable/ic_clock"
-          />
+          >
+
+          <ImageView
+            android:id="@+id/showDetailsEpisodeIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="@dimen/spaceTiny"
+            android:layout_gravity="center_vertical"
+            android:tint="@color/colorAccent"
+            app:srcCompat="@drawable/ic_clock"
+            />
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/colorAccent"
+            android:text="@string/textNextEpisode"
+            />
+
+        </LinearLayout>
 
         <TextView
           android:id="@+id/showDetailsEpisodeText"
           android:layout_width="wrap_content"
           android:layout_height="match_parent"
+          android:layout_marginTop="@dimen/spaceMicro"
           android:textSize="13sp"
           android:gravity="center"
           android:textColor="@color/colorTextPrimary"
-          tools:text="Episode airs in 10 days."
+          tools:text="S.00 E.00 - Episode Title"
+          />
+
+        <TextView
+          android:id="@+id/showDetailsEpisodeAirtime"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:textSize="11sp"
+          android:gravity="center"
+          android:textColor="@color/colorTextSecondary"
+          tools:text="Airs in 3 days 2 hours"
+          tools:ignore="SmallSp"
           />
 
       </LinearLayout>
@@ -151,7 +182,7 @@
       android:layout_marginStart="@dimen/spaceNormal"
       android:layout_marginEnd="@dimen/spaceNormal"
       android:ellipsize="end"
-      android:maxLines="5"
+      android:maxLines="3"
       android:textColor="@color/colorTextPrimary"
       android:textSize="13sp"
       app:layout_constraintEnd_toEndOf="parent"
@@ -169,6 +200,7 @@
       android:ellipsize="end"
       android:maxLines="6"
       android:text="@string/buttonShowMore"
+      android:textStyle="bold"
       android:textColor="@color/colorAccent"
       android:textSize="13sp"
       app:layout_constraintStart_toStartOf="parent"

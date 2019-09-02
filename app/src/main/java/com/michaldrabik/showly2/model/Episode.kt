@@ -16,5 +16,5 @@ data class Episode(
   val runtime: Int
 ) {
 
-  fun toDisplayString() = String.format("S%02d E%02d", season, number)
+  fun toDisplayString() = String.format("S.%02d E.%02d", season, number)
 }

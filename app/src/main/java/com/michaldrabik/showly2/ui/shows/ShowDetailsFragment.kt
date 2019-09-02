@@ -11,10 +11,20 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
-import com.michaldrabik.showly2.utilities.*
+import com.michaldrabik.showly2.utilities.fadeIn
+import com.michaldrabik.showly2.utilities.gone
+import com.michaldrabik.showly2.utilities.nowUtc
+import com.michaldrabik.showly2.utilities.onClick
+import com.michaldrabik.showly2.utilities.visible
+import com.michaldrabik.showly2.utilities.visibleIf
+import com.michaldrabik.showly2.utilities.withFailListener
+import com.michaldrabik.showly2.utilities.withSuccessListener
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import org.threeten.bp.Duration
+import kotlin.math.absoluteValue
 
 @SuppressLint("SetTextI18n", "DefaultLocale")
 class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
@@ -43,7 +53,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   private fun setupView() {
     showDetailsMoreButton.onClick {
       showDetailsDescription.apply {
-        maxLines = if (maxLines == 100) 5 else 100
+        maxLines = if (maxLines == 100) 3 else 100
         showDetailsMoreButton.setText(if (maxLines == 100) R.string.buttonShowLess else R.string.buttonShowMore)
       }
     }
@@ -58,21 +68,35 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         "${show.network} | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
       showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
     }
-    uiModel.nextEpisode?.let {
-      val timeToAir = Duration.between(nowUtc(), it.firstAired)
-      showDetailsEpisodeText.text = "${it.toDisplayString()} airs in ${timeToAir}."
-      showDetailsEpisodeCard.fadeIn()
-    }
+    uiModel.nextEpisode?.let { renderNextEpisode(it) }
     uiModel.imageLoading?.let { showDetailsImageProgress.visibleIf(it) }
-    uiModel.image?.let {
-      showDetailsImageProgress.visible()
-      Glide.with(this)
-        .load("$TVDB_IMAGE_BASE_URL${it.fileUrl}")
-        .transform(CenterCrop())
-        .transition(withCrossFade(200))
-        .withFailListener { showDetailsImageProgress.gone() }
-        .withSuccessListener { showDetailsImageProgress.gone() }
-        .into(showDetailsImage)
+    uiModel.image?.let { renderImage(it) }
+  }
+
+  private fun renderNextEpisode(nextEpisode: Episode) {
+    nextEpisode.run {
+      showDetailsEpisodeText.text = "${toDisplayString()} - '$title'"
+      showDetailsEpisodeCard.fadeIn()
+
+      val timeToAir = Duration.between(nowUtc(), firstAired)
+      val daysToAir = timeToAir.toDays().toInt().absoluteValue
+      if (daysToAir == 0) {
+        val hoursToAir = timeToAir.toHours().toInt().absoluteValue
+        showDetailsEpisodeAirtime.text = resources.getQuantityString(R.plurals.textHoursToAir, hoursToAir, hoursToAir)
+        return
+      }
+      showDetailsEpisodeAirtime.text = resources.getQuantityString(R.plurals.textDaysToAir, daysToAir, daysToAir)
     }
+  }
+
+  private fun renderImage(image: Image) {
+    showDetailsImageProgress.visible()
+    Glide.with(this)
+      .load("$TVDB_IMAGE_BASE_URL${image.fileUrl}")
+      .transform(CenterCrop())
+      .transition(withCrossFade(200))
+      .withFailListener { showDetailsImageProgress.gone() }
+      .withSuccessListener { showDetailsImageProgress.gone() }
+      .into(showDetailsImage)
   }
 }

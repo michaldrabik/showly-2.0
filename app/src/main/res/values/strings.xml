@@ -8,4 +8,20 @@
   <string name="buttonShowMore">Show More</string>
   <string name="buttonShowLess">Show Less</string>
 
+  <string name="textToday">today</string>
+  <string name="textTomorrow">tomorrow</string>
+  <string name="textNextEpisode">Next Episode:</string>
+
+  <plurals name="textDaysToAir">
+    <item quantity="zero">Airs today.</item>
+    <item quantity="one">Airs tomorrow.</item>
+    <item quantity="other">Airs in %d days.</item>
+  </plurals>
+
+  <plurals name="textHoursToAir">
+    <item quantity="zero">Airs in less than an hour.</item>
+    <item quantity="one">Airs in 1 hour.</item>
+    <item quantity="other">Airs in %d hours.</item>
+  </plurals>
+
 </resources>
