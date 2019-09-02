@@ -6,5 +6,6 @@
   <string name="menuLists">My Lists</string>
 
   <string name="buttonShowMore">Show More</string>
+  <string name="buttonShowLess">Show Less</string>
 
 </resources>

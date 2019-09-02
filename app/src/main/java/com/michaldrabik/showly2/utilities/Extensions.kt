@@ -14,16 +14,18 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 
+fun View.onClick(action: (View) -> Unit) = setOnClickListener { action(it) }
+
 fun Context.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSize(dimenResId)
 
 fun screenWidth() = Resources.getSystem().displayMetrics.widthPixels
 
 fun View.visible() {
-  visibility = VISIBLE
+  if (visibility != VISIBLE) visibility = VISIBLE
 }
 
 fun View.gone() {
-  visibility = GONE
+  if (visibility != GONE) visibility = GONE
 }
 
 fun View.visibleIf(condition: Boolean) =

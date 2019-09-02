@@ -30,7 +30,7 @@ class ShowPosterView @JvmOverloads constructor(
     clear()
     showPosterTitle.text = item.show.title
     showPosterProgress.visibleIf(item.isLoading)
-    showPosterRoot.setOnClickListener { itemClickListener(item) }
+    showPosterRoot.onClick { itemClickListener(item) }
     if (!item.isLoading) loadImage(item, missingImageListener)
   }
 

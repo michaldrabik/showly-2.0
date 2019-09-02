@@ -12,6 +12,7 @@ import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
+import com.michaldrabik.showly2.utilities.*
 import kotlinx.android.synthetic.main.fragment_show_details.*
 
 @SuppressLint("SetTextI18n", "DefaultLocale")
@@ -34,7 +35,17 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    setupView()
     viewModel.loadShowDetails(showId)
+  }
+
+  private fun setupView() {
+    showDetailsMoreButton.onClick {
+      showDetailsDescription.apply {
+        maxLines = if (maxLines == 100) 5 else 100
+        showDetailsMoreButton.setText(if (maxLines == 100) R.string.buttonShowLess else R.string.buttonShowMore)
+      }
+    }
   }
 
   private fun render(uiModel: ShowDetailsUiModel) {
@@ -44,12 +55,19 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       showDetailsStatus.text = show.status.split(" ").joinToString(" ") { it.capitalize() }
       showDetailsExtraInfo.text =
         "${show.network} | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
+      showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
     }
+
+    uiModel.imageLoading?.let { showDetailsImageProgress.visibleIf(it) }
+
     uiModel.image?.let {
+      showDetailsImageProgress.visible()
       Glide.with(this)
         .load("$TVDB_IMAGE_BASE_URL${it.fileUrl}")
         .transform(CenterCrop())
         .transition(withCrossFade(200))
+        .withFailListener { showDetailsImageProgress.gone() }
+        .withSuccessListener { showDetailsImageProgress.gone() }
         .into(showDetailsImage)
     }
   }

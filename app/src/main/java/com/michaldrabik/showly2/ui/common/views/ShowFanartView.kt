@@ -8,11 +8,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Image.Status.AVAILABLE
-import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
-import com.michaldrabik.showly2.model.Image.Status.UNKNOWN
+import com.michaldrabik.showly2.model.Image.Status.*
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.utilities.gone
+import com.michaldrabik.showly2.utilities.onClick
 import com.michaldrabik.showly2.utilities.visibleIf
 import com.michaldrabik.showly2.utilities.withFailListener
 import kotlinx.android.synthetic.main.view_show_fanart.view.*
@@ -34,7 +33,7 @@ class ShowFanartView @JvmOverloads constructor(
     clear()
     showFanartTitle.text = item.show.title
     showFanartProgress.visibleIf(item.isLoading)
-    showFanartRoot.setOnClickListener { itemClickListener(item) }
+    showFanartRoot.onClick { itemClickListener(item) }
     if (!item.isLoading) loadImage(item, missingImageListener)
   }
 

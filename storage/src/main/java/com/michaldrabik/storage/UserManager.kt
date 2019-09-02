@@ -1,10 +1,10 @@
-package com.michaldrabik.storage.repository
+package com.michaldrabik.storage
 
 import android.content.SharedPreferences
 import javax.inject.Inject
 import javax.inject.Named
 
-class UserRepository @Inject constructor(
+class UserManager @Inject constructor(
   @Named("userPreferences") private val preferences: SharedPreferences
 ) {
 

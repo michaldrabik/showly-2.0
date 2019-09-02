@@ -5,5 +5,6 @@ import com.michaldrabik.showly2.model.Show
 
 data class ShowDetailsUiModel(
   val show: Show? = null,
-  val image: Image? = null
+  val image: Image? = null,
+  val imageLoading: Boolean? = null
 )
