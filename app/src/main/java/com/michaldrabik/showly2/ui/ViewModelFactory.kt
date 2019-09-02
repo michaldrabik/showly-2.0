@@ -3,13 +3,16 @@ package com.michaldrabik.showly2.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.network.Cloud
+import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.ui.discover.DiscoverInteractor
 import com.michaldrabik.showly2.ui.discover.DiscoverViewModel
 import com.michaldrabik.showly2.ui.shows.ShowDetailsInteractor
 import com.michaldrabik.showly2.ui.shows.ShowDetailsViewModel
 import com.michaldrabik.storage.repository.UserRepository
+import javax.inject.Inject
 
-class ViewModelFactory(
+@AppScope
+class ViewModelFactory @Inject constructor(
   private val cloud: Cloud,
   private val userRepository: UserRepository,
   private val discoverInteractor: DiscoverInteractor,
