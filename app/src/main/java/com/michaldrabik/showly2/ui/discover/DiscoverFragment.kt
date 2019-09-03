@@ -12,9 +12,9 @@ import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
-import com.michaldrabik.showly2.utilities.fadeOut
-import com.michaldrabik.showly2.utilities.visibleIf
-import com.michaldrabik.showly2.utilities.withSpanSizeLookup
+import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.random.Random
 

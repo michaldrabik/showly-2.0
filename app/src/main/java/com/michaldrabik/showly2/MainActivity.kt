@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
-import com.michaldrabik.showly2.utilities.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {

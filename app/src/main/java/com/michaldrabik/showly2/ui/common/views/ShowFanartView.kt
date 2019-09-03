@@ -10,10 +10,10 @@ import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image.Status.*
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
-import com.michaldrabik.showly2.utilities.gone
-import com.michaldrabik.showly2.utilities.onClick
-import com.michaldrabik.showly2.utilities.visibleIf
-import com.michaldrabik.showly2.utilities.withFailListener
+import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.showly2.utilities.extensions.withFailListener
 import kotlinx.android.synthetic.main.view_show_fanart.view.*
 
 class ShowFanartView @JvmOverloads constructor(

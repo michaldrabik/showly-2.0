@@ -10,7 +10,7 @@ import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image.Status.*
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
-import com.michaldrabik.showly2.utilities.*
+import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.view_show_poster.view.*
 
 class ShowPosterView @JvmOverloads constructor(

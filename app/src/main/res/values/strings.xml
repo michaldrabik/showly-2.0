@@ -24,4 +24,10 @@
     <item quantity="other">Airs in %d hours.</item>
   </plurals>
 
+  <plurals name="textMinutesToAir">
+    <item quantity="zero">Airs now!</item>
+    <item quantity="one">Airs now!</item>
+    <item quantity="other">Airs in %d minutes.</item>
+  </plurals>
+
 </resources>

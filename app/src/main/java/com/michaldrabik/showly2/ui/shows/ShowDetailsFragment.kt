@@ -14,23 +14,20 @@ import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
-import com.michaldrabik.showly2.utilities.fadeIn
-import com.michaldrabik.showly2.utilities.gone
-import com.michaldrabik.showly2.utilities.nowUtc
-import com.michaldrabik.showly2.utilities.onClick
-import com.michaldrabik.showly2.utilities.visible
-import com.michaldrabik.showly2.utilities.visibleIf
-import com.michaldrabik.showly2.utilities.withFailListener
-import com.michaldrabik.showly2.utilities.withSuccessListener
+import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.fragment_show_details.*
+import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import org.threeten.bp.Duration
-import kotlin.math.absoluteValue
 
 @SuppressLint("SetTextI18n", "DefaultLocale")
 class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
 
-  private val showId by lazy { arguments?.getLong("id", -1) ?: -1 }
+  companion object {
+    private const val OVERVIEW_MIN_LINES = 3
+    private const val OVERVIEW_MAX_LINES = 100
+  }
 
+  private val showId by lazy { arguments?.getLong("id", -1) ?: -1 }
   override val layoutResId = R.layout.fragment_show_details
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,8 +50,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   private fun setupView() {
     showDetailsMoreButton.onClick {
       showDetailsDescription.apply {
-        maxLines = if (maxLines == 100) 3 else 100
-        showDetailsMoreButton.setText(if (maxLines == 100) R.string.buttonShowLess else R.string.buttonShowMore)
+        maxLines = if (maxLines == OVERVIEW_MAX_LINES) OVERVIEW_MIN_LINES else OVERVIEW_MAX_LINES
+        showDetailsMoreButton.setText(if (maxLines == OVERVIEW_MAX_LINES) R.string.buttonShowLess else R.string.buttonShowMore)
       }
     }
   }
@@ -79,13 +76,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       showDetailsEpisodeCard.fadeIn()
 
       val timeToAir = Duration.between(nowUtc(), firstAired)
-      val daysToAir = timeToAir.toDays().toInt().absoluteValue
-      if (daysToAir == 0) {
-        val hoursToAir = timeToAir.toHours().toInt().absoluteValue
-        showDetailsEpisodeAirtime.text = resources.getQuantityString(R.plurals.textHoursToAir, hoursToAir, hoursToAir)
+      val days = timeToAir.toDays()
+      if (days == 0L) {
+        val hours = timeToAir.toHours()
+        if (hours == 0L) {
+          val minutes = timeToAir.toMinutes()
+          showDetailsEpisodeAirtime.text = getQuantityString(R.plurals.textMinutesToAir, minutes)
+          return
+        }
+        showDetailsEpisodeAirtime.text = getQuantityString(R.plurals.textHoursToAir, hours)
         return
       }
-      showDetailsEpisodeAirtime.text = resources.getQuantityString(R.plurals.textDaysToAir, daysToAir, daysToAir)
+      showDetailsEpisodeAirtime.text = getQuantityString(R.plurals.textDaysToAir, days)
     }
   }
 

@@ -95,84 +95,20 @@
       tools:text="7.62 (9239 votes)"
       />
 
-    <com.google.android.material.card.MaterialCardView
+    <include
       android:id="@+id/showDetailsEpisodeCard"
       android:layout_width="match_parent"
+      android:layout_height="wrap_content"
       android:visibility="gone"
       tools:visibility="visible"
-      android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/spaceMedium"
       android:layout_marginLeft="@dimen/spaceNormal"
       android:layout_marginRight="@dimen/spaceNormal"
-      app:cardCornerRadius="4dp"
-      app:cardBackgroundColor="@color/colorShowDetailsEpisodeBackground"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/showDetailsStatus"
-      >
-
-      <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spaceSmall"
-        >
-
-
-        <LinearLayout
-          android:orientation="horizontal"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_vertical"
-          >
-
-          <ImageView
-            android:id="@+id/showDetailsEpisodeIcon"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginEnd="@dimen/spaceTiny"
-            android:layout_gravity="center_vertical"
-            android:tint="@color/colorAccent"
-            app:srcCompat="@drawable/ic_clock"
-            />
-
-          <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textSize="13sp"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textColor="@color/colorAccent"
-            android:text="@string/textNextEpisode"
-            />
-
-        </LinearLayout>
-
-        <TextView
-          android:id="@+id/showDetailsEpisodeText"
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:layout_marginTop="@dimen/spaceMicro"
-          android:textSize="13sp"
-          android:gravity="center"
-          android:textColor="@color/colorTextPrimary"
-          tools:text="S.00 E.00 - Episode Title"
-          />
-
-        <TextView
-          android:id="@+id/showDetailsEpisodeAirtime"
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:textSize="11sp"
-          android:gravity="center"
-          android:textColor="@color/colorTextSecondary"
-          tools:text="Airs in 3 days 2 hours"
-          tools:ignore="SmallSp"
-          />
-
-      </LinearLayout>
-
-    </com.google.android.material.card.MaterialCardView>
+      layout="@layout/fragment_show_details_next_episode"
+      />
 
     <TextView
       android:id="@+id/showDetailsDescription"
@@ -209,12 +145,11 @@
 
     <TextView
       android:id="@+id/showDetailsTitle"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/spaceNormal"
-      android:layout_marginBottom="16dp"
+      android:layout_margin="@dimen/spaceNormal"
       android:ellipsize="end"
-      android:maxLines="1"
+      android:maxLines="2"
       android:shadowColor="@color/colorBlack"
       android:shadowDx="3"
       android:shadowDy="3"
@@ -225,7 +160,7 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0"
       app:layout_constraintStart_toStartOf="parent"
-      tools:text="Game Of Thrones"
+      tools:text="Game Of Thrones "
       />
 
     <View
