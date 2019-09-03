@@ -1,189 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<FrameLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:fillViewport="true"
-  xmlns:tools="http://schemas.android.com/tools"
   >
 
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <ScrollView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
     >
 
-    <ImageView
-      android:id="@+id/showDetailsImage"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      app:layout_constraintBottom_toTopOf="@id/guideline1"
-      app:layout_constraintTop_toTopOf="parent"
-      />
-
-    <View
-      android:id="@+id/separator1"
-      android:layout_width="0dp"
-      android:layout_height="1dp"
-      android:background="@color/colorSeparatorGray"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintBottom_toBottomOf="@id/showDetailsImage"
-      />
-
-    <ProgressBar
-      android:id="@+id/showDetailsImageProgress"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:indeterminateTint="@color/colorProgressGray"
-      android:visibility="gone"
-      tools:visibility="visible"
-      app:layout_constraintBottom_toBottomOf="@+id/showDetailsImage"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="@+id/showDetailsImage"
-      />
-
-    <TextView
-      android:id="@+id/showDetailsExtraInfo"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/spaceMedium"
-      android:layout_marginStart="@dimen/spaceNormal"
-      android:textColor="@color/colorTextPrimary"
-      android:textSize="13sp"
-      android:textStyle="bold"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/guideline1"
-      tools:text="Netflix | 60 min | Drama, SF"
-      />
-
-    <TextView
-      android:id="@+id/showDetailsStatus"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textColor="@color/colorTextSecondary"
-      android:layout_marginStart="@dimen/spaceNormal"
-      android:textSize="13sp"
-      android:textStyle=""
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"
-      tools:text="Returning Series"
-      />
-
-    <ImageView
-      android:id="@+id/showDetailsStarIcon"
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
-      android:layout_marginStart="@dimen/spaceTiny"
-      android:tint="@color/colorAccent"
-      app:layout_constraintBottom_toBottomOf="@+id/showDetailsStatus"
-      app:layout_constraintStart_toEndOf="@+id/showDetailsStatus"
-      app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"
-      app:srcCompat="@drawable/ic_star"
-      />
-
-    <TextView
-      android:id="@+id/showDetailsRating"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textColor="@color/colorTextSecondary"
-      android:textSize="13sp"
-      android:textStyle=""
-      app:layout_constraintStart_toEndOf="@+id/showDetailsStarIcon"
-      app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"
-      tools:text="7.62 (9239 votes)"
-      />
-
-    <include
-      android:id="@+id/showDetailsEpisodeCard"
+    <androidx.constraintlayout.widget.ConstraintLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:visibility="gone"
-      tools:visibility="visible"
-      android:layout_marginTop="@dimen/spaceMedium"
-      android:layout_marginLeft="@dimen/spaceNormal"
-      android:layout_marginRight="@dimen/spaceNormal"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/showDetailsStatus"
-      layout="@layout/fragment_show_details_next_episode"
-      />
+      android:id="@+id/showDetailsMainLayout"
+      >
 
-    <TextView
-      android:id="@+id/showDetailsDescription"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/spaceMedium"
-      android:layout_marginStart="@dimen/spaceNormal"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:ellipsize="end"
-      android:maxLines="3"
-      android:textColor="@color/colorTextPrimary"
-      android:textSize="13sp"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/showDetailsEpisodeCard"
-      tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ligula leo, fermentum hendrerit rutrum ut, ullamcorper varius sem. Morbi in neque mattis, dapibus ex sit amet, pharetra orci. Donec quam nisi, sollicitudin sit amet elit sit amet, sagittis egestas lacus. Mauris tristique augue nunc, nec tincidunt leo rhoncus ac. Quisque scelerisque nisi et felis scelerisque eleifend. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ligula leo, fermentum hendrerit rutrum ut, ullamcorper varius sem. Morbi in neque mattis, dapibus ex sit amet, pharetra orci. Donec quam nisi, sollicitudin sit amet elit sit amet, sagittis egestas lacus. Mauris tristique augue nunc, nec tincidunt leo rhoncus ac. Quisque scelerisque nisi et felis scelerisque eleifend."
-      />
+      <ImageView
+        android:id="@+id/showDetailsImage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline1"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
-    <TextView
-      android:id="@+id/showDetailsMoreButton"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="16dp"
-      android:layout_marginTop="@dimen/spaceSmall"
-      android:ellipsize="end"
-      android:maxLines="6"
-      android:text="@string/buttonShowMore"
-      android:textStyle="bold"
-      android:textColor="@color/colorAccent"
-      android:textSize="13sp"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
-      />
+      <View
+        android:id="@+id/separator1"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/colorSeparatorGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/showDetailsImage"
+        />
 
-    <TextView
-      android:id="@+id/showDetailsTitle"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_margin="@dimen/spaceNormal"
-      android:ellipsize="end"
-      android:maxLines="2"
-      android:shadowColor="@color/colorBlack"
-      android:shadowDx="3"
-      android:shadowDy="3"
-      android:shadowRadius="1"
-      android:textColor="@color/colorWhite"
-      android:textSize="24sp"
-      app:layout_constraintBottom_toTopOf="@id/guideline1"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0"
-      app:layout_constraintStart_toStartOf="parent"
-      tools:text="Game Of Thrones "
-      />
+      <ProgressBar
+        android:id="@+id/showDetailsImageProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/colorProgressGray"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/showDetailsImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/showDetailsImage"
+        />
 
-    <View
-      android:id="@+id/separator2"
-      android:layout_width="0dp"
-      android:layout_height="1dp"
-      android:layout_marginStart="@dimen/spaceNormal"
-      android:layout_marginTop="@dimen/spaceSmall"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:background="@color/colorSeparatorGray"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/showDetailsMoreButton"
-      />
+      <TextView
+        android:id="@+id/showDetailsExtraInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spaceMedium"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guideline1"
+        tools:text="Netflix | 60 min | Drama, SF"
+        />
 
-    <androidx.constraintlayout.widget.Guideline
-      android:id="@+id/guideline1"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal"
-      app:layout_constraintGuide_percent="0.35"
-      />
+      <TextView
+        android:id="@+id/showDetailsStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextSecondary"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:textSize="13sp"
+        android:textStyle=""
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"
+        tools:text="Returning Series"
+        />
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+      <ImageView
+        android:id="@+id/showDetailsStarIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/spaceTiny"
+        android:tint="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="@+id/showDetailsStatus"
+        app:layout_constraintStart_toEndOf="@+id/showDetailsStatus"
+        app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"
+        app:srcCompat="@drawable/ic_star"
+        />
 
-</ScrollView>
+      <TextView
+        android:id="@+id/showDetailsRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextSecondary"
+        android:textSize="13sp"
+        android:textStyle=""
+        app:layout_constraintStart_toEndOf="@+id/showDetailsStarIcon"
+        app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"
+        tools:text="7.62 (9239 votes)"
+        />
+
+      <include
+        android:id="@+id/showDetailsEpisodeCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_marginTop="@dimen/spaceMedium"
+        android:layout_marginLeft="@dimen/spaceNormal"
+        android:layout_marginRight="@dimen/spaceNormal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsStatus"
+        layout="@layout/fragment_show_details_next_episode"
+        />
+
+      <TextView
+        android:id="@+id/showDetailsDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spaceMedium"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showDetailsEpisodeCard"
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ligula leo, fermentum hendrerit rutrum ut, ullamcorper varius sem. Morbi in neque mattis, dapibus ex sit amet, pharetra orci. Donec quam nisi, sollicitudin sit amet elit sit amet, sagittis egestas lacus. Mauris tristique augue nunc, nec tincidunt leo rhoncus ac. Quisque scelerisque nisi et felis scelerisque eleifend. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ligula leo, fermentum hendrerit rutrum ut, ullamcorper varius sem. Morbi in neque mattis, dapibus ex sit amet, pharetra orci. Donec quam nisi, sollicitudin sit amet elit sit amet, sagittis egestas lacus. Mauris tristique augue nunc, nec tincidunt leo rhoncus ac. Quisque scelerisque nisi et felis scelerisque eleifend."
+        />
+
+      <TextView
+        android:id="@+id/showDetailsMoreButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="@dimen/spaceSmall"
+        android:ellipsize="end"
+        android:maxLines="6"
+        android:text="@string/buttonShowMore"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
+        />
+
+      <TextView
+        android:id="@+id/showDetailsTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spaceNormal"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:shadowColor="@color/colorBlack"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="1"
+        android:textColor="@color/colorWhite"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@id/guideline1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Game Of Thrones "
+        />
+
+      <View
+        android:id="@+id/separator2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:background="@color/colorSeparatorGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsMoreButton"
+        />
+
+      <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+  </ScrollView>
+
+  <ProgressBar
+    android:id="@+id/showDetailsMainProgress"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:visibility="gone"
+    />
+
+</FrameLayout>

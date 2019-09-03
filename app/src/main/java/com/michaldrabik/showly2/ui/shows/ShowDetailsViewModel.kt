@@ -18,8 +18,9 @@ class ShowDetailsViewModel @Inject constructor(
   fun loadShowDetails(id: Long) {
     viewModelScope.launch {
       try {
+        uiStream.value = ShowDetailsUiModel(showLoading = true)
         val show = interactor.loadShowDetails(id)
-        uiStream.value = ShowDetailsUiModel(show, imageLoading = true)
+        uiStream.value = ShowDetailsUiModel(show, showLoading = false, imageLoading = true)
 
         coroutineScope {
           val image = async { interactor.loadBackgroundImage(show) }

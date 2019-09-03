@@ -18,12 +18,15 @@ class ShowDetailsInteractor @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  suspend fun loadShowDetails(id: Long): Show {
-    val show = database.showsDao().getById(id)
-    if (show == null) {
-      //TODO Fetch remote show info
+  suspend fun loadShowDetails(traktId: Long): Show {
+    val localShow = database.showsDao().getById(traktId)
+    if (localShow == null) {
+      val remoteShow = cloud.traktApi.fetchShow(traktId)
+      val show = mappers.show.fromNetwork(remoteShow)
+      database.showsDao().upsert(listOf(mappers.show.toDatabase(show)))
+      return show
     }
-    return mappers.show.fromDatabase(show!!)
+    return mappers.show.fromDatabase(localShow)
   }
 
   suspend fun loadBackgroundImage(show: Show) =

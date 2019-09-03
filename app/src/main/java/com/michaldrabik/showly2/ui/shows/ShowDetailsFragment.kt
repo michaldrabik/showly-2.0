@@ -27,8 +27,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     private const val OVERVIEW_MAX_LINES = 100
   }
 
-  private val showId by lazy { arguments?.getLong("id", -1) ?: -1 }
   override val layoutResId = R.layout.fragment_show_details
+
+  private val showId by lazy { arguments?.getLong("id", -1) ?: -1 }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -57,6 +58,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   }
 
   private fun render(uiModel: ShowDetailsUiModel) {
+    uiModel.showLoading?.let {
+      showDetailsMainLayout.visibleIf(!it)
+      showDetailsMainProgress.visibleIf(it)
+    }
     uiModel.show?.let { show ->
       showDetailsTitle.text = show.title
       showDetailsDescription.text = show.overview

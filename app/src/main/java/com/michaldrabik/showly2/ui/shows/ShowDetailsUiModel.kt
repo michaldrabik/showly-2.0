@@ -6,6 +6,7 @@ import com.michaldrabik.showly2.model.Show
 
 data class ShowDetailsUiModel(
   val show: Show? = null,
+  val showLoading: Boolean? = null,
   val image: Image? = null,
   val imageLoading: Boolean? = null,
   val nextEpisode: Episode? = null

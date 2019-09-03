@@ -4,6 +4,8 @@ import com.michaldrabik.network.trakt.model.Episode
 
 class TraktApi(private val service: TraktService) {
 
+  suspend fun fetchShow(traktId: Long) = service.fetchShow(traktId)
+
   suspend fun fetchTrendingShows() = service.fetchTrendingShows().map { it.show }
 
   suspend fun fetchNextEpisode(traktId: Long): Episode? {
