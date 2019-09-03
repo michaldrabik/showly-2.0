@@ -13,8 +13,10 @@ import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.random.Random
 
@@ -88,5 +90,8 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
     uiModel.showLoading?.let { discoverProgress.visibleIf(it) }
     uiModel.updateListItem?.let { adapter.updateItem(it) }
     uiModel.listPosition?.let { layoutManager.scrollToPositionWithOffset(it.first, it.second) }
+    uiModel.error?.let {
+      requireActivity().snackBarHost.showErrorSnackbar(it.message ?: getString(R.string.errorGeneral))
+    }
   }
 }

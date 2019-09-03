@@ -45,4 +45,11 @@
       />
   </LinearLayout>
 
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/snackBarHost"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/bottomNavigationHeight"
+    />
+
 </FrameLayout>

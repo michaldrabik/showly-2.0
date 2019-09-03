@@ -3,7 +3,9 @@ package com.michaldrabik.showly2.ui.discover
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.ImageType.*
+import com.michaldrabik.showly2.model.ImageType.FANART
+import com.michaldrabik.showly2.model.ImageType.FANART_WIDE
+import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
@@ -29,7 +31,7 @@ class DiscoverViewModel @Inject constructor(
         val shows = interactor.loadTrendingShows()
         onShowsLoaded(shows)
       } catch (t: Throwable) {
-        onError(t)
+        onError(Error(t))
       } finally {
         uiStream.value = DiscoverUiModel(showLoading = false)
         progress.cancel()
@@ -62,7 +64,6 @@ class DiscoverViewModel @Inject constructor(
       } catch (t: Throwable) {
         uiStream.value =
           DiscoverUiModel(updateListItem = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
-        onError(t)
       }
     }
   }
@@ -71,7 +72,7 @@ class DiscoverViewModel @Inject constructor(
     uiCache.discoverListPosition = Pair(position, offset)
   }
 
-  private fun onError(error: Throwable) {
-    //TODO
+  private fun onError(error: Error) {
+    uiStream.value = DiscoverUiModel(error = error)
   }
 }

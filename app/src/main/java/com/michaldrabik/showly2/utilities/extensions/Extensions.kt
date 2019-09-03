@@ -2,12 +2,17 @@ package com.michaldrabik.showly2.utilities.extensions
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Color
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import androidx.annotation.DimenRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
+import com.michaldrabik.showly2.R
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.ZoneOffset.UTC
 
@@ -52,3 +57,15 @@ fun GridLayoutManager.withSpanSizeLookup(action: (Int) -> Int) {
 
 fun Fragment.getQuantityString(stringResId: Int, count: Long) =
   resources.getQuantityString(stringResId, count.toInt(), count)
+
+fun ViewGroup.showErrorSnackbar(message: String, actionText: Int = R.string.textOk, action: () -> Unit = {}) {
+  Snackbar.make(this, message, LENGTH_INDEFINITE).apply {
+    view.setBackgroundResource(R.drawable.bg_error_snackbar)
+    setActionTextColor(Color.WHITE)
+    setAction(actionText) {
+      dismiss()
+      action()
+    }
+    show()
+  }
+}
