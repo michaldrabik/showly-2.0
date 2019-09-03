@@ -8,12 +8,15 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
   private val mainDestinations = arrayOf(R.id.watchlistFragment, R.id.discoverFragment)
+
+  @Inject lateinit var uiCache: UiCache
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -34,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         else -> throw IllegalStateException("Invalid menu item.")
       }
 
+      uiCache.clear()
       navigationHost.findNavController().navigate(target)
       return@setOnNavigationItemSelectedListener true
     }

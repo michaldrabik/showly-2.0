@@ -7,4 +7,8 @@ import javax.inject.Inject
 class UiCache @Inject constructor() {
 
   var discoverListPosition: Pair<Int, Int> = Pair(0, 0)
+
+  fun clear() {
+    discoverListPosition = Pair(0, 0)
+  }
 }

@@ -5,7 +5,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  app:cardCornerRadius="4dp"
+  app:cardCornerRadius="6dp"
   app:cardBackgroundColor="@color/colorShowDetailsEpisodeBackground"
   tools:showIn="@layout/fragment_show_details"
   >
@@ -14,7 +14,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/spaceSmall"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginBottom="@dimen/spaceSmall"
     >
 
     <LinearLayout
