@@ -12,13 +12,14 @@ import javax.inject.Inject
 @AppScope
 class ViewModelFactory @Inject constructor(
   private val discoverInteractor: DiscoverInteractor,
-  private val showDetailsInteractor: ShowDetailsInteractor
+  private val showDetailsInteractor: ShowDetailsInteractor,
+  private val uiCache: UiCache
 ) : ViewModelProvider.Factory {
 
   @Suppress("UNCHECKED_CAST")
   override fun <T : ViewModel?> create(modelClass: Class<T>) = when {
     modelClass.isAssignableFrom(DiscoverViewModel::class.java) ->
-      DiscoverViewModel(discoverInteractor) as T
+      DiscoverViewModel(discoverInteractor, uiCache) as T
 
     modelClass.isAssignableFrom(ShowDetailsViewModel::class.java) ->
       ShowDetailsViewModel(showDetailsInteractor) as T

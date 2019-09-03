@@ -3,10 +3,9 @@ package com.michaldrabik.showly2.ui.discover
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.ImageType.FANART
-import com.michaldrabik.showly2.model.ImageType.FANART_WIDE
-import com.michaldrabik.showly2.model.ImageType.POSTER
+import com.michaldrabik.showly2.model.ImageType.*
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import kotlinx.coroutines.delay
@@ -14,7 +13,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class DiscoverViewModel @Inject constructor(
-  private val interactor: DiscoverInteractor
+  private val interactor: DiscoverInteractor,
+  private val uiCache: UiCache
 ) : BaseViewModel() {
 
   val uiStream by lazy { MutableLiveData<DiscoverUiModel>() }
@@ -48,7 +48,7 @@ class DiscoverViewModel @Inject constructor(
       val image = interactor.findCachedImage(show, itemType)
       DiscoverListItem(show, image)
     }
-    uiStream.value = DiscoverUiModel(trendingShows = items)
+    uiStream.value = DiscoverUiModel(trendingShows = items, listPosition = uiCache.discoverListPosition)
   }
 
   fun loadMissingImage(item: DiscoverListItem, force: Boolean) {
@@ -64,6 +64,10 @@ class DiscoverViewModel @Inject constructor(
         onError(t)
       }
     }
+  }
+
+  fun saveListPosition(position: Int, offset: Int) {
+    uiCache.discoverListPosition = Pair(position, offset)
   }
 
   private fun onError(error: Throwable) {

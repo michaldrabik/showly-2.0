@@ -73,6 +73,8 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
     }
     val clickedView = discoverRecycler.findViewHolderForAdapterPosition(clickedIndex)
     clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350, endAction = {
+      val position = layoutManager.findFirstVisibleItemPosition()
+      viewModel.saveListPosition(position, layoutManager.findViewByPosition(position)?.top ?: 0)
       val bundle = Bundle().apply { putLong("id", item.show.ids.trakt) }
       findNavController().navigate(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
     })
@@ -85,5 +87,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
     }
     uiModel.showLoading?.let { discoverProgress.visibleIf(it) }
     uiModel.updateListItem?.let { adapter.updateItem(it) }
+    uiModel.listPosition?.let { layoutManager.scrollToPositionWithOffset(it.first, it.second) }
   }
 }
