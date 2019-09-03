@@ -11,6 +11,7 @@
   <string name="textToday">today</string>
   <string name="textTomorrow">tomorrow</string>
   <string name="textNextEpisode">Next Episode:</string>
+  <string name="textSearchFor">Search…</string>
 
   <plurals name="textDaysToAir">
     <item quantity="zero">Airs today.</item>

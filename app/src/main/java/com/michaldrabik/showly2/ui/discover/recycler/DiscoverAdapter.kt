@@ -2,14 +2,17 @@ package com.michaldrabik.showly2.ui.discover.recycler
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.showly2.model.ImageType.FANART
-import com.michaldrabik.showly2.model.ImageType.FANART_WIDE
-import com.michaldrabik.showly2.model.ImageType.POSTER
+import com.michaldrabik.showly2.model.ImageType.*
 import com.michaldrabik.showly2.ui.common.views.ShowFanartView
 import com.michaldrabik.showly2.ui.common.views.ShowPosterView
+import com.michaldrabik.showly2.ui.common.views.ShowSearchView
 import com.michaldrabik.showly2.ui.common.views.ShowView
 
 class DiscoverAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+  companion object {
+    private const val SEARCH_ITEM_ID = 0
+  }
 
   private val items: MutableList<DiscoverListItem> = mutableListOf()
   var missingImageListener: (DiscoverListItem, Boolean) -> Unit = { _, _ -> }
@@ -36,23 +39,27 @@ class DiscoverAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   fun findItemIndex(item: DiscoverListItem) = items.indexOf(item)
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-    POSTER.ordinal -> ViewHolderShow(ShowPosterView(parent.context))
-    FANART.ordinal, FANART_WIDE.ordinal -> ViewHolderShow(ShowFanartView(parent.context))
+    SEARCH_ITEM_ID -> ViewHolderShow(ShowSearchView(parent.context))
+    POSTER.id -> ViewHolderShow(ShowPosterView(parent.context))
+    FANART.id, FANART_WIDE.id -> ViewHolderShow(ShowFanartView(parent.context))
     else -> throw IllegalStateException("Unknown view type.")
   }
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (holder.itemViewType) {
-      POSTER.ordinal ->
+      POSTER.id ->
         (holder.itemView as ShowView).bind(items[position], missingImageListener, itemClickListener)
-      FANART.ordinal, FANART_WIDE.ordinal ->
+      FANART.id, FANART_WIDE.id ->
         (holder.itemView as ShowView).bind(items[position], missingImageListener, itemClickListener)
     }
   }
 
   override fun getItemCount() = items.size
 
-  override fun getItemViewType(position: Int) = items[position].image.type.ordinal
+  override fun getItemViewType(position: Int) = when (position) {
+    0 -> SEARCH_ITEM_ID
+    else -> items[position].image.type.id
+  }
 
   class ViewHolderShow(itemView: ShowView) : RecyclerView.ViewHolder(itemView)
 }

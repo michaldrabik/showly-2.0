@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <com.google.android.material.card.MaterialCardView
+    android:layout_width="match_parent"
+    android:layout_marginLeft="@dimen/spaceMedium"
+    android:layout_marginRight="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginBottom="@dimen/spaceSmall"
+    android:layout_height="@dimen/searchViewHeight"
+    app:cardCornerRadius="@dimen/searchViewCorner"
+    app:cardBackgroundColor="@color/colorSearchViewBackground"
+    tools:showIn="@layout/fragment_show_details"
+    >
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="horizontal"
+      android:gravity="center_vertical"
+      >
+
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_search"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginEnd="@dimen/spaceSmall"
+        android:tint="@color/colorSearchViewIcon"
+        />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="@string/textSearchFor"
+        />
+
+    </LinearLayout>
+
+  </com.google.android.material.card.MaterialCardView>
+
+</merge>

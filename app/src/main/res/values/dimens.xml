@@ -13,6 +13,9 @@
   <dimen name="backArrowSize">56dp</dimen>
   <dimen name="backArrowPadding">16dp</dimen>
 
+  <dimen name="searchViewHeight">48dp</dimen>
+  <dimen name="searchViewCorner">4dp</dimen>
+
   <dimen name="gridSpacing">2dp</dimen>
   <dimen name="gridPadding">4dp</dimen>
 </resources>
