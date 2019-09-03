@@ -1,6 +1,7 @@
 package com.michaldrabik.showly2.ui.common
 
 import com.michaldrabik.network.Cloud
+import com.michaldrabik.showly2.UserManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Image.Status.AVAILABLE
@@ -8,7 +9,6 @@ import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.storage.UserManager
 import com.michaldrabik.storage.database.AppDatabase
 import javax.inject.Inject
 
@@ -36,7 +36,7 @@ class ImagesInteractor @Inject constructor(
     }
 
     checkAuthorization()
-    val images = cloud.tvdbApi.fetchImages(userManager.tvdbToken, tvdbId, type.key)
+    val images = cloud.tvdbApi.fetchImages(userManager.getTvdbToken(), tvdbId, type.key)
     val remoteImage = images.firstOrNull()
 
     val image = when (remoteImage) {
@@ -53,9 +53,9 @@ class ImagesInteractor @Inject constructor(
   }
 
   private suspend fun checkAuthorization() {
-    if (!userManager.isTvdbAuthorized) {
+    if (!userManager.isTvdbAuthorized()) {
       val token = cloud.tvdbApi.authorize()
-      userManager.tvdbToken = token.token
+      userManager.saveTvdbToken(token.token)
     }
   }
 }

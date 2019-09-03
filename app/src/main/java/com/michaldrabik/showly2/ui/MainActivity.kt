@@ -1,9 +1,11 @@
-package com.michaldrabik.showly2
+package com.michaldrabik.showly2.ui
 
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
+import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import kotlinx.android.synthetic.main.activity_main.*
 

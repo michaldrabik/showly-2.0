@@ -18,7 +18,7 @@
     tools:ignore="GoogleAppIndexingWarning"
     >
     <activity
-      android:name=".MainActivity"
+      android:name=".ui.MainActivity"
       android:screenOrientation="portrait"
       >
       <intent-filter>
