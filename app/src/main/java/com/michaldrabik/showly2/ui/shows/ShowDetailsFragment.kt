@@ -55,6 +55,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         showDetailsMoreButton.setText(if (maxLines == OVERVIEW_MAX_LINES) R.string.buttonShowLess else R.string.buttonShowMore)
       }
     }
+    showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
   }
 
   private fun render(uiModel: ShowDetailsUiModel) {

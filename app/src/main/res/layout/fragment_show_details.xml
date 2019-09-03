@@ -202,4 +202,13 @@
     android:visibility="gone"
     />
 
+  <ImageView
+    android:id="@+id/showDetailsBackArrow"
+    android:layout_width="@dimen/backArrowSize"
+    android:layout_height="@dimen/backArrowSize"
+    android:padding="@dimen/backArrowPadding"
+    android:background="?android:attr/selectableItemBackground"
+    app:srcCompat="@drawable/ic_arrow_back"
+    />
+
 </FrameLayout>
