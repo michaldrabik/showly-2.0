@@ -12,6 +12,10 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
+  companion object {
+    private const val NAVIGATION_TRANSITION_DURATION_MS = 400L
+  }
+
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
   private val mainDestinations = arrayOf(R.id.watchlistFragment, R.id.discoverFragment)
@@ -57,15 +61,15 @@ class MainActivity : AppCompatActivity() {
   fun hideNavigation() {
     bottomNavigationWrapper.animate()
       .translationYBy(navigationHeight.toFloat())
-      .setDuration(400)
+      .setDuration(NAVIGATION_TRANSITION_DURATION_MS)
       .setInterpolator(decelerateInterpolator)
       .start()
   }
 
-  fun showNavigation() {
+  private fun showNavigation() {
     bottomNavigationWrapper.animate()
       .translationY(0F)
-      .setDuration(400)
+      .setDuration(NAVIGATION_TRANSITION_DURATION_MS)
       .setInterpolator(decelerateInterpolator)
       .start()
   }

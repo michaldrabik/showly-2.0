@@ -14,7 +14,15 @@ import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
-import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.showly2.utilities.extensions.fadeIn
+import com.michaldrabik.showly2.utilities.extensions.getQuantityString
+import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.nowUtc
+import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.showly2.utilities.extensions.withFailListener
+import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import org.threeten.bp.Duration

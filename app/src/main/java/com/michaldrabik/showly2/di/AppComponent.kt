@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.di
 import com.michaldrabik.network.di.CloudComponent
 import com.michaldrabik.showly2.ui.MainActivity
 import com.michaldrabik.showly2.ui.discover.DiscoverFragment
+import com.michaldrabik.showly2.ui.search.SearchFragment
 import com.michaldrabik.showly2.ui.shows.ShowDetailsFragment
 import com.michaldrabik.storage.di.StorageComponent
 import dagger.Component
@@ -18,5 +19,7 @@ interface AppComponent {
   fun inject(fragment: DiscoverFragment)
 
   fun inject(fragment: ShowDetailsFragment)
+
+  fun inject(fragment: SearchFragment)
 }
 

@@ -9,6 +9,7 @@
   >
 
   <com.google.android.material.card.MaterialCardView
+    android:id="@+id/searchCardLayout"
     android:layout_width="match_parent"
     android:layout_marginLeft="@dimen/spaceMedium"
     android:layout_marginRight="@dimen/spaceMedium"

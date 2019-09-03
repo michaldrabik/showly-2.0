@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  >
+
+  <com.google.android.material.card.MaterialCardView
+    android:id="@+id/searchBoxLayout"
+    android:layout_width="0dp"
+    android:layout_height="@dimen/searchViewHeight"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginLeft="@dimen/spaceNormal"
+    android:layout_marginRight="@dimen/spaceNormal"
+    app:cardBackgroundColor="@color/colorSearchViewBackground"
+    app:cardCornerRadius="@dimen/searchViewCorner"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    >
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center_vertical"
+      android:orientation="horizontal"
+      >
+
+      <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginEnd="@dimen/spaceSmall"
+        android:tint="@color/colorSearchViewIcon"
+        app:srcCompat="@drawable/ic_search"
+        />
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/textSearchFor"
+        android:textSize="16sp"
+        />
+
+      <Space
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        />
+
+      <ImageView
+        android:id="@+id/searchBoxCloseButton"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginEnd="@dimen/spaceSmall"
+        android:tint="@color/colorSearchViewIcon"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_close"
+        />
+
+    </LinearLayout>
+
+  </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

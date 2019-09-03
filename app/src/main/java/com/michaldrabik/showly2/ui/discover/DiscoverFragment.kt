@@ -50,6 +50,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
     adapter = DiscoverAdapter()
     adapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
     adapter.itemClickListener = { openShowDetails(it) }
+    adapter.searchClickListener = { openSearchView() }
     discoverRecycler.apply {
       setHasFixedSize(true)
       adapter = this@DiscoverFragment.adapter
@@ -60,6 +61,13 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
   private fun openShowDetails(item: DiscoverListItem) {
     animateItemsExit(item)
     (activity as MainActivity).hideNavigation()
+  }
+
+  private fun openSearchView() {
+    layoutManager.scrollToPosition(0)
+    (activity as MainActivity).hideNavigation()
+    viewModel.saveListPosition(0, 0)
+    findNavController().navigate(R.id.actionDiscoverFragmentToSearchFragment)
   }
 
   private fun animateItemsExit(item: DiscoverListItem) {

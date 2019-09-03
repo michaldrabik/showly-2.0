@@ -2,7 +2,9 @@ package com.michaldrabik.showly2.ui.discover.recycler
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.showly2.model.ImageType.*
+import com.michaldrabik.showly2.model.ImageType.FANART
+import com.michaldrabik.showly2.model.ImageType.FANART_WIDE
+import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.views.ShowFanartView
 import com.michaldrabik.showly2.ui.common.views.ShowPosterView
 import com.michaldrabik.showly2.ui.common.views.ShowSearchView
@@ -17,6 +19,7 @@ class DiscoverAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private val items: MutableList<DiscoverListItem> = mutableListOf()
   var missingImageListener: (DiscoverListItem, Boolean) -> Unit = { _, _ -> }
   var itemClickListener: (DiscoverListItem) -> Unit = { }
+  var searchClickListener: () -> Unit = { }
 
   fun setItems(items: List<DiscoverListItem>) {
     this.items.apply {
@@ -47,6 +50,8 @@ class DiscoverAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (holder.itemViewType) {
+      SEARCH_ITEM_ID ->
+        (holder.itemView as ShowSearchView).searchClickListener = searchClickListener
       POSTER.id ->
         (holder.itemView as ShowView).bind(items[position], missingImageListener, itemClickListener)
       FANART.id, FANART_WIDE.id ->
@@ -57,7 +62,7 @@ class DiscoverAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   override fun getItemCount() = items.size
 
   override fun getItemViewType(position: Int) = when (position) {
-    0 -> SEARCH_ITEM_ID
+    SEARCH_ITEM_ID -> SEARCH_ITEM_ID
     else -> items[position].image.type.id
   }
 

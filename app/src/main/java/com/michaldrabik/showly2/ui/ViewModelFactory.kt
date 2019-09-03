@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.ui.discover.DiscoverInteractor
 import com.michaldrabik.showly2.ui.discover.DiscoverViewModel
+import com.michaldrabik.showly2.ui.search.SearchViewModel
 import com.michaldrabik.showly2.ui.shows.ShowDetailsInteractor
 import com.michaldrabik.showly2.ui.shows.ShowDetailsViewModel
 import javax.inject.Inject
@@ -23,6 +24,9 @@ class ViewModelFactory @Inject constructor(
 
     modelClass.isAssignableFrom(ShowDetailsViewModel::class.java) ->
       ShowDetailsViewModel(showDetailsInteractor) as T
+
+    modelClass.isAssignableFrom(SearchViewModel::class.java) ->
+      SearchViewModel() as T
 
     else -> throw IllegalStateException("Unknown ViewModel class")
   }
