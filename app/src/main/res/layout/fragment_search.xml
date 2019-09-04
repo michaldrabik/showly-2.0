@@ -7,15 +7,28 @@
   >
 
   <include
+    android:id="@+id/searchViewLayout"
     layout="@layout/view_search"
     android:layout_width="0dp"
     android:layout_height="@dimen/searchViewHeight"
+    android:layout_marginLeft="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/spaceSmall"
-    android:layout_marginLeft="@dimen/spaceNormal"
-    android:layout_marginRight="@dimen/spaceNormal"
+    android:layout_marginRight="@dimen/spaceMedium"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <ImageView
+    android:id="@+id/fragmentSearchImage"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/searchViewLayout"
+    android:layout_marginTop="@dimen/searchViewBackgroundImageMargin"
+    android:tint="@color/colorSearchViewBackground"
+    app:srcCompat="@drawable/ic_binoculars"
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
