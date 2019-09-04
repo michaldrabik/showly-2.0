@@ -31,7 +31,7 @@
       <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_search"
+        app:srcCompat="@drawable/ic_anim_search_to_close"
         android:layout_marginStart="@dimen/spaceMedium"
         android:layout_marginEnd="@dimen/spaceSmall"
         android:tint="@color/colorSearchViewIcon"

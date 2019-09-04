@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.search
 
+import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
@@ -7,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
-import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.fragment_search.*
 
@@ -32,8 +32,8 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
   }
 
   private fun setupView() {
-    searchBoxCloseButton.fadeIn()
-    searchBoxCloseButton.onClick { requireActivity().onBackPressed() }
+    (searchBoxIcon.drawable as Animatable).start()
+    searchBoxIcon.onClick { requireActivity().onBackPressed() }
   }
 
   private fun render(uiModel: SearchUiModel) {
