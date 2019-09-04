@@ -7,6 +7,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.DimenRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -67,5 +68,17 @@ fun ViewGroup.showErrorSnackbar(message: String, actionText: Int = R.string.text
       action()
     }
     show()
+  }
+}
+
+fun View.showKeyboard() {
+  val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+  requestFocus()
+  inputMethodManager.showSoftInput(this, 0)
+}
+
+fun View.hideKeyboard() {
+  (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).apply {
+    hideSoftInputFromWindow(windowToken, 0)
   }
 }

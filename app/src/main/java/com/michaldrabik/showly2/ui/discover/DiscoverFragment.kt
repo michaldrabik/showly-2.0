@@ -13,11 +13,13 @@ import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_discover.*
+import kotlinx.android.synthetic.main.view_search.*
 import kotlin.random.Random
 
 class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
@@ -25,6 +27,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
   override val layoutResId = R.layout.fragment_discover
 
   private val gridSpan by lazy { resources.getInteger(R.integer.discoverGridSpan) }
+  private val searchViewPadding by lazy { resources.getDimensionPixelSize(R.dimen.searchViewHeightPadded) }
   private lateinit var adapter: DiscoverAdapter
   private lateinit var layoutManager: GridLayoutManager
 
@@ -41,8 +44,14 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    setupRecycler()
+    setupView()
     viewModel.loadTrendingShows()
+  }
+
+  private fun setupView() {
+    searchViewRoot.isClickable = false
+    searchViewRoot.onClick { openSearchView() }
+    setupRecycler()
   }
 
   private fun setupRecycler() {
@@ -50,7 +59,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
     adapter = DiscoverAdapter()
     adapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
     adapter.itemClickListener = { openShowDetails(it) }
-    adapter.searchClickListener = { openSearchView() }
     discoverRecycler.apply {
       setHasFixedSize(true)
       adapter = this@DiscoverFragment.adapter
@@ -60,14 +68,17 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
 
   private fun openShowDetails(item: DiscoverListItem) {
     animateItemsExit(item)
+    searchViewRoot.fadeOut()
     (activity as MainActivity).hideNavigation()
   }
 
   private fun openSearchView() {
-    layoutManager.scrollToPosition(0)
     (activity as MainActivity).hideNavigation()
-    viewModel.saveListPosition(0, 0)
-    findNavController().navigate(R.id.actionDiscoverFragmentToSearchFragment)
+    val position = layoutManager.findFirstVisibleItemPosition()
+    viewModel.saveListPosition(position, (layoutManager.findViewByPosition(position)?.top ?: 0) - searchViewPadding)
+    discoverRecycler.fadeOut(duration = 200) {
+      findNavController().navigate(R.id.actionDiscoverFragmentToSearchFragment)
+    }
   }
 
   private fun animateItemsExit(item: DiscoverListItem) {
@@ -84,7 +95,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
     val clickedView = discoverRecycler.findViewHolderForAdapterPosition(clickedIndex)
     clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350, endAction = {
       val position = layoutManager.findFirstVisibleItemPosition()
-      viewModel.saveListPosition(position, layoutManager.findViewByPosition(position)?.top ?: 0)
+      viewModel.saveListPosition(position, (layoutManager.findViewByPosition(position)?.top ?: 0) - searchViewPadding)
       val bundle = Bundle().apply { putLong("id", item.show.ids.trakt) }
       findNavController().navigate(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
     })
@@ -95,7 +106,10 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
       adapter.setItems(it)
       layoutManager.withSpanSizeLookup { pos -> it[pos].image.type.spanSize }
     }
-    uiModel.showLoading?.let { discoverProgress.visibleIf(it) }
+    uiModel.showLoading?.let {
+      searchViewRoot.isClickable = !it
+      discoverProgress.visibleIf(it)
+    }
     uiModel.updateListItem?.let { adapter.updateItem(it) }
     uiModel.listPosition?.let { layoutManager.scrollToPositionWithOffset(it.first, it.second) }
     uiModel.error?.let {

@@ -6,52 +6,16 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   >
 
-  <com.google.android.material.card.MaterialCardView
-    android:id="@+id/searchBoxLayout"
+  <include
+    layout="@layout/view_search"
     android:layout_width="0dp"
     android:layout_height="@dimen/searchViewHeight"
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginLeft="@dimen/spaceNormal"
     android:layout_marginRight="@dimen/spaceNormal"
-    app:cardBackgroundColor="@color/colorSearchViewBackground"
-    app:cardCornerRadius="@dimen/searchViewCorner"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    >
-
-    <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:gravity="center_vertical"
-      android:orientation="horizontal"
-      >
-
-      <ImageView
-        android:id="@+id/searchBoxIcon"
-        android:layout_width="26dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/spaceMedium"
-        android:layout_marginEnd="@dimen/spaceMedium"
-        android:tint="@color/colorSearchViewIcon"
-        app:srcCompat="@drawable/ic_anim_search_to_close"
-        />
-
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/textSearchFor"
-        android:textSize="16sp"
-        />
-
-      <Space
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        />
-
-    </LinearLayout>
-
-  </com.google.android.material.card.MaterialCardView>
+    />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -43,9 +43,8 @@ class DiscoverViewModel @Inject constructor(
     val items = shows.mapIndexed { index, show ->
       val itemType =
         when (index) {
-          0 -> FANART_WIDE
-          in (1..500 step 14) -> FANART_WIDE
-          in (6..500 step 14), in (10..500 step 14) -> FANART
+          in (0..500 step 14) -> FANART_WIDE
+          in (5..500 step 14), in (9..500 step 14) -> FANART
           else -> POSTER
         }
       val image = interactor.findCachedImage(show, itemType)

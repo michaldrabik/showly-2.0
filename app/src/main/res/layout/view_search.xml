@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/searchViewRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  app:cardBackgroundColor="@color/colorSearchViewBackground"
+  app:cardCornerRadius="@dimen/searchViewCorner"
+  >
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/spaceMedium"
+    android:paddingEnd="@dimen/spaceMedium"
+    >
+
+    <ImageView
+      android:id="@+id/searchViewIcon"
+      android:layout_width="26dp"
+      android:layout_height="match_parent"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:tint="@color/colorSearchViewIcon"
+      app:srcCompat="@drawable/ic_anim_search_to_close"
+      />
+
+    <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+
+      <TextView
+        android:id="@+id/searchViewText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:text="@string/textSearchFor"
+        android:textColor="@color/colorSearchViewText"
+        android:textSize="16sp"
+        />
+
+      <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/searchViewInput"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:hint="@string/textSearchFor"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textColor="@color/colorTextPrimary"
+        android:textColorHint="@color/colorSearchViewText"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:selectAllOnFocus="true"
+        />
+
+    </FrameLayout>
+
+  </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

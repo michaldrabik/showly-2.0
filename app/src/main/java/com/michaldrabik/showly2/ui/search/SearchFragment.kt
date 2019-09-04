@@ -8,8 +8,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
+import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
 import com.michaldrabik.showly2.utilities.extensions.onClick
-import kotlinx.android.synthetic.main.fragment_search.*
+import com.michaldrabik.showly2.utilities.extensions.showKeyboard
+import com.michaldrabik.showly2.utilities.extensions.visible
+import kotlinx.android.synthetic.main.view_search.*
 
 class SearchFragment : BaseFragment<SearchViewModel>() {
 
@@ -32,8 +36,16 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
   }
 
   private fun setupView() {
-    (searchBoxIcon.drawable as Animatable).start()
-    searchBoxIcon.onClick { requireActivity().onBackPressed() }
+    (searchViewIcon.drawable as Animatable).start()
+    searchViewInput.visible()
+    searchViewText.gone()
+    searchViewInput.showKeyboard()
+    searchViewInput.requestFocus()
+
+    searchViewIcon.onClick {
+      searchViewInput.hideKeyboard()
+      requireActivity().onBackPressed()
+    }
   }
 
   private fun render(uiModel: SearchUiModel) {

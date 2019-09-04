@@ -5,6 +5,8 @@
   android:id="@+id/discoverRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:clipChildren="false"
+  android:clipToPadding="false"
   tools:context=".ui.discover.DiscoverFragment"
   >
 
@@ -14,10 +16,20 @@
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:overScrollMode="never"
+    android:paddingTop="@dimen/searchViewHeightPadded"
     android:paddingLeft="@dimen/gridPadding"
     android:paddingRight="@dimen/gridPadding"
     android:paddingBottom="@dimen/bottomNavigationHeightPadded"
     android:scrollbars="vertical"
+    />
+
+  <include
+    layout="@layout/view_search"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/searchViewHeight"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginLeft="@dimen/spaceNormal"
+    android:layout_marginRight="@dimen/spaceNormal"
     />
 
   <ProgressBar
