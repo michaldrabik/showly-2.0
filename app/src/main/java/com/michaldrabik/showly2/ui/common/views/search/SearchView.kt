@@ -6,6 +6,7 @@ import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import kotlinx.android.synthetic.main.view_search.view.*
 
 class SearchView @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -16,4 +17,8 @@ class SearchView @JvmOverloads constructor(
   }
 
   override fun getBehavior() = SearchViewBehaviour(context.dimenToPx(R.dimen.spaceSmall))
+
+  override fun setEnabled(enabled: Boolean) {
+    searchViewInput.isEnabled = enabled
+  }
 }

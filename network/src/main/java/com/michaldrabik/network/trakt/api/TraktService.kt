@@ -1,11 +1,13 @@
 package com.michaldrabik.network.trakt.api
 
 import com.michaldrabik.network.trakt.model.Episode
+import com.michaldrabik.network.trakt.model.SearchResult
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.network.trakt.model.TrendingResult
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface TraktService {
 
@@ -17,4 +19,7 @@ interface TraktService {
 
   @GET("shows/{traktId}/next_episode?extended=full")
   suspend fun fetchNextEpisode(@Path("traktId") traktId: Long): Response<Episode>
+
+  @GET("search/show?extended=full&limit=50")
+  suspend fun fetchSearchResults(@Query("query") queryText: String): List<SearchResult>
 }

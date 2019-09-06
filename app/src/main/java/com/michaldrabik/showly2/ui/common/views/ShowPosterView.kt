@@ -8,9 +8,16 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Image.Status.*
+import com.michaldrabik.showly2.model.Image.Status.AVAILABLE
+import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
+import com.michaldrabik.showly2.model.Image.Status.UNKNOWN
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
-import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.showly2.utilities.extensions.withFailListener
+import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
 import kotlinx.android.synthetic.main.view_show_poster.view.*
 
 class ShowPosterView @JvmOverloads constructor(
@@ -36,6 +43,7 @@ class ShowPosterView @JvmOverloads constructor(
 
   private fun loadImage(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
     if (item.image.status == UNAVAILABLE) {
+      showPosterPlaceholder.visible()
       showPosterTitle.visible()
       return
     }

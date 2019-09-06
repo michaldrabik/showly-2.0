@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.search
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showKeyboard
 import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.view_search.*
 
@@ -50,6 +52,14 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
     searchViewInput.showKeyboard()
     searchViewInput.requestFocus()
 
+    searchViewInput.setOnEditorActionListener { textView, id, _ ->
+      if (id == EditorInfo.IME_ACTION_SEARCH) {
+        viewModel.searchForShow(textView.text.toString())
+        searchViewInput.hideKeyboard()
+      }
+      true
+    }
+
     searchViewIcon.onClick {
       searchViewInput.hideKeyboard()
       requireActivity().onBackPressed()
@@ -65,12 +75,18 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
       setHasFixedSize(true)
       adapter = this@SearchFragment.adapter
       layoutManager = this@SearchFragment.layoutManager
+//      addItemDecoration(DividerItemDecoration(requireContext(), VERTICAL))
     }
   }
 
   private fun render(uiModel: SearchUiModel) {
     uiModel.searchItems?.let {
       adapter.setItems(it)
+      searchRecycler.scheduleLayoutAnimation()
+    }
+    uiModel.isSearching?.let {
+      searchProgress.visibleIf(it)
+      searchViewLayout.isEnabled = !it
     }
   }
 }

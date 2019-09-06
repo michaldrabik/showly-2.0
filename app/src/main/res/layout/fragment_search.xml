@@ -18,6 +18,7 @@
     android:paddingRight="@dimen/spaceMedium"
     android:paddingBottom="@dimen/spaceMedium"
     android:scrollbars="vertical"
+    android:layoutAnimation="@anim/anim_recycler_fall_down"
     tools:listitem="@layout/view_show_search"
     />
 
@@ -32,5 +33,19 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     />
+
+  <ProgressBar
+    android:id="@+id/searchProgress"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:visibility="gone"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/searchViewLayout"
+    tools:visibility="visible"
+    />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
