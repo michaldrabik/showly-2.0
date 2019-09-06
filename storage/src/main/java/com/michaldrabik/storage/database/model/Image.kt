@@ -9,6 +9,6 @@ data class Image(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
   @ColumnInfo(name = "id_tvdb", defaultValue = "-1") var idTvdb: Long,
   @ColumnInfo(name = "type", defaultValue = "") var type: String,
-  @ColumnInfo(name = "fileUrl", defaultValue = "") var fileUrl: String,
-  @ColumnInfo(name = "thumbnailUrl", defaultValue = "") var thumbnailUrl: String
+  @ColumnInfo(name = "file_url", defaultValue = "") var fileUrl: String,
+  @ColumnInfo(name = "thumbnail_url", defaultValue = "") var thumbnailUrl: String
 )

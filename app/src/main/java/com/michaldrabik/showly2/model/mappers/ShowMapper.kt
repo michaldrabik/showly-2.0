@@ -75,6 +75,7 @@ class ShowMapper @Inject constructor() {
     show.votes,
     show.commentCount,
     show.genres.joinToString(","),
-    show.airedEpisodes
+    show.airedEpisodes,
+    System.currentTimeMillis()
   )
 }

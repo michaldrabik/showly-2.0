@@ -28,7 +28,8 @@ data class Show(
   @ColumnInfo(name = "status", defaultValue = "") var status: String,
   @ColumnInfo(name = "rating", defaultValue = "-1") var rating: Float,
   @ColumnInfo(name = "votes", defaultValue = "-1") var votes: Long,
-  @ColumnInfo(name = "commentCount", defaultValue = "-1") var commentCount: Long,
+  @ColumnInfo(name = "comment_count", defaultValue = "-1") var commentCount: Long,
   @ColumnInfo(name = "genres", defaultValue = "") var genres: String,
-  @ColumnInfo(name = "airedEpisodes", defaultValue = "-1") var airedEpisodes: Int
+  @ColumnInfo(name = "aired_episodes", defaultValue = "-1") var airedEpisodes: Int,
+  @ColumnInfo(name = "updated_at", defaultValue = "-1") var updatedAt: Long
 )
