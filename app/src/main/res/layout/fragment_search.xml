@@ -4,7 +4,22 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   >
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/searchRecycler"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:paddingTop="@dimen/searchViewHeightPadded"
+    android:paddingLeft="@dimen/spaceMedium"
+    android:paddingRight="@dimen/spaceMedium"
+    android:paddingBottom="@dimen/spaceMedium"
+    android:scrollbars="vertical"
+    tools:listitem="@layout/view_show_search"
+    />
 
   <com.michaldrabik.showly2.ui.common.views.search.SearchView
     android:id="@+id/searchViewLayout"
@@ -16,18 +31,6 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    />
-
-  <ImageView
-    android:id="@+id/fragmentSearchImage"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/searchViewLayout"
-    android:layout_marginTop="@dimen/searchViewBackgroundImageMargin"
-    android:tint="@color/colorSearchViewBackground"
-    app:srcCompat="@drawable/ic_binoculars"
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

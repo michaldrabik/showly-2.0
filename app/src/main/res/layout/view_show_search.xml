@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="100dp"
+  android:padding="@dimen/spaceMedium"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  >
+
+  <ImageView
+    android:id="@+id/showSearchImage"
+    android:layout_width="56dp"
+    android:layout_height="match_parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:background="@color/colorTextPrimary"
+    />
+
+  <TextView
+    android:id="@+id/showSearchTitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:textColor="@color/colorTextPrimary"
+    android:textSize="18sp"
+    android:maxLines="1"
+    android:ellipsize="end"
+    app:layout_constraintBottom_toTopOf="@+id/showSearchDescription"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/showSearchImage"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_chainStyle="packed"
+    tools:text="Game of Thrones"
+    />
+
+  <TextView
+    android:id="@+id/showSearchDescription"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:ellipsize="end"
+    android:maxLines="3"
+    android:textColor="@color/colorTextSecondary"
+    android:textSize="12sp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/showSearchImage"
+    app:layout_constraintTop_toBottomOf="@+id/showSearchTitle"
+    tools:text="Lorem Ipsum"
+    />
+
+</merge>
