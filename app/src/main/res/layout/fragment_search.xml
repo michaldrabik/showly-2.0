@@ -6,7 +6,7 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   >
 
-  <com.michaldrabik.showly2.ui.common.views.SearchView
+  <com.michaldrabik.showly2.ui.common.views.search.SearchView
     android:id="@+id/searchViewLayout"
     android:layout_width="0dp"
     android:layout_height="@dimen/searchViewHeight"

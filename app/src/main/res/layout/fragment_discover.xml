@@ -21,7 +21,7 @@
     android:scrollbars="vertical"
     />
 
-  <com.michaldrabik.showly2.ui.common.views.SearchView
+  <com.michaldrabik.showly2.ui.common.views.search.SearchView
     android:id="@+id/discoverSearchView"
     android:layout_width="match_parent"
     android:layout_height="@dimen/searchViewHeight"

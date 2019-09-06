@@ -1,11 +1,10 @@
-package com.michaldrabik.showly2.ui.common.views
+package com.michaldrabik.showly2.ui.common.views.search
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.ui.common.SearchViewBehaviour
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 
 class SearchView @JvmOverloads constructor(

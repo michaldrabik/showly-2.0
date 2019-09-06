@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.common
+package com.michaldrabik.showly2.ui.common.views.search
 
 import android.view.View
 import android.widget.FrameLayout
