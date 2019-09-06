@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/discoverRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
@@ -20,12 +19,10 @@
     android:paddingRight="@dimen/gridPadding"
     android:paddingBottom="@dimen/bottomNavigationHeightPadded"
     android:scrollbars="vertical"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
     />
 
-  <include
-    layout="@layout/view_search"
-    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+  <com.michaldrabik.showly2.ui.common.views.SearchView
+    android:id="@+id/discoverSearchView"
     android:layout_width="match_parent"
     android:layout_height="@dimen/searchViewHeight"
     android:layout_marginTop="@dimen/spaceSmall"
@@ -41,4 +38,4 @@
     android:visibility="gone"
     />
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

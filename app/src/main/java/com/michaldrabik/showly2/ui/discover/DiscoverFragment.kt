@@ -12,14 +12,9 @@ import com.michaldrabik.showly2.ui.MainActivity
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
-import com.michaldrabik.showly2.utilities.extensions.fadeOut
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
-import com.michaldrabik.showly2.utilities.extensions.visibleIf
-import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
+import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_discover.*
-import kotlinx.android.synthetic.main.view_search.*
 import kotlin.random.Random
 
 class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
@@ -49,8 +44,8 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
   }
 
   private fun setupView() {
-    searchViewRoot.isClickable = false
-    searchViewRoot.onClick { openSearchView() }
+    discoverSearchView.isClickable = false
+    discoverSearchView.onClick { openSearchView() }
     setupRecycler()
   }
 
@@ -68,7 +63,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
 
   private fun openShowDetails(item: DiscoverListItem) {
     animateItemsExit(item)
-    searchViewRoot.fadeOut()
+    discoverSearchView.fadeOut()
     (activity as MainActivity).hideNavigation()
   }
 
@@ -107,7 +102,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
       layoutManager.withSpanSizeLookup { pos -> it[pos].image.type.spanSize }
     }
     uiModel.showLoading?.let {
-      searchViewRoot.isClickable = !it
+      discoverSearchView.isClickable = !it
       discoverProgress.visibleIf(it)
     }
     uiModel.updateListItem?.let { adapter.updateItem(it) }
