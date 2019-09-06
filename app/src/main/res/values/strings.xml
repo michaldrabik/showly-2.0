@@ -13,6 +13,7 @@
   <string name="textTomorrow">tomorrow</string>
   <string name="textNextEpisode">Next Episode:</string>
   <string name="textSearchFor">Search…</string>
+  <string name="textAiredAlready">Already aired.</string>
 
   <plurals name="textDaysToAir">
     <item quantity="zero">Airs today.</item>

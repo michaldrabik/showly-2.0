@@ -90,6 +90,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       showDetailsEpisodeCard.fadeIn()
 
       val timeToAir = Duration.between(nowUtc(), firstAired)
+      if (timeToAir.seconds < 0 ) {
+        showDetailsEpisodeAirtime.text = getString(R.string.textAiredAlready)
+        return
+      }
       val days = timeToAir.toDays()
       if (days == 0L) {
         val hours = timeToAir.toHours()
