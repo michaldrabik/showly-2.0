@@ -12,7 +12,11 @@ import com.michaldrabik.showly2.ui.MainActivity
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
-import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.random.Random
@@ -77,7 +81,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
   }
 
   private fun animateItemsExit(item: DiscoverListItem) {
-    val clickedIndex = adapter.findItemIndex(item)
+    val clickedIndex = adapter.indexOf(item)
     (0..adapter.itemCount).forEach {
       if (it != clickedIndex) {
         val view = discoverRecycler.findViewHolderForAdapterPosition(it)
