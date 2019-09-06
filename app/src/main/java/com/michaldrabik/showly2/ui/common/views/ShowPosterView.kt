@@ -56,6 +56,7 @@ class ShowPosterView @JvmOverloads constructor(
 
   private fun onImageLoadFail(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
     if (item.image.status == AVAILABLE) {
+      showPosterPlaceholder.visible()
       showPosterTitle.visible()
       return
     }
@@ -66,6 +67,7 @@ class ShowPosterView @JvmOverloads constructor(
   private fun clear() {
     showPosterTitle.text = ""
     showPosterTitle.gone()
+    showPosterPlaceholder.gone()
     showPosterProgress.gone()
     Glide.with(this).clear(showPosterImage)
   }

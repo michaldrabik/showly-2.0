@@ -15,7 +15,7 @@ abstract class ShowView @JvmOverloads constructor(
     const val ASPECT_RATIO = 1.4705
   }
 
-  protected val cornerRadius by lazy { resources.getDimensionPixelSize(R.dimen.cornerShowTile) }
+  protected val cornerRadius by lazy { resources.getDimensionPixelSize(R.dimen.showTileCorner) }
   private val gridPadding by lazy { resources.getDimensionPixelSize(R.dimen.gridPadding) }
   private val gridSpan by lazy { resources.getInteger(R.integer.discoverGridSpan).toFloat() }
 

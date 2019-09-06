@@ -10,10 +10,7 @@ import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image.Status.*
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
-import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.visibleIf
-import com.michaldrabik.showly2.utilities.extensions.withFailListener
+import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.view_show_fanart.view.*
 
 class ShowFanartView @JvmOverloads constructor(
@@ -51,7 +48,10 @@ class ShowFanartView @JvmOverloads constructor(
   }
 
   private fun onImageLoadFail(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
-    if (item.image.status == AVAILABLE) return
+    if (item.image.status == AVAILABLE) {
+      showFanartPlaceholder.visible()
+      return
+    }
     val force = item.image.status != UNAVAILABLE
     missingImageListener(item, force)
   }
@@ -59,6 +59,7 @@ class ShowFanartView @JvmOverloads constructor(
   private fun clear() {
     showFanartTitle.text = ""
     showFanartProgress.gone()
+    showFanartPlaceholder.gone()
     Glide.with(this).clear(showFanartImage)
   }
 }
