@@ -41,6 +41,14 @@
     app:layout_constraintTop_toBottomOf="@id/separator"
     />
 
+  <LinearLayout
+    android:id="@+id/searchRecentsLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintTop_toBottomOf="@id/searchViewLayout"
+    />
+
   <ProgressBar
     android:id="@+id/searchProgress"
     android:layout_width="wrap_content"

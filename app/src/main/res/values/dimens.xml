@@ -20,6 +20,7 @@
   <dimen name="searchViewCorner">4dp</dimen>
   <dimen name="searchViewBackgroundImageMargin">50dp</dimen>
   <dimen name="searchViewImageWidth">56dp</dimen>
+  <dimen name="searchViewRecentHeight">46dp</dimen>
   <dimen name="searchViewImageHeight">82dp</dimen>
   <dimen name="searchViewItemPaddingHorizontal">20dp</dimen>
 

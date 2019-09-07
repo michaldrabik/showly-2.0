@@ -57,7 +57,6 @@
       app:layout_constraintStart_toEndOf="@id/showSearchImage"
       app:layout_constraintTop_toBottomOf="@+id/showSearchNetwork"
       app:layout_constraintVertical_chainStyle="packed"
-      tools:layout_editor_absoluteY="26dp"
       tools:text="Game of Thrones"
       />
 
@@ -76,7 +75,6 @@
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_chainStyle="packed"
       tools:ignore="SmallSp"
-      tools:layout_editor_absoluteY="47dp"
       tools:text="Netflix"
       />
 
@@ -93,7 +91,6 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/showSearchImage"
       app:layout_constraintTop_toBottomOf="@id/showSearchTitle"
-      tools:layout_editor_absoluteY="61dp"
       tools:text="Lorem Ipsum"
       />
 
