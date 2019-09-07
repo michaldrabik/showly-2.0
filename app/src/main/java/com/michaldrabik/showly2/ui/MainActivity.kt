@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
 
   companion object {
     private const val NAVIGATION_TRANSITION_DURATION_MS = 400L
+    private const val ARG_NAVIGATION_VISIBLE = "ARG_NAVIGATION_VISIBLE"
   }
 
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     appComponent().inject(this)
     setContentView(R.layout.activity_main)
     setupNavigation()
+    restoreState(savedInstanceState)
   }
 
   private fun setupNavigation() {
@@ -72,5 +74,15 @@ class MainActivity : AppCompatActivity() {
       .setDuration(NAVIGATION_TRANSITION_DURATION_MS)
       .setInterpolator(decelerateInterpolator)
       .start()
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    outState.putBoolean(ARG_NAVIGATION_VISIBLE, bottomNavigationWrapper.translationY == 0F)
+    super.onSaveInstanceState(outState)
+  }
+
+  private fun restoreState(savedInstanceState: Bundle?) {
+    val isNavigationVisible = savedInstanceState?.getBoolean(ARG_NAVIGATION_VISIBLE, true) ?: true
+    if (!isNavigationVisible) hideNavigation()
   }
 }

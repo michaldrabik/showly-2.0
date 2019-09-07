@@ -14,6 +14,7 @@
   <string name="textNextEpisode">Next Episode:</string>
   <string name="textSearchFor">Search…</string>
   <string name="textAiredAlready">Already aired.</string>
+  <string name="textEmptyResults">There were no results…</string>
 
   <plurals name="textDaysToAir">
     <item quantity="zero">Airs today.</item>

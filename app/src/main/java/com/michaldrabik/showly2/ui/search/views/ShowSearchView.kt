@@ -15,6 +15,7 @@ import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.views.ShowView
 import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
 import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.utilities.extensions.withFailListener
@@ -42,8 +43,9 @@ class ShowSearchView @JvmOverloads constructor(
 
     showSearchDescription.visibleIf(item.show.overview.isNotBlank())
     showSearchNetwork.visibleIf(item.show.network.isNotBlank())
-
     if (!item.isLoading) loadImage(item, missingImageListener)
+
+    showSearchRoot.onClick { itemClickListener(item) }
   }
 
   private fun loadImage(item: SearchListItem, missingImageListener: (SearchListItem, Boolean) -> Unit) {

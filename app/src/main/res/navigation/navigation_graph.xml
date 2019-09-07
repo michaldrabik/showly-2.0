@@ -32,7 +32,6 @@
     <action
       android:id="@+id/actionDiscoverFragmentToShowDetailsFragment"
       app:destination="@id/showDetailsFragment"
-      app:popUpTo="@id/discoverFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:popExitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
@@ -40,7 +39,6 @@
     <action
       android:id="@+id/actionDiscoverFragmentToSearchFragment"
       app:destination="@id/searchFragment"
-      app:popUpTo="@id/discoverFragment"
       app:launchSingleTop="true"
       />
   </fragment>
@@ -64,6 +62,14 @@
     android:name="com.michaldrabik.showly2.ui.search.SearchFragment"
     android:label="fragmentSearch"
     tools:layout="@layout/fragment_search"
-    />
+    >
+    <action
+      android:id="@+id/actionSearchFragmentToShowDetailsFragment"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:popExitAnim="@anim/anim_fade_out"
+      app:launchSingleTop="true"
+      />
+  </fragment>
 
 </navigation>

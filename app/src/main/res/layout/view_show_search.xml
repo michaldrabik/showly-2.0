@@ -9,9 +9,14 @@
   >
 
   <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/showSearchRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/spaceMedium"
+    android:paddingTop="@dimen/spaceMedium"
+    android:paddingBottom="@dimen/spaceMedium"
+    android:paddingRight="@dimen/searchViewItemPaddingHorizontal"
+    android:paddingLeft="@dimen/searchViewItemPaddingHorizontal"
+    android:background="?android:attr/selectableItemBackground"
     >
 
     <ImageView

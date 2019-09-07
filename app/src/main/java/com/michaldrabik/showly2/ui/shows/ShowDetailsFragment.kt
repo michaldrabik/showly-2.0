@@ -31,13 +31,15 @@ import org.threeten.bp.Duration
 class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
 
   companion object {
+    const val ARG_SHOW_ID = "ARG_SHOW_ID"
+
     private const val OVERVIEW_MIN_LINES = 3
     private const val OVERVIEW_MAX_LINES = 100
   }
 
   override val layoutResId = R.layout.fragment_show_details
 
-  private val showId by lazy { arguments?.getLong("id", -1) ?: -1 }
+  private val showId by lazy { arguments?.getLong(ARG_SHOW_ID, -1) ?: -1 }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -90,7 +92,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       showDetailsEpisodeCard.fadeIn()
 
       val timeToAir = Duration.between(nowUtc(), firstAired)
-      if (timeToAir.seconds < 0 ) {
+      if (timeToAir.seconds < 0) {
         showDetailsEpisodeAirtime.text = getString(R.string.textAiredAlready)
         return
       }

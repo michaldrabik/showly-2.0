@@ -21,6 +21,7 @@
   <dimen name="searchViewBackgroundImageMargin">50dp</dimen>
   <dimen name="searchViewImageWidth">56dp</dimen>
   <dimen name="searchViewImageHeight">82dp</dimen>
+  <dimen name="searchViewItemPaddingHorizontal">20dp</dimen>
 
   <dimen name="gridSpacing">2dp</dimen>
   <dimen name="gridPadding">4dp</dimen>

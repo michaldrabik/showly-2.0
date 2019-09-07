@@ -14,8 +14,6 @@
     android:clipToPadding="false"
     android:overScrollMode="never"
     android:paddingTop="@dimen/searchViewHeightPadded"
-    android:paddingLeft="@dimen/spaceMedium"
-    android:paddingRight="@dimen/spaceMedium"
     android:paddingBottom="@dimen/spaceMedium"
     android:scrollbars="vertical"
     android:layoutAnimation="@anim/anim_recycler_fall_down"
@@ -50,11 +48,41 @@
     android:layout_gravity="center"
     android:layout_marginTop="@dimen/spaceNormal"
     android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@+id/searchRecycler"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/searchViewLayout"
     tools:visibility="visible"
     />
 
+  <LinearLayout
+    android:id="@+id/searchEmptyView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:visibility="gone"
+    tools:visibility="visible"
+    app:layout_constraintBottom_toBottomOf="@+id/searchRecycler"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/searchViewLayout"
+    >
 
+    <ImageView
+      android:layout_width="150dp"
+      android:layout_height="150dp"
+      android:adjustViewBounds="true"
+      android:src="@drawable/vincent_vega"
+      android:tint="@color/colorSearchViewIcon"
+      />
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textColor="@color/colorSearchViewText"
+      android:text="@string/textEmptyResults"
+      />
+
+  </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

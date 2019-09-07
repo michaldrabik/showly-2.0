@@ -40,6 +40,13 @@ fun View.visibleIf(condition: Boolean) =
     gone()
   }
 
+fun View.fadeIf(condition: Boolean) =
+  if (condition) {
+    fadeIn()
+  } else {
+    fadeOut()
+  }
+
 fun View.fadeIn(duration: Long = 250, startDelay: Long = 0, endAction: () -> Unit = {}) {
   visibility = VISIBLE
   alpha = 0F

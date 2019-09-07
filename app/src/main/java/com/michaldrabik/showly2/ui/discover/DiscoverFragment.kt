@@ -8,10 +8,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
-import com.michaldrabik.showly2.ui.MainActivity
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
+import com.michaldrabik.showly2.ui.shows.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
@@ -68,11 +68,11 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
   private fun openShowDetails(item: DiscoverListItem) {
     animateItemsExit(item)
     discoverSearchView.fadeOut()
-    (activity as MainActivity).hideNavigation()
+    getMainActivity().hideNavigation()
   }
 
   private fun openSearchView() {
-    (activity as MainActivity).hideNavigation()
+    getMainActivity().hideNavigation()
     val position = layoutManager.findFirstVisibleItemPosition()
     viewModel.saveListPosition(position, (layoutManager.findViewByPosition(position)?.top ?: 0) - searchViewPadding)
     discoverRecycler.fadeOut(duration = 200) {
@@ -95,7 +95,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
     clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350, endAction = {
       val position = layoutManager.findFirstVisibleItemPosition()
       viewModel.saveListPosition(position, (layoutManager.findViewByPosition(position)?.top ?: 0) - searchViewPadding)
-      val bundle = Bundle().apply { putLong("id", item.show.ids.trakt) }
+      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt) }
       findNavController().navigate(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
     })
   }
