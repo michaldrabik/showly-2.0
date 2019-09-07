@@ -4,10 +4,10 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
+import com.michaldrabik.showly2.ui.discover.recycler.ListItem
 import com.michaldrabik.showly2.utilities.extensions.screenWidth
 
-abstract class ShowView @JvmOverloads constructor(
+abstract class ShowView<Item : ListItem> @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
@@ -23,9 +23,9 @@ abstract class ShowView @JvmOverloads constructor(
   private val height by lazy { width * ASPECT_RATIO }
 
   open fun bind(
-    item: DiscoverListItem,
-    missingImageListener: (DiscoverListItem, Boolean) -> Unit,
-    itemClickListener: (DiscoverListItem) -> Unit
+    item: Item,
+    missingImageListener: (Item, Boolean) -> Unit,
+    itemClickListener: (Item) -> Unit
   ) {
     layoutParams = LayoutParams((width * item.image.type.spanSize.toFloat()).toInt(), height.toInt())
   }

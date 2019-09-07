@@ -12,12 +12,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.search.recycler.SearchAdapter
-import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.showKeyboard
-import com.michaldrabik.showly2.utilities.extensions.visible
-import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.view_search.*
 
@@ -69,7 +64,7 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
     adapter = SearchAdapter()
-    adapter.missingImageListener = { ids, force -> }
+    adapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
     adapter.itemClickListener = { }
     searchRecycler.apply {
       setHasFixedSize(true)
@@ -88,5 +83,6 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
       searchProgress.visibleIf(it)
       searchViewLayout.isEnabled = !it
     }
+    uiModel.updateListItem?.let { adapter.updateItem(it) }
   }
 }
