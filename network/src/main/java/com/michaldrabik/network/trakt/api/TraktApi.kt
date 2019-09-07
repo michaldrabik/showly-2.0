@@ -15,8 +15,8 @@ class TraktApi(private val service: TraktService) {
     return response.body()
   }
 
-  suspend fun searchForShow(query: String): List<Show> {
+  suspend fun fetchShowsSearch(query: String): List<Show> {
     val results = service.fetchSearchResults(query)
-    return results.sortedWith(compareBy({ it.score }, { it.show.votes })).reversed().map { it.show }
+    return results.sortedWith(compareBy({ it.show.votes }, { it.score })).reversed().map { it.show }
   }
 }

@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.view_show_fanart.view.*
 
 class ShowFanartView @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : ShowView(context, attrs, defStyleAttr) {
+) : ShowView<DiscoverListItem>(context, attrs, defStyleAttr) {
 
   init {
     inflate(context, R.layout.view_show_fanart, this)

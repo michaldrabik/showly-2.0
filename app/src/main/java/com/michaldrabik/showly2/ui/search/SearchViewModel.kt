@@ -19,14 +19,32 @@ class SearchViewModel @Inject constructor(
     uiStream.value = SearchUiModel(emptyList())
 
     if (query.trim().isEmpty()) {
+      //TODO
       return
     }
 
     uiStream.value = SearchUiModel(isSearching = true)
     viewModelScope.launch {
-      val shows = interactor.searchForShow(query)
-      val items = shows.map { SearchListItem(it, Image.createUnknown(ImageType.POSTER)) }
+      val shows = interactor.searchShows(query)
+      val items = shows.map {
+        val image = interactor.findCachedImage(it, ImageType.POSTER)
+        SearchListItem(it, image)
+      }
       uiStream.value = SearchUiModel(items, isSearching = false)
+    }
+  }
+
+  fun loadMissingImage(item: SearchListItem, force: Boolean) {
+    viewModelScope.launch {
+      uiStream.value = SearchUiModel(updateListItem = item.copy(isLoading = true))
+      try {
+        val image = interactor.loadMissingImage(item.show, item.image.type, force)
+        uiStream.value =
+          SearchUiModel(updateListItem = item.copy(isLoading = false, image = image))
+      } catch (t: Throwable) {
+        uiStream.value =
+          SearchUiModel(updateListItem = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
+      }
     }
   }
 
