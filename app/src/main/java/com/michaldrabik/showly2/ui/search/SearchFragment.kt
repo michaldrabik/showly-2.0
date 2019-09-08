@@ -11,15 +11,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.model.RecentSearch
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.search.recycler.SearchAdapter
 import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
+import com.michaldrabik.showly2.ui.search.views.RecentSearchView
 import com.michaldrabik.showly2.ui.shows.ShowDetailsFragment.Companion.ARG_SHOW_ID
+import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
+import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
 import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.shake
 import com.michaldrabik.showly2.utilities.extensions.showKeyboard
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
@@ -56,17 +61,23 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
 
   private fun setupView() {
     getMainActivity().hideNavigation()
-    (searchViewIcon.drawable as Animatable).start()
     searchViewInput.visible()
     searchViewText.gone()
+    (searchViewIcon.drawable as Animatable).start()
     if (!isInitialized) {
       searchViewInput.showKeyboard()
       searchViewInput.requestFocus()
+      viewModel.loadRecentSearches()
     }
 
     searchViewInput.setOnEditorActionListener { textView, id, _ ->
       if (id == EditorInfo.IME_ACTION_SEARCH) {
-        viewModel.searchForShow(textView.text.toString())
+        val query = textView.text.toString()
+        if (query.trim().isBlank()) {
+          searchViewLayout.shake()
+          return@setOnEditorActionListener true
+        }
+        viewModel.searchForShow(query)
         searchViewInput.hideKeyboard()
         searchViewInput.clearFocus()
       }
@@ -116,11 +127,42 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
       searchRecycler.scheduleLayoutAnimation()
       searchEmptyView.fadeIf(it.isEmpty())
     }
+    uiModel.recentSearchItems?.let { renderRecentSearches(it) }
     uiModel.isSearching?.let {
       if (it) searchEmptyView.gone()
       searchProgress.visibleIf(it)
       searchViewLayout.isEnabled = !it
     }
     uiModel.updateListItem?.let { adapter.updateItem(it) }
+  }
+
+  private fun renderRecentSearches(it: List<RecentSearch>) {
+    if (it.isEmpty()) {
+      searchRecentsClearButton.fadeOut()
+      searchRecentsLayout.fadeOut {
+        searchRecentsLayout.removeAllViews()
+      }
+      return
+    }
+
+    searchRecentsLayout.fadeIn()
+    searchRecentsClearButton.fadeIn()
+    searchRecentsClearButton.onClick { viewModel.clearRecentSearches() }
+
+    val paddingH = requireContext().dimenToPx(R.dimen.searchViewItemPaddingHorizontal)
+    val paddingV = requireContext().dimenToPx(R.dimen.spaceSmall)
+
+    searchRecentsLayout.removeAllViews()
+    it.forEach { item ->
+      val view = RecentSearchView(requireContext()).apply {
+        setPadding(paddingH, paddingV, paddingH, paddingV)
+        bind(item)
+        onClick {
+          searchViewInput.setText(item.text)
+          viewModel.searchForShow(item.text)
+        }
+      }
+      searchRecentsLayout.addView(view)
+    }
   }
 }

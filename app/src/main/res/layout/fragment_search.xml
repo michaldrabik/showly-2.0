@@ -45,8 +45,23 @@
     android:id="@+id/searchRecentsLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceSmall"
     android:orientation="vertical"
     app:layout_constraintTop_toBottomOf="@id/searchViewLayout"
+    />
+
+  <TextView
+    android:id="@+id/searchRecentsClearButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/searchViewItemPaddingHorizontal"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:text="@string/textClear"
+    android:textAllCaps="true"
+    android:visibility="gone"
+    android:textColor="@color/colorAccent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/searchRecentsLayout"
     />
 
   <ProgressBar

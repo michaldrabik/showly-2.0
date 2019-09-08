@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.utilities.extensions
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
@@ -54,8 +55,15 @@ fun View.fadeIn(duration: Long = 250, startDelay: Long = 0, endAction: () -> Uni
 }
 
 fun View.fadeOut(duration: Long = 250, startDelay: Long = 0, endAction: () -> Unit = {}) {
-  animate().alpha(0F).setDuration(duration).setStartDelay(startDelay).withEndAction(endAction).start()
+  animate().alpha(0F).setDuration(duration).setStartDelay(startDelay).withEndAction {
+    gone()
+    endAction()
+  }.start()
 }
+
+fun View.shake() = ObjectAnimator.ofFloat(this, "translationX", 0F ,-15F, 15F, -10F, 10F, -5F, 5F, 0F)
+  .setDuration(500)
+  .start()
 
 fun GridLayoutManager.withSpanSizeLookup(action: (Int) -> Int) {
   spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
