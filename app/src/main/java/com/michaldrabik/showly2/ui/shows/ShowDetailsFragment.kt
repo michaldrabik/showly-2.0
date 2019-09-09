@@ -3,20 +3,21 @@ package com.michaldrabik.showly2.ui.shows
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import android.widget.FrameLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
-import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
-import com.michaldrabik.showly2.ui.shows.actors.ActorView
+import com.michaldrabik.showly2.ui.shows.actors.ActorsAdapter
 import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
@@ -35,6 +36,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   override val layoutResId = R.layout.fragment_show_details
 
   private val showId by lazy { arguments?.getLong(ARG_SHOW_ID, -1) ?: -1 }
+  private val actorsAdapter by lazy { ActorsAdapter() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -50,6 +52,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
+    setupRecycler()
     viewModel.loadShowDetails(showId)
   }
 
@@ -58,6 +61,14 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     showDetailsDescription.onClick { toggleDescription() }
     showDetailsMoreButton.onClick { toggleDescription() }
     showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
+  }
+
+  private fun setupRecycler() {
+    showDetailsActorsRecycler.apply {
+      adapter = actorsAdapter
+      layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
+      addItemDecoration(DividerItemDecoration(requireContext(), HORIZONTAL))
+    }
   }
 
   private fun toggleDescription() {
@@ -83,7 +94,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     uiModel.nextEpisode?.let { renderNextEpisode(it) }
     uiModel.imageLoading?.let { showDetailsImageProgress.visibleIf(it) }
     uiModel.image?.let { renderImage(it) }
-    uiModel.actors?.let { renderActors(it) }
+    uiModel.actors?.let {
+      actorsAdapter.setItems(it)
+      showDetailsActorsRecycler.fadeIf(it.isNotEmpty())
+    }
   }
 
   private fun renderNextEpisode(nextEpisode: Episode) {
@@ -109,24 +123,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       }
       showDetailsEpisodeAirtime.text = getQuantityString(R.plurals.textDaysToAir, days)
     }
-  }
-
-  private fun renderActors(actors: List<Actor>) {
-    showDetailsActors.removeAllViews()
-    if (actors.isEmpty()) {
-      showDetailsActorsWrapper.gone()
-      return
-    }
-    val height = requireContext().dimenToPx(R.dimen.actorTileImageHeight)
-    val width = requireContext().dimenToPx(R.dimen.actorTileImageWidth)
-    actors.forEach { actor ->
-      val view = ActorView(requireContext()).apply {
-        layoutParams = FrameLayout.LayoutParams(width, height)
-        bind(actor)
-      }
-      showDetailsActors.addView(view)
-    }
-    showDetailsActorsWrapper.fadeIn()
   }
 
   private fun renderImage(image: Image) {

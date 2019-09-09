@@ -10,6 +10,7 @@ import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.storage.database.AppDatabase
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 @AppScope
@@ -43,10 +44,11 @@ class ShowDetailsInteractor @Inject constructor(
   suspend fun loadActors(show: Show): List<Actor> {
     userManager.checkAuthorization()
     val token = userManager.getTvdbToken()
+    delay(3000) //TODO
     return cloud.tvdbApi.fetchActors(token, show.ids.tvdb)
       .filter { it.image.isNotBlank() }
       .sortedBy { it.sortOrder }
-      .take(15)
+      .take(30)
       .map { mappers.actor.fromNetwork(it) }
   }
 }

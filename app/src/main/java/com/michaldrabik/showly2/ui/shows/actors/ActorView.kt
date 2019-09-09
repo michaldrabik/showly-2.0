@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.shows.actors
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -24,6 +25,7 @@ class ActorView @JvmOverloads constructor(
 
   init {
     inflate(context, R.layout.view_actor, this)
+    layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
   }
 
   fun bind(item: Actor) {

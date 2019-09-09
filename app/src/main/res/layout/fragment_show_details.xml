@@ -189,38 +189,24 @@
         android:background="@color/colorSeparatorGray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsActorsWrapper"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsActorsRecycler"
         />
 
-      <HorizontalScrollView
-        android:id="@+id/showDetailsActorsWrapper"
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/showDetailsActorsRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spaceMedium"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:fillViewport="true"
         android:paddingStart="@dimen/spaceNormal"
         android:paddingEnd="@dimen/spaceNormal"
-        android:scrollbars="none"
+        android:overScrollMode="never"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsMoreButton"
-        tools:visibility="visible"
-        >
-
-        <LinearLayout
-          android:id="@+id/showDetailsActors"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:divider="@drawable/divider_actors"
-          android:orientation="horizontal"
-          android:showDividers="middle"
-          />
-
-      </HorizontalScrollView>
+        />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
