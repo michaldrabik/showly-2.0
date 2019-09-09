@@ -44,7 +44,6 @@ class ShowDetailsInteractor @Inject constructor(
   suspend fun loadActors(show: Show): List<Actor> {
     userManager.checkAuthorization()
     val token = userManager.getTvdbToken()
-    delay(3000) //TODO
     return cloud.tvdbApi.fetchActors(token, show.ids.tvdb)
       .filter { it.image.isNotBlank() }
       .sortedBy { it.sortOrder }

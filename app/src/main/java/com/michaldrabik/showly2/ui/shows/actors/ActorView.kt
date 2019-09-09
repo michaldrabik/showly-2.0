@@ -30,7 +30,7 @@ class ActorView @JvmOverloads constructor(
 
   fun bind(item: Actor) {
     clear()
-    actorName.text = item.name
+    actorName.text = item.name.split(" ").joinToString("\n")
     Glide.with(this)
       .load("$TVDB_IMAGE_BASE_URL${item.image}")
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
