@@ -8,8 +8,9 @@ import com.michaldrabik.network.trakt.converters.EpisodeConverter
 import com.michaldrabik.network.trakt.converters.SearchResultConverter
 import com.michaldrabik.network.trakt.converters.ShowConverter
 import com.michaldrabik.network.trakt.converters.TrendingResultConverter
+import com.michaldrabik.network.tvdb.converters.TvdbActorConverter
 import com.michaldrabik.network.tvdb.converters.TvdbImageConverter
-import com.michaldrabik.network.tvdb.converters.TvdbImagesResultConverter
+import com.michaldrabik.network.tvdb.converters.TvdbResultConverter
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -47,10 +48,15 @@ object RetrofitModule {
   fun providesMoshi(): Moshi {
     val showConverter = ShowConverter()
     val trendingResultConverter = TrendingResultConverter(showConverter)
-    val tvdbImageConverter = TvdbImageConverter()
-    val tvdbImageResultConverter = TvdbImagesResultConverter(tvdbImageConverter)
-    val episodeConverter = EpisodeConverter()
     val searchResultConverter = SearchResultConverter(showConverter)
+
+    val tvdbImageConverter = TvdbImageConverter()
+    val tvdbImageResultConverter = TvdbResultConverter(tvdbImageConverter)
+
+    val actorConverter = TvdbActorConverter()
+    val actorResultConverter = TvdbResultConverter(actorConverter)
+
+    val episodeConverter = EpisodeConverter()
 
     return Moshi.Builder()
       .add(showConverter)
@@ -59,6 +65,8 @@ object RetrofitModule {
       .add(tvdbImageResultConverter)
       .add(episodeConverter)
       .add(searchResultConverter)
+      .add(actorConverter)
+      .add(actorResultConverter)
       .build()
   }
 

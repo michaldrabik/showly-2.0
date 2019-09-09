@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_FANART_URL
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image.Status.*
@@ -36,7 +37,7 @@ class ShowFanartView @JvmOverloads constructor(
 
   private fun loadImage(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
     val url = when {
-      item.image.status == UNKNOWN -> "${TVDB_IMAGE_BASE_URL}fanart/original/${item.show.ids.tvdb}-1.jpg"
+      item.image.status == UNKNOWN -> "${TVDB_IMAGE_BASE_FANART_URL}${item.show.ids.tvdb}-1.jpg"
       else -> "$TVDB_IMAGE_BASE_URL${item.image.fileUrl}"
     }
     Glide.with(this)

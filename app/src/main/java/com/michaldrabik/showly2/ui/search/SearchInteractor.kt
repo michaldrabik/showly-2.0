@@ -6,7 +6,7 @@ import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.RecentSearch
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.ui.common.ImagesInteractor
+import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.storage.database.AppDatabase
 import org.threeten.bp.Instant
 import org.threeten.bp.OffsetDateTime
@@ -18,7 +18,7 @@ import com.michaldrabik.storage.database.model.RecentSearch as RecentSearchDb
 class SearchInteractor @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
-  private val imagesInteractor: ImagesInteractor,
+  private val imagesManager: ImagesManager,
   private val mappers: Mappers
 ) {
 
@@ -46,8 +46,8 @@ class SearchInteractor @Inject constructor(
   }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =
-    imagesInteractor.findCachedImage(show, type)
+    imagesManager.findCachedImage(show, type)
 
   suspend fun loadMissingImage(show: Show, type: ImageType, force: Boolean) =
-    imagesInteractor.loadRemoteImage(show, type, force)
+    imagesManager.loadRemoteImage(show, type, force)
 }

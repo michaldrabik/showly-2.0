@@ -13,7 +13,7 @@ import com.michaldrabik.storage.database.AppDatabase
 import javax.inject.Inject
 
 @AppScope
-class ImagesInteractor @Inject constructor(
+class ImagesManager @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
   private val userManager: UserManager,
@@ -35,9 +35,9 @@ class ImagesInteractor @Inject constructor(
       return cachedImage
     }
 
-    checkAuthorization()
+    userManager.checkAuthorization()
     val images = cloud.tvdbApi.fetchImages(userManager.getTvdbToken(), tvdbId, type.key)
-    val remoteImage = images.firstOrNull()
+    val remoteImage = images.maxBy { it.rating.count }
 
     val image = when (remoteImage) {
       null -> Image.createUnavailable(type)
@@ -50,12 +50,5 @@ class ImagesInteractor @Inject constructor(
     }
 
     return image
-  }
-
-  private suspend fun checkAuthorization() {
-    if (!userManager.isTvdbAuthorized()) {
-      val token = cloud.tvdbApi.authorize()
-      userManager.saveTvdbToken(token.token)
-    }
   }
 }

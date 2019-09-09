@@ -2,6 +2,7 @@ package com.michaldrabik.network.tvdb.api
 
 import com.michaldrabik.network.Config
 import com.michaldrabik.network.tvdb.model.AuthorizationRequest
+import com.michaldrabik.network.tvdb.model.TvdbActor
 import com.michaldrabik.network.tvdb.model.TvdbImage
 
 class TvdbApi(private val service: TvdbService) {
@@ -22,5 +23,9 @@ class TvdbApi(private val service: TvdbService) {
   suspend fun fetchImages(token: String, tvdbId: Long, type: String): List<TvdbImage> {
     check(type in allowedTypes)
     return service.fetchImages("Bearer $token", tvdbId, type).data
+  }
+
+  suspend fun fetchActors(token: String, tvdbId: Long): List<TvdbActor> {
+    return service.fetchActors("Bearer $token", tvdbId).data
   }
 }

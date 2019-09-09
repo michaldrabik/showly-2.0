@@ -1,8 +1,6 @@
 package com.michaldrabik.network.tvdb.api
 
-import com.michaldrabik.network.tvdb.model.AuthorizationRequest
-import com.michaldrabik.network.tvdb.model.AuthorizationToken
-import com.michaldrabik.network.tvdb.model.TvdbImagesResult
+import com.michaldrabik.network.tvdb.model.*
 import retrofit2.http.*
 
 interface TvdbService {
@@ -13,10 +11,16 @@ interface TvdbService {
   @GET("/refresh_token")
   suspend fun refreshToken(@Header("Authorization") authorization: String): AuthorizationToken
 
+  @GET("/series/{id}/actors")
+  suspend fun fetchActors(
+    @Header("Authorization") authorization: String,
+    @Path("id") id: Long
+  ): TvdbResult<TvdbActor>
+
   @GET("/series/{id}/images/query")
   suspend fun fetchImages(
     @Header("Authorization") authorization: String,
     @Path("id") id: Long,
     @Query("keyType") type: String
-  ): TvdbImagesResult
+  ): TvdbResult<TvdbImage>
 }

@@ -24,11 +24,15 @@ class ShowDetailsViewModel @Inject constructor(
 
         coroutineScope {
           val image = async { interactor.loadBackgroundImage(show) }
+          val actors = async { interactor.loadActors(show) }
           val nextEpisodeAsync = async {
             delay(250) //Added for UI transition to finish nicely
             interactor.loadNextEpisode(show)
           }
+
           uiStream.value = ShowDetailsUiModel(image = image.await())
+          uiStream.value = ShowDetailsUiModel(actors = actors.await())
+
           val nextEpisode = nextEpisodeAsync.await()
           if (nextEpisode?.firstAired != null) {
             uiStream.value = ShowDetailsUiModel(nextEpisode = nextEpisode)

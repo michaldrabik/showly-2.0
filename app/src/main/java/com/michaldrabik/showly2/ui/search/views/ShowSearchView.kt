@@ -14,11 +14,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.views.ShowView
 import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
-import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.visible
-import com.michaldrabik.showly2.utilities.extensions.visibleIf
-import com.michaldrabik.showly2.utilities.extensions.withFailListener
+import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.view_show_search.view.*
 
 @SuppressLint("SetTextI18n")
@@ -55,7 +51,7 @@ class ShowSearchView @JvmOverloads constructor(
     }
 
     val url = when {
-      item.image.status == Image.Status.UNKNOWN -> "${Config.TVDB_IMAGE_BASE_URL}_cache/posters/${item.show.ids.tvdb}-1.jpg"
+      item.image.status == Image.Status.UNKNOWN -> "${Config.TVDB_IMAGE_BASE_POSTER_URL}${item.show.ids.tvdb}-1.jpg"
       else -> "${Config.TVDB_IMAGE_BASE_URL}${item.image.thumbnailUrl}"
     }
 

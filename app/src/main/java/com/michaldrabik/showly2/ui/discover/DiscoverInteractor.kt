@@ -7,7 +7,7 @@ import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.ui.common.ImagesInteractor
+import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.TrendingShow
 import java.lang.System.currentTimeMillis
@@ -17,7 +17,7 @@ import javax.inject.Inject
 class DiscoverInteractor @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
-  private val imagesInteractor: ImagesInteractor,
+  private val imagesManager: ImagesManager,
   private val mappers: Mappers
 ) {
 
@@ -40,8 +40,8 @@ class DiscoverInteractor @Inject constructor(
   }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =
-    imagesInteractor.findCachedImage(show, type)
+    imagesManager.findCachedImage(show, type)
 
   suspend fun loadMissingImage(show: Show, type: ImageType, force: Boolean) =
-    imagesInteractor.loadRemoteImage(show, type, force)
+    imagesManager.loadRemoteImage(show, type, force)
 }

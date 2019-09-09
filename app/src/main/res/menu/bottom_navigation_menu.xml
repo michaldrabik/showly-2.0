@@ -20,10 +20,10 @@
     app:showAsAction="always"
     />
   <item
-    android:id="@+id/menuLists"
+    android:id="@+id/menuShows"
     android:enabled="true"
     android:icon="@drawable/ic_list"
-    android:title="@string/menuLists"
+    android:title="@string/menuShows"
     app:showAsAction="always"
     />
 </menu>
