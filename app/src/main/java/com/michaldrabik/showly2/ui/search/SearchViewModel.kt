@@ -33,7 +33,6 @@ class SearchViewModel @Inject constructor(
 
   fun searchForShow(query: String) {
     val trimmed = query.trim()
-
     if (trimmed.isEmpty()) return
 
     uiStream.value = SearchUiModel(emptyList(), emptyList(), isSearching = true)

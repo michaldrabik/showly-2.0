@@ -14,15 +14,7 @@ import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
-import com.michaldrabik.showly2.utilities.extensions.fadeIn
-import com.michaldrabik.showly2.utilities.extensions.getQuantityString
-import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.nowUtc
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.visible
-import com.michaldrabik.showly2.utilities.extensions.visibleIf
-import com.michaldrabik.showly2.utilities.extensions.withFailListener
-import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
+import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import org.threeten.bp.Duration
@@ -59,13 +51,16 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   }
 
   private fun setupView() {
-    showDetailsMoreButton.onClick {
-      showDetailsDescription.apply {
-        maxLines = if (maxLines == OVERVIEW_MAX_LINES) OVERVIEW_MIN_LINES else OVERVIEW_MAX_LINES
-        showDetailsMoreButton.setText(if (maxLines == OVERVIEW_MAX_LINES) R.string.buttonShowLess else R.string.buttonShowMore)
-      }
-    }
+    showDetailsDescription.onClick { toggleDescription() }
+    showDetailsMoreButton.onClick { toggleDescription() }
     showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
+  }
+
+  private fun toggleDescription() {
+    showDetailsDescription.apply {
+      maxLines = if (maxLines == OVERVIEW_MAX_LINES) OVERVIEW_MIN_LINES else OVERVIEW_MAX_LINES
+      showDetailsMoreButton.setText(if (maxLines == OVERVIEW_MAX_LINES) R.string.buttonShowLess else R.string.buttonShowMore)
+    }
   }
 
   private fun render(uiModel: ShowDetailsUiModel) {

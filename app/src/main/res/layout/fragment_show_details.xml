@@ -57,7 +57,7 @@
         android:layout_marginTop="@dimen/spaceMedium"
         android:layout_marginStart="@dimen/spaceNormal"
         android:textColor="@color/colorTextPrimary"
-        android:textSize="13sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline1"
@@ -126,7 +126,7 @@
         android:ellipsize="end"
         android:maxLines="3"
         android:textColor="@color/colorTextPrimary"
-        android:textSize="13sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showDetailsEpisodeCard"
@@ -144,7 +144,7 @@
         android:text="@string/buttonShowMore"
         android:textStyle="bold"
         android:textColor="@color/colorAccent"
-        android:textSize="13sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
         />
@@ -161,7 +161,7 @@
         android:shadowDy="3"
         android:shadowRadius="1"
         android:textColor="@color/colorWhite"
-        android:textSize="24sp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@id/guideline1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
@@ -187,7 +187,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.33"
+        app:layout_constraintGuide_percent="0.34"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

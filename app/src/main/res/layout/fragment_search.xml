@@ -45,7 +45,7 @@
     android:id="@+id/searchRecentsLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginTop="@dimen/spaceMedium"
     android:orientation="vertical"
     app:layout_constraintTop_toBottomOf="@id/searchViewLayout"
     />

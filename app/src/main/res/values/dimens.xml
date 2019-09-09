@@ -15,13 +15,13 @@
   <dimen name="backArrowSize">56dp</dimen>
   <dimen name="backArrowPadding">16dp</dimen>
 
-  <dimen name="searchViewHeight">44dp</dimen>
-  <dimen name="searchViewHeightPadded">60dp</dimen>
+  <dimen name="searchViewHeight">48dp</dimen>
+  <dimen name="searchViewHeightPadded">64dp</dimen>
   <dimen name="searchViewCorner">4dp</dimen>
   <dimen name="searchViewBackgroundImageMargin">50dp</dimen>
-  <dimen name="searchViewImageWidth">56dp</dimen>
   <dimen name="searchViewRecentHeight">46dp</dimen>
-  <dimen name="searchViewImageHeight">82dp</dimen>
+  <dimen name="searchViewImageWidth">64dp</dimen>
+  <dimen name="searchViewImageHeight">90dp</dimen>
   <dimen name="searchViewItemPaddingHorizontal">20dp</dimen>
 
   <dimen name="gridSpacing">2dp</dimen>

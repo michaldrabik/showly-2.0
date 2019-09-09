@@ -20,8 +20,4 @@ class RecentSearchView @JvmOverloads constructor(
   fun bind(item: RecentSearch) {
     searchRecentText.text = item.text
   }
-
-//  override fun setOnClickListener(listener: OnClickListener?) {
-//    searchRecentRoot.setOnClickListener(listener)
-//  }
 }
