@@ -26,6 +26,8 @@ fun Context.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSi
 
 fun screenWidth() = Resources.getSystem().displayMetrics.widthPixels
 
+fun screenHeight() = Resources.getSystem().displayMetrics.heightPixels
+
 fun View.visible() {
   if (visibility != VISIBLE) visibility = VISIBLE
 }

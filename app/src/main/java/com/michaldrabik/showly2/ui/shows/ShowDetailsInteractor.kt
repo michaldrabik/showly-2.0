@@ -43,6 +43,10 @@ class ShowDetailsInteractor @Inject constructor(
   suspend fun loadActors(show: Show): List<Actor> {
     userManager.checkAuthorization()
     val token = userManager.getTvdbToken()
-    return cloud.tvdbApi.fetchActors(token, show.ids.tvdb).map { mappers.actor.fromNetwork(it) }
+    return cloud.tvdbApi.fetchActors(token, show.ids.tvdb)
+      .filter { it.image.isNotBlank() }
+      .sortedBy { it.sortOrder }
+      .take(15)
+      .map { mappers.actor.fromNetwork(it) }
   }
 }

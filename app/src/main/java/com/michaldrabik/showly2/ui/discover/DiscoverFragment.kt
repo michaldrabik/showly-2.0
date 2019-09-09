@@ -12,11 +12,7 @@ import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.ui.shows.ShowDetailsFragment.Companion.ARG_SHOW_ID
-import com.michaldrabik.showly2.utilities.extensions.fadeOut
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
-import com.michaldrabik.showly2.utilities.extensions.visibleIf
-import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
+import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.random.Random
@@ -26,7 +22,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
   override val layoutResId = R.layout.fragment_discover
 
   private val gridSpan by lazy { resources.getInteger(R.integer.discoverGridSpan) }
-  private val searchViewPadding by lazy { resources.getDimensionPixelSize(R.dimen.searchViewHeightPadded) }
+  private val searchViewPadding by lazy { requireContext().dimenToPx(R.dimen.searchViewHeightPadded) }
   private lateinit var adapter: DiscoverAdapter
   private lateinit var layoutManager: GridLayoutManager
 

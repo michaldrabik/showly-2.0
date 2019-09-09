@@ -11,6 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
+    android:scrollbars="none"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,11 +20,19 @@
       android:id="@+id/showDetailsMainLayout"
       >
 
+      <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/showDetailsImageGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:layout_constraintGuide_begin="200dp"
+        />
+
       <ImageView
         android:id="@+id/showDetailsImage"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/guideline1"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsImageGuideline"
         app:layout_constraintTop_toTopOf="parent"
         />
 
@@ -60,7 +69,7 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/guideline1"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsImageGuideline"
         tools:text="Netflix | 60 min | Drama, SF"
         />
 
@@ -130,14 +139,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showDetailsEpisodeCard"
-        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ligula leo, fermentum hendrerit rutrum ut, ullamcorper varius sem. Morbi in neque mattis, dapibus ex sit amet, pharetra orci. Donec quam nisi, sollicitudin sit amet elit sit amet, sagittis egestas lacus. Mauris tristique augue nunc, nec tincidunt leo rhoncus ac. Quisque scelerisque nisi et felis scelerisque eleifend. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ligula leo, fermentum hendrerit rutrum ut, ullamcorper varius sem. Morbi in neque mattis, dapibus ex sit amet, pharetra orci. Donec quam nisi, sollicitudin sit amet elit sit amet, sagittis egestas lacus. Mauris tristique augue nunc, nec tincidunt leo rhoncus ac. Quisque scelerisque nisi et felis scelerisque eleifend."
+        tools:text="Description"
         />
 
       <TextView
         android:id="@+id/showDetailsMoreButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginTop="@dimen/spaceSmall"
         android:ellipsize="end"
         android:maxLines="6"
@@ -145,7 +155,7 @@
         android:textStyle="bold"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
         />
 
@@ -162,7 +172,7 @@
         android:shadowRadius="1"
         android:textColor="@color/colorWhite"
         android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@id/guideline1"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsImageGuideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
@@ -174,21 +184,43 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginTop="@dimen/spaceMedium"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:background="@color/colorSeparatorGray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsMoreButton"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsActorsWrapper"
         />
 
-      <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline1"
-        android:layout_width="wrap_content"
+      <HorizontalScrollView
+        android:id="@+id/showDetailsActorsWrapper"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.34"
-        />
+        android:layout_marginTop="@dimen/spaceMedium"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingStart="@dimen/spaceNormal"
+        android:paddingEnd="@dimen/spaceNormal"
+        android:scrollbars="none"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsMoreButton"
+        tools:visibility="visible"
+        >
+
+        <LinearLayout
+          android:id="@+id/showDetailsActors"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:divider="@drawable/divider_actors"
+          android:orientation="horizontal"
+          android:showDividers="middle"
+          />
+
+      </HorizontalScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

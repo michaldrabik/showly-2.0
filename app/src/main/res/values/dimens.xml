@@ -9,6 +9,11 @@
   <dimen name="showTileCorner">4dp</dimen>
   <dimen name="showTilePlaceholder">40dp</dimen>
 
+  <dimen name="actorTileCorner">4dp</dimen>
+  <dimen name="actorTilePlaceholder">30dp</dimen>
+  <dimen name="actorTileImageHeight">90dp</dimen>
+  <dimen name="actorTileImageWidth">60dp</dimen>
+
   <dimen name="bottomNavigationHeight">56dp</dimen>
   <dimen name="bottomNavigationHeightPadded">60dp</dimen>
 

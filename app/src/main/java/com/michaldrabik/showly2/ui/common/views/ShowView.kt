@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.discover.recycler.ListItem
+import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.screenWidth
 
 abstract class ShowView<Item : ListItem> @JvmOverloads constructor(
@@ -15,8 +16,8 @@ abstract class ShowView<Item : ListItem> @JvmOverloads constructor(
     const val ASPECT_RATIO = 1.4705
   }
 
-  protected val cornerRadius by lazy { resources.getDimensionPixelSize(R.dimen.showTileCorner) }
-  private val gridPadding by lazy { resources.getDimensionPixelSize(R.dimen.gridPadding) }
+  protected val cornerRadius by lazy { context.dimenToPx(R.dimen.showTileCorner) }
+  private val gridPadding by lazy { context.dimenToPx(R.dimen.gridPadding) }
   private val gridSpan by lazy { resources.getInteger(R.integer.discoverGridSpan).toFloat() }
 
   private val width by lazy { (screenWidth().toFloat() - (2.0 * gridPadding)) / gridSpan }
