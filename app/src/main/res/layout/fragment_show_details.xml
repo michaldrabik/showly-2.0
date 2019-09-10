@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/showDetailsRoot"
@@ -18,6 +19,7 @@
       android:id="@+id/showDetailsMainLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/spaceMedium"
       >
 
       <androidx.constraintlayout.widget.Guideline
@@ -206,6 +208,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsMoreButton"
+        />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/showDetailsRelatedRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spaceMedium"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingStart="@dimen/spaceNormal"
+        android:paddingEnd="@dimen/spaceNormal"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/separator2"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

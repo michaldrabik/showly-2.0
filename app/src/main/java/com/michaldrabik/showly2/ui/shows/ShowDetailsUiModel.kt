@@ -4,6 +4,7 @@ import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.ui.shows.related.RelatedListItem
 
 data class ShowDetailsUiModel(
   val show: Show? = null,
@@ -11,5 +12,7 @@ data class ShowDetailsUiModel(
   val image: Image? = null,
   val imageLoading: Boolean? = null,
   val nextEpisode: Episode? = null,
-  val actors: List<Actor>? = null
+  val actors: List<Actor>? = null,
+  val relatedShows: List<RelatedListItem>? = null,
+  val updateRelatedShow: RelatedListItem? = null
 )

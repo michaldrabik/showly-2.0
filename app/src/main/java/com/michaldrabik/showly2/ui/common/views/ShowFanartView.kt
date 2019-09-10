@@ -2,16 +2,13 @@ package com.michaldrabik.showly2.ui.common.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_FANART_URL
-import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Image.Status.*
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
-import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_show_fanart.view.*
 
 class ShowFanartView @JvmOverloads constructor(
@@ -21,6 +18,9 @@ class ShowFanartView @JvmOverloads constructor(
   init {
     inflate(context, R.layout.view_show_fanart, this)
   }
+
+  override val imageView: ImageView = showFanartImage
+  override val placeholderView: ImageView = showFanartPlaceholder
 
   override fun bind(
     item: DiscoverListItem,
@@ -33,28 +33,6 @@ class ShowFanartView @JvmOverloads constructor(
     showFanartProgress.visibleIf(item.isLoading)
     showFanartRoot.onClick { itemClickListener(item) }
     if (!item.isLoading) loadImage(item, missingImageListener)
-  }
-
-  private fun loadImage(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
-    val url = when {
-      item.image.status == UNKNOWN -> "${TVDB_IMAGE_BASE_FANART_URL}${item.show.ids.tvdb}-1.jpg"
-      else -> "$TVDB_IMAGE_BASE_URL${item.image.fileUrl}"
-    }
-    Glide.with(this)
-      .load(url)
-      .transform(CenterCrop(), RoundedCorners(cornerRadius))
-      .transition(withCrossFade(200))
-      .withFailListener { onImageLoadFail(item, missingImageListener) }
-      .into(showFanartImage)
-  }
-
-  private fun onImageLoadFail(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
-    if (item.image.status == AVAILABLE) {
-      showFanartPlaceholder.visible()
-      return
-    }
-    val force = item.image.status != UNAVAILABLE
-    missingImageListener(item, force)
   }
 
   private fun clear() {

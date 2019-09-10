@@ -5,6 +5,7 @@ import com.michaldrabik.showly2.UserManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
@@ -49,4 +50,14 @@ class ShowDetailsInteractor @Inject constructor(
       .take(30)
       .map { mappers.actor.fromNetwork(it) }
   }
+
+  suspend fun loadRelatedShows(show: Show) =
+    cloud.traktApi.fetchRelatedShows(show.ids.trakt)
+      .map { mappers.show.fromNetwork(it) }
+
+  suspend fun findCachedImage(show: Show, type: ImageType) =
+    imagesManager.findCachedImage(show, type)
+
+  suspend fun loadMissingImage(show: Show, type: ImageType, force: Boolean) =
+    imagesManager.loadRemoteImage(show, type, force)
 }

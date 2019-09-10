@@ -5,16 +5,16 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.views.ShowView
 import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
-import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_show_search.view.*
 
 @SuppressLint("SetTextI18n")
@@ -26,6 +26,9 @@ class ShowSearchView @JvmOverloads constructor(
     inflate(context, R.layout.view_show_search, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
   }
+
+  override val imageView: ImageView = showSearchImage
+  override val placeholderView: ImageView = showSearchPlaceholder
 
   override fun bind(
     item: SearchListItem,
@@ -44,32 +47,12 @@ class ShowSearchView @JvmOverloads constructor(
     showSearchRoot.onClick { itemClickListener(item) }
   }
 
-  private fun loadImage(item: SearchListItem, missingImageListener: (SearchListItem, Boolean) -> Unit) {
+  override fun loadImage(item: SearchListItem, missingImageListener: (SearchListItem, Boolean) -> Unit) {
     if (item.image.status == Image.Status.UNAVAILABLE) {
       showSearchPlaceholder.visible()
       return
     }
-
-    val url = when {
-      item.image.status == Image.Status.UNKNOWN -> "${Config.TVDB_IMAGE_BASE_POSTER_URL}${item.show.ids.tvdb}-1.jpg"
-      else -> "${Config.TVDB_IMAGE_BASE_URL}${item.image.thumbnailUrl}"
-    }
-
-    Glide.with(this)
-      .load(url)
-      .transform(CenterCrop(), RoundedCorners(cornerRadius))
-      .transition(DrawableTransitionOptions.withCrossFade(200))
-      .withFailListener { onImageLoadFail(item, missingImageListener) }
-      .into(showSearchImage)
-  }
-
-  private fun onImageLoadFail(item: SearchListItem, missingImageListener: (SearchListItem, Boolean) -> Unit) {
-    if (item.image.status == Image.Status.AVAILABLE) {
-      showSearchPlaceholder.visible()
-      return
-    }
-    val force = item.image.status != Image.Status.UNAVAILABLE
-    missingImageListener(item, force)
+    super.loadImage(item, missingImageListener)
   }
 
   private fun clear() {

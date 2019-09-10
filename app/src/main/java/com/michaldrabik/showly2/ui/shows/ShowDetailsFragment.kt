@@ -19,7 +19,19 @@ import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.shows.actors.ActorsAdapter
-import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.showly2.ui.shows.related.RelatedShowAdapter
+import com.michaldrabik.showly2.utilities.extensions.fadeIf
+import com.michaldrabik.showly2.utilities.extensions.fadeIn
+import com.michaldrabik.showly2.utilities.extensions.getQuantityString
+import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.nowUtc
+import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.screenHeight
+import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.showly2.utilities.extensions.withFailListener
+import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import org.threeten.bp.Duration
@@ -38,6 +50,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
 
   private val showId by lazy { arguments?.getLong(ARG_SHOW_ID, -1) ?: -1 }
   private val actorsAdapter by lazy { ActorsAdapter() }
+  private val relatedAdapter by lazy { RelatedShowAdapter() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -53,7 +66,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
-    setupRecycler()
+    setupActorsList()
+    setupRelatedList()
     viewModel.loadShowDetails(showId)
   }
 
@@ -64,7 +78,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
   }
 
-  private fun setupRecycler() {
+  private fun setupActorsList() {
     val context = requireContext()
     showDetailsActorsRecycler.apply {
       adapter = actorsAdapter
@@ -76,6 +90,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     actorsAdapter.onItemClickListener = {
       showDetailsRoot.showInfoSnackbar(getString(R.string.textActorRole, it.name, it.role))
     }
+  }
+
+  private fun setupRelatedList() {
+    val context = requireContext()
+    showDetailsRelatedRecycler.apply {
+      adapter = relatedAdapter
+      layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
+      addItemDecoration(DividerItemDecoration(context, HORIZONTAL).apply {
+        setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_related_shows)!!)
+      })
+    }
+    relatedAdapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
   }
 
   private fun toggleDescription() {
@@ -105,6 +131,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       actorsAdapter.setItems(it)
       showDetailsActorsRecycler.fadeIf(it.isNotEmpty())
     }
+    uiModel.relatedShows?.let {
+      relatedAdapter.setItems(it)
+      showDetailsRelatedRecycler.fadeIf(it.isNotEmpty())
+    }
+    uiModel.updateRelatedShow?.let { relatedAdapter.updateItem(it) }
   }
 
   private fun renderNextEpisode(nextEpisode: Episode) {
