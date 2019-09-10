@@ -54,6 +54,7 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
     searchViewInput.visible()
     searchViewText.gone()
     (searchViewIcon.drawable as Animatable).start()
+    viewModel.loadLastSearch()
     if (!isInitialized) {
       searchViewInput.showKeyboard()
       searchViewInput.requestFocus()
@@ -115,15 +116,14 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
     uiModel.searchItems?.let {
       adapter.setItems(it)
       searchRecycler.scheduleLayoutAnimation()
-      searchEmptyView.fadeIf(it.isEmpty())
     }
     uiModel.recentSearchItems?.let { renderRecentSearches(it) }
     uiModel.isSearching?.let {
-      if (it) searchEmptyView.gone()
       searchProgress.visibleIf(it)
       searchViewLayout.isEnabled = !it
     }
     uiModel.updateListItem?.let { adapter.updateItem(it) }
+    uiModel.isEmpty?.let { searchEmptyView.fadeIf(it) }
   }
 
   private fun renderRecentSearches(it: List<RecentSearch>) {

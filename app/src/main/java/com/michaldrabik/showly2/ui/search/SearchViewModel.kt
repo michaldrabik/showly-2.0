@@ -13,9 +13,13 @@ class SearchViewModel @Inject constructor(
   private val interactor: SearchInteractor
 ) : BaseViewModel() {
 
-  //TODO Errors
-
   val uiStream by lazy { MutableLiveData<SearchUiModel>() }
+
+  private val lastItems = mutableListOf<SearchListItem>()
+
+  fun loadLastSearch() {
+    uiStream.value = SearchUiModel(lastItems)
+  }
 
   fun loadRecentSearches() {
     viewModelScope.launch {
@@ -35,14 +39,16 @@ class SearchViewModel @Inject constructor(
     val trimmed = query.trim()
     if (trimmed.isEmpty()) return
 
-    uiStream.value = SearchUiModel(emptyList(), emptyList(), isSearching = true)
+    uiStream.value = SearchUiModel(emptyList(), emptyList(), isSearching = true, isEmpty = false)
     viewModelScope.launch {
       val shows = interactor.searchShows(trimmed)
       val items = shows.map {
         val image = interactor.findCachedImage(it, ImageType.POSTER)
         SearchListItem(it, image)
       }
-      uiStream.value = SearchUiModel(items, isSearching = false)
+      lastItems.clear()
+      lastItems.addAll(items)
+      uiStream.value = SearchUiModel(items, isSearching = false, isEmpty = items.isEmpty())
     }
   }
 
