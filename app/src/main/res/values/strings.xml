@@ -36,6 +36,6 @@
     <item quantity="other">Airs in %d minutes.</item>
   </plurals>
 
-  <string name="errorGeneral">Oops… Something went wrong.</string>
+  <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this happens again.</string>
 
 </resources>

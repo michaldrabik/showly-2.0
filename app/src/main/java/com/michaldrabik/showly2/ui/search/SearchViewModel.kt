@@ -38,17 +38,20 @@ class SearchViewModel @Inject constructor(
   fun searchForShow(query: String) {
     val trimmed = query.trim()
     if (trimmed.isEmpty()) return
-
-    uiStream.value = SearchUiModel(emptyList(), emptyList(), isSearching = true, isEmpty = false)
     viewModelScope.launch {
-      val shows = interactor.searchShows(trimmed)
-      val items = shows.map {
-        val image = interactor.findCachedImage(it, ImageType.POSTER)
-        SearchListItem(it, image)
+      try {
+        uiStream.value = SearchUiModel(emptyList(), emptyList(), isSearching = true, isEmpty = false)
+        val shows = interactor.searchShows(trimmed)
+        val items = shows.map {
+          val image = interactor.findCachedImage(it, ImageType.POSTER)
+          SearchListItem(it, image)
+        }
+        lastItems.clear()
+        lastItems.addAll(items)
+        uiStream.value = SearchUiModel(items, isSearching = false, isEmpty = items.isEmpty())
+      } catch (t: Throwable) {
+        onError(t)
       }
-      lastItems.clear()
-      lastItems.addAll(items)
-      uiStream.value = SearchUiModel(items, isSearching = false, isEmpty = items.isEmpty())
     }
   }
 
@@ -64,5 +67,9 @@ class SearchViewModel @Inject constructor(
           SearchUiModel(updateListItem = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }
+  }
+
+  private fun onError(t: Throwable) {
+    uiStream.value = SearchUiModel(error = Error(t), isSearching = false, isEmpty = false)
   }
 }

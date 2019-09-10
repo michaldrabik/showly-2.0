@@ -94,7 +94,6 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
   }
 
   private fun openShowDetails(item: SearchListItem) {
-    searchViewLayout.fadeOut()
     val clickedIndex = adapter.indexOf(item)
     (0..adapter.itemCount).forEach {
       if (it != clickedIndex) {
@@ -124,6 +123,7 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
     }
     uiModel.updateListItem?.let { adapter.updateItem(it) }
     uiModel.isEmpty?.let { searchEmptyView.fadeIf(it) }
+    uiModel.error?.let { searchRoot?.showErrorSnackbar(getString(R.string.errorGeneral)) }
   }
 
   private fun renderRecentSearches(it: List<RecentSearch>) {

@@ -8,5 +8,6 @@ data class SearchUiModel(
   val recentSearchItems: List<RecentSearch>? = null,
   val isSearching: Boolean? = null,
   val isEmpty: Boolean? = null,
-  val updateListItem: SearchListItem? = null
+  val updateListItem: SearchListItem? = null,
+  val error: Error? = null
 )
