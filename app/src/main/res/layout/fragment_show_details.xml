@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/showDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   >
@@ -15,9 +15,9 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/showDetailsMainLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:id="@+id/showDetailsMainLayout"
       >
 
       <androidx.constraintlayout.widget.Guideline
@@ -41,9 +41,9 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/colorSeparatorGray"
+        app:layout_constraintBottom_toBottomOf="@id/showDetailsImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsImage"
         />
 
       <ProgressBar
@@ -52,19 +52,19 @@
         android:layout_height="wrap_content"
         android:indeterminateTint="@color/colorProgressGray"
         android:visibility="gone"
-        tools:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/showDetailsImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/showDetailsImage"
+        tools:visibility="visible"
         />
 
       <TextView
         android:id="@+id/showDetailsExtraInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spaceMedium"
         android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceMedium"
         android:textColor="@color/colorTextPrimary"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -77,8 +77,8 @@
         android:id="@+id/showDetailsStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorTextSecondary"
         android:layout_marginStart="@dimen/spaceNormal"
+        android:textColor="@color/colorTextSecondary"
         android:textSize="13sp"
         android:textStyle=""
         app:layout_constraintStart_toStartOf="parent"
@@ -112,25 +112,25 @@
 
       <include
         android:id="@+id/showDetailsEpisodeCard"
+        layout="@layout/fragment_show_details_next_episode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        tools:visibility="visible"
-        android:layout_marginTop="@dimen/spaceMedium"
         android:layout_marginLeft="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceMedium"
         android:layout_marginRight="@dimen/spaceNormal"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsStatus"
-        layout="@layout/fragment_show_details_next_episode"
+        tools:visibility="visible"
         />
 
       <TextView
         android:id="@+id/showDetailsDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spaceMedium"
         android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceMedium"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:ellipsize="end"
         android:maxLines="3"
@@ -147,14 +147,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginEnd="@dimen/spaceNormal"
         android:ellipsize="end"
         android:maxLines="6"
         android:text="@string/buttonShowMore"
-        android:textStyle="bold"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
         />
@@ -199,12 +199,12 @@
         android:layout_marginTop="@dimen/spaceMedium"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:overScrollMode="never"
         android:paddingStart="@dimen/spaceNormal"
         android:paddingEnd="@dimen/spaceNormal"
-        android:overScrollMode="never"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsMoreButton"
         />
 
@@ -224,8 +224,8 @@
     android:id="@+id/showDetailsBackArrow"
     android:layout_width="@dimen/backArrowSize"
     android:layout_height="@dimen/backArrowSize"
-    android:padding="@dimen/backArrowPadding"
     android:background="?android:attr/selectableItemBackground"
+    android:padding="@dimen/backArrowPadding"
     app:srcCompat="@drawable/ic_arrow_back"
     />
 

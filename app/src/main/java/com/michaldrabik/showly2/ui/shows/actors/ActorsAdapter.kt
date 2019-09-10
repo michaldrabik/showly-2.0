@@ -9,6 +9,8 @@ class ActorsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   private val items: MutableList<Actor> = mutableListOf()
 
+  var onItemClickListener: (Actor) -> Unit = {}
+
   fun setItems(items: List<Actor>) {
     this.items.apply {
       clear()
@@ -21,7 +23,7 @@ class ActorsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     ViewHolderShow(ActorView(parent.context))
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-    (holder.itemView as ActorView).bind(items[position])
+    (holder.itemView as ActorView).bind(items[position], onItemClickListener)
   }
 
   override fun getItemCount() = items.size

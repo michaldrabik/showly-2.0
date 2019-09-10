@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
@@ -12,11 +11,11 @@
     android:id="@+id/showSearchRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="@dimen/spaceMedium"
-    android:paddingBottom="@dimen/spaceMedium"
-    android:paddingRight="@dimen/searchViewItemPaddingHorizontal"
-    android:paddingLeft="@dimen/searchViewItemPaddingHorizontal"
     android:background="?android:attr/selectableItemBackground"
+    android:paddingLeft="@dimen/searchViewItemPaddingHorizontal"
+    android:paddingTop="@dimen/spaceMedium"
+    android:paddingRight="@dimen/searchViewItemPaddingHorizontal"
+    android:paddingBottom="@dimen/spaceMedium"
     >
 
     <ImageView
@@ -33,14 +32,14 @@
       android:id="@+id/showSearchPlaceholder"
       android:layout_width="@dimen/searchViewImageWidth"
       android:layout_height="@dimen/searchViewImageHeight"
-      android:padding="@dimen/spaceMedium"
       android:layout_gravity="center"
+      android:padding="@dimen/spaceMedium"
       android:visibility="gone"
-      tools:visibility="visible"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:srcCompat="@drawable/ic_television"
+      tools:visibility="visible"
       />
 
     <TextView

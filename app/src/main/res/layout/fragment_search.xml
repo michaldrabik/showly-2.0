@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
   >
 
   <androidx.recyclerview.widget.RecyclerView
@@ -12,11 +11,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
+    android:layoutAnimation="@anim/anim_recycler_fall_down"
     android:overScrollMode="never"
     android:paddingTop="@dimen/searchViewHeightPadded"
     android:paddingBottom="@dimen/spaceMedium"
     android:scrollbars="vertical"
-    android:layoutAnimation="@anim/anim_recycler_fall_down"
     tools:listitem="@layout/view_show_search"
     />
 
@@ -25,8 +24,8 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/spaceSmall"
     android:background="@color/colorBackground"
-    app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     />
 
@@ -58,8 +57,8 @@
     android:layout_marginTop="@dimen/spaceSmall"
     android:text="@string/textClear"
     android:textAllCaps="true"
-    android:visibility="gone"
     android:textColor="@color/colorAccent"
+    android:visibility="gone"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/searchRecentsLayout"
     />
@@ -82,14 +81,14 @@
     android:id="@+id/searchEmptyView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     android:visibility="gone"
-    tools:visibility="visible"
     app:layout_constraintBottom_toBottomOf="@+id/searchRecycler"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/searchViewLayout"
+    tools:visibility="visible"
     >
 
     <ImageView
@@ -103,8 +102,8 @@
     <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:textColor="@color/colorSearchViewText"
       android:text="@string/textEmptyResults"
+      android:textColor="@color/colorSearchViewText"
       />
 
   </LinearLayout>

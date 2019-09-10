@@ -10,7 +10,6 @@ import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.storage.database.AppDatabase
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 @AppScope

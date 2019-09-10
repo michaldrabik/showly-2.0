@@ -21,20 +21,20 @@ class ShowDetailsViewModel @Inject constructor(
         val show = interactor.loadShowDetails(id)
         uiStream.value = ShowDetailsUiModel(show, showLoading = false, imageLoading = true)
 
-        launch {
-          val actors = interactor.loadActors(show)
-          uiStream.value = ShowDetailsUiModel(actors = actors)
-        }
-
-        launch {
-          val image = interactor.loadBackgroundImage(show)
-          uiStream.value = ShowDetailsUiModel(image = image)
-        }
-
         coroutineScope {
-          delay(250)
+          launch {
+            val actors = interactor.loadActors(show)
+            uiStream.value = ShowDetailsUiModel(actors = actors)
+          }
+
+          launch {
+            val image = interactor.loadBackgroundImage(show)
+            uiStream.value = ShowDetailsUiModel(image = image)
+          }
+
           val nextEpisode = interactor.loadNextEpisode(show)
           if (nextEpisode?.firstAired != null) {
+            delay(250)
             uiStream.value = ShowDetailsUiModel(nextEpisode = nextEpisode)
           }
         }

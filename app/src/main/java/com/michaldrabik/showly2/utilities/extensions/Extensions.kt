@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
+import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import com.michaldrabik.showly2.R
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.ZoneOffset.UTC
@@ -63,7 +64,7 @@ fun View.fadeOut(duration: Long = 250, startDelay: Long = 0, endAction: () -> Un
   }.start()
 }
 
-fun View.shake() = ObjectAnimator.ofFloat(this, "translationX", 0F ,-15F, 15F, -10F, 10F, -5F, 5F, 0F)
+fun View.shake() = ObjectAnimator.ofFloat(this, "translationX", 0F, -15F, 15F, -10F, 10F, -5F, 5F, 0F)
   .setDuration(500)
   .start()
 
@@ -76,16 +77,32 @@ fun GridLayoutManager.withSpanSizeLookup(action: (Int) -> Int) {
 fun Fragment.getQuantityString(stringResId: Int, count: Long) =
   resources.getQuantityString(stringResId, count.toInt(), count)
 
-fun ViewGroup.showErrorSnackbar(message: String, actionText: Int = R.string.textOk, action: () -> Unit = {}) {
-  Snackbar.make(this, message, LENGTH_INDEFINITE).apply {
-    view.setBackgroundResource(R.drawable.bg_error_snackbar)
+fun ViewGroup.showSnackbar(
+  message: String,
+  actionText: Int = R.string.textOk,
+  backgroundRes: Int = R.drawable.bg_snackbar_info,
+  length: Int = LENGTH_INDEFINITE,
+  action: (() -> Unit)? = null
+) {
+  Snackbar.make(this, message, length).apply {
+    view.setBackgroundResource(backgroundRes)
     setActionTextColor(Color.WHITE)
-    setAction(actionText) {
-      dismiss()
-      action()
+    if (action != null) {
+      setAction(actionText) {
+        dismiss()
+        action()
+      }
     }
     show()
   }
+}
+
+fun ViewGroup.showErrorSnackbar(message: String, actionText: Int = R.string.textOk, action: () -> Unit = {}) {
+  showSnackbar(message, actionText, R.drawable.bg_snackbar_error, LENGTH_INDEFINITE, action)
+}
+
+fun ViewGroup.showInfoSnackbar(message: String, actionText: Int = R.string.textOk) {
+  showSnackbar(message, actionText, R.drawable.bg_snackbar_info, LENGTH_SHORT)
 }
 
 fun View.showKeyboard() {

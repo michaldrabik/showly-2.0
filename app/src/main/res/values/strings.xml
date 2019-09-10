@@ -16,6 +16,7 @@
   <string name="textAiredAlready">Already aired.</string>
   <string name="textEmptyResults">There were no results…</string>
   <string name="textClear">Clear</string>
+  <string name="textActorRole">%s as %s</string>
 
   <plurals name="textDaysToAir">
     <item quantity="zero">Airs today.</item>

@@ -28,8 +28,9 @@ class ActorView @JvmOverloads constructor(
     layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
   }
 
-  fun bind(item: Actor) {
+  fun bind(item: Actor, clickListener: (Actor) -> Unit) {
     clear()
+    setOnClickListener { clickListener(item) }
     actorName.text = item.name.split(" ").joinToString("\n")
     Glide.with(this)
       .load("$TVDB_IMAGE_BASE_URL${item.image}")
