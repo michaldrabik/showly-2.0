@@ -16,12 +16,13 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.utilities.SafeOnClickListener
 import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.ZoneOffset.UTC
 
 fun nowUtc(): OffsetDateTime = OffsetDateTime.now(UTC)
 
-fun View.onClick(action: (View) -> Unit) = setOnClickListener { action(it) }
+fun View.onClick(action: (View) -> Unit) = setOnClickListener(SafeOnClickListener(action))
 
 fun Context.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSize(dimenResId)
 
