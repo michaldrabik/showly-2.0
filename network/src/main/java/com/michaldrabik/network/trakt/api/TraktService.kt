@@ -17,7 +17,7 @@ interface TraktService {
   @GET("shows/trending?extended=full&limit=154")
   suspend fun fetchTrendingShows(): List<TrendingResult>
 
-  @GET("shows/{traktId}/related?extended=full")
+  @GET("shows/{traktId}/related?extended=full&limit=15")
   suspend fun fetchRelatedShows(@Path("traktId") traktId: Long): List<Show>
 
   @GET("shows/{traktId}/next_episode?extended=full")

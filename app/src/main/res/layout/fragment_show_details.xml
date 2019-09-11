@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/showDetailsRoot"
@@ -210,11 +209,26 @@
         app:layout_constraintTop_toBottomOf="@id/showDetailsMoreButton"
         />
 
+      <TextView
+        android:id="@+id/showDetailsRelatedLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceMedium"
+        android:text="@string/textYouMayAlsoLike"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/separator2"
+        />
+
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/showDetailsRelatedRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/spaceSmall"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:overScrollMode="never"
@@ -223,7 +237,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator2"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedLabel"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

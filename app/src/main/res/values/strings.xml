@@ -17,6 +17,7 @@
   <string name="textEmptyResults">There were no results…</string>
   <string name="textClear">Clear</string>
   <string name="textActorRole">%s as %s</string>
+  <string name="textYouMayAlsoLike">You may also like:</string>
 
   <plurals name="textDaysToAir">
     <item quantity="zero">Airs today.</item>

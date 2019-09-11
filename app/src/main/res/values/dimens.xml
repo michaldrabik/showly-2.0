@@ -11,11 +11,11 @@
 
   <dimen name="actorTileCorner">4dp</dimen>
   <dimen name="actorTilePlaceholder">26dp</dimen>
-  <dimen name="actorTileImageHeight">96dp</dimen>
-  <dimen name="actorTileImageWidth">64dp</dimen>
+  <dimen name="actorTileImageHeight">100dp</dimen>
+  <dimen name="actorTileImageWidth">67dp</dimen>
 
-  <dimen name="relatedShowHeight">96dp</dimen>
-  <dimen name="relatedShowWidth">64dp</dimen>
+  <dimen name="relatedShowHeight">100dp</dimen>
+  <dimen name="relatedShowWidth">67dp</dimen>
 
   <dimen name="bottomNavigationHeight">56dp</dimen>
   <dimen name="bottomNavigationHeightPadded">60dp</dimen>
