@@ -53,6 +53,8 @@ class ShowDetailsInteractor @Inject constructor(
 
   suspend fun loadRelatedShows(show: Show) =
     cloud.traktApi.fetchRelatedShows(show.ids.trakt)
+      .sortedWith(compareBy({ it.votes }, { it.rating }))
+      .reversed()
       .map { mappers.show.fromNetwork(it) }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =

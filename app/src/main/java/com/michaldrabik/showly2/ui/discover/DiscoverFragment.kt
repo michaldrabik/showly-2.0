@@ -16,7 +16,6 @@ import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
-import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_discover.*
@@ -30,7 +29,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
   private val searchViewPadding by lazy { requireContext().dimenToPx(R.dimen.searchViewHeightPadded) }
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
-
 
   private lateinit var adapter: DiscoverAdapter
   private lateinit var layoutManager: GridLayoutManager
@@ -69,12 +67,15 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
       layoutManager = this@DiscoverFragment.layoutManager
     }
 
-    discoverSwipeRefresh.setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
-    discoverSwipeRefresh.setOnRefreshListener {
-      adapter.clearItems()
-      viewModel.saveListPosition(0, 0)
-      viewModel.loadTrendingShows(skipCache = true)
-      discoverSwipeRefresh.isRefreshing = false
+    discoverSwipeRefresh.apply {
+      setProgressBackgroundColorSchemeResource(R.color.colorSearchViewBackground)
+      setColorSchemeResources(R.color.colorAccent, R.color.colorAccent, R.color.colorAccent)
+      setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
+      setOnRefreshListener {
+        adapter.clearItems()
+        viewModel.saveListPosition(0, 0)
+        viewModel.loadTrendingShows(skipCache = true)
+      }
     }
   }
 
@@ -120,7 +121,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
     }
     uiModel.showLoading?.let {
       discoverSearchView.isClickable = !it
-      discoverProgress.visibleIf(it)
+      discoverSwipeRefresh.isRefreshing = it
     }
     uiModel.updateListItem?.let { adapter.updateItem(it) }
     uiModel.listPosition?.let { layoutManager.scrollToPositionWithOffset(it.first, it.second) }

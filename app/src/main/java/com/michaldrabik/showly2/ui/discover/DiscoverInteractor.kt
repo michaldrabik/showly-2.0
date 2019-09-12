@@ -10,6 +10,7 @@ import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.TrendingShow
+import kotlinx.coroutines.delay
 import java.lang.System.currentTimeMillis
 import javax.inject.Inject
 
