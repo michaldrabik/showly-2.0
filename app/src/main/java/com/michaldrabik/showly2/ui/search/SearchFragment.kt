@@ -90,6 +90,7 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
       setHasFixedSize(true)
       adapter = this@SearchFragment.adapter
       layoutManager = this@SearchFragment.layoutManager
+      itemAnimator = null
     }
   }
 
