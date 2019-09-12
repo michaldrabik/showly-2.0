@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+  xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
@@ -53,7 +54,6 @@
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
       android:layout_marginTop="@dimen/spaceMicro"
-      android:gravity="center"
       android:textColor="@color/colorTextPrimary"
       android:textSize="14sp"
       tools:text="S.00 E.00 - Episode Title"
@@ -63,7 +63,6 @@
       android:id="@+id/showDetailsEpisodeAirtime"
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
-      android:gravity="center"
       android:textColor="@color/colorTextSecondary"
       android:textSize="12sp"
       tools:ignore="SmallSp"
