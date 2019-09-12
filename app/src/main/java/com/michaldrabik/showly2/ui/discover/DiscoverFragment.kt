@@ -12,7 +12,12 @@ import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.ui.shows.ShowDetailsFragment.Companion.ARG_SHOW_ID
-import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.random.Random
@@ -23,6 +28,10 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
 
   private val gridSpan by lazy { resources.getInteger(R.integer.discoverGridSpan) }
   private val searchViewPadding by lazy { requireContext().dimenToPx(R.dimen.searchViewHeightPadded) }
+  private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
+  private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
+
+
   private lateinit var adapter: DiscoverAdapter
   private lateinit var layoutManager: GridLayoutManager
 
@@ -58,6 +67,14 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
       setHasFixedSize(true)
       adapter = this@DiscoverFragment.adapter
       layoutManager = this@DiscoverFragment.layoutManager
+    }
+
+    discoverSwipeRefresh.setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
+    discoverSwipeRefresh.setOnRefreshListener {
+      adapter.clearItems()
+      viewModel.saveListPosition(0, 0)
+      viewModel.loadTrendingShows(skipCache = true)
+      discoverSwipeRefresh.isRefreshing = false
     }
   }
 
