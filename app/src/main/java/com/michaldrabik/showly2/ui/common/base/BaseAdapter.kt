@@ -29,6 +29,11 @@ abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.
     }
   }
 
+  fun clearItems() {
+    items.clear()
+    notifyDataSetChanged()
+  }
+
   override fun getItemCount() = items.size
 
   fun indexOf(item: Item) = items.indexOf(item)

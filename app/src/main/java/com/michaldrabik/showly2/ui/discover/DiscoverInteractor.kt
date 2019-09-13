@@ -10,6 +10,7 @@ import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.TrendingShow
+import kotlinx.coroutines.delay
 import java.lang.System.currentTimeMillis
 import javax.inject.Inject
 
@@ -21,9 +22,9 @@ class DiscoverInteractor @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  suspend fun loadTrendingShows(): List<Show> {
+  suspend fun loadTrendingShows(skipCache: Boolean = false): List<Show> {
     val stamp = database.trendingShowsDao().getMostRecent()?.createdAt ?: 0
-    if (currentTimeMillis() - stamp < Config.TRENDING_SHOWS_CACHE_DURATION) {
+    if (!skipCache && currentTimeMillis() - stamp < Config.TRENDING_SHOWS_CACHE_DURATION) {
       return database.trendingShowsDao().getAll().map { mappers.show.fromDatabase(it) }
     }
 

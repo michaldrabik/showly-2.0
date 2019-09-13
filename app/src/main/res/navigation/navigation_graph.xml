@@ -55,7 +55,16 @@
     android:name="com.michaldrabik.showly2.ui.shows.ShowDetailsFragment"
     android:label="fragmentShowDetails"
     tools:layout="@layout/fragment_show_details"
-    />
+    >
+    <action
+      android:id="@+id/actionShowDetailsFragmentToSelf"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:exitAnim="@anim/anim_fade_out"
+      app:popExitAnim="@anim/anim_fade_out"
+      app:launchSingleTop="true"
+      />
+  </fragment>
 
   <fragment
     android:id="@+id/searchFragment"

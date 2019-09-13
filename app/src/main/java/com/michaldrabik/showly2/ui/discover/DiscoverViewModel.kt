@@ -21,14 +21,14 @@ class DiscoverViewModel @Inject constructor(
 
   val uiStream by lazy { MutableLiveData<DiscoverUiModel>() }
 
-  fun loadTrendingShows() {
+  fun loadTrendingShows(skipCache: Boolean = false) {
     viewModelScope.launch {
       val progress = launch {
         delay(500)
         uiStream.value = DiscoverUiModel(showLoading = true)
       }
       try {
-        val shows = interactor.loadTrendingShows()
+        val shows = interactor.loadTrendingShows(skipCache)
         onShowsLoaded(shows)
       } catch (t: Throwable) {
         onError(Error(t))
