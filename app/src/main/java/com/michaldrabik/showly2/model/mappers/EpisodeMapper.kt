@@ -8,24 +8,24 @@ import com.michaldrabik.network.trakt.model.Episode as EpisodeNetwork
 
 class EpisodeMapper @Inject constructor() {
 
-  fun fromNetwork(show: EpisodeNetwork) = Episode(
-    show.season,
-    show.number,
-    show.title,
+  fun fromNetwork(episode: EpisodeNetwork) = Episode(
+    episode.season,
+    episode.number,
+    episode.title,
     Ids(
-      show.ids.trakt,
-      show.ids.slug,
-      show.ids.tvdb,
-      show.ids.imdb,
-      show.ids.tmdb,
-      show.ids.tvrage
+      episode.ids.trakt,
+      episode.ids.slug,
+      episode.ids.tvdb,
+      episode.ids.imdb,
+      episode.ids.tmdb,
+      episode.ids.tvrage
     ),
-    show.overview,
-    show.rating,
-    show.votes,
-    show.commentCount,
-    if (show.firstAired.isEmpty()) null else ZonedDateTime.parse(show.firstAired),
-    if (show.updatedAt.isEmpty()) null else ZonedDateTime.parse(show.updatedAt),
-    show.runtime
+    episode.overview,
+    episode.rating,
+    episode.votes,
+    episode.commentCount,
+    if (episode.firstAired.isEmpty()) null else ZonedDateTime.parse(episode.firstAired),
+    if (episode.updatedAt.isEmpty()) null else ZonedDateTime.parse(episode.updatedAt),
+    episode.runtime
   )
 }

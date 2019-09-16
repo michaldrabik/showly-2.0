@@ -107,7 +107,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
 
   private fun render(uiModel: ShowDetailsUiModel) {
     uiModel.showLoading?.let {
-      showDetailsMainLayout.visibleIf(!it)
+      showDetailsMainLayout.fadeIf(!it)
       showDetailsMainProgress.visibleIf(it)
     }
     uiModel.show?.let { show ->
@@ -137,7 +137,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   private fun renderNextEpisode(nextEpisode: Episode) {
     nextEpisode.run {
       showDetailsEpisodeText.text = "${toDisplayString()} - '$title'"
-      showDetailsEpisodeCard.fadeIn()
+      showDetailsEpisodeCard.visible()
 
       val timeToAir = Duration.between(nowUtc(), firstAired)
       if (timeToAir.seconds < 0) {

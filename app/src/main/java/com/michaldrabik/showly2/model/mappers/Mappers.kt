@@ -8,5 +8,6 @@ class Mappers @Inject constructor(
   val image: ImageMapper,
   val show: ShowMapper,
   val episode: EpisodeMapper,
+  val season: SeasonMapper,
   val actor: ActorMapper
 )

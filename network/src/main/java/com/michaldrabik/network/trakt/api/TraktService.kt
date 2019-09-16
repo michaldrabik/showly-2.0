@@ -1,9 +1,6 @@
 package com.michaldrabik.network.trakt.api
 
-import com.michaldrabik.network.trakt.model.Episode
-import com.michaldrabik.network.trakt.model.SearchResult
-import com.michaldrabik.network.trakt.model.Show
-import com.michaldrabik.network.trakt.model.TrendingResult
+import com.michaldrabik.network.trakt.model.*
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -25,4 +22,7 @@ interface TraktService {
 
   @GET("search/show?extended=full&limit=50")
   suspend fun fetchSearchResults(@Query("query") queryText: String): List<SearchResult>
+
+  @GET("shows/{traktId}/seasons?extended=full,episodes")
+  suspend fun fetchSeasons(@Path("traktId") traktId: Long): List<Season>
 }

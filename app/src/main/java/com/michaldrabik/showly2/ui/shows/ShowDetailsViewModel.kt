@@ -3,11 +3,13 @@ package com.michaldrabik.showly2.ui.shows
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.ImageType.POSTER
+import com.michaldrabik.showly2.model.ImageType
+import com.michaldrabik.showly2.model.ImageType.FANART
+import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.shows.related.RelatedListItem
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
+import com.michaldrabik.showly2.ui.shows.seasons.SeasonListItem
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,41 +20,61 @@ class ShowDetailsViewModel @Inject constructor(
   val uiStream by lazy { MutableLiveData<ShowDetailsUiModel>() }
 
   fun loadShowDetails(id: Long) {
+    //TODO Errors
     viewModelScope.launch {
-      try {
-        uiStream.value = ShowDetailsUiModel(showLoading = true)
-        val show = interactor.loadShowDetails(id)
-        uiStream.value = ShowDetailsUiModel(show, showLoading = false, imageLoading = true)
+      uiStream.value = ShowDetailsUiModel(showLoading = true)
 
-        coroutineScope {
-          launch {
-            val image = interactor.loadBackgroundImage(show)
-            uiStream.value = ShowDetailsUiModel(image = image)
-          }
+      val showAsync = async { interactor.loadShowDetails(id) }
+      val nextEpisodeAsync = async { interactor.loadNextEpisode(id) }
+      val show = showAsync.await()
+      val nextEpisode = nextEpisodeAsync.await()
 
-          launch {
-            val actors = interactor.loadActors(show)
-            uiStream.value = ShowDetailsUiModel(actors = actors)
-          }
+      uiStream.value = ShowDetailsUiModel(show = show, nextEpisode = nextEpisode, showLoading = false)
 
-          launch {
-            val relatedShows = interactor.loadRelatedShows(show).map {
-              val image = interactor.findCachedImage(it, POSTER)
-              RelatedListItem(it, image)
-            }
-            uiStream.value = ShowDetailsUiModel(relatedShows = relatedShows)
-          }
+      launch { loadBackgroundImage(show) }
+      launch { loadActors(show) }
+      launch { loadSeasons(show) }
+      launch { loadRelatedShows(show) }
+    }
+  }
 
-          val nextEpisode = interactor.loadNextEpisode(show)
-          if (nextEpisode?.firstAired != null) {
-            delay(250)
-            uiStream.value = ShowDetailsUiModel(nextEpisode = nextEpisode)
-          }
-        }
-      } catch (error: Throwable) {
-        //TODO
-        uiStream.value = ShowDetailsUiModel(imageLoading = false)
+  private suspend fun loadBackgroundImage(show: Show) {
+    try {
+      uiStream.value = ShowDetailsUiModel(imageLoading = true)
+      val backgroundImage = interactor.loadBackgroundImage(show)
+      uiStream.value = ShowDetailsUiModel(image = backgroundImage, imageLoading = false)
+    } catch (e: Exception) {
+      uiStream.value = ShowDetailsUiModel(image = Image.createUnavailable(FANART), imageLoading = false)
+    }
+  }
+
+  private suspend fun loadActors(show: Show) {
+    try {
+      val actors = interactor.loadActors(show)
+      uiStream.value = ShowDetailsUiModel(actors = actors)
+    } catch (e: Exception) {
+      uiStream.value = ShowDetailsUiModel(actors = emptyList())
+    }
+  }
+
+  private suspend fun loadSeasons(show: Show) {
+    try {
+      val seasons = interactor.loadSeasons(show)
+      uiStream.value = ShowDetailsUiModel(seasons = seasons.map { SeasonListItem(it) })
+    } catch (e: Exception) {
+      uiStream.value = ShowDetailsUiModel(seasons = emptyList())
+    }
+  }
+
+  private suspend fun loadRelatedShows(show: Show) {
+    try {
+      val relatedShows = interactor.loadRelatedShows(show).map {
+        val image = interactor.findCachedImage(it, ImageType.POSTER)
+        RelatedListItem(it, image)
       }
+      uiStream.value = ShowDetailsUiModel(relatedShows = relatedShows)
+    } catch (e: Exception) {
+      uiStream.value = ShowDetailsUiModel(relatedShows = emptyList())
     }
   }
 
