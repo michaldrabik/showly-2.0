@@ -21,18 +21,7 @@ import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.shows.actors.ActorsAdapter
 import com.michaldrabik.showly2.ui.shows.related.RelatedShowAdapter
-import com.michaldrabik.showly2.utilities.extensions.fadeIf
-import com.michaldrabik.showly2.utilities.extensions.fadeIn
-import com.michaldrabik.showly2.utilities.extensions.getQuantityString
-import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.nowUtc
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.screenHeight
-import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
-import com.michaldrabik.showly2.utilities.extensions.visible
-import com.michaldrabik.showly2.utilities.extensions.visibleIf
-import com.michaldrabik.showly2.utilities.extensions.withFailListener
-import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
+import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import org.threeten.bp.Duration
@@ -140,6 +129,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       relatedAdapter.setItems(it)
       showDetailsRelatedRecycler.fadeIf(it.isNotEmpty())
       showDetailsRelatedLabel.fadeIf(it.isNotEmpty())
+      separator2.fadeIf(it.isNotEmpty())
     }
     uiModel.updateRelatedShow?.let { relatedAdapter.updateItem(it) }
   }
