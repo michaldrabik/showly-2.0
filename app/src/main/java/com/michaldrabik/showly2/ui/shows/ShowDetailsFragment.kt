@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -21,6 +22,7 @@ import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.shows.actors.ActorsAdapter
 import com.michaldrabik.showly2.ui.shows.related.RelatedShowAdapter
+import com.michaldrabik.showly2.ui.shows.seasons.SeasonsAdapter
 import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
@@ -39,8 +41,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   override val layoutResId = R.layout.fragment_show_details
 
   private val showId by lazy { arguments?.getLong(ARG_SHOW_ID, -1) ?: -1 }
+
   private val actorsAdapter by lazy { ActorsAdapter() }
   private val relatedAdapter by lazy { RelatedShowAdapter() }
+  private val seasonsAdapter by lazy { SeasonsAdapter() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -58,6 +62,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     setupView()
     setupActorsList()
     setupRelatedList()
+    setupSeasonsList()
     viewModel.loadShowDetails(showId)
   }
 
@@ -77,7 +82,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_actors)!!)
       })
     }
-    actorsAdapter.onItemClickListener = {
+    actorsAdapter.itemClickListener = {
       showDetailsRoot.showInfoSnackbar(getString(R.string.textActorRole, it.name, it.role))
     }
   }
@@ -95,6 +100,16 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     relatedAdapter.itemClickListener = {
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, it.show.ids.trakt) }
       findNavController().navigate(R.id.actionShowDetailsFragmentToSelf, bundle)
+    }
+  }
+
+  private fun setupSeasonsList() {
+    val context = requireContext()
+    showDetailsSeasonsRecycler.apply {
+      adapter = seasonsAdapter
+      layoutManager = LinearLayoutManager(context, VERTICAL, false)
+    }
+    seasonsAdapter.itemClickListener = {
     }
   }
 
@@ -125,11 +140,17 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       actorsAdapter.setItems(it)
       showDetailsActorsRecycler.fadeIf(it.isNotEmpty())
     }
+    uiModel.seasons?.let {
+      seasonsAdapter.setItems(it)
+      showDetailsSeasonsRecycler.fadeIf(it.isNotEmpty())
+      showDetailsSeasonsLabel.fadeIf(it.isNotEmpty())
+      separator2.fadeIf(it.isNotEmpty())
+    }
     uiModel.relatedShows?.let {
       relatedAdapter.setItems(it)
       showDetailsRelatedRecycler.fadeIf(it.isNotEmpty())
       showDetailsRelatedLabel.fadeIf(it.isNotEmpty())
-      separator2.fadeIf(it.isNotEmpty())
+      separator3.fadeIf(it.isNotEmpty())
     }
     uiModel.updateRelatedShow?.let { relatedAdapter.updateItem(it) }
   }

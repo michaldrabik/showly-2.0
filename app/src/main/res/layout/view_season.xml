@@ -13,8 +13,8 @@
     android:layout_height="wrap_content"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:paddingTop="@dimen/spaceMicro"
-    android:paddingBottom="@dimen/spaceMicro"
+    android:paddingTop="6dp"
+    android:paddingBottom="6dp"
     >
 
     <androidx.appcompat.widget.AppCompatCheckBox
@@ -32,12 +32,14 @@
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceSmall"
       android:gravity="center_vertical"
+      android:minWidth="80dp"
+      android:paddingBottom="@dimen/spaceMicro"
       android:textColor="@color/colorTextPrimary"
-      android:textSize="16sp"
+      android:textSize="14sp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toEndOf="@id/seasonViewCheckbox"
       app:layout_constraintTop_toTopOf="parent"
-      tools:text="Season 1 "
+      tools:text="Season 00"
       />
 
     <ImageView
@@ -55,9 +57,8 @@
       style="@style/Widget.AppCompat.ProgressBar.Horizontal"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/spaceSmall"
+      android:layout_marginStart="@dimen/spaceTiny"
       android:layout_marginEnd="@dimen/spaceSmall"
-      android:progress="75"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toStartOf="@id/seasonViewArrow"
       app:layout_constraintStart_toEndOf="@id/seasonViewTitle"

@@ -1,0 +1,30 @@
+package com.michaldrabik.showly2.ui.shows.seasons
+
+import android.content.Context
+import android.util.AttributeSet
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.FrameLayout
+import com.michaldrabik.showly2.R
+import kotlinx.android.synthetic.main.view_season.view.*
+
+class SeasonView @JvmOverloads constructor(
+  context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
+
+  init {
+    inflate(context, R.layout.view_season, this)
+    layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+  }
+
+  fun bind(item: SeasonListItem, clickListener: (SeasonListItem) -> Unit) {
+    clear()
+    setOnClickListener { clickListener(item) }
+
+    seasonViewTitle.text = context.getString(R.string.textSeason, item.season.number)
+  }
+
+  private fun clear() {
+    seasonViewTitle.text = ""
+  }
+}
