@@ -9,7 +9,6 @@ import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.shows.related.RelatedListItem
 import com.michaldrabik.showly2.ui.shows.seasons.SeasonListItem
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,20 +22,26 @@ class ShowDetailsViewModel @Inject constructor(
     //TODO Errors
     viewModelScope.launch {
       uiStream.value = ShowDetailsUiModel(showLoading = true)
+      val show = interactor.loadShowDetails(id)
+      uiStream.value = ShowDetailsUiModel(show = show, showLoading = false)
 
-      val showAsync = async { interactor.loadShowDetails(id) }
-      val nextEpisodeAsync = async { interactor.loadNextEpisode(id) }
-      val show = showAsync.await()
-      val nextEpisode = nextEpisodeAsync.await()
-
-      uiStream.value = ShowDetailsUiModel(show = show, nextEpisode = nextEpisode, showLoading = false)
-
+      launch { loadNextEpisode(show) }
       launch { loadBackgroundImage(show) }
       launch { loadActors(show) }
       launch { loadSeasons(show) }
       launch { loadRelatedShows(show) }
     }
   }
+
+  private suspend fun loadNextEpisode(show: Show) {
+    try {
+      val episode = interactor.loadNextEpisode(show.ids.trakt)
+      uiStream.value = ShowDetailsUiModel(nextEpisode = episode)
+    } catch (e: Exception) {
+      //NOOP
+    }
+  }
+
 
   private suspend fun loadBackgroundImage(show: Show) {
     try {
