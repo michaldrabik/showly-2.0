@@ -3,7 +3,10 @@ package com.michaldrabik.showly2.ui.show
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -19,6 +22,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
+import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.actors.ActorsAdapter
 import com.michaldrabik.showly2.ui.show.related.RelatedShowAdapter
@@ -49,6 +53,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     appComponent().inject(this)
+    handleBackPressed()
   }
 
   override fun createViewModel() =
@@ -76,6 +81,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   private fun setupActorsList() {
     val context = requireContext()
     showDetailsActorsRecycler.apply {
+      setHasFixedSize(true)
       adapter = actorsAdapter
       layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
       addItemDecoration(DividerItemDecoration(context, HORIZONTAL).apply {
@@ -90,6 +96,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   private fun setupRelatedList() {
     val context = requireContext()
     showDetailsRelatedRecycler.apply {
+      setHasFixedSize(true)
       adapter = relatedAdapter
       layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
       addItemDecoration(DividerItemDecoration(context, HORIZONTAL).apply {
@@ -106,10 +113,43 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   private fun setupSeasonsList() {
     val context = requireContext()
     showDetailsSeasonsRecycler.apply {
+      setHasFixedSize(true)
       adapter = seasonsAdapter
       layoutManager = LinearLayoutManager(context, VERTICAL, false)
     }
-    seasonsAdapter.itemClickListener = {
+    seasonsAdapter.itemClickListener = { showEpisodesView(it.season) }
+  }
+
+  private fun showEpisodesView(season: Season) {
+    val animationEnter = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_right)
+    val animationExit = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right)
+
+    showDetailsEpisodesView.run {
+      bind(season)
+      fadeIn(275) {
+        bindEpisodes(season.episodes)
+      }
+      startAnimation(animationEnter)
+    }
+
+    showDetailsMainLayout.run {
+      fadeOut()
+      startAnimation(animationExit)
+    }
+  }
+
+  private fun hideEpisodesView() {
+    val animationEnter = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_left)
+    val animationExit = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_left)
+
+    showDetailsEpisodesView.run {
+      fadeOut()
+      startAnimation(animationExit)
+    }
+
+    showDetailsMainLayout.run {
+      fadeIn()
+      startAnimation(animationEnter)
     }
   }
 
@@ -189,5 +229,17 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       .withFailListener { showDetailsImageProgress.gone() }
       .withSuccessListener { showDetailsImageProgress.gone() }
       .into(showDetailsImage)
+  }
+
+  private fun handleBackPressed() {
+    requireActivity().onBackPressedDispatcher.addCallback(this) {
+      if (showDetailsEpisodesView.isVisible) {
+        hideEpisodesView()
+        return@addCallback
+      }
+      remove()
+      getMainActivity().showNavigation()
+      findNavController().popBackStack()
+    }
   }
 }

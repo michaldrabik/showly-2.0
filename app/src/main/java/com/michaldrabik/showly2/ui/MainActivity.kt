@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui
 
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
@@ -28,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     appComponent().inject(this)
     setContentView(R.layout.activity_main)
     setupNavigation()
+    setupNavigationBackHandler()
     restoreState(savedInstanceState)
   }
 
@@ -49,15 +51,19 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
-  override fun onBackPressed() {
-    navigationHost.findNavController().run {
-      if (currentDestination?.id in mainDestinations && currentDestination?.id != R.id.watchlistFragment) {
-        bottomNavigationView.selectedItemId = R.id.menuWatchlist
-        return
+  private fun setupNavigationBackHandler() {
+    onBackPressedDispatcher.addCallback(this) {
+      navigationHost.findNavController().run {
+        if (currentDestination?.id == R.id.watchlistFragment) {
+          remove()
+          super.onBackPressed()
+        }
+        if (currentDestination?.id == R.id.discoverFragment) {
+          bottomNavigationView.selectedItemId = R.id.menuWatchlist
+        }
       }
-      super.onBackPressed()
+//    showNavigation()
     }
-    showNavigation()
   }
 
   fun hideNavigation() {
@@ -68,7 +74,7 @@ class MainActivity : AppCompatActivity() {
       .start()
   }
 
-  private fun showNavigation() {
+  fun showNavigation() {
     bottomNavigationWrapper.animate()
       .translationY(0F)
       .setDuration(NAVIGATION_TRANSITION_DURATION_MS)

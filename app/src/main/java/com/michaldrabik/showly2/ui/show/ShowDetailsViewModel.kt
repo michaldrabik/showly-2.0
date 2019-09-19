@@ -9,6 +9,7 @@ import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -73,6 +74,7 @@ class ShowDetailsViewModel @Inject constructor(
 
   private suspend fun loadRelatedShows(show: Show) {
     try {
+      delay(750)
       val relatedShows = interactor.loadRelatedShows(show).map {
         val image = interactor.findCachedImage(it, ImageType.POSTER)
         RelatedListItem(it, image)

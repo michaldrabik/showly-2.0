@@ -20,6 +20,7 @@
   <string name="textYouMayAlsoLike">You may also like:</string>
   <string name="textSeasons">Seasons:</string>
   <string name="textSeason">Season %1$d</string>
+  <string name="textEpisode">Episode %1$d</string>
 
   <plurals name="textDaysToAir">
     <item quantity="zero">Airs today.</item>

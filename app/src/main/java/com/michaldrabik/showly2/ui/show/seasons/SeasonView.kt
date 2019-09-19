@@ -15,6 +15,8 @@ class SeasonView @JvmOverloads constructor(
   init {
     inflate(context, R.layout.view_season, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    clipChildren = false
+    clipToPadding = false
   }
 
   fun bind(item: SeasonListItem, clickListener: (SeasonListItem) -> Unit) {

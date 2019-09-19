@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/showDetailsRoot"
@@ -8,19 +9,19 @@
   >
 
   <androidx.core.widget.NestedScrollView
+    android:id="@+id/showDetailsMainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:scrollbars="none"
+    android:visibility="gone"
+    tools:visibility="visible"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-      android:id="@+id/showDetailsMainLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:paddingBottom="@dimen/spaceMedium"
-      android:visibility="gone"
-      tools:visibility="visible"
       >
 
       <androidx.constraintlayout.widget.Guideline
@@ -202,7 +203,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/actorTileImageHeight"
         android:layout_marginTop="@dimen/spaceMedium"
-        android:clipChildren="false"
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingStart="@dimen/spaceNormal"
@@ -234,6 +234,8 @@
         android:id="@+id/showDetailsSeasonsRecycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:nestedScrollingEnabled="false"
         android:overScrollMode="never"
         android:paddingStart="10dp"
@@ -296,6 +298,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
   </androidx.core.widget.NestedScrollView>
+
+  <com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesView
+    android:id="@+id/showDetailsEpisodesView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    />
 
   <ProgressBar
     android:id="@+id/showDetailsMainProgress"

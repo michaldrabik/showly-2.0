@@ -31,7 +31,7 @@
     >
     <action
       android:id="@+id/actionDiscoverFragmentToShowDetailsFragment"
-      app:destination="@id/showDetailsNavigation"
+      app:destination="@id/showDetailsFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
@@ -51,6 +51,22 @@
     />
 
   <fragment
+    android:id="@+id/showDetailsFragment"
+    android:name="com.michaldrabik.showly2.ui.show.ShowDetailsFragment"
+    android:label="fragmentShowDetails"
+    tools:layout="@layout/fragment_show_details"
+    >
+    <action
+      android:id="@+id/actionShowDetailsFragmentToSelf"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:exitAnim="@anim/anim_fade_out"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
+
+  <fragment
     android:id="@+id/searchFragment"
     android:name="com.michaldrabik.showly2.ui.search.SearchFragment"
     android:label="fragmentSearch"
@@ -58,35 +74,11 @@
     >
     <action
       android:id="@+id/actionSearchFragmentToShowDetailsFragment"
-      app:destination="@id/showDetailsNavigation"
+      app:destination="@id/showDetailsFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
   </fragment>
-
-  <navigation
-    android:id="@+id/showDetailsNavigation"
-    android:label="Show Details"
-    app:startDestination="@id/showDetailsFragment"
-    >
-
-    <fragment
-      android:id="@+id/showDetailsFragment"
-      android:name="com.michaldrabik.showly2.ui.show.ShowDetailsFragment"
-      android:label="fragmentShowDetails"
-      tools:layout="@layout/fragment_show_details"
-      >
-      <action
-        android:id="@+id/actionShowDetailsFragmentToSelf"
-        app:destination="@id/showDetailsFragment"
-        app:enterAnim="@anim/anim_fade_in"
-        app:exitAnim="@anim/anim_fade_out"
-        app:launchSingleTop="true"
-        app:popExitAnim="@anim/anim_fade_out"
-        />
-    </fragment>
-
-  </navigation>
 
 </navigation>

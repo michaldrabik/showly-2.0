@@ -27,4 +27,6 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment() {
   }
 
   protected fun getMainActivity() = requireActivity() as MainActivity
+
+  protected open fun onBackPressed() = Unit
 }
