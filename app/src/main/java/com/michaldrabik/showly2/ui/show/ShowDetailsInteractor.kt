@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.shows
+package com.michaldrabik.showly2.ui.show
 
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.UserManager

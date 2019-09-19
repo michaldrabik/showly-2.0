@@ -73,7 +73,7 @@
 
     <fragment
       android:id="@+id/showDetailsFragment"
-      android:name="com.michaldrabik.showly2.ui.shows.ShowDetailsFragment"
+      android:name="com.michaldrabik.showly2.ui.show.ShowDetailsFragment"
       android:label="fragmentShowDetails"
       tools:layout="@layout/fragment_show_details"
       >

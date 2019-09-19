@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.shows.seasons
+package com.michaldrabik.showly2.ui.show.seasons
 
 import android.content.Context
 import android.util.AttributeSet

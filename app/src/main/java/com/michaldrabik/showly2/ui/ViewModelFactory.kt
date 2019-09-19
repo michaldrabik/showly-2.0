@@ -7,8 +7,8 @@ import com.michaldrabik.showly2.ui.discover.DiscoverInteractor
 import com.michaldrabik.showly2.ui.discover.DiscoverViewModel
 import com.michaldrabik.showly2.ui.search.SearchInteractor
 import com.michaldrabik.showly2.ui.search.SearchViewModel
-import com.michaldrabik.showly2.ui.shows.ShowDetailsInteractor
-import com.michaldrabik.showly2.ui.shows.ShowDetailsViewModel
+import com.michaldrabik.showly2.ui.show.ShowDetailsInteractor
+import com.michaldrabik.showly2.ui.show.ShowDetailsViewModel
 import javax.inject.Inject
 
 @AppScope

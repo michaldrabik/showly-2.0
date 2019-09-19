@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.shows
+package com.michaldrabik.showly2.ui.show
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -7,8 +7,8 @@ import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import com.michaldrabik.showly2.ui.shows.related.RelatedListItem
-import com.michaldrabik.showly2.ui.shows.seasons.SeasonListItem
+import com.michaldrabik.showly2.ui.show.related.RelatedListItem
+import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

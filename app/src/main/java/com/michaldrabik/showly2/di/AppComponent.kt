@@ -4,7 +4,7 @@ import com.michaldrabik.network.di.CloudComponent
 import com.michaldrabik.showly2.ui.MainActivity
 import com.michaldrabik.showly2.ui.discover.DiscoverFragment
 import com.michaldrabik.showly2.ui.search.SearchFragment
-import com.michaldrabik.showly2.ui.shows.ShowDetailsFragment
+import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
 import com.michaldrabik.storage.di.StorageComponent
 import dagger.Component
 

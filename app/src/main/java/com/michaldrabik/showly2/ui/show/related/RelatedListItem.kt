@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.shows.related
+package com.michaldrabik.showly2.ui.show.related
 
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Show

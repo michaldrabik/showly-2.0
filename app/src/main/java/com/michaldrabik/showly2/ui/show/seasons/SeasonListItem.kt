@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.shows.seasons
+package com.michaldrabik.showly2.ui.show.seasons
 
 import com.michaldrabik.showly2.model.Season
 

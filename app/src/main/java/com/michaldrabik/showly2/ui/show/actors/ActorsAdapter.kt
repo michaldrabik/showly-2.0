@@ -1,16 +1,17 @@
-package com.michaldrabik.showly2.ui.shows.seasons
+package com.michaldrabik.showly2.ui.show.actors
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.michaldrabik.showly2.model.Actor
 
-class SeasonsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ActorsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-  private val items: MutableList<SeasonListItem> = mutableListOf()
+  private val items: MutableList<Actor> = mutableListOf()
 
-  var itemClickListener: (SeasonListItem) -> Unit = {}
+  var itemClickListener: (Actor) -> Unit = {}
 
-  fun setItems(items: List<SeasonListItem>) {
+  fun setItems(items: List<Actor>) {
     this.items.apply {
       clear()
       addAll(items)
@@ -19,10 +20,10 @@ class SeasonsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ViewHolderShow(SeasonView(parent.context))
+    ViewHolderShow(ActorView(parent.context))
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-    (holder.itemView as SeasonView).bind(items[position], itemClickListener)
+    (holder.itemView as ActorView).bind(items[position], itemClickListener)
   }
 
   override fun getItemCount() = items.size

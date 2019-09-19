@@ -16,7 +16,7 @@ import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.search.recycler.SearchAdapter
 import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
 import com.michaldrabik.showly2.ui.search.views.RecentSearchView
-import com.michaldrabik.showly2.ui.shows.ShowDetailsFragment.Companion.ARG_SHOW_ID
+import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.view_search.*

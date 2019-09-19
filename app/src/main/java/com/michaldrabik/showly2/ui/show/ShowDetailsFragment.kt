@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.shows
+package com.michaldrabik.showly2.ui.show
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -20,9 +20,9 @@ import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
-import com.michaldrabik.showly2.ui.shows.actors.ActorsAdapter
-import com.michaldrabik.showly2.ui.shows.related.RelatedShowAdapter
-import com.michaldrabik.showly2.ui.shows.seasons.SeasonsAdapter
+import com.michaldrabik.showly2.ui.show.actors.ActorsAdapter
+import com.michaldrabik.showly2.ui.show.related.RelatedShowAdapter
+import com.michaldrabik.showly2.ui.show.seasons.SeasonsAdapter
 import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
