@@ -24,6 +24,7 @@ class SeasonMapper @Inject constructor(
     season.airedEpisodes,
     season.title,
     if (season.firstAired.isBlank()) null else ZonedDateTime.parse(season.firstAired),
+    season.overview,
     season.episodes.map { episodeMapper.fromNetwork(it) }
   )
 }

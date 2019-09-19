@@ -25,6 +25,7 @@ class SeasonConverter(
       json.aired_episodes ?: -1,
       json.title ?: "",
       json.first_aired ?: "",
+      json.overview ?: "",
       json.episodes?.map {
         episodeConverter.fromJson(it)
       } ?: emptyList()

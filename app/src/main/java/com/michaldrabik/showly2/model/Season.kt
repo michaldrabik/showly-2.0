@@ -9,5 +9,6 @@ data class Season(
   val airedEpisodes: Int,
   val title: String,
   val firstAired: ZonedDateTime?,
+  val overview: String,
   val episodes: List<Episode>
 )

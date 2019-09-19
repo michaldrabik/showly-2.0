@@ -7,5 +7,6 @@ data class SeasonJson(
   val aired_episodes: Int?,
   val title: String?,
   val first_aired: String?,
+  val overview: String?,
   val episodes: List<EpisodeJson>?
 )
