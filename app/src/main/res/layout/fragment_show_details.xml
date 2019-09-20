@@ -114,18 +114,35 @@
         tools:text="7.62 (9239 votes)"
         />
 
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/showDetailsAddButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="@string/textAdd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsRating"
+        app:strokeColor="@color/colorAccent"
+        />
+
       <include
         android:id="@+id/showDetailsEpisodeCard"
         layout="@layout/fragment_show_details_next_episode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/spaceSmall"
         android:layout_marginRight="@dimen/spaceNormal"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsStatus"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsAddButton"
         tools:visibility="visible"
         />
 
