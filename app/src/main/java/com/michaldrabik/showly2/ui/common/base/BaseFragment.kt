@@ -18,13 +18,15 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment() {
 
   protected abstract fun createViewModel(): T
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    viewModel = createViewModel()
+  }
+
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?,
     savedInstanceState: Bundle?
-  ): View? {
-    viewModel = createViewModel()
-    return inflater.inflate(layoutResId, container, false)
-  }
+  ): View = inflater.inflate(layoutResId, container, false)
 
   protected fun getMainActivity() = requireActivity() as MainActivity
 

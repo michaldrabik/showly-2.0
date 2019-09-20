@@ -43,7 +43,6 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-
   private suspend fun loadBackgroundImage(show: Show) {
     try {
       uiStream.value = ShowDetailsUiModel(imageLoading = true)

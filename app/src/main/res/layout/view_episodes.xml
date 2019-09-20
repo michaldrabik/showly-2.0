@@ -23,6 +23,16 @@
     tools:text="Season 2"
     />
 
+  <androidx.appcompat.widget.AppCompatCheckBox
+    android:id="@+id/episodesCheckbox"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    app:layout_constraintBottom_toTopOf="@id/episodesOverview"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
   <com.michaldrabik.showly2.ui.common.views.FoldableTextView
     android:id="@+id/episodesOverview"
     android:layout_width="wrap_content"

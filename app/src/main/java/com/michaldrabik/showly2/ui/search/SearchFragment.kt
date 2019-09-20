@@ -33,18 +33,16 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
   private lateinit var layoutManager: LinearLayoutManager
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
     appComponent().inject(this)
+    super.onCreate(savedInstanceState)
   }
 
   override fun createViewModel() =
     ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
-      .apply {
-        uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-      }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    viewModel.uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
     setupView()
     setupRecycler()
     if (savedInstanceState == null && !isInitialized) isInitialized = true

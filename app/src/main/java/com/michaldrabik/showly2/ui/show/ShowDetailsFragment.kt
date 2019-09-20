@@ -48,15 +48,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   private val seasonsAdapter by lazy { SeasonsAdapter() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
     appComponent().inject(this)
+    super.onCreate(savedInstanceState)
   }
 
   override fun createViewModel() =
     ViewModelProvider(this, viewModelFactory).get(ShowDetailsViewModel::class.java)
-      .apply {
-        uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-      }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -64,6 +61,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     setupActorsList()
     setupRelatedList()
     setupSeasonsList()
+
+    viewModel.uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
     viewModel.loadShowDetails(showId)
   }
 
@@ -153,10 +152,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   }
 
   private fun render(uiModel: ShowDetailsUiModel) {
-    uiModel.showLoading?.let {
-      showDetailsMainLayout.fadeIf(!it)
-      showDetailsMainProgress.visibleIf(it)
-    }
     uiModel.show?.let { show ->
       showDetailsTitle.text = show.title
       showDetailsDescription.text = show.overview
@@ -164,6 +159,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       showDetailsExtraInfo.text =
         "${show.network} ${show.year} | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
       showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
+    }
+    uiModel.showLoading?.let {
+      showDetailsMainLayout.fadeIf(!it)
+      showDetailsMainProgress.visibleIf(it)
     }
     uiModel.nextEpisode?.let { renderNextEpisode(it) }
     uiModel.imageLoading?.let { showDetailsImageProgress.visibleIf(it) }

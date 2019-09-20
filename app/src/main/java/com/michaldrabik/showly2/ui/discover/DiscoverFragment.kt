@@ -30,19 +30,18 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
   private lateinit var layoutManager: GridLayoutManager
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
     appComponent().inject(this)
+    super.onCreate(savedInstanceState)
   }
 
   override fun createViewModel() =
     ViewModelProvider(this, viewModelFactory).get(DiscoverViewModel::class.java)
-      .apply {
-        uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-      }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
+
+    viewModel.uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
     viewModel.loadTrendingShows()
   }
 
