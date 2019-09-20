@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.fixBlinking
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -20,7 +21,6 @@ class MainActivity : AppCompatActivity() {
 
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
-  private val mainDestinations = arrayOf(R.id.watchlistFragment, R.id.discoverFragment)
 
   @Inject lateinit var uiCache: UiCache
 
@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun setupNavigation() {
+    bottomNavigationView.fixBlinking()
     bottomNavigationView.setOnNavigationItemSelectedListener { item ->
       if (bottomNavigationView.selectedItemId == item.itemId) {
         return@setOnNavigationItemSelectedListener true
