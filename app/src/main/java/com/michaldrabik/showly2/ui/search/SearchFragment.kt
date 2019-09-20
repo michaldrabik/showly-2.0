@@ -4,6 +4,7 @@ import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.activity.addCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -47,6 +48,11 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
     setupView()
     setupRecycler()
     if (savedInstanceState == null && !isInitialized) isInitialized = true
+  }
+
+  override fun onResume() {
+    super.onResume()
+    handleBackPressed()
   }
 
   private fun setupView() {
@@ -154,6 +160,15 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
         }
       }
       searchRecentsLayout.addView(view)
+    }
+  }
+
+  private fun handleBackPressed() {
+    val dispatcher = requireActivity().onBackPressedDispatcher
+    dispatcher.addCallback(viewLifecycleOwner) {
+      getMainActivity().showNavigation()
+      remove()
+      findNavController().popBackStack()
     }
   }
 }

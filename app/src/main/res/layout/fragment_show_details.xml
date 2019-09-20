@@ -129,7 +129,7 @@
         tools:visibility="visible"
         />
 
-      <TextView
+      <com.michaldrabik.showly2.ui.common.views.FoldableTextView
         android:id="@+id/showDetailsDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -137,30 +137,12 @@
         android:layout_marginTop="@dimen/spaceMedium"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:ellipsize="end"
-        android:maxLines="3"
         android:textColor="@color/colorTextPrimary"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showDetailsEpisodeCard"
         tools:text="Description"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsMoreButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceSmall"
-        android:layout_marginEnd="@dimen/spaceNormal"
-        android:ellipsize="end"
-        android:maxLines="6"
-        android:text="@string/buttonShowMore"
-        android:textColor="@color/colorAccent"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
         />
 
       <TextView
@@ -207,11 +189,20 @@
         android:overScrollMode="never"
         android:paddingStart="@dimen/spaceNormal"
         android:paddingEnd="@dimen/spaceNormal"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsMoreButton"
-        tools:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
+        />
+
+      <ProgressBar
+        android:id="@+id/showDetailsActorsProgress"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:indeterminateTint="@color/colorProgressGray"
+        app:layout_constraintBottom_toBottomOf="@+id/showDetailsActorsRecycler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/showDetailsActorsRecycler"
         />
 
       <TextView

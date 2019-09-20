@@ -23,14 +23,13 @@
     tools:text="Season 2"
     />
 
-  <TextView
+  <com.michaldrabik.showly2.ui.common.views.FoldableTextView
     android:id="@+id/episodesOverview"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/spaceSmall"
     android:ellipsize="end"
     android:gravity="center_vertical"
-    android:maxLines="3"
     android:paddingLeft="@dimen/spaceNormal"
     android:paddingRight="@dimen/spaceNormal"
     android:textColor="@color/colorTextPrimary"

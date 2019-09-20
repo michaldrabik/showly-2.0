@@ -62,7 +62,6 @@ class MainActivity : AppCompatActivity() {
           bottomNavigationView.selectedItemId = R.id.menuWatchlist
         }
       }
-//    showNavigation()
     }
   }
 

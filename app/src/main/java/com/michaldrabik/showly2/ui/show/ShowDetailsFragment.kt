@@ -37,9 +37,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
 
   companion object {
     const val ARG_SHOW_ID = "ARG_SHOW_ID"
-
-    private const val OVERVIEW_MIN_LINES = 3
-    private const val OVERVIEW_MAX_LINES = 100
   }
 
   override val layoutResId = R.layout.fragment_show_details
@@ -53,7 +50,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     appComponent().inject(this)
-    handleBackPressed()
   }
 
   override fun createViewModel() =
@@ -71,10 +67,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     viewModel.loadShowDetails(showId)
   }
 
+  override fun onResume() {
+    super.onResume()
+    handleBackPressed()
+  }
+
   private fun setupView() {
     showDetailsImageGuideline.setGuidelineBegin((screenHeight() * 0.33).toInt())
-    showDetailsDescription.onClick { toggleDescription() }
-    showDetailsMoreButton.onClick { toggleDescription() }
     showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
   }
 
@@ -153,13 +152,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     }
   }
 
-  private fun toggleDescription() {
-    showDetailsDescription.apply {
-      maxLines = if (maxLines == OVERVIEW_MAX_LINES) OVERVIEW_MIN_LINES else OVERVIEW_MAX_LINES
-      showDetailsMoreButton.setText(if (maxLines == OVERVIEW_MAX_LINES) R.string.buttonShowLess else R.string.buttonShowMore)
-    }
-  }
-
   private fun render(uiModel: ShowDetailsUiModel) {
     uiModel.showLoading?.let {
       showDetailsMainLayout.fadeIf(!it)
@@ -170,7 +162,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       showDetailsDescription.text = show.overview
       showDetailsStatus.text = show.status.split(" ").joinToString(" ") { it.capitalize() }
       showDetailsExtraInfo.text =
-        "${show.network} | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
+        "${show.network} ${show.year} | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
       showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
     }
     uiModel.nextEpisode?.let { renderNextEpisode(it) }
@@ -179,6 +171,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     uiModel.actors?.let {
       actorsAdapter.setItems(it)
       showDetailsActorsRecycler.fadeIf(it.isNotEmpty())
+      showDetailsActorsProgress.gone()
     }
     uiModel.seasons?.let {
       seasonsAdapter.setItems(it)
@@ -232,7 +225,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   }
 
   private fun handleBackPressed() {
-    requireActivity().onBackPressedDispatcher.addCallback(this) {
+    val dispatcher = requireActivity().onBackPressedDispatcher
+    dispatcher.addCallback(viewLifecycleOwner) {
       if (showDetailsEpisodesView.isVisible) {
         hideEpisodesView()
         return@addCallback
