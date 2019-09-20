@@ -2,6 +2,7 @@ package com.michaldrabik.showly2
 
 import android.app.Activity
 import android.app.Application
+import android.os.StrictMode
 import androidx.fragment.app.Fragment
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.michaldrabik.network.di.DaggerCloudComponent
@@ -18,6 +19,7 @@ class App : Application() {
     super.onCreate()
     createComponents()
     AndroidThreeTen.init(this)
+    setStrictMode()
   }
 
   private fun createComponents() {
@@ -29,6 +31,17 @@ class App : Application() {
           .build()
       )
       .build()
+  }
+
+  private fun setStrictMode() {
+    if (BuildConfig.DEBUG) {
+      StrictMode.setThreadPolicy(
+        StrictMode.ThreadPolicy.Builder()
+          .detectAll()
+          .penaltyLog()
+          .build()
+      )
+    }
   }
 }
 
