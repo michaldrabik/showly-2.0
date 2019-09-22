@@ -27,6 +27,7 @@ import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.actors.ActorsAdapter
 import com.michaldrabik.showly2.ui.show.related.RelatedShowAdapter
 import com.michaldrabik.showly2.ui.show.seasons.SeasonsAdapter
+import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
@@ -74,6 +75,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   private fun setupView() {
     showDetailsImageGuideline.setGuidelineBegin((screenHeight() * 0.33).toInt())
     showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
+    showDetailsEpisodesView.itemClickListener = { showEpisodeDetails(it) }
   }
 
   private fun setupActorsList() {
@@ -151,6 +153,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     }
   }
 
+  private fun showEpisodeDetails(episode: Episode) {
+    val modal = EpisodeDetailsBottomSheet.create(episode)
+    modal.show(requireActivity().supportFragmentManager, "MODAL")
+  }
+
   private fun render(uiModel: ShowDetailsUiModel) {
     uiModel.show?.let { show ->
       showDetailsTitle.text = show.title
@@ -191,6 +198,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     nextEpisode.run {
       showDetailsEpisodeText.text = "${toDisplayString()} - '$title'"
       showDetailsEpisodeCard.visible()
+      showDetailsEpisodeCard.onClick { showEpisodeDetails(nextEpisode) }
 
       val timeToAir = Duration.between(nowUtc(), firstAired)
       if (timeToAir.seconds < 0) {

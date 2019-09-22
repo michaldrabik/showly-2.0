@@ -2,7 +2,7 @@
 <shape
   xmlns:android="http://schemas.android.com/apk/res/android">
   <size
-    android:height="12dp"
-    android:width="12dp"
+    android:width="@dimen/spaceMicro"
+    android:height="@dimen/spaceMicro"
     />
 </shape>

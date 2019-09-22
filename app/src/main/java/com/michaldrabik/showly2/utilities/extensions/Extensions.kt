@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
+import android.util.TypedValue
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -131,4 +132,9 @@ fun BottomNavigationView.fixBlinking() {
     isAccessible = true
     set(menuView, AutoTransition().apply { duration = 0L })
   }
+}
+
+fun View.addRipple() = with(TypedValue()) {
+  context.theme.resolveAttribute(android.R.attr.selectableItemBackground, this, true)
+  setBackgroundResource(resourceId)
 }

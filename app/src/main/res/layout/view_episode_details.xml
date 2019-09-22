@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/episodeDetailsRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:paddingBottom="@dimen/spaceNormal"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  >
+
+  <ImageView
+    android:id="@+id/episodeDetailsImage"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <ProgressBar
+    android:id="@+id/episodeDetailsProgress"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:indeterminateTint="@color/colorProgressGray"
+    app:layout_constraintBottom_toBottomOf="@id/episodeDetailsImage"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/episodeDetailsImage"
+    />
+
+  <View
+    android:id="@+id/episodeDetailsSeparator"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@color/colorAccent"
+    app:layout_constraintTop_toBottomOf="@id/episodeDetailsImage"
+    />
+
+  <TextView
+    android:id="@+id/episodeDetailsName"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:ellipsize="end"
+    android:gravity="center_vertical"
+    android:maxLines="1"
+    android:textColor="@color/colorTextSecondary"
+    android:textSize="14sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/episodeDetailsSeparator"
+    tools:text="Season 1 Episode 99"
+    />
+
+  <TextView
+    android:id="@+id/episodeDetailsTitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:ellipsize="end"
+    android:gravity="center_vertical"
+    android:maxLines="1"
+    android:textColor="@color/colorTextPrimary"
+    android:textSize="16sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/episodeDetailsName"
+    tools:text="That is not an example."
+    />
+
+  <TextView
+    android:id="@+id/episodeDetailsOverview"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:textColor="@color/colorTextSecondary"
+    android:textSize="14sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/episodeDetailsTitle"
+    tools:text="That is not an example."
+    />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/episodeDetailsButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:translationY="-20dp"
+    app:backgroundTint="@color/colorAccent"
+    app:fabSize="mini"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/episodeDetailsSeparator"
+    app:srcCompat="@drawable/ic_eye"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

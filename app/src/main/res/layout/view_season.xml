@@ -13,7 +13,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
+    android:paddingStart="10dp"
     android:paddingTop="6dp"
+    android:paddingEnd="10dp"
     android:paddingBottom="6dp"
     >
 

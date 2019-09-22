@@ -5,8 +5,6 @@ import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.michaldrabik.showly2.R
@@ -18,6 +16,8 @@ import kotlinx.android.synthetic.main.view_episodes.view.*
 class EpisodesView @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
+
+  var itemClickListener: (Episode) -> Unit = {}
 
   private val episodesAdapter by lazy { EpisodesAdapter() }
 
@@ -44,10 +44,7 @@ class EpisodesView @JvmOverloads constructor(
       setHasFixedSize(true)
       adapter = episodesAdapter
       layoutManager = LinearLayoutManager(context, VERTICAL, false)
-      addItemDecoration(DividerItemDecoration(context, VERTICAL).apply {
-        setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_episodes)!!)
-      })
     }
-    episodesAdapter.itemClickListener = { }
+    episodesAdapter.itemClickListener = { itemClickListener(it) }
   }
 }
