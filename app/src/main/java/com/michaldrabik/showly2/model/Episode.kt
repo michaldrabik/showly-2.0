@@ -16,5 +16,9 @@ data class Episode(
   val runtime: Int
 ) {
 
+  companion object {
+    val EMPTY = Episode(-1, -1, "", Ids.EMPTY, "", -1F, -1, -1, null, null, -1)
+  }
+
   fun toDisplayString() = String.format("S.%02d E.%02d", season, number)
 }

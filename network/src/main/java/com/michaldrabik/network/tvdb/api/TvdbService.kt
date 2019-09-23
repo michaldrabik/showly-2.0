@@ -18,9 +18,14 @@ interface TvdbService {
   ): TvdbResult<TvdbActor>
 
   @GET("/series/{id}/images/query")
-  suspend fun fetchImages(
+  suspend fun fetchShowImages(
     @Header("Authorization") authorization: String,
     @Path("id") id: Long,
     @Query("keyType") type: String
   ): TvdbResult<TvdbImage>
+
+  @GET("/episodes/{id}")
+  suspend fun fetchEpisodeImage(
+    @Header("Authorization") authorization: String,
+    @Path("id") id: Long): TvdbEpisodeImageResult
 }

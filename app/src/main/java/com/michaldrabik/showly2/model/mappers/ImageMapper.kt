@@ -12,6 +12,7 @@ class ImageMapper @Inject constructor() {
       imageDb.id,
       imageDb.idTvdb,
       enumValueOf(imageDb.type.toUpperCase(ROOT)),
+      enumValueOf(imageDb.family.toUpperCase(ROOT)),
       imageDb.fileUrl,
       imageDb.thumbnailUrl,
       Image.Status.AVAILABLE
@@ -23,6 +24,7 @@ class ImageMapper @Inject constructor() {
       id = image.id,
       idTvdb = image.idTvdb,
       type = image.type.key,
+      family = image.family.key,
       fileUrl = image.fileUrl,
       thumbnailUrl = image.thumbnailUrl
     )

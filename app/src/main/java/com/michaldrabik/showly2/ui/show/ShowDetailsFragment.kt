@@ -27,7 +27,7 @@ import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.actors.ActorsAdapter
 import com.michaldrabik.showly2.ui.show.related.RelatedShowAdapter
 import com.michaldrabik.showly2.ui.show.seasons.SeasonsAdapter
-import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodeDetailsBottomSheet
+import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
@@ -63,8 +63,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     setupRelatedList()
     setupSeasonsList()
 
-    viewModel.uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-    viewModel.loadShowDetails(showId)
+    viewModel.run {
+      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      loadShowDetails(showId)
+    }
   }
 
   override fun onResume() {

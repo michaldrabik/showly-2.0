@@ -1,9 +1,12 @@
 package com.michaldrabik.showly2.model
 
+import com.michaldrabik.showly2.model.ImageFamily.SHOW
+
 data class Image(
   val id: Long,
   val idTvdb: Long,
   val type: ImageType,
+  val family: ImageFamily,
   val fileUrl: String,
   val thumbnailUrl: String,
   val status: Status
@@ -21,8 +24,10 @@ data class Image(
   }
 
   companion object {
-    fun createUnknown(type: ImageType) = Image(0, 0, type, "", "", Status.UNKNOWN)
+    fun createUnknown(type: ImageType, family: ImageFamily = SHOW) =
+      Image(0, 0, type, family, "", "", Status.UNKNOWN)
 
-    fun createUnavailable(type: ImageType) = Image(0, 0, type, "", "", Status.UNAVAILABLE)
+    fun createUnavailable(type: ImageType, family: ImageFamily = SHOW) =
+      Image(0, 0, type, family, "", "", Status.UNAVAILABLE)
   }
 }
