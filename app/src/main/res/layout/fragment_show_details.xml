@@ -114,23 +114,18 @@
         tools:text="7.62 (9239 votes)"
         />
 
-      <com.google.android.material.button.MaterialButton
+      <com.michaldrabik.showly2.ui.common.views.AddToShowsButton
         android:id="@+id/showDetailsAddButton"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginTop="@dimen/spaceSmall"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceSmall"
-        android:gravity="center"
-        android:includeFontPadding="false"
-        android:text="@string/textAdd"
         app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeCard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsRating"
-        app:strokeColor="@color/colorAccent"
         />
 
       <include

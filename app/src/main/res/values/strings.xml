@@ -23,6 +23,7 @@
   <string name="textEpisode">Episode %1$d</string>
   <string name="textSeasonEpisode">Season %1$d Episode %2$d</string>
   <string name="textAdd">Add to my shows</string>
+  <string name="textAdded">In my shows</string>
   <string name="textNoDescription">Overview not available.</string>
 
   <plurals name="textDaysToAir">

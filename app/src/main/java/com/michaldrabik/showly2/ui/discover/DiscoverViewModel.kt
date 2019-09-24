@@ -22,7 +22,7 @@ class DiscoverViewModel @Inject constructor(
   fun loadTrendingShows(skipCache: Boolean = false) {
     viewModelScope.launch {
       val progress = launch {
-        delay(500)
+        delay(750)
         uiStream.value = DiscoverUiModel(showLoading = true)
       }
       try {

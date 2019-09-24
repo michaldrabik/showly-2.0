@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/addToMyShowsButton"
+    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:includeFontPadding="false"
+    android:text="@string/textAdd"
+    android:textColor="@color/colorAccent"
+    app:rippleColor="@color/colorAccent"
+    app:strokeColor="@color/colorAccent"
+    />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/inMyShowsButton"
+    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:includeFontPadding="false"
+    android:text="@string/textAdded"
+    android:textColor="@color/colorWhite"
+    android:visibility="gone"
+    app:icon="@drawable/ic_check"
+    app:iconPadding="-24dp"
+    app:iconTint="@color/colorWhite"
+    app:rippleColor="@color/colorWhite"
+    app:strokeColor="@color/colorWhite"
+    />
+
+</merge>

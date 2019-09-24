@@ -76,8 +76,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
 
   private fun setupView() {
     showDetailsImageGuideline.setGuidelineBegin((screenHeight() * 0.33).toInt())
-    showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
     showDetailsEpisodesView.itemClickListener = { showEpisodeDetails(it) }
+    showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
+    showDetailsAddButton.onClick { showDetailsAddButton.setWatched() }
   }
 
   private fun setupActorsList() {

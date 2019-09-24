@@ -3,8 +3,8 @@ package com.michaldrabik.showly2.ui.show
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.FANART
+import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
@@ -75,7 +75,7 @@ class ShowDetailsViewModel @Inject constructor(
     try {
       delay(750)
       val relatedShows = interactor.loadRelatedShows(show).map {
-        val image = interactor.findCachedImage(it, ImageType.POSTER)
+        val image = interactor.findCachedImage(it, POSTER)
         RelatedListItem(it, image)
       }
       uiStream.value = ShowDetailsUiModel(relatedShows = relatedShows)

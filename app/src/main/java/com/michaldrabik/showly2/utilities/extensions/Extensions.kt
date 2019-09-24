@@ -14,6 +14,7 @@ import androidx.annotation.DimenRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.transition.AutoTransition
+import androidx.transition.Fade
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -130,7 +131,13 @@ fun BottomNavigationView.fixBlinking() {
   val menuView = getChildAt(0) as BottomNavigationMenuView
   with(menuView::class.java.getDeclaredField("set")) {
     isAccessible = true
-    set(menuView, AutoTransition().apply { duration = 0L })
+    val transitionSet = (get(menuView) as AutoTransition).apply {
+      for (i in transitionCount downTo 0) {
+        val transition = getTransitionAt(i) as? Fade ?: continue
+        removeTransition(transition)
+      }
+    }
+    set(menuView, transitionSet)
   }
 }
 
