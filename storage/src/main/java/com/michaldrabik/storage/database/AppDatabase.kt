@@ -2,16 +2,8 @@ package com.michaldrabik.storage.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.michaldrabik.storage.database.dao.ImagesDao
-import com.michaldrabik.storage.database.dao.RecentSearchDao
-import com.michaldrabik.storage.database.dao.ShowsDao
-import com.michaldrabik.storage.database.dao.TrendingShowsDao
-import com.michaldrabik.storage.database.dao.UserDao
-import com.michaldrabik.storage.database.model.Image
-import com.michaldrabik.storage.database.model.RecentSearch
-import com.michaldrabik.storage.database.model.Show
-import com.michaldrabik.storage.database.model.TrendingShow
-import com.michaldrabik.storage.database.model.User
+import com.michaldrabik.storage.database.dao.*
+import com.michaldrabik.storage.database.model.*
 
 private const val DATABASE_VERSION = 1
 
@@ -20,6 +12,7 @@ private const val DATABASE_VERSION = 1
   entities = [
     Show::class,
     TrendingShow::class,
+    FollowedShow::class,
     Image::class,
     User::class,
     RecentSearch::class]
@@ -29,6 +22,8 @@ abstract class AppDatabase : RoomDatabase() {
   abstract fun showsDao(): ShowsDao
 
   abstract fun trendingShowsDao(): TrendingShowsDao
+
+  abstract fun followedShowsDao(): FollowedShowsDao
 
   abstract fun imagesDao(): ImagesDao
 

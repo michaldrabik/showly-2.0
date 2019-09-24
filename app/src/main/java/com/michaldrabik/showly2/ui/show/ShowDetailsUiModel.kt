@@ -4,6 +4,7 @@ import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.ui.common.FollowedState
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 
@@ -16,5 +17,6 @@ data class ShowDetailsUiModel(
   val actors: List<Actor>? = null,
   val relatedShows: List<RelatedListItem>? = null,
   val updateRelatedShow: RelatedListItem? = null,
-  val seasons: List<SeasonListItem>? = null
+  val seasons: List<SeasonListItem>? = null,
+  val isFollowed: FollowedState? = null
 )

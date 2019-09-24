@@ -22,18 +22,20 @@ class AddToShowsButton @JvmOverloads constructor(
 
   private var isWatched = false
 
-  fun setWatched() {
+  fun setWatched(withAnimation: Boolean = true) {
     if (isWatched) return
     isWatched = true
-    addToMyShowsButton.fadeOut(TRANSITION_DURATION)
-    inMyShowsButton.fadeIn(TRANSITION_DURATION)
+    val transition = if (!withAnimation) 0 else TRANSITION_DURATION
+    addToMyShowsButton.fadeOut(transition)
+    inMyShowsButton.fadeIn(transition)
   }
 
-  fun setUnwatched() {
+  fun setUnwatched(withAnimation: Boolean = true) {
     if (!isWatched) return
     isWatched = false
-    addToMyShowsButton.fadeIn(TRANSITION_DURATION)
-    inMyShowsButton.fadeOut(TRANSITION_DURATION)
+    val transition = if (!withAnimation) 0 else TRANSITION_DURATION
+    addToMyShowsButton.fadeIn(transition)
+    inMyShowsButton.fadeOut(transition)
   }
 
   override fun setOnClickListener(l: OnClickListener?) {

@@ -6,6 +6,7 @@ import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.ui.common.FollowedState
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
@@ -24,7 +25,12 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       uiStream.value = ShowDetailsUiModel(showLoading = true)
       val show = interactor.loadShowDetails(id)
-      uiStream.value = ShowDetailsUiModel(show = show, showLoading = false)
+      val isFollowed = interactor.isFollowed(show)
+      uiStream.value = ShowDetailsUiModel(
+        show = show,
+        showLoading = false,
+        isFollowed = FollowedState(isFollowed = isFollowed, withAnimation = false)
+      )
 
       launch { loadNextEpisode(show) }
       launch { loadBackgroundImage(show) }
@@ -95,6 +101,18 @@ class ShowDetailsViewModel @Inject constructor(
         uiStream.value =
           ShowDetailsUiModel(updateRelatedShow = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
+    }
+  }
+
+  fun toggleFollowedShow(show: Show) {
+    viewModelScope.launch {
+      val isFollowed = interactor.isFollowed(show)
+      when {
+        isFollowed -> interactor.removeFromFollowed(show)
+        else -> interactor.addToFollowed(show)
+      }
+      val state = FollowedState(isFollowed = !isFollowed, withAnimation = true)
+      uiStream.value = ShowDetailsUiModel(isFollowed = state)
     }
   }
 }

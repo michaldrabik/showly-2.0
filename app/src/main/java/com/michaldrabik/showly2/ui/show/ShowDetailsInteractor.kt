@@ -8,6 +8,7 @@ import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.FollowedShow
 import javax.inject.Inject
 
 @AppScope
@@ -64,5 +65,17 @@ class ShowDetailsInteractor @Inject constructor(
     return cloud.traktApi.fetchSeasons(show.ids.trakt)
       .filter { it.number != 0 } //Filtering out "special" seasons
       .map { mappers.season.fromNetwork(it) }
+  }
+
+  suspend fun isFollowed(show: Show) =
+    database.followedShowsDao().getById(show.ids.trakt) != null
+
+  suspend fun addToFollowed(show: Show) {
+    val dbShow = FollowedShow.fromTraktId(show.ids.trakt)
+    database.followedShowsDao().insert(listOf(dbShow))
+  }
+
+  suspend fun removeFromFollowed(show: Show) {
+    database.followedShowsDao().deleteById(show.ids.trakt)
   }
 }

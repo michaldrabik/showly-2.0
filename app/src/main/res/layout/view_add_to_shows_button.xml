@@ -36,6 +36,7 @@
     app:iconTint="@color/colorWhite"
     app:rippleColor="@color/colorWhite"
     app:strokeColor="@color/colorWhite"
+    tools:visibility="visible"
     />
 
 </merge>

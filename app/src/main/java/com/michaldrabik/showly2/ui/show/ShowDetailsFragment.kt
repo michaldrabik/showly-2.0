@@ -78,7 +78,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     showDetailsImageGuideline.setGuidelineBegin((screenHeight() * 0.33).toInt())
     showDetailsEpisodesView.itemClickListener = { showEpisodeDetails(it) }
     showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
-    showDetailsAddButton.onClick { showDetailsAddButton.setWatched() }
   }
 
   private fun setupActorsList() {
@@ -169,10 +168,17 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       showDetailsExtraInfo.text =
         "${show.network} ${show.year} | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
       showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
+      showDetailsAddButton.onClick { viewModel.toggleFollowedShow(show) }
     }
     uiModel.showLoading?.let {
       showDetailsMainLayout.fadeIf(!it)
       showDetailsMainProgress.visibleIf(it)
+    }
+    uiModel.isFollowed?.let {
+      when {
+        it.isFollowed -> showDetailsAddButton.setWatched(it.withAnimation)
+        else -> showDetailsAddButton.setUnwatched(it.withAnimation)
+      }
     }
     uiModel.nextEpisode?.let { renderNextEpisode(it) }
     uiModel.imageLoading?.let { showDetailsImageProgress.visibleIf(it) }
