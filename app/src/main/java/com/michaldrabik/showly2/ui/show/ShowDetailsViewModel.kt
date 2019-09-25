@@ -20,6 +20,8 @@ class ShowDetailsViewModel @Inject constructor(
 
   val uiStream by lazy { MutableLiveData<ShowDetailsUiModel>() }
 
+  private var isSeasonsLoaded = false
+
   fun loadShowDetails(id: Long) {
     //TODO Errors
     viewModelScope.launch {
@@ -51,11 +53,10 @@ class ShowDetailsViewModel @Inject constructor(
 
   private suspend fun loadBackgroundImage(show: Show) {
     try {
-      uiStream.value = ShowDetailsUiModel(imageLoading = true)
       val backgroundImage = interactor.loadBackgroundImage(show)
-      uiStream.value = ShowDetailsUiModel(image = backgroundImage, imageLoading = false)
+      uiStream.value = ShowDetailsUiModel(image = backgroundImage)
     } catch (e: Exception) {
-      uiStream.value = ShowDetailsUiModel(image = Image.createUnavailable(FANART), imageLoading = false)
+      uiStream.value = ShowDetailsUiModel(image = Image.createUnavailable(FANART))
     }
   }
 
@@ -71,6 +72,7 @@ class ShowDetailsViewModel @Inject constructor(
   private suspend fun loadSeasons(show: Show) {
     try {
       val seasons = interactor.loadSeasons(show)
+      isSeasonsLoaded = true
       uiStream.value = ShowDetailsUiModel(seasons = seasons.map { SeasonListItem(it) })
     } catch (e: Exception) {
       uiStream.value = ShowDetailsUiModel(seasons = emptyList())
@@ -105,6 +107,8 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   fun toggleFollowedShow(show: Show) {
+    if (!isSeasonsLoaded) return
+
     viewModelScope.launch {
       val isFollowed = interactor.isFollowed(show)
       when {

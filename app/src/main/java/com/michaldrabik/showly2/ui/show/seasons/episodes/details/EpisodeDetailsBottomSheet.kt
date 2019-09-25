@@ -77,8 +77,11 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         .load("${Config.TVDB_IMAGE_BASE_URL}${it.fileUrl}")
         .transform(CenterCrop(), RoundedCorners(cornerRadius))
         .transition(DrawableTransitionOptions.withCrossFade(200))
-        .withFailListener { episodeDetailsProgress.gone() }
         .withSuccessListener { episodeDetailsProgress.gone() }
+        .withFailListener {
+          episodeDetailsProgress.gone()
+          episodeDetailsImagePlaceholder.visible()
+        }
         .into(episodeDetailsImage)
     }
   }

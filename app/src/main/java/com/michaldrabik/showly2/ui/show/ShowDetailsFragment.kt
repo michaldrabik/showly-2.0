@@ -181,7 +181,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       }
     }
     uiModel.nextEpisode?.let { renderNextEpisode(it) }
-    uiModel.imageLoading?.let { showDetailsImageProgress.visibleIf(it) }
     uiModel.image?.let { renderImage(it) }
     uiModel.actors?.let {
       actorsAdapter.setItems(it)
@@ -230,7 +229,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   }
 
   private fun renderImage(image: Image) {
-    showDetailsImageProgress.visible()
     Glide.with(this)
       .load("$TVDB_IMAGE_BASE_URL${image.fileUrl}")
       .transform(CenterCrop())

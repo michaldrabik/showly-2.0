@@ -12,11 +12,11 @@ data class ShowDetailsUiModel(
   val show: Show? = null,
   val showLoading: Boolean? = null,
   val image: Image? = null,
-  val imageLoading: Boolean? = null,
   val nextEpisode: Episode? = null,
   val actors: List<Actor>? = null,
   val relatedShows: List<RelatedListItem>? = null,
   val updateRelatedShow: RelatedListItem? = null,
   val seasons: List<SeasonListItem>? = null,
-  val isFollowed: FollowedState? = null
+  val isFollowed: FollowedState? = null,
+  val error: Error? = null
 )
