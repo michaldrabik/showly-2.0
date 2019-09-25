@@ -15,6 +15,8 @@ private const val DATABASE_VERSION = 1
     FollowedShow::class,
     Image::class,
     User::class,
+    Season::class,
+    Episode::class,
     RecentSearch::class]
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -30,4 +32,8 @@ abstract class AppDatabase : RoomDatabase() {
   abstract fun userDao(): UserDao
 
   abstract fun recentSearchDao(): RecentSearchDao
+
+  abstract fun episodesDao(): EpisodesDao
+
+  abstract fun seasonsDao(): SeasonsDao
 }
