@@ -5,6 +5,7 @@ import com.michaldrabik.showly2.model.Season
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 import com.michaldrabik.network.trakt.model.Season as SeasonNetwork
+import com.michaldrabik.storage.database.model.Season as SeasonDb
 
 class SeasonMapper @Inject constructor(
   private val episodeMapper: EpisodeMapper
@@ -27,4 +28,20 @@ class SeasonMapper @Inject constructor(
     season.overview,
     season.episodes.map { episodeMapper.fromNetwork(it) }
   )
+
+  fun toDatabase(
+    season: Season,
+    showId: Long,
+    isWatched: Boolean
+  ): SeasonDb {
+    return SeasonDb(
+      season.ids.trakt,
+      showId,
+      season.number,
+      season.overview,
+      season.episodeCount,
+      season.airedEpisodes,
+      isWatched
+    )
+  }
 }

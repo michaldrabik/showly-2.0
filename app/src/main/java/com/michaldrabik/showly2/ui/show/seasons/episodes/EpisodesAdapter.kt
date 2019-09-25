@@ -10,11 +10,12 @@ class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private val items: MutableList<Episode> = mutableListOf()
 
   var itemClickListener: (Episode) -> Unit = {}
+  var itemCheckedListener: (Episode) -> Unit = {}
 
-  fun setItems(items: List<Episode>) {
+  fun setItems(episodes: List<Episode>) {
     this.items.apply {
       clear()
-      addAll(items)
+      addAll(episodes)
     }
     notifyDataSetChanged()
   }
@@ -28,7 +29,7 @@ class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     ViewHolderShow(EpisodeView(parent.context))
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-    (holder.itemView as EpisodeView).bind(items[position], itemClickListener)
+    (holder.itemView as EpisodeView).bind(items[position], itemClickListener, itemCheckedListener)
   }
 
   override fun getItemCount() = items.size

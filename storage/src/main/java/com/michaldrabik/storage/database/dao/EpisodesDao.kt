@@ -1,6 +1,9 @@
 package com.michaldrabik.storage.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import com.michaldrabik.storage.database.model.Episode
 
 @Dao
@@ -12,6 +15,6 @@ interface EpisodesDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun upsert(episode: Episode)
 
-  @Delete
-  suspend fun delete(episode: Episode)
+  @Query("DELETE FROM episodes WHERE id == :id")
+  suspend fun delete(id: Long)
 }

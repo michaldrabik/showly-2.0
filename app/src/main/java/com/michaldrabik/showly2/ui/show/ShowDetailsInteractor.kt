@@ -78,4 +78,14 @@ class ShowDetailsInteractor @Inject constructor(
   suspend fun removeFromFollowed(show: Show) {
     database.followedShowsDao().deleteById(show.ids.trakt)
   }
+
+  suspend fun addEpisodeToWatched(episode: Episode, season: Season, showId: Long) {
+    val dbSeason = mappers.season.toDatabase(season, showId, false)
+    val dbEpisode = mappers.episode.toDatabase(episode, season, showId, true)
+    database.episodesDao().upsert(dbEpisode)
+  }
+
+  suspend fun removeEpisodeFromWatched(episode: Episode) {
+    database.episodesDao().delete(episode.ids.trakt)
+  }
 }

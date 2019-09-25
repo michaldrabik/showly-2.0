@@ -132,6 +132,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         bindEpisodes(season.episodes)
       }
       startAnimation(animationEnter)
+      itemCheckedListener = { episode, season ->
+
+      }
     }
 
     showDetailsMainLayout.run {
