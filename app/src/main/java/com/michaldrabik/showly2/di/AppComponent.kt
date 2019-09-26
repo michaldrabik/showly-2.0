@@ -11,8 +11,7 @@ import dagger.Component
 
 @AppScope
 @Component(
-  dependencies = [CloudComponent::class, StorageComponent::class],
-  modules = [AppModule::class]
+  dependencies = [CloudComponent::class, StorageComponent::class]
 )
 interface AppComponent {
   fun inject(activity: MainActivity)

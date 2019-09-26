@@ -6,6 +6,7 @@ import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.*
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.mappers.Mappers
+import com.michaldrabik.showly2.ui.common.EpisodesManager
 import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.FollowedShow
@@ -17,6 +18,7 @@ class ShowDetailsInteractor @Inject constructor(
   private val database: AppDatabase,
   private val userManager: UserManager,
   private val imagesManager: ImagesManager,
+  private val episodesManager: EpisodesManager,
   private val mappers: Mappers
 ) {
 
@@ -79,13 +81,9 @@ class ShowDetailsInteractor @Inject constructor(
     database.followedShowsDao().deleteById(show.ids.trakt)
   }
 
-  suspend fun addEpisodeToWatched(episode: Episode, season: Season, showId: Long) {
-    val dbSeason = mappers.season.toDatabase(season, showId, false)
-    val dbEpisode = mappers.episode.toDatabase(episode, season, showId, true)
-    database.episodesDao().upsert(dbEpisode)
-  }
+  suspend fun addEpisodeToWatched(episode: Episode, season: Season, showId: Long) =
+    episodesManager.addEpisodeToWatched(episode, season, showId)
 
-  suspend fun removeEpisodeFromWatched(episode: Episode) {
-    database.episodesDao().delete(episode.ids.trakt)
-  }
+  suspend fun removeEpisodeFromWatched(episode: Episode) =
+    episodesManager.removeEpisodeFromWatched(episode)
 }
