@@ -33,7 +33,7 @@ class DiscoverInteractor @Inject constructor(
 
     trendingShows.forEachIndexed { index, show ->
       discoverShows.add(show)
-      if (index % 5 == 0 && anticipatedShows.isNotEmpty()) {
+      if (index % 4 == 0 && anticipatedShows.isNotEmpty()) {
         val element = anticipatedShows.removeAt(0)
         if (!discoverShows.contains(element)) {
           discoverShows.add(element)

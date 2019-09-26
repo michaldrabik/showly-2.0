@@ -8,12 +8,10 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.views.ShowView
 import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_show_search.view.*
 
@@ -45,14 +43,6 @@ class ShowSearchView @JvmOverloads constructor(
     if (!item.isLoading) loadImage(item, missingImageListener)
 
     showSearchRoot.onClick { itemClickListener(item) }
-  }
-
-  override fun loadImage(item: SearchListItem, missingImageListener: (SearchListItem, Boolean) -> Unit) {
-    if (item.image.status == Image.Status.UNAVAILABLE) {
-      showSearchPlaceholder.visible()
-      return
-    }
-    super.loadImage(item, missingImageListener)
   }
 
   private fun clear() {

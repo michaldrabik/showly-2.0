@@ -12,7 +12,8 @@ import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_FANART_URL
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_POSTER_URL
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Image.Status.*
+import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
+import com.michaldrabik.showly2.model.Image.Status.UNKNOWN
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.discover.recycler.ListItem
 import com.michaldrabik.showly2.utilities.extensions.*
@@ -44,6 +45,11 @@ abstract class ShowView<Item : ListItem> @JvmOverloads constructor(
   }
 
   protected open fun loadImage(item: Item, missingImageListener: (Item, Boolean) -> Unit) {
+    if (item.image.status == UNAVAILABLE) {
+      placeholderView.visible()
+      return
+    }
+
     val base = when {
       item.image.type == POSTER -> TVDB_IMAGE_BASE_POSTER_URL
       else -> TVDB_IMAGE_BASE_FANART_URL
@@ -52,6 +58,7 @@ abstract class ShowView<Item : ListItem> @JvmOverloads constructor(
       item.image.status == UNKNOWN -> "${base}${item.show.ids.tvdb}-1.jpg"
       else -> "$TVDB_IMAGE_BASE_URL${item.image.fileUrl}"
     }
+
     Glide.with(this)
       .load(url)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
@@ -64,7 +71,7 @@ abstract class ShowView<Item : ListItem> @JvmOverloads constructor(
   protected open fun onImageLoadSuccess() = Unit
 
   protected open fun onImageLoadFail(item: Item, missingImageListener: (Item, Boolean) -> Unit) {
-    if (item.image.status == AVAILABLE) {
+    if (item.image.status == UNAVAILABLE) {
       placeholderView.visible()
       return
     }

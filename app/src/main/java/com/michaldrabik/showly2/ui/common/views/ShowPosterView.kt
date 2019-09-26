@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Image.Status.AVAILABLE
 import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.utilities.extensions.gone
@@ -40,9 +39,7 @@ class ShowPosterView @JvmOverloads constructor(
 
   override fun loadImage(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
     if (item.image.status == UNAVAILABLE) {
-      showPosterPlaceholder.visible()
       showPosterTitle.visible()
-      return
     }
     super.loadImage(item, missingImageListener)
   }
@@ -52,7 +49,7 @@ class ShowPosterView @JvmOverloads constructor(
   }
 
   override fun onImageLoadFail(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
-    if (item.image.status == AVAILABLE) {
+    if (item.image.status == UNAVAILABLE) {
       showPosterPlaceholder.visible()
       showPosterTitle.visible()
       return
