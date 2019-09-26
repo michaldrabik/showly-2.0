@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "shows_trending")
-data class TrendingShow(
+@Entity(tableName = "shows_discover")
+data class DiscoverShow(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
   @ColumnInfo(name = "id_trakt", defaultValue = "-1") var idTrakt: Long,
   @ColumnInfo(name = "created_at", defaultValue = "-1") var createdAt: Long,

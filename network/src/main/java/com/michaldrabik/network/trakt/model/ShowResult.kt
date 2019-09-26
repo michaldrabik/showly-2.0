@@ -1,5 +1,5 @@
 package com.michaldrabik.network.trakt.model
 
-data class TrendingResult(
+data class ShowResult(
   val show: Show
 )

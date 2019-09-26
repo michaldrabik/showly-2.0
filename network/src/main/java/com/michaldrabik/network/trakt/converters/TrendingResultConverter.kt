@@ -1,6 +1,6 @@
 package com.michaldrabik.network.trakt.converters
 
-import com.michaldrabik.network.trakt.model.TrendingResult
+import com.michaldrabik.network.trakt.model.ShowResult
 import com.michaldrabik.network.trakt.model.json.TrendingResultJson
 import com.squareup.moshi.FromJson
 
@@ -10,7 +10,7 @@ class TrendingResultConverter(
 
   @FromJson
   fun fromJson(json: TrendingResultJson) =
-    TrendingResult(
+    ShowResult(
       showConverter.fromJson(json.show!!)
     )
 }

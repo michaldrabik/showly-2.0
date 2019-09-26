@@ -26,7 +26,7 @@ class DiscoverViewModel @Inject constructor(
         uiStream.value = DiscoverUiModel(showLoading = true)
       }
       try {
-        val shows = interactor.loadTrendingShows(skipCache)
+        val shows = interactor.loadDiscoverShows(skipCache)
         onShowsLoaded(shows)
       } catch (t: Throwable) {
         onError(Error(t))

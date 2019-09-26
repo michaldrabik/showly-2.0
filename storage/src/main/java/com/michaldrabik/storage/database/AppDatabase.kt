@@ -11,7 +11,7 @@ private const val DATABASE_VERSION = 1
   version = DATABASE_VERSION,
   entities = [
     Show::class,
-    TrendingShow::class,
+    DiscoverShow::class,
     FollowedShow::class,
     Image::class,
     User::class,
@@ -23,7 +23,7 @@ abstract class AppDatabase : RoomDatabase() {
 
   abstract fun showsDao(): ShowsDao
 
-  abstract fun trendingShowsDao(): TrendingShowsDao
+  abstract fun discoverShowsDao(): DiscoverShowsDao
 
   abstract fun followedShowsDao(): FollowedShowsDao
 
