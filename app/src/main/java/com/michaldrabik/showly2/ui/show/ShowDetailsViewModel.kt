@@ -9,6 +9,7 @@ import com.michaldrabik.showly2.ui.common.FollowedState
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
+import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodeListItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -71,8 +72,16 @@ class ShowDetailsViewModel @Inject constructor(
   private suspend fun loadSeasons(show: Show) {
     try {
       val seasons = interactor.loadSeasons(show)
+      val watchedEpisodes = interactor.loadWatchedEpisodes(seasons)
+
       isSeasonsLoaded = true
-      uiStream.value = ShowDetailsUiModel(seasons = seasons.map { SeasonListItem(it, show) })
+      uiStream.value = ShowDetailsUiModel(seasons = seasons.map {
+        val episodes = it.episodes.map { episode ->
+          val isWatched = watchedEpisodes.any { watched -> watched.ids.trakt == episode.ids.trakt }
+          EpisodeListItem(episode, isWatched)
+        }
+        SeasonListItem(it, episodes, show)
+      })
     } catch (e: Exception) {
       uiStream.value = ShowDetailsUiModel(seasons = emptyList())
     }

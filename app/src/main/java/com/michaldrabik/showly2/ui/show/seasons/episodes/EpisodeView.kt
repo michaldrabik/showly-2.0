@@ -22,15 +22,23 @@ class EpisodeView @JvmOverloads constructor(
   }
 
   fun bind(
-    episode: Episode,
+    item: EpisodeListItem,
     itemClickListener: (Episode) -> Unit,
     itemCheckedListener: (Episode, Boolean) -> Unit
   ) {
-    episodeTitle.text = context.getString(R.string.textEpisode, episode.number)
-    episodeOverview.text = episode.title
-    onClick { itemClickListener(episode) }
+    clear()
+
+    episodeTitle.text = context.getString(R.string.textEpisode, item.episode.number)
+    episodeOverview.text = item.episode.title
+    episodeCheckbox.isChecked = item.isWatched
+
+    onClick { itemClickListener(item.episode) }
     episodeCheckbox.setOnCheckedChangeListener { _, isChecked ->
-      itemCheckedListener(episode, isChecked)
+      itemCheckedListener(item.episode, isChecked)
     }
+  }
+
+  private fun clear() {
+    episodeCheckbox.setOnCheckedChangeListener { _, _ -> }
   }
 }

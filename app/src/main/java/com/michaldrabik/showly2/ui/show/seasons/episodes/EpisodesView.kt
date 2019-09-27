@@ -37,7 +37,7 @@ class EpisodesView @JvmOverloads constructor(
     episodesOverview.visibleIf(season.overview.isNotBlank())
   }
 
-  fun bindEpisodes(episodes: List<Episode>) {
+  fun bindEpisodes(episodes: List<EpisodeListItem>) {
     episodesAdapter.setItems(episodes)
     episodesRecycler.scheduleLayoutAnimation()
   }

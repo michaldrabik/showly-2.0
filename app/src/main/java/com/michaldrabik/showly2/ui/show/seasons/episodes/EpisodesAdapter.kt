@@ -7,12 +7,12 @@ import com.michaldrabik.showly2.model.Episode
 
 class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-  private val items: MutableList<Episode> = mutableListOf()
+  private val items: MutableList<EpisodeListItem> = mutableListOf()
 
   var itemClickListener: (Episode) -> Unit = {}
   var itemCheckedListener: (Episode, Boolean) -> Unit = { _, _ -> }
 
-  fun setItems(episodes: List<Episode>) {
+  fun setItems(episodes: List<EpisodeListItem>) {
     this.items.apply {
       clear()
       addAll(episodes)

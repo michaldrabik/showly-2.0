@@ -86,4 +86,19 @@ class ShowDetailsInteractor @Inject constructor(
 
   suspend fun setEpisodeUnwatched(episodeBundle: EpisodeBundle) =
     episodesManager.setEpisodeUnwatched(episodeBundle)
+
+  suspend fun loadWatchedEpisodes(seasons: List<Season>): List<Episode> {
+    val watched = mutableListOf<Episode>()
+
+    seasons.forEach { season ->
+      val watchedIds = episodesManager.getWatchedEpisodesIds(season)
+      season.episodes.forEach { episode ->
+        if (watchedIds.any { it.trakt == episode.ids.trakt }) {
+          watched.add(episode)
+        }
+      }
+    }
+
+    return watched
+  }
 }

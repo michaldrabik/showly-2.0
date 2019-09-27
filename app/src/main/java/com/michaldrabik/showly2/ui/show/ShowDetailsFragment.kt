@@ -129,7 +129,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     showDetailsEpisodesView.run {
       bind(item.season)
       fadeIn(275) {
-        bindEpisodes(item.season.episodes)
+        bindEpisodes(item.episodes)
       }
       startAnimation(animationEnter)
       itemCheckedListener = { episode, season, isChecked ->
