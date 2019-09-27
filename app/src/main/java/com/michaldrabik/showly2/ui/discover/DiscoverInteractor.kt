@@ -22,6 +22,13 @@ class DiscoverInteractor @Inject constructor(
 ) {
 
   suspend fun loadDiscoverShows(skipCache: Boolean = false): List<Show> {
+
+    fun addIfMissing(shows: MutableList<Show>, show: Show) {
+      if (shows.none { it.ids.trakt == show.ids.trakt }) {
+        shows.add(show)
+      }
+    }
+
     val stamp = database.discoverShowsDao().getMostRecent()?.createdAt ?: 0
     if (!skipCache && currentTimeMillis() - stamp < Config.DISCOVER_SHOWS_CACHE_DURATION) {
       return database.discoverShowsDao().getAll().map { mappers.show.fromDatabase(it) }
@@ -32,12 +39,10 @@ class DiscoverInteractor @Inject constructor(
     val anticipatedShows = cloud.traktApi.fetchAnticipatedShows().map { mappers.show.fromNetwork(it) }.toMutableList()
 
     trendingShows.forEachIndexed { index, show ->
-      discoverShows.add(show)
+      addIfMissing(discoverShows, show)
       if (index % 4 == 0 && anticipatedShows.isNotEmpty()) {
         val element = anticipatedShows.removeAt(0)
-        if (!discoverShows.contains(element)) {
-          discoverShows.add(element)
-        }
+        addIfMissing(discoverShows, element)
       }
     }
 

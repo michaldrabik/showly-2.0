@@ -48,16 +48,6 @@ class ShowPosterView @JvmOverloads constructor(
     showPosterTitle.gone()
   }
 
-  override fun onImageLoadFail(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
-    if (item.image.status == UNAVAILABLE) {
-      showPosterPlaceholder.visible()
-      showPosterTitle.visible()
-      return
-    }
-    val force = item.image.status != UNAVAILABLE
-    missingImageListener(item, force)
-  }
-
   private fun clear() {
     showPosterTitle.text = ""
     showPosterTitle.gone()

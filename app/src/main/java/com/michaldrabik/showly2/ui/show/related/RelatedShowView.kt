@@ -25,7 +25,11 @@ class RelatedShowView @JvmOverloads constructor(
   override val imageView: ImageView = relatedImage
   override val placeholderView: ImageView = relatedPlaceholder
 
-  override fun bind(item: RelatedListItem, missingImageListener: (RelatedListItem, Boolean) -> Unit, itemClickListener: (RelatedListItem) -> Unit) {
+  override fun bind(
+    item: RelatedListItem,
+    missingImageListener: (RelatedListItem, Boolean) -> Unit,
+    itemClickListener: (RelatedListItem) -> Unit
+  ) {
     clear()
     onClick { itemClickListener(item) }
     relatedTitle.text = item.show.title

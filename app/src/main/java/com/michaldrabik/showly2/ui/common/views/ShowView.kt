@@ -71,10 +71,6 @@ abstract class ShowView<Item : ListItem> @JvmOverloads constructor(
   protected open fun onImageLoadSuccess() = Unit
 
   protected open fun onImageLoadFail(item: Item, missingImageListener: (Item, Boolean) -> Unit) {
-    if (item.image.status == UNAVAILABLE) {
-      placeholderView.visible()
-      return
-    }
     val force = item.image.status != UNAVAILABLE
     missingImageListener(item, force)
   }
