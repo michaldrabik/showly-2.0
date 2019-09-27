@@ -5,6 +5,7 @@ import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.EpisodeBundle
 import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.model.Season
+import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.storage.database.AppDatabase
 import javax.inject.Inject
@@ -15,6 +16,18 @@ class EpisodesManager @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers
 ) {
+
+  suspend fun getWatchedSeasonsIds(show: Show): List<Ids> {
+    return database.seasonsDao().getAllForShow(show.ids.trakt)
+      .filter { it.isWatched }
+      .map { Ids.EMPTY.copy(trakt = it.idTrakt) }
+  }
+
+  suspend fun getWatchedEpisodesIds(show: Show): List<Ids> {
+    return database.episodesDao().getAllForShow(show.ids.trakt)
+      .filter { it.isWatched }
+      .map { Ids.EMPTY.copy(trakt = it.idTrakt) }
+  }
 
   suspend fun setEpisodeWatched(episodeBundle: EpisodeBundle) {
     database.withTransaction {
@@ -51,11 +64,5 @@ class EpisodesManager @Inject constructor(
     } else {
       database.seasonsDao().update(dbSeason.copy(isWatched = false))
     }
-  }
-
-  suspend fun getWatchedEpisodesIds(season: Season): List<Ids> {
-    return database.episodesDao().getAllForSeason(season.ids.trakt)
-      .filter { it.isWatched }
-      .map { Ids.EMPTY.copy(trakt = it.idTrakt) }
   }
 }

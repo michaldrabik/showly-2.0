@@ -5,4 +5,8 @@ import com.michaldrabik.showly2.model.Episode
 data class EpisodeListItem(
   val episode: Episode,
   val isWatched: Boolean
-)
+) {
+
+  val id = episode.ids.trakt
+
+}

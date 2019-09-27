@@ -9,6 +9,9 @@ interface SeasonsDao {
   @Query("SELECT * FROM seasons")
   suspend fun getAll(): List<Season>
 
+  @Query("SELECT * FROM seasons WHERE id_show_trakt = :traktId")
+  suspend fun getAllForShow(traktId: Long): List<Season>
+
   @Query("SELECT * FROM seasons WHERE id_trakt = :traktId")
   suspend fun getById(traktId: Long): Season?
 

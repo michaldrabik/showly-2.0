@@ -24,9 +24,14 @@ class SeasonView @JvmOverloads constructor(
     setOnClickListener { clickListener(item) }
 
     seasonViewTitle.text = context.getString(R.string.textSeason, item.season.number)
+    seasonViewProgress.max = item.season.episodeCount
+    seasonViewProgress.progress = item.episodes.count { it.isWatched }
+    seasonViewCheckbox.isChecked = item.isWatched
   }
 
   private fun clear() {
     seasonViewTitle.text = ""
+    seasonViewProgress.progress = 0
+    seasonViewProgress.max = 0
   }
 }

@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.show.seasons
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 class SeasonsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -10,12 +11,14 @@ class SeasonsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   var itemClickListener: (SeasonListItem) -> Unit = {}
 
-  fun setItems(items: List<SeasonListItem>) {
+  fun setItems(newItems: List<SeasonListItem>) {
+    val diffCallback = SeasonListItemDiffCallback(items, newItems)
+    val diffResult = DiffUtil.calculateDiff(diffCallback)
     this.items.apply {
       clear()
-      addAll(items)
+      addAll(newItems)
     }
-    notifyItemRangeInserted(0, items.size)
+    diffResult.dispatchUpdatesTo(this)
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
