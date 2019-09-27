@@ -9,15 +9,15 @@ import androidx.room.PrimaryKey
 @Entity(
   tableName = "episodes", foreignKeys = [ForeignKey(
     entity = Season::class,
-    parentColumns = arrayOf("id"),
+    parentColumns = arrayOf("id_trakt"),
     childColumns = arrayOf("id_season"),
     onDelete = CASCADE
   )]
 )
 data class Episode(
-  @PrimaryKey @ColumnInfo(name = "id") var id: Long,
-  @ColumnInfo(name = "id_season") var seasonId: Long,
-  @ColumnInfo(name = "id_show") var showId: Long,
+  @PrimaryKey @ColumnInfo(name = "id_trakt") var idTrakt: Long,
+  @ColumnInfo(name = "id_season") var idSeason: Long,
+  @ColumnInfo(name = "id_show_trakt") var idShowTrakt: Long,
   @ColumnInfo(name = "season_number") var seasonNumber: Int,
   @ColumnInfo(name = "episode_number") var episodeNumber: Int,
   @ColumnInfo(name = "episode_overview") var episodeOverview: String,

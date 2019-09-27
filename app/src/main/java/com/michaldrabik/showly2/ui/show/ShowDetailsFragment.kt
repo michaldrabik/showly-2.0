@@ -22,10 +22,10 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.actors.ActorsAdapter
 import com.michaldrabik.showly2.ui.show.related.RelatedShowAdapter
+import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonsAdapter
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.utilities.extensions.*
@@ -119,21 +119,21 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       adapter = seasonsAdapter
       layoutManager = LinearLayoutManager(context, VERTICAL, false)
     }
-    seasonsAdapter.itemClickListener = { showEpisodesView(it.season) }
+    seasonsAdapter.itemClickListener = { showEpisodesView(it) }
   }
 
-  private fun showEpisodesView(season: Season) {
+  private fun showEpisodesView(item: SeasonListItem) {
     val animationEnter = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_right)
     val animationExit = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right)
 
     showDetailsEpisodesView.run {
-      bind(season)
+      bind(item.season)
       fadeIn(275) {
-        bindEpisodes(season.episodes)
+        bindEpisodes(item.season.episodes)
       }
       startAnimation(animationEnter)
-      itemCheckedListener = { episode, season ->
-
+      itemCheckedListener = { episode, season, isChecked ->
+        viewModel.setWatchedEpisode(episode, season, item.show, isChecked)
       }
     }
 
@@ -171,7 +171,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       showDetailsExtraInfo.text =
         "${show.network} ${show.year} | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
       showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
-      showDetailsAddButton.onClick { viewModel.toggleFollowedShow(show) }
+      showDetailsAddButton.onClick(false) { viewModel.toggleFollowedShow(show) }
     }
     uiModel.showLoading?.let {
       showDetailsMainLayout.fadeIf(!it)

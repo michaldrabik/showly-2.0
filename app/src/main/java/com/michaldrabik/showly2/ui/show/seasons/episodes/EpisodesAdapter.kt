@@ -10,7 +10,7 @@ class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private val items: MutableList<Episode> = mutableListOf()
 
   var itemClickListener: (Episode) -> Unit = {}
-  var itemCheckedListener: (Episode) -> Unit = {}
+  var itemCheckedListener: (Episode, Boolean) -> Unit = { _, _ -> }
 
   fun setItems(episodes: List<Episode>) {
     this.items.apply {

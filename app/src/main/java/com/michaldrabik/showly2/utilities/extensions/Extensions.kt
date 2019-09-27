@@ -27,7 +27,7 @@ import org.threeten.bp.ZoneOffset.UTC
 
 fun nowUtc(): OffsetDateTime = OffsetDateTime.now(UTC)
 
-fun View.onClick(action: (View) -> Unit) = setOnClickListener(SafeOnClickListener(action))
+fun View.onClick(safe: Boolean = true, action: (View) -> Unit) = setOnClickListener(SafeOnClickListener(safe, action))
 
 fun Context.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSize(dimenResId)
 

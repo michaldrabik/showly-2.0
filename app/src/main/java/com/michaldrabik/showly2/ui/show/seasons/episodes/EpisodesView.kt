@@ -15,10 +15,10 @@ import kotlinx.android.synthetic.main.view_episodes.view.*
 
 class EpisodesView @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr), (Episode) -> Unit {
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
   var itemClickListener: (Episode) -> Unit = {}
-  var itemCheckedListener: (Episode, Season) -> Unit = { _, _ -> }
+  var itemCheckedListener: (Episode, Season, Boolean) -> Unit = { _, _, _ -> }
 
   private val episodesAdapter by lazy { EpisodesAdapter() }
   private lateinit var season: Season
@@ -49,8 +49,6 @@ class EpisodesView @JvmOverloads constructor(
       layoutManager = LinearLayoutManager(context, VERTICAL, false)
     }
     episodesAdapter.itemClickListener = { itemClickListener(it) }
-    episodesAdapter.itemCheckedListener = this
+    episodesAdapter.itemCheckedListener = { episode, isChecked -> itemCheckedListener(episode, season, isChecked) }
   }
-
-  override fun invoke(episode: Episode) = itemCheckedListener(episode, season)
 }

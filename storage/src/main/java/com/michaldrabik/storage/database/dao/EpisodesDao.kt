@@ -12,9 +12,12 @@ interface EpisodesDao {
   @Query("SELECT * FROM episodes")
   suspend fun getAll(): List<Episode>
 
+  @Query("SELECT * FROM episodes WHERE id_season = :seasonTraktId")
+  suspend fun getAllForSeason(seasonTraktId: Long): List<Episode>
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun upsert(episode: Episode)
 
-  @Query("DELETE FROM episodes WHERE id == :id")
+  @Query("DELETE FROM episodes WHERE id_trakt == :id")
   suspend fun delete(id: Long)
 }

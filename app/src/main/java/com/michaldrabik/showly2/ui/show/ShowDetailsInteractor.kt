@@ -81,9 +81,9 @@ class ShowDetailsInteractor @Inject constructor(
     database.followedShowsDao().deleteById(show.ids.trakt)
   }
 
-  suspend fun addEpisodeToWatched(episode: Episode, season: Season, showId: Long) =
-    episodesManager.addEpisodeToWatched(episode, season, showId)
+  suspend fun setEpisodeWatched(episodeBundle: EpisodeBundle) =
+    episodesManager.setEpisodeWatched(episodeBundle)
 
-  suspend fun removeEpisodeFromWatched(episode: Episode) =
-    episodesManager.removeEpisodeFromWatched(episode)
+  suspend fun setEpisodeUnwatched(episodeBundle: EpisodeBundle) =
+    episodesManager.setEpisodeUnwatched(episodeBundle)
 }

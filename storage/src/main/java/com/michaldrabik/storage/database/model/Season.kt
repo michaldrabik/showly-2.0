@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "seasons")
 data class Season(
-  @PrimaryKey @ColumnInfo(name = "id") var id: Long,
-  @ColumnInfo(name = "id_show") var showId: Long,
+  @PrimaryKey @ColumnInfo(name = "id_trakt") var idTrakt: Long,
+  @ColumnInfo(name = "id_show_trakt") var idShowTrakt: Long,
   @ColumnInfo(name = "season_number") var seasonNumber: Int,
   @ColumnInfo(name = "season_overview") var seasonOverview: String,
   @ColumnInfo(name = "episodes_count") var episodesCount: Int,

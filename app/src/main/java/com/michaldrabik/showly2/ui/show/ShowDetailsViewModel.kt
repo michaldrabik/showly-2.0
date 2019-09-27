@@ -2,10 +2,9 @@ package com.michaldrabik.showly2.ui.show
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.showly2.model.Image
+import com.michaldrabik.showly2.model.*
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.POSTER
-import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.FollowedState
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
@@ -73,7 +72,7 @@ class ShowDetailsViewModel @Inject constructor(
     try {
       val seasons = interactor.loadSeasons(show)
       isSeasonsLoaded = true
-      uiStream.value = ShowDetailsUiModel(seasons = seasons.map { SeasonListItem(it) })
+      uiStream.value = ShowDetailsUiModel(seasons = seasons.map { SeasonListItem(it, show) })
     } catch (e: Exception) {
       uiStream.value = ShowDetailsUiModel(seasons = emptyList())
     }
@@ -117,6 +116,16 @@ class ShowDetailsViewModel @Inject constructor(
       }
       val state = FollowedState(isFollowed = !isFollowed, withAnimation = true)
       uiStream.value = ShowDetailsUiModel(isFollowed = state)
+    }
+  }
+
+  fun setWatchedEpisode(episode: Episode, season: Season, show: Show, isChecked: Boolean) {
+    viewModelScope.launch {
+      val bundle = EpisodeBundle(episode, season, show)
+      when {
+        isChecked -> interactor.setEpisodeWatched(bundle)
+        else -> interactor.setEpisodeUnwatched(bundle)
+      }
     }
   }
 }
