@@ -12,5 +12,5 @@ data class Season(
   val overview: String,
   val episodes: List<Episode>
 ) {
-  val traktId = ids.trakt
+  val id = ids.trakt
 }

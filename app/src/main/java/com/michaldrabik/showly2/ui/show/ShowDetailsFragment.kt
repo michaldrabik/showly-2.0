@@ -127,7 +127,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     val animationExit = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right)
 
     showDetailsEpisodesView.run {
-      bind(item.season)
+      bind(item)
       fadeIn(275) {
         bindEpisodes(item.episodes)
       }
@@ -192,6 +192,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     }
     uiModel.seasons?.let {
       seasonsAdapter.setItems(it)
+      showDetailsEpisodesView.updateEpisodes(it)
       showDetailsSeasonsRecycler.fadeIf(it.isNotEmpty())
       showDetailsSeasonsLabel.fadeIf(it.isNotEmpty())
       separator2.fadeIf(it.isNotEmpty())

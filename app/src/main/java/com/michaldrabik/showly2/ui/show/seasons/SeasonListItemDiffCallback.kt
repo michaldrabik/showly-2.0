@@ -8,7 +8,7 @@ class SeasonListItemDiffCallback(
 ) : DiffUtil.Callback() {
 
   override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-    return oldList[oldItemPosition].season.traktId == newList[newItemPosition].season.traktId
+    return oldList[oldItemPosition].id == newList[newItemPosition].id
   }
 
   override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

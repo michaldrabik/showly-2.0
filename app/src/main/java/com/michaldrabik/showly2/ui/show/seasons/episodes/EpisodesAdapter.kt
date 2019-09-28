@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.show.seasons.episodes
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.showly2.model.Episode
 
@@ -12,12 +13,14 @@ class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   var itemClickListener: (Episode) -> Unit = {}
   var itemCheckedListener: (Episode, Boolean) -> Unit = { _, _ -> }
 
-  fun setItems(episodes: List<EpisodeListItem>) {
+  fun setItems(newItems: List<EpisodeListItem>) {
+    val diffCallback = EpisodeListItemDiffCallback(items, newItems)
+    val diffResult = DiffUtil.calculateDiff(diffCallback)
     this.items.apply {
       clear()
-      addAll(episodes)
+      addAll(newItems)
     }
-    notifyDataSetChanged()
+    diffResult.dispatchUpdatesTo(this)
   }
 
   fun clearItems() {

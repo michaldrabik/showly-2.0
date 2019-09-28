@@ -11,6 +11,6 @@ data class SeasonListItem(
   val show: Show
 ) {
 
-  val id = season.traktId
+  val id = season.id
 
 }

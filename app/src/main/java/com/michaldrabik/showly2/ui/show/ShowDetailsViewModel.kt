@@ -2,9 +2,13 @@ package com.michaldrabik.showly2.ui.show
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.showly2.model.*
+import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.showly2.model.EpisodeBundle
+import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.POSTER
+import com.michaldrabik.showly2.model.Season
+import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.FollowedState
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
@@ -143,26 +147,26 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   private suspend fun calculateWatchedEpisodes(currentList: List<SeasonListItem>, show: Show): List<SeasonListItem> {
-    val newSeasonItems = mutableListOf<SeasonListItem>()
+    val items = mutableListOf<SeasonListItem>()
 
     val watchedSeasonsIds = interactor.loadWatchedSeasons(show)
     val watchedEpisodesIds = interactor.loadWatchedEpisodes(show)
 
     currentList.forEach { item ->
-      val isSeasonWatched = watchedSeasonsIds.any { ids -> ids.trakt == item.season.traktId }
+      val isSeasonWatched = watchedSeasonsIds.any { ids -> ids.trakt == item.id }
       val episodes = item.episodes.map { episodeItem ->
-        val isEpisodeWatched = watchedEpisodesIds.any { ids -> ids.trakt == episodeItem.episode.ids.trakt }
+        val isEpisodeWatched = watchedEpisodesIds.any { ids -> ids.trakt == episodeItem.id }
         EpisodeListItem(episodeItem.episode, isEpisodeWatched)
       }
       val updated = item.copy(episodes = episodes, isWatched = isSeasonWatched)
-      newSeasonItems.add(updated)
+      items.add(updated)
     }
 
     seasonItems.run {
       clear()
-      addAll(newSeasonItems)
+      addAll(items)
     }
 
-    return newSeasonItems
+    return items
   }
 }
