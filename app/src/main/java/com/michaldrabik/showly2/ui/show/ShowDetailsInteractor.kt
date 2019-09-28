@@ -1,13 +1,20 @@
 package com.michaldrabik.showly2.ui.show
 
 import com.michaldrabik.network.Cloud
+import com.michaldrabik.showly2.Config.ACTORS_CACHE_DURATION
 import com.michaldrabik.showly2.UserManager
 import com.michaldrabik.showly2.di.AppScope
-import com.michaldrabik.showly2.model.*
+import com.michaldrabik.showly2.model.Actor
+import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.showly2.model.EpisodeBundle
+import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.FANART
+import com.michaldrabik.showly2.model.Season
+import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.EpisodesManager
 import com.michaldrabik.showly2.ui.common.ImagesManager
+import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.FollowedShow
 import javax.inject.Inject
@@ -42,13 +49,21 @@ class ShowDetailsInteractor @Inject constructor(
   }
 
   suspend fun loadActors(show: Show): List<Actor> {
+    val localActors = database.actorsDao().getAllByShow(show.ids.tvdb)
+    if (localActors.isNotEmpty() && nowUtcMillis() - localActors[0].updatedAt < ACTORS_CACHE_DURATION) {
+      return localActors.map { mappers.actor.fromDatabase(it) }
+    }
+
     userManager.checkAuthorization()
     val token = userManager.getTvdbToken()
-    return cloud.tvdbApi.fetchActors(token, show.ids.tvdb)
+    val remoteActors = cloud.tvdbApi.fetchActors(token, show.ids.tvdb)
       .filter { it.image.isNotBlank() }
       .sortedBy { it.sortOrder }
-      .take(30)
+      .take(20)
       .map { mappers.actor.fromNetwork(it) }
+
+    database.actorsDao().deleteAllAndInsert(remoteActors.map { mappers.actor.toDatabase(it) }, show.ids.tvdb)
+    return remoteActors
   }
 
   suspend fun loadRelatedShows(show: Show) =
