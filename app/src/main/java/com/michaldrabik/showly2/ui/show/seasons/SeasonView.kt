@@ -1,10 +1,15 @@
 package com.michaldrabik.showly2.ui.show.seasons
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.ImageViewCompat
 import com.michaldrabik.showly2.R
 import kotlinx.android.synthetic.main.view_season.view.*
 
@@ -19,14 +24,22 @@ class SeasonView @JvmOverloads constructor(
     clipToPadding = false
   }
 
+  @SuppressLint("SetTextI18n")
   fun bind(item: SeasonListItem, clickListener: (SeasonListItem) -> Unit) {
     clear()
     setOnClickListener { clickListener(item) }
 
     seasonViewTitle.text = context.getString(R.string.textSeason, item.season.number)
     seasonViewProgress.max = item.season.episodeCount
-    seasonViewProgress.progress = item.episodes.count { it.isWatched }
+    val progressCount = item.episodes.count { it.isWatched }
+    seasonViewProgress.progress = progressCount
+    seasonViewProgressText.text = "$progressCount/${item.episodes.size}"
     seasonViewCheckbox.isChecked = item.isWatched
+
+    val color = ContextCompat.getColor(context, if (item.isWatched) R.color.colorAccent else R.color.colorTextPrimary)
+    seasonViewTitle.setTextColor(color)
+    seasonViewProgressText.setTextColor(color)
+    ImageViewCompat.setImageTintList(seasonViewArrow, ColorStateList.valueOf(color))
   }
 
   private fun clear() {
