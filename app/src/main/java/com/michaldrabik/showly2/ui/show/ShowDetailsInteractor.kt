@@ -88,7 +88,7 @@ class ShowDetailsInteractor @Inject constructor(
     database.followedShowsDao().getById(show.ids.trakt) != null
 
   suspend fun addToFollowed(show: Show) {
-    val dbShow = FollowedShow.fromTraktId(show.ids.trakt)
+    val dbShow = FollowedShow.fromTraktId(show.ids.trakt, nowUtcMillis())
     database.followedShowsDao().insert(listOf(dbShow))
   }
 

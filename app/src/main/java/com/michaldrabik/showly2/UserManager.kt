@@ -2,9 +2,9 @@ package com.michaldrabik.showly2
 
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.User
-import java.lang.System.currentTimeMillis
 import javax.inject.Inject
 
 @AppScope
@@ -35,7 +35,7 @@ class UserManager @Inject constructor(
   }
 
   private suspend fun saveTvdbToken(token: String) {
-    val timestamp = currentTimeMillis()
+    val timestamp = nowUtcMillis()
     database.userDao().upsert(User(tvdbToken = token, tvdbTokenTimestamp = timestamp))
     tvdbToken = token
     tvdbTokenTimestamp = timestamp
@@ -51,7 +51,7 @@ class UserManager @Inject constructor(
     }
     return when {
       tvdbToken.isNullOrEmpty() -> false
-      currentTimeMillis() - tvdbTokenTimestamp > TVDB_TOKEN_EXPIRATION_MS -> false
+      nowUtcMillis() - tvdbTokenTimestamp > TVDB_TOKEN_EXPIRATION_MS -> false
       else -> true
     }
   }

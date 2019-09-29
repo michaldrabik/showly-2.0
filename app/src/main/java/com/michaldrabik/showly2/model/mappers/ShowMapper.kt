@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.model.mappers
 import com.michaldrabik.showly2.model.AirTime
 import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import javax.inject.Inject
 import com.michaldrabik.network.trakt.model.Show as ShowNetwork
 import com.michaldrabik.storage.database.model.Show as ShowDb
@@ -76,6 +77,6 @@ class ShowMapper @Inject constructor() {
     show.commentCount,
     show.genres.joinToString(","),
     show.airedEpisodes,
-    System.currentTimeMillis()
+    nowUtcMillis()
   )
 }

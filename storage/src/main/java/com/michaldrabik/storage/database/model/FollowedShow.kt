@@ -13,9 +13,8 @@ data class FollowedShow(
 ) {
 
   companion object {
-    fun fromTraktId(traktId: Long): FollowedShow {
-      val timestamp = System.currentTimeMillis()
-      return FollowedShow(idTrakt = traktId, createdAt = timestamp, updatedAt = timestamp)
+    fun fromTraktId(traktId: Long, nowUtcMillis: Long): FollowedShow {
+      return FollowedShow(idTrakt = traktId, createdAt = nowUtcMillis, updatedAt = nowUtcMillis)
     }
   }
 }

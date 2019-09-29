@@ -1,6 +1,7 @@
 package com.michaldrabik.showly2.utilities
 
 import android.view.View
+import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 
 private const val SAFE_INTERVAL = 650
 
@@ -15,7 +16,7 @@ class SafeOnClickListener(
       action(clickedView)
       return
     }
-    val currentTimestamp = System.currentTimeMillis()
+    val currentTimestamp = nowUtcMillis()
     if (lastClickTimestamp == 0L || currentTimestamp - lastClickTimestamp > SAFE_INTERVAL) {
       action(clickedView)
       lastClickTimestamp = currentTimestamp

@@ -8,9 +8,9 @@ import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.ImagesManager
+import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.DiscoverShow
-import java.lang.System.currentTimeMillis
 import javax.inject.Inject
 
 @AppScope
@@ -30,7 +30,7 @@ class DiscoverInteractor @Inject constructor(
     }
 
     val stamp = database.discoverShowsDao().getMostRecent()?.createdAt ?: 0
-    if (!skipCache && currentTimeMillis() - stamp < Config.DISCOVER_SHOWS_CACHE_DURATION) {
+    if (!skipCache && nowUtcMillis() - stamp < Config.DISCOVER_SHOWS_CACHE_DURATION) {
       return database.discoverShowsDao().getAll().map { mappers.show.fromDatabase(it) }
     }
 
@@ -47,7 +47,7 @@ class DiscoverInteractor @Inject constructor(
     }
 
     database.withTransaction {
-      val timestamp = currentTimeMillis()
+      val timestamp = nowUtcMillis()
       database.showsDao().upsert(discoverShows.map { mappers.show.toDatabase(it) })
       database.discoverShowsDao().deleteAllAndInsert(discoverShows.map {
         DiscoverShow(idTrakt = it.ids.trakt, createdAt = timestamp, updatedAt = timestamp)
