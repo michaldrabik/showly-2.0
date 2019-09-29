@@ -10,6 +10,7 @@ class SeasonsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private val items: MutableList<SeasonListItem> = mutableListOf()
 
   var itemClickListener: (SeasonListItem) -> Unit = {}
+  var itemCheckedListener: (SeasonListItem, Boolean) -> Unit = { _, _ -> }
 
   fun setItems(newItems: List<SeasonListItem>) {
     val diffCallback = SeasonListItemDiffCallback(items, newItems)
@@ -25,7 +26,7 @@ class SeasonsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     ViewHolderShow(SeasonView(parent.context))
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-    (holder.itemView as SeasonView).bind(items[position], itemClickListener)
+    (holder.itemView as SeasonView).bind(items[position], itemClickListener, itemCheckedListener)
   }
 
   override fun getItemCount() = items.size

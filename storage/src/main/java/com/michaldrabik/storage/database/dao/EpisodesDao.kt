@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.michaldrabik.storage.database.model.Episode
 
 @Dao
@@ -20,6 +21,9 @@ interface EpisodesDao {
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun upsert(episode: Episode)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun upsert(episodes: List<Episode>)
 
   @Query("DELETE FROM episodes WHERE id_trakt == :id")
   suspend fun delete(id: Long)

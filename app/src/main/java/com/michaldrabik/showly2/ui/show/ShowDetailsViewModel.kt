@@ -8,6 +8,7 @@ import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Season
+import com.michaldrabik.showly2.model.SeasonBundle
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.FollowedState
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
@@ -136,6 +137,17 @@ class ShowDetailsViewModel @Inject constructor(
       when {
         isChecked -> interactor.setEpisodeWatched(bundle)
         else -> interactor.setEpisodeUnwatched(bundle)
+      }
+      refreshWatchedEpisodes(show)
+    }
+  }
+
+  fun setWatchedSeason(season: Season, show: Show, isChecked: Boolean) {
+    viewModelScope.launch {
+      val bundle = SeasonBundle(season, show)
+      when {
+        isChecked -> interactor.setSeasonWatched(bundle)
+        else -> interactor.setSeasonUnwatched(bundle)
       }
       refreshWatchedEpisodes(show)
     }

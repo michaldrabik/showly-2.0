@@ -10,6 +10,7 @@ import com.michaldrabik.showly2.model.EpisodeBundle
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.Season
+import com.michaldrabik.showly2.model.SeasonBundle
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.EpisodesManager
@@ -101,6 +102,12 @@ class ShowDetailsInteractor @Inject constructor(
 
   suspend fun setEpisodeUnwatched(episodeBundle: EpisodeBundle) =
     episodesManager.setEpisodeUnwatched(episodeBundle)
+
+  suspend fun setSeasonWatched(seasonBundle: SeasonBundle) =
+    episodesManager.setSeasonWatched(seasonBundle)
+
+  suspend fun setSeasonUnwatched(seasonBundle: SeasonBundle) =
+    episodesManager.setSeasonUnwatched(seasonBundle)
 
   suspend fun loadWatchedSeasons(show: Show) =
     episodesManager.getWatchedSeasonsIds(show)

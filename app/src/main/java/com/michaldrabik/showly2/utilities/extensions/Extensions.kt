@@ -60,12 +60,14 @@ fun View.fadeIf(condition: Boolean) =
   }
 
 fun View.fadeIn(duration: Long = 250, startDelay: Long = 0, endAction: () -> Unit = {}) {
+  if (visibility == VISIBLE) return
   visibility = VISIBLE
   alpha = 0F
   animate().alpha(1F).setDuration(duration).setStartDelay(startDelay).withEndAction(endAction).start()
 }
 
 fun View.fadeOut(duration: Long = 250, startDelay: Long = 0, endAction: () -> Unit = {}) {
+  if (visibility == GONE) return
   animate().alpha(0F).setDuration(duration).setStartDelay(startDelay).withEndAction {
     gone()
     endAction()

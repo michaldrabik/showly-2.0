@@ -20,5 +20,7 @@ data class Episode(
     val EMPTY = Episode(-1, -1, "", Ids.EMPTY, "", -1F, -1, -1, null, null, -1)
   }
 
+  val id = ids.trakt
+
   fun toDisplayString() = String.format("S.%02d E.%02d", season, number)
 }
