@@ -21,5 +21,7 @@ data class Episode(
   @ColumnInfo(name = "season_number") var seasonNumber: Int,
   @ColumnInfo(name = "episode_number") var episodeNumber: Int,
   @ColumnInfo(name = "episode_overview") var episodeOverview: String,
+  @ColumnInfo(name = "episode_title") var title: String,
+  @ColumnInfo(name = "first_aired") var firstAired: String,
   @ColumnInfo(name = "is_watched") var isWatched: Boolean
 )

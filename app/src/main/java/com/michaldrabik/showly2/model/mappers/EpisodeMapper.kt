@@ -4,6 +4,7 @@ import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.model.Season
 import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
 import com.michaldrabik.network.trakt.model.Episode as EpisodeNetwork
 import com.michaldrabik.storage.database.model.Episode as EpisodeDb
@@ -44,6 +45,8 @@ class EpisodeMapper @Inject constructor() {
       season.number,
       episode.number,
       episode.overview,
+      episode.title,
+      episode.firstAired?.format(DateTimeFormatter.ISO_ZONED_DATE_TIME) ?: "",
       isWatched
     )
   }
