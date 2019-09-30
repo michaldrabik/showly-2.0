@@ -16,9 +16,9 @@
     android:gravity="center"
     android:includeFontPadding="false"
     android:text="@string/textAdd"
-    android:textColor="@color/colorAccent"
-    app:rippleColor="@color/colorAccent"
-    app:strokeColor="@color/colorAccent"
+    android:textColor="@color/colorWhite"
+    app:rippleColor="@color/colorWhite"
+    app:strokeColor="@color/colorWhite"
     />
 
   <com.google.android.material.button.MaterialButton
@@ -29,13 +29,13 @@
     android:gravity="center"
     android:includeFontPadding="false"
     android:text="@string/textAdded"
-    android:textColor="@color/colorWhite"
+    android:textColor="@color/colorAccent"
     android:visibility="gone"
     app:icon="@drawable/ic_check"
     app:iconPadding="-24dp"
-    app:iconTint="@color/colorWhite"
-    app:rippleColor="@color/colorWhite"
-    app:strokeColor="@color/colorWhite"
+    app:iconTint="@color/colorAccent"
+    app:rippleColor="@color/colorAccent"
+    app:strokeColor="@color/colorAccent"
     tools:visibility="visible"
     />
 

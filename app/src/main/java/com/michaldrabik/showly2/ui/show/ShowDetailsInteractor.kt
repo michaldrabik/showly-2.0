@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.show
 
+import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.Config.ACTORS_CACHE_DURATION
 import com.michaldrabik.showly2.UserManager
@@ -7,12 +8,13 @@ import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.*
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.ui.common.EpisodesManager
 import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.FollowedShow
 import javax.inject.Inject
+import com.michaldrabik.storage.database.model.Episode as EpisodeDb
+import com.michaldrabik.storage.database.model.Season as SeasonDb
 
 @AppScope
 class ShowDetailsInteractor @Inject constructor(
@@ -20,7 +22,6 @@ class ShowDetailsInteractor @Inject constructor(
   private val database: AppDatabase,
   private val userManager: UserManager,
   private val imagesManager: ImagesManager,
-  private val episodesManager: EpisodesManager,
   private val mappers: Mappers
 ) {
 
@@ -82,30 +83,54 @@ class ShowDetailsInteractor @Inject constructor(
   suspend fun isFollowed(show: Show) =
     database.followedShowsDao().getById(show.id) != null
 
-  suspend fun addToFollowed(show: Show) {
+  suspend fun addToFollowed(
+    show: Show,
+    seasons: List<Season>,
+    episodes: List<Episode>
+  ) {
     val dbShow = FollowedShow.fromTraktId(show.id, nowUtcMillis())
-    database.followedShowsDao().insert(listOf(dbShow))
+    database.withTransaction {
+      database.followedShowsDao().insert(dbShow)
+
+      val localSeasons = database.seasonsDao().getAllByShowId(show.id)
+      val localEpisodes = database.episodesDao().getAllByShowId(show.id)
+
+      val seasonsToAdd = mutableListOf<SeasonDb>()
+      val episodesToAdd = mutableListOf<EpisodeDb>()
+
+      seasons.forEach { season ->
+        if (localSeasons.none { it.idTrakt == season.id }) {
+          seasonsToAdd.add(mappers.season.toDatabase(season, show.id, false))
+        }
+      }
+
+      episodes.forEach { episode ->
+        if (localEpisodes.none { it.idTrakt == episode.id }) {
+          val season = seasons.find { it.number == episode.season }!!
+          episodesToAdd.add(mappers.episode.toDatabase(episode, season, show.id, false))
+        }
+      }
+
+      database.seasonsDao().upsert(seasonsToAdd)
+      database.episodesDao().upsert(episodesToAdd)
+    }
   }
 
   suspend fun removeFromFollowed(show: Show) {
-    database.followedShowsDao().deleteById(show.id)
+    database.withTransaction {
+      database.followedShowsDao().deleteById(show.id)
+      database.episodesDao().deleteAllUnwatchedForShow(show.id)
+
+      val seasons = database.seasonsDao().getAllByShowId(show.id)
+      val episodes = database.episodesDao().getAllByShowId(show.id)
+
+      val toDelete = mutableListOf<SeasonDb>()
+      seasons.forEach { season ->
+        if (episodes.none { it.idSeason == season.idTrakt }) {
+          toDelete.add(season)
+        }
+      }
+      database.seasonsDao().delete(toDelete)
+    }
   }
-
-  suspend fun setEpisodeWatched(episodeBundle: EpisodeBundle) =
-    episodesManager.setEpisodeWatched(episodeBundle)
-
-  suspend fun setEpisodeUnwatched(episodeBundle: EpisodeBundle) =
-    episodesManager.setEpisodeUnwatched(episodeBundle)
-
-  suspend fun setSeasonWatched(seasonBundle: SeasonBundle) =
-    episodesManager.setSeasonWatched(seasonBundle)
-
-  suspend fun setSeasonUnwatched(seasonBundle: SeasonBundle) =
-    episodesManager.setSeasonUnwatched(seasonBundle)
-
-  suspend fun loadWatchedSeasons(show: Show) =
-    episodesManager.getWatchedSeasonsIds(show)
-
-  suspend fun loadWatchedEpisodes(show: Show) =
-    episodesManager.getWatchedEpisodesIds(show)
 }

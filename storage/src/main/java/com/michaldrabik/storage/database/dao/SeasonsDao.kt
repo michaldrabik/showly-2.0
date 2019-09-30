@@ -6,11 +6,11 @@ import com.michaldrabik.storage.database.model.Season
 @Dao
 interface SeasonsDao {
 
-  @Query("SELECT * FROM seasons")
-  suspend fun getAll(): List<Season>
+  @Query("SELECT id_trakt FROM seasons WHERE id_show_trakt = :traktId AND is_watched = 1")
+  suspend fun getAllWatchedForShow(traktId: Long): List<Long>
 
   @Query("SELECT * FROM seasons WHERE id_show_trakt = :traktId")
-  suspend fun getAllForShow(traktId: Long): List<Season>
+  suspend fun getAllByShowId(traktId: Long): List<Season>
 
   @Query("SELECT * FROM seasons WHERE id_trakt = :traktId")
   suspend fun getById(traktId: Long): Season?
@@ -18,12 +18,15 @@ interface SeasonsDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun upsert(season: Season)
 
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun upsert(seasons: List<Season>)
+
   @Update
   suspend fun update(season: Season)
 
   @Delete
   suspend fun delete(season: Season)
 
-  @Query("DELETE FROM seasons WHERE id_show_trakt == :traktId")
-  suspend fun deleteAllForShow(traktId: Long)
+  @Delete
+  suspend fun delete(seasons: List<Season>)
 }

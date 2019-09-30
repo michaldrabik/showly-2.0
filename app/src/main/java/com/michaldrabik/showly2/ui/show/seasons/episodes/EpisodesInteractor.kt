@@ -1,30 +1,27 @@
-package com.michaldrabik.showly2.ui.common
+package com.michaldrabik.showly2.ui.show.seasons.episodes
 
 import androidx.room.withTransaction
 import com.michaldrabik.showly2.di.AppScope
-import com.michaldrabik.showly2.model.*
+import com.michaldrabik.showly2.model.EpisodeBundle
+import com.michaldrabik.showly2.model.Season
+import com.michaldrabik.showly2.model.SeasonBundle
+import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.Episode
 import javax.inject.Inject
-import com.michaldrabik.storage.database.model.Episode as EpisodeDb
 
 @AppScope
-class EpisodesManager @Inject constructor(
+class EpisodesInteractor @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers
 ) {
 
-  suspend fun getWatchedSeasonsIds(show: Show): List<Ids> {
-    return database.seasonsDao().getAllForShow(show.id)
-      .filter { it.isWatched }
-      .map { Ids.EMPTY.copy(trakt = it.idTrakt) }
-  }
+  suspend fun getWatchedSeasonsIds(show: Show): List<Long> =
+    database.seasonsDao().getAllWatchedForShow(show.id)
 
-  suspend fun getWatchedEpisodesIds(show: Show): List<Ids> {
-    return database.episodesDao().getAllForShow(show.id)
-      .filter { it.isWatched }
-      .map { Ids.EMPTY.copy(trakt = it.idTrakt) }
-  }
+  suspend fun getWatchedEpisodesIds(show: Show): List<Long> =
+    database.episodesDao().getAllWatchedForShow(show.id)
 
   suspend fun setSeasonWatched(seasonBundle: SeasonBundle) {
     database.withTransaction {
@@ -37,7 +34,7 @@ class EpisodesManager @Inject constructor(
       }
 
       val episodes = database.episodesDao().getAllForSeason(season.id).filter { it.isWatched }
-      val toAdd = mutableListOf<EpisodeDb>()
+      val toAdd = mutableListOf<Episode>()
 
       season.episodes.forEach { ep ->
         if (episodes.none { it.idTrakt == ep.id }) {
@@ -59,8 +56,18 @@ class EpisodesManager @Inject constructor(
       val watchedEpisodes = database.episodesDao().getAllForSeason(season.id).filter { it.isWatched }
       val toSet = watchedEpisodes.map { it.copy(isWatched = false) }
 
-      database.episodesDao().upsert(toSet)
-      database.seasonsDao().update(dbSeason)
+      val isShowFollowed = database.followedShowsDao().getById(show.id) != null
+
+      when {
+        isShowFollowed -> {
+          database.episodesDao().upsert(toSet)
+          database.seasonsDao().update(dbSeason)
+        }
+        else -> {
+          database.episodesDao().delete(toSet)
+          database.seasonsDao().delete(dbSeason)
+        }
+      }
     }
   }
 
@@ -84,9 +91,14 @@ class EpisodesManager @Inject constructor(
     database.withTransaction {
       val (episode, season, show) = episodeBundle
 
+      val isShowFollowed = database.followedShowsDao().getById(show.id) != null
       val dbEpisode = mappers.episode.toDatabase(episode, season, show.id, true)
 
-      database.episodesDao().upsert(dbEpisode.copy(isWatched = false))
+      when {
+        isShowFollowed -> database.episodesDao().upsert(dbEpisode.copy(isWatched = false))
+        else -> database.episodesDao().delete(dbEpisode)
+      }
+
       onEpisodeSet(season, show)
     }
   }

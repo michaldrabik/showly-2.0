@@ -17,7 +17,7 @@ interface FollowedShowsDao {
   suspend fun getById(traktId: Long): Show?
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(shows: List<FollowedShow>)
+  suspend fun insert(show: FollowedShow)
 
   @Query("DELETE FROM shows_followed WHERE id_trakt == :traktId")
   suspend fun deleteById(traktId: Long)

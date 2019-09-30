@@ -10,12 +10,14 @@ import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodeListItem
+import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesInteractor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ShowDetailsViewModel @Inject constructor(
-  private val interactor: ShowDetailsInteractor
+  private val interactor: ShowDetailsInteractor,
+  private val episodesInteractor: EpisodesInteractor
 ) : BaseViewModel() {
 
   val uiStream by lazy { MutableLiveData<ShowDetailsUiModel>() }
@@ -119,7 +121,11 @@ class ShowDetailsViewModel @Inject constructor(
       val isFollowed = interactor.isFollowed(show)
       when {
         isFollowed -> interactor.removeFromFollowed(show)
-        else -> interactor.addToFollowed(show)
+        else -> {
+          val seasons = seasonItems.map { it.season }
+          val episodes = seasonItems.flatMap { it.episodes.map { e -> e.episode } }
+          interactor.addToFollowed(show, seasons, episodes)
+        }
       }
       val state = FollowedState(isFollowed = !isFollowed, withAnimation = true)
       uiStream.value = ShowDetailsUiModel(isFollowed = state)
@@ -130,8 +136,8 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       val bundle = EpisodeBundle(episode, season, show)
       when {
-        isChecked -> interactor.setEpisodeWatched(bundle)
-        else -> interactor.setEpisodeUnwatched(bundle)
+        isChecked -> episodesInteractor.setEpisodeWatched(bundle)
+        else -> episodesInteractor.setEpisodeUnwatched(bundle)
       }
       refreshWatchedEpisodes(show)
     }
@@ -141,8 +147,8 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       val bundle = SeasonBundle(season, show)
       when {
-        isChecked -> interactor.setSeasonWatched(bundle)
-        else -> interactor.setSeasonUnwatched(bundle)
+        isChecked -> episodesInteractor.setSeasonWatched(bundle)
+        else -> episodesInteractor.setSeasonUnwatched(bundle)
       }
       refreshWatchedEpisodes(show)
     }
@@ -156,13 +162,13 @@ class ShowDetailsViewModel @Inject constructor(
   private suspend fun calculateWatchedEpisodes(currentList: List<SeasonListItem>, show: Show): List<SeasonListItem> {
     val items = mutableListOf<SeasonListItem>()
 
-    val watchedSeasonsIds = interactor.loadWatchedSeasons(show)
-    val watchedEpisodesIds = interactor.loadWatchedEpisodes(show)
+    val watchedSeasonsIds = episodesInteractor.getWatchedSeasonsIds(show)
+    val watchedEpisodesIds = episodesInteractor.getWatchedEpisodesIds(show)
 
     currentList.forEach { item ->
-      val isSeasonWatched = watchedSeasonsIds.any { ids -> ids.trakt == item.id }
+      val isSeasonWatched = watchedSeasonsIds.any { id -> id == item.id }
       val episodes = item.episodes.map { episodeItem ->
-        val isEpisodeWatched = watchedEpisodesIds.any { ids -> ids.trakt == episodeItem.id }
+        val isEpisodeWatched = watchedEpisodesIds.any { id -> id == episodeItem.id }
         EpisodeListItem(episodeItem.episode, isEpisodeWatched)
       }
       val updated = item.copy(episodes = episodes, isWatched = isSeasonWatched)
