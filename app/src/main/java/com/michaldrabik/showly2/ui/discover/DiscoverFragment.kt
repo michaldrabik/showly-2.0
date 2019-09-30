@@ -104,7 +104,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
     clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350, endAction = {
       val position = layoutManager.findFirstVisibleItemPosition()
       viewModel.saveListPosition(position, (layoutManager.findViewByPosition(position)?.top ?: 0) - searchViewPadding)
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt) }
+      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.id) }
       findNavController().navigate(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
     })
   }

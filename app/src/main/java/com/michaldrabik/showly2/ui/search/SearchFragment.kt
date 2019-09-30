@@ -111,7 +111,7 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
     }
     val clickedView = searchRecycler.findViewHolderForAdapterPosition(clickedIndex)
     clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350, endAction = {
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt) }
+      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.id) }
       findNavController().navigate(R.id.actionSearchFragmentToShowDetailsFragment, bundle)
     })
   }

@@ -24,7 +24,7 @@ class DiscoverInteractor @Inject constructor(
   suspend fun loadDiscoverShows(skipCache: Boolean = false): List<Show> {
 
     fun addIfMissing(shows: MutableList<Show>, show: Show) {
-      if (shows.none { it.ids.trakt == show.ids.trakt }) {
+      if (shows.none { it.id == show.id }) {
         shows.add(show)
       }
     }

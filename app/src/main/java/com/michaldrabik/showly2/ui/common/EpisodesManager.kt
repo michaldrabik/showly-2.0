@@ -2,11 +2,7 @@ package com.michaldrabik.showly2.ui.common
 
 import androidx.room.withTransaction
 import com.michaldrabik.showly2.di.AppScope
-import com.michaldrabik.showly2.model.EpisodeBundle
-import com.michaldrabik.showly2.model.Ids
-import com.michaldrabik.showly2.model.Season
-import com.michaldrabik.showly2.model.SeasonBundle
-import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.model.*
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.storage.database.AppDatabase
 import javax.inject.Inject
@@ -19,13 +15,13 @@ class EpisodesManager @Inject constructor(
 ) {
 
   suspend fun getWatchedSeasonsIds(show: Show): List<Ids> {
-    return database.seasonsDao().getAllForShow(show.ids.trakt)
+    return database.seasonsDao().getAllForShow(show.id)
       .filter { it.isWatched }
       .map { Ids.EMPTY.copy(trakt = it.idTrakt) }
   }
 
   suspend fun getWatchedEpisodesIds(show: Show): List<Ids> {
-    return database.episodesDao().getAllForShow(show.ids.trakt)
+    return database.episodesDao().getAllForShow(show.id)
       .filter { it.isWatched }
       .map { Ids.EMPTY.copy(trakt = it.idTrakt) }
   }
@@ -34,18 +30,18 @@ class EpisodesManager @Inject constructor(
     database.withTransaction {
       val (season, show) = seasonBundle
 
-      val dbSeason = mappers.season.toDatabase(season, show.ids.trakt, true)
-      val localSeason = database.seasonsDao().getById(season.ids.trakt)
+      val dbSeason = mappers.season.toDatabase(season, show.id, true)
+      val localSeason = database.seasonsDao().getById(season.id)
       if (localSeason == null) {
         database.seasonsDao().upsert(dbSeason)
       }
 
-      val watchedEpisodes = database.episodesDao().getAllForSeason(season.id).filter { it.isWatched }
+      val episodes = database.episodesDao().getAllForSeason(season.id).filter { it.isWatched }
       val toAdd = mutableListOf<EpisodeDb>()
 
       season.episodes.forEach { ep ->
-        if (watchedEpisodes.none { it.idTrakt == ep.id }) {
-          val dbEpisode = mappers.episode.toDatabase(ep, season, show.ids.trakt, true)
+        if (episodes.none { it.idTrakt == ep.id }) {
+          val dbEpisode = mappers.episode.toDatabase(ep, season, show.id, true)
           toAdd.add(dbEpisode)
         }
       }
@@ -59,7 +55,7 @@ class EpisodesManager @Inject constructor(
     database.withTransaction {
       val (season, show) = seasonBundle
 
-      val dbSeason = mappers.season.toDatabase(season, show.ids.trakt, false)
+      val dbSeason = mappers.season.toDatabase(season, show.id, false)
       val watchedEpisodes = database.episodesDao().getAllForSeason(season.id).filter { it.isWatched }
       val toSet = watchedEpisodes.map { it.copy(isWatched = false) }
 
@@ -72,8 +68,8 @@ class EpisodesManager @Inject constructor(
     database.withTransaction {
       val (episode, season, show) = episodeBundle
 
-      val dbEpisode = mappers.episode.toDatabase(episode, season, show.ids.trakt, true)
-      val dbSeason = mappers.season.toDatabase(season, show.ids.trakt, false)
+      val dbEpisode = mappers.episode.toDatabase(episode, season, show.id, true)
+      val dbSeason = mappers.season.toDatabase(season, show.id, false)
 
       val localSeason = database.seasonsDao().getById(season.ids.trakt)
       if (localSeason == null) {
@@ -88,7 +84,7 @@ class EpisodesManager @Inject constructor(
     database.withTransaction {
       val (episode, season, show) = episodeBundle
 
-      val dbEpisode = mappers.episode.toDatabase(episode, season, show.ids.trakt, true)
+      val dbEpisode = mappers.episode.toDatabase(episode, season, show.id, true)
 
       database.episodesDao().upsert(dbEpisode.copy(isWatched = false))
       onEpisodeSet(season, show)
@@ -98,7 +94,7 @@ class EpisodesManager @Inject constructor(
   private suspend fun onEpisodeSet(season: Season, show: Show) {
     val localEpisodes = database.episodesDao().getAllForSeason(season.ids.trakt)
     val isWatched = localEpisodes.count { it.isWatched } == season.episodeCount
-    val dbSeason = mappers.season.toDatabase(season, show.ids.trakt, isWatched)
+    val dbSeason = mappers.season.toDatabase(season, show.id, isWatched)
     database.seasonsDao().update(dbSeason)
   }
 }

@@ -2,14 +2,9 @@ package com.michaldrabik.showly2.ui.show
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.model.EpisodeBundle
-import com.michaldrabik.showly2.model.Image
+import com.michaldrabik.showly2.model.*
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.POSTER
-import com.michaldrabik.showly2.model.Season
-import com.michaldrabik.showly2.model.SeasonBundle
-import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.FollowedState
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
@@ -49,7 +44,7 @@ class ShowDetailsViewModel @Inject constructor(
 
   private suspend fun loadNextEpisode(show: Show) {
     try {
-      val episode = interactor.loadNextEpisode(show.ids.trakt)
+      val episode = interactor.loadNextEpisode(show.id)
       uiStream.value = ShowDetailsUiModel(nextEpisode = episode)
     } catch (e: Exception) {
       //NOOP

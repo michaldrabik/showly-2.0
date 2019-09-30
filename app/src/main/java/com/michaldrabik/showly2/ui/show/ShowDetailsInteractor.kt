@@ -4,14 +4,8 @@ import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.Config.ACTORS_CACHE_DURATION
 import com.michaldrabik.showly2.UserManager
 import com.michaldrabik.showly2.di.AppScope
-import com.michaldrabik.showly2.model.Actor
-import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.model.EpisodeBundle
-import com.michaldrabik.showly2.model.ImageType
+import com.michaldrabik.showly2.model.*
 import com.michaldrabik.showly2.model.ImageType.FANART
-import com.michaldrabik.showly2.model.Season
-import com.michaldrabik.showly2.model.SeasonBundle
-import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.EpisodesManager
 import com.michaldrabik.showly2.ui.common.ImagesManager
@@ -68,7 +62,7 @@ class ShowDetailsInteractor @Inject constructor(
   }
 
   suspend fun loadRelatedShows(show: Show) =
-    cloud.traktApi.fetchRelatedShows(show.ids.trakt)
+    cloud.traktApi.fetchRelatedShows(show.id)
       .sortedWith(compareBy({ it.votes }, { it.rating }))
       .reversed()
       .map { mappers.show.fromNetwork(it) }
@@ -80,21 +74,21 @@ class ShowDetailsInteractor @Inject constructor(
     imagesManager.loadRemoteImage(show, type, force)
 
   suspend fun loadSeasons(show: Show): List<Season> {
-    return cloud.traktApi.fetchSeasons(show.ids.trakt)
+    return cloud.traktApi.fetchSeasons(show.id)
       .filter { it.number != 0 } //Filtering out "special" seasons
       .map { mappers.season.fromNetwork(it) }
   }
 
   suspend fun isFollowed(show: Show) =
-    database.followedShowsDao().getById(show.ids.trakt) != null
+    database.followedShowsDao().getById(show.id) != null
 
   suspend fun addToFollowed(show: Show) {
-    val dbShow = FollowedShow.fromTraktId(show.ids.trakt, nowUtcMillis())
+    val dbShow = FollowedShow.fromTraktId(show.id, nowUtcMillis())
     database.followedShowsDao().insert(listOf(dbShow))
   }
 
   suspend fun removeFromFollowed(show: Show) {
-    database.followedShowsDao().deleteById(show.ids.trakt)
+    database.followedShowsDao().deleteById(show.id)
   }
 
   suspend fun setEpisodeWatched(episodeBundle: EpisodeBundle) =

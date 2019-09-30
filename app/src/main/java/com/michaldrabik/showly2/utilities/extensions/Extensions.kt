@@ -10,6 +10,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.CheckBox
 import androidx.annotation.DimenRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -148,4 +149,10 @@ fun BottomNavigationView.fixBlinking() {
 fun View.addRipple() = with(TypedValue()) {
   context.theme.resolveAttribute(android.R.attr.selectableItemBackground, this, true)
   setBackgroundResource(resourceId)
+}
+
+fun CheckBox.setCheckedSilent(isChecked: Boolean, action: (View, Boolean) -> Unit = { _, _ -> }) {
+  setOnCheckedChangeListener { _, _ -> }
+  setChecked(isChecked)
+  setOnCheckedChangeListener(action)
 }

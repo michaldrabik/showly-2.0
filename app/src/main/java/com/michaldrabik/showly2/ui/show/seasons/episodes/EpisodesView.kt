@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Season
+import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
+import com.michaldrabik.showly2.utilities.extensions.setCheckedSilent
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_episodes.view.*
 
@@ -20,6 +22,7 @@ class EpisodesView @JvmOverloads constructor(
 
   var itemClickListener: (Episode) -> Unit = {}
   var itemCheckedListener: (Episode, Season, Boolean) -> Unit = { _, _, _ -> }
+  var seasonCheckedListener: (Season, Show, Boolean) -> Unit = { _, _, _ -> }
 
   private val episodesAdapter by lazy { EpisodesAdapter() }
   private lateinit var season: Season
@@ -31,13 +34,17 @@ class EpisodesView @JvmOverloads constructor(
   }
 
   fun bind(seasonItem: SeasonListItem) {
+    clear()
     this.season = seasonItem.season.copy()
-    episodesAdapter.clearItems()
-    episodesCheckbox.isChecked = seasonItem.isWatched
-    episodesCheckbox.jumpDrawablesToCurrentState()
     episodesTitle.text = context.getString(R.string.textSeason, season.number)
     episodesOverview.text = season.overview
     episodesOverview.visibleIf(season.overview.isNotBlank())
+    episodesCheckbox.run {
+      setCheckedSilent(seasonItem.isWatched) { _, isChecked ->
+        seasonCheckedListener(season, seasonItem.show, isChecked)
+      }
+      jumpDrawablesToCurrentState()
+    }
   }
 
   fun bindEpisodes(episodes: List<EpisodeListItem>) {
@@ -49,7 +56,10 @@ class EpisodesView @JvmOverloads constructor(
     if (!this::season.isInitialized) return
     val seasonListItem = seasonListItems.find { it.season.id == season.id }
     seasonListItem?.let {
-      episodesCheckbox.isChecked = it.isWatched
+      this.season = it.season.copy()
+      episodesCheckbox.setCheckedSilent(it.isWatched) { _, isChecked ->
+        seasonCheckedListener(season, it.show, isChecked)
+      }
       episodesAdapter.setItems(it.episodes)
     }
   }
@@ -63,5 +73,9 @@ class EpisodesView @JvmOverloads constructor(
     }
     episodesAdapter.itemClickListener = { itemClickListener(it) }
     episodesAdapter.itemCheckedListener = { episode, isChecked -> itemCheckedListener(episode, season, isChecked) }
+  }
+
+  private fun clear() {
+    episodesAdapter.clearItems()
   }
 }
