@@ -4,7 +4,9 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
+import android.graphics.Rect
 import android.util.TypedValue
+import android.view.TouchDelegate
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -149,6 +151,16 @@ fun BottomNavigationView.fixBlinking() {
 fun View.addRipple() = with(TypedValue()) {
   context.theme.resolveAttribute(android.R.attr.selectableItemBackground, this, true)
   setBackgroundResource(resourceId)
+}
+
+fun View.expandTouchArea(amount: Int = 50) {
+  val rect = Rect()
+  this.getHitRect(rect)
+  rect.top -= amount
+  rect.right += amount
+  rect.bottom += amount
+  rect.left -= amount
+  (this.parent as View).touchDelegate = TouchDelegate(rect, this)
 }
 
 fun CheckBox.setCheckedSilent(isChecked: Boolean, action: (View, Boolean) -> Unit = { _, _ -> }) {

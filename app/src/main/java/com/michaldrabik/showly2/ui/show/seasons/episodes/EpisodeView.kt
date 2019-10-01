@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.utilities.extensions.addRipple
+import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.view_episode.view.*
 
@@ -19,6 +20,7 @@ class EpisodeView @JvmOverloads constructor(
     inflate(context, R.layout.view_episode, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     addRipple()
+    post { episodeCheckbox.expandTouchArea() }
   }
 
   fun bind(

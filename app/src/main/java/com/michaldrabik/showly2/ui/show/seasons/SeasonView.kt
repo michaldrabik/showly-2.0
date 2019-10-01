@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
 import kotlinx.android.synthetic.main.view_season.view.*
 
 class SeasonView @JvmOverloads constructor(
@@ -22,6 +23,7 @@ class SeasonView @JvmOverloads constructor(
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     clipChildren = false
     clipToPadding = false
+    post { seasonViewCheckbox.expandTouchArea() }
   }
 
   @SuppressLint("SetTextI18n")
