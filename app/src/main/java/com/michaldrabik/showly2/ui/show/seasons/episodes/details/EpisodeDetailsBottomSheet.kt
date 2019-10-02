@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.show.seasons.episodes.details
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
@@ -25,24 +26,36 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     private const val ARG_SEASON = "ARG_SEASON"
     private const val ARG_TITLE = "ARG_TITLE"
     private const val ARG_OVERVIEW = "ARG_OVERVIEW"
+    private const val ARG_IS_WATCHED = "ARG_IS_WATCHED"
+    private const val ARG_SHOW_BUTTON = "ARG_SHOW_BUTTON"
 
-    fun create(episode: Episode): EpisodeDetailsBottomSheet {
+    fun create(
+      episode: Episode,
+      isWatched: Boolean,
+      showButton: Boolean = true
+    ): EpisodeDetailsBottomSheet {
       val bundle = Bundle().apply {
         putLong(ARG_ID, episode.ids.tvdb)
         putString(ARG_TITLE, episode.title)
         putString(ARG_OVERVIEW, episode.overview)
         putInt(ARG_SEASON, episode.season)
         putInt(ARG_NUMBER, episode.number)
+        putBoolean(ARG_IS_WATCHED, isWatched)
+        putBoolean(ARG_SHOW_BUTTON, showButton)
       }
       return EpisodeDetailsBottomSheet().apply { arguments = bundle }
     }
   }
+
+  var onEpisodeWatchedClick: ((Boolean) -> Unit) = {}
 
   private val episodeTvdbId by lazy { arguments!!.getLong(ARG_ID) }
   private val episodeTitle by lazy { arguments!!.getString(ARG_TITLE, "") }
   private val episodeOverview by lazy { arguments!!.getString(ARG_OVERVIEW, "") }
   private val episodeNumber by lazy { arguments!!.getInt(ARG_NUMBER) }
   private val episodeSeason by lazy { arguments!!.getInt(ARG_SEASON) }
+  private val isWatched by lazy { arguments!!.getBoolean(ARG_IS_WATCHED) }
+  private val showButton by lazy { arguments!!.getBoolean(ARG_SHOW_BUTTON) }
 
   private val cornerRadius by lazy { requireContext().dimenToPx(R.dimen.episodeDetailsCorner) }
 
@@ -64,9 +77,19 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     viewModel.loadImage(episodeTvdbId)
 
     view.run {
-      episodeDetailsName.text = context.getString(R.string.textSeasonEpisode, episodeSeason, episodeNumber)
+      episodeDetailsName.text =
+        context.getString(R.string.textSeasonEpisode, episodeSeason, episodeNumber)
       episodeDetailsTitle.text = episodeTitle
-      episodeDetailsOverview.text = if (episodeOverview.isBlank()) getString(R.string.textNoDescription) else episodeOverview
+      episodeDetailsOverview.text =
+        if (episodeOverview.isBlank()) getString(R.string.textNoDescription) else episodeOverview
+      episodeDetailsButton.run {
+        visibleIf(showButton)
+        setImageResource(if (isWatched) R.drawable.ic_check else R.drawable.ic_eye)
+        onClick {
+          onEpisodeWatchedClick.invoke(!isWatched)
+          dismiss()
+        }
+      }
     }
   }
 
@@ -84,5 +107,10 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         }
         .into(episodeDetailsImage)
     }
+  }
+
+  override fun onDismiss(dialog: DialogInterface) {
+    onEpisodeWatchedClick = {}
+    super.onDismiss(dialog)
   }
 }

@@ -22,6 +22,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
+import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.actors.ActorsAdapter
 import com.michaldrabik.showly2.ui.show.related.RelatedShowAdapter
@@ -76,7 +77,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
 
   private fun setupView() {
     showDetailsImageGuideline.setGuidelineBegin((screenHeight() * 0.33).toInt())
-    showDetailsEpisodesView.itemClickListener = { showEpisodeDetails(it) }
+    showDetailsEpisodesView.itemClickListener = { episode, season, isWatched ->
+      showEpisodeDetails(episode, season, isWatched)
+    }
     showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
   }
 
@@ -137,7 +140,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       }
       startAnimation(animationEnter)
       itemCheckedListener = { episode, season, isChecked ->
-        viewModel.setWatchedEpisode(episode, season, item.show, isChecked)
+        viewModel.setWatchedEpisode(episode, season, isChecked)
       }
       seasonCheckedListener = { season, show, isChecked ->
         viewModel.setWatchedSeason(season, show, isChecked)
@@ -165,8 +168,16 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     }
   }
 
-  private fun showEpisodeDetails(episode: Episode) {
-    val modal = EpisodeDetailsBottomSheet.create(episode)
+  private fun showEpisodeDetails(
+    episode: Episode,
+    season: Season?,
+    isWatched: Boolean,
+    showButton: Boolean = true
+  ) {
+    val modal = EpisodeDetailsBottomSheet.create(episode, isWatched, showButton)
+    if (season != null) {
+      modal.onEpisodeWatchedClick = { viewModel.setWatchedEpisode(episode, season, it) }
+    }
     modal.show(requireActivity().supportFragmentManager, "MODAL")
   }
 
@@ -217,7 +228,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     nextEpisode.run {
       showDetailsEpisodeText.text = "${toDisplayString()} - '$title'"
       showDetailsEpisodeCard.visible()
-      showDetailsEpisodeCard.onClick { showEpisodeDetails(nextEpisode) }
+      showDetailsEpisodeCard.onClick {
+        showEpisodeDetails(nextEpisode, null, isWatched = false, showButton = false)
+      }
 
       val timeToAir = Duration.between(nowUtc(), firstAired)
       if (timeToAir.seconds < 0) {

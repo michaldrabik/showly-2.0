@@ -14,6 +14,7 @@ import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesInteractor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.properties.Delegates.notNull
 
 class ShowDetailsViewModel @Inject constructor(
   private val interactor: ShowDetailsInteractor,
@@ -22,13 +23,14 @@ class ShowDetailsViewModel @Inject constructor(
 
   val uiStream by lazy { MutableLiveData<ShowDetailsUiModel>() }
 
+  private var show by notNull<Show>()
   private val seasonItems = mutableListOf<SeasonListItem>()
 
   fun loadShowDetails(id: Long) {
     //TODO Errors
     viewModelScope.launch {
       uiStream.value = ShowDetailsUiModel(showLoading = true)
-      val show = interactor.loadShowDetails(id)
+      show = interactor.loadShowDetails(id)
       val isFollowed = interactor.isFollowed(show)
       uiStream.value = ShowDetailsUiModel(
         show = show,
@@ -132,7 +134,7 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun setWatchedEpisode(episode: Episode, season: Season, show: Show, isChecked: Boolean) {
+  fun setWatchedEpisode(episode: Episode, season: Season, isChecked: Boolean) {
     viewModelScope.launch {
       val bundle = EpisodeBundle(episode, season, show)
       when {

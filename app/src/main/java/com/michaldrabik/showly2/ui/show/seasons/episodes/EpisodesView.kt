@@ -20,7 +20,7 @@ class EpisodesView @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-  var itemClickListener: (Episode) -> Unit = {}
+  var itemClickListener: (Episode, Season, Boolean) -> Unit = { _, _, _ -> }
   var itemCheckedListener: (Episode, Season, Boolean) -> Unit = { _, _, _ -> }
   var seasonCheckedListener: (Season, Show, Boolean) -> Unit = { _, _, _ -> }
 
@@ -71,11 +71,9 @@ class EpisodesView @JvmOverloads constructor(
       layoutManager = LinearLayoutManager(context, VERTICAL, false)
       itemAnimator = null
     }
-    episodesAdapter.itemClickListener = { itemClickListener(it) }
+    episodesAdapter.itemClickListener = { episode, isWatched -> itemClickListener(episode, season, isWatched) }
     episodesAdapter.itemCheckedListener = { episode, isChecked -> itemCheckedListener(episode, season, isChecked) }
   }
 
-  private fun clear() {
-    episodesAdapter.clearItems()
-  }
+  private fun clear() = episodesAdapter.clearItems()
 }
