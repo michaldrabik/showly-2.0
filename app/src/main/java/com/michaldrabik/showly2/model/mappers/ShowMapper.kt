@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.model.mappers
 import com.michaldrabik.showly2.model.AirTime
 import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.model.ShowStatus
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import javax.inject.Inject
 import com.michaldrabik.network.trakt.model.Show as ShowNetwork
@@ -23,7 +24,7 @@ class ShowMapper @Inject constructor() {
     show.country,
     show.trailer,
     show.homepage,
-    show.status,
+    ShowStatus.fromKey(show.status),
     show.rating,
     show.votes,
     show.commentCount,
@@ -44,7 +45,7 @@ class ShowMapper @Inject constructor() {
     show.country,
     show.trailer,
     show.homepage,
-    show.status,
+    ShowStatus.fromKey(show.status),
     show.rating,
     show.votes,
     show.commentCount,
@@ -67,11 +68,12 @@ class ShowMapper @Inject constructor() {
     show.airTime.day,
     show.airTime.time,
     show.airTime.timezone,
-    show.certification, show.network,
+    show.certification,
+    show.network,
     show.country,
     show.trailer,
     show.homepage,
-    show.status,
+    show.status.key,
     show.rating,
     show.votes,
     show.commentCount,

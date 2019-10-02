@@ -13,7 +13,7 @@ data class Show(
   val country: String,
   val trailer: String,
   val homepage: String,
-  val status: String,
+  val status: ShowStatus,
   val rating: Float,
   val votes: Long,
   val commentCount: Long,

@@ -174,7 +174,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     uiModel.show?.let { show ->
       showDetailsTitle.text = show.title
       showDetailsDescription.text = show.overview
-      showDetailsStatus.text = show.status.split(" ").joinToString(" ") { it.capitalize() }
+      showDetailsStatus.text = show.status.displayName
       showDetailsExtraInfo.text =
         "${show.network} ${show.year} | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
       showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
