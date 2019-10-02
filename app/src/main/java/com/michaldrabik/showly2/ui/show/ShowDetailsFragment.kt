@@ -30,6 +30,7 @@ import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonsAdapter
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.utilities.extensions.*
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import org.threeten.bp.Duration
@@ -222,6 +223,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       separator3.fadeIf(it.isNotEmpty())
     }
     uiModel.updateRelatedShow?.let { relatedAdapter.updateItem(it) }
+    uiModel.error?.let {
+      requireActivity().snackBarHost.showErrorSnackbar(getString(R.string.errorCouldNotLoadShow))
+    }
   }
 
   private fun renderNextEpisode(nextEpisode: Episode) {

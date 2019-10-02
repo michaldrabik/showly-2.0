@@ -18,14 +18,11 @@ class TvdbApi(private val service: TvdbService) {
     )
   )
 
-  suspend fun refreshToken(token: String) =
-    service.refreshToken("Bearer $token")
-
   suspend fun fetchShowImages(token: String, tvdbId: Long, type: String): List<TvdbImage> {
     check(type in allowedTypes)
     return try {
       service.fetchShowImages("Bearer $token", tvdbId, type).data
-    } catch (e: Exception) {
+    } catch (t: Throwable) {
       emptyList()
     }
   }

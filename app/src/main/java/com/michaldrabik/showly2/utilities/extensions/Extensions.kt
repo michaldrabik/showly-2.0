@@ -13,6 +13,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
+import android.widget.TextView
 import androidx.annotation.DimenRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -98,6 +99,9 @@ fun ViewGroup.showSnackbar(
   action: (() -> Unit)? = null
 ) {
   Snackbar.make(this, message, length).apply {
+    view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)?.let {
+      it.maxLines = 5
+    }
     view.setBackgroundResource(backgroundRes)
     setActionTextColor(Color.WHITE)
     if (action != null) {

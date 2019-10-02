@@ -17,10 +17,10 @@ class EpisodesInteractor @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  suspend fun getWatchedSeasonsIds(show: Show): List<Long> =
+  suspend fun getWatchedSeasonsIds(show: Show) =
     database.seasonsDao().getAllWatchedForShow(show.id)
 
-  suspend fun getWatchedEpisodesIds(show: Show): List<Long> =
+  suspend fun getWatchedEpisodesIds(show: Show) =
     database.episodesDao().getAllWatchedForShow(show.id)
 
   suspend fun setSeasonWatched(seasonBundle: SeasonBundle) {

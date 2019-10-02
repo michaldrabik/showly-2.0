@@ -27,22 +27,25 @@ class ShowDetailsViewModel @Inject constructor(
   private val seasonItems = mutableListOf<SeasonListItem>()
 
   fun loadShowDetails(id: Long) {
-    //TODO Errors
     viewModelScope.launch {
-      uiStream.value = ShowDetailsUiModel(showLoading = true)
-      show = interactor.loadShowDetails(id)
-      val isFollowed = interactor.isFollowed(show)
-      uiStream.value = ShowDetailsUiModel(
-        show = show,
-        showLoading = false,
-        isFollowed = FollowedState(isFollowed = isFollowed, withAnimation = false)
-      )
+      try {
+        uiStream.value = ShowDetailsUiModel(showLoading = true)
+        show = interactor.loadShowDetails(id)
+        val isFollowed = interactor.isFollowed(show)
+        uiStream.value = ShowDetailsUiModel(
+          show = show,
+          showLoading = false,
+          isFollowed = FollowedState(isFollowed = isFollowed, withAnimation = false)
+        )
 
-      launch { loadNextEpisode(show) }
-      launch { loadBackgroundImage(show) }
-      launch { loadActors(show) }
-      launch { loadSeasons(show) }
-      launch { loadRelatedShows(show) }
+        launch { loadNextEpisode(show) }
+        launch { loadBackgroundImage(show) }
+        launch { loadActors(show) }
+        launch { loadSeasons(show) }
+        launch { loadRelatedShows(show) }
+      } catch (t: Throwable) {
+        uiStream.value = ShowDetailsUiModel(error = Error(t))
+      }
     }
   }
 
@@ -50,7 +53,7 @@ class ShowDetailsViewModel @Inject constructor(
     try {
       val episode = interactor.loadNextEpisode(show.id)
       uiStream.value = ShowDetailsUiModel(nextEpisode = episode)
-    } catch (e: Exception) {
+    } catch (t: Throwable) {
       //NOOP
     }
   }
@@ -59,7 +62,7 @@ class ShowDetailsViewModel @Inject constructor(
     try {
       val backgroundImage = interactor.loadBackgroundImage(show)
       uiStream.value = ShowDetailsUiModel(image = backgroundImage)
-    } catch (e: Exception) {
+    } catch (t: Throwable) {
       uiStream.value = ShowDetailsUiModel(image = Image.createUnavailable(FANART))
     }
   }
@@ -68,7 +71,7 @@ class ShowDetailsViewModel @Inject constructor(
     try {
       val actors = interactor.loadActors(show)
       uiStream.value = ShowDetailsUiModel(actors = actors)
-    } catch (e: Exception) {
+    } catch (t: Throwable) {
       uiStream.value = ShowDetailsUiModel(actors = emptyList())
     }
   }
@@ -84,7 +87,7 @@ class ShowDetailsViewModel @Inject constructor(
       val calculated = calculateWatchedEpisodes(seasonsItems)
 
       uiStream.value = ShowDetailsUiModel(seasons = calculated)
-    } catch (e: Exception) {
+    } catch (t: Throwable) {
       uiStream.value = ShowDetailsUiModel(seasons = emptyList())
     }
   }
@@ -97,7 +100,7 @@ class ShowDetailsViewModel @Inject constructor(
         RelatedListItem(it, image)
       }
       uiStream.value = ShowDetailsUiModel(relatedShows = relatedShows)
-    } catch (e: Exception) {
+    } catch (t: Throwable) {
       uiStream.value = ShowDetailsUiModel(relatedShows = emptyList())
     }
   }

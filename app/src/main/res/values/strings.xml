@@ -44,6 +44,7 @@
     <item quantity="other">Airs in %d minutes.</item>
   </plurals>
 
-  <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this happens again.</string>
+  <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this keeps happening.</string>
+  <string name="errorCouldNotLoadShow">We could not load this show\'s details at this moment.\nPlease contact us if this keeps happening.</string>
 
 </resources>

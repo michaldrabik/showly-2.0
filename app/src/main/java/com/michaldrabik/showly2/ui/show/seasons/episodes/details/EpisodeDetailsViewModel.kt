@@ -23,7 +23,7 @@ class EpisodeDetailsViewModel @Inject constructor(
         val episode = Episode.EMPTY.copy(ids = ids)
         val episodeImage = imagesManager.loadRemoteImage(episode)
         uiStream.value = EpisodeDetailsUiModel(image = episodeImage)
-      } catch (e: Exception) {
+      } catch (t: Throwable) {
         uiStream.value = EpisodeDetailsUiModel(imageLoading = false)
       }
     }
