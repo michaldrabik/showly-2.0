@@ -78,10 +78,10 @@ class ShowDetailsViewModel @Inject constructor(
       val seasons = interactor.loadSeasons(show)
       val seasonsItems = seasons.map {
         val episodes = it.episodes.map { episode -> EpisodeListItem(episode, false) }
-        SeasonListItem(it, episodes, false, show)
+        SeasonListItem(it, episodes, false)
       }
 
-      val calculated = calculateWatchedEpisodes(seasonsItems, show)
+      val calculated = calculateWatchedEpisodes(seasonsItems)
 
       uiStream.value = ShowDetailsUiModel(seasons = calculated)
     } catch (e: Exception) {
@@ -116,7 +116,7 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun toggleFollowedShow(show: Show) {
+  fun toggleFollowedShow() {
     if (seasonItems.isEmpty()) return
 
     viewModelScope.launch {
@@ -141,33 +141,33 @@ class ShowDetailsViewModel @Inject constructor(
         isChecked -> episodesInteractor.setEpisodeWatched(bundle)
         else -> episodesInteractor.setEpisodeUnwatched(bundle)
       }
-      refreshWatchedEpisodes(show)
+      refreshWatchedEpisodes()
     }
   }
 
-  fun setWatchedSeason(season: Season, show: Show, isChecked: Boolean) {
+  fun setWatchedSeason(season: Season, isChecked: Boolean) {
     viewModelScope.launch {
       val bundle = SeasonBundle(season, show)
       when {
         isChecked -> episodesInteractor.setSeasonWatched(bundle)
         else -> episodesInteractor.setSeasonUnwatched(bundle)
       }
-      refreshWatchedEpisodes(show)
+      refreshWatchedEpisodes()
     }
   }
 
-  private suspend fun refreshWatchedEpisodes(show: Show) {
-    val updatedSeasonItems = calculateWatchedEpisodes(this.seasonItems, show)
+  private suspend fun refreshWatchedEpisodes() {
+    val updatedSeasonItems = calculateWatchedEpisodes(this.seasonItems)
     uiStream.value = ShowDetailsUiModel(seasons = updatedSeasonItems)
   }
 
-  private suspend fun calculateWatchedEpisodes(currentList: List<SeasonListItem>, show: Show): List<SeasonListItem> {
+  private suspend fun calculateWatchedEpisodes(seasonsList: List<SeasonListItem>): List<SeasonListItem> {
     val items = mutableListOf<SeasonListItem>()
 
     val watchedSeasonsIds = episodesInteractor.getWatchedSeasonsIds(show)
     val watchedEpisodesIds = episodesInteractor.getWatchedEpisodesIds(show)
 
-    currentList.forEach { item ->
+    seasonsList.forEach { item ->
       val isSeasonWatched = watchedSeasonsIds.any { id -> id == item.id }
       val episodes = item.episodes.map { episodeItem ->
         val isEpisodeWatched = watchedEpisodesIds.any { id -> id == episodeItem.id }

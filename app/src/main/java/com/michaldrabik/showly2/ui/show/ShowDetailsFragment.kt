@@ -125,7 +125,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     }
     seasonsAdapter.itemClickListener = { showEpisodesView(it) }
     seasonsAdapter.itemCheckedListener = { item: SeasonListItem, isChecked: Boolean ->
-      viewModel.setWatchedSeason(item.season, item.show, isChecked)
+      viewModel.setWatchedSeason(item.season, isChecked)
     }
   }
 
@@ -142,8 +142,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       itemCheckedListener = { episode, season, isChecked ->
         viewModel.setWatchedEpisode(episode, season, isChecked)
       }
-      seasonCheckedListener = { season, show, isChecked ->
-        viewModel.setWatchedSeason(season, show, isChecked)
+      seasonCheckedListener = { season, isChecked ->
+        viewModel.setWatchedSeason(season, isChecked)
       }
     }
 
@@ -189,7 +189,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       showDetailsExtraInfo.text =
         "${show.network} ${show.year} | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
       showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
-      showDetailsAddButton.onClick(false) { viewModel.toggleFollowedShow(show) }
+      showDetailsAddButton.onClick(false) { viewModel.toggleFollowedShow() }
     }
     uiModel.showLoading?.let {
       showDetailsMainLayout.fadeIf(!it)

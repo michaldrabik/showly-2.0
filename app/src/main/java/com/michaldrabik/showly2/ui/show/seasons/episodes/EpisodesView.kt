@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Season
-import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.utilities.extensions.setCheckedSilent
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
@@ -22,7 +21,7 @@ class EpisodesView @JvmOverloads constructor(
 
   var itemClickListener: (Episode, Season, Boolean) -> Unit = { _, _, _ -> }
   var itemCheckedListener: (Episode, Season, Boolean) -> Unit = { _, _, _ -> }
-  var seasonCheckedListener: (Season, Show, Boolean) -> Unit = { _, _, _ -> }
+  var seasonCheckedListener: (Season, Boolean) -> Unit = { _, _ -> }
 
   private val episodesAdapter by lazy { EpisodesAdapter() }
   private lateinit var season: Season
@@ -41,7 +40,7 @@ class EpisodesView @JvmOverloads constructor(
     episodesOverview.visibleIf(season.overview.isNotBlank())
     episodesCheckbox.run {
       setCheckedSilent(seasonItem.isWatched) { _, isChecked ->
-        seasonCheckedListener(season, seasonItem.show, isChecked)
+        seasonCheckedListener(season, isChecked)
       }
       jumpDrawablesToCurrentState()
     }
@@ -58,7 +57,7 @@ class EpisodesView @JvmOverloads constructor(
     seasonListItem?.let {
       this.season = it.season.copy()
       episodesCheckbox.setCheckedSilent(it.isWatched) { _, isChecked ->
-        seasonCheckedListener(season, it.show, isChecked)
+        seasonCheckedListener(season, isChecked)
       }
       episodesAdapter.setItems(it.episodes)
     }
