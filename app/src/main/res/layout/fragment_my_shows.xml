@@ -11,8 +11,10 @@
 
   <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
     android:fillViewport="true"
+    android:paddingBottom="@dimen/myShowsBottomPadding"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,6 +35,7 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/myShowsRecentsContainer"
         />
 
       <GridLayout
@@ -48,6 +51,65 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myShowsRecentsLabel"
+        app:layout_constraintBottom_toTopOf="@id/myShowsRunningLabel"
+        />
+
+      <TextView
+        android:id="@+id/myShowsRunningLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceSmall"
+        android:layout_marginTop="@dimen/spaceMedium"
+        android:text="@string/textRunning"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/myShowsRecentsContainer"
+        />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myShowsRunningRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/myShowsPosterHeight"
+        android:layout_marginTop="@dimen/spaceMedium"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingStart="@dimen/spaceSmall"
+        android:paddingEnd="@dimen/spaceSmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/myShowsRunningLabel"
+        app:layout_constraintBottom_toTopOf="@id/myShowsEndedLabel"
+        />
+
+      <TextView
+        android:id="@+id/myShowsEndedLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceSmall"
+        android:layout_marginTop="@dimen/spaceMedium"
+        android:text="@string/textEnded"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/myShowsRunningRecycler"
+        app:layout_constraintBottom_toTopOf="@id/myShowsEndedRecycler"
+        />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myShowsEndedRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/myShowsPosterHeight"
+        android:layout_marginTop="@dimen/spaceMedium"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingStart="@dimen/spaceSmall"
+        android:paddingEnd="@dimen/spaceSmall"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/myShowsEndedLabel"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

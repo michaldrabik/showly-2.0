@@ -13,8 +13,11 @@
   <dimen name="showTileCorner">4dp</dimen>
   <dimen name="showTilePlaceholder">40dp</dimen>
 
-  <dimen name="myShowFanartCorner">4dp</dimen>
-  <dimen name="myShowFanartHeight">110dp</dimen>
+  <dimen name="myShowsFanartCorner">4dp</dimen>
+  <dimen name="myShowsFanartHeight">110dp</dimen>
+  <dimen name="myShowsPosterHeight">110dp</dimen>
+  <dimen name="myShowsPosterWidth">74dp</dimen>
+  <dimen name="myShowsBottomPadding">68dp</dimen>
 
   <dimen name="actorTileCorner">4dp</dimen>
   <dimen name="actorTilePlaceholder">26dp</dimen>

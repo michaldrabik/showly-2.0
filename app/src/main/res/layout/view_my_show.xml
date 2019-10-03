@@ -9,20 +9,20 @@
   >
 
   <FrameLayout
-    android:id="@+id/myShowFanartRoot"
+    android:id="@+id/myShowRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:foreground="?android:attr/selectableItemBackground"
     >
 
     <ImageView
-      android:id="@+id/myShowFanartImage"
+      android:id="@+id/myShowImage"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       />
 
     <ImageView
-      android:id="@+id/myShowFanartPlaceholder"
+      android:id="@+id/myShowPlaceholder"
       android:layout_width="@dimen/showTilePlaceholder"
       android:layout_height="@dimen/showTilePlaceholder"
       android:layout_gravity="center"
@@ -32,7 +32,7 @@
       />
 
     <TextView
-      android:id="@+id/myShowFanartTitle"
+      android:id="@+id/myShowTitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|start"
@@ -49,12 +49,13 @@
       />
 
     <ProgressBar
-      android:id="@+id/myShowFanartProgress"
+      android:id="@+id/myShowProgress"
       android:layout_width="28dp"
       android:layout_height="28dp"
       android:layout_gravity="center"
       android:indeterminateTint="@color/colorProgressGray"
       android:visibility="gone"
+      tools:visibility="visible"
       />
 
   </FrameLayout>

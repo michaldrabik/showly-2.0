@@ -12,28 +12,32 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visible
-import kotlinx.android.synthetic.main.view_my_show_fanart.view.*
+import kotlinx.android.synthetic.main.view_my_show.view.*
 
-class MyShowFanartView @JvmOverloads constructor(
+class MyShowView @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
   init {
-    inflate(context, R.layout.view_my_show_fanart, this)
+    inflate(context, R.layout.view_my_show, this)
   }
 
-  private val cornerRadius by lazy { context.dimenToPx(R.dimen.myShowFanartCorner) }
+  var onItemClickListener: (Show) -> Unit = {}
+
+  private val cornerRadius by lazy { context.dimenToPx(R.dimen.myShowsFanartCorner) }
 
   fun bind(show: Show, image: Image) {
     clear()
-    myShowFanartTitle.text = show.title
+    myShowTitle.text = show.title
+    onClick { onItemClickListener(show) }
     loadImage(image)
   }
 
   private fun loadImage(image: Image) {
     if (image.status == Image.Status.UNAVAILABLE) {
-      myShowFanartPlaceholder.visible()
+      myShowPlaceholder.visible()
       return
     }
 
@@ -43,11 +47,11 @@ class MyShowFanartView @JvmOverloads constructor(
       .load(url)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
       .transition(DrawableTransitionOptions.withCrossFade(200))
-      .into(myShowFanartImage)
+      .into(myShowImage)
   }
 
   private fun clear() {
-    myShowFanartTitle.text = ""
-    Glide.with(this).clear(myShowFanartImage)
+    myShowTitle.text = ""
+    Glide.with(this).clear(myShowImage)
   }
 }
