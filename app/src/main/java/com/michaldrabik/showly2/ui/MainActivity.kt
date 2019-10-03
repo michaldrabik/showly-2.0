@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
       val target = when (item.itemId) {
         R.id.menuWatchlist -> R.id.actionNavigateWatchlistFragment
         R.id.menuDiscover -> R.id.actionNavigateDiscoverFragment
+        R.id.menuShows -> R.id.actionNavigateMyShowsFragment
         else -> throw IllegalStateException("Invalid menu item.")
       }
 
@@ -59,8 +60,10 @@ class MainActivity : AppCompatActivity() {
           remove()
           super.onBackPressed()
         }
-        if (currentDestination?.id == R.id.discoverFragment) {
-          bottomNavigationView.selectedItemId = R.id.menuWatchlist
+        when (currentDestination?.id) {
+          R.id.discoverFragment, R.id.myShowsFragment -> {
+            bottomNavigationView.selectedItemId = R.id.menuWatchlist
+          }
         }
       }
     }

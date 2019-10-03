@@ -6,6 +6,7 @@ import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.showly2.ui.discover.DiscoverInteractor
 import com.michaldrabik.showly2.ui.discover.DiscoverViewModel
+import com.michaldrabik.showly2.ui.myshows.MyShowsViewModel
 import com.michaldrabik.showly2.ui.search.SearchInteractor
 import com.michaldrabik.showly2.ui.search.SearchViewModel
 import com.michaldrabik.showly2.ui.show.ShowDetailsInteractor
@@ -37,6 +38,9 @@ class ViewModelFactory @Inject constructor(
 
     modelClass.isAssignableFrom(SearchViewModel::class.java) ->
       SearchViewModel(searchInteractor) as T
+
+    modelClass.isAssignableFrom(MyShowsViewModel::class.java) ->
+      MyShowsViewModel() as T
 
     else -> throw IllegalStateException("Unknown ViewModel class")
   }

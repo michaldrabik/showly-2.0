@@ -23,6 +23,14 @@
     app:popUpToInclusive="true"
     />
 
+  <action
+    android:id="@+id/actionNavigateMyShowsFragment"
+    app:destination="@id/myShowsFragment"
+    app:launchSingleTop="true"
+    app:popUpTo="@id/navigationGraph"
+    app:popUpToInclusive="true"
+    />
+
   <fragment
     android:id="@+id/discoverFragment"
     android:name="com.michaldrabik.showly2.ui.discover.DiscoverFragment"
@@ -61,6 +69,21 @@
       app:destination="@id/showDetailsFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:exitAnim="@anim/anim_fade_out"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/myShowsFragment"
+    android:name="com.michaldrabik.showly2.ui.myshows.MyShowsFragment"
+    android:label="fragmentMyShows"
+    tools:layout="@layout/fragment_my_shows"
+    >
+    <action
+      android:id="@+id/actionMyShowsFragmentToShowDetailsFragment"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
