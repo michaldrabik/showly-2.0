@@ -6,6 +6,7 @@ import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.showly2.ui.discover.DiscoverInteractor
 import com.michaldrabik.showly2.ui.discover.DiscoverViewModel
+import com.michaldrabik.showly2.ui.myshows.MyShowsInteractor
 import com.michaldrabik.showly2.ui.myshows.MyShowsViewModel
 import com.michaldrabik.showly2.ui.search.SearchInteractor
 import com.michaldrabik.showly2.ui.search.SearchViewModel
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @AppScope
 class ViewModelFactory @Inject constructor(
   private val discoverInteractor: DiscoverInteractor,
+  private val myShowsInteractor: MyShowsInteractor,
   private val showDetailsInteractor: ShowDetailsInteractor,
   private val episodesInteractor: EpisodesInteractor,
   private val searchInteractor: SearchInteractor,
@@ -40,7 +42,7 @@ class ViewModelFactory @Inject constructor(
       SearchViewModel(searchInteractor) as T
 
     modelClass.isAssignableFrom(MyShowsViewModel::class.java) ->
-      MyShowsViewModel() as T
+      MyShowsViewModel(myShowsInteractor) as T
 
     else -> throw IllegalStateException("Unknown ViewModel class")
   }

@@ -25,6 +25,7 @@
   <string name="textAdd">Add to my shows</string>
   <string name="textAdded">In my shows</string>
   <string name="textNoDescription">Overview not available.</string>
+  <string name="textRecentlyAdded">Recently added</string>
 
   <plurals name="textDaysToAir">
     <item quantity="zero">Airs today.</item>

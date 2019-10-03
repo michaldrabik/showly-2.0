@@ -13,6 +13,9 @@
   <dimen name="showTileCorner">4dp</dimen>
   <dimen name="showTilePlaceholder">40dp</dimen>
 
+  <dimen name="myShowFanartCorner">4dp</dimen>
+  <dimen name="myShowFanartHeight">110dp</dimen>
+
   <dimen name="actorTileCorner">4dp</dimen>
   <dimen name="actorTilePlaceholder">26dp</dimen>
   <dimen name="actorTileImageHeight">100dp</dimen>

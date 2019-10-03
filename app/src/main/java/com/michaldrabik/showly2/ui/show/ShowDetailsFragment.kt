@@ -190,7 +190,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       showDetailsExtraInfo.text =
         "${show.network} ${show.year} | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
       showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
-      showDetailsAddButton.onClick(false) { viewModel.toggleFollowedShow() }
+      showDetailsAddButton.onClick { viewModel.toggleFollowedShow() }
     }
     uiModel.showLoading?.let {
       showDetailsMainLayout.fadeIf(!it)
