@@ -6,6 +6,8 @@ import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.ShowStatus.CANCELED
 import com.michaldrabik.showly2.model.ShowStatus.ENDED
+import com.michaldrabik.showly2.model.ShowStatus.IN_PRODUCTION
+import com.michaldrabik.showly2.model.ShowStatus.PLANNED
 import com.michaldrabik.showly2.model.ShowStatus.RETURNING
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.ImagesManager
@@ -31,19 +33,22 @@ class MyShowsInteractor @Inject constructor(
 
     val allShows = database.followedShowsDao().getAll()
       .map { mappers.show.fromDatabase(it) }
+      .sortedBy { it.title }
 
     val runningShows = allShows
       .filter { it.status == RETURNING }
-      .sortedBy { it.title }
 
     val endedShows = allShows
       .filter { it.status in arrayOf(ENDED, CANCELED) }
-      .sortedBy { it.title }
+
+    val incomingShows = allShows
+      .filter { it.status in arrayOf(IN_PRODUCTION, PLANNED) }
 
     return MyShowBundle(
       recentShows,
       runningShows,
-      endedShows
+      endedShows,
+      incomingShows
     )
   }
 

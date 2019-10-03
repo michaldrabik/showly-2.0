@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Show
@@ -20,6 +21,9 @@ import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsHorizontalAdapter
 import com.michaldrabik.showly2.ui.myshows.views.MyShowView
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.fadeIf
+import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 
 class MyShowsFragment : BaseFragment<MyShowsViewModel>() {
@@ -28,6 +32,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>() {
 
   private val runningShowsAdapter by lazy { MyShowsHorizontalAdapter() }
   private val endedShowsAdapter by lazy { MyShowsHorizontalAdapter() }
+  private val incomingShowsAdapter by lazy { MyShowsHorizontalAdapter() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
@@ -45,38 +50,47 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>() {
   }
 
   private fun setupView() {
-    setupRunningShowsList()
-    setupEndedShowsList()
+    setupRecycler(myShowsIncomingRecycler, incomingShowsAdapter)
+    setupRecycler(myShowsRunningRecycler, runningShowsAdapter)
+    setupRecycler(myShowsEndedRecycler, endedShowsAdapter)
   }
 
-  private fun setupRunningShowsList() {
+  private fun setupRecycler(
+    recycler: RecyclerView,
+    itemsAdapter: MyShowsHorizontalAdapter
+  ) {
     val context = requireContext()
-    myShowsRunningRecycler.apply {
+    recycler.apply {
       setHasFixedSize(true)
-      adapter = runningShowsAdapter
+      adapter = itemsAdapter
       layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
       addItemDecoration(DividerItemDecoration(context, HORIZONTAL).apply {
         setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_my_shows_horizontal)!!)
       })
     }
-  }
-
-  private fun setupEndedShowsList() {
-    val context = requireContext()
-    myShowsEndedRecycler.apply {
-      setHasFixedSize(true)
-      adapter = endedShowsAdapter
-      layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-      addItemDecoration(DividerItemDecoration(context, HORIZONTAL).apply {
-        setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_my_shows_horizontal)!!)
-      })
-    }
+    itemsAdapter.itemClickListener = { openShowDetails(it.show) }
   }
 
   private fun render(uiModel: MyShowsUiModel) {
-    uiModel.recentShows?.let { renderRecentlyAdded(it) }
-    uiModel.runningShows?.let { runningShowsAdapter.setItems(it) }
-    uiModel.endedShows?.let { endedShowsAdapter.setItems(it) }
+    uiModel.recentShows?.let {
+      renderRecentlyAdded(it)
+      myShowsRootContent.fadeIf(it.isNotEmpty())
+    }
+    uiModel.incomingShows?.let {
+      incomingShowsAdapter.clearItems()
+      incomingShowsAdapter.setItems(it)
+      myShowsIncomingGroup.visibleIf(it.isNotEmpty())
+    }
+    uiModel.runningShows?.let {
+      runningShowsAdapter.clearItems()
+      runningShowsAdapter.setItems(it)
+      myShowsRunningGroup.visibleIf(it.isNotEmpty())
+    }
+    uiModel.endedShows?.let {
+      endedShowsAdapter.clearItems()
+      endedShowsAdapter.setItems(it)
+      myShowsEndedGroup.visibleIf(it.isNotEmpty())
+    }
   }
 
   private fun renderRecentlyAdded(items: List<MyShowListItem>) {
@@ -104,8 +118,10 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>() {
 
   private fun openShowDetails(show: Show) {
     //TODO Add fade transition
-    val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.id) }
-    findNavController().navigate(R.id.actionMyShowsFragmentToShowDetailsFragment, bundle)
-    getMainActivity().hideNavigation()
+    myShowsRootContent.fadeOut {
+      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.id) }
+      findNavController().navigate(R.id.actionMyShowsFragmentToShowDetailsFragment, bundle)
+      getMainActivity().hideNavigation()
+    }
   }
 }

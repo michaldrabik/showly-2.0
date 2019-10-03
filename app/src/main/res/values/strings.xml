@@ -28,6 +28,7 @@
   <string name="textRecentlyAdded">Recently Added</string>
   <string name="textRunning">Running</string>
   <string name="textEnded">Ended &amp; Canceled</string>
+  <string name="textIncoming">Coming Soon</string>
 
   <plurals name="textDaysToAir">
     <item quantity="zero">Airs today.</item>

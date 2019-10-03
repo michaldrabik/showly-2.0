@@ -34,10 +34,16 @@ class MyShowsViewModel @Inject constructor(
           MyShowListItem(it, image)
         }
 
+        val incomingShows = shows.incomingShows.map {
+          val image = interactor.findCachedImage(it, POSTER)
+          MyShowListItem(it, image)
+        }
+
         uiStream.value = MyShowsUiModel(
-          recentShows = recentShows,
-          runningShows = runningShows,
-          endedShows = endedShows
+          recentShows,
+          runningShows,
+          endedShows,
+          incomingShows
         )
       } catch (t: Throwable) {
         TODO()

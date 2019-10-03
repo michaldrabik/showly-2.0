@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/myShowsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
@@ -18,24 +19,20 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-      android:id="@+id/myShowsRootConstraint"
+      android:id="@+id/myShowsRootContent"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:visibility="gone"
+      tools:visibility="visible"
       >
 
       <TextView
         android:id="@+id/myShowsRecentsLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceSmall"
-        android:layout_marginTop="@dimen/spaceMedium"
+        style="@style/MyShows.Label"
         android:text="@string/textRecentlyAdded"
-        android:textColor="@color/colorTextPrimary"
-        android:textSize="17sp"
-        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/myShowsRecentsContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/myShowsRecentsContainer"
         />
 
       <GridLayout
@@ -48,68 +45,92 @@
         android:columnCount="2"
         android:divider="@drawable/divider_my_shows_recents"
         android:showDividers="middle"
+        app:layout_constraintBottom_toTopOf="@id/myShowsIncomingLabel"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myShowsRecentsLabel"
-        app:layout_constraintBottom_toTopOf="@id/myShowsRunningLabel"
         />
 
       <TextView
-        android:id="@+id/myShowsRunningLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceSmall"
-        android:layout_marginTop="@dimen/spaceMedium"
-        android:text="@string/textRunning"
-        android:textColor="@color/colorTextPrimary"
-        android:textSize="17sp"
-        android:textStyle="bold"
+        android:id="@+id/myShowsIncomingLabel"
+        style="@style/MyShows.Label"
+        android:text="@string/textIncoming"
+        app:layout_constraintBottom_toTopOf="@+id/myShowsIncomingRecycler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myShowsRecentsContainer"
         />
 
       <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/myShowsRunningRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/myShowsPosterHeight"
-        android:layout_marginTop="@dimen/spaceMedium"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingStart="@dimen/spaceSmall"
-        android:paddingEnd="@dimen/spaceSmall"
+        android:id="@+id/myShowsIncomingRecycler"
+        style="@style/MyShows.Recycler"
+        app:layout_constraintBottom_toTopOf="@+id/myShowsRunningLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/myShowsRunningLabel"
+        app:layout_constraintTop_toBottomOf="@+id/myShowsIncomingLabel"
+        />
+
+      <TextView
+        android:id="@+id/myShowsRunningLabel"
+        style="@style/MyShows.Label"
+        android:text="@string/textRunning"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/myShowsIncomingRecycler"
+        app:layout_constraintBottom_toTopOf="@id/myShowsRunningRecycler"
+        />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myShowsRunningRecycler"
+        style="@style/MyShows.Recycler"
         app:layout_constraintBottom_toTopOf="@id/myShowsEndedLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myShowsRunningLabel"
         />
 
       <TextView
         android:id="@+id/myShowsEndedLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceSmall"
-        android:layout_marginTop="@dimen/spaceMedium"
+        style="@style/MyShows.Label"
         android:text="@string/textEnded"
-        android:textColor="@color/colorTextPrimary"
-        android:textSize="17sp"
-        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/myShowsEndedRecycler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myShowsRunningRecycler"
-        app:layout_constraintBottom_toTopOf="@id/myShowsEndedRecycler"
         />
 
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myShowsEndedRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/myShowsPosterHeight"
-        android:layout_marginTop="@dimen/spaceMedium"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:paddingStart="@dimen/spaceSmall"
-        android:paddingEnd="@dimen/spaceSmall"
+        style="@style/MyShows.Recycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myShowsEndedLabel"
+        />
+
+      <!-- Groups -->
+
+      <androidx.constraintlayout.widget.Group
+        android:id="@+id/myShowsIncomingGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="myShowsIncomingLabel,myShowsIncomingRecycler"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
+      <androidx.constraintlayout.widget.Group
+        android:id="@+id/myShowsRunningGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="myShowsRunningLabel,myShowsRunningRecycler"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
+      <androidx.constraintlayout.widget.Group
+        android:id="@+id/myShowsEndedGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="myShowsEndedLabel,myShowsEndedRecycler"
+        android:visibility="gone"
+        tools:visibility="visible"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
