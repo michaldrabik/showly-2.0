@@ -41,7 +41,10 @@ class ShowDetailsViewModel @Inject constructor(
         launch { loadNextEpisode(show) }
         launch { loadBackgroundImage(show) }
         launch { loadActors(show) }
-        launch { loadSeasons(show) }
+        launch {
+          val seasons = loadSeasons(show)
+          if (isFollowed) episodesInteractor.loadMissingEpisodes(show, seasons)
+        }
         launch { loadRelatedShows(show) }
       } catch (t: Throwable) {
         uiStream.value = ShowDetailsUiModel(error = Error(t))
@@ -76,20 +79,20 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun loadSeasons(show: Show) {
-    try {
-      val seasons = interactor.loadSeasons(show)
-      val seasonsItems = seasons.map {
-        val episodes = it.episodes.map { episode -> EpisodeListItem(episode, false) }
-        SeasonListItem(it, episodes, false)
-      }
-
-      val calculated = calculateWatchedEpisodes(seasonsItems)
-
-      uiStream.value = ShowDetailsUiModel(seasons = calculated)
-    } catch (t: Throwable) {
-      uiStream.value = ShowDetailsUiModel(seasons = emptyList())
+  private suspend fun loadSeasons(show: Show): List<Season> = try {
+    val seasons = interactor.loadSeasons(show)
+    val seasonsItems = seasons.map {
+      val episodes = it.episodes.map { episode -> EpisodeListItem(episode, false) }
+      SeasonListItem(it, episodes, false)
     }
+
+    val calculated = calculateWatchedEpisodes(seasonsItems)
+
+    uiStream.value = ShowDetailsUiModel(seasons = calculated)
+    seasons
+  } catch (t: Throwable) {
+    uiStream.value = ShowDetailsUiModel(seasons = emptyList())
+    emptyList()
   }
 
   private suspend fun loadRelatedShows(show: Show) {

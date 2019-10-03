@@ -8,8 +8,9 @@ import com.michaldrabik.showly2.model.SeasonBundle
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.Episode
 import javax.inject.Inject
+import com.michaldrabik.storage.database.model.Episode as EpisodeDb
+import com.michaldrabik.storage.database.model.Season as SeasonDb
 
 @AppScope
 class EpisodesInteractor @Inject constructor(
@@ -34,7 +35,7 @@ class EpisodesInteractor @Inject constructor(
       }
 
       val episodes = database.episodesDao().getAllForSeason(season.id).filter { it.isWatched }
-      val toAdd = mutableListOf<Episode>()
+      val toAdd = mutableListOf<EpisodeDb>()
 
       season.episodes.forEach { ep ->
         if (episodes.none { it.idTrakt == ep.id }) {
@@ -101,6 +102,32 @@ class EpisodesInteractor @Inject constructor(
 
       onEpisodeSet(season, show)
     }
+  }
+
+  suspend fun loadMissingEpisodes(show: Show, seasons: List<Season>) {
+    if (seasons.isEmpty()) return
+
+    val localSeasons = database.seasonsDao().getAllByShowId(show.id)
+    val localEpisodes = database.episodesDao().getAllByShowId(show.id)
+
+    val seasonsToAdd = mutableListOf<SeasonDb>()
+    val episodesToAdd = mutableListOf<EpisodeDb>()
+
+    seasons.forEach { season ->
+      if (localSeasons.none { it.idTrakt == season.id }) {
+        val seasonDb = mappers.season.toDatabase(season, show.id, false)
+        seasonsToAdd.add(seasonDb)
+      }
+      season.episodes.forEach { episode ->
+        if (localEpisodes.none { it.idTrakt == episode.id }) {
+          val episodeDb = mappers.episode.toDatabase(episode, season, show.id, false)
+          episodesToAdd.add(episodeDb)
+        }
+      }
+    }
+
+    if (seasonsToAdd.isNotEmpty()) database.seasonsDao().upsert(seasonsToAdd)
+    if (episodesToAdd.isNotEmpty()) database.episodesDao().upsert(episodesToAdd)
   }
 
   private suspend fun onEpisodeSet(season: Season, show: Show) {
