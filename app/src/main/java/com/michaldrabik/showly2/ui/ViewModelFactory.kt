@@ -42,7 +42,7 @@ class ViewModelFactory @Inject constructor(
       SearchViewModel(searchInteractor) as T
 
     modelClass.isAssignableFrom(MyShowsViewModel::class.java) ->
-      MyShowsViewModel(myShowsInteractor) as T
+      MyShowsViewModel(myShowsInteractor, uiCache) as T
 
     else -> throw IllegalStateException("Unknown ViewModel class")
   }

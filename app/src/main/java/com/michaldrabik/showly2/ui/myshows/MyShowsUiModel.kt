@@ -5,5 +5,6 @@ data class MyShowsUiModel(
   val runningShows: List<MyShowListItem>? = null,
   val endedShows: List<MyShowListItem>? = null,
   val incomingShows: List<MyShowListItem>? = null,
-  val updateListItem: MyShowListItem? = null
+  val updateListItem: MyShowListItem? = null,
+  val listPosition: Pair<Int, Int>? = null
 )

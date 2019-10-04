@@ -5,12 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.POSTER
+import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MyShowsViewModel @Inject constructor(
-  private val interactor: MyShowsInteractor
+  private val interactor: MyShowsInteractor,
+  private val uiCache: UiCache
 ) : BaseViewModel() {
 
   val uiStream by lazy { MutableLiveData<MyShowsUiModel>() }
@@ -44,7 +46,8 @@ class MyShowsViewModel @Inject constructor(
           recentShows,
           runningShows,
           endedShows,
-          incomingShows
+          incomingShows,
+          listPosition = uiCache.myShowsListPosition
         )
       } catch (t: Throwable) {
         TODO()
@@ -64,5 +67,9 @@ class MyShowsViewModel @Inject constructor(
           MyShowsUiModel(updateListItem = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }
+  }
+
+  fun saveListPosition(position: Int, offset: Int) {
+    uiCache.myShowsListPosition = Pair(position, offset)
   }
 }

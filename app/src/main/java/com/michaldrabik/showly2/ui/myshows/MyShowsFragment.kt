@@ -99,6 +99,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>() {
       myShowsIncomingLabel.text = getString(R.string.textIncoming, it.size)
     }
     uiModel.updateListItem?.let { item -> adapters.forEach { it.updateItem(item) } }
+    uiModel.listPosition?.let { myShowsRootScroll.scrollTo(0, it.first) }
   }
 
   private fun renderRecentlyAdded(items: List<MyShowListItem>) {
@@ -127,6 +128,8 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>() {
   private fun openShowDetails(show: Show) {
     //TODO Add fades transition
     myShowsRootContent.fadeOut {
+      val position = myShowsRootScroll.scrollY
+      viewModel.saveListPosition(position, 0)
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.id) }
       findNavController().navigate(R.id.actionMyShowsFragmentToShowDetailsFragment, bundle)
       getMainActivity().hideNavigation()

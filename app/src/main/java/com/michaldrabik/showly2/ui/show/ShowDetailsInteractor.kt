@@ -27,6 +27,7 @@ class ShowDetailsInteractor @Inject constructor(
 
   suspend fun loadShowDetails(traktId: Long): Show {
     val localShow = database.showsDao().getById(traktId)
+    //TODO Add timeout for local show
     if (localShow == null) {
       val remoteShow = cloud.traktApi.fetchShow(traktId)
       val show = mappers.show.fromNetwork(remoteShow)
