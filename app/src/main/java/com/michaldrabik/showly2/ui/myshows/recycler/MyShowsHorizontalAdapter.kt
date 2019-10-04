@@ -13,7 +13,7 @@ class MyShowsHorizontalAdapter : BaseAdapter<MyShowListItem>() {
     ViewHolderShow(MyShowHorizontalView(parent.context))
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-    (holder.itemView as MyShowHorizontalView).bind(items[position], itemClickListener)
+    (holder.itemView as MyShowHorizontalView).bind(items[position], missingImageListener, itemClickListener)
   }
 
   override fun getItemCount() = items.size

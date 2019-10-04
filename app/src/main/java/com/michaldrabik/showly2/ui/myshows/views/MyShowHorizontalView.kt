@@ -10,6 +10,7 @@ import com.michaldrabik.showly2.ui.common.views.ShowView
 import com.michaldrabik.showly2.ui.myshows.MyShowListItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_my_show.view.*
 
 class MyShowHorizontalView @JvmOverloads constructor(
@@ -30,14 +31,10 @@ class MyShowHorizontalView @JvmOverloads constructor(
     missingImageListener: (MyShowListItem, Boolean) -> Unit,
     itemClickListener: (MyShowListItem) -> Unit
   ) {
-
-  }
-
-  fun bind(listItem: MyShowListItem, itemClickListener: (MyShowListItem) -> Unit) {
     clear()
-    onClick { itemClickListener(listItem) }
-    loadImage(listItem, { item, force -> })
-    //TODO missing image handling
+    myShowProgress.visibleIf(item.isLoading)
+    onClick { itemClickListener(item) }
+    loadImage(item, missingImageListener)
   }
 
   private fun clear() {

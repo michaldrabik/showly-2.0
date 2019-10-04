@@ -39,49 +39,29 @@
         android:id="@+id/myShowsRecentsContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceTiny"
         android:layout_marginTop="@dimen/spaceSmall"
-        android:layout_marginEnd="@dimen/spaceTiny"
         android:columnCount="2"
         android:divider="@drawable/divider_my_shows_recents"
         android:showDividers="middle"
-        app:layout_constraintBottom_toTopOf="@id/myShowsIncomingLabel"
+        app:layout_constraintBottom_toTopOf="@+id/myShowsRunningLabel"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myShowsRecentsLabel"
         />
 
       <TextView
-        android:id="@+id/myShowsIncomingLabel"
+        android:id="@+id/myShowsRunningLabel"
         style="@style/MyShows.Label"
-        android:text="@string/textIncoming"
-        app:layout_constraintBottom_toTopOf="@+id/myShowsIncomingRecycler"
+        android:text="@string/textRunning"
+        app:layout_constraintBottom_toTopOf="@id/myShowsRunningRecycler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myShowsRecentsContainer"
         />
 
       <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/myShowsIncomingRecycler"
-        style="@style/MyShows.Recycler"
-        app:layout_constraintBottom_toTopOf="@+id/myShowsRunningLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myShowsIncomingLabel"
-        />
-
-      <TextView
-        android:id="@+id/myShowsRunningLabel"
-        style="@style/MyShows.Label"
-        android:text="@string/textRunning"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/myShowsIncomingRecycler"
-        app:layout_constraintBottom_toTopOf="@id/myShowsRunningRecycler"
-        />
-
-      <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myShowsRunningRecycler"
         style="@style/MyShows.Recycler"
-        app:layout_constraintBottom_toTopOf="@id/myShowsEndedLabel"
+        app:layout_constraintBottom_toTopOf="@+id/myShowsEndedLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myShowsRunningLabel"
@@ -91,7 +71,7 @@
         android:id="@+id/myShowsEndedLabel"
         style="@style/MyShows.Label"
         android:text="@string/textEnded"
-        app:layout_constraintBottom_toTopOf="@id/myShowsEndedRecycler"
+        app:layout_constraintBottom_toTopOf="@+id/myShowsEndedRecycler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myShowsRunningRecycler"
         />
@@ -99,9 +79,27 @@
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myShowsEndedRecycler"
         style="@style/MyShows.Recycler"
+        app:layout_constraintBottom_toTopOf="@+id/myShowsIncomingLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/myShowsEndedLabel"
+        app:layout_constraintTop_toBottomOf="@+id/myShowsEndedLabel"
+        />
+
+      <TextView
+        android:id="@+id/myShowsIncomingLabel"
+        style="@style/MyShows.Label"
+        android:text="@string/textIncoming"
+        app:layout_constraintBottom_toTopOf="@+id/myShowsIncomingRecycler"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myShowsEndedRecycler"
+        />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myShowsIncomingRecycler"
+        style="@style/MyShows.Recycler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myShowsIncomingLabel"
         />
 
       <!-- Groups -->
@@ -110,8 +108,8 @@
         android:id="@+id/myShowsIncomingGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="myShowsIncomingLabel,myShowsIncomingRecycler"
         android:visibility="gone"
+        app:constraint_referenced_ids="myShowsIncomingLabel,myShowsIncomingRecycler"
         tools:visibility="visible"
         />
 
@@ -119,8 +117,8 @@
         android:id="@+id/myShowsRunningGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="myShowsRunningLabel,myShowsRunningRecycler"
         android:visibility="gone"
+        app:constraint_referenced_ids="myShowsRunningLabel,myShowsRunningRecycler"
         tools:visibility="visible"
         />
 
@@ -128,8 +126,8 @@
         android:id="@+id/myShowsEndedGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="myShowsEndedLabel,myShowsEndedRecycler"
         android:visibility="gone"
+        app:constraint_referenced_ids="myShowsEndedLabel,myShowsEndedRecycler"
         tools:visibility="visible"
         />
 

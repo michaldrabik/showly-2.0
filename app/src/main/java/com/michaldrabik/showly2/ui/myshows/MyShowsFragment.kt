@@ -33,6 +33,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>() {
   private val runningShowsAdapter by lazy { MyShowsHorizontalAdapter() }
   private val endedShowsAdapter by lazy { MyShowsHorizontalAdapter() }
   private val incomingShowsAdapter by lazy { MyShowsHorizontalAdapter() }
+  private val adapters by lazy { arrayOf(incomingShowsAdapter, runningShowsAdapter, endedShowsAdapter) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
@@ -69,6 +70,9 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>() {
       })
     }
     itemsAdapter.itemClickListener = { openShowDetails(it.show) }
+    itemsAdapter.missingImageListener = { item, force ->
+      viewModel.loadMissingImage(item, force)
+    }
   }
 
   private fun render(uiModel: MyShowsUiModel) {
@@ -91,6 +95,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>() {
       endedShowsAdapter.setItems(it)
       myShowsEndedGroup.visibleIf(it.isNotEmpty())
     }
+    uiModel.updateListItem?.let { item -> adapters.forEach { it.updateItem(item) } }
   }
 
   private fun renderRecentlyAdded(items: List<MyShowListItem>) {

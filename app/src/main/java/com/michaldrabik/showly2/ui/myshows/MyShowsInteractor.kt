@@ -4,11 +4,7 @@ import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.ShowStatus.CANCELED
-import com.michaldrabik.showly2.model.ShowStatus.ENDED
-import com.michaldrabik.showly2.model.ShowStatus.IN_PRODUCTION
-import com.michaldrabik.showly2.model.ShowStatus.PLANNED
-import com.michaldrabik.showly2.model.ShowStatus.RETURNING
+import com.michaldrabik.showly2.model.ShowStatus.*
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.storage.database.AppDatabase
@@ -54,4 +50,7 @@ class MyShowsInteractor @Inject constructor(
 
   suspend fun findCachedImage(show: Show, type: ImageType) =
     imagesManager.findCachedImage(show, type)
+
+  suspend fun loadMissingImage(show: Show, type: ImageType, force: Boolean) =
+    imagesManager.loadRemoteImage(show, type, force)
 }
