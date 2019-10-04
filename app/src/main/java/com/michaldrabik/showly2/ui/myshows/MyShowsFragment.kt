@@ -80,20 +80,23 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>() {
       renderRecentlyAdded(it)
       myShowsRootContent.fadeIf(it.isNotEmpty())
     }
-    uiModel.incomingShows?.let {
-      incomingShowsAdapter.clearItems()
-      incomingShowsAdapter.setItems(it)
-      myShowsIncomingGroup.visibleIf(it.isNotEmpty())
-    }
     uiModel.runningShows?.let {
       runningShowsAdapter.clearItems()
       runningShowsAdapter.setItems(it)
       myShowsRunningGroup.visibleIf(it.isNotEmpty())
+      myShowsRunningLabel.text = getString(R.string.textRunning, it.size)
     }
     uiModel.endedShows?.let {
       endedShowsAdapter.clearItems()
       endedShowsAdapter.setItems(it)
       myShowsEndedGroup.visibleIf(it.isNotEmpty())
+      myShowsEndedLabel.text = getString(R.string.textEnded, it.size)
+    }
+    uiModel.incomingShows?.let {
+      incomingShowsAdapter.clearItems()
+      incomingShowsAdapter.setItems(it)
+      myShowsIncomingGroup.visibleIf(it.isNotEmpty())
+      myShowsIncomingLabel.text = getString(R.string.textIncoming, it.size)
     }
     uiModel.updateListItem?.let { item -> adapters.forEach { it.updateItem(item) } }
   }
@@ -122,7 +125,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>() {
   }
 
   private fun openShowDetails(show: Show) {
-    //TODO Add fade transition
+    //TODO Add fades transition
     myShowsRootContent.fadeOut {
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.id) }
       findNavController().navigate(R.id.actionMyShowsFragmentToShowDetailsFragment, bundle)

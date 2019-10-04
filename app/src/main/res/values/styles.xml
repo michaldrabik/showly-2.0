@@ -1,8 +1,7 @@
 <resources>
 
   <!-- Base application theme. -->
-  <style name="AppTheme"
-    parent="Theme.MaterialComponents.NoActionBar">
+  <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
     <!-- Customize your theme here. -->
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -12,43 +11,38 @@
 
   <!--  Bottom Sheet Dialog -->
 
-  <style name="BottomSheet"
-    parent="@style/Widget.Design.BottomSheet.Modal">
+  <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
     <item name="android:background">@drawable/bg_bottom_sheet</item>
   </style>
 
-  <style name="BaseBottomSheetDialog"
-    parent="@style/Theme.Design.Light.BottomSheetDialog">
+  <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
     <item name="android:windowIsFloating">false</item>
     <item name="android:statusBarColor">@android:color/transparent</item>
     <item name="bottomSheetStyle">@style/BottomSheet</item>
   </style>
 
-  <style name="BottomSheetDialogTheme"
-    parent="BaseBottomSheetDialog" />
+  <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
 
   <style name="MyShows" />
 
-  <style name="MyShows.Label"
-    parent="MyShows">
+  <style name="MyShows.Label" parent="MyShows">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_marginStart">@dimen/spaceSmall</item>
-    <item name="android:layout_marginTop">@dimen/spaceMedium</item>
+    <item name="android:layout_marginStart">@dimen/spaceMedium</item>
+    <item name="android:layout_marginTop">@dimen/spaceNormal</item>
     <item name="android:textColor">@color/colorTextPrimary</item>
-    <item name="android:textSize">17sp</item>
+    <item name="android:textSize">18sp</item>
     <item name="android:textStyle">bold</item>
   </style>
 
-  <style name="MyShows.Recycler"
-    parent="MyShows">
+  <style name="MyShows.Recycler" parent="MyShows">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">@dimen/myShowsPosterHeight</item>
     <item name="android:layout_marginTop">@dimen/spaceMedium</item>
     <item name="android:clipToPadding">false</item>
     <item name="android:overScrollMode">never</item>
-    <item name="android:paddingStart">@dimen/spaceSmall</item>
-    <item name="android:paddingEnd">@dimen/spaceSmall</item>
+    <item name="android:paddingStart">@dimen/spaceMedium</item>
+    <item name="android:paddingEnd">@dimen/spaceMedium</item>
   </style>
 
 

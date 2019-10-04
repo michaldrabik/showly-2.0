@@ -29,6 +29,7 @@
       <TextView
         android:id="@+id/myShowsRecentsLabel"
         style="@style/MyShows.Label"
+        android:layout_marginStart="12dp"
         android:text="@string/textRecentlyAdded"
         app:layout_constraintBottom_toTopOf="@id/myShowsRecentsContainer"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,6 +43,8 @@
         android:layout_marginTop="@dimen/spaceSmall"
         android:columnCount="2"
         android:divider="@drawable/divider_my_shows_recents"
+        android:paddingStart="@dimen/spaceSmall"
+        android:paddingEnd="@dimen/spaceSmall"
         android:showDividers="middle"
         app:layout_constraintBottom_toTopOf="@+id/myShowsRunningLabel"
         app:layout_constraintLeft_toLeftOf="parent"
