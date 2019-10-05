@@ -3,15 +3,21 @@ package com.michaldrabik.showly2.ui.show
 import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.Config.ACTORS_CACHE_DURATION
+import com.michaldrabik.showly2.Config.RELATED_CACHE_DURATION
 import com.michaldrabik.showly2.UserManager
 import com.michaldrabik.showly2.di.AppScope
-import com.michaldrabik.showly2.model.*
+import com.michaldrabik.showly2.model.Actor
+import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.FANART
+import com.michaldrabik.showly2.model.Season
+import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.FollowedShow
+import com.michaldrabik.storage.database.model.RelatedShow
 import javax.inject.Inject
 import com.michaldrabik.storage.database.model.Episode as EpisodeDb
 import com.michaldrabik.storage.database.model.Season as SeasonDb
@@ -63,11 +69,30 @@ class ShowDetailsInteractor @Inject constructor(
     return remoteActors
   }
 
-  suspend fun loadRelatedShows(show: Show) =
-    cloud.traktApi.fetchRelatedShows(show.id)
+  suspend fun loadRelatedShows(show: Show): List<Show> {
+    val localShow = database.relatedShowsDao().getMostRecentById(show.id)
+    if (localShow != null && nowUtcMillis() - localShow.updatedAt < RELATED_CACHE_DURATION) {
+      val relatedShows = database.relatedShowsDao().getById(show.id)
+      return relatedShows
+        .map { mappers.show.fromDatabase(it) }
+        .sortedWith(compareBy({ it.votes }, { it.rating }))
+        .reversed()
+    }
+
+    val remoteShows = cloud.traktApi.fetchRelatedShows(show.id)
+      .map { mappers.show.fromNetwork(it) }
+
+    database.withTransaction {
+      val timestamp = nowUtcMillis()
+      database.showsDao().upsert(remoteShows.map { mappers.show.toDatabase(it) })
+      database.relatedShowsDao().deleteById(show.id)
+      database.relatedShowsDao().insert(remoteShows.map { RelatedShow.fromTraktId(it.id, show.id, timestamp) })
+    }
+
+    return remoteShows
       .sortedWith(compareBy({ it.votes }, { it.rating }))
       .reversed()
-      .map { mappers.show.fromNetwork(it) }
+  }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =
     imagesManager.findCachedImage(show, type)

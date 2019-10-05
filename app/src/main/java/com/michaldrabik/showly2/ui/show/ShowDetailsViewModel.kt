@@ -97,7 +97,6 @@ class ShowDetailsViewModel @Inject constructor(
 
   private suspend fun loadRelatedShows(show: Show) {
     try {
-      delay(750)
       val relatedShows = interactor.loadRelatedShows(show).map {
         val image = interactor.findCachedImage(it, POSTER)
         RelatedListItem(it, image)

@@ -10,7 +10,7 @@ interface DiscoverShowsDao {
   @Query("SELECT * FROM shows INNER JOIN shows_discover ON shows_discover.id_trakt == shows.id_trakt")
   suspend fun getAll(): List<Show>
 
-  @Query("SELECT * from shows_discover ORDER BY created_at LIMIT 1")
+  @Query("SELECT * from shows_discover ORDER BY created_at DESC LIMIT 1")
   suspend fun getMostRecent(): DiscoverShow?
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)

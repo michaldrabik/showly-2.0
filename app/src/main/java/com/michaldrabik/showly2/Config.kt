@@ -8,5 +8,6 @@ object Config {
   const val TVDB_IMAGE_BASE_FANART_URL = "${TVDB_IMAGE_BASE_URL}fanart/original/"
 
   val DISCOVER_SHOWS_CACHE_DURATION by lazy { TimeUnit.HOURS.toMillis(6) }
-  val ACTORS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(3) }
+  val ACTORS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(7) }
+  val RELATED_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(7) }
 }
