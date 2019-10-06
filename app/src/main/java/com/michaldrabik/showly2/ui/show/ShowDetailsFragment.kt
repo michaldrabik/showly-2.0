@@ -64,7 +64,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     setupActorsList()
     setupRelatedList()
     setupSeasonsList()
-
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
       loadShowDetails(showId)
@@ -215,13 +214,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       showDetailsSeasonsRecycler.fadeIf(it.isNotEmpty())
       showDetailsSeasonsLabel.fadeIf(it.isNotEmpty())
       showDetailsSeasonsProgress.gone()
-      separator2.fadeIf(it.isNotEmpty())
     }
     uiModel.relatedShows?.let {
       relatedAdapter.setItems(it)
       showDetailsRelatedRecycler.fadeIf(it.isNotEmpty())
       showDetailsRelatedLabel.fadeIf(it.isNotEmpty())
-      separator3.fadeIf(it.isNotEmpty())
+      showDetailsRelatedProgress.gone()
     }
     uiModel.updateRelatedShow?.let { relatedAdapter.updateItem(it) }
     uiModel.error?.let {

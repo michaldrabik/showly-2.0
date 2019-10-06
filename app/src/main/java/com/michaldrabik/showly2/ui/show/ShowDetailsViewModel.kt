@@ -11,7 +11,6 @@ import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodeListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesInteractor
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
@@ -85,9 +84,7 @@ class ShowDetailsViewModel @Inject constructor(
       val episodes = it.episodes.map { episode -> EpisodeListItem(episode, false) }
       SeasonListItem(it, episodes, false)
     }
-
     val calculated = calculateWatchedEpisodes(seasonsItems)
-
     uiStream.value = ShowDetailsUiModel(seasons = calculated)
     seasons
   } catch (t: Throwable) {

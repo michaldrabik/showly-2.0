@@ -45,9 +45,10 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/colorSeparatorGray"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsImage"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsExtraInfo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsImageGuideline"
         />
 
       <ProgressBar
@@ -70,8 +71,9 @@
         android:textColor="@color/colorTextPrimary"
         android:textSize="14sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsStatus"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsImageGuideline"
+        app:layout_constraintTop_toBottomOf="@id/separator1"
         tools:text="Netflix | 60 min | Drama, SF"
         />
 
@@ -80,9 +82,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginBottom="@dimen/spaceSmall"
         android:textColor="@color/colorTextSecondary"
         android:textSize="13sp"
         android:textStyle=""
+        app:layout_constraintBottom_toTopOf="@id/showDetailsAddButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"
         tools:text="Returning Series"
@@ -117,13 +121,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceSmall"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceSmall"
         app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeCard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsRating"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsStatus"
         />
 
       <include
@@ -184,15 +187,13 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceMedium"
         android:layout_marginEnd="@dimen/spaceNormal"
+        android:layout_marginBottom="@dimen/spaceMedium"
         android:background="@color/colorSeparatorGray"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsActorsRecycler"
-        tools:visibility="visible"
         />
 
       <androidx.recyclerview.widget.RecyclerView
@@ -200,25 +201,29 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/actorTileImageHeight"
         android:layout_marginTop="@dimen/spaceMedium"
+        android:layout_marginBottom="@dimen/spaceMedium"
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingStart="@dimen/spaceNormal"
         android:paddingEnd="@dimen/spaceNormal"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/separator2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
+        tools:visibility="visible"
         />
 
       <ProgressBar
         android:id="@+id/showDetailsActorsProgress"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_margin="@dimen/spaceMedium"
         android:indeterminateTint="@color/colorProgressGray"
-        app:layout_constraintBottom_toBottomOf="@+id/showDetailsActorsRecycler"
+        app:layout_constraintBottom_toTopOf="@id/separator2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/showDetailsActorsRecycler"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
         />
 
       <TextView
@@ -226,7 +231,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceMedium"
         android:text="@string/textSeasons"
         android:textColor="@color/colorTextPrimary"
         android:textSize="14sp"
@@ -258,12 +262,12 @@
         android:id="@+id/showDetailsSeasonsProgress"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_margin="@dimen/spaceMedium"
         android:indeterminateTint="@color/colorProgressGray"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/showDetailsSeasonsRecycler"
+        app:layout_constraintBottom_toTopOf="@id/separator3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/showDetailsSeasonsRecycler"
+        app:layout_constraintTop_toBottomOf="@id/separator2"
         />
 
       <View
@@ -273,13 +277,12 @@
         android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginTop="@dimen/spaceTiny"
         android:layout_marginEnd="@dimen/spaceNormal"
+        android:layout_marginBottom="@dimen/spaceMedium"
         android:background="@color/colorSeparatorGray"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsSeasonsRecycler"
-        tools:visibility="visible"
         />
 
       <TextView
@@ -287,7 +290,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceMedium"
         android:text="@string/textYouMayAlsoLike"
         android:textColor="@color/colorTextPrimary"
         android:textSize="14sp"
@@ -310,11 +312,21 @@
         android:paddingStart="@dimen/spaceNormal"
         android:paddingEnd="@dimen/spaceNormal"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedLabel"
         tools:visibility="visible"
+        />
+
+      <ProgressBar
+        android:id="@+id/showDetailsRelatedProgress"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="@dimen/spaceMedium"
+        android:indeterminateTint="@color/colorProgressGray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/separator3"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
