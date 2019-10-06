@@ -188,6 +188,7 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         android:background="@color/colorSeparatorGray"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsActorsRecycler"
@@ -231,6 +232,7 @@
         android:textSize="14sp"
         android:textStyle="bold"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsRecycler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/separator2"
         tools:visibility="visible"
@@ -252,6 +254,18 @@
         tools:visibility="visible"
         />
 
+      <ProgressBar
+        android:id="@+id/showDetailsSeasonsProgress"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:indeterminateTint="@color/colorProgressGray"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/showDetailsSeasonsRecycler"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/showDetailsSeasonsRecycler"
+        />
+
       <View
         android:id="@+id/separator3"
         android:layout_width="0dp"
@@ -261,6 +275,7 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         android:background="@color/colorSeparatorGray"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsSeasonsRecycler"
@@ -278,6 +293,7 @@
         android:textSize="14sp"
         android:textStyle="bold"
         android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedRecycler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/separator3"
         tools:visibility="visible"

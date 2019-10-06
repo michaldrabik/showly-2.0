@@ -214,6 +214,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       showDetailsEpisodesView.updateEpisodes(it)
       showDetailsSeasonsRecycler.fadeIf(it.isNotEmpty())
       showDetailsSeasonsLabel.fadeIf(it.isNotEmpty())
+      showDetailsSeasonsProgress.gone()
       separator2.fadeIf(it.isNotEmpty())
     }
     uiModel.relatedShows?.let {
