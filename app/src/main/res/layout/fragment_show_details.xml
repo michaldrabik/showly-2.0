@@ -143,7 +143,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsAddButton"
         app:layout_goneMarginBottom="0dp"
-        tools:visibility="visible"
+        tools:visibility="gone"
         />
 
       <com.michaldrabik.showly2.ui.common.views.FoldableTextView
@@ -159,6 +159,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showDetailsEpisodeCard"
+        app:layout_goneMarginBottom="@dimen/spaceBig"
         tools:text="Description"
         />
 
@@ -187,13 +188,17 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceMedium"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceMedium"
         android:background="@color/colorSeparatorGray"
         app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsLabel"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsActorsRecycler"
+        app:layout_goneMarginBottom="@dimen/spaceBig"
+        app:layout_goneMarginTop="@dimen/spaceBig"
         />
 
       <androidx.recyclerview.widget.RecyclerView
@@ -201,7 +206,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/actorTileImageHeight"
         android:layout_marginTop="@dimen/spaceMedium"
-        android:layout_marginBottom="@dimen/spaceMedium"
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingStart="@dimen/spaceNormal"
@@ -211,7 +215,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
-        tools:visibility="visible"
+        tools:visibility="gone"
         />
 
       <ProgressBar
@@ -239,7 +243,7 @@
         app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsRecycler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/separator2"
-        tools:visibility="visible"
+        tools:visibility="gone"
         />
 
       <androidx.recyclerview.widget.RecyclerView
@@ -255,7 +259,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsSeasonsLabel"
-        tools:visibility="visible"
+        tools:visibility="gone"
         />
 
       <ProgressBar
@@ -283,6 +287,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsSeasonsRecycler"
+        app:layout_goneMarginBottom="@dimen/spaceBig"
+        app:layout_goneMarginTop="@dimen/spaceBig"
         />
 
       <TextView
@@ -298,7 +304,7 @@
         app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedRecycler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/separator3"
-        tools:visibility="visible"
+        tools:visibility="gone"
         />
 
       <androidx.recyclerview.widget.RecyclerView
@@ -315,7 +321,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedLabel"
-        tools:visibility="visible"
+        tools:visibility="gone"
         />
 
       <ProgressBar

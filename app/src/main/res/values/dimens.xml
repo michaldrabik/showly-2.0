@@ -43,6 +43,6 @@
   <dimen name="searchViewItemPaddingHorizontal">20dp</dimen>
 
   <dimen name="gridSpacing">2dp</dimen>
-  <dimen name="gridPadding">4dp</dimen>
+  <dimen name="gridPadding">6dp</dimen>
 
 </resources>
