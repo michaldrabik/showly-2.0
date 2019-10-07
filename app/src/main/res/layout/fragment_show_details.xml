@@ -40,6 +40,26 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
+      <TextView
+        android:id="@+id/showDetailsTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spaceNormal"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:shadowColor="@color/colorBlack"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="1"
+        android:textColor="@color/colorWhite"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsImageGuideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Game Of Thrones "
+        />
+
       <View
         android:id="@+id/separator1"
         android:layout_width="0dp"
@@ -161,26 +181,6 @@
         app:layout_constraintTop_toBottomOf="@+id/showDetailsEpisodeCard"
         app:layout_goneMarginBottom="@dimen/spaceBig"
         tools:text="Description"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/spaceNormal"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:shadowColor="@color/colorBlack"
-        android:shadowDx="3"
-        android:shadowDy="3"
-        android:shadowRadius="1"
-        android:textColor="@color/colorWhite"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsImageGuideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:text="Game Of Thrones "
         />
 
       <View

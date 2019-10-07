@@ -27,7 +27,7 @@
   <string name="textNoDescription">Overview not available.</string>
   <string name="textRecentlyAdded">Recently Added</string>
   <string name="textRunning">Running (%1$d)</string>
-  <string name="textEnded">Ended / Canceled (%1$d)</string>
+  <string name="textEnded">Ended (%1$d)</string>
   <string name="textIncoming">Coming Soon (%1$d)</string>
 
   <plurals name="textDaysToAir">

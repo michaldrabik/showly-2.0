@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsHorizontalAdapter
 import com.michaldrabik.showly2.ui.myshows.views.MyShowView
@@ -26,7 +27,7 @@ import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 
-class MyShowsFragment : BaseFragment<MyShowsViewModel>() {
+class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListener {
 
   override val layoutResId = R.layout.fragment_my_shows
 
@@ -135,4 +136,6 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>() {
       getMainActivity().hideNavigation()
     }
   }
+
+  override fun onTabReselected() = myShowsRootScroll.smoothScrollTo(0, 0)
 }

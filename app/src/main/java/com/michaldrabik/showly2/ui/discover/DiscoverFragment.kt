@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
@@ -17,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.random.Random
 
-class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
+class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListener {
 
   override val layoutResId = R.layout.fragment_discover
 
@@ -108,6 +109,8 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>() {
       findNavController().navigate(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
     })
   }
+
+  override fun onTabReselected() = openSearchView()
 
   private fun render(uiModel: DiscoverUiModel) {
     uiModel.trendingShows?.let {

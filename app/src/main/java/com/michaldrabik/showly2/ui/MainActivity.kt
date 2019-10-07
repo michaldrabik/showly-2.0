@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fixBlinking
 import kotlinx.android.synthetic.main.activity_main.*
@@ -37,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     bottomNavigationView.fixBlinking()
     bottomNavigationView.setOnNavigationItemSelectedListener { item ->
       if (bottomNavigationView.selectedItemId == item.itemId) {
+        onTabReselected()
         return@setOnNavigationItemSelectedListener true
       }
 
@@ -83,6 +85,15 @@ class MainActivity : AppCompatActivity() {
       .setDuration(NAVIGATION_TRANSITION_DURATION_MS)
       .setInterpolator(decelerateInterpolator)
       .start()
+  }
+
+  private fun onTabReselected() {
+    navigationHost.findNavController().currentDestination?.id?.let {
+      val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
+      navHost?.childFragmentManager?.primaryNavigationFragment?.let {
+        (it as? OnTabReselectedListener)?.onTabReselected()
+      }
+    }
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
