@@ -14,7 +14,6 @@ import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.myshows.views.MyShowView
-import com.michaldrabik.showly2.ui.myshows.views.MyShowsSection
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
@@ -42,12 +41,18 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
   }
 
   private fun setupView() {
-    myShowsSections.referencedIds.forEach { section ->
-      myShowsRootContent.findViewById<MyShowsSection>(section).run {
-        itemClickListener = { openShowDetails(it.show) }
-        missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) }
-      }
+    val onSectionItemClick: (MyShowsListItem) -> Unit = { openShowDetails(it.show) }
+    val onSectionMissingImageListener: (MyShowsListItem, Boolean) -> Unit = { item, force ->
+      viewModel.loadMissingImage(item, force)
     }
+
+    myShowsRunningSection.itemClickListener = onSectionItemClick
+    myShowsEndedSection.itemClickListener = onSectionItemClick
+    myShowsIncomingSection.itemClickListener = onSectionItemClick
+
+    myShowsRunningSection.missingImageListener = onSectionMissingImageListener
+    myShowsEndedSection.missingImageListener = onSectionMissingImageListener
+    myShowsIncomingSection.missingImageListener = onSectionMissingImageListener
   }
 
   private fun render(uiModel: MyShowsUiModel) {
@@ -68,11 +73,9 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
       myShowsIncomingSection.visibleIf(it.isNotEmpty())
     }
     uiModel.updateListItem?.let { item ->
-      myShowsSections.referencedIds.forEach { section ->
-        myShowsRootContent.findViewById<MyShowsSection>(section).run {
-          updateItem(item)
-        }
-      }
+      myShowsRunningSection.updateItem(item)
+      myShowsEndedSection.updateItem(item)
+      myShowsIncomingSection.updateItem(item)
     }
     uiModel.listPosition?.let { myShowsRootScroll.scrollTo(0, it.first) }
   }

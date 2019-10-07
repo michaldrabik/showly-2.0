@@ -82,13 +82,6 @@
         app:layout_constraintTop_toBottomOf="@id/myShowsEndedSection"
         />
 
-      <androidx.constraintlayout.widget.Group
-        android:id="@+id/myShowsSections"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="myShowsRunningSection,myShowsEndedSection,myShowsIncomingSection"
-        />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
   </androidx.core.widget.NestedScrollView>

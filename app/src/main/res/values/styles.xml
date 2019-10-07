@@ -30,6 +30,7 @@
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginStart">@dimen/spaceMedium</item>
     <item name="android:layout_marginTop">@dimen/spaceNormal</item>
+    <item name="android:layout_marginBottom">@dimen/spaceMedium</item>
     <item name="android:textColor">@color/colorTextPrimary</item>
     <item name="android:textSize">18sp</item>
     <item name="android:textStyle">bold</item>
@@ -38,7 +39,6 @@
   <style name="MyShows.Recycler" parent="MyShows">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">@dimen/myShowsPosterHeight</item>
-    <item name="android:layout_marginTop">@dimen/spaceMedium</item>
     <item name="android:clipToPadding">false</item>
     <item name="android:overScrollMode">never</item>
     <item name="android:paddingStart">@dimen/spaceMedium</item>
