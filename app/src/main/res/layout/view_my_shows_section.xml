@@ -19,8 +19,8 @@
 
   <ImageView
     android:id="@+id/myShowsSectionSortButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="22dp"
+    android:layout_height="22dp"
     android:layout_marginTop="@dimen/spaceNormal"
     android:layout_marginEnd="@dimen/spaceNormal"
     android:layout_marginBottom="@dimen/spaceMedium"
@@ -37,6 +37,16 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/myShowsSectionLabel"
+    />
+
+  <com.michaldrabik.showly2.ui.common.views.SortOrderView
+    android:id="@+id/myShowsSectionSortView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/spaceNormal"
+    android:visibility="gone"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
     />
 
 </merge>

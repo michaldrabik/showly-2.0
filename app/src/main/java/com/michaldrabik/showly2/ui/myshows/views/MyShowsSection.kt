@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.myshows.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.myshows.MyShowsListItem
 import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsSectionAdapter
+import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.view_my_shows_section.view.*
 
 class MyShowsSection @JvmOverloads constructor(
@@ -23,6 +25,7 @@ class MyShowsSection @JvmOverloads constructor(
 
   init {
     inflate(context, R.layout.view_my_shows_section, this)
+    setupView()
     setupRecycler()
   }
 
@@ -35,6 +38,21 @@ class MyShowsSection @JvmOverloads constructor(
   }
 
   fun updateItem(item: MyShowsListItem) = sectionAdapter.updateItem(item)
+
+  private fun setupView() {
+    layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+    myShowsSectionSortButton.expandTouchArea()
+    myShowsSectionSortButton.onClick { button ->
+      button.gone()
+      myShowsSectionSortView.run {
+        fadeIn()
+        sortSelectedListener = {
+          myShowsSectionSortView.fadeOut()
+          button.visible()
+        }
+      }
+    }
+  }
 
   private fun setupRecycler() {
     myShowsSectionRecycler.apply {

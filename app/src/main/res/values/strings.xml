@@ -29,6 +29,9 @@
   <string name="textRunning">Running (%1$d)</string>
   <string name="textEnded">Ended (%1$d)</string>
   <string name="textIncoming">Coming Soon (%1$d)</string>
+  <string name="textSortName">Name</string>
+  <string name="textSortNewest">Newest</string>
+  <string name="textSortRated">Highest Rated</string>
 
   <plurals name="textDaysToAir">
     <item quantity="zero">Airs today.</item>

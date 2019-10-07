@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:background="@color/colorSortViewBackground"
+  android:orientation="vertical"
+  tools:parentTag="android.widget.LinearLayout"
+  >
+
+  <LinearLayout
+    android:id="@+id/sortOrderName"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/spaceSmall"
+    >
+
+    <ImageView
+      android:layout_width="20dp"
+      android:layout_height="20dp"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      app:srcCompat="@drawable/ic_check"
+      />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/textSortName"
+      android:textColor="@color/colorTextPrimary"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/sortOrderNewest"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/spaceSmall"
+    >
+
+    <ImageView
+      android:layout_width="20dp"
+      android:layout_height="20dp"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      android:visibility="gone"
+      app:srcCompat="@drawable/ic_check"
+      />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/textSortNewest"
+      android:textColor="@color/colorTextPrimary"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/sortOrderRating"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/spaceSmall"
+    >
+
+    <ImageView
+      android:layout_width="20dp"
+      android:layout_height="20dp"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      android:visibility="gone"
+      app:srcCompat="@drawable/ic_check"
+      />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/textSortRated"
+      android:textColor="@color/colorTextPrimary"
+      />
+
+  </LinearLayout>
+
+</merge>
