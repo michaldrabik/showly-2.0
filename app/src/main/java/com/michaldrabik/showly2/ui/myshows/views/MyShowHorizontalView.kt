@@ -7,7 +7,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.views.ShowView
-import com.michaldrabik.showly2.ui.myshows.MyShowListItem
+import com.michaldrabik.showly2.ui.myshows.MyShowsListItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.view_my_show.view.*
 
 class MyShowHorizontalView @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : ShowView<MyShowListItem>(context, attrs, defStyleAttr) {
+) : ShowView<MyShowsListItem>(context, attrs, defStyleAttr) {
 
   init {
     inflate(context, R.layout.view_my_show, this)
@@ -27,9 +27,9 @@ class MyShowHorizontalView @JvmOverloads constructor(
   override val placeholderView: ImageView = myShowPlaceholder
 
   override fun bind(
-    item: MyShowListItem,
-    missingImageListener: (MyShowListItem, Boolean) -> Unit,
-    itemClickListener: (MyShowListItem) -> Unit
+    item: MyShowsListItem,
+    missingImageListener: (MyShowsListItem, Boolean) -> Unit,
+    itemClickListener: (MyShowsListItem) -> Unit
   ) {
     clear()
     myShowProgress.visibleIf(item.isLoading)

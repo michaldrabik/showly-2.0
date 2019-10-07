@@ -1,10 +1,10 @@
 package com.michaldrabik.showly2.ui.myshows
 
 data class MyShowsUiModel(
-  val recentShows: List<MyShowListItem>? = null,
-  val runningShows: List<MyShowListItem>? = null,
-  val endedShows: List<MyShowListItem>? = null,
-  val incomingShows: List<MyShowListItem>? = null,
-  val updateListItem: MyShowListItem? = null,
+  val recentShows: List<MyShowsListItem>? = null,
+  val runningShows: List<MyShowsListItem>? = null,
+  val endedShows: List<MyShowsListItem>? = null,
+  val incomingShows: List<MyShowsListItem>? = null,
+  val updateListItem: MyShowsListItem? = null,
   val listPosition: Pair<Int, Int>? = null
 )

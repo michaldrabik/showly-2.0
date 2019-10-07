@@ -24,22 +24,22 @@ class MyShowsViewModel @Inject constructor(
 
         val recentShows = shows.recentsShows.map {
           val image = interactor.findCachedImage(it, FANART)
-          MyShowListItem(it, image)
+          MyShowsListItem(it, image)
         }
 
         val runningShows = shows.runningShows.map {
           val image = interactor.findCachedImage(it, POSTER)
-          MyShowListItem(it, image)
+          MyShowsListItem(it, image)
         }
 
         val endedShows = shows.endedShows.map {
           val image = interactor.findCachedImage(it, POSTER)
-          MyShowListItem(it, image)
+          MyShowsListItem(it, image)
         }
 
         val incomingShows = shows.incomingShows.map {
           val image = interactor.findCachedImage(it, POSTER)
-          MyShowListItem(it, image)
+          MyShowsListItem(it, image)
         }
 
         uiStream.value = MyShowsUiModel(
@@ -55,7 +55,7 @@ class MyShowsViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingImage(item: MyShowListItem, force: Boolean) {
+  fun loadMissingImage(item: MyShowsListItem, force: Boolean) {
     viewModelScope.launch {
       uiStream.value = MyShowsUiModel(updateListItem = item.copy(isLoading = true))
       try {

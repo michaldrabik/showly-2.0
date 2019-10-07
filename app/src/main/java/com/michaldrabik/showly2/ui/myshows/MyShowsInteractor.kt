@@ -22,7 +22,7 @@ class MyShowsInteractor @Inject constructor(
     private const val RECENT_SHOWS_AMOUNT = 4
   }
 
-  suspend fun loadMyShows(): MyShowBundle {
+  suspend fun loadMyShows(): MyShowsBundle {
     val recentShows = database.followedShowsDao().getAllRecent()
       .map { mappers.show.fromDatabase(it) }
       .take(RECENT_SHOWS_AMOUNT)
@@ -40,7 +40,7 @@ class MyShowsInteractor @Inject constructor(
     val incomingShows = allShows
       .filter { it.status in arrayOf(IN_PRODUCTION, PLANNED) }
 
-    return MyShowBundle(
+    return MyShowsBundle(
       recentShows,
       runningShows,
       endedShows,

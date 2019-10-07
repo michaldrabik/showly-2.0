@@ -47,92 +47,46 @@
         android:paddingStart="@dimen/spaceSmall"
         android:paddingEnd="@dimen/spaceSmall"
         android:showDividers="middle"
-        app:layout_constraintBottom_toTopOf="@+id/myShowsRunningLabel"
+        app:layout_constraintBottom_toTopOf="@+id/myShowsRunningSection"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myShowsRecentsLabel"
         />
 
-      <TextView
-        android:id="@+id/myShowsRunningLabel"
-        style="@style/MyShows.Label"
-        android:text="@string/textRunning"
-        app:layout_constraintBottom_toTopOf="@id/myShowsRunningRecycler"
+      <com.michaldrabik.showly2.ui.myshows.views.MyShowsSection
+        android:id="@+id/myShowsRunningSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/myShowsEndedSection"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myShowsRecentsContainer"
         />
 
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/myShowsRunningRecycler"
-        style="@style/MyShows.Recycler"
-        app:layout_constraintBottom_toTopOf="@+id/myShowsEndedLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myShowsRunningLabel"
-        />
-
-      <TextView
-        android:id="@+id/myShowsEndedLabel"
-        style="@style/MyShows.Label"
-        android:text="@string/textEnded"
-        app:layout_constraintBottom_toTopOf="@+id/myShowsEndedRecycler"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/myShowsRunningRecycler"
-        />
-
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/myShowsEndedRecycler"
-        style="@style/MyShows.Recycler"
-        app:layout_constraintBottom_toTopOf="@+id/myShowsIncomingLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myShowsEndedLabel"
-        />
-
-      <TextView
-        android:id="@+id/myShowsIncomingLabel"
-        style="@style/MyShows.Label"
-        android:text="@string/textIncoming"
-        app:layout_constraintBottom_toTopOf="@+id/myShowsIncomingRecycler"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myShowsEndedRecycler"
-        />
-
-      <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/myShowsIncomingRecycler"
-        style="@style/MyShows.Recycler"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myShowsIncomingLabel"
-        />
-
-      <!-- Groups -->
-
-      <androidx.constraintlayout.widget.Group
-        android:id="@+id/myShowsIncomingGroup"
-        android:layout_width="wrap_content"
+      <com.michaldrabik.showly2.ui.myshows.views.MyShowsSection
+        android:id="@+id/myShowsEndedSection"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="myShowsIncomingLabel,myShowsIncomingRecycler"
-        tools:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/myShowsIncomingSection"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/myShowsRunningSection"
+        />
+
+      <com.michaldrabik.showly2.ui.myshows.views.MyShowsSection
+        android:id="@+id/myShowsIncomingSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/myShowsEndedSection"
         />
 
       <androidx.constraintlayout.widget.Group
-        android:id="@+id/myShowsRunningGroup"
+        android:id="@+id/myShowsSections"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="myShowsRunningLabel,myShowsRunningRecycler"
-        tools:visibility="visible"
-        />
-
-      <androidx.constraintlayout.widget.Group
-        android:id="@+id/myShowsEndedGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:constraint_referenced_ids="myShowsEndedLabel,myShowsEndedRecycler"
-        tools:visibility="visible"
+        app:constraint_referenced_ids="myShowsRunningSection,myShowsEndedSection,myShowsIncomingSection"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
