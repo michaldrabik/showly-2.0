@@ -31,7 +31,7 @@
       <TextView
         android:id="@+id/myShowsRecentsLabel"
         style="@style/MyShows.Label"
-        android:layout_marginStart="12dp"
+        android:layout_marginBottom="@dimen/spaceSmall"
         android:text="@string/textRecentlyAdded"
         app:layout_constraintBottom_toTopOf="@id/myShowsRecentsContainer"
         app:layout_constraintStart_toStartOf="parent"

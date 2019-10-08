@@ -74,8 +74,8 @@ class MyShowsSection @JvmOverloads constructor(
       })
     }
     sectionAdapter.run {
-      itemClickListener = { itemClickListener(it) }
-      missingImageListener = { item, force -> missingImageListener(item, force) }
+      itemClickListener = { this@MyShowsSection.itemClickListener(it) }
+      missingImageListener = { item, force -> this@MyShowsSection.missingImageListener(item, force) }
     }
   }
 }
