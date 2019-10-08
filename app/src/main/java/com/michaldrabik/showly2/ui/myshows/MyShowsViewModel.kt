@@ -23,71 +23,48 @@ class MyShowsViewModel @Inject constructor(
   val uiStream by lazy { MutableLiveData<MyShowsUiModel>() }
 
   fun loadMyShows() = viewModelScope.launch {
-    try {
-      val recentShows = interactor.loadRecentShows().map {
-        val image = interactor.findCachedImage(it, FANART)
-        MyShowsListItem(it, image)
-      }
-
-      val runningSortOrder = interactor.loadSortOrder(RUNNING)
-      val runningShows = interactor.loadRunningShows().map {
-        val image = interactor.findCachedImage(it, POSTER)
-        MyShowsListItem(it, image)
-      }
-
-      val endedSortOrder = interactor.loadSortOrder(ENDED)
-      val endedShows = interactor.loadEndedShows().map {
-        val image = interactor.findCachedImage(it, POSTER)
-        MyShowsListItem(it, image)
-      }
-
-      val incomingSortOrder = interactor.loadSortOrder(COMING_SOON)
-      val incomingShows = interactor.loadIncomingShows().map {
-        val image = interactor.findCachedImage(it, POSTER)
-        MyShowsListItem(it, image)
-      }
-
-      uiStream.value = MyShowsUiModel(
-        recentShows = recentShows,
-        runningShows = MyShowsBundle(runningShows, RUNNING, runningSortOrder),
-        endedShows = MyShowsBundle(endedShows, ENDED, endedSortOrder),
-        incomingShows = MyShowsBundle(incomingShows, COMING_SOON, incomingSortOrder),
-        listPosition = uiCache.myShowsListPosition
-      )
-    } catch (t: Throwable) {
-      TODO()
+    val recentShows = interactor.loadRecentShows().map {
+      val image = interactor.findCachedImage(it, FANART)
+      MyShowsListItem(it, image)
     }
+
+    val runningShows = interactor.loadShows(RUNNING).map {
+      val image = interactor.findCachedImage(it, POSTER)
+      MyShowsListItem(it, image)
+    }
+
+    val endedShows = interactor.loadShows(ENDED).map {
+      val image = interactor.findCachedImage(it, POSTER)
+      MyShowsListItem(it, image)
+    }
+
+    val incomingShows = interactor.loadShows(COMING_SOON).map {
+      val image = interactor.findCachedImage(it, POSTER)
+      MyShowsListItem(it, image)
+    }
+
+    val settings = interactor.loadSettings()
+
+    uiStream.value = MyShowsUiModel(
+      recentShows = recentShows,
+      runningShows = MyShowsBundle(runningShows, RUNNING, settings.myShowsRunningSortBy),
+      endedShows = MyShowsBundle(endedShows, ENDED, settings.myShowsEndedSortBy),
+      incomingShows = MyShowsBundle(incomingShows, COMING_SOON, settings.myShowsIncomingSortBy),
+      listPosition = uiCache.myShowsListPosition
+    )
   }
 
   fun loadSortedSection(section: MyShowsSection, order: SortOrder) {
     viewModelScope.launch {
-      try {
-        interactor.setSectionSortOrder(section, order)
-        when (section) {
-          RUNNING -> {
-            val shows = interactor.loadRunningShows().map {
-              val image = interactor.findCachedImage(it, POSTER)
-              MyShowsListItem(it, image)
-            }
-            uiStream.value = MyShowsUiModel(runningShows = MyShowsBundle(shows, section, order))
-          }
-          ENDED -> {
-            val shows = interactor.loadEndedShows().map {
-              val image = interactor.findCachedImage(it, POSTER)
-              MyShowsListItem(it, image)
-            }
-            uiStream.value = MyShowsUiModel(endedShows = MyShowsBundle(shows, section, order))
-          }
-          COMING_SOON -> {
-            val shows = interactor.loadIncomingShows().map {
-              val image = interactor.findCachedImage(it, POSTER)
-              MyShowsListItem(it, image)
-            }
-            uiStream.value = MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, order))
-          }
-        }
-      } catch (t: Throwable) {
-        TODO()
+      interactor.setSectionSortOrder(section, order)
+      val shows = interactor.loadShows(section).map {
+        val image = interactor.findCachedImage(it, POSTER)
+        MyShowsListItem(it, image)
+      }
+      uiStream.value = when (section) {
+        RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, order))
+        ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, order))
+        COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, order))
       }
     }
   }

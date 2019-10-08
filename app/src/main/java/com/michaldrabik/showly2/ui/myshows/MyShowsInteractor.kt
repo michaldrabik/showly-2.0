@@ -6,7 +6,6 @@ import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.MyShowsSection.COMING_SOON
 import com.michaldrabik.showly2.model.MyShowsSection.RUNNING
 import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.ShowStatus.*
 import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.model.SortOrder.*
 import com.michaldrabik.showly2.model.mappers.Mappers
@@ -30,35 +29,19 @@ class MyShowsInteractor @Inject constructor(
       .map { mappers.show.fromDatabase(it) }
       .take(RECENT_SHOWS_AMOUNT)
 
-  suspend fun loadRunningShows(): List<Show> {
-    val sortOrder = loadSortOrder(RUNNING)
+  suspend fun loadShows(section: MyShowsSection): List<Show> {
+    val sortOrder = loadSortOrder(section)
     val shows = database.followedShowsDao().getAll()
       .map { mappers.show.fromDatabase(it) }
-      .filter { it.status == RETURNING }
-
+      .filter { section.statuses.contains(it.status) }
     return sortBy(sortOrder, shows)
   }
 
-  suspend fun loadEndedShows(): List<Show> {
-    val sortOrder = loadSortOrder(MyShowsSection.ENDED)
-    val shows = database.followedShowsDao().getAll()
-      .map { mappers.show.fromDatabase(it) }
-      .filter { it.status in arrayOf(ENDED, CANCELED) }
+  suspend fun loadSettings() =
+    mappers.settings.fromDatabase(database.settingsDao().getAll()!!)
 
-    return sortBy(sortOrder, shows)
-  }
-
-  suspend fun loadIncomingShows(): List<Show> {
-    val sortOrder = loadSortOrder(COMING_SOON)
-    val shows = database.followedShowsDao().getAll()
-      .map { mappers.show.fromDatabase(it) }
-      .filter { it.status in arrayOf(IN_PRODUCTION, PLANNED) }
-
-    return sortBy(sortOrder, shows)
-  }
-
-  suspend fun loadSortOrder(section: MyShowsSection): SortOrder {
-    val settings = mappers.settings.fromDatabase(database.settingsDao().getAll()!!)
+  private suspend fun loadSortOrder(section: MyShowsSection): SortOrder {
+    val settings = loadSettings()
     return when (section) {
       RUNNING -> settings.myShowsRunningSortBy
       COMING_SOON -> settings.myShowsIncomingSortBy
@@ -74,7 +57,7 @@ class MyShowsInteractor @Inject constructor(
     }
 
   suspend fun setSectionSortOrder(section: MyShowsSection, order: SortOrder) {
-    val settings = mappers.settings.fromDatabase(database.settingsDao().getAll()!!)
+    val settings = loadSettings()
     val newSettings = when (section) {
       RUNNING -> settings.copy(myShowsRunningSortBy = order)
       MyShowsSection.ENDED -> settings.copy(myShowsEndedSortBy = order)
