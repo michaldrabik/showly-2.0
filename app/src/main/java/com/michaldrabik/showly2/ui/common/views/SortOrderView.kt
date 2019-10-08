@@ -5,8 +5,10 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.SortOrder
+import com.michaldrabik.showly2.model.SortOrder.*
 import com.michaldrabik.showly2.utilities.extensions.onClick
-import kotlinx.android.synthetic.main.view_sort_orded.view.*
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import kotlinx.android.synthetic.main.view_sort_order.view.*
 
 class SortOrderView @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -15,12 +17,18 @@ class SortOrderView @JvmOverloads constructor(
   var sortSelectedListener: (SortOrder) -> Unit = {}
 
   init {
-    inflate(context, R.layout.view_sort_orded, this)
+    inflate(context, R.layout.view_sort_order, this)
     orientation = VERTICAL
     setBackgroundResource(R.color.colorSortViewBackground)
 
-    sortOrderName.onClick { sortSelectedListener(SortOrder.NAME) }
-    sortOrderNewest.onClick { sortSelectedListener(SortOrder.NEWEST) }
-    sortOrderRating.onClick { sortSelectedListener(SortOrder.RATING) }
+    sortOrderName.onClick { sortSelectedListener(NAME) }
+    sortOrderNewest.onClick { sortSelectedListener(NEWEST) }
+    sortOrderRating.onClick { sortSelectedListener(RATING) }
+  }
+
+  fun bind(sortOrder: SortOrder) {
+    sortOrderNameCheck.visibleIf(sortOrder == NAME, false)
+    sortOrderNewestCheck.visibleIf(sortOrder == NEWEST, false)
+    sortOrderRatingCheck.visibleIf(sortOrder == RATING, false)
   }
 }

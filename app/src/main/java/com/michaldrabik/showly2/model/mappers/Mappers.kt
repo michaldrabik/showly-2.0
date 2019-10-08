@@ -9,5 +9,6 @@ class Mappers @Inject constructor(
   val show: ShowMapper,
   val episode: EpisodeMapper,
   val season: SeasonMapper,
-  val actor: ActorMapper
+  val actor: ActorMapper,
+  val settings: SettingsMapper
 )

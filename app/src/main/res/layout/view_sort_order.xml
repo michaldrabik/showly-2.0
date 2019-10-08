@@ -17,10 +17,11 @@
     android:background="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/spaceSmall"
+    android:padding="@dimen/spaceMedium"
     >
 
     <ImageView
+      android:id="@+id/sortOrderNameCheck"
       android:layout_width="20dp"
       android:layout_height="20dp"
       android:layout_marginEnd="@dimen/spaceSmall"
@@ -43,14 +44,15 @@
     android:background="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/spaceSmall"
+    android:padding="@dimen/spaceMedium"
     >
 
     <ImageView
+      android:id="@+id/sortOrderNewestCheck"
       android:layout_width="20dp"
       android:layout_height="20dp"
       android:layout_marginEnd="@dimen/spaceSmall"
-      android:visibility="gone"
+      android:visibility="invisible"
       app:srcCompat="@drawable/ic_check"
       />
 
@@ -70,14 +72,15 @@
     android:background="?android:attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/spaceSmall"
+    android:padding="@dimen/spaceMedium"
     >
 
     <ImageView
+      android:id="@+id/sortOrderRatingCheck"
       android:layout_width="20dp"
       android:layout_height="20dp"
       android:layout_marginEnd="@dimen/spaceSmall"
-      android:visibility="gone"
+      android:visibility="invisible"
       app:srcCompat="@drawable/ic_check"
       />
 

@@ -2,7 +2,6 @@ package com.michaldrabik.showly2.ui.common.base
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.ui.discover.recycler.ListItem
 
 abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -11,12 +10,12 @@ abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.
   var missingImageListener: (Item, Boolean) -> Unit = { _, _ -> }
   var itemClickListener: (Item) -> Unit = { }
 
-  fun setItems(items: List<Item>) {
+  open fun setItems(newItems: List<Item>) {
     this.items.apply {
       clear()
-      addAll(items)
+      addAll(newItems)
     }
-    notifyItemRangeInserted(0, items.size)
+    notifyItemRangeInserted(0, newItems.size)
   }
 
   fun updateItem(updatedItem: Item) {

@@ -6,6 +6,8 @@ import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.showly2.ui.discover.DiscoverInteractor
 import com.michaldrabik.showly2.ui.discover.DiscoverViewModel
+import com.michaldrabik.showly2.ui.main.MainInteractor
+import com.michaldrabik.showly2.ui.main.MainViewModel
 import com.michaldrabik.showly2.ui.myshows.MyShowsInteractor
 import com.michaldrabik.showly2.ui.myshows.MyShowsViewModel
 import com.michaldrabik.showly2.ui.search.SearchInteractor
@@ -18,6 +20,7 @@ import javax.inject.Inject
 
 @AppScope
 class ViewModelFactory @Inject constructor(
+  private val mainInteractor: MainInteractor,
   private val discoverInteractor: DiscoverInteractor,
   private val myShowsInteractor: MyShowsInteractor,
   private val showDetailsInteractor: ShowDetailsInteractor,
@@ -29,6 +32,9 @@ class ViewModelFactory @Inject constructor(
 
   @Suppress("UNCHECKED_CAST")
   override fun <T : ViewModel?> create(modelClass: Class<T>) = when {
+    modelClass.isAssignableFrom(MainViewModel::class.java) ->
+      MainViewModel(mainInteractor) as T
+
     modelClass.isAssignableFrom(DiscoverViewModel::class.java) ->
       DiscoverViewModel(discoverInteractor, uiCache) as T
 

@@ -5,8 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.POSTER
+import com.michaldrabik.showly2.model.MyShowsSection
+import com.michaldrabik.showly2.model.MyShowsSection.*
+import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
+import com.michaldrabik.showly2.ui.myshows.helpers.MyShowsBundle
+import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsListItem
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,38 +22,70 @@ class MyShowsViewModel @Inject constructor(
 
   val uiStream by lazy { MutableLiveData<MyShowsUiModel>() }
 
-  fun loadMyShows() {
+  fun loadMyShows() = viewModelScope.launch {
+    try {
+      val recentShows = interactor.loadRecentShows().map {
+        val image = interactor.findCachedImage(it, FANART)
+        MyShowsListItem(it, image)
+      }
+
+      val runningSortOrder = interactor.loadSortOrder(RUNNING)
+      val runningShows = interactor.loadRunningShows().map {
+        val image = interactor.findCachedImage(it, POSTER)
+        MyShowsListItem(it, image)
+      }
+
+      val endedSortOrder = interactor.loadSortOrder(ENDED)
+      val endedShows = interactor.loadEndedShows().map {
+        val image = interactor.findCachedImage(it, POSTER)
+        MyShowsListItem(it, image)
+      }
+
+      val incomingSortOrder = interactor.loadSortOrder(COMING_SOON)
+      val incomingShows = interactor.loadIncomingShows().map {
+        val image = interactor.findCachedImage(it, POSTER)
+        MyShowsListItem(it, image)
+      }
+
+      uiStream.value = MyShowsUiModel(
+        recentShows = recentShows,
+        runningShows = MyShowsBundle(runningShows, RUNNING, runningSortOrder),
+        endedShows = MyShowsBundle(endedShows, ENDED, endedSortOrder),
+        incomingShows = MyShowsBundle(incomingShows, COMING_SOON, incomingSortOrder),
+        listPosition = uiCache.myShowsListPosition
+      )
+    } catch (t: Throwable) {
+      TODO()
+    }
+  }
+
+  fun loadSortedSection(section: MyShowsSection, order: SortOrder) {
     viewModelScope.launch {
       try {
-        val shows = interactor.loadMyShows()
-
-        val recentShows = shows.recentsShows.map {
-          val image = interactor.findCachedImage(it, FANART)
-          MyShowsListItem(it, image)
+        interactor.setSectionSortOrder(section, order)
+        when (section) {
+          RUNNING -> {
+            val shows = interactor.loadRunningShows().map {
+              val image = interactor.findCachedImage(it, POSTER)
+              MyShowsListItem(it, image)
+            }
+            uiStream.value = MyShowsUiModel(runningShows = MyShowsBundle(shows, section, order))
+          }
+          ENDED -> {
+            val shows = interactor.loadEndedShows().map {
+              val image = interactor.findCachedImage(it, POSTER)
+              MyShowsListItem(it, image)
+            }
+            uiStream.value = MyShowsUiModel(endedShows = MyShowsBundle(shows, section, order))
+          }
+          COMING_SOON -> {
+            val shows = interactor.loadIncomingShows().map {
+              val image = interactor.findCachedImage(it, POSTER)
+              MyShowsListItem(it, image)
+            }
+            uiStream.value = MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, order))
+          }
         }
-
-        val runningShows = shows.runningShows.map {
-          val image = interactor.findCachedImage(it, POSTER)
-          MyShowsListItem(it, image)
-        }
-
-        val endedShows = shows.endedShows.map {
-          val image = interactor.findCachedImage(it, POSTER)
-          MyShowsListItem(it, image)
-        }
-
-        val incomingShows = shows.incomingShows.map {
-          val image = interactor.findCachedImage(it, POSTER)
-          MyShowsListItem(it, image)
-        }
-
-        uiStream.value = MyShowsUiModel(
-          recentShows,
-          runningShows,
-          endedShows,
-          incomingShows,
-          listPosition = uiCache.myShowsListPosition
-        )
       } catch (t: Throwable) {
         TODO()
       }

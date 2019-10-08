@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.michaldrabik.showly2.ui.MainActivity
 import com.michaldrabik.showly2.ui.ViewModelFactory
+import com.michaldrabik.showly2.ui.main.MainActivity
 import javax.inject.Inject
 
 abstract class BaseFragment<T : BaseViewModel> : Fragment() {

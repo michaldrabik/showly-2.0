@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.myshows
+package com.michaldrabik.showly2.ui.myshows.recycler
 
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Show

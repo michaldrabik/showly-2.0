@@ -8,8 +8,7 @@ import android.graphics.Rect
 import android.util.TypedValue
 import android.view.TouchDelegate
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
@@ -49,11 +48,15 @@ fun View.gone() {
   if (visibility != GONE) visibility = GONE
 }
 
-fun View.visibleIf(condition: Boolean) =
+fun View.invisible() {
+  if (visibility != INVISIBLE) visibility = INVISIBLE
+}
+
+fun View.visibleIf(condition: Boolean, gone: Boolean = true) =
   if (condition) {
     visible()
   } else {
-    gone()
+    if (gone) gone() else invisible()
   }
 
 fun View.fadeIf(condition: Boolean) =

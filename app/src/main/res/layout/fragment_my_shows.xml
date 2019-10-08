@@ -42,7 +42,6 @@
         android:id="@+id/myShowsRecentsContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spaceSmall"
         android:columnCount="2"
         android:divider="@drawable/divider_my_shows_recents"
         android:paddingStart="@dimen/spaceSmall"

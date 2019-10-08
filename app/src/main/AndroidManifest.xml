@@ -18,7 +18,7 @@
     tools:ignore="GoogleAppIndexingWarning"
     >
     <activity
-      android:name=".ui.MainActivity"
+      android:name=".ui.main.MainActivity"
       android:screenOrientation="portrait"
       android:launchMode="singleInstance"
       >

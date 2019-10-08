@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.ui.myshows.MyShowsListItem
+import com.michaldrabik.showly2.model.MyShowsSection
+import com.michaldrabik.showly2.model.SortOrder
+import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsListItem
 import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsSectionAdapter
 import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.view_my_shows_section.view.*
@@ -22,6 +24,9 @@ class MyShowsSection @JvmOverloads constructor(
 
   var itemClickListener: (MyShowsListItem) -> Unit = {}
   var missingImageListener: (MyShowsListItem, Boolean) -> Unit = { _, _ -> }
+  var sortSelectedListener: (MyShowsSection, SortOrder) -> Unit = { _, _ -> }
+
+  private lateinit var section: MyShowsSection
 
   init {
     inflate(context, R.layout.view_my_shows_section, this)
@@ -29,12 +34,16 @@ class MyShowsSection @JvmOverloads constructor(
     setupRecycler()
   }
 
-  fun bind(items: List<MyShowsListItem>, labelResId: Int) {
+  fun bind(
+    items: List<MyShowsListItem>,
+    section: MyShowsSection,
+    sortOrder: SortOrder,
+    labelResId: Int
+  ) {
+    this.section = section
     myShowsSectionLabel.text = context.getString(labelResId, items.size)
-    sectionAdapter.run {
-      clearItems()
-      setItems(items)
-    }
+    myShowsSectionSortView.bind(sortOrder)
+    sectionAdapter.setItems(items)
   }
 
   fun updateItem(item: MyShowsListItem) = sectionAdapter.updateItem(item)
@@ -49,6 +58,7 @@ class MyShowsSection @JvmOverloads constructor(
         sortSelectedListener = {
           myShowsSectionSortView.fadeOut()
           button.visible()
+          this@MyShowsSection.sortSelectedListener(section, it)
         }
       }
     }
@@ -63,7 +73,9 @@ class MyShowsSection @JvmOverloads constructor(
         setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_my_shows_horizontal)!!)
       })
     }
-    sectionAdapter.itemClickListener = { itemClickListener(it) }
-    sectionAdapter.missingImageListener = { item, force -> missingImageListener(item, force) }
+    sectionAdapter.run {
+      itemClickListener = { itemClickListener(it) }
+      missingImageListener = { item, force -> missingImageListener(item, force) }
+    }
   }
 }

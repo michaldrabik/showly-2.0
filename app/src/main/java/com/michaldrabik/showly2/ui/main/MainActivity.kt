@@ -1,12 +1,14 @@
-package com.michaldrabik.showly2.ui
+package com.michaldrabik.showly2.ui.main
 
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.ui.ViewModelFactory
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fixBlinking
@@ -23,12 +25,16 @@ class MainActivity : AppCompatActivity() {
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
 
-  @Inject lateinit var uiCache: UiCache
+  @Inject lateinit var viewModelFactory: ViewModelFactory
+  private lateinit var viewModel: MainViewModel
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     appComponent().inject(this)
     setContentView(R.layout.activity_main)
+    viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+    viewModel.initSettings()
+
     setupNavigation()
     setupNavigationBackHandler()
     restoreState(savedInstanceState)
@@ -49,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         else -> throw IllegalStateException("Invalid menu item.")
       }
 
-      uiCache.clear()
+      viewModel.clearCache()
       navigationHost.findNavController().navigate(target)
       return@setOnNavigationItemSelectedListener true
     }

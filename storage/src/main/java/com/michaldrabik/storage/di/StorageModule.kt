@@ -10,7 +10,7 @@ import dagger.Provides
 class StorageModule(private val context: Context) {
 
   companion object {
-    private const val DATABASE_NAME = "SHOWLY2_DB"
+    private const val DATABASE_NAME = "SHOWLY2_DATABASE"
   }
 
   @Provides

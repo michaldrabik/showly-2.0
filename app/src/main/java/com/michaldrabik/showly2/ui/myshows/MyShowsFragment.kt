@@ -10,9 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
+import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsListItem
 import com.michaldrabik.showly2.ui.myshows.views.MyShowView
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
@@ -35,24 +38,31 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    setupView()
+    setupSectionsViews()
     viewModel.uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
     viewModel.loadMyShows()
   }
 
-  private fun setupView() {
+  private fun setupSectionsViews() {
     val onSectionItemClick: (MyShowsListItem) -> Unit = { openShowDetails(it.show) }
     val onSectionMissingImageListener: (MyShowsListItem, Boolean) -> Unit = { item, force ->
       viewModel.loadMissingImage(item, force)
     }
+    val onSectionSortOrderChange: (MyShowsSection, SortOrder) -> Unit = { section, order ->
+      viewModel.loadSortedSection(section, order)
+    }
 
     myShowsRunningSection.itemClickListener = onSectionItemClick
-    myShowsEndedSection.itemClickListener = onSectionItemClick
-    myShowsIncomingSection.itemClickListener = onSectionItemClick
-
     myShowsRunningSection.missingImageListener = onSectionMissingImageListener
+    myShowsRunningSection.sortSelectedListener = onSectionSortOrderChange
+
+    myShowsEndedSection.itemClickListener = onSectionItemClick
     myShowsEndedSection.missingImageListener = onSectionMissingImageListener
+    myShowsEndedSection.sortSelectedListener = onSectionSortOrderChange
+
+    myShowsIncomingSection.itemClickListener = onSectionItemClick
     myShowsIncomingSection.missingImageListener = onSectionMissingImageListener
+    myShowsIncomingSection.sortSelectedListener = onSectionSortOrderChange
   }
 
   private fun render(uiModel: MyShowsUiModel) {
@@ -61,16 +71,16 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
       myShowsRootContent.fadeIf(it.isNotEmpty())
     }
     uiModel.runningShows?.let {
-      myShowsRunningSection.bind(it, R.string.textRunning)
-      myShowsRunningSection.visibleIf(it.isNotEmpty())
+      myShowsRunningSection.bind(it.items, it.section, it.sortOrder, R.string.textRunning)
+      myShowsRunningSection.visibleIf(it.items.isNotEmpty())
     }
     uiModel.endedShows?.let {
-      myShowsEndedSection.bind(it, R.string.textEnded)
-      myShowsEndedSection.visibleIf(it.isNotEmpty())
+      myShowsEndedSection.bind(it.items, it.section, it.sortOrder, R.string.textEnded)
+      myShowsEndedSection.visibleIf(it.items.isNotEmpty())
     }
     uiModel.incomingShows?.let {
-      myShowsIncomingSection.bind(it, R.string.textIncoming)
-      myShowsIncomingSection.visibleIf(it.isNotEmpty())
+      myShowsIncomingSection.bind(it.items, it.section, it.sortOrder, R.string.textIncoming)
+      myShowsIncomingSection.visibleIf(it.items.isNotEmpty())
     }
     uiModel.updateListItem?.let { item ->
       myShowsRunningSection.updateItem(item)
