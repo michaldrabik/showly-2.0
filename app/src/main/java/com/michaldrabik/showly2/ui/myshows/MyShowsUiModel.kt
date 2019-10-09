@@ -11,5 +11,6 @@ data class MyShowsUiModel(
   val incomingShows: MyShowsBundle? = null,
   val updateListItem: MyShowsListItem? = null,
   val updateSectionListItems: Pair<MyShowsSection, List<MyShowsListItem>>? = null,
-  val listPosition: Pair<Int, Int>? = null
+  val mainListPosition: Pair<Int, Int>? = null,
+  val sectionsPositions: Map<MyShowsSection, Pair<Int, Int>>? = null
 )

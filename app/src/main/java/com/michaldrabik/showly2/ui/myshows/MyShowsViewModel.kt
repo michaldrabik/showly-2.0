@@ -50,7 +50,8 @@ class MyShowsViewModel @Inject constructor(
       runningShows = MyShowsBundle(runningShows, RUNNING, settings.myShowsRunningSortBy),
       endedShows = MyShowsBundle(endedShows, ENDED, settings.myShowsEndedSortBy),
       incomingShows = MyShowsBundle(incomingShows, COMING_SOON, settings.myShowsIncomingSortBy),
-      listPosition = uiCache.myShowsListPosition
+      mainListPosition = uiCache.myShowsListPosition,
+      sectionsPositions = uiCache.myShowsSectionPositions
     )
   }
 
@@ -83,7 +84,11 @@ class MyShowsViewModel @Inject constructor(
     }
   }
 
-  fun saveListPosition(position: Int, offset: Int) {
-    uiCache.myShowsListPosition = Pair(position, offset)
+  fun saveListPosition(
+    position: Int,
+    sectionPositions: Map<MyShowsSection, Pair<Int, Int>>
+  ) {
+    uiCache.myShowsListPosition = Pair(position, 0)
+    uiCache.myShowsSectionPositions.putAll(sectionPositions)
   }
 }

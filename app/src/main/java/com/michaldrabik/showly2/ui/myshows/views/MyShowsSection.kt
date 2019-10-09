@@ -20,12 +20,13 @@ class MyShowsSection @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-  private val sectionAdapter = MyShowsSectionAdapter()
-
   var itemClickListener: (MyShowsListItem) -> Unit = {}
   var missingImageListener: (MyShowsListItem, Boolean) -> Unit = { _, _ -> }
   var sortSelectedListener: (MyShowsSection, SortOrder) -> Unit = { _, _ -> }
 
+  private val padding by lazy { context.dimenToPx(R.dimen.spaceMedium) }
+  private val sectionAdapter by lazy { MyShowsSectionAdapter() }
+  private val sectionLayoutManager by lazy { LinearLayoutManager(context, HORIZONTAL, false) }
   private lateinit var section: MyShowsSection
 
   init {
@@ -48,6 +49,16 @@ class MyShowsSection @JvmOverloads constructor(
 
   fun updateItem(item: MyShowsListItem) = sectionAdapter.updateItem(item)
 
+  fun getListPosition(): Pair<Int, Int> {
+    val position = sectionLayoutManager.findFirstVisibleItemPosition()
+    val offset = (sectionLayoutManager.findViewByPosition(position)?.left ?: 0) - padding
+    return Pair(position, offset)
+  }
+
+  fun scrollToPosition(position: Int, offset: Int) {
+    sectionLayoutManager.scrollToPositionWithOffset(position, offset)
+  }
+
   private fun setupView() {
     layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
     myShowsSectionSortButton.expandTouchArea()
@@ -68,7 +79,7 @@ class MyShowsSection @JvmOverloads constructor(
     myShowsSectionRecycler.apply {
       setHasFixedSize(true)
       adapter = sectionAdapter
-      layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
+      layoutManager = sectionLayoutManager
       addItemDecoration(DividerItemDecoration(context, HORIZONTAL).apply {
         setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_my_shows_horizontal)!!)
       })

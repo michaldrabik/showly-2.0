@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.MyShowsSection
+import com.michaldrabik.showly2.model.MyShowsSection.*
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
@@ -87,7 +88,12 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
       myShowsEndedSection.updateItem(item)
       myShowsIncomingSection.updateItem(item)
     }
-    uiModel.listPosition?.let { myShowsRootScroll.scrollTo(0, it.first) }
+    uiModel.mainListPosition?.let { myShowsRootScroll.scrollTo(0, it.first) }
+    uiModel.sectionsPositions?.let {
+      myShowsRunningSection.scrollToPosition(it[RUNNING]?.first ?: 0, it[RUNNING]?.second ?: 0)
+      myShowsEndedSection.scrollToPosition(it[ENDED]?.first ?: 0, it[ENDED]?.second ?: 0)
+      myShowsIncomingSection.scrollToPosition(it[COMING_SOON]?.first ?: 0, it[COMING_SOON]?.second ?: 0)
+    }
   }
 
   private fun renderRecentlyAdded(items: List<MyShowsListItem>) {
@@ -116,12 +122,21 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
   private fun openShowDetails(show: Show) {
     //TODO Add fades transition
     myShowsRootContent.fadeOut {
-      val position = myShowsRootScroll.scrollY
-      viewModel.saveListPosition(position, 0)
+      saveToUiCache()
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.id) }
       findNavController().navigate(R.id.actionMyShowsFragmentToShowDetailsFragment, bundle)
       getMainActivity().hideNavigation()
     }
+  }
+
+  private fun saveToUiCache() {
+    val mainPosition = myShowsRootScroll.scrollY
+    val sectionPositions = mapOf(
+      RUNNING to myShowsRunningSection.getListPosition(),
+      ENDED to myShowsEndedSection.getListPosition(),
+      COMING_SOON to myShowsIncomingSection.getListPosition()
+    )
+    viewModel.saveListPosition(mainPosition, sectionPositions)
   }
 
   override fun onTabReselected() = myShowsRootScroll.smoothScrollTo(0, 0)
