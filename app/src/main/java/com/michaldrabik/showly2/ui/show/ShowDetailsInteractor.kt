@@ -2,16 +2,13 @@ package com.michaldrabik.showly2.ui.show
 
 import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
+import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.Config.ACTORS_CACHE_DURATION
 import com.michaldrabik.showly2.Config.RELATED_CACHE_DURATION
 import com.michaldrabik.showly2.UserManager
 import com.michaldrabik.showly2.di.AppScope
-import com.michaldrabik.showly2.model.Actor
-import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.model.ImageType
+import com.michaldrabik.showly2.model.*
 import com.michaldrabik.showly2.model.ImageType.FANART
-import com.michaldrabik.showly2.model.Season
-import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
@@ -33,8 +30,7 @@ class ShowDetailsInteractor @Inject constructor(
 
   suspend fun loadShowDetails(traktId: Long): Show {
     val localShow = database.showsDao().getById(traktId)
-    //TODO Add timeout for local show
-    if (localShow == null) {
+    if (localShow == null || nowUtcMillis() - localShow.updatedAt > Config.SHOW_DETAILS_CACHE_DURATION) {
       val remoteShow = cloud.traktApi.fetchShow(traktId)
       val show = mappers.show.fromNetwork(remoteShow)
       database.showsDao().upsert(listOf(mappers.show.toDatabase(show)))
@@ -70,9 +66,9 @@ class ShowDetailsInteractor @Inject constructor(
   }
 
   suspend fun loadRelatedShows(show: Show): List<Show> {
-    val localShow = database.relatedShowsDao().getMostRecentById(show.id)
-    if (localShow != null && nowUtcMillis() - localShow.updatedAt < RELATED_CACHE_DURATION) {
-      val relatedShows = database.relatedShowsDao().getById(show.id)
+    val relatedShows = database.relatedShowsDao().getById(show.id)
+    val latest = relatedShows.maxBy { it.updatedAt }
+    if (latest != null && nowUtcMillis() - latest.updatedAt < RELATED_CACHE_DURATION) {
       return relatedShows
         .map { mappers.show.fromDatabase(it) }
         .sortedWith(compareBy({ it.votes }, { it.rating }))
