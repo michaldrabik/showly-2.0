@@ -7,7 +7,11 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.showly2.utilities.extensions.addRipple
+import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
+import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.toDisplayString
+import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
 import kotlinx.android.synthetic.main.view_episode.view.*
 
 class EpisodeView @JvmOverloads constructor(
@@ -28,18 +32,19 @@ class EpisodeView @JvmOverloads constructor(
   ) {
     clear()
 
+    val hasAired = item.episode.hasAired()
     episodeTitle.text = context.getString(R.string.textEpisode, item.episode.number)
     episodeOverview.text = item.episode.title
     episodeCheckbox.isChecked = item.isWatched
+    episodeCheckbox.isEnabled = hasAired
 
-    if (item.episode.hasAired()) {
+    if (hasAired) {
       episodeCheckbox.setOnCheckedChangeListener { _, isChecked ->
         itemCheckedListener(item.episode, isChecked)
       }
     } else {
       val date = item.episode.firstAired?.toLocalTimeZone()
       episodeTitle.text = context.getString(R.string.textEpisodeDate, item.episode.number, date?.toDisplayString() ?: "TBA")
-      episodeCheckbox.isEnabled = false
     }
 
     onClick { itemClickListener(item.episode, item.isWatched) }
@@ -47,6 +52,5 @@ class EpisodeView @JvmOverloads constructor(
 
   private fun clear() {
     episodeCheckbox.setOnCheckedChangeListener { _, _ -> }
-    episodeCheckbox.isEnabled = true
   }
 }

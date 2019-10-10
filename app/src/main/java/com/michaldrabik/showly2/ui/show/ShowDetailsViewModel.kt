@@ -42,7 +42,7 @@ class ShowDetailsViewModel @Inject constructor(
         launch { loadActors(show) }
         launch {
           val seasons = loadSeasons(show)
-          if (isFollowed) episodesInteractor.loadMissingEpisodes(show, seasons)
+          if (isFollowed) episodesInteractor.invalidateEpisodes(show, seasons)
         }
         launch { loadRelatedShows(show) }
       } catch (t: Throwable) {

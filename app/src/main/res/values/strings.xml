@@ -22,7 +22,6 @@
   <string name="textSeason">Season %1$d</string>
   <string name="textEpisode">Episode %1$d</string>
   <string name="textEpisodeDate">Episode %1$d | %2$s</string>
-  <string name="textAirs">Airs on %1$s</string>
   <string name="textSeasonEpisode">Season %1$d Episode %2$d</string>
   <string name="textAdd">Add to my shows</string>
   <string name="textAdded">In my shows</string>

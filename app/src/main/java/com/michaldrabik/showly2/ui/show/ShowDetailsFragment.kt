@@ -237,7 +237,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       nextEpisode.firstAired?.let {
         val displayDate = it.toLocalTimeZone().toDisplayString()
         showDetailsEpisodeAirtime.visible()
-        showDetailsEpisodeAirtime.text = getString(R.string.textAirs, displayDate)
+        showDetailsEpisodeAirtime.text = displayDate
       }
     }
   }

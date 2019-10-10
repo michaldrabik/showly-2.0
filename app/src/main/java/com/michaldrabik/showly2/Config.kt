@@ -13,5 +13,5 @@ object Config {
   val ACTORS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(7) }
   val RELATED_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(7) }
 
-  val DISPLAY_DATE_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("E, dd MMM yyyy 'at' HH:mm") }
+  val DISPLAY_DATE_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy 'at' HH:mm") }
 }

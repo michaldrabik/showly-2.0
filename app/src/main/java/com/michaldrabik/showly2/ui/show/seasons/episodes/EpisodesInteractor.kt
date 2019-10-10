@@ -37,20 +37,15 @@ class EpisodesInteractor @Inject constructor(
       val episodes = database.episodesDao().getAllForSeason(season.id).filter { it.isWatched }
       val toAdd = mutableListOf<EpisodeDb>()
 
-      var allEpisodesAired = true
       season.episodes.forEach { ep ->
         if (episodes.none { it.idTrakt == ep.id }) {
-          if (ep.hasAired()) {
-            val dbEpisode = mappers.episode.toDatabase(ep, season, show.id, true)
-            toAdd.add(dbEpisode)
-          } else {
-            allEpisodesAired = false
-          }
+          val dbEpisode = mappers.episode.toDatabase(ep, season, show.id, true)
+          toAdd.add(dbEpisode)
         }
       }
 
       database.episodesDao().upsert(toAdd)
-      database.seasonsDao().update(dbSeason.copy(isWatched = allEpisodesAired))
+      database.seasonsDao().update(dbSeason)
     }
   }
 
@@ -109,9 +104,8 @@ class EpisodesInteractor @Inject constructor(
     }
   }
 
-  suspend fun loadMissingEpisodes(show: Show, seasons: List<Season>) {
-    //TODO Also update seasons and episodes data?
-    if (seasons.isEmpty()) return
+  suspend fun invalidateEpisodes(show: Show, newSeasons: List<Season>) {
+    if (newSeasons.isEmpty()) return
 
     val localSeasons = database.seasonsDao().getAllByShowId(show.id)
     val localEpisodes = database.episodesDao().getAllByShowId(show.id)
@@ -119,16 +113,24 @@ class EpisodesInteractor @Inject constructor(
     val seasonsToAdd = mutableListOf<SeasonDb>()
     val episodesToAdd = mutableListOf<EpisodeDb>()
 
-    seasons.forEach { season ->
-      if (localSeasons.none { it.idTrakt == season.id }) {
-        val seasonDb = mappers.season.toDatabase(season, show.id, false)
-        seasonsToAdd.add(seasonDb)
-      }
-      season.episodes.forEach { episode ->
-        if (localEpisodes.none { it.idTrakt == episode.id }) {
-          val episodeDb = mappers.episode.toDatabase(episode, season, show.id, false)
-          episodesToAdd.add(episodeDb)
-        }
+    newSeasons.forEach { newSeason ->
+      val localSeason = localSeasons.find { it.idTrakt == newSeason.id }
+      val seasonDb = mappers.season.toDatabase(
+        newSeason,
+        show.id,
+        localSeason?.isWatched ?: false
+      )
+      seasonsToAdd.add(seasonDb)
+
+      newSeason.episodes.forEach { newEpisode ->
+        val localEpisode = localEpisodes.find { it.idTrakt == newEpisode.id }
+        val episodeDb = mappers.episode.toDatabase(
+          newEpisode,
+          newSeason,
+          show.id,
+          localEpisode?.isWatched ?: false
+        )
+        episodesToAdd.add(episodeDb)
       }
     }
 
