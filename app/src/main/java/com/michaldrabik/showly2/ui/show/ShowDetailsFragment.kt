@@ -77,7 +77,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   private fun setupView() {
     showDetailsImageGuideline.setGuidelineBegin((screenHeight() * 0.33).toInt())
     showDetailsEpisodesView.itemClickListener = { episode, season, isWatched ->
-      showEpisodeDetails(episode, season, isWatched)
+      showEpisodeDetails(episode, season, isWatched, episode.hasAired())
     }
     showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
   }
