@@ -32,7 +32,7 @@ class ShowFanartView @JvmOverloads constructor(
     showFanartTitle.text = item.show.title
     showFanartProgress.visibleIf(item.isLoading)
     showFanartRoot.onClick { itemClickListener(item) }
-    if (!item.isLoading) loadImage(item, missingImageListener)
+    loadImage(item, missingImageListener)
   }
 
   private fun clear() {

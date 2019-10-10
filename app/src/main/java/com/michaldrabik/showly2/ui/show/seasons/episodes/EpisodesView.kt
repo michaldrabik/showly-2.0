@@ -39,6 +39,7 @@ class EpisodesView @JvmOverloads constructor(
     episodesOverview.text = season.overview
     episodesOverview.visibleIf(season.overview.isNotBlank())
     episodesCheckbox.run {
+      isEnabled = seasonItem.episodes.all { it.episode.hasAired() }
       setCheckedSilent(seasonItem.isWatched) { _, isChecked ->
         seasonCheckedListener(season, isChecked)
       }

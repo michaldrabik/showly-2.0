@@ -16,7 +16,11 @@ import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
 import com.michaldrabik.showly2.model.Image.Status.UNKNOWN
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.discover.recycler.ListItem
-import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.screenWidth
+import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.showly2.utilities.extensions.withFailListener
+import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
 
 abstract class ShowView<Item : ListItem> @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
@@ -45,6 +49,8 @@ abstract class ShowView<Item : ListItem> @JvmOverloads constructor(
   }
 
   protected open fun loadImage(item: Item, missingImageListener: (Item, Boolean) -> Unit) {
+    if (item.isLoading) return
+
     if (item.image.status == UNAVAILABLE) {
       placeholderView.visible()
       return

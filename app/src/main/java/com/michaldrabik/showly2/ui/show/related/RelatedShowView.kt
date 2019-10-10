@@ -34,7 +34,7 @@ class RelatedShowView @JvmOverloads constructor(
     onClick { itemClickListener(item) }
     relatedTitle.text = item.show.title
 
-    if (!item.isLoading) loadImage(item, missingImageListener)
+    loadImage(item, missingImageListener)
   }
 
   override fun onImageLoadFail(item: RelatedListItem, missingImageListener: (RelatedListItem, Boolean) -> Unit) {

@@ -34,7 +34,7 @@ class ShowPosterView @JvmOverloads constructor(
     showPosterTitle.text = item.show.title
     showPosterProgress.visibleIf(item.isLoading)
     showPosterRoot.onClick { itemClickListener(item) }
-    if (!item.isLoading) loadImage(item, missingImageListener)
+    loadImage(item, missingImageListener)
   }
 
   override fun loadImage(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {

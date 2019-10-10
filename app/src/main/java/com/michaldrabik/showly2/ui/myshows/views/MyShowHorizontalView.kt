@@ -43,8 +43,6 @@ class MyShowHorizontalView @JvmOverloads constructor(
   override fun loadImage(item: MyShowsListItem, missingImageListener: (MyShowsListItem, Boolean) -> Unit) {
     if (item.image.status == Status.UNAVAILABLE) {
       myShowTitle.visible()
-      myShowPlaceholder.visible()
-      return
     }
     super.loadImage(item, missingImageListener)
   }

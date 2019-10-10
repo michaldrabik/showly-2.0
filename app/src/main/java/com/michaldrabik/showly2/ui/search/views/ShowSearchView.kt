@@ -40,7 +40,7 @@ class ShowSearchView @JvmOverloads constructor(
 
     showSearchDescription.visibleIf(item.show.overview.isNotBlank())
     showSearchNetwork.visibleIf(item.show.network.isNotBlank())
-    if (!item.isLoading) loadImage(item, missingImageListener)
+    loadImage(item, missingImageListener)
 
     showSearchRoot.onClick { itemClickListener(item) }
   }
