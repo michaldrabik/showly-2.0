@@ -88,12 +88,12 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
       myShowsEndedSection.updateItem(item)
       myShowsIncomingSection.updateItem(item)
     }
-    uiModel.mainListPosition?.let { myShowsRootScroll.scrollTo(0, it.first) }
     uiModel.sectionsPositions?.let {
       myShowsRunningSection.scrollToPosition(it[RUNNING]?.first ?: 0, it[RUNNING]?.second ?: 0)
       myShowsEndedSection.scrollToPosition(it[ENDED]?.first ?: 0, it[ENDED]?.second ?: 0)
       myShowsIncomingSection.scrollToPosition(it[COMING_SOON]?.first ?: 0, it[COMING_SOON]?.second ?: 0)
     }
+    uiModel.mainListPosition?.let { myShowsRootScroll.scrollTo(0, it.first) }
   }
 
   private fun renderRecentlyAdded(items: List<MyShowsListItem>) {

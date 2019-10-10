@@ -31,6 +31,7 @@ class MyShowView @JvmOverloads constructor(
   fun bind(show: Show, image: Image) {
     clear()
     myShowTitle.text = show.title
+    myShowTitle.visible()
     onClick { onItemClickListener(show) }
     loadImage(image)
   }

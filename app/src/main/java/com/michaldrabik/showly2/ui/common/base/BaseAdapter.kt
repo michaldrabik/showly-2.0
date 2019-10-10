@@ -19,7 +19,7 @@ abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.
   }
 
   fun updateItem(updatedItem: Item) {
-    val target = items.find { it.show.ids == updatedItem.show.ids }
+    val target = items.find { it.show.id == updatedItem.show.id }
     target?.let {
       val index = items.indexOf(it)
       items.removeAt(index)

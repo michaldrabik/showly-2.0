@@ -43,6 +43,7 @@
       android:shadowDx="3"
       android:shadowDy="3"
       android:shadowRadius="1"
+      android:visibility="gone"
       android:textColor="@color/colorWhite"
       android:textSize="13sp"
       tools:text="Game Of Thrones"
