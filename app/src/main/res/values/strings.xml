@@ -21,6 +21,8 @@
   <string name="textSeasons">Seasons:</string>
   <string name="textSeason">Season %1$d</string>
   <string name="textEpisode">Episode %1$d</string>
+  <string name="textEpisodeDate">Episode %1$d | %2$s</string>
+  <string name="textAirs">Airs on %1$s</string>
   <string name="textSeasonEpisode">Season %1$d Episode %2$d</string>
   <string name="textAdd">Add to my shows</string>
   <string name="textAdded">In my shows</string>
@@ -32,24 +34,6 @@
   <string name="textSortName">Name</string>
   <string name="textSortNewest">Newest</string>
   <string name="textSortRated">Highest Rated</string>
-
-  <plurals name="textDaysToAir">
-    <item quantity="zero">Airs today.</item>
-    <item quantity="one">Airs tomorrow.</item>
-    <item quantity="other">Airs in %d days.</item>
-  </plurals>
-
-  <plurals name="textHoursToAir">
-    <item quantity="zero">Airs in less than an hour.</item>
-    <item quantity="one">Airs in 1 hour.</item>
-    <item quantity="other">Airs in %d hours.</item>
-  </plurals>
-
-  <plurals name="textMinutesToAir">
-    <item quantity="zero">Airs now!</item>
-    <item quantity="one">Airs now!</item>
-    <item quantity="other">Airs in %d minutes.</item>
-  </plurals>
 
   <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this keeps happening.</string>
   <string name="errorCouldNotLoadShow">We could not load this show\'s details at this moment.\nPlease contact us if this keeps happening.</string>

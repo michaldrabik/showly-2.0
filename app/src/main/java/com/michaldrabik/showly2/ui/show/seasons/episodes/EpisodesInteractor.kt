@@ -37,15 +37,20 @@ class EpisodesInteractor @Inject constructor(
       val episodes = database.episodesDao().getAllForSeason(season.id).filter { it.isWatched }
       val toAdd = mutableListOf<EpisodeDb>()
 
+      var allEpisodesAired = true
       season.episodes.forEach { ep ->
         if (episodes.none { it.idTrakt == ep.id }) {
-          val dbEpisode = mappers.episode.toDatabase(ep, season, show.id, true)
-          toAdd.add(dbEpisode)
+          if (ep.hasAired()) {
+            val dbEpisode = mappers.episode.toDatabase(ep, season, show.id, true)
+            toAdd.add(dbEpisode)
+          } else {
+            allEpisodesAired = false
+          }
         }
       }
 
       database.episodesDao().upsert(toAdd)
-      database.seasonsDao().update(dbSeason)
+      database.seasonsDao().update(dbSeason.copy(isWatched = allEpisodesAired))
     }
   }
 
@@ -105,6 +110,7 @@ class EpisodesInteractor @Inject constructor(
   }
 
   suspend fun loadMissingEpisodes(show: Show, seasons: List<Season>) {
+    //TODO Also update seasons and episodes data?
     if (seasons.isEmpty()) return
 
     val localSeasons = database.seasonsDao().getAllByShowId(show.id)

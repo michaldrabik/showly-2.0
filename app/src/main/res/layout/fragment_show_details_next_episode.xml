@@ -65,6 +65,7 @@
       android:layout_height="match_parent"
       android:textColor="@color/colorTextSecondary"
       android:textSize="12sp"
+      android:visibility="gone"
       tools:ignore="SmallSp"
       tools:text="Airs in 3 days 2 hours"
       />

@@ -23,10 +23,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
+import com.michaldrabik.showly2.Config.DISPLAY_DATE_FORMAT
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.utilities.SafeOnClickListener
 import org.threeten.bp.OffsetDateTime
+import org.threeten.bp.ZoneId
 import org.threeten.bp.ZoneOffset.UTC
+import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.temporal.Temporal
 
 fun nowUtc(): OffsetDateTime = OffsetDateTime.now(UTC)
 
@@ -175,3 +179,7 @@ fun CheckBox.setCheckedSilent(isChecked: Boolean, action: (View, Boolean) -> Uni
   setChecked(isChecked)
   setOnCheckedChangeListener(action)
 }
+
+fun ZonedDateTime.toLocalTimeZone(): ZonedDateTime = this.withZoneSameInstant(ZoneId.systemDefault())
+
+fun Temporal.toDisplayString(): String = DISPLAY_DATE_FORMAT.format(this)

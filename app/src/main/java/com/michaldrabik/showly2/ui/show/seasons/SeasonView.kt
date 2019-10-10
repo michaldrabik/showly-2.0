@@ -47,6 +47,7 @@ class SeasonView @JvmOverloads constructor(
 
     seasonViewProgressText.text = "$progressCount/${item.episodes.size}"
     seasonViewCheckbox.isChecked = item.isWatched
+    seasonViewCheckbox.isEnabled = item.episodes.all { it.episode.hasAired() }
 
     val color = ContextCompat.getColor(context, if (item.isWatched) R.color.colorAccent else R.color.colorTextPrimary)
     seasonViewTitle.setTextColor(color)

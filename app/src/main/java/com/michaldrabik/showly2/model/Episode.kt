@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.model
 
+import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import org.threeten.bp.ZonedDateTime
 
 data class Episode(
@@ -21,6 +22,12 @@ data class Episode(
   }
 
   val id = ids.trakt
+
+  fun hasAired() =
+    when (firstAired) {
+      null -> false
+      else -> nowUtcMillis() >= firstAired.toInstant().toEpochMilli()
+    }
 
   fun toDisplayString() = String.format("S.%02d E.%02d", season, number)
 }

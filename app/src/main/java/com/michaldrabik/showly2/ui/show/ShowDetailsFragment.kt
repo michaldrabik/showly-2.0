@@ -33,7 +33,6 @@ import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
-import org.threeten.bp.Duration
 
 @SuppressLint("SetTextI18n", "DefaultLocale")
 class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
@@ -235,23 +234,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         showEpisodeDetails(nextEpisode, null, isWatched = false, showButton = false)
       }
 
-      val timeToAir = Duration.between(nowUtc(), firstAired)
-      if (timeToAir.seconds < 0) {
-        showDetailsEpisodeAirtime.text = getString(R.string.textAiredAlready)
-        return
+      nextEpisode.firstAired?.let {
+        val displayDate = it.toLocalTimeZone().toDisplayString()
+        showDetailsEpisodeAirtime.visible()
+        showDetailsEpisodeAirtime.text = getString(R.string.textAirs, displayDate)
       }
-      val days = timeToAir.toDays()
-      if (days == 0L) {
-        val hours = timeToAir.toHours()
-        if (hours == 0L) {
-          val minutes = timeToAir.toMinutes()
-          showDetailsEpisodeAirtime.text = getQuantityString(R.plurals.textMinutesToAir, minutes)
-          return
-        }
-        showDetailsEpisodeAirtime.text = getQuantityString(R.plurals.textHoursToAir, hours)
-        return
-      }
-      showDetailsEpisodeAirtime.text = getQuantityString(R.plurals.textDaysToAir, days)
     }
   }
 
