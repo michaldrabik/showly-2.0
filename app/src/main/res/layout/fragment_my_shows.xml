@@ -45,6 +45,16 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
+      <com.michaldrabik.showly2.ui.common.views.search.EmptySearchView
+        android:id="@+id/myShowsSearchEmptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
       <TextView
         android:id="@+id/myShowsRecentsLabel"
         style="@style/MyShows.Label"

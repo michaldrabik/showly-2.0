@@ -151,6 +151,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
         myShowsRunningSection.gone()
         myShowsEndedSection.gone()
         myShowsIncomingSection.gone()
+        myShowsSearchEmptyView.gone()
         renderFanartContainer(result.items, myShowsSearchContainer)
       }
       NO_RESULTS -> {
@@ -160,6 +161,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
         myShowsRunningSection.gone()
         myShowsEndedSection.gone()
         myShowsIncomingSection.gone()
+        myShowsSearchEmptyView.visible()
       }
       EMPTY -> {
         myShowsRecentsLabel.visible()
@@ -168,6 +170,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
         myShowsRunningSection.visible()
         myShowsEndedSection.visible()
         myShowsIncomingSection.visible()
+        myShowsSearchEmptyView.gone()
       }
     }
     myShowsRootScroll.scrollTo(0, 0)

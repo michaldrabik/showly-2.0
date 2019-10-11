@@ -59,22 +59,20 @@ class MyShowsViewModel @Inject constructor(
     )
   }
 
-  fun loadSortedSection(section: MyShowsSection, order: SortOrder) {
-    viewModelScope.launch {
-      interactor.setSectionSortOrder(section, order)
-      val shows = interactor.loadShows(section).map {
-        val image = interactor.findCachedImage(it, POSTER)
-        MyShowsListItem(it, image)
-      }
-      uiStream.value = when (section) {
-        RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, order))
-        ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, order))
-        COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, order))
-      }
+  fun loadSortedSection(section: MyShowsSection, order: SortOrder) = viewModelScope.launch {
+    interactor.setSectionSortOrder(section, order)
+    val shows = interactor.loadShows(section).map {
+      val image = interactor.findCachedImage(it, POSTER)
+      MyShowsListItem(it, image)
+    }
+    uiStream.value = when (section) {
+      RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, order))
+      ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, order))
+      COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, order))
     }
   }
 
-  fun loadMissingImage(item: MyShowsListItem, force: Boolean) {
+  fun loadMissingImage(item: MyShowsListItem, force: Boolean) =
     viewModelScope.launch {
       uiStream.value = MyShowsUiModel(updateListItem = item.copy(isLoading = true))
       try {
@@ -86,7 +84,7 @@ class MyShowsViewModel @Inject constructor(
           MyShowsUiModel(updateListItem = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }
-  }
+
 
   fun searchMyShows(query: String) {
     if (query.trim().isBlank()) {
