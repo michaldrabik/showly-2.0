@@ -16,6 +16,13 @@ class SearchView @JvmOverloads constructor(
     inflate(context, R.layout.view_search, this)
   }
 
+  var hint: String
+    get() = searchViewInput.hint.toString()
+    set(value) {
+      searchViewInput.hint = value
+      searchViewText.text = value
+    }
+
   override fun getBehavior() = SearchViewBehaviour(context.dimenToPx(R.dimen.spaceSmall))
 
   override fun setEnabled(enabled: Boolean) {

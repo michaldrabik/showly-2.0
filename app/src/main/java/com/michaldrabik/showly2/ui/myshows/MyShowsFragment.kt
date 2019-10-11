@@ -49,9 +49,10 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
   }
 
   private fun setupView() {
+    myShowsSearchView.hint = getString(R.string.textSearchForMyShows)
     myShowsSearchView.onClick { enterSearchMode() }
     searchViewInput.run {
-      imeOptions = EditorInfo.IME_ACTION_NONE
+      imeOptions = EditorInfo.IME_ACTION_DONE
       addTextChangedListener { viewModel.searchMyShows(it?.toString() ?: "") }
       setOnEditorActionListener { _, _, _ ->
         clearFocus()
@@ -219,5 +220,8 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
     viewModel.saveListPosition(mainPosition, sectionPositions)
   }
 
-  override fun onTabReselected() = myShowsRootScroll.smoothScrollTo(0, 0)
+  override fun onTabReselected() {
+    myShowsSearchView.translationY = 0F
+    myShowsRootScroll.smoothScrollTo(0, 0)
+  }
 }
