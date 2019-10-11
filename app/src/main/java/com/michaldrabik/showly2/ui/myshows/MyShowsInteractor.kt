@@ -73,6 +73,7 @@ class MyShowsInteractor @Inject constructor(
       .filter {
         it.title.contains(query, true) || it.network.contains(query, true)
       }
+      .sortedBy { it.title }
   }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =
