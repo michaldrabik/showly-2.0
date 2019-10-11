@@ -120,7 +120,6 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
   }
 
   private fun openShowDetails(show: Show) {
-    //TODO Add fades transition
     myShowsRootContent.fadeOut {
       saveToUiCache()
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.id) }

@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.myshows
 
+import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_AMOUNT
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.MyShowsSection
@@ -20,14 +21,10 @@ class MyShowsInteractor @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  companion object {
-    private const val RECENT_SHOWS_AMOUNT = 4
-  }
-
   suspend fun loadRecentShows() =
     database.followedShowsDao().getAllRecent()
       .map { mappers.show.fromDatabase(it) }
-      .take(RECENT_SHOWS_AMOUNT)
+      .take(MY_SHOWS_RECENTS_AMOUNT)
 
   suspend fun loadShows(section: MyShowsSection): List<Show> {
     val sortOrder = loadSortOrder(section)
