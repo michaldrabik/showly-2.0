@@ -1,6 +1,6 @@
 package com.michaldrabik.showly2.ui.myshows
 
-import android.graphics.drawable.AnimatedVectorDrawable
+import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -70,7 +70,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
       requestFocus()
     }
     getMainActivity().hideNavigation()
-    (searchViewIcon.drawable as AnimatedVectorDrawable).start()
+    (searchViewIcon.drawable as Animatable).start()
     searchViewIcon.onClick { exitSearchMode() }
   }
 
