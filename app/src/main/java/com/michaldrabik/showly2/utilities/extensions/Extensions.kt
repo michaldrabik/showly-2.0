@@ -16,10 +16,6 @@ import android.widget.TextView
 import androidx.annotation.DimenRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.transition.AutoTransition
-import androidx.transition.Fade
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
@@ -138,24 +134,6 @@ fun View.showKeyboard() {
 fun View.hideKeyboard() {
   (context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).apply {
     hideSoftInputFromWindow(windowToken, 0)
-  }
-}
-
-/**
- * Temporary fix for blinking issue. Remove ASAP.
- * https://github.com/material-components/material-components-android/issues/530?ts=2
- */
-fun BottomNavigationView.fixBlinking() {
-  val menuView = getChildAt(0) as BottomNavigationMenuView
-  with(menuView::class.java.getDeclaredField("set")) {
-    isAccessible = true
-    val transitionSet = (get(menuView) as AutoTransition).apply {
-      for (i in transitionCount downTo 0) {
-        val transition = getTransitionAt(i) as? Fade ?: continue
-        removeTransition(transition)
-      }
-    }
-    set(menuView, transitionSet)
   }
 }
 

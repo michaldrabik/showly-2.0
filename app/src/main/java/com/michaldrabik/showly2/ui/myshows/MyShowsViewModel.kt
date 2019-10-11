@@ -11,7 +11,10 @@ import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.myshows.helpers.MyShowsBundle
+import com.michaldrabik.showly2.ui.myshows.helpers.MyShowsSearchResult
+import com.michaldrabik.showly2.ui.myshows.helpers.ResultType.*
 import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsListItem
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,6 +24,7 @@ class MyShowsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   val uiStream by lazy { MutableLiveData<MyShowsUiModel>() }
+  private lateinit var searchJob: Job
 
   fun loadMyShows() = viewModelScope.launch {
     val recentShows = interactor.loadRecentShows().map {
@@ -81,6 +85,26 @@ class MyShowsViewModel @Inject constructor(
         uiStream.value =
           MyShowsUiModel(updateListItem = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
+    }
+  }
+
+  fun searchMyShows(query: String) {
+    if (query.trim().isBlank()) {
+      if (this::searchJob.isInitialized) searchJob.cancel()
+      val result = MyShowsSearchResult(emptyList(), EMPTY)
+      uiStream.value = MyShowsUiModel(searchResult = result)
+      return
+    }
+    if (this::searchJob.isInitialized) searchJob.cancel()
+    searchJob = viewModelScope.launch {
+      val results = interactor.searchMyShows(query)
+        .map {
+          val image = interactor.findCachedImage(it, FANART)
+          MyShowsListItem(it, image)
+        }
+      val type = if (results.isEmpty()) NO_RESULTS else RESULTS
+      val searchResult = MyShowsSearchResult(results, type)
+      uiStream.value = MyShowsUiModel(searchResult = searchResult)
     }
   }
 

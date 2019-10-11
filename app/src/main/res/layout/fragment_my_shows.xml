@@ -17,6 +17,7 @@
     android:clipToPadding="false"
     android:fillViewport="true"
     android:overScrollMode="never"
+    android:paddingTop="@dimen/searchViewHeightPadded"
     android:paddingBottom="@dimen/myShowsBottomPadding"
     >
 
@@ -28,9 +29,26 @@
       tools:visibility="visible"
       >
 
+      <GridLayout
+        android:id="@+id/myShowsSearchContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:columnCount="2"
+        android:divider="@drawable/divider_my_shows_fanart"
+        android:paddingStart="@dimen/spaceSmall"
+        android:paddingTop="@dimen/spaceTiny"
+        android:paddingEnd="@dimen/spaceSmall"
+        android:showDividers="middle"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
       <TextView
         android:id="@+id/myShowsRecentsLabel"
         style="@style/MyShows.Label"
+        android:layout_marginTop="@dimen/spaceSmall"
         android:layout_marginBottom="@dimen/spaceSmall"
         android:text="@string/textRecentlyAdded"
         app:layout_constraintBottom_toTopOf="@id/myShowsRecentsContainer"
@@ -43,7 +61,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:columnCount="2"
-        android:divider="@drawable/divider_my_shows_recents"
+        android:divider="@drawable/divider_my_shows_fanart"
         android:paddingStart="@dimen/spaceSmall"
         android:paddingEnd="@dimen/spaceSmall"
         android:showDividers="middle"
@@ -85,5 +103,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
   </androidx.core.widget.NestedScrollView>
+
+  <com.michaldrabik.showly2.ui.common.views.search.SearchView
+    android:id="@+id/myShowsSearchView"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/searchViewHeight"
+    android:layout_marginLeft="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginRight="@dimen/spaceMedium"
+    />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

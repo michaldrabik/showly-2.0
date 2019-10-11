@@ -11,7 +11,6 @@ import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.ui.ViewModelFactory
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import com.michaldrabik.showly2.utilities.extensions.fixBlinking
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -41,7 +40,6 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun setupNavigation() {
-    bottomNavigationView.fixBlinking()
     bottomNavigationView.setOnNavigationItemSelectedListener { item ->
       if (bottomNavigationView.selectedItemId == item.itemId) {
         onTabReselected()
@@ -57,6 +55,7 @@ class MainActivity : AppCompatActivity() {
 
       viewModel.clearCache()
       navigationHost.findNavController().navigate(target)
+      showNavigation()
       return@setOnNavigationItemSelectedListener true
     }
   }
