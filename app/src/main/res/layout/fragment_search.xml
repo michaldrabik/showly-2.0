@@ -8,18 +8,26 @@
   android:layout_height="match_parent"
   >
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/searchRecycler"
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/searchSwipeRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:layoutAnimation="@anim/anim_recycler_fall_down"
-    android:overScrollMode="never"
-    android:paddingTop="@dimen/searchViewHeightPadded"
-    android:paddingBottom="@dimen/spaceMedium"
-    android:scrollbars="vertical"
-    tools:listitem="@layout/view_show_search"
-    />
+    >
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/searchRecycler"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:clipToPadding="false"
+      android:layoutAnimation="@anim/anim_recycler_fall_down"
+      android:overScrollMode="never"
+      android:paddingTop="@dimen/searchViewHeightPadded"
+      android:paddingBottom="@dimen/spaceMedium"
+      android:scrollbars="vertical"
+      tools:listitem="@layout/view_show_search"
+      />
+
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
   <View
     android:id="@+id/separator"
@@ -65,26 +73,12 @@
     app:layout_constraintTop_toBottomOf="@+id/searchRecentsLayout"
     />
 
-  <ProgressBar
-    android:id="@+id/searchProgress"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginTop="@dimen/spaceNormal"
-    android:visibility="gone"
-    app:layout_constraintBottom_toBottomOf="@+id/searchRecycler"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/searchViewLayout"
-    tools:visibility="visible"
-    />
-
   <com.michaldrabik.showly2.ui.common.views.search.EmptySearchView
     android:id="@+id/searchEmptyView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceNormal"
     android:visibility="gone"
-    app:layout_constraintBottom_toBottomOf="@+id/searchRecycler"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/searchViewLayout"

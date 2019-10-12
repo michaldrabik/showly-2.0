@@ -32,6 +32,9 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
   private lateinit var adapter: SearchAdapter
   private lateinit var layoutManager: LinearLayoutManager
 
+  private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
+  private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
     super.onCreate(savedInstanceState)
@@ -96,6 +99,13 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
       layoutManager = this@SearchFragment.layoutManager
       itemAnimator = null
     }
+
+    searchSwipeRefresh.apply {
+      isEnabled = false
+      setProgressBackgroundColorSchemeResource(R.color.colorSearchViewBackground)
+      setColorSchemeResources(R.color.colorAccent, R.color.colorAccent, R.color.colorAccent)
+      setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
+    }
   }
 
   private fun openShowDetails(item: SearchListItem) {
@@ -123,7 +133,7 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
     }
     uiModel.recentSearchItems?.let { renderRecentSearches(it) }
     uiModel.isSearching?.let {
-      searchProgress.visibleIf(it)
+      searchSwipeRefresh.isRefreshing = it
       searchViewLayout.isEnabled = !it
     }
     uiModel.updateListItem?.let { adapter.updateItem(it) }

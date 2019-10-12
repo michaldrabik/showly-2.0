@@ -21,6 +21,8 @@ class MyShowsInteractor @Inject constructor(
   private val mappers: Mappers
 ) {
 
+  private val searchItemsCache = mutableListOf<Show>()
+
   suspend fun loadRecentShows() =
     database.followedShowsDao().getAllRecent()
       .map { mappers.show.fromDatabase(it) }
@@ -66,10 +68,14 @@ class MyShowsInteractor @Inject constructor(
   suspend fun searchMyShows(query: String?): List<Show> {
     if (query.isNullOrBlank()) return emptyList()
 
-    val allShows = database.followedShowsDao().getAll()
-      .map { mappers.show.fromDatabase(it) }
+    if (searchItemsCache.isEmpty()) {
+      val allShows = database.followedShowsDao().getAll()
+        .map { mappers.show.fromDatabase(it) }
+      searchItemsCache.clear()
+      searchItemsCache.addAll(allShows)
+    }
 
-    return allShows
+    return searchItemsCache
       .filter {
         it.title.contains(query, true) || it.network.contains(query, true)
       }
@@ -81,4 +87,6 @@ class MyShowsInteractor @Inject constructor(
 
   suspend fun loadMissingImage(show: Show, type: ImageType, force: Boolean) =
     imagesManager.loadRemoteImage(show, type, force)
+
+  fun clear() = searchItemsCache.clear()
 }
