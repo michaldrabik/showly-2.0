@@ -59,6 +59,8 @@ class MyShowsSection @JvmOverloads constructor(
     sectionLayoutManager.scrollToPositionWithOffset(position, offset)
   }
 
+  fun isEmpty() = sectionAdapter.itemCount == 0
+
   private fun setupView() {
     layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
     myShowsSectionSortButton.expandTouchArea()
