@@ -18,5 +18,6 @@ data class ShowDetailsUiModel(
   val updateRelatedShow: RelatedListItem? = null,
   val seasons: List<SeasonListItem>? = null,
   val isFollowed: FollowedState? = null,
-  val error: Error? = null
+  val error: Error? = null,
+  val info: Int? = null
 )

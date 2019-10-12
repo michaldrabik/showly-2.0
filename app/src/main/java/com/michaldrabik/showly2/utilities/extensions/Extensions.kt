@@ -8,16 +8,18 @@ import android.graphics.Rect
 import android.util.TypedValue
 import android.view.TouchDelegate
 import android.view.View
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.annotation.DimenRes
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
+import com.google.android.material.snackbar.Snackbar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import com.michaldrabik.showly2.Config.DISPLAY_DATE_FORMAT
 import com.michaldrabik.showly2.R
@@ -91,9 +93,6 @@ fun GridLayoutManager.withSpanSizeLookup(action: (Int) -> Int) {
   }
 }
 
-fun Fragment.getQuantityString(stringResId: Int, count: Long) =
-  resources.getQuantityString(stringResId, count.toInt(), count)
-
 fun ViewGroup.showSnackbar(
   message: String,
   actionText: Int = R.string.textOk,
@@ -122,7 +121,7 @@ fun ViewGroup.showErrorSnackbar(message: String, actionText: Int = R.string.text
 }
 
 fun ViewGroup.showInfoSnackbar(message: String, actionText: Int = R.string.textOk) {
-  showSnackbar(message, actionText, R.drawable.bg_snackbar_info, LENGTH_SHORT)
+  showSnackbar(message, actionText, R.drawable.bg_snackbar_info, LENGTH_LONG)
 }
 
 fun View.showKeyboard() {

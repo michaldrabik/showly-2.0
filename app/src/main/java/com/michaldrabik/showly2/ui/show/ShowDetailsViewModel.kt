@@ -2,9 +2,15 @@ package com.michaldrabik.showly2.ui.show
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.showly2.model.*
+import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.showly2.model.EpisodeBundle
+import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.POSTER
+import com.michaldrabik.showly2.model.Season
+import com.michaldrabik.showly2.model.SeasonBundle
+import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.FollowedState
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
@@ -23,6 +29,7 @@ class ShowDetailsViewModel @Inject constructor(
   val uiStream by lazy { MutableLiveData<ShowDetailsUiModel>() }
 
   private var show by notNull<Show>()
+  private var areSeasonsLoaded = false
   private val seasonItems = mutableListOf<SeasonListItem>()
 
   fun loadShowDetails(id: Long) {
@@ -41,8 +48,10 @@ class ShowDetailsViewModel @Inject constructor(
         launch { loadBackgroundImage(show) }
         launch { loadActors(show) }
         launch {
+          areSeasonsLoaded = false
           val seasons = loadSeasons(show)
           if (isFollowed) episodesInteractor.invalidateEpisodes(show, seasons)
+          areSeasonsLoaded = true
         }
         launch { loadRelatedShows(show) }
       } catch (t: Throwable) {
@@ -119,7 +128,10 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   fun toggleFollowedShow() {
-    if (seasonItems.isEmpty()) return
+    if (!areSeasonsLoaded) {
+      uiStream.value = ShowDetailsUiModel(info = R.string.errorSeasonsNotLoaded)
+      return
+    }
 
     viewModelScope.launch {
       val isFollowed = interactor.isFollowed(show)

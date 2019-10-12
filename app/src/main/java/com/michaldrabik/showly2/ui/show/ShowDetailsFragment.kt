@@ -29,8 +29,20 @@ import com.michaldrabik.showly2.ui.show.related.RelatedShowAdapter
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonsAdapter
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
-import com.michaldrabik.showly2.utilities.extensions.*
-import kotlinx.android.synthetic.main.activity_main.*
+import com.michaldrabik.showly2.utilities.extensions.fadeIf
+import com.michaldrabik.showly2.utilities.extensions.fadeIn
+import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.screenHeight
+import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
+import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.showly2.utilities.extensions.toDisplayString
+import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
+import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.showly2.utilities.extensions.withFailListener
+import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 
@@ -181,48 +193,53 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   }
 
   private fun render(uiModel: ShowDetailsUiModel) {
-    uiModel.show?.let { show ->
-      showDetailsTitle.text = show.title
-      showDetailsDescription.text = show.overview
-      showDetailsStatus.text = show.status.displayName
-      showDetailsExtraInfo.text =
-        "${show.network} ${show.year} | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
-      showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
-      showDetailsAddButton.onClick { viewModel.toggleFollowedShow() }
-    }
-    uiModel.showLoading?.let {
-      showDetailsMainLayout.fadeIf(!it)
-      showDetailsMainProgress.visibleIf(it)
-    }
-    uiModel.isFollowed?.let {
-      when {
-        it.isFollowed -> showDetailsAddButton.setWatched(it.withAnimation)
-        else -> showDetailsAddButton.setUnwatched(it.withAnimation)
+    uiModel.run {
+      show?.let { show ->
+        showDetailsTitle.text = show.title
+        showDetailsDescription.text = show.overview
+        showDetailsStatus.text = show.status.displayName
+        showDetailsExtraInfo.text =
+          "${show.network} ${show.year} | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
+        showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
+        showDetailsAddButton.onClick { viewModel.toggleFollowedShow() }
       }
-    }
-    uiModel.nextEpisode?.let { renderNextEpisode(it) }
-    uiModel.image?.let { renderImage(it) }
-    uiModel.actors?.let {
-      actorsAdapter.setItems(it)
-      showDetailsActorsRecycler.fadeIf(it.isNotEmpty())
-      showDetailsActorsProgress.gone()
-    }
-    uiModel.seasons?.let {
-      seasonsAdapter.setItems(it)
-      showDetailsEpisodesView.updateEpisodes(it)
-      showDetailsSeasonsRecycler.fadeIf(it.isNotEmpty())
-      showDetailsSeasonsLabel.fadeIf(it.isNotEmpty())
-      showDetailsSeasonsProgress.gone()
-    }
-    uiModel.relatedShows?.let {
-      relatedAdapter.setItems(it)
-      showDetailsRelatedRecycler.fadeIf(it.isNotEmpty())
-      showDetailsRelatedLabel.fadeIf(it.isNotEmpty())
-      showDetailsRelatedProgress.gone()
-    }
-    uiModel.updateRelatedShow?.let { relatedAdapter.updateItem(it) }
-    uiModel.error?.let {
-      requireActivity().snackBarHost.showErrorSnackbar(getString(R.string.errorCouldNotLoadShow))
+      showLoading?.let {
+        showDetailsMainLayout.fadeIf(!it)
+        showDetailsMainProgress.visibleIf(it)
+      }
+      isFollowed?.let {
+        when {
+          it.isFollowed -> showDetailsAddButton.setWatched(it.withAnimation)
+          else -> showDetailsAddButton.setUnwatched(it.withAnimation)
+        }
+      }
+      nextEpisode?.let { renderNextEpisode(it) }
+      image?.let { renderImage(it) }
+      actors?.let {
+        actorsAdapter.setItems(it)
+        showDetailsActorsRecycler.fadeIf(it.isNotEmpty())
+        showDetailsActorsProgress.gone()
+      }
+      seasons?.let {
+        seasonsAdapter.setItems(it)
+        showDetailsEpisodesView.updateEpisodes(it)
+        showDetailsSeasonsRecycler.fadeIf(it.isNotEmpty())
+        showDetailsSeasonsLabel.fadeIf(it.isNotEmpty())
+        showDetailsSeasonsProgress.gone()
+      }
+      relatedShows?.let {
+        relatedAdapter.setItems(it)
+        showDetailsRelatedRecycler.fadeIf(it.isNotEmpty())
+        showDetailsRelatedLabel.fadeIf(it.isNotEmpty())
+        showDetailsRelatedProgress.gone()
+      }
+      updateRelatedShow?.let { relatedAdapter.updateItem(it) }
+      error?.let {
+        showDetailsRoot.showErrorSnackbar(getString(R.string.errorCouldNotLoadShow))
+      }
+      info?.let {
+        showDetailsRoot.showInfoSnackbar(getString(it))
+      }
     }
   }
 
