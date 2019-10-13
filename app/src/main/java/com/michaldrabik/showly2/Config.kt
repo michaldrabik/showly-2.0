@@ -9,6 +9,7 @@ object Config {
   const val TVDB_IMAGE_BASE_FANART_URL = "${TVDB_IMAGE_BASE_URL}fanart/original/"
 
   const val MY_SHOWS_RECENTS_AMOUNT = 6
+  const val SEARCH_RECENTS_AMOUNT = 5
 
   val SHOW_DETAILS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(3) }
   val DISCOVER_SHOWS_CACHE_DURATION by lazy { TimeUnit.HOURS.toMillis(6) }

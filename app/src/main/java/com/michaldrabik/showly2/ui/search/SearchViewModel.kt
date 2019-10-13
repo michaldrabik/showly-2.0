@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.search
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.showly2.Config.SEARCH_RECENTS_AMOUNT
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
@@ -23,7 +24,7 @@ class SearchViewModel @Inject constructor(
 
   fun loadRecentSearches() {
     viewModelScope.launch {
-      val searches = interactor.getRecentSearches(5)
+      val searches = interactor.getRecentSearches(SEARCH_RECENTS_AMOUNT)
       uiStream.value = SearchUiModel(recentSearchItems = searches)
     }
   }
