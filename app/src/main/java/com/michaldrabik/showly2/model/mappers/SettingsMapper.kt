@@ -7,12 +7,14 @@ import com.michaldrabik.storage.database.model.Settings as SettingsDb
 class SettingsMapper @Inject constructor() {
 
   fun fromDatabase(settings: SettingsDb) = Settings(
+    settings.isInitialRun,
     enumValueOf(settings.myShowsRunningSortBy),
     enumValueOf(settings.myShowsIncomingSortBy),
     enumValueOf(settings.myShowsEndedSortBy)
   )
 
   fun toDatabase(settings: Settings) = SettingsDb(
+    isInitialRun = settings.isInitialRun,
     myShowsRunningSortBy = settings.myShowsRunningSortBy.name,
     myShowsIncomingSortBy = settings.myShowsIncomingSortBy.name,
     myShowsEndedSortBy = settings.myShowsEndedSortBy.name

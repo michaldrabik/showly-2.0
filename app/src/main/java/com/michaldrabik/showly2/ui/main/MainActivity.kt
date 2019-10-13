@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
@@ -31,12 +32,20 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     appComponent().inject(this)
     setContentView(R.layout.activity_main)
-    viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-    viewModel.initSettings()
 
+    setupViewModel()
     setupNavigation()
     setupNavigationBackHandler()
+
     restoreState(savedInstanceState)
+  }
+
+  private fun setupViewModel() {
+    viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+    viewModel.run {
+      uiStream.observe(this@MainActivity, Observer { render(it!!) })
+      initSettings()
+    }
   }
 
   private fun setupNavigation() {
@@ -97,6 +106,14 @@ class MainActivity : AppCompatActivity() {
       val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
       navHost?.childFragmentManager?.primaryNavigationFragment?.let {
         (it as? OnTabReselectedListener)?.onTabReselected()
+      }
+    }
+  }
+
+  private fun render(uiModel: MainUiModel) {
+    uiModel.run {
+      isInitialRun?.let {
+        if (it) bottomNavigationView.selectedItemId = R.id.menuDiscover
       }
     }
   }
