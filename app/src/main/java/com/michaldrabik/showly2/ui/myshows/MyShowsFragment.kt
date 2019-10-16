@@ -130,8 +130,10 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
       myShowsSearchContainer.gone()
       myShowsRecentsLabel.visible()
       myShowsRecentsContainer.visible()
-      renderFanartContainer(it, myShowsRecentsContainer)
       myShowsRootContent.fadeIf(it.isNotEmpty())
+      myShowsSearchView.isClickable = it.isNotEmpty()
+      myShowsSearchView.isEnabled = it.isNotEmpty()
+      renderFanartContainer(it, myShowsRecentsContainer)
     }
     uiModel.runningShows?.let {
       myShowsRunningSection.bind(it.items, it.section, it.sortOrder, R.string.textRunning)
