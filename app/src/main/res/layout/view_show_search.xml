@@ -13,9 +13,9 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:paddingLeft="@dimen/searchViewItemPaddingHorizontal"
-    android:paddingTop="@dimen/spaceMedium"
+    android:paddingTop="@dimen/spaceSmall"
     android:paddingRight="@dimen/searchViewItemPaddingHorizontal"
-    android:paddingBottom="@dimen/spaceMedium"
+    android:paddingBottom="@dimen/spaceSmall"
     >
 
     <ImageView
