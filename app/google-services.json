@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "437530387781",
+    "firebase_url": "https://showly-2.firebaseio.com",
+    "project_id": "showly-2",
+    "storage_bucket": "showly-2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437530387781:android:ba9a588895161e53448a2c",
+        "android_client_info": {
+          "package_name": "com.michaldrabik.showly2.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "437530387781-tnvll1814vn0gnr1kbqdmnp21t8a9mmp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9_JrAGaJKAnh2dtUHOUgVMVl5nh8OaMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "437530387781-tnvll1814vn0gnr1kbqdmnp21t8a9mmp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

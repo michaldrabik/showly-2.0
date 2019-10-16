@@ -16,6 +16,10 @@ android {
   }
 
   buildTypes {
+    debug {
+      applicationIdSuffix '.debug'
+      versionNameSuffix '-debug'
+    }
     release {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -35,6 +39,8 @@ dependencies {
   implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
   implementation 'androidx.transition:transition:1.2.0'
   implementation 'com.google.android.material:material:1.0.0'
+
+  implementation 'com.google.firebase:firebase-analytics:17.2.0'
 
   implementation "androidx.room:room-runtime:2.2.0"
   implementation "androidx.room:room-ktx:2.2.0"
@@ -59,3 +65,5 @@ dependencies {
   androidTestImplementation 'androidx.test:runner:1.2.0'
   androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
+
+apply plugin: 'com.google.gms.google-services'
