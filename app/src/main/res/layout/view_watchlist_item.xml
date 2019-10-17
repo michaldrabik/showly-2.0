@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  >
+
+  <ImageView
+    android:id="@+id/watchlistItemImage"
+    android:layout_width="@dimen/watchlistImageWidth"
+    android:layout_height="@dimen/watchlistImageHeight"
+    android:layout_marginStart="@dimen/spaceNormal"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:background="@color/colorBottomMenuBackground"
+    />
+
+  <TextView
+    android:id="@+id/watchlistItemTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:textColor="@color/colorTextPrimary"
+    android:layout_marginBottom="@dimen/spaceSmall"
+    android:textSize="16sp"
+    android:maxLines="1"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toTopOf="@id/watchlistItemSubtitle"
+    app:layout_constraintStart_toEndOf="@id/watchlistItemImage"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_chainStyle="packed"
+    tools:text="Breaking Bad"
+    />
+
+  <TextView
+    android:id="@+id/watchlistItemSubtitle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:textColor="@color/colorTextSecondary"
+    android:textSize="14sp"
+    android:maxLines="1"
+    android:ellipsize="end"
+    app:layout_constraintTop_toBottomOf="@id/watchlistItemTitle"
+    app:layout_constraintStart_toEndOf="@id/watchlistItemImage"
+    app:layout_constraintBottom_toTopOf="@id/watchlistItemProgress"
+    tools:text="S.01 E.01 - Breaking Bad Again"
+    />
+
+  <ProgressBar
+    android:id="@+id/watchlistItemProgress"
+    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:progress="25"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/watchlistItemImage"
+    app:layout_constraintTop_toBottomOf="@id/watchlistItemSubtitle"
+    />
+
+</merge>

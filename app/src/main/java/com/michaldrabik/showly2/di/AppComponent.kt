@@ -7,6 +7,7 @@ import com.michaldrabik.showly2.ui.myshows.MyShowsFragment
 import com.michaldrabik.showly2.ui.search.SearchFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
+import com.michaldrabik.showly2.ui.watchlist.WatchlistFragment
 import com.michaldrabik.storage.di.StorageComponent
 import dagger.Component
 
@@ -26,5 +27,7 @@ interface AppComponent {
   fun inject(fragment: SearchFragment)
 
   fun inject(fragment: MyShowsFragment)
+
+  fun inject(fragment: WatchlistFragment)
 }
 

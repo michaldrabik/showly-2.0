@@ -42,6 +42,9 @@
   <dimen name="searchViewImageHeight">100dp</dimen>
   <dimen name="searchViewItemPaddingHorizontal">20dp</dimen>
 
+  <dimen name="watchlistImageHeight">140dp</dimen>
+  <dimen name="watchlistImageWidth">94dp</dimen>
+
   <dimen name="gridSpacing">2dp</dimen>
   <dimen name="gridPadding">6dp</dimen>
 
