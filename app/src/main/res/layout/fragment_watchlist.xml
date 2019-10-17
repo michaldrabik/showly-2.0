@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/watchlistRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".ui.watchlist.WatchlistFragment"
+  android:clipChildren="false"
+  android:clipToPadding="false"
   >
 
-  <TextView
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/watchlistRecycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
-    android:text="Watchlist"
+    android:paddingTop="@dimen/spaceNormal"
+    android:paddingStart="@dimen/spaceMedium"
+    android:paddingEnd="@dimen/spaceMedium"
+    android:paddingBottom="@dimen/bottomNavigationHeightPadded"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
     />
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -26,7 +26,7 @@ import com.michaldrabik.showly2.ui.myshows.helpers.ResultType.EMPTY
 import com.michaldrabik.showly2.ui.myshows.helpers.ResultType.NO_RESULTS
 import com.michaldrabik.showly2.ui.myshows.helpers.ResultType.RESULTS
 import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsListItem
-import com.michaldrabik.showly2.ui.myshows.views.MyShowView
+import com.michaldrabik.showly2.ui.myshows.views.MyShowFanartView
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
@@ -204,7 +204,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
     val itemMargin = context.dimenToPx(R.dimen.spaceTiny)
 
     items.forEachIndexed { index, item ->
-      val view = MyShowView(context).apply {
+      val view = MyShowFanartView(context).apply {
         layoutParams = FrameLayout.LayoutParams(0, MATCH_PARENT)
         bind(item.show, item.image)
         onItemClickListener = { openShowDetails(it) }

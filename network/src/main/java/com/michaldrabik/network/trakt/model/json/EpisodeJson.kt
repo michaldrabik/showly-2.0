@@ -10,6 +10,5 @@ data class EpisodeJson(
   val votes: Int?,
   val comment_count: Int?,
   val first_aired: String?,
-  val updated_at: String?,
   val runtime: Int?
 )

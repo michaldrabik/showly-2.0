@@ -10,6 +10,5 @@ data class Episode(
   val votes: Int,
   val commentCount: Int,
   val firstAired: String,
-  val updatedAt: String,
   val runtime: Int
 )

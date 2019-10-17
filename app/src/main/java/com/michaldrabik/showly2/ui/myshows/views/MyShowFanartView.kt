@@ -16,7 +16,7 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visible
 import kotlinx.android.synthetic.main.view_my_show.view.*
 
-class MyShowView @JvmOverloads constructor(
+class MyShowFanartView @JvmOverloads constructor(
   context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
@@ -37,7 +37,7 @@ class MyShowView @JvmOverloads constructor(
   }
 
   private fun loadImage(image: Image) {
-    if (image.status == Image.Status.UNAVAILABLE) {
+    if (image.status != Image.Status.AVAILABLE) {
       myShowPlaceholder.visible()
       return
     }

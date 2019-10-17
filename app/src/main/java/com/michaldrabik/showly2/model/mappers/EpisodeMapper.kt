@@ -28,7 +28,6 @@ class EpisodeMapper @Inject constructor() {
     episode.votes,
     episode.commentCount,
     if (episode.firstAired.isEmpty()) null else ZonedDateTime.parse(episode.firstAired),
-    if (episode.updatedAt.isEmpty()) null else ZonedDateTime.parse(episode.updatedAt),
     episode.runtime
   )
 
@@ -47,7 +46,25 @@ class EpisodeMapper @Inject constructor() {
       episode.overview,
       episode.title,
       episode.firstAired?.format(DateTimeFormatter.ISO_ZONED_DATE_TIME) ?: "",
+      episode.commentCount,
+      episode.rating,
+      episode.runtime,
+      episode.votes,
       isWatched
     )
   }
+
+  fun fromDatabase(episodeDb: EpisodeDb) =
+    Episode(
+      ids = Ids.EMPTY.copy(trakt = episodeDb.idTrakt),
+      title = episodeDb.title,
+      number = episodeDb.episodeNumber,
+      season = episodeDb.seasonNumber,
+      overview = episodeDb.episodeOverview,
+      commentCount = episodeDb.commentsCount,
+      firstAired = if (episodeDb.firstAired.isEmpty()) null else ZonedDateTime.parse(episodeDb.firstAired),
+      rating = episodeDb.rating,
+      runtime = episodeDb.runtime,
+      votes = episodeDb.votesCount
+    )
 }

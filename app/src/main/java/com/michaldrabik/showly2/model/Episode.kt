@@ -13,12 +13,11 @@ data class Episode(
   val votes: Int,
   val commentCount: Int,
   val firstAired: ZonedDateTime?,
-  val updatedAt: ZonedDateTime?,
   val runtime: Int
 ) {
 
   companion object {
-    val EMPTY = Episode(-1, -1, "", Ids.EMPTY, "", -1F, -1, -1, null, null, -1)
+    val EMPTY = Episode(-1, -1, "", Ids.EMPTY, "", -1F, -1, -1, null, -1)
   }
 
   val id = ids.trakt
@@ -28,6 +27,8 @@ data class Episode(
       null -> false
       else -> nowUtcMillis() >= firstAired.toInstant().toEpochMilli()
     }
+
+  fun hasAirDate() = firstAired != null
 
   fun toDisplayString() = String.format("S.%02d E.%02d", season, number)
 }

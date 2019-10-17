@@ -23,5 +23,9 @@ data class Episode(
   @ColumnInfo(name = "episode_overview") var episodeOverview: String,
   @ColumnInfo(name = "episode_title") var title: String,
   @ColumnInfo(name = "first_aired") var firstAired: String,
+  @ColumnInfo(name = "comments_count") var commentsCount: Int,
+  @ColumnInfo(name = "rating") var rating: Float,
+  @ColumnInfo(name = "runtime") var runtime: Int,
+  @ColumnInfo(name = "votes_count") var votesCount: Int,
   @ColumnInfo(name = "is_watched") var isWatched: Boolean
 )

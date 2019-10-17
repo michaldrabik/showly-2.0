@@ -26,7 +26,6 @@ class EpisodeConverter {
       json.votes ?: 0,
       json.comment_count ?: 0,
       json.first_aired ?: "",
-      json.updated_at ?: "",
       json.runtime ?: -1
     )
 }
