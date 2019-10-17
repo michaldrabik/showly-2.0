@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.search
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.Config.SEARCH_RECENTS_AMOUNT
@@ -72,5 +73,6 @@ class SearchViewModel @Inject constructor(
 
   private fun onError(t: Throwable) {
     uiStream.value = SearchUiModel(error = Error(t), isSearching = false, isEmpty = false)
+    Log.e("SearchViewModel", t.message ?: "")
   }
 }
