@@ -14,12 +14,8 @@ class WatchlistViewModel @Inject constructor(
 
   fun loadWatchlist() {
     viewModelScope.launch {
-      try {
-        val items = interactor.loadWatchlist()
-        uiStream.value = WatchlistUiModel(watchlistItems = items)
-      } catch (t: Throwable) {
-        TODO()
-      }
+      val items = interactor.loadWatchlist()
+      uiStream.value = WatchlistUiModel(watchlistItems = items)
     }
   }
 }

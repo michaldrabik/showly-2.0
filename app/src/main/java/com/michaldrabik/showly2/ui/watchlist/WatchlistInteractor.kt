@@ -1,7 +1,9 @@
 package com.michaldrabik.showly2.ui.watchlist
 
 import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType
+import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.ImagesManager
@@ -17,23 +19,32 @@ class WatchlistInteractor @Inject constructor(
 ) {
 
   suspend fun loadWatchlist(): List<WatchlistItem> {
-    val episodesDb = database.episodesDao().getAllUnwatchedForFollowedShows()
-      .filter { mappers.episode.fromDatabase(it).hasAirDate() }
-    val shows = database.showsDao()
-      .getByIds(episodesDb.distinctBy { it.idShowTrakt }.map { it.idShowTrakt })
+    val unavailableImage = Image.createUnavailable(POSTER)
+
+    val showsDb = database.followedShowsDao().getAll()
+    val episodesDb = database.episodesDao()
+      .getAllUnwatchedForShows(showsDb.map { it.idTrakt })
+      .filter { it.firstAired.isNotBlank() }
+
+    val items = showsDb.asSequence()
+      .filter { show ->
+        episodesDb.any { it.idShowTrakt == show.idTrakt }
+      }
       .map { mappers.show.fromDatabase(it) }
-
-    return shows.map { show ->
-      val episode = episodesDb.asSequence()
-        .filter { it.idShowTrakt == show.id }
-        .sortedBy { it.idTrakt }
-        .first()
-
-      val image = findCachedImage(show, ImageType.POSTER)
-
-      WatchlistItem(show, mappers.episode.fromDatabase(episode), image)
-    }
+      .map { show ->
+        val episode = episodesDb.asSequence()
+          .filter { it.idShowTrakt == show.id }
+          .sortedBy { it.idTrakt }
+          .first()
+        WatchlistItem(show, mappers.episode.fromDatabase(episode), unavailableImage)
+      }
       .sortedBy { it.show.title }
+      .toList()
+
+    return items.map {
+      val image = findCachedImage(it.show, POSTER)
+      it.copy(image = image)
+    }
   }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =

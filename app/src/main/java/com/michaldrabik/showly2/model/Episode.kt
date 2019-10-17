@@ -28,7 +28,5 @@ data class Episode(
       else -> nowUtcMillis() >= firstAired.toInstant().toEpochMilli()
     }
 
-  fun hasAirDate() = firstAired != null
-
   fun toDisplayString() = String.format("S.%02d E.%02d", season, number)
 }
