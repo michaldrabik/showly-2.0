@@ -26,7 +26,7 @@ class WatchlistInteractor @Inject constructor(
       .getAllUnwatchedForShows(showsDb.map { it.idTrakt })
       .filter { it.firstAired.isNotBlank() }
 
-    val items = showsDb.asSequence()
+    return showsDb.asSequence()
       .filter { show ->
         episodesDb.any { it.idShowTrakt == show.idTrakt }
       }
@@ -40,11 +40,6 @@ class WatchlistInteractor @Inject constructor(
       }
       .sortedBy { it.show.title }
       .toList()
-
-    return items.map {
-      val image = findCachedImage(it.show, POSTER)
-      it.copy(image = image)
-    }
   }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =
