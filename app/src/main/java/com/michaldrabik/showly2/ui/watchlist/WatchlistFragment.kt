@@ -12,8 +12,10 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
+import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistAdapter
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 
@@ -34,18 +36,17 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    setupView()
     setupRecycler()
 
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
       watchlistStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-      loadWatchlist()
     }
   }
 
-  private fun setupView() {
-
+  override fun onResume() {
+    super.onResume()
+    viewModel.loadWatchlist()
   }
 
   private fun setupRecycler() {
@@ -58,6 +59,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>() {
       setHasFixedSize(true)
     }
     adapter.itemClickListener = { openShowDetails(it) }
+    adapter.detailsClickListener = { openEpisodeDetails(it) }
   }
 
   private fun openShowDetails(item: WatchlistItem) {
@@ -68,8 +70,15 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>() {
     getMainActivity().hideNavigation()
   }
 
+  private fun openEpisodeDetails(item: WatchlistItem) {
+    val modal = EpisodeDetailsBottomSheet.create(item.episode, isWatched = false, showButton = true)
+    modal.onEpisodeWatchedClick = {  }
+    modal.show(requireActivity().supportFragmentManager, "MODAL")
+  }
+
   private fun render(watchlistItems: List<WatchlistItem>) {
     adapter.setItems(watchlistItems)
+    watchlistRecycler.fadeIn()
   }
 
   private fun render(uiModel: WatchlistUiModel) {

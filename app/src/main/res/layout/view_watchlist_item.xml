@@ -24,8 +24,10 @@
     android:id="@+id/watchlistItemPlaceholder"
     android:layout_width="@dimen/watchlistImageWidth"
     android:layout_height="@dimen/watchlistImageHeight"
+    android:layout_marginStart="@dimen/spaceMedium"
     android:padding="@dimen/spaceBig"
     android:visibility="gone"
+    tools:visibility="visible"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
@@ -59,7 +61,7 @@
     android:layout_marginEnd="@dimen/spaceMedium"
     android:ellipsize="end"
     android:maxLines="1"
-    android:textColor="@color/colorTextSecondary"
+    android:textColor="@color/colorTextPrimary"
     android:textSize="14sp"
     app:layout_constraintBottom_toTopOf="@id/watchlistItemProgress"
     app:layout_constraintEnd_toEndOf="parent"
@@ -68,31 +70,31 @@
     tools:text="S.01 E.01 - Breaking Bad Again"
     />
 
+  <TextView
+    android:id="@+id/watchlistItemProgressText"
+    android:layout_width="wrap_content"
+    android:layout_height="0dp"
+    android:gravity="start|center_vertical"
+    android:textColor="@color/colorTextSecondary"
+    android:textSize="12sp"
+    android:layout_marginStart="@dimen/spaceNormal"
+    app:layout_constraintBottom_toBottomOf="@id/watchlistItemProgress"
+    app:layout_constraintStart_toEndOf="@id/watchlistItemImage"
+    app:layout_constraintTop_toBottomOf="@id/watchlistItemSubtitle"
+    tools:text="999/999"
+    />
+
   <ProgressBar
     android:id="@+id/watchlistItemProgress"
     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
     android:layout_width="0dp"
     android:layout_height="22dp"
-    android:layout_marginStart="@dimen/spaceNormal"
-    app:layout_constraintBottom_toTopOf="@id/watchlistItemButtons"
-    app:layout_constraintEnd_toStartOf="@id/watchlistItemProgressText"
-    app:layout_constraintStart_toEndOf="@id/watchlistItemImage"
-    app:layout_constraintTop_toBottomOf="@id/watchlistItemSubtitle"
-    />
-
-  <TextView
-    android:id="@+id/watchlistItemProgressText"
-    android:layout_width="60dp"
-    android:layout_height="0dp"
+    android:layout_marginStart="@dimen/spaceSmall"
     android:layout_marginEnd="@dimen/spaceMedium"
-    android:gravity="center"
-    android:textColor="@color/colorTextSecondary"
-    android:textSize="14sp"
-    app:layout_constraintBottom_toBottomOf="@id/watchlistItemProgress"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@id/watchlistItemProgress"
+    app:layout_constraintBottom_toTopOf="@id/watchlistItemButtons"
+    app:layout_constraintStart_toEndOf="@id/watchlistItemProgressText"
     app:layout_constraintTop_toBottomOf="@id/watchlistItemSubtitle"
-    tools:text="99/99"
+    app:layout_constraintEnd_toEndOf="parent"
     />
 
   <LinearLayout
@@ -103,7 +105,7 @@
     android:layout_marginTop="@dimen/spaceMicro"
     android:layout_marginEnd="@dimen/spaceMedium"
     android:clipChildren="false"
-    android:gravity="center"
+    android:gravity="end|center_vertical"
     android:orientation="horizontal"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
@@ -116,25 +118,20 @@
       style="@style/Widget.MaterialComponents.Button.OutlinedButton"
       android:layout_width="wrap_content"
       android:layout_height="40dp"
-      android:gravity="start|center_vertical"
-      android:paddingStart="0dp"
+      android:gravity="center"
+      android:layout_marginStart="@dimen/spaceTiny"
+      android:layout_marginEnd="@dimen/spaceTiny"
       android:text="@string/textEpisodeInfo"
       android:textColor="@color/colorTextSecondary"
       android:textSize="12sp"
-      app:rippleColor="@android:color/transparent"
+      app:rippleColor="@color/colorTextSecondary"
       app:strokeWidth="0dp"
-      />
-
-    <Space
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_weight="1"
       />
 
     <com.google.android.material.button.MaterialButton
       android:id="@+id/watchlistItemCheckButton"
       style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-      android:layout_width="60dp"
+      android:layout_width="70dp"
       android:layout_height="40dp"
       android:gravity="center"
       android:includeFontPadding="false"

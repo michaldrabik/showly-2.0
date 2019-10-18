@@ -15,7 +15,13 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image.Status
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
-import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.showly2.utilities.extensions.addRipple
+import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
+import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.showly2.utilities.extensions.withFailListener
 import kotlinx.android.synthetic.main.view_watchlist_item.view.*
 
 @SuppressLint("SetTextI18n")
@@ -36,7 +42,8 @@ class WatchlistItemView : ConstraintLayout {
 
   fun bind(
     item: WatchlistItem,
-    itemClickListener: (WatchlistItem) -> Unit
+    itemClickListener: (WatchlistItem) -> Unit,
+    detailsClickListener: (WatchlistItem) -> Unit
   ) {
     clear()
 
@@ -50,11 +57,12 @@ class WatchlistItemView : ConstraintLayout {
     )
 
     watchlistItemProgress.max = item.episodesCount
-    watchlistItemProgress.setAnimatedProgress(item.watchedEpisodesCount)
+    watchlistItemProgress.progress = item.watchedEpisodesCount
     watchlistItemProgressText.text = "${item.watchedEpisodesCount}/${item.episodesCount}"
 
     bindImage(item)
     onClick { itemClickListener(item) }
+    watchlistItemInfoButton.onClick { detailsClickListener(item) }
   }
 
   private fun bindImage(item: WatchlistItem) {
@@ -86,6 +94,7 @@ class WatchlistItemView : ConstraintLayout {
     watchlistItemTitle.text = ""
     watchlistItemSubtitle.text = ""
     watchlistItemProgressText.text = ""
+    watchlistItemPlaceholder.gone()
     Glide.with(this).clear(watchlistItemImage)
   }
 }

@@ -35,7 +35,7 @@
   <string name="textSortName">Name</string>
   <string name="textSortNewest">Newest</string>
   <string name="textSortRated">Highest Rated</string>
-  <string name="textEpisodeInfo">Episode Info</string>
+  <string name="textEpisodeInfo">Details</string>
 
   <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this keeps happening.</string>
   <string name="errorSeasonsNotLoaded">Please wait for seasons data to load.</string>

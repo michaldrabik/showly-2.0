@@ -84,7 +84,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         if (episodeOverview.isBlank()) getString(R.string.textNoDescription) else episodeOverview
       episodeDetailsButton.run {
         visibleIf(showButton)
-        setImageResource(if (isWatched) R.drawable.ic_check else R.drawable.ic_eye)
+        setImageResource(if (isWatched) R.drawable.ic_eye else R.drawable.ic_check)
         onClick {
           onEpisodeWatchedClick.invoke(!isWatched)
           dismiss()

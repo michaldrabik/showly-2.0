@@ -11,6 +11,7 @@ class WatchlistAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private val items: MutableList<WatchlistItem> = mutableListOf()
 
   var itemClickListener: (WatchlistItem) -> Unit = { }
+  var detailsClickListener: (WatchlistItem) -> Unit = { }
 
   fun setItems(newItems: List<WatchlistItem>) {
     val diffCallback = WatchlistItemDiffCallback(items, newItems)
@@ -26,7 +27,11 @@ class WatchlistAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     ViewHolderShow(WatchlistItemView(parent.context))
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-    (holder.itemView as WatchlistItemView).bind(items[position], itemClickListener)
+    (holder.itemView as WatchlistItemView).bind(
+      items[position],
+      itemClickListener,
+      detailsClickListener
+    )
   }
 
   override fun getItemCount() = items.size

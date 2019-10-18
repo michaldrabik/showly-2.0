@@ -14,7 +14,12 @@ import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
-import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.fadeIn
+import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
+import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.random.Random
@@ -113,16 +118,19 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
   private fun render(items: List<DiscoverListItem>) {
     adapter.setItems(items)
     layoutManager.withSpanSizeLookup { pos -> items[pos].image.type.spanSize }
+    discoverRecycler.fadeIn()
   }
 
   private fun render(uiModel: DiscoverUiModel) {
-    uiModel.showLoading?.let {
-      discoverSearchView.isClickable = !it
-      discoverSwipeRefresh.isRefreshing = it
-    }
-    uiModel.updateListItem?.let { adapter.updateItem(it) }
-    uiModel.error?.let {
-      requireActivity().snackBarHost.showErrorSnackbar(it.message ?: getString(R.string.errorGeneral))
+    uiModel.run {
+      showLoading?.let {
+        discoverSearchView.isClickable = !it
+        discoverSwipeRefresh.isRefreshing = it
+      }
+      updateListItem?.let { adapter.updateItem(it) }
+      error?.let {
+        requireActivity().snackBarHost.showErrorSnackbar(it.message ?: getString(R.string.errorGeneral))
+      }
     }
   }
 }

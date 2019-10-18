@@ -41,6 +41,9 @@ class EpisodeMapper @Inject constructor() {
       episode.ids.trakt,
       season.ids.trakt,
       showId,
+      episode.ids.tvdb,
+      episode.ids.imdb,
+      episode.ids.tmdb,
       season.number,
       episode.number,
       episode.overview,
@@ -56,7 +59,12 @@ class EpisodeMapper @Inject constructor() {
 
   fun fromDatabase(episodeDb: EpisodeDb) =
     Episode(
-      ids = Ids.EMPTY.copy(trakt = episodeDb.idTrakt),
+      ids = Ids.EMPTY.copy(
+        trakt = episodeDb.idTrakt,
+        tvdb = episodeDb.idShowTvdb,
+        imdb = episodeDb.idShowImdb,
+        tmdb = episodeDb.idShowTmdb
+      ),
       title = episodeDb.title,
       number = episodeDb.episodeNumber,
       season = episodeDb.seasonNumber,
