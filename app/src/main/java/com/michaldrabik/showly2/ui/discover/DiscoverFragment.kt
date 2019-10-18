@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
@@ -23,7 +24,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
   override val layoutResId = R.layout.fragment_discover
 
   private val gridSpan by lazy { resources.getInteger(R.integer.discoverGridSpan) }
-  private val searchViewPadding by lazy { requireContext().dimenToPx(R.dimen.searchViewHeightPadded) }
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
 
@@ -41,9 +41,11 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
-
-    viewModel.uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-    viewModel.loadTrendingShows()
+    viewModel.run {
+      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      discoverShowsStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      loadTrendingShows()
+    }
   }
 
   private fun setupView() {
@@ -58,9 +60,10 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     adapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
     adapter.itemClickListener = { openShowDetails(it) }
     discoverRecycler.apply {
-      setHasFixedSize(true)
       adapter = this@DiscoverFragment.adapter
       layoutManager = this@DiscoverFragment.layoutManager
+      (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+      setHasFixedSize(true)
     }
 
     discoverSwipeRefresh.apply {
@@ -69,7 +72,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
       setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
       setOnRefreshListener {
         adapter.clearItems()
-        viewModel.saveListPosition(0, 0)
         viewModel.loadTrendingShows(skipCache = true)
       }
     }
@@ -83,8 +85,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
 
   private fun openSearchView() {
     getMainActivity().hideNavigation()
-    val position = layoutManager.findFirstVisibleItemPosition()
-    viewModel.saveListPosition(position, (layoutManager.findViewByPosition(position)?.top ?: 0) - searchViewPadding)
     discoverRecycler.fadeOut(duration = 200) {
       findNavController().navigate(R.id.actionDiscoverFragmentToSearchFragment)
     }
@@ -103,8 +103,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     }
     val clickedView = discoverRecycler.findViewHolderForAdapterPosition(clickedIndex)
     clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350, endAction = {
-      val position = layoutManager.findFirstVisibleItemPosition()
-      viewModel.saveListPosition(position, (layoutManager.findViewByPosition(position)?.top ?: 0) - searchViewPadding)
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.id) }
       findNavController().navigate(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
     })
@@ -112,17 +110,17 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
 
   override fun onTabReselected() = openSearchView()
 
+  private fun render(items: List<DiscoverListItem>) {
+    adapter.setItems(items)
+    layoutManager.withSpanSizeLookup { pos -> items[pos].image.type.spanSize }
+  }
+
   private fun render(uiModel: DiscoverUiModel) {
-    uiModel.trendingShows?.let {
-      adapter.setItems(it)
-      layoutManager.withSpanSizeLookup { pos -> it[pos].image.type.spanSize }
-    }
     uiModel.showLoading?.let {
       discoverSearchView.isClickable = !it
       discoverSwipeRefresh.isRefreshing = it
     }
     uiModel.updateListItem?.let { adapter.updateItem(it) }
-    uiModel.listPosition?.let { layoutManager.scrollToPositionWithOffset(it.first, it.second) }
     uiModel.error?.let {
       requireActivity().snackBarHost.showErrorSnackbar(it.message ?: getString(R.string.errorGeneral))
     }

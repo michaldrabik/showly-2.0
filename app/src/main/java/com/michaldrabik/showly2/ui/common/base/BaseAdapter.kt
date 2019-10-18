@@ -11,11 +11,17 @@ abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.
   var itemClickListener: (Item) -> Unit = { }
 
   open fun setItems(newItems: List<Item>) {
+    var isNew: Boolean
     this.items.apply {
+      isNew = isEmpty()
       clear()
       addAll(newItems)
     }
-    notifyItemRangeInserted(0, newItems.size)
+    if (isNew) {
+      notifyItemRangeInserted(0, newItems.size)
+    } else {
+      notifyItemRangeChanged(0, newItems.size)
+    }
   }
 
   fun updateItem(updatedItem: Item) {
