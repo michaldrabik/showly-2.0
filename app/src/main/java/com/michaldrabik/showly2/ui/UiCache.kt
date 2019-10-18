@@ -7,11 +7,13 @@ import javax.inject.Inject
 @AppScope
 class UiCache @Inject constructor() {
 
+  var watchlistListPosition = Pair(0, 0)
   var discoverListPosition = Pair(0, 0)
   var myShowsListPosition = Pair(0, 0)
   var myShowsSectionPositions = mutableMapOf<MyShowsSection, Pair<Int, Int>>()
 
   fun clear() {
+    watchlistListPosition = Pair(0, 0)
     discoverListPosition = Pair(0, 0)
     myShowsListPosition = Pair(0, 0)
     myShowsSectionPositions.clear()

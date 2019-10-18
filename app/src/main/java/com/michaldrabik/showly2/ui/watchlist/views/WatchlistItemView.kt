@@ -14,21 +14,27 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image.Status
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
-import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.view_watchlist_item.view.*
 
-class WatchlistItemView @JvmOverloads constructor(
-  context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr) {
+class WatchlistItemView : ConstraintLayout {
+
+  constructor(context: Context) : super(context)
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+  constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   private val cornerRadius by lazy { context.dimenToPx(R.dimen.watchlistImageCorner) }
 
   init {
     inflate(context, R.layout.view_watchlist_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    addRipple()
   }
 
-  fun bind(item: WatchlistItem) {
+  fun bind(
+    item: WatchlistItem,
+    itemClickListener: (WatchlistItem) -> Unit
+  ) {
     clear()
 
     watchlistItemTitle.text = item.show.title
@@ -40,11 +46,12 @@ class WatchlistItemView @JvmOverloads constructor(
       episodeTitle
     )
     bindImage(item)
+    onClick { itemClickListener(item) }
   }
 
   private fun bindImage(item: WatchlistItem) {
     if (item.image.status == Status.UNAVAILABLE) {
-//      placeholderView.visible()
+      watchlistItemPlaceholder.visible()
       return
     }
 
@@ -61,6 +68,9 @@ class WatchlistItemView @JvmOverloads constructor(
       .load(url)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
       .transition(withCrossFade(200))
+      .withFailListener {
+        watchlistItemPlaceholder.visible()
+      }
       .into(watchlistItemImage)
   }
 

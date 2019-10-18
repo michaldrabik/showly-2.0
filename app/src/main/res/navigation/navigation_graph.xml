@@ -56,7 +56,15 @@
     android:name="com.michaldrabik.showly2.ui.watchlist.WatchlistFragment"
     android:label="fragmentWatchlist"
     tools:layout="@layout/fragment_watchlist"
-    />
+    >
+    <action
+      android:id="@+id/actionWatchlistFragmentToShowDetailsFragment"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
 
   <fragment
     android:id="@+id/showDetailsFragment"

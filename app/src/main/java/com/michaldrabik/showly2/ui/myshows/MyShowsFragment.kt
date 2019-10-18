@@ -14,29 +14,17 @@ import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.MyShowsSection
-import com.michaldrabik.showly2.model.MyShowsSection.COMING_SOON
-import com.michaldrabik.showly2.model.MyShowsSection.ENDED
-import com.michaldrabik.showly2.model.MyShowsSection.RUNNING
+import com.michaldrabik.showly2.model.MyShowsSection.*
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.myshows.helpers.MyShowsSearchResult
-import com.michaldrabik.showly2.ui.myshows.helpers.ResultType.EMPTY
-import com.michaldrabik.showly2.ui.myshows.helpers.ResultType.NO_RESULTS
-import com.michaldrabik.showly2.ui.myshows.helpers.ResultType.RESULTS
+import com.michaldrabik.showly2.ui.myshows.helpers.ResultType.*
 import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsListItem
 import com.michaldrabik.showly2.ui.myshows.views.MyShowFanartView
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
-import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import com.michaldrabik.showly2.utilities.extensions.fadeIf
-import com.michaldrabik.showly2.utilities.extensions.fadeOut
-import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.showKeyboard
-import com.michaldrabik.showly2.utilities.extensions.visible
-import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 import kotlinx.android.synthetic.main.view_search.*
 
@@ -225,8 +213,8 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
       saveToUiCache()
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.id) }
       findNavController().navigate(R.id.actionMyShowsFragmentToShowDetailsFragment, bundle)
-      getMainActivity().hideNavigation()
     }
+    getMainActivity().hideNavigation()
   }
 
   private fun saveToUiCache() {

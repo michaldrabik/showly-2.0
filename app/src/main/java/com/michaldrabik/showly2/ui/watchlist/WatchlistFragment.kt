@@ -2,16 +2,19 @@ package com.michaldrabik.showly2.ui.watchlist
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
+import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistAdapter
+import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 
 class WatchlistFragment : BaseFragment<WatchlistViewModel>() {
@@ -34,12 +37,11 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>() {
     setupView()
     setupRecycler()
 
-    viewModel.uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-  }
-
-  override fun onResume() {
-    super.onResume()
-    viewModel.loadWatchlist()
+    viewModel.run {
+      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      watchlistStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      loadWatchlist()
+    }
   }
 
   private fun setupView() {
@@ -52,18 +54,27 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>() {
     watchlistRecycler.apply {
       adapter = this@WatchlistFragment.adapter
       layoutManager = this@WatchlistFragment.layoutManager
+      (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
-      addItemDecoration(DividerItemDecoration(context, VERTICAL).apply {
-        setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_watchlist)!!)
-      })
     }
+    adapter.itemClickListener = { openShowDetails(it) }
+  }
+
+  private fun openShowDetails(item: WatchlistItem) {
+    watchlistRoot.fadeOut {
+      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.id) }
+      findNavController().navigate(R.id.actionWatchlistFragmentToShowDetailsFragment, bundle)
+    }
+    getMainActivity().hideNavigation()
+  }
+
+  private fun render(watchlistItems: List<WatchlistItem>) {
+    adapter.setItems(watchlistItems)
   }
 
   private fun render(uiModel: WatchlistUiModel) {
     uiModel.run {
-      watchlistItems?.let { adapter.setItems(it) }
       error?.let {}
     }
   }
-
 }
