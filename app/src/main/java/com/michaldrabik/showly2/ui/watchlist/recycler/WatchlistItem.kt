@@ -7,5 +7,7 @@ import com.michaldrabik.showly2.model.Show
 data class WatchlistItem(
   val show: Show,
   val episode: Episode,
-  val image: Image
+  val image: Image,
+  val episodesCount: Int,
+  val watchedEpisodesCount: Int
 )

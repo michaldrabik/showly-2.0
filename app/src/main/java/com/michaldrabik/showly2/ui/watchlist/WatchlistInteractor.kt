@@ -21,22 +21,30 @@ class WatchlistInteractor @Inject constructor(
   suspend fun loadWatchlist(): List<WatchlistItem> {
     val unavailableImage = Image.createUnavailable(POSTER)
 
-    val showsDb = database.followedShowsDao().getAll()
-    val episodesDb = database.episodesDao()
-      .getAllUnwatchedForShows(showsDb.map { it.idTrakt })
-      .filter { it.firstAired.isNotBlank() }
+    val shows = database.followedShowsDao().getAll()
+    val episodes = database.episodesDao().getAllForShows(shows.map { it.idTrakt })
+    val episodesUnwatched = episodes.filter { !it.isWatched && it.firstAired.isNotBlank()}
 
-    return showsDb.asSequence()
-      .filter { show ->
-        episodesDb.any { it.idShowTrakt == show.idTrakt }
-      }
-      .map { mappers.show.fromDatabase(it) }
+    return shows.asSequence()
+      .filter { show -> episodesUnwatched.any { it.idShowTrakt == show.idTrakt } }
       .map { show ->
-        val episode = episodesDb.asSequence()
-          .filter { it.idShowTrakt == show.id }
+        val showEpisodes = episodesUnwatched.filter { it.idShowTrakt == show.idTrakt }
+        val episode = showEpisodes.asSequence()
           .sortedBy { it.idTrakt }
           .first()
-        WatchlistItem(show, mappers.episode.fromDatabase(episode), unavailableImage)
+
+        val episodesCount = episodes.count { it.idShowTrakt == show.idTrakt }
+        val watchedEpisodesCount = episodesCount - episodes.count {
+          it.idShowTrakt == show.idTrakt && !it.isWatched
+        }
+
+        WatchlistItem(
+          mappers.show.fromDatabase(show),
+          mappers.episode.fromDatabase(episode),
+          unavailableImage,
+          episodesCount,
+          watchedEpisodesCount
+        )
       }
       .sortedBy { it.show.title }
       .toList()

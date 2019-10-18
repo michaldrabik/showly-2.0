@@ -3,7 +3,6 @@ package com.michaldrabik.showly2.ui.show.seasons
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
-import android.os.Build
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -12,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
+import com.michaldrabik.showly2.utilities.extensions.setAnimatedProgress
 import kotlinx.android.synthetic.main.view_season.view.*
 
 class SeasonView : FrameLayout {
@@ -38,16 +38,12 @@ class SeasonView : FrameLayout {
     setOnClickListener { clickListener(item) }
 
     seasonViewTitle.text = context.getString(R.string.textSeason, item.season.number)
-    seasonViewProgress.max = item.season.episodeCount
+
     val progressCount = item.episodes.count { it.isWatched }
-
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-      seasonViewProgress.setProgress(progressCount, true)
-    } else {
-      seasonViewProgress.progress = progressCount
-    }
-
+    seasonViewProgress.max = item.season.episodeCount
+    seasonViewProgress.setAnimatedProgress(item.episodes.count { it.isWatched })
     seasonViewProgressText.text = "$progressCount/${item.episodes.size}"
+
     seasonViewCheckbox.isChecked = item.isWatched
     seasonViewCheckbox.isEnabled = item.episodes.all { it.episode.hasAired() }
 

@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.watchlist.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -17,6 +18,7 @@ import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.view_watchlist_item.view.*
 
+@SuppressLint("SetTextI18n")
 class WatchlistItemView : ConstraintLayout {
 
   constructor(context: Context) : super(context)
@@ -29,6 +31,7 @@ class WatchlistItemView : ConstraintLayout {
     inflate(context, R.layout.view_watchlist_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     addRipple()
+    watchlistItemCheckButton.expandTouchArea(100)
   }
 
   fun bind(
@@ -45,6 +48,11 @@ class WatchlistItemView : ConstraintLayout {
       item.episode.number,
       episodeTitle
     )
+
+    watchlistItemProgress.max = item.episodesCount
+    watchlistItemProgress.setAnimatedProgress(item.watchedEpisodesCount)
+    watchlistItemProgressText.text = "${item.watchedEpisodesCount}/${item.episodesCount}"
+
     bindImage(item)
     onClick { itemClickListener(item) }
   }
@@ -77,6 +85,7 @@ class WatchlistItemView : ConstraintLayout {
   private fun clear() {
     watchlistItemTitle.text = ""
     watchlistItemSubtitle.text = ""
+    watchlistItemProgressText.text = ""
     Glide.with(this).clear(watchlistItemImage)
   }
 }

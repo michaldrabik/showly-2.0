@@ -13,8 +13,8 @@
     android:layout_width="@dimen/watchlistImageWidth"
     android:layout_height="@dimen/watchlistImageHeight"
     android:layout_marginStart="@dimen/spaceMedium"
-    android:layout_marginTop="@dimen/spaceTiny"
-    android:layout_marginBottom="@dimen/spaceTiny"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
@@ -41,7 +41,7 @@
     android:ellipsize="end"
     android:maxLines="1"
     android:textColor="@color/colorTextPrimary"
-    android:textSize="16sp"
+    android:textSize="18sp"
     android:textStyle="bold"
     app:layout_constraintBottom_toTopOf="@id/watchlistItemSubtitle"
     app:layout_constraintEnd_toEndOf="parent"
@@ -72,14 +72,81 @@
     android:id="@+id/watchlistItemProgress"
     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
     android:layout_width="0dp"
-    android:layout_height="wrap_content"
+    android:layout_height="22dp"
     android:layout_marginStart="@dimen/spaceNormal"
-    android:layout_marginEnd="@dimen/spaceMedium"
-    android:progress="25"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/watchlistItemButtons"
+    app:layout_constraintEnd_toStartOf="@id/watchlistItemProgressText"
     app:layout_constraintStart_toEndOf="@id/watchlistItemImage"
     app:layout_constraintTop_toBottomOf="@id/watchlistItemSubtitle"
     />
 
+  <TextView
+    android:id="@+id/watchlistItemProgressText"
+    android:layout_width="60dp"
+    android:layout_height="0dp"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:gravity="center"
+    android:textColor="@color/colorTextSecondary"
+    android:textSize="14sp"
+    app:layout_constraintBottom_toBottomOf="@id/watchlistItemProgress"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/watchlistItemProgress"
+    app:layout_constraintTop_toBottomOf="@id/watchlistItemSubtitle"
+    tools:text="99/99"
+    />
+
+  <LinearLayout
+    android:id="@+id/watchlistItemButtons"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginTop="@dimen/spaceMicro"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:clipChildren="false"
+    android:gravity="center"
+    android:orientation="horizontal"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/watchlistItemImage"
+    app:layout_constraintTop_toBottomOf="@id/watchlistItemProgress"
+    >
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/watchlistItemInfoButton"
+      style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+      android:layout_width="wrap_content"
+      android:layout_height="40dp"
+      android:gravity="start|center_vertical"
+      android:paddingStart="0dp"
+      android:text="@string/textEpisodeInfo"
+      android:textColor="@color/colorTextSecondary"
+      android:textSize="12sp"
+      app:rippleColor="@android:color/transparent"
+      app:strokeWidth="0dp"
+      />
+
+    <Space
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/watchlistItemCheckButton"
+      style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+      android:layout_width="60dp"
+      android:layout_height="40dp"
+      android:gravity="center"
+      android:includeFontPadding="false"
+      android:textColor="@color/colorWhite"
+      android:textSize="14sp"
+      app:icon="@drawable/ic_check"
+      app:iconGravity="textStart"
+      app:iconPadding="0dp"
+      app:iconTint="@color/colorWhite"
+      app:rippleColor="@color/colorWhite"
+      app:strokeColor="@color/colorWhite"
+      />
+
+  </LinearLayout>
 </merge>

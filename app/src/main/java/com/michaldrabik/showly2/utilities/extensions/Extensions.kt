@@ -5,22 +5,21 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Rect
+import android.os.Build
 import android.util.TypedValue
 import android.view.TouchDelegate
 import android.view.View
-import android.view.View.GONE
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.DimenRes
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
 import com.google.android.material.snackbar.Snackbar.LENGTH_LONG
-import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import com.michaldrabik.showly2.Config.DISPLAY_DATE_FORMAT
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.utilities.SafeOnClickListener
@@ -160,3 +159,11 @@ fun CheckBox.setCheckedSilent(isChecked: Boolean, action: (View, Boolean) -> Uni
 fun ZonedDateTime.toLocalTimeZone(): ZonedDateTime = this.withZoneSameInstant(ZoneId.systemDefault())
 
 fun Temporal.toDisplayString(): String = DISPLAY_DATE_FORMAT.format(this)
+
+fun ProgressBar.setAnimatedProgress(value: Int) {
+  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+    setProgress(value, true)
+  } else {
+    progress = value
+  }
+}

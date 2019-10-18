@@ -1,6 +1,5 @@
 package com.michaldrabik.storage.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -20,8 +19,8 @@ interface EpisodesDao {
   @Query("SELECT * FROM episodes WHERE id_season = :traktId")
   suspend fun getAllForSeason(traktId: Long): List<Episode>
 
-  @Query("SELECT * FROM episodes WHERE id_show_trakt IN (:showsIds) AND is_watched = 0")
-  suspend fun getAllUnwatchedForShows(showsIds: List<Long>): List<Episode>
+  @Query("SELECT * FROM episodes WHERE id_show_trakt IN (:showsIds)")
+  suspend fun getAllForShows(showsIds: List<Long>): List<Episode>
 
   @Insert(onConflict = REPLACE)
   suspend fun upsert(episode: Episode)
