@@ -11,9 +11,11 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_show_fanart.view.*
 
-class ShowFanartView @JvmOverloads constructor(
-  context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : ShowView<DiscoverListItem>(context, attrs, defStyleAttr) {
+class ShowFanartView : ShowView<DiscoverListItem> {
+
+  constructor(context: Context) : super(context)
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+  constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   init {
     inflate(context, R.layout.view_show_fanart, this)

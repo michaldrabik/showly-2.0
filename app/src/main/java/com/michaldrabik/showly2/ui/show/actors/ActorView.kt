@@ -17,9 +17,11 @@ import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.withFailListener
 import kotlinx.android.synthetic.main.view_actor.view.*
 
-class ActorView @JvmOverloads constructor(
-  context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
+class ActorView : FrameLayout {
+
+  constructor(context: Context) : super(context)
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+  constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   private val cornerRadius by lazy { context.dimenToPx(R.dimen.actorTileCorner) }
 

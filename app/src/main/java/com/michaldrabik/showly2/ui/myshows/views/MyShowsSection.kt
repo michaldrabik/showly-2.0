@@ -16,9 +16,11 @@ import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsSectionAdapter
 import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.view_my_shows_section.view.*
 
-class MyShowsSection @JvmOverloads constructor(
-  context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr) {
+class MyShowsSection : ConstraintLayout {
+
+  constructor(context: Context) : super(context)
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+  constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   var itemClickListener: (MyShowsListItem) -> Unit = {}
   var missingImageListener: (MyShowsListItem, Boolean) -> Unit = { _, _ -> }

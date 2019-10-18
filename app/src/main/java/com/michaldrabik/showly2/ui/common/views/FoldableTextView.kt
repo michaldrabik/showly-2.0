@@ -4,9 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.TextView
 
-class FoldableTextView @JvmOverloads constructor(
-  context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : TextView(context, attrs, defStyleAttr) {
+class FoldableTextView : TextView {
+
+  constructor(context: Context) : super(context)
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+  constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   companion object {
     private const val MIN_LINES = 3

@@ -13,9 +13,11 @@ import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_show_poster.view.*
 
-class ShowPosterView @JvmOverloads constructor(
-  context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : ShowView<DiscoverListItem>(context, attrs, defStyleAttr) {
+class ShowPosterView : ShowView<DiscoverListItem> {
+
+  constructor(context: Context) : super(context)
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+  constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   init {
     inflate(context, R.layout.view_show_poster, this)

@@ -15,9 +15,11 @@ import com.michaldrabik.showly2.utilities.extensions.setCheckedSilent
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_episodes.view.*
 
-class EpisodesView @JvmOverloads constructor(
-  context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr) {
+class EpisodesView : ConstraintLayout {
+
+  constructor(context: Context) : super(context)
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+  constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   var itemClickListener: (Episode, Season, Boolean) -> Unit = { _, _, _ -> }
   var itemCheckedListener: (Episode, Season, Boolean) -> Unit = { _, _, _ -> }

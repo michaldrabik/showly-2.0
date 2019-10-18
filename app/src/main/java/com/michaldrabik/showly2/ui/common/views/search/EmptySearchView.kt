@@ -6,9 +6,11 @@ import android.view.Gravity.CENTER
 import android.widget.LinearLayout
 import com.michaldrabik.showly2.R
 
-class EmptySearchView @JvmOverloads constructor(
-  context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr) {
+class EmptySearchView : LinearLayout {
+
+  constructor(context: Context) : super(context)
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+  constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   init {
     inflate(context, R.layout.view_search_empty, this)

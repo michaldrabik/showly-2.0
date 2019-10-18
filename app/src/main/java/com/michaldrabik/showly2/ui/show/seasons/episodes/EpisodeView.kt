@@ -7,16 +7,14 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.utilities.extensions.addRipple
-import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.toDisplayString
-import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
+import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.view_episode.view.*
 
-class EpisodeView @JvmOverloads constructor(
-  context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : ConstraintLayout(context, attrs, defStyleAttr) {
+class EpisodeView : ConstraintLayout {
+
+  constructor(context: Context) : super(context)
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+  constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   init {
     inflate(context, R.layout.view_episode, this)

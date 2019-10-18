@@ -14,9 +14,11 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
 import kotlinx.android.synthetic.main.view_season.view.*
 
-class SeasonView @JvmOverloads constructor(
-  context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
+class SeasonView : FrameLayout {
+
+  constructor(context: Context) : super(context)
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+  constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   init {
     inflate(context, R.layout.view_season, this)

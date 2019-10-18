@@ -16,19 +16,17 @@ import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
 import com.michaldrabik.showly2.model.Image.Status.UNKNOWN
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.discover.recycler.ListItem
-import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import com.michaldrabik.showly2.utilities.extensions.screenWidth
-import com.michaldrabik.showly2.utilities.extensions.visible
-import com.michaldrabik.showly2.utilities.extensions.withFailListener
-import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
+import com.michaldrabik.showly2.utilities.extensions.*
 
-abstract class ShowView<Item : ListItem> @JvmOverloads constructor(
-  context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
+abstract class ShowView<Item : ListItem> : FrameLayout {
 
   companion object {
     const val ASPECT_RATIO = 1.4705
   }
+
+  constructor(context: Context) : super(context)
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+  constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   private val cornerRadius by lazy { context.dimenToPx(R.dimen.showTileCorner) }
   private val gridPadding by lazy { context.dimenToPx(R.dimen.gridPadding) }
