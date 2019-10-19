@@ -138,6 +138,7 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
     }
     uiModel.updateListItem?.let { adapter.updateItem(it) }
     uiModel.isEmpty?.let { searchEmptyView.fadeIf(it) }
+    uiModel.isInitial?.let { searchInitialView.fadeIf(it) }
     uiModel.error?.let { searchRoot?.showErrorSnackbar(getString(R.string.errorGeneral)) }
   }
 

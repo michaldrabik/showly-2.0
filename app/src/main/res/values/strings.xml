@@ -16,7 +16,9 @@
   <string name="textSearchForMyShows">Search my shows…</string>
   <string name="textAiredAlready">Already aired.</string>
   <string name="textEmptyResults">There were no results…</string>
-  <string name="textClear">Clear</string>
+  <string name="textSearchInitial1">Find your favorite shows.</string>
+  <string name="textSearchInitial2">Search powered by Trakt.tv</string>
+  <string name="textClear">Clear recent searches</string>
   <string name="textActorRole">%s as %s</string>
   <string name="textYouMayAlsoLike">You may also like:</string>
   <string name="textSeasons">Seasons:</string>

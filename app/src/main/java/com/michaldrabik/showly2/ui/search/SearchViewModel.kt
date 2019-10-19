@@ -26,14 +26,14 @@ class SearchViewModel @Inject constructor(
   fun loadRecentSearches() {
     viewModelScope.launch {
       val searches = interactor.getRecentSearches(SEARCH_RECENTS_AMOUNT)
-      uiStream.value = SearchUiModel(recentSearchItems = searches)
+      uiStream.value = SearchUiModel(recentSearchItems = searches, isInitial = searches.isEmpty())
     }
   }
 
   fun clearRecentSearches() {
     viewModelScope.launch {
       interactor.clearRecentSearches()
-      uiStream.value = SearchUiModel(recentSearchItems = emptyList())
+      uiStream.value = SearchUiModel(recentSearchItems = emptyList(), isInitial = true)
     }
   }
 
@@ -42,7 +42,7 @@ class SearchViewModel @Inject constructor(
     if (trimmed.isEmpty()) return
     viewModelScope.launch {
       try {
-        uiStream.value = SearchUiModel(emptyList(), emptyList(), isSearching = true, isEmpty = false)
+        uiStream.value = SearchUiModel(emptyList(), emptyList(), isSearching = true, isEmpty = false, isInitial = false)
         val shows = interactor.searchShows(trimmed)
         val items = shows.map {
           val image = interactor.findCachedImage(it, ImageType.POSTER)
@@ -50,7 +50,7 @@ class SearchViewModel @Inject constructor(
         }
         lastItems.clear()
         lastItems.addAll(items)
-        uiStream.value = SearchUiModel(items, isSearching = false, isEmpty = items.isEmpty())
+        uiStream.value = SearchUiModel(items, isSearching = false, isEmpty = items.isEmpty(), isInitial = false)
       } catch (t: Throwable) {
         onError(t)
       }

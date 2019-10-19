@@ -67,7 +67,7 @@
     android:layout_marginTop="@dimen/spaceSmall"
     android:text="@string/textClear"
     android:textAllCaps="true"
-    android:textColor="@color/colorAccent"
+    android:textColor="@color/colorTextSecondary"
     android:visibility="gone"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/searchRecentsLayout"
@@ -75,6 +75,18 @@
 
   <com.michaldrabik.showly2.ui.common.views.search.EmptySearchView
     android:id="@+id/searchEmptyView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:visibility="gone"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/searchViewLayout"
+    tools:visibility="visible"
+    />
+
+  <com.michaldrabik.showly2.ui.common.views.search.InitialSearchView
+    android:id="@+id/searchInitialView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/spaceNormal"
