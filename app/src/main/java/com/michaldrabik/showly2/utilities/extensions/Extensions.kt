@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.utilities.extensions
 
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.res.Resources
@@ -9,13 +10,16 @@ import android.os.Build
 import android.util.TypedValue
 import android.view.TouchDelegate
 import android.view.View
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.DimenRes
+import androidx.core.animation.doOnEnd
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
@@ -85,6 +89,18 @@ fun View.fadeOut(duration: Long = 250, startDelay: Long = 0, endAction: () -> Un
 fun View.shake() = ObjectAnimator.ofFloat(this, "translationX", 0F, -15F, 15F, -10F, 10F, -5F, 5F, 0F)
   .setDuration(500)
   .start()
+
+fun View.bump(action: () -> Unit = {}) {
+  val x = ObjectAnimator.ofFloat(this, "scaleX", 1F, 1.1F, 1F)
+  val y = ObjectAnimator.ofFloat(this, "scaleY", 1F, 1.1F, 1F)
+
+  AnimatorSet().apply {
+    playTogether(x, y)
+    duration = 250
+    doOnEnd { action() }
+    start()
+  }
+}
 
 fun GridLayoutManager.withSpanSizeLookup(action: (Int) -> Int) {
   spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {

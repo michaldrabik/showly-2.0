@@ -16,6 +16,7 @@ import com.michaldrabik.showly2.model.Image.Status
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.addRipple
+import com.michaldrabik.showly2.utilities.extensions.bump
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
 import com.michaldrabik.showly2.utilities.extensions.gone
@@ -36,6 +37,7 @@ class WatchlistItemView : ConstraintLayout {
   init {
     inflate(context, R.layout.view_watchlist_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    clipChildren = false
     addRipple()
     watchlistItemCheckButton.expandTouchArea(100)
   }
@@ -43,7 +45,8 @@ class WatchlistItemView : ConstraintLayout {
   fun bind(
     item: WatchlistItem,
     itemClickListener: (WatchlistItem) -> Unit,
-    detailsClickListener: (WatchlistItem) -> Unit
+    detailsClickListener: (WatchlistItem) -> Unit,
+    checkClickListener: (WatchlistItem) -> Unit
   ) {
     clear()
 
@@ -63,6 +66,9 @@ class WatchlistItemView : ConstraintLayout {
     bindImage(item)
     onClick { itemClickListener(item) }
     watchlistItemInfoButton.onClick { detailsClickListener(item) }
+    watchlistItemCheckButton.onClick {
+      it.bump { checkClickListener(item) }
+    }
   }
 
   private fun bindImage(item: WatchlistItem) {

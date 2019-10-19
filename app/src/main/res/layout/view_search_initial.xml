@@ -15,7 +15,7 @@
     android:layout_height="100dp"
     android:adjustViewBounds="true"
     app:srcCompat="@drawable/ic_search"
-    android:tint="@color/colorSearchViewIcon"
+    android:tint="@color/colorWhite"
     />
 
   <TextView
@@ -23,14 +23,15 @@
     android:layout_height="wrap_content"
     android:text="@string/textSearchInitial1"
     android:layout_marginBottom="@dimen/spaceTiny"
-    android:textColor="@color/colorSearchViewIcon"
+    android:textSize="16sp"
+    android:textColor="@color/colorWhite"
     />
 
   <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/textSearchInitial2"
-    android:textColor="@color/colorSearchViewIcon"
+    android:textColor="@color/colorWhite"
     android:textSize="12sp"
     />
 

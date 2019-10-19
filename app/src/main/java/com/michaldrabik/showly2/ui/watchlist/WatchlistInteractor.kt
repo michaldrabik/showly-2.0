@@ -23,15 +23,16 @@ class WatchlistInteractor @Inject constructor(
 
     val shows = database.followedShowsDao().getAll()
     val episodes = database.episodesDao().getAllForShows(shows.map { it.idTrakt })
-    val episodesUnwatched = episodes.filter { !it.isWatched && it.firstAired.isNotBlank()}
+    val episodesUnwatched = episodes.filter { !it.isWatched && it.firstAired.isNotBlank() }
 
-    return shows.asSequence()
+    return shows
       .filter { show -> episodesUnwatched.any { it.idShowTrakt == show.idTrakt } }
       .map { show ->
         val showEpisodes = episodesUnwatched.filter { it.idShowTrakt == show.idTrakt }
         val episode = showEpisodes.asSequence()
           .sortedBy { it.idTrakt }
           .first()
+        val season = database.seasonsDao().getById(episode.idSeason)!!
 
         val episodesCount = episodes.count { it.idShowTrakt == show.idTrakt }
         val watchedEpisodesCount = episodesCount - episodes.count {
@@ -40,6 +41,7 @@ class WatchlistInteractor @Inject constructor(
 
         WatchlistItem(
           mappers.show.fromDatabase(show),
+          mappers.season.fromDatabase(season),
           mappers.episode.fromDatabase(episode),
           unavailableImage,
           episodesCount,

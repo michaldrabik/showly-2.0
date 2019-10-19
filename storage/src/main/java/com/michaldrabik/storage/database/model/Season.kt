@@ -9,7 +9,9 @@ data class Season(
   @PrimaryKey @ColumnInfo(name = "id_trakt") var idTrakt: Long,
   @ColumnInfo(name = "id_show_trakt") var idShowTrakt: Long,
   @ColumnInfo(name = "season_number") var seasonNumber: Int,
+  @ColumnInfo(name = "season_title") var seasonTitle: String,
   @ColumnInfo(name = "season_overview") var seasonOverview: String,
+  @ColumnInfo(name = "season_first_aired") var seasonFirstAired: String,
   @ColumnInfo(name = "episodes_count") var episodesCount: Int,
   @ColumnInfo(name = "episodes_aired_count") var episodesAiredCount: Int,
   @ColumnInfo(name = "is_watched") var isWatched: Boolean

@@ -54,7 +54,7 @@ class ViewModelFactory @Inject constructor(
       MyShowsViewModel(myShowsInteractor, uiCache) as T
 
     modelClass.isAssignableFrom(WatchlistViewModel::class.java) ->
-      WatchlistViewModel(watchlistInteractor) as T
+      WatchlistViewModel(watchlistInteractor, episodesInteractor) as T
 
     else -> throw IllegalStateException("Unknown ViewModel class")
   }

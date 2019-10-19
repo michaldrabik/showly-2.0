@@ -12,6 +12,7 @@ class WatchlistAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   var itemClickListener: (WatchlistItem) -> Unit = { }
   var detailsClickListener: (WatchlistItem) -> Unit = { }
+  var checkClickListener: (WatchlistItem) -> Unit = { }
 
   fun setItems(newItems: List<WatchlistItem>) {
     val diffCallback = WatchlistItemDiffCallback(items, newItems)
@@ -30,7 +31,8 @@ class WatchlistAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     (holder.itemView as WatchlistItemView).bind(
       items[position],
       itemClickListener,
-      detailsClickListener
+      detailsClickListener,
+      checkClickListener
     )
   }
 

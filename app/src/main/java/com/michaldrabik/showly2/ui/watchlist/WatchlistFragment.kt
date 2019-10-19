@@ -60,6 +60,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>() {
     }
     adapter.itemClickListener = { openShowDetails(it) }
     adapter.detailsClickListener = { openEpisodeDetails(it) }
+    adapter.checkClickListener = { viewModel.setWatchedEpisode(it) }
   }
 
   private fun openShowDetails(item: WatchlistItem) {
@@ -72,7 +73,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>() {
 
   private fun openEpisodeDetails(item: WatchlistItem) {
     val modal = EpisodeDetailsBottomSheet.create(item.episode, isWatched = false, showButton = true)
-    modal.onEpisodeWatchedClick = {  }
+    modal.onEpisodeWatchedClick = { }
     modal.show(requireActivity().supportFragmentManager, "MODAL")
   }
 
