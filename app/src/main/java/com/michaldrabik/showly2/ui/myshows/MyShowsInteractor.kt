@@ -88,5 +88,5 @@ class MyShowsInteractor @Inject constructor(
   suspend fun loadMissingImage(show: Show, type: ImageType, force: Boolean) =
     imagesManager.loadRemoteImage(show, type, force)
 
-  fun clear() = searchItemsCache.clear()
+  fun clearCache() = searchItemsCache.clear()
 }

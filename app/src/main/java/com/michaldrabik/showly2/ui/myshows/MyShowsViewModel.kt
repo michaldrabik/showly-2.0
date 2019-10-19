@@ -114,5 +114,5 @@ class MyShowsViewModel @Inject constructor(
     uiCache.myShowsSectionPositions.putAll(sectionPositions)
   }
 
-  fun clear() = interactor.clear()
+  fun clearCache() = interactor.clearCache()
 }
