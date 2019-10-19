@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
 import com.google.android.material.snackbar.Snackbar.LENGTH_LONG
+import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import com.michaldrabik.showly2.Config.DISPLAY_DATE_FORMAT
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.utilities.SafeOnClickListener
@@ -137,6 +138,10 @@ fun ViewGroup.showErrorSnackbar(message: String, actionText: Int = R.string.text
 
 fun ViewGroup.showInfoSnackbar(message: String, actionText: Int = R.string.textOk) {
   showSnackbar(message, actionText, R.drawable.bg_snackbar_info, LENGTH_LONG)
+}
+
+fun ViewGroup.showShortInfoSnackbar(message: String, actionText: Int = R.string.textOk) {
+  showSnackbar(message, actionText, R.drawable.bg_snackbar_info, LENGTH_SHORT)
 }
 
 fun View.showKeyboard() {

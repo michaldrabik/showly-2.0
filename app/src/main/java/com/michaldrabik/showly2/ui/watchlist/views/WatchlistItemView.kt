@@ -64,11 +64,14 @@ class WatchlistItemView : ConstraintLayout {
     watchlistItemProgressText.text = "${item.watchedEpisodesCount}/${item.episodesCount}"
 
     bindImage(item)
+
+    val color = if (item.episode.hasAired()) R.color.colorWhite else R.color.colorTextSecondary
+    watchlistItemCheckButton.setStrokeColorResource(color)
+    watchlistItemCheckButton.setIconTintResource(color)
+
     onClick { itemClickListener(item) }
+    watchlistItemCheckButton.onClick { it.bump { checkClickListener(item) } }
     watchlistItemInfoButton.onClick { detailsClickListener(item) }
-    watchlistItemCheckButton.onClick {
-      it.bump { checkClickListener(item) }
-    }
   }
 
   private fun bindImage(item: WatchlistItem) {

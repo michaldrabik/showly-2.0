@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.watchlist
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.EpisodeBundle
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Season
@@ -32,6 +33,10 @@ class WatchlistViewModel @Inject constructor(
 
   fun setWatchedEpisode(item: WatchlistItem) {
     viewModelScope.launch {
+      if (!item.episode.hasAired()) {
+        uiStream.value = WatchlistUiModel(info = R.string.errorEpisodeNotAired)
+        return@launch
+      }
       val bundle = EpisodeBundle(item.episode, item.season, item.show)
       episodesInteractor.setEpisodeWatched(bundle)
       loadWatchlist()

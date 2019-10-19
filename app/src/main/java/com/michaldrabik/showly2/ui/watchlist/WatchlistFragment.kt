@@ -17,6 +17,10 @@ import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistAdapter
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
+import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.showly2.utilities.extensions.showShortInfoSnackbar
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 
 class WatchlistFragment : BaseFragment<WatchlistViewModel>() {
@@ -84,7 +88,8 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>() {
 
   private fun render(uiModel: WatchlistUiModel) {
     uiModel.run {
-      error?.let {}
+      info?.let { requireActivity().snackBarHost.showShortInfoSnackbar(getString(it)) }
+      error?.let { requireActivity().snackBarHost.showErrorSnackbar(it.message ?: getString(R.string.errorGeneral)) }
     }
   }
 }
