@@ -18,7 +18,6 @@ import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
-import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.showly2.utilities.extensions.showShortInfoSnackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_watchlist.*

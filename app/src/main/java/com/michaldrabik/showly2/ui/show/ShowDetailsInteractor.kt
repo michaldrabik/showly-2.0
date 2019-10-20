@@ -7,8 +7,12 @@ import com.michaldrabik.showly2.Config.ACTORS_CACHE_DURATION
 import com.michaldrabik.showly2.Config.RELATED_CACHE_DURATION
 import com.michaldrabik.showly2.UserManager
 import com.michaldrabik.showly2.di.AppScope
-import com.michaldrabik.showly2.model.*
+import com.michaldrabik.showly2.model.Actor
+import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.FANART
+import com.michaldrabik.showly2.model.Season
+import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
@@ -97,9 +101,11 @@ class ShowDetailsInteractor @Inject constructor(
     imagesManager.loadRemoteImage(show, type, force)
 
   suspend fun loadSeasons(show: Show): List<Season> {
-    return cloud.traktApi.fetchSeasons(show.id)
+    return cloud.traktApi.fetchSeasons(show.id).asSequence()
       .filter { it.number != 0 } //Filtering out "special" seasons
+      .sortedByDescending { it.number }
       .map { mappers.season.fromNetwork(it) }
+      .toList()
   }
 
   suspend fun isFollowed(show: Show) =

@@ -65,7 +65,7 @@ class WatchlistItemView : ConstraintLayout {
 
     bindImage(item)
 
-    val color = if (item.episode.hasAired()) R.color.colorWhite else R.color.colorTextSecondary
+    val color = if (item.episode.hasAired()) R.color.colorWatchlistEnabledButton else R.color.colorWatchlistDisabledButton
     watchlistItemCheckButton.setStrokeColorResource(color)
     watchlistItemCheckButton.setIconTintResource(color)
 

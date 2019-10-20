@@ -5,8 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.EpisodeBundle
 import com.michaldrabik.showly2.model.ImageType.POSTER
-import com.michaldrabik.showly2.model.Season
-import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesInteractor
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
@@ -19,7 +17,7 @@ class WatchlistViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   val watchlistStream by lazy { MutableLiveData<List<WatchlistItem>>() }
-  val uiStream by lazy { MutableLiveData<WatchlistUiModel>() }
+  val uiStream by lazy { MutableLiveData<WatchlistUiModel>() } //TODO Use single event LiveData
 
   fun loadWatchlist() {
     viewModelScope.launch {

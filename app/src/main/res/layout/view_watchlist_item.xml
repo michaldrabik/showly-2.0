@@ -122,9 +122,9 @@
       android:layout_marginStart="@dimen/spaceTiny"
       android:layout_marginEnd="@dimen/spaceTiny"
       android:text="@string/textEpisodeInfo"
-      android:textColor="@color/colorTextSecondary"
+      android:textColor="@color/colorWatchlistSecondaryButton"
       android:textSize="12sp"
-      app:rippleColor="@color/colorTextSecondary"
+      app:rippleColor="@color/colorWatchlistSecondaryButton"
       app:strokeWidth="0dp"
       />
 
@@ -135,14 +135,14 @@
       android:layout_height="40dp"
       android:gravity="center"
       android:includeFontPadding="false"
-      android:textColor="@color/colorWhite"
+      android:textColor="@color/colorWatchlistEnabledButton"
       android:textSize="14sp"
       app:icon="@drawable/ic_check"
       app:iconGravity="textStart"
       app:iconPadding="0dp"
-      app:iconTint="@color/colorWhite"
-      app:rippleColor="@color/colorWhite"
-      app:strokeColor="@color/colorWhite"
+      app:iconTint="@color/colorWatchlistEnabledButton"
+      app:rippleColor="@color/colorWatchlistEnabledButton"
+      app:strokeColor="@color/colorWatchlistEnabledButton"
       />
 
   </LinearLayout>
