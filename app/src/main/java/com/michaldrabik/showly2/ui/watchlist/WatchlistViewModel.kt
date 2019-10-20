@@ -33,11 +33,16 @@ class WatchlistViewModel @Inject constructor(
     viewModelScope.launch {
       if (!item.episode.hasAired()) {
         uiStream.value = WatchlistUiModel(info = R.string.errorEpisodeNotAired)
+        clearStream()
         return@launch
       }
       val bundle = EpisodeBundle(item.episode, item.season, item.show)
       episodesInteractor.setEpisodeWatched(bundle)
       loadWatchlist()
     }
+  }
+
+  private fun clearStream() {
+    uiStream.value = WatchlistUiModel()
   }
 }
