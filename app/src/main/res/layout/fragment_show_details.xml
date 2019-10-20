@@ -142,12 +142,32 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceSmall"
+        app:layout_goneMarginEnd="@dimen/spaceNormal"
+        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeCard"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/showDetailsWatchLaterButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsStatus"
+        />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/showDetailsWatchLaterButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceSmall"
+        android:gravity="center"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:text="@string/textWatchLater"
+        android:padding="0dp"
+        android:textColor="@color/colorTextSecondary"
+        app:layout_constraintStart_toEndOf="@id/showDetailsAddButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsStatus"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeCard"
+        app:layout_constraintHorizontal_weight="1"
+        app:rippleColor="@color/colorWhite"
         />
 
       <include
