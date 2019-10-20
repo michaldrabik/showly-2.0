@@ -61,9 +61,12 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>() {
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
     }
-    adapter.itemClickListener = { openShowDetails(it) }
-    adapter.detailsClickListener = { openEpisodeDetails(it) }
-    adapter.checkClickListener = { viewModel.setWatchedEpisode(it) }
+    adapter.run {
+      itemClickListener = { openShowDetails(it) }
+      detailsClickListener = { openEpisodeDetails(it) }
+      checkClickListener = { viewModel.setWatchedEpisode(it) }
+      missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
+    }
   }
 
   private fun openShowDetails(item: WatchlistItem) {
@@ -87,6 +90,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>() {
 
   private fun render(uiModel: WatchlistUiModel) {
     uiModel.run {
+      updateListItem?.let { adapter.updateItem(it) }
       info?.let { requireActivity().snackBarHost.showShortInfoSnackbar(getString(it)) }
       error?.let { requireActivity().snackBarHost.showErrorSnackbar(it.message ?: getString(R.string.errorGeneral)) }
     }

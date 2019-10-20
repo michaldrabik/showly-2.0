@@ -1,20 +1,17 @@
 package com.michaldrabik.showly2.ui.watchlist.recycler
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.michaldrabik.showly2.ui.common.base.BaseAdapter
 import com.michaldrabik.showly2.ui.watchlist.views.WatchlistItemView
 
-class WatchlistAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class WatchlistAdapter : BaseAdapter<WatchlistItem>() {
 
-  private val items: MutableList<WatchlistItem> = mutableListOf()
-
-  var itemClickListener: (WatchlistItem) -> Unit = { }
   var detailsClickListener: (WatchlistItem) -> Unit = { }
   var checkClickListener: (WatchlistItem) -> Unit = { }
 
-  fun setItems(newItems: List<WatchlistItem>) {
+  override fun setItems(newItems: List<WatchlistItem>) {
     val diffCallback = WatchlistItemDiffCallback(items, newItems)
     val diffResult = DiffUtil.calculateDiff(diffCallback)
     this.items.apply {
@@ -32,11 +29,8 @@ class WatchlistAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
       items[position],
       itemClickListener,
       detailsClickListener,
-      checkClickListener
+      checkClickListener,
+      missingImageListener
     )
   }
-
-  override fun getItemCount() = items.size
-
-  class ViewHolderShow(itemView: View) : RecyclerView.ViewHolder(itemView)
 }

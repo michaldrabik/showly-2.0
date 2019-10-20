@@ -5,12 +5,14 @@ import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.SeasonBundle
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.ui.discover.recycler.ListItem
 
 data class WatchlistItem(
-  val show: Show,
+  override val show: Show,
   val season: Season,
   val episode: Episode,
-  val image: Image,
+  override val image: Image,
   val episodesCount: Int,
-  val watchedEpisodesCount: Int
-)
+  val watchedEpisodesCount: Int,
+  override val isLoading: Boolean = false
+) : ListItem

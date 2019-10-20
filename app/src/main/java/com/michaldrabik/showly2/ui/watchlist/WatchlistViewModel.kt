@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.EpisodeBundle
+import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesInteractor
@@ -17,7 +18,7 @@ class WatchlistViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   val watchlistStream by lazy { MutableLiveData<List<WatchlistItem>>() }
-  val uiStream by lazy { MutableLiveData<WatchlistUiModel>() } //TODO Use single event LiveData
+  val uiStream by lazy { MutableLiveData<WatchlistUiModel>() }
 
   fun loadWatchlist() {
     viewModelScope.launch {
@@ -39,6 +40,19 @@ class WatchlistViewModel @Inject constructor(
       val bundle = EpisodeBundle(item.episode, item.season, item.show)
       episodesInteractor.setEpisodeWatched(bundle)
       loadWatchlist()
+    }
+  }
+
+  fun findMissingImage(item: WatchlistItem, force: Boolean) {
+    viewModelScope.launch {
+      uiStream.value = WatchlistUiModel(updateListItem = item.copy(isLoading = true))
+      try {
+        val image = interactor.loadMissingImage(item.show, item.image.type, force)
+        uiStream.value = WatchlistUiModel(updateListItem = item.copy(isLoading = false, image = image))
+      } catch (t: Throwable) {
+        val unavailable = Image.createUnavailable(item.image.type)
+        uiStream.value = WatchlistUiModel(updateListItem = item.copy(isLoading = false, image = unavailable))
+      }
     }
   }
 
