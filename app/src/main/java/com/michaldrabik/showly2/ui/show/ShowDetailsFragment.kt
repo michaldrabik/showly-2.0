@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.transition.AutoTransition
+import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -209,8 +212,38 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       }
       isFollowed?.let {
         when {
-          it.isFollowed -> showDetailsAddButton.setWatched(it.withAnimation)
-          else -> showDetailsAddButton.setUnwatched(it.withAnimation)
+          it.isFollowed -> {
+            showDetailsWatchLaterButton.fadeOut {
+              showDetailsAddButton.setWatched(it.withAnimation)
+              val constraintSet1 = ConstraintSet()
+              val constraintSet2 = ConstraintSet()
+              constraintSet1.clone(constraintLayout)
+              constraintSet2.clone(constraintLayout)
+              constraintSet2.setHorizontalWeight(R.id.showDetailsWatchLaterButton, 0F)
+
+              val transition = AutoTransition().apply {
+                duration = if (it.withAnimation) 200L else 0L
+              }
+              TransitionManager.beginDelayedTransition(constraintLayout, transition)
+              constraintSet2.applyTo(constraintLayout)
+            }
+          }
+          else -> {
+            showDetailsWatchLaterButton.fadeIn {
+              showDetailsAddButton.setUnwatched(it.withAnimation)
+              val constraintSet1 = ConstraintSet()
+              val constraintSet2 = ConstraintSet()
+              constraintSet1.clone(constraintLayout)
+              constraintSet2.clone(constraintLayout)
+              constraintSet2.setHorizontalWeight(R.id.showDetailsWatchLaterButton, 1F)
+
+              val transition = AutoTransition().apply {
+                duration = if (it.withAnimation) 200L else 0L
+              }
+              TransitionManager.beginDelayedTransition(constraintLayout, transition)
+              constraintSet2.applyTo(constraintLayout)
+            }
+          }
         }
       }
       nextEpisode?.let { renderNextEpisode(it) }

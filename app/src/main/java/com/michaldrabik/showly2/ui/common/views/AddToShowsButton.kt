@@ -15,7 +15,7 @@ class AddToShowsButton : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   companion object {
-    private const val TRANSITION_DURATION = 200L
+    private const val TRANSITION_DURATION = 0L
   }
 
   init {

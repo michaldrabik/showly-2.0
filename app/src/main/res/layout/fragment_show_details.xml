@@ -20,6 +20,7 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/constraintLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:paddingBottom="@dimen/spaceMedium"
@@ -143,7 +144,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceSmall"
-        app:layout_goneMarginEnd="@dimen/spaceNormal"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeCard"
         app:layout_constraintEnd_toStartOf="@id/showDetailsWatchLaterButton"
@@ -156,11 +156,11 @@
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceSmall"
         android:gravity="center"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:text="@string/textWatchLater"
         android:padding="0dp"
+        android:maxLines="1"
         android:textColor="@color/colorTextSecondary"
         app:layout_constraintStart_toEndOf="@id/showDetailsAddButton"
         app:layout_constraintEnd_toEndOf="parent"
