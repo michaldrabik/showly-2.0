@@ -6,6 +6,7 @@ import com.michaldrabik.showly2.model.Genre
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.*
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import kotlinx.coroutines.delay
@@ -13,13 +14,18 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class DiscoverViewModel @Inject constructor(
-  private val interactor: DiscoverInteractor
+  private val interactor: DiscoverInteractor,
+  private val uiCache: UiCache
 ) : BaseViewModel() {
 
   val discoverShowsStream by lazy { MutableLiveData<List<DiscoverListItem>>() }
   val uiStream by lazy { MutableLiveData<DiscoverUiModel>() }
 
   fun loadDiscoverShows(genres: List<Genre> = emptyList(), skipCache: Boolean = false) {
+    uiStream.value = DiscoverUiModel(
+      searchPosition = uiCache.discoverSearchPosition,
+      chipsPosition = uiCache.discoverChipsPosition
+    )
     viewModelScope.launch {
       val progress = launch {
         delay(750)
@@ -63,6 +69,11 @@ class DiscoverViewModel @Inject constructor(
           DiscoverUiModel(updateListItem = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }
+  }
+
+  fun saveUiPositions(searchPosition: Float, chipsPosition: Float) {
+    uiCache.discoverSearchPosition = searchPosition
+    uiCache.discoverChipsPosition = chipsPosition
   }
 
   private fun onError(error: Error) {

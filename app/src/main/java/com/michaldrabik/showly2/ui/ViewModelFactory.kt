@@ -39,7 +39,7 @@ class ViewModelFactory @Inject constructor(
       MainViewModel(mainInteractor) as T
 
     modelClass.isAssignableFrom(DiscoverViewModel::class.java) ->
-      DiscoverViewModel(discoverInteractor) as T
+      DiscoverViewModel(discoverInteractor, uiCache) as T
 
     modelClass.isAssignableFrom(ShowDetailsViewModel::class.java) ->
       ShowDetailsViewModel(showDetailsInteractor, episodesInteractor) as T

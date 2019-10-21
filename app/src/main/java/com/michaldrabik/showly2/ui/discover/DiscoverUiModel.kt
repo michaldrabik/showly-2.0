@@ -5,5 +5,7 @@ import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 data class DiscoverUiModel(
   val showLoading: Boolean? = null,
   val updateListItem: DiscoverListItem? = null,
+  val searchPosition: Float? = null,
+  val chipsPosition: Float? = null,
   val error: Error? = null
 )

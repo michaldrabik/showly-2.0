@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
@@ -19,7 +20,7 @@ import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 
-class WatchlistFragment : BaseFragment<WatchlistViewModel>() {
+class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedListener {
 
   override val layoutResId = R.layout.fragment_watchlist
 
@@ -79,6 +80,8 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>() {
     modal.onEpisodeWatchedClick = { }
     modal.show(requireActivity().supportFragmentManager, "MODAL")
   }
+
+  override fun onTabReselected() = watchlistRecycler.smoothScrollToPosition(0)
 
   private fun render(watchlistItems: List<WatchlistItem>) {
     adapter.setItems(watchlistItems)
