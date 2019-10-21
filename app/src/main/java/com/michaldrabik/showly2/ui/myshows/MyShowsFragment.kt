@@ -121,6 +121,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
       myShowsRootContent.fadeIf(it.isNotEmpty())
       myShowsSearchView.isClickable = it.isNotEmpty()
       myShowsSearchView.isEnabled = it.isNotEmpty()
+      myShowsEmptyView.fadeIf(it.isEmpty())
       renderFanartContainer(it, myShowsRecentsContainer)
     }
     uiModel.runningShows?.let {

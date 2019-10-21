@@ -21,10 +21,10 @@ android {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
     release {
-      keyAlias keystoreProperties['keyAlias']
-      keyPassword keystoreProperties['keyPassword']
       storeFile file("keystore")
       storePassword keystoreProperties['storePassword']
+      keyAlias keystoreProperties['keyAlias']
+      keyPassword keystoreProperties['keyPassword']
     }
   }
 

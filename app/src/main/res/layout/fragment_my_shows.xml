@@ -123,4 +123,10 @@
     android:layout_marginRight="@dimen/spaceMedium"
     />
 
+  <include
+    android:id="@+id/myShowsEmptyView"
+    layout="@layout/layout_my_shows_empty"
+    android:visibility="gone"
+    />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
