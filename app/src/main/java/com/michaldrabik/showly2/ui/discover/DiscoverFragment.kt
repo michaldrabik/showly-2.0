@@ -139,7 +139,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
   private fun render(uiModel: DiscoverUiModel) {
     uiModel.run {
       showLoading?.let {
-        discoverChipsView.fadeIf(!it)
+        discoverChipsView.isEnabled = !it
         discoverSearchView.isClickable = !it
         discoverSwipeRefresh.isRefreshing = it
       }
