@@ -7,11 +7,16 @@
   <dimen name="spaceBig">24dp</dimen>
 
   <dimen name="swipeRefreshStartOffset">8dp</dimen>
-  <dimen name="swipeRefreshEndOffset">80dp</dimen>
+  <dimen name="swipeRefreshEndOffset">120dp</dimen>
 
   <dimen name="episodeDetailsCorner">16dp</dimen>
   <dimen name="showTileCorner">4dp</dimen>
   <dimen name="showTilePlaceholder">40dp</dimen>
+
+  <dimen name="discoverChipHeight">32dp</dimen>
+  <dimen name="discoverChipStrokeWidth">1dp</dimen>
+  <dimen name="discoverChipsPadding">68dp</dimen>
+  <dimen name="discoverRecyclerPadding">110dp</dimen>
 
   <dimen name="myShowsBottomPadding">68dp</dimen>
   <dimen name="myShowsFanartCorner">4dp</dimen>

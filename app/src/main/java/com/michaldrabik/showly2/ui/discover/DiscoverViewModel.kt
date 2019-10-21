@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.discover
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.showly2.model.Genre
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.*
 import com.michaldrabik.showly2.model.Show
@@ -18,14 +19,14 @@ class DiscoverViewModel @Inject constructor(
   val discoverShowsStream by lazy { MutableLiveData<List<DiscoverListItem>>() }
   val uiStream by lazy { MutableLiveData<DiscoverUiModel>() }
 
-  fun loadTrendingShows(skipCache: Boolean = false) {
+  fun loadDiscoverShows(genres: List<Genre> = emptyList(), skipCache: Boolean = false) {
     viewModelScope.launch {
       val progress = launch {
         delay(750)
         uiStream.value = DiscoverUiModel(showLoading = true)
       }
       try {
-        val shows = interactor.loadDiscoverShows(skipCache)
+        val shows = interactor.loadDiscoverShows(genres, skipCache)
         onShowsLoaded(shows)
       } catch (t: Throwable) {
         onError(Error(t))

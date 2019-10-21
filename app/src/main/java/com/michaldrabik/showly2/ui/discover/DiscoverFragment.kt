@@ -14,12 +14,7 @@ import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
-import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import com.michaldrabik.showly2.utilities.extensions.fadeIn
-import com.michaldrabik.showly2.utilities.extensions.fadeOut
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
-import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
+import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.random.Random
@@ -49,13 +44,14 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
       discoverShowsStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-      loadTrendingShows()
+      loadDiscoverShows()
     }
   }
 
   private fun setupView() {
     discoverSearchView.isClickable = false
     discoverSearchView.onClick { openSearchView() }
+    discoverChipsView.onChipsSelectedListener = { viewModel.loadDiscoverShows(it) }
     setupRecycler()
   }
 
@@ -76,20 +72,24 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
       setColorSchemeResources(R.color.colorAccent, R.color.colorAccent, R.color.colorAccent)
       setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
       setOnRefreshListener {
+        discoverChipsView.clear()
+        discoverChipsView.gone()
         adapter.clearItems()
-        viewModel.loadTrendingShows(skipCache = true)
+        viewModel.loadDiscoverShows(skipCache = true)
       }
     }
   }
 
   private fun openShowDetails(item: DiscoverListItem) {
     animateItemsExit(item)
+    discoverChipsView.fadeOut()
     discoverSearchView.fadeOut()
     getMainActivity().hideNavigation()
   }
 
   private fun openSearchView() {
     getMainActivity().hideNavigation()
+    discoverChipsView.fadeOut(200)
     discoverRecycler.fadeOut(duration = 200) {
       findNavController().navigate(R.id.actionDiscoverFragmentToSearchFragment)
     }
@@ -119,11 +119,13 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     adapter.setItems(items)
     layoutManager.withSpanSizeLookup { pos -> items[pos].image.type.spanSize }
     discoverRecycler.fadeIn()
+    discoverChipsView.fadeIn()
   }
 
   private fun render(uiModel: DiscoverUiModel) {
     uiModel.run {
       showLoading?.let {
+        discoverChipsView.fadeIf(!it)
         discoverSearchView.isClickable = !it
         discoverSwipeRefresh.isRefreshing = it
       }

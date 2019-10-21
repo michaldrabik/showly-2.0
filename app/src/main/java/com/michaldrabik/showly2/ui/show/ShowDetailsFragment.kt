@@ -195,7 +195,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         showDetailsMainProgress.visibleIf(it)
       }
       isFollowed?.let {
-        val duration = if (it.withAnimation) 150L else 0L
+        val duration = if (it.withAnimation) 125L else 0L
         when {
           it.isFollowed -> {
             showDetailsWatchLaterButton.fadeOut(duration)

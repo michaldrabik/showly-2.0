@@ -4,6 +4,7 @@ import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.model.Genre
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
@@ -21,7 +22,10 @@ class DiscoverInteractor @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  suspend fun loadDiscoverShows(skipCache: Boolean = false): List<Show> {
+  suspend fun loadDiscoverShows(
+    genres: List<Genre>,
+    skipCache: Boolean = false
+  ): List<Show> {
 
     fun addIfMissing(shows: MutableList<Show>, show: Show) {
       if (shows.none { it.id == show.id }) {
@@ -31,7 +35,14 @@ class DiscoverInteractor @Inject constructor(
 
     val stamp = database.discoverShowsDao().getMostRecent()?.createdAt ?: 0
     if (!skipCache && nowUtcMillis() - stamp < Config.DISCOVER_SHOWS_CACHE_DURATION) {
-      return database.discoverShowsDao().getAll().map { mappers.show.fromDatabase(it) }
+      return database.discoverShowsDao().getAll()
+        .map { mappers.show.fromDatabase(it) }
+        .filter { show ->
+          when {
+            genres.isEmpty() -> true
+            else -> genres.any { it.slug in show.genres }
+          }
+        }
     }
 
     val discoverShows = mutableListOf<Show>()
