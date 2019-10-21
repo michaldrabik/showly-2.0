@@ -56,7 +56,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     discoverSearchView.onClick { openSearchView() }
     discoverChipsView.onChipsSelectedListener = {
       saveUiPositions()
-      viewModel.loadDiscoverShows()
+      viewModel.loadDiscoverShows(resetScroll = it.isEmpty())
     }
   }
 
@@ -153,7 +153,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
         discoverChipsView.translationY = it.discoverChipsPosition
         discoverChipsView.selectedChips = it.discoverActiveGenres
       }
-      resetScroll?.let { discoverRecycler.smoothScrollToPosition(0) }
+      resetScroll?.let { if (it) discoverRecycler.scrollToPosition(0) }
       error?.let {
         requireActivity().snackBarHost.showErrorSnackbar(it.message ?: getString(R.string.errorGeneral))
       }

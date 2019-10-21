@@ -36,13 +36,13 @@ class DiscoverInteractor @Inject constructor(
     val stamp = database.discoverShowsDao().getMostRecent()?.createdAt ?: 0
     if (!skipCache && nowUtcMillis() - stamp < Config.DISCOVER_SHOWS_CACHE_DURATION) {
       return database.discoverShowsDao().getAll()
-        .map { mappers.show.fromDatabase(it) }
         .filter { show ->
           when {
             genres.isEmpty() -> true
             else -> genres.any { it.slug in show.genres }
           }
         }
+        .map { mappers.show.fromDatabase(it) }
     }
 
     val discoverShows = mutableListOf<Show>()

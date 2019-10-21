@@ -21,7 +21,7 @@ class DiscoverViewModel @Inject constructor(
   val discoverShowsStream by lazy { MutableLiveData<List<DiscoverListItem>>() }
   val uiStream by lazy { MutableLiveData<DiscoverUiModel>() }
 
-  fun loadDiscoverShows(skipCache: Boolean = false) {
+  fun loadDiscoverShows(resetScroll: Boolean = false, skipCache: Boolean = false) {
     uiStream.value = DiscoverUiModel(applyUiCache = uiCache)
     viewModelScope.launch {
       val progress = launch {
@@ -31,9 +31,7 @@ class DiscoverViewModel @Inject constructor(
       try {
         val shows = interactor.loadDiscoverShows(uiCache.discoverActiveGenres, skipCache)
         onShowsLoaded(shows)
-        if (uiCache.discoverActiveGenres.isEmpty()) {
-          uiStream.value = DiscoverUiModel(resetScroll = true)
-        }
+        uiStream.value = DiscoverUiModel(resetScroll = resetScroll)
       } catch (t: Throwable) {
         onError(Error(t))
       } finally {
