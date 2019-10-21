@@ -52,8 +52,8 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     discoverSearchView.isClickable = false
     discoverSearchView.onClick { openSearchView() }
     discoverChipsView.onChipsSelectedListener = {
-      viewModel.saveUiPositions(0F, 0F)
-      viewModel.loadDiscoverShows(it)
+      saveUiPositions()
+      viewModel.loadDiscoverShows()
     }
     setupRecycler()
   }
@@ -78,6 +78,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
         discoverChipsView.clear()
         discoverChipsView.gone()
         adapter.clearItems()
+        viewModel.clearCache()
         viewModel.loadDiscoverShows(skipCache = true)
       }
     }
@@ -119,7 +120,11 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
   }
 
   private fun saveUiPositions() {
-    viewModel.saveUiPositions(discoverSearchView.translationY, discoverChipsView.translationY)
+    viewModel.saveUiPositions(
+      discoverSearchView.translationY,
+      discoverChipsView.translationY,
+      discoverChipsView.selectedChips
+    )
   }
 
   override fun onTabReselected() = openSearchView()
@@ -139,8 +144,11 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
         discoverSwipeRefresh.isRefreshing = it
       }
       updateListItem?.let { adapter.updateItem(it) }
-      searchPosition?.let { discoverSearchView.translationY = it }
-      chipsPosition?.let { discoverChipsView.translationY = it }
+      uiCache?.let {
+        discoverSearchView.translationY = it.discoverSearchPosition
+        discoverChipsView.translationY = it.discoverChipsPosition
+        discoverChipsView.selectedChips = it.discoverActiveGenres
+      }
       error?.let {
         requireActivity().snackBarHost.showErrorSnackbar(it.message ?: getString(R.string.errorGeneral))
       }

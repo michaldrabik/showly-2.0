@@ -27,19 +27,34 @@ class DiscoverChipsView : HorizontalScrollView, CoordinatorLayout.AttachedBehavi
     View.inflate(context, R.layout.view_discover_chips, this)
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
     isHorizontalScrollBarEnabled = false
-    setupChips()
+    setupChips(Genre.values().toList())
   }
 
+  var selectedChips: List<Genre>
+    get() = discoverChipsGroup.children
+      .filter { (it as Chip).isChecked }
+      .map { it.tag as Genre }
+      .toList()
+    set(value) {
+      isListenerDisabled = true
+      discoverChipsGroup.children.forEach { child ->
+        (child as Chip).run { isChecked = ((tag as Genre) in value) }
+      }
+      isListenerDisabled = false
+    }
+
   var onChipsSelectedListener: (List<Genre>) -> Unit = {}
-  private var isClearing = false
+  private var isListenerDisabled = false
 
   override fun getBehavior() = DiscoverChipsViewBehaviour()
 
   @SuppressLint("DefaultLocale")
-  private fun setupChips() {
+  private fun setupChips(genres: List<Genre>) {
     val color = ResourcesCompat.getColorStateList(resources, R.color.bg_discover_chip, null)
     val checkListener: (CompoundButton, Boolean) -> Unit = { _, _ -> onChipSelected() }
-    Genre.values().forEach { genre ->
+
+    discoverChipsGroup.removeAllViews()
+    genres.forEach { genre ->
       val view = Chip(context).apply {
         layoutParams = LayoutParams(WRAP_CONTENT, MATCH_PARENT)
         isCheckable = true
@@ -61,15 +76,15 @@ class DiscoverChipsView : HorizontalScrollView, CoordinatorLayout.AttachedBehavi
       .filter { (it as Chip).isChecked }
       .map { it.tag as Genre }
       .toList()
-    if (!isClearing) onChipsSelectedListener(genres)
+    if (!isListenerDisabled) onChipsSelectedListener(genres)
   }
 
   fun clear() {
-    isClearing = true
+    isListenerDisabled = true
     scrollTo(0, 0)
     discoverChipsGroup.children.forEach {
       (it as Chip).isChecked = false
     }
-    isClearing = false
+    isListenerDisabled = false
   }
 }

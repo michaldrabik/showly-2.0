@@ -21,18 +21,15 @@ class DiscoverViewModel @Inject constructor(
   val discoverShowsStream by lazy { MutableLiveData<List<DiscoverListItem>>() }
   val uiStream by lazy { MutableLiveData<DiscoverUiModel>() }
 
-  fun loadDiscoverShows(genres: List<Genre> = emptyList(), skipCache: Boolean = false) {
-    uiStream.value = DiscoverUiModel(
-      searchPosition = uiCache.discoverSearchPosition,
-      chipsPosition = uiCache.discoverChipsPosition
-    )
+  fun loadDiscoverShows(skipCache: Boolean = false) {
+    uiStream.value = DiscoverUiModel(uiCache = uiCache)
     viewModelScope.launch {
       val progress = launch {
         delay(750)
         uiStream.value = DiscoverUiModel(showLoading = true)
       }
       try {
-        val shows = interactor.loadDiscoverShows(genres, skipCache)
+        val shows = interactor.loadDiscoverShows(uiCache.discoverActiveGenres, skipCache)
         onShowsLoaded(shows)
       } catch (t: Throwable) {
         onError(Error(t))
@@ -71,10 +68,16 @@ class DiscoverViewModel @Inject constructor(
     }
   }
 
-  fun saveUiPositions(searchPosition: Float, chipsPosition: Float) {
+  fun saveUiPositions(searchPosition: Float, chipsPosition: Float, activeGenres: List<Genre>) {
     uiCache.discoverSearchPosition = searchPosition
     uiCache.discoverChipsPosition = chipsPosition
+    uiCache.discoverActiveGenres.run {
+      clear()
+      addAll(activeGenres)
+    }
   }
+
+  fun clearCache() = uiCache.clear()
 
   private fun onError(error: Error) {
     uiStream.value = DiscoverUiModel(error = error)
