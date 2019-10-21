@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -15,8 +14,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
-import androidx.transition.AutoTransition
-import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -32,20 +29,7 @@ import com.michaldrabik.showly2.ui.show.related.RelatedShowAdapter
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonsAdapter
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
-import com.michaldrabik.showly2.utilities.extensions.fadeIf
-import com.michaldrabik.showly2.utilities.extensions.fadeIn
-import com.michaldrabik.showly2.utilities.extensions.fadeOut
-import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.screenHeight
-import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
-import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
-import com.michaldrabik.showly2.utilities.extensions.toDisplayString
-import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
-import com.michaldrabik.showly2.utilities.extensions.visible
-import com.michaldrabik.showly2.utilities.extensions.visibleIf
-import com.michaldrabik.showly2.utilities.extensions.withFailListener
-import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
+import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 
@@ -211,37 +195,20 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         showDetailsMainProgress.visibleIf(it)
       }
       isFollowed?.let {
+        val duration = if (it.withAnimation) 150L else 0L
         when {
           it.isFollowed -> {
-            showDetailsWatchLaterButton.fadeOut {
-              showDetailsAddButton.setWatched(it.withAnimation)
-              val constraintSet1 = ConstraintSet()
-              val constraintSet2 = ConstraintSet()
-              constraintSet1.clone(constraintLayout)
-              constraintSet2.clone(constraintLayout)
-              constraintSet2.setHorizontalWeight(R.id.showDetailsWatchLaterButton, 0F)
-
-              val transition = AutoTransition().apply {
-                duration = if (it.withAnimation) 200L else 0L
-              }
-              TransitionManager.beginDelayedTransition(constraintLayout, transition)
-              constraintSet2.applyTo(constraintLayout)
+            showDetailsWatchLaterButton.fadeOut(duration)
+            showDetailsAddButton.fadeOut(duration) {
+              showDetailsAddButton.setWatched()
+              showDetailsAddButton.fadeIn(duration)
             }
           }
           else -> {
-            showDetailsWatchLaterButton.fadeIn {
-              showDetailsAddButton.setUnwatched(it.withAnimation)
-              val constraintSet1 = ConstraintSet()
-              val constraintSet2 = ConstraintSet()
-              constraintSet1.clone(constraintLayout)
-              constraintSet2.clone(constraintLayout)
-              constraintSet2.setHorizontalWeight(R.id.showDetailsWatchLaterButton, 1F)
-
-              val transition = AutoTransition().apply {
-                duration = if (it.withAnimation) 200L else 0L
-              }
-              TransitionManager.beginDelayedTransition(constraintLayout, transition)
-              constraintSet2.applyTo(constraintLayout)
+            showDetailsAddButton.fadeOut(duration) {
+              showDetailsAddButton.setUnwatched()
+              showDetailsAddButton.fadeIn(duration)
+              showDetailsWatchLaterButton.fadeIn(duration)
             }
           }
         }
