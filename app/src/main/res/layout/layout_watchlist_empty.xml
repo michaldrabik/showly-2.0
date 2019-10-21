@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center"
+  android:layout_marginBottom="@dimen/bottomNavigationHeightPadded"
+  android:orientation="vertical"
+  tools:showIn="@layout/fragment_watchlist"
+  >
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spaceTiny"
+    android:text="@string/menuWatchlist"
+    android:textAllCaps="true"
+    android:textColor="@color/colorTextPrimary"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    />
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/textWatchlistEmpty"
+    android:textColor="@color/colorTextSecondary"
+    android:textSize="14sp"
+    />
+</LinearLayout>

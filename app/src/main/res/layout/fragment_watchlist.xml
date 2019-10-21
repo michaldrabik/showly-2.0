@@ -12,10 +12,16 @@
     android:id="@+id/watchlistRecycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/spaceNormal"
-    android:paddingBottom="@dimen/bottomNavigationHeightPadded"
     android:clipToPadding="false"
     android:overScrollMode="never"
+    android:paddingTop="@dimen/spaceNormal"
+    android:paddingBottom="@dimen/bottomNavigationHeightPadded"
+    android:visibility="gone"
+    />
+
+  <include
+    android:id="@+id/watchlistEmptyView"
+    layout="@layout/layout_watchlist_empty"
     android:visibility="gone"
     />
 
