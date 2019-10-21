@@ -6,6 +6,7 @@ import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 data class DiscoverUiModel(
   val showLoading: Boolean? = null,
   val updateListItem: DiscoverListItem? = null,
-  val uiCache: UiCache? = null,
+  val applyUiCache: UiCache? = null,
+  val resetScroll: Boolean? = null,
   val error: Error? = null
 )

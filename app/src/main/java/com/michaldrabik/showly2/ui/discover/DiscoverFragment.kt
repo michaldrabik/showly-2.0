@@ -41,6 +41,9 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
+    setupRecycler()
+    setupSwipeRefresh()
+
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
       discoverShowsStream.observe(viewLifecycleOwner, Observer { render(it!!) })
@@ -55,7 +58,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
       saveUiPositions()
       viewModel.loadDiscoverShows()
     }
-    setupRecycler()
   }
 
   private fun setupRecycler() {
@@ -69,7 +71,9 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
     }
+  }
 
+  private fun setupSwipeRefresh() {
     discoverSwipeRefresh.apply {
       setProgressBackgroundColorSchemeResource(R.color.colorSearchViewBackground)
       setColorSchemeResources(R.color.colorAccent, R.color.colorAccent, R.color.colorAccent)
@@ -144,11 +148,12 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
         discoverSwipeRefresh.isRefreshing = it
       }
       updateListItem?.let { adapter.updateItem(it) }
-      uiCache?.let {
+      applyUiCache?.let {
         discoverSearchView.translationY = it.discoverSearchPosition
         discoverChipsView.translationY = it.discoverChipsPosition
         discoverChipsView.selectedChips = it.discoverActiveGenres
       }
+      resetScroll?.let { discoverRecycler.smoothScrollToPosition(0) }
       error?.let {
         requireActivity().snackBarHost.showErrorSnackbar(it.message ?: getString(R.string.errorGeneral))
       }
