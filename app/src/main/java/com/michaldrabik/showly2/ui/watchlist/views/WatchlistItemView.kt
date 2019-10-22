@@ -6,15 +6,12 @@ import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.views.ShowView
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
-import com.michaldrabik.showly2.utilities.extensions.addRipple
-import com.michaldrabik.showly2.utilities.extensions.bump
-import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
-import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.view_watchlist_item.view.*
 
 @SuppressLint("SetTextI18n")
@@ -58,7 +55,16 @@ class WatchlistItemView : ShowView<WatchlistItem> {
 
     loadImage(item, missingImageListener)
 
-    val color = if (item.episode.hasAired()) R.color.colorWatchlistEnabledButton else R.color.colorWatchlistDisabledButton
+    val hasAired = item.episode.hasAired()
+    val color = if (hasAired) R.color.colorWatchlistEnabledButton else R.color.colorWatchlistDisabledButton
+    if (hasAired) {
+      watchlistItemCheckButton.text = ""
+      watchlistItemCheckButton.setIconResource(R.drawable.ic_check)
+    } else {
+      watchlistItemCheckButton.text = "Airs in 99 days"
+      watchlistItemCheckButton.icon = null
+    }
+    watchlistItemCheckButton.setTextColor(ContextCompat.getColor(context, color))
     watchlistItemCheckButton.setStrokeColorResource(color)
     watchlistItemCheckButton.setIconTintResource(color)
 

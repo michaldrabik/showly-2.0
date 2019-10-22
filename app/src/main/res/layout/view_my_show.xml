@@ -43,10 +43,11 @@
       android:shadowDx="3"
       android:shadowDy="3"
       android:shadowRadius="1"
-      android:visibility="gone"
       android:textColor="@color/colorWhite"
-      android:textSize="13sp"
+      android:textSize="14sp"
+      android:visibility="gone"
       tools:text="Game Of Thrones"
+      tools:visibility="visible"
       />
 
     <ProgressBar

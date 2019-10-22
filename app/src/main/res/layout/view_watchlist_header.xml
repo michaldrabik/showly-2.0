@@ -15,7 +15,7 @@
     android:layout_marginTop="@dimen/spaceNormal"
     android:layout_marginBottom="@dimen/spaceNormal"
     android:textColor="@color/colorTextPrimary"
-    android:textSize="20sp"
+    android:textSize="@dimen/listHeaderTextSize"
     android:textStyle="bold"
     tools:text="Coming Soon"
     />

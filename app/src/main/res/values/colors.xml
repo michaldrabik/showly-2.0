@@ -24,7 +24,7 @@
   <color name="colorSearchViewText">#B5B5B5</color>
 
   <color name="colorWatchlistEnabledButton">#FFFFFF</color>
-  <color name="colorWatchlistDisabledButton">#57B5B5B5</color>
+  <color name="colorWatchlistDisabledButton">#B5B5B5</color>
   <color name="colorWatchlistSecondaryButton">#B5B5B5</color>
 
   <color name="colorShowDetailsEpisodeBackground">#313131</color>

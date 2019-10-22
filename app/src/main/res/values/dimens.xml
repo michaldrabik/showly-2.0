@@ -8,6 +8,7 @@
 
   <dimen name="swipeRefreshStartOffset">8dp</dimen>
   <dimen name="swipeRefreshEndOffset">120dp</dimen>
+  <dimen name="listHeaderTextSize">20sp</dimen>
 
   <dimen name="episodeDetailsCorner">16dp</dimen>
   <dimen name="showTileCorner">4dp</dimen>
