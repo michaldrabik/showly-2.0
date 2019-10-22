@@ -39,6 +39,7 @@
   <string name="textSortRated">Highest Rated</string>
   <string name="textEpisodeInfo">Details</string>
   <string name="textWatchLater">See Later</string>
+  <string name="textWatchlistIncoming">Coming Soon</string>
   <string name="textWatchlistEmpty">Your watchlist is currently empty.\nVisit Discover tab to add your favorite shows.</string>
   <string name="textMyShowsEmpty">Your shows list is currently empty.\nVisit Discover tab to add your favorite shows.</string>
 

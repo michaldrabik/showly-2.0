@@ -25,7 +25,14 @@ class WatchlistViewModel @Inject constructor(
       val items = interactor.loadWatchlist().map {
         val image = interactor.findCachedImage(it.show, POSTER)
         it.copy(image = image)
+      }.toMutableList()
+
+      val headerIndex = items.indexOfFirst { !it.isHeader() && !it.episode.hasAired() }
+      if (headerIndex != -1) {
+        val item = items[headerIndex]
+        items.add(headerIndex, item.copy(headerTextResId = R.string.textWatchlistIncoming))
       }
+
       watchlistStream.value = items
     }
   }

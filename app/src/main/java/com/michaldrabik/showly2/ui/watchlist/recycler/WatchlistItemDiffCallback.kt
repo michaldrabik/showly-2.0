@@ -9,6 +9,7 @@ class WatchlistItemDiffCallback(
 
   override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
     oldList[oldItemPosition].show.id == newList[newItemPosition].show.id
+        && oldList[oldItemPosition].isHeader() == newList[newItemPosition].isHeader()
 
   override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
     val (_, episode1, episodesCount1, watchedEpisodes1) = oldList[oldItemPosition]

@@ -48,7 +48,7 @@ class WatchlistInteractor @Inject constructor(
           watchedEpisodesCount
         )
       }
-      .sortedBy { it.show.title }
+      .sortedWith(compareBy({ !it.episode.hasAired() }, { it.show.title }))
       .toList()
   }
 
