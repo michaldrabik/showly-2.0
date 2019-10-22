@@ -2,8 +2,6 @@ package com.michaldrabik.showly2.model.mappers
 
 import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.model.Season
-import org.threeten.bp.ZonedDateTime
-import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
 import com.michaldrabik.network.trakt.model.Season as SeasonNetwork
 import com.michaldrabik.storage.database.model.Season as SeasonDb
@@ -25,7 +23,7 @@ class SeasonMapper @Inject constructor(
     season.episodeCount,
     season.airedEpisodes,
     season.title,
-    if (season.firstAired.isBlank()) null else ZonedDateTime.parse(season.firstAired),
+    season.firstAired,
     season.overview,
     season.episodes.map { episodeMapper.fromNetwork(it) }
   )
@@ -36,7 +34,7 @@ class SeasonMapper @Inject constructor(
     seasonDb.episodesCount,
     seasonDb.episodesAiredCount,
     seasonDb.seasonTitle,
-    if (seasonDb.seasonFirstAired.isBlank()) null else ZonedDateTime.parse(seasonDb.seasonFirstAired),
+    seasonDb.seasonFirstAired,
     seasonDb.seasonOverview,
     emptyList()
   )
@@ -52,7 +50,7 @@ class SeasonMapper @Inject constructor(
       season.number,
       season.title,
       season.overview,
-      season.firstAired?.format(DateTimeFormatter.ISO_ZONED_DATE_TIME) ?: "",
+      season.firstAired,
       season.episodeCount,
       season.airedEpisodes,
       isWatched

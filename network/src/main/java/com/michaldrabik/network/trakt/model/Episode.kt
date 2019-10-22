@@ -1,5 +1,7 @@
 package com.michaldrabik.network.trakt.model
 
+import org.threeten.bp.ZonedDateTime
+
 data class Episode(
   val season: Int,
   val number: Int,
@@ -9,6 +11,6 @@ data class Episode(
   val rating: Float,
   val votes: Int,
   val commentCount: Int,
-  val firstAired: String,
+  val firstAired: ZonedDateTime?,
   val runtime: Int
 )

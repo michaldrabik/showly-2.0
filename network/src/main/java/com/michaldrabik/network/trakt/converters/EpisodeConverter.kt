@@ -4,6 +4,8 @@ import com.michaldrabik.network.trakt.model.Episode
 import com.michaldrabik.network.trakt.model.Ids
 import com.michaldrabik.network.trakt.model.json.EpisodeJson
 import com.squareup.moshi.FromJson
+import com.squareup.moshi.ToJson
+import org.threeten.bp.ZonedDateTime
 
 class EpisodeConverter {
 
@@ -25,7 +27,10 @@ class EpisodeConverter {
       json.rating ?: 0F,
       json.votes ?: 0,
       json.comment_count ?: 0,
-      json.first_aired ?: "",
+      if (json.first_aired.isNullOrBlank()) null else ZonedDateTime.parse(json.first_aired),
       json.runtime ?: -1
     )
+
+  @ToJson
+  fun toJson(value: Episode): EpisodeJson = throw UnsupportedOperationException()
 }

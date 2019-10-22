@@ -5,6 +5,7 @@ import com.michaldrabik.network.trakt.model.Ids
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.network.trakt.model.json.ShowJson
 import com.squareup.moshi.FromJson
+import com.squareup.moshi.ToJson
 
 class ShowConverter {
 
@@ -41,4 +42,7 @@ class ShowConverter {
       json.genres?.map { it } ?: emptyList(),
       json.aired_episodes ?: -1
     )
+
+  @ToJson
+  fun toJson(value: Show): ShowJson = throw UnsupportedOperationException()
 }

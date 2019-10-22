@@ -4,6 +4,8 @@ import com.michaldrabik.network.trakt.model.Ids
 import com.michaldrabik.network.trakt.model.Season
 import com.michaldrabik.network.trakt.model.json.SeasonJson
 import com.squareup.moshi.FromJson
+import com.squareup.moshi.ToJson
+import org.threeten.bp.ZonedDateTime
 
 class SeasonConverter(
   private val episodeConverter: EpisodeConverter
@@ -24,10 +26,13 @@ class SeasonConverter(
       json.episode_count ?: -1,
       json.aired_episodes ?: -1,
       json.title ?: "",
-      json.first_aired ?: "",
+      if (json.first_aired.isNullOrBlank()) null else ZonedDateTime.parse(json.first_aired),
       json.overview ?: "",
       json.episodes?.map {
         episodeConverter.fromJson(it)
       } ?: emptyList()
     )
+
+  @ToJson
+  fun toJson(value: Season): SeasonJson = throw UnsupportedOperationException()
 }

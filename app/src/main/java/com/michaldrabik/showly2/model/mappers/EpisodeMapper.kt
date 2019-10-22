@@ -3,8 +3,6 @@ package com.michaldrabik.showly2.model.mappers
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.model.Season
-import org.threeten.bp.ZonedDateTime
-import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
 import com.michaldrabik.network.trakt.model.Episode as EpisodeNetwork
 import com.michaldrabik.storage.database.model.Episode as EpisodeDb
@@ -27,7 +25,7 @@ class EpisodeMapper @Inject constructor() {
     episode.rating,
     episode.votes,
     episode.commentCount,
-    if (episode.firstAired.isEmpty()) null else ZonedDateTime.parse(episode.firstAired),
+    episode.firstAired,
     episode.runtime
   )
 
@@ -48,7 +46,7 @@ class EpisodeMapper @Inject constructor() {
       episode.number,
       episode.overview,
       episode.title,
-      episode.firstAired?.format(DateTimeFormatter.ISO_ZONED_DATE_TIME) ?: "",
+      episode.firstAired,
       episode.commentCount,
       episode.rating,
       episode.runtime,
@@ -70,7 +68,7 @@ class EpisodeMapper @Inject constructor() {
       season = episodeDb.seasonNumber,
       overview = episodeDb.episodeOverview,
       commentCount = episodeDb.commentsCount,
-      firstAired = if (episodeDb.firstAired.isEmpty()) null else ZonedDateTime.parse(episodeDb.firstAired),
+      firstAired = episodeDb.firstAired,
       rating = episodeDb.rating,
       runtime = episodeDb.runtime,
       votes = episodeDb.votesCount

@@ -23,7 +23,7 @@ class WatchlistInteractor @Inject constructor(
 
     val shows = database.followedShowsDao().getAll()
     val episodes = database.episodesDao().getAllForShows(shows.map { it.idTrakt })
-    val episodesUnwatched = episodes.filter { !it.isWatched && it.firstAired.isNotBlank() }
+    val episodesUnwatched = episodes.filter { !it.isWatched && it.firstAired != null }
 
     return shows
       .filter { show -> episodesUnwatched.any { it.idShowTrakt == show.idTrakt } }

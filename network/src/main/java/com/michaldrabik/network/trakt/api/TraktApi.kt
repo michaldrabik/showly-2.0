@@ -24,5 +24,5 @@ class TraktApi(private val service: TraktService) {
     return results.sortedWith(compareBy({ it.score }, { it.show.votes })).reversed().map { it.show }
   }
 
-  suspend fun fetchSeasons(traktId: Long) = service.fetchSeasons(traktId).sortedBy { it.number }
+  suspend fun fetchSeasons(traktId: Long) = service.fetchSeasons(traktId)
 }

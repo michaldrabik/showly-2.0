@@ -1,10 +1,9 @@
 package com.michaldrabik.storage.database.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
-import androidx.room.PrimaryKey
+import com.michaldrabik.storage.database.converters.DateConverter
+import org.threeten.bp.ZonedDateTime
 
 @Entity(
   tableName = "episodes", foreignKeys = [ForeignKey(
@@ -14,6 +13,7 @@ import androidx.room.PrimaryKey
     onDelete = CASCADE
   )]
 )
+@TypeConverters(DateConverter::class)
 data class Episode(
   @PrimaryKey @ColumnInfo(name = "id_trakt") var idTrakt: Long,
   @ColumnInfo(name = "id_season") var idSeason: Long,
@@ -25,7 +25,7 @@ data class Episode(
   @ColumnInfo(name = "episode_number") var episodeNumber: Int,
   @ColumnInfo(name = "episode_overview") var episodeOverview: String,
   @ColumnInfo(name = "episode_title") var title: String,
-  @ColumnInfo(name = "first_aired") var firstAired: String,
+  @ColumnInfo(name = "first_aired") var firstAired: ZonedDateTime?,
   @ColumnInfo(name = "comments_count") var commentsCount: Int,
   @ColumnInfo(name = "rating") var rating: Float,
   @ColumnInfo(name = "runtime") var runtime: Int,

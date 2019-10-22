@@ -185,8 +185,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         showDetailsTitle.text = show.title
         showDetailsDescription.text = show.overview
         showDetailsStatus.text = show.status.displayName
+        val year = if (show.year > 0) show.year.toString() else ""
         showDetailsExtraInfo.text =
-          "${show.network} ${show.year} | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
+          "${show.network} $year | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
         showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
         showDetailsAddButton.onClick { viewModel.toggleFollowedShow() }
       }
