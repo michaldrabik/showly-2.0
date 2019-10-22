@@ -7,10 +7,8 @@ import com.michaldrabik.showly2.model.RecentSearch
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.ImagesManager
+import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
-import org.threeten.bp.Instant
-import org.threeten.bp.OffsetDateTime
-import org.threeten.bp.ZoneId
 import javax.inject.Inject
 import com.michaldrabik.storage.database.model.RecentSearch as RecentSearchDb
 
@@ -25,10 +23,7 @@ class SearchInteractor @Inject constructor(
   suspend fun getRecentSearches(limit: Int = 10): List<RecentSearch> {
     return database.recentSearchDao().getAll(limit)
       .sortedByDescending { it.createdAt }
-      .map {
-        val time = OffsetDateTime.ofInstant(Instant.ofEpochMilli(it.createdAt), ZoneId.of("UTC"))
-        RecentSearch(it.text, time)
-      }
+      .map { RecentSearch(it.text) }
   }
 
   suspend fun clearRecentSearches() {
@@ -42,7 +37,8 @@ class SearchInteractor @Inject constructor(
   }
 
   private suspend fun saveRecentSearch(query: String) {
-    database.recentSearchDao().insert(listOf(RecentSearchDb(0, query, Instant.now().toEpochMilli())))
+    val now = nowUtcMillis()
+    database.recentSearchDao().insert(listOf(RecentSearchDb(0, query, now, now)))
   }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =
