@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.common.views
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.ADD
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_MY_SHOWS
@@ -40,25 +41,33 @@ class AddToShowsButton : FrameLayout {
       ADD -> {
         addToMyShowsButton.fadeIn(duration)
         seeLaterButton.fadeIn(duration)
-        inMyShowsButton.fadeOut(duration) {
-          isEnabled = true
-        }
+        inMyShowsButton.fadeOut(duration) { isEnabled = true }
       }
       IN_MY_SHOWS -> {
         addToMyShowsButton.fadeOut(duration)
         seeLaterButton.fadeOut(duration)
-        inMyShowsButton.fadeIn(duration) {
-          isEnabled = true
+        inMyShowsButton.run {
+          setIconResource(R.drawable.ic_check)
+          setText(R.string.textInMyShows)
+          setTextColor(ContextCompat.getColor(context, R.color.colorAccent))
+          setIconTintResource(R.color.colorAccent)
+          setStrokeColorResource(R.color.colorAccent)
+          setRippleColorResource(R.color.colorAccent)
+          fadeIn(duration) { isEnabled = true }
         }
-        inMyShowsButton.setText(R.string.textInMyShows)
       }
       IN_WATCH_LATER -> {
         addToMyShowsButton.fadeOut(duration)
         seeLaterButton.fadeOut(duration)
-        inMyShowsButton.fadeIn(duration) {
-          isEnabled = true
+        inMyShowsButton.run {
+          icon = null
+          setText(R.string.textInSeeLater)
+          setTextColor(ContextCompat.getColor(context, R.color.colorTextSecondary))
+          setIconTintResource(R.color.colorTextSecondary)
+          setStrokeColorResource(R.color.colorTextSecondary)
+          setRippleColorResource(R.color.colorWhite)
+          fadeIn(duration) { isEnabled = true }
         }
-        inMyShowsButton.setText(R.string.textInSeeLater)
       }
     }
   }

@@ -17,6 +17,7 @@ import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodeListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesInteractor
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
@@ -37,12 +38,17 @@ class ShowDetailsViewModel @Inject constructor(
       try {
         uiStream.value = ShowDetailsUiModel(showLoading = true)
         show = interactor.loadShowDetails(id)
-        val isFollowed = interactor.isFollowed(show)
-        val isWatchLater = interactor.isWatchLater(show)
+        val isFollowed = async { interactor.isFollowed(show) }
+        val isWatchLater = async { interactor.isWatchLater(show) }
+        val followedState = FollowedState(
+          isMyShows = isFollowed.await(),
+          isWatchLater = isWatchLater.await(),
+          withAnimation = false
+        )
         uiStream.value = ShowDetailsUiModel(
           show = show,
           showLoading = false,
-          isFollowed = FollowedState(isMyShows = isFollowed, isWatchLater = isWatchLater, withAnimation = false)
+          isFollowed = followedState
         )
 
         launch { loadNextEpisode(show) }
@@ -51,7 +57,7 @@ class ShowDetailsViewModel @Inject constructor(
         launch {
           areSeasonsLoaded = false
           val seasons = loadSeasons(show)
-          if (isFollowed) episodesInteractor.invalidateEpisodes(show, seasons)
+          if (followedState.isMyShows) episodesInteractor.invalidateEpisodes(show, seasons)
           areSeasonsLoaded = true
         }
         launch { loadRelatedShows(show) }
@@ -148,7 +154,6 @@ class ShowDetailsViewModel @Inject constructor(
       uiStream.value = ShowDetailsUiModel(info = R.string.errorSeasonsNotLoaded)
       return
     }
-
     viewModelScope.launch {
       interactor.addToWatchLater(show)
 
