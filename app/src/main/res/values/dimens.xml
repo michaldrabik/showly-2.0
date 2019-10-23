@@ -26,7 +26,7 @@
   <dimen name="myShowsPosterWidth">94dp</dimen>
 
   <dimen name="actorTileCorner">4dp</dimen>
-  <dimen name="actorTilePlaceholder">26dp</dimen>
+  <dimen name="actorTilePlaceholder">36dp</dimen>
   <dimen name="actorTileImageHeight">120dp</dimen>
   <dimen name="actorTileImageWidth">80dp</dimen>
 

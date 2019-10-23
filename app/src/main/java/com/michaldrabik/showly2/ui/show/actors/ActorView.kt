@@ -34,8 +34,16 @@ class ActorView : FrameLayout {
     clear()
     setOnClickListener { clickListener(item) }
     actorName.text = item.name.split(" ").joinToString("\n")
+    loadImage(item)
+  }
+
+  private fun loadImage(actor: Actor) {
+    if (actor.image.isBlank()) {
+      actorPlaceholder.visible()
+      return
+    }
     Glide.with(this)
-      .load("$TVDB_IMAGE_BASE_URL${item.image}")
+      .load("$TVDB_IMAGE_BASE_URL${actor.image}")
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
       .transition(withCrossFade(200))
       .withFailListener { actorPlaceholder.visible() }

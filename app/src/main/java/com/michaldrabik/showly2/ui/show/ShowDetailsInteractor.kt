@@ -7,12 +7,8 @@ import com.michaldrabik.showly2.Config.ACTORS_CACHE_DURATION
 import com.michaldrabik.showly2.Config.RELATED_CACHE_DURATION
 import com.michaldrabik.showly2.UserManager
 import com.michaldrabik.showly2.di.AppScope
-import com.michaldrabik.showly2.model.Actor
-import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.model.ImageType
+import com.michaldrabik.showly2.model.*
 import com.michaldrabik.showly2.model.ImageType.FANART
-import com.michaldrabik.showly2.model.Season
-import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
@@ -60,7 +56,6 @@ class ShowDetailsInteractor @Inject constructor(
     userManager.checkAuthorization()
     val token = userManager.getTvdbToken()
     val remoteActors = cloud.tvdbApi.fetchActors(token, show.ids.tvdb)
-      .filter { it.image.isNotBlank() }
       .sortedBy { it.sortOrder }
       .take(20)
       .map { mappers.actor.fromNetwork(it) }
