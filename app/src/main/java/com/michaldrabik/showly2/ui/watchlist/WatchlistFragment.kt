@@ -16,7 +16,11 @@ import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_I
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistAdapter
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
-import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.showly2.utilities.extensions.fadeIf
+import com.michaldrabik.showly2.utilities.extensions.fadeIn
+import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
+import com.michaldrabik.showly2.utilities.extensions.showShortInfoSnackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 

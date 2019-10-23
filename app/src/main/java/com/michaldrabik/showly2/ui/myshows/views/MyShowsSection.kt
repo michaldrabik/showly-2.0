@@ -13,7 +13,13 @@ import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsListItem
 import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsSectionAdapter
-import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
+import com.michaldrabik.showly2.utilities.extensions.fadeIn
+import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.visible
 import kotlinx.android.synthetic.main.view_my_shows_section.view.*
 
 class MyShowsSection : ConstraintLayout {

@@ -8,7 +8,9 @@ import com.michaldrabik.showly2.model.MyShowsSection.COMING_SOON
 import com.michaldrabik.showly2.model.MyShowsSection.RUNNING
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.SortOrder
-import com.michaldrabik.showly2.model.SortOrder.*
+import com.michaldrabik.showly2.model.SortOrder.NAME
+import com.michaldrabik.showly2.model.SortOrder.NEWEST
+import com.michaldrabik.showly2.model.SortOrder.RATING
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.storage.database.AppDatabase

@@ -10,7 +10,9 @@ import android.os.Build
 import android.util.TypedValue
 import android.view.TouchDelegate
 import android.view.View
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
@@ -20,7 +22,9 @@ import androidx.annotation.DimenRes
 import androidx.core.animation.doOnEnd
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.snackbar.Snackbar.*
+import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
+import com.google.android.material.snackbar.Snackbar.LENGTH_LONG
+import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import com.michaldrabik.showly2.Config.DISPLAY_DATE_FORMAT
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.utilities.SafeOnClickListener

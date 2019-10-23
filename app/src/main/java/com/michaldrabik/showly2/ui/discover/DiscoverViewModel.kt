@@ -4,7 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Genre
 import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.ImageType.*
+import com.michaldrabik.showly2.model.ImageType.FANART
+import com.michaldrabik.showly2.model.ImageType.FANART_WIDE
+import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel

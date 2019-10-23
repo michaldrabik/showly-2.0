@@ -15,7 +15,13 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.ui.common.base.BaseBottomSheetFragment
-import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.showly2.utilities.extensions.withFailListener
+import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
 import kotlinx.android.synthetic.main.view_episode_details.*
 import kotlinx.android.synthetic.main.view_episode_details.view.*
 

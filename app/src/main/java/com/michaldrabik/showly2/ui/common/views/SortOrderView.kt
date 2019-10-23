@@ -5,7 +5,9 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.SortOrder
-import com.michaldrabik.showly2.model.SortOrder.*
+import com.michaldrabik.showly2.model.SortOrder.NAME
+import com.michaldrabik.showly2.model.SortOrder.NEWEST
+import com.michaldrabik.showly2.model.SortOrder.RATING
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_sort_order.view.*

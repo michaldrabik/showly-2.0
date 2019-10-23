@@ -12,7 +12,11 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.views.ShowView
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.DurationPrinter
-import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.showly2.utilities.extensions.addRipple
+import com.michaldrabik.showly2.utilities.extensions.bump
+import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
+import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.view_watchlist_item.view.*
 
 @SuppressLint("SetTextI18n")
