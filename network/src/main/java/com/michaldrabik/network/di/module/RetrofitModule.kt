@@ -4,7 +4,11 @@ import com.michaldrabik.network.BuildConfig
 import com.michaldrabik.network.Config.TRAKT_BASE_URL
 import com.michaldrabik.network.Config.TVDB_BASE_URL
 import com.michaldrabik.network.trakt.TraktInterceptor
-import com.michaldrabik.network.trakt.converters.*
+import com.michaldrabik.network.trakt.converters.EpisodeConverter
+import com.michaldrabik.network.trakt.converters.SearchResultConverter
+import com.michaldrabik.network.trakt.converters.SeasonConverter
+import com.michaldrabik.network.trakt.converters.ShowConverter
+import com.michaldrabik.network.trakt.converters.TrendingResultConverter
 import com.michaldrabik.network.tvdb.converters.TvdbActorConverter
 import com.michaldrabik.network.tvdb.converters.TvdbImageConverter
 import com.michaldrabik.network.tvdb.converters.TvdbResultConverter

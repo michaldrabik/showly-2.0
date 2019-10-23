@@ -1,6 +1,10 @@
 package com.michaldrabik.network.trakt.api
 
-import com.michaldrabik.network.trakt.model.*
+import com.michaldrabik.network.trakt.model.Episode
+import com.michaldrabik.network.trakt.model.SearchResult
+import com.michaldrabik.network.trakt.model.Season
+import com.michaldrabik.network.trakt.model.Show
+import com.michaldrabik.network.trakt.model.ShowResult
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

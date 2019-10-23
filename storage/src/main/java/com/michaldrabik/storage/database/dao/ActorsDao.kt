@@ -6,7 +6,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.michaldrabik.storage.database.model.Actor
-import com.michaldrabik.storage.database.model.Show
 
 @Dao
 interface ActorsDao {

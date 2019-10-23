@@ -1,7 +1,11 @@
 package com.michaldrabik.storage.database.model
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.michaldrabik.storage.database.converters.DateConverter
 import org.threeten.bp.ZonedDateTime
 
