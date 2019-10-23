@@ -19,8 +19,8 @@
 
   <ImageView
     android:id="@+id/myShowsSectionSortButton"
-    android:layout_width="22dp"
-    android:layout_height="22dp"
+    android:layout_width="24dp"
+    android:layout_height="24dp"
     android:layout_marginTop="@dimen/spaceNormal"
     android:layout_marginEnd="@dimen/spaceNormal"
     android:layout_marginBottom="@dimen/spaceMedium"

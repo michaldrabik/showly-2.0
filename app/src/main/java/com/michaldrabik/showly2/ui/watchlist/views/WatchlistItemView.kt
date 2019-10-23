@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.views.ShowView
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.utilities.DurationPrinter
 import com.michaldrabik.showly2.utilities.extensions.*
 import kotlinx.android.synthetic.main.view_watchlist_item.view.*
 
@@ -30,6 +31,8 @@ class WatchlistItemView : ShowView<WatchlistItem> {
 
   override val imageView: ImageView = watchlistItemImage
   override val placeholderView: ImageView = watchlistItemPlaceholder
+
+  private val durationPrinter by lazy { DurationPrinter(context.applicationContext) }
 
   fun bind(
     item: WatchlistItem,
@@ -60,16 +63,17 @@ class WatchlistItemView : ShowView<WatchlistItem> {
     if (hasAired) {
       watchlistItemCheckButton.text = ""
       watchlistItemCheckButton.setIconResource(R.drawable.ic_check)
+      watchlistItemCheckButton.onClick { it.bump { checkClickListener(item) } }
     } else {
-      watchlistItemCheckButton.text = "Airs in 99 days"
+      watchlistItemCheckButton.text = durationPrinter.print(item.episode.firstAired)
       watchlistItemCheckButton.icon = null
+      watchlistItemCheckButton.onClick { }
     }
     watchlistItemCheckButton.setTextColor(ContextCompat.getColor(context, color))
     watchlistItemCheckButton.setStrokeColorResource(color)
     watchlistItemCheckButton.setIconTintResource(color)
 
     onClick { itemClickListener(item) }
-    watchlistItemCheckButton.onClick { it.bump { checkClickListener(item) } }
     watchlistItemInfoButton.onClick { detailsClickListener(item) }
   }
 

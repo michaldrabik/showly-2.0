@@ -14,7 +14,8 @@
   <string name="textNextEpisode">Next Episode:</string>
   <string name="textSearchFor">Search…</string>
   <string name="textSearchForMyShows">Search my shows…</string>
-  <string name="textAiredAlready">Already aired.</string>
+  <string name="textAiredAlready">Aired</string>
+  <string name="textAirsNow">Airs Now</string>
   <string name="textEmptyResults">There were no results…</string>
   <string name="textSearchInitial1">Find your favorite shows.</string>
   <string name="textSearchInitial2">Search powered by Trakt.tv</string>
@@ -42,6 +43,21 @@
   <string name="textWatchlistIncoming">Coming Soon</string>
   <string name="textWatchlistEmpty">Your watchlist is currently empty.\nVisit Discover tab to add your favorite shows.</string>
   <string name="textMyShowsEmpty">Your shows list is currently empty.\nVisit Discover tab to add your favorite shows.</string>
+
+  <plurals name="textDaysToAir">
+    <item quantity="one">Airs tomorrow</item>
+    <item quantity="other">Airs in %d days</item>
+  </plurals>
+
+  <plurals name="textHoursToAir">
+    <item quantity="one">Airs in 1 hour</item>
+    <item quantity="other">Airs in %d hours</item>
+  </plurals>
+
+  <plurals name="textMinutesToAir">
+    <item quantity="one">Airs now</item>
+    <item quantity="other">Airs in %d minutes</item>
+  </plurals>
 
   <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this keeps happening.</string>
   <string name="errorSeasonsNotLoaded">Please wait for seasons data to load.</string>

@@ -25,7 +25,7 @@ class WatchlistInteractor @Inject constructor(
     val episodes = database.episodesDao().getAllForShows(shows.map { it.idTrakt })
     val episodesUnwatched = episodes.filter { !it.isWatched && it.firstAired != null }
 
-    return shows
+    val allItems = shows
       .filter { show -> episodesUnwatched.any { it.idShowTrakt == show.idTrakt } }
       .map { show ->
         val showEpisodes = episodesUnwatched.filter { it.idShowTrakt == show.idTrakt }
@@ -48,8 +48,14 @@ class WatchlistInteractor @Inject constructor(
           watchedEpisodesCount
         )
       }
-      .sortedWith(compareBy({ !it.episode.hasAired() }, { it.show.title }))
-      .toList()
+      .groupBy { it.episode.hasAired() }
+
+    val aired = (allItems[true] ?: emptyList())
+      .sortedBy { it.show.title }
+    val notAired = (allItems[false] ?: emptyList())
+      .sortedBy { it.episode.firstAired?.toInstant()?.toEpochMilli() }
+
+    return aired + notAired
   }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =
