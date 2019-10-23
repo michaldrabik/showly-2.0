@@ -8,18 +8,44 @@
   tools:parentTag="android.widget.FrameLayout"
   >
 
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/addToMyShowsButton"
-    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
     android:gravity="center"
-    android:includeFontPadding="false"
-    android:text="@string/textAdd"
-    android:textColor="@color/colorWhite"
-    app:rippleColor="@color/colorWhite"
-    app:strokeColor="@color/colorWhite"
-    />
+    android:orientation="horizontal"
+    >
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/addToMyShowsButton"
+      style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      android:layout_weight="2"
+      android:gravity="center"
+      android:includeFontPadding="false"
+      android:text="@string/textAdd"
+      android:textColor="@color/colorWhite"
+      app:rippleColor="@color/colorWhite"
+      app:strokeColor="@color/colorWhite"
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/seeLaterButton"
+      style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceSmall"
+      android:layout_weight="1"
+      android:gravity="center"
+      android:maxLines="1"
+      android:padding="0dp"
+      android:text="@string/textWatchLater"
+      android:textColor="@color/colorTextSecondary"
+      app:rippleColor="@color/colorWhite"
+      />
+  </LinearLayout>
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/inMyShowsButton"
@@ -28,15 +54,15 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:includeFontPadding="false"
-    android:text="@string/textAdded"
+    android:text="@string/textInMyShows"
     android:textColor="@color/colorAccent"
     android:visibility="gone"
     app:icon="@drawable/ic_check"
-    app:iconPadding="-24dp"
+    app:iconGravity="textStart"
+    app:iconPadding="@dimen/spaceNormal"
     app:iconTint="@color/colorAccent"
     app:rippleColor="@color/colorAccent"
     app:strokeColor="@color/colorAccent"
     tools:visibility="visible"
     />
-
 </merge>

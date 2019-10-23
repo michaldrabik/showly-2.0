@@ -27,6 +27,9 @@ import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
 import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
+import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.ADD
+import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_MY_SHOWS
+import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_WATCH_LATER
 import com.michaldrabik.showly2.ui.show.actors.ActorsAdapter
 import com.michaldrabik.showly2.ui.show.related.RelatedShowAdapter
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
@@ -205,29 +208,20 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         showDetailsExtraInfo.text =
           "${show.network} $year | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
         showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
-        showDetailsAddButton.onClick { viewModel.toggleFollowedShow() }
+
+        showDetailsAddButton.onAddMyShowsClickListener = { viewModel.addFollowedShow() }
+        showDetailsAddButton.onAddWatchLaterClickListener = { viewModel.addWatchLaterShow() }
+        showDetailsAddButton.onRemoveClickListener = { viewModel.removeFromFollowed() }
       }
       showLoading?.let {
         showDetailsMainLayout.fadeIf(!it)
         showDetailsMainProgress.visibleIf(it)
       }
       isFollowed?.let {
-        val duration = if (it.withAnimation) 125L else 0L
         when {
-          it.isFollowed -> {
-            showDetailsWatchLaterButton.fadeOut(duration)
-            showDetailsAddButton.fadeOut(duration) {
-              showDetailsAddButton.setWatched()
-              showDetailsAddButton.fadeIn(duration)
-            }
-          }
-          else -> {
-            showDetailsAddButton.fadeOut(duration) {
-              showDetailsAddButton.setUnwatched()
-              showDetailsAddButton.fadeIn(duration)
-              showDetailsWatchLaterButton.fadeIn(duration)
-            }
-          }
+          it.isMyShows -> showDetailsAddButton.setState(IN_MY_SHOWS, it.withAnimation)
+          it.isWatchLater -> showDetailsAddButton.setState(IN_WATCH_LATER, it.withAnimation)
+          else -> showDetailsAddButton.setState(ADD, it.withAnimation)
         }
       }
       nextEpisode?.let { renderNextEpisode(it) }

@@ -19,6 +19,7 @@ import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.FollowedShow
 import com.michaldrabik.storage.database.model.RelatedShow
+import com.michaldrabik.storage.database.model.WatchLaterShow
 import javax.inject.Inject
 import com.michaldrabik.storage.database.model.Episode as EpisodeDb
 import com.michaldrabik.storage.database.model.Season as SeasonDb
@@ -159,5 +160,17 @@ class ShowDetailsInteractor @Inject constructor(
       }
       database.seasonsDao().delete(toDelete)
     }
+  }
+
+  suspend fun isWatchLater(show: Show) =
+    database.watchLaterShowsDao().getById(show.id) != null
+
+  suspend fun addToWatchLater(show: Show) {
+    val dbShow = WatchLaterShow.fromTraktId(show.id, nowUtcMillis())
+    database.watchLaterShowsDao().insert(dbShow)
+  }
+
+  suspend fun removeFromWatchLater(show: Show) {
+    database.watchLaterShowsDao().deleteById(show.id)
   }
 }

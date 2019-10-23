@@ -38,10 +38,11 @@ class ShowDetailsViewModel @Inject constructor(
         uiStream.value = ShowDetailsUiModel(showLoading = true)
         show = interactor.loadShowDetails(id)
         val isFollowed = interactor.isFollowed(show)
+        val isWatchLater = interactor.isWatchLater(show)
         uiStream.value = ShowDetailsUiModel(
           show = show,
           showLoading = false,
-          isFollowed = FollowedState(isFollowed = isFollowed, withAnimation = false)
+          isFollowed = FollowedState(isMyShows = isFollowed, isWatchLater = isWatchLater, withAnimation = false)
         )
 
         launch { loadNextEpisode(show) }
@@ -127,23 +128,48 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun toggleFollowedShow() {
+  fun addFollowedShow() {
+    if (!areSeasonsLoaded) {
+      uiStream.value = ShowDetailsUiModel(info = R.string.errorSeasonsNotLoaded)
+      return
+    }
+    viewModelScope.launch {
+      val seasons = seasonItems.map { it.season }
+      val episodes = seasonItems.flatMap { it.episodes.map { e -> e.episode } }
+      interactor.addToFollowed(show, seasons, episodes)
+
+      val state = FollowedState(isMyShows = true, isWatchLater = false, withAnimation = true)
+      uiStream.value = ShowDetailsUiModel(isFollowed = state)
+    }
+  }
+
+  fun addWatchLaterShow() {
     if (!areSeasonsLoaded) {
       uiStream.value = ShowDetailsUiModel(info = R.string.errorSeasonsNotLoaded)
       return
     }
 
     viewModelScope.launch {
+      interactor.addToWatchLater(show)
+
+      val state = FollowedState(isMyShows = false, isWatchLater = true, withAnimation = true)
+      uiStream.value = ShowDetailsUiModel(isFollowed = state)
+    }
+  }
+
+  fun removeFromFollowed() {
+    if (!areSeasonsLoaded) {
+      uiStream.value = ShowDetailsUiModel(info = R.string.errorSeasonsNotLoaded)
+      return
+    }
+    viewModelScope.launch {
       val isFollowed = interactor.isFollowed(show)
-      when {
-        isFollowed -> interactor.removeFromFollowed(show)
-        else -> {
-          val seasons = seasonItems.map { it.season }
-          val episodes = seasonItems.flatMap { it.episodes.map { e -> e.episode } }
-          interactor.addToFollowed(show, seasons, episodes)
-        }
-      }
-      val state = FollowedState(isFollowed = !isFollowed, withAnimation = true)
+      val isWatchLater = interactor.isWatchLater(show)
+
+      if (isFollowed) interactor.removeFromFollowed(show)
+      if (isWatchLater) interactor.removeFromWatchLater(show)
+
+      val state = FollowedState(isMyShows = false, isWatchLater = false, withAnimation = true)
       uiStream.value = ShowDetailsUiModel(isFollowed = state)
     }
   }
