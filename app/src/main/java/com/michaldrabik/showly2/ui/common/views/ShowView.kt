@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_FANART_URL
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_POSTER_URL
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
@@ -66,7 +67,7 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
     Glide.with(this)
       .load(url)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
-      .transition(withCrossFade(200))
+      .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
       .withSuccessListener { onImageLoadSuccess() }
       .withFailListener { onImageLoadFail(item, missingImageListener) }
       .into(imageView)

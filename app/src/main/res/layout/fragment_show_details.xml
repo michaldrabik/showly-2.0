@@ -253,6 +253,19 @@
         />
 
       <TextView
+        android:id="@+id/showDetailsActorsEmptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/textActorsEmpty"
+        android:textColor="@color/colorTextSecondary"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/separator2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
+        />
+
+      <TextView
         android:id="@+id/showDetailsSeasonsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -290,6 +303,19 @@
         android:layout_height="30dp"
         android:layout_margin="@dimen/spaceMedium"
         android:indeterminateTint="@color/colorProgressGray"
+        app:layout_constraintBottom_toTopOf="@id/separator3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/separator2"
+        />
+
+      <TextView
+        android:id="@+id/showDetailsSeasonsEmptyView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/textSeasonsEmpty"
+        android:textColor="@color/colorTextSecondary"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/separator3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

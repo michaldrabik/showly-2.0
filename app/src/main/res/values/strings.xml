@@ -21,8 +21,10 @@
   <string name="textSearchInitial2">Search powered by Trakt.tv</string>
   <string name="textClear">Clear recent searches</string>
   <string name="textActorRole">%s as %s</string>
+  <string name="textActorsEmpty">Actors are not yet available</string>
   <string name="textYouMayAlsoLike">You may also like:</string>
   <string name="textSeasons">Seasons:</string>
+  <string name="textSeasonsEmpty">Seasons are not yet available</string>
   <string name="textSeason">Season %1$d</string>
   <string name="textEpisode">Episode %1$d</string>
   <string name="textEpisodeDate">Episode %1$d | %2$s</string>

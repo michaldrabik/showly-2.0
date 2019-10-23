@@ -8,6 +8,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.showly2.Config
+import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Show
@@ -49,7 +50,7 @@ class MyShowFanartView : FrameLayout {
     Glide.with(this)
       .load(url)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
-      .transition(DrawableTransitionOptions.withCrossFade(200))
+      .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
       .into(myShowImage)
   }
 

@@ -17,11 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
+import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
 import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.actors.ActorsAdapter
@@ -216,18 +219,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       }
       nextEpisode?.let { renderNextEpisode(it) }
       image?.let { renderImage(it) }
-      actors?.let {
-        actorsAdapter.setItems(it)
-        showDetailsActorsRecycler.fadeIf(it.isNotEmpty())
-        showDetailsActorsProgress.gone()
-      }
-      seasons?.let {
-        seasonsAdapter.setItems(it)
-        showDetailsEpisodesView.updateEpisodes(it)
-        showDetailsSeasonsRecycler.fadeIf(it.isNotEmpty())
-        showDetailsSeasonsLabel.fadeIf(it.isNotEmpty())
-        showDetailsSeasonsProgress.gone()
-      }
+      actors?.let { renderActors(it) }
+      seasons?.let { renderSeasons(it) }
       relatedShows?.let {
         relatedAdapter.setItems(it)
         showDetailsRelatedRecycler.fadeIf(it.isNotEmpty())
@@ -242,6 +235,20 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         showDetailsRoot.showInfoSnackbar(getString(it))
       }
     }
+  }
+
+  private fun renderImage(image: Image) {
+    if (image.status == UNAVAILABLE) {
+      showDetailsImageProgress.gone()
+      return
+    }
+    Glide.with(this)
+      .load("$TVDB_IMAGE_BASE_URL${image.fileUrl}")
+      .transform(CenterCrop())
+      .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
+      .withFailListener { showDetailsImageProgress.gone() }
+      .withSuccessListener { showDetailsImageProgress.gone() }
+      .into(showDetailsImage)
   }
 
   private fun renderNextEpisode(nextEpisode: Episode) {
@@ -260,14 +267,20 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     }
   }
 
-  private fun renderImage(image: Image) {
-    Glide.with(this)
-      .load("$TVDB_IMAGE_BASE_URL${image.fileUrl}")
-      .transform(CenterCrop())
-      .transition(withCrossFade(200))
-      .withFailListener { showDetailsImageProgress.gone() }
-      .withSuccessListener { showDetailsImageProgress.gone() }
-      .into(showDetailsImage)
+  private fun renderActors(actors: List<Actor>) {
+    actorsAdapter.setItems(actors)
+    showDetailsActorsRecycler.fadeIf(actors.isNotEmpty())
+    showDetailsActorsEmptyView.fadeIf(actors.isEmpty())
+    showDetailsActorsProgress.gone()
+  }
+
+  private fun renderSeasons(seasonsItems: List<SeasonListItem>) {
+    seasonsAdapter.setItems(seasonsItems)
+    showDetailsEpisodesView.updateEpisodes(seasonsItems)
+    showDetailsSeasonsRecycler.fadeIf(seasonsItems.isNotEmpty())
+    showDetailsSeasonsLabel.fadeIf(seasonsItems.isNotEmpty())
+    showDetailsSeasonsEmptyView.fadeIf(seasonsItems.isEmpty())
+    showDetailsSeasonsProgress.gone()
   }
 
   private fun handleBackPressed() {

@@ -10,6 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.showly2.Config
+import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Episode
@@ -99,7 +100,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       Glide.with(this)
         .load("${Config.TVDB_IMAGE_BASE_URL}${it.fileUrl}")
         .transform(CenterCrop(), RoundedCorners(cornerRadius))
-        .transition(DrawableTransitionOptions.withCrossFade(200))
+        .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
         .withSuccessListener { episodeDetailsProgress.gone() }
         .withFailListener {
           episodeDetailsProgress.gone()
