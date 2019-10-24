@@ -2,8 +2,9 @@ package com.michaldrabik.showly2.di
 
 import com.michaldrabik.network.di.CloudComponent
 import com.michaldrabik.showly2.ui.discover.DiscoverFragment
+import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
+import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsFragment
 import com.michaldrabik.showly2.ui.main.MainActivity
-import com.michaldrabik.showly2.ui.myshows.MyShowsFragment
 import com.michaldrabik.showly2.ui.search.SearchFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
@@ -25,6 +26,8 @@ interface AppComponent {
   fun inject(fragment: EpisodeDetailsBottomSheet)
 
   fun inject(fragment: SearchFragment)
+
+  fun inject(fragment: FollowedShowsFragment)
 
   fun inject(fragment: MyShowsFragment)
 

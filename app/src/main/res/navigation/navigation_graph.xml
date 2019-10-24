@@ -24,8 +24,8 @@
     />
 
   <action
-    android:id="@+id/actionNavigateMyShowsFragment"
-    app:destination="@id/myShowsFragment"
+    android:id="@+id/actionNavigateFollowedShowsFragment"
+    app:destination="@id/followedShowsFragment"
     app:launchSingleTop="true"
     app:popUpTo="@id/navigationGraph"
     app:popUpToInclusive="true"
@@ -83,13 +83,13 @@
   </fragment>
 
   <fragment
-    android:id="@+id/myShowsFragment"
-    android:name="com.michaldrabik.showly2.ui.myshows.MyShowsFragment"
-    android:label="fragmentMyShows"
-    tools:layout="@layout/fragment_my_shows"
+    android:id="@+id/followedShowsFragment"
+    android:name="com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment"
+    android:label="fragmentFollowedShows"
+    tools:layout="@layout/fragment_followed_shows"
     >
     <action
-      android:id="@+id/actionMyShowsFragmentToShowDetailsFragment"
+      android:id="@+id/actionFollowedShowsFragmentToShowDetailsFragment"
       app:destination="@id/showDetailsFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"

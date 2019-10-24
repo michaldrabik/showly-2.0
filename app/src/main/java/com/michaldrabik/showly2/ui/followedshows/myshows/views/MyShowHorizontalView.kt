@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.myshows.views
+package com.michaldrabik.showly2.ui.followedshows.myshows.views
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image.Status
 import com.michaldrabik.showly2.ui.common.views.ShowView
-import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsListItem
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visible

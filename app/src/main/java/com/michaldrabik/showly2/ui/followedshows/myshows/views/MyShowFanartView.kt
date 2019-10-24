@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.myshows.views
+package com.michaldrabik.showly2.ui.followedshows.myshows.views
 
 import android.content.Context
 import android.util.AttributeSet

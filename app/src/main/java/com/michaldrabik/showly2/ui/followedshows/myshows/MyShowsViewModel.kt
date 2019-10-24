@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.myshows
+package com.michaldrabik.showly2.ui.followedshows.myshows
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -12,12 +12,12 @@ import com.michaldrabik.showly2.model.MyShowsSection.RUNNING
 import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import com.michaldrabik.showly2.ui.myshows.helpers.MyShowsBundle
-import com.michaldrabik.showly2.ui.myshows.helpers.MyShowsSearchResult
-import com.michaldrabik.showly2.ui.myshows.helpers.ResultType.EMPTY
-import com.michaldrabik.showly2.ui.myshows.helpers.ResultType.NO_RESULTS
-import com.michaldrabik.showly2.ui.myshows.helpers.ResultType.RESULTS
-import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsListItem
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsBundle
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsSearchResult
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.EMPTY
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.NO_RESULTS
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.RESULTS
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject

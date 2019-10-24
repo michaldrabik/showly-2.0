@@ -1,11 +1,11 @@
-package com.michaldrabik.showly2.ui.myshows.recycler
+package com.michaldrabik.showly2.ui.followedshows.myshows.recycler
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.showly2.ui.common.base.BaseAdapter
-import com.michaldrabik.showly2.ui.myshows.views.MyShowHorizontalView
+import com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowHorizontalView
 
 class MyShowsSectionAdapter : BaseAdapter<MyShowsListItem>() {
 

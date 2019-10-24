@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
       val target = when (item.itemId) {
         R.id.menuWatchlist -> R.id.actionNavigateWatchlistFragment
         R.id.menuDiscover -> R.id.actionNavigateDiscoverFragment
-        R.id.menuShows -> R.id.actionNavigateMyShowsFragment
+        R.id.menuShows -> R.id.actionNavigateFollowedShowsFragment
         else -> throw IllegalStateException("Invalid menu item.")
       }
 
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
           super.onBackPressed()
         }
         when (currentDestination?.id) {
-          R.id.discoverFragment, R.id.myShowsFragment -> {
+          R.id.discoverFragment, R.id.followedShowsFragment -> {
             bottomNavigationView.selectedItemId = R.id.menuWatchlist
           }
         }

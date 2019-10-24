@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.myshows
+package com.michaldrabik.showly2.ui.followedshows.myshows
 
 import android.graphics.drawable.Animatable
 import android.os.Bundle
@@ -10,7 +10,6 @@ import android.widget.GridLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.MyShowsSection
@@ -21,12 +20,12 @@ import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
-import com.michaldrabik.showly2.ui.myshows.helpers.MyShowsSearchResult
-import com.michaldrabik.showly2.ui.myshows.helpers.ResultType.EMPTY
-import com.michaldrabik.showly2.ui.myshows.helpers.ResultType.NO_RESULTS
-import com.michaldrabik.showly2.ui.myshows.helpers.ResultType.RESULTS
-import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsListItem
-import com.michaldrabik.showly2.ui.myshows.views.MyShowFanartView
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsSearchResult
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.EMPTY
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.NO_RESULTS
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.RESULTS
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
+import com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowFanartView
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
@@ -225,7 +224,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
     myShowsRootContent.fadeOut {
       saveToUiCache()
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.id) }
-      findNavController().navigate(R.id.actionMyShowsFragmentToShowDetailsFragment, bundle)
+//      findNavController().navigate(R.id.actionMyShowsFragmentToShowDetailsFragment, bundle)
     }
     getMainActivity().hideNavigation()
   }

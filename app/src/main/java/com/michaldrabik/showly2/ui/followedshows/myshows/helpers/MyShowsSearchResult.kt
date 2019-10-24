@@ -1,6 +1,6 @@
-package com.michaldrabik.showly2.ui.myshows.helpers
+package com.michaldrabik.showly2.ui.followedshows.myshows.helpers
 
-import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsListItem
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
 
 data class MyShowsSearchResult(
   val items: List<MyShowsListItem>,

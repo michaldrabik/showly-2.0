@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.myshows
+package com.michaldrabik.showly2.ui.followedshows.myshows
 
 import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_AMOUNT
 import com.michaldrabik.showly2.di.AppScope

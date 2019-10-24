@@ -1,9 +1,9 @@
-package com.michaldrabik.showly2.ui.myshows
+package com.michaldrabik.showly2.ui.followedshows.myshows
 
 import com.michaldrabik.showly2.model.MyShowsSection
-import com.michaldrabik.showly2.ui.myshows.helpers.MyShowsBundle
-import com.michaldrabik.showly2.ui.myshows.helpers.MyShowsSearchResult
-import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsListItem
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsBundle
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsSearchResult
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
 
 data class MyShowsUiModel(
   val searchResult: MyShowsSearchResult? = null,

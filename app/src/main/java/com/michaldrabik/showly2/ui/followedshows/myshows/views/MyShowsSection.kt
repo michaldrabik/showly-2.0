@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.myshows.views
+package com.michaldrabik.showly2.ui.followedshows.myshows.views
 
 import android.content.Context
 import android.util.AttributeSet
@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.SortOrder
-import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsListItem
-import com.michaldrabik.showly2.ui.myshows.recycler.MyShowsSectionAdapter
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsSectionAdapter
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
