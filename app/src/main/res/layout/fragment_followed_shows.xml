@@ -8,6 +8,12 @@
   android:clipToPadding="false"
   >
 
+  <androidx.viewpager2.widget.ViewPager2
+    android:id="@+id/followedShowsPager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    />
+
   <com.michaldrabik.showly2.ui.common.views.search.SearchView
     android:id="@+id/followedShowsSearchView"
     android:layout_width="match_parent"

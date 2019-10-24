@@ -4,6 +4,8 @@ import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
@@ -11,6 +13,8 @@ import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
+import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsFragment
+import com.michaldrabik.showly2.ui.followedshows.watchlater.LaterShowsFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
@@ -25,6 +29,8 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
 
   override val layoutResId = R.layout.fragment_followed_shows
 
+  private lateinit var pagesAdapter: FollowedPagesAdapter
+
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
     super.onCreate(savedInstanceState)
@@ -36,10 +42,10 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
+    setupPager()
     viewModel.run {
-      //      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-//      clearCache()
-//      loadMyShows()
+      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      clearCache()
     }
   }
 
@@ -48,12 +54,25 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
     followedShowsSearchView.onClick { enterSearchMode() }
     searchViewInput.run {
       imeOptions = EditorInfo.IME_ACTION_DONE
-//      addTextChangedListener { viewModel.searchMyShows(it?.toString() ?: "") }
+      addTextChangedListener { viewModel.searchMyShows(it?.toString() ?: "") }
       setOnEditorActionListener { _, _, _ ->
         clearFocus()
         hideKeyboard()
         true
       }
+    }
+  }
+
+  private fun setupPager() {
+    //TODO Look for possible optimizations
+    pagesAdapter = FollowedPagesAdapter(this)
+    pagesAdapter.addPages(
+      MyShowsFragment(),
+      LaterShowsFragment()
+    )
+    followedShowsPager.run {
+      isUserInputEnabled = false
+      adapter = pagesAdapter
     }
   }
 
@@ -82,17 +101,63 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
     searchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
   }
 
-  private fun openShowDetails(show: Show) {
-    followedShowsSearchView.fadeOut()
-    followedShowsRoot.fadeOut {
+  private fun render(uiModel: FollowedShowsUiModel) {
+    uiModel.run {
+      searchResult?.let { }
+    }
+  }
+
+//  private fun renderSearchResults(result: MyShowsSearchResult) {
+//    when (result.type) {
+//      ResultType.RESULTS -> {
+//        myShowsRecentsLabel.gone()
+//        myShowsSearchContainer.visible()
+//        myShowsRecentsContainer.gone()
+//        myShowsRunningSection.gone()
+//        myShowsEndedSection.gone()
+//        myShowsIncomingSection.gone()
+//        myShowsSearchEmptyView.gone()
+//        renderFanartContainer(result.items, myShowsSearchContainer)
+//      }
+//      ResultType.NO_RESULTS -> {
+//        myShowsRecentsLabel.gone()
+//        myShowsRecentsContainer.gone()
+//        myShowsSearchContainer.gone()
+//        myShowsRunningSection.gone()
+//        myShowsEndedSection.gone()
+//        myShowsIncomingSection.gone()
+//        myShowsSearchEmptyView.visible()
+//      }
+//      ResultType.EMPTY -> {
+//        myShowsRecentsLabel.visible()
+//        myShowsSearchContainer.gone()
+//        myShowsRecentsContainer.visible()
+//        myShowsRunningSection.run { if (!isEmpty()) visible() }
+//        myShowsEndedSection.run { if (!isEmpty()) visible() }
+//        myShowsIncomingSection.run { if (!isEmpty()) visible() }
+//        myShowsSearchEmptyView.gone()
+//      }
+//    }
+//    myShowsRootScroll.scrollTo(0, 0)
+//  }
+
+  fun openShowDetails(show: Show) {
+    followedShowsPager.fadeOut {
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.id) }
       findNavController().navigate(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
     }
     getMainActivity().hideNavigation()
   }
 
+  fun enableSearch(enable: Boolean) {
+    followedShowsSearchView.isClickable = enable
+    followedShowsSearchView.isEnabled = enable
+  }
+
   override fun onTabReselected() {
-//    myShowsSearchView.translationY = 0F
-//    myShowsRootScroll.smoothScrollTo(0, 0)
+    followedShowsSearchView.translationY = 0F
+    childFragmentManager.fragments.forEach {
+      (it as? OnTabReselectedListener)?.onTabReselected()
+    }
   }
 }

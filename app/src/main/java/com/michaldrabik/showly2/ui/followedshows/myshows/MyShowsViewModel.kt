@@ -13,12 +13,7 @@ import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsBundle
-import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsSearchResult
-import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.EMPTY
-import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.NO_RESULTS
-import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.RESULTS
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,7 +23,6 @@ class MyShowsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   val uiStream by lazy { MutableLiveData<MyShowsUiModel>() }
-  private lateinit var searchJob: Job
 
   fun loadMyShows() = viewModelScope.launch {
     val recentShows = interactor.loadRecentShows().map {
@@ -58,7 +52,6 @@ class MyShowsViewModel @Inject constructor(
       runningShows = MyShowsBundle(runningShows, RUNNING, settings.myShowsRunningSortBy),
       endedShows = MyShowsBundle(endedShows, ENDED, settings.myShowsEndedSortBy),
       incomingShows = MyShowsBundle(incomingShows, COMING_SOON, settings.myShowsIncomingSortBy),
-      mainListPosition = uiCache.myShowsListPosition,
       sectionsPositions = uiCache.myShowsSectionPositions
     )
   }
@@ -89,34 +82,9 @@ class MyShowsViewModel @Inject constructor(
       }
     }
 
-
-  fun searchMyShows(query: String) {
-    if (query.trim().isBlank()) {
-      if (this::searchJob.isInitialized) searchJob.cancel()
-      val result = MyShowsSearchResult(emptyList(), EMPTY)
-      uiStream.value = MyShowsUiModel(searchResult = result)
-      return
-    }
-    if (this::searchJob.isInitialized) searchJob.cancel()
-    searchJob = viewModelScope.launch {
-      val results = interactor.searchMyShows(query)
-        .map {
-          val image = interactor.findCachedImage(it, FANART)
-          MyShowsListItem(it, image)
-        }
-      val type = if (results.isEmpty()) NO_RESULTS else RESULTS
-      val searchResult = MyShowsSearchResult(results, type)
-      uiStream.value = MyShowsUiModel(searchResult = searchResult)
-    }
-  }
-
   fun saveListPosition(
-    position: Int,
     sectionPositions: Map<MyShowsSection, Pair<Int, Int>>
   ) {
-    uiCache.myShowsListPosition = Pair(position, 0)
     uiCache.myShowsSectionPositions.putAll(sectionPositions)
   }
-
-  fun clearCache() = interactor.clearCache()
 }

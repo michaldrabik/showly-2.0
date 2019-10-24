@@ -4,6 +4,7 @@ import com.michaldrabik.network.di.CloudComponent
 import com.michaldrabik.showly2.ui.discover.DiscoverFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsFragment
+import com.michaldrabik.showly2.ui.followedshows.watchlater.LaterShowsFragment
 import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.showly2.ui.search.SearchFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
@@ -30,6 +31,8 @@ interface AppComponent {
   fun inject(fragment: FollowedShowsFragment)
 
   fun inject(fragment: MyShowsFragment)
+
+  fun inject(fragment: LaterShowsFragment)
 
   fun inject(fragment: WatchlistFragment)
 }

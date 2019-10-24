@@ -10,6 +10,7 @@ import com.michaldrabik.showly2.ui.followedshows.FollowedShowsInteractor
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsViewModel
 import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsInteractor
 import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsViewModel
+import com.michaldrabik.showly2.ui.followedshows.watchlater.LaterShowsViewModel
 import com.michaldrabik.showly2.ui.main.MainInteractor
 import com.michaldrabik.showly2.ui.main.MainViewModel
 import com.michaldrabik.showly2.ui.search.SearchInteractor
@@ -55,6 +56,9 @@ class ViewModelFactory @Inject constructor(
 
     modelClass.isAssignableFrom(MyShowsViewModel::class.java) ->
       MyShowsViewModel(myShowsInteractor, uiCache) as T
+
+    modelClass.isAssignableFrom(LaterShowsViewModel::class.java) ->
+      LaterShowsViewModel() as T
 
     modelClass.isAssignableFrom(FollowedShowsViewModel::class.java) ->
       FollowedShowsViewModel(followedShowsInteractor, uiCache) as T
