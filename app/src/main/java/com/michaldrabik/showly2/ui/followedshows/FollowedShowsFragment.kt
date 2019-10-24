@@ -3,7 +3,10 @@ package com.michaldrabik.showly2.ui.followedshows
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.inputmethod.EditorInfo
+import android.widget.FrameLayout
+import android.widget.GridLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,8 +17,15 @@ import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsFragment
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsSearchResult
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.EMPTY
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.NO_RESULTS
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.RESULTS
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
+import com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowFanartView
 import com.michaldrabik.showly2.ui.followedshows.watchlater.LaterShowsFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
+import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
@@ -103,43 +113,54 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
 
   private fun render(uiModel: FollowedShowsUiModel) {
     uiModel.run {
-      searchResult?.let { }
+      searchResult?.let { renderSearchResults(it) }
     }
   }
 
-//  private fun renderSearchResults(result: MyShowsSearchResult) {
-//    when (result.type) {
-//      ResultType.RESULTS -> {
-//        myShowsRecentsLabel.gone()
-//        myShowsSearchContainer.visible()
-//        myShowsRecentsContainer.gone()
-//        myShowsRunningSection.gone()
-//        myShowsEndedSection.gone()
-//        myShowsIncomingSection.gone()
-//        myShowsSearchEmptyView.gone()
-//        renderFanartContainer(result.items, myShowsSearchContainer)
-//      }
-//      ResultType.NO_RESULTS -> {
-//        myShowsRecentsLabel.gone()
-//        myShowsRecentsContainer.gone()
-//        myShowsSearchContainer.gone()
-//        myShowsRunningSection.gone()
-//        myShowsEndedSection.gone()
-//        myShowsIncomingSection.gone()
-//        myShowsSearchEmptyView.visible()
-//      }
-//      ResultType.EMPTY -> {
-//        myShowsRecentsLabel.visible()
-//        myShowsSearchContainer.gone()
-//        myShowsRecentsContainer.visible()
-//        myShowsRunningSection.run { if (!isEmpty()) visible() }
-//        myShowsEndedSection.run { if (!isEmpty()) visible() }
-//        myShowsIncomingSection.run { if (!isEmpty()) visible() }
-//        myShowsSearchEmptyView.gone()
-//      }
-//    }
-//    myShowsRootScroll.scrollTo(0, 0)
-//  }
+  private fun renderSearchResults(result: MyShowsSearchResult) {
+    when (result.type) {
+      RESULTS -> {
+        followedShowsSearchContainer.visible()
+        followedShowsPager.gone()
+        followedShowsSearchEmptyView.gone()
+        renderSearchContainer(result.items)
+      }
+      NO_RESULTS -> {
+        followedShowsSearchContainer.gone()
+        followedShowsPager.gone()
+        followedShowsSearchEmptyView.visible()
+      }
+      EMPTY -> {
+        followedShowsSearchContainer.gone()
+        followedShowsPager.gone()
+        followedShowsSearchEmptyView.gone()
+      }
+    }
+    onTabReselected()
+  }
+
+  private fun renderSearchContainer(items: List<MyShowsListItem>) {
+    followedShowsSearchContainer.removeAllViews()
+
+    val context = requireContext()
+    val itemHeight = context.dimenToPx(R.dimen.myShowsFanartHeight)
+    val itemMargin = context.dimenToPx(R.dimen.spaceTiny)
+
+    items.forEachIndexed { index, item ->
+      val view = MyShowFanartView(context).apply {
+        layoutParams = FrameLayout.LayoutParams(0, MATCH_PARENT)
+        bind(item.show, item.image)
+        onItemClickListener = { openShowDetails(it) }
+      }
+      val layoutParams = GridLayout.LayoutParams().apply {
+        width = 0
+        height = itemHeight
+        columnSpec = GridLayout.spec(index % 2, 1F)
+        setMargins(itemMargin, itemMargin, itemMargin, itemMargin)
+      }
+      followedShowsSearchContainer.addView(view, layoutParams)
+    }
+  }
 
   fun openShowDetails(show: Show) {
     followedShowsPager.fadeOut {

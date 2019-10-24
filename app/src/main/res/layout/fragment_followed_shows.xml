@@ -14,6 +14,28 @@
     android:layout_height="match_parent"
     />
 
+  <GridLayout
+    android:id="@+id/followedShowsSearchContainer"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/searchViewHeightPadded"
+    android:columnCount="2"
+    android:divider="@drawable/divider_my_shows_fanart"
+    android:paddingStart="@dimen/spaceSmall"
+    android:paddingEnd="@dimen/spaceSmall"
+    android:showDividers="middle"
+    android:visibility="gone"
+    />
+
+  <com.michaldrabik.showly2.ui.common.views.search.EmptySearchView
+    android:id="@+id/followedShowsSearchEmptyView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="@dimen/searchViewHeightPadded"
+    android:visibility="gone"
+    />
+
   <com.michaldrabik.showly2.ui.common.views.search.SearchView
     android:id="@+id/followedShowsSearchView"
     android:layout_width="match_parent"
