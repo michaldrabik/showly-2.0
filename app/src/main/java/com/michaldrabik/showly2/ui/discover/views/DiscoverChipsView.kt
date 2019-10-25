@@ -87,4 +87,11 @@ class DiscoverChipsView : HorizontalScrollView, CoordinatorLayout.AttachedBehavi
     }
     isListenerDisabled = false
   }
+
+  override fun setEnabled(enabled: Boolean) {
+    discoverChipsGroup.children.forEach { chip ->
+      chip.isEnabled = enabled
+      chip.isClickable = enabled
+    }
+  }
 }

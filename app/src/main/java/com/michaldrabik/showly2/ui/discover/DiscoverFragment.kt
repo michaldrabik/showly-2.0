@@ -17,7 +17,6 @@ import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_I
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
-import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
@@ -85,11 +84,8 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
       setColorSchemeResources(R.color.colorAccent, R.color.colorAccent, R.color.colorAccent)
       setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
       setOnRefreshListener {
-        discoverChipsView.clear()
-        discoverChipsView.gone()
-        adapter.clearItems()
         viewModel.clearCache()
-        viewModel.loadDiscoverShows(skipCache = true)
+        viewModel.loadDiscoverShows(skipCache = true, manual = true)
       }
     }
   }
@@ -137,20 +133,20 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     )
   }
 
-  override fun onTabReselected() = openSearchView()
-
   private fun render(items: List<DiscoverListItem>) {
     adapter.setItems(items)
     layoutManager.withSpanSizeLookup { pos -> items[pos].image.type.spanSize }
-    discoverRecycler.fadeIn()
     discoverChipsView.fadeIn()
+    discoverRecycler.fadeIn()
   }
 
   private fun render(uiModel: DiscoverUiModel) {
     uiModel.run {
       showLoading?.let {
+        if (it) discoverChipsView.clear()
         discoverChipsView.isEnabled = !it
         discoverSearchView.isClickable = !it
+        discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
       }
       updateListItem?.let { adapter.updateItem(it) }
@@ -165,4 +161,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
       }
     }
   }
+
+  override fun onTabReselected() = openSearchView()
 }

@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2.ui.watchlist.recycler
 
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.showly2.ui.common.base.BaseAdapter
 import com.michaldrabik.showly2.ui.watchlist.views.WatchlistHeaderView
@@ -14,33 +14,26 @@ class WatchlistAdapter : BaseAdapter<WatchlistItem>() {
     private const val VIEW_TYPE_HEADER = 2
   }
 
+  override val asyncDiffer = AsyncListDiffer(this, WatchlistItemDiffCallback())
+
   var detailsClickListener: (WatchlistItem) -> Unit = { }
   var checkClickListener: (WatchlistItem) -> Unit = { }
 
-  override fun setItems(newItems: List<WatchlistItem>) {
-    val diffCallback = WatchlistItemDiffCallback(items, newItems)
-    val diffResult = DiffUtil.calculateDiff(diffCallback)
-    this.items.apply {
-      clear()
-      addAll(newItems)
-    }
-    diffResult.dispatchUpdatesTo(this)
-  }
-
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
-      VIEW_TYPE_ITEM -> ViewHolderShow(WatchlistItemView(parent.context))
-      VIEW_TYPE_HEADER -> ViewHolderShow(WatchlistHeaderView(parent.context))
+      VIEW_TYPE_ITEM -> BaseViewHolder(WatchlistItemView(parent.context))
+      VIEW_TYPE_HEADER -> BaseViewHolder(WatchlistHeaderView(parent.context))
       else -> throw IllegalStateException()
     }
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    val item = asyncDiffer.currentList[position]
     when (holder.itemViewType) {
       VIEW_TYPE_HEADER -> (holder.itemView as WatchlistHeaderView).bind(
-        items[position].headerTextResId!!
+        item.headerTextResId!!
       )
       VIEW_TYPE_ITEM -> (holder.itemView as WatchlistItemView).bind(
-        items[position],
+        item,
         itemClickListener,
         detailsClickListener,
         checkClickListener,
@@ -51,7 +44,7 @@ class WatchlistAdapter : BaseAdapter<WatchlistItem>() {
 
   override fun getItemViewType(position: Int) =
     when {
-      items[position].isHeader() -> VIEW_TYPE_HEADER
+      asyncDiffer.currentList[position].isHeader() -> VIEW_TYPE_HEADER
       else -> VIEW_TYPE_ITEM
     }
 }
