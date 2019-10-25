@@ -14,7 +14,7 @@ import androidx.core.view.children
 import com.google.android.material.chip.Chip
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Genre
-import com.michaldrabik.showly2.ui.common.views.search.DiscoverChipsViewBehaviour
+import com.michaldrabik.showly2.ui.common.views.search.ScrollableViewBehaviour
 import kotlinx.android.synthetic.main.view_discover_chips.view.*
 
 class DiscoverChipsView : HorizontalScrollView, CoordinatorLayout.AttachedBehavior {
@@ -46,7 +46,7 @@ class DiscoverChipsView : HorizontalScrollView, CoordinatorLayout.AttachedBehavi
   var onChipsSelectedListener: (List<Genre>) -> Unit = {}
   private var isListenerDisabled = false
 
-  override fun getBehavior() = DiscoverChipsViewBehaviour()
+  override fun getBehavior() = ScrollableViewBehaviour()
 
   @SuppressLint("DefaultLocale")
   private fun setupChips(genres: List<Genre>) {

@@ -53,7 +53,7 @@ dependencies {
   implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
   implementation 'androidx.transition:transition:1.2.0'
   implementation 'androidx.viewpager2:viewpager2:1.0.0-rc01'
-  implementation 'com.google.android.material:material:1.0.0'
+  implementation 'com.google.android.material:material:1.1.0-beta01'
 
   implementation 'com.google.firebase:firebase-analytics:17.2.1'
 

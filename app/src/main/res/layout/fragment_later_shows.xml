@@ -6,7 +6,7 @@
   android:layout_height="match_parent"
   android:clipChildren="false"
   android:clipToPadding="false"
-  android:background="@color/colorAccent"
+  android:background="@color/colorSeparatorGray"
   >
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

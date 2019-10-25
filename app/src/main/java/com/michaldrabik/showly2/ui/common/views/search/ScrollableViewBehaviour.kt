@@ -6,7 +6,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class DiscoverChipsViewBehaviour : CoordinatorLayout.Behavior<ViewGroup>() {
+class ScrollableViewBehaviour : CoordinatorLayout.Behavior<ViewGroup>() {
 
   override fun layoutDependsOn(parent: CoordinatorLayout, child: ViewGroup, dependency: View): Boolean {
     return dependency is RecyclerView
@@ -32,9 +32,10 @@ class DiscoverChipsViewBehaviour : CoordinatorLayout.Behavior<ViewGroup>() {
     dyConsumed: Int,
     dxUnconsumed: Int,
     dyUnconsumed: Int,
-    type: Int
+    type: Int,
+    consumed: IntArray
   ) {
-    super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type)
+    super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed)
     child.translationY = (child.translationY - dyConsumed.toFloat()).coerceAtMost(0F)
   }
 }

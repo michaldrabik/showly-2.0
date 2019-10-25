@@ -17,7 +17,7 @@
     android:clipToPadding="false"
     android:fillViewport="true"
     android:overScrollMode="never"
-    android:paddingTop="@dimen/searchViewHeightPadded"
+    android:paddingTop="@dimen/myShowsTabsViewPadding"
     android:paddingBottom="@dimen/myShowsBottomPadding"
     >
 

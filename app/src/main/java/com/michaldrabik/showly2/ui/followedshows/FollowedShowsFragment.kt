@@ -11,6 +11,8 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Show
@@ -79,10 +81,26 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
       MyShowsFragment(),
       LaterShowsFragment()
     )
+
     followedShowsPager.run {
       isUserInputEnabled = false
       adapter = pagesAdapter
     }
+
+    followedShowsTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+      override fun onTabSelected(tab: TabLayout.Tab) {
+        followedShowsPager.currentItem = tab.position
+      }
+
+      override fun onTabReselected(tab: TabLayout.Tab) = Unit
+      override fun onTabUnselected(tab: TabLayout.Tab) = Unit
+    })
+    TabLayoutMediator(followedShowsTabs, followedShowsPager) { tab, position ->
+      tab.text = when (position) {
+        0 -> getString(R.string.tabMyShows)
+        else -> getString(R.string.tabSeeLater)
+      }
+    }.attach()
   }
 
   private fun enterSearch() {
