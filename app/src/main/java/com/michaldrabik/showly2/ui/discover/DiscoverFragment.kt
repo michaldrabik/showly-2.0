@@ -135,7 +135,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
 
   private fun render(items: List<DiscoverListItem>) {
     adapter.setItems(items)
-    layoutManager.withSpanSizeLookup { pos -> items[pos].image.type.spanSize }
+    layoutManager.withSpanSizeLookup { pos -> adapter.getItems()[pos].image.type.spanSize }
     discoverChipsView.fadeIn()
     discoverRecycler.fadeIn()
   }

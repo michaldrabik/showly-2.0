@@ -15,7 +15,7 @@
   <item
     android:id="@+id/menuDiscover"
     android:enabled="true"
-    android:icon="@drawable/ic_search"
+    android:icon="@drawable/ic_binoculars"
     android:title="@string/menuDiscover"
     app:showAsAction="always"
     />

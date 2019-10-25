@@ -7,7 +7,7 @@ import com.michaldrabik.showly2.ui.discover.recycler.ListItem
 
 abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-  protected abstract val asyncDiffer: AsyncListDiffer<Item>
+  abstract val asyncDiffer: AsyncListDiffer<Item>
 
   var missingImageListener: (Item, Boolean) -> Unit = { _, _ -> }
   var itemClickListener: (Item) -> Unit = { }
@@ -26,6 +26,8 @@ abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.
   }
 
   override fun getItemCount() = asyncDiffer.currentList.size
+
+  fun getItems(): List<Item> = asyncDiffer.currentList
 
   fun indexOf(item: Item) = asyncDiffer.currentList.indexOf(item)
 

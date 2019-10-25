@@ -42,6 +42,7 @@
       android:maxLines="1"
       android:padding="0dp"
       android:text="@string/textWatchLater"
+      app:strokeWidth="0dp"
       android:textColor="@color/colorTextSecondary"
       app:rippleColor="@color/colorWhite"
       />
@@ -59,7 +60,7 @@
     android:visibility="gone"
     app:icon="@drawable/ic_check"
     app:iconGravity="textStart"
-    app:iconPadding="@dimen/spaceNormal"
+    app:iconPadding="@dimen/spaceTiny"
     app:iconTint="@color/colorAccent"
     app:rippleColor="@color/colorAccent"
     app:strokeColor="@color/colorAccent"
