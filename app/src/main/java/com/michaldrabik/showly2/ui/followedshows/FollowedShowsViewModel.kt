@@ -24,7 +24,7 @@ class FollowedShowsViewModel @Inject constructor(
     if (query.trim().isBlank()) {
       searchJob?.cancel()
       val result = MyShowsSearchResult(emptyList(), EMPTY)
-      uiStream.value = FollowedShowsUiModel(searchResult = result)
+      postSearchResult(result)
       return
     }
     searchJob?.cancel()
@@ -36,8 +36,13 @@ class FollowedShowsViewModel @Inject constructor(
         }
       val type = if (results.isEmpty()) NO_RESULTS else RESULTS
       val searchResult = MyShowsSearchResult(results, type)
-      uiStream.value = FollowedShowsUiModel(searchResult = searchResult)
+      postSearchResult(searchResult)
     }
+  }
+
+  private fun postSearchResult(searchResult: MyShowsSearchResult) {
+    uiStream.value = FollowedShowsUiModel(searchResult = searchResult)
+    uiStream.value = FollowedShowsUiModel()
   }
 
   fun clearCache() = interactor.clearCache()

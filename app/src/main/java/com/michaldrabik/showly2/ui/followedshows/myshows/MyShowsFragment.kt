@@ -113,11 +113,12 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
     val itemHeight = context.dimenToPx(R.dimen.myShowsFanartHeight)
     val itemMargin = context.dimenToPx(R.dimen.spaceTiny)
 
+    val clickListener: (Show) -> Unit = { openShowDetails(it) }
+
     items.forEachIndexed { index, item ->
       val view = MyShowFanartView(context).apply {
         layoutParams = FrameLayout.LayoutParams(0, MATCH_PARENT)
-        bind(item.show, item.image)
-        onItemClickListener = { openShowDetails(it) }
+        bind(item.show, item.image, clickListener)
       }
       val layoutParams = GridLayout.LayoutParams().apply {
         width = 0

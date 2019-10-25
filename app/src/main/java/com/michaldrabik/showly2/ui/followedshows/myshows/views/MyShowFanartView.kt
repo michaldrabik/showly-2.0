@@ -27,15 +27,13 @@ class MyShowFanartView : FrameLayout {
     inflate(context, R.layout.view_my_show, this)
   }
 
-  var onItemClickListener: (Show) -> Unit = {}
-
   private val cornerRadius by lazy { context.dimenToPx(R.dimen.myShowsFanartCorner) }
 
-  fun bind(show: Show, image: Image) {
+  fun bind(show: Show, image: Image, clickListener: (Show) -> Unit) {
     clear()
     myShowTitle.text = show.title
     myShowTitle.visible()
-    onClick { onItemClickListener(show) }
+    onClick { clickListener(show) }
     loadImage(image)
   }
 

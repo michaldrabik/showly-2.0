@@ -7,7 +7,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import android.widget.GridLayout
-import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -61,10 +61,9 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
 
   private fun setupView() {
     followedShowsSearchView.hint = getString(R.string.textSearchForMyShows)
-    followedShowsSearchView.onClick { enterSearchMode() }
+    followedShowsSearchView.onClick { enterSearch() }
     searchViewInput.run {
       imeOptions = EditorInfo.IME_ACTION_DONE
-      addTextChangedListener { viewModel.searchMyShows(it?.toString() ?: "") }
       setOnEditorActionListener { _, _, _ ->
         clearFocus()
         hideKeyboard()
@@ -86,20 +85,21 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
     }
   }
 
-  private fun enterSearchMode() {
+  private fun enterSearch() {
     searchViewText.gone()
     searchViewInput.run {
       setText("")
+      doAfterTextChanged { viewModel.searchMyShows(it?.toString() ?: "") }
       visible()
       showKeyboard()
       requestFocus()
     }
     getMainActivity().hideNavigation()
     (searchViewIcon.drawable as Animatable).start()
-    searchViewIcon.onClick { exitSearchMode() }
+    searchViewIcon.onClick { exitSearch() }
   }
 
-  private fun exitSearchMode() {
+  private fun exitSearch() {
     searchViewText.visible()
     searchViewInput.run {
       setText("")
@@ -146,11 +146,15 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
     val itemHeight = context.dimenToPx(R.dimen.myShowsFanartHeight)
     val itemMargin = context.dimenToPx(R.dimen.spaceTiny)
 
+    val clickListener: (Show) -> Unit = {
+      followedShowsRoot.hideKeyboard()
+      openShowDetails(it)
+    }
+
     items.forEachIndexed { index, item ->
       val view = MyShowFanartView(context).apply {
         layoutParams = FrameLayout.LayoutParams(0, MATCH_PARENT)
-        bind(item.show, item.image)
-        onItemClickListener = { openShowDetails(it) }
+        bind(item.show, item.image, clickListener)
       }
       val layoutParams = GridLayout.LayoutParams().apply {
         width = 0
@@ -163,11 +167,11 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
   }
 
   fun openShowDetails(show: Show) {
-    followedShowsPager.fadeOut {
+    getMainActivity().hideNavigation()
+    followedShowsRoot.fadeOut {
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.id) }
       findNavController().navigate(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
     }
-    getMainActivity().hideNavigation()
   }
 
   fun enableSearch(enable: Boolean) {
