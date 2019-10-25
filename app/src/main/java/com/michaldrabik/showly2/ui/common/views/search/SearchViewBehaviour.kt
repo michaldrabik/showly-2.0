@@ -6,10 +6,27 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * Note: some extra work is added because of an issue:
+ * https://gist.github.com/erikhuizinga/edf408167b46eb5b1568424563ca4e59?ts=2
+ */
 class SearchViewBehaviour(private val padding: Int) : CoordinatorLayout.Behavior<FrameLayout>() {
 
   override fun layoutDependsOn(parent: CoordinatorLayout, child: FrameLayout, dependency: View): Boolean {
     return dependency is RecyclerView
+  }
+
+  override fun onNestedPreScroll(
+    coordinatorLayout: CoordinatorLayout,
+    child: FrameLayout,
+    target: View,
+    dx: Int,
+    dy: Int,
+    consumed: IntArray,
+    type: Int
+  ) {
+    super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type)
+    stopNestedScrollIfNeeded(dy, target, type)
   }
 
   override fun onStartNestedScroll(
@@ -40,6 +57,15 @@ class SearchViewBehaviour(private val padding: Int) : CoordinatorLayout.Behavior
       child.translationY = (child.translationY - dyConsumed.toFloat()).coerceAtLeast(limit)
     } else if (dyConsumed <= 0) {
       child.translationY = (child.translationY - dyConsumed.toFloat()).coerceAtMost(0F)
+    }
+    stopNestedScrollIfNeeded(dyConsumed, target, type)
+  }
+
+  private fun stopNestedScrollIfNeeded(dy: Int, target: View, type: Int) {
+    if (type == ViewCompat.TYPE_NON_TOUCH) {
+      if (dy == 0) {
+        ViewCompat.stopNestedScroll(target, ViewCompat.TYPE_NON_TOUCH)
+      }
     }
   }
 }
