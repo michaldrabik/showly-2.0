@@ -80,7 +80,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
       myShowsRootContent.fadeIf(it.isNotEmpty())
       myShowsEmptyView.fadeIf(it.isEmpty())
       renderFanartContainer(it, myShowsRecentsContainer)
-      (parentFragment as? FollowedShowsFragment)?.enableSearch(it.isNotEmpty())
+      (parentFragment as FollowedShowsFragment).enableSearch(it.isNotEmpty())
     }
     uiModel.runningShows?.let {
       myShowsRunningSection.bind(it.items, it.section, it.sortOrder, R.string.textRunning)

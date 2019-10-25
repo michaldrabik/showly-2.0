@@ -132,7 +132,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
       }
       EMPTY -> {
         followedShowsSearchContainer.gone()
-        followedShowsPager.gone()
+        followedShowsPager.visible()
         followedShowsSearchEmptyView.gone()
       }
     }

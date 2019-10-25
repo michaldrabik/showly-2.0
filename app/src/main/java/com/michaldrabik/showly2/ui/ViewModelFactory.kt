@@ -61,7 +61,7 @@ class ViewModelFactory @Inject constructor(
       LaterShowsViewModel() as T
 
     modelClass.isAssignableFrom(FollowedShowsViewModel::class.java) ->
-      FollowedShowsViewModel(followedShowsInteractor, uiCache) as T
+      FollowedShowsViewModel(followedShowsInteractor) as T
 
     modelClass.isAssignableFrom(WatchlistViewModel::class.java) ->
       WatchlistViewModel(watchlistInteractor, episodesInteractor) as T
