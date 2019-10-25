@@ -11,7 +11,6 @@ import javax.inject.Named
 object TvdbModule {
 
   @Provides
-  @JvmStatic
   fun providesTvdbApi(@Named("retrofitTvdb") retrofit: Retrofit): TvdbApi =
     TvdbApi(retrofit.create(TvdbService::class.java))
 }

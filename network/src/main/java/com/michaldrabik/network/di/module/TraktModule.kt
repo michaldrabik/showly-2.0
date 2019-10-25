@@ -12,11 +12,9 @@ import javax.inject.Named
 object TraktModule {
 
   @Provides
-  @JvmStatic
   fun providesTraktApi(@Named("retrofitTrakt") retrofit: Retrofit): TraktApi =
     TraktApi(retrofit.create(TraktService::class.java))
 
   @Provides
-  @JvmStatic
   fun providesTraktInterceptor() = TraktInterceptor()
 }

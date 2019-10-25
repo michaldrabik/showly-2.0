@@ -26,7 +26,6 @@ object RetrofitModule {
 
   @Provides
   @Named("retrofitTrakt")
-  @JvmStatic
   fun providesTraktRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit =
     Retrofit.Builder()
       .client(okHttpClient)
@@ -36,7 +35,6 @@ object RetrofitModule {
 
   @Provides
   @Named("retrofitTvdb")
-  @JvmStatic
   fun providesTvdbRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit =
     Retrofit.Builder()
       .client(okHttpClient)
@@ -45,7 +43,6 @@ object RetrofitModule {
       .build()
 
   @Provides
-  @JvmStatic
   fun providesMoshi(): Moshi {
     val showConverter = ShowConverter()
     val trendingResultConverter = TrendingResultConverter(showConverter)
@@ -74,7 +71,6 @@ object RetrofitModule {
   }
 
   @Provides
-  @JvmStatic
   fun providesOkHttp(
     httpLoggingInterceptor: HttpLoggingInterceptor,
     traktInterceptor: TraktInterceptor
@@ -85,7 +81,6 @@ object RetrofitModule {
       .build()
 
   @Provides
-  @JvmStatic
   fun providesHttpLoggingInterceptor(): HttpLoggingInterceptor =
     HttpLoggingInterceptor().apply {
       level = when {

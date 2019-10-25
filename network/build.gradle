@@ -47,8 +47,8 @@ dependencies {
 
   implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
 
-  implementation "com.google.dagger:dagger:2.24"
-  kapt "com.google.dagger:dagger-compiler:2.24"
+  implementation "com.google.dagger:dagger:2.25.2"
+  kapt "com.google.dagger:dagger-compiler:2.25.2"
 
   testImplementation "junit:junit:4.12"
 }
