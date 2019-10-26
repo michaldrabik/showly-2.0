@@ -62,7 +62,7 @@ class WatchlistItemView : ShowView<WatchlistItem> {
 
     loadImage(item, missingImageListener)
 
-    val hasAired = item.episode.hasAired()
+    val hasAired = item.episode.hasAired(item.season)
     val color = if (hasAired) R.color.colorWatchlistEnabledButton else R.color.colorWatchlistDisabledButton
     if (hasAired) {
       watchlistItemCheckButton.text = ""

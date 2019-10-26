@@ -41,7 +41,7 @@ class EpisodesView : ConstraintLayout {
     episodesOverview.text = season.overview
     episodesOverview.visibleIf(season.overview.isNotBlank())
     episodesCheckbox.run {
-      isEnabled = seasonItem.episodes.all { it.episode.hasAired() }
+      isEnabled = seasonItem.episodes.all { it.episode.hasAired(season) }
       setCheckedSilent(seasonItem.isWatched) { _, isChecked ->
         seasonCheckedListener(season, isChecked)
       }

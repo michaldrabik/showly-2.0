@@ -97,7 +97,7 @@ class ShowDetailsViewModel @Inject constructor(
   private suspend fun loadSeasons(show: Show): List<Season> = try {
     val seasons = interactor.loadSeasons(show)
     val seasonsItems = seasons.map {
-      val episodes = it.episodes.map { episode -> EpisodeListItem(episode, false) }
+      val episodes = it.episodes.map { episode -> EpisodeListItem(episode, it, false) }
       SeasonListItem(it, episodes, false)
     }
     val calculated = calculateWatchedEpisodes(seasonsItems)
@@ -216,7 +216,7 @@ class ShowDetailsViewModel @Inject constructor(
       val isSeasonWatched = watchedSeasonsIds.any { id -> id == item.id }
       val episodes = item.episodes.map { episodeItem ->
         val isEpisodeWatched = watchedEpisodesIds.any { id -> id == episodeItem.id }
-        EpisodeListItem(episodeItem.episode, isEpisodeWatched)
+        EpisodeListItem(episodeItem.episode, item.season, isEpisodeWatched)
       }
       val updated = item.copy(episodes = episodes, isWatched = isSeasonWatched)
       items.add(updated)

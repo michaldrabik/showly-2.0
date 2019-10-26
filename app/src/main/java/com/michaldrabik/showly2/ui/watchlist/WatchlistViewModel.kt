@@ -27,7 +27,7 @@ class WatchlistViewModel @Inject constructor(
         it.copy(image = image)
       }.toMutableList()
 
-      val headerIndex = items.indexOfFirst { !it.isHeader() && !it.episode.hasAired() }
+      val headerIndex = items.indexOfFirst { !it.isHeader() && !it.episode.hasAired(it.season) }
       if (headerIndex != -1) {
         val item = items[headerIndex]
         items.add(headerIndex, item.copy(headerTextResId = R.string.textWatchlistIncoming))
@@ -39,7 +39,7 @@ class WatchlistViewModel @Inject constructor(
 
   fun setWatchedEpisode(item: WatchlistItem) {
     viewModelScope.launch {
-      if (!item.episode.hasAired()) {
+      if (!item.episode.hasAired(item.season)) {
         uiStream.value = WatchlistUiModel(info = R.string.errorEpisodeNotAired)
         clearStream()
         return@launch

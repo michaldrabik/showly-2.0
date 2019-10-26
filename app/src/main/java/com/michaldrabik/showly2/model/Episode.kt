@@ -22,9 +22,9 @@ data class Episode(
 
   val id = ids.trakt
 
-  fun hasAired() =
+  fun hasAired(season: Season) =
     when (firstAired) {
-      null -> false
+      null -> season.episodes.any { it.number > number && it.firstAired != null }
       else -> nowUtcMillis() >= firstAired.toInstant().toEpochMilli()
     }
 

@@ -48,7 +48,7 @@ class WatchlistInteractor @Inject constructor(
           watchedEpisodesCount
         )
       }
-      .groupBy { it.episode.hasAired() }
+      .groupBy { it.episode.hasAired(it.season) }
 
     val aired = (allItems[true] ?: emptyList())
       .sortedBy { it.show.title }
