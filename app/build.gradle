@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.firebase.appdistribution'
 
 android {
   compileSdkVersion 29
@@ -37,6 +38,10 @@ android {
       minifyEnabled true
       signingConfig signingConfigs.release
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+      firebaseAppDistribution {
+        releaseNotes=""
+        testers="michal.drabik0@gmail.com"
+      }
     }
   }
 }
