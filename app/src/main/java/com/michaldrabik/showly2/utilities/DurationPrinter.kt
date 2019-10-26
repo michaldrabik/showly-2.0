@@ -24,8 +24,8 @@ class DurationPrinter(private val context: Context) {
         }
         return context.resources.getQuantityString(R.plurals.textMinutesToAir, minutes, minutes)
       }
-      return context.resources.getQuantityString(R.plurals.textHoursToAir, hours, hours)
+      return context.resources.getQuantityString(R.plurals.textHoursToAir, hours + 1, hours + 1)
     }
-    return context.resources.getQuantityString(R.plurals.textDaysToAir, days, days)
+    return context.resources.getQuantityString(R.plurals.textDaysToAir, days + 1, days + 1)
   }
 }

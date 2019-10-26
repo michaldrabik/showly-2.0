@@ -28,13 +28,12 @@ import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import com.michaldrabik.showly2.Config.DISPLAY_DATE_FORMAT
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.utilities.SafeOnClickListener
-import org.threeten.bp.OffsetDateTime
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZoneOffset.UTC
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.temporal.Temporal
 
-fun nowUtc(): OffsetDateTime = OffsetDateTime.now(UTC)
+fun nowUtc(): ZonedDateTime = ZonedDateTime.now(UTC)
 
 fun nowUtcMillis(): Long = nowUtc().toInstant().toEpochMilli()
 
