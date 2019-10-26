@@ -20,6 +20,9 @@ class FollowedShowsViewModel @Inject constructor(
   val uiStream by lazy { MutableLiveData<FollowedShowsUiModel>() }
   private var searchJob: Job? = null
 
+  var searchViewTranslation = 0F
+  var tabsTranslation = 0F
+
   fun searchMyShows(query: String) {
     if (query.trim().isBlank()) {
       searchJob?.cancel()

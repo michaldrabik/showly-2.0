@@ -72,6 +72,9 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
         true
       }
     }
+
+    followedShowsTabs.translationY = viewModel.tabsTranslation
+    followedShowsSearchView.translationY = viewModel.searchViewTranslation
   }
 
   private fun setupPager() {
@@ -190,6 +193,8 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.id) }
       findNavController().navigate(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
     }
+    viewModel.tabsTranslation = followedShowsTabs.translationY
+    viewModel.searchViewTranslation = followedShowsSearchView.translationY
   }
 
   fun enableSearch(enable: Boolean) {
