@@ -10,7 +10,8 @@ import com.michaldrabik.showly2.ui.followedshows.FollowedShowsInteractor
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsViewModel
 import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsInteractor
 import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsViewModel
-import com.michaldrabik.showly2.ui.followedshows.watchlater.LaterShowsViewModel
+import com.michaldrabik.showly2.ui.followedshows.seelater.SeeLaterInteractor
+import com.michaldrabik.showly2.ui.followedshows.seelater.SeeLaterViewModel
 import com.michaldrabik.showly2.ui.main.MainInteractor
 import com.michaldrabik.showly2.ui.main.MainViewModel
 import com.michaldrabik.showly2.ui.search.SearchInteractor
@@ -29,6 +30,7 @@ class ViewModelFactory @Inject constructor(
   private val discoverInteractor: DiscoverInteractor,
   private val followedShowsInteractor: FollowedShowsInteractor,
   private val myShowsInteractor: MyShowsInteractor,
+  private val seeLaterInteractor: SeeLaterInteractor,
   private val showDetailsInteractor: ShowDetailsInteractor,
   private val episodesInteractor: EpisodesInteractor,
   private val searchInteractor: SearchInteractor,
@@ -57,8 +59,8 @@ class ViewModelFactory @Inject constructor(
     modelClass.isAssignableFrom(MyShowsViewModel::class.java) ->
       MyShowsViewModel(myShowsInteractor, uiCache) as T
 
-    modelClass.isAssignableFrom(LaterShowsViewModel::class.java) ->
-      LaterShowsViewModel() as T
+    modelClass.isAssignableFrom(SeeLaterViewModel::class.java) ->
+      SeeLaterViewModel(seeLaterInteractor) as T
 
     modelClass.isAssignableFrom(FollowedShowsViewModel::class.java) ->
       FollowedShowsViewModel(followedShowsInteractor) as T

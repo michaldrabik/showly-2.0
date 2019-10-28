@@ -4,6 +4,7 @@
   <string name="menuWatchlist">Watchlist</string>
   <string name="menuDiscover">Discover</string>
   <string name="menuShows">My Shows</string>
+  <string name="menuSeeLater">See Later</string>
 
   <string name="buttonShowMore">Show More</string>
   <string name="buttonShowLess">Show Less</string>
@@ -48,6 +49,7 @@
   <string name="textWatchlistIncoming">Coming Soon</string>
   <string name="textWatchlistEmpty">Your watchlist is currently empty.\nVisit Discover tab to add your favorite shows.</string>
   <string name="textMyShowsEmpty">Your shows list is currently empty.\nVisit Discover tab to add your favorite shows.</string>
+  <string name="textSeeLaterEmpty">Your see later list is currently empty.\nVisit Discover tab to add shows you may want to see in the future.</string>
 
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>

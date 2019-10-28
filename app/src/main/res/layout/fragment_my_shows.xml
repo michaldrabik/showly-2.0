@@ -107,6 +107,12 @@
   <include
     android:id="@+id/myShowsEmptyView"
     layout="@layout/layout_my_shows_empty"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginEnd="@dimen/spaceBig"
+    android:layout_marginBottom="@dimen/bottomNavigationHeight"
     android:visibility="gone"
     />
 

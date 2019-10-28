@@ -11,7 +11,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/spaceTiny"
-    android:text="@string/menuShows"
+    android:text="@string/menuSeeLater"
     android:textAllCaps="true"
     android:textColor="@color/colorTextPrimary"
     android:textSize="20sp"
@@ -21,7 +21,7 @@
   <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:text="@string/textMyShowsEmpty"
+    android:text="@string/textSeeLaterEmpty"
     android:textColor="@color/colorTextSecondary"
     android:textSize="14sp"
     />

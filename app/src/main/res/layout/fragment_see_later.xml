@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/watchlistRoot"
+  android:id="@+id/seeLaterRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:clipChildren="false"
@@ -9,24 +9,24 @@
   >
 
   <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/watchlistRecycler"
+    android:id="@+id/seeLaterRecycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:overScrollMode="never"
-    android:paddingTop="@dimen/spaceNormal"
-    android:paddingBottom="@dimen/bottomNavigationHeightPadded"
-    android:visibility="gone"
+    android:paddingTop="@dimen/myShowsTabsViewPadding"
+    android:paddingBottom="@dimen/myShowsBottomPadding"
+    android:scrollbars="vertical"
     />
 
   <include
-    android:id="@+id/watchlistEmptyView"
-    layout="@layout/layout_watchlist_empty"
+    android:id="@+id/seeLaterEmptyView"
+    layout="@layout/layout_see_later_empty"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_marginStart="@dimen/spaceNormal"
-    android:layout_marginEnd="@dimen/spaceNormal"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginEnd="@dimen/spaceBig"
     android:layout_marginBottom="@dimen/bottomNavigationHeight"
     android:visibility="gone"
     />

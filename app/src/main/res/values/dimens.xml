@@ -57,6 +57,11 @@
   <dimen name="watchlistImageWidth">80dp</dimen>
   <dimen name="watchlistImageCorner">4dp</dimen>
 
+  <dimen name="seeLaterImageHeight">120dp</dimen>
+  <dimen name="seeLaterImageWidth">80dp</dimen>
+  <dimen name="seeLaterImageCorner">4dp</dimen>
+  <dimen name="seeLaterMarginHorizontal">12dp</dimen>
+
   <dimen name="gridSpacing">2dp</dimen>
   <dimen name="gridPadding">6dp</dimen>
 

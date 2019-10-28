@@ -25,7 +25,7 @@ import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.NO_R
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.RESULTS
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
 import com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowFanartView
-import com.michaldrabik.showly2.ui.followedshows.watchlater.LaterShowsFragment
+import com.michaldrabik.showly2.ui.followedshows.seelater.SeeLaterFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
@@ -82,10 +82,11 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
     pagesAdapter = FollowedPagesAdapter(this)
     pagesAdapter.addPages(
       MyShowsFragment(),
-      LaterShowsFragment()
+      SeeLaterFragment()
     )
 
     followedShowsPager.run {
+      offscreenPageLimit = pagesAdapter.itemCount - 1
       isUserInputEnabled = false
       adapter = pagesAdapter
     }
