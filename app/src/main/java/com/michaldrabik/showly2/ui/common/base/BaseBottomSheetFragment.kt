@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.michaldrabik.showly2.ui.ViewModelFactory
+import com.michaldrabik.showly2.ui.common.UiModel
 import javax.inject.Inject
 
-abstract class BaseBottomSheetFragment<T : BaseViewModel> : BottomSheetDialogFragment() {
+abstract class BaseBottomSheetFragment<T : BaseViewModel<out UiModel>> : BottomSheetDialogFragment() {
 
   @Inject lateinit var viewModelFactory: ViewModelFactory
   protected lateinit var viewModel: T

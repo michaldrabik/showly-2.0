@@ -1,6 +1,5 @@
 package com.michaldrabik.showly2.ui.followedshows.myshows
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.FANART
@@ -20,9 +19,7 @@ import javax.inject.Inject
 class MyShowsViewModel @Inject constructor(
   private val interactor: MyShowsInteractor,
   private val uiCache: UiCache
-) : BaseViewModel() {
-
-  val uiStream by lazy { MutableLiveData<MyShowsUiModel>() }
+) : BaseViewModel<MyShowsUiModel>() {
 
   fun loadMyShows() = viewModelScope.launch {
     val recentShows = interactor.loadRecentShows().map {
@@ -47,7 +44,7 @@ class MyShowsViewModel @Inject constructor(
 
     val settings = interactor.loadSettings()
 
-    uiStream.value = MyShowsUiModel(
+    _uiStream.value = MyShowsUiModel(
       recentShows = recentShows,
       runningShows = MyShowsBundle(runningShows, RUNNING, settings.myShowsRunningSortBy),
       endedShows = MyShowsBundle(endedShows, ENDED, settings.myShowsEndedSortBy),
@@ -62,7 +59,7 @@ class MyShowsViewModel @Inject constructor(
       val image = interactor.findCachedImage(it, POSTER)
       MyShowsListItem(it, image)
     }
-    uiStream.value = when (section) {
+    _uiStream.value = when (section) {
       RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, order))
       ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, order))
       COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, order))
@@ -71,13 +68,13 @@ class MyShowsViewModel @Inject constructor(
 
   fun loadMissingImage(item: MyShowsListItem, force: Boolean) =
     viewModelScope.launch {
-      uiStream.value = MyShowsUiModel(updateListItem = item.copy(isLoading = true))
+      _uiStream.value = MyShowsUiModel(updateListItem = item.copy(isLoading = true))
       try {
         val image = interactor.loadMissingImage(item.show, item.image.type, force)
-        uiStream.value =
+        _uiStream.value =
           MyShowsUiModel(updateListItem = item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
-        uiStream.value =
+        _uiStream.value =
           MyShowsUiModel(updateListItem = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }

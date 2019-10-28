@@ -73,36 +73,38 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
   }
 
   private fun render(uiModel: MyShowsUiModel) {
-    uiModel.recentShows?.let {
-      myShowsSearchContainer.gone()
-      myShowsRecentsLabel.visible()
-      myShowsRecentsContainer.visible()
-      myShowsRootContent.fadeIf(it.isNotEmpty())
-      myShowsEmptyView.fadeIf(it.isEmpty())
-      renderFanartContainer(it, myShowsRecentsContainer)
-      (parentFragment as FollowedShowsFragment).enableSearch(it.isNotEmpty())
-    }
-    uiModel.runningShows?.let {
-      myShowsRunningSection.bind(it.items, it.section, it.sortOrder, R.string.textRunning)
-      myShowsRunningSection.visibleIf(it.items.isNotEmpty())
-    }
-    uiModel.endedShows?.let {
-      myShowsEndedSection.bind(it.items, it.section, it.sortOrder, R.string.textEnded)
-      myShowsEndedSection.visibleIf(it.items.isNotEmpty())
-    }
-    uiModel.incomingShows?.let {
-      myShowsIncomingSection.bind(it.items, it.section, it.sortOrder, R.string.textIncoming)
-      myShowsIncomingSection.visibleIf(it.items.isNotEmpty())
-    }
-    uiModel.updateListItem?.let { item ->
-      myShowsRunningSection.updateItem(item)
-      myShowsEndedSection.updateItem(item)
-      myShowsIncomingSection.updateItem(item)
-    }
-    uiModel.sectionsPositions?.let {
-      myShowsRunningSection.scrollToPosition(it[RUNNING]?.first ?: 0, it[RUNNING]?.second ?: 0)
-      myShowsEndedSection.scrollToPosition(it[ENDED]?.first ?: 0, it[ENDED]?.second ?: 0)
-      myShowsIncomingSection.scrollToPosition(it[COMING_SOON]?.first ?: 0, it[COMING_SOON]?.second ?: 0)
+    uiModel.run {
+      recentShows?.let {
+        myShowsSearchContainer.gone()
+        myShowsRecentsLabel.visible()
+        myShowsRecentsContainer.visible()
+        myShowsRootContent.fadeIf(it.isNotEmpty())
+        myShowsEmptyView.fadeIf(it.isEmpty())
+        renderFanartContainer(it, myShowsRecentsContainer)
+        (parentFragment as FollowedShowsFragment).enableSearch(it.isNotEmpty())
+      }
+      runningShows?.let {
+        myShowsRunningSection.bind(it.items, it.section, it.sortOrder, R.string.textRunning)
+        myShowsRunningSection.visibleIf(it.items.isNotEmpty())
+      }
+      endedShows?.let {
+        myShowsEndedSection.bind(it.items, it.section, it.sortOrder, R.string.textEnded)
+        myShowsEndedSection.visibleIf(it.items.isNotEmpty())
+      }
+      incomingShows?.let {
+        myShowsIncomingSection.bind(it.items, it.section, it.sortOrder, R.string.textIncoming)
+        myShowsIncomingSection.visibleIf(it.items.isNotEmpty())
+      }
+      updateListItem?.let { item ->
+        myShowsRunningSection.updateItem(item)
+        myShowsEndedSection.updateItem(item)
+        myShowsIncomingSection.updateItem(item)
+      }
+      sectionsPositions?.let {
+        myShowsRunningSection.scrollToPosition(it[RUNNING]?.first ?: 0, it[RUNNING]?.second ?: 0)
+        myShowsEndedSection.scrollToPosition(it[ENDED]?.first ?: 0, it[ENDED]?.second ?: 0)
+        myShowsIncomingSection.scrollToPosition(it[COMING_SOON]?.first ?: 0, it[COMING_SOON]?.second ?: 0)
+      }
     }
   }
 

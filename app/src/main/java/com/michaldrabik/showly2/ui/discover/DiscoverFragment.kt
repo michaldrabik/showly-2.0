@@ -51,7 +51,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
 
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-      discoverShowsStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      showsStream.observe(viewLifecycleOwner, Observer { render(it!!) })
       loadDiscoverShows()
     }
   }

@@ -1,6 +1,5 @@
 package com.michaldrabik.showly2.ui.followedshows
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
@@ -15,9 +14,8 @@ import javax.inject.Inject
 
 class FollowedShowsViewModel @Inject constructor(
   private val interactor: FollowedShowsInteractor
-) : BaseViewModel() {
+) : BaseViewModel<FollowedShowsUiModel>() {
 
-  val uiStream by lazy { MutableLiveData<FollowedShowsUiModel>() }
   private var searchJob: Job? = null
 
   var searchViewTranslation = 0F
@@ -44,8 +42,8 @@ class FollowedShowsViewModel @Inject constructor(
   }
 
   private fun postSearchResult(searchResult: MyShowsSearchResult) {
-    uiStream.value = FollowedShowsUiModel(searchResult = searchResult)
-    uiStream.value = FollowedShowsUiModel()
+    _uiStream.value = FollowedShowsUiModel(searchResult = searchResult)
+    _uiStream.value = FollowedShowsUiModel()
   }
 
   fun clearCache() = interactor.clearCache()

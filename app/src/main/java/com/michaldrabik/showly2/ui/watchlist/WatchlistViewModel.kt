@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.watchlist
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
@@ -15,10 +16,10 @@ import javax.inject.Inject
 class WatchlistViewModel @Inject constructor(
   private val interactor: WatchlistInteractor,
   private val episodesInteractor: EpisodesInteractor
-) : BaseViewModel() {
+) : BaseViewModel<WatchlistUiModel>() {
 
-  val watchlistStream by lazy { MutableLiveData<List<WatchlistItem>>() }
-  val uiStream by lazy { MutableLiveData<WatchlistUiModel>() }
+  private val _watchlistStream = MutableLiveData<List<WatchlistItem>>()
+  val watchlistStream: LiveData<List<WatchlistItem>> = _watchlistStream
 
   fun loadWatchlist() {
     viewModelScope.launch {
@@ -33,14 +34,14 @@ class WatchlistViewModel @Inject constructor(
         items.add(headerIndex, item.copy(headerTextResId = R.string.textWatchlistIncoming))
       }
 
-      watchlistStream.value = items
+      _watchlistStream.value = items
     }
   }
 
   fun setWatchedEpisode(item: WatchlistItem) {
     viewModelScope.launch {
       if (!item.episode.hasAired(item.season)) {
-        uiStream.value = WatchlistUiModel(info = R.string.errorEpisodeNotAired)
+        _uiStream.value = WatchlistUiModel(info = R.string.errorEpisodeNotAired)
         clearStream()
         return@launch
       }
@@ -52,18 +53,18 @@ class WatchlistViewModel @Inject constructor(
 
   fun findMissingImage(item: WatchlistItem, force: Boolean) {
     viewModelScope.launch {
-      uiStream.value = WatchlistUiModel(updateListItem = item.copy(isLoading = true))
+      _uiStream.value = WatchlistUiModel(updateListItem = item.copy(isLoading = true))
       try {
         val image = interactor.loadMissingImage(item.show, item.image.type, force)
-        uiStream.value = WatchlistUiModel(updateListItem = item.copy(isLoading = false, image = image))
+        _uiStream.value = WatchlistUiModel(updateListItem = item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
         val unavailable = Image.createUnavailable(item.image.type)
-        uiStream.value = WatchlistUiModel(updateListItem = item.copy(isLoading = false, image = unavailable))
+        _uiStream.value = WatchlistUiModel(updateListItem = item.copy(isLoading = false, image = unavailable))
       }
     }
   }
 
   private fun clearStream() {
-    uiStream.value = WatchlistUiModel()
+    _uiStream.value = WatchlistUiModel()
   }
 }

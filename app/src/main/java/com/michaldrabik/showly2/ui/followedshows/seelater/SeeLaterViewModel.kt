@@ -1,7 +1,5 @@
 package com.michaldrabik.showly2.ui.followedshows.seelater
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.POSTER
@@ -12,10 +10,7 @@ import javax.inject.Inject
 
 class SeeLaterViewModel @Inject constructor(
   private val interactor: SeeLaterInteractor
-) : BaseViewModel() {
-
-  private val _uiStream = MutableLiveData<SeeLaterUiModel>()
-  val uiStream: LiveData<SeeLaterUiModel> = _uiStream
+) : BaseViewModel<SeeLaterUiModel>() {
 
   fun loadShows() {
     viewModelScope.launch {

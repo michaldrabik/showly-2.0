@@ -208,6 +208,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
 
   override fun onTabReselected() {
     followedShowsSearchView.translationY = 0F
+    followedShowsTabs.translationY = 0F
     childFragmentManager.fragments.forEach {
       (it as? OnTabReselectedListener)?.onTabReselected()
     }

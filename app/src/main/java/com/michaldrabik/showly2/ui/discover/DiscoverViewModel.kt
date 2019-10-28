@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.discover
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Genre
@@ -18,26 +19,26 @@ import javax.inject.Inject
 class DiscoverViewModel @Inject constructor(
   private val interactor: DiscoverInteractor,
   private val uiCache: UiCache
-) : BaseViewModel() {
+) : BaseViewModel<DiscoverUiModel>() {
 
-  val discoverShowsStream by lazy { MutableLiveData<List<DiscoverListItem>>() }
-  val uiStream by lazy { MutableLiveData<DiscoverUiModel>() }
+  private val _showsStream = MutableLiveData<List<DiscoverListItem>>()
+  val showsStream: LiveData<List<DiscoverListItem>> = _showsStream
 
   fun loadDiscoverShows(resetScroll: Boolean = false, skipCache: Boolean = false, manual: Boolean = false) {
-    uiStream.value = DiscoverUiModel(applyUiCache = uiCache)
+    _uiStream.value = DiscoverUiModel(applyUiCache = uiCache)
     viewModelScope.launch {
       val progress = launch {
         delay(if (manual) 0 else 750)
-        uiStream.value = DiscoverUiModel(showLoading = true)
+        _uiStream.value = DiscoverUiModel(showLoading = true)
       }
       try {
         val shows = interactor.loadDiscoverShows(uiCache.discoverActiveGenres, skipCache)
         onShowsLoaded(shows)
-        uiStream.value = DiscoverUiModel(resetScroll = resetScroll)
+        _uiStream.value = DiscoverUiModel(resetScroll = resetScroll)
       } catch (t: Throwable) {
         onError(Error(t))
       } finally {
-        uiStream.value = DiscoverUiModel(showLoading = false)
+        _uiStream.value = DiscoverUiModel(showLoading = false)
         progress.cancel()
       }
     }
@@ -54,18 +55,18 @@ class DiscoverViewModel @Inject constructor(
       val image = interactor.findCachedImage(show, itemType)
       DiscoverListItem(show, image)
     }
-    discoverShowsStream.value = items
+    _showsStream.value = items
   }
 
   fun loadMissingImage(item: DiscoverListItem, force: Boolean) {
     viewModelScope.launch {
-      uiStream.value = DiscoverUiModel(updateListItem = item.copy(isLoading = true))
+      _uiStream.value = DiscoverUiModel(updateListItem = item.copy(isLoading = true))
       try {
         val image = interactor.loadMissingImage(item.show, item.image.type, force)
-        uiStream.value =
+        _uiStream.value =
           DiscoverUiModel(updateListItem = item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
-        uiStream.value =
+        _uiStream.value =
           DiscoverUiModel(updateListItem = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }
@@ -83,6 +84,6 @@ class DiscoverViewModel @Inject constructor(
   fun clearCache() = uiCache.clear()
 
   private fun onError(error: Error) {
-    uiStream.value = DiscoverUiModel(error = error)
+    _uiStream.value = DiscoverUiModel(error = error)
   }
 }

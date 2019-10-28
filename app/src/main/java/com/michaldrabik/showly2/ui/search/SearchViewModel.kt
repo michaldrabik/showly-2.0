@@ -1,7 +1,6 @@
 package com.michaldrabik.showly2.ui.search
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.Config.SEARCH_RECENTS_AMOUNT
 import com.michaldrabik.showly2.model.Image
@@ -13,27 +12,25 @@ import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
   private val interactor: SearchInteractor
-) : BaseViewModel() {
-
-  val uiStream by lazy { MutableLiveData<SearchUiModel>() }
+) : BaseViewModel<SearchUiModel>() {
 
   private val lastItems = mutableListOf<SearchListItem>()
 
   fun loadLastSearch() {
-    uiStream.value = SearchUiModel(lastItems)
+    _uiStream.value = SearchUiModel(lastItems)
   }
 
   fun loadRecentSearches() {
     viewModelScope.launch {
       val searches = interactor.getRecentSearches(SEARCH_RECENTS_AMOUNT)
-      uiStream.value = SearchUiModel(recentSearchItems = searches, isInitial = searches.isEmpty())
+      _uiStream.value = SearchUiModel(recentSearchItems = searches, isInitial = searches.isEmpty())
     }
   }
 
   fun clearRecentSearches() {
     viewModelScope.launch {
       interactor.clearRecentSearches()
-      uiStream.value = SearchUiModel(recentSearchItems = emptyList(), isInitial = true)
+      _uiStream.value = SearchUiModel(recentSearchItems = emptyList(), isInitial = true)
     }
   }
 
@@ -42,7 +39,7 @@ class SearchViewModel @Inject constructor(
     if (trimmed.isEmpty()) return
     viewModelScope.launch {
       try {
-        uiStream.value = SearchUiModel(emptyList(), emptyList(), isSearching = true, isEmpty = false, isInitial = false)
+        _uiStream.value = SearchUiModel(emptyList(), emptyList(), isSearching = true, isEmpty = false, isInitial = false)
         val shows = interactor.searchShows(trimmed)
         val items = shows.map {
           val image = interactor.findCachedImage(it, ImageType.POSTER)
@@ -50,7 +47,7 @@ class SearchViewModel @Inject constructor(
         }
         lastItems.clear()
         lastItems.addAll(items)
-        uiStream.value = SearchUiModel(items, isSearching = false, isEmpty = items.isEmpty(), isInitial = false)
+        _uiStream.value = SearchUiModel(items, isSearching = false, isEmpty = items.isEmpty(), isInitial = false)
       } catch (t: Throwable) {
         onError(t)
       }
@@ -59,20 +56,20 @@ class SearchViewModel @Inject constructor(
 
   fun loadMissingImage(item: SearchListItem, force: Boolean) {
     viewModelScope.launch {
-      uiStream.value = SearchUiModel(updateListItem = item.copy(isLoading = true))
+      _uiStream.value = SearchUiModel(updateListItem = item.copy(isLoading = true))
       try {
         val image = interactor.loadMissingImage(item.show, item.image.type, force)
-        uiStream.value =
+        _uiStream.value =
           SearchUiModel(updateListItem = item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
-        uiStream.value =
+        _uiStream.value =
           SearchUiModel(updateListItem = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }
   }
 
   private fun onError(t: Throwable) {
-    uiStream.value = SearchUiModel(error = Error(t), isSearching = false, isEmpty = false)
+    _uiStream.value = SearchUiModel(error = Error(t), isSearching = false, isEmpty = false)
     Log.e("SearchViewModel", t.message ?: "")
   }
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Show
@@ -49,7 +50,7 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListe
       setHasFixedSize(true)
       adapter = this@SeeLaterFragment.adapter
       layoutManager = this@SeeLaterFragment.layoutManager
-      itemAnimator = null
+      (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
   }
 
