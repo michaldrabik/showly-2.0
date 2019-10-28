@@ -126,6 +126,7 @@ fun ViewGroup.showSnackbar(
       it.maxLines = 5
     }
     view.setBackgroundResource(backgroundRes)
+    setTextColor(Color.WHITE)
     setActionTextColor(Color.WHITE)
     if (action != null) {
       setAction(actionText) {
