@@ -17,7 +17,7 @@
   <dimen name="discoverChipHeight">32dp</dimen>
   <dimen name="discoverChipStrokeWidth">1dp</dimen>
   <dimen name="discoverChipsPadding">68dp</dimen>
-  <dimen name="discoverRecyclerPadding">110dp</dimen>
+  <dimen name="discoverRecyclerPadding">108dp</dimen>
 
   <dimen name="seasonViewHeight">44dp</dimen>
   <dimen name="episodeViewHeight">42dp</dimen>
@@ -62,7 +62,7 @@
   <dimen name="seeLaterImageCorner">4dp</dimen>
   <dimen name="seeLaterMarginHorizontal">12dp</dimen>
 
-  <dimen name="gridSpacing">2dp</dimen>
+  <dimen name="gridSpacing">3dp</dimen>
   <dimen name="gridPadding">6dp</dimen>
 
 </resources>
