@@ -29,6 +29,7 @@
 
   <color name="colorShowDetailsEpisodeBackground">#313131</color>
   <color name="colorSortViewBackground">#222327</color>
+  <color name="colorNewBadgeBackground">#313131</color>
 
   <color name="colorProgressGray">#333333</color>
   <color name="colorSeparatorGray">#2C2C2C</color>

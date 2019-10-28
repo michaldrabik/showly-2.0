@@ -14,6 +14,7 @@
 
   <string name="textOk">OK</string>
   <string name="textToday">today</string>
+  <string name="textNew">New</string>
   <string name="textTomorrow">tomorrow</string>
   <string name="textNextEpisode">Next Episode:</string>
   <string name="textSearchFor">Search…</string>
@@ -25,7 +26,7 @@
   <string name="textSearchInitial2">Search powered by Trakt.tv</string>
   <string name="textClear">Clear recent searches</string>
   <string name="textActorRole">%s as %s</string>
-  <string name="textActorsEmpty">Actors are not yet available</string>
+  <string name="textActorsEmpty">Actors are not available</string>
   <string name="textYouMayAlsoLike">You may also like:</string>
   <string name="textSeasons">Seasons:</string>
   <string name="textSeasonsEmpty">Seasons are not yet available</string>
@@ -35,7 +36,7 @@
   <string name="textSeasonEpisodeDate">Season %1$d Episode %2$d | %3$s</string>
   <string name="textAdd">Add to my shows</string>
   <string name="textInMyShows">Added to my shows</string>
-  <string name="textInSeeLater">Will see later</string>
+  <string name="textInSeeLater">Added to see later</string>
   <string name="textNoDescription">Overview not available.</string>
   <string name="textRecentlyAdded">Recently Added</string>
   <string name="textRunning">Running (%1$d)</string>

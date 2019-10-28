@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.michaldrabik.showly2.Config.NEW_BADGE_DURATION
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.views.ShowView
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
@@ -16,7 +17,11 @@ import com.michaldrabik.showly2.utilities.extensions.addRipple
 import com.michaldrabik.showly2.utilities.extensions.bump
 import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
 import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.nowUtc
+import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.toMillis
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_watchlist_item.view.*
 
 @SuppressLint("SetTextI18n")
@@ -56,12 +61,33 @@ class WatchlistItemView : ShowView<WatchlistItem> {
       episodeTitle
     )
 
-    watchlistItemProgress.max = item.episodesCount
-    watchlistItemProgress.progress = item.watchedEpisodesCount
-    watchlistItemProgressText.text = "${item.watchedEpisodesCount}/${item.episodesCount}"
+    bindProgress(item)
+    bindNewBadge(item)
+    bindCheckButton(item, checkClickListener)
 
     loadImage(item, missingImageListener)
 
+    onClick { itemClickListener(item) }
+    watchlistItemInfoButton.onClick { detailsClickListener(item) }
+  }
+
+  private fun bindProgress(item: WatchlistItem) {
+    watchlistItemProgress.max = item.episodesCount
+    watchlistItemProgress.progress = item.watchedEpisodesCount
+    watchlistItemProgressText.text = "${item.watchedEpisodesCount}/${item.episodesCount}"
+  }
+
+  private fun bindNewBadge(item: WatchlistItem) {
+    val showNewBadge =
+      item.episode.firstAired?.isBefore(nowUtc()) ?: false &&
+          nowUtcMillis() - (item.episode.firstAired?.toMillis() ?: 0) < NEW_BADGE_DURATION
+    watchlistItemNewBadge.visibleIf(showNewBadge)
+  }
+
+  private fun bindCheckButton(
+    item: WatchlistItem,
+    checkClickListener: (WatchlistItem) -> Unit
+  ) {
     val hasAired = item.episode.hasAired(item.season)
     val color = if (hasAired) R.color.colorWatchlistEnabledButton else R.color.colorWatchlistDisabledButton
     if (hasAired) {
@@ -76,9 +102,6 @@ class WatchlistItemView : ShowView<WatchlistItem> {
     watchlistItemCheckButton.setTextColor(ContextCompat.getColor(context, color))
     watchlistItemCheckButton.setStrokeColorResource(color)
     watchlistItemCheckButton.setIconTintResource(color)
-
-    onClick { itemClickListener(item) }
-    watchlistItemInfoButton.onClick { detailsClickListener(item) }
   }
 
   private fun clear() {
