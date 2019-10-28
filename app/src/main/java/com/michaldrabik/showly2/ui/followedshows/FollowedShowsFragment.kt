@@ -111,7 +111,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
     searchViewText.gone()
     searchViewInput.run {
       setText("")
-      doAfterTextChanged { viewModel.searchMyShows(it?.toString() ?: "") }
+      doAfterTextChanged { viewModel.searchFollowedShows(it?.toString() ?: "") }
       visible()
       showKeyboard()
       requestFocus()
@@ -144,17 +144,20 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
       RESULTS -> {
         followedShowsSearchContainer.visible()
         followedShowsPager.gone()
+        followedShowsTabs.gone()
         followedShowsSearchEmptyView.gone()
         renderSearchContainer(result.items)
       }
       NO_RESULTS -> {
         followedShowsSearchContainer.gone()
         followedShowsPager.gone()
+        followedShowsTabs.gone()
         followedShowsSearchEmptyView.visible()
       }
       EMPTY -> {
         followedShowsSearchContainer.gone()
         followedShowsPager.visible()
+        followedShowsTabs.visible()
         followedShowsSearchEmptyView.gone()
       }
     }

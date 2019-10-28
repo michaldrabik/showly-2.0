@@ -23,7 +23,7 @@ class FollowedShowsViewModel @Inject constructor(
   var searchViewTranslation = 0F
   var tabsTranslation = 0F
 
-  fun searchMyShows(query: String) {
+  fun searchFollowedShows(query: String) {
     if (query.trim().isBlank()) {
       searchJob?.cancel()
       val result = MyShowsSearchResult(emptyList(), EMPTY)
@@ -32,7 +32,7 @@ class FollowedShowsViewModel @Inject constructor(
     }
     searchJob?.cancel()
     searchJob = viewModelScope.launch {
-      val results = interactor.searchMyShows(query)
+      val results = interactor.searchFollowed(query)
         .map {
           val image = interactor.findCachedImage(it, ImageType.FANART)
           MyShowsListItem(it, image)

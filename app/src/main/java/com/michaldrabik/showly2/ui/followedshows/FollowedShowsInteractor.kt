@@ -17,12 +17,16 @@ class FollowedShowsInteractor @Inject constructor(
 
   private val searchItemsCache = mutableListOf<Show>()
 
-  suspend fun searchMyShows(query: String?): List<Show> {
+  suspend fun searchFollowed(query: String?): List<Show> {
     if (query.isNullOrBlank()) return emptyList()
 
     if (searchItemsCache.isEmpty()) {
-      val allShows = database.followedShowsDao().getAll()
+      val seeLaterShows = database.watchLaterShowsDao().getAll()
+      val myShows = database.followedShowsDao().getAll()
+
+      val allShows = (seeLaterShows + myShows)
         .map { mappers.show.fromDatabase(it) }
+
       searchItemsCache.clear()
       searchItemsCache.addAll(allShows)
     }
