@@ -1,10 +1,7 @@
 package com.michaldrabik.storage.di
 
-import com.michaldrabik.storage.database.AppDatabase
 import dagger.Component
 
+@StorageScope
 @Component(modules = [StorageModule::class])
-interface StorageComponent {
-
-  fun database(): AppDatabase
-}
+interface StorageComponent : StorageMarker

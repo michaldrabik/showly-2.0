@@ -1,5 +1,6 @@
 package com.michaldrabik.network.di.module
 
+import com.michaldrabik.network.di.CloudScope
 import com.michaldrabik.network.trakt.TraktInterceptor
 import com.michaldrabik.network.trakt.api.TraktApi
 import com.michaldrabik.network.trakt.api.TraktService
@@ -12,9 +13,11 @@ import javax.inject.Named
 object TraktModule {
 
   @Provides
+  @CloudScope
   fun providesTraktApi(@Named("retrofitTrakt") retrofit: Retrofit): TraktApi =
     TraktApi(retrofit.create(TraktService::class.java))
 
   @Provides
+  @CloudScope
   fun providesTraktInterceptor() = TraktInterceptor()
 }

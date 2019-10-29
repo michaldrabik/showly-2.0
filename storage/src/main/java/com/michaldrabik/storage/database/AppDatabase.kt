@@ -27,7 +27,8 @@ import com.michaldrabik.storage.database.model.Show
 import com.michaldrabik.storage.database.model.User
 import com.michaldrabik.storage.database.model.WatchLaterShow
 
-private const val DATABASE_VERSION = 1
+const val DATABASE_VERSION = 1
+const val DATABASE_NAME = "SHOWLY2_DATABASE"
 
 @Database(
   version = DATABASE_VERSION,

@@ -3,6 +3,7 @@ package com.michaldrabik.network.di.module
 import com.michaldrabik.network.BuildConfig
 import com.michaldrabik.network.Config.TRAKT_BASE_URL
 import com.michaldrabik.network.Config.TVDB_BASE_URL
+import com.michaldrabik.network.di.CloudScope
 import com.michaldrabik.network.trakt.TraktInterceptor
 import com.michaldrabik.network.trakt.converters.EpisodeConverter
 import com.michaldrabik.network.trakt.converters.SearchResultConverter
@@ -25,6 +26,7 @@ import javax.inject.Named
 object RetrofitModule {
 
   @Provides
+  @CloudScope
   @Named("retrofitTrakt")
   fun providesTraktRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit =
     Retrofit.Builder()
@@ -34,6 +36,7 @@ object RetrofitModule {
       .build()
 
   @Provides
+  @CloudScope
   @Named("retrofitTvdb")
   fun providesTvdbRetrofit(okHttpClient: OkHttpClient, moshi: Moshi): Retrofit =
     Retrofit.Builder()
@@ -43,6 +46,7 @@ object RetrofitModule {
       .build()
 
   @Provides
+  @CloudScope
   fun providesMoshi(): Moshi {
     val showConverter = ShowConverter()
     val trendingResultConverter = TrendingResultConverter(showConverter)
@@ -71,6 +75,7 @@ object RetrofitModule {
   }
 
   @Provides
+  @CloudScope
   fun providesOkHttp(
     httpLoggingInterceptor: HttpLoggingInterceptor,
     traktInterceptor: TraktInterceptor
@@ -81,6 +86,7 @@ object RetrofitModule {
       .build()
 
   @Provides
+  @CloudScope
   fun providesHttpLoggingInterceptor(): HttpLoggingInterceptor =
     HttpLoggingInterceptor().apply {
       level = when {

@@ -24,8 +24,8 @@ class App : Application() {
 
   private fun createComponents() {
     appComponent = DaggerAppComponent.builder()
-      .cloudComponent(DaggerCloudComponent.create())
-      .storageComponent(
+      .cloudMarker(DaggerCloudComponent.create())
+      .storageMarker(
         DaggerStorageComponent.builder()
           .storageModule(StorageModule(this))
           .build()
