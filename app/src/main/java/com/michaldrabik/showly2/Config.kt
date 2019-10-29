@@ -11,6 +11,7 @@ object Config {
   const val MY_SHOWS_RECENTS_AMOUNT = 6
   const val SEARCH_RECENTS_AMOUNT = 5
   const val IMAGE_FADE_DURATION_MS = 200
+  const val PULL_TO_REFRESH_COOLDOWN_MS = 15_000
 
   val SHOW_DETAILS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(3) }
   val DISCOVER_SHOWS_CACHE_DURATION by lazy { TimeUnit.HOURS.toMillis(6) }

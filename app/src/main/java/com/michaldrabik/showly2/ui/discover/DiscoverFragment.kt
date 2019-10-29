@@ -85,7 +85,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
       setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
       setOnRefreshListener {
         viewModel.clearCache()
-        viewModel.loadDiscoverShows(skipCache = true, manual = true)
+        viewModel.loadDiscoverShows(skipCache = true, pullToRefresh = true)
       }
     }
   }
