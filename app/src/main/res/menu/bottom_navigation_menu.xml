@@ -7,7 +7,7 @@
   <item
     android:id="@+id/menuWatchlist"
     android:enabled="true"
-    android:icon="@drawable/ic_eye"
+    android:icon="@drawable/ic_bookmark"
     android:title="@string/menuWatchlist"
     app:showAsAction="always"
     tools:ignore="AlwaysShowAction"
@@ -15,7 +15,7 @@
   <item
     android:id="@+id/menuDiscover"
     android:enabled="true"
-    android:icon="@drawable/ic_binoculars"
+    android:icon="@drawable/ic_search"
     android:title="@string/menuDiscover"
     app:showAsAction="always"
     />
