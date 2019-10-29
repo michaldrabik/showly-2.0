@@ -55,10 +55,10 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    viewModel.uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
     setupView()
     setupRecycler()
     if (savedInstanceState == null && !isInitialized) isInitialized = true
+    viewModel.uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
   }
 
   override fun onResume() {

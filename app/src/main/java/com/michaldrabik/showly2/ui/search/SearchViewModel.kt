@@ -1,6 +1,5 @@
 package com.michaldrabik.showly2.ui.search
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.Config.SEARCH_RECENTS_AMOUNT
 import com.michaldrabik.showly2.model.Image
@@ -14,10 +13,10 @@ class SearchViewModel @Inject constructor(
   private val interactor: SearchInteractor
 ) : BaseViewModel<SearchUiModel>() {
 
-  private val lastItems = mutableListOf<SearchListItem>()
+  private val lastSearchItems = mutableListOf<SearchListItem>()
 
   fun loadLastSearch() {
-    _uiStream.value = SearchUiModel(lastItems)
+    _uiStream.value = SearchUiModel(searchItems = lastSearchItems)
   }
 
   fun loadRecentSearches() {
@@ -45,8 +44,8 @@ class SearchViewModel @Inject constructor(
           val image = interactor.findCachedImage(it, ImageType.POSTER)
           SearchListItem(it, image)
         }
-        lastItems.clear()
-        lastItems.addAll(items)
+        lastSearchItems.clear()
+        lastSearchItems.addAll(items)
         _uiStream.value = SearchUiModel(items, isSearching = false, isEmpty = items.isEmpty(), isInitial = false)
       } catch (t: Throwable) {
         onError(t)
@@ -70,6 +69,5 @@ class SearchViewModel @Inject constructor(
 
   private fun onError(t: Throwable) {
     _uiStream.value = SearchUiModel(error = Error(t), isSearching = false, isEmpty = false)
-    Log.e("SearchViewModel", t.message ?: "")
   }
 }

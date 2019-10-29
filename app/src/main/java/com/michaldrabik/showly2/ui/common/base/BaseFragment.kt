@@ -30,6 +30,4 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>> : Fragment() {
   ): View = inflater.inflate(layoutResId, container, false)
 
   protected fun getMainActivity() = requireActivity() as MainActivity
-
-  protected open fun onBackPressed() = Unit
 }
