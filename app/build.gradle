@@ -39,8 +39,9 @@ android {
       signingConfig signingConfigs.release
       proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
       firebaseAppDistribution {
-        releaseNotes=""
-        testers="michal.drabik0@gmail.com"
+        serviceCredentialsFile = rootProject.file("app/firebase-service-key.json")
+        releaseNotes = ""
+        groups = "developers"
       }
     }
   }
