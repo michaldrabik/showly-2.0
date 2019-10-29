@@ -47,7 +47,7 @@ class DiscoverViewModel @Inject constructor(
         val shows = interactor.loadDiscoverShows(uiCache.discoverActiveGenres, skipCache)
         onShowsLoaded(shows)
         _uiStream.value = DiscoverUiModel(resetScroll = resetScroll)
-        lastPullToRefreshMs = nowUtcMillis()
+        if (pullToRefresh) lastPullToRefreshMs = nowUtcMillis()
       } catch (t: Throwable) {
         onError(Error(t))
       } finally {
