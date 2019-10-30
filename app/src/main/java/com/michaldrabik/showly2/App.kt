@@ -4,10 +4,13 @@ import android.app.Activity
 import android.app.Application
 import android.os.StrictMode
 import androidx.fragment.app.Fragment
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.michaldrabik.network.di.DaggerCloudComponent
 import com.michaldrabik.showly2.di.AppComponent
 import com.michaldrabik.showly2.di.DaggerAppComponent
+import com.michaldrabik.showly2.fcm.FcmTopic
 import com.michaldrabik.storage.di.DaggerStorageComponent
 import com.michaldrabik.storage.di.StorageModule
 
@@ -17,12 +20,13 @@ class App : Application() {
 
   override fun onCreate() {
     super.onCreate()
-    createComponents()
     AndroidThreeTen.init(this)
-    setStrictMode()
+    setupComponents()
+    setupStrictMode()
+    setupFcm()
   }
 
-  private fun createComponents() {
+  private fun setupComponents() {
     appComponent = DaggerAppComponent.builder()
       .cloudMarker(DaggerCloudComponent.create())
       .storageMarker(
@@ -33,7 +37,7 @@ class App : Application() {
       .build()
   }
 
-  private fun setStrictMode() {
+  private fun setupStrictMode() {
     if (BuildConfig.DEBUG) {
       StrictMode.setThreadPolicy(
         StrictMode.ThreadPolicy.Builder()
@@ -41,6 +45,14 @@ class App : Application() {
           .penaltyLog()
           .build()
       )
+    }
+  }
+
+  private fun setupFcm() {
+    FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
+      if (it.isSuccessful) {
+        FirebaseMessaging.getInstance().subscribeToTopic(FcmTopic.GENERAL.key)
+      }
     }
   }
 }
