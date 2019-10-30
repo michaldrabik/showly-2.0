@@ -26,7 +26,6 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      tools:background="@color/colorWhite"
       />
 
     <ImageView
@@ -34,7 +33,7 @@
       android:layout_width="@dimen/seeLaterImageWidth"
       android:layout_height="@dimen/seeLaterImageHeight"
       android:layout_gravity="center"
-      android:padding="@dimen/spaceMedium"
+      android:padding="@dimen/spaceNormal"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"

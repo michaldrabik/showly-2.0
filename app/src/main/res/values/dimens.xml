@@ -47,19 +47,15 @@
   <dimen name="searchViewHeight">48dp</dimen>
   <dimen name="searchViewHeightPadded">64dp</dimen>
   <dimen name="searchViewCorner">4dp</dimen>
-  <dimen name="searchViewBackgroundImageMargin">50dp</dimen>
-  <dimen name="searchViewRecentHeight">46dp</dimen>
   <dimen name="searchViewImageWidth">67dp</dimen>
   <dimen name="searchViewImageHeight">100dp</dimen>
   <dimen name="searchViewItemPaddingHorizontal">20dp</dimen>
 
   <dimen name="watchlistImageHeight">120dp</dimen>
   <dimen name="watchlistImageWidth">80dp</dimen>
-  <dimen name="watchlistImageCorner">4dp</dimen>
 
   <dimen name="seeLaterImageHeight">120dp</dimen>
   <dimen name="seeLaterImageWidth">80dp</dimen>
-  <dimen name="seeLaterImageCorner">4dp</dimen>
   <dimen name="seeLaterMarginHorizontal">12dp</dimen>
 
   <dimen name="gridSpacing">3dp</dimen>

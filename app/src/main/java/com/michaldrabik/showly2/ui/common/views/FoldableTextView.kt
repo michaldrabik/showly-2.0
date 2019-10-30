@@ -2,9 +2,9 @@ package com.michaldrabik.showly2.ui.common.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 
-class FoldableTextView : TextView {
+class FoldableTextView : AppCompatTextView {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

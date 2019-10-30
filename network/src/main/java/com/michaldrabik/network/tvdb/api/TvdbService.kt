@@ -18,9 +18,6 @@ interface TvdbService {
   @POST("/login")
   suspend fun authorize(@Body body: AuthorizationRequest): AuthorizationToken
 
-  @GET("/refresh_token")
-  suspend fun refreshToken(@Header("Authorization") authorization: String): AuthorizationToken
-
   @GET("/series/{id}/actors")
   suspend fun fetchActors(
     @Header("Authorization") authorization: String,

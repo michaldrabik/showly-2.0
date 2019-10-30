@@ -8,7 +8,6 @@
   <color name="colorBlack">#000000</color>
   <color name="colorWhite">#FFFFFF</color>
 
-  <color name="colorErrorSnackbar">#E53935</color>
   <color name="colorInfoSnackbar">#313131</color>
 
   <color name="colorTextPrimary">#FEFEFE</color>

@@ -6,16 +6,11 @@
   <string name="menuShows">My Shows</string>
   <string name="menuSeeLater">See Later</string>
 
-  <string name="buttonShowMore">Show More</string>
-  <string name="buttonShowLess">Show Less</string>
-
   <string name="tabMyShows">My Shows</string>
   <string name="tabSeeLater">See Later</string>
 
   <string name="textOk">OK</string>
-  <string name="textToday">today</string>
   <string name="textNew">New</string>
-  <string name="textTomorrow">tomorrow</string>
   <string name="textNextEpisode">Next Episode:</string>
   <string name="textSearchFor">Search…</string>
   <string name="textSearchForMyShows">Search my shows…</string>
