@@ -15,12 +15,6 @@ interface ShowsDao {
   @Query("SELECT * FROM shows WHERE id_trakt == :traktId")
   suspend fun getById(traktId: Long): Show?
 
-  @Query("SELECT * FROM shows WHERE id_trakt IN (:traktIds)")
-  suspend fun getByIds(traktIds: List<Long>): List<Show>
-
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun upsert(shows: List<Show>)
-
-  @Query("DELETE FROM shows")
-  suspend fun deleteAll()
 }
