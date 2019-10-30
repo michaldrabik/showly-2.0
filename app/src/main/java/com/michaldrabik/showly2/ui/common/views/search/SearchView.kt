@@ -25,6 +25,8 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
       searchViewText.text = value
     }
 
+  var isSearching = false
+
   override fun getBehavior() = SearchViewBehaviour(context.dimenToPx(R.dimen.spaceSmall))
 
   override fun setEnabled(enabled: Boolean) {

@@ -67,7 +67,7 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
   }
 
   private fun setupView() {
-    getMainActivity().hideNavigation()
+    hideNavigation()
     searchViewInput.visible()
     searchViewText.gone()
     (searchViewIcon.drawable as Animatable).start()
@@ -185,7 +185,7 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
   private fun handleBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
-      getMainActivity().showNavigation()
+      showNavigation()
       remove()
       findNavController().popBackStack()
     }

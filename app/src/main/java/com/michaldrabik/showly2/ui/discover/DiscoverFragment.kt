@@ -91,15 +91,15 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
   }
 
   private fun openShowDetails(item: DiscoverListItem) {
+    hideNavigation()
     animateItemsExit(item)
     discoverChipsView.fadeOut()
     discoverSearchView.fadeOut()
-    getMainActivity().hideNavigation()
   }
 
   private fun openSearchView() {
+    hideNavigation()
     saveUiPositions()
-    getMainActivity().hideNavigation()
     discoverChipsView.fadeOut(200)
     discoverRecycler.fadeOut(duration = 200) {
       findNavController().navigate(R.id.actionDiscoverFragmentToSearchFragment)

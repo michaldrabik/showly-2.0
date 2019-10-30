@@ -78,7 +78,6 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
   }
 
   private fun setupPager() {
-    //TODO Look for possible optimizations
     pagesAdapter = FollowedPagesAdapter(this)
     pagesAdapter.addPages(
       MyShowsFragment(),
@@ -108,6 +107,8 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
   }
 
   private fun enterSearch() {
+    if (followedShowsSearchView.isSearching) return
+    followedShowsSearchView.isSearching = true
     searchViewText.gone()
     searchViewInput.run {
       setText("")
@@ -116,12 +117,13 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
       showKeyboard()
       requestFocus()
     }
-    getMainActivity().hideNavigation()
     (searchViewIcon.drawable as Animatable).start()
     searchViewIcon.onClick { exitSearch() }
+    hideNavigation(false)
   }
 
   private fun exitSearch() {
+    followedShowsSearchView.isSearching = false
     searchViewText.visible()
     searchViewInput.run {
       setText("")
@@ -129,8 +131,8 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
       hideKeyboard()
       clearFocus()
     }
-    getMainActivity().showNavigation()
     searchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
+    showNavigation()
   }
 
   private fun render(uiModel: FollowedShowsUiModel) {
@@ -192,7 +194,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
   }
 
   fun openShowDetails(show: Show) {
-    getMainActivity().hideNavigation()
+    hideNavigation()
     followedShowsRoot.fadeOut {
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.id) }
       findNavController().navigate(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)

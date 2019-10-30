@@ -29,5 +29,9 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>> : Fragment() {
     savedInstanceState: Bundle?
   ): View = inflater.inflate(layoutResId, container, false)
 
-  protected fun getMainActivity() = requireActivity() as MainActivity
+  protected fun hideNavigation(animate: Boolean = true) = getMainActivity().hideNavigation(animate)
+
+  protected fun showNavigation(animate: Boolean = true) = getMainActivity().showNavigation(animate)
+
+  private fun getMainActivity() = requireActivity() as MainActivity
 }

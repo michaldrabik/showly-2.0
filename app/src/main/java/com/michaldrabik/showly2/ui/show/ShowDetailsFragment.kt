@@ -298,7 +298,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         return@addCallback
       }
       remove()
-      getMainActivity().showNavigation()
+      showNavigation()
       findNavController().popBackStack()
     }
   }

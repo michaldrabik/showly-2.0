@@ -85,18 +85,18 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
-  fun hideNavigation() {
+  fun hideNavigation(animate: Boolean = true) {
     bottomNavigationWrapper.animate()
       .translationYBy(navigationHeight.toFloat())
-      .setDuration(NAVIGATION_TRANSITION_DURATION_MS)
+      .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
       .setInterpolator(decelerateInterpolator)
       .start()
   }
 
-  fun showNavigation() {
+  fun showNavigation(animate: Boolean = true) {
     bottomNavigationWrapper.animate()
       .translationY(0F)
-      .setDuration(NAVIGATION_TRANSITION_DURATION_MS)
+      .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
       .setInterpolator(decelerateInterpolator)
       .start()
   }
