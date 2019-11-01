@@ -34,6 +34,7 @@ class ShowFanartView : ShowView<DiscoverListItem> {
     showFanartTitle.text = item.show.title
     showFanartProgress.visibleIf(item.isLoading)
     showFanartRoot.onClick { itemClickListener(item) }
+    showFanartBadge.visibleIf(item.isFollowed)
     loadImage(item, missingImageListener)
   }
 
@@ -41,6 +42,7 @@ class ShowFanartView : ShowView<DiscoverListItem> {
     showFanartTitle.text = ""
     showFanartProgress.gone()
     showFanartPlaceholder.gone()
+    showFanartBadge.gone()
     Glide.with(this).clear(showFanartImage)
   }
 }

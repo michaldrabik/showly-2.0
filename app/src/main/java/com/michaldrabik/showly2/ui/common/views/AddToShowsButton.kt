@@ -47,7 +47,7 @@ class AddToShowsButton : FrameLayout {
         addToMyShowsButton.fadeOut(duration)
         seeLaterButton.fadeOut(duration)
         inMyShowsButton.run {
-          setIconResource(R.drawable.ic_bookmark)
+          setIconResource(R.drawable.ic_bookmark_full)
           setText(R.string.textInMyShows)
           setTextColor(ContextCompat.getColor(context, R.color.colorAccent))
           setIconTintResource(R.color.colorAccent)

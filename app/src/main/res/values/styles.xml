@@ -9,6 +9,18 @@
     <item name="android:windowBackground">@color/colorBackground</item>
   </style>
 
+  <style name="Show" />
+
+  <style name="Show.Badge" parent="Show">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_gravity">top|end</item>
+    <item name="android:layout_marginEnd">@dimen/spaceTiny</item>
+    <item name="android:layout_marginTop">-5dp</item>
+    <item name="android:visibility">gone</item>
+    <item name="android:tint">@color/colorAccent</item>
+  </style>
+
   <!--  Bottom Sheet Dialog -->
 
   <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
@@ -60,7 +72,6 @@
     <item name="tabIndicatorAnimationDuration">200</item>
   </style>
 
-  <!-- for text -->
   <style name="MyShowsTabTextStyle" parent="TextAppearance.Design.Tab">
     <item name="android:textSize">15sp</item>
     <item name="android:textColor">@color/colorTextSecondary</item>

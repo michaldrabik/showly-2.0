@@ -58,7 +58,7 @@
     android:text="@string/textInMyShows"
     android:textColor="@color/colorAccent"
     android:visibility="gone"
-    app:icon="@drawable/ic_bookmark"
+    app:icon="@drawable/ic_bookmark_full"
     app:iconGravity="textStart"
     app:iconPadding="@dimen/spaceTiny"
     app:iconTint="@color/colorAccent"

@@ -41,6 +41,9 @@ class SearchInteractor @Inject constructor(
     database.recentSearchDao().insert(listOf(RecentSearchDb(0, query, now, now)))
   }
 
+  suspend fun loadFollowedShowsIds() =
+    database.followedShowsDao().getAllTraktIds()
+
   suspend fun findCachedImage(show: Show, type: ImageType) =
     imagesManager.findCachedImage(show, type)
 

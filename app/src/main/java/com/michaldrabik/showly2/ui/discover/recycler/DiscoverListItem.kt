@@ -6,5 +6,6 @@ import com.michaldrabik.showly2.model.Show
 data class DiscoverListItem(
   override val show: Show,
   override val image: Image,
-  override var isLoading: Boolean = false
+  override var isLoading: Boolean = false,
+  val isFollowed: Boolean = false
 ) : ListItem

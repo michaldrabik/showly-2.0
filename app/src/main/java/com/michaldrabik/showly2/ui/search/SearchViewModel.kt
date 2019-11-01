@@ -3,7 +3,7 @@ package com.michaldrabik.showly2.ui.search
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.Config.SEARCH_RECENTS_AMOUNT
 import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.ImageType
+import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
 import kotlinx.coroutines.launch
@@ -40,9 +40,10 @@ class SearchViewModel @Inject constructor(
       try {
         _uiStream.value = SearchUiModel(emptyList(), emptyList(), isSearching = true, isEmpty = false, isInitial = false)
         val shows = interactor.searchShows(trimmed)
+        val followedShowsIds = interactor.loadFollowedShowsIds()
         val items = shows.map {
-          val image = interactor.findCachedImage(it, ImageType.POSTER)
-          SearchListItem(it, image)
+          val image = interactor.findCachedImage(it, POSTER)
+          SearchListItem(it, image, isFollowed = it.id in followedShowsIds)
         }
         lastSearchItems.clear()
         lastSearchItems.addAll(items)

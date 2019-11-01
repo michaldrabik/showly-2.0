@@ -21,7 +21,7 @@ class FollowedShowsInteractor @Inject constructor(
     if (query.isNullOrBlank()) return emptyList()
 
     if (searchItemsCache.isEmpty()) {
-      val seeLaterShows = database.watchLaterShowsDao().getAll()
+      val seeLaterShows = database.seeLaterShowsDao().getAll()
       val myShows = database.followedShowsDao().getAll()
 
       val allShows = (seeLaterShows + myShows)

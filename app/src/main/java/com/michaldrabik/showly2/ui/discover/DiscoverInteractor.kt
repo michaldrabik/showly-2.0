@@ -68,6 +68,9 @@ class DiscoverInteractor @Inject constructor(
     return discoverShows
   }
 
+  suspend fun loadFollowedShowsIds() =
+    database.followedShowsDao().getAllTraktIds()
+
   suspend fun findCachedImage(show: Show, type: ImageType) =
     imagesManager.findCachedImage(show, type)
 

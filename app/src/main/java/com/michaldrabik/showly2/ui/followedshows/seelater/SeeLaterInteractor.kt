@@ -16,7 +16,7 @@ class SeeLaterInteractor @Inject constructor(
 ) {
 
   suspend fun loadShows() =
-    database.watchLaterShowsDao().getAll()
+    database.seeLaterShowsDao().getAll()
       .sortedBy { it.title }
       .map { mappers.show.fromDatabase(it) }
 

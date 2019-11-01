@@ -45,7 +45,8 @@ class DiscoverViewModel @Inject constructor(
       }
       try {
         val shows = interactor.loadDiscoverShows(uiCache.discoverActiveGenres, skipCache)
-        onShowsLoaded(shows)
+        val followedShowsIds = interactor.loadFollowedShowsIds()
+        onShowsLoaded(shows, followedShowsIds)
         _uiStream.value = DiscoverUiModel(resetScroll = resetScroll)
         if (pullToRefresh) lastPullToRefreshMs = nowUtcMillis()
       } catch (t: Throwable) {
@@ -57,7 +58,10 @@ class DiscoverViewModel @Inject constructor(
     }
   }
 
-  private suspend fun onShowsLoaded(shows: List<Show>) {
+  private suspend fun onShowsLoaded(
+    shows: List<Show>,
+    followedShowsIds: List<Long>
+  ) {
     val items = shows.mapIndexed { index, show ->
       val itemType =
         when (index) {
@@ -66,7 +70,7 @@ class DiscoverViewModel @Inject constructor(
           else -> POSTER
         }
       val image = interactor.findCachedImage(show, itemType)
-      DiscoverListItem(show, image)
+      DiscoverListItem(show, image, isFollowed = show.id in followedShowsIds)
     }
     _showsStream.value = items
   }

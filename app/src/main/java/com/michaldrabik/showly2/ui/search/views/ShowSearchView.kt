@@ -43,6 +43,7 @@ class ShowSearchView : ShowView<SearchListItem> {
 
     showSearchDescription.visibleIf(item.show.overview.isNotBlank())
     showSearchNetwork.visibleIf(item.show.network.isNotBlank())
+    showSearchBadge.visibleIf(item.isFollowed)
     loadImage(item, missingImageListener)
 
     showSearchRoot.onClick { itemClickListener(item) }
@@ -53,6 +54,7 @@ class ShowSearchView : ShowView<SearchListItem> {
     showSearchDescription.text = ""
     showSearchNetwork.text = ""
     showSearchPlaceholder.gone()
+    showSearchBadge.gone()
     Glide.with(this).clear(showSearchImage)
   }
 }

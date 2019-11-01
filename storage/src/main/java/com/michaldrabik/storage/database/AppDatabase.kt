@@ -13,7 +13,7 @@ import com.michaldrabik.storage.database.dao.SeasonsDao
 import com.michaldrabik.storage.database.dao.SettingsDao
 import com.michaldrabik.storage.database.dao.ShowsDao
 import com.michaldrabik.storage.database.dao.UserDao
-import com.michaldrabik.storage.database.dao.WatchLaterShowsDao
+import com.michaldrabik.storage.database.dao.SeeLaterShowsDao
 import com.michaldrabik.storage.database.model.Actor
 import com.michaldrabik.storage.database.model.DiscoverShow
 import com.michaldrabik.storage.database.model.Episode
@@ -25,7 +25,7 @@ import com.michaldrabik.storage.database.model.Season
 import com.michaldrabik.storage.database.model.Settings
 import com.michaldrabik.storage.database.model.Show
 import com.michaldrabik.storage.database.model.User
-import com.michaldrabik.storage.database.model.WatchLaterShow
+import com.michaldrabik.storage.database.model.SeeLaterShow
 
 const val DATABASE_VERSION = 1
 const val DATABASE_NAME = "SHOWLY2_DATABASE"
@@ -36,7 +36,7 @@ const val DATABASE_NAME = "SHOWLY2_DATABASE"
     Show::class,
     DiscoverShow::class,
     FollowedShow::class,
-    WatchLaterShow::class,
+    SeeLaterShow::class,
     RelatedShow::class,
     Image::class,
     User::class,
@@ -54,7 +54,7 @@ abstract class AppDatabase : RoomDatabase() {
 
   abstract fun followedShowsDao(): FollowedShowsDao
 
-  abstract fun watchLaterShowsDao(): WatchLaterShowsDao
+  abstract fun seeLaterShowsDao(): SeeLaterShowsDao
 
   abstract fun relatedShowsDao(): RelatedShowsDao
 

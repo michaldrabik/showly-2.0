@@ -36,6 +36,7 @@ class ShowPosterView : ShowView<DiscoverListItem> {
     showPosterTitle.text = item.show.title
     showPosterProgress.visibleIf(item.isLoading)
     showPosterRoot.onClick { itemClickListener(item) }
+    showPosterBadge.visibleIf(item.isFollowed)
     loadImage(item, missingImageListener)
   }
 
@@ -55,6 +56,7 @@ class ShowPosterView : ShowView<DiscoverListItem> {
     showPosterTitle.gone()
     showPosterPlaceholder.gone()
     showPosterProgress.gone()
+    showPosterBadge.gone()
     Glide.with(this).clear(showPosterImage)
   }
 }

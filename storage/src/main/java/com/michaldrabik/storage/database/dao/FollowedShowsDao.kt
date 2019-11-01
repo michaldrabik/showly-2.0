@@ -13,6 +13,9 @@ interface FollowedShowsDao {
   @Query("SELECT * FROM shows INNER JOIN shows_followed ON shows_followed.id_trakt == shows.id_trakt")
   suspend fun getAll(): List<Show>
 
+  @Query("SELECT shows.id_trakt FROM shows INNER JOIN shows_followed ON shows_followed.id_trakt == shows.id_trakt")
+  suspend fun getAllTraktIds(): List<Long>
+
   @Query("SELECT * FROM shows INNER JOIN shows_followed ON shows_followed.id_trakt == shows.id_trakt ORDER BY id DESC")
   suspend fun getAllRecent(): List<Show>
 

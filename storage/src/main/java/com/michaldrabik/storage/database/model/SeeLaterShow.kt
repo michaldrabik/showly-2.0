@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "shows_watch_later")
-data class WatchLaterShow(
+@Entity(tableName = "shows_see_later")
+data class SeeLaterShow(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
   @ColumnInfo(name = "id_trakt", defaultValue = "-1") var idTrakt: Long,
   @ColumnInfo(name = "created_at", defaultValue = "-1") var createdAt: Long,
@@ -13,8 +13,8 @@ data class WatchLaterShow(
 ) {
 
   companion object {
-    fun fromTraktId(traktId: Long, nowUtcMillis: Long): WatchLaterShow {
-      return WatchLaterShow(idTrakt = traktId, createdAt = nowUtcMillis, updatedAt = nowUtcMillis)
+    fun fromTraktId(traktId: Long, nowUtcMillis: Long): SeeLaterShow {
+      return SeeLaterShow(idTrakt = traktId, createdAt = nowUtcMillis, updatedAt = nowUtcMillis)
     }
   }
 }
