@@ -74,7 +74,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
   private fun openShowDetails(item: WatchlistItem) {
     hideNavigation()
     watchlistRoot.fadeOut {
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.id) }
+      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
       findNavController().navigate(R.id.actionWatchlistFragmentToShowDetailsFragment, bundle)
     }
   }

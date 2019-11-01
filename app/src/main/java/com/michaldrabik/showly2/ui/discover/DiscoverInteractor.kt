@@ -28,7 +28,7 @@ class DiscoverInteractor @Inject constructor(
   ): List<Show> {
 
     fun addIfMissing(shows: MutableList<Show>, show: Show) {
-      if (shows.none { it.id == show.id }) {
+      if (shows.none { it.ids.trakt == show.ids.trakt }) {
         shows.add(show)
       }
     }
@@ -61,7 +61,7 @@ class DiscoverInteractor @Inject constructor(
       val timestamp = nowUtcMillis()
       database.showsDao().upsert(discoverShows.map { mappers.show.toDatabase(it) })
       database.discoverShowsDao().deleteAllAndInsert(discoverShows.map {
-        DiscoverShow(idTrakt = it.ids.trakt, createdAt = timestamp, updatedAt = timestamp)
+        DiscoverShow(idTrakt = it.ids.trakt.id, createdAt = timestamp, updatedAt = timestamp)
       })
     }
 

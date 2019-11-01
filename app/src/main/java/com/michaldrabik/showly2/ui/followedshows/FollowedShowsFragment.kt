@@ -197,7 +197,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
   fun openShowDetails(show: Show) {
     hideNavigation()
     followedShowsRoot.fadeOut {
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.id) }
+      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.ids.trakt.id) }
       findNavController().navigate(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
     }
     viewModel.tabsTranslation = followedShowsTabs.translationY

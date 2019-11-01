@@ -20,8 +20,6 @@ data class Episode(
     val EMPTY = Episode(-1, -1, "", Ids.EMPTY, "", -1F, -1, -1, null, -1)
   }
 
-  val id = ids.trakt
-
   fun hasAired(season: Season) =
     when (firstAired) {
       null -> season.episodes.any { it.number > number && it.firstAired != null }

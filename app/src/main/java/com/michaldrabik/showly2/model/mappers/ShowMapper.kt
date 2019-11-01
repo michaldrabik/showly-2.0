@@ -1,6 +1,12 @@
 package com.michaldrabik.showly2.model.mappers
 
 import com.michaldrabik.showly2.model.AirTime
+import com.michaldrabik.showly2.model.IdImdb
+import com.michaldrabik.showly2.model.IdSlug
+import com.michaldrabik.showly2.model.IdTmdb
+import com.michaldrabik.showly2.model.IdTrakt
+import com.michaldrabik.showly2.model.IdTvRage
+import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.ShowStatus
@@ -12,7 +18,14 @@ import com.michaldrabik.storage.database.model.Show as ShowDb
 class ShowMapper @Inject constructor() {
 
   fun fromNetwork(show: ShowNetwork) = Show(
-    Ids(show.ids.trakt, show.ids.slug, show.ids.tvdb, show.ids.imdb, show.ids.tmdb, show.ids.tvrage),
+    Ids(
+      IdTrakt(show.ids.trakt),
+      IdSlug(show.ids.slug),
+      IdTvdb(show.ids.tvdb),
+      IdImdb(show.ids.imdb),
+      IdTmdb(show.ids.tmdb),
+      IdTvRage(show.ids.tvrage)
+    ),
     show.title,
     show.year,
     show.overview,
@@ -33,7 +46,14 @@ class ShowMapper @Inject constructor() {
   )
 
   fun fromDatabase(show: ShowDb) = Show(
-    Ids(show.idTrakt, show.idSlug, show.idTvdb, show.idImdb, show.idTmdb, show.idTvrage),
+    Ids(
+      IdTrakt(show.idTrakt),
+      IdSlug(show.idSlug),
+      IdTvdb(show.idTvdb),
+      IdImdb(show.idImdb),
+      IdTmdb(show.idTmdb),
+      IdTvRage(show.idTvrage)
+    ),
     show.title,
     show.year,
     show.overview,
@@ -54,12 +74,12 @@ class ShowMapper @Inject constructor() {
   )
 
   fun toDatabase(show: Show) = ShowDb(
-    show.id,
-    show.ids.tvdb,
-    show.ids.tmdb,
-    show.ids.imdb,
-    show.ids.slug,
-    show.ids.tvrage,
+    show.ids.trakt.id,
+    show.ids.tvdb.id,
+    show.ids.tmdb.id,
+    show.ids.imdb.id,
+    show.ids.slug.id,
+    show.ids.tvrage.id,
     show.title,
     show.year,
     show.overview,

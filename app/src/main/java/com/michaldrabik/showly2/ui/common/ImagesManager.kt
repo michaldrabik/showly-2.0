@@ -25,7 +25,7 @@ class ImagesManager @Inject constructor(
 ) {
 
   suspend fun findCachedImage(show: Show, type: ImageType): Image {
-    val cachedImage = database.imagesDao().getByShowId(show.ids.tvdb, type.key)
+    val cachedImage = database.imagesDao().getByShowId(show.ids.tvdb.id, type.key)
     return when (cachedImage) {
       null -> Image.createUnknown(type)
       else -> mappers.image.fromDatabase(cachedImage).copy(type = type)
@@ -33,7 +33,7 @@ class ImagesManager @Inject constructor(
   }
 
   suspend fun findCachedImage(episode: Episode, type: ImageType): Image {
-    val cachedImage = database.imagesDao().getByEpisodeId(episode.ids.tvdb, type.key)
+    val cachedImage = database.imagesDao().getByEpisodeId(episode.ids.tvdb.id, type.key)
     return when (cachedImage) {
       null -> Image.createUnknown(type, EPISODE)
       else -> mappers.image.fromDatabase(cachedImage).copy(type = type)
@@ -41,7 +41,7 @@ class ImagesManager @Inject constructor(
   }
 
   suspend fun loadRemoteImage(show: Show, type: ImageType, force: Boolean = false): Image {
-    val tvdbId = show.ids.tvdb
+    val tvdbId = show.ids.tvdb.id
     val cachedImage = findCachedImage(show, type)
     if (cachedImage.status == AVAILABLE && !force) {
       return cachedImage
@@ -65,7 +65,7 @@ class ImagesManager @Inject constructor(
   }
 
   suspend fun loadRemoteImage(episode: Episode, force: Boolean = false): Image {
-    val tvdbId = episode.ids.tvdb
+    val tvdbId = episode.ids.tvdb.id
     val cachedImage = findCachedImage(episode, FANART)
     if (cachedImage.status == AVAILABLE && !force) {
       return cachedImage

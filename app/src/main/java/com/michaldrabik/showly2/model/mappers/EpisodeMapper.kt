@@ -1,6 +1,12 @@
 package com.michaldrabik.showly2.model.mappers
 
 import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.showly2.model.IdImdb
+import com.michaldrabik.showly2.model.IdSlug
+import com.michaldrabik.showly2.model.IdTmdb
+import com.michaldrabik.showly2.model.IdTrakt
+import com.michaldrabik.showly2.model.IdTvRage
+import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.model.Season
 import javax.inject.Inject
@@ -14,12 +20,12 @@ class EpisodeMapper @Inject constructor() {
     episode.number,
     episode.title,
     Ids(
-      episode.ids.trakt,
-      episode.ids.slug,
-      episode.ids.tvdb,
-      episode.ids.imdb,
-      episode.ids.tmdb,
-      episode.ids.tvrage
+      IdTrakt(episode.ids.trakt),
+      IdSlug(episode.ids.slug),
+      IdTvdb(episode.ids.tvdb),
+      IdImdb(episode.ids.imdb),
+      IdTmdb(episode.ids.tmdb),
+      IdTvRage(episode.ids.tvrage)
     ),
     episode.overview,
     episode.rating,
@@ -32,16 +38,16 @@ class EpisodeMapper @Inject constructor() {
   fun toDatabase(
     episode: Episode,
     season: Season,
-    showId: Long,
+    showId: IdTrakt,
     isWatched: Boolean
   ): EpisodeDb {
     return EpisodeDb(
-      episode.ids.trakt,
-      season.ids.trakt,
-      showId,
-      episode.ids.tvdb,
-      episode.ids.imdb,
-      episode.ids.tmdb,
+      episode.ids.trakt.id,
+      season.ids.trakt.id,
+      showId.id,
+      episode.ids.tvdb.id,
+      episode.ids.imdb.id,
+      episode.ids.tmdb.id,
       season.number,
       episode.number,
       episode.overview,
@@ -58,10 +64,10 @@ class EpisodeMapper @Inject constructor() {
   fun fromDatabase(episodeDb: EpisodeDb) =
     Episode(
       ids = Ids.EMPTY.copy(
-        trakt = episodeDb.idTrakt,
-        tvdb = episodeDb.idShowTvdb,
-        imdb = episodeDb.idShowImdb,
-        tmdb = episodeDb.idShowTmdb
+        trakt = IdTrakt(episodeDb.idTrakt),
+        tvdb = IdTvdb(episodeDb.idShowTvdb),
+        imdb = IdImdb(episodeDb.idShowImdb),
+        tmdb = IdTmdb(episodeDb.idShowTmdb)
       ),
       title = episodeDb.title,
       number = episodeDb.episodeNumber,

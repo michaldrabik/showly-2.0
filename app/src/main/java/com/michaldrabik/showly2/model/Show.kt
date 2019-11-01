@@ -19,8 +19,4 @@ data class Show(
   val commentCount: Long,
   val genres: List<String>,
   val airedEpisodes: Int
-) {
-
-  val id = ids.trakt
-
-}
+)

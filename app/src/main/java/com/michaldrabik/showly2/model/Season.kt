@@ -11,6 +11,4 @@ data class Season(
   val firstAired: ZonedDateTime?,
   val overview: String,
   val episodes: List<Episode>
-) {
-  val id = ids.trakt
-}
+)

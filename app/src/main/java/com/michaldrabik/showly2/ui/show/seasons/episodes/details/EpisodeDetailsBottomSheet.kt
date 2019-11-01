@@ -14,6 +14,7 @@ import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.ui.common.base.BaseBottomSheetFragment
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.gone
@@ -48,7 +49,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       showButton: Boolean = true
     ): EpisodeDetailsBottomSheet {
       val bundle = Bundle().apply {
-        putLong(ARG_ID, episode.ids.tvdb)
+        putLong(ARG_ID, episode.ids.tvdb.id)
         putString(ARG_TITLE, episode.title)
         putString(ARG_OVERVIEW, episode.overview)
         putInt(ARG_SEASON, episode.season)
@@ -63,7 +64,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   var onEpisodeWatchedClick: ((Boolean) -> Unit)? = null
 
-  private val episodeTvdbId by lazy { arguments!!.getLong(ARG_ID) }
+  private val episodeTvdbId by lazy { IdTvdb(arguments!!.getLong(ARG_ID)) }
   private val episodeTitle by lazy { arguments!!.getString(ARG_TITLE, "") }
   private val episodeOverview by lazy { arguments!!.getString(ARG_OVERVIEW, "") }
   private val episodeNumber by lazy { arguments!!.getInt(ARG_NUMBER) }

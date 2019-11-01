@@ -1,5 +1,11 @@
 package com.michaldrabik.showly2.model.mappers
 
+import com.michaldrabik.showly2.model.IdImdb
+import com.michaldrabik.showly2.model.IdSlug
+import com.michaldrabik.showly2.model.IdTmdb
+import com.michaldrabik.showly2.model.IdTrakt
+import com.michaldrabik.showly2.model.IdTvRage
+import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.model.Season
 import javax.inject.Inject
@@ -12,12 +18,12 @@ class SeasonMapper @Inject constructor(
 
   fun fromNetwork(season: SeasonNetwork) = Season(
     Ids(
-      season.ids.trakt,
-      season.ids.slug,
-      season.ids.tvdb,
-      season.ids.imdb,
-      season.ids.tmdb,
-      season.ids.tvrage
+      IdTrakt(season.ids.trakt),
+      IdSlug(season.ids.slug),
+      IdTvdb(season.ids.tvdb),
+      IdImdb(season.ids.imdb),
+      IdTmdb(season.ids.tmdb),
+      IdTvRage(season.ids.tvrage)
     ),
     season.number,
     season.episodeCount,
@@ -29,7 +35,7 @@ class SeasonMapper @Inject constructor(
   )
 
   fun fromDatabase(seasonDb: SeasonDb) = Season(
-    Ids.EMPTY.copy(trakt = seasonDb.idTrakt),
+    Ids.EMPTY.copy(trakt = IdTrakt(seasonDb.idTrakt)),
     seasonDb.seasonNumber,
     seasonDb.episodesCount,
     seasonDb.episodesAiredCount,
@@ -41,12 +47,12 @@ class SeasonMapper @Inject constructor(
 
   fun toDatabase(
     season: Season,
-    showId: Long,
+    showId: IdTrakt,
     isWatched: Boolean
   ): SeasonDb {
     return SeasonDb(
-      season.ids.trakt,
-      showId,
+      season.ids.trakt.id,
+      showId.id,
       season.number,
       season.title,
       season.overview,

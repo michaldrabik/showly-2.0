@@ -9,6 +9,6 @@ data class EpisodeListItem(
   val isWatched: Boolean
 ) {
 
-  val id = episode.ids.trakt
+  val id = episode.ids.trakt.id
 
 }

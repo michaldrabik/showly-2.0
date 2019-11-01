@@ -70,7 +70,7 @@ class DiscoverViewModel @Inject constructor(
           else -> POSTER
         }
       val image = interactor.findCachedImage(show, itemType)
-      DiscoverListItem(show, image, isFollowed = show.id in followedShowsIds)
+      DiscoverListItem(show, image, isFollowed = show.ids.trakt.id in followedShowsIds)
     }
     _showsStream.value = items
   }

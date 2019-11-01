@@ -43,7 +43,7 @@ class SearchViewModel @Inject constructor(
         val followedShowsIds = interactor.loadFollowedShowsIds()
         val items = shows.map {
           val image = interactor.findCachedImage(it, POSTER)
-          SearchListItem(it, image, isFollowed = it.id in followedShowsIds)
+          SearchListItem(it, image, isFollowed = it.ids.trakt.id in followedShowsIds)
         }
         lastSearchItems.clear()
         lastSearchItems.addAll(items)

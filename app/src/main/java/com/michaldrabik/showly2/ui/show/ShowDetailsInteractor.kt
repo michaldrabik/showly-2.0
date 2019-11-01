@@ -9,6 +9,7 @@ import com.michaldrabik.showly2.UserManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.Season
@@ -33,10 +34,10 @@ class ShowDetailsInteractor @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  suspend fun loadShowDetails(traktId: Long): Show {
-    val localShow = database.showsDao().getById(traktId)
+  suspend fun loadShowDetails(traktId: IdTrakt): Show {
+    val localShow = database.showsDao().getById(traktId.id)
     if (localShow == null || nowUtcMillis() - localShow.updatedAt > Config.SHOW_DETAILS_CACHE_DURATION) {
-      val remoteShow = cloud.traktApi.fetchShow(traktId)
+      val remoteShow = cloud.traktApi.fetchShow(traktId.id)
       val show = mappers.show.fromNetwork(remoteShow)
       database.showsDao().upsert(listOf(mappers.show.toDatabase(show)))
       return show
@@ -47,30 +48,30 @@ class ShowDetailsInteractor @Inject constructor(
   suspend fun loadBackgroundImage(show: Show) =
     imagesManager.loadRemoteImage(show, FANART)
 
-  suspend fun loadNextEpisode(traktId: Long): Episode? {
-    val episode = cloud.traktApi.fetchNextEpisode(traktId) ?: return null
+  suspend fun loadNextEpisode(traktId: IdTrakt): Episode? {
+    val episode = cloud.traktApi.fetchNextEpisode(traktId.id) ?: return null
     return mappers.episode.fromNetwork(episode)
   }
 
   suspend fun loadActors(show: Show): List<Actor> {
-    val localActors = database.actorsDao().getAllByShow(show.ids.tvdb)
+    val localActors = database.actorsDao().getAllByShow(show.ids.tvdb.id)
     if (localActors.isNotEmpty() && nowUtcMillis() - localActors[0].updatedAt < ACTORS_CACHE_DURATION) {
       return localActors.map { mappers.actor.fromDatabase(it) }
     }
 
     userManager.checkAuthorization()
     val token = userManager.getTvdbToken()
-    val remoteActors = cloud.tvdbApi.fetchActors(token, show.ids.tvdb)
+    val remoteActors = cloud.tvdbApi.fetchActors(token, show.ids.tvdb.id)
       .sortedBy { it.sortOrder }
       .take(20)
       .map { mappers.actor.fromNetwork(it) }
 
-    database.actorsDao().deleteAllAndInsert(remoteActors.map { mappers.actor.toDatabase(it) }, show.ids.tvdb)
+    database.actorsDao().deleteAllAndInsert(remoteActors.map { mappers.actor.toDatabase(it) }, show.ids.tvdb.id)
     return remoteActors
   }
 
   suspend fun loadRelatedShows(show: Show): List<Show> {
-    val relatedShows = database.relatedShowsDao().getById(show.id)
+    val relatedShows = database.relatedShowsDao().getById(show.ids.trakt.id)
     val latest = relatedShows.maxBy { it.updatedAt }
     if (latest != null && nowUtcMillis() - latest.updatedAt < RELATED_CACHE_DURATION) {
       return relatedShows
@@ -79,14 +80,14 @@ class ShowDetailsInteractor @Inject constructor(
         .reversed()
     }
 
-    val remoteShows = cloud.traktApi.fetchRelatedShows(show.id)
+    val remoteShows = cloud.traktApi.fetchRelatedShows(show.ids.trakt.id)
       .map { mappers.show.fromNetwork(it) }
 
     database.withTransaction {
       val timestamp = nowUtcMillis()
       database.showsDao().upsert(remoteShows.map { mappers.show.toDatabase(it) })
-      database.relatedShowsDao().deleteById(show.id)
-      database.relatedShowsDao().insert(remoteShows.map { RelatedShow.fromTraktId(it.id, show.id, timestamp) })
+      database.relatedShowsDao().deleteById(show.ids.trakt.id)
+      database.relatedShowsDao().insert(remoteShows.map { RelatedShow.fromTraktId(it.ids.trakt.id, show.ids.trakt.id, timestamp) })
     }
 
     return remoteShows
@@ -101,7 +102,7 @@ class ShowDetailsInteractor @Inject constructor(
     imagesManager.loadRemoteImage(show, type, force)
 
   suspend fun loadSeasons(show: Show): List<Season> {
-    return cloud.traktApi.fetchSeasons(show.id).asSequence()
+    return cloud.traktApi.fetchSeasons(show.ids.trakt.id).asSequence()
       .filter { it.number != 0 } //Filtering out "special" seasons
       .sortedByDescending { it.number }
       .map { mappers.season.fromNetwork(it) }
@@ -109,33 +110,33 @@ class ShowDetailsInteractor @Inject constructor(
   }
 
   suspend fun isFollowed(show: Show) =
-    database.followedShowsDao().getById(show.id) != null
+    database.followedShowsDao().getById(show.ids.trakt.id) != null
 
   suspend fun addToFollowed(
     show: Show,
     seasons: List<Season>,
     episodes: List<Episode>
   ) {
-    val dbShow = FollowedShow.fromTraktId(show.id, nowUtcMillis())
+    val dbShow = FollowedShow.fromTraktId(show.ids.trakt.id, nowUtcMillis())
     database.withTransaction {
       database.followedShowsDao().insert(dbShow)
 
-      val localSeasons = database.seasonsDao().getAllByShowId(show.id)
-      val localEpisodes = database.episodesDao().getAllByShowId(show.id)
+      val localSeasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
+      val localEpisodes = database.episodesDao().getAllByShowId(show.ids.trakt.id)
 
       val seasonsToAdd = mutableListOf<SeasonDb>()
       val episodesToAdd = mutableListOf<EpisodeDb>()
 
       seasons.forEach { season ->
-        if (localSeasons.none { it.idTrakt == season.id }) {
-          seasonsToAdd.add(mappers.season.toDatabase(season, show.id, false))
+        if (localSeasons.none { it.idTrakt == season.ids.trakt.id }) {
+          seasonsToAdd.add(mappers.season.toDatabase(season, show.ids.trakt, false))
         }
       }
 
       episodes.forEach { episode ->
-        if (localEpisodes.none { it.idTrakt == episode.id }) {
+        if (localEpisodes.none { it.idTrakt == episode.ids.trakt.id }) {
           val season = seasons.find { it.number == episode.season }!!
-          episodesToAdd.add(mappers.episode.toDatabase(episode, season, show.id, false))
+          episodesToAdd.add(mappers.episode.toDatabase(episode, season, show.ids.trakt, false))
         }
       }
 
@@ -146,11 +147,11 @@ class ShowDetailsInteractor @Inject constructor(
 
   suspend fun removeFromFollowed(show: Show) {
     database.withTransaction {
-      database.followedShowsDao().deleteById(show.id)
-      database.episodesDao().deleteAllUnwatchedForShow(show.id)
+      database.followedShowsDao().deleteById(show.ids.trakt.id)
+      database.episodesDao().deleteAllUnwatchedForShow(show.ids.trakt.id)
 
-      val seasons = database.seasonsDao().getAllByShowId(show.id)
-      val episodes = database.episodesDao().getAllByShowId(show.id)
+      val seasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
+      val episodes = database.episodesDao().getAllByShowId(show.ids.trakt.id)
 
       val toDelete = mutableListOf<SeasonDb>()
       seasons.forEach { season ->
@@ -163,14 +164,14 @@ class ShowDetailsInteractor @Inject constructor(
   }
 
   suspend fun isWatchLater(show: Show) =
-    database.seeLaterShowsDao().getById(show.id) != null
+    database.seeLaterShowsDao().getById(show.ids.trakt.id) != null
 
   suspend fun addToWatchLater(show: Show) {
-    val dbShow = SeeLaterShow.fromTraktId(show.id, nowUtcMillis())
+    val dbShow = SeeLaterShow.fromTraktId(show.ids.trakt.id, nowUtcMillis())
     database.seeLaterShowsDao().insert(dbShow)
   }
 
   suspend fun removeFromWatchLater(show: Show) {
-    database.seeLaterShowsDao().deleteById(show.id)
+    database.seeLaterShowsDao().deleteById(show.ids.trakt.id)
   }
 }

@@ -23,6 +23,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
 import com.michaldrabik.showly2.model.Season
@@ -61,7 +62,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
 
   override val layoutResId = R.layout.fragment_show_details
 
-  private val showId by lazy { arguments?.getLong(ARG_SHOW_ID, -1) ?: -1 }
+  private val showId by lazy { IdTrakt(arguments?.getLong(ARG_SHOW_ID, -1) ?: -1) }
 
   private val actorsAdapter by lazy { ActorsAdapter() }
   private val relatedAdapter by lazy { RelatedShowAdapter() }
@@ -127,7 +128,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     }
     relatedAdapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
     relatedAdapter.itemClickListener = {
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, it.show.id) }
+      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, it.show.ids.trakt.id) }
       findNavController().navigate(R.id.actionShowDetailsFragmentToSelf, bundle)
     }
   }

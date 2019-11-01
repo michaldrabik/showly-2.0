@@ -56,7 +56,7 @@ class EpisodesView : ConstraintLayout {
 
   fun updateEpisodes(seasonListItems: List<SeasonListItem>) {
     if (!this::season.isInitialized) return
-    val seasonListItem = seasonListItems.find { it.season.id == season.id }
+    val seasonListItem = seasonListItems.find { it.season.ids.trakt == season.ids.trakt }
     seasonListItem?.let {
       this.season = it.season.copy()
       episodesCheckbox.setCheckedSilent(it.isWatched) { _, isChecked ->

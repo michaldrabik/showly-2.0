@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.EpisodeBundle
+import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.POSTER
@@ -30,7 +31,7 @@ class ShowDetailsViewModel @Inject constructor(
   private var areSeasonsLoaded = false
   private val seasonItems = mutableListOf<SeasonListItem>()
 
-  fun loadShowDetails(id: Long) {
+  fun loadShowDetails(id: IdTrakt) {
     viewModelScope.launch {
       try {
         _uiStream.value = ShowDetailsUiModel(showLoading = true)
@@ -66,7 +67,7 @@ class ShowDetailsViewModel @Inject constructor(
 
   private suspend fun loadNextEpisode(show: Show) {
     try {
-      val episode = interactor.loadNextEpisode(show.id)
+      val episode = interactor.loadNextEpisode(show.ids.trakt)
       _uiStream.value = ShowDetailsUiModel(nextEpisode = episode)
     } catch (t: Throwable) {
       //NOOP
