@@ -31,6 +31,7 @@ import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
+import com.michaldrabik.showly2.utilities.extensions.nextPage
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showKeyboard
 import com.michaldrabik.showly2.utilities.extensions.visible
@@ -211,6 +212,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
   override fun onTabReselected() {
     followedShowsSearchView.translationY = 0F
     followedShowsTabs.translationY = 0F
+    followedShowsPager.nextPage()
     childFragmentManager.fragments.forEach {
       (it as? OnTabReselectedListener)?.onTabReselected()
     }

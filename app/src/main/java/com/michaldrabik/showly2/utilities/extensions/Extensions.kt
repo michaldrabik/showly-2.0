@@ -21,6 +21,7 @@ import android.widget.TextView
 import androidx.annotation.DimenRes
 import androidx.core.animation.doOnEnd
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
 import com.google.android.material.snackbar.Snackbar.LENGTH_LONG
@@ -194,5 +195,15 @@ fun ProgressBar.setAnimatedProgress(value: Int) {
     setProgress(value, true)
   } else {
     progress = value
+  }
+}
+
+fun ViewPager2.nextPage() {
+  val itemsCount = adapter?.itemCount ?: 0
+  if (itemsCount == 0) return
+
+  when (currentItem) {
+    itemsCount - 1 -> currentItem = 0
+    else -> currentItem += 1
   }
 }
