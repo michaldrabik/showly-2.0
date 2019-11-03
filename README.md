@@ -4,4 +4,10 @@
 
 Showly 2.0 is modern, slick, open-sourced and completely free Android TV Shows Tracker.
 
+## Slack
+
+Feel free to join official Slack workspace for all things related:
+
+[**Click to join Slack**](https://join.slack.com/t/showly2/shared_invite/enQtODE5MDYwNDMxNjIwLTQxOTA2YzBjNDFjNjU0M2Q2M2ZmMTBjNGQ2MWMxNjc0MmQyMTMxZGEyYjA0YTYzM2Y0OGIxMDU4NjBkODhkYzA)
+
 ## This app is currently under heavy development. Version 1.0.0 is coming this year (hopefully) :)
