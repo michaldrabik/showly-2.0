@@ -1,2 +1,2 @@
-include ':app', ':network', ':storage'
+include ':app', ':network', ':storage', ':common'
 rootProject.name='Showly 2.0'
