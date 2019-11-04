@@ -31,6 +31,14 @@
     app:popUpToInclusive="true"
     />
 
+  <action
+    android:id="@+id/actionNavigateShowDetailsFragment"
+    app:destination="@id/showDetailsFragment"
+    app:launchSingleTop="true"
+    app:popUpTo="@id/navigationGraph"
+    app:popUpToInclusive="true"
+    />
+
   <fragment
     android:id="@+id/discoverFragment"
     android:name="com.michaldrabik.showly2.ui.discover.DiscoverFragment"
