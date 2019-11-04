@@ -64,7 +64,7 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
       else -> TVDB_IMAGE_BASE_FANART_URL
     }
     val url = when {
-      item.image.status == UNKNOWN -> "${base}${item.show.ids.tvdb}-1.jpg"
+      item.image.status == UNKNOWN -> "${base}${item.show.ids.tvdb.id}-1.jpg"
       else -> "$TVDB_IMAGE_BASE_URL${item.image.fileUrl}"
     }
 
