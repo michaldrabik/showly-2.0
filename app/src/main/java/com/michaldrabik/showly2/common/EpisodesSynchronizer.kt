@@ -33,6 +33,7 @@ class EpisodesSynchronizer @Inject constructor(
 
     val showsToSync = database.followedShowsDao().getAll()
       .filter { it.status !in arrayOf(ENDED.key, CANCELED.key) }
+
     Log.i(TAG, "Shows to sync: ${showsToSync.size}.")
 
     if (showsToSync.isEmpty()) {
@@ -50,14 +51,19 @@ class EpisodesSynchronizer @Inject constructor(
         return@forEach
       }
 
-      val show = mappers.show.fromDatabase(showDb)
-      val remoteEpisodes = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
-        .map { mappers.season.fromNetwork(it) }
+      try {
+        val show = mappers.show.fromDatabase(showDb)
+        val remoteEpisodes = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
+          .map { mappers.season.fromNetwork(it) }
 
-      episodesInteractor.invalidateEpisodes(show, remoteEpisodes)
+        episodesInteractor.invalidateEpisodes(show, remoteEpisodes)
 
-      Log.i(TAG, "${show.title}(${show.ids.trakt.id}) synced.")
-      delay(200)
+        Log.i(TAG, "${show.title}(${showDb.idTrakt}) synced.")
+      } catch (t: Throwable) {
+        Log.w(TAG, "${showDb.title}(${showDb.idTrakt}) sync error. Skipping... \n$t")
+      } finally {
+        delay(200)
+      }
     }
   }
 }
