@@ -1,10 +1,10 @@
 package com.michaldrabik.showly2.ui.show.seasons.episodes.details
 
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.showly2.common.ImagesManager
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Ids
-import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

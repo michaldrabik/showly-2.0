@@ -2,8 +2,8 @@ package com.michaldrabik.showly2.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.michaldrabik.showly2.common.ImagesManager
 import com.michaldrabik.showly2.di.AppScope
-import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.showly2.ui.discover.DiscoverInteractor
 import com.michaldrabik.showly2.ui.discover.DiscoverViewModel
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsInteractor

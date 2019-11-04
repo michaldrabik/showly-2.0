@@ -2,6 +2,7 @@ package com.michaldrabik.showly2
 
 import android.app.Activity
 import android.app.Application
+import android.app.Service
 import android.os.StrictMode
 import androidx.fragment.app.Fragment
 import com.google.firebase.iid.FirebaseInstanceId
@@ -58,5 +59,7 @@ class App : Application() {
 }
 
 fun Activity.appComponent() = (application as App).appComponent
+
+fun Service.appComponent() = (application as App).appComponent
 
 fun Fragment.appComponent() = (requireActivity().application as App).appComponent

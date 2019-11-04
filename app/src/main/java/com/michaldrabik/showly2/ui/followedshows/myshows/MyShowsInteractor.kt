@@ -1,6 +1,7 @@
 package com.michaldrabik.showly2.ui.followedshows.myshows
 
 import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_AMOUNT
+import com.michaldrabik.showly2.common.ImagesManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.MyShowsSection
@@ -12,7 +13,6 @@ import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.SortOrder.NEWEST
 import com.michaldrabik.showly2.model.SortOrder.RATING
 import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.storage.database.AppDatabase
 import javax.inject.Inject
 

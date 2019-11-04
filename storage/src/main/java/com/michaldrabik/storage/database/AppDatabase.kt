@@ -5,27 +5,29 @@ import androidx.room.RoomDatabase
 import com.michaldrabik.storage.database.dao.ActorsDao
 import com.michaldrabik.storage.database.dao.DiscoverShowsDao
 import com.michaldrabik.storage.database.dao.EpisodesDao
+import com.michaldrabik.storage.database.dao.EpisodesSyncLogDao
 import com.michaldrabik.storage.database.dao.FollowedShowsDao
 import com.michaldrabik.storage.database.dao.ImagesDao
 import com.michaldrabik.storage.database.dao.RecentSearchDao
 import com.michaldrabik.storage.database.dao.RelatedShowsDao
 import com.michaldrabik.storage.database.dao.SeasonsDao
+import com.michaldrabik.storage.database.dao.SeeLaterShowsDao
 import com.michaldrabik.storage.database.dao.SettingsDao
 import com.michaldrabik.storage.database.dao.ShowsDao
 import com.michaldrabik.storage.database.dao.UserDao
-import com.michaldrabik.storage.database.dao.SeeLaterShowsDao
 import com.michaldrabik.storage.database.model.Actor
 import com.michaldrabik.storage.database.model.DiscoverShow
 import com.michaldrabik.storage.database.model.Episode
+import com.michaldrabik.storage.database.model.EpisodesSyncLog
 import com.michaldrabik.storage.database.model.FollowedShow
 import com.michaldrabik.storage.database.model.Image
 import com.michaldrabik.storage.database.model.RecentSearch
 import com.michaldrabik.storage.database.model.RelatedShow
 import com.michaldrabik.storage.database.model.Season
+import com.michaldrabik.storage.database.model.SeeLaterShow
 import com.michaldrabik.storage.database.model.Settings
 import com.michaldrabik.storage.database.model.Show
 import com.michaldrabik.storage.database.model.User
-import com.michaldrabik.storage.database.model.SeeLaterShow
 
 const val DATABASE_VERSION = 1
 const val DATABASE_NAME = "SHOWLY2_DATABASE"
@@ -44,7 +46,9 @@ const val DATABASE_NAME = "SHOWLY2_DATABASE"
     Actor::class,
     Episode::class,
     Settings::class,
-    RecentSearch::class]
+    RecentSearch::class,
+    EpisodesSyncLog::class
+  ]
 )
 abstract class AppDatabase : RoomDatabase() {
 
@@ -71,4 +75,6 @@ abstract class AppDatabase : RoomDatabase() {
   abstract fun actorsDao(): ActorsDao
 
   abstract fun settingsDao(): SettingsDao
+
+  abstract fun episodesSyncLogDao(): EpisodesSyncLogDao
 }

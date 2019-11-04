@@ -1,15 +1,22 @@
 package com.michaldrabik.showly2.ui.main
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.common.EpisodesSynchronizerService
 import com.michaldrabik.showly2.ui.ViewModelFactory
+import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import kotlinx.android.synthetic.main.activity_main.*
@@ -38,6 +45,18 @@ class MainActivity : AppCompatActivity() {
     setupNavigationBackHandler()
 
     restoreState(savedInstanceState)
+  }
+
+  override fun onStart() {
+    super.onStart()
+    val filter = IntentFilter(EpisodesSynchronizerService.ACTION_SYNC_SUCCESS)
+    LocalBroadcastManager.getInstance(applicationContext).registerReceiver(broadcastReceiver, filter)
+    EpisodesSynchronizerService.initialize(applicationContext)
+  }
+
+  override fun onStop() {
+    LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(broadcastReceiver)
+    super.onStop()
   }
 
   private fun setupViewModel() {
@@ -110,6 +129,15 @@ class MainActivity : AppCompatActivity() {
     }
   }
 
+  private fun onEpisodesSyncSuccess() {
+    navigationHost.findNavController().currentDestination?.id?.let {
+      val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
+      navHost?.childFragmentManager?.primaryNavigationFragment?.let {
+        (it as? OnEpisodesSyncedListener)?.onEpisodesSyncSuccess()
+      }
+    }
+  }
+
   private fun render(uiModel: MainUiModel) {
     uiModel.run {
       isInitialRun?.let {
@@ -126,5 +154,13 @@ class MainActivity : AppCompatActivity() {
   private fun restoreState(savedInstanceState: Bundle?) {
     val isNavigationVisible = savedInstanceState?.getBoolean(ARG_NAVIGATION_VISIBLE, true) ?: true
     if (!isNavigationVisible) hideNavigation()
+  }
+
+  private val broadcastReceiver = object : BroadcastReceiver() {
+    override fun onReceive(context: Context?, intent: Intent?) {
+      when (intent?.action) {
+        EpisodesSynchronizerService.ACTION_SYNC_SUCCESS -> onEpisodesSyncSuccess()
+      }
+    }
   }
 }

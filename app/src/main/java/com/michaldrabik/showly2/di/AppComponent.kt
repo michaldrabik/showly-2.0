@@ -1,6 +1,7 @@
 package com.michaldrabik.showly2.di
 
 import com.michaldrabik.network.di.CloudMarker
+import com.michaldrabik.showly2.common.EpisodesSynchronizerService
 import com.michaldrabik.showly2.ui.discover.DiscoverFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsFragment
@@ -35,5 +36,7 @@ interface AppComponent {
   fun inject(fragment: SeeLaterFragment)
 
   fun inject(fragment: WatchlistFragment)
+
+  fun inject(service: EpisodesSynchronizerService)
 }
 

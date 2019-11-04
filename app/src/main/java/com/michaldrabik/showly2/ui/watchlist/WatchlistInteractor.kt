@@ -1,12 +1,12 @@
 package com.michaldrabik.showly2.ui.watchlist
 
+import com.michaldrabik.showly2.common.ImagesManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.ui.common.ImagesManager
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.storage.database.AppDatabase
 import javax.inject.Inject

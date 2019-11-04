@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
@@ -24,7 +25,7 @@ import com.michaldrabik.showly2.utilities.extensions.showShortInfoSnackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 
-class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedListener {
+class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedListener, OnEpisodesSyncedListener {
 
   override val layoutResId = R.layout.fragment_watchlist
 
@@ -85,6 +86,8 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
   }
 
   override fun onTabReselected() = watchlistRecycler.smoothScrollToPosition(0)
+
+  override fun onEpisodesSyncSuccess() = viewModel.loadWatchlist()
 
   private fun render(watchlistItems: List<WatchlistItem>) {
     adapter.setItems(watchlistItems)

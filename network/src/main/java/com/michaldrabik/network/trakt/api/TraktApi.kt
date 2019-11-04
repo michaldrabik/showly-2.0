@@ -1,7 +1,6 @@
 package com.michaldrabik.network.trakt.api
 
 import com.michaldrabik.network.trakt.model.Episode
-import com.michaldrabik.network.trakt.model.Show
 
 class TraktApi(private val service: TraktService) {
 
@@ -19,10 +18,14 @@ class TraktApi(private val service: TraktService) {
     return response.body()
   }
 
-  suspend fun fetchShowsSearch(query: String): List<Show> {
-    val results = service.fetchSearchResults(query)
-    return results.sortedWith(compareBy({ it.score }, { it.show.votes })).reversed().map { it.show }
-  }
+  suspend fun fetchShowsSearch(query: String) =
+    service.fetchSearchResults(query)
+      .sortedWith(compareBy({ it.score }, { it.show.votes }))
+      .reversed()
+      .map { it.show }
 
-  suspend fun fetchSeasons(traktId: Long) = service.fetchSeasons(traktId)
+  suspend fun fetchSeasons(traktId: Long) =
+    service.fetchSeasons(traktId)
+      .filter { it.number != 0 } //Filtering out "special" seasons
+      .sortedByDescending { it.number }
 }

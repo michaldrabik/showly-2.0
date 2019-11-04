@@ -18,5 +18,8 @@ object Config {
   val ACTORS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(7) }
   val RELATED_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(7) }
   val NEW_BADGE_DURATION by lazy { TimeUnit.HOURS.toMillis(24) }
+  val SHOW_SYNC_COOLDOWN by lazy {
+    if (BuildConfig.DEBUG) TimeUnit.MINUTES.toMillis(1) else TimeUnit.HOURS.toMillis(12)
+  }
   val DISPLAY_DATE_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy 'at' HH:mm") }
 }

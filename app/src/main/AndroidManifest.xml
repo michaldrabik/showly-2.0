@@ -37,6 +37,11 @@
       </intent-filter>
     </service>
 
+    <service
+      android:name=".common.EpisodesSynchronizerService"
+      android:exported="true"
+      android:permission="android.permission.BIND_JOB_SERVICE" />
+
     <meta-data
       android:name="com.google.firebase.messaging.default_notification_icon"
       android:resource="@drawable/ic_notification" />

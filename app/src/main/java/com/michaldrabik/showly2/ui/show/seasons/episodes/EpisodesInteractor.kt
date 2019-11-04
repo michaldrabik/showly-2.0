@@ -7,7 +7,9 @@ import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.SeasonBundle
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
+import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.EpisodesSyncLog
 import javax.inject.Inject
 import com.michaldrabik.storage.database.model.Episode as EpisodeDb
 import com.michaldrabik.storage.database.model.Season as SeasonDb
@@ -136,6 +138,7 @@ class EpisodesInteractor @Inject constructor(
 
     if (seasonsToAdd.isNotEmpty()) database.seasonsDao().upsert(seasonsToAdd)
     if (episodesToAdd.isNotEmpty()) database.episodesDao().upsert(episodesToAdd)
+    database.episodesSyncLogDao().upsert(EpisodesSyncLog(show.ids.trakt.id, nowUtcMillis()))
   }
 
   private suspend fun onEpisodeSet(season: Season, show: Show) {
