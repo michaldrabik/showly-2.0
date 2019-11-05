@@ -12,10 +12,16 @@
     android:id="@+id/watchlistRecycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/transparent"
     android:clipToPadding="false"
     android:overScrollMode="never"
     android:paddingTop="@dimen/spaceNormal"
     android:paddingBottom="@dimen/bottomNavigationHeightPadded"
+    android:scrollbarFadeDuration="150"
+    android:scrollbarSize="@dimen/scrollBarWidth"
+    android:scrollbarStyle="outsideOverlay"
+    android:scrollbarThumbVertical="@color/colorScrollbar"
+    android:scrollbars="vertical"
     android:visibility="gone"
     />
 

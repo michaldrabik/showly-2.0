@@ -12,10 +12,15 @@
     android:id="@+id/seeLaterRecycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/transparent"
     android:clipToPadding="false"
     android:overScrollMode="never"
     android:paddingTop="@dimen/myShowsTabsViewPadding"
     android:paddingBottom="@dimen/myShowsBottomPadding"
+    android:scrollbarFadeDuration="150"
+    android:scrollbarSize="@dimen/scrollBarWidth"
+    android:scrollbarStyle="outsideOverlay"
+    android:scrollbarThumbVertical="@color/colorScrollbar"
     android:scrollbars="vertical"
     />
 

@@ -4,6 +4,7 @@
   <color name="colorPrimary">#222327</color>
   <color name="colorPrimaryDark">#121212</color>
   <color name="colorAccent">#F44336</color>
+  <color name="colorScrollbar">#292929</color>
   <color name="colorError">#E53935</color>
   <color name="colorBlack">#000000</color>
   <color name="colorWhite">#FFFFFF</color>
