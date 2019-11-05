@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.showly2.ui.ViewModelFactory
 import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.main.MainActivity
@@ -17,11 +18,11 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>> : Fragment() {
 
   protected abstract val layoutResId: Int
 
-  protected abstract fun createViewModel(): T
+  protected abstract fun createViewModel(provider: ViewModelProvider): T
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    viewModel = createViewModel()
+    viewModel = createViewModel(ViewModelProvider(this, viewModelFactory))
   }
 
   override fun onCreateView(

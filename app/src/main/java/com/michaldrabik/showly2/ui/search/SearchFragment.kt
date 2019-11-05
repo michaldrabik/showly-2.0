@@ -50,8 +50,8 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
     super.onCreate(savedInstanceState)
   }
 
-  override fun createViewModel() =
-    ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
+  override fun createViewModel(provider: ViewModelProvider) =
+    provider.get(SearchViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

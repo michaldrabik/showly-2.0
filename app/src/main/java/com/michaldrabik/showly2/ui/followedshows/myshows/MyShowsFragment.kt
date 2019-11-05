@@ -37,8 +37,8 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
     super.onCreate(savedInstanceState)
   }
 
-  override fun createViewModel() =
-    ViewModelProvider(this, viewModelFactory).get(MyShowsViewModel::class.java)
+  override fun createViewModel(provider: ViewModelProvider) =
+    provider.get(MyShowsViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

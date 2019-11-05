@@ -29,8 +29,8 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListe
     super.onCreate(savedInstanceState)
   }
 
-  override fun createViewModel() =
-    ViewModelProvider(this, viewModelFactory).get(SeeLaterViewModel::class.java)
+  override fun createViewModel(provider: ViewModelProvider) =
+    provider.get(SeeLaterViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

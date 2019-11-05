@@ -73,8 +73,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     super.onCreate(savedInstanceState)
   }
 
-  override fun createViewModel() =
-    ViewModelProvider(this, viewModelFactory).get(ShowDetailsViewModel::class.java)
+  override fun createViewModel(provider: ViewModelProvider) =
+    provider.get(ShowDetailsViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

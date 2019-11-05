@@ -49,8 +49,8 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
     super.onCreate(savedInstanceState)
   }
 
-  override fun createViewModel() =
-    ViewModelProvider(this, viewModelFactory).get(FollowedShowsViewModel::class.java)
+  override fun createViewModel(provider: ViewModelProvider) =
+    provider.get(FollowedShowsViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

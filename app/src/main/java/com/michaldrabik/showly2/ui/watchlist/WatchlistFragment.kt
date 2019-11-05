@@ -37,8 +37,8 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
     super.onCreate(savedInstanceState)
   }
 
-  override fun createViewModel() =
-    ViewModelProvider(this, viewModelFactory).get(WatchlistViewModel::class.java)
+  override fun createViewModel(provider: ViewModelProvider) =
+    provider.get(WatchlistViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

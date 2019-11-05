@@ -40,8 +40,8 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     super.onCreate(savedInstanceState)
   }
 
-  override fun createViewModel() =
-    ViewModelProvider(this, viewModelFactory).get(DiscoverViewModel::class.java)
+  override fun createViewModel(provider: ViewModelProvider) =
+    provider.get(DiscoverViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
