@@ -52,7 +52,9 @@ class App : Application() {
   private fun setupFcm() {
     FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
       if (it.isSuccessful) {
-        FirebaseMessaging.getInstance().subscribeToTopic(FcmTopic.GENERAL.key)
+        val suffix = if (BuildConfig.DEBUG) "-debug" else ""
+        FirebaseMessaging.getInstance().subscribeToTopic(FcmTopic.GENERAL.key + suffix)
+        FirebaseMessaging.getInstance().subscribeToTopic(FcmTopic.SHOWS.key + suffix)
       }
     }
   }

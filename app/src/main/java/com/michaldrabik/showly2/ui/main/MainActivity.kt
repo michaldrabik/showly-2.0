@@ -5,10 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
-import android.util.Log
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -16,16 +14,15 @@ import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.EpisodesSynchronizerService
-import com.michaldrabik.showly2.fcm.FcmExtra
+import com.michaldrabik.showly2.ui.NotificationActivity
 import com.michaldrabik.showly2.ui.ViewModelFactory
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
-import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : NotificationActivity() {
 
   companion object {
     private const val NAVIGATION_TRANSITION_DURATION_MS = 400L
@@ -48,7 +45,12 @@ class MainActivity : AppCompatActivity() {
     setupNavigationBackHandler()
 
     restoreState(savedInstanceState)
-    receiveNotification()
+    onNewIntent(intent)
+  }
+
+  override fun onNewIntent(intent: Intent?) {
+    super.onNewIntent(intent)
+    handleNotification(intent?.extras) { hideNavigation(false) }
   }
 
   override fun onStart() {
@@ -61,18 +63,6 @@ class MainActivity : AppCompatActivity() {
   override fun onStop() {
     LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(broadcastReceiver)
     super.onStop()
-  }
-
-  private fun receiveNotification() {
-    intent?.extras?.let { extras ->
-      if (extras.containsKey(FcmExtra.SHOW_ID.key)) {
-        val showId = extras.getLong(FcmExtra.SHOW_ID.key)
-        Log.d("FCM", showId.toString())
-        val bundle = Bundle().apply { putLong(ARG_SHOW_ID, showId) }
-        navigationHost.findNavController().navigate(R.id.actionNavigateShowDetailsFragment, bundle)
-        hideNavigation()
-      }
-    }
   }
 
   private fun setupViewModel() {
