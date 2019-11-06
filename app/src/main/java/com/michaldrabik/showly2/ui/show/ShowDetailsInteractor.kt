@@ -56,13 +56,15 @@ class ShowDetailsInteractor @Inject constructor(
   suspend fun loadActors(show: Show): List<Actor> {
     val localActors = database.actorsDao().getAllByShow(show.ids.tvdb.id)
     if (localActors.isNotEmpty() && nowUtcMillis() - localActors[0].updatedAt < ACTORS_CACHE_DURATION) {
-      return localActors.map { mappers.actor.fromDatabase(it) }
+      return localActors
+        .sortedWith(compareBy({ it.image.isNotBlank() }, { it.sortOrder }))
+        .map { mappers.actor.fromDatabase(it) }
     }
 
     userManager.checkAuthorization()
     val token = userManager.getTvdbToken()
     val remoteActors = cloud.tvdbApi.fetchActors(token, show.ids.tvdb.id)
-      .sortedBy { it.sortOrder }
+      .sortedWith(compareBy({ it.image.isNotBlank() }, { it.sortOrder }))
       .take(20)
       .map { mappers.actor.fromNetwork(it) }
 
@@ -71,10 +73,11 @@ class ShowDetailsInteractor @Inject constructor(
   }
 
   suspend fun loadRelatedShows(show: Show): List<Show> {
-    val relatedShows = database.relatedShowsDao().getById(show.ids.trakt.id)
+    val relatedShows = database.relatedShowsDao().getAllById(show.ids.trakt.id)
     val latest = relatedShows.maxBy { it.updatedAt }
     if (latest != null && nowUtcMillis() - latest.updatedAt < RELATED_CACHE_DURATION) {
-      return relatedShows
+      val relatedShowsIds = relatedShows.map { it.idTrakt }
+      return database.showsDao().getAll(relatedShowsIds)
         .map { mappers.show.fromDatabase(it) }
         .sortedWith(compareBy({ it.votes }, { it.rating }))
         .reversed()

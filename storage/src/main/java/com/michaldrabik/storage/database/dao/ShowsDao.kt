@@ -12,6 +12,9 @@ interface ShowsDao {
   @Query("SELECT * FROM shows")
   suspend fun getAll(): List<Show>
 
+  @Query("SELECT * FROM shows WHERE id_trakt IN (:ids)")
+  suspend fun getAll(ids: List<Long>): List<Show>
+
   @Query("SELECT * FROM shows WHERE id_trakt == :traktId")
   suspend fun getById(traktId: Long): Show?
 
