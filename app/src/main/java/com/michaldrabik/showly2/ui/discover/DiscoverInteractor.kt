@@ -35,7 +35,11 @@ class DiscoverInteractor @Inject constructor(
 
     val stamp = database.discoverShowsDao().getMostRecent()?.createdAt ?: 0
     if (!skipCache && nowUtcMillis() - stamp < Config.DISCOVER_SHOWS_CACHE_DURATION) {
-      return database.discoverShowsDao().getAll()
+      val discoverShows = database.discoverShowsDao().getAll().map { it.idTrakt }
+      val shows = database.showsDao().getAll(discoverShows)
+
+      return discoverShows
+        .map { id -> shows.first { it.idTrakt == id } }
         .filter { show ->
           when {
             genres.isEmpty() -> true
@@ -60,8 +64,12 @@ class DiscoverInteractor @Inject constructor(
     database.withTransaction {
       val timestamp = nowUtcMillis()
       database.showsDao().upsert(discoverShows.map { mappers.show.toDatabase(it) })
-      database.discoverShowsDao().deleteAllAndInsert(discoverShows.map {
-        DiscoverShow(idTrakt = it.ids.trakt.id, createdAt = timestamp, updatedAt = timestamp)
+      database.discoverShowsDao().replace(discoverShows.map {
+        DiscoverShow(
+          idTrakt = it.ids.trakt.id,
+          createdAt = timestamp,
+          updatedAt = timestamp
+        )
       })
     }
 

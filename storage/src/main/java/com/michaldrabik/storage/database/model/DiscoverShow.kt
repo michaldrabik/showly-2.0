@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+//TODO Foreign key to show
 @Entity(tableName = "shows_discover")
 data class DiscoverShow(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
