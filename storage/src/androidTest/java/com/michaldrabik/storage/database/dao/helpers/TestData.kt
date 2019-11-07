@@ -1,5 +1,6 @@
 package com.michaldrabik.storage.database.dao.helpers
 
+import com.michaldrabik.storage.database.model.Actor
 import com.michaldrabik.storage.database.model.Settings
 import com.michaldrabik.storage.database.model.Show
 
@@ -35,4 +36,6 @@ object TestData {
   )
 
   fun createSettings() = Settings(1, false, "", "", "")
+
+  fun createActor() = Actor(0, 1, 1, "Name", "Role", 1, "Image", 99, 99)
 }

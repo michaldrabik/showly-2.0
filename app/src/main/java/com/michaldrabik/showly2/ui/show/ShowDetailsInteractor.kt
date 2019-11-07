@@ -68,7 +68,7 @@ class ShowDetailsInteractor @Inject constructor(
       .take(20)
       .map { mappers.actor.fromNetwork(it) }
 
-    database.actorsDao().deleteAllAndInsert(remoteActors.map { mappers.actor.toDatabase(it) }, show.ids.tvdb.id)
+    database.actorsDao().replace(remoteActors.map { mappers.actor.toDatabase(it) }, show.ids.tvdb.id)
     return remoteActors
   }
 

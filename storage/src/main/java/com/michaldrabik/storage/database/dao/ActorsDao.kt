@@ -20,7 +20,7 @@ interface ActorsDao {
   suspend fun deleteAllByShow(tvdbId: Long)
 
   @Transaction
-  suspend fun deleteAllAndInsert(actors: List<Actor>, showTvdbId: Long) {
+  suspend fun replace(actors: List<Actor>, showTvdbId: Long) {
     deleteAllByShow(showTvdbId)
     upsert(actors)
   }
