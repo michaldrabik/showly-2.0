@@ -20,15 +20,13 @@ class SearchInteractor @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  suspend fun getRecentSearches(limit: Int = 10): List<RecentSearch> {
+  suspend fun getRecentSearches(limit: Int): List<RecentSearch> {
     return database.recentSearchDao().getAll(limit)
-      .sortedByDescending { it.createdAt }
       .map { RecentSearch(it.text) }
   }
 
-  suspend fun clearRecentSearches() {
+  suspend fun clearRecentSearches() =
     database.recentSearchDao().deleteAll()
-  }
 
   suspend fun searchShows(query: String): List<Show> {
     saveRecentSearch(query)
@@ -38,7 +36,7 @@ class SearchInteractor @Inject constructor(
 
   private suspend fun saveRecentSearch(query: String) {
     val now = nowUtcMillis()
-    database.recentSearchDao().insert(listOf(RecentSearchDb(0, query, now, now)))
+    database.recentSearchDao().upsert(listOf(RecentSearchDb(0, query, now, now)))
   }
 
   suspend fun loadFollowedShowsIds() =

@@ -13,7 +13,7 @@ interface RecentSearchDao {
   suspend fun getAll(limit: Int): List<RecentSearch>
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(searches: List<RecentSearch>)
+  suspend fun upsert(searches: List<RecentSearch>)
 
   @Query("DELETE FROM recent_searches")
   suspend fun deleteAll()
