@@ -57,14 +57,14 @@ class ShowDetailsInteractor @Inject constructor(
     val localActors = database.actorsDao().getAllByShow(show.ids.tvdb.id)
     if (localActors.isNotEmpty() && nowUtcMillis() - localActors[0].updatedAt < ACTORS_CACHE_DURATION) {
       return localActors
-        .sortedWith(compareBy({ it.image.isNotBlank() }, { it.sortOrder }))
+        .sortedWith(compareBy({ it.image.isBlank() }, { it.sortOrder }))
         .map { mappers.actor.fromDatabase(it) }
     }
 
     userManager.checkAuthorization()
     val token = userManager.getTvdbToken()
     val remoteActors = cloud.tvdbApi.fetchActors(token, show.ids.tvdb.id)
-      .sortedWith(compareBy({ it.image.isNotBlank() }, { it.sortOrder }))
+      .sortedWith(compareBy({ it.image.isBlank() }, { it.sortOrder }))
       .take(20)
       .map { mappers.actor.fromNetwork(it) }
 

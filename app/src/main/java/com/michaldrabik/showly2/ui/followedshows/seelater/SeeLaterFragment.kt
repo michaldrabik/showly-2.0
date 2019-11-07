@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
@@ -17,7 +18,7 @@ import com.michaldrabik.showly2.ui.followedshows.seelater.recycler.SeeLaterAdapt
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import kotlinx.android.synthetic.main.fragment_see_later.*
 
-class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListener {
+class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListener, OnScrollResetListener {
 
   override val layoutResId = R.layout.fragment_see_later
 
@@ -68,5 +69,7 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListe
     (parentFragment as? FollowedShowsFragment)?.openShowDetails(show)
   }
 
-  override fun onTabReselected() = seeLaterRecycler.scrollToPosition(0)
+  override fun onTabReselected() = onScrollReset()
+
+  override fun onScrollReset() = seeLaterRecycler.scrollToPosition(0)
 }

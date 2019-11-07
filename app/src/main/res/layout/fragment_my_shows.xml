@@ -112,7 +112,6 @@
     android:layout_gravity="center"
     android:layout_marginStart="@dimen/spaceBig"
     android:layout_marginEnd="@dimen/spaceBig"
-    android:layout_marginBottom="@dimen/bottomNavigationHeight"
     android:visibility="gone"
     />
 

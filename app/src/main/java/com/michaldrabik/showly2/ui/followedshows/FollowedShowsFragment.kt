@@ -16,6 +16,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsFragment
@@ -164,7 +165,11 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
         followedShowsSearchEmptyView.gone()
       }
     }
-    onTabReselected()
+    followedShowsSearchView.translationY = 0F
+    followedShowsTabs.translationY = 0F
+    childFragmentManager.fragments.forEach {
+      (it as? OnScrollResetListener)?.onScrollReset()
+    }
   }
 
   private fun renderSearchContainer(items: List<MyShowsListItem>) {

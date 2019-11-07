@@ -17,7 +17,7 @@ object Config {
   val DISCOVER_SHOWS_CACHE_DURATION by lazy { TimeUnit.HOURS.toMillis(6) }
   val ACTORS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(7) }
   val RELATED_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(7) }
-  val NEW_BADGE_DURATION by lazy { TimeUnit.HOURS.toMillis(24) }
+  val NEW_BADGE_DURATION by lazy { TimeUnit.HOURS.toMillis(30) }
   val SHOW_SYNC_COOLDOWN by lazy {
     if (BuildConfig.DEBUG) TimeUnit.MINUTES.toMillis(1) else TimeUnit.HOURS.toMillis(12)
   }

@@ -15,6 +15,7 @@ import com.michaldrabik.showly2.model.MyShowsSection.ENDED
 import com.michaldrabik.showly2.model.MyShowsSection.RUNNING
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.SortOrder
+import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
@@ -28,7 +29,7 @@ import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 import java.util.ResourceBundle.clearCache
 
-class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListener {
+class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListener, OnScrollResetListener {
 
   override val layoutResId = R.layout.fragment_my_shows
 
@@ -146,7 +147,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
     viewModel.saveListPosition(sectionPositions)
   }
 
-  override fun onTabReselected() {
-    myShowsRootScroll.smoothScrollTo(0, 0)
-  }
+  override fun onTabReselected() = onScrollReset()
+
+  override fun onScrollReset() = myShowsRootScroll.smoothScrollTo(0, 0)
 }
