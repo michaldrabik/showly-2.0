@@ -13,6 +13,7 @@ import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.SortOrder.NEWEST
 import com.michaldrabik.showly2.model.SortOrder.RATING
 import com.michaldrabik.showly2.model.mappers.Mappers
+import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.storage.database.AppDatabase
 import javax.inject.Inject
 
@@ -20,21 +21,18 @@ import javax.inject.Inject
 class MyShowsInteractor @Inject constructor(
   private val database: AppDatabase,
   private val imagesManager: ImagesManager,
-  private val mappers: Mappers
+  private val mappers: Mappers,
+  private val showsRepository: ShowsRepository
 ) {
-
-  suspend fun loadRecentShows() =
-    database.followedShowsDao().getAllRecent()
-      .map { mappers.show.fromDatabase(it) }
-      .take(MY_SHOWS_RECENTS_AMOUNT)
 
   suspend fun loadShows(section: MyShowsSection): List<Show> {
     val sortOrder = loadSortOrder(section)
-    val shows = database.followedShowsDao().getAll()
-      .map { mappers.show.fromDatabase(it) }
+    val shows = showsRepository.myShows.loadAll()
       .filter { section.statuses.contains(it.status) }
     return sortBy(sortOrder, shows)
   }
+
+  suspend fun loadRecentShows() = showsRepository.myShows.loadAllRecent(MY_SHOWS_RECENTS_AMOUNT)
 
   suspend fun loadSettings() =
     mappers.settings.fromDatabase(database.settingsDao().getAll()!!)

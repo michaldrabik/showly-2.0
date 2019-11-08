@@ -4,21 +4,18 @@ import com.michaldrabik.showly2.common.ImagesManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope
 class SeeLaterInteractor @Inject constructor(
-  private val database: AppDatabase,
   private val imagesManager: ImagesManager,
-  private val mappers: Mappers
+  private val showsRepository: ShowsRepository
 ) {
 
   suspend fun loadShows() =
-    database.seeLaterShowsDao().getAll()
+    showsRepository.seeLaterShows.loadAll()
       .sortedBy { it.title }
-      .map { mappers.show.fromDatabase(it) }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =
     imagesManager.findCachedImage(show, type)

@@ -2,9 +2,7 @@ package com.michaldrabik.showly2.ui.show
 
 import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.Config.ACTORS_CACHE_DURATION
-import com.michaldrabik.showly2.Config.RELATED_CACHE_DURATION
 import com.michaldrabik.showly2.UserManager
 import com.michaldrabik.showly2.common.ImagesManager
 import com.michaldrabik.showly2.di.AppScope
@@ -16,11 +14,9 @@ import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
+import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.FollowedShow
-import com.michaldrabik.storage.database.model.RelatedShow
-import com.michaldrabik.storage.database.model.SeeLaterShow
 import javax.inject.Inject
 import com.michaldrabik.storage.database.model.Episode as EpisodeDb
 import com.michaldrabik.storage.database.model.Season as SeasonDb
@@ -31,19 +27,12 @@ class ShowDetailsInteractor @Inject constructor(
   private val database: AppDatabase,
   private val userManager: UserManager,
   private val imagesManager: ImagesManager,
-  private val mappers: Mappers
+  private val mappers: Mappers,
+  private val showsRepository: ShowsRepository
 ) {
 
-  suspend fun loadShowDetails(traktId: IdTrakt): Show {
-    val localShow = database.showsDao().getById(traktId.id)
-    if (localShow == null || nowUtcMillis() - localShow.updatedAt > Config.SHOW_DETAILS_CACHE_DURATION) {
-      val remoteShow = cloud.traktApi.fetchShow(traktId.id)
-      val show = mappers.show.fromNetwork(remoteShow)
-      database.showsDao().upsert(listOf(mappers.show.toDatabase(show)))
-      return show
-    }
-    return mappers.show.fromDatabase(localShow)
-  }
+  suspend fun loadShowDetails(idTrakt: IdTrakt) =
+    showsRepository.detailsShow.load(idTrakt)
 
   suspend fun loadBackgroundImage(show: Show) =
     imagesManager.loadRemoteImage(show, FANART)
@@ -72,31 +61,10 @@ class ShowDetailsInteractor @Inject constructor(
     return remoteActors
   }
 
-  suspend fun loadRelatedShows(show: Show): List<Show> {
-    val relatedShows = database.relatedShowsDao().getAllById(show.ids.trakt.id)
-    val latest = relatedShows.maxBy { it.updatedAt }
-    if (latest != null && nowUtcMillis() - latest.updatedAt < RELATED_CACHE_DURATION) {
-      val relatedShowsIds = relatedShows.map { it.idTrakt }
-      return database.showsDao().getAll(relatedShowsIds)
-        .map { mappers.show.fromDatabase(it) }
-        .sortedWith(compareBy({ it.votes }, { it.rating }))
-        .reversed()
-    }
-
-    val remoteShows = cloud.traktApi.fetchRelatedShows(show.ids.trakt.id)
-      .map { mappers.show.fromNetwork(it) }
-
-    database.withTransaction {
-      val timestamp = nowUtcMillis()
-      database.showsDao().upsert(remoteShows.map { mappers.show.toDatabase(it) })
-      database.relatedShowsDao().deleteById(show.ids.trakt.id)
-      database.relatedShowsDao().insert(remoteShows.map { RelatedShow.fromTraktId(it.ids.trakt.id, show.ids.trakt.id, timestamp) })
-    }
-
-    return remoteShows
+  suspend fun loadRelatedShows(show: Show): List<Show> =
+    showsRepository.relatedShows.loadAll(show)
       .sortedWith(compareBy({ it.votes }, { it.rating }))
       .reversed()
-  }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =
     imagesManager.findCachedImage(show, type)
@@ -110,16 +78,15 @@ class ShowDetailsInteractor @Inject constructor(
       .toList()
 
   suspend fun isFollowed(show: Show) =
-    database.followedShowsDao().getById(show.ids.trakt.id) != null
+    showsRepository.myShows.load(show.ids.trakt) != null
 
   suspend fun addToFollowed(
     show: Show,
     seasons: List<Season>,
     episodes: List<Episode>
   ) {
-    val dbShow = FollowedShow.fromTraktId(show.ids.trakt.id, nowUtcMillis())
     database.withTransaction {
-      database.followedShowsDao().insert(dbShow)
+      showsRepository.myShows.insert(show.ids.trakt)
 
       val localSeasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
       val localEpisodes = database.episodesDao().getAllByShowId(show.ids.trakt.id)
@@ -147,7 +114,7 @@ class ShowDetailsInteractor @Inject constructor(
 
   suspend fun removeFromFollowed(show: Show) {
     database.withTransaction {
-      database.followedShowsDao().deleteById(show.ids.trakt.id)
+      showsRepository.myShows.delete(show.ids.trakt)
       database.episodesDao().deleteAllUnwatchedForShow(show.ids.trakt.id)
 
       val seasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
@@ -164,14 +131,11 @@ class ShowDetailsInteractor @Inject constructor(
   }
 
   suspend fun isWatchLater(show: Show) =
-    database.seeLaterShowsDao().getById(show.ids.trakt.id) != null
+    showsRepository.seeLaterShows.load(show.ids.trakt) != null
 
-  suspend fun addToWatchLater(show: Show) {
-    val dbShow = SeeLaterShow.fromTraktId(show.ids.trakt.id, nowUtcMillis())
-    database.seeLaterShowsDao().insert(dbShow)
-  }
+  suspend fun addToWatchLater(show: Show) =
+    showsRepository.seeLaterShows.insert(show.ids.trakt)
 
-  suspend fun removeFromWatchLater(show: Show) {
-    database.seeLaterShowsDao().deleteById(show.ids.trakt.id)
-  }
+  suspend fun removeFromWatchLater(show: Show) =
+    showsRepository.seeLaterShows.delete(show.ids.trakt)
 }

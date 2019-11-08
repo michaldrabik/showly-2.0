@@ -7,6 +7,7 @@ import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.SeasonBundle
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
+import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.EpisodesSyncLog
@@ -16,6 +17,7 @@ import com.michaldrabik.storage.database.model.Season as SeasonDb
 
 @AppScope
 class EpisodesInteractor @Inject constructor(
+  private val showsRepository: ShowsRepository,
   private val database: AppDatabase,
   private val mappers: Mappers
 ) {
@@ -59,7 +61,7 @@ class EpisodesInteractor @Inject constructor(
       val watchedEpisodes = database.episodesDao().getAllForSeason(season.ids.trakt.id).filter { it.isWatched }
       val toSet = watchedEpisodes.map { it.copy(isWatched = false) }
 
-      val isShowFollowed = database.followedShowsDao().getById(show.ids.trakt.id) != null
+      val isShowFollowed = showsRepository.myShows.load(show.ids.trakt) != null
 
       when {
         isShowFollowed -> {
@@ -94,7 +96,7 @@ class EpisodesInteractor @Inject constructor(
     database.withTransaction {
       val (episode, season, show) = episodeBundle
 
-      val isShowFollowed = database.followedShowsDao().getById(show.ids.trakt.id) != null
+      val isShowFollowed = showsRepository.myShows.load(show.ids.trakt) != null
       val dbEpisode = mappers.episode.toDatabase(episode, season, show.ids.trakt, true)
 
       when {

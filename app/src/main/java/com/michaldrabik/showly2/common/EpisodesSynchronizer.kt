@@ -7,6 +7,7 @@ import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.ShowStatus.CANCELED
 import com.michaldrabik.showly2.model.ShowStatus.ENDED
 import com.michaldrabik.showly2.model.mappers.Mappers
+import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesInteractor
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
@@ -21,7 +22,8 @@ class EpisodesSynchronizer @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
   private val mappers: Mappers,
-  private val episodesInteractor: EpisodesInteractor
+  private val episodesInteractor: EpisodesInteractor,
+  private val showsRepository: ShowsRepository
 ) {
 
   companion object {
@@ -31,8 +33,8 @@ class EpisodesSynchronizer @Inject constructor(
   suspend fun synchronize() {
     Log.i(TAG, "Sync initialized.")
 
-    val showsToSync = database.followedShowsDao().getAll()
-      .filter { it.status !in arrayOf(ENDED.key, CANCELED.key) }
+    val showsToSync = showsRepository.myShows.loadAll()
+      .filter { it.status !in arrayOf(ENDED, CANCELED) }
 
     Log.i(TAG, "Shows to sync: ${showsToSync.size}.")
 
@@ -42,25 +44,24 @@ class EpisodesSynchronizer @Inject constructor(
     }
 
     val syncLog = database.episodesSyncLogDao().getAll()
-    showsToSync.forEach { showDb ->
-      Log.i(TAG, "Syncing ${showDb.title}(${showDb.idTrakt})...")
+    showsToSync.forEach { show ->
+      Log.i(TAG, "Syncing ${show.title}(${show.ids.trakt})...")
 
-      val lastSync = syncLog.find { it.idTrakt == showDb.idTrakt }?.syncedAt ?: 0
+      val lastSync = syncLog.find { it.idTrakt == show.ids.trakt.id }?.syncedAt ?: 0
       if (nowUtcMillis() - lastSync < Config.SHOW_SYNC_COOLDOWN) {
-        Log.i(TAG, "${showDb.title} is on cooldown. No need to sync.")
+        Log.i(TAG, "${show.title} is on cooldown. No need to sync.")
         return@forEach
       }
 
       try {
-        val show = mappers.show.fromDatabase(showDb)
         val remoteEpisodes = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
           .map { mappers.season.fromNetwork(it) }
 
         episodesInteractor.invalidateEpisodes(show, remoteEpisodes)
 
-        Log.i(TAG, "${show.title}(${showDb.idTrakt}) synced.")
+        Log.i(TAG, "${show.title}(${show.ids.trakt}) synced.")
       } catch (t: Throwable) {
-        Log.w(TAG, "${showDb.title}(${showDb.idTrakt}) sync error. Skipping... \n$t")
+        Log.w(TAG, "${show.title}(${show.ids.trakt}) sync error. Skipping... \n$t")
       } finally {
         delay(200)
       }

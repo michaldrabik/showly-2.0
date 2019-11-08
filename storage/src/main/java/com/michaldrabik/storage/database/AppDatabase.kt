@@ -6,8 +6,8 @@ import com.michaldrabik.storage.database.dao.ActorsDao
 import com.michaldrabik.storage.database.dao.DiscoverShowsDao
 import com.michaldrabik.storage.database.dao.EpisodesDao
 import com.michaldrabik.storage.database.dao.EpisodesSyncLogDao
-import com.michaldrabik.storage.database.dao.FollowedShowsDao
 import com.michaldrabik.storage.database.dao.ImagesDao
+import com.michaldrabik.storage.database.dao.MyShowsDao
 import com.michaldrabik.storage.database.dao.RecentSearchDao
 import com.michaldrabik.storage.database.dao.RelatedShowsDao
 import com.michaldrabik.storage.database.dao.SeasonsDao
@@ -19,8 +19,8 @@ import com.michaldrabik.storage.database.model.Actor
 import com.michaldrabik.storage.database.model.DiscoverShow
 import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.EpisodesSyncLog
-import com.michaldrabik.storage.database.model.FollowedShow
 import com.michaldrabik.storage.database.model.Image
+import com.michaldrabik.storage.database.model.MyShow
 import com.michaldrabik.storage.database.model.RecentSearch
 import com.michaldrabik.storage.database.model.RelatedShow
 import com.michaldrabik.storage.database.model.Season
@@ -37,7 +37,7 @@ const val DATABASE_NAME = "SHOWLY2_DB_2"
   entities = [
     Show::class,
     DiscoverShow::class,
-    FollowedShow::class,
+    MyShow::class,
     SeeLaterShow::class,
     RelatedShow::class,
     Image::class,
@@ -56,7 +56,7 @@ abstract class AppDatabase : RoomDatabase() {
 
   abstract fun discoverShowsDao(): DiscoverShowsDao
 
-  abstract fun followedShowsDao(): FollowedShowsDao
+  abstract fun myShowsDao(): MyShowsDao
 
   abstract fun seeLaterShowsDao(): SeeLaterShowsDao
 

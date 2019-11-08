@@ -4,15 +4,13 @@ import com.michaldrabik.showly2.common.ImagesManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope
 class FollowedShowsInteractor @Inject constructor(
-  private val database: AppDatabase,
   private val imagesManager: ImagesManager,
-  private val mappers: Mappers
+  private val showsRepository: ShowsRepository
 ) {
 
   private val searchItemsCache = mutableListOf<Show>()
@@ -21,11 +19,10 @@ class FollowedShowsInteractor @Inject constructor(
     if (query.isNullOrBlank()) return emptyList()
 
     if (searchItemsCache.isEmpty()) {
-      val seeLaterShows = database.seeLaterShowsDao().getAll()
-      val myShows = database.followedShowsDao().getAll()
+      val seeLaterShows = showsRepository.seeLaterShows.loadAll()
+      val myShows = showsRepository.myShows.loadAll()
 
       val allShows = (seeLaterShows + myShows)
-        .map { mappers.show.fromDatabase(it) }
 
       searchItemsCache.clear()
       searchItemsCache.addAll(allShows)

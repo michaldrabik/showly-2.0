@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "shows_followed")
-data class FollowedShow(
+@Entity(tableName = "shows_my_shows")
+data class MyShow(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
   @ColumnInfo(name = "id_trakt", defaultValue = "-1") var idTrakt: Long,
   @ColumnInfo(name = "created_at", defaultValue = "-1") var createdAt: Long,
@@ -13,8 +13,8 @@ data class FollowedShow(
 ) {
 
   companion object {
-    fun fromTraktId(traktId: Long, nowUtcMillis: Long): FollowedShow {
-      return FollowedShow(idTrakt = traktId, createdAt = nowUtcMillis, updatedAt = nowUtcMillis)
+    fun fromTraktId(traktId: Long, nowUtcMillis: Long): MyShow {
+      return MyShow(idTrakt = traktId, createdAt = nowUtcMillis, updatedAt = nowUtcMillis)
     }
   }
 }

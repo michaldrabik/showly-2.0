@@ -7,6 +7,7 @@ import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.RecentSearch
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
+import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import javax.inject.Inject
@@ -17,7 +18,8 @@ class SearchInteractor @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
   private val imagesManager: ImagesManager,
-  private val mappers: Mappers
+  private val mappers: Mappers,
+  private val showsRepository: ShowsRepository
 ) {
 
   suspend fun getRecentSearches(limit: Int): List<RecentSearch> {
@@ -39,8 +41,7 @@ class SearchInteractor @Inject constructor(
     database.recentSearchDao().upsert(listOf(RecentSearchDb(0, query, now, now)))
   }
 
-  suspend fun loadFollowedShowsIds() =
-    database.followedShowsDao().getAllTraktIds()
+  suspend fun loadMyShowsIds() = showsRepository.myShows.loadAllIds()
 
   suspend fun findCachedImage(show: Show, type: ImageType) =
     imagesManager.findCachedImage(show, type)

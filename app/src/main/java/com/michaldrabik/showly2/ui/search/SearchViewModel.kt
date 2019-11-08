@@ -40,10 +40,10 @@ class SearchViewModel @Inject constructor(
       try {
         _uiStream.value = SearchUiModel(emptyList(), emptyList(), isSearching = true, isEmpty = false, isInitial = false)
         val shows = interactor.searchShows(trimmed)
-        val followedShowsIds = interactor.loadFollowedShowsIds()
+        val myShowsIds = interactor.loadMyShowsIds()
         val items = shows.map {
           val image = interactor.findCachedImage(it, POSTER)
-          SearchListItem(it, image, isFollowed = it.ids.trakt.id in followedShowsIds)
+          SearchListItem(it, image, isFollowed = it.ids.trakt.id in myShowsIds)
         }
         lastSearchItems.clear()
         lastSearchItems.addAll(items)
