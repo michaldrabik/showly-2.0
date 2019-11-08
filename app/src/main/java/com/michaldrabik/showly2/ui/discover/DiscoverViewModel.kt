@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.discover
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -39,7 +40,7 @@ class DiscoverViewModel @Inject constructor(
     }
     _uiStream.value = DiscoverUiModel(applyUiCache = uiCache)
     viewModelScope.launch {
-      val progress = launch {
+      val progressJob = launch {
         delay(if (pullToRefresh) 0 else 750)
         _uiStream.value = DiscoverUiModel(showLoading = true)
       }
@@ -53,7 +54,7 @@ class DiscoverViewModel @Inject constructor(
         onError(Error(t))
       } finally {
         _uiStream.value = DiscoverUiModel(showLoading = false)
-        progress.cancel()
+        progressJob.cancel()
       }
     }
   }
@@ -83,6 +84,7 @@ class DiscoverViewModel @Inject constructor(
         _uiStream.value =
           DiscoverUiModel(updateListItem = item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
+        Log.e("ERROR", "IMAGE ERROR")
         _uiStream.value =
           DiscoverUiModel(updateListItem = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }

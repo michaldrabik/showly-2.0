@@ -86,4 +86,6 @@ class ImagesManager @Inject constructor(
 
     return image
   }
+
+  suspend fun checkAuthorization() = userManager.checkAuthorization()
 }

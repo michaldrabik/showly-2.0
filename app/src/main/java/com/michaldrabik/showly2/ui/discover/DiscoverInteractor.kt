@@ -14,14 +14,16 @@ class DiscoverInteractor @Inject constructor(
   private val showsRepository: ShowsRepository
 ) {
 
-  suspend fun loadDiscoverShows(genres: List<Genre>, skipCache: Boolean) =
-    showsRepository.discoverShows.loadAll(skipCache)
+  suspend fun loadDiscoverShows(genres: List<Genre>, skipCache: Boolean): List<Show> {
+    imagesManager.checkAuthorization()
+    return showsRepository.discoverShows.loadAll(skipCache)
       .filter { show ->
         when {
           genres.isEmpty() -> true
           else -> genres.any { it.slug in show.genres }
         }
       }
+  }
 
   suspend fun loadMyShowsIds() = showsRepository.myShows.loadAllIds()
 
