@@ -48,7 +48,8 @@ const val DATABASE_NAME = "SHOWLY2_DB_2"
     Settings::class,
     RecentSearch::class,
     EpisodesSyncLog::class
-  ]
+  ],
+  exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 

@@ -20,7 +20,7 @@ import org.threeten.bp.ZonedDateTime
 @TypeConverters(DateConverter::class)
 data class Episode(
   @PrimaryKey @ColumnInfo(name = "id_trakt") var idTrakt: Long,
-  @ColumnInfo(name = "id_season") var idSeason: Long,
+  @ColumnInfo(name = "id_season", index = true) var idSeason: Long,
   @ColumnInfo(name = "id_show_trakt") var idShowTrakt: Long,
   @ColumnInfo(name = "id_show_tvdb") var idShowTvdb: Long,
   @ColumnInfo(name = "id_show_imdb") var idShowImdb: String,

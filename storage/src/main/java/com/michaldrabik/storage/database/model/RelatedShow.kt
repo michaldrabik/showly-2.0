@@ -18,7 +18,7 @@ import androidx.room.PrimaryKey
 data class RelatedShow(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
   @ColumnInfo(name = "id_trakt", defaultValue = "-1") var idTrakt: Long,
-  @ColumnInfo(name = "id_trakt_related_show", defaultValue = "-1") var idTraktRelatedShow: Long,
+  @ColumnInfo(name = "id_trakt_related_show", defaultValue = "-1", index = true) var idTraktRelatedShow: Long,
   @ColumnInfo(name = "updated_at", defaultValue = "-1") var updatedAt: Long
 ) {
 
