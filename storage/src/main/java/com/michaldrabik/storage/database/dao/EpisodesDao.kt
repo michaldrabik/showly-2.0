@@ -23,13 +23,7 @@ interface EpisodesDao {
   suspend fun getAllForShows(showsIds: List<Long>): List<Episode>
 
   @Insert(onConflict = REPLACE)
-  suspend fun upsert(episode: Episode)
-
-  @Insert(onConflict = REPLACE)
   suspend fun upsert(episodes: List<Episode>)
-
-  @Delete
-  suspend fun delete(episode: Episode)
 
   @Delete
   suspend fun delete(episodes: List<Episode>)

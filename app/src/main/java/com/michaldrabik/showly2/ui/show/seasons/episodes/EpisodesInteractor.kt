@@ -87,7 +87,7 @@ class EpisodesInteractor @Inject constructor(
       if (localSeason == null) {
         database.seasonsDao().upsert(dbSeason)
       }
-      database.episodesDao().upsert(dbEpisode)
+      database.episodesDao().upsert(listOf(dbEpisode))
       onEpisodeSet(season, show)
     }
   }
@@ -100,8 +100,8 @@ class EpisodesInteractor @Inject constructor(
       val dbEpisode = mappers.episode.toDatabase(episode, season, show.ids.trakt, true)
 
       when {
-        isShowFollowed -> database.episodesDao().upsert(dbEpisode.copy(isWatched = false))
-        else -> database.episodesDao().delete(dbEpisode)
+        isShowFollowed -> database.episodesDao().upsert(listOf(dbEpisode.copy(isWatched = false)))
+        else -> database.episodesDao().delete(listOf(dbEpisode))
       }
 
       onEpisodeSet(season, show)
