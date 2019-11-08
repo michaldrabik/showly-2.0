@@ -4,8 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.michaldrabik.storage.database.model.Show
 import com.michaldrabik.storage.database.model.SeeLaterShow
+import com.michaldrabik.storage.database.model.Show
 
 @Dao
 interface SeeLaterShowsDao {

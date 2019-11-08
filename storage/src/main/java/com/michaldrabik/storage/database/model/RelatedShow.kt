@@ -7,7 +7,8 @@ import androidx.room.ForeignKey.CASCADE
 import androidx.room.PrimaryKey
 
 @Entity(
-  tableName = "shows_related", foreignKeys = [ForeignKey(
+  tableName = "shows_related",
+  foreignKeys = [ForeignKey(
     entity = Show::class,
     parentColumns = arrayOf("id_trakt"),
     childColumns = arrayOf("id_trakt_related_show"),
