@@ -341,7 +341,7 @@
         android:id="@+id/showDetailsRelatedRecycler"
         android:layout_width="match_parent"
         android:layout_height="@dimen/relatedShowHeight"
-        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginTop="@dimen/spaceMedium"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:overScrollMode="never"
