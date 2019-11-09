@@ -10,7 +10,8 @@ import com.michaldrabik.storage.database.converters.DateConverter
 import org.threeten.bp.ZonedDateTime
 
 @Entity(
-  tableName = "episodes", foreignKeys = [ForeignKey(
+  tableName = "episodes",
+  foreignKeys = [ForeignKey(
     entity = Season::class,
     parentColumns = arrayOf("id_trakt"),
     childColumns = arrayOf("id_season"),

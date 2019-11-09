@@ -35,7 +35,7 @@ class EpisodesInteractor @Inject constructor(
       val dbSeason = mappers.season.toDatabase(season, show.ids.trakt, true)
       val localSeason = database.seasonsDao().getById(season.ids.trakt.id)
       if (localSeason == null) {
-        database.seasonsDao().upsert(dbSeason)
+        database.seasonsDao().upsert(listOf(dbSeason))
       }
 
       val episodes = database.episodesDao().getAllForSeason(season.ids.trakt.id).filter { it.isWatched }
@@ -49,7 +49,7 @@ class EpisodesInteractor @Inject constructor(
       }
 
       database.episodesDao().upsert(toAdd)
-      database.seasonsDao().update(dbSeason)
+      database.seasonsDao().update(listOf(dbSeason))
     }
   }
 
@@ -66,11 +66,11 @@ class EpisodesInteractor @Inject constructor(
       when {
         isShowFollowed -> {
           database.episodesDao().upsert(toSet)
-          database.seasonsDao().update(dbSeason)
+          database.seasonsDao().update(listOf(dbSeason))
         }
         else -> {
           database.episodesDao().delete(toSet)
-          database.seasonsDao().delete(dbSeason)
+          database.seasonsDao().delete(listOf(dbSeason))
         }
       }
     }
@@ -85,7 +85,7 @@ class EpisodesInteractor @Inject constructor(
 
       val localSeason = database.seasonsDao().getById(season.ids.trakt.id)
       if (localSeason == null) {
-        database.seasonsDao().upsert(dbSeason)
+        database.seasonsDao().upsert(listOf(dbSeason))
       }
       database.episodesDao().upsert(listOf(dbEpisode))
       onEpisodeSet(season, show)
@@ -147,6 +147,6 @@ class EpisodesInteractor @Inject constructor(
     val localEpisodes = database.episodesDao().getAllForSeason(season.ids.trakt.id)
     val isWatched = localEpisodes.count { it.isWatched } == season.episodeCount
     val dbSeason = mappers.season.toDatabase(season, show.ids.trakt, isWatched)
-    database.seasonsDao().update(dbSeason)
+    database.seasonsDao().update(listOf(dbSeason))
   }
 }
