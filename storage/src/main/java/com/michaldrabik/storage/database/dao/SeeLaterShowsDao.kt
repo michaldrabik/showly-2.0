@@ -10,10 +10,10 @@ import com.michaldrabik.storage.database.model.Show
 @Dao
 interface SeeLaterShowsDao {
 
-  @Query("SELECT * FROM shows INNER JOIN shows_see_later ON shows_see_later.id_trakt == shows.id_trakt")
+  @Query("SELECT shows.* FROM shows INNER JOIN shows_see_later USING(id_trakt)")
   suspend fun getAll(): List<Show>
 
-  @Query("SELECT * FROM shows INNER JOIN shows_see_later ON shows_see_later.id_trakt == shows.id_trakt WHERE shows.id_trakt == :traktId")
+  @Query("SELECT shows.* FROM shows INNER JOIN shows_see_later ON shows_see_later.id_trakt == shows.id_trakt WHERE shows.id_trakt == :traktId")
   suspend fun getById(traktId: Long): Show?
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
