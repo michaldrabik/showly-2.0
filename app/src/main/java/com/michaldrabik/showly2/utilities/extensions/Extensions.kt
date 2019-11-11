@@ -207,3 +207,9 @@ fun ViewPager2.nextPage() {
     else -> currentItem += 1
   }
 }
+
+fun <T> MutableList<T>.replaceItem(oldItem: T, newItem: T) {
+  val index = indexOf(oldItem)
+  removeAt(index)
+  add(index, newItem)
+}

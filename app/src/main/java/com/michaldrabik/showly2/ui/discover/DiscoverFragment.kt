@@ -149,7 +149,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
         discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
       }
-      updateListItem?.let { adapter.updateItem(it) }
       applyUiCache?.let {
         discoverSearchView.translationY = it.discoverSearchPosition
         discoverChipsView.translationY = it.discoverChipsPosition

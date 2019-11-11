@@ -1,6 +1,5 @@
 package com.michaldrabik.showly2.ui.discover
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -15,6 +14,7 @@ import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
+import com.michaldrabik.showly2.utilities.extensions.replaceItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -77,16 +77,24 @@ class DiscoverViewModel @Inject constructor(
   }
 
   fun loadMissingImage(item: DiscoverListItem, force: Boolean) {
+
+    fun updateShowsItem(new: DiscoverListItem) {
+      val currentItems = _showsStream.value?.toMutableList()
+      currentItems?.let { items ->
+        items.find { it.show.ids.trakt == new.show.ids.trakt }?.let {
+          items.replaceItem(it, new)
+        }
+      }
+      _showsStream.value = currentItems
+    }
+
     viewModelScope.launch {
-      _uiStream.value = DiscoverUiModel(updateListItem = item.copy(isLoading = true))
+      updateShowsItem(item.copy(isLoading = true))
       try {
         val image = interactor.loadMissingImage(item.show, item.image.type, force)
-        _uiStream.value =
-          DiscoverUiModel(updateListItem = item.copy(isLoading = false, image = image))
+        updateShowsItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
-        Log.e("ERROR", "IMAGE ERROR")
-        _uiStream.value =
-          DiscoverUiModel(updateListItem = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
+        updateShowsItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }
   }
