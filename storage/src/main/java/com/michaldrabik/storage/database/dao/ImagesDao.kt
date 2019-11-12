@@ -10,9 +10,6 @@ import com.michaldrabik.storage.database.model.Image
 @Dao
 interface ImagesDao {
 
-  @Query("SELECT * FROM shows_images")
-  suspend fun getAll(): List<Image>
-
   @Query("SELECT * FROM shows_images WHERE id_tvdb = :tvdbId AND type = :type AND family = 'show'")
   suspend fun getByShowId(tvdbId: Long, type: String): Image?
 
