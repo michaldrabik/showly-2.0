@@ -22,8 +22,11 @@ data class MyShow(
 ) {
 
   companion object {
-    fun fromTraktId(traktId: Long, nowUtcMillis: Long): MyShow {
-      return MyShow(idTrakt = traktId, createdAt = nowUtcMillis, updatedAt = nowUtcMillis)
-    }
+    fun fromTraktId(traktId: Long, nowUtcMillis: Long) =
+      MyShow(
+        idTrakt = traktId,
+        createdAt = nowUtcMillis,
+        updatedAt = nowUtcMillis
+      )
   }
 }

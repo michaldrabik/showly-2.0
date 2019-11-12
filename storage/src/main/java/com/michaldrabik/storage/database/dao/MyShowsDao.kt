@@ -10,16 +10,16 @@ import com.michaldrabik.storage.database.model.Show
 @Dao
 interface MyShowsDao {
 
-  @Query("SELECT * FROM shows INNER JOIN shows_my_shows ON shows_my_shows.id_trakt == shows.id_trakt")
+  @Query("SELECT shows.* FROM shows INNER JOIN shows_my_shows USING(id_trakt)")
   suspend fun getAll(): List<Show>
 
-  @Query("SELECT * FROM shows INNER JOIN shows_my_shows ON shows_my_shows.id_trakt == shows.id_trakt ORDER BY id DESC")
+  @Query("SELECT shows.* FROM shows INNER JOIN shows_my_shows USING(id_trakt) ORDER BY id DESC")
   suspend fun getAllRecent(): List<Show>
 
-  @Query("SELECT shows.id_trakt FROM shows INNER JOIN shows_my_shows ON shows_my_shows.id_trakt == shows.id_trakt")
+  @Query("SELECT shows.id_trakt FROM shows INNER JOIN shows_my_shows USING(id_trakt)")
   suspend fun getAllTraktIds(): List<Long>
 
-  @Query("SELECT * FROM shows INNER JOIN shows_my_shows ON shows_my_shows.id_trakt == shows.id_trakt WHERE shows.id_trakt == :traktId")
+  @Query("SELECT shows.* FROM shows INNER JOIN shows_my_shows USING(id_trakt) WHERE id_trakt == :traktId")
   suspend fun getById(traktId: Long): Show?
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
