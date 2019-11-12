@@ -89,7 +89,7 @@ class ShowDetailsInteractor @Inject constructor(
       showsRepository.myShows.insert(show.ids.trakt)
 
       val localSeasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
-      val localEpisodes = database.episodesDao().getAllByShowId(show.ids.trakt.id)
+      val localEpisodes = database.episodesDao().getAllForShows(listOf(show.ids.trakt.id))
 
       val seasonsToAdd = mutableListOf<SeasonDb>()
       val episodesToAdd = mutableListOf<EpisodeDb>()
@@ -118,7 +118,7 @@ class ShowDetailsInteractor @Inject constructor(
       database.episodesDao().deleteAllUnwatchedForShow(show.ids.trakt.id)
 
       val seasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
-      val episodes = database.episodesDao().getAllByShowId(show.ids.trakt.id)
+      val episodes = database.episodesDao().getAllForShows(listOf(show.ids.trakt.id))
 
       val toDelete = mutableListOf<SeasonDb>()
       seasons.forEach { season ->

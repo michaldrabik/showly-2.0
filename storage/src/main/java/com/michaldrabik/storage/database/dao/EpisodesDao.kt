@@ -1,7 +1,6 @@
 package com.michaldrabik.storage.database.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
@@ -10,21 +9,18 @@ import com.michaldrabik.storage.database.model.Episode
 @Dao
 interface EpisodesDao : BaseDao<Episode> {
 
-  @Query("SELECT id_trakt FROM episodes WHERE id_show_trakt = :traktId AND is_watched = 1")
-  suspend fun getAllWatchedForShow(traktId: Long): List<Long>
+  @Insert(onConflict = REPLACE)
+  suspend fun upsert(episodes: List<Episode>)
 
-  @Query("SELECT * FROM episodes WHERE id_show_trakt = :traktId")
-  suspend fun getAllByShowId(traktId: Long): List<Episode>
-
-  @Query("SELECT * FROM episodes WHERE id_season = :traktId")
-  suspend fun getAllForSeason(traktId: Long): List<Episode>
+  @Query("SELECT * FROM episodes WHERE id_season = :seasonTraktId")
+  suspend fun getAllForSeason(seasonTraktId: Long): List<Episode>
 
   @Query("SELECT * FROM episodes WHERE id_show_trakt IN (:showsIds)")
   suspend fun getAllForShows(showsIds: List<Long>): List<Episode>
 
-  @Insert(onConflict = REPLACE)
-  suspend fun upsert(episodes: List<Episode>)
+  @Query("SELECT id_trakt FROM episodes WHERE id_show_trakt = :showTraktId AND is_watched = 1")
+  suspend fun getAllWatchedForShow(showTraktId: Long): List<Long>
 
-  @Query("DELETE FROM episodes WHERE id_show_trakt = :traktId AND is_watched = 0")
-  suspend fun deleteAllUnwatchedForShow(traktId: Long)
+  @Query("DELETE FROM episodes WHERE id_show_trakt = :showTraktId AND is_watched = 0")
+  suspend fun deleteAllUnwatchedForShow(showTraktId: Long)
 }

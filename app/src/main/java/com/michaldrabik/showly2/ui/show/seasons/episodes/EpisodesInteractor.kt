@@ -112,7 +112,7 @@ class EpisodesInteractor @Inject constructor(
     if (newSeasons.isEmpty()) return
 
     val localSeasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
-    val localEpisodes = database.episodesDao().getAllByShowId(show.ids.trakt.id)
+    val localEpisodes = database.episodesDao().getAllForShows(listOf(show.ids.trakt.id))
 
     val seasonsToAdd = mutableListOf<SeasonDb>()
     val episodesToAdd = mutableListOf<EpisodeDb>()
