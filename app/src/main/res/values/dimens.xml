@@ -15,10 +15,7 @@
   <dimen name="showTileCorner">4dp</dimen>
   <dimen name="showTilePlaceholder">40dp</dimen>
 
-  <dimen name="discoverChipHeight">32dp</dimen>
-  <dimen name="discoverChipStrokeWidth">1dp</dimen>
-  <dimen name="discoverChipsPadding">68dp</dimen>
-  <dimen name="discoverRecyclerPadding">108dp</dimen>
+  <dimen name="discoverRecyclerPadding">64dp</dimen>
 
   <dimen name="seasonViewHeight">44dp</dimen>
   <dimen name="episodeViewHeight">42dp</dimen>

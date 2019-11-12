@@ -59,10 +59,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
   private fun setupView() {
     discoverSearchView.isClickable = false
     discoverSearchView.onClick { openSearchView() }
-    discoverChipsView.onChipsSelectedListener = {
-      saveUiPositions()
-      viewModel.loadDiscoverShows(resetScroll = it.isEmpty())
-    }
   }
 
   private fun setupRecycler() {
@@ -93,14 +89,12 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
   private fun openShowDetails(item: DiscoverListItem) {
     hideNavigation()
     animateItemsExit(item)
-    discoverChipsView.fadeOut()
     discoverSearchView.fadeOut()
   }
 
   private fun openSearchView() {
     hideNavigation()
     saveUiPositions()
-    discoverChipsView.fadeOut(200)
     discoverRecycler.fadeOut(duration = 200) {
       findNavController().navigate(R.id.actionDiscoverFragmentToSearchFragment)
     }
@@ -127,32 +121,25 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
 
   private fun saveUiPositions() {
     viewModel.saveUiPositions(
-      discoverSearchView.translationY,
-      discoverChipsView.translationY,
-      discoverChipsView.selectedChips
+      discoverSearchView.translationY
     )
   }
 
   private fun render(items: List<DiscoverListItem>) {
     adapter.setItems(items)
     layoutManager.withSpanSizeLookup { pos -> adapter.getItems()[pos].image.type.spanSize }
-    discoverChipsView.fadeIn()
     discoverRecycler.fadeIn()
   }
 
   private fun render(uiModel: DiscoverUiModel) {
     uiModel.run {
       showLoading?.let {
-        if (it) discoverChipsView.clear()
-        discoverChipsView.isEnabled = !it
         discoverSearchView.isClickable = !it
         discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
       }
       applyUiCache?.let {
         discoverSearchView.translationY = it.discoverSearchPosition
-        discoverChipsView.translationY = it.discoverChipsPosition
-        discoverChipsView.selectedChips = it.discoverActiveGenres
       }
       resetScroll?.let { if (it) discoverRecycler.scrollToPosition(0) }
       error?.let {

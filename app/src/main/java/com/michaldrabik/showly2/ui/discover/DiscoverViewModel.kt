@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.Config
-import com.michaldrabik.showly2.model.Genre
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.FANART_WIDE
@@ -45,7 +44,7 @@ class DiscoverViewModel @Inject constructor(
         _uiStream.value = DiscoverUiModel(showLoading = true)
       }
       try {
-        val shows = interactor.loadDiscoverShows(uiCache.discoverActiveGenres, skipCache)
+        val shows = interactor.loadDiscoverShows(skipCache)
         val myShowsIds = interactor.loadMyShowsIds()
         onShowsLoaded(shows, myShowsIds)
         _uiStream.value = DiscoverUiModel(resetScroll = resetScroll)
@@ -99,13 +98,8 @@ class DiscoverViewModel @Inject constructor(
     }
   }
 
-  fun saveUiPositions(searchPosition: Float, chipsPosition: Float, activeGenres: List<Genre>) {
+  fun saveUiPositions(searchPosition: Float) {
     uiCache.discoverSearchPosition = searchPosition
-    uiCache.discoverChipsPosition = chipsPosition
-    uiCache.discoverActiveGenres.run {
-      clear()
-      addAll(activeGenres)
-    }
   }
 
   fun clearCache() = uiCache.clear()

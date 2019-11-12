@@ -37,17 +37,6 @@
 
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-  <com.michaldrabik.showly2.ui.discover.views.DiscoverChipsView
-    android:id="@+id/discoverChipsView"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/discoverChipHeight"
-    android:layout_marginTop="@dimen/discoverChipsPadding"
-    android:clipToPadding="false"
-    android:paddingStart="@dimen/spaceMedium"
-    android:paddingEnd="@dimen/spaceMedium"
-    android:visibility="gone"
-    />
-
   <com.michaldrabik.showly2.ui.common.views.search.SearchView
     android:id="@+id/discoverSearchView"
     android:layout_width="match_parent"
