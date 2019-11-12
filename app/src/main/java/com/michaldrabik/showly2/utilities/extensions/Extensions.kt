@@ -213,3 +213,8 @@ fun <T> MutableList<T>.replaceItem(oldItem: T, newItem: T) {
   removeAt(index)
   add(index, newItem)
 }
+
+fun <T> MutableList<T>.replace(newItems: List<T>) {
+  clear()
+  addAll(newItems)
+}

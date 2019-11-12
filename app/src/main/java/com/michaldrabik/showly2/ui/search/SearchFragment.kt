@@ -137,19 +137,20 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
   }
 
   private fun render(uiModel: SearchUiModel) {
-    uiModel.searchItems?.let {
-      adapter.setItems(it)
-      searchRecycler.scheduleLayoutAnimation()
+    uiModel.run {
+      searchItems?.let {
+        adapter.setItems(it)
+        if (searchItemsAnimate == true) searchRecycler.scheduleLayoutAnimation()
+      }
+      recentSearchItems?.let { renderRecentSearches(it) }
+      isSearching?.let {
+        searchSwipeRefresh.isRefreshing = it
+        searchViewLayout.isEnabled = !it
+      }
+      isEmpty?.let { searchEmptyView.fadeIf(it) }
+      isInitial?.let { searchInitialView.fadeIf(it) }
+      error?.let { searchRoot?.showErrorSnackbar(getString(R.string.errorGeneral)) }
     }
-    uiModel.recentSearchItems?.let { renderRecentSearches(it) }
-    uiModel.isSearching?.let {
-      searchSwipeRefresh.isRefreshing = it
-      searchViewLayout.isEnabled = !it
-    }
-    uiModel.updateListItem?.let { adapter.updateItem(it) }
-    uiModel.isEmpty?.let { searchEmptyView.fadeIf(it) }
-    uiModel.isInitial?.let { searchInitialView.fadeIf(it) }
-    uiModel.error?.let { searchRoot?.showErrorSnackbar(getString(R.string.errorGeneral)) }
   }
 
   private fun renderRecentSearches(it: List<RecentSearch>) {

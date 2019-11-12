@@ -6,6 +6,8 @@ import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
+import com.michaldrabik.showly2.utilities.extensions.replace
+import com.michaldrabik.showly2.utilities.extensions.replaceItem
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,7 +18,7 @@ class SearchViewModel @Inject constructor(
   private val lastSearchItems = mutableListOf<SearchListItem>()
 
   fun loadLastSearch() {
-    _uiStream.value = SearchUiModel(searchItems = lastSearchItems)
+    _uiStream.value = SearchUiModel(searchItems = lastSearchItems, searchItemsAnimate = true)
   }
 
   fun loadRecentSearches() {
@@ -38,16 +40,15 @@ class SearchViewModel @Inject constructor(
     if (trimmed.isEmpty()) return
     viewModelScope.launch {
       try {
-        _uiStream.value = SearchUiModel(emptyList(), emptyList(), isSearching = true, isEmpty = false, isInitial = false)
+        _uiStream.value = SearchUiModel.createLoading()
         val shows = interactor.searchShows(trimmed)
         val myShowsIds = interactor.loadMyShowsIds()
         val items = shows.map {
           val image = interactor.findCachedImage(it, POSTER)
           SearchListItem(it, image, isFollowed = it.ids.trakt.id in myShowsIds)
         }
-        lastSearchItems.clear()
-        lastSearchItems.addAll(items)
-        _uiStream.value = SearchUiModel(items, isSearching = false, isEmpty = items.isEmpty(), isInitial = false)
+        lastSearchItems.replace(items)
+        _uiStream.value = SearchUiModel.createResults(items)
       } catch (t: Throwable) {
         onError(t)
       }
@@ -55,15 +56,26 @@ class SearchViewModel @Inject constructor(
   }
 
   fun loadMissingImage(item: SearchListItem, force: Boolean) {
+
+    fun updateItem(new: SearchListItem) {
+      val currentModel = _uiStream.value
+      val currentItems = currentModel?.searchItems?.toMutableList()
+      currentItems?.let { items ->
+        items.find { it.show.ids.trakt == new.show.ids.trakt }?.let {
+          items.replaceItem(it, new)
+        }
+        lastSearchItems.replace(currentItems)
+      }
+      _uiStream.value = currentModel?.copy(searchItems = currentItems, searchItemsAnimate = false)
+    }
+
     viewModelScope.launch {
-      _uiStream.value = SearchUiModel(updateListItem = item.copy(isLoading = true))
+      updateItem(item.copy(isLoading = true))
       try {
         val image = interactor.loadMissingImage(item.show, item.image.type, force)
-        _uiStream.value =
-          SearchUiModel(updateListItem = item.copy(isLoading = false, image = image))
+        updateItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
-        _uiStream.value =
-          SearchUiModel(updateListItem = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
+        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }
   }
