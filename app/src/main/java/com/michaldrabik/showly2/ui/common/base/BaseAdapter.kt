@@ -14,17 +14,6 @@ abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.
 
   fun setItems(newItems: List<Item>) = asyncDiffer.submitList(newItems)
 
-  fun updateItem(updatedItem: Item) {
-    val target = asyncDiffer.currentList.find { it.show.ids.trakt == updatedItem.show.ids.trakt }
-    target?.let {
-      val index = asyncDiffer.currentList.indexOf(it)
-      val newList = asyncDiffer.currentList.toMutableList()
-      newList.removeAt(index)
-      newList.add(index, updatedItem)
-      setItems(newList)
-    }
-  }
-
   override fun getItemCount() = asyncDiffer.currentList.size
 
   fun getItems(): List<Item> = asyncDiffer.currentList

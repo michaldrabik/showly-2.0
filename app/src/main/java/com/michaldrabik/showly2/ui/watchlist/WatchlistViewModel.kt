@@ -1,6 +1,5 @@
 package com.michaldrabik.showly2.ui.watchlist
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
@@ -10,6 +9,7 @@ import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesInteractor
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.utilities.extensions.replaceItem
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ class WatchlistViewModel @Inject constructor(
 ) : BaseViewModel<WatchlistUiModel>() {
 
   private val _watchlistStream = MutableLiveData<List<WatchlistItem>>()
-  val watchlistStream: LiveData<List<WatchlistItem>> = _watchlistStream
+  val watchlistStream get() = _watchlistStream
 
   fun loadWatchlist() {
     viewModelScope.launch {
@@ -52,14 +52,28 @@ class WatchlistViewModel @Inject constructor(
   }
 
   fun findMissingImage(item: WatchlistItem, force: Boolean) {
+
+    fun updateItem(new: WatchlistItem) {
+      val currentItems = _watchlistStream.value?.toMutableList()
+      currentItems?.let { items ->
+        items.find {
+          it.show.ids.trakt == new.show.ids.trakt
+              && it.isHeader() == new.isHeader()
+        }?.let {
+          items.replaceItem(it, new)
+        }
+      }
+      _watchlistStream.value = currentItems
+    }
+
     viewModelScope.launch {
-      _uiStream.value = WatchlistUiModel(updateListItem = item.copy(isLoading = true))
+      updateItem(item.copy(isLoading = true))
       try {
         val image = interactor.loadMissingImage(item.show, item.image.type, force)
-        _uiStream.value = WatchlistUiModel(updateListItem = item.copy(isLoading = false, image = image))
+        updateItem(item.copy(image = image, isLoading = false))
       } catch (t: Throwable) {
         val unavailable = Image.createUnavailable(item.image.type)
-        _uiStream.value = WatchlistUiModel(updateListItem = item.copy(isLoading = false, image = unavailable))
+        updateItem(item.copy(image = unavailable, isLoading = false))
       }
     }
   }

@@ -96,11 +96,6 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
         myShowsIncomingSection.bind(it.items, it.section, it.sortOrder, R.string.textIncoming)
         myShowsIncomingSection.visibleIf(it.items.isNotEmpty())
       }
-      updateListItem?.let { item ->
-        myShowsRunningSection.updateItem(item)
-        myShowsEndedSection.updateItem(item)
-        myShowsIncomingSection.updateItem(item)
-      }
       sectionsPositions?.let {
         myShowsRunningSection.scrollToPosition(it[RUNNING]?.first ?: 0, it[RUNNING]?.second ?: 0)
         myShowsEndedSection.scrollToPosition(it[ENDED]?.first ?: 0, it[ENDED]?.second ?: 0)

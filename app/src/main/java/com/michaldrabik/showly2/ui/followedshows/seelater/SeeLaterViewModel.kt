@@ -5,6 +5,7 @@ import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.followedshows.seelater.recycler.SeeLaterListItem
+import com.michaldrabik.showly2.utilities.extensions.replaceItem
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,16 +23,26 @@ class SeeLaterViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingImage(item: SeeLaterListItem, force: Boolean) =
+  fun loadMissingImage(item: SeeLaterListItem, force: Boolean) {
+
+    fun updateItem(new: SeeLaterListItem) {
+      val currentItems = uiState?.items?.toMutableList()
+      currentItems?.let { items ->
+        items.find { it.show.ids.trakt == new.show.ids.trakt }?.let {
+          items.replaceItem(it, new)
+        }
+      }
+      uiState = uiState?.copy(items = currentItems)
+    }
+
     viewModelScope.launch {
-      _uiStream.value = SeeLaterUiModel(updateItem = item.copy(isLoading = true))
+      updateItem(item.copy(isLoading = true))
       try {
         val image = interactor.loadMissingImage(item.show, item.image.type, force)
-        _uiStream.value =
-          SeeLaterUiModel(updateItem = item.copy(isLoading = false, image = image))
+        updateItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
-        _uiStream.value =
-          SeeLaterUiModel(updateItem = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
+        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }
+  }
 }

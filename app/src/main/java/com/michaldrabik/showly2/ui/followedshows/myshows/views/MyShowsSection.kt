@@ -55,8 +55,6 @@ class MyShowsSection : ConstraintLayout {
     sectionAdapter.setItems(items)
   }
 
-  fun updateItem(item: MyShowsListItem) = sectionAdapter.updateItem(item)
-
   fun getListPosition(): Pair<Int, Int> {
     val position = sectionLayoutManager.findFirstVisibleItemPosition()
     val offset = (sectionLayoutManager.findViewByPosition(position)?.left ?: 0) - padding

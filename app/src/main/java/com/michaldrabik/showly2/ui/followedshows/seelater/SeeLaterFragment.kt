@@ -61,7 +61,6 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListe
         adapter.setItems(it)
         seeLaterEmptyView.fadeIf(it.isEmpty())
       }
-      updateItem?.let { adapter.updateItem(it) }
     }
   }
 

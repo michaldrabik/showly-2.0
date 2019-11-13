@@ -42,8 +42,8 @@ class FollowedShowsViewModel @Inject constructor(
   }
 
   private fun postSearchResult(searchResult: MyShowsSearchResult) {
-    _uiStream.value = FollowedShowsUiModel(searchResult = searchResult)
-    _uiStream.value = FollowedShowsUiModel()
+    uiState = FollowedShowsUiModel(searchResult = searchResult)
+    uiState = FollowedShowsUiModel()
   }
 
   fun clearCache() = interactor.clearCache()

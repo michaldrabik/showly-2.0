@@ -10,7 +10,15 @@ data class MyShowsUiModel(
   val runningShows: MyShowsBundle? = null,
   val endedShows: MyShowsBundle? = null,
   val incomingShows: MyShowsBundle? = null,
-  val updateListItem: MyShowsListItem? = null,
-  val updateSectionListItems: Pair<MyShowsSection, List<MyShowsListItem>>? = null,
   val sectionsPositions: Map<MyShowsSection, Pair<Int, Int>>? = null
-) : UiModel()
+) : UiModel() {
+
+  override fun update(newModel: UiModel) =
+    (newModel as MyShowsUiModel).copy(
+      recentShows = newModel.recentShows ?: recentShows,
+      runningShows = newModel.runningShows ?: runningShows,
+      endedShows = newModel.endedShows ?: endedShows,
+      incomingShows = newModel.incomingShows ?: incomingShows,
+      sectionsPositions = newModel.sectionsPositions ?: sectionsPositions
+    )
+}

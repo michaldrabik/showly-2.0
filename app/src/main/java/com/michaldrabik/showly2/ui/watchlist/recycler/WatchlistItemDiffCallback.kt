@@ -13,4 +13,5 @@ class WatchlistItemDiffCallback : DiffUtil.ItemCallback<WatchlistItem>() {
         && oldItem.watchedEpisodesCount == newItem.watchedEpisodesCount
         && oldItem.season == newItem.season
         && oldItem.season.episodes == newItem.season.episodes
+        && oldItem.image == newItem.image
 }

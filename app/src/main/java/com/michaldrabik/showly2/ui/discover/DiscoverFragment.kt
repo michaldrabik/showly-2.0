@@ -51,7 +51,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
 
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-      showsStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      showsState.observe(viewLifecycleOwner, Observer { render(it!!) })
       loadDiscoverShows()
     }
   }
@@ -136,7 +136,9 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
       showLoading?.let {
         discoverSearchView.isClickable = !it
         discoverSearchView.isEnabled = !it
-        discoverSwipeRefresh.isRefreshing = it
+        if (discoverSwipeRefresh.isRefreshing != it) {
+          discoverSwipeRefresh.isRefreshing = it
+        }
       }
       applyUiCache?.let {
         discoverSearchView.translationY = it.discoverSearchPosition

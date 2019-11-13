@@ -1,6 +1,5 @@
 package com.michaldrabik.showly2.ui.discover
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.Config
@@ -23,8 +22,8 @@ class DiscoverViewModel @Inject constructor(
   private val uiCache: UiCache
 ) : BaseViewModel<DiscoverUiModel>() {
 
-  private val _showsStream = MutableLiveData<List<DiscoverListItem>>()
-  val showsStream: LiveData<List<DiscoverListItem>> = _showsStream
+  private val _showsState = MutableLiveData<List<DiscoverListItem>>()
+  val showsState get() = _showsState
 
   private var lastPullToRefreshMs = 0L
 
@@ -34,25 +33,29 @@ class DiscoverViewModel @Inject constructor(
     pullToRefresh: Boolean = false
   ) {
     if (pullToRefresh && nowUtcMillis() - lastPullToRefreshMs < Config.PULL_TO_REFRESH_COOLDOWN_MS) {
-      _uiStream.value = DiscoverUiModel(showLoading = false)
+      uiState = DiscoverUiModel(showLoading = false)
       return
     }
-    _uiStream.value = DiscoverUiModel(applyUiCache = uiCache)
+
+    uiState = DiscoverUiModel(applyUiCache = uiCache)
+
     viewModelScope.launch {
+
       val progressJob = launch {
         delay(if (pullToRefresh) 0 else 750)
-        _uiStream.value = DiscoverUiModel(showLoading = true)
+        uiState = DiscoverUiModel(showLoading = true)
       }
+
       try {
         val shows = interactor.loadDiscoverShows(skipCache)
         val myShowsIds = interactor.loadMyShowsIds()
         onShowsLoaded(shows, myShowsIds)
-        _uiStream.value = DiscoverUiModel(resetScroll = resetScroll)
+        uiState = DiscoverUiModel(resetScroll = resetScroll)
         if (pullToRefresh) lastPullToRefreshMs = nowUtcMillis()
       } catch (t: Throwable) {
         onError(Error(t))
       } finally {
-        _uiStream.value = DiscoverUiModel(showLoading = false)
+        uiState = DiscoverUiModel(showLoading = false)
         progressJob.cancel()
       }
     }
@@ -72,19 +75,19 @@ class DiscoverViewModel @Inject constructor(
       val image = interactor.findCachedImage(show, itemType)
       DiscoverListItem(show, image, isFollowed = show.ids.trakt.id in followedShowsIds)
     }
-    _showsStream.value = items
+    _showsState.value = items
   }
 
   fun loadMissingImage(item: DiscoverListItem, force: Boolean) {
 
     fun updateShowsItem(new: DiscoverListItem) {
-      val currentItems = _showsStream.value?.toMutableList()
+      val currentItems = _showsState.value?.toMutableList()
       currentItems?.let { items ->
         items.find { it.show.ids.trakt == new.show.ids.trakt }?.let {
           items.replaceItem(it, new)
         }
       }
-      _showsStream.value = currentItems
+      _showsState.value = currentItems
     }
 
     viewModelScope.launch {
@@ -105,6 +108,6 @@ class DiscoverViewModel @Inject constructor(
   fun clearCache() = uiCache.clear()
 
   private fun onError(error: Error) {
-    _uiStream.value = DiscoverUiModel(error = error)
+    uiState = DiscoverUiModel(error = error)
   }
 }

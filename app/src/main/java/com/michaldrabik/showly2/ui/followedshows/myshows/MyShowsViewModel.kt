@@ -13,6 +13,7 @@ import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsBundle
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
+import com.michaldrabik.showly2.utilities.extensions.replaceItem
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -66,18 +67,36 @@ class MyShowsViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingImage(item: MyShowsListItem, force: Boolean) =
+  fun loadMissingImage(item: MyShowsListItem, force: Boolean) {
+
+    fun updateItem(new: MyShowsListItem) {
+      val incoming = uiState?.incomingShows?.items?.toMutableList() ?: mutableListOf()
+      val ended = uiState?.endedShows?.items?.toMutableList() ?: mutableListOf()
+      val running = uiState?.runningShows?.items?.toMutableList() ?: mutableListOf()
+
+      listOf(incoming, ended, running).forEach { section ->
+        section.find { it.show.ids.trakt == new.show.ids.trakt }?.let {
+          section.replaceItem(it, new)
+        }
+      }
+
+      uiState = uiState?.copy(
+        incomingShows = uiState?.incomingShows?.copy(items = incoming.toList()),
+        endedShows = uiState?.endedShows?.copy(items = ended.toList()),
+        runningShows = uiState?.runningShows?.copy(items = running.toList())
+      )
+    }
+
     viewModelScope.launch {
-      _uiStream.value = MyShowsUiModel(updateListItem = item.copy(isLoading = true))
+      updateItem(item.copy(isLoading = true))
       try {
         val image = interactor.loadMissingImage(item.show, item.image.type, force)
-        _uiStream.value =
-          MyShowsUiModel(updateListItem = item.copy(isLoading = false, image = image))
+        updateItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
-        _uiStream.value =
-          MyShowsUiModel(updateListItem = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
+        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }
+  }
 
   fun saveListPosition(
     sectionPositions: Map<MyShowsSection, Pair<Int, Int>>

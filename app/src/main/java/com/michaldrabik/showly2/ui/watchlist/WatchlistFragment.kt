@@ -97,9 +97,12 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
 
   private fun render(uiModel: WatchlistUiModel) {
     uiModel.run {
-      updateListItem?.let { adapter.updateItem(it) }
-      info?.let { requireActivity().snackBarHost.showShortInfoSnackbar(getString(it)) }
-      error?.let { requireActivity().snackBarHost.showErrorSnackbar(it.message ?: getString(R.string.errorGeneral)) }
+      info?.let {
+        requireActivity().snackBarHost.showShortInfoSnackbar(getString(it))
+      }
+      error?.let {
+        requireActivity().snackBarHost.showErrorSnackbar(it.message ?: getString(R.string.errorGeneral))
+      }
     }
   }
 }

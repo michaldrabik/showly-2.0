@@ -5,4 +5,11 @@ import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsSearchRe
 
 data class FollowedShowsUiModel(
   val searchResult: MyShowsSearchResult? = null
-) : UiModel()
+) : UiModel() {
+
+  override fun update(newModel: UiModel) =
+    (newModel as FollowedShowsUiModel)
+      .copy(
+        searchResult = newModel.searchResult ?: searchResult
+      )
+}
