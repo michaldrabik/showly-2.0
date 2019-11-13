@@ -45,7 +45,7 @@ class MyShowsViewModel @Inject constructor(
 
     val settings = interactor.loadSettings()
 
-    _uiStream.value = MyShowsUiModel(
+    uiState = MyShowsUiModel(
       recentShows = recentShows,
       runningShows = MyShowsBundle(runningShows, RUNNING, settings.myShowsRunningSortBy),
       endedShows = MyShowsBundle(endedShows, ENDED, settings.myShowsEndedSortBy),
@@ -60,7 +60,7 @@ class MyShowsViewModel @Inject constructor(
       val image = interactor.findCachedImage(it, POSTER)
       MyShowsListItem(it, image)
     }
-    _uiStream.value = when (section) {
+    uiState = when (section) {
       RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, order))
       ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, order))
       COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, order))

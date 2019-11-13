@@ -19,7 +19,7 @@ class MainViewModel @Inject constructor(
   private suspend fun checkInitialRun() {
     val isInitialRun = interactor.isInitialRun()
     if (isInitialRun) interactor.setInitialRun(false)
-    _uiStream.value = MainUiModel(isInitialRun = isInitialRun)
+    uiState = MainUiModel(isInitialRun = isInitialRun)
   }
 
   fun clearCache() = interactor.clearCache()

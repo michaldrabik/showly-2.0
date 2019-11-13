@@ -14,6 +14,17 @@ data class SearchUiModel(
   val error: Error? = null
 ) : UiModel() {
 
+  override fun update(newModel: UiModel) =
+    (newModel as SearchUiModel).copy(
+      searchItems = newModel.searchItems ?: searchItems,
+      searchItemsAnimate = newModel.searchItemsAnimate ?: searchItemsAnimate,
+      recentSearchItems = newModel.recentSearchItems ?: recentSearchItems,
+      isSearching = newModel.isSearching ?: isSearching,
+      isEmpty = newModel.isEmpty ?: isEmpty,
+      isInitial = newModel.isInitial ?: isInitial,
+      error = newModel.error ?: error
+    )
+
   companion object {
     fun createLoading() = SearchUiModel(
       emptyList(),

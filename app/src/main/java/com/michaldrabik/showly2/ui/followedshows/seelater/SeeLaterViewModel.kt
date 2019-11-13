@@ -19,7 +19,7 @@ class SeeLaterViewModel @Inject constructor(
         val image = interactor.findCachedImage(it, POSTER)
         SeeLaterListItem(it, image, false)
       }
-      _uiStream.value = SeeLaterUiModel(items = items)
+      uiState = SeeLaterUiModel(items = items)
     }
   }
 

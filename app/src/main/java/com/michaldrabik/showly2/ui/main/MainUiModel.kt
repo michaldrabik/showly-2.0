@@ -4,4 +4,10 @@ import com.michaldrabik.showly2.ui.common.UiModel
 
 data class MainUiModel(
   val isInitialRun: Boolean? = null
-) : UiModel()
+) : UiModel() {
+
+  override fun update(newModel: UiModel) =
+    (newModel as MainUiModel).copy(
+      isInitialRun = newModel.isInitialRun ?: isInitialRun
+    )
+}

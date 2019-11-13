@@ -7,7 +7,7 @@ import com.michaldrabik.showly2.ui.common.UiModel
 
 open class BaseViewModel<UM : UiModel> : ViewModel() {
 
-  protected val _uiStream = MutableLiveData<UM>()
+  private val _uiStream = MutableLiveData<UM>()
   val uiStream get() = _uiStream
 
   @Suppress("UNCHECKED_CAST")

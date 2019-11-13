@@ -119,14 +119,13 @@ class ShowDetailsViewModel @Inject constructor(
   fun loadMissingImage(item: RelatedListItem, force: Boolean) {
 
     fun updateItem(new: RelatedListItem) {
-      val currentModel = _uiStream.value
-      val currentItems = currentModel?.relatedShows?.toMutableList()
+      val currentItems = uiState?.relatedShows?.toMutableList()
       currentItems?.let { items ->
         items.find { it.show.ids.trakt == new.show.ids.trakt }?.let {
           items.replaceItem(it, new)
         }
       }
-      uiState = currentModel?.copy(relatedShows = currentItems)
+      uiState = uiState?.copy(relatedShows = currentItems)
     }
 
     viewModelScope.launch {

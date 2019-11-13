@@ -18,20 +18,20 @@ class SearchViewModel @Inject constructor(
   private val lastSearchItems = mutableListOf<SearchListItem>()
 
   fun loadLastSearch() {
-    _uiStream.value = SearchUiModel(searchItems = lastSearchItems, searchItemsAnimate = true)
+    uiState = SearchUiModel(searchItems = lastSearchItems, searchItemsAnimate = true)
   }
 
   fun loadRecentSearches() {
     viewModelScope.launch {
       val searches = interactor.getRecentSearches(SEARCH_RECENTS_AMOUNT)
-      _uiStream.value = SearchUiModel(recentSearchItems = searches, isInitial = searches.isEmpty())
+      uiState = SearchUiModel(recentSearchItems = searches, isInitial = searches.isEmpty())
     }
   }
 
   fun clearRecentSearches() {
     viewModelScope.launch {
       interactor.clearRecentSearches()
-      _uiStream.value = SearchUiModel(recentSearchItems = emptyList(), isInitial = true)
+      uiState = SearchUiModel(recentSearchItems = emptyList(), isInitial = true)
     }
   }
 
@@ -40,7 +40,7 @@ class SearchViewModel @Inject constructor(
     if (trimmed.isEmpty()) return
     viewModelScope.launch {
       try {
-        _uiStream.value = SearchUiModel.createLoading()
+        uiState = SearchUiModel.createLoading()
         val shows = interactor.searchShows(trimmed)
         val myShowsIds = interactor.loadMyShowsIds()
         val items = shows.map {
@@ -48,7 +48,7 @@ class SearchViewModel @Inject constructor(
           SearchListItem(it, image, isFollowed = it.ids.trakt.id in myShowsIds)
         }
         lastSearchItems.replace(items)
-        _uiStream.value = SearchUiModel.createResults(items)
+        uiState = SearchUiModel.createResults(items)
       } catch (t: Throwable) {
         onError(t)
       }
@@ -58,7 +58,7 @@ class SearchViewModel @Inject constructor(
   fun loadMissingImage(item: SearchListItem, force: Boolean) {
 
     fun updateItem(new: SearchListItem) {
-      val currentModel = _uiStream.value
+      val currentModel = uiState
       val currentItems = currentModel?.searchItems?.toMutableList()
       currentItems?.let { items ->
         items.find { it.show.ids.trakt == new.show.ids.trakt }?.let {
@@ -66,7 +66,7 @@ class SearchViewModel @Inject constructor(
         }
         lastSearchItems.replace(currentItems)
       }
-      _uiStream.value = currentModel?.copy(searchItems = currentItems, searchItemsAnimate = false)
+      uiState = currentModel?.copy(searchItems = currentItems, searchItemsAnimate = false)
     }
 
     viewModelScope.launch {
@@ -81,6 +81,6 @@ class SearchViewModel @Inject constructor(
   }
 
   private fun onError(t: Throwable) {
-    _uiStream.value = SearchUiModel(error = Error(t), isSearching = false, isEmpty = false)
+    uiState = SearchUiModel(error = Error(t), isSearching = false, isEmpty = false)
   }
 }
