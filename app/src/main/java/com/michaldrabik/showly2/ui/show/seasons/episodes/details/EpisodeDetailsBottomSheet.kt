@@ -120,18 +120,20 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     }
 
   private fun render(uiModel: EpisodeDetailsUiModel) {
-    uiModel.imageLoading?.let { episodeDetailsProgress.visibleIf(it) }
-    uiModel.image?.let {
-      Glide.with(this)
-        .load("${Config.TVDB_IMAGE_BASE_URL}${it.fileUrl}")
-        .transform(CenterCrop(), RoundedCorners(cornerRadius))
-        .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
-        .withSuccessListener { episodeDetailsProgress.gone() }
-        .withFailListener {
-          episodeDetailsProgress.gone()
-          episodeDetailsImagePlaceholder.visible()
-        }
-        .into(episodeDetailsImage)
+    uiModel.run {
+      imageLoading?.let { episodeDetailsProgress.visibleIf(it) }
+      image?.let {
+        Glide.with(this@EpisodeDetailsBottomSheet)
+          .load("${Config.TVDB_IMAGE_BASE_URL}${it.fileUrl}")
+          .transform(CenterCrop(), RoundedCorners(cornerRadius))
+          .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
+          .withSuccessListener { episodeDetailsProgress.gone() }
+          .withFailListener {
+            episodeDetailsProgress.gone()
+            episodeDetailsImagePlaceholder.visible()
+          }
+          .into(episodeDetailsImage)
+      }
     }
   }
 

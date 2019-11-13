@@ -7,8 +7,9 @@ data class WatchlistUiModel(
   val error: Error? = null
 ) : UiModel() {
 
-  override fun update(newModel: UiModel): UiModel {
-    return super.update(newModel)
-  }
-
+  override fun update(newModel: UiModel) =
+    (newModel as WatchlistUiModel).copy(
+      info = newModel.info ?: info,
+      error = newModel.error ?: error
+    )
 }

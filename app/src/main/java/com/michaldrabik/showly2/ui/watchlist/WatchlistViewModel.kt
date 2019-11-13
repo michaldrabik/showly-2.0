@@ -41,7 +41,7 @@ class WatchlistViewModel @Inject constructor(
   fun setWatchedEpisode(item: WatchlistItem) {
     viewModelScope.launch {
       if (!item.episode.hasAired(item.season)) {
-        _uiStream.value = WatchlistUiModel(info = R.string.errorEpisodeNotAired)
+        uiState = WatchlistUiModel(info = R.string.errorEpisodeNotAired)
         clearStream()
         return@launch
       }
@@ -79,6 +79,6 @@ class WatchlistViewModel @Inject constructor(
   }
 
   private fun clearStream() {
-    _uiStream.value = WatchlistUiModel()
+    uiState = WatchlistUiModel()
   }
 }

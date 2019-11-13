@@ -16,13 +16,13 @@ class EpisodeDetailsViewModel @Inject constructor(
   fun loadImage(tvdb: IdTvdb) {
     viewModelScope.launch {
       try {
-        _uiStream.value = EpisodeDetailsUiModel(imageLoading = true)
+        uiState = EpisodeDetailsUiModel(imageLoading = true)
         val ids = Ids.EMPTY.copy(tvdb = tvdb)
         val episode = Episode.EMPTY.copy(ids = ids)
         val episodeImage = imagesManager.loadRemoteImage(episode)
-        _uiStream.value = EpisodeDetailsUiModel(image = episodeImage)
+        uiState = EpisodeDetailsUiModel(image = episodeImage)
       } catch (t: Throwable) {
-        _uiStream.value = EpisodeDetailsUiModel(imageLoading = false)
+        uiState = EpisodeDetailsUiModel(imageLoading = false)
       }
     }
   }

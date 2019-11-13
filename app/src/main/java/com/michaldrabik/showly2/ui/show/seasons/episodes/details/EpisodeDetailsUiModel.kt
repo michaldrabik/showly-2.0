@@ -6,4 +6,11 @@ import com.michaldrabik.showly2.ui.common.UiModel
 data class EpisodeDetailsUiModel(
   val image: Image? = null,
   val imageLoading: Boolean? = null
-) : UiModel()
+) : UiModel() {
+
+  override fun update(newModel: UiModel) =
+    (newModel as EpisodeDetailsUiModel).copy(
+      image = newModel.image ?: image,
+      imageLoading = newModel.imageLoading ?: imageLoading
+    )
+}
