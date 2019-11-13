@@ -1,3 +1,5 @@
 package com.michaldrabik.showly2.ui.common
 
-interface UiModel
+abstract class UiModel {
+  open fun update(newModel: UiModel): UiModel = this
+}

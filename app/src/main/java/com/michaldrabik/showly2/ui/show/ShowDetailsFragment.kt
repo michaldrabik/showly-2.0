@@ -32,6 +32,7 @@ import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.ADD
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_MY_SHOWS
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_WATCH_LATER
 import com.michaldrabik.showly2.ui.show.actors.ActorsAdapter
+import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.related.RelatedShowAdapter
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonsAdapter
@@ -215,8 +216,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         showDetailsAddButton.onRemoveClickListener = { viewModel.removeFromFollowed() }
       }
       showLoading?.let {
-        showDetailsMainLayout.fadeIf(!it)
-        showDetailsMainProgress.visibleIf(it)
+        if (!showDetailsEpisodesView.isVisible) {
+          showDetailsMainLayout.fadeIf(!it)
+          showDetailsMainProgress.visibleIf(it)
+        }
       }
       isFollowed?.let {
         when {
@@ -229,13 +232,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
       seasons?.let { renderSeasons(it) }
-      relatedShows?.let {
-        relatedAdapter.setItems(it)
-        showDetailsRelatedRecycler.fadeIf(it.isNotEmpty())
-        showDetailsRelatedLabel.fadeIf(it.isNotEmpty())
-        showDetailsRelatedProgress.gone()
-      }
-      updateRelatedShow?.let { relatedAdapter.updateItem(it) }
+      relatedShows?.let { renderRelatedShows(it) }
       error?.let {
         showDetailsRoot.showErrorSnackbar(getString(R.string.errorCouldNotLoadShow))
       }
@@ -289,6 +286,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     showDetailsSeasonsLabel.fadeIf(seasonsItems.isNotEmpty())
     showDetailsSeasonsEmptyView.fadeIf(seasonsItems.isEmpty())
     showDetailsSeasonsProgress.gone()
+  }
+
+  private fun renderRelatedShows(items: List<RelatedListItem>) {
+    relatedAdapter.setItems(items)
+    showDetailsRelatedRecycler.fadeIf(items.isNotEmpty())
+    showDetailsRelatedLabel.fadeIf(items.isNotEmpty())
+    showDetailsRelatedProgress.gone()
   }
 
   private fun handleBackPressed() {

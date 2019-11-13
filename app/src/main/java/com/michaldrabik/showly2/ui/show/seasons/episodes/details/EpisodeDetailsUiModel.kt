@@ -6,4 +6,4 @@ import com.michaldrabik.showly2.ui.common.UiModel
 data class EpisodeDetailsUiModel(
   val image: Image? = null,
   val imageLoading: Boolean? = null
-) : UiModel
+) : UiModel()

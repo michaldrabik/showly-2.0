@@ -16,9 +16,23 @@ data class ShowDetailsUiModel(
   val nextEpisode: Episode? = null,
   val actors: List<Actor>? = null,
   val relatedShows: List<RelatedListItem>? = null,
-  val updateRelatedShow: RelatedListItem? = null,
   val seasons: List<SeasonListItem>? = null,
   val isFollowed: FollowedState? = null,
   val error: Error? = null,
   val info: Int? = null
-) : UiModel
+) : UiModel() {
+
+  override fun update(newModel: UiModel) =
+    (newModel as ShowDetailsUiModel).copy(
+      show = newModel.show ?: show,
+      showLoading = newModel.showLoading ?: showLoading,
+      image = newModel.image ?: image,
+      nextEpisode = newModel.nextEpisode ?: nextEpisode,
+      actors = newModel.actors ?: actors,
+      relatedShows = newModel.relatedShows ?: relatedShows,
+      seasons = newModel.seasons ?: seasons,
+      isFollowed = newModel.isFollowed ?: isFollowed,
+      error = newModel.error ?: error,
+      info = newModel.info ?: info
+    )
+}

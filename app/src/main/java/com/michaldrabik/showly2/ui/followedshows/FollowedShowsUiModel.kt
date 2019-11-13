@@ -5,4 +5,4 @@ import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsSearchRe
 
 data class FollowedShowsUiModel(
   val searchResult: MyShowsSearchResult? = null
-) : UiModel
+) : UiModel()

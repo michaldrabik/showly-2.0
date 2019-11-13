@@ -16,7 +16,7 @@ class ActorsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
       clear()
       addAll(items)
     }
-    notifyItemRangeInserted(0, items.size)
+    notifyDataSetChanged()
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =

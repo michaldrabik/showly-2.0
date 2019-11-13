@@ -13,4 +13,4 @@ data class MyShowsUiModel(
   val updateListItem: MyShowsListItem? = null,
   val updateSectionListItems: Pair<MyShowsSection, List<MyShowsListItem>>? = null,
   val sectionsPositions: Map<MyShowsSection, Pair<Int, Int>>? = null
-) : UiModel
+) : UiModel()

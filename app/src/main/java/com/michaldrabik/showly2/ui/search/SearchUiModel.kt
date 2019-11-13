@@ -12,7 +12,7 @@ data class SearchUiModel(
   val isEmpty: Boolean? = null,
   val isInitial: Boolean? = null,
   val error: Error? = null
-) : UiModel {
+) : UiModel() {
 
   companion object {
     fun createLoading() = SearchUiModel(

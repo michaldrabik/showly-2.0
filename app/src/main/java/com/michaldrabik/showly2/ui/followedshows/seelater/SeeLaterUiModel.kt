@@ -6,4 +6,4 @@ import com.michaldrabik.showly2.ui.followedshows.seelater.recycler.SeeLaterListI
 data class SeeLaterUiModel(
   val items: List<SeeLaterListItem>? = null,
   val updateItem: SeeLaterListItem? = null
-) : UiModel
+) : UiModel()

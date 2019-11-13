@@ -7,4 +7,4 @@ data class WatchlistUiModel(
   val updateListItem: WatchlistItem? = null,
   val info: Int? = null,
   val error: Error? = null
-) : UiModel
+) : UiModel()

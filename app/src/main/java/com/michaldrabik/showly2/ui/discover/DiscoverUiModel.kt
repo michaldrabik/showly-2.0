@@ -8,4 +8,4 @@ data class DiscoverUiModel(
   val applyUiCache: UiCache? = null,
   val resetScroll: Boolean? = null,
   val error: Error? = null
-) : UiModel
+) : UiModel()

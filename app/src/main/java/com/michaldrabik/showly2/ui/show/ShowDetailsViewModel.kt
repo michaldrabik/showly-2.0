@@ -17,6 +17,7 @@ import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodeListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesInteractor
+import com.michaldrabik.showly2.utilities.extensions.replaceItem
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,7 +35,7 @@ class ShowDetailsViewModel @Inject constructor(
   fun loadShowDetails(id: IdTrakt) {
     viewModelScope.launch {
       try {
-        _uiStream.value = ShowDetailsUiModel(showLoading = true)
+        uiState = ShowDetailsUiModel(showLoading = true)
         show = interactor.loadShowDetails(id)
         val isFollowed = async { interactor.isFollowed(show) }
         val isWatchLater = async { interactor.isWatchLater(show) }
@@ -43,11 +44,8 @@ class ShowDetailsViewModel @Inject constructor(
           isWatchLater = isWatchLater.await(),
           withAnimation = false
         )
-        _uiStream.value = ShowDetailsUiModel(
-          show = show,
-          showLoading = false,
-          isFollowed = followedState
-        )
+
+        uiState = ShowDetailsUiModel(show = show, showLoading = false, isFollowed = followedState)
 
         launch { loadNextEpisode(show) }
         launch { loadBackgroundImage(show) }
@@ -60,7 +58,7 @@ class ShowDetailsViewModel @Inject constructor(
         }
         launch { loadRelatedShows(show) }
       } catch (t: Throwable) {
-        _uiStream.value = ShowDetailsUiModel(error = Error(t))
+        uiState = ShowDetailsUiModel(error = Error(t))
       }
     }
   }
@@ -68,27 +66,27 @@ class ShowDetailsViewModel @Inject constructor(
   private suspend fun loadNextEpisode(show: Show) {
     try {
       val episode = interactor.loadNextEpisode(show.ids.trakt)
-      _uiStream.value = ShowDetailsUiModel(nextEpisode = episode)
+      uiState = ShowDetailsUiModel(nextEpisode = episode)
     } catch (t: Throwable) {
       //NOOP
     }
   }
 
   private suspend fun loadBackgroundImage(show: Show) {
-    try {
+    uiState = try {
       val backgroundImage = interactor.loadBackgroundImage(show)
-      _uiStream.value = ShowDetailsUiModel(image = backgroundImage)
+      ShowDetailsUiModel(image = backgroundImage)
     } catch (t: Throwable) {
-      _uiStream.value = ShowDetailsUiModel(image = Image.createUnavailable(FANART))
+      ShowDetailsUiModel(image = Image.createUnavailable(FANART))
     }
   }
 
   private suspend fun loadActors(show: Show) {
     try {
       val actors = interactor.loadActors(show)
-      _uiStream.value = ShowDetailsUiModel(actors = actors)
+      uiState = ShowDetailsUiModel(actors = actors)
     } catch (t: Throwable) {
-      _uiStream.value = ShowDetailsUiModel(actors = emptyList())
+      uiState = ShowDetailsUiModel(actors = emptyList())
     }
   }
 
@@ -99,10 +97,10 @@ class ShowDetailsViewModel @Inject constructor(
       SeasonListItem(it, episodes, false)
     }
     val calculated = calculateWatchedEpisodes(seasonsItems)
-    _uiStream.value = ShowDetailsUiModel(seasons = calculated)
+    uiState = ShowDetailsUiModel(seasons = calculated)
     seasons
   } catch (t: Throwable) {
-    _uiStream.value = ShowDetailsUiModel(seasons = emptyList())
+    uiState = ShowDetailsUiModel(seasons = emptyList())
     emptyList()
   }
 
@@ -112,29 +110,39 @@ class ShowDetailsViewModel @Inject constructor(
         val image = interactor.findCachedImage(it, POSTER)
         RelatedListItem(it, image)
       }
-      _uiStream.value = ShowDetailsUiModel(relatedShows = relatedShows)
+      uiState = ShowDetailsUiModel(relatedShows = relatedShows)
     } catch (t: Throwable) {
-      _uiStream.value = ShowDetailsUiModel(relatedShows = emptyList())
+      uiState = ShowDetailsUiModel(relatedShows = emptyList())
     }
   }
 
   fun loadMissingImage(item: RelatedListItem, force: Boolean) {
+
+    fun updateItem(new: RelatedListItem) {
+      val currentModel = _uiStream.value
+      val currentItems = currentModel?.relatedShows?.toMutableList()
+      currentItems?.let { items ->
+        items.find { it.show.ids.trakt == new.show.ids.trakt }?.let {
+          items.replaceItem(it, new)
+        }
+      }
+      uiState = currentModel?.copy(relatedShows = currentItems)
+    }
+
     viewModelScope.launch {
-      _uiStream.value = ShowDetailsUiModel(updateRelatedShow = item.copy(isLoading = true))
+      updateItem(item.copy(isLoading = true))
       try {
         val image = interactor.loadMissingImage(item.show, item.image.type, force)
-        _uiStream.value =
-          ShowDetailsUiModel(updateRelatedShow = item.copy(isLoading = false, image = image))
+        updateItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
-        _uiStream.value =
-          ShowDetailsUiModel(updateRelatedShow = item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
+        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }
   }
 
   fun addFollowedShow() {
     if (!areSeasonsLoaded) {
-      _uiStream.value = ShowDetailsUiModel(info = R.string.errorSeasonsNotLoaded)
+      uiState = ShowDetailsUiModel(info = R.string.errorSeasonsNotLoaded)
       return
     }
     viewModelScope.launch {
@@ -142,27 +150,27 @@ class ShowDetailsViewModel @Inject constructor(
       val episodes = seasonItems.flatMap { it.episodes.map { e -> e.episode } }
       interactor.addToFollowed(show, seasons, episodes)
 
-      val state = FollowedState(isMyShows = true, isWatchLater = false, withAnimation = true)
-      _uiStream.value = ShowDetailsUiModel(isFollowed = state)
+      val followedState = FollowedState(isMyShows = true, isWatchLater = false, withAnimation = true)
+      uiState = ShowDetailsUiModel(isFollowed = followedState)
     }
   }
 
   fun addWatchLaterShow() {
     if (!areSeasonsLoaded) {
-      _uiStream.value = ShowDetailsUiModel(info = R.string.errorSeasonsNotLoaded)
+      uiState = ShowDetailsUiModel(info = R.string.errorSeasonsNotLoaded)
       return
     }
     viewModelScope.launch {
       interactor.addToWatchLater(show)
 
-      val state = FollowedState(isMyShows = false, isWatchLater = true, withAnimation = true)
-      _uiStream.value = ShowDetailsUiModel(isFollowed = state)
+      val followedState = FollowedState(isMyShows = false, isWatchLater = true, withAnimation = true)
+      uiState = ShowDetailsUiModel(isFollowed = followedState)
     }
   }
 
   fun removeFromFollowed() {
     if (!areSeasonsLoaded) {
-      _uiStream.value = ShowDetailsUiModel(info = R.string.errorSeasonsNotLoaded)
+      uiState = ShowDetailsUiModel(info = R.string.errorSeasonsNotLoaded)
       return
     }
     viewModelScope.launch {
@@ -172,8 +180,8 @@ class ShowDetailsViewModel @Inject constructor(
       if (isFollowed) interactor.removeFromFollowed(show)
       if (isWatchLater) interactor.removeFromWatchLater(show)
 
-      val state = FollowedState(isMyShows = false, isWatchLater = false, withAnimation = true)
-      _uiStream.value = ShowDetailsUiModel(isFollowed = state)
+      val followedState = FollowedState(isMyShows = false, isWatchLater = false, withAnimation = true)
+      uiState = ShowDetailsUiModel(isFollowed = followedState)
     }
   }
 
@@ -201,7 +209,7 @@ class ShowDetailsViewModel @Inject constructor(
 
   private suspend fun refreshWatchedEpisodes() {
     val updatedSeasonItems = calculateWatchedEpisodes(this.seasonItems)
-    _uiStream.value = ShowDetailsUiModel(seasons = updatedSeasonItems)
+    uiState = ShowDetailsUiModel(seasons = updatedSeasonItems)
   }
 
   private suspend fun calculateWatchedEpisodes(seasonsList: List<SeasonListItem>): List<SeasonListItem> {
