@@ -8,6 +8,7 @@ import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.seelater.SeeLaterFragment
 import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.showly2.ui.search.SearchFragment
+import com.michaldrabik.showly2.ui.settings.SettingsFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.ui.watchlist.WatchlistFragment
@@ -36,6 +37,8 @@ interface AppComponent {
   fun inject(fragment: SeeLaterFragment)
 
   fun inject(fragment: WatchlistFragment)
+
+  fun inject(fragment: SettingsFragment)
 
   fun inject(service: EpisodesSynchronizerService)
 }

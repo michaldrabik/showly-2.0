@@ -47,6 +47,18 @@
   <string name="textMyShowsEmpty">Your shows list is currently empty.\nVisit Discover tab to add your favorite shows.</string>
   <string name="textSeeLaterEmpty">Your see later list is currently empty.\nVisit Discover tab to add shows you may want to see in the future.</string>
 
+  <string name="textSettings">Settings</string>
+
+  <string name="textSettingsGeneral">General &amp; UX</string>
+  <string name="textSettingsRecentShowsTitle">My Recent Shows Amount</string>
+  <string name="textSettingsRecentShowsSummary">Amount of recent shows to display in \'My Shows\' screen.</string>
+
+  <string name="textSettingsNotifications">Notifications</string>
+  <string name="textSettingsPushNotificationsTitle">Push Notifications</string>
+  <string name="textSettingsPushNotificationsSummary">Receive general information push notifications.</string>
+  <string name="textSettingsShowsNotificationsTitle">Shows Announcements</string>
+  <string name="textSettingsShowsNotificationsSummary">Receive notification about new episodes and seasons for shows you are following.</string>
+
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>
     <item quantity="other">Airs in %d days</item>

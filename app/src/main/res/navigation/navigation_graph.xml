@@ -57,6 +57,11 @@
       app:destination="@id/searchFragment"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionDiscoverFragmentToSettingsFragment"
+      app:destination="@id/settingsFragment"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -103,6 +108,13 @@
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
+    <action
+      android:id="@+id/actionFollowedShowsFragmentToSettingsFragment"
+      app:destination="@id/settingsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
   </fragment>
 
   <fragment
@@ -119,5 +131,11 @@
       app:popExitAnim="@anim/anim_fade_out"
       />
   </fragment>
+
+  <fragment
+    android:id="@+id/settingsFragment"
+    android:name="com.michaldrabik.showly2.ui.settings.SettingsFragment"
+    android:label="fragmentSettings"
+    />
 
 </navigation>

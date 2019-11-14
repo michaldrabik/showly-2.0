@@ -59,6 +59,15 @@
         android:visibility="gone"
         />
 
+      <ImageView
+        android:id="@+id/searchSettingsIcon"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:tint="@color/colorSearchViewIcon"
+        app:srcCompat="@drawable/ic_settings"
+        />
+
     </FrameLayout>
 
   </LinearLayout>

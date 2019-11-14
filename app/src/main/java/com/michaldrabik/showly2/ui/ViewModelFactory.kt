@@ -16,6 +16,8 @@ import com.michaldrabik.showly2.ui.main.MainInteractor
 import com.michaldrabik.showly2.ui.main.MainViewModel
 import com.michaldrabik.showly2.ui.search.SearchInteractor
 import com.michaldrabik.showly2.ui.search.SearchViewModel
+import com.michaldrabik.showly2.ui.settings.SettingsInteractor
+import com.michaldrabik.showly2.ui.settings.SettingsViewModel
 import com.michaldrabik.showly2.ui.show.ShowDetailsInteractor
 import com.michaldrabik.showly2.ui.show.ShowDetailsViewModel
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesInteractor
@@ -35,6 +37,7 @@ class ViewModelFactory @Inject constructor(
   private val episodesInteractor: EpisodesInteractor,
   private val searchInteractor: SearchInteractor,
   private val watchlistInteractor: WatchlistInteractor,
+  private val settingsInteractor: SettingsInteractor,
   private val imagesManager: ImagesManager,
   private val uiCache: UiCache
 ) : ViewModelProvider.Factory {
@@ -67,6 +70,9 @@ class ViewModelFactory @Inject constructor(
 
     modelClass.isAssignableFrom(WatchlistViewModel::class.java) ->
       WatchlistViewModel(watchlistInteractor, episodesInteractor) as T
+
+    modelClass.isAssignableFrom(SettingsViewModel::class.java) ->
+      SettingsViewModel(settingsInteractor) as T
 
     else -> throw IllegalStateException("Unknown ViewModel class")
   }

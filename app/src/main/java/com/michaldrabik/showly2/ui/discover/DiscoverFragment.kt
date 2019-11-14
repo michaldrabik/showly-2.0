@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.discover
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.NavigationRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -57,15 +58,18 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
   }
 
   private fun setupView() {
-    discoverSearchView.isClickable = false
-    discoverSearchView.onClick { openSearchView() }
+    discoverSearchView.run {
+      isClickable = false
+      onClick { navigateTo(R.id.actionDiscoverFragmentToSearchFragment) }
+      onSettingsClickListener = { navigateTo(R.id.actionDiscoverFragmentToSettingsFragment) }
+    }
   }
 
   private fun setupRecycler() {
     layoutManager = GridLayoutManager(context, gridSpan)
     adapter = DiscoverAdapter()
     adapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
-    adapter.itemClickListener = { openShowDetails(it) }
+    adapter.itemClickListener = { navigateToDetails(it) }
     discoverRecycler.apply {
       adapter = this@DiscoverFragment.adapter
       layoutManager = this@DiscoverFragment.layoutManager
@@ -86,17 +90,17 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     }
   }
 
-  private fun openShowDetails(item: DiscoverListItem) {
+  private fun navigateToDetails(item: DiscoverListItem) {
     hideNavigation()
     animateItemsExit(item)
     discoverSearchView.fadeOut()
   }
 
-  private fun openSearchView() {
+  private fun navigateTo(@NavigationRes id: Int) {
     hideNavigation()
     saveUiPositions()
     discoverRecycler.fadeOut(duration = 200) {
-      findNavController().navigate(R.id.actionDiscoverFragmentToSearchFragment)
+      findNavController().navigate(id)
     }
   }
 
@@ -150,5 +154,5 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     }
   }
 
-  override fun onTabReselected() = openSearchView()
+  override fun onTabReselected() = navigateTo(R.id.actionDiscoverFragmentToSearchFragment)
 }

@@ -71,6 +71,7 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
     searchViewInput.visible()
     searchViewText.gone()
     (searchViewIcon.drawable as Animatable).start()
+    searchViewLayout.settingsIconVisible = false
     viewModel.loadLastSearch()
     if (!isInitialized) {
       searchViewInput.showKeyboard()

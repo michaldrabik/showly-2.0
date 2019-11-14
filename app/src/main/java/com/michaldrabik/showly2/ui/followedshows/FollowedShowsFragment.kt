@@ -64,8 +64,12 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
   }
 
   private fun setupView() {
-    followedShowsSearchView.hint = getString(R.string.textSearchForMyShows)
-    followedShowsSearchView.onClick { enterSearch() }
+    followedShowsSearchView.run {
+      hint = getString(R.string.textSearchForMyShows)
+      onClick { enterSearch() }
+      onSettingsClickListener = { openSettings() }
+    }
+
     searchViewInput.run {
       imeOptions = EditorInfo.IME_ACTION_DONE
       setOnEditorActionListener { _, _, _ ->
@@ -207,6 +211,11 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
     }
     viewModel.tabsTranslation = followedShowsTabs.translationY
     viewModel.searchViewTranslation = followedShowsSearchView.translationY
+  }
+
+  private fun openSettings() {
+    hideNavigation()
+    findNavController().navigate(R.id.actionFollowedShowsFragmentToSettingsFragment)
   }
 
   fun enableSearch(enable: Boolean) {
