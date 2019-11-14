@@ -10,7 +10,5 @@ internal object Config {
   const val TRAKT_SEARCH_LIMIT = 50
 
   const val TVDB_BASE_URL = "https://api.thetvdb.com/"
-  const val TVDB_CLIENT_ID = BuildConfig.TVDB_CLIENT_ID
   const val TVDB_API_KEY = BuildConfig.TVDB_API_KEY
-  const val TVDB_USER = BuildConfig.TVDB_USERNAME
 }

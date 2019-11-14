@@ -11,11 +11,7 @@ class TvdbApi(private val service: TvdbService) {
   private val allowedTypes = arrayOf("poster", "fanart")
 
   suspend fun authorize() = service.authorize(
-    AuthorizationRequest(
-      apikey = Config.TVDB_API_KEY,
-      username = Config.TVDB_USER,
-      userkey = Config.TVDB_CLIENT_ID
-    )
+    AuthorizationRequest(apiKey = Config.TVDB_API_KEY)
   )
 
   suspend fun fetchShowImages(token: String, tvdbId: Long, type: String): List<TvdbImage> {
