@@ -1,6 +1,5 @@
 package com.michaldrabik.showly2.ui.followedshows.myshows
 
-import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_AMOUNT
 import com.michaldrabik.showly2.common.ImagesManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.ImageType
@@ -32,7 +31,10 @@ class MyShowsInteractor @Inject constructor(
     return sortBy(sortOrder, shows)
   }
 
-  suspend fun loadRecentShows() = showsRepository.myShows.loadAllRecent(MY_SHOWS_RECENTS_AMOUNT)
+  suspend fun loadRecentShows(): List<Show> {
+    val amount = loadSettings().myShowsRecentsAmount
+    return showsRepository.myShows.loadAllRecent(amount)
+  }
 
   suspend fun loadSettings() =
     mappers.settings.fromDatabase(database.settingsDao().getAll()!!)

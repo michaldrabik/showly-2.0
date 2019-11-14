@@ -50,14 +50,14 @@
   <string name="textSettings">Settings</string>
 
   <string name="textSettingsGeneral">General &amp; UX</string>
-  <string name="textSettingsRecentShowsTitle">My Recent Shows Amount</string>
-  <string name="textSettingsRecentShowsSummary">Amount of recent shows to display in \'My Shows\' screen.</string>
+  <string name="textSettingsRecentShowsTitle">Recently Added Amount</string>
+  <string name="textSettingsRecentShowsSummary">Number of recent shows to display in \'My Shows\' screen.</string>
 
   <string name="textSettingsNotifications">Notifications</string>
   <string name="textSettingsPushNotificationsTitle">Push Notifications</string>
   <string name="textSettingsPushNotificationsSummary">Receive general information push notifications.</string>
   <string name="textSettingsShowsNotificationsTitle">Shows Announcements</string>
-  <string name="textSettingsShowsNotificationsSummary">Receive notification about new episodes and seasons for shows you are following.</string>
+  <string name="textSettingsShowsNotificationsSummary">Receive notifications about new episodes, seasons for shows you are following.</string>
 
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>

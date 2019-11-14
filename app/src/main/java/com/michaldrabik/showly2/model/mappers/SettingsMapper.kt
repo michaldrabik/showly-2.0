@@ -10,13 +10,15 @@ class SettingsMapper @Inject constructor() {
     settings.isInitialRun,
     enumValueOf(settings.myShowsRunningSortBy),
     enumValueOf(settings.myShowsIncomingSortBy),
-    enumValueOf(settings.myShowsEndedSortBy)
+    enumValueOf(settings.myShowsEndedSortBy),
+    settings.myShowsRecentsAmount
   )
 
   fun toDatabase(settings: Settings) = SettingsDb(
     isInitialRun = settings.isInitialRun,
     myShowsRunningSortBy = settings.myShowsRunningSortBy.name,
     myShowsIncomingSortBy = settings.myShowsIncomingSortBy.name,
-    myShowsEndedSortBy = settings.myShowsEndedSortBy.name
+    myShowsEndedSortBy = settings.myShowsEndedSortBy.name,
+    myShowsRecentsAmount = settings.myShowsRecentsAmount
   )
 }

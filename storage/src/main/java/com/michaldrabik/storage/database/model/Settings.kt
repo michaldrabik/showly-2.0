@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 data class Settings(
   @PrimaryKey @ColumnInfo(name = "id") var id: Long = 1,
   @ColumnInfo(name = "is_initial_run", defaultValue = "0") var isInitialRun: Boolean,
+  @ColumnInfo(name = "my_shows_recent_amount", defaultValue = "6") var myShowsRecentsAmount: Int,
   @ColumnInfo(name = "my_shows_running_sort_by", defaultValue = "NAME") var myShowsRunningSortBy: String,
   @ColumnInfo(name = "my_shows_incoming_sort_by", defaultValue = "NAME") var myShowsIncomingSortBy: String,
   @ColumnInfo(name = "my_shows_ended_sort_by", defaultValue = "NAME") var myShowsEndedSortBy: String

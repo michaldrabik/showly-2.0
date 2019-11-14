@@ -1,6 +1,7 @@
 package com.michaldrabik.showly2.ui.main
 
 import androidx.room.withTransaction
+import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_DEFAULT
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.UiCache
@@ -21,7 +22,8 @@ class MainInteractor @Inject constructor(
         isInitialRun = true,
         myShowsEndedSortBy = SortOrder.NAME.name,
         myShowsIncomingSortBy = SortOrder.NAME.name,
-        myShowsRunningSortBy = SortOrder.NAME.name
+        myShowsRunningSortBy = SortOrder.NAME.name,
+        myShowsRecentsAmount = MY_SHOWS_RECENTS_DEFAULT
       )
       database.settingsDao().upsert(newSettings)
     }

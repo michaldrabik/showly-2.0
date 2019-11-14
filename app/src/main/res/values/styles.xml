@@ -86,8 +86,8 @@
   <style name="Settings.Category" parent="Settings">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_marginStart">@dimen/spaceNormal</item>
-    <item name="android:layout_marginEnd">@dimen/spaceNormal</item>
+    <item name="android:paddingStart">@dimen/spaceNormal</item>
+    <item name="android:paddingEnd">@dimen/spaceNormal</item>
     <item name="android:layout_marginTop">@dimen/spaceBig</item>
     <item name="android:textColor">@color/colorAccent</item>
     <item name="android:textSize">14sp</item>
@@ -111,10 +111,9 @@
   <style name="Settings.ItemLayout" parent="Settings">
     <item name="android:layout_width">0dp</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_marginStart">@dimen/spaceNormal</item>
-    <item name="android:layout_marginEnd">@dimen/spaceNormal</item>
-    <item name="android:layout_marginTop">@dimen/spaceBig</item>
+    <item name="android:padding">@dimen/spaceNormal</item>
     <item name="android:orientation">vertical</item>
+    <item name="android:background">?android:attr/selectableItemBackground</item>
   </style>
 
 </resources>
