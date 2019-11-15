@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.search
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
 import androidx.lifecycle.Observer
@@ -26,7 +27,6 @@ import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.shake
-import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.showly2.utilities.extensions.showKeyboard
 import com.michaldrabik.showly2.utilities.extensions.visible
 import kotlinx.android.synthetic.main.fragment_search.*
@@ -45,6 +45,8 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
 
+  override fun getSnackbarHost(): ViewGroup = searchRoot
+
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
     super.onCreate(savedInstanceState)
@@ -58,7 +60,10 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
     setupView()
     setupRecycler()
     if (savedInstanceState == null && !isInitialized) isInitialized = true
-    viewModel.uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+    viewModel.run {
+      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      errorStream.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
+    }
   }
 
   override fun onResume() {
@@ -150,7 +155,6 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
       }
       isEmpty?.let { searchEmptyView.fadeIf(it) }
       isInitial?.let { searchInitialView.fadeIf(it) }
-      error?.let { searchRoot?.showErrorSnackbar(getString(R.string.errorGeneral)) }
     }
   }
 

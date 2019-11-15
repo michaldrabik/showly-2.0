@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.search
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.Config.SEARCH_RECENTS_AMOUNT
+import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
@@ -50,7 +51,7 @@ class SearchViewModel @Inject constructor(
         lastSearchItems.replace(items)
         uiState = SearchUiModel.createResults(items)
       } catch (t: Throwable) {
-        onError(t)
+        onError()
       }
     }
   }
@@ -78,7 +79,8 @@ class SearchViewModel @Inject constructor(
     }
   }
 
-  private fun onError(t: Throwable) {
-    uiState = SearchUiModel(error = Error(t), isSearching = false, isEmpty = false)
+  private fun onError() {
+    uiState = SearchUiModel(isSearching = false, isEmpty = false)
+    _errorStream.value = R.string.errorCouldNotLoadSearchResults
   }
 }

@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.discover
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.Config
+import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.FANART_WIDE
@@ -40,7 +41,6 @@ class DiscoverViewModel @Inject constructor(
     uiState = DiscoverUiModel(applyUiCache = uiCache)
 
     viewModelScope.launch {
-
       val progressJob = launch {
         delay(if (pullToRefresh) 0 else 750)
         uiState = DiscoverUiModel(showLoading = true)
@@ -53,7 +53,7 @@ class DiscoverViewModel @Inject constructor(
         uiState = DiscoverUiModel(resetScroll = resetScroll)
         if (pullToRefresh) lastPullToRefreshMs = nowUtcMillis()
       } catch (t: Throwable) {
-        onError(Error(t))
+        onError()
       } finally {
         uiState = DiscoverUiModel(showLoading = false)
         progressJob.cancel()
@@ -103,7 +103,7 @@ class DiscoverViewModel @Inject constructor(
 
   fun clearCache() = uiCache.clear()
 
-  private fun onError(error: Error) {
-    uiState = DiscoverUiModel(error = error)
+  private fun onError() {
+    _errorStream.value = R.string.errorCouldNotLoadDiscover
   }
 }

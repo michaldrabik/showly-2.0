@@ -19,9 +19,7 @@ import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.random.Random
 
@@ -53,6 +51,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
       showsState.observe(viewLifecycleOwner, Observer { render(it!!) })
+      errorStream.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
       loadDiscoverShows()
     }
   }
@@ -148,9 +147,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
         discoverSearchView.translationY = it.discoverSearchPosition
       }
       resetScroll?.let { if (it) discoverRecycler.scrollToPosition(0) }
-      error?.let {
-        requireActivity().snackBarHost.showErrorSnackbar(it.message ?: getString(R.string.errorGeneral))
-      }
     }
   }
 

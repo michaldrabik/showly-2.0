@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.show
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
@@ -43,7 +44,6 @@ import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.screenHeight
-import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.showly2.utilities.extensions.toDisplayString
 import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
@@ -85,6 +85,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     setupSeasonsList()
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      messageStream.observe(viewLifecycleOwner, Observer { showInfoSnackbar(it!!) })
+      errorStream.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
       loadShowDetails(showId)
     }
   }
@@ -233,12 +235,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       actors?.let { renderActors(it) }
       seasons?.let { renderSeasons(it) }
       relatedShows?.let { renderRelatedShows(it) }
-      error?.let {
-        showDetailsRoot.showErrorSnackbar(getString(R.string.errorCouldNotLoadShow))
-      }
-      info?.let {
-        showDetailsRoot.showInfoSnackbar(getString(it))
-      }
     }
   }
 
@@ -294,6 +290,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     showDetailsRelatedLabel.fadeIf(items.isNotEmpty())
     showDetailsRelatedProgress.gone()
   }
+
+  override fun getSnackbarHost(): ViewGroup = showDetailsRoot
 
   private fun handleBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher

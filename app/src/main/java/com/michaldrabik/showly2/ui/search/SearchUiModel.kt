@@ -10,8 +10,7 @@ data class SearchUiModel(
   val recentSearchItems: List<RecentSearch>? = null,
   val isSearching: Boolean? = null,
   val isEmpty: Boolean? = null,
-  val isInitial: Boolean? = null,
-  val error: Error? = null
+  val isInitial: Boolean? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -21,8 +20,7 @@ data class SearchUiModel(
       recentSearchItems = newModel.recentSearchItems ?: recentSearchItems,
       isSearching = newModel.isSearching ?: isSearching,
       isEmpty = newModel.isEmpty ?: isEmpty,
-      isInitial = newModel.isInitial ?: isInitial,
-      error = newModel.error ?: error
+      isInitial = newModel.isInitial ?: isInitial
     )
 
   companion object {

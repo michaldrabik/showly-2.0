@@ -59,7 +59,7 @@ class ShowDetailsViewModel @Inject constructor(
         }
         launch { loadRelatedShows(show) }
       } catch (t: Throwable) {
-        uiState = ShowDetailsUiModel(error = Error(t))
+        _errorStream.value = R.string.errorCouldNotLoadShow
       }
     }
   }
@@ -137,10 +137,7 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   fun addFollowedShow() {
-    if (!areSeasonsLoaded) {
-      uiState = ShowDetailsUiModel(info = R.string.errorSeasonsNotLoaded)
-      return
-    }
+    if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
       val seasons = seasonItems.map { it.season }
       val episodes = seasonItems.flatMap { it.episodes.map { e -> e.episode } }
@@ -152,10 +149,7 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   fun addWatchLaterShow() {
-    if (!areSeasonsLoaded) {
-      uiState = ShowDetailsUiModel(info = R.string.errorSeasonsNotLoaded)
-      return
-    }
+    if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
       interactor.addToWatchLater(show)
 
@@ -165,10 +159,7 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   fun removeFromFollowed() {
-    if (!areSeasonsLoaded) {
-      uiState = ShowDetailsUiModel(info = R.string.errorSeasonsNotLoaded)
-      return
-    }
+    if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
       val isFollowed = interactor.isFollowed(show)
       val isWatchLater = interactor.isWatchLater(show)
@@ -201,6 +192,14 @@ class ShowDetailsViewModel @Inject constructor(
       }
       refreshWatchedEpisodes()
     }
+  }
+
+  private fun checkSeasonsLoaded(): Boolean {
+    if (!areSeasonsLoaded) {
+      _messageStream.value = R.string.errorSeasonsNotLoaded
+      return false
+    }
+    return true
   }
 
   private suspend fun refreshWatchedEpisodes() {

@@ -17,9 +17,7 @@ data class ShowDetailsUiModel(
   val actors: List<Actor>? = null,
   val relatedShows: List<RelatedListItem>? = null,
   val seasons: List<SeasonListItem>? = null,
-  val isFollowed: FollowedState? = null,
-  val error: Error? = null,
-  val info: Int? = null
+  val isFollowed: FollowedState? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -31,8 +29,6 @@ data class ShowDetailsUiModel(
       actors = newModel.actors ?: actors,
       relatedShows = newModel.relatedShows ?: relatedShows,
       seasons = newModel.seasons ?: seasons,
-      isFollowed = newModel.isFollowed ?: isFollowed,
-      error = newModel.error ?: error,
-      info = newModel.info ?: info
+      isFollowed = newModel.isFollowed ?: isFollowed
     )
 }
