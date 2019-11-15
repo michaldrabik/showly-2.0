@@ -56,7 +56,7 @@
   <string name="textSettingsNotifications">Notifications</string>
   <string name="textSettingsPushNotificationsTitle">Push Notifications</string>
   <string name="textSettingsPushNotificationsSummary">Receive general information push notifications.</string>
-  <string name="textSettingsShowsNotificationsTitle">Shows Announcements</string>
+  <string name="textSettingsShowsNotificationsTitle">Episodes Announcements</string>
   <string name="textSettingsShowsNotificationsSummary">Receive notifications about new episodes, seasons for shows you are following.</string>
 
   <plurals name="textDaysToAir">
