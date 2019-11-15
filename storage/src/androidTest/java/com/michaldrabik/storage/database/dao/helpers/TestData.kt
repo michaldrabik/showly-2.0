@@ -37,7 +37,7 @@ object TestData {
     0
   )
 
-  fun createSettings() = Settings(1, false, "", "", "")
+  fun createSettings() = Settings(1, false, true, true, 2, "", "", "")
 
   fun createActor() = Actor(0, 1, 1, "Name", "Role", 1, "Image", 99, 99)
 
