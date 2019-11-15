@@ -27,7 +27,7 @@ class SeeLaterViewModel @Inject constructor(
 
     fun updateItem(new: SeeLaterListItem) {
       val currentItems = uiState?.items?.toMutableList()
-      currentItems?.findReplace(new) { it.show.ids.trakt == new.show.ids.trakt }
+      currentItems?.findReplace(new) { it.isSameAs(new) }
       uiState = uiState?.copy(items = currentItems)
     }
 

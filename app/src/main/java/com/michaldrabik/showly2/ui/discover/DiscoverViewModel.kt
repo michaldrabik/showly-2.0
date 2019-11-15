@@ -82,7 +82,7 @@ class DiscoverViewModel @Inject constructor(
 
     fun updateShowsItem(newItem: DiscoverListItem) {
       val currentItems = _showsState.value?.toMutableList()
-      currentItems?.findReplace(newItem) { it.show.ids.trakt == newItem.show.ids.trakt }
+      currentItems?.findReplace(newItem) { it.isSameAs(newItem) }
       _showsState.value = currentItems
     }
 

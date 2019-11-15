@@ -75,7 +75,7 @@ class MyShowsViewModel @Inject constructor(
       val running = uiState?.runningShows?.items?.toMutableList() ?: mutableListOf()
 
       listOf(incoming, ended, running).forEach { section ->
-        section.findReplace(new) { it.show.ids.trakt == new.show.ids.trakt }
+        section.findReplace(new) { it.isSameAs(new) }
       }
 
       uiState = uiState?.copy(

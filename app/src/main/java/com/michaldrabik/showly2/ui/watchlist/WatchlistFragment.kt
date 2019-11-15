@@ -20,9 +20,6 @@ import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
-import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
-import com.michaldrabik.showly2.utilities.extensions.showShortInfoSnackbar
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 
 class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedListener, OnEpisodesSyncedListener {
@@ -46,7 +43,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
 
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-      watchlistStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      messageStream.observe(viewLifecycleOwner, Observer { showInfoSnackbar(it!!) })
     }
   }
 
@@ -89,20 +86,11 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
 
   override fun onEpisodesSyncSuccess() = viewModel.loadWatchlist()
 
-  private fun render(watchlistItems: List<WatchlistItem>) {
-    adapter.setItems(watchlistItems)
-    watchlistRecycler.fadeIn()
-    watchlistEmptyView.fadeIf(watchlistItems.isEmpty())
-  }
-
   private fun render(uiModel: WatchlistUiModel) {
-    uiModel.run {
-      info?.let {
-        requireActivity().snackBarHost.showShortInfoSnackbar(getString(it))
-      }
-      error?.let {
-        requireActivity().snackBarHost.showErrorSnackbar(it.message ?: getString(R.string.errorGeneral))
-      }
+    uiModel.items?.let {
+      adapter.setItems(it)
+      watchlistRecycler.fadeIn()
+      watchlistEmptyView.fadeIf(it.isEmpty())
     }
   }
 }

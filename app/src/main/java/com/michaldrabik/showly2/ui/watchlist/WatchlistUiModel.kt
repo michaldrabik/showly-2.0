@@ -1,15 +1,14 @@
 package com.michaldrabik.showly2.ui.watchlist
 
 import com.michaldrabik.showly2.ui.common.UiModel
+import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 
 data class WatchlistUiModel(
-  val info: Int? = null,
-  val error: Error? = null
+  val items: List<WatchlistItem>? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
     (newModel as WatchlistUiModel).copy(
-      info = newModel.info ?: info,
-      error = newModel.error ?: error
+      items = newModel.items ?: items
     )
 }

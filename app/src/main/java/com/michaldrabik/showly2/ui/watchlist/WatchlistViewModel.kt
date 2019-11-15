@@ -1,6 +1,5 @@
 package com.michaldrabik.showly2.ui.watchlist
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.EpisodeBundle
@@ -18,9 +17,6 @@ class WatchlistViewModel @Inject constructor(
   private val episodesManager: EpisodesManager
 ) : BaseViewModel<WatchlistUiModel>() {
 
-  private val _watchlistStream = MutableLiveData<List<WatchlistItem>>()
-  val watchlistStream get() = _watchlistStream
-
   fun loadWatchlist() {
     viewModelScope.launch {
       val items = interactor.loadWatchlist().map {
@@ -34,15 +30,14 @@ class WatchlistViewModel @Inject constructor(
         items.add(headerIndex, item.copy(headerTextResId = R.string.textWatchlistIncoming))
       }
 
-      _watchlistStream.value = items
+      uiState = WatchlistUiModel(items)
     }
   }
 
   fun setWatchedEpisode(item: WatchlistItem) {
     viewModelScope.launch {
       if (!item.episode.hasAired(item.season)) {
-        uiState = WatchlistUiModel(info = R.string.errorEpisodeNotAired)
-        clearStream()
+        _messageStream.value = R.string.errorEpisodeNotAired
         return@launch
       }
       val bundle = EpisodeBundle(item.episode, item.season, item.show)
@@ -54,9 +49,9 @@ class WatchlistViewModel @Inject constructor(
   fun findMissingImage(item: WatchlistItem, force: Boolean) {
 
     fun updateItem(new: WatchlistItem) {
-      val currentItems = _watchlistStream.value?.toMutableList()
-      currentItems?.findReplace(new) { it.show.ids.trakt == new.show.ids.trakt && it.isHeader() == new.isHeader() }
-      _watchlistStream.value = currentItems
+      val currentItems = uiState?.items?.toMutableList()
+      currentItems?.findReplace(new) { it.isSameAs(new) }
+      uiState = WatchlistUiModel(items = currentItems)
     }
 
     viewModelScope.launch {
@@ -69,9 +64,5 @@ class WatchlistViewModel @Inject constructor(
         updateItem(item.copy(image = unavailable, isLoading = false))
       }
     }
-  }
-
-  private fun clearStream() {
-    uiState = WatchlistUiModel()
   }
 }

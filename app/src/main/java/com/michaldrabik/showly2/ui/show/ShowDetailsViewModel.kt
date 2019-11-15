@@ -121,7 +121,7 @@ class ShowDetailsViewModel @Inject constructor(
 
     fun updateItem(new: RelatedListItem) {
       val currentItems = uiState?.relatedShows?.toMutableList()
-      currentItems?.findReplace(new) { it.show.ids.trakt == new.show.ids.trakt }
+      currentItems?.findReplace(new) { it.isSameAs(new) }
       uiState = uiState?.copy(relatedShows = currentItems)
     }
 

@@ -17,6 +17,8 @@ data class WatchlistItem(
   val headerTextResId: Int? = null
 ) : ListItem {
 
-  fun isHeader() = headerTextResId != null
+  fun isSameAs(other: WatchlistItem) =
+    show.ids.trakt == other.show.ids.trakt && isHeader() == other.isHeader()
 
+  fun isHeader() = headerTextResId != null
 }

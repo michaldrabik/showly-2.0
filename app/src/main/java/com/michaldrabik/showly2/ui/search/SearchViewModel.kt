@@ -62,7 +62,7 @@ class SearchViewModel @Inject constructor(
       val currentModel = uiState
       val currentItems = currentModel?.searchItems?.toMutableList()
       currentItems?.run {
-        findReplace(new) { it.show.ids.trakt == new.show.ids.trakt }
+        findReplace(new) { it.isSameAs(new) }
         lastSearchItems.replace(this)
       }
       uiState = currentModel?.copy(searchItems = currentItems, searchItemsAnimate = false)
