@@ -29,17 +29,12 @@ class FollowedShowsInteractor @Inject constructor(
     }
 
     return searchItemsCache
-      .filter {
-        it.title.contains(query, true) || it.network.contains(query, true)
-      }
+      .filter { it.title.contains(query, true) || it.network.contains(query, true) }
       .sortedBy { it.title }
   }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =
     imagesManager.findCachedImage(show, type)
-
-  suspend fun loadMissingImage(show: Show, type: ImageType, force: Boolean) =
-    imagesManager.loadRemoteImage(show, type, force)
 
   fun clearCache() = searchItemsCache.clear()
 }

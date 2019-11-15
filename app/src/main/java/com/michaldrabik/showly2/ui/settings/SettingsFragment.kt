@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_OPTIONS
@@ -12,6 +13,7 @@ import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.setCheckedSilent
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : BaseFragment<SettingsViewModel>() {
@@ -28,14 +30,34 @@ class SettingsFragment : BaseFragment<SettingsViewModel>() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+    viewModel.uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+    viewModel.loadSettings()
 
-    settingsRecentShowsAmount.onClick {
-      AlertDialog.Builder(requireContext())
-        .setSingleChoiceItems(MY_SHOWS_RECENTS_OPTIONS, 0) { dialog, index ->
-          dialog.dismiss()
+    settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+  }
+
+  private fun render(uiModel: SettingsUiModel) {
+    uiModel.settings?.let { settings ->
+      settingsRecentShowsAmount.onClick {
+        val options = MY_SHOWS_RECENTS_OPTIONS.map { it.toString() }.toTypedArray()
+        val default = settings.myShowsRecentsAmount
+        AlertDialog.Builder(requireContext())
+          .setSingleChoiceItems(options, options.indexOf(default.toString())) { dialog, index ->
+            viewModel.setRecentShowsAmount(options[index].toInt())
+            dialog.dismiss()
+          }
+          .show()
+      }
+
+      settingsPushNotificationsSwitch
+        .setCheckedSilent(settings.pushNotificationsEnabled) { _, isChecked ->
+          viewModel.enablePushNotifications(isChecked)
         }
-        .show()
+
+      settingsShowsNotificationsSwitch
+        .setCheckedSilent(settings.showsNotificationsEnabled) { _, isChecked ->
+          viewModel.enableShowsNotifications(isChecked)
+        }
     }
   }
 

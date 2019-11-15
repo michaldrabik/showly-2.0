@@ -8,8 +8,6 @@ import android.app.Service
 import android.os.Build
 import android.os.StrictMode
 import androidx.fragment.app.Fragment
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.messaging.FirebaseMessaging
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.michaldrabik.network.di.DaggerCloudComponent
 import com.michaldrabik.showly2.di.AppComponent
@@ -29,7 +27,7 @@ class App : Application() {
     AndroidThreeTen.init(this)
     setupComponents()
     setupStrictMode()
-    setupFcm()
+    setupNotificationChannels()
   }
 
   private fun setupComponents() {
@@ -51,17 +49,6 @@ class App : Application() {
           .penaltyLog()
           .build()
       )
-    }
-  }
-
-  private fun setupFcm() {
-    setupNotificationChannels()
-    FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
-      if (it.isSuccessful) {
-        val suffix = if (BuildConfig.DEBUG) "-debug" else ""
-        FirebaseMessaging.getInstance().subscribeToTopic(GENERAL_INFO.topicName + suffix)
-        FirebaseMessaging.getInstance().subscribeToTopic(SHOWS_INFO.topicName + suffix)
-      }
     }
   }
 

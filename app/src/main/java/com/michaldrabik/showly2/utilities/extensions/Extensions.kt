@@ -15,7 +15,7 @@ import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.CheckBox
+import android.widget.CompoundButton
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.DimenRes
@@ -180,7 +180,7 @@ fun View.expandTouchArea(amount: Int = 50) {
   (this.parent as View).touchDelegate = TouchDelegate(rect, this)
 }
 
-fun CheckBox.setCheckedSilent(isChecked: Boolean, action: (View, Boolean) -> Unit = { _, _ -> }) {
+fun CompoundButton.setCheckedSilent(isChecked: Boolean, action: (View, Boolean) -> Unit = { _, _ -> }) {
   setOnCheckedChangeListener { _, _ -> }
   setChecked(isChecked)
   setOnCheckedChangeListener(action)

@@ -8,7 +8,7 @@ import com.michaldrabik.showly2.model.ShowStatus.CANCELED
 import com.michaldrabik.showly2.model.ShowStatus.ENDED
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
-import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesInteractor
+import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import kotlinx.coroutines.delay
@@ -22,7 +22,7 @@ class EpisodesSynchronizer @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
   private val mappers: Mappers,
-  private val episodesInteractor: EpisodesInteractor,
+  private val episodesManager: EpisodesManager,
   private val showsRepository: ShowsRepository
 ) {
 
@@ -57,7 +57,7 @@ class EpisodesSynchronizer @Inject constructor(
         val remoteEpisodes = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
           .map { mappers.season.fromNetwork(it) }
 
-        episodesInteractor.invalidateEpisodes(show, remoteEpisodes)
+        episodesManager.invalidateEpisodes(show, remoteEpisodes)
 
         Log.i(TAG, "${show.title}(${show.ids.trakt}) synced.")
       } catch (t: Throwable) {

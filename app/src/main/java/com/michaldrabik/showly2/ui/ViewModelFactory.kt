@@ -20,7 +20,7 @@ import com.michaldrabik.showly2.ui.settings.SettingsInteractor
 import com.michaldrabik.showly2.ui.settings.SettingsViewModel
 import com.michaldrabik.showly2.ui.show.ShowDetailsInteractor
 import com.michaldrabik.showly2.ui.show.ShowDetailsViewModel
-import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesInteractor
+import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsViewModel
 import com.michaldrabik.showly2.ui.watchlist.WatchlistInteractor
 import com.michaldrabik.showly2.ui.watchlist.WatchlistViewModel
@@ -34,7 +34,7 @@ class ViewModelFactory @Inject constructor(
   private val myShowsInteractor: MyShowsInteractor,
   private val seeLaterInteractor: SeeLaterInteractor,
   private val showDetailsInteractor: ShowDetailsInteractor,
-  private val episodesInteractor: EpisodesInteractor,
+  private val episodesManager: EpisodesManager,
   private val searchInteractor: SearchInteractor,
   private val watchlistInteractor: WatchlistInteractor,
   private val settingsInteractor: SettingsInteractor,
@@ -51,7 +51,7 @@ class ViewModelFactory @Inject constructor(
       DiscoverViewModel(discoverInteractor, uiCache) as T
 
     modelClass.isAssignableFrom(ShowDetailsViewModel::class.java) ->
-      ShowDetailsViewModel(showDetailsInteractor, episodesInteractor) as T
+      ShowDetailsViewModel(showDetailsInteractor, episodesManager) as T
 
     modelClass.isAssignableFrom(EpisodeDetailsViewModel::class.java) ->
       EpisodeDetailsViewModel(imagesManager) as T
@@ -69,7 +69,7 @@ class ViewModelFactory @Inject constructor(
       FollowedShowsViewModel(followedShowsInteractor) as T
 
     modelClass.isAssignableFrom(WatchlistViewModel::class.java) ->
-      WatchlistViewModel(watchlistInteractor, episodesInteractor) as T
+      WatchlistViewModel(watchlistInteractor, episodesManager) as T
 
     modelClass.isAssignableFrom(SettingsViewModel::class.java) ->
       SettingsViewModel(settingsInteractor) as T

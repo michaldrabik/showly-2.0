@@ -7,7 +7,7 @@ import com.michaldrabik.showly2.model.EpisodeBundle
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesInteractor
+import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.findReplace
 import kotlinx.coroutines.launch
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class WatchlistViewModel @Inject constructor(
   private val interactor: WatchlistInteractor,
-  private val episodesInteractor: EpisodesInteractor
+  private val episodesManager: EpisodesManager
 ) : BaseViewModel<WatchlistUiModel>() {
 
   private val _watchlistStream = MutableLiveData<List<WatchlistItem>>()
@@ -46,7 +46,7 @@ class WatchlistViewModel @Inject constructor(
         return@launch
       }
       val bundle = EpisodeBundle(item.episode, item.season, item.show)
-      episodesInteractor.setEpisodeWatched(bundle)
+      episodesManager.setEpisodeWatched(bundle)
       loadWatchlist()
     }
   }

@@ -1,49 +1,63 @@
 package com.michaldrabik.showly2.ui.main
 
-import androidx.room.withTransaction
+import com.google.firebase.messaging.FirebaseMessaging
+import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_DEFAULT
 import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.fcm.FcmChannel
+import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.model.SortOrder
+import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.ui.UiCache
-import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.Settings
 import javax.inject.Inject
 
 @AppScope
 class MainInteractor @Inject constructor(
-  private val database: AppDatabase,
+  private val settingsRepository: SettingsRepository,
   private val uiCache: UiCache
 ) {
 
   suspend fun initSettings() {
-    val settings = database.settingsDao().getAll()
+    val settings = settingsRepository.load()
     if (settings == null) {
       val newSettings = Settings(
         isInitialRun = true,
-        myShowsEndedSortBy = SortOrder.NAME.name,
-        myShowsIncomingSortBy = SortOrder.NAME.name,
-        myShowsRunningSortBy = SortOrder.NAME.name,
+        pushNotificationsEnabled = true,
+        showsNotificationsEnabled = true,
+        myShowsEndedSortBy = SortOrder.NAME,
+        myShowsIncomingSortBy = SortOrder.NAME,
+        myShowsRunningSortBy = SortOrder.NAME,
         myShowsRecentsAmount = MY_SHOWS_RECENTS_DEFAULT
       )
-      database.settingsDao().upsert(newSettings)
+      settingsRepository.update(newSettings)
     }
   }
 
   suspend fun setInitialRun(value: Boolean) {
-    database.withTransaction {
-      val settings = database.settingsDao().getAll()
-      settings?.let {
-        database.settingsDao().upsert(it.copy(isInitialRun = value))
-      }
+    val settings = settingsRepository.load()
+    settings?.let {
+      settingsRepository.update(it.copy(isInitialRun = value))
     }
   }
 
   suspend fun isInitialRun(): Boolean {
-    val settings = database.settingsDao().getAll()
+    val settings = settingsRepository.load()
     return settings?.isInitialRun ?: true
   }
 
-  fun clearCache() {
-    uiCache.clear()
+  suspend fun initFcm() {
+    val isEnabled = settingsRepository.load()?.pushNotificationsEnabled ?: false
+    FirebaseMessaging.getInstance().run {
+      val suffix = if (BuildConfig.DEBUG) "-debug" else ""
+      if (isEnabled) {
+        subscribeToTopic(FcmChannel.GENERAL_INFO.topicName + suffix)
+        subscribeToTopic(FcmChannel.SHOWS_INFO.topicName + suffix)
+      } else {
+        unsubscribeFromTopic(FcmChannel.GENERAL_INFO.topicName + suffix)
+        unsubscribeFromTopic(FcmChannel.SHOWS_INFO.topicName + suffix)
+      }
+    }
   }
+
+  fun clearCache() = uiCache.clear()
 }

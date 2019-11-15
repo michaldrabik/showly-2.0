@@ -16,7 +16,7 @@ import com.michaldrabik.storage.database.model.Episode as EpisodeDb
 import com.michaldrabik.storage.database.model.Season as SeasonDb
 
 @AppScope
-class EpisodesInteractor @Inject constructor(
+class EpisodesManager @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val database: AppDatabase,
   private val mappers: Mappers
@@ -140,6 +140,7 @@ class EpisodesInteractor @Inject constructor(
 
     if (seasonsToAdd.isNotEmpty()) database.seasonsDao().upsert(seasonsToAdd)
     if (episodesToAdd.isNotEmpty()) database.episodesDao().upsert(episodesToAdd)
+
     database.episodesSyncLogDao().upsert(EpisodesSyncLog(show.ids.trakt.id, nowUtcMillis()))
   }
 

@@ -27,7 +27,7 @@ class ImagesManager @Inject constructor(
   suspend fun findCachedImage(show: Show, type: ImageType): Image {
     val cachedImage = database.imagesDao().getByShowId(show.ids.tvdb.id, type.key)
     return when (cachedImage) {
-      null -> Image.createUnknown(type)
+      null -> Image.createUnknown(type, SHOW)
       else -> mappers.image.fromDatabase(cachedImage).copy(type = type)
     }
   }

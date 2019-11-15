@@ -13,6 +13,7 @@ class MainViewModel @Inject constructor(
     viewModelScope.launch {
       interactor.initSettings()
       checkInitialRun()
+      interactor.initFcm()
     }
   }
 
