@@ -5,7 +5,7 @@ import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.followedshows.seelater.recycler.SeeLaterListItem
-import com.michaldrabik.showly2.utilities.extensions.replaceItem
+import com.michaldrabik.showly2.utilities.extensions.findReplace
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,11 +27,7 @@ class SeeLaterViewModel @Inject constructor(
 
     fun updateItem(new: SeeLaterListItem) {
       val currentItems = uiState?.items?.toMutableList()
-      currentItems?.let { items ->
-        items.find { it.show.ids.trakt == new.show.ids.trakt }?.let {
-          items.replaceItem(it, new)
-        }
-      }
+      currentItems?.findReplace(new) { it.show.ids.trakt == new.show.ids.trakt }
       uiState = uiState?.copy(items = currentItems)
     }
 

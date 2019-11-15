@@ -13,7 +13,7 @@ import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsBundle
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
-import com.michaldrabik.showly2.utilities.extensions.replaceItem
+import com.michaldrabik.showly2.utilities.extensions.findReplace
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -75,9 +75,7 @@ class MyShowsViewModel @Inject constructor(
       val running = uiState?.runningShows?.items?.toMutableList() ?: mutableListOf()
 
       listOf(incoming, ended, running).forEach { section ->
-        section.find { it.show.ids.trakt == new.show.ids.trakt }?.let {
-          section.replaceItem(it, new)
-        }
+        section.findReplace(new) { it.show.ids.trakt == new.show.ids.trakt }
       }
 
       uiState = uiState?.copy(

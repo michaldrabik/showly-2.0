@@ -6,8 +6,8 @@ import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
+import com.michaldrabik.showly2.utilities.extensions.findReplace
 import com.michaldrabik.showly2.utilities.extensions.replace
-import com.michaldrabik.showly2.utilities.extensions.replaceItem
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -60,11 +60,9 @@ class SearchViewModel @Inject constructor(
     fun updateItem(new: SearchListItem) {
       val currentModel = uiState
       val currentItems = currentModel?.searchItems?.toMutableList()
-      currentItems?.let { items ->
-        items.find { it.show.ids.trakt == new.show.ids.trakt }?.let {
-          items.replaceItem(it, new)
-        }
-        lastSearchItems.replace(currentItems)
+      currentItems?.run {
+        findReplace(new) { it.show.ids.trakt == new.show.ids.trakt }
+        lastSearchItems.replace(this)
       }
       uiState = currentModel?.copy(searchItems = currentItems, searchItemsAnimate = false)
     }

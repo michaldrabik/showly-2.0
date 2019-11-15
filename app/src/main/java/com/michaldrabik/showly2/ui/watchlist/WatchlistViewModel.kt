@@ -9,7 +9,7 @@ import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesInteractor
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
-import com.michaldrabik.showly2.utilities.extensions.replaceItem
+import com.michaldrabik.showly2.utilities.extensions.findReplace
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -55,14 +55,7 @@ class WatchlistViewModel @Inject constructor(
 
     fun updateItem(new: WatchlistItem) {
       val currentItems = _watchlistStream.value?.toMutableList()
-      currentItems?.let { items ->
-        items.find {
-          it.show.ids.trakt == new.show.ids.trakt
-              && it.isHeader() == new.isHeader()
-        }?.let {
-          items.replaceItem(it, new)
-        }
-      }
+      currentItems?.findReplace(new) { it.show.ids.trakt == new.show.ids.trakt && it.isHeader() == new.isHeader() }
       _watchlistStream.value = currentItems
     }
 

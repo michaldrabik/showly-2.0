@@ -11,8 +11,8 @@ import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
+import com.michaldrabik.showly2.utilities.extensions.findReplace
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
-import com.michaldrabik.showly2.utilities.extensions.replaceItem
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -80,13 +80,9 @@ class DiscoverViewModel @Inject constructor(
 
   fun loadMissingImage(item: DiscoverListItem, force: Boolean) {
 
-    fun updateShowsItem(new: DiscoverListItem) {
+    fun updateShowsItem(newItem: DiscoverListItem) {
       val currentItems = _showsState.value?.toMutableList()
-      currentItems?.let { items ->
-        items.find { it.show.ids.trakt == new.show.ids.trakt }?.let {
-          items.replaceItem(it, new)
-        }
-      }
+      currentItems?.findReplace(newItem) { it.show.ids.trakt == newItem.show.ids.trakt }
       _showsState.value = currentItems
     }
 

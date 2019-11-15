@@ -13,6 +13,7 @@ import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_FANART_URL
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_POSTER_URL
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.model.Image.Status.AVAILABLE
 import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
 import com.michaldrabik.showly2.model.Image.Status.UNKNOWN
 import com.michaldrabik.showly2.model.ImageType.POSTER
@@ -80,7 +81,11 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
   protected open fun onImageLoadSuccess() = Unit
 
   protected open fun onImageLoadFail(item: Item, missingImageListener: (Item, Boolean) -> Unit) {
-    val force = item.image.status != UNAVAILABLE
+    if (item.image.status == AVAILABLE) {
+      placeholderView.visible()
+      return
+    }
+    val force = (item.image.status == UNKNOWN)
     missingImageListener(item, force)
   }
 }

@@ -17,7 +17,7 @@ import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodeListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesInteractor
-import com.michaldrabik.showly2.utilities.extensions.replaceItem
+import com.michaldrabik.showly2.utilities.extensions.findReplace
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -120,11 +120,7 @@ class ShowDetailsViewModel @Inject constructor(
 
     fun updateItem(new: RelatedListItem) {
       val currentItems = uiState?.relatedShows?.toMutableList()
-      currentItems?.let { items ->
-        items.find { it.show.ids.trakt == new.show.ids.trakt }?.let {
-          items.replaceItem(it, new)
-        }
-      }
+      currentItems?.findReplace(new) { it.show.ids.trakt == new.show.ids.trakt }
       uiState = uiState?.copy(relatedShows = currentItems)
     }
 

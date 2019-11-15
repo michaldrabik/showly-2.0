@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.model.Image.Status.AVAILABLE
 import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.utilities.extensions.gone
@@ -49,6 +50,13 @@ class ShowPosterView : ShowView<DiscoverListItem> {
 
   override fun onImageLoadSuccess() {
     showPosterTitle.gone()
+  }
+
+  override fun onImageLoadFail(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
+    super.onImageLoadFail(item, missingImageListener)
+    if (item.image.status == AVAILABLE) {
+      showPosterTitle.visible()
+    }
   }
 
   private fun clear() {
