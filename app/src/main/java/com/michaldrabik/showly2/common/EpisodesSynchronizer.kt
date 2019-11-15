@@ -45,7 +45,6 @@ class EpisodesSynchronizer @Inject constructor(
 
     val syncLog = database.episodesSyncLogDao().getAll()
     showsToSync.forEach { show ->
-      Log.i(TAG, "Syncing ${show.title}(${show.ids.trakt})...")
 
       val lastSync = syncLog.find { it.idTrakt == show.ids.trakt.id }?.syncedAt ?: 0
       if (nowUtcMillis() - lastSync < Config.SHOW_SYNC_COOLDOWN) {
@@ -54,16 +53,26 @@ class EpisodesSynchronizer @Inject constructor(
       }
 
       try {
+        Log.i(TAG, "Syncing ${show.title}(${show.ids.trakt}) show...")
+        showsRepository.detailsShow.load(show.ids.trakt, force = true)
+
+        Log.i(TAG, "${show.title}(${show.ids.trakt}) show synced.")
+      } catch (t: Throwable) {
+        Log.e(TAG, "${show.title}(${show.ids.trakt}) show sync error. Skipping... \n$t")
+      }
+
+      try {
+        Log.i(TAG, "Syncing ${show.title}(${show.ids.trakt}) episodes...")
+
         val remoteEpisodes = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
           .map { mappers.season.fromNetwork(it) }
-
         episodesManager.invalidateEpisodes(show, remoteEpisodes)
 
-        Log.i(TAG, "${show.title}(${show.ids.trakt}) synced.")
+        Log.i(TAG, "${show.title}(${show.ids.trakt}) episodes synced.")
       } catch (t: Throwable) {
-        Log.w(TAG, "${show.title}(${show.ids.trakt}) sync error. Skipping... \n$t")
+        Log.e(TAG, "${show.title}(${show.ids.trakt}) episodes sync error. Skipping... \n$t")
       } finally {
-        delay(200)
+        delay(500)
       }
     }
   }

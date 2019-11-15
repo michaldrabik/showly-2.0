@@ -17,9 +17,9 @@ class ShowDetailsRepository @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  suspend fun load(idTrakt: IdTrakt): Show {
+  suspend fun load(idTrakt: IdTrakt, force: Boolean = false): Show {
     val localShow = database.showsDao().getById(idTrakt.id)
-    if (localShow == null || nowUtcMillis() - localShow.updatedAt > Config.SHOW_DETAILS_CACHE_DURATION) {
+    if (force || localShow == null || nowUtcMillis() - localShow.updatedAt > Config.SHOW_DETAILS_CACHE_DURATION) {
       val remoteShow = cloud.traktApi.fetchShow(idTrakt.id)
       val show = mappers.show.fromNetwork(remoteShow)
       database.showsDao().upsert(listOf(mappers.show.toDatabase(show)))
