@@ -26,5 +26,5 @@ data class Episode(
       else -> nowUtcMillis() >= firstAired.toInstant().toEpochMilli()
     }
 
-  fun toDisplayString() = String.format("S.%02d E.%02d", season, number)
+  fun toDisplayString() = String.format("S.%02d E.%02d - \'%s\'", season, number, title)
 }

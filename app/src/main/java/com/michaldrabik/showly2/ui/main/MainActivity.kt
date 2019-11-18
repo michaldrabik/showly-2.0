@@ -13,7 +13,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
-import com.michaldrabik.showly2.common.EpisodesSynchronizerService
+import com.michaldrabik.showly2.common.ShowsSyncService
 import com.michaldrabik.showly2.ui.NotificationActivity
 import com.michaldrabik.showly2.ui.ViewModelFactory
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
@@ -55,9 +55,9 @@ class MainActivity : NotificationActivity() {
 
   override fun onStart() {
     super.onStart()
-    val filter = IntentFilter(EpisodesSynchronizerService.ACTION_SYNC_SUCCESS)
+    val filter = IntentFilter(ShowsSyncService.ACTION_SHOWS_SYNC_FINISHED)
     LocalBroadcastManager.getInstance(applicationContext).registerReceiver(broadcastReceiver, filter)
-    EpisodesSynchronizerService.initialize(applicationContext)
+    ShowsSyncService.initialize(applicationContext)
   }
 
   override fun onStop() {
@@ -135,13 +135,14 @@ class MainActivity : NotificationActivity() {
     }
   }
 
-  private fun onEpisodesSyncSuccess() {
+  private fun onEpisodesSyncFinished() {
     navigationHost.findNavController().currentDestination?.id?.let {
       val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
       navHost?.childFragmentManager?.primaryNavigationFragment?.let {
-        (it as? OnEpisodesSyncedListener)?.onEpisodesSyncSuccess()
+        (it as? OnEpisodesSyncedListener)?.onEpisodesSyncFinished()
       }
     }
+    viewModel.refreshAnnouncements(applicationContext)
   }
 
   private fun render(uiModel: MainUiModel) {
@@ -165,7 +166,7 @@ class MainActivity : NotificationActivity() {
   private val broadcastReceiver = object : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
       when (intent?.action) {
-        EpisodesSynchronizerService.ACTION_SYNC_SUCCESS -> onEpisodesSyncSuccess()
+        ShowsSyncService.ACTION_SHOWS_SYNC_FINISHED -> onEpisodesSyncFinished()
       }
     }
   }

@@ -84,7 +84,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
 
   override fun onTabReselected() = watchlistRecycler.smoothScrollToPosition(0)
 
-  override fun onEpisodesSyncSuccess() = viewModel.loadWatchlist()
+  override fun onEpisodesSyncFinished() = viewModel.loadWatchlist()
 
   private fun render(uiModel: WatchlistUiModel) {
     uiModel.items?.let {

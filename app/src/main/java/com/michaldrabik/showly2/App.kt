@@ -12,9 +12,9 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import com.michaldrabik.network.di.DaggerCloudComponent
 import com.michaldrabik.showly2.di.AppComponent
 import com.michaldrabik.showly2.di.DaggerAppComponent
-import com.michaldrabik.showly2.fcm.FcmChannel
-import com.michaldrabik.showly2.fcm.FcmChannel.GENERAL_INFO
-import com.michaldrabik.showly2.fcm.FcmChannel.SHOWS_INFO
+import com.michaldrabik.showly2.fcm.NotificationChannel.EPISODES_ANNOUNCEMENTS
+import com.michaldrabik.showly2.fcm.NotificationChannel.GENERAL_INFO
+import com.michaldrabik.showly2.fcm.NotificationChannel.SHOWS_INFO
 import com.michaldrabik.storage.di.DaggerStorageComponent
 import com.michaldrabik.storage.di.StorageModule
 
@@ -55,7 +55,7 @@ class App : Application() {
   private fun setupNotificationChannels() {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
 
-    fun createChannel(channel: FcmChannel) =
+    fun createChannel(channel: com.michaldrabik.showly2.fcm.NotificationChannel) =
       NotificationChannel(channel.name, channel.displayName, channel.importance).apply {
         description = channel.description
       }
@@ -63,6 +63,7 @@ class App : Application() {
     (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).run {
       createNotificationChannel(createChannel(GENERAL_INFO))
       createNotificationChannel(createChannel(SHOWS_INFO))
+      createNotificationChannel(createChannel(EPISODES_ANNOUNCEMENTS))
     }
   }
 }

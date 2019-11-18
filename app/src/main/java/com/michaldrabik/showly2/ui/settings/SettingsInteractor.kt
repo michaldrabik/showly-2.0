@@ -1,17 +1,20 @@
 package com.michaldrabik.showly2.ui.settings
 
+import android.content.Context
 import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.Config
+import com.michaldrabik.showly2.common.notifications.AnnouncementManager
 import com.michaldrabik.showly2.di.AppScope
-import com.michaldrabik.showly2.fcm.FcmChannel
+import com.michaldrabik.showly2.fcm.NotificationChannel
 import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import javax.inject.Inject
 
 @AppScope
 class SettingsInteractor @Inject constructor(
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
+  private val announcementManager: AnnouncementManager
 ) {
 
   suspend fun getSettings(): Settings = settingsRepository.load()!!
@@ -34,20 +37,21 @@ class SettingsInteractor @Inject constructor(
     FirebaseMessaging.getInstance().run {
       val suffix = if (BuildConfig.DEBUG) "-debug" else ""
       if (enable) {
-        subscribeToTopic(FcmChannel.GENERAL_INFO.topicName + suffix)
-        subscribeToTopic(FcmChannel.SHOWS_INFO.topicName + suffix)
+        subscribeToTopic(NotificationChannel.GENERAL_INFO.topicName + suffix)
+        subscribeToTopic(NotificationChannel.SHOWS_INFO.topicName + suffix)
       } else {
-        unsubscribeFromTopic(FcmChannel.GENERAL_INFO.topicName + suffix)
-        unsubscribeFromTopic(FcmChannel.SHOWS_INFO.topicName + suffix)
+        unsubscribeFromTopic(NotificationChannel.GENERAL_INFO.topicName + suffix)
+        unsubscribeFromTopic(NotificationChannel.SHOWS_INFO.topicName + suffix)
       }
     }
   }
 
-  suspend fun enableShowsNotifications(enable: Boolean) {
+  suspend fun enableShowsNotifications(enable: Boolean, context: Context) {
     val settings = settingsRepository.load()
     settings?.let {
-      val new = it.copy(showsNotificationsEnabled = enable)
+      val new = it.copy(episodesNotificationsEnabled = enable)
       settingsRepository.update(new)
+      announcementManager.refreshEpisodesAnnouncements(context.applicationContext)
     }
   }
 }

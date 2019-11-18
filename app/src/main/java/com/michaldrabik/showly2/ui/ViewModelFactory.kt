@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.showly2.common.ImagesManager
+import com.michaldrabik.showly2.common.notifications.AnnouncementManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.ui.discover.DiscoverInteractor
 import com.michaldrabik.showly2.ui.discover.DiscoverViewModel
@@ -34,11 +35,12 @@ class ViewModelFactory @Inject constructor(
   private val myShowsInteractor: MyShowsInteractor,
   private val seeLaterInteractor: SeeLaterInteractor,
   private val showDetailsInteractor: ShowDetailsInteractor,
-  private val episodesManager: EpisodesManager,
   private val searchInteractor: SearchInteractor,
   private val watchlistInteractor: WatchlistInteractor,
   private val settingsInteractor: SettingsInteractor,
   private val imagesManager: ImagesManager,
+  private val episodesManager: EpisodesManager,
+  private val announcementManager: AnnouncementManager,
   private val uiCache: UiCache
 ) : ViewModelProvider.Factory {
 
@@ -51,7 +53,7 @@ class ViewModelFactory @Inject constructor(
       DiscoverViewModel(discoverInteractor, uiCache) as T
 
     modelClass.isAssignableFrom(ShowDetailsViewModel::class.java) ->
-      ShowDetailsViewModel(showDetailsInteractor, episodesManager) as T
+      ShowDetailsViewModel(showDetailsInteractor, episodesManager, announcementManager) as T
 
     modelClass.isAssignableFrom(EpisodeDetailsViewModel::class.java) ->
       EpisodeDetailsViewModel(imagesManager) as T

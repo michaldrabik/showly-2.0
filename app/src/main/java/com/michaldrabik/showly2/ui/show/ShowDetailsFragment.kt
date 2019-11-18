@@ -87,7 +87,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
       messageStream.observe(viewLifecycleOwner, Observer { showInfoSnackbar(it!!) })
       errorStream.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
-      loadShowDetails(showId)
+      loadShowDetails(showId, requireContext().applicationContext)
     }
   }
 
@@ -213,9 +213,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
           "${show.network} $year | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
         showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
 
-        showDetailsAddButton.onAddMyShowsClickListener = { viewModel.addFollowedShow() }
+        showDetailsAddButton.onAddMyShowsClickListener = { viewModel.addFollowedShow(requireContext().applicationContext) }
         showDetailsAddButton.onAddWatchLaterClickListener = { viewModel.addWatchLaterShow() }
-        showDetailsAddButton.onRemoveClickListener = { viewModel.removeFromFollowed() }
+        showDetailsAddButton.onRemoveClickListener = { viewModel.removeFromFollowed(requireContext().applicationContext) }
       }
       showLoading?.let {
         if (!showDetailsEpisodesView.isVisible) {
@@ -254,7 +254,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
 
   private fun renderNextEpisode(nextEpisode: Episode) {
     nextEpisode.run {
-      showDetailsEpisodeText.text = "${toDisplayString()} - '$title'"
+      showDetailsEpisodeText.text = toDisplayString()
       showDetailsEpisodeCard.visible()
       showDetailsEpisodeCard.onClick {
         showEpisodeDetails(nextEpisode, null, isWatched = false, showButton = false)

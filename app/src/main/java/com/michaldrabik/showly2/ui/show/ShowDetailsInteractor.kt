@@ -72,10 +72,11 @@ class ShowDetailsInteractor @Inject constructor(
   suspend fun loadMissingImage(show: Show, type: ImageType, force: Boolean) =
     imagesManager.loadRemoteImage(show, type, force)
 
-  suspend fun loadSeasons(show: Show) =
-    cloud.traktApi.fetchSeasons(show.ids.trakt.id).asSequence()
+  suspend fun loadSeasons(show: Show): List<Season> {
+    return cloud.traktApi.fetchSeasons(show.ids.trakt.id).asSequence()
       .map { mappers.season.fromNetwork(it) }
       .toList()
+  }
 
   suspend fun isFollowed(show: Show) =
     showsRepository.myShows.load(show.ids.trakt) != null

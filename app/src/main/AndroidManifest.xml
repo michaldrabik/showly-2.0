@@ -38,7 +38,7 @@
     </service>
 
     <service
-      android:name=".common.EpisodesSynchronizerService"
+      android:name=".common.ShowsSyncService"
       android:exported="true"
       android:permission="android.permission.BIND_JOB_SERVICE" />
 

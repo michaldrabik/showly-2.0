@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.settings
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import kotlinx.coroutines.launch
@@ -29,9 +30,9 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  fun enableShowsNotifications(enable: Boolean) {
+  fun enableShowsNotifications(enable: Boolean, context: Context) {
     viewModelScope.launch {
-      interactor.enableShowsNotifications(enable)
+      interactor.enableShowsNotifications(enable, context)
       refreshSettings()
     }
   }

@@ -1,7 +1,9 @@
 package com.michaldrabik.showly2.ui.show
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.common.notifications.AnnouncementManager
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.EpisodeBundle
 import com.michaldrabik.showly2.model.IdTrakt
@@ -26,14 +28,15 @@ import kotlin.properties.Delegates.notNull
 
 class ShowDetailsViewModel @Inject constructor(
   private val interactor: ShowDetailsInteractor,
-  private val episodesManager: EpisodesManager
+  private val episodesManager: EpisodesManager,
+  private val announcementManager: AnnouncementManager
 ) : BaseViewModel<ShowDetailsUiModel>() {
 
   private var show by notNull<Show>()
   private var areSeasonsLoaded = false
   private val seasonItems = mutableListOf<SeasonListItem>()
 
-  fun loadShowDetails(id: IdTrakt) {
+  fun loadShowDetails(id: IdTrakt, context: Context) {
     viewModelScope.launch {
       try {
         uiState = ShowDetailsUiModel(showLoading = true)
@@ -54,7 +57,10 @@ class ShowDetailsViewModel @Inject constructor(
         launch {
           areSeasonsLoaded = false
           val seasons = loadSeasons(show)
-          if (followedState.isMyShows) episodesManager.invalidateEpisodes(show, seasons)
+          if (followedState.isMyShows) {
+            episodesManager.invalidateEpisodes(show, seasons)
+            announcementManager.refreshEpisodesAnnouncements(context)
+          }
           areSeasonsLoaded = true
         }
         launch { loadRelatedShows(show) }
@@ -136,7 +142,7 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun addFollowedShow() {
+  fun addFollowedShow(context: Context) {
     if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
       val seasons = seasonItems.map { it.season }
@@ -145,6 +151,8 @@ class ShowDetailsViewModel @Inject constructor(
 
       val followedState = FollowedState(isMyShows = true, isWatchLater = false, withAnimation = true)
       uiState = ShowDetailsUiModel(isFollowed = followedState)
+
+      announcementManager.refreshEpisodesAnnouncements(context)
     }
   }
 
@@ -158,7 +166,7 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun removeFromFollowed() {
+  fun removeFromFollowed(context: Context) {
     if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
       val isFollowed = interactor.isFollowed(show)
@@ -169,6 +177,8 @@ class ShowDetailsViewModel @Inject constructor(
 
       val followedState = FollowedState(isMyShows = false, isWatchLater = false, withAnimation = true)
       uiState = ShowDetailsUiModel(isFollowed = followedState)
+
+      announcementManager.refreshEpisodesAnnouncements(context)
     }
   }
 

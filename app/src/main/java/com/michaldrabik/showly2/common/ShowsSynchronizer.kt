@@ -18,7 +18,7 @@ import javax.inject.Inject
  * This class is responsible for fetching and syncing missing/updated episodes data for current watchlist items.
  */
 @AppScope
-class EpisodesSynchronizer @Inject constructor(
+class ShowsSynchronizer @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
   private val mappers: Mappers,
@@ -27,7 +27,8 @@ class EpisodesSynchronizer @Inject constructor(
 ) {
 
   companion object {
-    private const val TAG = "EpisodesSynchronizer"
+    private const val TAG = "ShowsSynchronizer"
+    private const val DELAY_MS = 250L
   }
 
   suspend fun synchronize() {
@@ -36,12 +37,11 @@ class EpisodesSynchronizer @Inject constructor(
     val showsToSync = showsRepository.myShows.loadAll()
       .filter { it.status !in arrayOf(ENDED, CANCELED) }
 
-    Log.i(TAG, "Shows to sync: ${showsToSync.size}.")
-
     if (showsToSync.isEmpty()) {
-      Log.i(TAG, "Nothing to sync.")
+      Log.i(TAG, "Nothing to process. Exiting...")
       return
     }
+    Log.i(TAG, "Shows to sync: ${showsToSync.size}.")
 
     val syncLog = database.episodesSyncLogDao().getAll()
     showsToSync.forEach { show ->
@@ -72,7 +72,7 @@ class EpisodesSynchronizer @Inject constructor(
       } catch (t: Throwable) {
         Log.e(TAG, "${show.title}(${show.ids.trakt}) episodes sync error. Skipping... \n$t")
       } finally {
-        delay(500)
+        delay(DELAY_MS)
       }
     }
   }

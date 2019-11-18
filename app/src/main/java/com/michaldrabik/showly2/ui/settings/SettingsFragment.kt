@@ -55,8 +55,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>() {
         }
 
       settingsShowsNotificationsSwitch
-        .setCheckedSilent(settings.showsNotificationsEnabled) { _, isChecked ->
-          viewModel.enableShowsNotifications(isChecked)
+        .setCheckedSilent(settings.episodesNotificationsEnabled) { _, isChecked ->
+          viewModel.enableShowsNotifications(isChecked, requireContext().applicationContext)
         }
     }
   }

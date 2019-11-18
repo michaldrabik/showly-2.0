@@ -13,23 +13,23 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-class EpisodesSynchronizerService : JobIntentService(), CoroutineScope {
+class ShowsSyncService : JobIntentService(), CoroutineScope {
 
   companion object {
-    const val ACTION_SYNC_SUCCESS = "ACTION_SYNC_SUCCESS"
+    const val ACTION_SHOWS_SYNC_FINISHED = "ACTION_SHOWS_SYNC_FINISHED"
 
-    private const val TAG = "EpisodesSyncService"
+    private const val TAG = "ShowsSyncService"
     private const val JOB_ID = 999
 
     fun initialize(context: Context) {
-      enqueueWork(context, EpisodesSynchronizerService::class.java, JOB_ID, Intent())
+      enqueueWork(context, ShowsSyncService::class.java, JOB_ID, Intent())
     }
   }
 
   override val coroutineContext = Job() + Dispatchers.Main
 
   @Inject
-  lateinit var synchronizer: EpisodesSynchronizer
+  lateinit var synchronizer: ShowsSynchronizer
 
   override fun onHandleWork(intent: Intent) {
     Log.i(TAG, "Sync service initialized")
@@ -45,7 +45,7 @@ class EpisodesSynchronizerService : JobIntentService(), CoroutineScope {
   }
 
   private fun notifySuccess() {
-    val i = Intent(ACTION_SYNC_SUCCESS)
+    val i = Intent(ACTION_SHOWS_SYNC_FINISHED)
     LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(i)
   }
 
