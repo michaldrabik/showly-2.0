@@ -94,7 +94,7 @@
   <LinearLayout
     android:id="@+id/settingsShowsNotifications"
     style="@style/Settings.ItemLayout"
-    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/settingsWhenToNotify"
     app:layout_constraintEnd_toStartOf="@id/settingsShowsNotificationsSwitch"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/settingsPushNotifications"
@@ -120,6 +120,39 @@
     app:layout_constraintBottom_toBottomOf="@id/settingsShowsNotifications"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="@id/settingsShowsNotifications"
+    />
+
+  <LinearLayout
+    android:id="@+id/settingsWhenToNotify"
+    style="@style/Settings.ItemLayout"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/settingsWhenToNotifyValue"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/settingsShowsNotifications"
+    >
+
+    <TextView
+      style="@style/Settings.Title"
+      android:text="@string/textSettingsShowsNotificationsWhenTitle"
+      />
+
+    <TextView
+      style="@style/Settings.Summary"
+      android:text="@string/textSettingsShowsNotificationsWhenSummary"
+      />
+
+  </LinearLayout>
+
+  <TextView
+    android:id="@+id/settingsWhenToNotifyValue"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:text="@string/textSettingsShowsNotificationsWhenJustBefore"
+    android:textColor="@color/colorAccent"
+    app:layout_constraintBottom_toBottomOf="@id/settingsWhenToNotify"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@id/settingsWhenToNotify"
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

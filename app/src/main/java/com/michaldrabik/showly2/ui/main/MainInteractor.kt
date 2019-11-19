@@ -7,6 +7,7 @@ import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_DEFAULT
 import com.michaldrabik.showly2.common.notifications.AnnouncementManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.fcm.NotificationChannel
+import com.michaldrabik.showly2.model.NotificationDelay.JUST_BEFORE
 import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
@@ -27,6 +28,7 @@ class MainInteractor @Inject constructor(
         isInitialRun = true,
         pushNotificationsEnabled = true,
         episodesNotificationsEnabled = true,
+        episodesNotificationsDelay = JUST_BEFORE,
         myShowsEndedSortBy = SortOrder.NAME,
         myShowsIncomingSortBy = SortOrder.NAME,
         myShowsRunningSortBy = SortOrder.NAME,

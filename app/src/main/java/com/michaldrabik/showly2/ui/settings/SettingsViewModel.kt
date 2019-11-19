@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.settings
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,9 +31,16 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  fun enableShowsNotifications(enable: Boolean, context: Context) {
+  fun enableEpisodesAnnouncements(enable: Boolean, context: Context) {
     viewModelScope.launch {
-      interactor.enableShowsNotifications(enable, context)
+      interactor.enableEpisodesAnnouncements(enable, context)
+      refreshSettings()
+    }
+  }
+
+  fun setWhenToNotify(delay: NotificationDelay, context: Context) {
+    viewModelScope.launch {
+      interactor.setWhenToNotify(delay, context)
       refreshSettings()
     }
   }

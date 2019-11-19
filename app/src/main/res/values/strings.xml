@@ -60,6 +60,14 @@
   <string name="textSettingsPushNotificationsSummary">Receive general information push notifications.</string>
   <string name="textSettingsShowsNotificationsTitle">Episodes Announcements</string>
   <string name="textSettingsShowsNotificationsSummary">Receive notifications about new episodes, seasons for shows you are following.</string>
+  <string name="textSettingsShowsNotificationsWhenTitle">When To Notify</string>
+  <string name="textSettingsShowsNotificationsWhenSummary">When would you like ro receive episodes announcements.</string>
+  <string name="textSettingsShowsNotificationsWhenJustBefore">When Available</string>
+  <string name="textSettingsShowsNotificationsWhen1Hour">1 Hour After</string>
+  <string name="textSettingsShowsNotificationsWhen3Hours">3 Hours After</string>
+  <string name="textSettingsShowsNotificationsWhen6Hours">6 Hours After</string>
+  <string name="textSettingsShowsNotificationsWhen12Hours">12 Hours After</string>
+  <string name="textSettingsShowsNotificationsWhenNextDay">1 Day After</string>
 
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>

@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_OPTIONS
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.showly2.utilities.extensions.onClick
@@ -38,11 +39,13 @@ class SettingsFragment : BaseFragment<SettingsViewModel>() {
 
   private fun render(uiModel: SettingsUiModel) {
     uiModel.settings?.let { settings ->
+      val applicationContext = requireContext().applicationContext
+
       settingsRecentShowsAmount.onClick {
         val options = MY_SHOWS_RECENTS_OPTIONS.map { it.toString() }.toTypedArray()
-        val default = settings.myShowsRecentsAmount
+        val default = options.indexOf(settings.myShowsRecentsAmount.toString())
         AlertDialog.Builder(requireContext())
-          .setSingleChoiceItems(options, options.indexOf(default.toString())) { dialog, index ->
+          .setSingleChoiceItems(options, default) { dialog, index ->
             viewModel.setRecentShowsAmount(options[index].toInt())
             dialog.dismiss()
           }
@@ -56,8 +59,23 @@ class SettingsFragment : BaseFragment<SettingsViewModel>() {
 
       settingsShowsNotificationsSwitch
         .setCheckedSilent(settings.episodesNotificationsEnabled) { _, isChecked ->
-          viewModel.enableShowsNotifications(isChecked, requireContext().applicationContext)
+          viewModel.enableEpisodesAnnouncements(isChecked, applicationContext)
         }
+
+      settingsWhenToNotifyValue.run {
+        setText(settings.episodesNotificationsDelay.stringRes)
+        onClick {
+          val options = NotificationDelay.values()
+          val default = options.indexOf(settings.episodesNotificationsDelay)
+          AlertDialog.Builder(requireContext())
+            .setSingleChoiceItems(options.map { getString(it.stringRes) }.toTypedArray(), default)
+            { dialog, index ->
+              viewModel.setWhenToNotify(options[index], applicationContext)
+              dialog.dismiss()
+            }
+            .show()
+        }
+      }
     }
   }
 

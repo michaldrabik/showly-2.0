@@ -17,6 +17,7 @@ import com.michaldrabik.showly2.fcm.NotificationChannel
 import com.michaldrabik.showly2.model.Image.Status.AVAILABLE
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.POSTER
+import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
@@ -49,8 +50,8 @@ class AnnouncementManager @Inject constructor(
 
     WorkManager.getInstance(context.applicationContext).cancelAllWorkByTag(ANNOUNCEMENT_WORK_TAG)
 
-    val settings = settingsRepository.load()
-    if (settings?.episodesNotificationsEnabled == false) {
+    val settings = settingsRepository.load()!!
+    if (!settings.episodesNotificationsEnabled) {
       Log.i(TAG, "Episodes announcements are disabled. Exiting...")
       return
     }
@@ -62,6 +63,7 @@ class AnnouncementManager @Inject constructor(
     }
 
     val now = nowUtcMillis()
+    val delay = settings.episodesNotificationsDelay
     myShows.forEach { show ->
       Log.i(TAG, "Processing ${show.title} (${show.idTrakt})")
       val episodes = database.episodesDao().getAllForShows(listOf(show.idTrakt))
@@ -70,7 +72,7 @@ class AnnouncementManager @Inject constructor(
         .minBy { it.firstAired!!.toMillis() }
         ?.let {
           Log.i(TAG, "Next episode for ${show.title} (${show.idTrakt}) found. Setting notification...")
-          scheduleAnnouncement(context.applicationContext, show, it)
+          scheduleAnnouncement(context.applicationContext, show, it, delay)
         }
     }
   }
@@ -78,7 +80,8 @@ class AnnouncementManager @Inject constructor(
   private suspend fun scheduleAnnouncement(
     context: Context,
     showDb: Show,
-    episodeDb: Episode
+    episodeDb: Episode,
+    delay: NotificationDelay
   ) {
     val show = mappers.show.fromDatabase(showDb)
 
@@ -104,16 +107,16 @@ class AnnouncementManager @Inject constructor(
     }
 
 //    val delay = TimeUnit.SECONDS.toMillis(20)
-    val delay = (episodeDb.firstAired!!.toMillis() - nowUtcMillis())
+    val delayed = (episodeDb.firstAired!!.toMillis() - nowUtcMillis()) + delay.delayMs
     val request = OneTimeWorkRequestBuilder<AnnouncementWorker>()
       .setInputData(data.build())
-      .setInitialDelay(delay, MILLISECONDS)
+      .setInitialDelay(delayed, MILLISECONDS)
       .addTag(ANNOUNCEMENT_WORK_TAG)
       .build()
 
     WorkManager.getInstance(context.applicationContext).enqueue(request)
 
-    val logTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(nowUtcMillis() + delay), ZoneId.of("UTC"))
+    val logTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(nowUtcMillis() + delayed), ZoneId.of("UTC"))
     Log.i(TAG, "Notification set for: ${logTime.toDisplayString()} UTC")
   }
 }
