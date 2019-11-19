@@ -139,9 +139,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
       showLoading?.let {
         discoverSearchView.isClickable = !it
         discoverSearchView.isEnabled = !it
-        if (discoverSwipeRefresh.isRefreshing != it) {
-          discoverSwipeRefresh.isRefreshing = it
-        }
+        discoverSwipeRefresh.isRefreshing = it
       }
       applyUiCache?.let {
         discoverSearchView.translationY = it.discoverSearchPosition

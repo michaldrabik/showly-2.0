@@ -38,7 +38,7 @@ class DiscoverViewModel @Inject constructor(
       return
     }
 
-    uiState = DiscoverUiModel(applyUiCache = uiCache)
+    uiState = DiscoverUiModel(applyUiCache = uiCache, showLoading = pullToRefresh)
 
     viewModelScope.launch {
       val progressJob = launch {
