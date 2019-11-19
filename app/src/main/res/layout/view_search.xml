@@ -61,7 +61,7 @@
 
       <ImageView
         android:id="@+id/searchSettingsIcon"
-        android:layout_width="20dp"
+        android:layout_width="22dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:tint="@color/colorSearchViewIcon"

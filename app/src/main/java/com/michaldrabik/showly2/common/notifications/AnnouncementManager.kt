@@ -2,7 +2,6 @@ package com.michaldrabik.showly2.common.notifications
 
 import android.content.Context
 import android.util.Log
-import androidx.core.app.NotificationManagerCompat
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -30,7 +29,6 @@ import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import java.util.concurrent.TimeUnit.MILLISECONDS
-import java.util.concurrent.TimeUnit.SECONDS
 import javax.inject.Inject
 
 @AppScope
@@ -50,7 +48,6 @@ class AnnouncementManager @Inject constructor(
     Log.i(TAG, "Refreshing announcements")
 
     WorkManager.getInstance(context.applicationContext).cancelAllWorkByTag(ANNOUNCEMENT_WORK_TAG)
-    NotificationManagerCompat.from(context.applicationContext).cancelAll()
 
     val settings = settingsRepository.load()
     if (settings?.episodesNotificationsEnabled == false) {
@@ -106,8 +103,8 @@ class AnnouncementManager @Inject constructor(
       }
     }
 
-    val delay = (episodeDb.firstAired!!.toMillis() - nowUtcMillis()) + SECONDS.toMillis(5)
-//    val delay = SECONDS.toMillis(15)
+//    val delay = TimeUnit.SECONDS.toMillis(20)
+    val delay = (episodeDb.firstAired!!.toMillis() - nowUtcMillis())
     val request = OneTimeWorkRequestBuilder<AnnouncementWorker>()
       .setInputData(data.build())
       .setInitialDelay(delay, MILLISECONDS)
