@@ -13,6 +13,7 @@ class TvdbImageConverter : TvdbDataConverter<TvdbImageJson, TvdbImage> {
       json.id ?: -1,
       json.fileName ?: "",
       json.thumbnail ?: "",
+      json.keyType ?: "",
       TvdbImageRating(
         json.ratingsInfo?.average ?: 0F,
         json.ratingsInfo?.count ?: 0

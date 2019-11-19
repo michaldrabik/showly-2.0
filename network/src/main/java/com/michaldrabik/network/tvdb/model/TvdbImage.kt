@@ -4,5 +4,6 @@ data class TvdbImage(
   val id: Long,
   val fileName: String,
   val thumbnail: String,
+  val keyType: String,
   val rating: TvdbImageRating
 )

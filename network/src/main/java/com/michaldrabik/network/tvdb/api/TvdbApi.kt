@@ -8,16 +8,13 @@ import com.michaldrabik.network.tvdb.model.TvdbImageRating
 
 class TvdbApi(private val service: TvdbService) {
 
-  private val allowedTypes = arrayOf("poster", "fanart")
-
   suspend fun authorize() = service.authorize(
     AuthorizationRequest(apiKey = Config.TVDB_API_KEY)
   )
 
-  suspend fun fetchShowImages(token: String, tvdbId: Long, type: String): List<TvdbImage> {
-    check(type in allowedTypes)
+  suspend fun fetchShowImages(token: String, tvdbId: Long): List<TvdbImage> {
     return try {
-      service.fetchShowImages("Bearer $token", tvdbId, type).data
+      service.fetchShowImages("Bearer $token", tvdbId).data
     } catch (t: Throwable) {
       emptyList()
     }
@@ -26,7 +23,7 @@ class TvdbApi(private val service: TvdbService) {
   suspend fun fetchEpisodeImage(token: String, tvdbId: Long): TvdbImage? {
     val result = service.fetchEpisodeImage("Bearer $token", tvdbId).data
     if (result.filename.isNullOrBlank()) return null
-    return TvdbImage(result.id ?: -1, result.filename, "", TvdbImageRating(0F, 0))
+    return TvdbImage(result.id ?: -1, result.filename, "", "", TvdbImageRating(0F, 0))
   }
 
   suspend fun fetchActors(token: String, tvdbId: Long): List<TvdbActor> {

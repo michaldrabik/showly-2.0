@@ -11,7 +11,6 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface TvdbService {
 
@@ -24,11 +23,10 @@ interface TvdbService {
     @Path("id") id: Long
   ): TvdbResult<TvdbActor>
 
-  @GET("/series/{id}/images/query")
+  @GET("/series/{id}/images/query?subKey=graphical")
   suspend fun fetchShowImages(
     @Header("Authorization") authorization: String,
-    @Path("id") id: Long,
-    @Query("keyType") type: String
+    @Path("id") id: Long
   ): TvdbResult<TvdbImage>
 
   @GET("/episodes/{id}")

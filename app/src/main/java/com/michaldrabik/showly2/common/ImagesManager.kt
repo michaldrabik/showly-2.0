@@ -11,6 +11,7 @@ import com.michaldrabik.showly2.model.ImageFamily.EPISODE
 import com.michaldrabik.showly2.model.ImageFamily.SHOW
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.FANART
+import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.storage.database.AppDatabase
@@ -48,9 +49,15 @@ class ImagesManager @Inject constructor(
     }
 
     userManager.checkAuthorization()
-    val images = cloud.tvdbApi.fetchShowImages(userManager.getTvdbToken(), tvdbId, type.key)
-    val remoteImage = images.maxBy { it.rating.count }
+    val images = cloud.tvdbApi.fetchShowImages(userManager.getTvdbToken(), tvdbId)
 
+    var typeImages = images.filter { it.keyType == type.key }
+    //If requested poster is unavailable try backing up to a fanart
+    if (typeImages.isEmpty() && type == POSTER) {
+      typeImages = images.filter { it.keyType == FANART.key }
+    }
+
+    val remoteImage = typeImages.maxBy { it.rating.count }
     val image = when (remoteImage) {
       null -> Image.createUnavailable(type)
       else -> Image(cachedImage.id, tvdbId, type, SHOW, remoteImage.fileName, remoteImage.thumbnail, AVAILABLE)
