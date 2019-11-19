@@ -14,14 +14,28 @@ abstract class NotificationActivity : AppCompatActivity() {
     if (extras == null) return
 
     if (extras.containsKey(FcmExtra.SHOW_ID.key)) {
-      val showId = extras.getString(FcmExtra.SHOW_ID.key)?.toLong() ?: -1
-      val bundle = Bundle().apply { putLong(ShowDetailsFragment.ARG_SHOW_ID, showId) }
-      navigationHost.findNavController().run {
-        bottomNavigationView.selectedItemId = R.id.menuWatchlist
-        navigate(R.id.actionWatchlistFragmentToShowDetailsFragment, bundle)
+      handleFcmShowPush(extras, action)
+    }
+  }
+
+  private fun handleFcmShowPush(extras: Bundle, action: () -> Unit) {
+    val showId = extras.getString(FcmExtra.SHOW_ID.key)?.toLong() ?: -1
+    val bundle = Bundle().apply { putLong(ShowDetailsFragment.ARG_SHOW_ID, showId) }
+    navigationHost.findNavController().run {
+      try {
+        val current = currentDestination?.id
+        when (current) {
+          R.id.showDetailsFragment -> navigate(R.id.actionShowDetailsFragmentToSelf, bundle)
+          else -> {
+            bottomNavigationView.selectedItemId = R.id.menuWatchlist
+            navigate(R.id.actionWatchlistFragmentToShowDetailsFragment, bundle)
+          }
+        }
+        extras.clear()
+        action()
+      } catch (e: Exception) {
+        //NOOP Simply leave app where it is in case of any failure
       }
-      extras.clear()
-      action()
     }
   }
 }
