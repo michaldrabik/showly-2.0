@@ -43,6 +43,7 @@ class AnnouncementManager @Inject constructor(
   companion object {
     private const val TAG = "AnnouncementManager"
     private const val ANNOUNCEMENT_WORK_TAG = "ANNOUNCEMENT_WORK_TAG"
+    private const val ANNOUNCEMENT_STATIC_DELAY = 300000 //5 min
   }
 
   suspend fun refreshEpisodesAnnouncements(context: Context) {
@@ -107,7 +108,7 @@ class AnnouncementManager @Inject constructor(
     }
 
 //    val delay = TimeUnit.SECONDS.toMillis(20)
-    val delayed = (episodeDb.firstAired!!.toMillis() - nowUtcMillis()) + delay.delayMs
+    val delayed = (episodeDb.firstAired!!.toMillis() - nowUtcMillis()) + delay.delayMs + ANNOUNCEMENT_STATIC_DELAY
     val request = OneTimeWorkRequestBuilder<AnnouncementWorker>()
       .setInputData(data.build())
       .setInitialDelay(delayed, MILLISECONDS)
