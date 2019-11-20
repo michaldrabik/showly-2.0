@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
+import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.ImagesManager
 import com.michaldrabik.showly2.common.notifications.AnnouncementWorker.Companion.DATA_CHANNEL
@@ -98,11 +98,11 @@ class AnnouncementManager @Inject constructor(
 
       val posterImage = imagesManager.findCachedImage(show, POSTER)
       if (posterImage.status == AVAILABLE) {
-        putString(DATA_IMAGE_URL, "${TVDB_IMAGE_BASE_URL}${posterImage.fileUrl}")
+        putString(DATA_IMAGE_URL, "${TVDB_IMAGE_BASE_BANNERS_URL}${posterImage.fileUrl}")
       } else {
         val fanartImage = imagesManager.findCachedImage(show, FANART)
         if (fanartImage.status == AVAILABLE) {
-          putString(DATA_IMAGE_URL, "${TVDB_IMAGE_BASE_URL}${fanartImage.fileUrl}")
+          putString(DATA_IMAGE_URL, "${TVDB_IMAGE_BASE_BANNERS_URL}${fanartImage.fileUrl}")
         }
       }
     }

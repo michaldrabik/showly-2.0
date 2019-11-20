@@ -124,7 +124,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       imageLoading?.let { episodeDetailsProgress.visibleIf(it) }
       image?.let {
         Glide.with(this@EpisodeDetailsBottomSheet)
-          .load("${Config.TVDB_IMAGE_BASE_URL}${it.fileUrl}")
+          .load("${Config.TVDB_IMAGE_BASE_BANNERS_URL}${it.fileUrl}")
           .transform(CenterCrop(), RoundedCorners(cornerRadius))
           .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
           .withSuccessListener { episodeDetailsProgress.gone() }

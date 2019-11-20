@@ -9,7 +9,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
-import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
+import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
@@ -43,11 +43,14 @@ class ActorView : FrameLayout {
       actorPlaceholder.visible()
       return
     }
+
     Glide.with(this)
-      .load("$TVDB_IMAGE_BASE_URL${actor.image}")
+      .load("$TVDB_IMAGE_BASE_BANNERS_URL${actor.image}")
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
-      .withFailListener { actorPlaceholder.visible() }
+      .withFailListener {
+        actorPlaceholder.visible()
+      }
       .into(actorImage)
   }
 

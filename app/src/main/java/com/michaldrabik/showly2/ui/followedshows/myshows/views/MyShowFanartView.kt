@@ -43,7 +43,7 @@ class MyShowFanartView : FrameLayout {
       return
     }
 
-    val url = "${Config.TVDB_IMAGE_BASE_URL}${image.fileUrl}"
+    val url = "${Config.TVDB_IMAGE_BASE_BANNERS_URL}${image.fileUrl}"
 
     Glide.with(this)
       .load(url)

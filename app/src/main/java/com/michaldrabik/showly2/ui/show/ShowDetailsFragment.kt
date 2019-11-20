@@ -19,7 +19,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
-import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_URL
+import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Actor
@@ -244,7 +244,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       return
     }
     Glide.with(this)
-      .load("$TVDB_IMAGE_BASE_URL${image.fileUrl}")
+      .load("$TVDB_IMAGE_BASE_BANNERS_URL${image.fileUrl}")
       .transform(CenterCrop())
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
       .withFailListener { showDetailsImageProgress.gone() }
