@@ -1,6 +1,9 @@
 package com.michaldrabik.showly2.ui.show
 
 import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
+import android.content.pm.ActivityInfo.*
+import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -44,6 +47,7 @@ import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.screenHeight
+import com.michaldrabik.showly2.utilities.extensions.screenWidth
 import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.showly2.utilities.extensions.toDisplayString
 import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
@@ -69,6 +73,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   private val relatedAdapter by lazy { RelatedShowAdapter() }
   private val seasonsAdapter by lazy { SeasonsAdapter() }
 
+  private val imageHeight by lazy { if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight() else screenWidth() }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
     super.onCreate(savedInstanceState)
@@ -79,6 +85,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    requireActivity().requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
     setupView()
     setupActorsList()
     setupRelatedList()
@@ -97,11 +104,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   }
 
   private fun setupView() {
-    showDetailsImageGuideline.setGuidelineBegin((screenHeight() * 0.33).toInt())
+    showDetailsImageGuideline.setGuidelineBegin((imageHeight * 0.33).toInt())
     showDetailsEpisodesView.itemClickListener = { episode, season, isWatched ->
       showEpisodeDetails(episode, season, isWatched, episode.hasAired(season))
     }
     showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
+    showDetailsImage.onClick { findNavController().navigate(R.id.actionShowDetailsFragmentToFanartGallery) }
   }
 
   private fun setupActorsList() {
@@ -241,13 +249,17 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   private fun renderImage(image: Image) {
     if (image.status == UNAVAILABLE) {
       showDetailsImageProgress.gone()
+      showDetailsImage.isClickable = false
       return
     }
     Glide.with(this)
       .load("$TVDB_IMAGE_BASE_BANNERS_URL${image.fileUrl}")
       .transform(CenterCrop())
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
-      .withFailListener { showDetailsImageProgress.gone() }
+      .withFailListener {
+        showDetailsImageProgress.gone()
+        showDetailsImage.isClickable = true
+      }
       .withSuccessListener { showDetailsImageProgress.gone() }
       .into(showDetailsImage)
   }

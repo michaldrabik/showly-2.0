@@ -21,6 +21,7 @@ import com.michaldrabik.showly2.ui.settings.SettingsInteractor
 import com.michaldrabik.showly2.ui.settings.SettingsViewModel
 import com.michaldrabik.showly2.ui.show.ShowDetailsInteractor
 import com.michaldrabik.showly2.ui.show.ShowDetailsViewModel
+import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryViewModel
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsViewModel
 import com.michaldrabik.showly2.ui.watchlist.WatchlistInteractor
@@ -75,6 +76,9 @@ class ViewModelFactory @Inject constructor(
 
     modelClass.isAssignableFrom(SettingsViewModel::class.java) ->
       SettingsViewModel(settingsInteractor) as T
+
+    modelClass.isAssignableFrom(FanartGalleryViewModel::class.java) ->
+      FanartGalleryViewModel() as T
 
     else -> throw IllegalStateException("Unknown ViewModel class")
   }

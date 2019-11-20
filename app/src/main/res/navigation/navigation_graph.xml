@@ -93,7 +93,22 @@
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToFanartGallery"
+      app:destination="@id/fanartGalleryFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:exitAnim="@anim/anim_fade_out"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
   </fragment>
+
+  <fragment
+    android:id="@+id/fanartGalleryFragment"
+    android:name="com.michaldrabik.showly2.ui.show.gallery.FanartGalleryFragment"
+    android:label="fragmentFanartGallery"
+    tools:layout="@layout/fragment_fanart_gallery"
+    />
 
   <fragment
     android:id="@+id/followedShowsFragment"

@@ -10,6 +10,7 @@ import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.showly2.ui.search.SearchFragment
 import com.michaldrabik.showly2.ui.settings.SettingsFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
+import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryFragment
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.ui.watchlist.WatchlistFragment
 import com.michaldrabik.storage.di.StorageMarker
@@ -25,6 +26,8 @@ interface AppComponent {
   fun inject(fragment: DiscoverFragment)
 
   fun inject(fragment: ShowDetailsFragment)
+
+  fun inject(fragment: FanartGalleryFragment)
 
   fun inject(fragment: EpisodeDetailsBottomSheet)
 

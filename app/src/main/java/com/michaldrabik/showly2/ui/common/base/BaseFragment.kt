@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.showly2.ui.ViewModelFactory
 import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.main.MainActivity
+import com.michaldrabik.showly2.utilities.extensions.screenHeight
+import com.michaldrabik.showly2.utilities.extensions.screenWidth
 import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
 import kotlinx.android.synthetic.main.activity_main.*
