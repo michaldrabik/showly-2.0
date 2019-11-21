@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2
+package com.michaldrabik.showly2.common
 
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.di.AppScope

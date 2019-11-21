@@ -1,7 +1,6 @@
 package com.michaldrabik.showly2.common
 
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.showly2.UserManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image

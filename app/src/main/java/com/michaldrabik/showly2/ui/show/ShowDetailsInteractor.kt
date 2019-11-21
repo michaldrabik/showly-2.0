@@ -3,8 +3,8 @@ package com.michaldrabik.showly2.ui.show
 import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.Config.ACTORS_CACHE_DURATION
-import com.michaldrabik.showly2.UserManager
 import com.michaldrabik.showly2.common.ImagesManager
+import com.michaldrabik.showly2.common.UserManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.model.Episode
