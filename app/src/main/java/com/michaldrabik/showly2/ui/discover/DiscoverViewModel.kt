@@ -1,6 +1,5 @@
 package com.michaldrabik.showly2.ui.discover
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.R
@@ -22,9 +21,6 @@ class DiscoverViewModel @Inject constructor(
   private val interactor: DiscoverInteractor,
   private val uiCache: UiCache
 ) : BaseViewModel<DiscoverUiModel>() {
-
-  private val _showsState = MutableLiveData<List<DiscoverListItem>>()
-  val showsState get() = _showsState
 
   private var lastPullToRefreshMs = 0L
 
@@ -66,24 +62,23 @@ class DiscoverViewModel @Inject constructor(
     followedShowsIds: List<Long>
   ) {
     val items = shows.mapIndexed { index, show ->
-      val itemType =
-        when (index) {
-          in (0..500 step 14) -> FANART_WIDE
-          in (5..500 step 14), in (9..500 step 14) -> FANART
-          else -> POSTER
-        }
+      val itemType = when (index) {
+        in (0..500 step 14) -> FANART_WIDE
+        in (5..500 step 14), in (9..500 step 14) -> FANART
+        else -> POSTER
+      }
       val image = interactor.findCachedImage(show, itemType)
       DiscoverListItem(show, image, isFollowed = show.ids.trakt.id in followedShowsIds)
     }
-    _showsState.value = items
+    uiState = DiscoverUiModel(shows = items)
   }
 
   fun loadMissingImage(item: DiscoverListItem, force: Boolean) {
 
     fun updateShowsItem(newItem: DiscoverListItem) {
-      val currentItems = _showsState.value?.toMutableList()
+      val currentItems = uiState?.shows?.toMutableList()
       currentItems?.findReplace(newItem) { it.isSameAs(newItem) }
-      _showsState.value = currentItems
+      uiState = DiscoverUiModel(shows = currentItems)
     }
 
     viewModelScope.launch {

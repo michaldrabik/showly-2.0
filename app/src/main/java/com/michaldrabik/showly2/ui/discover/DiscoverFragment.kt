@@ -50,7 +50,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
 
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-      showsState.observe(viewLifecycleOwner, Observer { render(it!!) })
       errorStream.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
       loadDiscoverShows()
     }
@@ -128,14 +127,13 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     )
   }
 
-  private fun render(items: List<DiscoverListItem>) {
-    adapter.setItems(items)
-    layoutManager.withSpanSizeLookup { pos -> adapter.getItems()[pos].image.type.spanSize }
-    discoverRecycler.fadeIn()
-  }
-
   private fun render(uiModel: DiscoverUiModel) {
     uiModel.run {
+      shows?.let {
+        adapter.setItems(it)
+        layoutManager.withSpanSizeLookup { pos -> adapter.getItems()[pos].image.type.spanSize }
+        discoverRecycler.fadeIn()
+      }
       showLoading?.let {
         discoverSearchView.isClickable = !it
         discoverSearchView.isEnabled = !it
