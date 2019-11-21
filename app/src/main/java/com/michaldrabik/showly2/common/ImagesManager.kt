@@ -60,7 +60,7 @@ class ImagesManager @Inject constructor(
     val remoteImage = typeImages.maxBy { it.rating.count }
     val image = when (remoteImage) {
       null -> Image.createUnavailable(type)
-      else -> Image(cachedImage.id, tvdbId, type, SHOW, remoteImage.fileName, remoteImage.thumbnail, AVAILABLE)
+      else -> Image(remoteImage.id, tvdbId, type, SHOW, remoteImage.fileName, remoteImage.thumbnail, AVAILABLE)
     }
 
     when (image.status) {
@@ -83,7 +83,7 @@ class ImagesManager @Inject constructor(
 
     val image = when (remoteImage) {
       null -> Image.createUnavailable(FANART)
-      else -> Image(cachedImage.id, tvdbId, FANART, EPISODE, remoteImage.fileName, remoteImage.thumbnail, AVAILABLE)
+      else -> Image(remoteImage.id, tvdbId, FANART, EPISODE, remoteImage.fileName, remoteImage.thumbnail, AVAILABLE)
     }
 
     when (image.status) {
@@ -92,6 +92,19 @@ class ImagesManager @Inject constructor(
     }
 
     return image
+  }
+
+  suspend fun loadRemoteImages(show: Show, type: ImageType): List<Image> {
+    val tvdbId = show.ids.tvdb.id
+
+    userManager.checkAuthorization()
+    val remoteImages = cloud.tvdbApi.fetchShowImages(userManager.getTvdbToken(), tvdbId)
+
+    return remoteImages
+      .filter { it.keyType == type.key }
+      .map {
+        Image(it.id, tvdbId, type, SHOW, it.fileName, it.thumbnail, AVAILABLE)
+      }
   }
 
   suspend fun checkAuthorization() = userManager.checkAuthorization()

@@ -13,6 +13,7 @@ object Config {
   const val SEARCH_RECENTS_AMOUNT = 5
   const val IMAGE_FADE_DURATION_MS = 200
   const val MY_SHOWS_RECENTS_DEFAULT = 6
+  const val FANART_GALLERY_IMAGES_LIMIT = 30
   val MY_SHOWS_RECENTS_OPTIONS = arrayOf(2, 4, 6, 8)
 
   val SHOW_DETAILS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(3) }

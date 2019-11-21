@@ -1,8 +1,7 @@
 package com.michaldrabik.showly2.ui.show
 
 import android.annotation.SuppressLint
-import android.content.pm.ActivityInfo
-import android.content.pm.ActivityInfo.*
+import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
 import android.view.View
@@ -36,6 +35,7 @@ import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.ADD
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_MY_SHOWS
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_WATCH_LATER
 import com.michaldrabik.showly2.ui.show.actors.ActorsAdapter
+import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryFragment
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.related.RelatedShowAdapter
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
@@ -109,7 +109,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       showEpisodeDetails(episode, season, isWatched, episode.hasAired(season))
     }
     showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
-    showDetailsImage.onClick { findNavController().navigate(R.id.actionShowDetailsFragmentToFanartGallery) }
+    showDetailsImage.onClick {
+      val bundle = Bundle().apply { putLong(FanartGalleryFragment.ARG_SHOW_ID, showId.id) }
+      findNavController().navigate(R.id.actionShowDetailsFragmentToFanartGallery, bundle)
+    }
   }
 
   private fun setupActorsList() {
@@ -250,6 +253,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     if (image.status == UNAVAILABLE) {
       showDetailsImageProgress.gone()
       showDetailsImage.isClickable = false
+      showDetailsImage.isEnabled = false
       return
     }
     Glide.with(this)
@@ -259,6 +263,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       .withFailListener {
         showDetailsImageProgress.gone()
         showDetailsImage.isClickable = true
+        showDetailsImage.isEnabled = true
       }
       .withSuccessListener { showDetailsImageProgress.gone() }
       .into(showDetailsImage)

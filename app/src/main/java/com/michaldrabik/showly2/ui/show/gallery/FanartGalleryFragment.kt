@@ -2,20 +2,31 @@ package com.michaldrabik.showly2.ui.show.gallery
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
+import com.michaldrabik.showly2.ui.show.gallery.recycler.FanartGalleryAdapter
+import com.michaldrabik.showly2.utilities.extensions.onClick
+import kotlinx.android.synthetic.main.fragment_fanart_gallery.*
 
 @SuppressLint("SetTextI18n", "DefaultLocale")
 class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>() {
 
+  companion object {
+    const val ARG_SHOW_ID = "ARG_SHOW_ID"
+  }
+
   override val layoutResId = R.layout.fragment_fanart_gallery
+
+  private val showId by lazy { IdTrakt(arguments?.getLong(ARG_SHOW_ID, -1) ?: -1) }
+  private val galleryAdapter by lazy { FanartGalleryAdapter() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
@@ -28,11 +39,10 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     requireActivity().requestedOrientation = SCREEN_ORIENTATION_LANDSCAPE
+    setupView()
     viewModel.run {
-      //      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-//      messageStream.observe(viewLifecycleOwner, Observer { showInfoSnackbar(it!!) })
-//      errorStream.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
-//      loadShowDetails(showId, requireContext().applicationContext)
+      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      loadImage(showId)
     }
   }
 
@@ -41,9 +51,22 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>() {
     handleBackPressed()
   }
 
-  override fun onDestroyView() {
-//    requireActivity().requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
-    super.onDestroyView()
+  private fun setupView() {
+    fanartGalleryBackArrow.onClick { requireActivity().onBackPressed() }
+    fanartGalleryPager.run {
+      adapter = galleryAdapter
+      offscreenPageLimit = 2
+      fanartGalleryPagerIndicator.setViewPager(this)
+      adapter?.registerAdapterDataObserver(fanartGalleryPagerIndicator.adapterDataObserver)
+    }
+  }
+
+  private fun render(uiModel: FanartGalleryUiModel) {
+    uiModel.run {
+      images?.let {
+        galleryAdapter.setItems(it)
+      }
+    }
   }
 
   private fun handleBackPressed() {
