@@ -22,7 +22,6 @@ class ImageMapper @Inject constructor() {
 
   fun toDatabase(image: Image): ImageDb =
     ImageDb(
-      id = image.id,
       idTvdb = image.idTvdb.id,
       type = image.type.key,
       family = image.family.key,

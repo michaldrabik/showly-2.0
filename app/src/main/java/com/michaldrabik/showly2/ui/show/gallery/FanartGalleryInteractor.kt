@@ -28,7 +28,7 @@ class FanartGalleryInteractor @Inject constructor(
 
     val show = showsRepository.detailsShow.load(id)
     val allImages = imagesManager.loadRemoteImages(show, ImageType.FANART)
-      .filter { it.id != initialImage.id }
+      .filter { it.fileUrl != initialImage.fileUrl }
       .take(FANART_GALLERY_IMAGES_LIMIT)
     images.addAll(allImages)
     return images

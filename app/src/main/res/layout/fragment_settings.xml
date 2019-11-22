@@ -148,7 +148,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/spaceNormal"
-    android:text="@string/textSettingsShowsNotificationsWhenJustBefore"
+    android:text="@string/textSettingsShowsNotificationsWhenAvailable"
     android:textColor="@color/colorAccent"
     app:layout_constraintBottom_toBottomOf="@id/settingsWhenToNotify"
     app:layout_constraintEnd_toEndOf="parent"

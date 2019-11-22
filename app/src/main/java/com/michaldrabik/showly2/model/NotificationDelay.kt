@@ -8,7 +8,7 @@ enum class NotificationDelay(
   @StringRes val stringRes: Int,
   val delayMs: Long
 ) {
-  JUST_BEFORE(R.string.textSettingsShowsNotificationsWhenJustBefore, 0),
+  WHEN_AVAILABLE(R.string.textSettingsShowsNotificationsWhenAvailable, 0),
   HOURS_1(R.string.textSettingsShowsNotificationsWhen1Hour, 3_600_000),
   HOURS_3(R.string.textSettingsShowsNotificationsWhen3Hours, 3_600_000 * 3),
   HOURS_6(R.string.textSettingsShowsNotificationsWhen6Hours, 3_600_000 * 6),

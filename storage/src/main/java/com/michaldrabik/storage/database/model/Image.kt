@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "shows_images")
 data class Image(
-  @PrimaryKey @ColumnInfo(name = "id") var id: Long,
+  @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
   @ColumnInfo(name = "id_tvdb", defaultValue = "-1") var idTvdb: Long,
   @ColumnInfo(name = "type", defaultValue = "") var type: String,
   @ColumnInfo(name = "family", defaultValue = "") var family: String,
