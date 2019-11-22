@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.di
 
 import com.michaldrabik.network.di.CloudMarker
 import com.michaldrabik.showly2.common.ShowsSyncService
+import com.michaldrabik.showly2.di.module.ViewModelsModule
 import com.michaldrabik.showly2.ui.discover.DiscoverFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsFragment
@@ -18,7 +19,8 @@ import dagger.Component
 
 @AppScope
 @Component(
-  dependencies = [CloudMarker::class, StorageMarker::class]
+  dependencies = [CloudMarker::class, StorageMarker::class],
+  modules = [ViewModelsModule::class]
 )
 interface AppComponent {
   fun inject(activity: MainActivity)

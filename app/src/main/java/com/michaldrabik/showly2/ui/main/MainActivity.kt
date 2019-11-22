@@ -14,8 +14,8 @@ import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.ShowsSyncService
+import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.ui.NotificationActivity
-import com.michaldrabik.showly2.ui.ViewModelFactory
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
@@ -32,7 +32,7 @@ class MainActivity : NotificationActivity() {
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
 
-  @Inject lateinit var viewModelFactory: ViewModelFactory
+  @Inject lateinit var viewModelFactory: DaggerViewModelFactory
   private lateinit var viewModel: MainViewModel
 
   override fun onCreate(savedInstanceState: Bundle?) {

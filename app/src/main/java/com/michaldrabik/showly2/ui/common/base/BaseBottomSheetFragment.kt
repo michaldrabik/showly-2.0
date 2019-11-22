@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.michaldrabik.showly2.ui.ViewModelFactory
+import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.ui.common.UiModel
 import javax.inject.Inject
 
 abstract class BaseBottomSheetFragment<T : BaseViewModel<out UiModel>> : BottomSheetDialogFragment() {
 
-  @Inject lateinit var viewModelFactory: ViewModelFactory
+  @Inject lateinit var viewModelFactory: DaggerViewModelFactory
   protected lateinit var viewModel: T
 
   protected abstract val layoutResId: Int

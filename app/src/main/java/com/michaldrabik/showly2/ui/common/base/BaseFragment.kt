@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.michaldrabik.showly2.ui.ViewModelFactory
+import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.main.MainActivity
-import com.michaldrabik.showly2.utilities.extensions.screenHeight
-import com.michaldrabik.showly2.utilities.extensions.screenWidth
 import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,7 +17,7 @@ import javax.inject.Inject
 
 abstract class BaseFragment<T : BaseViewModel<out UiModel>> : Fragment() {
 
-  @Inject lateinit var viewModelFactory: ViewModelFactory
+  @Inject lateinit var viewModelFactory: DaggerViewModelFactory
   protected lateinit var viewModel: T
 
   protected abstract val layoutResId: Int
