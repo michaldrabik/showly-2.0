@@ -8,6 +8,8 @@ import com.michaldrabik.showly2.utilities.extensions.replace
 
 class FanartGalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+  var onItemClickListener: (() -> Unit)? = null
+
   private val items = mutableListOf<Image>()
 
   fun setItems(items: List<Image>) {
@@ -16,7 +18,9 @@ class FanartGalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ViewHolderShow(FanartGalleryImageView(parent.context))
+    ViewHolderShow(FanartGalleryImageView(parent.context).apply {
+      onItemClickListener = this@FanartGalleryAdapter.onItemClickListener
+    })
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     (holder.itemView as FanartGalleryImageView).bind(items[position])

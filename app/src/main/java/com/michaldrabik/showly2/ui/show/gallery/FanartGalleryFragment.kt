@@ -13,6 +13,7 @@ import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.gallery.recycler.FanartGalleryAdapter
+import com.michaldrabik.showly2.utilities.extensions.nextPage
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.fragment_fanart_gallery.*
 
@@ -54,6 +55,7 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>() {
   private fun setupView() {
     fanartGalleryBackArrow.onClick { requireActivity().onBackPressed() }
     fanartGalleryPager.run {
+      galleryAdapter.onItemClickListener = { nextPage() }
       adapter = galleryAdapter
       offscreenPageLimit = 2
       fanartGalleryPagerIndicator.setViewPager(this)
