@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.discover
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.R
@@ -22,10 +23,12 @@ class DiscoverViewModel @Inject constructor(
   private val uiCache: UiCache
 ) : BaseViewModel<DiscoverUiModel>() {
 
+  private val _cacheStream = MutableLiveData<UiCache>()
+  val cacheStream get() = _cacheStream
+
   private var lastPullToRefreshMs = 0L
 
   fun loadDiscoverShows(
-    resetScroll: Boolean = false,
     skipCache: Boolean = false,
     pullToRefresh: Boolean = false
   ) {
@@ -34,7 +37,8 @@ class DiscoverViewModel @Inject constructor(
       return
     }
 
-    uiState = DiscoverUiModel(applyUiCache = uiCache, showLoading = pullToRefresh)
+    uiState = DiscoverUiModel(showLoading = pullToRefresh)
+    _cacheStream.value = uiCache
 
     viewModelScope.launch {
       val progressJob = launch {
@@ -46,7 +50,6 @@ class DiscoverViewModel @Inject constructor(
         val shows = interactor.loadDiscoverShows(skipCache)
         val myShowsIds = interactor.loadMyShowsIds()
         onShowsLoaded(shows, myShowsIds)
-        uiState = DiscoverUiModel(resetScroll = resetScroll)
         if (pullToRefresh) lastPullToRefreshMs = nowUtcMillis()
       } catch (t: Throwable) {
         onError()

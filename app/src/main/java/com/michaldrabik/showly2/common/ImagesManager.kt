@@ -41,14 +41,14 @@ class ImagesManager @Inject constructor(
   }
 
   suspend fun loadRemoteImage(show: Show, type: ImageType, force: Boolean = false): Image {
-    val tvdbId = show.ids.tvdb.id
+    val tvdbId = show.ids.tvdb
     val cachedImage = findCachedImage(show, type)
     if (cachedImage.status == AVAILABLE && !force) {
       return cachedImage
     }
 
     userManager.checkAuthorization()
-    val images = cloud.tvdbApi.fetchShowImages(userManager.getTvdbToken(), tvdbId)
+    val images = cloud.tvdbApi.fetchShowImages(userManager.getTvdbToken(), tvdbId.id)
 
     var typeImages = images.filter { it.keyType == type.key }
     //If requested poster is unavailable try backing up to a fanart
@@ -63,7 +63,7 @@ class ImagesManager @Inject constructor(
     }
 
     when (image.status) {
-      UNAVAILABLE -> database.imagesDao().deleteByShowId(tvdbId, image.type.key)
+      UNAVAILABLE -> database.imagesDao().deleteByShowId(tvdbId.id, image.type.key)
       else -> database.imagesDao().insertShowImage(mappers.image.toDatabase(image))
     }
 
@@ -71,14 +71,14 @@ class ImagesManager @Inject constructor(
   }
 
   suspend fun loadRemoteImage(episode: Episode, force: Boolean = false): Image {
-    val tvdbId = episode.ids.tvdb.id
+    val tvdbId = episode.ids.tvdb
     val cachedImage = findCachedImage(episode, FANART)
     if (cachedImage.status == AVAILABLE && !force) {
       return cachedImage
     }
 
     userManager.checkAuthorization()
-    val remoteImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getTvdbToken(), tvdbId)
+    val remoteImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getTvdbToken(), tvdbId.id)
 
     val image = when (remoteImage) {
       null -> Image.createUnavailable(FANART)
@@ -86,7 +86,7 @@ class ImagesManager @Inject constructor(
     }
 
     when (image.status) {
-      UNAVAILABLE -> database.imagesDao().deleteByEpisodeId(tvdbId, image.type.key)
+      UNAVAILABLE -> database.imagesDao().deleteByEpisodeId(tvdbId.id, image.type.key)
       else -> database.imagesDao().insertEpisodeImage(mappers.image.toDatabase(image))
     }
 
@@ -94,10 +94,10 @@ class ImagesManager @Inject constructor(
   }
 
   suspend fun loadRemoteImages(show: Show, type: ImageType): List<Image> {
-    val tvdbId = show.ids.tvdb.id
+    val tvdbId = show.ids.tvdb
 
     userManager.checkAuthorization()
-    val remoteImages = cloud.tvdbApi.fetchShowImages(userManager.getTvdbToken(), tvdbId)
+    val remoteImages = cloud.tvdbApi.fetchShowImages(userManager.getTvdbToken(), tvdbId.id)
 
     return remoteImages
       .filter { it.keyType == type.key }

@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.model.mappers
 
+import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Image
 import java.util.Locale.ROOT
 import javax.inject.Inject
@@ -10,7 +11,7 @@ class ImageMapper @Inject constructor() {
   fun fromDatabase(imageDb: ImageDb): Image {
     return Image(
       imageDb.id,
-      imageDb.idTvdb,
+      IdTvdb(imageDb.idTvdb),
       enumValueOf(imageDb.type.toUpperCase(ROOT)),
       enumValueOf(imageDb.family.toUpperCase(ROOT)),
       imageDb.fileUrl,
@@ -22,7 +23,7 @@ class ImageMapper @Inject constructor() {
   fun toDatabase(image: Image): ImageDb =
     ImageDb(
       id = image.id,
-      idTvdb = image.idTvdb,
+      idTvdb = image.idTvdb.id,
       type = image.type.key,
       family = image.family.key,
       fileUrl = image.fileUrl,

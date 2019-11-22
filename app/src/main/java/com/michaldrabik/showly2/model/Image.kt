@@ -4,7 +4,7 @@ import com.michaldrabik.showly2.model.ImageFamily.SHOW
 
 data class Image(
   val id: Long,
-  val idTvdb: Long,
+  val idTvdb: IdTvdb,
   val type: ImageType,
   val family: ImageFamily,
   val fileUrl: String,
@@ -25,9 +25,9 @@ data class Image(
 
   companion object {
     fun createUnknown(type: ImageType, family: ImageFamily = SHOW) =
-      Image(0, 0, type, family, "", "", Status.UNKNOWN)
+      Image(0, IdTvdb(0), type, family, "", "", Status.UNKNOWN)
 
     fun createUnavailable(type: ImageType, family: ImageFamily = SHOW) =
-      Image(0, 0, type, family, "", "", Status.UNAVAILABLE)
+      Image(0, IdTvdb(0), type, family, "", "", Status.UNAVAILABLE)
   }
 }

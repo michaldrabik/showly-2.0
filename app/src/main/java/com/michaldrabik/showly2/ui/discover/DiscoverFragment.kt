@@ -2,7 +2,6 @@ package com.michaldrabik.showly2.ui.discover
 
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.NavigationRes
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -10,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
@@ -50,6 +50,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
 
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      cacheStream.observe(viewLifecycleOwner, Observer { render(it!!) })
       errorStream.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
       loadDiscoverShows()
     }
@@ -94,7 +95,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     discoverSearchView.fadeOut()
   }
 
-  private fun navigateTo(@NavigationRes id: Int) {
+  private fun navigateTo(id: Int) {
     hideNavigation()
     saveUiPositions()
     discoverRecycler.fadeOut(duration = 200) {
@@ -139,10 +140,12 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
         discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
       }
-      applyUiCache?.let {
-        discoverSearchView.translationY = it.discoverSearchPosition
-      }
-      resetScroll?.let { if (it) discoverRecycler.scrollToPosition(0) }
+    }
+  }
+
+  private fun render(uiCache: UiCache) {
+    uiCache.let {
+      discoverSearchView.translationY = it.discoverSearchPosition
     }
   }
 
