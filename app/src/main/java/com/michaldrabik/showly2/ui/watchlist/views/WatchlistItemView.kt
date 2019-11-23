@@ -55,11 +55,11 @@ class WatchlistItemView : ShowView<WatchlistItem> {
     watchlistItemTitle.text = item.show.title
     val episodeTitle = if (item.episode.title.isBlank()) "TBA" else item.episode.title
     watchlistItemSubtitle.text = String.format(
-      "S.%02d E.%02d - %s",
+      "S.%02d E.%02d",
       item.episode.season,
-      item.episode.number,
-      episodeTitle
+      item.episode.number
     )
+    watchlistItemSubtitle2.text = episodeTitle
 
     bindProgress(item)
     bindNewBadge(item)
@@ -107,6 +107,7 @@ class WatchlistItemView : ShowView<WatchlistItem> {
   private fun clear() {
     watchlistItemTitle.text = ""
     watchlistItemSubtitle.text = ""
+    watchlistItemSubtitle2.text = ""
     watchlistItemProgressText.text = ""
     watchlistItemPlaceholder.gone()
     Glide.with(this).clear(watchlistItemImage)

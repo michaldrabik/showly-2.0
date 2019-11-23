@@ -6,5 +6,5 @@
   <corners
     android:radius="4dp"
     />
-  <solid android:color="@color/colorNewBadgeBackground" />
+  <solid android:color="@color/colorEpisodeBadgeBackground" />
 </shape>
