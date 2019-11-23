@@ -1,8 +1,10 @@
 package com.michaldrabik.showly2.common
 
 import com.michaldrabik.network.Cloud
+import com.michaldrabik.network.tvdb.model.TvdbImage
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Image.Status.AVAILABLE
 import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
@@ -24,6 +26,14 @@ class ImagesManager @Inject constructor(
   private val mappers: Mappers
 ) {
 
+  suspend fun findCachedImage(episode: Episode, type: ImageType): Image {
+    val cachedImage = database.imagesDao().getByEpisodeId(episode.ids.tvdb.id, type.key)
+    return when (cachedImage) {
+      null -> Image.createUnknown(type, EPISODE)
+      else -> mappers.image.fromDatabase(cachedImage).copy(type = type)
+    }
+  }
+
   suspend fun findCachedImage(show: Show, type: ImageType): Image {
     val cachedImage = database.imagesDao().getByShowId(show.ids.tvdb.id, type.key)
     return when (cachedImage) {
@@ -32,12 +42,27 @@ class ImagesManager @Inject constructor(
     }
   }
 
-  suspend fun findCachedImage(episode: Episode, type: ImageType): Image {
-    val cachedImage = database.imagesDao().getByEpisodeId(episode.ids.tvdb.id, type.key)
-    return when (cachedImage) {
-      null -> Image.createUnknown(type, EPISODE)
-      else -> mappers.image.fromDatabase(cachedImage).copy(type = type)
+  suspend fun loadRemoteImage(episode: Episode, force: Boolean = false): Image {
+    val tvdbId = episode.ids.tvdb
+    val cachedImage = findCachedImage(episode, FANART)
+    if (cachedImage.status == AVAILABLE && !force) {
+      return cachedImage
     }
+
+    userManager.checkAuthorization()
+    val remoteImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getTvdbToken(), tvdbId.id)
+
+    val image = when (remoteImage) {
+      null -> Image.createUnavailable(FANART)
+      else -> Image(remoteImage.id, tvdbId, FANART, EPISODE, remoteImage.fileName, remoteImage.thumbnail, AVAILABLE)
+    }
+
+    when (image.status) {
+      UNAVAILABLE -> database.imagesDao().deleteByEpisodeId(tvdbId.id, image.type.key)
+      else -> database.imagesDao().insertEpisodeImage(mappers.image.toDatabase(image))
+    }
+
+    return image
   }
 
   suspend fun loadRemoteImage(show: Show, type: ImageType, force: Boolean = false): Image {
@@ -64,33 +89,28 @@ class ImagesManager @Inject constructor(
 
     when (image.status) {
       UNAVAILABLE -> database.imagesDao().deleteByShowId(tvdbId.id, image.type.key)
-      else -> database.imagesDao().insertShowImage(mappers.image.toDatabase(image))
+      else -> {
+        database.imagesDao().insertShowImage(mappers.image.toDatabase(image))
+        storeExtraImage(tvdbId, images, type)
+      }
     }
 
     return image
   }
 
-  suspend fun loadRemoteImage(episode: Episode, force: Boolean = false): Image {
-    val tvdbId = episode.ids.tvdb
-    val cachedImage = findCachedImage(episode, FANART)
-    if (cachedImage.status == AVAILABLE && !force) {
-      return cachedImage
-    }
-
-    userManager.checkAuthorization()
-    val remoteImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getTvdbToken(), tvdbId.id)
-
-    val image = when (remoteImage) {
-      null -> Image.createUnavailable(FANART)
-      else -> Image(remoteImage.id, tvdbId, FANART, EPISODE, remoteImage.fileName, remoteImage.thumbnail, AVAILABLE)
-    }
-
-    when (image.status) {
-      UNAVAILABLE -> database.imagesDao().deleteByEpisodeId(tvdbId.id, image.type.key)
-      else -> database.imagesDao().insertEpisodeImage(mappers.image.toDatabase(image))
-    }
-
-    return image
+  private suspend fun storeExtraImage(
+    id: IdTvdb,
+    images: List<TvdbImage>,
+    targetType: ImageType
+  ) {
+    val extraType = if (targetType == POSTER) FANART else POSTER
+    images
+      .filter { it.keyType == extraType.key }
+      .maxBy { it.rating.count }
+      ?.let {
+        val extraImage = Image(it.id, id, extraType, SHOW, it.fileName, it.thumbnail, AVAILABLE)
+        database.imagesDao().insertShowImage(mappers.image.toDatabase(extraImage))
+      }
   }
 
   suspend fun loadRemoteImages(show: Show, type: ImageType): List<Image> {
