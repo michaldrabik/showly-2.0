@@ -1,8 +1,11 @@
 package com.michaldrabik.showly2.ui.show
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -26,10 +29,12 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.showly2.model.IdImdb
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
 import com.michaldrabik.showly2.model.Season
+import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.ADD
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_MY_SHOWS
@@ -224,9 +229,26 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
           "${show.network} $year | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
         showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
 
-        showDetailsAddButton.onAddMyShowsClickListener = { viewModel.addFollowedShow(requireContext().applicationContext) }
-        showDetailsAddButton.onAddWatchLaterClickListener = { viewModel.addWatchLaterShow() }
-        showDetailsAddButton.onRemoveClickListener = { viewModel.removeFromFollowed(requireContext().applicationContext) }
+        showDetailsShareIcon.run {
+          visibleIf(show.ids.imdb.id.isNotBlank())
+          onClick { openShareSheet(show) }
+        }
+
+        showDetailsTrailerButton.run {
+          visibleIf(show.trailer.isNotBlank())
+          onClick { openTrailerLink(show.trailer) }
+        }
+
+        showDetailsImdbButton.run {
+          visibleIf(show.ids.imdb.id.isNotBlank())
+          onClick { openIMDbLink(show.ids.imdb) }
+        }
+
+        showDetailsAddButton.run {
+          onAddMyShowsClickListener = { viewModel.addFollowedShow(requireContext().applicationContext) }
+          onAddWatchLaterClickListener = { viewModel.addWatchLaterShow() }
+          onRemoveClickListener = { viewModel.removeFromFollowed(requireContext().applicationContext) }
+        }
       }
       showLoading?.let {
         if (!showDetailsEpisodesView.isVisible) {
@@ -308,7 +330,35 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     showDetailsRelatedProgress.gone()
   }
 
-  override fun getSnackbarHost(): ViewGroup = showDetailsRoot
+  private fun openTrailerLink(url: String) {
+    Intent(Intent.ACTION_VIEW).apply {
+      data = Uri.parse(url)
+      startActivity(this)
+    }
+  }
+
+  private fun openIMDbLink(id: IdImdb) {
+    val i = Intent(Intent.ACTION_VIEW)
+    i.data = Uri.parse("imdb:///title/${id.id}")
+    try {
+      startActivity(i)
+    } catch (e: ActivityNotFoundException) {
+      //IMDb App not installed. Start in web browser
+      i.data = Uri.parse("http://www.imdb.com/title/${id.id}")
+      startActivity(i)
+    }
+  }
+
+  private fun openShareSheet(show: Show) {
+    val intent = Intent().apply {
+      action = Intent.ACTION_SEND
+      putExtra(Intent.EXTRA_TEXT, "Hey! Check out ${show.title}:\nhttp://www.imdb.com/title/${show.ids.imdb.id}")
+      type = "text/plain"
+    }
+
+    val shareIntent = Intent.createChooser(intent, "Share ${show.title}")
+    startActivity(shareIntent)
+  }
 
   private fun handleBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
@@ -322,4 +372,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       findNavController().popBackStack()
     }
   }
+
+  override fun getSnackbarHost(): ViewGroup = showDetailsRoot
 }

@@ -311,14 +311,76 @@
         android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginTop="@dimen/spaceTiny"
         android:layout_marginEnd="@dimen/spaceNormal"
-        android:layout_marginBottom="@dimen/spaceMedium"
+        android:layout_marginBottom="@dimen/spaceSmall"
         android:background="@color/colorSeparatorGray"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedLabel"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsImdbButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsSeasonsRecycler"
-        app:layout_goneMarginBottom="@dimen/spaceBig"
+        app:layout_goneMarginBottom="@dimen/spaceMedium"
         app:layout_goneMarginTop="@dimen/spaceBig"
+        />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/showDetailsTrailerButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceSmall"
+        android:includeFontPadding="false"
+        android:text="@string/textTrailer"
+        android:textColor="@color/colorWhite"
+        android:visibility="gone"
+        app:icon="@drawable/ic_play"
+        app:iconGravity="textStart"
+        app:iconTint="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@id/showDetailsImdbButton"
+        app:layout_constraintEnd_toStartOf="@id/showDetailsImdbButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/showDetailsImdbButton"
+        app:layout_goneMarginEnd="@dimen/spaceNormal"
+        app:rippleColor="@color/colorWhite"
+        app:strokeColor="@color/colorWhite"
+        />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/showDetailsImdbButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceSmall"
+        android:layout_marginEnd="@dimen/spaceSmall"
+        android:includeFontPadding="false"
+        android:text="@string/textImdb"
+        android:textColor="@color/colorWhite"
+        android:visibility="gone"
+        app:icon="@drawable/ic_link"
+        app:iconGravity="textStart"
+        app:iconTint="@color/colorWhite"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedLabel"
+        app:layout_constraintEnd_toStartOf="@id/showDetailsShareIcon"
+        app:layout_constraintStart_toEndOf="@id/showDetailsTrailerButton"
+        app:layout_constraintTop_toBottomOf="@id/separator3"
+        app:layout_goneMarginEnd="@dimen/spaceNormal"
+        app:layout_goneMarginStart="@dimen/spaceNormal"
+        app:layout_goneMarginTop="@dimen/spaceBig"
+        app:rippleColor="@color/colorWhite"
+        app:strokeColor="@color/colorWhite"
+        />
+
+      <ImageView
+        android:id="@+id/showDetailsShareIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/spaceSmall"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/showDetailsImdbButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/showDetailsImdbButton"
+        app:layout_constraintTop_toTopOf="@id/showDetailsImdbButton"
+        app:srcCompat="@drawable/ic_share"
         />
 
       <TextView
@@ -326,6 +388,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceSmall"
         android:text="@string/textYouMayAlsoLike"
         android:textColor="@color/colorTextPrimary"
         android:textSize="16sp"
@@ -333,7 +396,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedRecycler"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator3"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsImdbButton"
         tools:visibility="gone"
         />
 
@@ -362,7 +425,7 @@
         android:indeterminateTint="@color/colorProgressGray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator3"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsImdbButton"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
