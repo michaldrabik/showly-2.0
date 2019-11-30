@@ -1,6 +1,7 @@
 package com.michaldrabik.showly2.ui.settings
 
 import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
@@ -45,7 +46,23 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
+  fun authorizeTrakt(authData: Uri?) {
+    if (authData == null) return
+
+    viewModelScope.launch {
+      interactor.authorizeTrakt(authData)
+      refreshSettings()
+    }
+  }
+
+  fun logoutTrakt() {
+//TODO
+  }
+
   private suspend fun refreshSettings() {
-    uiState = SettingsUiModel(interactor.getSettings())
+    uiState = SettingsUiModel(
+      settings = interactor.getSettings(),
+      isSignedInTrakt = interactor.isTraktAuthorized()
+    )
   }
 }

@@ -22,7 +22,7 @@ import javax.inject.Inject
 class ImagesManager @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
-  private val userManager: UserManager,
+  private val userManager: UserTvdbManager,
   private val mappers: Mappers
 ) {
 
@@ -50,7 +50,7 @@ class ImagesManager @Inject constructor(
     }
 
     userManager.checkAuthorization()
-    val remoteImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getTvdbToken(), tvdbId.id)
+    val remoteImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getToken(), tvdbId.id)
 
     val image = when (remoteImage) {
       null -> Image.createUnavailable(FANART)
@@ -73,7 +73,7 @@ class ImagesManager @Inject constructor(
     }
 
     userManager.checkAuthorization()
-    val images = cloud.tvdbApi.fetchShowImages(userManager.getTvdbToken(), tvdbId.id)
+    val images = cloud.tvdbApi.fetchShowImages(userManager.getToken(), tvdbId.id)
 
     var typeImages = images.filter { it.keyType == type.key }
     //If requested poster is unavailable try backing up to a fanart
@@ -117,7 +117,7 @@ class ImagesManager @Inject constructor(
     val tvdbId = show.ids.tvdb
 
     userManager.checkAuthorization()
-    val remoteImages = cloud.tvdbApi.fetchShowImages(userManager.getTvdbToken(), tvdbId.id)
+    val remoteImages = cloud.tvdbApi.fetchShowImages(userManager.getToken(), tvdbId.id)
 
     return remoteImages
       .filter { it.keyType == type.key }
