@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.settings
 import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import kotlinx.coroutines.launch
@@ -51,12 +52,16 @@ class SettingsViewModel @Inject constructor(
 
     viewModelScope.launch {
       interactor.authorizeTrakt(authData)
+      _messageStream.value = R.string.textTraktLoginSuccess
       refreshSettings()
     }
   }
 
   fun logoutTrakt() {
-//TODO
+    viewModelScope.launch {
+      interactor.logoutTrakt()
+      refreshSettings()
+    }
   }
 
   private suspend fun refreshSettings() {

@@ -2,12 +2,18 @@ package com.michaldrabik.network.trakt.api
 
 import com.michaldrabik.network.Config
 import com.michaldrabik.network.trakt.model.Episode
+import com.michaldrabik.network.trakt.model.OAuthResponse
 import com.michaldrabik.network.trakt.model.SearchResult
 import com.michaldrabik.network.trakt.model.Season
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.network.trakt.model.ShowResult
+import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
+import com.michaldrabik.network.trakt.model.request.OAuthRequest
+import com.michaldrabik.network.trakt.model.request.OAuthRevokeRequest
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -33,4 +39,13 @@ interface TraktService {
 
   @GET("shows/{traktId}/seasons?extended=full,episodes")
   suspend fun fetchSeasons(@Path("traktId") traktId: Long): List<Season>
+
+  @POST("oauth/token")
+  suspend fun fetchOAuthToken(@Body request: OAuthRequest): OAuthResponse
+
+  @POST("oauth/token")
+  suspend fun refreshOAuthToken(@Body request: OAuthRefreshRequest): OAuthResponse
+
+  @POST("oauth/revoke")
+  suspend fun revokeOAuthToken(@Body request: OAuthRevokeRequest): Response<Any>
 }

@@ -8,5 +8,8 @@ import androidx.room.PrimaryKey
 data class User(
   @PrimaryKey @ColumnInfo(name = "id") var id: Long = 1,
   @ColumnInfo(name = "tvdb_token", defaultValue = "") var tvdbToken: String,
-  @ColumnInfo(name = "tvdb_token_timestamp", defaultValue = "0") var tvdbTokenTimestamp: Long
+  @ColumnInfo(name = "tvdb_token_timestamp", defaultValue = "0") var tvdbTokenTimestamp: Long,
+  @ColumnInfo(name = "trakt_token", defaultValue = "") var traktToken: String,
+  @ColumnInfo(name = "trakt_refresh_token", defaultValue = "") var traktRefreshToken: String,
+  @ColumnInfo(name = "trakt_token_timestamp", defaultValue = "0") var traktTokenTimestamp: Long
 )

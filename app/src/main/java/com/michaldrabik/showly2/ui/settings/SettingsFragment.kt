@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
@@ -125,4 +126,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
       findNavController().popBackStack()
     }
   }
+
+  override fun getSnackbarHost(): ViewGroup = settingsRoot
 }

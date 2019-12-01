@@ -1,6 +1,13 @@
 package com.michaldrabik.network.trakt.api
 
+import com.michaldrabik.network.Config.TRAKT_CLIENT_ID
+import com.michaldrabik.network.Config.TRAKT_CLIENT_SECRET
+import com.michaldrabik.network.Config.TRAKT_REDIRECT_URL
 import com.michaldrabik.network.trakt.model.Episode
+import com.michaldrabik.network.trakt.model.OAuthResponse
+import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
+import com.michaldrabik.network.trakt.model.request.OAuthRequest
+import com.michaldrabik.network.trakt.model.request.OAuthRevokeRequest
 
 class TraktApi(private val service: TraktService) {
 
@@ -28,4 +35,33 @@ class TraktApi(private val service: TraktService) {
     service.fetchSeasons(traktId)
       .filter { it.number != 0 } //Filtering out "special" seasons
       .sortedByDescending { it.number }
+
+  suspend fun fetchAuthTokens(code: String): OAuthResponse {
+    val request = OAuthRequest(
+      code,
+      TRAKT_CLIENT_ID,
+      TRAKT_CLIENT_SECRET,
+      TRAKT_REDIRECT_URL
+    )
+    return service.fetchOAuthToken(request)
+  }
+
+  suspend fun refreshAuthTokens(refreshToken: String): OAuthResponse {
+    val request = OAuthRefreshRequest(
+      refreshToken,
+      TRAKT_CLIENT_ID,
+      TRAKT_CLIENT_SECRET,
+      TRAKT_REDIRECT_URL
+    )
+    return service.refreshOAuthToken(request)
+  }
+
+  suspend fun revokeAuthTokens(token: String) {
+    val request = OAuthRevokeRequest(
+      token,
+      TRAKT_CLIENT_ID,
+      TRAKT_CLIENT_SECRET
+    )
+    service.revokeOAuthToken(request)
+  }
 }

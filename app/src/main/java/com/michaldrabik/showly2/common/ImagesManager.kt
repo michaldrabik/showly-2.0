@@ -15,6 +15,7 @@ import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
+import com.michaldrabik.showly2.repository.UserTvdbManager
 import com.michaldrabik.storage.database.AppDatabase
 import javax.inject.Inject
 

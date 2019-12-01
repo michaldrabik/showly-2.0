@@ -1,5 +1,6 @@
-package com.michaldrabik.showly2.common
+package com.michaldrabik.showly2.repository
 
+import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
@@ -36,7 +37,21 @@ class UserTvdbManager @Inject constructor(
 
   private suspend fun saveToken(token: String) {
     val timestamp = nowUtcMillis()
-    database.userDao().upsert(User(tvdbToken = token, tvdbTokenTimestamp = timestamp))
+    database.withTransaction {
+      val user = database.userDao().get()
+      database.userDao().upsert(
+        user?.copy(
+          tvdbToken = token,
+          tvdbTokenTimestamp = timestamp
+        ) ?: User(
+          tvdbToken = token,
+          tvdbTokenTimestamp = timestamp,
+          traktToken = "",
+          traktRefreshToken = "",
+          traktTokenTimestamp = 0
+        )
+      )
+    }
     tvdbToken = token
     tvdbTokenTimestamp = timestamp
   }
