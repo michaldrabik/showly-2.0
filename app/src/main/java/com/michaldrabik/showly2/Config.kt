@@ -17,7 +17,7 @@ object Config {
   val MY_SHOWS_RECENTS_OPTIONS = arrayOf(2, 4, 6, 8)
 
   val SHOW_DETAILS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(3) }
-  val DISCOVER_SHOWS_CACHE_DURATION by lazy { TimeUnit.HOURS.toMillis(6) }
+  val DISCOVER_SHOWS_CACHE_DURATION by lazy { TimeUnit.HOURS.toMillis(10) }
   val ACTORS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(7) }
   val RELATED_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(7) }
   val NEW_BADGE_DURATION by lazy { TimeUnit.HOURS.toMillis(30) }
