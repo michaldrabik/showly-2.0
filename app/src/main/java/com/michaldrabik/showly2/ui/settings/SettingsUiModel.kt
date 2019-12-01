@@ -4,11 +4,13 @@ import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.ui.common.UiModel
 
 data class SettingsUiModel(
-  val settings: Settings? = null
+  val settings: Settings? = null,
+  val isSignedInTrakt: Boolean? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
     (newModel as SettingsUiModel).copy(
-      settings = newModel.settings ?: settings
+      settings = newModel.settings ?: settings,
+      isSignedInTrakt = newModel.isSignedInTrakt ?: isSignedInTrakt
     )
 }

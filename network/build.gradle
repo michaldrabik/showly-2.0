@@ -21,6 +21,7 @@ android {
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
     buildConfigField("String", "TRAKT_CLIENT_ID", properties.getProperty("traktClientId"))
+    buildConfigField("String", "TRAKT_CLIENT_SECRET", properties.getProperty("traktClientSecret"))
     buildConfigField("String", "TVDB_CLIENT_ID", properties.getProperty("tvdbClientId"))
     buildConfigField("String", "TVDB_API_KEY", properties.getProperty("tvdbApiKey"))
     buildConfigField("String", "TVDB_USERNAME", properties.getProperty("tvdbUsername"))

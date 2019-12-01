@@ -1,5 +1,6 @@
-package com.michaldrabik.showly2.common
+package com.michaldrabik.showly2.repository
 
+import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
@@ -8,7 +9,7 @@ import com.michaldrabik.storage.database.model.User
 import javax.inject.Inject
 
 @AppScope
-class UserManager @Inject constructor(
+class UserTvdbManager @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase
 ) {
@@ -21,27 +22,41 @@ class UserManager @Inject constructor(
   private var tvdbTokenTimestamp = 0L
 
   suspend fun checkAuthorization() {
-    if (!isTvdbAuthorized()) {
+    if (!isAuthorized()) {
       val token = cloud.tvdbApi.authorize()
-      saveTvdbToken(token.token)
+      saveToken(token.token)
     }
   }
 
-  suspend fun getTvdbToken(): String {
+  suspend fun getToken(): String {
     if (tvdbToken.isNullOrEmpty()) {
       tvdbToken = database.userDao().get()?.tvdbToken
     }
     return tvdbToken!!
   }
 
-  private suspend fun saveTvdbToken(token: String) {
+  private suspend fun saveToken(token: String) {
     val timestamp = nowUtcMillis()
-    database.userDao().upsert(User(tvdbToken = token, tvdbTokenTimestamp = timestamp))
+    database.withTransaction {
+      val user = database.userDao().get()
+      database.userDao().upsert(
+        user?.copy(
+          tvdbToken = token,
+          tvdbTokenTimestamp = timestamp
+        ) ?: User(
+          tvdbToken = token,
+          tvdbTokenTimestamp = timestamp,
+          traktToken = "",
+          traktRefreshToken = "",
+          traktTokenTimestamp = 0
+        )
+      )
+    }
     tvdbToken = token
     tvdbTokenTimestamp = timestamp
   }
 
-  private suspend fun isTvdbAuthorized(): Boolean {
+  private suspend fun isAuthorized(): Boolean {
     if (tvdbToken == null) {
       val user = database.userDao().get()
       user?.let {

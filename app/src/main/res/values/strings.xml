@@ -50,9 +50,14 @@
   <string name="textSeeLaterEmpty">Your see later list is currently empty.\nVisit Discover tab to add shows you may want to see in the future.</string>
   <string name="textNewEpisodeAvailable">New episode is available now!</string>
   <string name="textNewSeasonAvailable">New season is available now!</string>
+  <string name="textTraktLoginSuccess">You\'ve been successfully authorized.</string>
+  <string name="textTraktLogoutSuccess">You\'ve been signed out.</string>
 
   <string name="textSettings">Settings</string>
-
+  <string name="textSettingsTrakt">Trakt.tv</string>
+  <string name="textSettingsTraktAuthorizeTitle">Trakt.tv Authorization</string>
+  <string name="textSettingsTraktAuthorizeSummarySignIn">Click to sign in into your Trakt.tv account.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOut">Signed in. Click to log out.</string>
   <string name="textSettingsGeneral">General &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Recently Added Amount</string>
   <string name="textSettingsRecentShowsSummary">Number of recent shows to display in \'My Shows\' screen.</string>

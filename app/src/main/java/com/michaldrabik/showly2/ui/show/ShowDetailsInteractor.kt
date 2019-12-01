@@ -4,7 +4,7 @@ import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.Config.ACTORS_CACHE_DURATION
 import com.michaldrabik.showly2.common.ImagesManager
-import com.michaldrabik.showly2.common.UserManager
+import com.michaldrabik.showly2.repository.UserTvdbManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.model.Episode
@@ -25,7 +25,7 @@ import com.michaldrabik.storage.database.model.Season as SeasonDb
 class ShowDetailsInteractor @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
-  private val userManager: UserManager,
+  private val userTvdbManager: UserTvdbManager,
   private val imagesManager: ImagesManager,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository
@@ -50,8 +50,8 @@ class ShowDetailsInteractor @Inject constructor(
         .map { mappers.actor.fromDatabase(it) }
     }
 
-    userManager.checkAuthorization()
-    val token = userManager.getTvdbToken()
+    userTvdbManager.checkAuthorization()
+    val token = userTvdbManager.getToken()
     val remoteActors = cloud.tvdbApi.fetchActors(token, show.ids.tvdb.id)
       .sortedWith(compareBy({ it.image.isBlank() }, { it.sortOrder }))
       .take(20)
