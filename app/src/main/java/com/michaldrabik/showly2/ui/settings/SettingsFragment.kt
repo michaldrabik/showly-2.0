@@ -21,6 +21,7 @@ import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.setCheckedSilent
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeListener {
@@ -57,6 +58,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
     uiModel.run {
       settings?.let { renderSettings(it) }
       isSignedInTrakt?.let { isSignedIn ->
+        settingsTraktAuthorizeIcon.visibleIf(isSignedIn)
         settingsTraktAuthorize.onClick {
           if (isSignedIn) viewModel.logoutTrakt()
           else openTraktWebAuthorization()

@@ -60,6 +60,7 @@ class SettingsViewModel @Inject constructor(
   fun logoutTrakt() {
     viewModelScope.launch {
       interactor.logoutTrakt()
+      _messageStream.value = R.string.textTraktLogoutSuccess
       refreshSettings()
     }
   }
