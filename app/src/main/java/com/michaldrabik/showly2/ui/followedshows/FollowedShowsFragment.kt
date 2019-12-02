@@ -128,7 +128,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
     hideNavigation(false)
   }
 
-  private fun exitSearch() {
+  private fun exitSearch(showNavigation: Boolean = true) {
     followedShowsSearchView.isSearching = false
     searchViewText.visible()
     searchViewInput.run {
@@ -138,7 +138,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
       clearFocus()
     }
     searchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
-    showNavigation()
+    if (showNavigation) showNavigation()
   }
 
   private fun render(uiModel: FollowedShowsUiModel) {
@@ -206,6 +206,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
   fun openShowDetails(show: Show) {
     hideNavigation()
     followedShowsRoot.fadeOut {
+      exitSearch(false)
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.ids.trakt.id) }
       findNavController().navigate(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
     }
