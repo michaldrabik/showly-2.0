@@ -15,7 +15,7 @@ class UserDaoTest : BaseDaoTest() {
   @Test
   fun shouldInsertAndSaveData() {
     runBlocking {
-      val testUser = User(1, "tvdbToken", 999)
+      val testUser = User(1, "tvdbToken", 999, "test", "test", 999)
       database.userDao().upsert(testUser)
       val result = database.userDao().get()
       assertThat(result).isEqualTo(testUser)
@@ -25,7 +25,7 @@ class UserDaoTest : BaseDaoTest() {
   @Test
   fun shouldUpdateRowIfAlreadyExists() {
     runBlocking {
-      val testUser = User(1, "tvdbToken", 999)
+      val testUser = User(1, "tvdbToken", 999, "test", "test", 999)
 
       database.userDao().upsert(testUser)
       assertThat(database.userDao().get()).isEqualTo(testUser)
