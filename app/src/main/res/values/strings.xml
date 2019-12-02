@@ -94,6 +94,7 @@
   </plurals>
 
   <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this keeps happening.</string>
+  <string name="errorAuthorization">Authorization failed.\nPlease contact us if this keeps happening.</string>
   <string name="errorSeasonsNotLoaded">Please wait for seasons data to load.</string>
   <string name="errorEpisodeNotAired">This episode hasn\'t been aired yet.</string>
   <string name="errorCouldNotLoadDiscover">We could not load discover page at this moment.\nPlease contact us if this keeps happening.</string>

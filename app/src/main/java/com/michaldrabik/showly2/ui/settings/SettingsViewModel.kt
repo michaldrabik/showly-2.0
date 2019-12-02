@@ -49,11 +49,14 @@ class SettingsViewModel @Inject constructor(
 
   fun authorizeTrakt(authData: Uri?) {
     if (authData == null) return
-
     viewModelScope.launch {
-      interactor.authorizeTrakt(authData)
-      _messageStream.value = R.string.textTraktLoginSuccess
-      refreshSettings()
+      try {
+        interactor.authorizeTrakt(authData)
+        _messageStream.value = R.string.textTraktLoginSuccess
+        refreshSettings()
+      } catch (t: Throwable) {
+        _errorStream.value = R.string.errorAuthorization
+      }
     }
   }
 
