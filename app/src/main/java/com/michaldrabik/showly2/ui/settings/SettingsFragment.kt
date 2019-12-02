@@ -58,6 +58,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
     uiModel.run {
       settings?.let { renderSettings(it) }
       isSignedInTrakt?.let { isSignedIn ->
+        settingsTraktImport.visibleIf(isSignedIn)
         settingsTraktAuthorizeIcon.visibleIf(isSignedIn)
         settingsTraktAuthorize.onClick {
           if (isSignedIn) viewModel.logoutTrakt()

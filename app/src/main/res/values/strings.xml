@@ -58,6 +58,8 @@
   <string name="textSettingsTraktAuthorizeTitle">Trakt.tv Authorization</string>
   <string name="textSettingsTraktAuthorizeSummarySignIn">Click to sign in into your Trakt.tv account.</string>
   <string name="textSettingsTraktAuthorizeSummarySignOut">Signed in. Click to log out.</string>
+  <string name="textSettingsTraktImportTitle">Trakt.tv Import</string>
+  <string name="textSettingsTraktImportSummary">Add your Trakt.tv data into Showly collection.</string>
   <string name="textSettingsGeneral">General &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Recently Added Amount</string>
   <string name="textSettingsRecentShowsSummary">Number of recent shows to display in \'My Shows\' screen.</string>
