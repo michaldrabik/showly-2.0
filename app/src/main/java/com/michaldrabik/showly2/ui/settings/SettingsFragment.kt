@@ -38,12 +38,19 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+    setupView()
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
       messageStream.observe(viewLifecycleOwner, Observer { showInfoSnackbar(it) })
       errorStream.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it) })
       loadSettings()
+    }
+  }
+
+  private fun setupView() {
+    settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+    settingsTraktImport.onClick {
+      findNavController().navigate(R.id.actionSettingsFragmentToTraktImport)
     }
   }
 

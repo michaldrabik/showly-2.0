@@ -151,6 +151,21 @@
     android:id="@+id/settingsFragment"
     android:name="com.michaldrabik.showly2.ui.settings.SettingsFragment"
     android:label="fragmentSettings"
+    >
+    <action
+      android:id="@+id/actionSettingsFragmentToTraktImport"
+      app:destination="@id/traktImportFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:exitAnim="@anim/anim_fade_out"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/traktImportFragment"
+    android:name="com.michaldrabik.showly2.ui.trakt.TraktImportFragment"
+    android:label="fragmentTraktImport"
     />
 
 </navigation>

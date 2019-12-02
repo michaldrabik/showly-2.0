@@ -49,9 +49,10 @@ class SearchViewBehaviour(private val padding: Int) : CoordinatorLayout.Behavior
     dyConsumed: Int,
     dxUnconsumed: Int,
     dyUnconsumed: Int,
-    type: Int
+    type: Int,
+    consumed: IntArray
   ) {
-    super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type)
+    super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed)
     if (dyConsumed > 0) {
       val limit = -(child.height + 2 * padding).toFloat()
       child.translationY = (child.translationY - dyConsumed.toFloat()).coerceAtLeast(limit)
