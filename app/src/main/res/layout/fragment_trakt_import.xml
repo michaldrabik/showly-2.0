@@ -4,7 +4,7 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/traktImportRoot"
   android:layout_width="match_parent"
-  android:layout_height="wrap_content"
+  android:layout_height="match_parent"
   >
 
   <androidx.appcompat.widget.Toolbar
@@ -17,6 +17,97 @@
     app:layout_constraintTop_toTopOf="parent"
     app:navigationIcon="@drawable/ic_arrow_back"
     app:title="@string/textTraktImport"
+    />
+
+  <ImageView
+    android:id="@+id/traktImportIcon"
+    android:layout_width="80dp"
+    android:layout_height="0dp"
+    app:layout_constraintBottom_toBottomOf="@id/traktImportIconArrow"
+    app:layout_constraintEnd_toStartOf="@id/traktImportIconArrow"
+    app:layout_constraintHorizontal_chainStyle="packed"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/traktImportIconArrow"
+    app:srcCompat="@drawable/ic_trakt"
+    />
+
+  <ImageView
+    android:id="@+id/traktImportIconArrow"
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:padding="18dp"
+    app:layout_constraintVertical_bias="0.33"
+    app:layout_constraintBottom_toTopOf="@id/traktImportTitle"
+    app:layout_constraintEnd_toStartOf="@id/traktImportIconShowly"
+    app:layout_constraintHorizontal_chainStyle="packed"
+    app:layout_constraintStart_toEndOf="@id/traktImportIcon"
+    app:layout_constraintTop_toBottomOf="@id/traktImportToolbar"
+    app:layout_constraintVertical_chainStyle="packed"
+    app:srcCompat="@drawable/ic_arrow_right"
+    />
+
+  <ImageView
+    android:id="@+id/traktImportIconShowly"
+    android:layout_width="80dp"
+    android:layout_height="0dp"
+    app:layout_constraintBottom_toBottomOf="@id/traktImportIconArrow"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_chainStyle="packed"
+    app:layout_constraintStart_toEndOf="@id/traktImportIconArrow"
+    app:layout_constraintTop_toTopOf="@id/traktImportIconArrow"
+    app:srcCompat="@mipmap/ic_launcher_round"
+    />
+
+  <TextView
+    android:id="@+id/traktImportTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="50dp"
+    android:layout_marginBottom="@dimen/spaceTiny"
+    android:text="@string/textTraktImport"
+    android:textAllCaps="true"
+    android:textColor="@color/colorTextPrimary"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toTopOf="@id/traktImportDescription"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/traktImportIconArrow"
+    />
+
+  <TextView
+    android:id="@+id/traktImportDescription"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginEnd="@dimen/spaceBig"
+    android:gravity="center"
+    android:text="@string/textTraktImportDescription"
+    android:textColor="@color/colorTextSecondary"
+    android:textSize="14sp"
+    app:layout_constraintBottom_toTopOf="@id/traktImportButton"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/traktImportTitle"
+    />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/traktImportButton"
+    style="@style/Widget.MaterialComponents.Button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="40dp"
+    android:includeFontPadding="false"
+    android:text="@string/textTraktImportStart"
+    android:textColor="@color/colorWhite"
+    app:backgroundTint="@color/colorAccent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/traktImportDescription"
+    app:rippleColor="@color/colorWhite"
+    app:strokeColor="@color/colorWhite"
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

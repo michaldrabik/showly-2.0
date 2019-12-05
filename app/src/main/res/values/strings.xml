@@ -79,6 +79,8 @@
   <string name="textSettingsShowsNotificationsWhenNextDay">1 Day After</string>
 
   <string name="textTraktImport">Trakt.tv Import</string>
+  <string name="textTraktImportDescription">Add your Trakt.tv account progress and watchlist data into Showly.\n\nYour current Showly collection will not be modified. Only new Trakt items that are not currently in Showly\'s collection will be added.</string>
+  <string name="textTraktImportStart">Start Import</string>
 
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>
