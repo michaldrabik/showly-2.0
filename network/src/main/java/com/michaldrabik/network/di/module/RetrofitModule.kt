@@ -9,6 +9,7 @@ import com.michaldrabik.network.trakt.converters.EpisodeConverter
 import com.michaldrabik.network.trakt.converters.SearchResultConverter
 import com.michaldrabik.network.trakt.converters.SeasonConverter
 import com.michaldrabik.network.trakt.converters.ShowConverter
+import com.michaldrabik.network.trakt.converters.SyncProgressItemConverter
 import com.michaldrabik.network.trakt.converters.TrendingResultConverter
 import com.michaldrabik.network.tvdb.converters.TvdbActorConverter
 import com.michaldrabik.network.tvdb.converters.TvdbImageConverter
@@ -45,6 +46,7 @@ object RetrofitModule {
       .baseUrl(TVDB_BASE_URL)
       .build()
 
+  //TODO Refactor into binding map
   @Provides
   @CloudScope
   fun providesMoshi(): Moshi {
@@ -61,6 +63,8 @@ object RetrofitModule {
     val episodeConverter = EpisodeConverter()
     val seasonConverter = SeasonConverter(episodeConverter)
 
+    val syncProgressItemConverter = SyncProgressItemConverter(showConverter, seasonConverter)
+
     return Moshi.Builder()
       .add(showConverter)
       .add(trendingResultConverter)
@@ -71,6 +75,7 @@ object RetrofitModule {
       .add(searchResultConverter)
       .add(actorConverter)
       .add(actorResultConverter)
+      .add(syncProgressItemConverter)
       .build()
   }
 

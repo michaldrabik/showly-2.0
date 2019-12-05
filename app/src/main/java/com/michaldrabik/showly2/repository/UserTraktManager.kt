@@ -1,3 +1,5 @@
+@file:Suppress("EXPERIMENTAL_FEATURE_WARNING")
+
 package com.michaldrabik.showly2.repository
 
 import androidx.room.withTransaction
@@ -18,16 +20,17 @@ class UserTraktManager @Inject constructor(
     private const val TRAKT_TOKEN_EXPIRATION_MS = 5_184_000_000 //2 months
   }
 
-  private var traktToken: String? = null
-  private var traktRefreshToken: String? = null
+  private var traktToken: TraktAuthToken? = null
+  private var traktRefreshToken: TraktRefreshToken? = null
   private var traktTokenTimestamp = 0L
 
-  suspend fun checkAuthorization() {
+  suspend fun checkAuthorization(): TraktAuthToken {
     if (!isAuthorized()) {
       if (traktRefreshToken == null) throw Error("Manual authorization needed")
-      val tokens = cloud.traktApi.refreshAuthTokens(traktRefreshToken!!)
+      val tokens = cloud.traktApi.refreshAuthTokens(traktRefreshToken?.token!!)
       saveToken(tokens.access_token, tokens.refresh_token)
     }
+    return traktToken!!
   }
 
   suspend fun authorize(authCode: String) {
@@ -39,13 +42,13 @@ class UserTraktManager @Inject constructor(
     if (traktToken == null || traktRefreshToken == null) {
       val user = database.userDao().get()
       user?.let {
-        traktToken = it.traktToken
-        traktRefreshToken = it.traktRefreshToken
+        traktToken = TraktAuthToken(it.traktToken)
+        traktRefreshToken = TraktRefreshToken(it.traktRefreshToken)
         traktTokenTimestamp = it.traktTokenTimestamp
       }
     }
     return when {
-      traktToken.isNullOrEmpty() -> false
+      traktToken?.token.isNullOrEmpty() -> false
       nowUtcMillis() - traktTokenTimestamp > TRAKT_TOKEN_EXPIRATION_MS -> false
       else -> true
     }
@@ -64,7 +67,7 @@ class UserTraktManager @Inject constructor(
     }
 
     try {
-      traktToken?.let { cloud.traktApi.revokeAuthTokens(it) }
+      traktToken?.let { cloud.traktApi.revokeAuthTokens(it.token) }
     } catch (t: Throwable) {
       //NOOP
     } finally {
@@ -93,9 +96,13 @@ class UserTraktManager @Inject constructor(
       )
 
     }
-    traktToken = token
-    traktRefreshToken = refreshToken
+    traktToken = TraktAuthToken(token)
+    traktRefreshToken = TraktRefreshToken(refreshToken)
     traktTokenTimestamp = timestamp
   }
-
 }
+
+inline class TraktAuthToken(val token: String)
+
+inline class TraktRefreshToken(val token: String)
+

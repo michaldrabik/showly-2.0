@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
+import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.fragment_trakt_import.*
 
 class TraktImportFragment : BaseFragment<TraktImportViewModel>() {
@@ -29,6 +30,10 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>() {
 
   private fun setupView() {
     traktImportToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+    traktImportButton.onClick {
+      viewModel.startImport()
+      traktImportButton.isEnabled = false
+    }
   }
 
   override fun onResume() {

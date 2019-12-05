@@ -64,4 +64,7 @@ class TraktApi(private val service: TraktService) {
     )
     service.revokeOAuthToken(request)
   }
+
+  suspend fun fetchSyncWatched(token: String) =
+    service.fetchSyncWatched("Bearer $token")
 }

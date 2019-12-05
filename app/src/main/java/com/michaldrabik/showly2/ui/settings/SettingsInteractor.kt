@@ -5,12 +5,12 @@ import android.net.Uri
 import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.Config
-import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.common.notifications.AnnouncementManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.fcm.NotificationChannel
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.Settings
+import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import javax.inject.Inject
 
