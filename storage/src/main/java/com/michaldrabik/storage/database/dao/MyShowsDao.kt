@@ -23,7 +23,7 @@ interface MyShowsDao {
   suspend fun getById(traktId: Long): Show?
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(show: MyShow)
+  suspend fun insert(shows: List<MyShow>)
 
   @Query("DELETE FROM shows_my_shows WHERE id_trakt == :traktId")
   suspend fun deleteById(traktId: Long)

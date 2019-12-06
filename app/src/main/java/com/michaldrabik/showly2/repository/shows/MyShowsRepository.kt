@@ -32,7 +32,7 @@ class MyShowsRepository @Inject constructor(
 
   suspend fun insert(id: IdTrakt) {
     val dbShow = MyShow.fromTraktId(id.id, nowUtcMillis())
-    database.myShowsDao().insert(dbShow)
+    database.myShowsDao().insert(listOf(dbShow))
   }
 
   suspend fun delete(id: IdTrakt) = database.myShowsDao().deleteById(id.id)

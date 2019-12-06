@@ -102,7 +102,7 @@ class UserTraktManager @Inject constructor(
   }
 }
 
-inline class TraktAuthToken(val token: String)
+inline class TraktAuthToken(val token: String = "")
 
-inline class TraktRefreshToken(val token: String)
+inline class TraktRefreshToken(val token: String = "")
 

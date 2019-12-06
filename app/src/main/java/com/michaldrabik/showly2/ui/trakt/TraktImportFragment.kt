@@ -1,5 +1,7 @@
 package com.michaldrabik.showly2.ui.trakt
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
@@ -7,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.common.trakt.TraktImportService
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.fragment_trakt_import.*
@@ -31,7 +34,14 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>() {
   private fun setupView() {
     traktImportToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     traktImportButton.onClick {
-      viewModel.startImport()
+      val context = requireContext().applicationContext
+      Intent(context, TraktImportService::class.java).run {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+          context.startForegroundService(this)
+        } else {
+          context.startService(this)
+        }
+      }
       traktImportButton.isEnabled = false
     }
   }
