@@ -31,8 +31,10 @@ class TraktImportWatchedRunner @Inject constructor(
 ) {
 
   var progressListener: ((ShowNetwork, Int, Int) -> Unit)? = null
+  var isRunning = false
 
   suspend fun run() {
+    isRunning = true
     Log.d(TAG, "Initialized.")
     var authToken = TraktAuthToken()
     try {
@@ -44,6 +46,7 @@ class TraktImportWatchedRunner @Inject constructor(
 
     importWatchedShows(authToken)
 
+    isRunning = false
     Log.d(TAG, "Finished with success.")
   }
 

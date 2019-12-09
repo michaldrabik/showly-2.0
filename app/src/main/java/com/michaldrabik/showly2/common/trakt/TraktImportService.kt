@@ -30,8 +30,9 @@ class TraktImportService : Service(), CoroutineScope {
     private const val IMPORT_NOTIFICATION_PROGRESS_ID = 826
     private const val IMPORT_NOTIFICATION_COMPLETE_ID = 827
 
-    private const val ACTION_IMPORT_PROGRESS = "ACTION_IMPORT_PROGRESS"
-    private const val ACTION_IMPORT_COMPLETE = "ACTION_IMPORT_COMPLETE"
+    const val ACTION_IMPORT_START = "ACTION_IMPORT_START"
+    const val ACTION_IMPORT_PROGRESS = "ACTION_IMPORT_PROGRESS"
+    const val ACTION_IMPORT_COMPLETE = "ACTION_IMPORT_COMPLETE"
   }
 
   @Inject lateinit var importWatchedRunner: TraktImportWatchedRunner
@@ -49,7 +50,9 @@ class TraktImportService : Service(), CoroutineScope {
   }
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    if (importWatchedRunner.isRunning) return START_NOT_STICKY
     startForeground(IMPORT_NOTIFICATION_PROGRESS_ID, createProgressNotification().build())
+
     launch {
       try {
         importWatchedRunner.run {
@@ -59,19 +62,20 @@ class TraktImportService : Service(), CoroutineScope {
               setProgress(total, progress, false)
             }
             notificationsManager().notify(IMPORT_NOTIFICATION_PROGRESS_ID, notification.build())
+            notifyBroadcast(ACTION_IMPORT_PROGRESS)
           }
+          notifyBroadcast(ACTION_IMPORT_START)
           run()
-          notifyBroadcast(ACTION_IMPORT_PROGRESS)
         }
         notificationsManager().notify(IMPORT_NOTIFICATION_COMPLETE_ID, createSuccessNotification())
-        notifyBroadcast(ACTION_IMPORT_COMPLETE)
-        stopSelf()
       } catch (t: Throwable) {
         notificationsManager().notify(IMPORT_NOTIFICATION_COMPLETE_ID, createErrorNotification())
+      } finally {
         notifyBroadcast(ACTION_IMPORT_COMPLETE)
         stopSelf()
       }
     }
+
     return START_NOT_STICKY
   }
 
