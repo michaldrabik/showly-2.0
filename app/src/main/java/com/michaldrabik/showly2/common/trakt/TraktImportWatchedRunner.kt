@@ -3,29 +3,40 @@ package com.michaldrabik.showly2.common.trakt
 import android.util.Log
 import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
+import com.michaldrabik.network.trakt.model.SyncProgressItem
+import com.michaldrabik.showly2.common.ImagesManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.IdTrakt
+import com.michaldrabik.showly2.model.ImageType.FANART
+import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.TraktAuthToken
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.MyShow
+import com.michaldrabik.storage.database.model.Season
+import kotlinx.coroutines.delay
 import javax.inject.Inject
+import com.michaldrabik.network.trakt.model.Show as ShowNetwork
 
 @AppScope
 class TraktImportWatchedRunner @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
   private val mappers: Mappers,
+  private val imagesManager: ImagesManager,
   private val userTraktManager: UserTraktManager
 ) {
 
+  var progressListener: ((ShowNetwork, Int, Int) -> Unit)? = null
+
   suspend fun run() {
-    Log.d("TraktImportWatched", "Initialized.")
+    Log.d(TAG, "Initialized.")
     var authToken = TraktAuthToken()
     try {
-      Log.d("TraktImportWatched", "Checking authorization...")
+      Log.d(TAG, "Checking authorization...")
       authToken = userTraktManager.checkAuthorization()
     } catch (t: Throwable) {
       //TODO Error Oauth needed
@@ -33,55 +44,79 @@ class TraktImportWatchedRunner @Inject constructor(
 
     importWatchedShows(authToken)
 
-    Log.d("TraktImportWatched", "Finished with success.")
+    Log.d(TAG, "Finished with success.")
   }
 
   private suspend fun importWatchedShows(token: TraktAuthToken) {
-    Log.d("TraktImportWatched", "Importing watched shows...")
+    Log.d(TAG, "Importing watched shows...")
     val syncResults = cloud.traktApi.fetchSyncWatched(token.token)
     val myShowsIds = database.myShowsDao().getAll().map { it.idTrakt }
 
-    syncResults.forEach { result ->
-      Log.d("TraktImportWatched", "Processing \'${result.show.title}\'...")
+    syncResults.forEachIndexed { index, result ->
+      Log.d(TAG, "Processing \'${result.show.title}\'...")
+      progressListener?.invoke(result.show, index, syncResults.size)
 
-      val showId = result.show.ids.trakt
-      val remoteSeasons = cloud.traktApi.fetchSeasons(showId)
+      try {
+        val showId = result.show.ids.trakt
 
-      val seasons = remoteSeasons
-        .map { mappers.season.fromNetwork(it) }
-        .map { remoteSeason ->
-          val isWatched = result.seasons.any {
-            it.number == remoteSeason.number && it.episodes.size == remoteSeason.episodes.size
+        val (seasons, episodes) = loadSeasons(showId, result)
+
+        database.withTransaction {
+          if (myShowsIds.none { it == showId }) {
+            val show = mappers.show.fromNetwork(result.show)
+            val showDb = mappers.show.toDatabase(show)
+            database.showsDao().upsert(listOf(showDb))
+            database.myShowsDao().insert(listOf(MyShow.fromTraktId(showDb.idTrakt, nowUtcMillis())))
+            loadImage(show)
           }
-          mappers.season.toDatabase(remoteSeason, IdTrakt(showId), isWatched)
+          database.seasonsDao().upsert(seasons)
+          database.episodesDao().upsert(episodes)
         }
-
-      val episodes = remoteSeasons.flatMap { season ->
-        season.episodes.map { episode ->
-          val isWatched = result.seasons
-            .find { it.number == season.number }?.episodes
-            ?.find { it.number == episode.number } != null
-
-          val seasonDb = mappers.season.fromNetwork(season)
-          val episodeDb = mappers.episode.fromNetwork(episode)
-
-          mappers.episode.toDatabase(episodeDb, seasonDb, IdTrakt(showId), isWatched)
-        }
+      } catch (t: Throwable) {
+        Log.w(TAG, "Processing \'${result.show.title}\' failed. Skipping...")
       }
 
-      database.withTransaction {
-        if (myShowsIds.none { it == showId }) {
-          val timestamp = nowUtcMillis()
-          val showDb = mappers.show.run {
-            val show = fromNetwork(result.show)
-            toDatabase(show)
-          }
-          database.showsDao().upsert(listOf(showDb))
-          database.myShowsDao().insert(listOf(MyShow.fromTraktId(showDb.idTrakt, timestamp)))
+      delay(200)
+    }
+  }
+
+  private suspend fun loadSeasons(showId: Long, item: SyncProgressItem): Pair<List<Season>, List<Episode>> {
+    val remoteSeasons = cloud.traktApi.fetchSeasons(showId)
+
+    val seasons = remoteSeasons
+      .map { mappers.season.fromNetwork(it) }
+      .map { remoteSeason ->
+        val isWatched = item.seasons.any {
+          it.number == remoteSeason.number && it.episodes.size == remoteSeason.episodes.size
         }
-        database.seasonsDao().upsert(seasons)
-        database.episodesDao().upsert(episodes)
+        mappers.season.toDatabase(remoteSeason, IdTrakt(showId), isWatched)
+      }
+
+    val episodes = remoteSeasons.flatMap { season ->
+      season.episodes.map { episode ->
+        val isWatched = item.seasons
+          .find { it.number == season.number }?.episodes
+          ?.find { it.number == episode.number } != null
+
+        val seasonDb = mappers.season.fromNetwork(season)
+        val episodeDb = mappers.episode.fromNetwork(episode)
+
+        mappers.episode.toDatabase(episodeDb, seasonDb, IdTrakt(showId), isWatched)
       }
     }
+
+    return Pair(seasons, episodes)
+  }
+
+  private suspend fun loadImage(show: Show) {
+    try {
+      imagesManager.loadRemoteImage(show, FANART)
+    } catch (t: Throwable) {
+      //NOOP Ignore image for now. It will be fetched later if needed.
+    }
+  }
+
+  companion object {
+    private const val TAG = "TraktImportWatched"
   }
 }
