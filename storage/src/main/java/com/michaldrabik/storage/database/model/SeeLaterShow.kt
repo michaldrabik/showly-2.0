@@ -22,8 +22,7 @@ data class SeeLaterShow(
 ) {
 
   companion object {
-    fun fromTraktId(traktId: Long, nowUtcMillis: Long): SeeLaterShow {
-      return SeeLaterShow(idTrakt = traktId, createdAt = nowUtcMillis, updatedAt = nowUtcMillis)
-    }
+    fun fromTraktId(traktId: Long, nowUtcMillis: Long) =
+      SeeLaterShow(idTrakt = traktId, createdAt = nowUtcMillis, updatedAt = nowUtcMillis)
   }
 }

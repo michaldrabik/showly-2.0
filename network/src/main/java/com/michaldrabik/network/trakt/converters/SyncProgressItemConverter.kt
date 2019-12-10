@@ -1,7 +1,7 @@
 package com.michaldrabik.network.trakt.converters
 
-import com.michaldrabik.network.trakt.model.SyncProgressItem
-import com.michaldrabik.network.trakt.model.json.SyncProgressItemJson
+import com.michaldrabik.network.trakt.model.SyncItem
+import com.michaldrabik.network.trakt.model.json.SyncItemJson
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.ToJson
 
@@ -11,12 +11,12 @@ class SyncProgressItemConverter(
 ) {
 
   @FromJson
-  fun fromJson(json: SyncProgressItemJson) =
-    SyncProgressItem(
+  fun fromJson(json: SyncItemJson) =
+    SyncItem(
       show = showConverter.fromJson(json.show!!),
       seasons = json.seasons?.map { seasonConverter.fromJson(it) } ?: emptyList()
     )
 
   @ToJson
-  fun toJson(value: SyncProgressItem): SyncProgressItemJson = throw UnsupportedOperationException()
+  fun toJson(value: SyncItem): SyncItemJson = throw UnsupportedOperationException()
 }

@@ -3,7 +3,7 @@ package com.michaldrabik.showly2.common.trakt
 import android.util.Log
 import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.network.trakt.model.SyncProgressItem
+import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.showly2.common.ImagesManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.IdTrakt
@@ -65,7 +65,7 @@ class TraktImportWatchedRunner @Inject constructor(
         val (seasons, episodes) = loadSeasons(showId, result)
 
         database.withTransaction {
-          if (myShowsIds.none { it == showId }) {
+          if (showId !in myShowsIds) {
             val show = mappers.show.fromNetwork(result.show)
             val showDb = mappers.show.toDatabase(show)
             database.showsDao().upsert(listOf(showDb))
@@ -83,7 +83,7 @@ class TraktImportWatchedRunner @Inject constructor(
     }
   }
 
-  private suspend fun loadSeasons(showId: Long, item: SyncProgressItem): Pair<List<Season>, List<Episode>> {
+  private suspend fun loadSeasons(showId: Long, item: SyncItem): Pair<List<Season>, List<Episode>> {
     val remoteSeasons = cloud.traktApi.fetchSeasons(showId)
 
     val seasons = remoteSeasons

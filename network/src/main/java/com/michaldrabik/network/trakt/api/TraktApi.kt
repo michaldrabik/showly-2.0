@@ -67,4 +67,7 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun fetchSyncWatched(token: String) =
     service.fetchSyncWatched("Bearer $token")
+
+  suspend fun fetchSyncWatchlist(token: String) =
+    service.fetchSyncWatchlist("Bearer $token")
 }

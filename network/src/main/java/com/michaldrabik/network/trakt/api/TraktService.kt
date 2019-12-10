@@ -7,7 +7,7 @@ import com.michaldrabik.network.trakt.model.SearchResult
 import com.michaldrabik.network.trakt.model.Season
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.network.trakt.model.ShowResult
-import com.michaldrabik.network.trakt.model.SyncProgressItem
+import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRevokeRequest
@@ -56,5 +56,9 @@ interface TraktService {
   //Sync
 
   @GET("sync/watched/shows?extended=full")
-  suspend fun fetchSyncWatched(@Header("Authorization") authToken: String): List<SyncProgressItem>
+  suspend fun fetchSyncWatched(@Header("Authorization") authToken: String): List<SyncItem>
+
+
+  @GET("sync/watchlist?extended=full")
+  suspend fun fetchSyncWatchlist(@Header("Authorization") authToken: String): List<SyncItem>
 }

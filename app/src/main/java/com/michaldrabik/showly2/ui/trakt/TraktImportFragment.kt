@@ -97,6 +97,8 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>() {
     }
   }
 
+  override fun getSnackbarHost(): ViewGroup = traktImportRoot
+
   private val broadcastReceiver = object : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
       viewModel.onBroadcastAction(intent?.action)

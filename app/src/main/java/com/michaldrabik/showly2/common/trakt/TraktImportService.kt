@@ -10,6 +10,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Build.VERSION
 import android.os.IBinder
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.CATEGORY_SERVICE
 import androidx.core.content.ContextCompat
@@ -27,6 +28,8 @@ import javax.inject.Inject
 class TraktImportService : Service(), CoroutineScope {
 
   companion object {
+    private const val TAG = "TraktImportService"
+
     private const val IMPORT_NOTIFICATION_PROGRESS_ID = 826
     private const val IMPORT_NOTIFICATION_COMPLETE_ID = 827
 
@@ -36,6 +39,7 @@ class TraktImportService : Service(), CoroutineScope {
   }
 
   @Inject lateinit var importWatchedRunner: TraktImportWatchedRunner
+  @Inject lateinit var importWatchlistRunner: TraktImportWatchlistRunner
 
   override val coroutineContext = Job() + Dispatchers.IO
 
@@ -46,27 +50,26 @@ class TraktImportService : Service(), CoroutineScope {
 
   override fun onDestroy() {
     coroutineContext.cancelChildren()
+    Log.d(TAG, "Service destroyed.")
     super.onDestroy()
   }
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-    if (importWatchedRunner.isRunning) return START_NOT_STICKY
+    Log.d(TAG, "Service initialized.")
+    if (importWatchedRunner.isRunning || importWatchlistRunner.isRunning) {
+      Log.d(TAG, "Already running. Skipping...")
+      return START_NOT_STICKY
+    }
     startForeground(IMPORT_NOTIFICATION_PROGRESS_ID, createProgressNotification().build())
 
+    Log.d(TAG, "Import started.")
     launch {
       try {
-        importWatchedRunner.run {
-          progressListener = { show: Show, progress: Int, total: Int ->
-            val notification = createProgressNotification().run {
-              setContentText("Processing \'${show.title}\'...")
-              setProgress(total, progress, false)
-            }
-            notificationsManager().notify(IMPORT_NOTIFICATION_PROGRESS_ID, notification.build())
-            notifyBroadcast(ACTION_IMPORT_PROGRESS)
-          }
-          notifyBroadcast(ACTION_IMPORT_START)
-          run()
-        }
+        notifyBroadcast(ACTION_IMPORT_START)
+
+        runImportWatched()
+        runImportWatchlist()
+
         notificationsManager().notify(IMPORT_NOTIFICATION_COMPLETE_ID, createSuccessNotification())
       } catch (t: Throwable) {
         notificationsManager().notify(IMPORT_NOTIFICATION_COMPLETE_ID, createErrorNotification())
@@ -75,8 +78,25 @@ class TraktImportService : Service(), CoroutineScope {
         stopSelf()
       }
     }
+    Log.d(TAG, "Import completed.")
 
     return START_NOT_STICKY
+  }
+
+  private suspend fun runImportWatched() {
+    importWatchedRunner.progressListener = { show: Show, progress: Int, total: Int ->
+      val notification = createProgressNotification().run {
+        setContentText("Processing \'${show.title}\'...")
+        setProgress(total, progress, false)
+      }
+      notificationsManager().notify(IMPORT_NOTIFICATION_PROGRESS_ID, notification.build())
+      notifyBroadcast(ACTION_IMPORT_PROGRESS)
+    }
+    importWatchedRunner.run()
+  }
+
+  private suspend fun runImportWatchlist() {
+    importWatchlistRunner.run()
   }
 
   private fun createProgressNotification() =
