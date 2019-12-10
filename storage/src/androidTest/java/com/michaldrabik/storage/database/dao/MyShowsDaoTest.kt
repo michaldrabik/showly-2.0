@@ -31,7 +31,7 @@ class MyShowsDaoTest : BaseDaoTest() {
     runBlocking {
       val myShow = MyShow.fromTraktId(shows[0].idTrakt, 999)
 
-      database.myShowsDao().insert(myShow)
+      database.myShowsDao().insert(listOf(myShow))
 
       val result = database.myShowsDao().getAll()
       assertThat(result).containsExactlyElementsIn(listOf(shows[0]))
@@ -44,8 +44,8 @@ class MyShowsDaoTest : BaseDaoTest() {
       val myShow1 = MyShow.fromTraktId(shows[0].idTrakt, 999)
       val myShow2 = MyShow.fromTraktId(shows[1].idTrakt, 999)
 
-      database.myShowsDao().insert(myShow1)
-      database.myShowsDao().insert(myShow2)
+      database.myShowsDao().insert(listOf(myShow1))
+      database.myShowsDao().insert(listOf(myShow2))
 
       val result = database.myShowsDao().getAllTraktIds()
       assertThat(result).containsExactlyElementsIn(listOf(shows[0].idTrakt, shows[1].idTrakt))
@@ -58,8 +58,8 @@ class MyShowsDaoTest : BaseDaoTest() {
       val myShow1 = MyShow.fromTraktId(shows[0].idTrakt, 999)
       val myShow2 = MyShow.fromTraktId(shows[1].idTrakt, 999)
 
-      database.myShowsDao().insert(myShow1)
-      database.myShowsDao().insert(myShow2)
+      database.myShowsDao().insert(listOf(myShow1))
+      database.myShowsDao().insert(listOf(myShow2))
 
       val result = database.myShowsDao().getAllRecent()
       assertThat(result[0]).isEqualTo(shows[1])
@@ -73,8 +73,8 @@ class MyShowsDaoTest : BaseDaoTest() {
       val myShow1 = MyShow.fromTraktId(shows[0].idTrakt, 999)
       val myShow2 = MyShow.fromTraktId(shows[1].idTrakt, 999)
 
-      database.myShowsDao().insert(myShow1)
-      database.myShowsDao().insert(myShow2)
+      database.myShowsDao().insert(listOf(myShow1))
+      database.myShowsDao().insert(listOf(myShow2))
 
       val result = database.myShowsDao().getById(shows[1].idTrakt)
       assertThat(result).isEqualTo(shows[1])
@@ -87,7 +87,7 @@ class MyShowsDaoTest : BaseDaoTest() {
       val myShow1 = MyShow.fromTraktId(shows[1].idTrakt, 999)
 
       val showsSize = shows.size
-      database.myShowsDao().insert(myShow1)
+      database.myShowsDao().insert(listOf(myShow1))
       database.myShowsDao().deleteById(shows[1].idTrakt)
       val result = database.myShowsDao().getById(shows[1].idTrakt)
 
