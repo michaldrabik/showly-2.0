@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.utilities.extensions
 
+import android.app.NotificationManager
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Rect
@@ -18,6 +19,8 @@ import com.michaldrabik.showly2.utilities.SafeOnClickListener
 fun View.onClick(safe: Boolean = true, action: (View) -> Unit) = setOnClickListener(SafeOnClickListener(safe, action))
 
 fun Context.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSize(dimenResId)
+
+fun Context.notificationManager() = (applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
 
 fun screenWidth() = Resources.getSystem().displayMetrics.widthPixels
 

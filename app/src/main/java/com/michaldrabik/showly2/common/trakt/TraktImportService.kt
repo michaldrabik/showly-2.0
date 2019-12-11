@@ -2,10 +2,8 @@ package com.michaldrabik.showly2.common.trakt
 
 import android.app.Notification
 import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.NotificationManager.IMPORTANCE_LOW
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Build.VERSION
@@ -18,6 +16,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.repository.TraktAuthError
+import com.michaldrabik.showly2.utilities.extensions.notificationManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -36,6 +36,7 @@ class TraktImportService : Service(), CoroutineScope {
     const val ACTION_IMPORT_START = "ACTION_IMPORT_START"
     const val ACTION_IMPORT_PROGRESS = "ACTION_IMPORT_PROGRESS"
     const val ACTION_IMPORT_COMPLETE = "ACTION_IMPORT_COMPLETE"
+    const val ACTION_IMPORT_AUTH_ERROR = "ACTION_IMPORT_AUTH_ERROR"
   }
 
   @Inject lateinit var importWatchedRunner: TraktImportWatchedRunner
@@ -70,9 +71,10 @@ class TraktImportService : Service(), CoroutineScope {
         val resultCount = runImportWatched()
         runImportWatchlist(resultCount)
 
-        notificationsManager().notify(IMPORT_NOTIFICATION_COMPLETE_ID, createSuccessNotification())
+        notificationManager().notify(IMPORT_NOTIFICATION_COMPLETE_ID, createSuccessNotification())
       } catch (t: Throwable) {
-        notificationsManager().notify(IMPORT_NOTIFICATION_COMPLETE_ID, createErrorNotification())
+        if (t is TraktAuthError) notifyBroadcast(ACTION_IMPORT_AUTH_ERROR)
+        notificationManager().notify(IMPORT_NOTIFICATION_COMPLETE_ID, createErrorNotification())
       } finally {
         notifyBroadcast(ACTION_IMPORT_COMPLETE)
         stopSelf()
@@ -89,7 +91,7 @@ class TraktImportService : Service(), CoroutineScope {
         setContentText("Processing \'${show.title}\'...")
         setProgress(total, progress, false)
       }
-      notificationsManager().notify(IMPORT_NOTIFICATION_PROGRESS_ID, notification.build())
+      notificationManager().notify(IMPORT_NOTIFICATION_PROGRESS_ID, notification.build())
       notifyBroadcast(ACTION_IMPORT_PROGRESS)
     }
     return importWatchedRunner.run()
@@ -101,39 +103,33 @@ class TraktImportService : Service(), CoroutineScope {
         setContentText("Processing \'${show.title}\'...")
         setProgress(totalProgress + total, totalProgress + progress, false)
       }
-      notificationsManager().notify(IMPORT_NOTIFICATION_PROGRESS_ID, notification.build())
+      notificationManager().notify(IMPORT_NOTIFICATION_PROGRESS_ID, notification.build())
       notifyBroadcast(ACTION_IMPORT_PROGRESS)
     }
     importWatchlistRunner.run()
   }
 
-  private fun createProgressNotification() =
+  private fun createBaseNotification() =
     NotificationCompat.Builder(applicationContext, createNotificationChannel())
       .setContentTitle(getString(R.string.textTraktImport))
-      .setContentText(getString(R.string.textTraktImportRunning))
-      .setSmallIcon(R.drawable.ic_notification)
-      .setCategory(CATEGORY_SERVICE)
-      .setOngoing(true)
-      .setProgress(0, 0, true)
-      .setColor(ContextCompat.getColor(applicationContext, R.color.colorAccent))
-
-  private fun createSuccessNotification() =
-    NotificationCompat.Builder(applicationContext, createNotificationChannel())
-      .setContentTitle(getString(R.string.textTraktImport))
-      .setContentText(getString(R.string.textTraktImportComplete))
       .setSmallIcon(R.drawable.ic_notification)
       .setAutoCancel(true)
       .setColor(ContextCompat.getColor(applicationContext, R.color.colorAccent))
-      .build()
 
-  private fun createErrorNotification() =
-    NotificationCompat.Builder(applicationContext, createNotificationChannel())
-      .setContentTitle(getString(R.string.textTraktImport))
-      .setContentText(getString(R.string.textTraktImportError))
-      .setSmallIcon(R.drawable.ic_notification)
-      .setAutoCancel(true)
-      .setColor(ContextCompat.getColor(applicationContext, R.color.colorAccent))
-      .build()
+  private fun createProgressNotification() = createBaseNotification()
+    .setContentText(getString(R.string.textTraktImportRunning))
+    .setCategory(CATEGORY_SERVICE)
+    .setOngoing(true)
+    .setAutoCancel(false)
+    .setProgress(0, 0, true)
+
+  private fun createSuccessNotification() = createBaseNotification()
+    .setContentText(getString(R.string.textTraktImportComplete))
+    .build()
+
+  private fun createErrorNotification() = createBaseNotification()
+    .setContentText(getString(R.string.textTraktImportError))
+    .build()
 
   private fun createNotificationChannel(): String {
     if (VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -143,7 +139,7 @@ class TraktImportService : Service(), CoroutineScope {
         lockscreenVisibility = Notification.VISIBILITY_PRIVATE
         setSound(null, null)
       }
-      notificationsManager().createNotificationChannel(channel)
+      notificationManager().createNotificationChannel(channel)
       return id
     }
     return ""
@@ -152,8 +148,6 @@ class TraktImportService : Service(), CoroutineScope {
   private fun notifyBroadcast(action: String) {
     LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(Intent(action))
   }
-
-  private fun notificationsManager() = (applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
 
   override fun onBind(intent: Intent?): IBinder? = null
 }

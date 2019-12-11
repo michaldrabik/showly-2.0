@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.trakt.TraktImportService
+import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_AUTH_ERROR
 import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_COMPLETE
 import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_PROGRESS
 import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_START
@@ -39,6 +40,7 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>() {
       addAction(ACTION_IMPORT_COMPLETE)
       addAction(ACTION_IMPORT_START)
       addAction(ACTION_IMPORT_PROGRESS)
+      addAction(ACTION_IMPORT_AUTH_ERROR)
     }
     LocalBroadcastManager.getInstance(requireContext().applicationContext).registerReceiver(broadcastReceiver, filter)
     return super.onCreateView(inflater, container, savedInstanceState)
@@ -58,6 +60,7 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>() {
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
       messageStream.observe(viewLifecycleOwner, Observer { showInfoSnackbar(it!!) })
+      errorStream.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
     }
   }
 
@@ -86,6 +89,7 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>() {
         traktImportButton.visibleIf(!it, false)
         traktImportProgress.visibleIf(it)
       }
+      authError?.let { findNavController().popBackStack() }
     }
   }
 

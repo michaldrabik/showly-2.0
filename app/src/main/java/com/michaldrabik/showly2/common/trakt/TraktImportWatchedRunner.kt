@@ -10,6 +10,7 @@ import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
+import com.michaldrabik.showly2.repository.TraktAuthError
 import com.michaldrabik.showly2.repository.TraktAuthToken
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
@@ -36,12 +37,13 @@ class TraktImportWatchedRunner @Inject constructor(
   suspend fun run(): Int {
     isRunning = true
     Log.d(TAG, "Initialized.")
-    var authToken = TraktAuthToken()
+    val authToken: TraktAuthToken
     try {
       Log.d(TAG, "Checking authorization...")
       authToken = userTraktManager.checkAuthorization()
     } catch (t: Throwable) {
-      //TODO Error Oauth needed
+      isRunning = false
+      throw TraktAuthError(t.message)
     }
 
     val syncedCount = importWatchedShows(authToken)

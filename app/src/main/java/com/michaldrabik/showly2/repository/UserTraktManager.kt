@@ -26,7 +26,7 @@ class UserTraktManager @Inject constructor(
 
   suspend fun checkAuthorization(): TraktAuthToken {
     if (!isAuthorized()) {
-      if (traktRefreshToken == null) throw Error("Manual authorization needed")
+      if (traktRefreshToken == null) throw TraktAuthError("Authorization needed")
       val tokens = cloud.traktApi.refreshAuthTokens(traktRefreshToken?.token!!)
       saveToken(tokens.access_token, tokens.refresh_token)
     }
@@ -105,4 +105,6 @@ class UserTraktManager @Inject constructor(
 inline class TraktAuthToken(val token: String = "")
 
 inline class TraktRefreshToken(val token: String = "")
+
+data class TraktAuthError(override val message: String?) : Error()
 

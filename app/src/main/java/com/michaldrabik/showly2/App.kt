@@ -3,7 +3,6 @@ package com.michaldrabik.showly2
 import android.app.Activity
 import android.app.Application
 import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.Service
 import android.os.Build
 import android.os.StrictMode
@@ -15,6 +14,7 @@ import com.michaldrabik.showly2.di.DaggerAppComponent
 import com.michaldrabik.showly2.fcm.NotificationChannel.EPISODES_ANNOUNCEMENTS
 import com.michaldrabik.showly2.fcm.NotificationChannel.GENERAL_INFO
 import com.michaldrabik.showly2.fcm.NotificationChannel.SHOWS_INFO
+import com.michaldrabik.showly2.utilities.extensions.notificationManager
 import com.michaldrabik.storage.di.DaggerStorageComponent
 import com.michaldrabik.storage.di.StorageModule
 
@@ -60,7 +60,7 @@ class App : Application() {
         description = channel.description
       }
 
-    (getSystemService(NOTIFICATION_SERVICE) as NotificationManager).run {
+    notificationManager().run {
       createNotificationChannel(createChannel(GENERAL_INFO))
       createNotificationChannel(createChannel(SHOWS_INFO))
       createNotificationChannel(createChannel(EPISODES_ANNOUNCEMENTS))
