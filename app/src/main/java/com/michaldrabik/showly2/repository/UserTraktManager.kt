@@ -5,6 +5,7 @@ package com.michaldrabik.showly2.repository
 import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.model.error.TraktAuthError
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.User
@@ -105,6 +106,4 @@ class UserTraktManager @Inject constructor(
 inline class TraktAuthToken(val token: String = "")
 
 inline class TraktRefreshToken(val token: String = "")
-
-data class TraktAuthError(override val message: String?) : Error()
 

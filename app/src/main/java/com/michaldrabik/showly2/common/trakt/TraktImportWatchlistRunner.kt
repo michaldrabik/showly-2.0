@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.model.error.TraktAuthError
 import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.repository.TraktAuthError
 import com.michaldrabik.showly2.repository.TraktAuthToken
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
