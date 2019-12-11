@@ -3,6 +3,7 @@ package com.michaldrabik.network.trakt.api
 import com.michaldrabik.network.Config.TRAKT_CLIENT_ID
 import com.michaldrabik.network.Config.TRAKT_CLIENT_SECRET
 import com.michaldrabik.network.Config.TRAKT_REDIRECT_URL
+import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.network.trakt.model.Episode
 import com.michaldrabik.network.trakt.model.OAuthResponse
 import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
@@ -35,6 +36,16 @@ class TraktApi(private val service: TraktService) {
     service.fetchSeasons(traktId)
       .filter { it.number != 0 } //Filtering out "special" seasons
       .sortedByDescending { it.number }
+
+  suspend fun fetchEpisodeComments(
+    traktId: Long,
+    seasonNumber: Int,
+    episodeNumber: Int
+  ): List<Comment> = try {
+    service.fetchEpisodeComments(traktId, seasonNumber, episodeNumber)
+  } catch (t: Throwable) {
+    emptyList()
+  }
 
   suspend fun fetchAuthTokens(code: String): OAuthResponse {
     val request = OAuthRequest(

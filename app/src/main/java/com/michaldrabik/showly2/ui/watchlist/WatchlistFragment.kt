@@ -78,7 +78,12 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
   }
 
   private fun openEpisodeDetails(item: WatchlistItem) {
-    val modal = EpisodeDetailsBottomSheet.create(item.episode, isWatched = false, showButton = false)
+    val modal = EpisodeDetailsBottomSheet.create(
+      item.show.ids.trakt,
+      item.episode,
+      isWatched = false,
+      showButton = false
+    )
     modal.show(requireActivity().supportFragmentManager, "MODAL")
   }
 

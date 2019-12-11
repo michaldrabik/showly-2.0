@@ -5,6 +5,7 @@ import com.michaldrabik.network.Config.TRAKT_BASE_URL
 import com.michaldrabik.network.Config.TVDB_BASE_URL
 import com.michaldrabik.network.di.CloudScope
 import com.michaldrabik.network.trakt.TraktInterceptor
+import com.michaldrabik.network.trakt.converters.CommentConverter
 import com.michaldrabik.network.trakt.converters.EpisodeConverter
 import com.michaldrabik.network.trakt.converters.SearchResultConverter
 import com.michaldrabik.network.trakt.converters.SeasonConverter
@@ -64,6 +65,7 @@ object RetrofitModule {
     val seasonConverter = SeasonConverter(episodeConverter)
 
     val syncProgressItemConverter = SyncProgressItemConverter(showConverter, seasonConverter)
+    val commentsConverter = CommentConverter()
 
     return Moshi.Builder()
       .add(showConverter)
@@ -76,6 +78,7 @@ object RetrofitModule {
       .add(actorConverter)
       .add(actorResultConverter)
       .add(syncProgressItemConverter)
+      .add(commentsConverter)
       .build()
   }
 

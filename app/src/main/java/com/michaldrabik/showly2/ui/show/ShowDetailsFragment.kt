@@ -211,7 +211,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     isWatched: Boolean,
     showButton: Boolean = true
   ) {
-    val modal = EpisodeDetailsBottomSheet.create(episode, isWatched, showButton)
+    val modal = EpisodeDetailsBottomSheet.create(showId, episode, isWatched, showButton)
     if (season != null) {
       modal.onEpisodeWatchedClick = { viewModel.setWatchedEpisode(episode, season, it) }
     }

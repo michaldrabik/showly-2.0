@@ -1,6 +1,7 @@
 package com.michaldrabik.network.trakt.api
 
 import com.michaldrabik.network.Config
+import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.network.trakt.model.Episode
 import com.michaldrabik.network.trakt.model.OAuthResponse
 import com.michaldrabik.network.trakt.model.SearchResult
@@ -41,6 +42,13 @@ interface TraktService {
 
   @GET("shows/{traktId}/seasons?extended=full,episodes")
   suspend fun fetchSeasons(@Path("traktId") traktId: Long): List<Season>
+
+  @GET("shows/{traktId}/seasons/{seasonNumber}/episodes/{episodeNumber}/comments?limit=30")
+  suspend fun fetchEpisodeComments(
+    @Path("traktId") traktId: Long,
+    @Path("seasonNumber") seasonNumber: Int,
+    @Path("episodeNumber") episodeNumber: Int
+  ): List<Comment>
 
   //Auth
 

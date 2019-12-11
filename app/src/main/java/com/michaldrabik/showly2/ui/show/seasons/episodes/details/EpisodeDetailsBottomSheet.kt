@@ -14,6 +14,7 @@ import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.ui.common.base.BaseBottomSheetFragment
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
@@ -34,7 +35,8 @@ import org.threeten.bp.ZonedDateTime
 class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewModel>() {
 
   companion object {
-    private const val ARG_ID = "ARG_ID"
+    private const val ARG_ID_TRAKT = "ARG_ID_TRAKT"
+    private const val ARG_ID_TVDB = "ARG_ID_TVDB"
     private const val ARG_NUMBER = "ARG_NUMBER"
     private const val ARG_SEASON = "ARG_SEASON"
     private const val ARG_TITLE = "ARG_TITLE"
@@ -44,12 +46,14 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     private const val ARG_SHOW_BUTTON = "ARG_SHOW_BUTTON"
 
     fun create(
+      showId: IdTrakt,
       episode: Episode,
       isWatched: Boolean,
       showButton: Boolean = true
     ): EpisodeDetailsBottomSheet {
       val bundle = Bundle().apply {
-        putLong(ARG_ID, episode.ids.tvdb.id)
+        putLong(ARG_ID_TRAKT, showId.id)
+        putLong(ARG_ID_TVDB, episode.ids.tvdb.id)
         putString(ARG_TITLE, episode.title)
         putString(ARG_OVERVIEW, episode.overview)
         putInt(ARG_SEASON, episode.season)
@@ -64,7 +68,8 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   var onEpisodeWatchedClick: ((Boolean) -> Unit)? = null
 
-  private val episodeTvdbId by lazy { IdTvdb(arguments!!.getLong(ARG_ID)) }
+  private val episodeTraktId by lazy { IdTrakt(arguments!!.getLong(ARG_ID_TRAKT)) }
+  private val episodeTvdbId by lazy { IdTvdb(arguments!!.getLong(ARG_ID_TVDB)) }
   private val episodeTitle by lazy { arguments!!.getString(ARG_TITLE, "") }
   private val episodeOverview by lazy { arguments!!.getString(ARG_OVERVIEW, "") }
   private val episodeNumber by lazy { arguments!!.getInt(ARG_NUMBER) }
@@ -89,9 +94,15 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    viewModel.uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-    viewModel.loadImage(episodeTvdbId)
+    viewModel.run {
+      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      loadImage(episodeTvdbId)
+      loadComments(episodeTraktId, episodeSeason, episodeNumber)
+    }
+    setupView(view)
+  }
 
+  private fun setupView(view: View) {
     view.run {
       val date = getDateString()
       episodeDetailsName.text =
