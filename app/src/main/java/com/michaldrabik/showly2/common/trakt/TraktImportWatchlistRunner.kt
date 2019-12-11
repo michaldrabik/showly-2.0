@@ -44,31 +44,31 @@ class TraktImportWatchlistRunner @Inject constructor(
 
   private suspend fun importWatchlist(token: TraktAuthToken) {
     Log.d(TAG, "Importing watchlist...")
-    val syncResults = cloud.traktApi.fetchSyncWatchlist(token.token)
+    val syncResults = cloud.traktApi.fetchSyncWatchlist(token.token).distinctBy { it.show.ids.trakt }
     val localShowsIds =
       database.seeLaterShowsDao().getAll().map { it.idTrakt }
         .plus(database.myShowsDao().getAll().map { it.idTrakt })
 
-    syncResults.forEachIndexed { index, result ->
-      Log.d(TAG, "Processing \'${result.show.title}\'...")
-      progressListener?.invoke(result.show, index, syncResults.size)
-
-      try {
-        val showId = result.show.ids.trakt
-        database.withTransaction {
-          if (showId !in localShowsIds) {
-            val show = mappers.show.fromNetwork(result.show)
-            val showDb = mappers.show.toDatabase(show)
-            database.showsDao().upsert(listOf(showDb))
-            database.seeLaterShowsDao().insert(SeeLaterShow.fromTraktId(showId, nowUtcMillis()))
+    syncResults
+      .forEachIndexed { index, result ->
+        Log.d(TAG, "Processing \'${result.show.title}\'...")
+        progressListener?.invoke(result.show, index, syncResults.size)
+        try {
+          val showId = result.show.ids.trakt
+          database.withTransaction {
+            if (showId !in localShowsIds) {
+              val show = mappers.show.fromNetwork(result.show)
+              val showDb = mappers.show.toDatabase(show)
+              database.showsDao().upsert(listOf(showDb))
+              database.seeLaterShowsDao().insert(SeeLaterShow.fromTraktId(showId, nowUtcMillis()))
+            }
           }
+        } catch (t: Throwable) {
+          Log.w(TAG, "Processing \'${result.show.title}\' failed. Skipping...")
         }
-      } catch (t: Throwable) {
-        Log.w(TAG, "Processing \'${result.show.title}\' failed. Skipping...")
-      }
 
-      delay(200)
-    }
+        delay(200)
+      }
   }
 
   companion object {

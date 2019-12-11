@@ -67,8 +67,8 @@ class TraktImportService : Service(), CoroutineScope {
       try {
         notifyBroadcast(ACTION_IMPORT_START)
 
-        runImportWatched()
-        runImportWatchlist()
+        val resultCount = runImportWatched()
+        runImportWatchlist(resultCount)
 
         notificationsManager().notify(IMPORT_NOTIFICATION_COMPLETE_ID, createSuccessNotification())
       } catch (t: Throwable) {
@@ -83,7 +83,7 @@ class TraktImportService : Service(), CoroutineScope {
     return START_NOT_STICKY
   }
 
-  private suspend fun runImportWatched() {
+  private suspend fun runImportWatched(): Int {
     importWatchedRunner.progressListener = { show: Show, progress: Int, total: Int ->
       val notification = createProgressNotification().run {
         setContentText("Processing \'${show.title}\'...")
@@ -92,10 +92,18 @@ class TraktImportService : Service(), CoroutineScope {
       notificationsManager().notify(IMPORT_NOTIFICATION_PROGRESS_ID, notification.build())
       notifyBroadcast(ACTION_IMPORT_PROGRESS)
     }
-    importWatchedRunner.run()
+    return importWatchedRunner.run()
   }
 
-  private suspend fun runImportWatchlist() {
+  private suspend fun runImportWatchlist(totalProgress: Int) {
+    importWatchlistRunner.progressListener = { show: Show, progress: Int, total: Int ->
+      val notification = createProgressNotification().run {
+        setContentText("Processing \'${show.title}\'...")
+        setProgress(totalProgress + total, totalProgress + progress, false)
+      }
+      notificationsManager().notify(IMPORT_NOTIFICATION_PROGRESS_ID, notification.build())
+      notifyBroadcast(ACTION_IMPORT_PROGRESS)
+    }
     importWatchlistRunner.run()
   }
 

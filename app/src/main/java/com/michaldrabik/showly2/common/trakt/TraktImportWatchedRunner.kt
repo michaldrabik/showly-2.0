@@ -33,7 +33,7 @@ class TraktImportWatchedRunner @Inject constructor(
   var progressListener: ((ShowNetwork, Int, Int) -> Unit)? = null
   var isRunning = false
 
-  suspend fun run() {
+  suspend fun run(): Int {
     isRunning = true
     Log.d(TAG, "Initialized.")
     var authToken = TraktAuthToken()
@@ -44,43 +44,47 @@ class TraktImportWatchedRunner @Inject constructor(
       //TODO Error Oauth needed
     }
 
-    importWatchedShows(authToken)
+    val syncedCount = importWatchedShows(authToken)
 
     isRunning = false
     Log.d(TAG, "Finished with success.")
+    return syncedCount
   }
 
-  private suspend fun importWatchedShows(token: TraktAuthToken) {
+  private suspend fun importWatchedShows(token: TraktAuthToken): Int {
     Log.d(TAG, "Importing watched shows...")
-    val syncResults = cloud.traktApi.fetchSyncWatched(token.token)
+    val syncResults = cloud.traktApi.fetchSyncWatched(token.token).distinctBy { it.show.ids.trakt }
     val myShowsIds = database.myShowsDao().getAll().map { it.idTrakt }
 
-    syncResults.forEachIndexed { index, result ->
-      Log.d(TAG, "Processing \'${result.show.title}\'...")
-      progressListener?.invoke(result.show, index, syncResults.size)
+    syncResults
+      .forEachIndexed { index, result ->
+        Log.d(TAG, "Processing \'${result.show.title}\'...")
+        progressListener?.invoke(result.show, index, syncResults.size)
 
-      try {
-        val showId = result.show.ids.trakt
+        try {
+          val showId = result.show.ids.trakt
 
-        val (seasons, episodes) = loadSeasons(showId, result)
+          val (seasons, episodes) = loadSeasons(showId, result)
 
-        database.withTransaction {
-          if (showId !in myShowsIds) {
-            val show = mappers.show.fromNetwork(result.show)
-            val showDb = mappers.show.toDatabase(show)
-            database.showsDao().upsert(listOf(showDb))
-            database.myShowsDao().insert(listOf(MyShow.fromTraktId(showDb.idTrakt, nowUtcMillis())))
-            loadImage(show)
+          database.withTransaction {
+            if (showId !in myShowsIds) {
+              val show = mappers.show.fromNetwork(result.show)
+              val showDb = mappers.show.toDatabase(show)
+              database.showsDao().upsert(listOf(showDb))
+              database.myShowsDao().insert(listOf(MyShow.fromTraktId(showDb.idTrakt, nowUtcMillis())))
+              loadImage(show)
+            }
+            database.seasonsDao().upsert(seasons)
+            database.episodesDao().upsert(episodes)
           }
-          database.seasonsDao().upsert(seasons)
-          database.episodesDao().upsert(episodes)
+        } catch (t: Throwable) {
+          Log.w(TAG, "Processing \'${result.show.title}\' failed. Skipping...")
         }
-      } catch (t: Throwable) {
-        Log.w(TAG, "Processing \'${result.show.title}\' failed. Skipping...")
+
+        delay(200)
       }
 
-      delay(200)
-    }
+    return syncResults.size
   }
 
   private suspend fun loadSeasons(showId: Long, item: SyncItem): Pair<List<Season>, List<Episode>> {
