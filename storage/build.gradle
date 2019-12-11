@@ -27,9 +27,9 @@ android {
 dependencies {
   implementation project(':common')
 
-  api "androidx.room:room-runtime:2.2.1"
-  api "androidx.room:room-ktx:2.2.1"
-  kapt "androidx.room:room-compiler:2.2.1"
+  api "androidx.room:room-runtime:2.2.2"
+  api "androidx.room:room-ktx:2.2.2"
+  kapt "androidx.room:room-compiler:2.2.2"
 
   implementation "com.google.dagger:dagger:2.25.2"
   kapt "com.google.dagger:dagger-compiler:2.25.2"
