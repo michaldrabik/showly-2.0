@@ -17,6 +17,7 @@ import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.ui.common.base.BaseBottomSheetFragment
+import com.michaldrabik.showly2.ui.common.views.CommentView
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
@@ -97,7 +98,6 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
       loadImage(episodeTvdbId)
-      loadComments(episodeTraktId, episodeSeason, episodeNumber)
     }
     setupView(view)
   }
@@ -117,6 +117,10 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
           onEpisodeWatchedClick?.invoke(!isWatched)
           dismiss()
         }
+      }
+      episodeDetailsCommentsButton.onClick {
+        episodeDetailsCommentsButton.gone()
+        viewModel.loadComments(episodeTraktId, episodeSeason, episodeNumber)
       }
     }
   }
@@ -144,6 +148,20 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
             episodeDetailsImagePlaceholder.visible()
           }
           .into(episodeDetailsImage)
+      }
+      commentsLoading?.let {
+        episodeDetailsCommentsProgress.visibleIf(it)
+      }
+      comments?.let { comments ->
+        episodeDetailsCommentsLabel.visibleIf(comments.isNotEmpty())
+        episodeDetailsComments.visibleIf(comments.isNotEmpty())
+        episodeDetailsComments.removeAllViews()
+        comments.forEach {
+          val view = CommentView(requireContext()).apply {
+            bind(it)
+          }
+          episodeDetailsComments.addView(view)
+        }
       }
     }
   }

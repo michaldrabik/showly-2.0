@@ -15,3 +15,5 @@ fun ZonedDateTime.toMillis() = this.toInstant().toEpochMilli()
 fun ZonedDateTime.toLocalTimeZone(): ZonedDateTime = this.withZoneSameInstant(ZoneId.systemDefault())
 
 fun Temporal.toDisplayString(): String = Config.DISPLAY_DATE_FORMAT.format(this)
+
+fun Temporal.toShortDisplayString(): String = Config.DISPLAY_DATE_SHORT_FORMAT.format(this)

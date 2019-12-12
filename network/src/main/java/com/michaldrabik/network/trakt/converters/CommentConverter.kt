@@ -4,6 +4,7 @@ import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.network.trakt.model.json.CommentJson
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.ToJson
+import org.threeten.bp.ZonedDateTime
 
 class CommentConverter {
 
@@ -15,7 +16,8 @@ class CommentConverter {
       comment = json.comment ?: "",
       userRating = json.user_rating ?: -1,
       spoiler = json.spoiler ?: true,
-      review = json.spoiler ?: false
+      review = json.spoiler ?: false,
+      createdAt = if (json.created_at.isNullOrBlank()) null else ZonedDateTime.parse(json.created_at)
     )
 
   @ToJson

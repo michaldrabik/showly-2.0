@@ -34,12 +34,15 @@ class EpisodeDetailsViewModel @Inject constructor(
   fun loadComments(idTrakt: IdTrakt, season: Int, episode: Int) {
     viewModelScope.launch {
       try {
+        uiState = EpisodeDetailsUiModel(commentsLoading = true)
         val comments = cloud.traktApi.fetchEpisodeComments(idTrakt.id, season, episode)
-          .filter { !it.review && !it.spoiler }
+          .filter { it.parentId <= 0 }
+          .filter { !it.spoiler }
           .sortedByDescending { it.id }
-        uiState = EpisodeDetailsUiModel(comments = comments)
+        uiState = EpisodeDetailsUiModel(comments = comments, commentsLoading = false)
       } catch (t: Throwable) {
         Log.w("EpisodeDetails", "Failed to load comments. ${t.message}")
+        uiState = EpisodeDetailsUiModel(commentsLoading = false)
       }
     }
   }
