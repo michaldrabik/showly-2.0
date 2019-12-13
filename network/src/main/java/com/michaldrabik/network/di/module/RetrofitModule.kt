@@ -12,6 +12,7 @@ import com.michaldrabik.network.trakt.converters.SeasonConverter
 import com.michaldrabik.network.trakt.converters.ShowConverter
 import com.michaldrabik.network.trakt.converters.SyncProgressItemConverter
 import com.michaldrabik.network.trakt.converters.TrendingResultConverter
+import com.michaldrabik.network.trakt.converters.UserConverter
 import com.michaldrabik.network.tvdb.converters.TvdbActorConverter
 import com.michaldrabik.network.tvdb.converters.TvdbImageConverter
 import com.michaldrabik.network.tvdb.converters.TvdbResultConverter
@@ -65,7 +66,9 @@ object RetrofitModule {
     val seasonConverter = SeasonConverter(episodeConverter)
 
     val syncProgressItemConverter = SyncProgressItemConverter(showConverter, seasonConverter)
-    val commentsConverter = CommentConverter()
+
+    val userConverter = UserConverter()
+    val commentsConverter = CommentConverter(userConverter)
 
     return Moshi.Builder()
       .add(showConverter)
@@ -78,6 +81,7 @@ object RetrofitModule {
       .add(actorConverter)
       .add(actorResultConverter)
       .add(syncProgressItemConverter)
+      .add(userConverter)
       .add(commentsConverter)
       .build()
   }

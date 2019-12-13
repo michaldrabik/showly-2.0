@@ -16,4 +16,4 @@ fun ZonedDateTime.toLocalTimeZone(): ZonedDateTime = this.withZoneSameInstant(Zo
 
 fun Temporal.toDisplayString(): String = Config.DISPLAY_DATE_FORMAT.format(this)
 
-fun Temporal.toShortDisplayString(): String = Config.DISPLAY_DATE_SHORT_FORMAT.format(this)
+fun Temporal.toDayOnlyDisplayString(): String = Config.DISPLAY_DATE_DAY_ONLY_FORMAT.format(this)

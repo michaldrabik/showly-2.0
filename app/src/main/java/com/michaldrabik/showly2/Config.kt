@@ -25,5 +25,5 @@ object Config {
     if (BuildConfig.DEBUG) TimeUnit.MINUTES.toMillis(1) else TimeUnit.HOURS.toMillis(12)
   }
   val DISPLAY_DATE_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy 'at' HH:mm") }
-  val DISPLAY_DATE_SHORT_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy") }
+  val DISPLAY_DATE_DAY_ONLY_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("dd MMM yyyy") }
 }

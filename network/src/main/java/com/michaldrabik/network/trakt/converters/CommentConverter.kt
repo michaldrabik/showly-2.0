@@ -6,7 +6,9 @@ import com.squareup.moshi.FromJson
 import com.squareup.moshi.ToJson
 import org.threeten.bp.ZonedDateTime
 
-class CommentConverter {
+class CommentConverter(
+  private val userConverter: UserConverter
+) {
 
   @FromJson
   fun fromJson(json: CommentJson) =
@@ -17,7 +19,8 @@ class CommentConverter {
       userRating = json.user_rating ?: -1,
       spoiler = json.spoiler ?: true,
       review = json.spoiler ?: false,
-      createdAt = if (json.created_at.isNullOrBlank()) null else ZonedDateTime.parse(json.created_at)
+      createdAt = if (json.created_at.isNullOrBlank()) null else ZonedDateTime.parse(json.created_at),
+      user = userConverter.fromJson(json.user)
     )
 
   @ToJson

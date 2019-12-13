@@ -9,5 +9,6 @@ data class Comment(
   val userRating: Int,
   val spoiler: Boolean,
   val review: Boolean,
-  val createdAt: ZonedDateTime?
-  )
+  val createdAt: ZonedDateTime?,
+  val user: User
+)

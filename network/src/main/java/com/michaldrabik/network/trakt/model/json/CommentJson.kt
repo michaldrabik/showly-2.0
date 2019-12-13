@@ -7,5 +7,6 @@ data class CommentJson(
   val user_rating: Int?,
   val spoiler: Boolean?,
   val review: Boolean?,
-  val created_at: String?
+  val created_at: String?,
+  val user: UserJson?
 )
