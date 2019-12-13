@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
@@ -79,7 +79,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   private val isWatched by lazy { arguments!!.getBoolean(ARG_IS_WATCHED) }
   private val showButton by lazy { arguments!!.getBoolean(ARG_SHOW_BUTTON) }
 
-  private val cornerRadius by lazy { requireContext().dimenToPx(R.dimen.episodeDetailsCorner) }
+  private val cornerRadius by lazy { requireContext().dimenToPx(R.dimen.episodeDetailsCorner).toFloat() }
 
   override val layoutResId = R.layout.view_episode_details
 
@@ -140,7 +140,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       image?.let {
         Glide.with(this@EpisodeDetailsBottomSheet)
           .load("${Config.TVDB_IMAGE_BASE_BANNERS_URL}${it.fileUrl}")
-          .transform(CenterCrop(), RoundedCorners(cornerRadius))
+          .transform(CenterCrop(), GranularRoundedCorners(cornerRadius, cornerRadius, 0F, 0F))
           .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
           .withSuccessListener { episodeDetailsProgress.gone() }
           .withFailListener {
@@ -153,8 +153,6 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         episodeDetailsCommentsProgress.visibleIf(it)
       }
       comments?.let { comments ->
-        episodeDetailsCommentsLabel.visibleIf(comments.isNotEmpty())
-        episodeDetailsComments.visibleIf(comments.isNotEmpty())
         episodeDetailsComments.removeAllViews()
         comments.forEach {
           val view = CommentView(requireContext()).apply {
@@ -162,6 +160,8 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
           }
           episodeDetailsComments.addView(view)
         }
+        episodeDetailsCommentsLabel.visibleIf(comments.isNotEmpty())
+        episodeDetailsComments.visibleIf(comments.isNotEmpty())
       }
     }
   }
