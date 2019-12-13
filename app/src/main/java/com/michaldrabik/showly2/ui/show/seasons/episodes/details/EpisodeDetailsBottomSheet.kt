@@ -19,6 +19,7 @@ import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.ui.common.base.BaseBottomSheetFragment
 import com.michaldrabik.showly2.ui.common.views.CommentView
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.toDisplayString
@@ -155,8 +156,9 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
           }
           episodeDetailsComments.addView(view)
         }
-        episodeDetailsCommentsLabel.visibleIf(comments.isNotEmpty())
-        episodeDetailsComments.visibleIf(comments.isNotEmpty())
+        episodeDetailsCommentsLabel.fadeIf(comments.isNotEmpty())
+        episodeDetailsComments.fadeIf(comments.isNotEmpty())
+        episodeDetailsCommentsEmpty.fadeIf(comments.isEmpty())
       }
     }
   }

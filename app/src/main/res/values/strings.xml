@@ -34,6 +34,7 @@
   <string name="textImdb">iMDB</string>
   <string name="textLoadComments">Show Comments</string>
   <string name="textComments">Comments:</string>
+  <string name="textNoComments">No comments yet.</string>
   <string name="textInMyShows">Added to my shows</string>
   <string name="textInSeeLater">Added to see later</string>
   <string name="textNoDescription">Overview not available.</string>
