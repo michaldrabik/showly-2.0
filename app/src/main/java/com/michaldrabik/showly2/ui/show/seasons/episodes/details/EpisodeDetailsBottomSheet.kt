@@ -26,7 +26,6 @@ import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.utilities.extensions.withFailListener
-import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
 import kotlinx.android.synthetic.main.view_episode_details.*
 import kotlinx.android.synthetic.main.view_episode_details.view.*
 import org.threeten.bp.Instant
@@ -142,11 +141,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
           .load("${Config.TVDB_IMAGE_BASE_BANNERS_URL}${it.fileUrl}")
           .transform(CenterCrop(), GranularRoundedCorners(cornerRadius, cornerRadius, 0F, 0F))
           .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
-          .withSuccessListener { episodeDetailsProgress.gone() }
-          .withFailListener {
-            episodeDetailsProgress.gone()
-            episodeDetailsImagePlaceholder.visible()
-          }
+          .withFailListener { episodeDetailsImagePlaceholder.visible() }
           .into(episodeDetailsImage)
       }
       commentsLoading?.let {
