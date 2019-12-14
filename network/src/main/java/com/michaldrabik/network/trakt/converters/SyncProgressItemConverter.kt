@@ -13,7 +13,7 @@ class SyncProgressItemConverter(
   @FromJson
   fun fromJson(json: SyncItemJson) =
     SyncItem(
-      show = showConverter.fromJson(json.show!!),
+      show = json.show?.let { showConverter.fromJson(it) },
       seasons = json.seasons?.map { seasonConverter.fromJson(it) } ?: emptyList()
     )
 

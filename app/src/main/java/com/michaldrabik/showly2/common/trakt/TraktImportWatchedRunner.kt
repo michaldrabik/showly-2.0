@@ -55,22 +55,25 @@ class TraktImportWatchedRunner @Inject constructor(
 
   private suspend fun importWatchedShows(token: TraktAuthToken): Int {
     Log.d(TAG, "Importing watched shows...")
-    val syncResults = cloud.traktApi.fetchSyncWatched(token.token).distinctBy { it.show.ids.trakt }
+    val syncResults = cloud.traktApi.fetchSyncWatched(token.token)
+      .filter { it.show != null }
+      .distinctBy { it.show!!.ids.trakt }
+
     val myShowsIds = database.myShowsDao().getAll().map { it.idTrakt }
 
     syncResults
       .forEachIndexed { index, result ->
-        Log.d(TAG, "Processing \'${result.show.title}\'...")
-        progressListener?.invoke(result.show, index, syncResults.size)
+        Log.d(TAG, "Processing \'${result.show!!.title}\'...")
+        progressListener?.invoke(result.show!!, index, syncResults.size)
 
         try {
-          val showId = result.show.ids.trakt
+          val showId = result.show!!.ids.trakt
 
           val (seasons, episodes) = loadSeasons(showId, result)
 
           database.withTransaction {
             if (showId !in myShowsIds) {
-              val show = mappers.show.fromNetwork(result.show)
+              val show = mappers.show.fromNetwork(result.show!!)
               val showDb = mappers.show.toDatabase(show)
               database.showsDao().upsert(listOf(showDb))
               database.myShowsDao().insert(listOf(MyShow.fromTraktId(showDb.idTrakt, nowUtcMillis())))
@@ -80,7 +83,7 @@ class TraktImportWatchedRunner @Inject constructor(
             database.episodesDao().upsert(episodes)
           }
         } catch (t: Throwable) {
-          Log.w(TAG, "Processing \'${result.show.title}\' failed. Skipping...")
+          Log.w(TAG, "Processing \'${result.show!!.title}\' failed. Skipping...")
         }
 
         delay(200)
