@@ -83,6 +83,7 @@
 
   <string name="textTraktImport">Trakt.tv Import</string>
   <string name="textTraktImportRunning">Running…</string>
+  <string name="textTraktImportStarted">Import started. It will continue to run in the background.</string>
   <string name="textTraktImportComplete">Trakt.tv import completed.</string>
   <string name="textTraktImportError">There was a problem completing Trakt.tv import. Please contact us if this keeps happening.</string>
   <string name="textTraktImportDescription">Add your Trakt.tv account progress and watchlist data into Showly.\n\nYour current Showly collection will not be modified. Only new Trakt items that are not currently in Showly\'s collection will be added.</string>
