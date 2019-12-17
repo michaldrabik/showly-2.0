@@ -71,7 +71,8 @@ class SettingsViewModel @Inject constructor(
   private suspend fun refreshSettings() {
     uiState = SettingsUiModel(
       settings = interactor.getSettings(),
-      isSignedInTrakt = interactor.isTraktAuthorized()
+      isSignedInTrakt = interactor.isTraktAuthorized(),
+      traktUsername = interactor.getTraktUsername()
     )
   }
 }

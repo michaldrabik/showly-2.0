@@ -11,5 +11,6 @@ data class User(
   @ColumnInfo(name = "tvdb_token_timestamp", defaultValue = "0") var tvdbTokenTimestamp: Long,
   @ColumnInfo(name = "trakt_token", defaultValue = "") var traktToken: String,
   @ColumnInfo(name = "trakt_refresh_token", defaultValue = "") var traktRefreshToken: String,
-  @ColumnInfo(name = "trakt_token_timestamp", defaultValue = "0") var traktTokenTimestamp: Long
+  @ColumnInfo(name = "trakt_token_timestamp", defaultValue = "0") var traktTokenTimestamp: Long,
+  @ColumnInfo(name = "trakt_username", defaultValue = "") var traktUsername: String
 )

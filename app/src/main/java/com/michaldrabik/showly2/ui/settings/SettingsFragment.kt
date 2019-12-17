@@ -69,10 +69,18 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
           if (isSignedIn) viewModel.logoutTrakt()
           else openTraktWebAuthorization()
         }
-        settingsTraktAuthorizeSummary.setText(
-          if (isSignedIn) R.string.textSettingsTraktAuthorizeSummarySignOut
-          else R.string.textSettingsTraktAuthorizeSummarySignIn
-        )
+        val summaryText = when {
+          isSignedIn -> {
+            when {
+              traktUsername?.isNotEmpty() == true ->
+                getString(R.string.textSettingsTraktAuthorizeSummarySignOutUser, traktUsername)
+              else ->
+                getString(R.string.textSettingsTraktAuthorizeSummarySignOut)
+            }
+          }
+          else -> getString(R.string.textSettingsTraktAuthorizeSummarySignIn)
+        }
+        settingsTraktAuthorizeSummary.text = summaryText
       }
     }
   }

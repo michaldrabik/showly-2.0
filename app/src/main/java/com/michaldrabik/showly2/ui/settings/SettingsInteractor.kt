@@ -79,4 +79,6 @@ class SettingsInteractor @Inject constructor(
   suspend fun logoutTrakt() = userManager.revokeToken()
 
   suspend fun isTraktAuthorized() = userManager.isAuthorized()
+
+  fun getTraktUsername() = userManager.traktUsername
 }

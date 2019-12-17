@@ -19,6 +19,7 @@ class TraktImportViewModel @Inject constructor(
     when (action) {
       ACTION_IMPORT_START -> {
         _messageStream.value = R.string.textTraktImportStarted
+        uiState = TraktImportUiModel(isProgress = true)
       }
       ACTION_IMPORT_PROGRESS -> {
         uiState = TraktImportUiModel(isProgress = true)

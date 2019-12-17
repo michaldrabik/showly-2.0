@@ -10,6 +10,7 @@ import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.User
 import javax.inject.Inject
+import com.michaldrabik.network.trakt.model.User as UserModel
 
 @AppScope
 class UserTraktManager @Inject constructor(
@@ -21,6 +22,7 @@ class UserTraktManager @Inject constructor(
     private const val TRAKT_TOKEN_EXPIRATION_MS = 5_184_000_000 //2 months
   }
 
+  var traktUsername = ""
   private var traktToken: TraktAuthToken? = null
   private var traktRefreshToken: TraktRefreshToken? = null
   private var traktTokenTimestamp = 0L
@@ -29,14 +31,16 @@ class UserTraktManager @Inject constructor(
     if (!isAuthorized()) {
       if (traktRefreshToken == null) throw TraktAuthError("Authorization needed")
       val tokens = cloud.traktApi.refreshAuthTokens(traktRefreshToken?.token!!)
-      saveToken(tokens.access_token, tokens.refresh_token)
+      val user = cloud.traktApi.fetchMyProfile(tokens.access_token)
+      saveToken(tokens.access_token, tokens.refresh_token, user)
     }
     return traktToken!!
   }
 
   suspend fun authorize(authCode: String) {
     val tokens = cloud.traktApi.fetchAuthTokens(authCode)
-    saveToken(tokens.access_token, tokens.refresh_token)
+    val user = cloud.traktApi.fetchMyProfile(tokens.access_token)
+    saveToken(tokens.access_token, tokens.refresh_token, user)
   }
 
   suspend fun isAuthorized(): Boolean {
@@ -62,7 +66,8 @@ class UserTraktManager @Inject constructor(
         user.copy(
           traktToken = "",
           traktRefreshToken = "",
-          traktTokenTimestamp = 0
+          traktTokenTimestamp = 0,
+          traktUsername = ""
         )
       )
     }
@@ -75,10 +80,11 @@ class UserTraktManager @Inject constructor(
       traktToken = null
       traktRefreshToken = null
       traktTokenTimestamp = 0
+      traktUsername = ""
     }
   }
 
-  private suspend fun saveToken(token: String, refreshToken: String) {
+  private suspend fun saveToken(token: String, refreshToken: String, userModel: UserModel) {
     val timestamp = nowUtcMillis()
     database.withTransaction {
       val user = database.userDao().get()
@@ -86,11 +92,13 @@ class UserTraktManager @Inject constructor(
         user?.copy(
           traktToken = token,
           traktRefreshToken = refreshToken,
-          traktTokenTimestamp = timestamp
+          traktTokenTimestamp = timestamp,
+          traktUsername = user.traktUsername
         ) ?: User(
           traktToken = token,
           traktRefreshToken = refreshToken,
           traktTokenTimestamp = timestamp,
+          traktUsername = userModel.username,
           tvdbToken = "",
           tvdbTokenTimestamp = 0
         )
@@ -100,6 +108,7 @@ class UserTraktManager @Inject constructor(
     traktToken = TraktAuthToken(token)
     traktRefreshToken = TraktRefreshToken(refreshToken)
     traktTokenTimestamp = timestamp
+    traktUsername = userModel.username
   }
 }
 

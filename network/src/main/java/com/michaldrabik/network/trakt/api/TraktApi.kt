@@ -76,6 +76,9 @@ class TraktApi(private val service: TraktService) {
     service.revokeOAuthToken(request)
   }
 
+  suspend fun fetchMyProfile(token: String) =
+    service.fetchMyProfile("Bearer $token")
+
   suspend fun fetchSyncWatched(token: String) =
     service.fetchSyncWatched("Bearer $token")
 

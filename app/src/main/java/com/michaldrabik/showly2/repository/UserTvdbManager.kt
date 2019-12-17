@@ -48,7 +48,8 @@ class UserTvdbManager @Inject constructor(
           tvdbTokenTimestamp = timestamp,
           traktToken = "",
           traktRefreshToken = "",
-          traktTokenTimestamp = 0
+          traktTokenTimestamp = 0,
+          traktUsername = ""
         )
       )
     }
