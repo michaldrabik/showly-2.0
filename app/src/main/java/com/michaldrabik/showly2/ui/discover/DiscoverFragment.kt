@@ -83,8 +83,8 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
       setColorSchemeResources(R.color.colorAccent, R.color.colorAccent, R.color.colorAccent)
       setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
       setOnRefreshListener {
-        viewModel.clearCache()
-        viewModel.loadDiscoverShows(skipCache = true, pullToRefresh = true)
+        viewModel.clearUiCache()
+        viewModel.loadDiscoverShows(pullToRefresh = true)
       }
     }
   }

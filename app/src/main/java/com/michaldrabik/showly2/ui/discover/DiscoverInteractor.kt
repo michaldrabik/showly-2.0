@@ -13,10 +13,11 @@ class DiscoverInteractor @Inject constructor(
   private val showsRepository: ShowsRepository
 ) {
 
-  suspend fun loadDiscoverShows(skipCache: Boolean): List<Show> {
-    imagesManager.checkAuthorization()
-    return showsRepository.discoverShows.loadAll(skipCache)
-  }
+  suspend fun isCacheValid() = showsRepository.discoverShows.isCacheValid()
+
+  suspend fun loadCachedShows() = showsRepository.discoverShows.loadAllCached()
+
+  suspend fun loadRemoteShows() = showsRepository.discoverShows.loadAllRemote()
 
   suspend fun loadMyShowsIds() = showsRepository.myShows.loadAllIds()
 

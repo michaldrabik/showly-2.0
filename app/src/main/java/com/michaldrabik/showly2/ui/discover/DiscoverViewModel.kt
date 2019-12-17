@@ -28,10 +28,7 @@ class DiscoverViewModel @Inject constructor(
 
   private var lastPullToRefreshMs = 0L
 
-  fun loadDiscoverShows(
-    skipCache: Boolean = false,
-    pullToRefresh: Boolean = false
-  ) {
+  fun loadDiscoverShows(pullToRefresh: Boolean = false) {
     if (pullToRefresh && nowUtcMillis() - lastPullToRefreshMs < Config.PULL_TO_REFRESH_COOLDOWN_MS) {
       uiState = DiscoverUiModel(showLoading = false)
       return
@@ -47,9 +44,17 @@ class DiscoverViewModel @Inject constructor(
       }
 
       try {
-        val shows = interactor.loadDiscoverShows(skipCache)
         val myShowsIds = interactor.loadMyShowsIds()
-        onShowsLoaded(shows, myShowsIds)
+
+        if (!pullToRefresh) {
+          val cachedShows = interactor.loadCachedShows()
+          onShowsLoaded(cachedShows, myShowsIds)
+        }
+        if (pullToRefresh || !interactor.isCacheValid()) {
+          val remoteShows = interactor.loadRemoteShows()
+          onShowsLoaded(remoteShows, myShowsIds)
+        }
+
         if (pullToRefresh) lastPullToRefreshMs = nowUtcMillis()
       } catch (t: Throwable) {
         onError()
@@ -99,7 +104,7 @@ class DiscoverViewModel @Inject constructor(
     uiCache.discoverSearchPosition = searchPosition
   }
 
-  fun clearCache() = uiCache.clear()
+  fun clearUiCache() = uiCache.clear()
 
   private fun onError() {
     _errorStream.value = R.string.errorCouldNotLoadDiscover

@@ -18,17 +18,21 @@ class DiscoverShowsRepository @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  suspend fun loadAll(skipCache: Boolean): List<Show> {
+  suspend fun isCacheValid(): Boolean {
     val stamp = database.discoverShowsDao().getMostRecent()?.createdAt ?: 0
-    if (!skipCache && nowUtcMillis() - stamp < Config.DISCOVER_SHOWS_CACHE_DURATION) {
-      val cachedShows = database.discoverShowsDao().getAll().map { it.idTrakt }
-      val shows = database.showsDao().getAll(cachedShows)
+    return nowUtcMillis() - stamp < Config.DISCOVER_SHOWS_CACHE_DURATION
+  }
 
-      return cachedShows
-        .map { id -> shows.first { it.idTrakt == id } }
-        .map { mappers.show.fromDatabase(it) }
-    }
+  suspend fun loadAllCached(): List<Show> {
+    val cachedShows = database.discoverShowsDao().getAll().map { it.idTrakt }
+    val shows = database.showsDao().getAll(cachedShows)
 
+    return cachedShows
+      .map { id -> shows.first { it.idTrakt == id } }
+      .map { mappers.show.fromDatabase(it) }
+  }
+
+  suspend fun loadAllRemote(): List<Show> {
     val remoteShows = mutableListOf<Show>()
     val trendingShows = cloud.traktApi.fetchTrendingShows().map { mappers.show.fromNetwork(it) }
     val anticipatedShows = cloud.traktApi.fetchAnticipatedShows().map { mappers.show.fromNetwork(it) }.toMutableList()
