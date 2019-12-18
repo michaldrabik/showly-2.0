@@ -20,7 +20,9 @@ import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.fragment_watchlist.*
+import kotlinx.android.synthetic.main.layout_watchlist_empty.*
 
 class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedListener, OnEpisodesSyncedListener {
 
@@ -39,6 +41,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    setupView()
     setupRecycler()
 
     viewModel.run {
@@ -49,7 +52,12 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
 
   override fun onResume() {
     super.onResume()
+    showNavigation()
     viewModel.loadWatchlist()
+  }
+
+  private fun setupView() {
+    watchlistEmptyTraktButton.onClick { openTraktImport() }
   }
 
   private fun setupRecycler() {
@@ -85,6 +93,11 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
       showButton = false
     )
     modal.show(requireActivity().supportFragmentManager, "MODAL")
+  }
+
+  private fun openTraktImport() {
+    findNavController().navigate(R.id.actionWatchlistFragmentToTraktImportFragment)
+    hideNavigation()
   }
 
   override fun onTabReselected() = watchlistRecycler.smoothScrollToPosition(0)

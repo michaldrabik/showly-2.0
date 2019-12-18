@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
+import com.michaldrabik.network.Config
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.trakt.TraktImportService
@@ -21,12 +23,13 @@ import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION
 import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_COMPLETE
 import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_PROGRESS
 import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_START
+import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_trakt_import.*
 
-class TraktImportFragment : BaseFragment<TraktImportViewModel>() {
+class TraktImportFragment : BaseFragment<TraktImportViewModel>(), OnTraktAuthorizeListener {
 
   override val layoutResId = R.layout.fragment_trakt_import
 
@@ -61,27 +64,38 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>() {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
       messageStream.observe(viewLifecycleOwner, Observer { showInfoSnackbar(it!!) })
       errorStream.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
+      invalidate()
     }
   }
 
   private fun setupView() {
     traktImportToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
-    traktImportButton.onClick {
-      val context = requireContext().applicationContext
-      Intent(context, TraktImportService::class.java).run {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-          context.startForegroundService(this)
-        } else {
-          context.startService(this)
-        }
-      }
-    }
   }
 
   override fun onResume() {
     super.onResume()
     handleBackPressed()
   }
+
+  private fun startImport() {
+    val context = requireContext().applicationContext
+    Intent(context, TraktImportService::class.java).run {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        context.startForegroundService(this)
+      } else {
+        context.startService(this)
+      }
+    }
+  }
+
+  private fun startAuthorization() {
+    Intent(Intent.ACTION_VIEW).run {
+      data = Uri.parse(Config.TRAKT_AUTHORIZE_URL)
+      startActivity(this)
+    }
+  }
+
+  override fun onAuthorizationResult(authData: Uri?) = viewModel.authorizeTrakt(authData)
 
   private fun render(uiModel: TraktImportUiModel) {
     uiModel.run {
@@ -90,6 +104,18 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>() {
         traktImportProgress.visibleIf(it)
       }
       authError?.let { findNavController().popBackStack() }
+      isAuthorized?.let {
+        when {
+          it -> {
+            traktImportButton.text = getString(R.string.textTraktImportStart)
+            traktImportButton.onClick { startImport() }
+          }
+          else -> {
+            traktImportButton.text = getString(R.string.textSettingsTraktAuthorizeTitle)
+            traktImportButton.onClick { startAuthorization() }
+          }
+        }
+      }
     }
   }
 

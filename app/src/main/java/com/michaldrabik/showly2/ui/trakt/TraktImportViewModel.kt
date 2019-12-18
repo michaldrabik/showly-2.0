@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.trakt
 
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_AUTH_ERROR
@@ -14,6 +15,30 @@ import javax.inject.Inject
 class TraktImportViewModel @Inject constructor(
   private val userManager: UserTraktManager
 ) : BaseViewModel<TraktImportUiModel>() {
+
+  fun invalidate() {
+    viewModelScope.launch {
+      val isAuthorized = userManager.isAuthorized()
+      uiState = TraktImportUiModel(isAuthorized = isAuthorized)
+    }
+  }
+
+  fun authorizeTrakt(authData: Uri?) {
+    if (authData == null) return
+    viewModelScope.launch {
+      try {
+        val code = authData.getQueryParameter("code")
+        if (code.isNullOrBlank()) {
+          throw IllegalStateException("Invalid Trakt authorization code.")
+        }
+        userManager.authorize(code)
+        _messageStream.value = R.string.textTraktLoginSuccess
+        invalidate()
+      } catch (t: Throwable) {
+        _errorStream.value = R.string.errorAuthorization
+      }
+    }
+  }
 
   fun onBroadcastAction(action: String?) {
     when (action) {
