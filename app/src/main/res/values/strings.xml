@@ -49,8 +49,8 @@
   <string name="textWatchLater">See Later</string>
   <string name="textWatchlistIncoming">Coming Soon</string>
   <string name="textWatchlistEmpty">Your watchlist is currently empty.\n\nVisit Discover tab to add shows or import your Trakt.tv collection.</string>
-  <string name="textMyShowsEmpty">Your shows list is currently empty.\n\nVisit Discover tab to add shows or import your Trakt.tv collection.</string>
-  <string name="textSeeLaterEmpty">Your see later list is currently empty.\n\nVisit Discover tab to add shows you might want to see in the future or import your Trakt.tv collection.</string>
+  <string name="textMyShowsEmpty">Your shows list is currently empty.\n\nVisit Discover tab to add shows.</string>
+  <string name="textSeeLaterEmpty">Your see later list is currently empty.\n\nVisit Discover tab to add shows you might want to see in the future.</string>
   <string name="textNewEpisodeAvailable">New episode is available now!</string>
   <string name="textNewSeasonAvailable">New season is available now!</string>
   <string name="textTraktLoginSuccess">You\'ve been successfully authorized.</string>
