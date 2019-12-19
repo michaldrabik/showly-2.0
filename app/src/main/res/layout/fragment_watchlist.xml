@@ -15,7 +15,7 @@
     android:background="@android:color/transparent"
     android:clipToPadding="false"
     android:overScrollMode="never"
-    android:paddingTop="@dimen/spaceNormal"
+    android:paddingTop="@dimen/spaceSmall"
     android:paddingBottom="@dimen/bottomNavigationHeightPadded"
     android:scrollbarFadeDuration="150"
     android:scrollbarSize="@dimen/scrollBarWidth"
