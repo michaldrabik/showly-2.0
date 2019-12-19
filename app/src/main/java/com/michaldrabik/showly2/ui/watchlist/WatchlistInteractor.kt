@@ -53,7 +53,7 @@ class WatchlistInteractor @Inject constructor(
       .groupBy { it.episode.hasAired(it.season) }
 
     val aired = (allItems[true] ?: emptyList())
-      .sortedBy { it.show.title }
+      .sortedWith(compareByDescending<WatchlistItem> { it.isNew() }.thenBy { it.show.title })
     val notAired = (allItems[false] ?: emptyList())
       .sortedBy { it.episode.firstAired?.toInstant()?.toEpochMilli() }
 

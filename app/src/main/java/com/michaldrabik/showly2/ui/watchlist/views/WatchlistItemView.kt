@@ -8,7 +8,6 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.michaldrabik.showly2.Config.NEW_BADGE_DURATION
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.views.ShowView
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
@@ -17,10 +16,7 @@ import com.michaldrabik.showly2.utilities.extensions.addRipple
 import com.michaldrabik.showly2.utilities.extensions.bump
 import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
 import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.nowUtc
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.toMillis
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_watchlist_item.view.*
 
@@ -60,9 +56,9 @@ class WatchlistItemView : ShowView<WatchlistItem> {
       item.episode.number
     )
     watchlistItemSubtitle2.text = episodeTitle
+    watchlistItemNewBadge.visibleIf(item.isNew())
 
     bindProgress(item)
-    bindNewBadge(item)
     bindCheckButton(item, checkClickListener)
 
     loadImage(item, missingImageListener)
@@ -75,13 +71,6 @@ class WatchlistItemView : ShowView<WatchlistItem> {
     watchlistItemProgress.max = item.episodesCount
     watchlistItemProgress.progress = item.watchedEpisodesCount
     watchlistItemProgressText.text = "${item.watchedEpisodesCount}/${item.episodesCount}"
-  }
-
-  private fun bindNewBadge(item: WatchlistItem) {
-    val showNewBadge =
-      item.episode.firstAired?.isBefore(nowUtc()) ?: false &&
-          nowUtcMillis() - (item.episode.firstAired?.toMillis() ?: 0) < NEW_BADGE_DURATION
-    watchlistItemNewBadge.visibleIf(showNewBadge)
   }
 
   private fun bindCheckButton(
