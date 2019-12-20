@@ -18,5 +18,6 @@ data class Show(
   val votes: Long,
   val commentCount: Long,
   val genres: List<String>,
-  val airedEpisodes: Int
+  val airedEpisodes: Int,
+  val updatedAt: Long
 )

@@ -37,7 +37,7 @@ class MyShowsInteractor @Inject constructor(
   }
 
   suspend fun loadSettings() =
-    mappers.settings.fromDatabase(database.settingsDao().getAll()!!)
+    mappers.settings.fromDatabase(database.settingsDao().getAll())
 
   private suspend fun loadSortOrder(section: MyShowsSection): SortOrder {
     val settings = loadSettings()
@@ -53,6 +53,7 @@ class MyShowsInteractor @Inject constructor(
       NAME -> shows.sortedBy { it.title }
       NEWEST -> shows.sortedByDescending { it.year }
       RATING -> shows.sortedByDescending { it.rating }
+      else -> throw IllegalStateException("Unsupported sort type.")
     }
 
   suspend fun setSectionSortOrder(section: MyShowsSection, order: SortOrder) {

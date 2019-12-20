@@ -31,7 +31,7 @@ class ShowsSynchronizer @Inject constructor(
     private const val DELAY_MS = 250L
   }
 
-  suspend fun synchronize() {
+  suspend fun synchronize(): Int {
     Log.i(TAG, "Sync initialized.")
 
     val showsToSync = showsRepository.myShows.loadAll()
@@ -39,10 +39,11 @@ class ShowsSynchronizer @Inject constructor(
 
     if (showsToSync.isEmpty()) {
       Log.i(TAG, "Nothing to process. Exiting...")
-      return
+      return 0
     }
     Log.i(TAG, "Shows to sync: ${showsToSync.size}.")
 
+    var syncCount = 0
     val syncLog = database.episodesSyncLogDao().getAll()
     showsToSync.forEach { show ->
 
@@ -55,6 +56,7 @@ class ShowsSynchronizer @Inject constructor(
       try {
         Log.i(TAG, "Syncing ${show.title}(${show.ids.trakt}) show...")
         showsRepository.detailsShow.load(show.ids.trakt, force = true)
+        syncCount++
 
         Log.i(TAG, "${show.title}(${show.ids.trakt}) show synced.")
       } catch (t: Throwable) {
@@ -67,6 +69,7 @@ class ShowsSynchronizer @Inject constructor(
         val remoteEpisodes = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
           .map { mappers.season.fromNetwork(it) }
         episodesManager.invalidateEpisodes(show, remoteEpisodes)
+        syncCount++
 
         Log.i(TAG, "${show.title}(${show.ids.trakt}) episodes synced.")
       } catch (t: Throwable) {
@@ -75,5 +78,7 @@ class ShowsSynchronizer @Inject constructor(
         delay(DELAY_MS)
       }
     }
+
+    return syncCount
   }
 }

@@ -3,13 +3,10 @@ package com.michaldrabik.showly2.ui.main
 import android.content.Context
 import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.showly2.BuildConfig
-import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_DEFAULT
 import com.michaldrabik.showly2.common.notifications.AnnouncementManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.fcm.NotificationChannel
-import com.michaldrabik.showly2.model.NotificationDelay.WHEN_AVAILABLE
 import com.michaldrabik.showly2.model.Settings
-import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.ui.UiCache
 import javax.inject.Inject
@@ -22,36 +19,24 @@ class MainInteractor @Inject constructor(
 ) {
 
   suspend fun initSettings() {
-    val settings = settingsRepository.load()
-    if (settings == null) {
-      val newSettings = Settings(
-        isInitialRun = true,
-        pushNotificationsEnabled = true,
-        episodesNotificationsEnabled = true,
-        episodesNotificationsDelay = WHEN_AVAILABLE,
-        myShowsEndedSortBy = SortOrder.NAME,
-        myShowsIncomingSortBy = SortOrder.NAME,
-        myShowsRunningSortBy = SortOrder.NAME,
-        myShowsRecentsAmount = MY_SHOWS_RECENTS_DEFAULT
-      )
-      settingsRepository.update(newSettings)
-    }
+    if (settingsRepository.isInitialized()) return
+    settingsRepository.update(Settings.createInitial())
   }
 
   suspend fun setInitialRun(value: Boolean) {
     val settings = settingsRepository.load()
-    settings?.let {
+    settings.let {
       settingsRepository.update(it.copy(isInitialRun = value))
     }
   }
 
   suspend fun isInitialRun(): Boolean {
     val settings = settingsRepository.load()
-    return settings?.isInitialRun ?: true
+    return settings.isInitialRun
   }
 
   suspend fun initFcm() {
-    val isEnabled = settingsRepository.load()?.pushNotificationsEnabled ?: false
+    val isEnabled = settingsRepository.load().pushNotificationsEnabled
     FirebaseMessaging.getInstance().run {
       val suffix = if (BuildConfig.DEBUG) "-debug" else ""
       if (isEnabled) {

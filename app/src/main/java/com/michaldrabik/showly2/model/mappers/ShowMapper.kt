@@ -42,7 +42,8 @@ class ShowMapper @Inject constructor() {
     show.votes,
     show.commentCount,
     show.genres,
-    show.airedEpisodes
+    show.airedEpisodes,
+    nowUtcMillis()
   )
 
   fun fromDatabase(show: ShowDb) = Show(
@@ -70,7 +71,8 @@ class ShowMapper @Inject constructor() {
     show.votes,
     show.commentCount,
     show.genres.split(","),
-    show.airedEpisodes
+    show.airedEpisodes,
+    show.updatedAt
   )
 
   fun toDatabase(show: Show) = ShowDb(

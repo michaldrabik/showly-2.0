@@ -10,7 +10,10 @@ import com.michaldrabik.storage.database.model.Settings
 interface SettingsDao {
 
   @Query("SELECT * FROM settings")
-  suspend fun getAll(): Settings?
+  suspend fun getAll(): Settings
+
+  @Query("SELECT COUNT(*) FROM settings")
+  suspend fun getCount(): Int
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun upsert(settings: Settings)

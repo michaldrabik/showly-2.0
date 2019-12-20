@@ -15,7 +15,8 @@ class SettingsMapper @Inject constructor() {
     myShowsRunningSortBy = enumValueOf(settings.myShowsRunningSortBy),
     myShowsIncomingSortBy = enumValueOf(settings.myShowsIncomingSortBy),
     myShowsEndedSortBy = enumValueOf(settings.myShowsEndedSortBy),
-    myShowsRecentsAmount = settings.myShowsRecentsAmount
+    myShowsRecentsAmount = settings.myShowsRecentsAmount,
+    seeLaterShowsSortBy = enumValueOf(settings.seeLaterShowsSortBy)
   )
 
   fun toDatabase(settings: Settings) = SettingsDb(
@@ -26,6 +27,7 @@ class SettingsMapper @Inject constructor() {
     myShowsRunningSortBy = settings.myShowsRunningSortBy.name,
     myShowsIncomingSortBy = settings.myShowsIncomingSortBy.name,
     myShowsEndedSortBy = settings.myShowsEndedSortBy.name,
-    myShowsRecentsAmount = settings.myShowsRecentsAmount
+    myShowsRecentsAmount = settings.myShowsRecentsAmount,
+    seeLaterShowsSortBy = settings.seeLaterShowsSortBy.name
   )
 }

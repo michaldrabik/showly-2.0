@@ -34,14 +34,14 @@ class ShowsSyncService : JobIntentService(), CoroutineScope {
   override fun onHandleWork(intent: Intent) {
     Log.i(TAG, "Sync service initialized")
     appComponent().inject(this)
-    runBlocking {
+    val syncCount = runBlocking {
       try {
         synchronizer.synchronize()
-        notifySuccess()
       } catch (t: Throwable) {
         Log.e(TAG, t.toString())
       }
     }
+    if (syncCount > 0) notifySuccess()
   }
 
   private fun notifySuccess() {

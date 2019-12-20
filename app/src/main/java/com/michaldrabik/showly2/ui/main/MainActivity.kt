@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.net.Uri
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
@@ -19,7 +18,6 @@ import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.ui.NotificationActivity
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
-import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject

@@ -13,9 +13,12 @@ class SettingsRepository @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  suspend fun load(): Settings? {
+  suspend fun isInitialized() =
+    database.settingsDao().getCount() > 0
+
+  suspend fun load(): Settings {
     val settingsDb = database.settingsDao().getAll()
-    return settingsDb?.let { mappers.settings.fromDatabase(it) }
+    return settingsDb.let { mappers.settings.fromDatabase(it) }
   }
 
   suspend fun update(settings: Settings) {

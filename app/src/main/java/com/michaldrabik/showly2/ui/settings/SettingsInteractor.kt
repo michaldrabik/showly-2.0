@@ -21,12 +21,12 @@ class SettingsInteractor @Inject constructor(
   private val userManager: UserTraktManager
 ) {
 
-  suspend fun getSettings(): Settings = settingsRepository.load()!!
+  suspend fun getSettings(): Settings = settingsRepository.load()
 
   suspend fun setRecentShowsAmount(amount: Int) {
     check(amount in Config.MY_SHOWS_RECENTS_OPTIONS)
     val settings = settingsRepository.load()
-    settings?.let {
+    settings.let {
       val new = it.copy(myShowsRecentsAmount = amount)
       settingsRepository.update(new)
     }
@@ -34,7 +34,7 @@ class SettingsInteractor @Inject constructor(
 
   suspend fun enablePushNotifications(enable: Boolean) {
     val settings = settingsRepository.load()
-    settings?.let {
+    settings.let {
       val new = it.copy(pushNotificationsEnabled = enable)
       settingsRepository.update(new)
     }
@@ -52,7 +52,7 @@ class SettingsInteractor @Inject constructor(
 
   suspend fun enableEpisodesAnnouncements(enable: Boolean, context: Context) {
     val settings = settingsRepository.load()
-    settings?.let {
+    settings.let {
       val new = it.copy(episodesNotificationsEnabled = enable)
       settingsRepository.update(new)
       announcementManager.refreshEpisodesAnnouncements(context.applicationContext)
@@ -61,7 +61,7 @@ class SettingsInteractor @Inject constructor(
 
   suspend fun setWhenToNotify(delay: NotificationDelay, context: Context) {
     val settings = settingsRepository.load()
-    settings?.let {
+    settings.let {
       val new = it.copy(episodesNotificationsDelay = delay)
       settingsRepository.update(new)
       announcementManager.refreshEpisodesAnnouncements(context.applicationContext)
