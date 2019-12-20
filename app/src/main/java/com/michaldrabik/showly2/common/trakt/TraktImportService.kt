@@ -76,6 +76,7 @@ class TraktImportService : Service(), CoroutineScope {
         if (t is TraktAuthError) notifyBroadcast(ACTION_IMPORT_AUTH_ERROR)
         notificationManager().notify(IMPORT_NOTIFICATION_COMPLETE_ID, createErrorNotification())
       } finally {
+        clear()
         notifyBroadcast(ACTION_IMPORT_COMPLETE)
         stopSelf()
       }
@@ -147,6 +148,11 @@ class TraktImportService : Service(), CoroutineScope {
 
   private fun notifyBroadcast(action: String) {
     LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(Intent(action))
+  }
+
+  private fun clear() {
+    importWatchlistRunner.isRunning = false
+    importWatchedRunner.isRunning = false
   }
 
   override fun onBind(intent: Intent?): IBinder? = null
