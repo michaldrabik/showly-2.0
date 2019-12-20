@@ -126,6 +126,4 @@ class ImagesManager @Inject constructor(
         Image(it.id, tvdbId, type, SHOW, it.fileName, it.thumbnail, AVAILABLE)
       }
   }
-
-  suspend fun checkAuthorization() = userManager.checkAuthorization()
 }
