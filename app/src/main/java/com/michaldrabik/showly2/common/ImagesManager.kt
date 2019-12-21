@@ -12,6 +12,7 @@ import com.michaldrabik.showly2.model.ImageFamily.EPISODE
 import com.michaldrabik.showly2.model.ImageFamily.SHOW
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.FANART
+import com.michaldrabik.showly2.model.ImageType.FANART_WIDE
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
@@ -77,9 +78,22 @@ class ImagesManager @Inject constructor(
     val images = cloud.tvdbApi.fetchShowImages(userManager.getToken(), tvdbId.id)
 
     var typeImages = images.filter { it.keyType == type.key }
+
     //If requested poster is unavailable try backing up to a fanart
     if (typeImages.isEmpty() && type == POSTER) {
       typeImages = images.filter { it.keyType == FANART.key }
+    }
+
+    //If requested fanart is unavailable try backing up to an episode image
+    if (typeImages.isEmpty() && type in arrayOf(FANART, FANART_WIDE)) {
+      val seasons = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
+      if (seasons.isNotEmpty()) {
+        val episode = seasons[0].episodes.firstOrNull()
+        episode?.let { ep ->
+          val backupImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getToken(), ep.ids.tvdb)
+          backupImage?.let { img -> typeImages = listOf(img) }
+        }
+      }
     }
 
     val remoteImage = typeImages.maxBy { it.rating.count }
