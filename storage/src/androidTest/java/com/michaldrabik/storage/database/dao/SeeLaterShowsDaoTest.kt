@@ -22,7 +22,7 @@ class SeeLaterShowsDaoTest : BaseDaoTest() {
       database.showsDao().upsert(listOf(show))
       database.seeLaterShowsDao().insert(seeLaterShow)
       val result = database.seeLaterShowsDao().getAll()
-      assertThat(result).containsExactlyElementsIn(listOf(show))
+      assertThat(result).containsExactlyElementsIn(listOf(show.copy(updatedAt = 999)))
     }
   }
 
@@ -57,7 +57,7 @@ class SeeLaterShowsDaoTest : BaseDaoTest() {
       database.seeLaterShowsDao().deleteById(2)
 
       val result = database.seeLaterShowsDao().getAll()
-      assertThat(result).containsExactlyElementsIn(listOf(show))
+      assertThat(result).containsExactlyElementsIn(listOf(show.copy(updatedAt = 999)))
     }
   }
 }
