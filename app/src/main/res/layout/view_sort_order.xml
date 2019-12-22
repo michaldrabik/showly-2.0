@@ -92,4 +92,32 @@
 
   </LinearLayout>
 
+  <LinearLayout
+    android:id="@+id/sortOrderDateAdded"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/spaceMedium"
+    >
+
+    <ImageView
+      android:id="@+id/sortOrderDateAddedCheck"
+      android:layout_width="20dp"
+      android:layout_height="20dp"
+      android:layout_marginEnd="@dimen/spaceSmall"
+      android:visibility="invisible"
+      app:srcCompat="@drawable/ic_check"
+      />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/textSortDateAdded"
+      android:textColor="@color/colorTextPrimary"
+      />
+
+  </LinearLayout>
+
 </merge>

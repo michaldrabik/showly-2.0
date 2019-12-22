@@ -10,12 +10,19 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.model.SortOrder.DATE_ADDED
+import com.michaldrabik.showly2.model.SortOrder.NAME
+import com.michaldrabik.showly2.model.SortOrder.NEWEST
+import com.michaldrabik.showly2.model.SortOrder.RATING
 import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.seelater.recycler.SeeLaterAdapter
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
+import com.michaldrabik.showly2.utilities.extensions.fadeIn
+import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.fragment_see_later.*
 
 class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListener, OnScrollResetListener {
@@ -35,10 +42,22 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListe
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    setupView()
     setupRecycler()
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
       loadShows()
+    }
+  }
+
+  private fun setupView() {
+    seeLaterSortIcon.onClick { seeLaterSortView.fadeIn() }
+    seeLaterSortView.run {
+      setAvailable(listOf(NAME, DATE_ADDED, RATING, NEWEST))
+      sortSelectedListener = {
+        fadeOut()
+        viewModel.setSortOrder(it)
+      }
     }
   }
 
@@ -61,6 +80,7 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListe
         adapter.setItems(it)
         seeLaterEmptyView.fadeIf(it.isEmpty())
       }
+      sortOrder?.let { seeLaterSortView.bind(it) }
     }
   }
 

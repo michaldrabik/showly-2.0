@@ -1,11 +1,12 @@
-package com.michaldrabik.showly2.ui.common.views.search
+package com.michaldrabik.showly2.ui.common.views
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.google.android.material.tabs.TabLayout
+import com.michaldrabik.showly2.ui.common.behaviour.ScrollableViewBehaviour
 
-class ScrollableTabLayout : TabLayout, CoordinatorLayout.AttachedBehavior {
+class ScrollableImageView : AppCompatImageView, CoordinatorLayout.AttachedBehavior {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

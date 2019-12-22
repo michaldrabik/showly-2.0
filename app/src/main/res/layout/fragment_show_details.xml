@@ -132,7 +132,6 @@
         android:layout_height="wrap_content"
         android:textColor="@color/colorTextSecondary"
         android:textSize="13sp"
-        android:textStyle=""
         app:layout_constraintStart_toEndOf="@+id/showDetailsStarIcon"
         app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"
         tools:text="7.62 (9239 votes)"

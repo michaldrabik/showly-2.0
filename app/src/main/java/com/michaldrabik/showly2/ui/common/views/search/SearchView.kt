@@ -6,6 +6,7 @@ import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.ui.common.behaviour.SearchViewBehaviour
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
 import com.michaldrabik.showly2.utilities.extensions.onClick
@@ -41,7 +42,8 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
   var isSearching = false
 
-  override fun getBehavior() = SearchViewBehaviour(context.dimenToPx(R.dimen.spaceSmall))
+  override fun getBehavior() =
+    SearchViewBehaviour(context.dimenToPx(R.dimen.spaceSmall))
 
   override fun setEnabled(enabled: Boolean) {
     searchViewInput.isEnabled = enabled

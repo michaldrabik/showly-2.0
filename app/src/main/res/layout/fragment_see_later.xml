@@ -1,38 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.core.widget.NestedScrollView
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/seeLaterRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:clipChildren="false"
-  android:clipToPadding="false"
+  android:fillViewport="true"
   >
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/seeLaterRecycler"
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:clipChildren="false"
     android:clipToPadding="false"
-    android:overScrollMode="never"
-    android:paddingTop="@dimen/myShowsTabsViewPadding"
-    android:paddingBottom="@dimen/myShowsBottomPadding"
-    android:scrollbarFadeDuration="150"
-    android:scrollbarSize="@dimen/scrollBarWidth"
-    android:scrollbarStyle="outsideOverlay"
-    android:scrollbarThumbVertical="@color/colorScrollbar"
-    android:scrollbars="vertical"
-    />
+    >
 
-  <include
-    android:id="@+id/seeLaterEmptyView"
-    layout="@layout/layout_see_later_empty"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginStart="@dimen/spaceBig"
-    android:layout_marginEnd="@dimen/spaceBig"
-    android:visibility="gone"
-    />
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/seeLaterRecycler"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@android:color/transparent"
+      android:clipToPadding="false"
+      android:nestedScrollingEnabled="false"
+      android:overScrollMode="never"
+      android:paddingTop="@dimen/myShowsTabsViewPadding"
+      android:paddingBottom="@dimen/myShowsBottomPadding"
+      android:scrollbarFadeDuration="150"
+      android:scrollbarSize="@dimen/scrollBarWidth"
+      android:scrollbarStyle="outsideOverlay"
+      android:scrollbarThumbVertical="@color/colorScrollbar"
+      android:scrollbars="vertical"
+      />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <com.michaldrabik.showly2.ui.common.views.ScrollableImageView
+      android:id="@+id/seeLaterSortIcon"
+      android:layout_width="wrap_content"
+      android:layout_height="36dp"
+      android:layout_gravity="end"
+      android:layout_marginTop="@dimen/myShowsSearchViewPadding"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      app:srcCompat="@drawable/ic_sort"
+      />
+
+    <com.michaldrabik.showly2.ui.common.views.SortOrderView
+      android:id="@+id/seeLaterSortView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="end"
+      android:layout_marginTop="@dimen/myShowsSearchViewPadding"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:visibility="gone"
+      />
+
+    <include
+      android:id="@+id/seeLaterEmptyView"
+      layout="@layout/layout_see_later_empty"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginStart="@dimen/spaceBig"
+      android:layout_marginEnd="@dimen/spaceBig"
+      android:visibility="gone"
+      />
+
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.core.widget.NestedScrollView>

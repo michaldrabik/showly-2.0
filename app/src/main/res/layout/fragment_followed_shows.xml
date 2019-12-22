@@ -15,7 +15,7 @@
     android:layout_height="match_parent"
     />
 
-  <com.michaldrabik.showly2.ui.common.views.search.ScrollableTabLayout
+  <com.michaldrabik.showly2.ui.common.views.ScrollableTabLayout
     android:id="@+id/followedShowsTabs"
     style="@style/MyShowsTabStyle"
     android:layout_width="wrap_content"

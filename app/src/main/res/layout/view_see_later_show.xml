@@ -83,12 +83,35 @@
       android:textColor="@color/colorAccent"
       android:textSize="12sp"
       app:layout_constraintBottom_toTopOf="@+id/seeLaterShowTitle"
-      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/seeLaterShowImage"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_chainStyle="packed"
       tools:ignore="SmallSp"
       tools:text="Netflix"
+      />
+
+    <ImageView
+      android:id="@+id/seeLaterShowStarIcon"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:tint="@color/colorAccent"
+      app:layout_constraintBottom_toTopOf="@+id/seeLaterShowTitle"
+      app:layout_constraintEnd_toStartOf="@id/seeLaterShowRating"
+      app:layout_constraintTop_toTopOf="@id/seeLaterShowNetwork"
+      app:srcCompat="@drawable/ic_star"
+      />
+
+    <TextView
+      android:id="@+id/seeLaterShowRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="end"
+      android:textColor="@color/colorTextSecondary"
+      android:textSize="12sp"
+      app:layout_constraintBottom_toTopOf="@+id/seeLaterShowTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/seeLaterShowNetwork"
+      tools:text="7.6"
       />
 
     <TextView

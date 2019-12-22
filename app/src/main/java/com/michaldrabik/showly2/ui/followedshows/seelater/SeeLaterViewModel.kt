@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.followedshows.seelater
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.POSTER
+import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.followedshows.seelater.recycler.SeeLaterListItem
 import com.michaldrabik.showly2.utilities.extensions.findReplace
@@ -15,11 +16,12 @@ class SeeLaterViewModel @Inject constructor(
 
   fun loadShows() {
     viewModelScope.launch {
+      val sortOrder = interactor.loadSortOrder()
       val items = interactor.loadShows().map {
         val image = interactor.findCachedImage(it, POSTER)
         SeeLaterListItem(it, image, false)
       }
-      uiState = SeeLaterUiModel(items = items)
+      uiState = SeeLaterUiModel(items = items, sortOrder = sortOrder)
     }
   }
 
@@ -39,6 +41,13 @@ class SeeLaterViewModel @Inject constructor(
       } catch (t: Throwable) {
         updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
+    }
+  }
+
+  fun setSortOrder(sortOrder: SortOrder) {
+    viewModelScope.launch {
+      interactor.setSortOrder(sortOrder)
+      loadShows()
     }
   }
 }

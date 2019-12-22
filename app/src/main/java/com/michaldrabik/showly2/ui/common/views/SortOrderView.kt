@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.SortOrder
+import com.michaldrabik.showly2.model.SortOrder.DATE_ADDED
 import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.SortOrder.NEWEST
 import com.michaldrabik.showly2.model.SortOrder.RATING
@@ -28,11 +29,20 @@ class SortOrderView : LinearLayout {
     sortOrderName.onClick { sortSelectedListener(NAME) }
     sortOrderNewest.onClick { sortSelectedListener(NEWEST) }
     sortOrderRating.onClick { sortSelectedListener(RATING) }
+    sortOrderDateAdded.onClick { sortSelectedListener(DATE_ADDED) }
+  }
+
+  fun setAvailable(sortOrders: List<SortOrder>) {
+    sortOrderName.visibleIf(NAME in sortOrders)
+    sortOrderNewest.visibleIf(NEWEST in sortOrders)
+    sortOrderRating.visibleIf(RATING in sortOrders)
+    sortOrderDateAdded.visibleIf(DATE_ADDED in sortOrders)
   }
 
   fun bind(sortOrder: SortOrder) {
     sortOrderNameCheck.visibleIf(sortOrder == NAME, false)
     sortOrderNewestCheck.visibleIf(sortOrder == NEWEST, false)
     sortOrderRatingCheck.visibleIf(sortOrder == RATING, false)
+    sortOrderDateAddedCheck.visibleIf(sortOrder == DATE_ADDED, false)
   }
 }

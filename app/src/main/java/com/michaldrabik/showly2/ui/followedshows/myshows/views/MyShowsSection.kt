@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.SortOrder
+import com.michaldrabik.showly2.model.SortOrder.NAME
+import com.michaldrabik.showly2.model.SortOrder.NEWEST
+import com.michaldrabik.showly2.model.SortOrder.RATING
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsSectionAdapter
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
@@ -69,6 +72,7 @@ class MyShowsSection : ConstraintLayout {
 
   private fun setupView() {
     layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+    myShowsSectionSortView.setAvailable(listOf(NAME, NEWEST, RATING))
     myShowsSectionSortButton.expandTouchArea()
     myShowsSectionSortButton.onClick { button ->
       button.gone()

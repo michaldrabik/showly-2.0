@@ -1,20 +1,19 @@
-package com.michaldrabik.showly2.ui.common.views.search
+package com.michaldrabik.showly2.ui.common.behaviour
 
 import android.view.View
-import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class ScrollableViewBehaviour : CoordinatorLayout.Behavior<ViewGroup>() {
+class ScrollableViewBehaviour : CoordinatorLayout.Behavior<View>() {
 
-  override fun layoutDependsOn(parent: CoordinatorLayout, child: ViewGroup, dependency: View): Boolean {
+  override fun layoutDependsOn(parent: CoordinatorLayout, child: View, dependency: View): Boolean {
     return dependency is RecyclerView
   }
 
   override fun onStartNestedScroll(
     coordinatorLayout: CoordinatorLayout,
-    child: ViewGroup,
+    child: View,
     directTargetChild: View,
     target: View,
     axes: Int,
@@ -26,7 +25,7 @@ class ScrollableViewBehaviour : CoordinatorLayout.Behavior<ViewGroup>() {
 
   override fun onNestedScroll(
     coordinatorLayout: CoordinatorLayout,
-    child: ViewGroup,
+    child: View,
     target: View,
     dxConsumed: Int,
     dyConsumed: Int,

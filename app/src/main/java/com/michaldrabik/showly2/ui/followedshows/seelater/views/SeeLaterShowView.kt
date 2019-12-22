@@ -41,6 +41,7 @@ class SeeLaterShowView : ShowView<SeeLaterListItem> {
     seeLaterShowDescription.text = item.show.overview
     val year = if (item.show.year > 0) " (${item.show.year})" else ""
     seeLaterShowNetwork.text = "${item.show.network}$year"
+    seeLaterShowRating.text = String.format("%.1f", item.show.rating)
 
     seeLaterShowDescription.visibleIf(item.show.overview.isNotBlank())
     seeLaterShowNetwork.visibleIf(item.show.network.isNotBlank())
@@ -53,6 +54,7 @@ class SeeLaterShowView : ShowView<SeeLaterListItem> {
     seeLaterShowTitle.text = ""
     seeLaterShowDescription.text = ""
     seeLaterShowNetwork.text = ""
+    seeLaterShowRating.text = ""
     seeLaterShowPlaceholder.gone()
     Glide.with(this).clear(seeLaterShowImage)
   }
