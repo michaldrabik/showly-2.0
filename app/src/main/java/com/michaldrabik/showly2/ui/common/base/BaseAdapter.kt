@@ -18,7 +18,7 @@ abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.
 
   fun getItems(): List<Item> = asyncDiffer.currentList
 
-  fun indexOf(item: Item) = asyncDiffer.currentList.indexOf(item)
+  fun indexOf(item: Item) = asyncDiffer.currentList.indexOfFirst { it.isSameAs(item) }
 
   class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
