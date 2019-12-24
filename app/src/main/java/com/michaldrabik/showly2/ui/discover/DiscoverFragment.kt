@@ -20,8 +20,8 @@ import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
-import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.random.Random
+import kotlinx.android.synthetic.main.fragment_discover.*
 
 class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListener {
 

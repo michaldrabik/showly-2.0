@@ -39,7 +39,7 @@ class AnnouncementWorker(context: Context, workerParams: WorkerParameters) : Wor
         val bitmap = target.get()
         notification.setLargeIcon(bitmap)
       } catch (e: Exception) {
-        //NOOP
+        // NOOP
       } finally {
         Glide.with(applicationContext).clear(target)
       }

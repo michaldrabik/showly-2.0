@@ -343,7 +343,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     try {
       startActivity(i)
     } catch (e: ActivityNotFoundException) {
-      //IMDb App not installed. Start in web browser
+      // IMDb App not installed. Start in web browser
       i.data = Uri.parse("http://www.imdb.com/title/${id.id}")
       startActivity(i)
     }

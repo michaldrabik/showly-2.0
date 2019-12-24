@@ -53,4 +53,3 @@ interface AppComponent {
 
   fun inject(service: TraktImportService)
 }
-

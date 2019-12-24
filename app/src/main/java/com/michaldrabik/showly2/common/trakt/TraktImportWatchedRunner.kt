@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.common.trakt
 import android.util.Log
 import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
+import com.michaldrabik.network.trakt.model.Show as ShowNetwork
 import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.showly2.common.ImagesManager
 import com.michaldrabik.showly2.di.AppScope
@@ -18,9 +19,8 @@ import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.MyShow
 import com.michaldrabik.storage.database.model.Season
-import kotlinx.coroutines.delay
 import javax.inject.Inject
-import com.michaldrabik.network.trakt.model.Show as ShowNetwork
+import kotlinx.coroutines.delay
 
 @AppScope
 class TraktImportWatchedRunner @Inject constructor(
@@ -124,7 +124,7 @@ class TraktImportWatchedRunner @Inject constructor(
     try {
       imagesManager.loadRemoteImage(show, FANART)
     } catch (t: Throwable) {
-      //NOOP Ignore image for now. It will be fetched later if needed.
+      // NOOP Ignore image for now. It will be fetched later if needed.
     }
   }
 

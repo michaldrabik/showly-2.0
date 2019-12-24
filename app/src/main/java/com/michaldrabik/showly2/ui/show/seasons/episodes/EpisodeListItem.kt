@@ -10,5 +10,4 @@ data class EpisodeListItem(
 ) {
 
   val id = episode.ids.trakt.id
-
 }

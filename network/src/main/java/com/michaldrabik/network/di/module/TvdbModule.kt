@@ -5,8 +5,8 @@ import com.michaldrabik.network.tvdb.api.TvdbApi
 import com.michaldrabik.network.tvdb.api.TvdbService
 import dagger.Module
 import dagger.Provides
-import retrofit2.Retrofit
 import javax.inject.Named
+import retrofit2.Retrofit
 
 @Module
 object TvdbModule {

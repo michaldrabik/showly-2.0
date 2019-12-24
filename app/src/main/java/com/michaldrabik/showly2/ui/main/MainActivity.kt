@@ -19,8 +19,8 @@ import com.michaldrabik.showly2.ui.NotificationActivity
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : NotificationActivity() {
 

@@ -15,7 +15,7 @@ class UserTvdbManager @Inject constructor(
 ) {
 
   companion object {
-    private const val TVDB_TOKEN_EXPIRATION_MS = 72_000_000 //20 hours
+    private const val TVDB_TOKEN_EXPIRATION_MS = 72_000_000 // 20 hours
   }
 
   private var tvdbToken: String? = null

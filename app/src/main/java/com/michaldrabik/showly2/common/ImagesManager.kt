@@ -79,12 +79,12 @@ class ImagesManager @Inject constructor(
 
     var typeImages = images.filter { it.keyType == type.key }
 
-    //If requested poster is unavailable try backing up to a fanart
+    // If requested poster is unavailable try backing up to a fanart
     if (typeImages.isEmpty() && type == POSTER) {
       typeImages = images.filter { it.keyType == FANART.key }
     }
 
-    //If requested fanart is unavailable try backing up to an episode image
+    // If requested fanart is unavailable try backing up to an episode image
     if (typeImages.isEmpty() && type in arrayOf(FANART, FANART_WIDE)) {
       val seasons = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
       if (seasons.isNotEmpty()) {

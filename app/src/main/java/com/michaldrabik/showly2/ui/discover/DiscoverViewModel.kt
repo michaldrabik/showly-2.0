@@ -14,9 +14,9 @@ import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.utilities.extensions.findReplace
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
+import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class DiscoverViewModel @Inject constructor(
   private val interactor: DiscoverInteractor,

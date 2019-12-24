@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.model.mappers
 
+import com.michaldrabik.network.trakt.model.Episode as EpisodeNetwork
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.IdImdb
 import com.michaldrabik.showly2.model.IdSlug
@@ -9,9 +10,8 @@ import com.michaldrabik.showly2.model.IdTvRage
 import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.model.Season
-import javax.inject.Inject
-import com.michaldrabik.network.trakt.model.Episode as EpisodeNetwork
 import com.michaldrabik.storage.database.model.Episode as EpisodeDb
+import javax.inject.Inject
 
 class EpisodeMapper @Inject constructor() {
 

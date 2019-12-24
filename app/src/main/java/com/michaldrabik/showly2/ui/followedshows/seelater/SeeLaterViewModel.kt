@@ -7,8 +7,8 @@ import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.followedshows.seelater.recycler.SeeLaterListItem
 import com.michaldrabik.showly2.utilities.extensions.findReplace
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 class SeeLaterViewModel @Inject constructor(
   private val interactor: SeeLaterInteractor

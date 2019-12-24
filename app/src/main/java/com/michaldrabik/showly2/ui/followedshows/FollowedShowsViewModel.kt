@@ -8,9 +8,9 @@ import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.EMPT
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.NO_RESULTS
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.RESULTS
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
+import javax.inject.Inject
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class FollowedShowsViewModel @Inject constructor(
   private val interactor: FollowedShowsInteractor

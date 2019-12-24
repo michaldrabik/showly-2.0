@@ -24,7 +24,8 @@ abstract class BaseBottomSheetFragment<T : BaseViewModel<out UiModel>> : BottomS
   }
 
   override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?,
+    inflater: LayoutInflater,
+    container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View = inflater.inflate(layoutResId, container, false)
 }

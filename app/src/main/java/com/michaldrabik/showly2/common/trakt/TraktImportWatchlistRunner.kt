@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.common.trakt
 import android.util.Log
 import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
+import com.michaldrabik.network.trakt.model.Show as ShowNetwork
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.error.TraktAuthError
 import com.michaldrabik.showly2.model.mappers.Mappers
@@ -11,9 +12,8 @@ import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.SeeLaterShow
-import kotlinx.coroutines.delay
 import javax.inject.Inject
-import com.michaldrabik.network.trakt.model.Show as ShowNetwork
+import kotlinx.coroutines.delay
 
 @AppScope
 class TraktImportWatchlistRunner @Inject constructor(

@@ -6,8 +6,8 @@ import com.michaldrabik.network.trakt.api.TraktApi
 import com.michaldrabik.network.trakt.api.TraktService
 import dagger.Module
 import dagger.Provides
-import retrofit2.Retrofit
 import javax.inject.Named
+import retrofit2.Retrofit
 
 @Module
 object TraktModule {

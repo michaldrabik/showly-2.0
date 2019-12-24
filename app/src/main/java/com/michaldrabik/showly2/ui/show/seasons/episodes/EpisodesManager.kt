@@ -10,10 +10,10 @@ import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.EpisodesSyncLog
-import javax.inject.Inject
 import com.michaldrabik.storage.database.model.Episode as EpisodeDb
+import com.michaldrabik.storage.database.model.EpisodesSyncLog
 import com.michaldrabik.storage.database.model.Season as SeasonDb
+import javax.inject.Inject
 
 @AppScope
 class EpisodesManager @Inject constructor(

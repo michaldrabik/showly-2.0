@@ -12,8 +12,8 @@ import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
+import kotlinx.android.synthetic.main.activity_main.*
 
 abstract class BaseFragment<T : BaseViewModel<out UiModel>> : Fragment() {
 
@@ -30,7 +30,8 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>> : Fragment() {
   }
 
   override fun onCreateView(
-    inflater: LayoutInflater, container: ViewGroup?,
+    inflater: LayoutInflater,
+    container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View = inflater.inflate(layoutResId, container, false)
 

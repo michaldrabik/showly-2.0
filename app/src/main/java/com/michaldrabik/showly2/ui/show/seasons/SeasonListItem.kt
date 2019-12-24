@@ -10,5 +10,4 @@ data class SeasonListItem(
 ) {
 
   val id = season.ids.trakt.id
-
 }

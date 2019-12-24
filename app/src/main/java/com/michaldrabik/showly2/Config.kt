@@ -1,11 +1,11 @@
 package com.michaldrabik.showly2
 
-import org.threeten.bp.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
+import org.threeten.bp.format.DateTimeFormatter
 
 object Config {
   private const val TVDB_IMAGE_PERSON_BASE_URL = "https://artworks.thetvdb.com"
-  const val TVDB_IMAGE_BASE_BANNERS_URL = "${TVDB_IMAGE_PERSON_BASE_URL}/banners/"
+  const val TVDB_IMAGE_BASE_BANNERS_URL = "$TVDB_IMAGE_PERSON_BASE_URL/banners/"
   const val TVDB_IMAGE_BASE_POSTER_URL = "${TVDB_IMAGE_BASE_BANNERS_URL}posters/"
   const val TVDB_IMAGE_BASE_FANART_URL = "${TVDB_IMAGE_BASE_BANNERS_URL}fanart/original/"
 

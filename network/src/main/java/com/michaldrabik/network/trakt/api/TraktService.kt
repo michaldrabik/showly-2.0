@@ -51,7 +51,7 @@ interface TraktService {
     @Path("episodeNumber") episodeNumber: Int
   ): List<Comment>
 
-  //Auth
+  // Auth
 
   @POST("oauth/token")
   suspend fun fetchOAuthToken(@Body request: OAuthRequest): OAuthResponse
@@ -65,7 +65,7 @@ interface TraktService {
   @GET("users/me")
   suspend fun fetchMyProfile(@Header("Authorization") authToken: String): User
 
-  //Sync
+  // Sync
 
   @GET("sync/watched/shows?extended=full")
   suspend fun fetchSyncWatched(@Header("Authorization") authToken: String): List<SyncItem>

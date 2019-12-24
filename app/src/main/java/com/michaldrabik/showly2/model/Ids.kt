@@ -27,4 +27,3 @@ inline class IdTmdb(val id: Long = -1)
 inline class IdTvRage(val id: Long = -1)
 
 inline class IdSlug(val id: String = "")
-

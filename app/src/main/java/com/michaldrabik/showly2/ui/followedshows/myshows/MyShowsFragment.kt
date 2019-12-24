@@ -26,8 +26,8 @@ import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
-import kotlinx.android.synthetic.main.fragment_my_shows.*
 import java.util.ResourceBundle.clearCache
+import kotlinx.android.synthetic.main.fragment_my_shows.*
 
 class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListener, OnScrollResetListener {
 

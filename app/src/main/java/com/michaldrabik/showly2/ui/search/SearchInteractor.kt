@@ -10,8 +10,8 @@ import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
-import javax.inject.Inject
 import com.michaldrabik.storage.database.model.RecentSearch as RecentSearchDb
+import javax.inject.Inject
 
 @AppScope
 class SearchInteractor @Inject constructor(

@@ -115,8 +115,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
         val options = NotificationDelay.values()
         val default = options.indexOf(settings.episodesNotificationsDelay)
         AlertDialog.Builder(requireContext())
-          .setSingleChoiceItems(options.map { getString(it.stringRes) }.toTypedArray(), default)
-          { dialog, index ->
+          .setSingleChoiceItems(options.map { getString(it.stringRes) }.toTypedArray(), default) { dialog, index ->
             viewModel.setWhenToNotify(options[index], applicationContext)
             dialog.dismiss()
           }

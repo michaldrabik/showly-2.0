@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.model.mappers
 
+import com.michaldrabik.network.trakt.model.Show as ShowNetwork
 import com.michaldrabik.showly2.model.AirTime
 import com.michaldrabik.showly2.model.IdImdb
 import com.michaldrabik.showly2.model.IdSlug
@@ -11,9 +12,8 @@ import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.ShowStatus
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
-import javax.inject.Inject
-import com.michaldrabik.network.trakt.model.Show as ShowNetwork
 import com.michaldrabik.storage.database.model.Show as ShowDb
+import javax.inject.Inject
 
 class ShowMapper @Inject constructor() {
 

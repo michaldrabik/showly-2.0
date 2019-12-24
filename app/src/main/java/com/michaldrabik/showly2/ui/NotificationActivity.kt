@@ -35,7 +35,7 @@ abstract class NotificationActivity : AppCompatActivity() {
         extras.clear()
         action()
       } catch (e: Exception) {
-        //NOOP Simply leave app where it is in case of failure
+        // NOOP Simply leave app where it is in case of failure
       }
     }
   }

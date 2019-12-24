@@ -4,8 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.Image.Status
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 class FanartGalleryViewModel @Inject constructor(
   private val interactor: FanartGalleryInteractor
@@ -21,7 +21,7 @@ class FanartGalleryViewModel @Inject constructor(
         val allImages = interactor.loadAllImages(id, image)
         uiState = FanartGalleryUiModel(allImages)
       } catch (t: Throwable) {
-        //NOOP Don't show rest of the gallery
+        // NOOP Don't show rest of the gallery
       }
     }
   }

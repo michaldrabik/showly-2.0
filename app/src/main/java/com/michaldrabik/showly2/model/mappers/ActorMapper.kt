@@ -3,8 +3,8 @@ package com.michaldrabik.showly2.model.mappers
 import com.michaldrabik.network.tvdb.model.TvdbActor
 import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
-import javax.inject.Inject
 import com.michaldrabik.storage.database.model.Actor as ActorDb
+import javax.inject.Inject
 
 class ActorMapper @Inject constructor() {
 

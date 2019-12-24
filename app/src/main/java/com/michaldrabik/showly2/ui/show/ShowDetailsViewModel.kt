@@ -21,10 +21,10 @@ import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodeListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.showly2.utilities.extensions.findReplace
 import com.michaldrabik.showly2.utilities.extensions.replace
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class ShowDetailsViewModel @Inject constructor(
   private val interactor: ShowDetailsInteractor,
@@ -75,7 +75,7 @@ class ShowDetailsViewModel @Inject constructor(
       val episode = interactor.loadNextEpisode(show.ids.trakt)
       uiState = ShowDetailsUiModel(nextEpisode = episode)
     } catch (t: Throwable) {
-      //NOOP
+      // NOOP
     }
   }
 

@@ -31,4 +31,3 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
     super.setValue(t)
   }
 }
-

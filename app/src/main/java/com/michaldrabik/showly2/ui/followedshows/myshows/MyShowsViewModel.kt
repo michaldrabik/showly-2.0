@@ -14,8 +14,8 @@ import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsBundle
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
 import com.michaldrabik.showly2.utilities.extensions.findReplace
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
 class MyShowsViewModel @Inject constructor(
   private val interactor: MyShowsInteractor,
