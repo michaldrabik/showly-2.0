@@ -20,7 +20,8 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.trakt.TraktImportService
 import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_AUTH_ERROR
-import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_COMPLETE
+import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_COMPLETE_ERROR
+import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_COMPLETE_SUCCESS
 import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_PROGRESS
 import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_START
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
@@ -40,7 +41,8 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>(), OnTraktAuthori
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val filter = IntentFilter().apply {
-      addAction(ACTION_IMPORT_COMPLETE)
+      addAction(ACTION_IMPORT_COMPLETE_SUCCESS)
+      addAction(ACTION_IMPORT_COMPLETE_ERROR)
       addAction(ACTION_IMPORT_START)
       addAction(ACTION_IMPORT_PROGRESS)
       addAction(ACTION_IMPORT_AUTH_ERROR)

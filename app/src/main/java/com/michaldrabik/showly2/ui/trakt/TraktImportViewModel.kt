@@ -4,7 +4,8 @@ import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_AUTH_ERROR
-import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_COMPLETE
+import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_COMPLETE_ERROR
+import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_COMPLETE_SUCCESS
 import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_PROGRESS
 import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_START
 import com.michaldrabik.showly2.repository.UserTraktManager
@@ -49,9 +50,13 @@ class TraktImportViewModel @Inject constructor(
       ACTION_IMPORT_PROGRESS -> {
         uiState = TraktImportUiModel(isProgress = true)
       }
-      ACTION_IMPORT_COMPLETE -> {
+      ACTION_IMPORT_COMPLETE_SUCCESS -> {
         uiState = TraktImportUiModel(isProgress = false)
         _messageStream.value = R.string.textTraktImportComplete
+      }
+      ACTION_IMPORT_COMPLETE_ERROR -> {
+        uiState = TraktImportUiModel(isProgress = false)
+        _messageStream.value = R.string.textTraktImportError
       }
       ACTION_IMPORT_AUTH_ERROR -> {
         viewModelScope.launch {

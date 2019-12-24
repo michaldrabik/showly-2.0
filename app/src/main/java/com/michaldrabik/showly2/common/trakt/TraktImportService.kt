@@ -11,6 +11,8 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.CATEGORY_SERVICE
+import androidx.core.app.NotificationCompat.PRIORITY_DEFAULT
+import androidx.core.app.NotificationCompat.PRIORITY_HIGH
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.michaldrabik.network.trakt.model.Show
@@ -31,11 +33,13 @@ class TraktImportService : Service(), CoroutineScope {
     private const val TAG = "TraktImportService"
 
     private const val IMPORT_NOTIFICATION_PROGRESS_ID = 826
-    private const val IMPORT_NOTIFICATION_COMPLETE_ID = 827
+    private const val IMPORT_NOTIFICATION_COMPLETE_SUCCESS_ID = 827
+    private const val IMPORT_NOTIFICATION_COMPLETE_ERROR_ID = 828
 
     const val ACTION_IMPORT_START = "ACTION_IMPORT_START"
     const val ACTION_IMPORT_PROGRESS = "ACTION_IMPORT_PROGRESS"
-    const val ACTION_IMPORT_COMPLETE = "ACTION_IMPORT_COMPLETE"
+    const val ACTION_IMPORT_COMPLETE_SUCCESS = "ACTION_IMPORT_COMPLETE_SUCCESS"
+    const val ACTION_IMPORT_COMPLETE_ERROR = "ACTION_IMPORT_COMPLETE_ERROR"
     const val ACTION_IMPORT_AUTH_ERROR = "ACTION_IMPORT_AUTH_ERROR"
   }
 
@@ -71,13 +75,14 @@ class TraktImportService : Service(), CoroutineScope {
         val resultCount = runImportWatched()
         runImportWatchlist(resultCount)
 
-        notificationManager().notify(IMPORT_NOTIFICATION_COMPLETE_ID, createSuccessNotification())
+        notificationManager().notify(IMPORT_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification())
+        notifyBroadcast(ACTION_IMPORT_COMPLETE_SUCCESS)
       } catch (t: Throwable) {
         if (t is TraktAuthError) notifyBroadcast(ACTION_IMPORT_AUTH_ERROR)
-        notificationManager().notify(IMPORT_NOTIFICATION_COMPLETE_ID, createErrorNotification())
+        notificationManager().notify(IMPORT_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
+        notifyBroadcast(ACTION_IMPORT_COMPLETE_ERROR)
       } finally {
         clear()
-        notifyBroadcast(ACTION_IMPORT_COMPLETE)
         stopSelf()
       }
     }
@@ -126,10 +131,12 @@ class TraktImportService : Service(), CoroutineScope {
 
   private fun createSuccessNotification() = createBaseNotification()
     .setContentText(getString(R.string.textTraktImportComplete))
+    .setPriority(PRIORITY_HIGH)
     .build()
 
   private fun createErrorNotification() = createBaseNotification()
     .setContentText(getString(R.string.textTraktImportError))
+    .setPriority(PRIORITY_HIGH)
     .build()
 
   private fun createNotificationChannel(): String {
