@@ -19,14 +19,12 @@ import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
-import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsSearchResult
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.EMPTY
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.NO_RESULTS
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.RESULTS
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
 import com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowFanartView
-import com.michaldrabik.showly2.ui.followedshows.seelater.SeeLaterFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
@@ -42,8 +40,6 @@ import kotlinx.android.synthetic.main.view_search.*
 class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabReselectedListener {
 
   override val layoutResId = R.layout.fragment_followed_shows
-
-  private lateinit var pagesAdapter: FollowedPagesAdapter
 
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
@@ -84,16 +80,10 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
   }
 
   private fun setupPager() {
-    pagesAdapter = FollowedPagesAdapter(this)
-    pagesAdapter.addPages(
-      MyShowsFragment(),
-      SeeLaterFragment()
-    )
-
     followedShowsPager.run {
-      offscreenPageLimit = pagesAdapter.itemCount - 1
+      offscreenPageLimit = FollowedPagesAdapter.PAGES_COUNT
       isUserInputEnabled = false
-      adapter = pagesAdapter
+      adapter = FollowedPagesAdapter(this@FollowedShowsFragment)
     }
 
     followedShowsTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {

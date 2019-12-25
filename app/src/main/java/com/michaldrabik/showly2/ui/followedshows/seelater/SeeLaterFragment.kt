@@ -90,5 +90,5 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListe
 
   override fun onTabReselected() = onScrollReset()
 
-  override fun onScrollReset() = seeLaterRecycler.scrollToPosition(0)
+  override fun onScrollReset() = seeLaterRoot.smoothScrollTo(0, 0)
 }

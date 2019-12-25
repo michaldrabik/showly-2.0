@@ -95,6 +95,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     setupActorsList()
     setupRelatedList()
     setupSeasonsList()
+
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
       messageStream.observe(viewLifecycleOwner, Observer { showInfoSnackbar(it!!) })
