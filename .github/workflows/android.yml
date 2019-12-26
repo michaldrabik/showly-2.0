@@ -16,6 +16,6 @@ jobs:
     - name: Decrypt keystore
       run: ./.github/scripts/decrypt_keystore.sh
       env:
-        KEYSTORE_PASSPHRASE: $
+        KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
     - name: Build with Gradle
       run: ./gradlew assembleDebug
