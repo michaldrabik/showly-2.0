@@ -13,8 +13,10 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - name: Install ktlint
+      run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.35.0/ktlint && chmod a+x ktlint
     - name: Run ktlint
-      run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.35.0/ktlint && chmod a+x ktlint && ktlint
+      run: ktlint
     - name: Decrypt keystore
       run: ./.github/scripts/decrypt_keystore.sh
       env:
