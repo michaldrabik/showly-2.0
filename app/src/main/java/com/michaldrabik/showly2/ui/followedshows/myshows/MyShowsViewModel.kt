@@ -2,6 +2,8 @@ package com.michaldrabik.showly2.ui.followedshows.myshows
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Image
+import com.michaldrabik.showly2.model.ImageType
+import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.MyShowsSection.ALL
@@ -15,8 +17,8 @@ import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsBundle
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
 import com.michaldrabik.showly2.utilities.extensions.findReplace
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class MyShowsViewModel @Inject constructor(
   private val interactor: MyShowsInteractor,
@@ -25,16 +27,16 @@ class MyShowsViewModel @Inject constructor(
 
   fun loadMyShows() = viewModelScope.launch {
 
-    suspend fun List<Show>.mapToListItem() = this.map {
-      val image = interactor.findCachedImage(it, POSTER)
+    suspend fun List<Show>.mapToListItem(imageType: ImageType) = this.map {
+      val image = interactor.findCachedImage(it, imageType)
       MyShowsListItem(it, image)
     }
 
-    val recentShows = interactor.loadRecentShows().mapToListItem()
-    val allShows = interactor.loadShows(ALL).mapToListItem()
-    val runningShows = interactor.loadShows(RUNNING).mapToListItem()
-    val endedShows = interactor.loadShows(ENDED).mapToListItem()
-    val incomingShows = interactor.loadShows(COMING_SOON).mapToListItem()
+    val recentShows = interactor.loadRecentShows().mapToListItem(FANART)
+    val allShows = interactor.loadShows(ALL).mapToListItem(POSTER)
+    val runningShows = interactor.loadShows(RUNNING).mapToListItem(POSTER)
+    val endedShows = interactor.loadShows(ENDED).mapToListItem(POSTER)
+    val incomingShows = interactor.loadShows(COMING_SOON).mapToListItem(POSTER)
 
     val settings = interactor.loadSettings()
 
