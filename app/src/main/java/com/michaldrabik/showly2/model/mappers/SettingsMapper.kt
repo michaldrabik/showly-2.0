@@ -2,8 +2,8 @@ package com.michaldrabik.showly2.model.mappers
 
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.Settings
-import com.michaldrabik.storage.database.model.Settings as SettingsDb
 import javax.inject.Inject
+import com.michaldrabik.storage.database.model.Settings as SettingsDb
 
 class SettingsMapper @Inject constructor() {
 
@@ -16,6 +16,9 @@ class SettingsMapper @Inject constructor() {
     myShowsIncomingSortBy = enumValueOf(settings.myShowsIncomingSortBy),
     myShowsEndedSortBy = enumValueOf(settings.myShowsEndedSortBy),
     myShowsAllSortBy = enumValueOf(settings.myShowsAllSortBy),
+    myShowsRunningIsCollapsed = settings.myShowsRunningIsCollapsed,
+    myShowsIncomingIsCollapsed = settings.myShowsIncomingIsCollapsed,
+    myShowsEndedIsCollapsed = settings.myShowsEndedIsCollapsed,
     myShowsRecentsAmount = settings.myShowsRecentsAmount,
     seeLaterShowsSortBy = enumValueOf(settings.seeLaterShowsSortBy)
   )
@@ -29,6 +32,9 @@ class SettingsMapper @Inject constructor() {
     myShowsIncomingSortBy = settings.myShowsIncomingSortBy.name,
     myShowsEndedSortBy = settings.myShowsEndedSortBy.name,
     myShowsAllSortBy = settings.myShowsAllSortBy.name,
+    myShowsRunningIsCollapsed = settings.myShowsRunningIsCollapsed,
+    myShowsIncomingIsCollapsed = settings.myShowsIncomingIsCollapsed,
+    myShowsEndedIsCollapsed = settings.myShowsEndedIsCollapsed,
     myShowsRecentsAmount = settings.myShowsRecentsAmount,
     seeLaterShowsSortBy = settings.seeLaterShowsSortBy.name
   )

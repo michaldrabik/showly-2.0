@@ -73,6 +73,17 @@ class MyShowsInteractor @Inject constructor(
     database.settingsDao().upsert(mappers.settings.toDatabase(newSettings))
   }
 
+  suspend fun setSectionCollapsed(section: MyShowsSection, isCollapsed: Boolean) {
+    val settings = loadSettings()
+    val newSettings = when (section) {
+      RUNNING -> settings.copy(myShowsRunningIsCollapsed = isCollapsed)
+      ENDED -> settings.copy(myShowsEndedIsCollapsed = isCollapsed)
+      COMING_SOON -> settings.copy(myShowsIncomingIsCollapsed = isCollapsed)
+      ALL -> settings
+    }
+    database.settingsDao().upsert(mappers.settings.toDatabase(newSettings))
+  }
+
   suspend fun findCachedImage(show: Show, type: ImageType) =
     imagesManager.findCachedImage(show, type)
 

@@ -30,6 +30,21 @@
     app:srcCompat="@drawable/ic_sort"
     />
 
+  <ImageView
+    android:id="@+id/myShowsSectionCollapsedIcon"
+    android:layout_width="24dp"
+    android:layout_height="24dp"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:layout_marginBottom="@dimen/spaceMedium"
+    app:layout_constraintBottom_toTopOf="@id/myShowsSectionRecycler"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    android:rotation="90"
+    android:visibility="gone"
+    app:srcCompat="@drawable/ic_arrow_right"
+    />
+
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/myShowsSectionRecycler"
     style="@style/MyShows.Recycler"

@@ -40,10 +40,10 @@ class MyShowsViewModel @Inject constructor(
 
     uiState = MyShowsUiModel(
       recentShows = recentShows,
-      runningShows = MyShowsBundle(runningShows, RUNNING, settings.myShowsRunningSortBy),
-      endedShows = MyShowsBundle(endedShows, ENDED, settings.myShowsEndedSortBy),
-      incomingShows = MyShowsBundle(incomingShows, COMING_SOON, settings.myShowsIncomingSortBy),
-      allShows = MyShowsBundle(allShows, ALL, settings.myShowsAllSortBy),
+      runningShows = MyShowsBundle(runningShows, RUNNING, settings.myShowsRunningSortBy, settings.myShowsRunningIsCollapsed),
+      endedShows = MyShowsBundle(endedShows, ENDED, settings.myShowsEndedSortBy, settings.myShowsEndedIsCollapsed),
+      incomingShows = MyShowsBundle(incomingShows, COMING_SOON, settings.myShowsIncomingSortBy, settings.myShowsIncomingIsCollapsed),
+      allShows = MyShowsBundle(allShows, ALL, settings.myShowsAllSortBy, null),
       sectionsPositions = uiCache.myShowsSectionPositions
     )
   }
@@ -55,10 +55,24 @@ class MyShowsViewModel @Inject constructor(
       MyShowsListItem(it, image)
     }
     uiState = when (section) {
-      ALL -> MyShowsUiModel(allShows = MyShowsBundle(shows, section, order))
-      RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, order))
-      ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, order))
-      COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, order))
+      ALL -> MyShowsUiModel(allShows = MyShowsBundle(shows, section, order, null))
+      RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, order, null))
+      ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, order, null))
+      COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, order, null))
+    }
+  }
+
+  fun loadCollapsedSection(section: MyShowsSection, isCollapsed: Boolean) = viewModelScope.launch {
+    interactor.setSectionCollapsed(section, isCollapsed)
+    val shows = interactor.loadShows(section).map {
+      val image = interactor.findCachedImage(it, POSTER)
+      MyShowsListItem(it, image)
+    }
+    uiState = when (section) {
+      ALL -> MyShowsUiModel(allShows = MyShowsBundle(shows, section, null, isCollapsed))
+      RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, null, isCollapsed))
+      ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, null, isCollapsed))
+      COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, null, isCollapsed))
     }
   }
 

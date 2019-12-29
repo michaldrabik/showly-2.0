@@ -15,6 +15,7 @@ import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.SortOrder.NEWEST
 import com.michaldrabik.showly2.model.SortOrder.RATING
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsBundle
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsSectionAdapter
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
@@ -35,10 +36,12 @@ class MyShowsSection : ConstraintLayout {
   var itemClickListener: (MyShowsListItem) -> Unit = {}
   var missingImageListener: (MyShowsListItem, Boolean) -> Unit = { _, _ -> }
   var sortSelectedListener: (MyShowsSection, SortOrder) -> Unit = { _, _ -> }
+  var collapseListener: (MyShowsSection, Boolean) -> Unit = { _, _ -> }
 
   private val padding by lazy { context.dimenToPx(R.dimen.spaceMedium) }
   private val sectionAdapter by lazy { MyShowsSectionAdapter() }
   private val sectionLayoutManager by lazy { LinearLayoutManager(context, HORIZONTAL, false) }
+  private var isCollapsed: Boolean = false
   private lateinit var section: MyShowsSection
 
   init {
@@ -47,16 +50,26 @@ class MyShowsSection : ConstraintLayout {
     setupRecycler()
   }
 
-  fun bind(
-    items: List<MyShowsListItem>,
-    section: MyShowsSection,
-    sortOrder: SortOrder,
-    labelResId: Int
-  ) {
+  fun bind(item: MyShowsBundle, labelResId: Int) {
+    val (items, section, sortOrder, isCollapsed) = item
     this.section = section
     myShowsSectionLabel.text = context.getString(labelResId, items.size)
-    myShowsSectionSortView.bind(sortOrder)
+    sortOrder?.let { myShowsSectionSortView.bind(it) }
+    isCollapsed?.let { bindCollapsed(it) }
     sectionAdapter.setItems(items)
+  }
+
+  private fun bindCollapsed(isCollapsed: Boolean) {
+    this.isCollapsed = isCollapsed
+    if (isCollapsed) {
+      myShowsSectionRecycler.gone()
+      myShowsSectionSortButton.gone()
+      myShowsSectionCollapsedIcon.visible()
+    } else {
+      myShowsSectionRecycler.visible()
+      myShowsSectionSortButton.visible()
+      myShowsSectionCollapsedIcon.gone()
+    }
   }
 
   fun getListPosition(): Pair<Int, Int> {
@@ -86,6 +99,8 @@ class MyShowsSection : ConstraintLayout {
         }
       }
     }
+    myShowsSectionLabel.onClick(safe = false) { collapseListener(section, !isCollapsed) }
+    myShowsSectionCollapsedIcon.onClick(safe = false) { collapseListener(section, !isCollapsed) }
   }
 
   private fun setupRecycler() {

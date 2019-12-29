@@ -14,7 +14,9 @@
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:paddingLeft="@dimen/myShowAllMarginHorizontal"
+    android:paddingTop="@dimen/spaceSmall"
     android:paddingRight="@dimen/myShowAllMarginHorizontal"
+    android:paddingBottom="@dimen/spaceSmall"
     >
 
     <ImageView
@@ -86,6 +88,30 @@
       app:layout_constraintVertical_chainStyle="packed"
       tools:ignore="SmallSp"
       tools:text="Netflix"
+      />
+
+    <ImageView
+      android:id="@+id/myShowAllStarIcon"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:tint="@color/colorAccent"
+      app:layout_constraintBottom_toTopOf="@+id/myShowAllTitle"
+      app:layout_constraintEnd_toStartOf="@id/myShowAllRating"
+      app:layout_constraintTop_toTopOf="@id/myShowAllNetwork"
+      app:srcCompat="@drawable/ic_star"
+      />
+
+    <TextView
+      android:id="@+id/myShowAllRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="end"
+      android:textColor="@color/colorTextSecondary"
+      android:textSize="12sp"
+      app:layout_constraintBottom_toTopOf="@+id/myShowAllTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/myShowAllNetwork"
+      tools:text="7.6"
       />
 
     <TextView

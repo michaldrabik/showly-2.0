@@ -57,18 +57,20 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
     val onSectionSortOrderChange: (MyShowsSection, SortOrder) -> Unit = { section, order ->
       viewModel.loadSortedSection(section, order)
     }
+    val onSectionCollapsedListener: (MyShowsSection, Boolean) -> Unit = { section, isCollapsed ->
+      viewModel.loadCollapsedSection(section, isCollapsed)
+    }
 
-    myShowsRunningSection.itemClickListener = onSectionItemClick
-    myShowsRunningSection.missingImageListener = onSectionMissingImageListener
-    myShowsRunningSection.sortSelectedListener = onSectionSortOrderChange
-
-    myShowsEndedSection.itemClickListener = onSectionItemClick
-    myShowsEndedSection.missingImageListener = onSectionMissingImageListener
-    myShowsEndedSection.sortSelectedListener = onSectionSortOrderChange
-
-    myShowsIncomingSection.itemClickListener = onSectionItemClick
-    myShowsIncomingSection.missingImageListener = onSectionMissingImageListener
-    myShowsIncomingSection.sortSelectedListener = onSectionSortOrderChange
+    listOf(
+      myShowsRunningSection,
+      myShowsEndedSection,
+      myShowsIncomingSection
+    ).forEach {
+      it.itemClickListener = onSectionItemClick
+      it.missingImageListener = onSectionMissingImageListener
+      it.sortSelectedListener = onSectionSortOrderChange
+      it.collapseListener = onSectionCollapsedListener
+    }
 
     myShowsAllSection.itemClickListener = onSectionItemClick
     myShowsAllSection.missingImageListener = onSectionMissingImageListener
@@ -87,19 +89,19 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
         (parentFragment as FollowedShowsFragment).enableSearch(it.isNotEmpty())
       }
       allShows?.let {
-        myShowsAllSection.bind(it.items, it.section, it.sortOrder, R.string.textAllShows)
+        myShowsAllSection.bind(it, R.string.textAllShows)
         myShowsAllSection.visibleIf(it.items.isNotEmpty())
       }
       runningShows?.let {
-        myShowsRunningSection.bind(it.items, it.section, it.sortOrder, R.string.textRunning)
+        myShowsRunningSection.bind(it, R.string.textRunning)
         myShowsRunningSection.visibleIf(it.items.isNotEmpty())
       }
       endedShows?.let {
-        myShowsEndedSection.bind(it.items, it.section, it.sortOrder, R.string.textEnded)
+        myShowsEndedSection.bind(it, R.string.textEnded)
         myShowsEndedSection.visibleIf(it.items.isNotEmpty())
       }
       incomingShows?.let {
-        myShowsIncomingSection.bind(it.items, it.section, it.sortOrder, R.string.textIncoming)
+        myShowsIncomingSection.bind(it, R.string.textIncoming)
         myShowsIncomingSection.visibleIf(it.items.isNotEmpty())
       }
       sectionsPositions?.let {

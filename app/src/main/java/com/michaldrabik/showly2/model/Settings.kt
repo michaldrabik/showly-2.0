@@ -12,6 +12,9 @@ data class Settings(
   val myShowsIncomingSortBy: SortOrder,
   val myShowsEndedSortBy: SortOrder,
   val myShowsAllSortBy: SortOrder,
+  val myShowsRunningIsCollapsed: Boolean,
+  val myShowsIncomingIsCollapsed: Boolean,
+  val myShowsEndedIsCollapsed: Boolean,
   val myShowsRecentsAmount: Int
 ) {
 
@@ -25,6 +28,9 @@ data class Settings(
       myShowsIncomingSortBy = SortOrder.NAME,
       myShowsRunningSortBy = SortOrder.NAME,
       myShowsAllSortBy = SortOrder.NAME,
+      myShowsEndedIsCollapsed = false,
+      myShowsIncomingIsCollapsed = false,
+      myShowsRunningIsCollapsed = false,
       myShowsRecentsAmount = Config.MY_SHOWS_RECENTS_DEFAULT,
       seeLaterShowsSortBy = SortOrder.NAME
     )

@@ -11,6 +11,7 @@
   <TextView
     android:id="@+id/myShowsAllSectionLabel"
     style="@style/MyShows.Label"
+    android:layout_marginBottom="@dimen/spaceTiny"
     app:layout_constraintBottom_toTopOf="@id/myShowsAllSectionRecycler"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
@@ -23,7 +24,7 @@
     android:layout_height="24dp"
     android:layout_marginTop="@dimen/spaceNormal"
     android:layout_marginEnd="@dimen/spaceNormal"
-    android:layout_marginBottom="@dimen/spaceMedium"
+    android:layout_marginBottom="@dimen/spaceTiny"
     app:layout_constraintBottom_toTopOf="@id/myShowsAllSectionRecycler"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent"

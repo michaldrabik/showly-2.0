@@ -96,7 +96,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     viewModel.run {
-      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      uiStream.observe(viewLifecycleOwner, Observer { render(it) })
       loadImage(episodeTvdbId)
     }
     setupView(view)

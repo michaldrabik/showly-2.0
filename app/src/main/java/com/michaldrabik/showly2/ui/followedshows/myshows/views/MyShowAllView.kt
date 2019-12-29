@@ -41,6 +41,7 @@ class MyShowAllView : ShowView<MyShowsListItem> {
     myShowAllDescription.text = item.show.overview
     val year = if (item.show.year > 0) " (${item.show.year})" else ""
     myShowAllNetwork.text = "${item.show.network}$year"
+    myShowAllRating.text = String.format("%.1f", item.show.rating)
 
     myShowAllDescription.visibleIf(item.show.overview.isNotBlank())
     myShowAllNetwork.visibleIf(item.show.network.isNotBlank())
@@ -53,6 +54,7 @@ class MyShowAllView : ShowView<MyShowsListItem> {
     myShowAllTitle.text = ""
     myShowAllDescription.text = ""
     myShowAllNetwork.text = ""
+    myShowAllRating.text = ""
     myShowAllPlaceholder.gone()
     Glide.with(this).clear(myShowAllImage)
   }
