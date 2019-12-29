@@ -2,8 +2,8 @@ package com.michaldrabik.showly2.model.mappers
 
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.Settings
-import javax.inject.Inject
 import com.michaldrabik.storage.database.model.Settings as SettingsDb
+import javax.inject.Inject
 
 class SettingsMapper @Inject constructor() {
 
