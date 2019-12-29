@@ -114,5 +114,6 @@
   <string name="errorCouldNotLoadDiscover">We could not load discover page at this moment.\nPlease contact us if this keeps happening.</string>
   <string name="errorCouldNotLoadShow">We could not load this show\'s details at this moment.\nPlease contact us if this keeps happening.</string>
   <string name="errorCouldNotLoadSearchResults">We could not load search results at this moment.\nPlease contact us if this keeps happening.</string>
+  <string name="errorNoInternetConnection">No Internet. Please check your connection.</string>
 
 </resources>
