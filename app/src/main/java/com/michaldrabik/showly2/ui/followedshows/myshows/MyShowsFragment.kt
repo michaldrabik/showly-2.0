@@ -26,7 +26,6 @@ import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
-import java.util.ResourceBundle.clearCache
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 
 class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListener, OnScrollResetListener {
@@ -46,7 +45,6 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
     setupSectionsViews()
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-      clearCache()
       loadMyShows()
     }
   }
@@ -71,6 +69,10 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
     myShowsIncomingSection.itemClickListener = onSectionItemClick
     myShowsIncomingSection.missingImageListener = onSectionMissingImageListener
     myShowsIncomingSection.sortSelectedListener = onSectionSortOrderChange
+
+    myShowsAllSection.itemClickListener = onSectionItemClick
+    myShowsAllSection.missingImageListener = onSectionMissingImageListener
+    myShowsAllSection.sortSelectedListener = onSectionSortOrderChange
   }
 
   private fun render(uiModel: MyShowsUiModel) {
@@ -83,6 +85,10 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
         myShowsEmptyView.fadeIf(it.isEmpty())
         renderFanartContainer(it, myShowsRecentsContainer)
         (parentFragment as FollowedShowsFragment).enableSearch(it.isNotEmpty())
+      }
+      allShows?.let {
+        myShowsAllSection.bind(it.items, it.section, it.sortOrder, R.string.textAllShows)
+        myShowsAllSection.visibleIf(it.items.isNotEmpty())
       }
       runningShows?.let {
         myShowsRunningSection.bind(it.items, it.section, it.sortOrder, R.string.textRunning)

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  >
+
+  <TextView
+    android:id="@+id/myShowsAllSectionLabel"
+    style="@style/MyShows.Label"
+    app:layout_constraintBottom_toTopOf="@id/myShowsAllSectionRecycler"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:text="Section Label"
+    />
+
+  <ImageView
+    android:id="@+id/myShowsAllSectionSortButton"
+    android:layout_width="24dp"
+    android:layout_height="24dp"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:layout_marginBottom="@dimen/spaceMedium"
+    app:layout_constraintBottom_toTopOf="@id/myShowsAllSectionRecycler"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:srcCompat="@drawable/ic_sort"
+    />
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/myShowsAllSectionRecycler"
+    style="@style/MyShows.Recycler"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    android:paddingStart="0dp"
+    android:paddingEnd="0dp"
+    app:layout_constraintTop_toBottomOf="@+id/myShowsAllSectionLabel"
+    />
+
+  <com.michaldrabik.showly2.ui.common.views.SortOrderView
+    android:id="@+id/myShowsAllSectionSortView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/spaceNormal"
+    android:visibility="gone"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+</merge>

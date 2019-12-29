@@ -4,7 +4,9 @@ import com.michaldrabik.showly2.common.ImagesManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.MyShowsSection
+import com.michaldrabik.showly2.model.MyShowsSection.ALL
 import com.michaldrabik.showly2.model.MyShowsSection.COMING_SOON
+import com.michaldrabik.showly2.model.MyShowsSection.ENDED
 import com.michaldrabik.showly2.model.MyShowsSection.RUNNING
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.SortOrder
@@ -27,7 +29,10 @@ class MyShowsInteractor @Inject constructor(
   suspend fun loadShows(section: MyShowsSection): List<Show> {
     val sortOrder = loadSortOrder(section)
     val shows = showsRepository.myShows.loadAll()
-      .filter { section.statuses.contains(it.status) }
+      .filter {
+        if (section.statuses.isEmpty()) true
+        else section.statuses.contains(it.status)
+      }
     return sortBy(sortOrder, shows)
   }
 
@@ -44,7 +49,8 @@ class MyShowsInteractor @Inject constructor(
     return when (section) {
       RUNNING -> settings.myShowsRunningSortBy
       COMING_SOON -> settings.myShowsIncomingSortBy
-      MyShowsSection.ENDED -> settings.myShowsEndedSortBy
+      ENDED -> settings.myShowsEndedSortBy
+      ALL -> settings.myShowsAllSortBy
     }
   }
 
@@ -60,8 +66,9 @@ class MyShowsInteractor @Inject constructor(
     val settings = loadSettings()
     val newSettings = when (section) {
       RUNNING -> settings.copy(myShowsRunningSortBy = order)
-      MyShowsSection.ENDED -> settings.copy(myShowsEndedSortBy = order)
+      ENDED -> settings.copy(myShowsEndedSortBy = order)
       COMING_SOON -> settings.copy(myShowsIncomingSortBy = order)
+      ALL -> settings.copy(myShowsAllSortBy = order)
     }
     database.settingsDao().upsert(mappers.settings.toDatabase(newSettings))
   }

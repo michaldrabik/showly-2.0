@@ -15,6 +15,7 @@ class SettingsMapper @Inject constructor() {
     myShowsRunningSortBy = enumValueOf(settings.myShowsRunningSortBy),
     myShowsIncomingSortBy = enumValueOf(settings.myShowsIncomingSortBy),
     myShowsEndedSortBy = enumValueOf(settings.myShowsEndedSortBy),
+    myShowsAllSortBy = enumValueOf(settings.myShowsAllSortBy),
     myShowsRecentsAmount = settings.myShowsRecentsAmount,
     seeLaterShowsSortBy = enumValueOf(settings.seeLaterShowsSortBy)
   )
@@ -27,6 +28,7 @@ class SettingsMapper @Inject constructor() {
     myShowsRunningSortBy = settings.myShowsRunningSortBy.name,
     myShowsIncomingSortBy = settings.myShowsIncomingSortBy.name,
     myShowsEndedSortBy = settings.myShowsEndedSortBy.name,
+    myShowsAllSortBy = settings.myShowsAllSortBy.name,
     myShowsRecentsAmount = settings.myShowsRecentsAmount,
     seeLaterShowsSortBy = settings.seeLaterShowsSortBy.name
   )

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.showly2.ui.common.base.BaseAdapter
 import com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowHorizontalView
 
-class MyShowsSectionAdapter : BaseAdapter<MyShowsListItem>() {
+open class MyShowsSectionAdapter : BaseAdapter<MyShowsListItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, MyShowsListItemDiffCallback())
 

@@ -11,6 +11,7 @@ data class Settings(
   val myShowsRunningSortBy: SortOrder,
   val myShowsIncomingSortBy: SortOrder,
   val myShowsEndedSortBy: SortOrder,
+  val myShowsAllSortBy: SortOrder,
   val myShowsRecentsAmount: Int
 ) {
 
@@ -23,6 +24,7 @@ data class Settings(
       myShowsEndedSortBy = SortOrder.NAME,
       myShowsIncomingSortBy = SortOrder.NAME,
       myShowsRunningSortBy = SortOrder.NAME,
+      myShowsAllSortBy = SortOrder.NAME,
       myShowsRecentsAmount = Config.MY_SHOWS_RECENTS_DEFAULT,
       seeLaterShowsSortBy = SortOrder.NAME
     )

@@ -2,20 +2,21 @@ package com.michaldrabik.showly2.ui.followedshows.myshows
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.MyShowsSection
+import com.michaldrabik.showly2.model.MyShowsSection.ALL
 import com.michaldrabik.showly2.model.MyShowsSection.COMING_SOON
 import com.michaldrabik.showly2.model.MyShowsSection.ENDED
 import com.michaldrabik.showly2.model.MyShowsSection.RUNNING
+import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsBundle
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
 import com.michaldrabik.showly2.utilities.extensions.findReplace
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class MyShowsViewModel @Inject constructor(
   private val interactor: MyShowsInteractor,
@@ -23,25 +24,17 @@ class MyShowsViewModel @Inject constructor(
 ) : BaseViewModel<MyShowsUiModel>() {
 
   fun loadMyShows() = viewModelScope.launch {
-    val recentShows = interactor.loadRecentShows().map {
-      val image = interactor.findCachedImage(it, FANART)
-      MyShowsListItem(it, image)
-    }
 
-    val runningShows = interactor.loadShows(RUNNING).map {
+    suspend fun List<Show>.mapToListItem() = this.map {
       val image = interactor.findCachedImage(it, POSTER)
       MyShowsListItem(it, image)
     }
 
-    val endedShows = interactor.loadShows(ENDED).map {
-      val image = interactor.findCachedImage(it, POSTER)
-      MyShowsListItem(it, image)
-    }
-
-    val incomingShows = interactor.loadShows(COMING_SOON).map {
-      val image = interactor.findCachedImage(it, POSTER)
-      MyShowsListItem(it, image)
-    }
+    val recentShows = interactor.loadRecentShows().mapToListItem()
+    val allShows = interactor.loadShows(ALL).mapToListItem()
+    val runningShows = interactor.loadShows(RUNNING).mapToListItem()
+    val endedShows = interactor.loadShows(ENDED).mapToListItem()
+    val incomingShows = interactor.loadShows(COMING_SOON).mapToListItem()
 
     val settings = interactor.loadSettings()
 
@@ -50,6 +43,7 @@ class MyShowsViewModel @Inject constructor(
       runningShows = MyShowsBundle(runningShows, RUNNING, settings.myShowsRunningSortBy),
       endedShows = MyShowsBundle(endedShows, ENDED, settings.myShowsEndedSortBy),
       incomingShows = MyShowsBundle(incomingShows, COMING_SOON, settings.myShowsIncomingSortBy),
+      allShows = MyShowsBundle(allShows, ALL, settings.myShowsAllSortBy),
       sectionsPositions = uiCache.myShowsSectionPositions
     )
   }
@@ -61,6 +55,7 @@ class MyShowsViewModel @Inject constructor(
       MyShowsListItem(it, image)
     }
     uiState = when (section) {
+      ALL -> MyShowsUiModel(allShows = MyShowsBundle(shows, section, order))
       RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, order))
       ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, order))
       COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, order))
@@ -70,18 +65,20 @@ class MyShowsViewModel @Inject constructor(
   fun loadMissingImage(item: MyShowsListItem, force: Boolean) {
 
     fun updateItem(new: MyShowsListItem) {
+      val all = uiState?.allShows?.items?.toMutableList() ?: mutableListOf()
       val incoming = uiState?.incomingShows?.items?.toMutableList() ?: mutableListOf()
       val ended = uiState?.endedShows?.items?.toMutableList() ?: mutableListOf()
       val running = uiState?.runningShows?.items?.toMutableList() ?: mutableListOf()
 
-      listOf(incoming, ended, running).forEach { section ->
+      listOf(all, incoming, ended, running).forEach { section ->
         section.findReplace(new) { it.isSameAs(new) }
       }
 
       uiState = uiState?.copy(
         incomingShows = uiState?.incomingShows?.copy(items = incoming.toList()),
         endedShows = uiState?.endedShows?.copy(items = ended.toList()),
-        runningShows = uiState?.runningShows?.copy(items = running.toList())
+        runningShows = uiState?.runningShows?.copy(items = running.toList()),
+        allShows = uiState?.allShows?.copy(items = all.toList())
       )
     }
 

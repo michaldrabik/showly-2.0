@@ -15,5 +15,6 @@ data class Settings(
   @ColumnInfo(name = "my_shows_running_sort_by", defaultValue = "NAME") var myShowsRunningSortBy: String,
   @ColumnInfo(name = "my_shows_incoming_sort_by", defaultValue = "NAME") var myShowsIncomingSortBy: String,
   @ColumnInfo(name = "my_shows_ended_sort_by", defaultValue = "NAME") var myShowsEndedSortBy: String,
+  @ColumnInfo(name = "my_shows_all_sort_by", defaultValue = "NAME") var myShowsAllSortBy: String,
   @ColumnInfo(name = "see_later_shows_sort_by", defaultValue = "NAME") var seeLaterShowsSortBy: String
 )
