@@ -33,5 +33,4 @@ class NetworkMonitor(
     connectivityManager.unregisterNetworkCallback(networkCallback)
     Log.d("NetworkMonitor", "Unregistering network callback.")
   }
-
 }

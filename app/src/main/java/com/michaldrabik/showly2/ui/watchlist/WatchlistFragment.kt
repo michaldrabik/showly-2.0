@@ -114,5 +114,4 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
       watchlistEmptyView.fadeIf(it.isEmpty())
     }
   }
-
 }
