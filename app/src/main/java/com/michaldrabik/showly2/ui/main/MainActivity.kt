@@ -190,6 +190,7 @@ class MainActivity : NotificationActivity() {
     override fun onReceive(context: Context?, intent: Intent?) {
       when (intent?.action) {
         ShowsSyncService.ACTION_SHOWS_SYNC_FINISHED -> onEpisodesSyncFinished()
+        //TODO Refactor into listening to DB changes and Coroutines Flows
         TraktImportService.ACTION_IMPORT_PROGRESS -> onTraktImportProgress()
       }
     }

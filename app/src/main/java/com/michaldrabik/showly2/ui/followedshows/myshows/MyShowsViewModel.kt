@@ -25,56 +25,62 @@ class MyShowsViewModel @Inject constructor(
   private val uiCache: UiCache
 ) : BaseViewModel<MyShowsUiModel>() {
 
-  fun loadMyShows() = viewModelScope.launch {
+  fun loadShows() {
+    viewModelScope.launch {
 
-    suspend fun List<Show>.mapToListItem(imageType: ImageType) = this.map {
-      val image = interactor.findCachedImage(it, imageType)
-      MyShowsListItem(it, image)
-    }
+      suspend fun List<Show>.mapToListItem(imageType: ImageType) = this.map {
+        val image = interactor.findCachedImage(it, imageType)
+        MyShowsListItem(it, image)
+      }
 
-    val recentShows = interactor.loadRecentShows().mapToListItem(FANART)
-    val allShows = interactor.loadShows(ALL).mapToListItem(POSTER)
-    val runningShows = interactor.loadShows(RUNNING).mapToListItem(POSTER)
-    val endedShows = interactor.loadShows(ENDED).mapToListItem(POSTER)
-    val incomingShows = interactor.loadShows(COMING_SOON).mapToListItem(POSTER)
+      val recentShows = interactor.loadRecentShows().mapToListItem(FANART)
+      val allShows = interactor.loadShows(ALL).mapToListItem(POSTER)
+      val runningShows = interactor.loadShows(RUNNING).mapToListItem(POSTER)
+      val endedShows = interactor.loadShows(ENDED).mapToListItem(POSTER)
+      val incomingShows = interactor.loadShows(COMING_SOON).mapToListItem(POSTER)
 
-    val settings = interactor.loadSettings()
+      val settings = interactor.loadSettings()
 
-    uiState = MyShowsUiModel(
-      recentShows = recentShows,
-      runningShows = MyShowsBundle(runningShows, RUNNING, settings.myShowsRunningSortBy, settings.myShowsRunningIsCollapsed),
-      endedShows = MyShowsBundle(endedShows, ENDED, settings.myShowsEndedSortBy, settings.myShowsEndedIsCollapsed),
-      incomingShows = MyShowsBundle(incomingShows, COMING_SOON, settings.myShowsIncomingSortBy, settings.myShowsIncomingIsCollapsed),
-      allShows = MyShowsBundle(allShows, ALL, settings.myShowsAllSortBy, null),
-      sectionsPositions = uiCache.myShowsSectionPositions
-    )
-  }
-
-  fun loadSortedSection(section: MyShowsSection, order: SortOrder) = viewModelScope.launch {
-    interactor.setSectionSortOrder(section, order)
-    val shows = interactor.loadShows(section).map {
-      val image = interactor.findCachedImage(it, POSTER)
-      MyShowsListItem(it, image)
-    }
-    uiState = when (section) {
-      ALL -> MyShowsUiModel(allShows = MyShowsBundle(shows, section, order, null))
-      RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, order, null))
-      ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, order, null))
-      COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, order, null))
+      uiState = MyShowsUiModel(
+        recentShows = recentShows,
+        runningShows = MyShowsBundle(runningShows, RUNNING, settings.myShowsRunningSortBy, settings.myShowsRunningIsCollapsed),
+        endedShows = MyShowsBundle(endedShows, ENDED, settings.myShowsEndedSortBy, settings.myShowsEndedIsCollapsed),
+        incomingShows = MyShowsBundle(incomingShows, COMING_SOON, settings.myShowsIncomingSortBy, settings.myShowsIncomingIsCollapsed),
+        allShows = MyShowsBundle(allShows, ALL, settings.myShowsAllSortBy, null),
+        sectionsPositions = uiCache.myShowsSectionPositions
+      )
     }
   }
 
-  fun loadCollapsedSection(section: MyShowsSection, isCollapsed: Boolean) = viewModelScope.launch {
-    interactor.setSectionCollapsed(section, isCollapsed)
-    val shows = interactor.loadShows(section).map {
-      val image = interactor.findCachedImage(it, POSTER)
-      MyShowsListItem(it, image)
+  fun loadSortedSection(section: MyShowsSection, order: SortOrder) {
+    viewModelScope.launch {
+      interactor.setSectionSortOrder(section, order)
+      val shows = interactor.loadShows(section).map {
+        val image = interactor.findCachedImage(it, POSTER)
+        MyShowsListItem(it, image)
+      }
+      uiState = when (section) {
+        ALL -> MyShowsUiModel(allShows = MyShowsBundle(shows, section, order, null))
+        RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, order, null))
+        ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, order, null))
+        COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, order, null))
+      }
     }
-    uiState = when (section) {
-      ALL -> MyShowsUiModel(allShows = MyShowsBundle(shows, section, null, isCollapsed))
-      RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, null, isCollapsed))
-      ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, null, isCollapsed))
-      COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, null, isCollapsed))
+  }
+
+  fun loadCollapsedSection(section: MyShowsSection, isCollapsed: Boolean) {
+    viewModelScope.launch {
+      interactor.setSectionCollapsed(section, isCollapsed)
+      val shows = interactor.loadShows(section).map {
+        val image = interactor.findCachedImage(it, POSTER)
+        MyShowsListItem(it, image)
+      }
+      uiState = when (section) {
+        ALL -> MyShowsUiModel(allShows = MyShowsBundle(shows, section, null, isCollapsed))
+        RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, null, isCollapsed))
+        ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, null, isCollapsed))
+        COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, null, isCollapsed))
+      }
     }
   }
 

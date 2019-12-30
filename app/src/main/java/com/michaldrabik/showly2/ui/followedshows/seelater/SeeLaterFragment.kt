@@ -16,6 +16,7 @@ import com.michaldrabik.showly2.model.SortOrder.NEWEST
 import com.michaldrabik.showly2.model.SortOrder.RATING
 import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
+import com.michaldrabik.showly2.ui.common.OnTraktImportListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.seelater.recycler.SeeLaterAdapter
@@ -25,7 +26,7 @@ import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.fragment_see_later.*
 
-class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListener, OnScrollResetListener {
+class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListener, OnScrollResetListener, OnTraktImportListener {
 
   override val layoutResId = R.layout.fragment_see_later
 
@@ -91,4 +92,6 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListe
   override fun onTabReselected() = onScrollReset()
 
   override fun onScrollReset() = seeLaterRoot.smoothScrollTo(0, 0)
+
+  override fun onTraktImportProgress() = viewModel.loadShows()
 }
