@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/myShowAllRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:paddingLeft="@dimen/myShowAllMarginHorizontal"
+    android:paddingTop="@dimen/spaceSmall"
+    android:paddingRight="@dimen/myShowAllMarginHorizontal"
+    android:paddingBottom="@dimen/spaceSmall"
+    >
+
+    <ImageView
+      android:id="@+id/myShowAllImage"
+      android:layout_width="@dimen/myShowAllImageWidth"
+      android:layout_height="@dimen/myShowAllImageHeight"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/myShowAllPlaceholder"
+      android:layout_width="@dimen/myShowAllImageWidth"
+      android:layout_height="@dimen/myShowAllImageHeight"
+      android:layout_gravity="center"
+      android:padding="@dimen/spaceNormal"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_television"
+      tools:visibility="visible"
+      />
+
+    <ProgressBar
+      android:id="@+id/myShowAllProgress"
+      android:layout_width="28dp"
+      android:layout_height="28dp"
+      android:layout_gravity="center"
+      android:indeterminateTint="@color/colorProgressGray"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@id/myShowAllImage"
+      app:layout_constraintStart_toStartOf="@id/myShowAllImage"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/myShowAllTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textColor="@color/colorTextPrimary"
+      android:textSize="18sp"
+      app:layout_constraintBottom_toTopOf="@id/myShowAllDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/myShowAllImage"
+      app:layout_constraintTop_toBottomOf="@+id/myShowAllNetwork"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="Game of Thrones"
+      />
+
+    <TextView
+      android:id="@+id/myShowAllNetwork"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textColor="@color/colorAccent"
+      android:textSize="12sp"
+      app:layout_constraintBottom_toTopOf="@+id/myShowAllTitle"
+      app:layout_constraintStart_toEndOf="@id/myShowAllImage"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:ignore="SmallSp"
+      tools:text="Netflix"
+      />
+
+    <ImageView
+      android:id="@+id/myShowAllStarIcon"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:tint="@color/colorAccent"
+      app:layout_constraintBottom_toTopOf="@+id/myShowAllTitle"
+      app:layout_constraintEnd_toStartOf="@id/myShowAllRating"
+      app:layout_constraintTop_toTopOf="@id/myShowAllNetwork"
+      app:srcCompat="@drawable/ic_star"
+      />
+
+    <TextView
+      android:id="@+id/myShowAllRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="end"
+      android:textColor="@color/colorTextSecondary"
+      android:textSize="12sp"
+      app:layout_constraintBottom_toTopOf="@+id/myShowAllTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/myShowAllNetwork"
+      tools:text="7.6"
+      />
+
+    <TextView
+      android:id="@+id/myShowAllDescription"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:maxLines="2"
+      android:textColor="@color/colorTextSecondary"
+      android:textSize="12sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/myShowAllImage"
+      app:layout_constraintTop_toBottomOf="@id/myShowAllTitle"
+      tools:text="Lorem Ipsum"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

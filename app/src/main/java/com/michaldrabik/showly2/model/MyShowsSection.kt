@@ -5,7 +5,8 @@ import com.michaldrabik.showly2.model.ShowStatus.IN_PRODUCTION
 import com.michaldrabik.showly2.model.ShowStatus.PLANNED
 import com.michaldrabik.showly2.model.ShowStatus.RETURNING
 
-enum class MyShowsSection(val statuses: List<ShowStatus>) {
+enum class MyShowsSection(val statuses: List<ShowStatus> = emptyList()) {
+  ALL,
   RUNNING(
     listOf(RETURNING)
   ),

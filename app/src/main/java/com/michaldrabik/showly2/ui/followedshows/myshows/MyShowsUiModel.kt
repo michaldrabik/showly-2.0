@@ -10,6 +10,7 @@ data class MyShowsUiModel(
   val runningShows: MyShowsBundle? = null,
   val endedShows: MyShowsBundle? = null,
   val incomingShows: MyShowsBundle? = null,
+  val allShows: MyShowsBundle? = null,
   val sectionsPositions: Map<MyShowsSection, Pair<Int, Int>>? = null
 ) : UiModel() {
 
@@ -19,6 +20,7 @@ data class MyShowsUiModel(
       runningShows = newModel.runningShows ?: runningShows,
       endedShows = newModel.endedShows ?: endedShows,
       incomingShows = newModel.incomingShows ?: incomingShows,
+      allShows = newModel.allShows ?: allShows,
       sectionsPositions = newModel.sectionsPositions ?: sectionsPositions
     )
 }

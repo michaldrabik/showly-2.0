@@ -7,5 +7,6 @@ import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListIte
 data class MyShowsBundle(
   val items: List<MyShowsListItem>,
   val section: MyShowsSection,
-  val sortOrder: SortOrder
+  val sortOrder: SortOrder?,
+  val isCollapsed: Boolean?
 )

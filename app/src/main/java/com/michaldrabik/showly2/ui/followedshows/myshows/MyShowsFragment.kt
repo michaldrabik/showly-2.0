@@ -26,7 +26,6 @@ import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
-import java.util.ResourceBundle.clearCache
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 
 class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListener, OnScrollResetListener {
@@ -46,7 +45,6 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
     setupSectionsViews()
     viewModel.run {
       uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-      clearCache()
       loadMyShows()
     }
   }
@@ -59,18 +57,24 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
     val onSectionSortOrderChange: (MyShowsSection, SortOrder) -> Unit = { section, order ->
       viewModel.loadSortedSection(section, order)
     }
+    val onSectionCollapsedListener: (MyShowsSection, Boolean) -> Unit = { section, isCollapsed ->
+      viewModel.loadCollapsedSection(section, isCollapsed)
+    }
 
-    myShowsRunningSection.itemClickListener = onSectionItemClick
-    myShowsRunningSection.missingImageListener = onSectionMissingImageListener
-    myShowsRunningSection.sortSelectedListener = onSectionSortOrderChange
+    listOf(
+      myShowsRunningSection,
+      myShowsEndedSection,
+      myShowsIncomingSection
+    ).forEach {
+      it.itemClickListener = onSectionItemClick
+      it.missingImageListener = onSectionMissingImageListener
+      it.sortSelectedListener = onSectionSortOrderChange
+      it.collapseListener = onSectionCollapsedListener
+    }
 
-    myShowsEndedSection.itemClickListener = onSectionItemClick
-    myShowsEndedSection.missingImageListener = onSectionMissingImageListener
-    myShowsEndedSection.sortSelectedListener = onSectionSortOrderChange
-
-    myShowsIncomingSection.itemClickListener = onSectionItemClick
-    myShowsIncomingSection.missingImageListener = onSectionMissingImageListener
-    myShowsIncomingSection.sortSelectedListener = onSectionSortOrderChange
+    myShowsAllSection.itemClickListener = onSectionItemClick
+    myShowsAllSection.missingImageListener = onSectionMissingImageListener
+    myShowsAllSection.sortSelectedListener = onSectionSortOrderChange
   }
 
   private fun render(uiModel: MyShowsUiModel) {
@@ -84,16 +88,20 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
         renderFanartContainer(it, myShowsRecentsContainer)
         (parentFragment as FollowedShowsFragment).enableSearch(it.isNotEmpty())
       }
+      allShows?.let {
+        myShowsAllSection.bind(it, R.string.textAllShows)
+        myShowsAllSection.visibleIf(it.items.isNotEmpty())
+      }
       runningShows?.let {
-        myShowsRunningSection.bind(it.items, it.section, it.sortOrder, R.string.textRunning)
+        myShowsRunningSection.bind(it, R.string.textRunning)
         myShowsRunningSection.visibleIf(it.items.isNotEmpty())
       }
       endedShows?.let {
-        myShowsEndedSection.bind(it.items, it.section, it.sortOrder, R.string.textEnded)
+        myShowsEndedSection.bind(it, R.string.textEnded)
         myShowsEndedSection.visibleIf(it.items.isNotEmpty())
       }
       incomingShows?.let {
-        myShowsIncomingSection.bind(it.items, it.section, it.sortOrder, R.string.textIncoming)
+        myShowsIncomingSection.bind(it, R.string.textIncoming)
         myShowsIncomingSection.visibleIf(it.items.isNotEmpty())
       }
       sectionsPositions?.let {
