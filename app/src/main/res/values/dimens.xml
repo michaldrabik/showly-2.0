@@ -42,6 +42,7 @@
 
   <dimen name="bottomNavigationHeight">56dp</dimen>
   <dimen name="bottomNavigationHeightPadded">60dp</dimen>
+  <dimen name="bottomNoInternetViewHeight">28dp</dimen>
 
   <dimen name="backArrowSize">56dp</dimen>
   <dimen name="backArrowPadding">16dp</dimen>

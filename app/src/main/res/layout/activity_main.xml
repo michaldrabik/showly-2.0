@@ -29,15 +29,15 @@
     <TextView
       android:id="@+id/noInternetView"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="@dimen/bottomNoInternetViewHeight"
       android:textSize="14sp"
       android:gravity="center"
       android:visibility="gone"
       tools:visibility="visible"
-      android:padding="@dimen/spaceTiny"
       android:background="@color/colorError"
       android:textColor="@color/colorWhite"
       android:text="@string/errorNoInternetConnection"
+      android:elevation="10dp"
       />
 
     <View
@@ -57,6 +57,7 @@
       app:labelVisibilityMode="labeled"
       app:menu="@menu/bottom_navigation_menu"
       />
+
   </LinearLayout>
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout

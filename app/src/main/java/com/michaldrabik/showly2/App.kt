@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.Service
+import android.content.Context
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.StrictMode
 import androidx.fragment.app.Fragment
@@ -67,6 +69,8 @@ class App : Application() {
     }
   }
 }
+
+fun Context.connectivityManager() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
 fun Activity.appComponent() = (application as App).appComponent
 

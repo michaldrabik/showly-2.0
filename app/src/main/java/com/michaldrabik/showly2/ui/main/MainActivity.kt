@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.Network
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
@@ -14,13 +15,19 @@ import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.ShowsSyncService
+import com.michaldrabik.showly2.common.trakt.TraktImportService
+import com.michaldrabik.showly2.connectivityManager
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.ui.NotificationActivity
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
+import com.michaldrabik.showly2.ui.common.OnTraktImportListener
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import javax.inject.Inject
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.showly2.utilities.network.NetworkCallbackAdapter
+import com.michaldrabik.showly2.utilities.network.NetworkMonitor
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 class MainActivity : NotificationActivity() {
 
@@ -31,6 +38,7 @@ class MainActivity : NotificationActivity() {
 
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
+  private val networkMonitor by lazy { NetworkMonitor(connectivityManager(), networkReceiver) }
 
   @Inject lateinit var viewModelFactory: DaggerViewModelFactory
   private lateinit var viewModel: MainViewModel
@@ -39,6 +47,8 @@ class MainActivity : NotificationActivity() {
     appComponent().inject(this)
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
+
+    lifecycle.addObserver(networkMonitor)
 
     setupViewModel()
     setupNavigation()
@@ -56,13 +66,16 @@ class MainActivity : NotificationActivity() {
 
   override fun onStart() {
     super.onStart()
-    val filter = IntentFilter(ShowsSyncService.ACTION_SHOWS_SYNC_FINISHED)
-    LocalBroadcastManager.getInstance(applicationContext).registerReceiver(broadcastReceiver, filter)
+    val filter = IntentFilter().apply {
+      addAction(ShowsSyncService.ACTION_SHOWS_SYNC_FINISHED)
+      addAction(TraktImportService.ACTION_IMPORT_PROGRESS)
+    }
+    LocalBroadcastManager.getInstance(applicationContext).registerReceiver(servicesReceiver, filter)
     ShowsSyncService.initialize(applicationContext)
   }
 
   override fun onStop() {
-    LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(broadcastReceiver)
+    LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(servicesReceiver)
     super.onStop()
   }
 
@@ -146,6 +159,15 @@ class MainActivity : NotificationActivity() {
     viewModel.refreshAnnouncements(applicationContext)
   }
 
+  private fun onTraktImportProgress() {
+    navigationHost.findNavController().currentDestination?.id?.let {
+      val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
+      navHost?.childFragmentManager?.primaryNavigationFragment?.let {
+        (it as? OnTraktImportListener)?.onTraktImportProgress()
+      }
+    }
+  }
+
   private fun render(uiModel: MainUiModel) {
     uiModel.run {
       isInitialRun?.let {
@@ -164,11 +186,21 @@ class MainActivity : NotificationActivity() {
     if (!isNavigationVisible) hideNavigation()
   }
 
-  private val broadcastReceiver = object : BroadcastReceiver() {
+  private val servicesReceiver = object : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
       when (intent?.action) {
         ShowsSyncService.ACTION_SHOWS_SYNC_FINISHED -> onEpisodesSyncFinished()
+        TraktImportService.ACTION_IMPORT_PROGRESS -> onTraktImportProgress()
       }
     }
+  }
+
+  private val networkReceiver = object : NetworkCallbackAdapter() {
+
+    fun showDisclaimer(show: Boolean) = runOnUiThread { noInternetView.visibleIf(show) }
+
+    override fun onAvailable(network: Network) = showDisclaimer(false)
+    override fun onUnavailable() = showDisclaimer(true)
+    override fun onLost(network: Network) = showDisclaimer(true)
   }
 }

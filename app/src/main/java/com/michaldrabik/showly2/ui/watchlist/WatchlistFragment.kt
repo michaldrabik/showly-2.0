@@ -12,6 +12,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
+import com.michaldrabik.showly2.ui.common.OnTraktImportListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
@@ -24,7 +25,7 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 import kotlinx.android.synthetic.main.layout_watchlist_empty.*
 
-class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedListener, OnEpisodesSyncedListener {
+class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedListener, OnEpisodesSyncedListener, OnTraktImportListener {
 
   override val layoutResId = R.layout.fragment_watchlist
 
@@ -104,6 +105,8 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
 
   override fun onEpisodesSyncFinished() = viewModel.loadWatchlist()
 
+  override fun onTraktImportProgress() = viewModel.loadWatchlist()
+
   private fun render(uiModel: WatchlistUiModel) {
     uiModel.items?.let {
       adapter.setItems(it)
@@ -111,4 +114,5 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
       watchlistEmptyView.fadeIf(it.isEmpty())
     }
   }
+
 }
