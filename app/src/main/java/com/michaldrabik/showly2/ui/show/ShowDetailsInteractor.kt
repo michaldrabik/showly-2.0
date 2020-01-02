@@ -17,9 +17,9 @@ import com.michaldrabik.showly2.repository.UserTvdbManager
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
+import javax.inject.Inject
 import com.michaldrabik.storage.database.model.Episode as EpisodeDb
 import com.michaldrabik.storage.database.model.Season as SeasonDb
-import javax.inject.Inject
 
 @AppScope
 class ShowDetailsInteractor @Inject constructor(
@@ -72,11 +72,13 @@ class ShowDetailsInteractor @Inject constructor(
   suspend fun loadMissingImage(show: Show, type: ImageType, force: Boolean) =
     imagesManager.loadRemoteImage(show, type, force)
 
-  suspend fun loadSeasons(show: Show): List<Season> {
-    return cloud.traktApi.fetchSeasons(show.ids.trakt.id).asSequence()
+  suspend fun loadSeasons(show: Show): List<Season> =
+    cloud.traktApi.fetchSeasons(show.ids.trakt.id)
       .map { mappers.season.fromNetwork(it) }
-      .toList()
-  }
+
+  suspend fun loadComments(show: Show, limit: Int = 10) =
+    showsRepository.detailsShow.loadComments(show.ids.trakt, limit)
+      .filter { !it.isSpoiler() }
 
   suspend fun isFollowed(show: Show) =
     showsRepository.myShows.load(show.ids.trakt) != null

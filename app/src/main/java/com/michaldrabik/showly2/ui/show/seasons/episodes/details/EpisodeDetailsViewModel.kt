@@ -9,8 +9,8 @@ import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class EpisodeDetailsViewModel @Inject constructor(
   private val imagesManager: ImagesManager,
@@ -37,7 +37,7 @@ class EpisodeDetailsViewModel @Inject constructor(
         uiState = EpisodeDetailsUiModel(commentsLoading = true)
         val comments = cloud.traktApi.fetchEpisodeComments(idTrakt.id, season, episode)
           .filter { it.parentId <= 0 }
-          .filter { !it.spoiler }
+          .filter { !it.isSpoiler() }
           .sortedByDescending { it.id }
         uiState = EpisodeDetailsUiModel(comments = comments, commentsLoading = false)
       } catch (t: Throwable) {

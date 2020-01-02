@@ -21,10 +21,10 @@ import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodeListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.showly2.utilities.extensions.findReplace
 import com.michaldrabik.showly2.utilities.extensions.replace
-import javax.inject.Inject
-import kotlin.properties.Delegates.notNull
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import kotlin.properties.Delegates.notNull
 
 class ShowDetailsViewModel @Inject constructor(
   private val interactor: ShowDetailsInteractor,
@@ -63,6 +63,7 @@ class ShowDetailsViewModel @Inject constructor(
           }
           areSeasonsLoaded = true
         }
+        launch { loadComments(show) }
         launch { loadRelatedShows(show) }
       } catch (t: Throwable) {
         _errorStream.value = R.string.errorCouldNotLoadShow
@@ -109,6 +110,15 @@ class ShowDetailsViewModel @Inject constructor(
   } catch (t: Throwable) {
     uiState = ShowDetailsUiModel(seasons = emptyList())
     emptyList()
+  }
+
+  private suspend fun loadComments(show: Show) {
+    uiState = try {
+      val comments = interactor.loadComments(show)
+      ShowDetailsUiModel(comments = comments)
+    } catch (t: Throwable) {
+      ShowDetailsUiModel(comments = emptyList())
+    }
   }
 
   private suspend fun loadRelatedShows(show: Show) {

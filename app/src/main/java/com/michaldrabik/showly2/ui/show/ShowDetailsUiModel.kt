@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.show
 
+import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
@@ -17,6 +18,7 @@ data class ShowDetailsUiModel(
   val actors: List<Actor>? = null,
   val relatedShows: List<RelatedListItem>? = null,
   val seasons: List<SeasonListItem>? = null,
+  val comments: List<Comment>? = null,
   val isFollowed: FollowedState? = null
 ) : UiModel() {
 
@@ -29,6 +31,7 @@ data class ShowDetailsUiModel(
       actors = newModel.actors ?: actors,
       relatedShows = newModel.relatedShows ?: relatedShows,
       seasons = newModel.seasons ?: seasons,
+      comments = newModel.comments ?: comments,
       isFollowed = newModel.isFollowed ?: isFollowed
     )
 }

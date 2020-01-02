@@ -1,6 +1,7 @@
 package com.michaldrabik.showly2.repository.shows
 
 import com.michaldrabik.network.Cloud
+import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.IdTrakt
@@ -26,5 +27,9 @@ class ShowDetailsRepository @Inject constructor(
       return show
     }
     return mappers.show.fromDatabase(localShow)
+  }
+
+  suspend fun loadComments(idTrakt: IdTrakt, limit: Int = 10): List<Comment> {
+    return cloud.traktApi.fetchShowComments(idTrakt.id, limit)
   }
 }

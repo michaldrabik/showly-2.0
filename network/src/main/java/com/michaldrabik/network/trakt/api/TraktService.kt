@@ -44,6 +44,12 @@ interface TraktService {
   @GET("shows/{traktId}/seasons?extended=full,episodes")
   suspend fun fetchSeasons(@Path("traktId") traktId: Long): List<Season>
 
+  @GET("shows/{traktId}/comments?extended=full")
+  suspend fun fetchShowComments(
+    @Path("traktId") traktId: Long,
+    @Query("limit") limit: Int
+  ): List<Comment>
+
   @GET("shows/{traktId}/seasons/{seasonNumber}/episodes/{episodeNumber}/comments?limit=40&extended=full")
   suspend fun fetchEpisodeComments(
     @Path("traktId") traktId: Long,

@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.showly2.R
@@ -78,7 +79,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   private val relatedAdapter by lazy { RelatedShowAdapter() }
   private val seasonsAdapter by lazy { SeasonsAdapter() }
 
-  private val imageHeight by lazy { if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight() else screenWidth() }
+  private val imageHeight by lazy {
+    if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
+    else screenWidth()
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
@@ -268,6 +272,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
       seasons?.let { renderSeasons(it) }
+      comments?.let { renderComments(it) }
       relatedShows?.let { renderRelatedShows(it) }
     }
   }
@@ -322,6 +327,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     showDetailsSeasonsLabel.fadeIf(seasonsItems.isNotEmpty())
     showDetailsSeasonsEmptyView.fadeIf(seasonsItems.isEmpty())
     showDetailsSeasonsProgress.gone()
+  }
+
+  private fun renderComments(comments: List<Comment>) {
+    if (comments.isNotEmpty()) {
+      showDetailsCommentView.bind(comments[0])
+      showDetailsCommentView.fadeIn()
+    }
   }
 
   private fun renderRelatedShows(items: List<RelatedListItem>) {
