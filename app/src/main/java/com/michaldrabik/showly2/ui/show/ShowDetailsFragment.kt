@@ -233,6 +233,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         showDetailsExtraInfo.text =
           "${show.network} $year | ${show.runtime} min | ${show.genres.take(2).joinToString(", ") { it.capitalize() }}"
         showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
+        showDetailsCommentsButton.visible()
 
         showDetailsShareIcon.run {
           visibleIf(show.ids.imdb.id.isNotBlank())
@@ -272,7 +273,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
       seasons?.let { renderSeasons(it) }
-      comments?.let { renderComments(it) }
       relatedShows?.let { renderRelatedShows(it) }
     }
   }
@@ -330,10 +330,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   }
 
   private fun renderComments(comments: List<Comment>) {
-    if (comments.isNotEmpty()) {
-      showDetailsCommentView.bind(comments[0])
-      showDetailsCommentView.fadeIn()
-    }
+//    if (comments.isNotEmpty()) {
+//      showDetailsCommentView.bind(comments[0])
+//      showDetailsCommentView.fadeIn()
+//    }
   }
 
   private fun renderRelatedShows(items: List<RelatedListItem>) {

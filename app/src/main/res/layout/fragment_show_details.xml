@@ -358,7 +358,7 @@
         app:icon="@drawable/ic_link"
         app:iconGravity="textStart"
         app:iconTint="@color/colorWhite"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedLabel"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsCommentsButton"
         app:layout_constraintEnd_toStartOf="@id/showDetailsShareIcon"
         app:layout_constraintStart_toEndOf="@id/showDetailsTrailerButton"
         app:layout_constraintTop_toBottomOf="@id/separator3"
@@ -382,20 +382,32 @@
         app:layout_constraintStart_toEndOf="@id/showDetailsImdbButton"
         app:layout_constraintTop_toTopOf="@id/showDetailsImdbButton"
         app:srcCompat="@drawable/ic_share"
+        tools:visibility="visible"
         />
 
-      <com.michaldrabik.showly2.ui.common.views.CommentView
-        android:id="@+id/showDetailsCommentView"
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/showDetailsCommentsButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginTop="@dimen/spaceMicro"
         android:layout_marginEnd="@dimen/spaceNormal"
+        android:includeFontPadding="false"
+        android:text="@string/textLoadComments"
+        android:textColor="@color/colorWhite"
         android:visibility="gone"
+        app:icon="@drawable/ic_comment"
+        app:iconGravity="textStart"
+        app:iconSize="22dp"
+        app:iconTint="@color/colorWhite"
         app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsImdbButton"
+        app:layout_goneMarginEnd="@dimen/spaceNormal"
+        app:rippleColor="@color/colorWhite"
+        app:strokeColor="@color/colorWhite"
         tools:visibility="visible"
         />
 
@@ -404,7 +416,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/spaceSmall"
         android:text="@string/textYouMayAlsoLike"
         android:textColor="@color/colorTextPrimary"
         android:textSize="16sp"
@@ -412,7 +424,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedRecycler"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsCommentView"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsCommentsButton"
         tools:visibility="visible"
         />
 
@@ -441,7 +453,7 @@
         android:indeterminateTint="@color/colorProgressGray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsCommentView"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsCommentsButton"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

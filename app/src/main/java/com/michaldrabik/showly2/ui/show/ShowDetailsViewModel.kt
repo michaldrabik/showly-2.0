@@ -63,7 +63,6 @@ class ShowDetailsViewModel @Inject constructor(
           }
           areSeasonsLoaded = true
         }
-        launch { loadComments(show) }
         launch { loadRelatedShows(show) }
       } catch (t: Throwable) {
         _errorStream.value = R.string.errorCouldNotLoadShow
