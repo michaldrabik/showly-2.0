@@ -14,5 +14,4 @@ data class Comment(
 ) {
 
   fun isSpoiler() = spoiler || comment.contains("spoiler")
-
 }
