@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.showly2.R
@@ -83,6 +82,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
     else screenWidth()
   }
+  private val animationEnterRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_right) }
+  private val animationExitRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
@@ -108,8 +109,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     }
   }
 
-  override fun onResume() {
-    super.onResume()
+  override fun onStart() {
+    super.onStart()
     handleBackPressed()
   }
 
@@ -123,6 +124,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       val bundle = Bundle().apply { putLong(FanartGalleryFragment.ARG_SHOW_ID, showId.id) }
       findNavController().navigate(R.id.actionShowDetailsFragmentToFanartGallery, bundle)
     }
+    showDetailsCommentsButton.onClick { showCommentsView() }
   }
 
   private fun setupActorsList() {
@@ -172,15 +174,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   }
 
   private fun showEpisodesView(item: SeasonListItem) {
-    val animationEnter = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_right)
-    val animationExit = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right)
-
     showDetailsEpisodesView.run {
       bind(item)
       fadeIn(275) {
         bindEpisodes(item.episodes)
       }
-      startAnimation(animationEnter)
+      startAnimation(animationEnterRight)
       itemCheckedListener = { episode, season, isChecked ->
         viewModel.setWatchedEpisode(episode, season, isChecked)
       }
@@ -188,22 +187,31 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         viewModel.setWatchedSeason(season, isChecked)
       }
     }
-
     showDetailsMainLayout.run {
       fadeOut()
-      startAnimation(animationExit)
+      startAnimation(animationExitRight)
     }
   }
 
-  private fun hideEpisodesView() {
+  private fun showCommentsView() {
+    showDetailsCommentsView.run {
+      fadeIn(275)
+      startAnimation(animationEnterRight)
+    }
+    showDetailsMainLayout.run {
+      fadeOut()
+      startAnimation(animationExitRight)
+    }
+  }
+
+  private fun hideExtraView(view: View) {
     val animationEnter = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_left)
     val animationExit = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_left)
 
-    showDetailsEpisodesView.run {
+    view.run {
       fadeOut()
       startAnimation(animationExit)
     }
-
     showDetailsMainLayout.run {
       fadeIn()
       startAnimation(animationEnter)
@@ -329,13 +337,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     showDetailsSeasonsProgress.gone()
   }
 
-  private fun renderComments(comments: List<Comment>) {
-//    if (comments.isNotEmpty()) {
-//      showDetailsCommentView.bind(comments[0])
-//      showDetailsCommentView.fadeIn()
-//    }
-  }
-
   private fun renderRelatedShows(items: List<RelatedListItem>) {
     relatedAdapter.setItems(items)
     showDetailsRelatedRecycler.fadeIf(items.isNotEmpty())
@@ -376,13 +377,21 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   private fun handleBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
-      if (showDetailsEpisodesView.isVisible) {
-        hideEpisodesView()
-        return@addCallback
+      when {
+        showDetailsEpisodesView.isVisible -> {
+          hideExtraView(showDetailsEpisodesView)
+          return@addCallback
+        }
+        showDetailsCommentsView.isVisible -> {
+          hideExtraView(showDetailsCommentsView)
+          return@addCallback
+        }
+        else -> {
+          remove()
+          showNavigation()
+          findNavController().popBackStack()
+        }
       }
-      remove()
-      showNavigation()
-      findNavController().popBackStack()
     }
   }
 

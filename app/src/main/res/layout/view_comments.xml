@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/commentsRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  >
+
+  <TextView
+    android:id="@+id/commentsTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/backArrowSize"
+    android:layout_marginStart="@dimen/backArrowSize"
+    android:gravity="center_vertical"
+    android:text="@string/textComments2"
+    android:textColor="@color/colorTextPrimary"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/showDetailsImageGuideline"
+    />
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/commentsRecycler"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:layoutAnimation="@anim/anim_recycler_fall_down_fast"
+    android:nestedScrollingEnabled="false"
+    android:overScrollMode="never"
+    android:paddingTop="@dimen/spaceSmall"
+    android:paddingBottom="@dimen/spaceSmall"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/commentsTitle"
+    />
+
+</merge>

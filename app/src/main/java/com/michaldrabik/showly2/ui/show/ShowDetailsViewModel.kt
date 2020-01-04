@@ -111,15 +111,6 @@ class ShowDetailsViewModel @Inject constructor(
     emptyList()
   }
 
-  private suspend fun loadComments(show: Show) {
-    uiState = try {
-      val comments = interactor.loadComments(show)
-      ShowDetailsUiModel(comments = comments)
-    } catch (t: Throwable) {
-      ShowDetailsUiModel(comments = emptyList())
-    }
-  }
-
   private suspend fun loadRelatedShows(show: Show) {
     uiState = try {
       val relatedShows = interactor.loadRelatedShows(show).map {
@@ -129,6 +120,15 @@ class ShowDetailsViewModel @Inject constructor(
       ShowDetailsUiModel(relatedShows = relatedShows)
     } catch (t: Throwable) {
       ShowDetailsUiModel(relatedShows = emptyList())
+    }
+  }
+
+  suspend fun loadComments(show: Show) {
+    uiState = try {
+      val comments = interactor.loadComments(show)
+      ShowDetailsUiModel(comments = comments)
+    } catch (t: Throwable) {
+      ShowDetailsUiModel(comments = emptyList())
     }
   }
 
