@@ -123,12 +123,14 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  suspend fun loadComments(show: Show) {
-    uiState = try {
-      val comments = interactor.loadComments(show)
-      ShowDetailsUiModel(comments = comments)
-    } catch (t: Throwable) {
-      ShowDetailsUiModel(comments = emptyList())
+  fun loadComments() {
+    viewModelScope.launch {
+      uiState = try {
+        val comments = interactor.loadComments(show)
+        ShowDetailsUiModel(comments = comments)
+      } catch (t: Throwable) {
+        ShowDetailsUiModel(comments = emptyList())
+      }
     }
   }
 

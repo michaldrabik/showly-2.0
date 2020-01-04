@@ -3,9 +3,17 @@ package com.michaldrabik.showly2.ui.show.comments
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import kotlinx.android.synthetic.main.view_comments.view.*
 
 class CommentsView : ConstraintLayout {
 
@@ -17,7 +25,31 @@ class CommentsView : ConstraintLayout {
 
   init {
     inflate(context, R.layout.view_comments, this)
-    layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
+    setupRecycler()
   }
 
+  fun bind(comments: List<Comment>) {
+    commentsProgress.gone()
+    commentsEmpty.visibleIf(comments.isEmpty())
+    commentsAdapter.setItems(comments)
+  }
+
+  fun clear() {
+    commentsProgress.visible()
+    commentsEmpty.gone()
+    commentsAdapter.setItems(emptyList())
+  }
+
+  private fun setupRecycler() {
+    commentsRecycler.apply {
+      setHasFixedSize(true)
+      adapter = commentsAdapter
+      layoutManager = LinearLayoutManager(context, VERTICAL, false)
+      itemAnimator = null
+      addItemDecoration(DividerItemDecoration(context, VERTICAL).apply {
+        setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_comments_list)!!)
+      })
+    }
+  }
 }

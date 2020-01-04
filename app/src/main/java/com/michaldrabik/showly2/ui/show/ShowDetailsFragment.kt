@@ -124,7 +124,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       val bundle = Bundle().apply { putLong(FanartGalleryFragment.ARG_SHOW_ID, showId.id) }
       findNavController().navigate(R.id.actionShowDetailsFragmentToFanartGallery, bundle)
     }
-    showDetailsCommentsButton.onClick { showCommentsView() }
+    showDetailsCommentsButton.onClick {
+      showDetailsCommentsView.clear()
+      showCommentsView()
+      viewModel.loadComments()
+    }
   }
 
   private fun setupActorsList() {
@@ -265,7 +269,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         }
       }
       showLoading?.let {
-        if (!showDetailsEpisodesView.isVisible) {
+        if (!showDetailsEpisodesView.isVisible && !showDetailsCommentsView.isVisible) {
           showDetailsMainLayout.fadeIf(!it)
           showDetailsMainProgress.visibleIf(it)
         }
@@ -282,6 +286,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       actors?.let { renderActors(it) }
       seasons?.let { renderSeasons(it) }
       relatedShows?.let { renderRelatedShows(it) }
+      comments?.let { showDetailsCommentsView.bind(it) }
     }
   }
 

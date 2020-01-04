@@ -77,7 +77,7 @@ class ShowDetailsInteractor @Inject constructor(
     cloud.traktApi.fetchSeasons(show.ids.trakt.id)
       .map { mappers.season.fromNetwork(it) }
 
-  suspend fun loadComments(show: Show, limit: Int = 10) =
+  suspend fun loadComments(show: Show, limit: Int = 30) =
     showsRepository.detailsShow.loadComments(show.ids.trakt, limit)
       .filter { !it.isSpoiler() }
 

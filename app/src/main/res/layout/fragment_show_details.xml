@@ -400,6 +400,7 @@
         app:icon="@drawable/ic_comment"
         app:iconGravity="textStart"
         app:iconSize="22dp"
+        app:iconPadding="6dp"
         app:iconTint="@color/colorWhite"
         app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedLabel"
         app:layout_constraintEnd_toEndOf="parent"

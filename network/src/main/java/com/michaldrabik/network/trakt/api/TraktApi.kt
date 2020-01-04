@@ -37,7 +37,7 @@ class TraktApi(private val service: TraktService) {
       .filter { it.number != 0 } // Filtering out "special" seasons
       .sortedByDescending { it.number }
 
-  suspend fun fetchShowComments(traktId: Long, limit: Int = 10) =
+  suspend fun fetchShowComments(traktId: Long, limit: Int) =
     service.fetchShowComments(traktId, limit)
 
   suspend fun fetchEpisodeComments(

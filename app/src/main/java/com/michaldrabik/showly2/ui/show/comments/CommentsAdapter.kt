@@ -9,24 +9,19 @@ import com.michaldrabik.showly2.ui.common.views.CommentView
 
 class CommentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-  private val items: MutableList<Comment> = mutableListOf()
   private val asyncDiffer = AsyncListDiffer(this, CommentItemDiffCallback())
 
   fun setItems(newItems: List<Comment>) = asyncDiffer.submitList(newItems)
-
-  fun clearItems() {
-    items.clear()
-    notifyDataSetChanged()
-  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     ViewHolderShow(CommentView(parent.context))
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-    (holder.itemView as CommentView).bind(items[position])
+    val item = asyncDiffer.currentList[position]
+    (holder.itemView as CommentView).bind(item)
   }
 
-  override fun getItemCount() = items.size
+  override fun getItemCount() = asyncDiffer.currentList.size
 
   class ViewHolderShow(itemView: View) : RecyclerView.ViewHolder(itemView)
 }

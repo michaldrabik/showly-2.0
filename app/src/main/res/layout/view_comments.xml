@@ -5,7 +5,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/commentsRoot"
   android:layout_width="match_parent"
-  android:layout_height="wrap_content"
+  android:layout_height="match_parent"
   tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
   >
 
@@ -20,7 +20,8 @@
     android:textSize="18sp"
     android:textStyle="bold"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/showDetailsImageGuideline"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toTopOf="@id/commentsRecycler"
     />
 
   <androidx.recyclerview.widget.RecyclerView
@@ -29,15 +30,44 @@
     android:layout_height="0dp"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:layoutAnimation="@anim/anim_recycler_fall_down_fast"
-    android:nestedScrollingEnabled="false"
+    android:paddingStart="@dimen/spaceNormal"
+    android:paddingEnd="@dimen/spaceNormal"
     android:overScrollMode="never"
-    android:paddingTop="@dimen/spaceSmall"
-    android:paddingBottom="@dimen/spaceSmall"
+    android:scrollbarFadeDuration="150"
+    android:scrollbarSize="@dimen/scrollBarWidth"
+    android:scrollbarStyle="outsideOverlay"
+    android:scrollbarThumbVertical="@color/colorScrollbar"
+    android:scrollbars="vertical"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/commentsTitle"
+    />
+
+  <ProgressBar
+    android:id="@+id/commentsProgress"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:layout_margin="@dimen/spaceNormal"
+    android:indeterminateTint="@color/colorProgressGray"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/commentsTitle"
+    />
+
+  <TextView
+    android:id="@+id/commentsEmpty"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/textNoComments"
+    android:textColor="@color/colorTextPrimary"
+    android:layout_margin="@dimen/spaceNormal"
+    android:gravity="center"
+    android:visibility="gone"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/commentsTitle"
+    tools:visibility="visible"
     />
 
 </merge>
