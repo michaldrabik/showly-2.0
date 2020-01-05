@@ -109,8 +109,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     }
   }
 
-  override fun onStart() {
-    super.onStart()
+  override fun onResume() {
+    super.onResume()
     handleBackPressed()
   }
 

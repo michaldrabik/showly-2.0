@@ -18,7 +18,6 @@ import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
-import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.setCheckedSilent
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
@@ -137,7 +136,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
       remove()
-      (activity as MainActivity).showNavigation()
+      showNavigation()
       findNavController().popBackStack()
     }
   }
