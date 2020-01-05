@@ -10,10 +10,19 @@
   >
 
   <ImageView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scaleX="0.9"
+    android:scaleY="0.9"
+    android:tint="@color/colorWhite"
+    app:srcCompat="@drawable/ic_circle"
+    />
+
+
+  <ImageView
     android:id="@+id/tutorialTipIcon"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginEnd="@dimen/spaceMedium"
     android:tint="@color/colorAccent"
     app:srcCompat="@drawable/ic_info"
     />

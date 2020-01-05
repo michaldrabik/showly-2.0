@@ -23,6 +23,8 @@ import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktImportListener
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.utilities.network.NetworkMonitor
 import kotlinx.android.synthetic.main.activity_main.*
@@ -51,6 +53,7 @@ class MainActivity : NotificationActivity() {
     setupNavigation()
     setupNavigationBackHandler()
     setupNetworkMonitoring()
+    setupTutorials()
 
     restoreState(savedInstanceState)
     onNewIntent(intent)
@@ -127,6 +130,10 @@ class MainActivity : NotificationActivity() {
       runOnUiThread { noInternetView.visibleIf(!isAvailable) }
     }
     lifecycle.addObserver(networkMonitor)
+  }
+
+  private fun setupTutorials() {
+    tutorialTipDiscover.onClick { it.gone() }
   }
 
   fun hideNavigation(animate: Boolean = true) {
