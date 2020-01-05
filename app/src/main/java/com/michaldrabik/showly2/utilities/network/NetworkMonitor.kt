@@ -8,6 +8,8 @@ import android.net.NetworkRequest
 import android.util.Log
 import androidx.lifecycle.Lifecycle.Event.ON_CREATE
 import androidx.lifecycle.Lifecycle.Event.ON_DESTROY
+import androidx.lifecycle.Lifecycle.Event.ON_START
+import androidx.lifecycle.Lifecycle.Event.ON_STOP
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 
@@ -16,7 +18,7 @@ class NetworkMonitor(
   private val networkCallback: NetworkCallbackAdapter
 ) : LifecycleObserver {
 
-  @OnLifecycleEvent(ON_CREATE)
+  @OnLifecycleEvent(ON_START)
   fun monitorInternet() {
     val networkRequest = NetworkRequest.Builder()
       .addTransportType(TRANSPORT_WIFI)
@@ -28,7 +30,7 @@ class NetworkMonitor(
     Log.d("NetworkMonitor", "Registering network callback.")
   }
 
-  @OnLifecycleEvent(ON_DESTROY)
+  @OnLifecycleEvent(ON_STOP)
   fun stopMonitoringInternet() {
     connectivityManager.unregisterNetworkCallback(networkCallback)
     Log.d("NetworkMonitor", "Unregistering network callback.")
