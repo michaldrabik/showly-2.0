@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.net.Network
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
@@ -24,7 +23,6 @@ import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktImportListener
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
-import com.michaldrabik.showly2.utilities.network.NetworkCallbackAdapter
 import com.michaldrabik.showly2.utilities.network.NetworkMonitor
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -38,7 +36,7 @@ class MainActivity : NotificationActivity() {
 
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
-  private val networkMonitor by lazy { NetworkMonitor(connectivityManager(), networkReceiver) }
+  private val networkMonitor by lazy { NetworkMonitor(connectivityManager()) }
 
   @Inject lateinit var viewModelFactory: DaggerViewModelFactory
   private lateinit var viewModel: MainViewModel
@@ -48,11 +46,10 @@ class MainActivity : NotificationActivity() {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
-    lifecycle.addObserver(networkMonitor)
-
     setupViewModel()
     setupNavigation()
     setupNavigationBackHandler()
+    setupNetworkMonitoring()
 
     restoreState(savedInstanceState)
     onNewIntent(intent)
@@ -122,6 +119,13 @@ class MainActivity : NotificationActivity() {
         }
       }
     }
+  }
+
+  private fun setupNetworkMonitoring() {
+    networkMonitor.onNetworkAvailableCallback = { isAvailable ->
+      runOnUiThread { noInternetView.visibleIf(!isAvailable) }
+    }
+    lifecycle.addObserver(networkMonitor)
   }
 
   fun hideNavigation(animate: Boolean = true) {
@@ -194,14 +198,5 @@ class MainActivity : NotificationActivity() {
         TraktImportService.ACTION_IMPORT_PROGRESS -> onTraktImportProgress()
       }
     }
-  }
-
-  private val networkReceiver = object : NetworkCallbackAdapter() {
-
-    fun showDisclaimer(show: Boolean) = runOnUiThread { noInternetView.visibleIf(show) }
-
-    override fun onAvailable(network: Network) = showDisclaimer(false)
-    override fun onUnavailable() = showDisclaimer(true)
-    override fun onLost(network: Network) = showDisclaimer(true)
   }
 }
