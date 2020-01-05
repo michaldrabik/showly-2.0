@@ -30,7 +30,7 @@ import javax.inject.Inject
 class MainActivity : NotificationActivity() {
 
   companion object {
-    private const val NAVIGATION_TRANSITION_DURATION_MS = 400L
+    private const val NAVIGATION_TRANSITION_DURATION_MS = 350L
     private const val ARG_NAVIGATION_VISIBLE = "ARG_NAVIGATION_VISIBLE"
   }
 
