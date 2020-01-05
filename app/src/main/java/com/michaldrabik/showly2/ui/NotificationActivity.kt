@@ -14,7 +14,6 @@ abstract class NotificationActivity : AppCompatActivity() {
 
   protected fun handleNotification(extras: Bundle?, action: () -> Unit = {}) {
     if (extras == null) return
-
     if (extras.containsKey(FcmExtra.SHOW_ID.key)) {
       handleFcmShowPush(extras, action)
     }

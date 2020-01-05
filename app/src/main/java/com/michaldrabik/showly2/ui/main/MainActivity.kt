@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -87,7 +88,7 @@ class MainActivity : NotificationActivity() {
   private fun setupNavigation() {
     bottomNavigationView.setOnNavigationItemSelectedListener { item ->
       if (bottomNavigationView.selectedItemId == item.itemId) {
-        onTabReselected()
+        doForFragments { (it as? OnTabReselectedListener)?.onTabReselected() }
         return@setOnNavigationItemSelectedListener true
       }
 
@@ -144,34 +145,6 @@ class MainActivity : NotificationActivity() {
       .start()
   }
 
-  private fun onTabReselected() {
-    navigationHost.findNavController().currentDestination?.id?.let {
-      val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
-      navHost?.childFragmentManager?.primaryNavigationFragment?.let {
-        (it as? OnTabReselectedListener)?.onTabReselected()
-      }
-    }
-  }
-
-  private fun onEpisodesSyncFinished() {
-    navigationHost.findNavController().currentDestination?.id?.let {
-      val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
-      navHost?.childFragmentManager?.primaryNavigationFragment?.let {
-        (it as? OnEpisodesSyncedListener)?.onEpisodesSyncFinished()
-      }
-    }
-    viewModel.refreshAnnouncements(applicationContext)
-  }
-
-  private fun onTraktImportProgress() {
-    navigationHost.findNavController().currentDestination?.id?.let {
-      val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
-      navHost?.childFragmentManager?.primaryNavigationFragment?.let {
-        (it as? OnTraktImportListener)?.onTraktImportProgress()
-      }
-    }
-  }
-
   private fun render(uiModel: MainUiModel) {
     uiModel.run {
       isInitialRun?.let {
@@ -190,12 +163,26 @@ class MainActivity : NotificationActivity() {
     if (!isNavigationVisible) hideNavigation()
   }
 
+  private fun doForFragments(action: (Fragment) -> Unit) {
+    navigationHost.findNavController().currentDestination?.id?.let {
+      val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
+      navHost?.childFragmentManager?.primaryNavigationFragment?.let {
+        action(it)
+      }
+    }
+  }
+
   private val servicesReceiver = object : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
       when (intent?.action) {
-        ShowsSyncService.ACTION_SHOWS_SYNC_FINISHED -> onEpisodesSyncFinished()
+        ShowsSyncService.ACTION_SHOWS_SYNC_FINISHED -> {
+          doForFragments { (it as? OnEpisodesSyncedListener)?.onEpisodesSyncFinished() }
+          viewModel.refreshAnnouncements(applicationContext)
+        }
         // TODO Refactor into listening to DB changes and Coroutines Flows
-        TraktImportService.ACTION_IMPORT_PROGRESS -> onTraktImportProgress()
+        TraktImportService.ACTION_IMPORT_PROGRESS -> {
+          doForFragments { (it as? OnTraktImportListener)?.onTraktImportProgress() }
+        }
       }
     }
   }
