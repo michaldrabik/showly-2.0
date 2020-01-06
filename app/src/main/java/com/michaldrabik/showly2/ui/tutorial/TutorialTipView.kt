@@ -5,7 +5,7 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator.INFINITE
 import android.content.Context
 import android.util.AttributeSet
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.michaldrabik.showly2.R
 
@@ -17,6 +17,12 @@ class TutorialTipView : FrameLayout {
 
   companion object {
     private const val ANIMATION_DURATION = 2500L
+  }
+
+  init {
+    inflate(context, R.layout.view_tutorial_tip, this)
+    layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+    clipChildren = false
   }
 
   private val animatorX by lazy {
@@ -38,10 +44,13 @@ class TutorialTipView : FrameLayout {
     }
   }
 
-  init {
-    inflate(context, R.layout.view_tutorial_tip, this)
-    layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
-    clipChildren = false
+  override fun onAttachedToWindow() {
+    super.onAttachedToWindow()
     animatorSet.start()
+  }
+
+  override fun onDetachedFromWindow() {
+    animatorSet.cancel()
+    super.onDetachedFromWindow()
   }
 }
