@@ -84,7 +84,6 @@
     app:layout_constraintBottom_toBottomOf="@id/bottomNavigationWrapper"
     android:layout_marginBottom="44dp"
     app:layout_constraintHorizontal_bias="0.55"
-    android:visibility="gone"
     />
 
   <com.michaldrabik.showly2.ui.tutorial.TutorialTipView
@@ -96,6 +95,32 @@
     app:layout_constraintBottom_toBottomOf="@id/bottomNavigationWrapper"
     android:layout_marginBottom="44dp"
     app:layout_constraintHorizontal_bias="0.925"
+    android:visibility="gone"
+    />
+
+  <View
+    android:id="@+id/tutorialViewMask"
+    android:background="@color/colorMask"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:visibility="gone"
+    />
+
+  <com.michaldrabik.showly2.ui.tutorial.TutorialTextView
+    android:id="@+id/tutorialView"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginEnd="@dimen/spaceBig"
+    android:layout_marginBottom="@dimen/bottomNavigationHeightPadded"
+    app:layout_constraintEnd_toEndOf="parent"
     android:visibility="gone"
     />
 

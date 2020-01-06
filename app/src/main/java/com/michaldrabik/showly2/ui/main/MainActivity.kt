@@ -23,6 +23,8 @@ import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktImportListener
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.fadeIn
+import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
@@ -133,7 +135,17 @@ class MainActivity : NotificationActivity() {
   }
 
   private fun setupTutorials() {
-    tutorialTipDiscover.onClick { it.gone() }
+    tutorialViewMask.onClick { /* Block clicks */ }
+    tutorialView.onOkClick = {
+      tutorialViewMask.fadeOut()
+      tutorialView.fadeOut()
+    }
+
+    tutorialTipDiscover.onClick {
+      it.gone()
+      tutorialViewMask.fadeIn()
+      tutorialView.fadeIn()
+    }
   }
 
   fun hideNavigation(animate: Boolean = true) {
