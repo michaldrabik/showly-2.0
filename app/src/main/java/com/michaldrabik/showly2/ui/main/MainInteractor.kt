@@ -7,13 +7,16 @@ import com.michaldrabik.showly2.common.notifications.AnnouncementManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.fcm.NotificationChannel
 import com.michaldrabik.showly2.model.Settings
+import com.michaldrabik.showly2.model.Tip
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
+import com.michaldrabik.showly2.repository.tutorial.TipsRepository
 import com.michaldrabik.showly2.ui.UiCache
 import javax.inject.Inject
 
 @AppScope
 class MainInteractor @Inject constructor(
   private val settingsRepository: SettingsRepository,
+  private val tipsRepository: TipsRepository,
   private val announcementManager: AnnouncementManager,
   private val uiCache: UiCache
 ) {
@@ -50,6 +53,10 @@ class MainInteractor @Inject constructor(
   }
 
   suspend fun refreshAnnouncements(context: Context) = announcementManager.refreshEpisodesAnnouncements(context)
+
+  fun isTutorialShown(tip: Tip) = tipsRepository.isShown(tip)
+
+  fun setTutorialShown(tip: Tip) = tipsRepository.setShown(tip)
 
   fun clearCache() = uiCache.clear()
 }

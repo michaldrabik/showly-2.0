@@ -109,8 +109,8 @@
     <item quantity="other">Airs in %d minutes</item>
   </plurals>
 
-  <string name="textTutorialDiscover">Double tap \'Discover\' menu button to quickly open search screen.</string>
-  <string name="textTutorialMyShows">Double tap \'My Shows\' menu button to quickly switch between tabs.</string>
+  <string name="textTipDiscover">Double tap \'Discover\' menu button to quickly open search screen.</string>
+  <string name="textTipMyShows">Double tap \'My Shows\' menu button to quickly switch between tabs.</string>
 
   <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this keeps happening.</string>
   <string name="errorAuthorization">Authorization failed.\nPlease contact us if this keeps happening.</string>

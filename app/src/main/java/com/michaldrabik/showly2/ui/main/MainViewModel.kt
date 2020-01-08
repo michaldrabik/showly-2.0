@@ -2,9 +2,10 @@ package com.michaldrabik.showly2.ui.main
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.showly2.model.Tip
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
   private val interactor: MainInteractor
@@ -29,6 +30,10 @@ class MainViewModel @Inject constructor(
       interactor.refreshAnnouncements(context)
     }
   }
+
+  fun isTutorialShown(tip: Tip) = interactor.isTutorialShown(tip)
+
+  fun setTutorialShown(tip: Tip) = interactor.setTutorialShown(tip)
 
   fun clearCache() = interactor.clearCache()
 }

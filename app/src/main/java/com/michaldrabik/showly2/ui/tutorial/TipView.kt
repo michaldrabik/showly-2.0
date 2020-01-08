@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.michaldrabik.showly2.R
 
-class TutorialTipView : FrameLayout {
+class TipView : FrameLayout {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -20,7 +20,7 @@ class TutorialTipView : FrameLayout {
   }
 
   init {
-    inflate(context, R.layout.view_tutorial_tip, this)
+    inflate(context, R.layout.view_tip, this)
     layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     clipChildren = false
   }

@@ -75,7 +75,7 @@
     app:layout_constraintBottom_toTopOf="@+id/bottomNavigationWrapper"
     />
 
-  <com.michaldrabik.showly2.ui.tutorial.TutorialTipView
+  <com.michaldrabik.showly2.ui.tutorial.TipView
     android:id="@+id/tutorialTipDiscover"
     android:layout_width="@dimen/tutorialTipSize"
     android:layout_height="@dimen/tutorialTipSize"
@@ -86,7 +86,7 @@
     app:layout_constraintHorizontal_bias="0.55"
     />
 
-  <com.michaldrabik.showly2.ui.tutorial.TutorialTipView
+  <com.michaldrabik.showly2.ui.tutorial.TipView
     android:id="@+id/tutorialTipMyShows"
     android:layout_width="@dimen/tutorialTipSize"
     android:layout_height="@dimen/tutorialTipSize"
@@ -95,10 +95,9 @@
     app:layout_constraintBottom_toBottomOf="@id/bottomNavigationWrapper"
     android:layout_marginBottom="44dp"
     app:layout_constraintHorizontal_bias="0.925"
-    android:visibility="gone"
     />
 
-  <com.michaldrabik.showly2.ui.tutorial.TutorialView
+  <com.michaldrabik.showly2.ui.tutorial.TipOverlayView
     android:id="@+id/tutorialView"
     android:layout_width="0dp"
     android:layout_height="0dp"

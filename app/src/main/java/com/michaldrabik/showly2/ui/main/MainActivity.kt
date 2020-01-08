@@ -19,6 +19,8 @@ import com.michaldrabik.showly2.common.ShowsSyncService
 import com.michaldrabik.showly2.common.trakt.TraktImportService
 import com.michaldrabik.showly2.connectivityManager
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
+import com.michaldrabik.showly2.model.Tip.MENU_DISCOVER
+import com.michaldrabik.showly2.model.Tip.MENU_MY_SHOWS
 import com.michaldrabik.showly2.ui.NotificationActivity
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
@@ -140,15 +142,27 @@ class MainActivity : NotificationActivity() {
   }
 
   private fun setupTutorials() {
-    tutorialView.onOkClick = {
-      tutorialView.fadeOut()
+    tutorialTipDiscover.apply {
+      visibleIf(!viewModel.isTutorialShown(MENU_DISCOVER))
+      onClick {
+        it.gone()
+        tutorialView.fadeIn()
+        tutorialView.showTip(MENU_DISCOVER)
+        viewModel.setTutorialShown(MENU_DISCOVER)
+      }
     }
 
-    tutorialTipDiscover.onClick {
-      it.gone()
-      tutorialView.fadeIn()
-      tutorialView.showTip(R.string.textTutorialDiscover)
+    tutorialTipMyShows.apply {
+      visibleIf(!viewModel.isTutorialShown(MENU_MY_SHOWS))
+      onClick {
+        it.gone()
+        tutorialView.fadeIn()
+        tutorialView.showTip(MENU_MY_SHOWS)
+        viewModel.setTutorialShown(MENU_MY_SHOWS)
+      }
     }
+
+    tutorialView.onOkClick = { tutorialView.fadeOut() }
   }
 
   fun hideNavigation(animate: Boolean = true) {

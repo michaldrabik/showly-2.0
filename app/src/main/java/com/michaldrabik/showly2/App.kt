@@ -13,6 +13,7 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import com.michaldrabik.network.di.DaggerCloudComponent
 import com.michaldrabik.showly2.di.AppComponent
 import com.michaldrabik.showly2.di.DaggerAppComponent
+import com.michaldrabik.showly2.di.module.PreferencesModule
 import com.michaldrabik.showly2.fcm.NotificationChannel.EPISODES_ANNOUNCEMENTS
 import com.michaldrabik.showly2.fcm.NotificationChannel.GENERAL_INFO
 import com.michaldrabik.showly2.fcm.NotificationChannel.SHOWS_INFO
@@ -37,9 +38,10 @@ class App : Application() {
       .cloudMarker(DaggerCloudComponent.create())
       .storageMarker(
         DaggerStorageComponent.builder()
-          .storageModule(StorageModule(this))
+          .storageModule(StorageModule(applicationContext))
           .build()
       )
+      .preferencesModule(PreferencesModule(applicationContext))
       .build()
   }
 
@@ -48,7 +50,7 @@ class App : Application() {
       StrictMode.setThreadPolicy(
         StrictMode.ThreadPolicy.Builder()
           .detectAll()
-          .penaltyDialog()
+          .penaltyLog()
           .build()
       )
     }
