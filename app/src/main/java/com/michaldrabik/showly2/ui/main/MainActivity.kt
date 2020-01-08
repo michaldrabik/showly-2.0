@@ -135,16 +135,15 @@ class MainActivity : NotificationActivity() {
   }
 
   private fun setupTutorials() {
-    tutorialViewMask.onClick { /* Block clicks */ }
     tutorialView.onOkClick = {
-      tutorialViewMask.fadeOut()
       tutorialView.fadeOut()
+      tutorialView.hideTip()
     }
 
     tutorialTipDiscover.onClick {
       it.gone()
-      tutorialViewMask.fadeIn()
       tutorialView.fadeIn()
+      tutorialView.showTip(R.string.textTutorialDiscover)
     }
   }
 

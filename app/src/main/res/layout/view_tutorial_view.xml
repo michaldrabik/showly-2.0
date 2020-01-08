@@ -5,51 +5,67 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/tutorialViewRoot"
   android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:background="@drawable/bg_tutorial_view"
-  android:padding="@dimen/spaceNormal"
-  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  android:layout_height="match_parent"
+  tools:parentTag="android.widget.FrameLayout"
   >
 
-  <TextView
-    android:id="@+id/tutorialViewTitle"
-    android:layout_width="0dp"
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/tutorialTipView"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="@string/textTip"
-    android:textColor="@color/colorTextPrimary"
-    android:textSize="20sp"
-    android:textStyle="bold"
-    app:layout_constraintBottom_toTopOf="@id/tutorialViewText"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    />
+    android:layout_gravity="center"
+    android:layout_margin="32dp"
+    android:background="@drawable/bg_tutorial_view"
+    android:paddingStart="@dimen/spaceBig"
+    android:paddingTop="@dimen/spaceNormal"
+    android:paddingEnd="@dimen/spaceBig"
+    android:paddingBottom="@dimen/spaceSmall"
+    android:visibility="gone"
+    tools:visibility="visible"
+    >
 
-  <TextView
-    android:id="@+id/tutorialViewText"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/spaceNormal"
-    android:textColor="@color/colorTextPrimary"
-    android:textSize="14sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/tutorialViewTitle"
-    tools:text="Double tap Discover menu button to quickly open search screen."
-    />
+    <TextView
+      android:id="@+id/tutorialViewTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:text="@string/textTip"
+      android:textColor="@color/colorTextPrimary"
+      android:textSize="20sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toTopOf="@id/tutorialViewText"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
 
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/tutorialViewButton"
-    style="@style/Widget.MaterialComponents.Button.TextButton"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/spaceNormal"
-    android:text="@string/textOk"
-    android:textColor="@color/colorAccent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/tutorialViewText"
-    app:rippleColor="@color/colorAccent"
-    />
+    <TextView
+      android:id="@+id/tutorialViewText"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spaceNormal"
+      android:textColor="@color/colorTextPrimary"
+      android:textSize="14sp"
+      app:layout_constraintBottom_toTopOf="@id/tutorialViewButton"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/tutorialViewTitle"
+      tools:text="Double tap Discover menu button to quickly open search screen."
+      />
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/tutorialViewButton"
+      style="@style/Widget.MaterialComponents.Button.TextButton"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spaceNormal"
+      android:text="@string/textOk"
+      android:textColor="@color/colorAccent"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/tutorialViewText"
+      app:rippleColor="@color/colorAccent"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
 </merge>
