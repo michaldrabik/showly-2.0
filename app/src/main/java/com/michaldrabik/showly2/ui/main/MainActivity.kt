@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -113,6 +114,10 @@ class MainActivity : NotificationActivity() {
 
   private fun setupNavigationBackHandler() {
     onBackPressedDispatcher.addCallback(this) {
+      if (tutorialView.isVisible) {
+        tutorialView.fadeOut()
+        return@addCallback
+      }
       navigationHost.findNavController().run {
         if (currentDestination?.id == R.id.watchlistFragment) {
           remove()
@@ -137,7 +142,6 @@ class MainActivity : NotificationActivity() {
   private fun setupTutorials() {
     tutorialView.onOkClick = {
       tutorialView.fadeOut()
-      tutorialView.hideTip()
     }
 
     tutorialTipDiscover.onClick {

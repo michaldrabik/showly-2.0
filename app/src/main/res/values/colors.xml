@@ -8,7 +8,7 @@
   <color name="colorError">#E53935</color>
   <color name="colorBlack">#000000</color>
   <color name="colorWhite">#FFFFFF</color>
-  <color name="colorMask">#8D000000</color>
+  <color name="colorMask">#99000000</color>
 
   <color name="colorInfoSnackbar">#313131</color>
   <color name="colorTutorialView">#222327</color>
