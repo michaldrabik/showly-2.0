@@ -31,9 +31,9 @@ class MainViewModel @Inject constructor(
     }
   }
 
-  fun isTutorialShown(tip: Tip) = interactor.isTutorialShown(tip)
+  fun isTipShown(tip: Tip) = interactor.isTutorialShown(tip)
 
-  fun setTutorialShown(tip: Tip) = interactor.setTutorialShown(tip)
+  fun setTipShown(tip: Tip) = interactor.setTutorialShown(tip)
 
   fun clearCache() = interactor.clearCache()
 }

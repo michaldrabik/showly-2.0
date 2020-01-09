@@ -19,6 +19,7 @@ import com.michaldrabik.showly2.common.ShowsSyncService
 import com.michaldrabik.showly2.common.trakt.TraktImportService
 import com.michaldrabik.showly2.connectivityManager
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
+import com.michaldrabik.showly2.model.Tip
 import com.michaldrabik.showly2.model.Tip.MENU_DISCOVER
 import com.michaldrabik.showly2.model.Tip.MENU_MY_SHOWS
 import com.michaldrabik.showly2.ui.NotificationActivity
@@ -26,7 +27,6 @@ import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktImportListener
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
@@ -45,6 +45,12 @@ class MainActivity : NotificationActivity() {
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
   private val networkMonitor by lazy { NetworkMonitor(connectivityManager()) }
+  private val tips by lazy {
+    mapOf(
+      MENU_DISCOVER to tutorialTipDiscover,
+      MENU_MY_SHOWS to tutorialTipMyShows
+    )
+  }
 
   @Inject lateinit var viewModelFactory: DaggerViewModelFactory
   private lateinit var viewModel: MainViewModel
@@ -58,7 +64,7 @@ class MainActivity : NotificationActivity() {
     setupNavigation()
     setupNavigationBackHandler()
     setupNetworkMonitoring()
-    setupTutorials()
+    setupTips()
 
     restoreState(savedInstanceState)
     onNewIntent(intent)
@@ -141,31 +147,25 @@ class MainActivity : NotificationActivity() {
     lifecycle.addObserver(networkMonitor)
   }
 
-  private fun setupTutorials() {
-    tutorialTipDiscover.apply {
-      visibleIf(!viewModel.isTutorialShown(MENU_DISCOVER))
-      onClick {
+  private fun setupTips() {
+    tips.entries.forEach { (tip, view) ->
+      view.visibleIf(!isTipShown(tip))
+      view.onClick {
         it.gone()
-        tutorialView.fadeIn()
-        tutorialView.showTip(MENU_DISCOVER)
-        viewModel.setTutorialShown(MENU_DISCOVER)
+        showTip(tip)
       }
     }
-
-    tutorialTipMyShows.apply {
-      visibleIf(!viewModel.isTutorialShown(MENU_MY_SHOWS))
-      onClick {
-        it.gone()
-        tutorialView.fadeIn()
-        tutorialView.showTip(MENU_MY_SHOWS)
-        viewModel.setTutorialShown(MENU_MY_SHOWS)
-      }
-    }
-
-    tutorialView.onOkClick = { tutorialView.fadeOut() }
   }
 
+  fun showTip(tip: Tip) {
+    tutorialView.showTip(tip)
+    viewModel.setTipShown(tip)
+  }
+
+  fun isTipShown(tip: Tip) = viewModel.isTipShown(tip)
+
   fun hideNavigation(animate: Boolean = true) {
+    tips.values.forEach { it.gone() }
     bottomNavigationWrapper.animate()
       .translationYBy(navigationHeight.toFloat())
       .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
@@ -174,6 +174,7 @@ class MainActivity : NotificationActivity() {
   }
 
   fun showNavigation(animate: Boolean = true) {
+    tips.entries.forEach { (tip, view) -> view.visibleIf(!isTipShown(tip)) }
     bottomNavigationWrapper.animate()
       .translationY(0F)
       .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)

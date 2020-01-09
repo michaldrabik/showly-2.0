@@ -35,6 +35,7 @@ import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
 import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.ADD
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_MY_SHOWS
@@ -128,6 +129,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       showDetailsCommentsView.clear()
       showCommentsView()
       viewModel.loadComments()
+    }
+    showDetailsTipGallery.onClick {
+      it.gone()
+      getMainActivity().showTip(SHOW_DETAILS_GALLERY)
     }
   }
 
@@ -306,7 +311,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
         showDetailsImage.isClickable = true
         showDetailsImage.isEnabled = true
       }
-      .withSuccessListener { showDetailsImageProgress.gone() }
+      .withSuccessListener {
+        showDetailsImageProgress.gone()
+        showDetailsTipGallery.fadeIf(!getMainActivity().isTipShown(SHOW_DETAILS_GALLERY))
+      }
       .into(showDetailsImage)
   }
 

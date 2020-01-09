@@ -84,6 +84,17 @@
         app:layout_constraintTop_toTopOf="@+id/showDetailsImage"
         />
 
+      <com.michaldrabik.showly2.ui.tutorial.TipView
+        android:id="@+id/showDetailsTipGallery"
+        android:layout_width="@dimen/tutorialTipSize"
+        android:layout_height="@dimen/tutorialTipSize"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/showDetailsImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/showDetailsImage"
+        />
+
       <TextView
         android:id="@+id/showDetailsExtraInfo"
         android:layout_width="wrap_content"
@@ -399,8 +410,8 @@
         android:visibility="gone"
         app:icon="@drawable/ic_comment"
         app:iconGravity="textStart"
-        app:iconSize="22dp"
         app:iconPadding="6dp"
+        app:iconSize="22dp"
         app:iconTint="@color/colorWhite"
         app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedLabel"
         app:layout_constraintEnd_toEndOf="parent"
