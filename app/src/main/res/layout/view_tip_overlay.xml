@@ -16,8 +16,8 @@
     android:layout_gravity="center"
     android:layout_margin="32dp"
     android:background="@drawable/bg_tutorial_view"
-    android:paddingTop="@dimen/spaceNormal"
     android:elevation="8dp"
+    android:paddingTop="@dimen/spaceNormal"
     >
 
     <TextView

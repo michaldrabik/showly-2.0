@@ -34,9 +34,9 @@
 
     <ImageView
       android:id="@+id/showPosterBadge"
-      tools:visibility="visible"
-      app:srcCompat="@drawable/ic_bookmark_full"
       style="@style/Show.Badge"
+      app:srcCompat="@drawable/ic_bookmark_full"
+      tools:visibility="visible"
       />
 
     <TextView

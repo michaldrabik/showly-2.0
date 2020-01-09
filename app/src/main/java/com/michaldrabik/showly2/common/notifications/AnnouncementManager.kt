@@ -26,11 +26,11 @@ import com.michaldrabik.showly2.utilities.extensions.toMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.Show
-import java.util.concurrent.TimeUnit.MILLISECONDS
-import javax.inject.Inject
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
+import java.util.concurrent.TimeUnit.MILLISECONDS
+import javax.inject.Inject
 
 @AppScope
 class AnnouncementManager @Inject constructor(

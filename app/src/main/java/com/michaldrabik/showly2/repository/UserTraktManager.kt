@@ -4,13 +4,13 @@ package com.michaldrabik.showly2.repository
 
 import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.network.trakt.model.User as UserModel
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.error.TraktAuthError
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.User
 import javax.inject.Inject
+import com.michaldrabik.network.trakt.model.User as UserModel
 
 @AppScope
 class UserTraktManager @Inject constructor(

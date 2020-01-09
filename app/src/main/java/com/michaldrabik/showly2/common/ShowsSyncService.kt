@@ -6,12 +6,12 @@ import android.util.Log
 import androidx.core.app.JobIntentService
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.michaldrabik.showly2.appComponent
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
 class ShowsSyncService : JobIntentService(), CoroutineScope {
 

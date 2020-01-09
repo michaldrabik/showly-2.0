@@ -95,10 +95,10 @@
         android:id="@+id/myShowsIncomingSection"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/myShowsAllSection"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/myShowsEndedSection"
-        app:layout_constraintBottom_toTopOf="@id/myShowsAllSection"
         />
 
       <com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowsAllSection

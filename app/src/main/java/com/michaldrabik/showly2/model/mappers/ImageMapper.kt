@@ -2,9 +2,9 @@ package com.michaldrabik.showly2.model.mappers
 
 import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.storage.database.model.Image as ImageDb
 import java.util.Locale.ROOT
 import javax.inject.Inject
+import com.michaldrabik.storage.database.model.Image as ImageDb
 
 class ImageMapper @Inject constructor() {
 

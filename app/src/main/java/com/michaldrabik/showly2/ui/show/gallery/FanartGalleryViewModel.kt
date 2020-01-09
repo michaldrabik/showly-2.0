@@ -4,8 +4,8 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.Image.Status
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class FanartGalleryViewModel @Inject constructor(
   private val interactor: FanartGalleryInteractor

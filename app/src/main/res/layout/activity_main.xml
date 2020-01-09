@@ -35,14 +35,14 @@
       android:id="@+id/noInternetView"
       android:layout_width="match_parent"
       android:layout_height="@dimen/bottomNoInternetViewHeight"
-      android:textSize="14sp"
+      android:background="@color/colorError"
+      android:elevation="10dp"
       android:gravity="center"
+      android:text="@string/errorNoInternetConnection"
+      android:textColor="@color/colorWhite"
+      android:textSize="14sp"
       android:visibility="gone"
       tools:visibility="visible"
-      android:background="@color/colorError"
-      android:textColor="@color/colorWhite"
-      android:text="@string/errorNoInternetConnection"
-      android:elevation="10dp"
       />
 
     <View
@@ -69,43 +69,43 @@
     android:id="@+id/snackBarHost"
     android:layout_width="0dp"
     android:layout_height="0dp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintBottom_toTopOf="@+id/bottomNavigationWrapper"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
     />
 
   <com.michaldrabik.showly2.ui.tutorial.TipView
     android:id="@+id/tutorialTipDiscover"
     android:layout_width="@dimen/tutorialTipSize"
     android:layout_height="@dimen/tutorialTipSize"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBottom_toBottomOf="@id/bottomNavigationWrapper"
     android:layout_marginBottom="44dp"
+    app:layout_constraintBottom_toBottomOf="@id/bottomNavigationWrapper"
+    app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.55"
+    app:layout_constraintStart_toStartOf="parent"
     />
 
   <com.michaldrabik.showly2.ui.tutorial.TipView
     android:id="@+id/tutorialTipMyShows"
     android:layout_width="@dimen/tutorialTipSize"
     android:layout_height="@dimen/tutorialTipSize"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBottom_toBottomOf="@id/bottomNavigationWrapper"
     android:layout_marginBottom="44dp"
+    app:layout_constraintBottom_toBottomOf="@id/bottomNavigationWrapper"
+    app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.925"
+    app:layout_constraintStart_toStartOf="parent"
     />
 
   <com.michaldrabik.showly2.ui.tutorial.TipOverlayView
     android:id="@+id/tutorialView"
     android:layout_width="0dp"
     android:layout_height="0dp"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
     android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

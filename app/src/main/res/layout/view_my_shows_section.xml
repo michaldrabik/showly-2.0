@@ -37,11 +37,11 @@
     android:layout_marginTop="@dimen/spaceNormal"
     android:layout_marginEnd="@dimen/spaceNormal"
     android:layout_marginBottom="@dimen/spaceMedium"
+    android:rotation="90"
+    android:visibility="gone"
     app:layout_constraintBottom_toTopOf="@id/myShowsSectionRecycler"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    android:rotation="90"
-    android:visibility="gone"
     app:srcCompat="@drawable/ic_arrow_right"
     />
 

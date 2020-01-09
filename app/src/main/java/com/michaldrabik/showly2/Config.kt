@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2
 
-import java.util.concurrent.TimeUnit
 import org.threeten.bp.format.DateTimeFormatter
+import java.util.concurrent.TimeUnit
 
 object Config {
   private const val TVDB_IMAGE_PERSON_BASE_URL = "https://artworks.thetvdb.com"

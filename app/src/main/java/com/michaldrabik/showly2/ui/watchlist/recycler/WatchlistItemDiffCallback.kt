@@ -9,9 +9,9 @@ class WatchlistItemDiffCallback : DiffUtil.ItemCallback<WatchlistItem>() {
 
   override fun areContentsTheSame(oldItem: WatchlistItem, newItem: WatchlistItem) =
     oldItem.episode.ids.trakt == newItem.episode.ids.trakt &&
-        oldItem.episodesCount == newItem.episodesCount &&
-        oldItem.watchedEpisodesCount == newItem.watchedEpisodesCount &&
-        oldItem.season == newItem.season &&
-        oldItem.season.episodes == newItem.season.episodes &&
-        oldItem.image == newItem.image
+      oldItem.episodesCount == newItem.episodesCount &&
+      oldItem.watchedEpisodesCount == newItem.watchedEpisodesCount &&
+      oldItem.season == newItem.season &&
+      oldItem.season.episodes == newItem.season.episodes &&
+      oldItem.image == newItem.image
 }

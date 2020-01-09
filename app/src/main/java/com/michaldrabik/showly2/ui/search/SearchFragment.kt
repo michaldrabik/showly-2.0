@@ -29,9 +29,9 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.shake
 import com.michaldrabik.showly2.utilities.extensions.showKeyboard
 import com.michaldrabik.showly2.utilities.extensions.visible
-import kotlin.random.Random
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.view_search.*
+import kotlin.random.Random
 
 class SearchFragment : BaseFragment<SearchViewModel>() {
 

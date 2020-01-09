@@ -10,8 +10,8 @@ import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION
 import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_START
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class TraktImportViewModel @Inject constructor(
   private val userManager: UserTraktManager

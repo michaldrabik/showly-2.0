@@ -45,15 +45,15 @@
 
     <ImageView
       android:id="@+id/showSearchBadge"
-      tools:visibility="visible"
+      style="@style/Show.Badge"
       android:layout_width="18dp"
       android:layout_height="18dp"
-      app:srcCompat="@drawable/ic_bookmark_full"
-      app:layout_constraintTop_toTopOf="@id/showSearchRoot"
-      app:layout_constraintEnd_toStartOf="@id/showSearchTitle"
-      android:layout_marginEnd="12dp"
       android:layout_marginTop="2dp"
-      style="@style/Show.Badge"
+      android:layout_marginEnd="12dp"
+      app:layout_constraintEnd_toStartOf="@id/showSearchTitle"
+      app:layout_constraintTop_toTopOf="@id/showSearchRoot"
+      app:srcCompat="@drawable/ic_bookmark_full"
+      tools:visibility="visible"
       />
 
     <TextView

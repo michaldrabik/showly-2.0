@@ -19,11 +19,11 @@ import com.michaldrabik.network.tvdb.converters.TvdbResultConverter
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
-import javax.inject.Named
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import javax.inject.Named
 
 @Module
 object RetrofitModule {

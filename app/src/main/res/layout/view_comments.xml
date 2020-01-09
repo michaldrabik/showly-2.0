@@ -19,9 +19,9 @@
     android:textColor="@color/colorTextPrimary"
     android:textSize="18sp"
     android:textStyle="bold"
+    app:layout_constraintBottom_toTopOf="@id/commentsRecycler"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toTopOf="@id/commentsRecycler"
     />
 
   <androidx.recyclerview.widget.RecyclerView
@@ -30,9 +30,9 @@
     android:layout_height="0dp"
     android:clipChildren="false"
     android:clipToPadding="false"
+    android:overScrollMode="never"
     android:paddingStart="@dimen/spaceNormal"
     android:paddingEnd="@dimen/spaceNormal"
-    android:overScrollMode="never"
     android:scrollbarFadeDuration="150"
     android:scrollbarSize="@dimen/scrollBarWidth"
     android:scrollbarStyle="outsideOverlay"
@@ -59,13 +59,13 @@
     android:id="@+id/commentsEmpty"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="@string/textNoComments"
-    android:textColor="@color/colorTextPrimary"
     android:layout_margin="@dimen/spaceNormal"
     android:gravity="center"
+    android:text="@string/textNoComments"
+    android:textColor="@color/colorTextPrimary"
     android:visibility="gone"
-    app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/commentsTitle"
     tools:visibility="visible"
     />

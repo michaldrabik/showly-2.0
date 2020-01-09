@@ -9,6 +9,6 @@ class DiscoverItemDiffCallback : DiffUtil.ItemCallback<DiscoverListItem>() {
 
   override fun areContentsTheSame(oldItem: DiscoverListItem, newItem: DiscoverListItem) =
     oldItem.image == newItem.image &&
-        oldItem.isLoading == newItem.isLoading &&
-        oldItem.isFollowed == newItem.isFollowed
+      oldItem.isLoading == newItem.isLoading &&
+      oldItem.isFollowed == newItem.isFollowed
 }

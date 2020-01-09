@@ -24,9 +24,9 @@
 
     <activity
       android:name=".ui.main.MainActivity"
+      android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
       android:launchMode="singleInstance"
       android:screenOrientation="portrait"
-      android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
       >
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
