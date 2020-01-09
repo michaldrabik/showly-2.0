@@ -23,6 +23,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Named
 
 @Module
@@ -93,6 +94,9 @@ object RetrofitModule {
     traktInterceptor: TraktInterceptor
   ): OkHttpClient =
     OkHttpClient.Builder()
+      .readTimeout(20, TimeUnit.SECONDS)
+      .writeTimeout(20, TimeUnit.SECONDS)
+      .connectTimeout(20, TimeUnit.SECONDS)
       .addInterceptor(httpLoggingInterceptor)
       .addInterceptor(traktInterceptor)
       .build()
