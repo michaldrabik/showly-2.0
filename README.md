@@ -9,9 +9,9 @@ Showly 2.0 is modern, slick, open-sourced and completely free Android TV Shows T
 <div>
    <img src="assets/screenshots/screenshot1.png" width="170" alt="screenshot 1">
    <img src="assets/screenshots/screenshot2.png" width="170" alt="screenshot 1">
-   <img src="assets/screenshots/screenshot3.png" width="170" alt="screenshot 1">
-   <img src="assets/screenshots/screenshot4.png" width="170" alt="screenshot 1">
    <img src="assets/screenshots/screenshot5.png" width="170" alt="screenshot 1">
+   <img src="assets/screenshots/screenshot4.png" width="170" alt="screenshot 1">
+   <img src="assets/screenshots/screenshot3.png" width="170" alt="screenshot 1">
 </div>
 
 ## Slack
