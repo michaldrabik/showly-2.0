@@ -27,11 +27,12 @@ class TipOverlayView : FrameLayout {
     setupView()
   }
 
+  private val springStartValue by lazy { (screenHeight().toFloat()) / 3F }
   private val springAnimation by lazy {
     SpringAnimation(tutorialTipView, DynamicAnimation.TRANSLATION_Y, 0F).apply {
       spring.stiffness = 300F
       spring.dampingRatio = 0.65F
-      setStartValue((screenHeight().toFloat()) / 3F)
+      setStartValue(springStartValue)
     }
   }
 
@@ -42,6 +43,7 @@ class TipOverlayView : FrameLayout {
 
   fun showTip(tip: Tip) {
     tutorialViewText.setText(tip.textResId)
+    springAnimation.setStartValue(springStartValue)
     springAnimation.start()
     fadeIn()
   }
