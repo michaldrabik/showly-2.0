@@ -52,7 +52,6 @@ android {
 dependencies {
   implementation project(':network')
   implementation project(':storage')
-  implementation project(':common')
 
   implementation 'androidx.appcompat:appcompat:1.1.0'
   implementation 'androidx.core:core-ktx:1.1.0'
@@ -65,6 +64,7 @@ dependencies {
   implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
   implementation 'me.relex:circleindicator:2.1.4'
   implementation 'com.google.android.material:material:1.2.0-alpha03'
+  implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
 
   implementation 'com.google.firebase:firebase-analytics:17.2.1'
   implementation 'com.google.firebase:firebase-messaging:20.1.0'

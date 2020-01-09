@@ -40,11 +40,11 @@ android {
 }
 
 dependencies {
-  implementation project(':common')
-
   implementation "com.squareup.retrofit2:retrofit:2.6.2"
   implementation 'com.squareup.retrofit2:converter-moshi:2.6.2'
   implementation "com.squareup.okhttp3:logging-interceptor:4.2.2"
+
+  implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
 
   implementation "com.google.dagger:dagger:2.25.2"
   kapt "com.google.dagger:dagger-compiler:2.25.2"
