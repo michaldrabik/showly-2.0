@@ -21,6 +21,21 @@ class UserTvdbManager @Inject constructor(
   private var tvdbToken: String? = null
   private var tvdbTokenTimestamp = 0L
 
+  suspend fun isAuthorized(): Boolean {
+    if (tvdbToken == null) {
+      val user = database.userDao().get()
+      user?.let {
+        tvdbToken = it.tvdbToken
+        tvdbTokenTimestamp = it.tvdbTokenTimestamp
+      }
+    }
+    return when {
+      tvdbToken.isNullOrEmpty() -> false
+      nowUtcMillis() - tvdbTokenTimestamp > TVDB_TOKEN_EXPIRATION_MS -> false
+      else -> true
+    }
+  }
+
   suspend fun checkAuthorization() {
     if (!isAuthorized()) {
       val token = cloud.tvdbApi.authorize()
@@ -55,20 +70,5 @@ class UserTvdbManager @Inject constructor(
     }
     tvdbToken = token
     tvdbTokenTimestamp = timestamp
-  }
-
-  private suspend fun isAuthorized(): Boolean {
-    if (tvdbToken == null) {
-      val user = database.userDao().get()
-      user?.let {
-        tvdbToken = it.tvdbToken
-        tvdbTokenTimestamp = it.tvdbTokenTimestamp
-      }
-    }
-    return when {
-      tvdbToken.isNullOrEmpty() -> false
-      nowUtcMillis() - tvdbTokenTimestamp > TVDB_TOKEN_EXPIRATION_MS -> false
-      else -> true
-    }
   }
 }

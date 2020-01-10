@@ -13,6 +13,7 @@ import com.michaldrabik.showly2.model.error.TraktAuthError
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.TraktAuthToken
 import com.michaldrabik.showly2.repository.UserTraktManager
+import com.michaldrabik.showly2.repository.UserTvdbManager
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Episode
@@ -28,7 +29,8 @@ class TraktImportWatchedRunner @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val imagesManager: ImagesManager,
-  private val userTraktManager: UserTraktManager
+  private val userTraktManager: UserTraktManager,
+  private val userTvdbManager: UserTvdbManager
 ) {
 
   var progressListener: ((ShowNetwork, Int, Int) -> Unit)? = null
@@ -55,6 +57,8 @@ class TraktImportWatchedRunner @Inject constructor(
 
   private suspend fun importWatchedShows(token: TraktAuthToken): Int {
     Log.d(TAG, "Importing watched shows...")
+
+    checkTvdbAuth()
     val syncResults = cloud.traktApi.fetchSyncWatched(token.token)
       .filter { it.show != null }
       .distinctBy { it.show!!.ids.trakt }
@@ -122,9 +126,18 @@ class TraktImportWatchedRunner @Inject constructor(
 
   private suspend fun loadImage(show: Show) {
     try {
+      if (!userTvdbManager.isAuthorized()) return
       imagesManager.loadRemoteImage(show, FANART)
     } catch (t: Throwable) {
       // NOOP Ignore image for now. It will be fetched later if needed.
+    }
+  }
+
+  private suspend fun checkTvdbAuth() {
+    try {
+      userTvdbManager.checkAuthorization()
+    } catch (t: Throwable) {
+      //Ignore for now
     }
   }
 
