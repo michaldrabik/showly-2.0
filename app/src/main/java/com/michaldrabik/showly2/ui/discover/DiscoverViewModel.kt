@@ -50,7 +50,9 @@ class DiscoverViewModel @Inject constructor(
           val cachedShows = interactor.loadCachedShows()
           onShowsLoaded(cachedShows, myShowsIds)
         }
+
         if (pullToRefresh || !interactor.isCacheValid()) {
+          checkTvdbAuth()
           val remoteShows = interactor.loadRemoteShows()
           onShowsLoaded(remoteShows, myShowsIds)
         }
@@ -105,6 +107,14 @@ class DiscoverViewModel @Inject constructor(
   }
 
   fun clearUiCache() = uiCache.clear()
+
+  private suspend fun checkTvdbAuth() {
+    try {
+      interactor.checkTvdbAuth()
+    } catch (t: Throwable) {
+      //Ignore at this moment
+    }
+  }
 
   private fun onError() {
     _errorStream.value = R.string.errorCouldNotLoadDiscover

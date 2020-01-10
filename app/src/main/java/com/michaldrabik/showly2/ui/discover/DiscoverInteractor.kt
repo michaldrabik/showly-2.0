@@ -4,14 +4,18 @@ import com.michaldrabik.showly2.common.ImagesManager
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.repository.UserTvdbManager
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope
 class DiscoverInteractor @Inject constructor(
   private val imagesManager: ImagesManager,
+  private val tvdbUserManager: UserTvdbManager,
   private val showsRepository: ShowsRepository
 ) {
+
+  suspend fun checkTvdbAuth() = tvdbUserManager.checkAuthorization()
 
   suspend fun isCacheValid() = showsRepository.discoverShows.isCacheValid()
 
