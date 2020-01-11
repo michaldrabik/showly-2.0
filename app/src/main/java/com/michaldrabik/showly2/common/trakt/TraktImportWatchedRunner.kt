@@ -137,7 +137,7 @@ class TraktImportWatchedRunner @Inject constructor(
     try {
       userTvdbManager.checkAuthorization()
     } catch (t: Throwable) {
-      //Ignore for now
+      // Ignore for now
     }
   }
 

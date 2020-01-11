@@ -112,7 +112,7 @@ class DiscoverViewModel @Inject constructor(
     try {
       interactor.checkTvdbAuth()
     } catch (t: Throwable) {
-      //Ignore at this moment
+      // Ignore at this moment
     }
   }
 
