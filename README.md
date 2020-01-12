@@ -16,6 +16,14 @@ Showly 2.0 is modern, slick, open-sourced and completely free Android TV Shows T
    <img src="assets/screenshots/screenshot3.png" width="170" alt="screenshot 1">
 </div>
 
+## Project Setup
+
+TODO
+
+## Issues & Contributions
+
+Feel free to post ideas and problems as Github Issues.
+
 ## Slack
 
 Feel free to join official Slack workspace for all things related:
