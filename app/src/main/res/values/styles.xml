@@ -9,6 +9,16 @@
     <item name="android:windowBackground">@color/colorBackground</item>
   </style>
 
+  <style name="ProgressBarGray">
+    <item name="android:indeterminateTint">@color/colorProgressGray</item>
+    <item name="android:indeterminateTintMode">src_in</item>
+  </style>
+
+  <style name="ProgressBarAccent">
+    <item name="android:indeterminateTint">@color/colorAccent</item>
+    <item name="android:indeterminateTintMode">src_in</item>
+  </style>
+
   <style name="Show" />
 
   <style name="Show.Badge" parent="Show">

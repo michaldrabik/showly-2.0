@@ -58,10 +58,10 @@
 
     <ProgressBar
       android:id="@+id/showFanartProgress"
+      style="@style/ProgressBarGray"
       android:layout_width="28dp"
       android:layout_height="28dp"
       android:layout_gravity="center"
-      android:indeterminateTint="@color/colorProgressGray"
       android:visibility="gone"
       />
 

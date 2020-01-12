@@ -40,9 +40,9 @@
 
   <ProgressBar
     android:id="@+id/episodeDetailsProgress"
+    style="@style/ProgressBarGray"
     android:layout_width="30dp"
     android:layout_height="30dp"
-    android:indeterminateTint="@color/colorProgressGray"
     app:layout_constraintBottom_toBottomOf="@id/episodeDetailsImage"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -132,11 +132,11 @@
 
       <ProgressBar
         android:id="@+id/episodeDetailsCommentsProgress"
+        style="@style/ProgressBarAccent"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/spaceNormal"
-        android:indeterminateTint="@color/colorAccent"
         android:visibility="gone"
         tools:visibility="visible"
         />

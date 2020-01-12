@@ -44,10 +44,10 @@
 
     <ProgressBar
       android:id="@+id/seeLaterShowProgress"
+      style="@style/ProgressBarGray"
       android:layout_width="28dp"
       android:layout_height="28dp"
       android:layout_gravity="center"
-      android:indeterminateTint="@color/colorProgressGray"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="@id/seeLaterShowImage"
