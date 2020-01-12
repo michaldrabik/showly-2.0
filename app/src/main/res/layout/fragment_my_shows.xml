@@ -56,15 +56,15 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-      <GridLayout
+      <androidx.gridlayout.widget.GridLayout
         android:id="@+id/myShowsRecentsContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:columnCount="2"
         android:divider="@drawable/divider_my_shows_fanart"
         android:paddingStart="@dimen/spaceSmall"
         android:paddingEnd="@dimen/spaceSmall"
         android:showDividers="middle"
+        app:columnCount="2"
         app:layout_constraintBottom_toTopOf="@+id/myShowsRunningSection"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

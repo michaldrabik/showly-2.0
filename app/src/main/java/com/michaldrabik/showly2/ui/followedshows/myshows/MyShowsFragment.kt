@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
-import android.widget.GridLayout
+import androidx.gridlayout.widget.GridLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.showly2.R
@@ -86,7 +86,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
         myShowsRecentsContainer.visible()
         myShowsRootContent.fadeIf(it.isNotEmpty())
         myShowsEmptyView.fadeIf(it.isEmpty())
-        renderFanartContainer(it, myShowsRecentsContainer)
+        renderRecentsContainer(it)
         (parentFragment as FollowedShowsFragment).enableSearch(it.isNotEmpty())
       }
       allShows?.let {
@@ -113,8 +113,8 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
     }
   }
 
-  private fun renderFanartContainer(items: List<MyShowsListItem>, container: GridLayout) {
-    container.removeAllViews()
+  private fun renderRecentsContainer(items: List<MyShowsListItem>) {
+    myShowsRecentsContainer.removeAllViews()
 
     val context = requireContext()
     val itemHeight = context.dimenToPx(R.dimen.myShowsFanartHeight)
@@ -133,7 +133,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
         columnSpec = GridLayout.spec(index % 2, 1F)
         setMargins(itemMargin, itemMargin, itemMargin, itemMargin)
       }
-      container.addView(view, layoutParams)
+      myShowsRecentsContainer.addView(view, layoutParams)
     }
   }
 
