@@ -117,6 +117,6 @@ class DiscoverViewModel @Inject constructor(
   }
 
   private fun onError() {
-    _errorStream.value = R.string.errorCouldNotLoadDiscover
+    _errorLiveData.value = R.string.errorCouldNotLoadDiscover
   }
 }

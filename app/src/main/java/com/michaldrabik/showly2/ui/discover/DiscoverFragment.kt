@@ -49,9 +49,9 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     setupSwipeRefresh()
 
     viewModel.run {
-      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
       cacheStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-      errorStream.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
+      errorLiveData.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
       loadDiscoverShows()
     }
   }

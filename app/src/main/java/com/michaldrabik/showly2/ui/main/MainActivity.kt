@@ -94,7 +94,7 @@ class MainActivity : NotificationActivity() {
   private fun setupViewModel() {
     viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     viewModel.run {
-      uiStream.observe(this@MainActivity, Observer { render(it!!) })
+      uiLiveData.observe(this@MainActivity, Observer { render(it!!) })
       initSettings()
     }
   }

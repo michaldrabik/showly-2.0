@@ -65,7 +65,7 @@ class ShowDetailsViewModel @Inject constructor(
         }
         launch { loadRelatedShows(show) }
       } catch (t: Throwable) {
-        _errorStream.value = R.string.errorCouldNotLoadShow
+        _errorLiveData.value = R.string.errorCouldNotLoadShow
       }
     }
   }
@@ -217,7 +217,7 @@ class ShowDetailsViewModel @Inject constructor(
 
   private fun checkSeasonsLoaded(): Boolean {
     if (!areSeasonsLoaded) {
-      _messageStream.value = R.string.errorSeasonsNotLoaded
+      _messageLiveData.value = R.string.errorSeasonsNotLoaded
       return false
     }
     return true

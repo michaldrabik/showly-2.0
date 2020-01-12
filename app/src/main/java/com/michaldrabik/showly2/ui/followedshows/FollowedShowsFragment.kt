@@ -55,7 +55,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
     setupView()
     setupPager()
     viewModel.run {
-      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
       clearCache()
     }
   }

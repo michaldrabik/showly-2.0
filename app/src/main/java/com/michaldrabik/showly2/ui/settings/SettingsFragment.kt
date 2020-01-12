@@ -39,9 +39,9 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
     super.onViewCreated(view, savedInstanceState)
     setupView()
     viewModel.run {
-      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-      messageStream.observe(viewLifecycleOwner, Observer { showInfoSnackbar(it) })
-      errorStream.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it) })
+      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
+      messageLiveData.observe(viewLifecycleOwner, Observer { showInfoSnackbar(it) })
+      errorLiveData.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it) })
       loadSettings()
     }
   }

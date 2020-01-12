@@ -45,7 +45,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
     super.onViewCreated(view, savedInstanceState)
     setupSectionsViews()
     viewModel.run {
-      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
       loadShows()
     }
   }

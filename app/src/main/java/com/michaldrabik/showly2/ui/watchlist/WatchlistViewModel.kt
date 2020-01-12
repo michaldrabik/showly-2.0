@@ -37,7 +37,7 @@ class WatchlistViewModel @Inject constructor(
   fun setWatchedEpisode(item: WatchlistItem) {
     viewModelScope.launch {
       if (!item.episode.hasAired(item.season)) {
-        _messageStream.value = R.string.errorEpisodeNotAired
+        _messageLiveData.value = R.string.errorEpisodeNotAired
         return@launch
       }
       val bundle = EpisodeBundle(item.episode, item.season, item.show)

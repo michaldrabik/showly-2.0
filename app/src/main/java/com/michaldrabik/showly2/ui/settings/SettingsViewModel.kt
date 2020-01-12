@@ -52,10 +52,10 @@ class SettingsViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         interactor.authorizeTrakt(authData)
-        _messageStream.value = R.string.textTraktLoginSuccess
+        _messageLiveData.value = R.string.textTraktLoginSuccess
         refreshSettings()
       } catch (t: Throwable) {
-        _errorStream.value = R.string.errorAuthorization
+        _errorLiveData.value = R.string.errorAuthorization
       }
     }
   }
@@ -63,7 +63,7 @@ class SettingsViewModel @Inject constructor(
   fun logoutTrakt() {
     viewModelScope.launch {
       interactor.logoutTrakt()
-      _messageStream.value = R.string.textTraktLogoutSuccess
+      _messageLiveData.value = R.string.textTraktLogoutSuccess
       refreshSettings()
     }
   }

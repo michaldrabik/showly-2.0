@@ -46,8 +46,8 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
     setupRecycler()
 
     viewModel.run {
-      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-      messageStream.observe(viewLifecycleOwner, Observer { showInfoSnackbar(it!!) })
+      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
+      messageLiveData.observe(viewLifecycleOwner, Observer { showInfoSnackbar(it!!) })
     }
   }
 

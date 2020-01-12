@@ -42,7 +42,7 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>() {
     requireActivity().requestedOrientation = SCREEN_ORIENTATION_LANDSCAPE
     setupView()
     viewModel.run {
-      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
       loadImage(showId)
     }
   }

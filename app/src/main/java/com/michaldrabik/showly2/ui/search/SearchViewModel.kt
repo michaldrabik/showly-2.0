@@ -81,6 +81,6 @@ class SearchViewModel @Inject constructor(
 
   private fun onError() {
     uiState = SearchUiModel(isSearching = false, isEmpty = false)
-    _errorStream.value = R.string.errorCouldNotLoadSearchResults
+    _errorLiveData.value = R.string.errorCouldNotLoadSearchResults
   }
 }

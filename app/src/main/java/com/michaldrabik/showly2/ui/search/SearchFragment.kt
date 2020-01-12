@@ -61,8 +61,8 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
     setupRecycler()
     if (savedInstanceState == null && !isInitialized) isInitialized = true
     viewModel.run {
-      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
-      errorStream.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
+      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
+      errorLiveData.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
     }
   }
 

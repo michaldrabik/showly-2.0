@@ -33,10 +33,10 @@ class TraktImportViewModel @Inject constructor(
           throw IllegalStateException("Invalid Trakt authorization code.")
         }
         userManager.authorize(code)
-        _messageStream.value = R.string.textTraktLoginSuccess
+        _messageLiveData.value = R.string.textTraktLoginSuccess
         invalidate()
       } catch (t: Throwable) {
-        _errorStream.value = R.string.errorAuthorization
+        _errorLiveData.value = R.string.errorAuthorization
       }
     }
   }
@@ -44,7 +44,7 @@ class TraktImportViewModel @Inject constructor(
   fun onBroadcastAction(action: String?) {
     when (action) {
       ACTION_IMPORT_START -> {
-        _messageStream.value = R.string.textTraktImportStarted
+        _messageLiveData.value = R.string.textTraktImportStarted
         uiState = TraktImportUiModel(isProgress = true)
       }
       ACTION_IMPORT_PROGRESS -> {
@@ -52,16 +52,16 @@ class TraktImportViewModel @Inject constructor(
       }
       ACTION_IMPORT_COMPLETE_SUCCESS -> {
         uiState = TraktImportUiModel(isProgress = false)
-        _messageStream.value = R.string.textTraktImportComplete
+        _messageLiveData.value = R.string.textTraktImportComplete
       }
       ACTION_IMPORT_COMPLETE_ERROR -> {
         uiState = TraktImportUiModel(isProgress = false)
-        _messageStream.value = R.string.textTraktImportError
+        _messageLiveData.value = R.string.textTraktImportError
       }
       ACTION_IMPORT_AUTH_ERROR -> {
         viewModelScope.launch {
           userManager.revokeToken()
-          _errorStream.value = R.string.errorTraktAuthorization
+          _errorLiveData.value = R.string.errorTraktAuthorization
           uiState = TraktImportUiModel(isProgress = false, authError = true)
         }
       }

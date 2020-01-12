@@ -46,7 +46,7 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListe
     setupView()
     setupRecycler()
     viewModel.run {
-      uiStream.observe(viewLifecycleOwner, Observer { render(it!!) })
+      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
       loadShows()
     }
   }
