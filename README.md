@@ -21,3 +21,11 @@ Showly 2.0 is modern, slick, open-sourced and completely free Android TV Shows T
 Feel free to join official Slack workspace for all things related:
 
 [**Click to join Slack**](https://join.slack.com/t/showly2/shared_invite/enQtODE5MDYwNDMxNjIwLTQxOTA2YzBjNDFjNjU0M2Q2M2ZmMTBjNGQ2MWMxNjc0MmQyMTMxZGEyYjA0YTYzM2Y0OGIxMDU4NjBkODhkYzA)
+
+## Project Setup
+
+TODO
+
+## Issues & Contributions
+
+Feel free to post ideas and problems as Github Issues.
