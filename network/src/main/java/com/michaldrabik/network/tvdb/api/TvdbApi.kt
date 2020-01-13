@@ -39,5 +39,9 @@ class TvdbApi(private val service: TvdbService) {
       }
   }
 
+  /**
+   * TVDB returns strange file paths occasionally.
+   * This method normalizes path by removing excessive "/" which causes problems.
+   */
   private fun removeExtraPrefix(input: String) = input.removePrefix("/")
 }

@@ -48,41 +48,33 @@ object RetrofitModule {
       .baseUrl(TVDB_BASE_URL)
       .build()
 
-  // TODO Refactor into binding map
   @Provides
   @CloudScope
-  fun providesMoshi(): Moshi {
-    val showConverter = ShowConverter()
-    val trendingResultConverter = TrendingResultConverter(showConverter)
-    val searchResultConverter = SearchResultConverter(showConverter)
-
-    val tvdbImageConverter = TvdbImageConverter()
-    val tvdbImageResultConverter = TvdbResultConverter(tvdbImageConverter)
-
-    val actorConverter = TvdbActorConverter()
-    val actorResultConverter = TvdbResultConverter(actorConverter)
-
-    val episodeConverter = EpisodeConverter()
-    val seasonConverter = SeasonConverter(episodeConverter)
-
-    val syncProgressItemConverter = SyncProgressItemConverter(showConverter, seasonConverter)
-
-    val userConverter = UserConverter()
-    val commentsConverter = CommentConverter(userConverter)
-
+  fun providesMoshi(
+    showConverter: ShowConverter,
+    trendingResultConverter: TrendingResultConverter,
+    tvdbImageConverter: TvdbImageConverter,
+    actorConverter: TvdbActorConverter,
+    episodeConverter: EpisodeConverter,
+    userConverter: UserConverter,
+    seasonConverter: SeasonConverter,
+    syncProgressItemConverter: SyncProgressItemConverter,
+    searchResultConverter: SearchResultConverter,
+    commentConverter: CommentConverter
+  ): Moshi {
     return Moshi.Builder()
       .add(showConverter)
-      .add(trendingResultConverter)
-      .add(tvdbImageConverter)
-      .add(tvdbImageResultConverter)
-      .add(episodeConverter)
-      .add(seasonConverter)
-      .add(searchResultConverter)
       .add(actorConverter)
-      .add(actorResultConverter)
-      .add(syncProgressItemConverter)
       .add(userConverter)
-      .add(commentsConverter)
+      .add(seasonConverter)
+      .add(episodeConverter)
+      .add(commentConverter)
+      .add(tvdbImageConverter)
+      .add(searchResultConverter)
+      .add(trendingResultConverter)
+      .add(syncProgressItemConverter)
+      .add(TvdbResultConverter(actorConverter))
+      .add(TvdbResultConverter(tvdbImageConverter))
       .build()
   }
 
