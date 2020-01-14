@@ -1,10 +1,16 @@
-[<p align="center"><img alt="Get it on Google Play" height="180" src="https://i.ibb.co/ChBN7Lg/ic-launcher.png"></p>]()
-
 # Showly 2.0
+<img src="https://i.ibb.co/ChBN7Lg/ic-launcher.png" align="left" width="180" hspace="10" vspace="10" />
 
-Showly 2.0 is modern, slick, open-sourced and completely free Android TV Shows Tracker.
+Showly 2.0 is modern, slick, open source Android TV Shows Tracker.
 
-[<p align="center"><img alt="Get it on Google Play" height="90" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"></p>](https://play.google.com/store/apps/details?id=com.michaldrabik.showly2)
+Available on the Google Play Store and soon also on F-Droid.
+
+<a href="https://play.google.com/store/apps/details?id=com.michaldrabik.showly2">
+  <img
+    alt="Get it on Google Play"
+    height="80"
+    src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"/>
+</a>
 
 ## Screenshots
 
