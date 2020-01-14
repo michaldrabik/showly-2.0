@@ -23,10 +23,13 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit.SECONDS
 import javax.inject.Named
 
 @Module
 object RetrofitModule {
+
+  private const val TIMEOUT_DURATION = 30L
 
   @Provides
   @CloudScope
@@ -85,6 +88,9 @@ object RetrofitModule {
     traktInterceptor: TraktInterceptor
   ): OkHttpClient =
     OkHttpClient.Builder()
+      .writeTimeout(TIMEOUT_DURATION, SECONDS)
+      .readTimeout(TIMEOUT_DURATION, SECONDS)
+      .callTimeout(TIMEOUT_DURATION, SECONDS)
       .addInterceptor(httpLoggingInterceptor)
       .addInterceptor(traktInterceptor)
       .build()
