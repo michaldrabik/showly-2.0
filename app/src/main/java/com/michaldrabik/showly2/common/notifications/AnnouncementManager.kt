@@ -7,7 +7,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.common.ImagesManager
+import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.common.notifications.AnnouncementWorker.Companion.DATA_CHANNEL
 import com.michaldrabik.showly2.common.notifications.AnnouncementWorker.Companion.DATA_CONTENT
 import com.michaldrabik.showly2.common.notifications.AnnouncementWorker.Companion.DATA_IMAGE_URL
@@ -36,7 +36,7 @@ import javax.inject.Inject
 class AnnouncementManager @Inject constructor(
   private val database: AppDatabase,
   private val settingsRepository: SettingsRepository,
-  private val imagesManager: ImagesManager,
+  private val imagesProvider: ShowImagesProvider,
   private val mappers: Mappers
 ) {
 
@@ -96,11 +96,11 @@ class AnnouncementManager @Inject constructor(
       }
       putString(DATA_CONTENT, context.getString(stringResId))
 
-      val posterImage = imagesManager.findCachedImage(show, POSTER)
+      val posterImage = imagesProvider.findCachedImage(show, POSTER)
       if (posterImage.status == AVAILABLE) {
         putString(DATA_IMAGE_URL, "${TVDB_IMAGE_BASE_BANNERS_URL}${posterImage.fileUrl}")
       } else {
-        val fanartImage = imagesManager.findCachedImage(show, FANART)
+        val fanartImage = imagesProvider.findCachedImage(show, FANART)
         if (fanartImage.status == AVAILABLE) {
           putString(DATA_IMAGE_URL, "${TVDB_IMAGE_BASE_BANNERS_URL}${fanartImage.fileUrl}")
         }

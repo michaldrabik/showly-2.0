@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncItem
-import com.michaldrabik.showly2.common.ImagesManager
+import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.ImageType.FANART
@@ -28,7 +28,7 @@ class TraktImportWatchedRunner @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
   private val mappers: Mappers,
-  private val imagesManager: ImagesManager,
+  private val imagesProvider: ShowImagesProvider,
   private val userTraktManager: UserTraktManager,
   private val userTvdbManager: UserTvdbManager
 ) {
@@ -127,7 +127,7 @@ class TraktImportWatchedRunner @Inject constructor(
   private suspend fun loadImage(show: Show) {
     try {
       if (!userTvdbManager.isAuthorized()) return
-      imagesManager.loadRemoteImage(show, FANART)
+      imagesProvider.loadRemoteImage(show, FANART)
     } catch (t: Throwable) {
       // NOOP Ignore image for now. It will be fetched later if needed.
     }

@@ -1,19 +1,12 @@
-package com.michaldrabik.showly2.common
+package com.michaldrabik.showly2.common.images
 
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.tvdb.model.TvdbImage
 import com.michaldrabik.showly2.di.AppScope
-import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.Image.Status.AVAILABLE
-import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
-import com.michaldrabik.showly2.model.ImageFamily.EPISODE
-import com.michaldrabik.showly2.model.ImageFamily.SHOW
+import com.michaldrabik.showly2.model.ImageFamily
 import com.michaldrabik.showly2.model.ImageType
-import com.michaldrabik.showly2.model.ImageType.FANART
-import com.michaldrabik.showly2.model.ImageType.FANART_WIDE
-import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.UserTvdbManager
@@ -21,56 +14,25 @@ import com.michaldrabik.storage.database.AppDatabase
 import javax.inject.Inject
 
 @AppScope
-class ImagesManager @Inject constructor(
+class ShowImagesProvider @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
   private val userManager: UserTvdbManager,
   private val mappers: Mappers
 ) {
 
-  suspend fun findCachedImage(episode: Episode, type: ImageType): Image {
-    val cachedImage = database.imagesDao().getByEpisodeId(episode.ids.tvdb.id, type.key)
-    return when (cachedImage) {
-      null -> Image.createUnknown(type, EPISODE)
-      else -> mappers.image.fromDatabase(cachedImage).copy(type = type)
-    }
-  }
-
   suspend fun findCachedImage(show: Show, type: ImageType): Image {
     val cachedImage = database.imagesDao().getByShowId(show.ids.tvdb.id, type.key)
     return when (cachedImage) {
-      null -> Image.createUnknown(type, SHOW)
+      null -> Image.createUnknown(type, ImageFamily.SHOW)
       else -> mappers.image.fromDatabase(cachedImage).copy(type = type)
     }
-  }
-
-  suspend fun loadRemoteImage(episode: Episode, force: Boolean = false): Image {
-    val tvdbId = episode.ids.tvdb
-    val cachedImage = findCachedImage(episode, FANART)
-    if (cachedImage.status == AVAILABLE && !force) {
-      return cachedImage
-    }
-
-    userManager.checkAuthorization()
-    val remoteImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getToken(), tvdbId.id)
-
-    val image = when (remoteImage) {
-      null -> Image.createUnavailable(FANART)
-      else -> Image(remoteImage.id, tvdbId, FANART, EPISODE, remoteImage.fileName, remoteImage.thumbnail, AVAILABLE)
-    }
-
-    when (image.status) {
-      UNAVAILABLE -> database.imagesDao().deleteByEpisodeId(tvdbId.id, image.type.key)
-      else -> database.imagesDao().insertEpisodeImage(mappers.image.toDatabase(image))
-    }
-
-    return image
   }
 
   suspend fun loadRemoteImage(show: Show, type: ImageType, force: Boolean = false): Image {
     val tvdbId = show.ids.tvdb
     val cachedImage = findCachedImage(show, type)
-    if (cachedImage.status == AVAILABLE && !force) {
+    if (cachedImage.status == Image.Status.AVAILABLE && !force) {
       return cachedImage
     }
 
@@ -80,12 +42,12 @@ class ImagesManager @Inject constructor(
     var typeImages = images.filter { it.keyType == type.key }
 
     // If requested poster is unavailable try backing up to a fanart
-    if (typeImages.isEmpty() && type == POSTER) {
-      typeImages = images.filter { it.keyType == FANART.key }
+    if (typeImages.isEmpty() && type == ImageType.POSTER) {
+      typeImages = images.filter { it.keyType == ImageType.FANART.key }
     }
 
     // If requested fanart is unavailable try backing up to an episode image
-    if (typeImages.isEmpty() && type in arrayOf(FANART, FANART_WIDE)) {
+    if (typeImages.isEmpty() && type in arrayOf(ImageType.FANART, ImageType.FANART_WIDE)) {
       val seasons = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
       if (seasons.isNotEmpty()) {
         val episode = seasons[0].episodes.firstOrNull()
@@ -99,11 +61,11 @@ class ImagesManager @Inject constructor(
     val remoteImage = typeImages.maxBy { it.rating.count }
     val image = when (remoteImage) {
       null -> Image.createUnavailable(type)
-      else -> Image(remoteImage.id, tvdbId, type, SHOW, remoteImage.fileName, remoteImage.thumbnail, AVAILABLE)
+      else -> Image(remoteImage.id, tvdbId, type, ImageFamily.SHOW, remoteImage.fileName, remoteImage.thumbnail, Image.Status.AVAILABLE)
     }
 
     when (image.status) {
-      UNAVAILABLE -> database.imagesDao().deleteByShowId(tvdbId.id, image.type.key)
+      Image.Status.UNAVAILABLE -> database.imagesDao().deleteByShowId(tvdbId.id, image.type.key)
       else -> {
         database.imagesDao().insertShowImage(mappers.image.toDatabase(image))
         storeExtraImage(tvdbId, images, type)
@@ -118,12 +80,12 @@ class ImagesManager @Inject constructor(
     images: List<TvdbImage>,
     targetType: ImageType
   ) {
-    val extraType = if (targetType == POSTER) FANART else POSTER
+    val extraType = if (targetType == ImageType.POSTER) ImageType.FANART else ImageType.POSTER
     images
       .filter { it.keyType == extraType.key }
       .maxBy { it.rating.count }
       ?.let {
-        val extraImage = Image(it.id, id, extraType, SHOW, it.fileName, it.thumbnail, AVAILABLE)
+        val extraImage = Image(it.id, id, extraType, ImageFamily.SHOW, it.fileName, it.thumbnail, Image.Status.AVAILABLE)
         database.imagesDao().insertShowImage(mappers.image.toDatabase(extraImage))
       }
   }
@@ -137,7 +99,7 @@ class ImagesManager @Inject constructor(
     return remoteImages
       .filter { it.keyType == type.key }
       .map {
-        Image(it.id, tvdbId, type, SHOW, it.fileName, it.thumbnail, AVAILABLE)
+        Image(it.id, tvdbId, type, ImageFamily.SHOW, it.fileName, it.thumbnail, Image.Status.AVAILABLE)
       }
   }
 }

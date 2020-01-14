@@ -3,7 +3,7 @@ package com.michaldrabik.showly2.ui.show.seasons.episodes.details
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.showly2.common.ImagesManager
+import com.michaldrabik.showly2.common.images.EpisodeImagesProvider
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.IdTvdb
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EpisodeDetailsViewModel @Inject constructor(
-  private val imagesManager: ImagesManager,
+  private val imagesProvider: EpisodeImagesProvider,
   private val cloud: Cloud
 ) : BaseViewModel<EpisodeDetailsUiModel>() {
 
@@ -23,7 +23,7 @@ class EpisodeDetailsViewModel @Inject constructor(
         uiState = EpisodeDetailsUiModel(imageLoading = true)
         val ids = Ids.EMPTY.copy(tvdb = tvdb)
         val episode = Episode.EMPTY.copy(ids = ids)
-        val episodeImage = imagesManager.loadRemoteImage(episode)
+        val episodeImage = imagesProvider.loadRemoteImage(episode)
         uiState = EpisodeDetailsUiModel(image = episodeImage, imageLoading = false)
       } catch (t: Throwable) {
         uiState = EpisodeDetailsUiModel(imageLoading = false)

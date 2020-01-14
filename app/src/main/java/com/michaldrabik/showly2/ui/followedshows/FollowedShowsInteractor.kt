@@ -1,6 +1,6 @@
 package com.michaldrabik.showly2.ui.followedshows
 
-import com.michaldrabik.showly2.common.ImagesManager
+import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.Show
@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 @AppScope
 class FollowedShowsInteractor @Inject constructor(
-  private val imagesManager: ImagesManager,
+  private val imagesProvider: ShowImagesProvider,
   private val showsRepository: ShowsRepository
 ) {
 
@@ -34,7 +34,7 @@ class FollowedShowsInteractor @Inject constructor(
   }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =
-    imagesManager.findCachedImage(show, type)
+    imagesProvider.findCachedImage(show, type)
 
   fun clearCache() = searchItemsCache.clear()
 }

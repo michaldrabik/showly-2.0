@@ -3,7 +3,7 @@ package com.michaldrabik.showly2.ui.show
 import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.Config.ACTORS_CACHE_DURATION
-import com.michaldrabik.showly2.common.ImagesManager
+import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.model.Episode
@@ -26,7 +26,7 @@ class ShowDetailsInteractor @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
   private val userTvdbManager: UserTvdbManager,
-  private val imagesManager: ImagesManager,
+  private val imagesProvider: ShowImagesProvider,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository
 ) {
@@ -35,7 +35,7 @@ class ShowDetailsInteractor @Inject constructor(
     showsRepository.detailsShow.load(idTrakt)
 
   suspend fun loadBackgroundImage(show: Show) =
-    imagesManager.loadRemoteImage(show, FANART)
+    imagesProvider.loadRemoteImage(show, FANART)
 
   suspend fun loadNextEpisode(traktId: IdTrakt): Episode? {
     val episode = cloud.traktApi.fetchNextEpisode(traktId.id) ?: return null
@@ -68,10 +68,10 @@ class ShowDetailsInteractor @Inject constructor(
       .reversed()
 
   suspend fun findCachedImage(show: Show, type: ImageType) =
-    imagesManager.findCachedImage(show, type)
+    imagesProvider.findCachedImage(show, type)
 
   suspend fun loadMissingImage(show: Show, type: ImageType, force: Boolean) =
-    imagesManager.loadRemoteImage(show, type, force)
+    imagesProvider.loadRemoteImage(show, type, force)
 
   suspend fun loadSeasons(show: Show): List<Season> =
     cloud.traktApi.fetchSeasons(show.ids.trakt.id)

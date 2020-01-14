@@ -1,6 +1,6 @@
 package com.michaldrabik.showly2.ui.followedshows.myshows
 
-import com.michaldrabik.showly2.common.ImagesManager
+import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.MyShowsSection
@@ -21,7 +21,7 @@ import javax.inject.Inject
 @AppScope
 class MyShowsInteractor @Inject constructor(
   private val database: AppDatabase,
-  private val imagesManager: ImagesManager,
+  private val imagesProvider: ShowImagesProvider,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository
 ) {
@@ -85,8 +85,8 @@ class MyShowsInteractor @Inject constructor(
   }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =
-    imagesManager.findCachedImage(show, type)
+    imagesProvider.findCachedImage(show, type)
 
   suspend fun loadMissingImage(show: Show, type: ImageType, force: Boolean) =
-    imagesManager.loadRemoteImage(show, type, force)
+    imagesProvider.loadRemoteImage(show, type, force)
 }

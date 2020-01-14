@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2.ui.show.gallery
 
 import com.michaldrabik.showly2.Config.FANART_GALLERY_IMAGES_LIMIT
-import com.michaldrabik.showly2.common.ImagesManager
+import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.Image
@@ -12,12 +12,12 @@ import javax.inject.Inject
 @AppScope
 class FanartGalleryInteractor @Inject constructor(
   private val showsRepository: ShowsRepository,
-  private val imagesManager: ImagesManager
+  private val imagesProvider: ShowImagesProvider
 ) {
 
   suspend fun loadInitialImage(id: IdTrakt): Image {
     val show = showsRepository.detailsShow.load(id)
-    return imagesManager.findCachedImage(show, ImageType.FANART)
+    return imagesProvider.findCachedImage(show, ImageType.FANART)
   }
 
   suspend fun loadAllImages(id: IdTrakt, initialImage: Image): List<Image> {
@@ -27,7 +27,7 @@ class FanartGalleryInteractor @Inject constructor(
     }
 
     val show = showsRepository.detailsShow.load(id)
-    val allImages = imagesManager.loadRemoteImages(show, ImageType.FANART)
+    val allImages = imagesProvider.loadRemoteImages(show, ImageType.FANART)
       .filter { it.fileUrl != initialImage.fileUrl }
       .take(FANART_GALLERY_IMAGES_LIMIT)
     images.addAll(allImages)
