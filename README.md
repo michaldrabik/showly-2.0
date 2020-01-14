@@ -11,6 +11,7 @@ Available on the Google Play Store.
     height="80"
     src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"/>
 </a>  
+
 ## Screenshots
 
 <div>
