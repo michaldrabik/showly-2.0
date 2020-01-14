@@ -3,7 +3,7 @@
 
 Showly 2.0 is modern, slick, open source Android TV Shows Tracker.
 
-Showly 2.0 is available on the Google Play Store.
+Available on the Google Play Store.
 
 <a href="https://play.google.com/store/apps/details?id=com.michaldrabik.showly2">
   <img
@@ -12,6 +12,7 @@ Showly 2.0 is available on the Google Play Store.
     src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
   />
 </a>
+<br>
 
 ## Screenshots
 
