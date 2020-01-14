@@ -1,9 +1,6 @@
 package com.michaldrabik.showly2.ui.trakt
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -13,24 +10,21 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.network.Config
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.common.events.Event
+import com.michaldrabik.showly2.common.events.EventObserver
+import com.michaldrabik.showly2.common.events.EventsManager
 import com.michaldrabik.showly2.common.trakt.TraktImportService
-import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_AUTH_ERROR
-import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_COMPLETE_ERROR
-import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_COMPLETE_SUCCESS
-import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_PROGRESS
-import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_START
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_trakt_import.*
 
-class TraktImportFragment : BaseFragment<TraktImportViewModel>(), OnTraktAuthorizeListener {
+class TraktImportFragment : BaseFragment<TraktImportViewModel>(), OnTraktAuthorizeListener, EventObserver {
 
   override val layoutResId = R.layout.fragment_trakt_import
 
@@ -40,19 +34,12 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>(), OnTraktAuthori
   }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-    val filter = IntentFilter().apply {
-      addAction(ACTION_IMPORT_COMPLETE_SUCCESS)
-      addAction(ACTION_IMPORT_COMPLETE_ERROR)
-      addAction(ACTION_IMPORT_START)
-      addAction(ACTION_IMPORT_PROGRESS)
-      addAction(ACTION_IMPORT_AUTH_ERROR)
-    }
-    LocalBroadcastManager.getInstance(requireContext().applicationContext).registerReceiver(broadcastReceiver, filter)
+    EventsManager.registerObserver(this)
     return super.onCreateView(inflater, container, savedInstanceState)
   }
 
   override fun onDestroyView() {
-    LocalBroadcastManager.getInstance(requireContext().applicationContext).unregisterReceiver(broadcastReceiver)
+    EventsManager.removeObserver(this)
     super.onDestroyView()
   }
 
@@ -131,9 +118,5 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>(), OnTraktAuthori
 
   override fun getSnackbarHost(): ViewGroup = traktImportRoot
 
-  private val broadcastReceiver = object : BroadcastReceiver() {
-    override fun onReceive(context: Context?, intent: Intent?) {
-      viewModel.onBroadcastAction(intent?.action)
-    }
-  }
+  override fun onNewEvent(event: Event) = viewModel.handleEvent(event)
 }

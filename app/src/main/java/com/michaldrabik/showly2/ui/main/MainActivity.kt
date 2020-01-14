@@ -1,9 +1,6 @@
 package com.michaldrabik.showly2.ui.main
 
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
@@ -11,12 +8,15 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.ShowsSyncService
-import com.michaldrabik.showly2.common.trakt.TraktImportService
+import com.michaldrabik.showly2.common.events.Event
+import com.michaldrabik.showly2.common.events.EventObserver
+import com.michaldrabik.showly2.common.events.EventsManager
+import com.michaldrabik.showly2.common.events.ShowsSyncComplete
+import com.michaldrabik.showly2.common.events.TraktImportProgress
 import com.michaldrabik.showly2.connectivityManager
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.model.Tip
@@ -35,7 +35,7 @@ import com.michaldrabik.showly2.utilities.network.NetworkMonitor
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : NotificationActivity() {
+class MainActivity : NotificationActivity(), EventObserver {
 
   companion object {
     private const val NAVIGATION_TRANSITION_DURATION_MS = 350L
@@ -78,16 +78,12 @@ class MainActivity : NotificationActivity() {
 
   override fun onStart() {
     super.onStart()
-    val filter = IntentFilter().apply {
-      addAction(ShowsSyncService.ACTION_SHOWS_SYNC_FINISHED)
-      addAction(TraktImportService.ACTION_IMPORT_PROGRESS)
-    }
-    LocalBroadcastManager.getInstance(applicationContext).registerReceiver(servicesReceiver, filter)
+    EventsManager.registerObserver(this)
     ShowsSyncService.initialize(applicationContext)
   }
 
   override fun onStop() {
-    LocalBroadcastManager.getInstance(applicationContext).unregisterReceiver(servicesReceiver)
+    EventsManager.removeObserver(this)
     super.onStop()
   }
 
@@ -209,15 +205,14 @@ class MainActivity : NotificationActivity() {
     }
   }
 
-  private val servicesReceiver = object : BroadcastReceiver() {
-    override fun onReceive(context: Context?, intent: Intent?) {
-      when (intent?.action) {
-        ShowsSyncService.ACTION_SHOWS_SYNC_FINISHED -> {
+  override fun onNewEvent(event: Event) {
+    runOnUiThread {
+      when (event) {
+        is ShowsSyncComplete -> {
           doForFragments { (it as? OnEpisodesSyncedListener)?.onEpisodesSyncFinished() }
           viewModel.refreshAnnouncements(applicationContext)
         }
-        // TODO Refactor into listening to DB changes and Coroutines Flows
-        TraktImportService.ACTION_IMPORT_PROGRESS -> {
+        is TraktImportProgress -> {
           doForFragments { (it as? OnTraktImportListener)?.onTraktImportProgress() }
         }
       }

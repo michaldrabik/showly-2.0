@@ -13,10 +13,15 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.CATEGORY_SERVICE
 import androidx.core.app.NotificationCompat.PRIORITY_HIGH
 import androidx.core.content.ContextCompat
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.common.events.EventsManager
+import com.michaldrabik.showly2.common.events.TraktImportAuthError
+import com.michaldrabik.showly2.common.events.TraktImportError
+import com.michaldrabik.showly2.common.events.TraktImportProgress
+import com.michaldrabik.showly2.common.events.TraktImportStart
+import com.michaldrabik.showly2.common.events.TraktImportSuccess
 import com.michaldrabik.showly2.model.error.TraktAuthError
 import com.michaldrabik.showly2.utilities.extensions.notificationManager
 import kotlinx.coroutines.CoroutineScope
@@ -34,12 +39,6 @@ class TraktImportService : Service(), CoroutineScope {
     private const val IMPORT_NOTIFICATION_PROGRESS_ID = 826
     private const val IMPORT_NOTIFICATION_COMPLETE_SUCCESS_ID = 827
     private const val IMPORT_NOTIFICATION_COMPLETE_ERROR_ID = 828
-
-    const val ACTION_IMPORT_START = "ACTION_IMPORT_START"
-    const val ACTION_IMPORT_PROGRESS = "ACTION_IMPORT_PROGRESS"
-    const val ACTION_IMPORT_COMPLETE_SUCCESS = "ACTION_IMPORT_COMPLETE_SUCCESS"
-    const val ACTION_IMPORT_COMPLETE_ERROR = "ACTION_IMPORT_COMPLETE_ERROR"
-    const val ACTION_IMPORT_AUTH_ERROR = "ACTION_IMPORT_AUTH_ERROR"
   }
 
   @Inject lateinit var importWatchedRunner: TraktImportWatchedRunner
@@ -69,17 +68,17 @@ class TraktImportService : Service(), CoroutineScope {
     Log.d(TAG, "Import started.")
     launch {
       try {
-        notifyBroadcast(ACTION_IMPORT_START)
+        EventsManager.sendEvent(TraktImportStart)
 
         val resultCount = runImportWatched()
         runImportWatchlist(resultCount)
 
         notificationManager().notify(IMPORT_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification())
-        notifyBroadcast(ACTION_IMPORT_COMPLETE_SUCCESS)
+        EventsManager.sendEvent(TraktImportSuccess)
       } catch (t: Throwable) {
-        if (t is TraktAuthError) notifyBroadcast(ACTION_IMPORT_AUTH_ERROR)
+        if (t is TraktAuthError) EventsManager.sendEvent(TraktImportAuthError)
         notificationManager().notify(IMPORT_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
-        notifyBroadcast(ACTION_IMPORT_COMPLETE_ERROR)
+        EventsManager.sendEvent(TraktImportError)
       } finally {
         clear()
         stopSelf()
@@ -97,7 +96,7 @@ class TraktImportService : Service(), CoroutineScope {
         setProgress(total, progress, false)
       }
       notificationManager().notify(IMPORT_NOTIFICATION_PROGRESS_ID, notification.build())
-      notifyBroadcast(ACTION_IMPORT_PROGRESS)
+      EventsManager.sendEvent(TraktImportProgress)
     }
     return importWatchedRunner.run()
   }
@@ -109,7 +108,7 @@ class TraktImportService : Service(), CoroutineScope {
         setProgress(totalProgress + total, totalProgress + progress, false)
       }
       notificationManager().notify(IMPORT_NOTIFICATION_PROGRESS_ID, notification.build())
-      notifyBroadcast(ACTION_IMPORT_PROGRESS)
+      EventsManager.sendEvent(TraktImportProgress)
     }
     importWatchlistRunner.run()
   }
@@ -150,10 +149,6 @@ class TraktImportService : Service(), CoroutineScope {
       return id
     }
     return ""
-  }
-
-  private fun notifyBroadcast(action: String) {
-    LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(Intent(action))
   }
 
   private fun clear() {

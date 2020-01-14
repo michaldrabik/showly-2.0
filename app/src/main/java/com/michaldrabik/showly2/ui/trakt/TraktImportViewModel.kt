@@ -3,11 +3,12 @@ package com.michaldrabik.showly2.ui.trakt
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_AUTH_ERROR
-import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_COMPLETE_ERROR
-import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_COMPLETE_SUCCESS
-import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_PROGRESS
-import com.michaldrabik.showly2.common.trakt.TraktImportService.Companion.ACTION_IMPORT_START
+import com.michaldrabik.showly2.common.events.Event
+import com.michaldrabik.showly2.common.events.TraktImportAuthError
+import com.michaldrabik.showly2.common.events.TraktImportError
+import com.michaldrabik.showly2.common.events.TraktImportProgress
+import com.michaldrabik.showly2.common.events.TraktImportStart
+import com.michaldrabik.showly2.common.events.TraktImportSuccess
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import kotlinx.coroutines.launch
@@ -41,28 +42,30 @@ class TraktImportViewModel @Inject constructor(
     }
   }
 
-  fun onBroadcastAction(action: String?) {
-    when (action) {
-      ACTION_IMPORT_START -> {
-        _messageLiveData.value = R.string.textTraktImportStarted
-        uiState = TraktImportUiModel(isProgress = true)
-      }
-      ACTION_IMPORT_PROGRESS -> {
-        uiState = TraktImportUiModel(isProgress = true)
-      }
-      ACTION_IMPORT_COMPLETE_SUCCESS -> {
-        uiState = TraktImportUiModel(isProgress = false)
-        _messageLiveData.value = R.string.textTraktImportComplete
-      }
-      ACTION_IMPORT_COMPLETE_ERROR -> {
-        uiState = TraktImportUiModel(isProgress = false)
-        _messageLiveData.value = R.string.textTraktImportError
-      }
-      ACTION_IMPORT_AUTH_ERROR -> {
-        viewModelScope.launch {
-          userManager.revokeToken()
-          _errorLiveData.value = R.string.errorTraktAuthorization
-          uiState = TraktImportUiModel(isProgress = false, authError = true)
+  fun handleEvent(event: Event) {
+    viewModelScope.launch {
+      when (event) {
+        is TraktImportStart -> {
+          _messageLiveData.value = R.string.textTraktImportStarted
+          uiState = TraktImportUiModel(isProgress = true)
+        }
+        is TraktImportProgress -> {
+          uiState = TraktImportUiModel(isProgress = true)
+        }
+        is TraktImportSuccess -> {
+          uiState = TraktImportUiModel(isProgress = false)
+          _messageLiveData.value = R.string.textTraktImportComplete
+        }
+        is TraktImportError -> {
+          uiState = TraktImportUiModel(isProgress = false)
+          _messageLiveData.value = R.string.textTraktImportError
+        }
+        is TraktImportAuthError -> {
+          viewModelScope.launch {
+            userManager.revokeToken()
+            _errorLiveData.value = R.string.errorTraktAuthorization
+            uiState = TraktImportUiModel(isProgress = false, authError = true)
+          }
         }
       }
     }
