@@ -1,5 +1,5 @@
 # Showly 2.0
-<img src="https://i.ibb.co/ChBN7Lg/ic-launcher.png" align="left" width="200" hspace="10" vspace="10" />
+<img src="https://i.ibb.co/ChBN7Lg/ic-launcher.png" align="left" width="180" hspace="10" vspace="10" />
 
 Showly 2.0 is modern, slick, open source Android TV Shows Tracker.
 
@@ -11,7 +11,6 @@ Available on the Google Play Store.
     height="80"
     src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"/>
 </a>
-Some
 
 ## Screenshots
 
