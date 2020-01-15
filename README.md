@@ -24,11 +24,28 @@ Available on the Google Play Store and soon also on F-Droid.
 
 ## Project Setup
 
-TODO
+1. Clone repository and open project in the latest version of Android Studio.
+2. Create `keystore.properties` file and put it in the `/app` folder.
+3. Add following properties into `keystore.properties` file (values are not important at this moment):
+```
+keyAlias=github
+keyPassword=github
+storePassword=github
+```
+4. Add your [Trakt.tv](https://trakt.tv/oauth/applications) and [TVDB](https://thetvdb.com/dashboard/account/apikey) api keys as following properties into your `local.properties` file located in the root directory of the project:
+```
+traktClientId="your trakt client id"
+traktClientSecret="your trakt client secret"
+tvdbApiKey="your tvdb api key"
+```
+5. Generate your own Firebase `google-services.json` file and put it in the `/app` directory.
+6. Rebuild and start the app.
 
 ## Issues & Contributions
 
 Feel free to post ideas and problems as Github Issues.
+
+Pull requests are welcome. Remember about leaving a comment in the relevant issue if you are working on something.
 
 ## Slack
 
