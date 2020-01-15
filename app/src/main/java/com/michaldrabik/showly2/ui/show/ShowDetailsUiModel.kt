@@ -5,8 +5,8 @@ import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.ui.common.FollowedState
 import com.michaldrabik.showly2.ui.common.UiModel
+import com.michaldrabik.showly2.ui.show.helpers.FollowedState
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 

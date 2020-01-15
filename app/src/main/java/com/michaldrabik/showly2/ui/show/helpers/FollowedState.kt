@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.common
+package com.michaldrabik.showly2.ui.show.helpers
 
 data class FollowedState(
   val isMyShows: Boolean,

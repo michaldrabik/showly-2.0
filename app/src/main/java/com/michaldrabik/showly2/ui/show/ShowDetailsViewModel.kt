@@ -13,8 +13,8 @@ import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.SeasonBundle
 import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.ui.common.FollowedState
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
+import com.michaldrabik.showly2.ui.show.helpers.FollowedState
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodeListItem
@@ -160,7 +160,8 @@ class ShowDetailsViewModel @Inject constructor(
       val episodes = seasonItems.flatMap { it.episodes.map { e -> e.episode } }
       interactor.addToFollowed(show, seasons, episodes)
 
-      val followedState = FollowedState(isMyShows = true, isWatchLater = false, withAnimation = true)
+      val followedState =
+        FollowedState(isMyShows = true, isWatchLater = false, withAnimation = true)
       uiState = ShowDetailsUiModel(isFollowed = followedState)
 
       announcementManager.refreshEpisodesAnnouncements(context)
@@ -172,7 +173,8 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       interactor.addToWatchLater(show)
 
-      val followedState = FollowedState(isMyShows = false, isWatchLater = true, withAnimation = true)
+      val followedState =
+        FollowedState(isMyShows = false, isWatchLater = true, withAnimation = true)
       uiState = ShowDetailsUiModel(isFollowed = followedState)
     }
   }
@@ -186,7 +188,8 @@ class ShowDetailsViewModel @Inject constructor(
       if (isFollowed) interactor.removeFromFollowed(show)
       if (isWatchLater) interactor.removeFromWatchLater(show)
 
-      val followedState = FollowedState(isMyShows = false, isWatchLater = false, withAnimation = true)
+      val followedState =
+        FollowedState(isMyShows = false, isWatchLater = false, withAnimation = true)
       uiState = ShowDetailsUiModel(isFollowed = followedState)
 
       announcementManager.refreshEpisodesAnnouncements(context)
