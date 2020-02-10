@@ -28,14 +28,14 @@ class ShowsSyncService : JobIntentService(), CoroutineScope {
   override val coroutineContext = Job() + Dispatchers.Main
 
   @Inject
-  lateinit var synchronizer: ShowsSynchronizer
+  lateinit var showsSyncRunner: ShowsSyncRunner
 
   override fun onHandleWork(intent: Intent) {
     Log.i(TAG, "Sync service initialized")
     appComponent().inject(this)
     val syncCount = runBlocking {
       try {
-        synchronizer.synchronize()
+        showsSyncRunner.synchronize()
       } catch (t: Throwable) {
         Log.e(TAG, t.toString())
       }

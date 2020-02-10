@@ -18,7 +18,7 @@ import javax.inject.Inject
  * This class is responsible for fetching and syncing missing/updated episodes data for current watchlist items.
  */
 @AppScope
-class ShowsSynchronizer @Inject constructor(
+class ShowsSyncRunner @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
   private val mappers: Mappers,
