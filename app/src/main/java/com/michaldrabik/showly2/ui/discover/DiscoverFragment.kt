@@ -88,6 +88,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
   }
 
   private fun navigateToDetails(item: DiscoverListItem) {
+    saveUiPositions()
     hideNavigation()
     animateItemsExit(item)
     discoverSearchView.fadeOut()
@@ -114,16 +115,13 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     }
     val clickedView = discoverRecycler.findViewHolderForAdapterPosition(clickedIndex)
     clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350, endAction = {
-      saveUiPositions()
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
       findNavController().navigate(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
     })
   }
 
   private fun saveUiPositions() {
-    viewModel.saveUiPositions(
-      discoverSearchView.translationY
-    )
+    viewModel.saveUiPositions(discoverSearchView.translationY)
   }
 
   private fun render(uiModel: DiscoverUiModel) {
