@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.trakt
+package com.michaldrabik.showly2.ui.trakt.imports
 
 import android.content.Intent
 import android.net.Uri
@@ -17,7 +17,7 @@ import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.events.Event
 import com.michaldrabik.showly2.common.events.EventObserver
 import com.michaldrabik.showly2.common.events.EventsManager
-import com.michaldrabik.showly2.common.trakt.TraktImportService
+import com.michaldrabik.showly2.common.trakt.imports.TraktImportService
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.utilities.extensions.onClick

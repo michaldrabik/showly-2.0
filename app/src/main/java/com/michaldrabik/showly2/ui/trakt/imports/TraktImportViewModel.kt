@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.trakt
+package com.michaldrabik.showly2.ui.trakt.imports
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope

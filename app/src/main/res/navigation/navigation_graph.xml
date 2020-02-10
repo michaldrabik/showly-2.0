@@ -180,13 +180,13 @@
 
   <fragment
     android:id="@+id/traktImportFragment"
-    android:name="com.michaldrabik.showly2.ui.trakt.TraktImportFragment"
+    android:name="com.michaldrabik.showly2.ui.trakt.imports.TraktImportFragment"
     android:label="fragmentTraktImport"
     />
 
   <fragment
     android:id="@+id/traktExportFragment"
-    android:name="com.michaldrabik.showly2.ui.trakt.export.TraktExportFragment"
+    android:name="com.michaldrabik.showly2.ui.trakt.exports.TraktExportFragment"
     android:label="fragmentTraktExport"
     />
 

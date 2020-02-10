@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.trakt.export
+package com.michaldrabik.showly2.ui.trakt.exports
 
 import com.michaldrabik.showly2.ui.common.UiModel
 

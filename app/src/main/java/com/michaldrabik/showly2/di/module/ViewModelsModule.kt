@@ -12,8 +12,8 @@ import com.michaldrabik.showly2.ui.settings.SettingsViewModel
 import com.michaldrabik.showly2.ui.show.ShowDetailsViewModel
 import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryViewModel
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsViewModel
-import com.michaldrabik.showly2.ui.trakt.TraktImportViewModel
-import com.michaldrabik.showly2.ui.trakt.export.TraktExportViewModel
+import com.michaldrabik.showly2.ui.trakt.exports.TraktExportViewModel
+import com.michaldrabik.showly2.ui.trakt.imports.TraktImportViewModel
 import com.michaldrabik.showly2.ui.watchlist.WatchlistViewModel
 import dagger.Binds
 import dagger.Module

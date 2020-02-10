@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.common.trakt
+package com.michaldrabik.showly2.common.trakt.imports
 
 import android.app.Notification
 import android.app.NotificationChannel

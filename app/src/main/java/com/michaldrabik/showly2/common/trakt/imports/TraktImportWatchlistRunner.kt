@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.common.trakt
+package com.michaldrabik.showly2.common.trakt.imports
 
 import android.util.Log
 import androidx.room.withTransaction

@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.trakt.export
+package com.michaldrabik.showly2.ui.trakt.exports
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.common.events.Event
