@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.network.Config
 import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_OPTIONS
@@ -26,14 +26,12 @@ import kotlinx.android.synthetic.main.fragment_settings.*
 class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeListener {
 
   override val layoutResId = R.layout.fragment_settings
+  override val viewModel by viewModels<SettingsViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
-
-  override fun createViewModel(provider: ViewModelProvider) =
-    provider.get(SettingsViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

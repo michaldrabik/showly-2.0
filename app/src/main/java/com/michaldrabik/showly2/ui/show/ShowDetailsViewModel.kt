@@ -14,7 +14,6 @@ import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.SeasonBundle
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import com.michaldrabik.showly2.ui.show.helpers.FollowedState
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodeListItem

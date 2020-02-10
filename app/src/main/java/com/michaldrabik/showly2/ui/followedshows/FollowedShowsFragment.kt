@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.followedshows
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
@@ -8,8 +9,8 @@ import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import android.widget.GridLayout
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -41,14 +42,12 @@ import kotlinx.android.synthetic.main.view_search.*
 class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabReselectedListener, OnTraktImportListener {
 
   override val layoutResId = R.layout.fragment_followed_shows
+  override val viewModel by viewModels<FollowedShowsViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
-
-  override fun createViewModel(provider: ViewModelProvider) =
-    provider.get(FollowedShowsViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -80,6 +79,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
     followedShowsSearchView.translationY = viewModel.searchViewTranslation
   }
 
+  @SuppressLint("WrongConstant")
   private fun setupPager() {
     followedShowsPager.run {
       offscreenPageLimit = FollowedPagesAdapter.PAGES_COUNT

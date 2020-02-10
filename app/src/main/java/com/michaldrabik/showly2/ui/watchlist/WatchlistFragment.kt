@@ -2,8 +2,8 @@ package com.michaldrabik.showly2.ui.watchlist
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.layout_watchlist_empty.*
 class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedListener, OnEpisodesSyncedListener, OnTraktImportListener {
 
   override val layoutResId = R.layout.fragment_watchlist
+  override val viewModel by viewModels<WatchlistViewModel> { viewModelFactory }
 
   private lateinit var adapter: WatchlistAdapter
   private lateinit var layoutManager: LinearLayoutManager
@@ -36,9 +37,6 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
     appComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
-
-  override fun createViewModel(provider: ViewModelProvider) =
-    provider.get(WatchlistViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

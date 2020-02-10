@@ -5,8 +5,8 @@ import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
@@ -25,6 +25,7 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>() {
   }
 
   override val layoutResId = R.layout.fragment_fanart_gallery
+  override val viewModel by viewModels<FanartGalleryViewModel> { viewModelFactory }
 
   private val showId by lazy { IdTrakt(arguments?.getLong(ARG_SHOW_ID, -1) ?: -1) }
   private val galleryAdapter by lazy { FanartGalleryAdapter() }
@@ -33,9 +34,6 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>() {
     appComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
-
-  override fun createViewModel(provider: ViewModelProvider) =
-    provider.get(FanartGalleryViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

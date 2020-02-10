@@ -2,8 +2,8 @@ package com.michaldrabik.showly2.ui.discover
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -26,6 +26,7 @@ import kotlin.random.Random
 class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListener {
 
   override val layoutResId = R.layout.fragment_discover
+  override val viewModel by viewModels<DiscoverViewModel> { viewModelFactory }
 
   private val gridSpan by lazy { resources.getInteger(R.integer.discoverGridSpan) }
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
@@ -38,9 +39,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     appComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
-
-  override fun createViewModel(provider: ViewModelProvider) =
-    provider.get(DiscoverViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

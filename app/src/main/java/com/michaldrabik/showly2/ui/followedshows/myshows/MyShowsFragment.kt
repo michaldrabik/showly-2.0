@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
+import androidx.fragment.app.viewModels
 import androidx.gridlayout.widget.GridLayout
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.model.MyShowsSection
@@ -32,14 +32,12 @@ import kotlinx.android.synthetic.main.fragment_my_shows.*
 class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListener, OnScrollResetListener, OnTraktImportListener {
 
   override val layoutResId = R.layout.fragment_my_shows
+  override val viewModel by viewModels<MyShowsViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
-
-  override fun createViewModel(provider: ViewModelProvider) =
-    provider.get(MyShowsViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

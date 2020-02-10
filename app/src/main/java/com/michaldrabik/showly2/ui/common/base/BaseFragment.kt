@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.main.MainActivity
@@ -18,16 +17,9 @@ import javax.inject.Inject
 abstract class BaseFragment<T : BaseViewModel<out UiModel>> : Fragment() {
 
   @Inject lateinit var viewModelFactory: DaggerViewModelFactory
-  protected lateinit var viewModel: T
 
   protected abstract val layoutResId: Int
-
-  protected abstract fun createViewModel(provider: ViewModelProvider): T
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    viewModel = createViewModel(ViewModelProvider(this, viewModelFactory))
-  }
+  protected abstract val viewModel: T
 
   override fun onCreateView(
     inflater: LayoutInflater,

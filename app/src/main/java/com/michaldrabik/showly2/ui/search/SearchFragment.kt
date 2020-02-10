@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
@@ -36,6 +36,7 @@ import kotlin.random.Random
 class SearchFragment : BaseFragment<SearchViewModel>() {
 
   override val layoutResId = R.layout.fragment_search
+  override val viewModel by viewModels<SearchViewModel> { viewModelFactory }
 
   private var isInitialized = false
 
@@ -51,9 +52,6 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
     appComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
-
-  override fun createViewModel(provider: ViewModelProvider) =
-    provider.get(SearchViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

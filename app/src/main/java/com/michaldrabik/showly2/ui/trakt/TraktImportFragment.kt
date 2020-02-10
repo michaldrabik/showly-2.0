@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.network.Config
 import com.michaldrabik.showly2.R
@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_trakt_import.*
 class TraktImportFragment : BaseFragment<TraktImportViewModel>(), OnTraktAuthorizeListener, EventObserver {
 
   override val layoutResId = R.layout.fragment_trakt_import
+  override val viewModel by viewModels<TraktImportViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
@@ -42,9 +43,6 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>(), OnTraktAuthori
     EventsManager.removeObserver(this)
     super.onDestroyView()
   }
-
-  override fun createViewModel(provider: ViewModelProvider) =
-    provider.get(TraktImportViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

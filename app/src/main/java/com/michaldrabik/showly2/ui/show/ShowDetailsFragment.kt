@@ -13,8 +13,8 @@ import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -72,6 +72,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   }
 
   override val layoutResId = R.layout.fragment_show_details
+  override val viewModel by viewModels<ShowDetailsViewModel> { viewModelFactory }
 
   private val showId by lazy { IdTrakt(arguments?.getLong(ARG_SHOW_ID, -1) ?: -1) }
 
@@ -90,9 +91,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     appComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
-
-  override fun createViewModel(provider: ViewModelProvider) =
-    provider.get(ShowDetailsViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

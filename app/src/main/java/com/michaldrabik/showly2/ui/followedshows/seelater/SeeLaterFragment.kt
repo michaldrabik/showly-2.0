@@ -2,8 +2,8 @@ package com.michaldrabik.showly2.ui.followedshows.seelater
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.fragment_see_later.*
 class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListener, OnScrollResetListener, OnTraktImportListener {
 
   override val layoutResId = R.layout.fragment_see_later
+  override val viewModel by viewModels<SeeLaterViewModel> { viewModelFactory }
 
   private lateinit var adapter: SeeLaterAdapter
   private lateinit var layoutManager: LinearLayoutManager
@@ -37,9 +38,6 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListe
     appComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
-
-  override fun createViewModel(provider: ViewModelProvider) =
-    provider.get(SeeLaterViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
