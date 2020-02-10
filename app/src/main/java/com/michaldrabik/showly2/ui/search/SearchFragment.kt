@@ -158,10 +158,9 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
 
   private fun renderRecentSearches(it: List<RecentSearch>) {
     if (it.isEmpty()) {
-      searchRecentsClearButton.fadeOut()
-      searchRecentsLayout.fadeOut {
-        searchRecentsLayout.removeAllViews()
-      }
+      searchRecentsClearButton.gone()
+      searchRecentsLayout.removeAllViews()
+      searchRecentsLayout.gone()
       return
     }
 
