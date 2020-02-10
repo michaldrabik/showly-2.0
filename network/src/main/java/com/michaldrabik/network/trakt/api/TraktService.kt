@@ -8,6 +8,8 @@ import com.michaldrabik.network.trakt.model.SearchResult
 import com.michaldrabik.network.trakt.model.Season
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.network.trakt.model.ShowResult
+import com.michaldrabik.network.trakt.model.SyncExportRequest
+import com.michaldrabik.network.trakt.model.SyncExportResult
 import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.network.trakt.model.User
 import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
@@ -78,4 +80,10 @@ interface TraktService {
 
   @GET("sync/watchlist?extended=full")
   suspend fun fetchSyncWatchlist(@Header("Authorization") authToken: String): List<SyncItem>
+
+  @POST("sync/watchlist")
+  suspend fun postSyncWatchlist(
+    @Header("Authorization") authToken: String,
+    @Body request: SyncExportRequest
+  ): SyncExportResult
 }

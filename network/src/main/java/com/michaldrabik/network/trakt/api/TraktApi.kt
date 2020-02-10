@@ -6,6 +6,7 @@ import com.michaldrabik.network.Config.TRAKT_REDIRECT_URL
 import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.network.trakt.model.Episode
 import com.michaldrabik.network.trakt.model.OAuthResponse
+import com.michaldrabik.network.trakt.model.SyncExportRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRevokeRequest
@@ -87,4 +88,7 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun fetchSyncWatchlist(token: String) =
     service.fetchSyncWatchlist("Bearer $token")
+
+  suspend fun postSyncWatchlist(token: String, request: SyncExportRequest) =
+    service.postSyncWatchlist("Bearer $token", request)
 }

@@ -46,6 +46,38 @@ class ShowMapper @Inject constructor() {
     nowUtcMillis()
   )
 
+  fun toNetwork(show: Show) = ShowNetwork(
+    com.michaldrabik.network.trakt.model.Ids(
+      show.ids.trakt.id,
+      show.ids.tvdb.id,
+      show.ids.tmdb.id,
+      show.ids.tvrage.id,
+      show.ids.imdb.id,
+      show.ids.slug.id
+    ),
+    show.title,
+    show.year,
+    show.overview,
+    show.firstAired,
+    show.runtime,
+    com.michaldrabik.network.trakt.model.AirTime(
+      show.airTime.day,
+      show.airTime.time,
+      show.airTime.timezone
+    ),
+    show.certification,
+    show.network,
+    show.country,
+    show.trailer,
+    show.homepage,
+    show.status.key,
+    show.rating,
+    show.votes,
+    show.commentCount,
+    show.genres,
+    show.airedEpisodes
+  )
+
   fun fromDatabase(show: ShowDb) = Show(
     Ids(
       IdTrakt(show.idTrakt),

@@ -89,16 +89,20 @@
   <string name="textSettingsShowsNotificationsWhenNextDay">1 Day After</string>
 
   <string name="textTraktImport">Trakt.tv Import</string>
+  <string name="textTraktImportDescription">Add your Trakt.tv account progress and watchlist data into Showly.\n\nYour current Showly collection will not be modified. Only new Trakt items that are not currently in Showly\'s collection will be added.</string>
+  <string name="textTraktImportStart">Start Import</string>
   <string name="textTraktImportRunning">Running…</string>
   <string name="textTraktImportStarted">Import started. It will continue to run in the background.</string>
   <string name="textTraktImportComplete">Import completed.</string>
   <string name="textTraktImportError">Trakt.tv import failed. Please try again or contact us if this keeps happening.</string>
-  <string name="textTraktImportDescription">Add your Trakt.tv account progress and watchlist data into Showly.\n\nYour current Showly collection will not be modified. Only new Trakt items that are not currently in Showly\'s collection will be added.</string>
-  <string name="textTraktImportStart">Start Import</string>
 
   <string name="textTraktExport">Trakt.tv Export</string>
   <string name="textTraktExportDescription">Add your shows progress and \'see later\' data into Trakt.tv account.\n\nYour current Trakt.tv collection will not be modified in any harmful way. Only new items that are not currently in Trakt.tv collection will be added.</string>
   <string name="textTraktExportStart">Start Export</string>
+  <string name="textTraktExportRunning">Running…</string>
+  <string name="textTraktExportStarted">Export started. It will continue to run in the background.</string>
+  <string name="textTraktExportComplete">Export completed.</string>
+  <string name="textTraktExportError">Trakt.tv export failed. Please try again or contact us if this keeps happening.</string>
 
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>

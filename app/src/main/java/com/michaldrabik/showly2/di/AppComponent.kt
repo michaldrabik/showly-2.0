@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.di
 
 import com.michaldrabik.network.di.CloudMarker
 import com.michaldrabik.showly2.common.ShowsSyncService
+import com.michaldrabik.showly2.common.trakt.exports.TraktExportService
 import com.michaldrabik.showly2.common.trakt.imports.TraktImportService
 import com.michaldrabik.showly2.di.module.PreferencesModule
 import com.michaldrabik.showly2.di.module.ViewModelsModule
@@ -56,4 +57,6 @@ interface AppComponent {
   fun inject(service: ShowsSyncService)
 
   fun inject(service: TraktImportService)
+
+  fun inject(service: TraktExportService)
 }

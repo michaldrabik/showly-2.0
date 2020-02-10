@@ -1,5 +1,7 @@
 package com.michaldrabik.showly2.ui.trakt.exports
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +15,7 @@ import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.events.Event
 import com.michaldrabik.showly2.common.events.EventObserver
 import com.michaldrabik.showly2.common.events.EventsManager
+import com.michaldrabik.showly2.common.trakt.exports.TraktExportService
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
@@ -59,14 +62,14 @@ class TraktExportFragment : BaseFragment<TraktExportViewModel>(), EventObserver 
   }
 
   private fun startExport() {
-//    val context = requireContext().applicationContext
-//    Intent(context, TraktImportService::class.java).run {
-//      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//        context.startForegroundService(this)
-//      } else {
-//        context.startService(this)
-//      }
-//    }
+    val context = requireContext().applicationContext
+    Intent(context, TraktExportService::class.java).run {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        context.startForegroundService(this)
+      } else {
+        context.startService(this)
+      }
+    }
   }
 
   private fun render(uiModel: TraktExportUiModel) {
