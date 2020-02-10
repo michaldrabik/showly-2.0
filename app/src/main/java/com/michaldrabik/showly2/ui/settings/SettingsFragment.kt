@@ -49,6 +49,9 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
     settingsTraktImport.onClick {
       findNavController().navigate(R.id.actionSettingsFragmentToTraktImport)
     }
+    settingsTraktExport.onClick {
+      findNavController().navigate(R.id.actionSettingsFragmentToTraktExport)
+    }
   }
 
   override fun onResume() {
@@ -61,6 +64,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
       settings?.let { renderSettings(it) }
       isSignedInTrakt?.let { isSignedIn ->
         settingsTraktImport.visibleIf(isSignedIn)
+        settingsTraktExport.visibleIf(isSignedIn)
         settingsTraktAuthorizeIcon.visibleIf(isSignedIn)
         settingsTraktAuthorize.onClick {
           if (isSignedIn) viewModel.logoutTrakt()

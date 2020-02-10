@@ -16,6 +16,7 @@ import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
 import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryFragment
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.ui.trakt.TraktImportFragment
+import com.michaldrabik.showly2.ui.trakt.export.TraktExportFragment
 import com.michaldrabik.showly2.ui.watchlist.WatchlistFragment
 import com.michaldrabik.storage.di.StorageMarker
 import dagger.Component
@@ -49,6 +50,8 @@ interface AppComponent {
   fun inject(fragment: SettingsFragment)
 
   fun inject(fragment: TraktImportFragment)
+
+  fun inject(fragment: TraktExportFragment)
 
   fun inject(service: ShowsSyncService)
 

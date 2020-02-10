@@ -1,7 +1,8 @@
 package com.michaldrabik.showly2.common.events
 
 /**
- * Simple event bus to replace deprecated Android Local broadcasts manager.
+ * Very simple event bus to replace deprecated Android Local broadcasts manager.
+ * At this point this bus does not care about threading at all which should not be an issue.
  */
 object EventsManager {
 

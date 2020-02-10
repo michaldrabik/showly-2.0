@@ -76,10 +76,11 @@
       android:id="@+id/settingsTraktImport"
       style="@style/Settings.ItemLayout"
       android:visibility="gone"
-      app:layout_constraintBottom_toTopOf="@id/settingsCategoryGeneral"
+      app:layout_constraintBottom_toTopOf="@id/settingsTraktExport"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsTraktAuthorize"
+      tools:visibility="visible"
       >
 
       <TextView
@@ -94,13 +95,36 @@
 
     </LinearLayout>
 
+    <LinearLayout
+      android:id="@+id/settingsTraktExport"
+      style="@style/Settings.ItemLayout"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryGeneral"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsTraktImport"
+      tools:visibility="visible"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsTraktExportTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:text="@string/textSettingsTraktExportSummary"
+        />
+
+    </LinearLayout>
+
     <TextView
       android:id="@+id/settingsCategoryGeneral"
       style="@style/Settings.Category"
       android:text="@string/textSettingsGeneral"
       app:layout_constraintBottom_toTopOf="@id/settingsRecentShowsAmount"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsTraktImport"
+      app:layout_constraintTop_toBottomOf="@id/settingsTraktExport"
       app:layout_constraintVertical_bias="0"
       app:layout_constraintVertical_chainStyle="packed"
       app:layout_goneMarginTop="@dimen/spaceBig"

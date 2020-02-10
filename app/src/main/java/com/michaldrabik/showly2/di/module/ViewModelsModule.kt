@@ -13,6 +13,7 @@ import com.michaldrabik.showly2.ui.show.ShowDetailsViewModel
 import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryViewModel
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsViewModel
 import com.michaldrabik.showly2.ui.trakt.TraktImportViewModel
+import com.michaldrabik.showly2.ui.trakt.export.TraktExportViewModel
 import com.michaldrabik.showly2.ui.watchlist.WatchlistViewModel
 import dagger.Binds
 import dagger.Module
@@ -81,4 +82,9 @@ abstract class ViewModelsModule {
   @IntoMap
   @ViewModelKey(TraktImportViewModel::class)
   abstract fun bindTraktImportViewModel(viewModel: TraktImportViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(TraktExportViewModel::class)
+  abstract fun bindTraktExportViewModel(viewModel: TraktExportViewModel): ViewModel
 }
