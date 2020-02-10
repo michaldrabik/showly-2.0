@@ -9,14 +9,29 @@ import com.michaldrabik.showly2.common.events.TraktImportError
 import com.michaldrabik.showly2.common.events.TraktImportProgress
 import com.michaldrabik.showly2.common.events.TraktImportStart
 import com.michaldrabik.showly2.common.events.TraktImportSuccess
+import com.michaldrabik.showly2.common.trakt.exports.TraktExportWatchlistRunner
+import com.michaldrabik.showly2.common.trakt.imports.TraktImportWatchedRunner
+import com.michaldrabik.showly2.common.trakt.imports.TraktImportWatchlistRunner
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TraktImportViewModel @Inject constructor(
-  private val userManager: UserTraktManager
+  private val userManager: UserTraktManager,
+  importWatchedRunner: TraktImportWatchedRunner,
+  importWatchlistRunner: TraktImportWatchlistRunner,
+  exportWatchlistRunner: TraktExportWatchlistRunner
 ) : BaseViewModel<TraktImportUiModel>() {
+
+  init {
+    if (exportWatchlistRunner.isRunning ||
+      importWatchedRunner.isRunning ||
+      importWatchlistRunner.isRunning
+    ) {
+      uiState = TraktImportUiModel(isProgress = true)
+    }
+  }
 
   fun invalidate() {
     viewModelScope.launch {
