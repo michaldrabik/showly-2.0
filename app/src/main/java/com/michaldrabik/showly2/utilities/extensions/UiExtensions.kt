@@ -2,8 +2,11 @@ package com.michaldrabik.showly2.utilities.extensions
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.app.Activity
 import android.view.View
+import android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
 import androidx.core.animation.doOnEnd
+import androidx.fragment.app.Fragment
 
 fun View.visible() {
   if (visibility != View.VISIBLE) visibility = View.VISIBLE
@@ -67,3 +70,13 @@ fun View.bump(action: () -> Unit = {}) {
     start()
   }
 }
+
+fun Activity.disableUi() = window.setFlags(FLAG_NOT_TOUCHABLE, FLAG_NOT_TOUCHABLE)
+
+fun Activity.enableUi() = window.clearFlags(FLAG_NOT_TOUCHABLE)
+
+fun Fragment.disableUi() = activity?.disableUi()
+
+fun Fragment.enableUi() = activity?.enableUi()
+
+

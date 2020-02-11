@@ -16,6 +16,8 @@ import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.disableUi
+import com.michaldrabik.showly2.utilities.extensions.enableUi
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.onClick
@@ -87,18 +89,22 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     }
   }
 
-  private fun navigateToDetails(item: DiscoverListItem) {
-    hideNavigation()
-    animateItemsExit(item)
-    discoverSearchView.fadeOut()
-  }
-
   private fun navigateTo(id: Int) {
+    disableUi()
     hideNavigation()
     saveUiPositions()
     discoverRecycler.fadeOut(duration = 200) {
+      enableUi()
       findNavController().navigate(id)
     }
+  }
+
+  private fun navigateToDetails(item: DiscoverListItem) {
+    disableUi()
+    saveUiPositions()
+    hideNavigation()
+    animateItemsExit(item)
+    discoverSearchView.fadeOut()
   }
 
   private fun animateItemsExit(item: DiscoverListItem) {
@@ -114,16 +120,14 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     }
     val clickedView = discoverRecycler.findViewHolderForAdapterPosition(clickedIndex)
     clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350, endAction = {
-      saveUiPositions()
+      enableUi()
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
       findNavController().navigate(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
     })
   }
 
   private fun saveUiPositions() {
-    viewModel.saveUiPositions(
-      discoverSearchView.translationY
-    )
+    viewModel.saveUiPositions(discoverSearchView.translationY)
   }
 
   private fun render(uiModel: DiscoverUiModel) {

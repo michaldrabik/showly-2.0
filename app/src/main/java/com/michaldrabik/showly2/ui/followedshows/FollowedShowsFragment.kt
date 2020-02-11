@@ -29,6 +29,8 @@ import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListIte
 import com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowFanartView
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.disableUi
+import com.michaldrabik.showly2.utilities.extensions.enableUi
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
@@ -195,8 +197,10 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
   }
 
   fun openShowDetails(show: Show) {
+    disableUi()
     hideNavigation()
     followedShowsRoot.fadeOut {
+      enableUi()
       exitSearch(false)
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.ids.trakt.id) }
       findNavController().navigate(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)

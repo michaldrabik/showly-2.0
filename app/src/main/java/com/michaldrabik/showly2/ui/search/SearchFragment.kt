@@ -20,6 +20,8 @@ import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
 import com.michaldrabik.showly2.ui.search.views.RecentSearchView
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.disableUi
+import com.michaldrabik.showly2.utilities.extensions.enableUi
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
@@ -123,6 +125,7 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
   }
 
   private fun openShowDetails(item: SearchListItem) {
+    disableUi()
     val clickedIndex = adapter.indexOf(item)
     (0..adapter.itemCount).forEach {
       if (it != clickedIndex) {
@@ -135,6 +138,7 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
     }
     val clickedView = searchRecycler.findViewHolderForAdapterPosition(clickedIndex)
     clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350, endAction = {
+      enableUi()
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
       findNavController().navigate(R.id.actionSearchFragmentToShowDetailsFragment, bundle)
     })
@@ -158,10 +162,9 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
 
   private fun renderRecentSearches(it: List<RecentSearch>) {
     if (it.isEmpty()) {
-      searchRecentsClearButton.fadeOut()
-      searchRecentsLayout.fadeOut {
-        searchRecentsLayout.removeAllViews()
-      }
+      searchRecentsClearButton.gone()
+      searchRecentsLayout.removeAllViews()
+      searchRecentsLayout.gone()
       return
     }
 

@@ -42,6 +42,9 @@ class MainActivity : NotificationActivity(), EventObserver {
     private const val ARG_NAVIGATION_VISIBLE = "ARG_NAVIGATION_VISIBLE"
   }
 
+  @Inject lateinit var viewModelFactory: DaggerViewModelFactory
+  private lateinit var viewModel: MainViewModel
+
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
   private val networkMonitor by lazy { NetworkMonitor(connectivityManager()) }
@@ -51,9 +54,6 @@ class MainActivity : NotificationActivity(), EventObserver {
       MENU_MY_SHOWS to tutorialTipMyShows
     )
   }
-
-  @Inject lateinit var viewModelFactory: DaggerViewModelFactory
-  private lateinit var viewModel: MainViewModel
 
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
@@ -122,6 +122,7 @@ class MainActivity : NotificationActivity(), EventObserver {
         tutorialView.fadeOut()
         return@addCallback
       }
+
       navigationHost.findNavController().run {
         if (currentDestination?.id == R.id.watchlistFragment) {
           remove()
@@ -161,6 +162,10 @@ class MainActivity : NotificationActivity(), EventObserver {
   fun isTipShown(tip: Tip) = viewModel.isTipShown(tip)
 
   fun hideNavigation(animate: Boolean = true) {
+    bottomNavigationView.run {
+      isEnabled = false
+      isClickable = false
+    }
     tips.values.forEach { it.gone() }
     bottomNavigationWrapper.animate()
       .translationYBy(navigationHeight.toFloat())
@@ -170,6 +175,10 @@ class MainActivity : NotificationActivity(), EventObserver {
   }
 
   fun showNavigation(animate: Boolean = true) {
+    bottomNavigationView.run {
+      isEnabled = true
+      isClickable = true
+    }
     tips.entries.forEach { (tip, view) -> view.visibleIf(!isTipShown(tip)) }
     bottomNavigationWrapper.animate()
       .translationY(0F)
