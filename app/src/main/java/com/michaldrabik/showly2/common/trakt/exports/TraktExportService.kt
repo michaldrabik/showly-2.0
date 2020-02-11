@@ -72,6 +72,7 @@ class TraktExportService : Service(), CoroutineScope {
         EventsManager.sendEvent(TraktExportError)
       } finally {
         Log.d(TAG, "Export completed.")
+        notificationManager().cancel(EXPORT_NOTIFICATION_PROGRESS_ID)
         clear()
         stopSelf()
       }

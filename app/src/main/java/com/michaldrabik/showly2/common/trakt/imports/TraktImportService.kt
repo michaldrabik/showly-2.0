@@ -81,6 +81,7 @@ class TraktImportService : Service(), CoroutineScope {
         EventsManager.sendEvent(TraktImportError)
       } finally {
         Log.d(TAG, "Import completed.")
+        notificationManager().cancel(IMPORT_NOTIFICATION_PROGRESS_ID)
         clear()
         stopSelf()
       }
