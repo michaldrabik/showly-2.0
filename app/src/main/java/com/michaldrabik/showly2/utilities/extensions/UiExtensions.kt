@@ -78,5 +78,3 @@ fun Activity.enableUi() = window.clearFlags(FLAG_NOT_TOUCHABLE)
 fun Fragment.disableUi() = activity?.disableUi()
 
 fun Fragment.enableUi() = activity?.enableUi()
-
-
