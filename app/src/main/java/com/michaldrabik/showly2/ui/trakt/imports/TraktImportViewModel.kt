@@ -21,11 +21,13 @@ class TraktImportViewModel @Inject constructor(
   private val userManager: UserTraktManager,
   importWatchedRunner: TraktImportWatchedRunner,
   importWatchlistRunner: TraktImportWatchlistRunner,
+  exportWatchedRunner: TraktImportWatchedRunner,
   exportWatchlistRunner: TraktExportWatchlistRunner
 ) : BaseViewModel<TraktImportUiModel>() {
 
   init {
     if (exportWatchlistRunner.isRunning ||
+      exportWatchedRunner.isRunning ||
       importWatchedRunner.isRunning ||
       importWatchlistRunner.isRunning
     ) {

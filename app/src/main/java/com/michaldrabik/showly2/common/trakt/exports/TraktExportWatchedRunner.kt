@@ -31,6 +31,7 @@ class TraktExportWatchedRunner @Inject constructor(
     return 0
   }
 
+  //TODO Do not duplicate history items!
   private suspend fun exportWatched(token: TraktAuthToken) {
     Log.d(TAG, "Exporting watched...")
 

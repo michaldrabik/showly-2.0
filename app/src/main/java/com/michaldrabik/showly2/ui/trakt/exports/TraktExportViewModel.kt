@@ -7,6 +7,7 @@ import com.michaldrabik.showly2.common.events.TraktExportError
 import com.michaldrabik.showly2.common.events.TraktExportProgress
 import com.michaldrabik.showly2.common.events.TraktExportStart
 import com.michaldrabik.showly2.common.events.TraktExportSuccess
+import com.michaldrabik.showly2.common.trakt.exports.TraktExportWatchedRunner
 import com.michaldrabik.showly2.common.trakt.exports.TraktExportWatchlistRunner
 import com.michaldrabik.showly2.common.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.showly2.common.trakt.imports.TraktImportWatchlistRunner
@@ -17,11 +18,13 @@ import javax.inject.Inject
 class TraktExportViewModel @Inject constructor(
   importWatchedRunner: TraktImportWatchedRunner,
   importWatchlistRunner: TraktImportWatchlistRunner,
+  exportWatchedRunner: TraktExportWatchedRunner,
   exportWatchlistRunner: TraktExportWatchlistRunner
 ) : BaseViewModel<TraktExportUiModel>() {
 
   init {
     if (exportWatchlistRunner.isRunning ||
+      exportWatchedRunner.isRunning ||
       importWatchedRunner.isRunning ||
       importWatchlistRunner.isRunning
     ) {
