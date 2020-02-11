@@ -80,12 +80,11 @@ class TraktImportService : Service(), CoroutineScope {
         notificationManager().notify(IMPORT_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
         EventsManager.sendEvent(TraktImportError)
       } finally {
+        Log.d(TAG, "Import completed.")
         clear()
         stopSelf()
       }
     }
-    Log.d(TAG, "Import completed.")
-
     return START_NOT_STICKY
   }
 

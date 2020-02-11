@@ -67,6 +67,7 @@ class TraktImportWatchedRunner @Inject constructor(
 
     syncResults
       .forEachIndexed { index, result ->
+        delay(200)
         Log.d(TAG, "Processing \'${result.show!!.title}\'...")
         progressListener?.invoke(result.show!!, index, syncResults.size)
 
@@ -89,8 +90,6 @@ class TraktImportWatchedRunner @Inject constructor(
         } catch (t: Throwable) {
           Log.w(TAG, "Processing \'${result.show!!.title}\' failed. Skipping...")
         }
-
-        delay(200)
       }
 
     return syncResults.size

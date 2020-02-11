@@ -71,12 +71,11 @@ class TraktExportService : Service(), CoroutineScope {
         notificationManager().notify(EXPORT_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
         EventsManager.sendEvent(TraktExportError)
       } finally {
+        Log.d(TAG, "Export completed.")
         clear()
         stopSelf()
       }
     }
-    Log.d(TAG, "Export completed.")
-
     return START_NOT_STICKY
   }
 
