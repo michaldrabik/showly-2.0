@@ -68,7 +68,7 @@ class SeasonsDaoTest : BaseDaoTest() {
       val season3 = TestData.createSeason().copy(idTrakt = 3, isWatched = true)
 
       database.seasonsDao().upsert(listOf(season1, season2, season3))
-      val result = database.seasonsDao().getAllWatchedForShow(1)
+      val result = database.seasonsDao().getAllWatchedIdsForShows(listOf(1))
       assertThat(result).hasSize(1)
       assertThat(result[0]).isEqualTo(3)
     }

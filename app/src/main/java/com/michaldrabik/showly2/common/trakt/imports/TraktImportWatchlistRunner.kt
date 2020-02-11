@@ -3,8 +3,8 @@ package com.michaldrabik.showly2.common.trakt.imports
 import android.util.Log
 import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
+import com.michaldrabik.showly2.common.trakt.TraktSyncRunner
 import com.michaldrabik.showly2.di.AppScope
-import com.michaldrabik.showly2.model.error.TraktAuthError
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.TraktAuthToken
 import com.michaldrabik.showly2.repository.UserTraktManager
@@ -13,35 +13,26 @@ import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.SeeLaterShow
 import kotlinx.coroutines.delay
 import javax.inject.Inject
-import com.michaldrabik.network.trakt.model.Show as ShowNetwork
 
 @AppScope
 class TraktImportWatchlistRunner @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
   private val mappers: Mappers,
-  private val userTraktManager: UserTraktManager
-) {
+  userTraktManager: UserTraktManager
+) : TraktSyncRunner(userTraktManager) {
 
-  var progressListener: ((ShowNetwork, Int, Int) -> Unit)? = null
-  var isRunning = false
-
-  suspend fun run() {
-    isRunning = true
+  override suspend fun run(): Int {
     Log.d(TAG, "Initialized.")
-    val authToken: TraktAuthToken
-    try {
-      Log.d(TAG, "Checking authorization...")
-      authToken = userTraktManager.checkAuthorization()
-    } catch (t: Throwable) {
-      isRunning = false
-      throw TraktAuthError(t.message)
-    }
+    isRunning = true
 
+    Log.d(TAG, "Checking authorization...")
+    val authToken = checkAuthorization()
     importWatchlist(authToken)
 
     isRunning = false
     Log.d(TAG, "Finished with success.")
+    return 0
   }
 
   private suspend fun importWatchlist(token: TraktAuthToken) {

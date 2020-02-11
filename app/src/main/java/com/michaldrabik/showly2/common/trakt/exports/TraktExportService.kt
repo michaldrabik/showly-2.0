@@ -37,7 +37,9 @@ class TraktExportService : Service(), CoroutineScope {
     private const val EXPORT_NOTIFICATION_COMPLETE_ERROR_ID = 1128
   }
 
+  @Inject lateinit var exportWatchedRunner: TraktExportWatchedRunner
   @Inject lateinit var exportWatchlistRunner: TraktExportWatchlistRunner
+  private val runners by lazy { listOf(exportWatchedRunner, exportWatchlistRunner) }
 
   override val coroutineContext = Job() + Dispatchers.IO
 
@@ -54,7 +56,7 @@ class TraktExportService : Service(), CoroutineScope {
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     Log.d(TAG, "Service initialized.")
-    if (exportWatchlistRunner.isRunning) {
+    if (runners.any { it.isRunning }) {
       Log.d(TAG, "Already running. Skipping...")
       return START_NOT_STICKY
     }
@@ -64,12 +66,13 @@ class TraktExportService : Service(), CoroutineScope {
     launch {
       try {
         EventsManager.sendEvent(TraktExportStart)
-        runExportWatchlist()
-        notificationManager().notify(EXPORT_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification())
+        exportWatchedRunner.run()
+        exportWatchlistRunner.run()
         EventsManager.sendEvent(TraktExportSuccess)
+        notificationManager().notify(EXPORT_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification())
       } catch (t: Throwable) {
-        notificationManager().notify(EXPORT_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
         EventsManager.sendEvent(TraktExportError)
+        notificationManager().notify(EXPORT_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
       } finally {
         Log.d(TAG, "Export completed.")
         notificationManager().cancel(EXPORT_NOTIFICATION_PROGRESS_ID)
@@ -78,18 +81,6 @@ class TraktExportService : Service(), CoroutineScope {
       }
     }
     return START_NOT_STICKY
-  }
-
-  private suspend fun runExportWatchlist() {
-//    exportWatchlistRunner.progressListener = { show: Show, progress: Int, total: Int ->
-//      val notification = createProgressNotification().run {
-//        setContentText("Processing \'${show.title}\'...")
-//        setProgress(totalProgress + total, totalProgress + progress, false)
-//      }
-//      notificationManager().notify(IMPORT_NOTIFICATION_PROGRESS_ID, notification.build())
-//      EventsManager.sendEvent(TraktExportProgress)
-//    }
-    exportWatchlistRunner.run()
   }
 
   private fun createBaseNotification() =
@@ -130,9 +121,7 @@ class TraktExportService : Service(), CoroutineScope {
     return ""
   }
 
-  private fun clear() {
-    exportWatchlistRunner.isRunning = false
-  }
+  private fun clear() = runners.forEach { it.isRunning = false }
 
   override fun onBind(intent: Intent?): IBinder? = null
 }

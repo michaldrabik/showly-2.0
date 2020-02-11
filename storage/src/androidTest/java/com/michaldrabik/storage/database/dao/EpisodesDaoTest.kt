@@ -105,7 +105,7 @@ class EpisodesDaoTest : BaseDaoTest() {
       database.seasonsDao().upsert(listOf(season1, season2))
       database.episodesDao().upsert(listOf(episode1, episode2))
 
-      val result = database.episodesDao().getAllWatchedForShow(show.idTrakt)
+      val result = database.episodesDao().getAllWatchedIdsForShows(listOf(show.idTrakt))
       assertThat(result).containsExactlyElementsIn(listOf(episode1.idTrakt))
     }
   }

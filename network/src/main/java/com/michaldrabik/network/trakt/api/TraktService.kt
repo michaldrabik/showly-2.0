@@ -75,14 +75,23 @@ interface TraktService {
 
   // Sync
 
-  @GET("sync/watched/shows?extended=full")
-  suspend fun fetchSyncWatched(@Header("Authorization") authToken: String): List<SyncItem>
+  @GET("sync/watched/shows")
+  suspend fun fetchSyncWatched(
+    @Header("Authorization") authToken: String,
+    @Query("extended") extended: String?
+  ): List<SyncItem>
 
   @GET("sync/watchlist?extended=full")
   suspend fun fetchSyncWatchlist(@Header("Authorization") authToken: String): List<SyncItem>
 
   @POST("sync/watchlist")
   suspend fun postSyncWatchlist(
+    @Header("Authorization") authToken: String,
+    @Body request: SyncExportRequest
+  ): SyncExportResult
+
+  @POST("sync/history")
+  suspend fun postSyncWatched(
     @Header("Authorization") authToken: String,
     @Body request: SyncExportRequest
   ): SyncExportResult

@@ -5,11 +5,11 @@ import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
+import com.michaldrabik.showly2.common.trakt.TraktSyncRunner
 import com.michaldrabik.showly2.di.AppScope
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.error.TraktAuthError
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.TraktAuthToken
 import com.michaldrabik.showly2.repository.UserTraktManager
@@ -21,7 +21,6 @@ import com.michaldrabik.storage.database.model.MyShow
 import com.michaldrabik.storage.database.model.Season
 import kotlinx.coroutines.delay
 import javax.inject.Inject
-import com.michaldrabik.network.trakt.model.Show as ShowNetwork
 
 @AppScope
 class TraktImportWatchedRunner @Inject constructor(
@@ -29,25 +28,16 @@ class TraktImportWatchedRunner @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val imagesProvider: ShowImagesProvider,
-  private val userTraktManager: UserTraktManager,
-  private val userTvdbManager: UserTvdbManager
-) {
+  private val userTvdbManager: UserTvdbManager,
+  userTraktManager: UserTraktManager
+) : TraktSyncRunner(userTraktManager) {
 
-  var progressListener: ((ShowNetwork, Int, Int) -> Unit)? = null
-  var isRunning = false
-
-  suspend fun run(): Int {
-    isRunning = true
+  override suspend fun run(): Int {
     Log.d(TAG, "Initialized.")
-    val authToken: TraktAuthToken
-    try {
-      Log.d(TAG, "Checking authorization...")
-      authToken = userTraktManager.checkAuthorization()
-    } catch (t: Throwable) {
-      isRunning = false
-      throw TraktAuthError(t.message)
-    }
+    isRunning = true
 
+    Log.d(TAG, "Checking authorization...")
+    val authToken = checkAuthorization()
     val syncedCount = importWatchedShows(authToken)
 
     isRunning = false
@@ -59,7 +49,7 @@ class TraktImportWatchedRunner @Inject constructor(
     Log.d(TAG, "Importing watched shows...")
 
     checkTvdbAuth()
-    val syncResults = cloud.traktApi.fetchSyncWatched(token.token)
+    val syncResults = cloud.traktApi.fetchSyncWatched(token.token, "full")
       .filter { it.show != null }
       .distinctBy { it.show!!.ids.trakt }
 

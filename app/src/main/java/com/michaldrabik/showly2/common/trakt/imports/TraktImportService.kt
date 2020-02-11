@@ -43,6 +43,7 @@ class TraktImportService : Service(), CoroutineScope {
 
   @Inject lateinit var importWatchedRunner: TraktImportWatchedRunner
   @Inject lateinit var importWatchlistRunner: TraktImportWatchlistRunner
+  private val runners by lazy { listOf(importWatchedRunner, importWatchlistRunner) }
 
   override val coroutineContext = Job() + Dispatchers.IO
 
@@ -59,7 +60,7 @@ class TraktImportService : Service(), CoroutineScope {
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     Log.d(TAG, "Service initialized.")
-    if (importWatchedRunner.isRunning || importWatchlistRunner.isRunning) {
+    if (runners.any { it.isRunning }) {
       Log.d(TAG, "Already running. Skipping...")
       return START_NOT_STICKY
     }
@@ -73,12 +74,12 @@ class TraktImportService : Service(), CoroutineScope {
         val resultCount = runImportWatched()
         runImportWatchlist(resultCount)
 
-        notificationManager().notify(IMPORT_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification())
         EventsManager.sendEvent(TraktImportSuccess)
+        notificationManager().notify(IMPORT_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification())
       } catch (t: Throwable) {
         if (t is TraktAuthError) EventsManager.sendEvent(TraktImportAuthError)
-        notificationManager().notify(IMPORT_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
         EventsManager.sendEvent(TraktImportError)
+        notificationManager().notify(IMPORT_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
       } finally {
         Log.d(TAG, "Import completed.")
         notificationManager().cancel(IMPORT_NOTIFICATION_PROGRESS_ID)
@@ -151,10 +152,7 @@ class TraktImportService : Service(), CoroutineScope {
     return ""
   }
 
-  private fun clear() {
-    importWatchlistRunner.isRunning = false
-    importWatchedRunner.isRunning = false
-  }
+  private fun clear() = runners.forEach { it.isRunning = false }
 
   override fun onBind(intent: Intent?): IBinder? = null
 }

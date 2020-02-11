@@ -1,5 +1,12 @@
 package com.michaldrabik.network.trakt.model
 
 data class SyncExportResult(
-  val meta: String
+  val added: SyncExportResultItem,
+  val existing: SyncExportResultItem
+)
+
+data class SyncExportResultItem(
+  val shows: Long,
+  val seasons: Long,
+  val episodes: Long
 )

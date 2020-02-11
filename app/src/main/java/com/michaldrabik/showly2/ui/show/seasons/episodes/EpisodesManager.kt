@@ -23,10 +23,10 @@ class EpisodesManager @Inject constructor(
 ) {
 
   suspend fun getWatchedSeasonsIds(show: Show) =
-    database.seasonsDao().getAllWatchedForShow(show.ids.trakt.id)
+    database.seasonsDao().getAllWatchedIdsForShows(listOf(show.ids.trakt.id))
 
   suspend fun getWatchedEpisodesIds(show: Show) =
-    database.episodesDao().getAllWatchedForShow(show.ids.trakt.id)
+    database.episodesDao().getAllWatchedIdsForShows(listOf(show.ids.trakt.id))
 
   suspend fun setSeasonWatched(seasonBundle: SeasonBundle) {
     database.withTransaction {

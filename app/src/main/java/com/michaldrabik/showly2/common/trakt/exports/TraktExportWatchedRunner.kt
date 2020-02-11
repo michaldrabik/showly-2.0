@@ -12,7 +12,7 @@ import com.michaldrabik.storage.database.AppDatabase
 import javax.inject.Inject
 
 @AppScope
-class TraktExportWatchlistRunner @Inject constructor(
+class TraktExportWatchedRunner @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
   userTraktManager: UserTraktManager
@@ -24,24 +24,29 @@ class TraktExportWatchlistRunner @Inject constructor(
 
     Log.d(TAG, "Checking authorization...")
     val authToken = checkAuthorization()
-    exportWatchlist(authToken)
+    exportWatched(authToken)
 
     isRunning = false
     Log.d(TAG, "Finished with success.")
     return 0
   }
 
-  private suspend fun exportWatchlist(token: TraktAuthToken) {
-    Log.d(TAG, "Exporting watchlist...")
+  private suspend fun exportWatched(token: TraktAuthToken) {
+    Log.d(TAG, "Exporting watched...")
 
-    val localShows = database.seeLaterShowsDao().getAll()
-      .map { SyncExportItem.create(it.idTrakt) }
+    val localMyShowsIds = database.myShowsDao().getAllTraktIds()
+    val localSeasons = database.seasonsDao().getAllWatchedIdsForShows(localMyShowsIds)
+    val localEpisodes = database.episodesDao().getAllWatchedForShows(localMyShowsIds)
+      .filter { !localSeasons.contains(it.idSeason) }
 
-    val request = SyncExportRequest(shows = localShows)
-    cloud.traktApi.postSyncWatchlist(token.token, request)
+    val request = SyncExportRequest(
+      episodes = localEpisodes.map { SyncExportItem.create(it.idTrakt) },
+      seasons = localSeasons.map { SyncExportItem.create(it) }
+    )
+    cloud.traktApi.postSyncWatched(token.token, request)
   }
 
   companion object {
-    private const val TAG = "TraktExportWatchlist"
+    private const val TAG = "TraktExportWatched"
   }
 }
