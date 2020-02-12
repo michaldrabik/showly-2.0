@@ -95,7 +95,7 @@
   <string name="textTraktImportStart">Start Import</string>
   <string name="textTraktImportRunning">Running…</string>
   <string name="textTraktImportStarted">Import started. It will continue to run in the background.</string>
-  <string name="textTraktImportComplete">Import completed.</string>
+  <string name="textTraktImportComplete">Import completed successfully.</string>
   <string name="textTraktImportError">Trakt.tv import failed. Please try again or contact us if this keeps happening.</string>
 
   <string name="textTraktExport">Trakt.tv Export</string>
@@ -103,7 +103,7 @@
   <string name="textTraktExportStart">Start Export</string>
   <string name="textTraktExportRunning">Running…</string>
   <string name="textTraktExportStarted">Export started. It will continue to run in the background.</string>
-  <string name="textTraktExportComplete">Export completed.</string>
+  <string name="textTraktExportComplete">Export completed successfully.</string>
   <string name="textTraktExportError">Trakt.tv export failed. Please try again or contact us if this keeps happening.</string>
 
   <plurals name="textDaysToAir">

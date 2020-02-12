@@ -1,18 +1,8 @@
 package com.michaldrabik.showly2.common.trakt.imports
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager.IMPORTANCE_LOW
-import android.app.Service
 import android.content.Intent
-import android.os.Build
-import android.os.Build.VERSION
 import android.os.IBinder
 import android.util.Log
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationCompat.CATEGORY_SERVICE
-import androidx.core.app.NotificationCompat.PRIORITY_HIGH
-import androidx.core.content.ContextCompat
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
@@ -22,20 +12,15 @@ import com.michaldrabik.showly2.common.events.TraktImportError
 import com.michaldrabik.showly2.common.events.TraktImportProgress
 import com.michaldrabik.showly2.common.events.TraktImportStart
 import com.michaldrabik.showly2.common.events.TraktImportSuccess
+import com.michaldrabik.showly2.common.trakt.TraktSyncService
 import com.michaldrabik.showly2.model.error.TraktAuthError
 import com.michaldrabik.showly2.utilities.extensions.notificationManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class TraktImportService : Service(), CoroutineScope {
+class TraktImportService : TraktSyncService() {
 
   companion object {
-    private const val TAG = "TraktImportService"
-
     private const val IMPORT_NOTIFICATION_PROGRESS_ID = 826
     private const val IMPORT_NOTIFICATION_COMPLETE_SUCCESS_ID = 827
     private const val IMPORT_NOTIFICATION_COMPLETE_ERROR_ID = 828
@@ -43,30 +28,30 @@ class TraktImportService : Service(), CoroutineScope {
 
   @Inject lateinit var importWatchedRunner: TraktImportWatchedRunner
   @Inject lateinit var importWatchlistRunner: TraktImportWatchlistRunner
-  private val runners by lazy { listOf(importWatchedRunner, importWatchlistRunner) }
 
-  override val coroutineContext = Job() + Dispatchers.IO
+  override val tag = "TraktImportService"
+  override val serviceId = "Showly Trakt Import"
+
+  override val notificationTitleRes = R.string.textTraktImport
+  override val notificationProgressRes = R.string.textTraktImportRunning
+  override val notificationSuccessRes = R.string.textTraktImportComplete
+  override val notificationErrorRes = R.string.textTraktImportError
 
   override fun onCreate() {
     super.onCreate()
     appComponent().inject(this)
-  }
-
-  override fun onDestroy() {
-    coroutineContext.cancelChildren()
-    Log.d(TAG, "Service destroyed.")
-    super.onDestroy()
+    runners.addAll(listOf(importWatchedRunner, importWatchlistRunner))
   }
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-    Log.d(TAG, "Service initialized.")
+    Log.d(tag, "Service initialized.")
     if (runners.any { it.isRunning }) {
-      Log.d(TAG, "Already running. Skipping...")
+      Log.d(tag, "Already running. Skipping...")
       return START_NOT_STICKY
     }
     startForeground(IMPORT_NOTIFICATION_PROGRESS_ID, createProgressNotification().build())
 
-    Log.d(TAG, "Import started.")
+    Log.d(tag, "Import started.")
     launch {
       try {
         EventsManager.sendEvent(TraktImportStart)
@@ -81,7 +66,7 @@ class TraktImportService : Service(), CoroutineScope {
         EventsManager.sendEvent(TraktImportError)
         notificationManager().notify(IMPORT_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
       } finally {
-        Log.d(TAG, "Import completed.")
+        Log.d(tag, "Import completed.")
         notificationManager().cancel(IMPORT_NOTIFICATION_PROGRESS_ID)
         clear()
         stopSelf()
@@ -113,46 +98,6 @@ class TraktImportService : Service(), CoroutineScope {
     }
     importWatchlistRunner.run()
   }
-
-  private fun createBaseNotification() =
-    NotificationCompat.Builder(applicationContext, createNotificationChannel())
-      .setContentTitle(getString(R.string.textTraktImport))
-      .setSmallIcon(R.drawable.ic_notification)
-      .setAutoCancel(true)
-      .setColor(ContextCompat.getColor(applicationContext, R.color.colorAccent))
-
-  private fun createProgressNotification() = createBaseNotification()
-    .setContentText(getString(R.string.textTraktImportRunning))
-    .setCategory(CATEGORY_SERVICE)
-    .setOngoing(true)
-    .setAutoCancel(false)
-    .setProgress(0, 0, true)
-
-  private fun createSuccessNotification() = createBaseNotification()
-    .setContentText(getString(R.string.textTraktImportComplete))
-    .setPriority(PRIORITY_HIGH)
-    .build()
-
-  private fun createErrorNotification() = createBaseNotification()
-    .setContentText(getString(R.string.textTraktImportError))
-    .setPriority(PRIORITY_HIGH)
-    .build()
-
-  private fun createNotificationChannel(): String {
-    if (VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      val id = "Showly Trakt Import Service"
-      val name = "Showly Trakt Import"
-      val channel = NotificationChannel(id, name, IMPORTANCE_LOW).apply {
-        lockscreenVisibility = Notification.VISIBILITY_PRIVATE
-        setSound(null, null)
-      }
-      notificationManager().createNotificationChannel(channel)
-      return id
-    }
-    return ""
-  }
-
-  private fun clear() = runners.forEach { it.isRunning = false }
 
   override fun onBind(intent: Intent?): IBinder? = null
 }
