@@ -122,7 +122,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
     showDetailsImage.onClick {
       val bundle = Bundle().apply { putLong(FanartGalleryFragment.ARG_SHOW_ID, showId.id) }
-      findNavController().navigate(R.id.actionShowDetailsFragmentToFanartGallery, bundle)
+      navigateTo(R.id.actionShowDetailsFragmentToFanartGallery, bundle)
     }
     showDetailsCommentsButton.onClick {
       showDetailsCommentsView.clear()
@@ -163,7 +163,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     relatedAdapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
     relatedAdapter.itemClickListener = {
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, it.show.ids.trakt.id) }
-      findNavController().navigate(R.id.actionShowDetailsFragmentToSelf, bundle)
+      navigateTo(R.id.actionShowDetailsFragmentToSelf, bundle)
     }
   }
 

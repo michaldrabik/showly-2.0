@@ -11,7 +11,6 @@ import android.widget.GridLayout
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.michaldrabik.showly2.R
@@ -203,7 +202,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
       enableUi()
       exitSearch(false)
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.ids.trakt.id) }
-      findNavController().navigate(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
+      navigateTo(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
     }
     viewModel.tabsTranslation = followedShowsTabs.translationY
     viewModel.searchViewTranslation = followedShowsSearchView.translationY
@@ -211,7 +210,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
 
   private fun openSettings() {
     hideNavigation()
-    findNavController().navigate(R.id.actionFollowedShowsFragmentToSettingsFragment)
+    navigateTo(R.id.actionFollowedShowsFragmentToSettingsFragment)
   }
 
   fun enableSearch(enable: Boolean) {

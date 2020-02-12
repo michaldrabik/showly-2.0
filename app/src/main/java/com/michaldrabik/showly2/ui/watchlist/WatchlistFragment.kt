@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -80,7 +79,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
     hideNavigation()
     watchlistRoot.fadeOut {
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
-      findNavController().navigate(R.id.actionWatchlistFragmentToShowDetailsFragment, bundle)
+      navigateTo(R.id.actionWatchlistFragmentToShowDetailsFragment, bundle)
     }
   }
 
@@ -95,7 +94,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
   }
 
   private fun openTraktImport() {
-    findNavController().navigate(R.id.actionWatchlistFragmentToTraktImportFragment)
+    navigateTo(R.id.actionWatchlistFragmentToTraktImportFragment)
     hideNavigation()
   }
 

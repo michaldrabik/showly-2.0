@@ -140,7 +140,7 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
     clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350, endAction = {
       enableUi()
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
-      findNavController().navigate(R.id.actionSearchFragmentToShowDetailsFragment, bundle)
+      navigateTo(R.id.actionSearchFragmentToShowDetailsFragment, bundle)
     })
   }
 

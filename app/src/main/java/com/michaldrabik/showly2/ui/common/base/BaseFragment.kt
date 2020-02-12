@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.main.MainActivity
@@ -42,4 +44,7 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>> : Fragment() {
   protected open fun getSnackbarHost(): ViewGroup = getMainActivity().snackBarHost
 
   protected fun getMainActivity() = requireActivity() as MainActivity
+
+  protected fun navigateTo(@IdRes destination: Int, bundle: Bundle? = null) =
+    findNavController().navigate(destination, bundle)
 }

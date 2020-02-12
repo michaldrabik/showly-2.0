@@ -2,9 +2,9 @@ package com.michaldrabik.showly2.ui.discover
 
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.IdRes
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
@@ -89,13 +89,13 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     }
   }
 
-  private fun navigateTo(id: Int) {
+  private fun navigateTo(@IdRes id: Int) {
     disableUi()
     hideNavigation()
     saveUiPositions()
     discoverRecycler.fadeOut(duration = 200) {
       enableUi()
-      findNavController().navigate(id)
+      super.navigateTo(id, null)
     }
   }
 
@@ -122,7 +122,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350, endAction = {
       enableUi()
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
-      findNavController().navigate(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
+      navigateTo(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
     })
   }
 

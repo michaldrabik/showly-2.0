@@ -47,10 +47,10 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
   private fun setupView() {
     settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     settingsTraktImport.onClick {
-      findNavController().navigate(R.id.actionSettingsFragmentToTraktImport)
+      navigateTo(R.id.actionSettingsFragmentToTraktImport)
     }
     settingsTraktExport.onClick {
-      findNavController().navigate(R.id.actionSettingsFragmentToTraktExport)
+      navigateTo(R.id.actionSettingsFragmentToTraktExport)
     }
   }
 
