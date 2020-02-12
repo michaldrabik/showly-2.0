@@ -63,6 +63,7 @@ import com.michaldrabik.showly2.utilities.extensions.withFailListener
 import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
+import org.threeten.bp.Duration
 
 @SuppressLint("SetTextI18n", "DefaultLocale")
 class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
@@ -287,7 +288,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       nextEpisode?.let { renderNextEpisode(it) }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
-      seasons?.let { renderSeasons(it) }
+      seasons?.let {
+        renderSeasons(it)
+        renderRuntimeLeft(it)
+      }
       relatedShows?.let { renderRelatedShows(it) }
       comments?.let { showDetailsCommentsView.bind(it) }
     }
@@ -346,6 +350,25 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     showDetailsSeasonsLabel.fadeIf(seasonsItems.isNotEmpty())
     showDetailsSeasonsEmptyView.fadeIf(seasonsItems.isEmpty())
     showDetailsSeasonsProgress.gone()
+  }
+
+  private fun renderRuntimeLeft(seasonsItems: List<SeasonListItem>) {
+    val runtimeLeft = seasonsItems
+      .flatMap { it.episodes }
+      .filterNot { it.isWatched }
+      .sumBy { it.episode.runtime }
+      .toLong()
+
+    val duration = Duration.ofMinutes(runtimeLeft)
+    val hours = duration.toHours()
+    val minutes = duration.minusHours(hours).toMinutes()
+
+    val runtimeText = when {
+      hours <= 0 -> getString(R.string.textRuntimeLeftMinutes, minutes)
+      else -> getString(R.string.textRuntimeLeftHours, hours, minutes)
+    }
+    showDetailsRuntimeLeft.text = runtimeText
+    showDetailsRuntimeLeft.fadeIf(seasonsItems.isNotEmpty() && runtimeLeft > 0)
   }
 
   private fun renderRelatedShows(items: List<RelatedListItem>) {

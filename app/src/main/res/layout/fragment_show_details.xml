@@ -270,7 +270,23 @@
         app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsRecycler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/separator2"
-        tools:visibility="gone"
+        tools:visibility="visible"
+        />
+
+      <TextView
+        android:id="@+id/showDetailsRuntimeLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:gravity="center_vertical"
+        android:textColor="@color/colorTextSecondary"
+        android:textSize="13sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/showDetailsSeasonsLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/showDetailsSeasonsLabel"
+        tools:text="~14h 12min of watching"
+        tools:visibility="visible"
         />
 
       <androidx.recyclerview.widget.RecyclerView
@@ -286,7 +302,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsSeasonsLabel"
-        tools:visibility="gone"
+        tools:visibility="visible"
         />
 
       <ProgressBar
@@ -295,7 +311,6 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="@dimen/spaceMedium"
-
         app:layout_constraintBottom_toTopOf="@id/separator3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -59,6 +59,8 @@
   <string name="textNewSeasonAvailable">New season is available now!</string>
   <string name="textTraktLoginSuccess">You\'ve been successfully authorized.</string>
   <string name="textTraktLogoutSuccess">You\'ve been signed out.</string>
+  <string name="textRuntimeLeftHours">~%1$dh %2$dm of watching</string>
+  <string name="textRuntimeLeftMinutes">~%1$dm of watching</string>
 
   <string name="textSettings">Settings</string>
   <string name="textSettingsTrakt">Trakt.tv</string>
