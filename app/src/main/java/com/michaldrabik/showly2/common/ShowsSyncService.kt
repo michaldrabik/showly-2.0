@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.JobIntentService
+import com.crashlytics.android.Crashlytics
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.events.EventsManager
 import com.michaldrabik.showly2.common.events.ShowsSyncComplete
@@ -37,6 +38,7 @@ class ShowsSyncService : JobIntentService(), CoroutineScope {
       try {
         showsSyncRunner.synchronize()
       } catch (t: Throwable) {
+        Crashlytics.logException(t)
         Log.e(TAG, t.toString())
       }
     }

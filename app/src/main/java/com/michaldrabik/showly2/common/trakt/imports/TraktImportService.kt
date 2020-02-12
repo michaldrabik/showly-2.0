@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.common.trakt.imports
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import com.crashlytics.android.Crashlytics
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
@@ -65,6 +66,7 @@ class TraktImportService : TraktSyncService() {
         if (t is TraktAuthError) EventsManager.sendEvent(TraktImportAuthError)
         EventsManager.sendEvent(TraktImportError)
         notificationManager().notify(IMPORT_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
+        Crashlytics.logException(t)
       } finally {
         Log.d(tag, "Import completed.")
         notificationManager().cancel(IMPORT_NOTIFICATION_PROGRESS_ID)

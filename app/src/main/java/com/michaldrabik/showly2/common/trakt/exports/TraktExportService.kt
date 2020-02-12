@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.common.trakt.exports
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import com.crashlytics.android.Crashlytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.events.EventsManager
@@ -58,6 +59,7 @@ class TraktExportService : TraktSyncService() {
       } catch (t: Throwable) {
         EventsManager.sendEvent(TraktExportError)
         notificationManager().notify(EXPORT_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
+        Crashlytics.logException(t)
       } finally {
         Log.d(tag, "Export completed.")
         notificationManager().cancel(EXPORT_NOTIFICATION_PROGRESS_ID)
