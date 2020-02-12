@@ -27,7 +27,7 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-//TODO Extract common code.
+// TODO Extract common code.
 class TraktExportService : Service(), CoroutineScope {
 
   companion object {
