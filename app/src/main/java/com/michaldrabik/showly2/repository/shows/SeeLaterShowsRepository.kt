@@ -1,6 +1,6 @@
 package com.michaldrabik.showly2.repository.shows
 
-import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis

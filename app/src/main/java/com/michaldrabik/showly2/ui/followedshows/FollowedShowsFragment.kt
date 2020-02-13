@@ -14,7 +14,7 @@ import androidx.lifecycle.Observer
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
@@ -46,7 +46,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
   override val viewModel by viewModels<FollowedShowsViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    appComponent().inject(this)
+    fragmentComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 

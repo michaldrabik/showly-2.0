@@ -26,7 +26,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.IdImdb
@@ -89,7 +89,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
   private val animationExitRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    appComponent().inject(this)
+    fragmentComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 

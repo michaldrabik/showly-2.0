@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2.ui.show.seasons.episodes
 
 import androidx.room.withTransaction
-import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.EpisodeBundle
 import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.SeasonBundle

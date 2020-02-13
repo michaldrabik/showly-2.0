@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.gallery.recycler.FanartGalleryAdapter
@@ -31,7 +31,7 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>() {
   private val galleryAdapter by lazy { FanartGalleryAdapter() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    appComponent().inject(this)
+    fragmentComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 

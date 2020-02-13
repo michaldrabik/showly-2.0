@@ -5,12 +5,12 @@ import android.os.IBinder
 import android.util.Log
 import com.crashlytics.android.Crashlytics
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.events.EventsManager
 import com.michaldrabik.showly2.common.events.TraktExportError
 import com.michaldrabik.showly2.common.events.TraktExportStart
 import com.michaldrabik.showly2.common.events.TraktExportSuccess
 import com.michaldrabik.showly2.common.trakt.TraktSyncService
+import com.michaldrabik.showly2.serviceComponent
 import com.michaldrabik.showly2.utilities.extensions.notificationManager
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -36,7 +36,7 @@ class TraktExportService : TraktSyncService() {
 
   override fun onCreate() {
     super.onCreate()
-    appComponent().inject(this)
+    serviceComponent().inject(this)
     runners.addAll(listOf(exportWatchedRunner, exportWatchlistRunner))
   }
 

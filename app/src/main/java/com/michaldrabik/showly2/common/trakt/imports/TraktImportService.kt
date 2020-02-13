@@ -6,7 +6,6 @@ import android.util.Log
 import com.crashlytics.android.Crashlytics
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.events.EventsManager
 import com.michaldrabik.showly2.common.events.TraktImportAuthError
 import com.michaldrabik.showly2.common.events.TraktImportError
@@ -15,6 +14,7 @@ import com.michaldrabik.showly2.common.events.TraktImportStart
 import com.michaldrabik.showly2.common.events.TraktImportSuccess
 import com.michaldrabik.showly2.common.trakt.TraktSyncService
 import com.michaldrabik.showly2.model.error.TraktAuthError
+import com.michaldrabik.showly2.serviceComponent
 import com.michaldrabik.showly2.utilities.extensions.notificationManager
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -40,7 +40,7 @@ class TraktImportService : TraktSyncService() {
 
   override fun onCreate() {
     super.onCreate()
-    appComponent().inject(this)
+    serviceComponent().inject(this)
     runners.addAll(listOf(importWatchedRunner, importWatchlistRunner))
   }
 

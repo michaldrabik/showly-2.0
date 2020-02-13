@@ -1,6 +1,6 @@
 package com.michaldrabik.showly2.repository.shows
 
-import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.di.scope.AppScope
 import javax.inject.Inject
 
 @AppScope

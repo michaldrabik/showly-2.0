@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.RecentSearch
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.search.recycler.SearchAdapter
@@ -51,7 +51,7 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
   override fun getSnackbarHost(): ViewGroup = searchRoot
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    appComponent().inject(this)
+    fragmentComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 

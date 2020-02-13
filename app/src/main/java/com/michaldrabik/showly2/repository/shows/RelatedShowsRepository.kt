@@ -3,7 +3,7 @@ package com.michaldrabik.showly2.repository.shows
 import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.Config
-import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers

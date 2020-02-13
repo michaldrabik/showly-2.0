@@ -6,7 +6,7 @@ import com.michaldrabik.network.trakt.model.SyncExportItem
 import com.michaldrabik.network.trakt.model.SyncExportRequest
 import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.showly2.common.trakt.TraktSyncRunner
-import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.repository.TraktAuthToken
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.storage.database.AppDatabase

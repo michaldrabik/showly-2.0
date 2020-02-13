@@ -1,6 +1,6 @@
 package com.michaldrabik.showly2.model.mappers
 
-import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.di.scope.AppScope
 import javax.inject.Inject
 
 @AppScope

@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2.ui.followedshows.myshows
 
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
-import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.MyShowsSection.ALL

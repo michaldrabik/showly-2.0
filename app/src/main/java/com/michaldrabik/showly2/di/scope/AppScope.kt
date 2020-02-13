@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.di
+package com.michaldrabik.showly2.di.scope
 
 import javax.inject.Scope
 

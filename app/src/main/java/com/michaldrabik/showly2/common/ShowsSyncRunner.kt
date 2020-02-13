@@ -3,7 +3,7 @@ package com.michaldrabik.showly2.common
 import android.util.Log
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.Config
-import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.ShowStatus.CANCELED
 import com.michaldrabik.showly2.model.ShowStatus.ENDED
 import com.michaldrabik.showly2.model.mappers.Mappers

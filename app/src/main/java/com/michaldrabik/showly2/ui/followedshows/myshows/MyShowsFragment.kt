@@ -8,7 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.gridlayout.widget.GridLayout
 import androidx.lifecycle.Observer
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.MyShowsSection.COMING_SOON
 import com.michaldrabik.showly2.model.MyShowsSection.ENDED
@@ -35,7 +35,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
   override val viewModel by viewModels<MyShowsViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    appComponent().inject(this)
+    fragmentComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 

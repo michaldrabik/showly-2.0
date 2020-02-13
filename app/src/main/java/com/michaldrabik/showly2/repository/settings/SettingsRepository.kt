@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2.repository.settings
 
 import androidx.room.withTransaction
-import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.storage.database.AppDatabase

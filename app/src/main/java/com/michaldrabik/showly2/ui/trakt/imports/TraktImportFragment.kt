@@ -13,11 +13,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.network.Config
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.events.Event
 import com.michaldrabik.showly2.common.events.EventObserver
 import com.michaldrabik.showly2.common.events.EventsManager
 import com.michaldrabik.showly2.common.trakt.imports.TraktImportService
+import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.utilities.extensions.onClick
@@ -30,7 +30,7 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>(), OnTraktAuthori
   override val viewModel by viewModels<TraktImportViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    appComponent().inject(this)
+    fragmentComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 

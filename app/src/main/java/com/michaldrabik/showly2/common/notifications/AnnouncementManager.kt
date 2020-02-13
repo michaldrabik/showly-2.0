@@ -12,7 +12,7 @@ import com.michaldrabik.showly2.common.notifications.AnnouncementWorker.Companio
 import com.michaldrabik.showly2.common.notifications.AnnouncementWorker.Companion.DATA_CONTENT
 import com.michaldrabik.showly2.common.notifications.AnnouncementWorker.Companion.DATA_IMAGE_URL
 import com.michaldrabik.showly2.common.notifications.AnnouncementWorker.Companion.DATA_TITLE
-import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.fcm.NotificationChannel
 import com.michaldrabik.showly2.model.Image.Status.AVAILABLE
 import com.michaldrabik.showly2.model.ImageType.FANART

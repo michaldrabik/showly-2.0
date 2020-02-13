@@ -11,8 +11,8 @@ import android.os.StrictMode
 import androidx.fragment.app.Fragment
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.michaldrabik.network.di.DaggerCloudComponent
-import com.michaldrabik.showly2.di.AppComponent
-import com.michaldrabik.showly2.di.DaggerAppComponent
+import com.michaldrabik.showly2.di.component.AppComponent
+import com.michaldrabik.showly2.di.component.DaggerAppComponent
 import com.michaldrabik.showly2.di.module.PreferencesModule
 import com.michaldrabik.showly2.fcm.NotificationChannel.EPISODES_ANNOUNCEMENTS
 import com.michaldrabik.showly2.fcm.NotificationChannel.GENERAL_INFO
@@ -76,6 +76,6 @@ fun Context.connectivityManager() = getSystemService(Context.CONNECTIVITY_SERVIC
 
 fun Activity.appComponent() = (application as App).appComponent
 
-fun Service.appComponent() = (application as App).appComponent
+fun Fragment.fragmentComponent() = (requireActivity().application as App).appComponent.fragmentComponent().create()
 
-fun Fragment.appComponent() = (requireActivity().application as App).appComponent
+fun Service.serviceComponent() = (application as App).appComponent.serviceComponent().create()

@@ -6,7 +6,7 @@ import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.common.trakt.TraktSyncRunner
-import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.Show

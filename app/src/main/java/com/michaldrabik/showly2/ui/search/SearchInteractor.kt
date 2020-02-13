@@ -2,7 +2,7 @@ package com.michaldrabik.showly2.ui.search
 
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
-import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.RecentSearch
 import com.michaldrabik.showly2.model.Show

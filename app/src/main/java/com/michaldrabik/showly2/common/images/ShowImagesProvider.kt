@@ -2,7 +2,7 @@ package com.michaldrabik.showly2.common.images
 
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.tvdb.model.TvdbImage
-import com.michaldrabik.showly2.di.AppScope
+import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageFamily

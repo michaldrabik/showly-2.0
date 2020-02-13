@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.michaldrabik.network.Config
 import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_OPTIONS
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
@@ -29,7 +29,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
   override val viewModel by viewModels<SettingsViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    appComponent().inject(this)
+    fragmentComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 
