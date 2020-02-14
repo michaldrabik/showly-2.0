@@ -90,6 +90,7 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(), OnTraktAuthorizeLi
         traktSyncButton.visibleIf(!it, false)
         traktSyncProgress.visibleIf(it)
       }
+      progressStatus?.let { traktSyncStatus.text = it }
       authError?.let { findNavController().popBackStack() }
       isAuthorized?.let {
         when {

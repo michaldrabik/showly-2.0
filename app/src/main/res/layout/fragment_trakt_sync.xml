@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/traktSyncRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
@@ -41,7 +42,7 @@
     app:layout_constraintHorizontal_chainStyle="packed"
     app:layout_constraintStart_toEndOf="@id/traktSyncIcon"
     app:layout_constraintTop_toBottomOf="@id/traktSyncToolbar"
-    app:layout_constraintVertical_bias="0.33"
+    app:layout_constraintVertical_bias="0.25"
     app:layout_constraintVertical_chainStyle="packed"
     app:srcCompat="@drawable/ic_sync"
     />
@@ -120,6 +121,23 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="@id/traktSyncButton"
+    tools:visibility="visible"
+    />
+
+  <TextView
+    android:id="@+id/traktSyncStatus"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceBig"
+    android:gravity="center"
+    android:textColor="@color/colorTextSecondary"
+    android:textSize="14sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/traktSyncProgress"
+    tools:text="Syncing..."
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

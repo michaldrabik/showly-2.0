@@ -4,6 +4,7 @@ import com.michaldrabik.showly2.ui.common.UiModel
 
 data class TraktSyncUiModel(
   val isProgress: Boolean? = null,
+  val progressStatus: String? = null,
   val isAuthorized: Boolean? = null,
   val authError: Boolean? = null
 ) : UiModel() {
@@ -11,6 +12,7 @@ data class TraktSyncUiModel(
   override fun update(newModel: UiModel) =
     (newModel as TraktSyncUiModel).copy(
       isProgress = newModel.isProgress ?: isProgress,
+      progressStatus = newModel.progressStatus ?: progressStatus,
       isAuthorized = newModel.isAuthorized ?: isAuthorized,
       authError = newModel.authError ?: authError
     )

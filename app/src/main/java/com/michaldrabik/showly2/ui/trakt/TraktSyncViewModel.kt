@@ -61,24 +61,24 @@ class TraktSyncViewModel @Inject constructor(
       when (event) {
         is TraktSyncStart -> {
           _messageLiveData.value = R.string.textTraktSyncStarted
-          uiState = TraktSyncUiModel(isProgress = true)
+          uiState = TraktSyncUiModel(isProgress = true, progressStatus = "")
         }
         is TraktSyncProgress -> {
-          uiState = TraktSyncUiModel(isProgress = true)
+          uiState = TraktSyncUiModel(isProgress = true, progressStatus = event.status)
         }
         is TraktSyncSuccess -> {
-          uiState = TraktSyncUiModel(isProgress = false)
+          uiState = TraktSyncUiModel(isProgress = false, progressStatus = "")
           _messageLiveData.value = R.string.textTraktSyncComplete
         }
         is TraktSyncError -> {
-          uiState = TraktSyncUiModel(isProgress = false)
+          uiState = TraktSyncUiModel(isProgress = false, progressStatus = "")
           _messageLiveData.value = R.string.textTraktSyncError
         }
         is TraktSyncAuthError -> {
           viewModelScope.launch {
             userManager.revokeToken()
             _errorLiveData.value = R.string.errorTraktAuthorization
-            uiState = TraktSyncUiModel(isProgress = false, authError = true)
+            uiState = TraktSyncUiModel(isProgress = false, authError = true, progressStatus = "")
           }
         }
       }

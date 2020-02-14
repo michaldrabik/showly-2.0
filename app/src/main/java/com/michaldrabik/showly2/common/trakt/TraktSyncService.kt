@@ -86,45 +86,49 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
 
   private suspend fun runImportWatched(): Int {
     importWatchedRunner.progressListener = { show: Show, progress: Int, total: Int ->
+      val status = "Importing \'${show.title}\'..."
       val notification = createProgressNotification().run {
-        setContentText("Importing \'${show.title}\'...")
+        setContentText(status)
         setProgress(total, progress, false)
       }
       notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
-      EventsManager.sendEvent(TraktSyncProgress)
+      EventsManager.sendEvent(TraktSyncProgress(status))
     }
     return importWatchedRunner.run()
   }
 
   private suspend fun runImportWatchlist(totalProgress: Int) {
     importWatchlistRunner.progressListener = { show: Show, progress: Int, total: Int ->
+      val status = "Importing \'${show.title}\'..."
       val notification = createProgressNotification().run {
-        setContentText("Importing \'${show.title}\'...")
+        setContentText(status)
         setProgress(totalProgress + total, totalProgress + progress, false)
       }
       notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
-      EventsManager.sendEvent(TraktSyncProgress)
+      EventsManager.sendEvent(TraktSyncProgress(status))
     }
     importWatchlistRunner.run()
   }
 
   private suspend fun runExportWatched(totalProgress: Int) {
+    val status = "Exporting progress..."
     val notification = createProgressNotification().run {
-      setContentText("Exporting progress...")
+      setContentText(status)
       setProgress(totalProgress, totalProgress, false)
     }
     notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
-    EventsManager.sendEvent(TraktSyncProgress)
+    EventsManager.sendEvent(TraktSyncProgress(status))
     exportWatchedRunner.run()
   }
 
   private suspend fun runExportWatchlist(totalProgress: Int) {
+    val status = "Exporting watchlist..."
     val notification = createProgressNotification().run {
-      setContentText("Exporting watchlist...")
+      setContentText(status)
       setProgress(totalProgress, totalProgress, false)
     }
     notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
-    EventsManager.sendEvent(TraktSyncProgress)
+    EventsManager.sendEvent(TraktSyncProgress(status))
     exportWatchlistRunner.run()
   }
 
