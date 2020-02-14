@@ -9,8 +9,7 @@ import com.michaldrabik.showly2.ui.settings.SettingsFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
 import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryFragment
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
-import com.michaldrabik.showly2.ui.trakt.exports.TraktExportFragment
-import com.michaldrabik.showly2.ui.trakt.imports.TraktImportFragment
+import com.michaldrabik.showly2.ui.trakt.TraktSyncFragment
 import com.michaldrabik.showly2.ui.watchlist.WatchlistFragment
 import dagger.Subcomponent
 
@@ -40,9 +39,7 @@ interface FragmentComponent {
 
   fun inject(fragment: SettingsFragment)
 
-  fun inject(fragment: TraktImportFragment)
-
-  fun inject(fragment: TraktExportFragment)
+  fun inject(fragment: TraktSyncFragment)
 
   fun inject(fragment: EpisodeDetailsBottomSheet)
 }

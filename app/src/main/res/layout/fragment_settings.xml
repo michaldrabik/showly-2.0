@@ -40,7 +40,7 @@
     <LinearLayout
       android:id="@+id/settingsTraktAuthorize"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsTraktImport"
+      app:layout_constraintBottom_toTopOf="@id/settingsTraktSync"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsCategoryTrakt"
@@ -73,10 +73,10 @@
       />
 
     <LinearLayout
-      android:id="@+id/settingsTraktImport"
+      android:id="@+id/settingsTraktSync"
       style="@style/Settings.ItemLayout"
       android:visibility="gone"
-      app:layout_constraintBottom_toTopOf="@id/settingsTraktExport"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryGeneral"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsTraktAuthorize"
@@ -85,35 +85,12 @@
 
       <TextView
         style="@style/Settings.Title"
-        android:text="@string/textSettingsTraktImportTitle"
+        android:text="@string/textSettingsTraktSyncTitle"
         />
 
       <TextView
         style="@style/Settings.Summary"
-        android:text="@string/textSettingsTraktImportSummary"
-        />
-
-    </LinearLayout>
-
-    <LinearLayout
-      android:id="@+id/settingsTraktExport"
-      style="@style/Settings.ItemLayout"
-      android:visibility="gone"
-      app:layout_constraintBottom_toTopOf="@id/settingsCategoryGeneral"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsTraktImport"
-      tools:visibility="visible"
-      >
-
-      <TextView
-        style="@style/Settings.Title"
-        android:text="@string/textSettingsTraktExportTitle"
-        />
-
-      <TextView
-        style="@style/Settings.Summary"
-        android:text="@string/textSettingsTraktExportSummary"
+        android:text="@string/textSettingsTraktSyncSummary"
         />
 
     </LinearLayout>
@@ -124,7 +101,7 @@
       android:text="@string/textSettingsGeneral"
       app:layout_constraintBottom_toTopOf="@id/settingsRecentShowsAmount"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsTraktExport"
+      app:layout_constraintTop_toBottomOf="@id/settingsTraktSync"
       app:layout_constraintVertical_bias="0"
       app:layout_constraintVertical_chainStyle="packed"
       app:layout_goneMarginTop="@dimen/spaceBig"

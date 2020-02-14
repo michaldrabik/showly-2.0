@@ -18,7 +18,7 @@ import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
-import com.michaldrabik.showly2.ui.common.OnTraktImportListener
+import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsSearchResult
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.EMPTY
@@ -40,7 +40,7 @@ import com.michaldrabik.showly2.utilities.extensions.visible
 import kotlinx.android.synthetic.main.fragment_followed_shows.*
 import kotlinx.android.synthetic.main.view_search.*
 
-class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabReselectedListener, OnTraktImportListener {
+class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabReselectedListener, OnTraktSyncListener {
 
   override val layoutResId = R.layout.fragment_followed_shows
   override val viewModel by viewModels<FollowedShowsViewModel> { viewModelFactory }
@@ -227,9 +227,9 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabResel
     }
   }
 
-  override fun onTraktImportProgress() {
+  override fun onTraktSyncProgress() {
     childFragmentManager.fragments.forEach {
-      (it as? OnTraktImportListener)?.onTraktImportProgress()
+      (it as? OnTraktSyncListener)?.onTraktSyncProgress()
     }
   }
 }

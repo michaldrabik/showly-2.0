@@ -16,7 +16,7 @@ import com.michaldrabik.showly2.common.events.Event
 import com.michaldrabik.showly2.common.events.EventObserver
 import com.michaldrabik.showly2.common.events.EventsManager
 import com.michaldrabik.showly2.common.events.ShowsSyncComplete
-import com.michaldrabik.showly2.common.events.TraktImportProgress
+import com.michaldrabik.showly2.common.events.TraktSyncProgress
 import com.michaldrabik.showly2.connectivityManager
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.model.Tip
@@ -25,7 +25,7 @@ import com.michaldrabik.showly2.model.Tip.MENU_MY_SHOWS
 import com.michaldrabik.showly2.ui.NotificationActivity
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
-import com.michaldrabik.showly2.ui.common.OnTraktImportListener
+import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
@@ -221,8 +221,8 @@ class MainActivity : NotificationActivity(), EventObserver {
           doForFragments { (it as? OnEpisodesSyncedListener)?.onEpisodesSyncFinished() }
           viewModel.refreshAnnouncements(applicationContext)
         }
-        is TraktImportProgress -> {
-          doForFragments { (it as? OnTraktImportListener)?.onTraktImportProgress() }
+        is TraktSyncProgress -> {
+          doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncProgress() }
         }
       }
     }

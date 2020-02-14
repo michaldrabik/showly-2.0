@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.trakt.imports
+package com.michaldrabik.showly2.ui.trakt
 
 import android.content.Intent
 import android.net.Uri
@@ -16,18 +16,18 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.events.Event
 import com.michaldrabik.showly2.common.events.EventObserver
 import com.michaldrabik.showly2.common.events.EventsManager
-import com.michaldrabik.showly2.common.trakt.imports.TraktImportService
+import com.michaldrabik.showly2.common.trakt.TraktSyncService
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
-import kotlinx.android.synthetic.main.fragment_trakt_import.*
+import kotlinx.android.synthetic.main.fragment_trakt_sync.*
 
-class TraktImportFragment : BaseFragment<TraktImportViewModel>(), OnTraktAuthorizeListener, EventObserver {
+class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(), OnTraktAuthorizeListener, EventObserver {
 
-  override val layoutResId = R.layout.fragment_trakt_import
-  override val viewModel by viewModels<TraktImportViewModel> { viewModelFactory }
+  override val layoutResId = R.layout.fragment_trakt_sync
+  override val viewModel by viewModels<TraktSyncViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     fragmentComponent().inject(this)
@@ -56,7 +56,7 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>(), OnTraktAuthori
   }
 
   private fun setupView() {
-    traktImportToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+    traktSyncToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
   }
 
   override fun onResume() {
@@ -66,7 +66,7 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>(), OnTraktAuthori
 
   private fun startImport() {
     val context = requireContext().applicationContext
-    Intent(context, TraktImportService::class.java).run {
+    Intent(context, TraktSyncService::class.java).run {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         context.startForegroundService(this)
       } else {
@@ -84,22 +84,22 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>(), OnTraktAuthori
 
   override fun onAuthorizationResult(authData: Uri?) = viewModel.authorizeTrakt(authData)
 
-  private fun render(uiModel: TraktImportUiModel) {
+  private fun render(uiModel: TraktSyncUiModel) {
     uiModel.run {
       isProgress?.let {
-        traktImportButton.visibleIf(!it, false)
-        traktImportProgress.visibleIf(it)
+        traktSyncButton.visibleIf(!it, false)
+        traktSyncProgress.visibleIf(it)
       }
       authError?.let { findNavController().popBackStack() }
       isAuthorized?.let {
         when {
           it -> {
-            traktImportButton.text = getString(R.string.textTraktImportStart)
-            traktImportButton.onClick { startImport() }
+            traktSyncButton.text = getString(R.string.textTraktSyncStart)
+            traktSyncButton.onClick { startImport() }
           }
           else -> {
-            traktImportButton.text = getString(R.string.textSettingsTraktAuthorizeTitle)
-            traktImportButton.onClick { startAuthorization() }
+            traktSyncButton.text = getString(R.string.textSettingsTraktAuthorizeTitle)
+            traktSyncButton.onClick { startAuthorization() }
           }
         }
       }
@@ -114,7 +114,7 @@ class TraktImportFragment : BaseFragment<TraktImportViewModel>(), OnTraktAuthori
     }
   }
 
-  override fun getSnackbarHost(): ViewGroup = traktImportRoot
+  override fun getSnackbarHost(): ViewGroup = traktSyncRoot
 
   override fun onNewEvent(event: Event) = viewModel.handleEvent(event)
 }

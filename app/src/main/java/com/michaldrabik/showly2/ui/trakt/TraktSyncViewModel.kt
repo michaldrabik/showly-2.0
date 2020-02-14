@@ -1,14 +1,14 @@
-package com.michaldrabik.showly2.ui.trakt.imports
+package com.michaldrabik.showly2.ui.trakt
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.events.Event
-import com.michaldrabik.showly2.common.events.TraktImportAuthError
-import com.michaldrabik.showly2.common.events.TraktImportError
-import com.michaldrabik.showly2.common.events.TraktImportProgress
-import com.michaldrabik.showly2.common.events.TraktImportStart
-import com.michaldrabik.showly2.common.events.TraktImportSuccess
+import com.michaldrabik.showly2.common.events.TraktSyncAuthError
+import com.michaldrabik.showly2.common.events.TraktSyncError
+import com.michaldrabik.showly2.common.events.TraktSyncProgress
+import com.michaldrabik.showly2.common.events.TraktSyncStart
+import com.michaldrabik.showly2.common.events.TraktSyncSuccess
 import com.michaldrabik.showly2.common.trakt.exports.TraktExportWatchlistRunner
 import com.michaldrabik.showly2.common.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.showly2.common.trakt.imports.TraktImportWatchlistRunner
@@ -17,28 +17,25 @@ import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class TraktImportViewModel @Inject constructor(
+class TraktSyncViewModel @Inject constructor(
   private val userManager: UserTraktManager,
   importWatchedRunner: TraktImportWatchedRunner,
   importWatchlistRunner: TraktImportWatchlistRunner,
   exportWatchedRunner: TraktImportWatchedRunner,
   exportWatchlistRunner: TraktExportWatchlistRunner
-) : BaseViewModel<TraktImportUiModel>() {
+) : BaseViewModel<TraktSyncUiModel>() {
 
   init {
-    if (exportWatchlistRunner.isRunning ||
-      exportWatchedRunner.isRunning ||
-      importWatchedRunner.isRunning ||
-      importWatchlistRunner.isRunning
-    ) {
-      uiState = TraktImportUiModel(isProgress = true)
+    val runners = listOf(importWatchedRunner, importWatchlistRunner, exportWatchedRunner, exportWatchlistRunner)
+    if (runners.any { it.isRunning }) {
+      uiState = TraktSyncUiModel(isProgress = true)
     }
   }
 
   fun invalidate() {
     viewModelScope.launch {
       val isAuthorized = userManager.isAuthorized()
-      uiState = TraktImportUiModel(isAuthorized = isAuthorized)
+      uiState = TraktSyncUiModel(isAuthorized = isAuthorized)
     }
   }
 
@@ -62,26 +59,26 @@ class TraktImportViewModel @Inject constructor(
   fun handleEvent(event: Event) {
     viewModelScope.launch {
       when (event) {
-        is TraktImportStart -> {
-          _messageLiveData.value = R.string.textTraktImportStarted
-          uiState = TraktImportUiModel(isProgress = true)
+        is TraktSyncStart -> {
+          _messageLiveData.value = R.string.textTraktSyncStarted
+          uiState = TraktSyncUiModel(isProgress = true)
         }
-        is TraktImportProgress -> {
-          uiState = TraktImportUiModel(isProgress = true)
+        is TraktSyncProgress -> {
+          uiState = TraktSyncUiModel(isProgress = true)
         }
-        is TraktImportSuccess -> {
-          uiState = TraktImportUiModel(isProgress = false)
-          _messageLiveData.value = R.string.textTraktImportComplete
+        is TraktSyncSuccess -> {
+          uiState = TraktSyncUiModel(isProgress = false)
+          _messageLiveData.value = R.string.textTraktSyncComplete
         }
-        is TraktImportError -> {
-          uiState = TraktImportUiModel(isProgress = false)
-          _messageLiveData.value = R.string.textTraktImportError
+        is TraktSyncError -> {
+          uiState = TraktSyncUiModel(isProgress = false)
+          _messageLiveData.value = R.string.textTraktSyncError
         }
-        is TraktImportAuthError -> {
+        is TraktSyncAuthError -> {
           viewModelScope.launch {
             userManager.revokeToken()
             _errorLiveData.value = R.string.errorTraktAuthorization
-            uiState = TraktImportUiModel(isProgress = false, authError = true)
+            uiState = TraktSyncUiModel(isProgress = false, authError = true)
           }
         }
       }

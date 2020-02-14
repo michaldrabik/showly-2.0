@@ -68,10 +68,8 @@
   <string name="textSettingsTraktAuthorizeSummarySignIn">Click to sign in into your Trakt.tv account.</string>
   <string name="textSettingsTraktAuthorizeSummarySignOut">Signed in. Click to log out.</string>
   <string name="textSettingsTraktAuthorizeSummarySignOutUser">Signed in as %1$s. Click to log out.</string>
-  <string name="textSettingsTraktImportTitle">Trakt.tv Import</string>
-  <string name="textSettingsTraktImportSummary">Add your Trakt.tv data into Showly collection.</string>
-  <string name="textSettingsTraktExportTitle">Trakt.tv Export</string>
-  <string name="textSettingsTraktExportSummary">Send your Showly data into Trakt.tv collection.</string>
+  <string name="textSettingsTraktSyncTitle">Trakt.tv Sync</string>
+  <string name="textSettingsTraktSyncSummary">Sync data between your Trakt.tv and Showly.</string>
   <string name="textSettingsGeneral">General &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Recently Added Amount</string>
   <string name="textSettingsRecentShowsSummary">Number of recent shows to display in \'My Shows\' screen.</string>
@@ -90,21 +88,14 @@
   <string name="textSettingsShowsNotificationsWhen12Hours">12 Hours After</string>
   <string name="textSettingsShowsNotificationsWhenNextDay">1 Day After</string>
 
-  <string name="textTraktImport">Trakt.tv Import</string>
-  <string name="textTraktImportDescription">Add your Trakt.tv account progress and watchlist data into Showly.\n\nYour current Showly collection will not be modified. Only new Trakt items that are not currently in Showly\'s collection will be added.</string>
-  <string name="textTraktImportStart">Start Import</string>
-  <string name="textTraktImportRunning">Running…</string>
-  <string name="textTraktImportStarted">Import started. It will continue to run in the background.</string>
-  <string name="textTraktImportComplete">Import completed successfully.</string>
-  <string name="textTraktImportError">Trakt.tv import failed. Please try again or contact us if this keeps happening.</string>
-
-  <string name="textTraktExport">Trakt.tv Export</string>
-  <string name="textTraktExportDescription">Add your shows progress and \'see later\' data into Trakt.tv account.\n\nYour current Trakt.tv collection will not be modified in any harmful way. Only new items that are not currently in Trakt.tv collection will be added.</string>
-  <string name="textTraktExportStart">Start Export</string>
-  <string name="textTraktExportRunning">Running…</string>
-  <string name="textTraktExportStarted">Export started. It will continue to run in the background.</string>
-  <string name="textTraktExportComplete">Export completed successfully.</string>
-  <string name="textTraktExportError">Trakt.tv export failed. Please try again or contact us if this keeps happening.</string>
+  <string name="textTraktSynchronize">Synchronize with Trakt.tv</string>
+  <string name="textTraktSync">Trakt.tv Sync</string>
+  <string name="textTraktSyncRunning">Running…</string>
+  <string name="textTraktSyncStarted">Sync started. It will continue to run in the background.</string>
+  <string name="textTraktSyncComplete">Sync completed successfully.</string>
+  <string name="textTraktSyncError">Trakt.tv sync failed. Please try again or contact us if this keeps happening.</string>
+  <string name="textTraktSyncDescription">Sync your Trakt.tv account progress and watchlist data with Showly.\n\nNo items from your current collection will be deleted. Only missing items that are not currently in your collection will be added.</string>
+  <string name="textTraktSyncStart">Start Sync</string>
 
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>

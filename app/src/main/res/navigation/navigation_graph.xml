@@ -78,8 +78,8 @@
       app:popExitAnim="@anim/anim_fade_out"
       />
     <action
-      android:id="@+id/actionWatchlistFragmentToTraktImportFragment"
-      app:destination="@id/traktImportFragment"
+      android:id="@+id/actionWatchlistFragmentToTraktSyncFragment"
+      app:destination="@id/traktSyncFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:exitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
@@ -161,16 +161,8 @@
     android:label="fragmentSettings"
     >
     <action
-      android:id="@+id/actionSettingsFragmentToTraktImport"
-      app:destination="@id/traktImportFragment"
-      app:enterAnim="@anim/anim_fade_in"
-      app:exitAnim="@anim/anim_fade_out"
-      app:launchSingleTop="true"
-      app:popExitAnim="@anim/anim_fade_out"
-      />
-    <action
-      android:id="@+id/actionSettingsFragmentToTraktExport"
-      app:destination="@id/traktExportFragment"
+      android:id="@+id/actionSettingsFragmentToTraktSync"
+      app:destination="@id/traktSyncFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:exitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
@@ -179,15 +171,9 @@
   </fragment>
 
   <fragment
-    android:id="@+id/traktImportFragment"
-    android:name="com.michaldrabik.showly2.ui.trakt.imports.TraktImportFragment"
-    android:label="fragmentTraktImport"
-    />
-
-  <fragment
-    android:id="@+id/traktExportFragment"
-    android:name="com.michaldrabik.showly2.ui.trakt.exports.TraktExportFragment"
-    android:label="fragmentTraktExport"
+    android:id="@+id/traktSyncFragment"
+    android:name="com.michaldrabik.showly2.ui.trakt.TraktSyncFragment"
+    android:label="fragmentTraktSync"
     />
 
 </navigation>

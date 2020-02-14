@@ -34,7 +34,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_marginTop="@dimen/spaceNormal"
-    android:text="@string/textTraktImport"
+    android:text="@string/textTraktSynchronize"
     android:textColor="@color/colorWhite"
     app:backgroundTint="@color/colorAccent"
     app:rippleColor="@color/colorWhite"

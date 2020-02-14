@@ -11,7 +11,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
-import com.michaldrabik.showly2.ui.common.OnTraktImportListener
+import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
@@ -24,7 +24,7 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 import kotlinx.android.synthetic.main.layout_watchlist_empty.*
 
-class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedListener, OnEpisodesSyncedListener, OnTraktImportListener {
+class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedListener, OnEpisodesSyncedListener, OnTraktSyncListener {
 
   override val layoutResId = R.layout.fragment_watchlist
   override val viewModel by viewModels<WatchlistViewModel> { viewModelFactory }
@@ -55,7 +55,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
   }
 
   private fun setupView() {
-    watchlistEmptyTraktButton.onClick { openTraktImport() }
+    watchlistEmptyTraktButton.onClick { openTraktSync() }
   }
 
   private fun setupRecycler() {
@@ -93,8 +93,8 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
     modal.show(requireActivity().supportFragmentManager, "MODAL")
   }
 
-  private fun openTraktImport() {
-    navigateTo(R.id.actionWatchlistFragmentToTraktImportFragment)
+  private fun openTraktSync() {
+    navigateTo(R.id.actionWatchlistFragmentToTraktSyncFragment)
     hideNavigation()
   }
 
@@ -102,7 +102,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedLis
 
   override fun onEpisodesSyncFinished() = viewModel.loadWatchlist()
 
-  override fun onTraktImportProgress() = viewModel.loadWatchlist()
+  override fun onTraktSyncProgress() = viewModel.loadWatchlist()
 
   private fun render(uiModel: WatchlistUiModel) {
     uiModel.items?.let {

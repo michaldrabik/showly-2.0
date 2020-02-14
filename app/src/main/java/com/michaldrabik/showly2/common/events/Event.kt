@@ -4,24 +4,12 @@ sealed class Event
 
 object ShowsSyncComplete : Event()
 
-// Trakt Import
+object TraktSyncStart : Event()
 
-object TraktImportStart : Event()
+object TraktSyncSuccess : Event()
 
-object TraktImportSuccess : Event()
+object TraktSyncError : Event()
 
-object TraktImportError : Event()
+object TraktSyncAuthError : Event()
 
-object TraktImportAuthError : Event()
-
-object TraktImportProgress : Event()
-
-// Trakt Export
-
-object TraktExportStart : Event()
-
-object TraktExportSuccess : Event()
-
-object TraktExportError : Event()
-
-object TraktExportProgress : Event()
+object TraktSyncProgress : Event()

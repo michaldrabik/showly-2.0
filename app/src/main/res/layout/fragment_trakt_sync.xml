@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/traktExportRoot"
+  android:id="@+id/traktSyncRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   >
 
   <androidx.appcompat.widget.Toolbar
-    android:id="@+id/traktExportToolbar"
+    android:id="@+id/traktSyncToolbar"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     app:contentInsetStartWithNavigation="0dp"
@@ -16,110 +16,110 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:navigationIcon="@drawable/ic_arrow_back"
-    app:title="@string/textTraktExport"
+    app:title="@string/textTraktSync"
     />
 
   <ImageView
-    android:id="@+id/traktExportIcon"
+    android:id="@+id/traktSyncIcon"
     android:layout_width="80dp"
     android:layout_height="0dp"
-    app:layout_constraintBottom_toBottomOf="@id/traktExportIconArrow"
-    app:layout_constraintEnd_toStartOf="@id/traktExportIconArrow"
+    app:layout_constraintBottom_toBottomOf="@id/traktSyncIconArrow"
+    app:layout_constraintEnd_toStartOf="@id/traktSyncIconArrow"
     app:layout_constraintHorizontal_chainStyle="packed"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@id/traktExportIconArrow"
-    app:srcCompat="@mipmap/ic_launcher_round"
-    />
-
-  <ImageView
-    android:id="@+id/traktExportIconArrow"
-    android:layout_width="80dp"
-    android:layout_height="80dp"
-    android:padding="18dp"
-    app:layout_constraintBottom_toTopOf="@id/traktExportTitle"
-    app:layout_constraintEnd_toStartOf="@id/traktExportIconShowly"
-    app:layout_constraintHorizontal_chainStyle="packed"
-    app:layout_constraintStart_toEndOf="@id/traktExportIcon"
-    app:layout_constraintTop_toBottomOf="@id/traktExportToolbar"
-    app:layout_constraintVertical_bias="0.33"
-    app:layout_constraintVertical_chainStyle="packed"
-    app:srcCompat="@drawable/ic_arrow_right"
-    />
-
-  <ImageView
-    android:id="@+id/traktExportIconShowly"
-    android:layout_width="80dp"
-    android:layout_height="0dp"
-    app:layout_constraintBottom_toBottomOf="@id/traktExportIconArrow"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_chainStyle="packed"
-    app:layout_constraintStart_toEndOf="@id/traktExportIconArrow"
-    app:layout_constraintTop_toTopOf="@id/traktExportIconArrow"
+    app:layout_constraintTop_toTopOf="@id/traktSyncIconArrow"
     app:srcCompat="@drawable/ic_trakt"
     />
 
+  <ImageView
+    android:id="@+id/traktSyncIconArrow"
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:padding="18dp"
+    app:layout_constraintBottom_toTopOf="@id/traktSyncTitle"
+    app:layout_constraintEnd_toStartOf="@id/traktSyncIconShowly"
+    app:layout_constraintHorizontal_chainStyle="packed"
+    app:layout_constraintStart_toEndOf="@id/traktSyncIcon"
+    app:layout_constraintTop_toBottomOf="@id/traktSyncToolbar"
+    app:layout_constraintVertical_bias="0.33"
+    app:layout_constraintVertical_chainStyle="packed"
+    app:srcCompat="@drawable/ic_sync"
+    />
+
+  <ImageView
+    android:id="@+id/traktSyncIconShowly"
+    android:layout_width="80dp"
+    android:layout_height="0dp"
+    app:layout_constraintBottom_toBottomOf="@id/traktSyncIconArrow"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_chainStyle="packed"
+    app:layout_constraintStart_toEndOf="@id/traktSyncIconArrow"
+    app:layout_constraintTop_toTopOf="@id/traktSyncIconArrow"
+    app:srcCompat="@mipmap/ic_launcher_round"
+    />
+
   <TextView
-    android:id="@+id/traktExportTitle"
+    android:id="@+id/traktSyncTitle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="50dp"
     android:layout_marginBottom="@dimen/spaceTiny"
-    android:text="@string/textTraktExport"
+    android:text="@string/textTraktSync"
     android:textAllCaps="true"
     android:textColor="@color/colorTextPrimary"
     android:textSize="20sp"
     android:textStyle="bold"
-    app:layout_constraintBottom_toTopOf="@id/traktExportDescription"
+    app:layout_constraintBottom_toTopOf="@id/traktSyncDescription"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/traktExportIconArrow"
+    app:layout_constraintTop_toBottomOf="@id/traktSyncIconArrow"
     />
 
   <TextView
-    android:id="@+id/traktExportDescription"
+    android:id="@+id/traktSyncDescription"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceBig"
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginEnd="@dimen/spaceBig"
     android:gravity="center"
-    android:text="@string/textTraktExportDescription"
+    android:text="@string/textTraktSyncDescription"
     android:textColor="@color/colorTextSecondary"
     android:textSize="14sp"
-    app:layout_constraintBottom_toTopOf="@id/traktExportButton"
+    app:layout_constraintBottom_toTopOf="@id/traktSyncButton"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/traktExportTitle"
+    app:layout_constraintTop_toBottomOf="@id/traktSyncTitle"
     />
 
   <com.google.android.material.button.MaterialButton
-    android:id="@+id/traktExportButton"
+    android:id="@+id/traktSyncButton"
     style="@style/Widget.MaterialComponents.Button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="20dp"
     android:minWidth="200dp"
-    android:text="@string/textTraktExportStart"
+    android:text="@string/textTraktSyncStart"
     android:textColor="@color/colorWhite"
     app:backgroundTint="@color/colorAccent"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/traktExportDescription"
+    app:layout_constraintTop_toBottomOf="@id/traktSyncDescription"
     app:rippleColor="@color/colorWhite"
     app:strokeColor="@color/colorWhite"
     />
 
   <ProgressBar
-    android:id="@+id/traktExportProgress"
+    android:id="@+id/traktSyncProgress"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:foregroundTint="@color/colorAccent"
     android:visibility="gone"
-    app:layout_constraintBottom_toBottomOf="@id/traktExportButton"
+    app:layout_constraintBottom_toBottomOf="@id/traktSyncButton"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@id/traktExportButton"
+    app:layout_constraintTop_toTopOf="@id/traktSyncButton"
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

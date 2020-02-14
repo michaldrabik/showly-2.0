@@ -17,7 +17,7 @@ import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
-import com.michaldrabik.showly2.ui.common.OnTraktImportListener
+import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
@@ -29,7 +29,7 @@ import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 
-class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListener, OnScrollResetListener, OnTraktImportListener {
+class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListener, OnScrollResetListener, OnTraktSyncListener {
 
   override val layoutResId = R.layout.fragment_my_shows
   override val viewModel by viewModels<MyShowsViewModel> { viewModelFactory }
@@ -153,5 +153,5 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
 
   override fun onScrollReset() = myShowsRootScroll.smoothScrollTo(0, 0)
 
-  override fun onTraktImportProgress() = viewModel.loadShows()
+  override fun onTraktSyncProgress() = viewModel.loadShows()
 }

@@ -46,11 +46,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
 
   private fun setupView() {
     settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
-    settingsTraktImport.onClick {
-      navigateTo(R.id.actionSettingsFragmentToTraktImport)
-    }
-    settingsTraktExport.onClick {
-      navigateTo(R.id.actionSettingsFragmentToTraktExport)
+    settingsTraktSync.onClick {
+      navigateTo(R.id.actionSettingsFragmentToTraktSync)
     }
   }
 
@@ -63,8 +60,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
     uiModel.run {
       settings?.let { renderSettings(it) }
       isSignedInTrakt?.let { isSignedIn ->
-        settingsTraktImport.visibleIf(isSignedIn)
-        settingsTraktExport.visibleIf(isSignedIn)
+        settingsTraktSync.visibleIf(isSignedIn)
         settingsTraktAuthorizeIcon.visibleIf(isSignedIn)
         settingsTraktAuthorize.onClick {
           if (isSignedIn) viewModel.logoutTrakt()
