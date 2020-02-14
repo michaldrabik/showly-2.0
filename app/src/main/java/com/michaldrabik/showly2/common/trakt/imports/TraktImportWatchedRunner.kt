@@ -87,8 +87,11 @@ class TraktImportWatchedRunner @Inject constructor(
 
   private suspend fun loadSeasons(showId: Long, item: SyncItem): Pair<List<Season>, List<Episode>> {
     val remoteSeasons = cloud.traktApi.fetchSeasons(showId)
+    val localSeasonsIds = database.seasonsDao().getAllWatchedIdsForShows(listOf(showId))
+    val localEpisodesIds = database.episodesDao().getAllWatchedIdsForShows(listOf(showId))
 
     val seasons = remoteSeasons
+      .filterNot { localSeasonsIds.contains(it.ids.trakt) }
       .map { mappers.season.fromNetwork(it) }
       .map { remoteSeason ->
         val isWatched = item.seasons.any {
@@ -98,16 +101,17 @@ class TraktImportWatchedRunner @Inject constructor(
       }
 
     val episodes = remoteSeasons.flatMap { season ->
-      season.episodes.map { episode ->
-        val isWatched = item.seasons
-          .find { it.number == season.number }?.episodes
-          ?.find { it.number == episode.number } != null
+      season.episodes
+        .filterNot { localEpisodesIds.contains(it.ids.trakt) }
+        .map { episode ->
+          val isWatched = item.seasons
+            .find { it.number == season.number }?.episodes
+            ?.find { it.number == episode.number } != null
 
-        val seasonDb = mappers.season.fromNetwork(season)
-        val episodeDb = mappers.episode.fromNetwork(episode)
-
-        mappers.episode.toDatabase(episodeDb, seasonDb, IdTrakt(showId), isWatched)
-      }
+          val seasonDb = mappers.season.fromNetwork(season)
+          val episodeDb = mappers.episode.fromNetwork(episode)
+          mappers.episode.toDatabase(episodeDb, seasonDb, IdTrakt(showId), isWatched)
+        }
     }
 
     return Pair(seasons, episodes)
