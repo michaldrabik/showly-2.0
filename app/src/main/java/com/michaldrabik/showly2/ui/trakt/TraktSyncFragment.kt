@@ -57,6 +57,12 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(), OnTraktAuthorizeLi
 
   private fun setupView() {
     traktSyncToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+    traktSyncImportCheckbox.setOnCheckedChangeListener { _, isChecked ->
+      traktSyncButton.isEnabled = (isChecked || traktSyncExportCheckbox.isChecked)
+    }
+    traktSyncExportCheckbox.setOnCheckedChangeListener { _, isChecked ->
+      traktSyncButton.isEnabled = (isChecked || traktSyncImportCheckbox.isChecked)
+    }
   }
 
   override fun onResume() {
@@ -66,7 +72,11 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(), OnTraktAuthorizeLi
 
   private fun startImport() {
     val context = requireContext().applicationContext
-    Intent(context, TraktSyncService::class.java).run {
+    TraktSyncService.createIntent(
+      context,
+      isImport = traktSyncImportCheckbox.isChecked,
+      isExport = traktSyncExportCheckbox.isChecked
+    ).run {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         context.startForegroundService(this)
       } else {
@@ -89,6 +99,8 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(), OnTraktAuthorizeLi
       isProgress?.let {
         traktSyncButton.visibleIf(!it, false)
         traktSyncProgress.visibleIf(it)
+        traktSyncImportCheckbox.visibleIf(!it)
+        traktSyncExportCheckbox.visibleIf(!it)
       }
       progressStatus?.let { traktSyncStatus.text = it }
       authError?.let { findNavController().popBackStack() }

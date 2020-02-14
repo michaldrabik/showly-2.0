@@ -87,10 +87,41 @@
     android:text="@string/textTraktSyncDescription"
     android:textColor="@color/colorTextSecondary"
     android:textSize="14sp"
-    app:layout_constraintBottom_toTopOf="@id/traktSyncButton"
+    app:layout_constraintBottom_toTopOf="@id/traktSyncImportCheckbox"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/traktSyncTitle"
+    />
+
+  <androidx.appcompat.widget.AppCompatCheckBox
+    android:id="@+id/traktSyncImportCheckbox"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceBig"
+    android:checked="true"
+    android:gravity="center"
+    android:text="@string/textTraktSyncFromTraktToShowly"
+    app:layout_constraintBottom_toTopOf="@id/traktSyncExportCheckbox"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/traktSyncDescription"
+    />
+
+  <androidx.appcompat.widget.AppCompatCheckBox
+    android:id="@+id/traktSyncExportCheckbox"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginEnd="@dimen/spaceBig"
+    android:checked="true"
+    android:gravity="center"
+    android:text="@string/textTraktSyncFromShowlyToTrakt"
+    app:layout_constraintBottom_toTopOf="@id/traktSyncButton"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/traktSyncImportCheckbox"
     />
 
   <com.google.android.material.button.MaterialButton
@@ -98,7 +129,7 @@
     style="@style/Widget.MaterialComponents.Button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
+    android:layout_marginTop="@dimen/spaceNormal"
     android:minWidth="200dp"
     android:text="@string/textTraktSyncStart"
     android:textColor="@color/colorWhite"
@@ -106,7 +137,7 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/traktSyncDescription"
+    app:layout_constraintTop_toBottomOf="@id/traktSyncExportCheckbox"
     app:rippleColor="@color/colorWhite"
     app:strokeColor="@color/colorWhite"
     />

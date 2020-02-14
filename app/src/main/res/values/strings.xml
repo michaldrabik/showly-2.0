@@ -69,7 +69,7 @@
   <string name="textSettingsTraktAuthorizeSummarySignOut">Signed in. Click to log out.</string>
   <string name="textSettingsTraktAuthorizeSummarySignOutUser">Signed in as %1$s. Click to log out.</string>
   <string name="textSettingsTraktSyncTitle">Trakt.tv Sync</string>
-  <string name="textSettingsTraktSyncSummary">Sync data between your Trakt.tv and Showly.</string>
+  <string name="textSettingsTraktSyncSummary">Sync data between Trakt.tv and Showly.</string>
   <string name="textSettingsGeneral">General &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Recently Added Amount</string>
   <string name="textSettingsRecentShowsSummary">Number of recent shows to display in \'My Shows\' screen.</string>
@@ -96,6 +96,8 @@
   <string name="textTraktSyncError">Trakt.tv sync failed. Please try again or contact us if this keeps happening.</string>
   <string name="textTraktSyncDescription">Sync your Trakt.tv account progress and watchlist data with Showly.\n\nNo items from your current collection will be deleted. Only missing items that are not currently in your collection will be added.</string>
   <string name="textTraktSyncStart">Start Sync</string>
+  <string name="textTraktSyncFromTraktToShowly">Sync from Trakt.tv to Showly</string>
+  <string name="textTraktSyncFromShowlyToTrakt">Sync from Showly to Trakt.tv</string>
 
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>

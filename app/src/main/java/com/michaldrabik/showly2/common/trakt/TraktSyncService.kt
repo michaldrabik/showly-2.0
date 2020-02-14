@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.common.trakt
 
+import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
@@ -28,10 +29,19 @@ import javax.inject.Inject
 class TraktSyncService : TraktNotificationsService(), CoroutineScope {
 
   companion object {
+    private const val ARG_IS_IMPORT = "ARG_IS_IMPORT"
+    private const val ARG_IS_EXPORT = "ARG_IS_EXPORT"
+
     private const val TAG = "TraktSyncService"
     private const val SYNC_NOTIFICATION_PROGRESS_ID = 826
     private const val SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID = 827
     private const val SYNC_NOTIFICATION_COMPLETE_ERROR_ID = 828
+
+    fun createIntent(context: Context, isImport: Boolean, isExport: Boolean) =
+      Intent(context, TraktSyncService::class.java).apply {
+        putExtra(ARG_IS_IMPORT, isImport)
+        putExtra(ARG_IS_EXPORT, isExport)
+      }
   }
 
   override val coroutineContext = Job() + Dispatchers.IO
@@ -46,11 +56,14 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
   override fun onCreate() {
     super.onCreate()
     serviceComponent().inject(this)
-    runners.addAll(listOf(importWatchedRunner, importWatchlistRunner, exportWatchedRunner, exportWatchlistRunner))
   }
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     Log.d(TAG, "Service initialized.")
+
+    val isImport = intent?.extras?.getBoolean(ARG_IS_IMPORT) ?: false
+    val isExport = intent?.extras?.getBoolean(ARG_IS_EXPORT) ?: false
+
     if (runners.any { it.isRunning }) {
       Log.d(TAG, "Already running. Skipping...")
       return START_NOT_STICKY
@@ -62,10 +75,15 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
       try {
         EventsManager.sendEvent(TraktSyncStart)
 
-        val resultCount = runImportWatched()
-        runImportWatchlist(resultCount)
-        runExportWatched(resultCount)
-        runExportWatchlist(resultCount)
+        if (isImport) {
+          val resultCount = runImportWatched()
+          runImportWatchlist(resultCount)
+        }
+
+        if (isExport) {
+          runExportWatched()
+          runExportWatchlist()
+        }
 
         EventsManager.sendEvent(TraktSyncSuccess)
         notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification())
@@ -110,22 +128,20 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
     importWatchlistRunner.run()
   }
 
-  private suspend fun runExportWatched(totalProgress: Int) {
+  private suspend fun runExportWatched() {
     val status = "Exporting progress..."
     val notification = createProgressNotification().run {
       setContentText(status)
-      setProgress(totalProgress, totalProgress, false)
     }
     notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
     EventsManager.sendEvent(TraktSyncProgress(status))
     exportWatchedRunner.run()
   }
 
-  private suspend fun runExportWatchlist(totalProgress: Int) {
+  private suspend fun runExportWatchlist() {
     val status = "Exporting watchlist..."
     val notification = createProgressNotification().run {
       setContentText(status)
-      setProgress(totalProgress, totalProgress, false)
     }
     notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
     EventsManager.sendEvent(TraktSyncProgress(status))
