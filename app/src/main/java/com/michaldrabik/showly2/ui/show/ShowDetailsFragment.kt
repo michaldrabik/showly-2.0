@@ -131,7 +131,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
     }
     showDetailsTipGallery.onClick {
       it.gone()
-      getMainActivity().showTip(SHOW_DETAILS_GALLERY)
+      mainActivity().showTip(SHOW_DETAILS_GALLERY)
     }
   }
 
@@ -315,7 +315,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
       }
       .withSuccessListener {
         showDetailsImageProgress.gone()
-        showDetailsTipGallery.fadeIf(!getMainActivity().isTipShown(SHOW_DETAILS_GALLERY))
+        showDetailsTipGallery.fadeIf(!mainActivity().isTipShown(SHOW_DETAILS_GALLERY))
       }
       .into(showDetailsImage)
   }

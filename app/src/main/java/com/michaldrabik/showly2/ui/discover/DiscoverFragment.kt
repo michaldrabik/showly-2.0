@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
@@ -50,7 +49,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
-      cacheStream.observe(viewLifecycleOwner, Observer { render(it!!) })
       errorLiveData.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
       loadDiscoverShows()
     }
@@ -61,6 +59,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
       isClickable = false
       onClick { navigateTo(R.id.actionDiscoverFragmentToSearchFragment) }
       onSettingsClickListener = { navigateTo(R.id.actionDiscoverFragmentToSettingsFragment) }
+      translationY = mainActivity().discoverSearchViewPosition
     }
   }
 
@@ -83,7 +82,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
       setColorSchemeResources(R.color.colorAccent, R.color.colorAccent, R.color.colorAccent)
       setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
       setOnRefreshListener {
-        viewModel.clearUiCache()
+        mainActivity().discoverSearchViewPosition = 0F
         viewModel.loadDiscoverShows(pullToRefresh = true)
       }
     }
@@ -91,8 +90,8 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
 
   private fun navigateTo(@IdRes id: Int) {
     disableUi()
+    saveUi()
     hideNavigation()
-    saveUiPositions()
     discoverRecycler.fadeOut(duration = 200) {
       enableUi()
       super.navigateTo(id, null)
@@ -101,7 +100,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
 
   private fun navigateToDetails(item: DiscoverListItem) {
     disableUi()
-    saveUiPositions()
+    saveUi()
     hideNavigation()
     animateItemsExit(item)
     discoverSearchView.fadeOut()
@@ -126,8 +125,8 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
     })
   }
 
-  private fun saveUiPositions() {
-    viewModel.saveUiPositions(discoverSearchView.translationY)
+  private fun saveUi() {
+    mainActivity().discoverSearchViewPosition = discoverSearchView.translationY
   }
 
   private fun render(uiModel: DiscoverUiModel) {
@@ -142,12 +141,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListe
         discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
       }
-    }
-  }
-
-  private fun render(uiCache: UiCache) {
-    uiCache.let {
-      discoverSearchView.translationY = it.discoverSearchPosition
     }
   }
 

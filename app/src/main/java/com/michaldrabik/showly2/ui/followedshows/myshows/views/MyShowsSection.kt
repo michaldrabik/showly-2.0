@@ -40,7 +40,6 @@ class MyShowsSection : ConstraintLayout {
 
   private val padding by lazy { context.dimenToPx(R.dimen.spaceMedium) }
   private val sectionAdapter by lazy { MyShowsSectionAdapter() }
-  private val sectionLayoutManager by lazy { LinearLayoutManager(context, HORIZONTAL, false) }
   private var isCollapsed: Boolean = false
   private lateinit var section: MyShowsSection
 
@@ -73,13 +72,15 @@ class MyShowsSection : ConstraintLayout {
   }
 
   fun getListPosition(): Pair<Int, Int> {
-    val position = sectionLayoutManager.findFirstVisibleItemPosition()
-    val offset = (sectionLayoutManager.findViewByPosition(position)?.left ?: 0) - padding
+    val lm = myShowsSectionRecycler.layoutManager as LinearLayoutManager
+    val position = lm.findFirstVisibleItemPosition()
+    val offset = (lm.findViewByPosition(position)?.left ?: 0) - padding
     return Pair(position, offset)
   }
 
   fun scrollToPosition(position: Int, offset: Int) {
-    sectionLayoutManager.scrollToPositionWithOffset(position, offset)
+    val lm = myShowsSectionRecycler.layoutManager as LinearLayoutManager
+    lm.scrollToPositionWithOffset(position, offset)
   }
 
   fun isEmpty() = sectionAdapter.itemCount == 0
@@ -107,7 +108,7 @@ class MyShowsSection : ConstraintLayout {
     myShowsSectionRecycler.apply {
       setHasFixedSize(true)
       adapter = sectionAdapter
-      layoutManager = sectionLayoutManager
+      layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
       addItemDecoration(DividerItemDecoration(context, HORIZONTAL).apply {
         setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_my_shows_horizontal)!!)
       })

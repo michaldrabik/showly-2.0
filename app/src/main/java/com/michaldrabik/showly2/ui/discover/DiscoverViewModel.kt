@@ -1,6 +1,5 @@
 package com.michaldrabik.showly2.ui.discover
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.R
@@ -9,7 +8,6 @@ import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.FANART_WIDE
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.utilities.extensions.findReplace
@@ -19,12 +17,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class DiscoverViewModel @Inject constructor(
-  private val interactor: DiscoverInteractor,
-  private val uiCache: UiCache
+  private val interactor: DiscoverInteractor
 ) : BaseViewModel<DiscoverUiModel>() {
-
-  private val _cacheStream = MutableLiveData<UiCache>()
-  val cacheStream get() = _cacheStream
 
   private var lastPullToRefreshMs = 0L
 
@@ -35,7 +29,6 @@ class DiscoverViewModel @Inject constructor(
     }
 
     uiState = DiscoverUiModel(showLoading = pullToRefresh)
-    _cacheStream.value = uiCache
 
     viewModelScope.launch {
       val progressJob = launch {
@@ -101,12 +94,6 @@ class DiscoverViewModel @Inject constructor(
       }
     }
   }
-
-  fun saveUiPositions(searchPosition: Float) {
-    uiCache.discoverSearchPosition = searchPosition
-  }
-
-  fun clearUiCache() = uiCache.clear()
 
   private suspend fun checkTvdbAuth() {
     try {

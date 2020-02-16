@@ -12,7 +12,6 @@ import com.michaldrabik.showly2.model.MyShowsSection.ENDED
 import com.michaldrabik.showly2.model.MyShowsSection.RUNNING
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.SortOrder
-import com.michaldrabik.showly2.ui.UiCache
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsBundle
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
@@ -21,8 +20,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MyShowsViewModel @Inject constructor(
-  private val interactor: MyShowsInteractor,
-  private val uiCache: UiCache
+  private val interactor: MyShowsInteractor
 ) : BaseViewModel<MyShowsUiModel>() {
 
   fun loadShows() {
@@ -46,8 +44,7 @@ class MyShowsViewModel @Inject constructor(
         runningShows = MyShowsBundle(runningShows, RUNNING, settings.myShowsRunningSortBy, settings.myShowsRunningIsCollapsed),
         endedShows = MyShowsBundle(endedShows, ENDED, settings.myShowsEndedSortBy, settings.myShowsEndedIsCollapsed),
         incomingShows = MyShowsBundle(incomingShows, COMING_SOON, settings.myShowsIncomingSortBy, settings.myShowsIncomingIsCollapsed),
-        allShows = MyShowsBundle(allShows, ALL, settings.myShowsAllSortBy, null),
-        sectionsPositions = uiCache.myShowsSectionPositions
+        allShows = MyShowsBundle(allShows, ALL, settings.myShowsAllSortBy, null)
       )
     }
   }
@@ -113,11 +110,5 @@ class MyShowsViewModel @Inject constructor(
         updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }
-  }
-
-  fun saveListPosition(
-    sectionPositions: Map<MyShowsSection, Pair<Int, Int>>
-  ) {
-    uiCache.myShowsSectionPositions.putAll(sectionPositions)
   }
 }

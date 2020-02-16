@@ -10,9 +10,6 @@ import androidx.lifecycle.Observer
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.MyShowsSection
-import com.michaldrabik.showly2.model.MyShowsSection.COMING_SOON
-import com.michaldrabik.showly2.model.MyShowsSection.ENDED
-import com.michaldrabik.showly2.model.MyShowsSection.RUNNING
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.OnScrollResetListener
@@ -94,19 +91,23 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
       runningShows?.let {
         myShowsRunningSection.bind(it, R.string.textRunning)
         myShowsRunningSection.visibleIf(it.items.isNotEmpty())
+        mainActivity().myShowsRunningPosition.let { pos ->
+          myShowsRunningSection.scrollToPosition(pos.first, pos.second)
+        }
       }
       endedShows?.let {
         myShowsEndedSection.bind(it, R.string.textEnded)
         myShowsEndedSection.visibleIf(it.items.isNotEmpty())
+        mainActivity().myShowsEndedPosition.let { pos ->
+          myShowsEndedSection.scrollToPosition(pos.first, pos.second)
+        }
       }
       incomingShows?.let {
         myShowsIncomingSection.bind(it, R.string.textIncoming)
         myShowsIncomingSection.visibleIf(it.items.isNotEmpty())
-      }
-      sectionsPositions?.let {
-        myShowsRunningSection.scrollToPosition(it[RUNNING]?.first ?: 0, it[RUNNING]?.second ?: 0)
-        myShowsEndedSection.scrollToPosition(it[ENDED]?.first ?: 0, it[ENDED]?.second ?: 0)
-        myShowsIncomingSection.scrollToPosition(it[COMING_SOON]?.first ?: 0, it[COMING_SOON]?.second ?: 0)
+        mainActivity().myShowsIncomingPosition.let { pos ->
+          myShowsIncomingSection.scrollToPosition(pos.first, pos.second)
+        }
       }
     }
   }
@@ -141,12 +142,11 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListene
   }
 
   private fun saveToUiCache() {
-    val sectionPositions = mapOf(
-      RUNNING to myShowsRunningSection.getListPosition(),
-      ENDED to myShowsEndedSection.getListPosition(),
-      COMING_SOON to myShowsIncomingSection.getListPosition()
-    )
-    viewModel.saveListPosition(sectionPositions)
+    mainActivity().apply {
+      myShowsRunningSection.run { post { myShowsRunningPosition = getListPosition() } }
+      myShowsEndedSection.run { post { myShowsEndedPosition = getListPosition() } }
+      myShowsIncomingSection.run { post { myShowsIncomingPosition = getListPosition() } }
+    }
   }
 
   override fun onTabReselected() = onScrollReset()

@@ -30,10 +30,10 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>> : Fragment() {
   ): View = inflater.inflate(layoutResId, container, false)
 
   protected fun hideNavigation(animate: Boolean = true) =
-    getMainActivity().hideNavigation(animate)
+    mainActivity().hideNavigation(animate)
 
   protected fun showNavigation(animate: Boolean = true) =
-    getMainActivity().showNavigation(animate)
+    mainActivity().showNavigation(animate)
 
   protected fun showInfoSnackbar(@StringRes messageResId: Int) =
     getSnackbarHost().showInfoSnackbar(getString(messageResId))
@@ -41,9 +41,9 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>> : Fragment() {
   protected fun showErrorSnackbar(@StringRes errorResId: Int) =
     getSnackbarHost().showErrorSnackbar(getString(errorResId))
 
-  protected open fun getSnackbarHost(): ViewGroup = getMainActivity().snackBarHost
+  protected open fun getSnackbarHost(): ViewGroup = mainActivity().snackBarHost
 
-  protected fun getMainActivity() = requireActivity() as MainActivity
+  protected fun mainActivity() = requireActivity() as MainActivity
 
   protected fun navigateTo(@IdRes destination: Int, bundle: Bundle? = null) =
     findNavController().navigate(destination, bundle)

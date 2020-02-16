@@ -2,15 +2,16 @@ package com.michaldrabik.showly2.ui
 
 import android.net.Uri
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
+import com.crashlytics.android.Crashlytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fcm.FcmExtra
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
+import com.michaldrabik.showly2.ui.main.BaseActivity
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-abstract class NotificationActivity : AppCompatActivity() {
+abstract class NotificationActivity : BaseActivity() {
 
   protected fun handleNotification(extras: Bundle?, action: () -> Unit = {}) {
     if (extras == null) return
@@ -35,6 +36,7 @@ abstract class NotificationActivity : AppCompatActivity() {
         action()
       } catch (e: Exception) {
         // NOOP Simply leave app where it is in case of failure
+        Crashlytics.logException(e)
       }
     }
   }

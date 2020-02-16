@@ -109,7 +109,7 @@ class MainActivity : NotificationActivity(), EventObserver {
         else -> throw IllegalStateException("Invalid menu item.")
       }
 
-      viewModel.clearCache()
+      clearUiCache()
       navigationHost.findNavController().navigate(target)
       showNavigation()
       return@setOnNavigationItemSelectedListener true
