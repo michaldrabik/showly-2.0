@@ -96,8 +96,8 @@
   <string name="textTraktSyncError">Trakt.tv sync failed. Please try again or contact us if this keeps happening.</string>
   <string name="textTraktSyncDescription">Sync your Trakt.tv account progress and watchlist data with Showly.\n\nNo items from your current collection will be deleted. Only missing items that are not currently in your collection will be added.</string>
   <string name="textTraktSyncStart">Start Sync</string>
-  <string name="textTraktSyncFromTraktToShowly">Sync from Trakt.tv to Showly</string>
-  <string name="textTraktSyncFromShowlyToTrakt">Sync from Showly to Trakt.tv</string>
+  <string name="textTraktSyncFromTraktToShowly">Import from Trakt.tv to Showly</string>
+  <string name="textTraktSyncFromShowlyToTrakt">Export from Showly to Trakt.tv</string>
 
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>
