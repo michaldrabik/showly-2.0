@@ -38,11 +38,13 @@ class EpisodeImagesProvider @Inject constructor(
     }
 
     userManager.checkAuthorization()
-    val remoteImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getToken(), tvdbId.id)
-
-    val image = when (remoteImage) {
-      null -> Image.createUnavailable(FANART)
-      else -> Image(remoteImage.id, tvdbId, FANART, EPISODE, remoteImage.fileName, remoteImage.thumbnail, AVAILABLE)
+    var image = Image.createUnavailable(FANART)
+    runCatching {
+      val remoteImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getToken(), tvdbId.id)
+      image = when (remoteImage) {
+        null -> Image.createUnavailable(FANART)
+        else -> Image(remoteImage.id, tvdbId, FANART, EPISODE, remoteImage.fileName, remoteImage.thumbnail, AVAILABLE)
+      }
     }
 
     when (image.status) {
