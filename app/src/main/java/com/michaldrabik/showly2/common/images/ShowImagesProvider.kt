@@ -3,10 +3,15 @@ package com.michaldrabik.showly2.common.images
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.tvdb.model.TvdbImage
 import com.michaldrabik.showly2.di.scope.AppScope
+import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.ImageFamily
+import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
+import com.michaldrabik.showly2.model.ImageFamily.SHOW
 import com.michaldrabik.showly2.model.ImageType
+import com.michaldrabik.showly2.model.ImageType.FANART
+import com.michaldrabik.showly2.model.ImageType.FANART_WIDE
+import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.UserTvdbManager
@@ -21,10 +26,16 @@ class ShowImagesProvider @Inject constructor(
   private val mappers: Mappers
 ) {
 
+  private val unavailableCache = mutableListOf<IdTrakt>()
+
   suspend fun findCachedImage(show: Show, type: ImageType): Image {
     val cachedImage = database.imagesDao().getByShowId(show.ids.tvdb.id, type.key)
     return when (cachedImage) {
-      null -> Image.createUnknown(type, ImageFamily.SHOW)
+      null -> if (unavailableCache.contains(show.ids.trakt)) {
+        Image.createUnavailable(type, SHOW)
+      } else {
+        Image.createUnknown(type, SHOW)
+      }
       else -> mappers.image.fromDatabase(cachedImage).copy(type = type)
     }
   }
@@ -42,12 +53,12 @@ class ShowImagesProvider @Inject constructor(
     var typeImages = images.filter { it.keyType == type.key }
 
     // If requested poster is unavailable try backing up to a fanart
-    if (typeImages.isEmpty() && type == ImageType.POSTER) {
-      typeImages = images.filter { it.keyType == ImageType.FANART.key }
+    if (typeImages.isEmpty() && type == POSTER) {
+      typeImages = images.filter { it.keyType == FANART.key }
     }
 
     // If requested fanart is unavailable try backing up to an episode image
-    if (typeImages.isEmpty() && type in arrayOf(ImageType.FANART, ImageType.FANART_WIDE)) {
+    if (typeImages.isEmpty() && type in arrayOf(FANART, FANART_WIDE)) {
       val seasons = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
       if (seasons.isNotEmpty()) {
         val episode = seasons[0].episodes.firstOrNull()
@@ -61,11 +72,14 @@ class ShowImagesProvider @Inject constructor(
     val remoteImage = typeImages.maxBy { it.rating.count }
     val image = when (remoteImage) {
       null -> Image.createUnavailable(type)
-      else -> Image(remoteImage.id, tvdbId, type, ImageFamily.SHOW, remoteImage.fileName, remoteImage.thumbnail, Image.Status.AVAILABLE)
+      else -> Image(remoteImage.id, tvdbId, type, SHOW, remoteImage.fileName, remoteImage.thumbnail, Image.Status.AVAILABLE)
     }
 
     when (image.status) {
-      Image.Status.UNAVAILABLE -> database.imagesDao().deleteByShowId(tvdbId.id, image.type.key)
+      UNAVAILABLE -> {
+        unavailableCache.add(show.ids.trakt)
+        database.imagesDao().deleteByShowId(tvdbId.id, image.type.key)
+      }
       else -> {
         database.imagesDao().insertShowImage(mappers.image.toDatabase(image))
         storeExtraImage(tvdbId, images, type)
@@ -80,12 +94,12 @@ class ShowImagesProvider @Inject constructor(
     images: List<TvdbImage>,
     targetType: ImageType
   ) {
-    val extraType = if (targetType == ImageType.POSTER) ImageType.FANART else ImageType.POSTER
+    val extraType = if (targetType == POSTER) FANART else POSTER
     images
       .filter { it.keyType == extraType.key }
       .maxBy { it.rating.count }
       ?.let {
-        val extraImage = Image(it.id, id, extraType, ImageFamily.SHOW, it.fileName, it.thumbnail, Image.Status.AVAILABLE)
+        val extraImage = Image(it.id, id, extraType, SHOW, it.fileName, it.thumbnail, Image.Status.AVAILABLE)
         database.imagesDao().insertShowImage(mappers.image.toDatabase(extraImage))
       }
   }
@@ -99,7 +113,7 @@ class ShowImagesProvider @Inject constructor(
     return remoteImages
       .filter { it.keyType == type.key }
       .map {
-        Image(it.id, tvdbId, type, ImageFamily.SHOW, it.fileName, it.thumbnail, Image.Status.AVAILABLE)
+        Image(it.id, tvdbId, type, SHOW, it.fileName, it.thumbnail, Image.Status.AVAILABLE)
       }
   }
 }
