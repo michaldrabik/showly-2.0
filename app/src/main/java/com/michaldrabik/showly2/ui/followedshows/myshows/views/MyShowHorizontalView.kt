@@ -45,6 +45,7 @@ class MyShowHorizontalView : ShowView<MyShowsListItem> {
   override fun loadImage(item: MyShowsListItem, missingImageListener: (MyShowsListItem, Boolean) -> Unit) {
     if (item.image.status == Status.UNAVAILABLE) {
       myShowTitle.visible()
+      myShowRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)
     }
     super.loadImage(item, missingImageListener)
   }

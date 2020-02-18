@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
@@ -38,10 +39,18 @@ class ShowFanartView : ShowView<DiscoverListItem> {
     loadImage(item, missingImageListener)
   }
 
+  override fun loadImage(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
+    super.loadImage(item, missingImageListener)
+    if (item.image.status == Image.Status.UNAVAILABLE) {
+      showFanartRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)
+    }
+  }
+
   private fun clear() {
     showFanartTitle.text = ""
     showFanartProgress.gone()
     showFanartPlaceholder.gone()
+    showFanartRoot.setBackgroundResource(0)
     showFanartBadge.gone()
     Glide.with(this).clear(showFanartImage)
   }

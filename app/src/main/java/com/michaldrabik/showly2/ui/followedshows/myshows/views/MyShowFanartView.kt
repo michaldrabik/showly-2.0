@@ -40,6 +40,7 @@ class MyShowFanartView : FrameLayout {
   private fun loadImage(image: Image) {
     if (image.status != Image.Status.AVAILABLE) {
       myShowPlaceholder.visible()
+      myShowRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)
       return
     }
 
@@ -54,6 +55,7 @@ class MyShowFanartView : FrameLayout {
 
   private fun clear() {
     myShowTitle.text = ""
+    myShowRoot.setBackgroundResource(0)
     Glide.with(this).clear(myShowImage)
   }
 }
