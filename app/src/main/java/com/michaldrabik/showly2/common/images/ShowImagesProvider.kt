@@ -63,8 +63,10 @@ class ShowImagesProvider @Inject constructor(
       if (seasons.isNotEmpty()) {
         val episode = seasons[0].episodes.firstOrNull()
         episode?.let { ep ->
-          val backupImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getToken(), ep.ids.tvdb)
-          backupImage?.let { img -> typeImages = listOf(img) }
+          runCatching {
+            val backupImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getToken(), ep.ids.tvdb)
+            backupImage?.let { img -> typeImages = listOf(img) }
+          }
         }
       }
     }
