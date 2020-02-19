@@ -87,6 +87,11 @@
   <string name="textSettingsShowsNotificationsWhen6Hours">6 Hours After</string>
   <string name="textSettingsShowsNotificationsWhen12Hours">12 Hours After</string>
   <string name="textSettingsShowsNotificationsWhenNextDay">1 Day After</string>
+  <string name="textSettingsMisc">Misc</string>
+  <string name="textSettingsContactDevsTitle">Contact Developers</string>
+  <string name="textSettingsContactDevsSummary">Got an issue? Click to send us an email.</string>
+  <string name="textSettingsRateAppTitle">Give Feedback</string>
+  <string name="textSettingsRateAppSummary">Enjoying Showly? Let us know on PlayStore. Thanks!</string>
 
   <string name="textTraktSynchronize">Synchronize with Trakt.tv</string>
   <string name="textTraktSync">Trakt.tv Sync</string>

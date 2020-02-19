@@ -8,6 +8,8 @@ object Config {
   const val TVDB_IMAGE_BASE_BANNERS_URL = "$TVDB_IMAGE_PERSON_BASE_URL/banners/"
   const val TVDB_IMAGE_BASE_POSTER_URL = "${TVDB_IMAGE_BASE_BANNERS_URL}posters/"
   const val TVDB_IMAGE_BASE_FANART_URL = "${TVDB_IMAGE_BASE_BANNERS_URL}fanart/original/"
+  const val DEVELOPER_MAIL = "showlyapp@gmail.com"
+  const val PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=com.michaldrabik.showly2"
 
   const val PULL_TO_REFRESH_COOLDOWN_MS = 15_000
   const val SEARCH_RECENTS_AMOUNT = 5

@@ -1,6 +1,10 @@
 package com.michaldrabik.showly2.ui.settings
 
 import android.content.Intent
+import android.content.Intent.ACTION_SENDTO
+import android.content.Intent.ACTION_VIEW
+import android.content.Intent.EXTRA_EMAIL
+import android.content.Intent.EXTRA_SUBJECT
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -10,7 +14,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.michaldrabik.network.Config
+import com.michaldrabik.showly2.BuildConfig
+import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_OPTIONS
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
@@ -22,6 +27,7 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.setCheckedSilent
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_settings.*
+import com.michaldrabik.network.Config as ConfigNetwork
 
 class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeListener {
 
@@ -119,11 +125,34 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
           .show()
       }
     }
+
+    settingsContactDevs.onClick {
+      val intent = Intent(ACTION_SENDTO).apply {
+        data = Uri.parse("mailto:")
+        putExtra(EXTRA_EMAIL, arrayOf(Config.DEVELOPER_MAIL))
+        putExtra(EXTRA_SUBJECT, "Showly 2.0 Issue")
+      }
+      if (intent.resolveActivity(requireActivity().packageManager) != null) {
+        startActivity(intent)
+      }
+    }
+
+    settingsRateApp.onClick {
+      val intent = Intent(ACTION_VIEW).apply {
+        data = Uri.parse(Config.PLAYSTORE_URL)
+        setPackage("com.android.vending")
+      }
+      if (intent.resolveActivity(requireActivity().packageManager) != null) {
+        startActivity(intent)
+      }
+    }
+
+    settingsVersion.text = "Version: ${BuildConfig.VERSION_NAME}"
   }
 
   private fun openTraktWebAuthorization() {
-    Intent(Intent.ACTION_VIEW).run {
-      data = Uri.parse(Config.TRAKT_AUTHORIZE_URL)
+    Intent(ACTION_VIEW).run {
+      data = Uri.parse(ConfigNetwork.TRAKT_AUTHORIZE_URL)
       startActivity(this)
     }
   }
