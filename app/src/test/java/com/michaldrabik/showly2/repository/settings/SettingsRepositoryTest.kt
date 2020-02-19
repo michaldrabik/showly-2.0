@@ -45,7 +45,7 @@ class SettingsRepositoryTest {
   @Test
   fun `Should be initialized if there are settings in database`() {
     runBlocking {
-      coEvery { settingsDao.getCount() } returns 0
+      coEvery { settingsDao.getCount() } returns 1
       assertThat(SUT.isInitialized()).isTrue()
     }
   }
