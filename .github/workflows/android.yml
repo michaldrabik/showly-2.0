@@ -22,5 +22,5 @@ jobs:
       run: ./.github/scripts/decrypt_secrets.sh
       env:
         KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
-    - name: Build with Gradle
-      run: ./gradlew assembleDebug
+    - name: Run Unit Tests
+      run: ./gradlew :app:testDebugUnitTest
