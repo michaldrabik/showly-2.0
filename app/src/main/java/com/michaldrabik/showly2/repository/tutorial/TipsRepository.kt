@@ -11,9 +11,7 @@ class TipsRepository @Inject constructor(
   @Named("tipsPreferences") private val sharedPreferences: SharedPreferences
 ) {
 
-  fun isShown(tip: Tip): Boolean {
-    return sharedPreferences.getBoolean(tip.name, false)
-  }
+  fun isShown(tip: Tip) = sharedPreferences.getBoolean(tip.name, false)
 
   fun setShown(tip: Tip) {
     sharedPreferences.edit().putBoolean(tip.name, true).apply()
