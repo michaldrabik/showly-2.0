@@ -1,14 +1,10 @@
 package com.michaldrabik.showly2.repository.settings
 
-import androidx.room.withTransaction
+import BaseMockTest
 import com.google.common.truth.Truth.assertThat
-import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Settings
-import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.model.mappers.SettingsMapper
-import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.dao.SettingsDao
-import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -16,29 +12,20 @@ import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.just
-import io.mockk.mockkStatic
-import io.mockk.slot
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
-class SettingsRepositoryTest {
+class SettingsRepositoryMockTest : BaseMockTest() {
 
-  @MockK lateinit var database: AppDatabase
   @MockK lateinit var settingsDao: SettingsDao
-  @MockK lateinit var mappers: Mappers
 
   private lateinit var SUT: SettingsRepository
 
   @Before
-  fun setUp() {
-    MockKAnnotations.init(this)
-    mockkStatic("androidx.room.RoomDatabaseKt")
-    val lambda = slot<suspend () -> R>()
-    coEvery { database.withTransaction(capture(lambda)) } coAnswers { lambda.captured.invoke() }
-
+  override fun setUp() {
+    super.setUp()
     every { database.settingsDao() } returns settingsDao
-
     SUT = SettingsRepository(database, mappers)
   }
 

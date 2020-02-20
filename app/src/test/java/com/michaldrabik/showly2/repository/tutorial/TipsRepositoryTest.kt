@@ -1,19 +1,18 @@
 package com.michaldrabik.showly2.repository.tutorial
 
+import BaseMockTest
 import android.content.SharedPreferences
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.showly2.model.Tip
-import io.mockk.MockKAnnotations
 import io.mockk.Runs
-import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.just
-import io.mockk.verify
+import io.mockk.verifyAll
 import org.junit.Before
 import org.junit.Test
 
-class TipsRepositoryTest {
+class TipsRepositoryTest : BaseMockTest() {
 
   @MockK lateinit var sharedPreferences: SharedPreferences
   @MockK lateinit var sharedPreferencesEditor: SharedPreferences.Editor
@@ -21,8 +20,8 @@ class TipsRepositoryTest {
   private lateinit var SUT: TipsRepository
 
   @Before
-  fun setUp() {
-    MockKAnnotations.init(this)
+  override fun setUp() {
+    super.setUp()
     every { sharedPreferencesEditor.apply() } just Runs
     every { sharedPreferencesEditor.putBoolean(any(), any()) } returns sharedPreferencesEditor
     every { sharedPreferences.edit() } returns sharedPreferencesEditor
@@ -52,8 +51,9 @@ class TipsRepositoryTest {
 
     SUT.setShown(tip)
 
-    verify { sharedPreferencesEditor.putBoolean(tip.name, true) }
-    verify { sharedPreferencesEditor.apply() }
-    confirmVerified(sharedPreferencesEditor)
+    verifyAll {
+      sharedPreferencesEditor.putBoolean(tip.name, true)
+      sharedPreferencesEditor.apply()
+    }
   }
 }
