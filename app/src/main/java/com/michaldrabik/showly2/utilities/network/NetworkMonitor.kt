@@ -14,7 +14,12 @@ import androidx.lifecycle.OnLifecycleEvent
 
 class NetworkMonitor(private val connectivityManager: ConnectivityManager) : LifecycleObserver {
 
+  companion object {
+    private const val TAG = "NetworkMonitor"
+  }
+
   var onNetworkAvailableCallback: ((Boolean) -> Unit)? = null
+  private var availableNetworksIds = mutableListOf<String>()
 
   @OnLifecycleEvent(ON_START)
   fun monitorInternet() {
@@ -25,25 +30,32 @@ class NetworkMonitor(private val connectivityManager: ConnectivityManager) : Lif
       .build()
 
     connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
-    Log.d("NetworkMonitor", "Registering network callback.")
+    Log.d(TAG, "Registering network callback.")
   }
 
   @OnLifecycleEvent(ON_STOP)
   fun stopMonitoringInternet() {
     connectivityManager.unregisterNetworkCallback(networkCallback)
-    Log.d("NetworkMonitor", "Unregistering network callback.")
+    Log.d(TAG, "Unregistering network callback.")
   }
 
   private val networkCallback = object : NetworkCallbackAdapter() {
     override fun onAvailable(network: Network) {
+      Log.d(TAG, "Network available: $network")
+      availableNetworksIds.add(network.toString())
       onNetworkAvailableCallback?.invoke(true)
     }
 
     override fun onLost(network: Network) {
-      onNetworkAvailableCallback?.invoke(false)
+      Log.d(TAG, "Network lost: $network")
+      availableNetworksIds.remove(network.toString())
+      if (availableNetworksIds.isEmpty()) {
+        onNetworkAvailableCallback?.invoke(false)
+      }
     }
 
     override fun onUnavailable() {
+      Log.d(TAG, "Network unavailable")
       onNetworkAvailableCallback?.invoke(false)
     }
   }
