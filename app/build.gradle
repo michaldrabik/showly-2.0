@@ -18,8 +18,8 @@ android {
     applicationId "com.michaldrabik.showly2"
     minSdkVersion 21
     targetSdkVersion 29
-    versionCode 46
-    versionName "1.1.4"
+    versionCode 47
+    versionName "1.1.5"
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
   }
 
