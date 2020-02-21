@@ -19,6 +19,7 @@ import com.michaldrabik.showly2.common.events.ShowsSyncComplete
 import com.michaldrabik.showly2.common.events.TraktSyncProgress
 import com.michaldrabik.showly2.connectivityManager
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
+import com.michaldrabik.showly2.di.component.FragmentComponent
 import com.michaldrabik.showly2.model.Tip
 import com.michaldrabik.showly2.model.Tip.MENU_DISCOVER
 import com.michaldrabik.showly2.model.Tip.MENU_MY_SHOWS
@@ -42,6 +43,7 @@ class MainActivity : NotificationActivity(), EventObserver {
     private const val ARG_NAVIGATION_VISIBLE = "ARG_NAVIGATION_VISIBLE"
   }
 
+  lateinit var fragmentComponent: FragmentComponent
   @Inject lateinit var viewModelFactory: DaggerViewModelFactory
   private lateinit var viewModel: MainViewModel
 
@@ -57,6 +59,8 @@ class MainActivity : NotificationActivity(), EventObserver {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
+    fragmentComponent = appComponent().fragmentComponent().create()
+
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 

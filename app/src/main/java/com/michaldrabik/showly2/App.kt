@@ -17,6 +17,7 @@ import com.michaldrabik.showly2.di.module.PreferencesModule
 import com.michaldrabik.showly2.fcm.NotificationChannel.EPISODES_ANNOUNCEMENTS
 import com.michaldrabik.showly2.fcm.NotificationChannel.GENERAL_INFO
 import com.michaldrabik.showly2.fcm.NotificationChannel.SHOWS_INFO
+import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.showly2.utilities.extensions.notificationManager
 import com.michaldrabik.storage.di.DaggerStorageComponent
 import com.michaldrabik.storage.di.StorageModule
@@ -76,6 +77,6 @@ fun Context.connectivityManager() = getSystemService(Context.CONNECTIVITY_SERVIC
 
 fun Activity.appComponent() = (application as App).appComponent
 
-fun Fragment.fragmentComponent() = (requireActivity().application as App).appComponent.fragmentComponent().create()
+fun Fragment.fragmentComponent() = (requireActivity() as MainActivity).fragmentComponent
 
 fun Service.serviceComponent() = (application as App).appComponent.serviceComponent().create()
