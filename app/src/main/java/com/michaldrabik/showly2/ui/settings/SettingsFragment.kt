@@ -147,7 +147,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
       }
     }
 
-    settingsVersion.text = "Version: ${BuildConfig.VERSION_NAME}"
+    settingsVersion.text = "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
   }
 
   private fun openTraktWebAuthorization() {
