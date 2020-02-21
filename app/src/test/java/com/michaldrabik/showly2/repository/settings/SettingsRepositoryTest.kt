@@ -16,7 +16,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
-class SettingsRepositoryMockTest : BaseMockTest() {
+class SettingsRepositoryTest : BaseMockTest() {
 
   @MockK lateinit var settingsDao: SettingsDao
 
