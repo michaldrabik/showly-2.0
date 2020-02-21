@@ -107,7 +107,6 @@ class AnnouncementManager @Inject constructor(
       }
     }
 
-//    val delayed = TimeUnit.SECONDS.toMillis(20)
     val delayed = (episodeDb.firstAired!!.toMillis() - nowUtcMillis()) + delay.delayMs + ANNOUNCEMENT_STATIC_DELAY
     val request = OneTimeWorkRequestBuilder<AnnouncementWorker>()
       .setInputData(data.build())
