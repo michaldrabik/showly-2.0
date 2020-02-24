@@ -37,7 +37,6 @@ class EpisodeDetailsViewModel @Inject constructor(
         uiState = EpisodeDetailsUiModel(commentsLoading = true)
         val comments = cloud.traktApi.fetchEpisodeComments(idTrakt.id, season, episode)
           .filter { it.parentId <= 0 }
-          .filter { !it.isSpoiler() }
           .sortedByDescending { it.id }
         uiState = EpisodeDetailsUiModel(comments = comments, commentsLoading = false)
       } catch (t: Throwable) {

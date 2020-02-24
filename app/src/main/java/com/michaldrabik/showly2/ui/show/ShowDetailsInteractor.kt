@@ -79,7 +79,6 @@ class ShowDetailsInteractor @Inject constructor(
 
   suspend fun loadComments(show: Show, limit: Int = 30) =
     showsRepository.detailsShow.loadComments(show.ids.trakt, limit)
-      .filter { !it.isSpoiler() }
 
   suspend fun isFollowed(show: Show) =
     showsRepository.myShows.load(show.ids.trakt) != null

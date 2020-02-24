@@ -13,5 +13,5 @@ data class Comment(
   val user: User
 ) {
 
-  fun isSpoiler() = spoiler || comment.contains("spoiler")
+  fun hasSpoilers() = spoiler || comment.contains("spoiler")
 }
