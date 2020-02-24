@@ -40,6 +40,13 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
+  fun enableAnticipatedShows(enable: Boolean) {
+    viewModelScope.launch {
+      interactor.enableAnticipatedShows(enable)
+      refreshSettings()
+    }
+  }
+
   fun setWhenToNotify(delay: NotificationDelay, context: Context) {
     viewModelScope.launch {
       interactor.setWhenToNotify(delay, context)

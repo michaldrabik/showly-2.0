@@ -1,11 +1,11 @@
 package com.michaldrabik.showly2.ui.common.base
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.utilities.SingleLiveEvent
+import timber.log.Timber
 
 @Suppress("PropertyName")
 open class BaseViewModel<UM : UiModel> : ViewModel() {
@@ -29,6 +29,6 @@ open class BaseViewModel<UM : UiModel> : ViewModel() {
 
   override fun onCleared() {
     super.onCleared()
-    Log.i("BaseViewModel", "ViewModel cleared.")
+    Timber.d("ViewModel cleared.")
   }
 }

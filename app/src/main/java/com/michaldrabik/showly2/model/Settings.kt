@@ -15,7 +15,8 @@ data class Settings(
   val myShowsRunningIsCollapsed: Boolean,
   val myShowsIncomingIsCollapsed: Boolean,
   val myShowsEndedIsCollapsed: Boolean,
-  val myShowsRecentsAmount: Int
+  val myShowsRecentsAmount: Int,
+  val showAnticipatedShows: Boolean
 ) {
 
   companion object {
@@ -32,7 +33,8 @@ data class Settings(
       myShowsIncomingIsCollapsed = false,
       myShowsRunningIsCollapsed = false,
       myShowsRecentsAmount = Config.MY_SHOWS_RECENTS_DEFAULT,
-      seeLaterShowsSortBy = SortOrder.NAME
+      seeLaterShowsSortBy = SortOrder.NAME,
+      showAnticipatedShows = true
     )
   }
 }

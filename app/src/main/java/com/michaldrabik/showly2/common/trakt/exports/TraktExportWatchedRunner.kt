@@ -1,6 +1,5 @@
 package com.michaldrabik.showly2.common.trakt.exports
 
-import android.util.Log
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncExportItem
 import com.michaldrabik.network.trakt.model.SyncExportRequest
@@ -11,6 +10,7 @@ import com.michaldrabik.showly2.repository.TraktAuthToken
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Episode
+import timber.log.Timber
 import javax.inject.Inject
 
 @AppScope
@@ -21,20 +21,20 @@ class TraktExportWatchedRunner @Inject constructor(
 ) : TraktSyncRunner(userTraktManager) {
 
   override suspend fun run(): Int {
-    Log.d(TAG, "Initialized.")
+    Timber.d("Initialized.")
     isRunning = true
 
-    Log.d(TAG, "Checking authorization...")
+    Timber.d("Checking authorization...")
     val authToken = checkAuthorization()
     exportWatched(authToken)
 
     isRunning = false
-    Log.d(TAG, "Finished with success.")
+    Timber.d("Finished with success.")
     return 0
   }
 
   private suspend fun exportWatched(token: TraktAuthToken) {
-    Log.d(TAG, "Exporting watched...")
+    Timber.d("Exporting watched...")
 
     val remoteWatched = cloud.traktApi.fetchSyncWatched(token.token)
       .filter { it.show != null }
@@ -54,9 +54,5 @@ class TraktExportWatchedRunner @Inject constructor(
       ?.seasons?.find { it.number == episodeDb.seasonNumber }
       ?.episodes?.find { it.number == episodeDb.episodeNumber }
     return find != null
-  }
-
-  companion object {
-    private const val TAG = "TraktExportWatched"
   }
 }

@@ -1,6 +1,5 @@
 package com.michaldrabik.showly2.common.trakt.imports
 
-import android.util.Log
 import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncItem
@@ -20,6 +19,7 @@ import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.MyShow
 import com.michaldrabik.storage.database.model.Season
 import kotlinx.coroutines.delay
+import timber.log.Timber
 import javax.inject.Inject
 
 @AppScope
@@ -33,20 +33,20 @@ class TraktImportWatchedRunner @Inject constructor(
 ) : TraktSyncRunner(userTraktManager) {
 
   override suspend fun run(): Int {
-    Log.d(TAG, "Initialized.")
+    Timber.d("Initialized.")
     isRunning = true
 
-    Log.d(TAG, "Checking authorization...")
+    Timber.d("Checking authorization...")
     val authToken = checkAuthorization()
     val syncedCount = importWatchedShows(authToken)
 
     isRunning = false
-    Log.d(TAG, "Finished with success.")
+    Timber.d("Finished with success.")
     return syncedCount
   }
 
   private suspend fun importWatchedShows(token: TraktAuthToken): Int {
-    Log.d(TAG, "Importing watched shows...")
+    Timber.d("Importing watched shows...")
 
     checkTvdbAuth()
     val syncResults = cloud.traktApi.fetchSyncWatched(token.token, "full")
@@ -58,7 +58,7 @@ class TraktImportWatchedRunner @Inject constructor(
     syncResults
       .forEachIndexed { index, result ->
         delay(200)
-        Log.d(TAG, "Processing \'${result.show!!.title}\'...")
+        Timber.d("Processing \'${result.show!!.title}\'...")
         progressListener?.invoke(result.show!!, index, syncResults.size)
 
         try {
@@ -78,7 +78,7 @@ class TraktImportWatchedRunner @Inject constructor(
             database.episodesDao().upsert(episodes)
           }
         } catch (t: Throwable) {
-          Log.w(TAG, "Processing \'${result.show!!.title}\' failed. Skipping...")
+          Timber.w("Processing \'${result.show!!.title}\' failed. Skipping...")
         }
       }
 
@@ -132,9 +132,5 @@ class TraktImportWatchedRunner @Inject constructor(
     } catch (t: Throwable) {
       // Ignore for now
     }
-  }
-
-  companion object {
-    private const val TAG = "TraktImportWatched"
   }
 }

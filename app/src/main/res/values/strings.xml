@@ -74,6 +74,8 @@
   <string name="textSettingsGeneral">General &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Recently Added Amount</string>
   <string name="textSettingsRecentShowsSummary">Number of recent shows to display in \'My Shows\' screen.</string>
+  <string name="textSettingsDiscoverAnticipatedTitle">Anticipated Shows in Discover Feed</string>
+  <string name="textSettingsDiscoverAnticipatedSummary">Switch off if you want Discover feed to only contain shows that are already available to watch.</string>
 
   <string name="textSettingsNotifications">Notifications</string>
   <string name="textSettingsPushNotificationsTitle">Push Notifications</string>

@@ -23,6 +23,8 @@ class DiscoverShowsRepository @Inject constructor(
     return nowUtcMillis() - stamp < Config.DISCOVER_SHOWS_CACHE_DURATION
   }
 
+  suspend fun clearCache() = database.discoverShowsDao().deleteAll()
+
   suspend fun loadAllCached(): List<Show> {
     val cachedShows = database.discoverShowsDao().getAll().map { it.idTrakt }
     val shows = database.showsDao().getAll(cachedShows)
@@ -35,7 +37,13 @@ class DiscoverShowsRepository @Inject constructor(
   suspend fun loadAllRemote(): List<Show> {
     val remoteShows = mutableListOf<Show>()
     val trendingShows = cloud.traktApi.fetchTrendingShows().map { mappers.show.fromNetwork(it) }
-    val anticipatedShows = cloud.traktApi.fetchAnticipatedShows().map { mappers.show.fromNetwork(it) }.toMutableList()
+
+    val showAnticipated = database.settingsDao().getAll().showAnticipatedShows
+    val anticipatedShows = mutableListOf<Show>()
+    if (showAnticipated) {
+      val shows = cloud.traktApi.fetchAnticipatedShows().map { mappers.show.fromNetwork(it) }.toMutableList()
+      anticipatedShows.addAll(shows)
+    }
 
     trendingShows.forEachIndexed { index, show ->
       addIfMissing(remoteShows, show)

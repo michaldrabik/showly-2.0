@@ -1,7 +1,6 @@
 package com.michaldrabik.showly2.common.notifications
 
 import android.content.Context
-import android.util.Log
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -29,6 +28,7 @@ import com.michaldrabik.storage.database.model.Show
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
+import timber.log.Timber
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import javax.inject.Inject
 
@@ -41,38 +41,37 @@ class AnnouncementManager @Inject constructor(
 ) {
 
   companion object {
-    private const val TAG = "AnnouncementManager"
     private const val ANNOUNCEMENT_WORK_TAG = "ANNOUNCEMENT_WORK_TAG"
     private const val ANNOUNCEMENT_STATIC_DELAY = 300000 // 5 min
   }
 
   suspend fun refreshEpisodesAnnouncements(context: Context) {
-    Log.i(TAG, "Refreshing announcements")
+    Timber.i("Refreshing announcements")
 
     WorkManager.getInstance(context.applicationContext).cancelAllWorkByTag(ANNOUNCEMENT_WORK_TAG)
 
     val settings = settingsRepository.load()
     if (!settings.episodesNotificationsEnabled) {
-      Log.i(TAG, "Episodes announcements are disabled. Exiting...")
+      Timber.i("Episodes announcements are disabled. Exiting...")
       return
     }
 
     val myShows = database.myShowsDao().getAll()
     if (myShows.isEmpty()) {
-      Log.i(TAG, "Nothing to process. Exiting...")
+      Timber.i("Nothing to process. Exiting...")
       return
     }
 
     val now = nowUtcMillis()
     val delay = settings.episodesNotificationsDelay
     myShows.forEach { show ->
-      Log.i(TAG, "Processing ${show.title} (${show.idTrakt})")
+      Timber.i("Processing ${show.title} (${show.idTrakt})")
       val episodes = database.episodesDao().getAllForShows(listOf(show.idTrakt))
       episodes
         .filter { it.firstAired != null && it.firstAired!!.toMillis() > now }
         .minBy { it.firstAired!!.toMillis() }
         ?.let {
-          Log.i(TAG, "Next episode for ${show.title} (${show.idTrakt}) found. Setting notification...")
+          Timber.i("Next episode for ${show.title} (${show.idTrakt}) found. Setting notification...")
           scheduleAnnouncement(context.applicationContext, show, it, delay)
         }
     }
@@ -117,6 +116,6 @@ class AnnouncementManager @Inject constructor(
     WorkManager.getInstance(context.applicationContext).enqueue(request)
 
     val logTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(nowUtcMillis() + delayed), ZoneId.of("UTC"))
-    Log.i(TAG, "Notification set for: ${logTime.toDisplayString()} UTC")
+    Timber.i("Notification set for: ${logTime.toDisplayString()} UTC")
   }
 }

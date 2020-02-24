@@ -21,6 +21,7 @@ import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.showly2.utilities.extensions.notificationManager
 import com.michaldrabik.storage.di.DaggerStorageComponent
 import com.michaldrabik.storage.di.StorageModule
+import timber.log.Timber
 
 class App : Application() {
 
@@ -28,7 +29,10 @@ class App : Application() {
 
   override fun onCreate() {
     super.onCreate()
+
     AndroidThreeTen.init(this)
+    Timber.plant(Timber.DebugTree())
+
     setupComponents()
     setupStrictMode()
     setupNotificationChannels()

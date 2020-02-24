@@ -2,7 +2,6 @@ package com.michaldrabik.showly2.common
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.core.app.JobIntentService
 import com.crashlytics.android.Crashlytics
 import com.michaldrabik.showly2.common.events.EventsManager
@@ -13,12 +12,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 import javax.inject.Inject
 
 class ShowsSyncService : JobIntentService(), CoroutineScope {
 
   companion object {
-    private const val TAG = "ShowsSyncService"
     private const val JOB_ID = 999
 
     fun initialize(context: Context) {
@@ -32,14 +31,15 @@ class ShowsSyncService : JobIntentService(), CoroutineScope {
   lateinit var showsSyncRunner: ShowsSyncRunner
 
   override fun onHandleWork(intent: Intent) {
-    Log.i(TAG, "Sync service initialized")
+    Timber.i("Sync service initialized")
     serviceComponent().inject(this)
     val syncCount = runBlocking {
       try {
         showsSyncRunner.synchronize()
       } catch (t: Throwable) {
+        Timber.e(t.toString())
         Crashlytics.logException(t)
-        Log.e(TAG, t.toString())
+        0
       }
     }
     if (syncCount > 0) notifyComplete()
@@ -49,7 +49,7 @@ class ShowsSyncService : JobIntentService(), CoroutineScope {
 
   override fun onDestroy() {
     coroutineContext.cancelChildren()
-    Log.i(TAG, "Sync service destroyed")
+    Timber.i("Sync service destroyed")
     super.onDestroy()
   }
 }

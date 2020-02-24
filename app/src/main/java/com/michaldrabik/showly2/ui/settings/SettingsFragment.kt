@@ -112,6 +112,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeList
         viewModel.enableEpisodesAnnouncements(isChecked, applicationContext)
       }
 
+    settingsDiscoverAnticipatedSwitch
+      .setCheckedSilent(settings.showAnticipatedShows) { _, isChecked ->
+        viewModel.enableAnticipatedShows(isChecked)
+      }
+
     settingsWhenToNotifyValue.run {
       setText(settings.episodesNotificationsDelay.stringRes)
       onClick {

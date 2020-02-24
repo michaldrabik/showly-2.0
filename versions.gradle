@@ -30,6 +30,7 @@ ext.versions = [
     retrofit               : '2.7.1',
     room                   : '2.2.4',
     threeTenAbp            : '1.2.2',
+    timber                 : '4.7.1',
 
     // Testing
     junit                  : '4.13',

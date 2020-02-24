@@ -12,11 +12,13 @@ import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
+import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope
 class SettingsInteractor @Inject constructor(
   private val settingsRepository: SettingsRepository,
+  private val showsRepository: ShowsRepository,
   private val announcementManager: AnnouncementManager,
   private val userManager: UserTraktManager
 ) {
@@ -56,6 +58,15 @@ class SettingsInteractor @Inject constructor(
       val new = it.copy(episodesNotificationsEnabled = enable)
       settingsRepository.update(new)
       announcementManager.refreshEpisodesAnnouncements(context.applicationContext)
+    }
+  }
+
+  suspend fun enableAnticipatedShows(enable: Boolean) {
+    val settings = settingsRepository.load()
+    settings.let {
+      val new = it.copy(showAnticipatedShows = enable)
+      settingsRepository.update(new)
+      showsRepository.discoverShows.clearCache()
     }
   }
 

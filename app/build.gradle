@@ -88,6 +88,7 @@ dependencies {
   kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
 
   debugImplementation "com.amitshekhar.android:debug-db:$versions.debugDb"
+  implementation "com.jakewharton.timber:timber:$versions.timber"
 
   testImplementation "junit:junit:$versions.junit"
   testImplementation "io.mockk:mockk:$versions.mockk"

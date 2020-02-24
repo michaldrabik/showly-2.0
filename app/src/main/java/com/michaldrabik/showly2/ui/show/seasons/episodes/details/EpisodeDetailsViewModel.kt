@@ -1,6 +1,5 @@
 package com.michaldrabik.showly2.ui.show.seasons.episodes.details
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.common.images.EpisodeImagesProvider
@@ -10,6 +9,7 @@ import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class EpisodeDetailsViewModel @Inject constructor(
@@ -40,7 +40,7 @@ class EpisodeDetailsViewModel @Inject constructor(
           .sortedByDescending { it.id }
         uiState = EpisodeDetailsUiModel(comments = comments, commentsLoading = false)
       } catch (t: Throwable) {
-        Log.w("EpisodeDetails", "Failed to load comments. ${t.message}")
+        Timber.w("Failed to load comments. ${t.message}")
         uiState = EpisodeDetailsUiModel(commentsLoading = false)
       }
     }

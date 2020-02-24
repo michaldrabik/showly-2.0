@@ -3,7 +3,6 @@ package com.michaldrabik.showly2.common.trakt
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
-import android.util.Log
 import com.crashlytics.android.Crashlytics
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.showly2.common.events.EventsManager
@@ -24,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class TraktSyncService : TraktNotificationsService(), CoroutineScope {
@@ -32,7 +32,6 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
     private const val ARG_IS_IMPORT = "ARG_IS_IMPORT"
     private const val ARG_IS_EXPORT = "ARG_IS_EXPORT"
 
-    private const val TAG = "TraktSyncService"
     private const val SYNC_NOTIFICATION_PROGRESS_ID = 826
     private const val SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID = 827
     private const val SYNC_NOTIFICATION_COMPLETE_ERROR_ID = 828
@@ -59,18 +58,18 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
   }
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-    Log.d(TAG, "Service initialized.")
+    Timber.d("Service initialized.")
 
     val isImport = intent?.extras?.getBoolean(ARG_IS_IMPORT) ?: false
     val isExport = intent?.extras?.getBoolean(ARG_IS_EXPORT) ?: false
 
     if (runners.any { it.isRunning }) {
-      Log.d(TAG, "Already running. Skipping...")
+      Timber.d("Already running. Skipping...")
       return START_NOT_STICKY
     }
     startForeground(SYNC_NOTIFICATION_PROGRESS_ID, createProgressNotification().build())
 
-    Log.d(TAG, "Sync started.")
+    Timber.d("Sync started.")
     launch {
       try {
         EventsManager.sendEvent(TraktSyncStart)
@@ -93,7 +92,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
         notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
         Crashlytics.logException(t)
       } finally {
-        Log.d(TAG, "Sync completed.")
+        Timber.d("Sync completed.")
         notificationManager().cancel(SYNC_NOTIFICATION_PROGRESS_ID)
         clear()
         stopSelf()

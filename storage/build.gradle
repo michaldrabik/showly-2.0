@@ -31,6 +31,7 @@ dependencies {
   kapt "androidx.room:room-compiler:$versions.room"
 
   implementation "com.jakewharton.threetenabp:threetenabp:$versions.threeTenAbp"
+  implementation "com.jakewharton.timber:timber:$versions.timber"
 
   implementation "com.google.dagger:dagger:$versions.dagger"
   kapt "com.google.dagger:dagger-compiler:$versions.dagger"

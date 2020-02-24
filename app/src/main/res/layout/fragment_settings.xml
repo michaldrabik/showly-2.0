@@ -99,7 +99,7 @@
       android:id="@+id/settingsCategoryGeneral"
       style="@style/Settings.Category"
       android:text="@string/textSettingsGeneral"
-      app:layout_constraintBottom_toTopOf="@id/settingsRecentShowsAmount"
+      app:layout_constraintBottom_toTopOf="@id/settingsDiscoverAnticipated"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsTraktSync"
       app:layout_constraintVertical_bias="0"
@@ -107,13 +107,45 @@
       app:layout_goneMarginTop="@dimen/spaceBig"
       />
 
+    <androidx.appcompat.widget.SwitchCompat
+      android:id="@+id/settingsDiscoverAnticipatedSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:checked="true"
+      app:layout_constraintBottom_toBottomOf="@id/settingsDiscoverAnticipated"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsDiscoverAnticipated"
+      />
+
+    <LinearLayout
+      android:id="@+id/settingsDiscoverAnticipated"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@id/settingsRecentShowsAmount"
+      app:layout_constraintEnd_toStartOf="@id/settingsDiscoverAnticipatedSwitch"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsCategoryGeneral"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsDiscoverAnticipatedTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:text="@string/textSettingsDiscoverAnticipatedSummary"
+        />
+
+    </LinearLayout>
+
     <LinearLayout
       android:id="@+id/settingsRecentShowsAmount"
       style="@style/Settings.ItemLayout"
       app:layout_constraintBottom_toTopOf="@id/settingsCategoryNotifications"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsCategoryGeneral"
+      app:layout_constraintTop_toBottomOf="@id/settingsDiscoverAnticipated"
       >
 
       <TextView
