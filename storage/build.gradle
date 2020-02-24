@@ -2,13 +2,14 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply from: '../versions.gradle'
 
 android {
-  compileSdkVersion 29
+  compileSdkVersion versions.compileSdk
 
   defaultConfig {
-    minSdkVersion 21
-    targetSdkVersion 29
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.compileSdk
     versionCode 1
     versionName "1.0"
 
@@ -25,16 +26,16 @@ android {
 }
 
 dependencies {
-  api "androidx.room:room-runtime:2.2.3"
-  api "androidx.room:room-ktx:2.2.3"
-  kapt "androidx.room:room-compiler:2.2.3"
+  api "androidx.room:room-runtime:$versions.room"
+  api "androidx.room:room-ktx:$versions.room"
+  kapt "androidx.room:room-compiler:$versions.room"
 
-  implementation 'com.jakewharton.threetenabp:threetenabp:1.2.2'
+  implementation "com.jakewharton.threetenabp:threetenabp:$versions.threeTenAbp"
 
-  implementation "com.google.dagger:dagger:2.26"
-  kapt "com.google.dagger:dagger-compiler:2.26"
+  implementation "com.google.dagger:dagger:$versions.dagger"
+  kapt "com.google.dagger:dagger-compiler:$versions.dagger"
 
-  testImplementation 'junit:junit:4.13'
-  androidTestImplementation 'androidx.test:runner:1.2.0'
-  androidTestImplementation 'androidx.test.ext:truth:1.2.0'
+  testImplementation "junit:junit:$versions.junit"
+  androidTestImplementation "androidx.test:runner:$versions.testRunner"
+  androidTestImplementation "androidx.test.ext:truth:$versions.testRunner"
 }
