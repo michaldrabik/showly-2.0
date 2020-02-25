@@ -66,13 +66,12 @@ import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import org.threeten.bp.Duration
 
 @SuppressLint("SetTextI18n", "DefaultLocale")
-class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>() {
+class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment_show_details) {
 
   companion object {
     const val ARG_SHOW_ID = "ARG_SHOW_ID"
   }
 
-  override val layoutResId = R.layout.fragment_show_details
   override val viewModel by viewModels<ShowDetailsViewModel> { viewModelFactory }
 
   private val showId by lazy { IdTrakt(arguments?.getLong(ARG_SHOW_ID, -1) ?: -1) }

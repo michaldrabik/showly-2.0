@@ -26,9 +26,11 @@ import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 
-class MyShowsFragment : BaseFragment<MyShowsViewModel>(), OnTabReselectedListener, OnScrollResetListener, OnTraktSyncListener {
+class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_shows),
+  OnTabReselectedListener,
+  OnScrollResetListener,
+  OnTraktSyncListener {
 
-  override val layoutResId = R.layout.fragment_my_shows
   override val viewModel by viewModels<MyShowsViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {

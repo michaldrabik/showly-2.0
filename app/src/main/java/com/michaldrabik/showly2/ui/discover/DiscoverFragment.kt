@@ -24,9 +24,8 @@ import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.random.Random
 
-class DiscoverFragment : BaseFragment<DiscoverViewModel>(), OnTabReselectedListener {
+class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_discover), OnTabReselectedListener {
 
-  override val layoutResId = R.layout.fragment_discover
   override val viewModel by viewModels<DiscoverViewModel> { viewModelFactory }
 
   private val gridSpan by lazy { resources.getInteger(R.integer.discoverGridSpan) }

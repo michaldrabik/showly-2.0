@@ -18,13 +18,12 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.fragment_fanart_gallery.*
 
 @SuppressLint("SetTextI18n", "DefaultLocale")
-class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>() {
+class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>(R.layout.fragment_fanart_gallery) {
 
   companion object {
     const val ARG_SHOW_ID = "ARG_SHOW_ID"
   }
 
-  override val layoutResId = R.layout.fragment_fanart_gallery
   override val viewModel by viewModels<FanartGalleryViewModel> { viewModelFactory }
 
   private val showId by lazy { IdTrakt(arguments?.getLong(ARG_SHOW_ID, -1) ?: -1) }

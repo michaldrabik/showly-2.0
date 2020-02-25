@@ -24,9 +24,11 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 import kotlinx.android.synthetic.main.layout_watchlist_empty.*
 
-class WatchlistFragment : BaseFragment<WatchlistViewModel>(), OnTabReselectedListener, OnEpisodesSyncedListener, OnTraktSyncListener {
+class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
+  OnTabReselectedListener,
+  OnEpisodesSyncedListener,
+  OnTraktSyncListener {
 
-  override val layoutResId = R.layout.fragment_watchlist
   override val viewModel by viewModels<WatchlistViewModel> { viewModelFactory }
 
   private lateinit var adapter: WatchlistAdapter

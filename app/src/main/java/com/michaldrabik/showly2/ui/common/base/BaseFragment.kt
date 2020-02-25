@@ -1,10 +1,9 @@
 package com.michaldrabik.showly2.ui.common.base
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
+import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -16,18 +15,10 @@ import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-abstract class BaseFragment<T : BaseViewModel<out UiModel>> : Fragment() {
+abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId) {
 
   @Inject lateinit var viewModelFactory: DaggerViewModelFactory
-
-  protected abstract val layoutResId: Int
   protected abstract val viewModel: T
-
-  override fun onCreateView(
-    inflater: LayoutInflater,
-    container: ViewGroup?,
-    savedInstanceState: Bundle?
-  ): View = inflater.inflate(layoutResId, container, false)
 
   protected fun hideNavigation(animate: Boolean = true) =
     mainActivity().hideNavigation(animate)

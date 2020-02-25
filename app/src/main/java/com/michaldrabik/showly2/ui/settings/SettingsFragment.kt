@@ -29,9 +29,8 @@ import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_settings.*
 import com.michaldrabik.network.Config as ConfigNetwork
 
-class SettingsFragment : BaseFragment<SettingsViewModel>(), OnTraktAuthorizeListener {
+class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_settings), OnTraktAuthorizeListener {
 
-  override val layoutResId = R.layout.fragment_settings
   override val viewModel by viewModels<SettingsViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {

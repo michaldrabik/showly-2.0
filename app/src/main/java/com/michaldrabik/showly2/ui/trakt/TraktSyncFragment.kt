@@ -24,9 +24,10 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_trakt_sync.*
 
-class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(), OnTraktAuthorizeListener, EventObserver {
+class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(R.layout.fragment_trakt_sync),
+  OnTraktAuthorizeListener,
+  EventObserver {
 
-  override val layoutResId = R.layout.fragment_trakt_sync
   override val viewModel by viewModels<TraktSyncViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,7 +35,7 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(), OnTraktAuthorizeLi
     super.onCreate(savedInstanceState)
   }
 
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     EventsManager.registerObserver(this)
     return super.onCreateView(inflater, container, savedInstanceState)
   }

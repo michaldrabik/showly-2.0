@@ -40,9 +40,10 @@ import com.michaldrabik.showly2.utilities.extensions.visible
 import kotlinx.android.synthetic.main.fragment_followed_shows.*
 import kotlinx.android.synthetic.main.view_search.*
 
-class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(), OnTabReselectedListener, OnTraktSyncListener {
+class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.fragment_followed_shows),
+  OnTabReselectedListener,
+  OnTraktSyncListener {
 
-  override val layoutResId = R.layout.fragment_followed_shows
   override val viewModel by viewModels<FollowedShowsViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {

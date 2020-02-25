@@ -26,9 +26,11 @@ import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.fragment_see_later.*
 
-class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(), OnTabReselectedListener, OnScrollResetListener, OnTraktSyncListener {
+class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(R.layout.fragment_see_later),
+  OnTabReselectedListener,
+  OnScrollResetListener,
+  OnTraktSyncListener {
 
-  override val layoutResId = R.layout.fragment_see_later
   override val viewModel by viewModels<SeeLaterViewModel> { viewModelFactory }
 
   private lateinit var adapter: SeeLaterAdapter

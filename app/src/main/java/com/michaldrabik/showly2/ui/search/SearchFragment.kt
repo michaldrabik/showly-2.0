@@ -35,9 +35,8 @@ import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.view_search.*
 import kotlin.random.Random
 
-class SearchFragment : BaseFragment<SearchViewModel>() {
+class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
 
-  override val layoutResId = R.layout.fragment_search
   override val viewModel by viewModels<SearchViewModel> { viewModelFactory }
 
   private var isInitialized = false
