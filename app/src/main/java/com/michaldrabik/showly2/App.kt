@@ -11,6 +11,8 @@ import android.os.StrictMode
 import androidx.fragment.app.Fragment
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.michaldrabik.network.di.DaggerCloudComponent
+import com.michaldrabik.showly2.common.ShowsSyncActivityCallbacks
+import com.michaldrabik.showly2.common.events.EventsActivityCallbacks
 import com.michaldrabik.showly2.di.component.AppComponent
 import com.michaldrabik.showly2.di.component.DaggerAppComponent
 import com.michaldrabik.showly2.di.module.PreferencesModule
@@ -27,11 +29,19 @@ class App : Application() {
 
   lateinit var appComponent: AppComponent
 
+  private val activityCallbacks by lazy {
+    listOf(
+      EventsActivityCallbacks(),
+      ShowsSyncActivityCallbacks()
+    )
+  }
+
   override fun onCreate() {
     super.onCreate()
+    activityCallbacks.forEach { registerActivityLifecycleCallbacks(it) }
 
     AndroidThreeTen.init(this)
-    Timber.plant(Timber.DebugTree())
+    if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
 
     setupComponents()
     setupStrictMode()

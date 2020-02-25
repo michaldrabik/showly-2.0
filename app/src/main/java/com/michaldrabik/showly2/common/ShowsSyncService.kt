@@ -31,7 +31,7 @@ class ShowsSyncService : JobIntentService(), CoroutineScope {
   lateinit var showsSyncRunner: ShowsSyncRunner
 
   override fun onHandleWork(intent: Intent) {
-    Timber.i("Sync service initialized")
+    Timber.d("Sync service initialized")
     serviceComponent().inject(this)
     val syncCount = runBlocking {
       try {
@@ -49,7 +49,7 @@ class ShowsSyncService : JobIntentService(), CoroutineScope {
 
   override fun onDestroy() {
     coroutineContext.cancelChildren()
-    Timber.i("Sync service destroyed")
+    Timber.d("Sync service destroyed")
     super.onDestroy()
   }
 }

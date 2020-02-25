@@ -11,10 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
-import com.michaldrabik.showly2.common.ShowsSyncService
 import com.michaldrabik.showly2.common.events.Event
 import com.michaldrabik.showly2.common.events.EventObserver
-import com.michaldrabik.showly2.common.events.EventsManager
 import com.michaldrabik.showly2.common.events.ShowsSyncComplete
 import com.michaldrabik.showly2.common.events.TraktSyncProgress
 import com.michaldrabik.showly2.connectivityManager
@@ -78,17 +76,6 @@ class MainActivity : NotificationActivity(), EventObserver {
     super.onNewIntent(intent)
     handleNotification(intent?.extras) { hideNavigation(false) }
     handleTraktAuthorization(intent?.data)
-  }
-
-  override fun onStart() {
-    super.onStart()
-    EventsManager.registerObserver(this)
-    ShowsSyncService.initialize(applicationContext)
-  }
-
-  override fun onStop() {
-    EventsManager.removeObserver(this)
-    super.onStop()
   }
 
   private fun setupViewModel() {

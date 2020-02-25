@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
@@ -15,7 +14,6 @@ import com.michaldrabik.network.Config
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.events.Event
 import com.michaldrabik.showly2.common.events.EventObserver
-import com.michaldrabik.showly2.common.events.EventsManager
 import com.michaldrabik.showly2.common.trakt.TraktSyncService
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
@@ -33,16 +31,6 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(R.layout.fragment_tra
   override fun onCreate(savedInstanceState: Bundle?) {
     fragmentComponent().inject(this)
     super.onCreate(savedInstanceState)
-  }
-
-  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-    EventsManager.registerObserver(this)
-    return super.onCreateView(inflater, container, savedInstanceState)
-  }
-
-  override fun onDestroyView() {
-    EventsManager.removeObserver(this)
-    super.onDestroyView()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
