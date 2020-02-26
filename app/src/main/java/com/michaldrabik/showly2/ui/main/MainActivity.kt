@@ -15,7 +15,6 @@ import com.michaldrabik.showly2.common.events.Event
 import com.michaldrabik.showly2.common.events.EventObserver
 import com.michaldrabik.showly2.common.events.ShowsSyncComplete
 import com.michaldrabik.showly2.common.events.TraktSyncProgress
-import com.michaldrabik.showly2.connectivityManager
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.di.component.FragmentComponent
 import com.michaldrabik.showly2.model.Tip
@@ -30,11 +29,11 @@ import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
-import com.michaldrabik.showly2.utilities.network.NetworkMonitor
+import com.michaldrabik.showly2.utilities.network.NetworkObserver
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : NotificationActivity(), EventObserver {
+class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
 
   companion object {
     private const val NAVIGATION_TRANSITION_DURATION_MS = 350L
@@ -47,7 +46,6 @@ class MainActivity : NotificationActivity(), EventObserver {
 
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
-  private val networkMonitor by lazy { NetworkMonitor(connectivityManager()) }
   private val tips by lazy {
     mapOf(
       MENU_DISCOVER to tutorialTipDiscover,
@@ -65,7 +63,6 @@ class MainActivity : NotificationActivity(), EventObserver {
     setupViewModel()
     setupNavigation()
     setupNavigationBackHandler()
-    setupNetworkMonitoring()
     setupTips()
 
     restoreState(savedInstanceState)
@@ -126,13 +123,6 @@ class MainActivity : NotificationActivity(), EventObserver {
         }
       }
     }
-  }
-
-  private fun setupNetworkMonitoring() {
-    networkMonitor.onNetworkAvailableCallback = { isAvailable ->
-      runOnUiThread { noInternetView.visibleIf(!isAvailable) }
-    }
-    lifecycle.addObserver(networkMonitor)
   }
 
   private fun setupTips() {
@@ -204,6 +194,9 @@ class MainActivity : NotificationActivity(), EventObserver {
       }
     }
   }
+
+  override fun onNetworkAvailableListener(isAvailable: Boolean) =
+    runOnUiThread { noInternetView.visibleIf(!isAvailable) }
 
   override fun onNewEvent(event: Event) {
     runOnUiThread {

@@ -21,6 +21,7 @@ import com.michaldrabik.showly2.fcm.NotificationChannel.GENERAL_INFO
 import com.michaldrabik.showly2.fcm.NotificationChannel.SHOWS_INFO
 import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.showly2.utilities.extensions.notificationManager
+import com.michaldrabik.showly2.utilities.network.NetworkMonitorCallbacks
 import com.michaldrabik.storage.di.DaggerStorageComponent
 import com.michaldrabik.storage.di.StorageModule
 import timber.log.Timber
@@ -28,11 +29,11 @@ import timber.log.Timber
 class App : Application() {
 
   lateinit var appComponent: AppComponent
-
   private val activityCallbacks by lazy {
     listOf(
       EventsActivityCallbacks(),
-      ShowsSyncActivityCallbacks()
+      ShowsSyncActivityCallbacks(),
+      NetworkMonitorCallbacks(connectivityManager())
     )
   }
 
