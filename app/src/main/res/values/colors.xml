@@ -12,6 +12,7 @@
 
   <color name="colorInfoSnackbar">#313131</color>
   <color name="colorTutorialView">#222327</color>
+  <color name="colorActorFullView">#BE000000</color>
 
   <color name="colorTextPrimary">#FEFEFE</color>
   <color name="colorTextSecondary">#B5B5B5</color>

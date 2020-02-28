@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  >
+
+  <View
+    android:id="@+id/showDetailsActorFullMask"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorActorFullView"
+    android:visibility="gone"
+    />
+
+  <FrameLayout
+    android:id="@+id/showDetailsActorFullContainer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:visibility="gone"
+    >
+
+    <ImageView
+      android:id="@+id/showDetailsActorFullImage"
+      android:layout_width="@dimen/actorFullTileImageWidth"
+      android:layout_height="@dimen/actorFullTileImageHeight"
+      />
+
+    <TextView
+      android:id="@+id/showDetailsActorFullName"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom|start"
+      android:layout_margin="@dimen/spaceSmall"
+      android:ellipsize="end"
+      android:maxLines="2"
+      android:shadowColor="@color/colorBlack"
+      android:shadowDx="3"
+      android:shadowDy="3"
+      android:shadowRadius="1"
+      android:textColor="@color/colorWhite"
+      android:textSize="13sp"
+      android:visibility="gone"
+      tools:text="Erin Moriarty as Starlight"
+      />
+
+  </FrameLayout>
+
+</merge>

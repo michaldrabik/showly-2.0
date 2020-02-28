@@ -5,8 +5,10 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
+import android.graphics.Color.TRANSPARENT
 import android.net.Uri
 import android.os.Bundle
+import android.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -22,7 +24,9 @@ import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.google.android.material.transition.MaterialContainerTransform
 import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.showly2.R
@@ -47,6 +51,7 @@ import com.michaldrabik.showly2.ui.show.related.RelatedShowAdapter
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonsAdapter
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
+import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
@@ -54,7 +59,6 @@ import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.screenHeight
 import com.michaldrabik.showly2.utilities.extensions.screenWidth
-import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.showly2.utilities.extensions.toDisplayString
 import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
 import com.michaldrabik.showly2.utilities.extensions.visible
@@ -62,6 +66,7 @@ import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.utilities.extensions.withFailListener
 import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
 import kotlinx.android.synthetic.main.fragment_show_details.*
+import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import org.threeten.bp.Duration
 
@@ -84,6 +89,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
     else screenWidth()
   }
+  private val actorViewCorner by lazy { requireContext().dimenToPx(R.dimen.actorFullTileCorner) }
   private val animationEnterRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_right) }
   private val animationExitRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right) }
 
@@ -144,9 +150,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_actors)!!)
       })
     }
-    actorsAdapter.itemClickListener = {
-      showDetailsRoot.showInfoSnackbar(getString(R.string.textActorRole, it.name, it.role))
-    }
+    actorsAdapter.itemClickListener = { showFullActorView(it) }
   }
 
   private fun setupRelatedList() {
@@ -236,6 +240,50 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       modal.onEpisodeWatchedClick = { viewModel.setWatchedEpisode(episode, season, it) }
     }
     modal.show(requireActivity().supportFragmentManager, "MODAL")
+  }
+
+  private fun showFullActorView(actor: Actor) {
+    Glide.with(this)
+      .load("$TVDB_IMAGE_BASE_BANNERS_URL${actor.image}")
+      .onlyRetrieveFromCache(true)
+      .transform(CenterCrop(), RoundedCorners(actorViewCorner))
+      .into(showDetailsActorFullImage)
+
+    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.id)
+    val transform = MaterialContainerTransform(requireContext()).apply {
+      startView = actorView
+      endView = showDetailsActorFullContainer
+      scrimColor = TRANSPARENT
+    }
+    TransitionManager.beginDelayedTransition(showDetailsRoot, transform)
+    actorView.gone()
+    showDetailsActorFullName.apply {
+      text = getString(R.string.textActorRole, actor.name, actor.role)
+      fadeIn()
+    }
+    showDetailsActorFullContainer.apply {
+      tag = actor
+      onClick { hideFullActorView(actor) }
+      visible()
+    }
+    showDetailsActorFullMask.apply {
+      onClick { hideFullActorView(actor) }
+      fadeIn()
+    }
+  }
+
+  private fun hideFullActorView(actor: Actor) {
+    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.id)
+    val transform = MaterialContainerTransform(requireContext()).apply {
+      startView = showDetailsActorFullContainer
+      endView = actorView
+      scrimColor = TRANSPARENT
+    }
+    TransitionManager.beginDelayedTransition(showDetailsRoot, transform)
+    showDetailsActorFullContainer.gone()
+    actorView.visible()
+    showDetailsActorFullMask.fadeOut()
+    showDetailsActorFullName.fadeOut()
   }
 
   private fun render(uiModel: ShowDetailsUiModel) {
@@ -417,6 +465,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
         showDetailsCommentsView.isVisible -> {
           hideExtraView(showDetailsCommentsView)
+          return@addCallback
+        }
+        showDetailsActorFullContainer.isVisible -> {
+          hideFullActorView(showDetailsActorFullContainer.tag as Actor)
           return@addCallback
         }
         else -> {

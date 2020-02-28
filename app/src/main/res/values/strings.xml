@@ -20,7 +20,7 @@
   <string name="textSearchInitial1">Find your favorite shows.</string>
   <string name="textSearchInitial2">Search powered by Trakt.tv</string>
   <string name="textClear">Clear recent searches</string>
-  <string name="textActorRole">%s as %s</string>
+  <string name="textActorRole">%s\n(%s)</string>
   <string name="textActorsEmpty">Actors are not available</string>
   <string name="textYouMayAlsoLike">You may also like:</string>
   <string name="textSeasons">Seasons:</string>

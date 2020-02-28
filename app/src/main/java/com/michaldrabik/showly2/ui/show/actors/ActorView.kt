@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy.DATA
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -33,7 +34,10 @@ class ActorView : FrameLayout {
 
   fun bind(item: Actor, clickListener: (Actor) -> Unit) {
     clear()
-    setOnClickListener { clickListener(item) }
+    tag = item.id
+    setOnClickListener {
+      if (item.image.isNotBlank()) clickListener(item)
+    }
     actorName.text = item.name.split(" ").joinToString("\n")
     loadImage(item)
   }
@@ -46,6 +50,7 @@ class ActorView : FrameLayout {
 
     Glide.with(this)
       .load("$TVDB_IMAGE_BASE_BANNERS_URL${actor.image}")
+      .diskCacheStrategy(DATA)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
       .withFailListener {
@@ -55,7 +60,6 @@ class ActorView : FrameLayout {
   }
 
   private fun clear() {
-    actorName.text = ""
     actorPlaceholder.gone()
     Glide.with(this).clear(actorImage)
   }

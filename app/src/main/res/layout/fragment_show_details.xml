@@ -520,4 +520,6 @@
     app:srcCompat="@drawable/ic_arrow_back"
     />
 
+  <include layout="@layout/fragment_show_details_actor_full_view" />
+
 </FrameLayout>
