@@ -6,7 +6,7 @@ ext.versions = [
     compileSdk             : 29,
 
     kotlin                 : '1.3.61',
-    gradleBuildTools       : '3.6.0',
+    gradleBuildTools       : '3.6.1',
 
     androidAppCompat       : '1.1.0',
     androidConstraintLayout: '1.1.3',

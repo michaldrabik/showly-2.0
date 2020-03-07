@@ -30,7 +30,7 @@ class ShowsSyncRunner @Inject constructor(
     private const val DELAY_MS = 250L
   }
 
-  suspend fun synchronize(): Int {
+  suspend fun run(): Int {
     Timber.i("Sync initialized.")
 
     val showsToSync = showsRepository.myShows.loadAll()

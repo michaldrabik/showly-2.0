@@ -32,7 +32,7 @@ class WatchlistInteractor @Inject constructor(
       .map { show ->
         val showEpisodes = episodesUnwatched.filter { it.idShowTrakt == show.ids.trakt.id }
         val episode = showEpisodes.asSequence()
-          .sortedBy { it.idTrakt }
+          .sortedBy { it.episodeNumber }
           .first()
         val season = database.seasonsDao().getById(episode.idSeason)!!
 

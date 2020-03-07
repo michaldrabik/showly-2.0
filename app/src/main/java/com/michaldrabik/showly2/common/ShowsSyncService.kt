@@ -35,7 +35,7 @@ class ShowsSyncService : JobIntentService(), CoroutineScope {
     serviceComponent().inject(this)
     val syncCount = runBlocking {
       try {
-        showsSyncRunner.synchronize()
+        showsSyncRunner.run()
       } catch (t: Throwable) {
         Timber.e(t.toString())
         Crashlytics.logException(t)
