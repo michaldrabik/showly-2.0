@@ -10,6 +10,7 @@ import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.Episode
 import javax.inject.Inject
 
 @AppScope
@@ -32,7 +33,7 @@ class WatchlistInteractor @Inject constructor(
       .map { show ->
         val showEpisodes = episodesUnwatched.filter { it.idShowTrakt == show.ids.trakt.id }
         val episode = showEpisodes.asSequence()
-          .sortedBy { it.episodeNumber }
+          .sortedWith(compareBy<Episode> { it.seasonNumber }.thenBy { it.episodeNumber })
           .first()
         val season = database.seasonsDao().getById(episode.idSeason)!!
 
