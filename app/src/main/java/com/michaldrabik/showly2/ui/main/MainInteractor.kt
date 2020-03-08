@@ -52,7 +52,10 @@ class MainInteractor @Inject constructor(
 
   suspend fun refreshAnnouncements(context: Context) = announcementManager.refreshEpisodesAnnouncements(context)
 
-  fun isTutorialShown(tip: Tip) = tipsRepository.isShown(tip)
+  fun isTutorialShown(tip: Tip) = when {
+    BuildConfig.DEBUG -> true
+    else -> tipsRepository.isShown(tip)
+  }
 
   fun setTutorialShown(tip: Tip) = tipsRepository.setShown(tip)
 }
