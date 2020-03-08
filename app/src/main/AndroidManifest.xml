@@ -27,6 +27,7 @@
       android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
       android:launchMode="singleInstance"
       android:screenOrientation="portrait"
+      tools:ignore="LockedOrientationActivity"
       >
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -79,6 +80,16 @@
       android:resource="@color/colorAccent"
       />
 
-  </application>
+    <receiver android:name=".widget.WatchlistAppWidgetProvider">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
 
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/watchlist_widgets_provider"
+        />
+    </receiver>
+
+  </application>
 </manifest>
