@@ -10,19 +10,21 @@ class EventsActivityCallbacks : Application.ActivityLifecycleCallbacks {
   private val eventsFragmentCallbacks by lazy { EventsFragmentCallbacks() }
 
   override fun onActivityCreated(activity: Activity, p1: Bundle?) {
-    (activity as AppCompatActivity).supportFragmentManager
-      .registerFragmentLifecycleCallbacks(eventsFragmentCallbacks, true)
+    (activity as? AppCompatActivity)?.supportFragmentManager
+      ?.registerFragmentLifecycleCallbacks(eventsFragmentCallbacks, true)
   }
 
-  override fun onActivityStarted(activity: Activity) =
-    EventsManager.registerObserver(activity as EventObserver)
+  override fun onActivityStarted(activity: Activity) {
+    (activity as? EventObserver)?.let { EventsManager.registerObserver(it) }
+  }
 
-  override fun onActivityStopped(activity: Activity) =
-    EventsManager.removeObserver(activity as EventObserver)
+  override fun onActivityStopped(activity: Activity) {
+    (activity as? EventObserver)?.let { EventsManager.removeObserver(it) }
+  }
 
   override fun onActivityDestroyed(activity: Activity) {
-    (activity as AppCompatActivity).supportFragmentManager
-      .unregisterFragmentLifecycleCallbacks(eventsFragmentCallbacks)
+    (activity as? AppCompatActivity)?.supportFragmentManager
+      ?.unregisterFragmentLifecycleCallbacks(eventsFragmentCallbacks)
   }
 
   override fun onActivityPaused(activity: Activity) = Unit
