@@ -73,6 +73,7 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
     super.onNewIntent(intent)
     handleNotification(intent?.extras) { hideNavigation(false) }
     handleTraktAuthorization(intent?.data)
+    //TODO Handle widget intent
   }
 
   private fun setupViewModel() {

@@ -2,6 +2,7 @@
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/watchlistWidgetItem"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:clipChildren="false"
@@ -109,7 +110,6 @@
       android:layout_height="22dp"
       android:layout_below="@id/watchlistWidgetItemSubtitle"
       android:layout_marginStart="@dimen/spaceSmall"
-      android:layout_marginTop="@dimen/spaceMicro"
       android:layout_marginEnd="@dimen/spaceTiny"
       android:layout_toEndOf="@id/watchlistWidgetItemProgressText"
       android:indeterminate="false"

@@ -1,6 +1,8 @@
 package com.michaldrabik.showly2.widget
 
 import android.content.Context
+import android.content.Intent
+import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.RemoteViews
@@ -15,6 +17,7 @@ import com.michaldrabik.showly2.ui.watchlist.WatchlistInteractor
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.replace
+import com.michaldrabik.showly2.widget.WatchlistAppWidgetProvider.Companion.EXTRA_SHOW_ID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -71,6 +74,13 @@ class WatchlistWidgetViewsFactory(
       setTextViewText(R.id.watchlistWidgetItemSubtitle2, item.episode.title)
       setTextViewText(R.id.watchlistWidgetItemProgressText, progressText)
       setProgressBar(R.id.watchlistWidgetItemProgress, item.episodesCount, item.watchedEpisodesCount, false)
+
+      val fillIntent = Intent().apply {
+        putExtras(Bundle().apply {
+          putExtra(EXTRA_SHOW_ID, item.show.ids.trakt.id)
+        })
+      }
+      setOnClickFillInIntent(R.id.watchlistWidgetItem, fillIntent)
     }
 
     try {
