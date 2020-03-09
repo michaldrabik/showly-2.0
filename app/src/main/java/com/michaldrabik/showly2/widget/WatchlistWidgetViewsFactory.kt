@@ -54,6 +54,13 @@ class WatchlistWidgetViewsFactory(
 
   override fun getViewAt(position: Int): RemoteViews {
     val item = adapterItems[position]
+    return when {
+      item.isHeader() -> createHeaderRemoteView(item)
+      else -> createItemRemoteView(item)
+    }
+  }
+
+  private fun createItemRemoteView(item: WatchlistItem): RemoteViews {
     val subtitle = String.format("S.%02d E.%02d", item.episode.season, item.episode.number)
     val progressText = "${item.watchedEpisodesCount}/${item.episodesCount}"
     val imageUrl = "${Config.TVDB_IMAGE_BASE_BANNERS_URL}${item.image.fileUrl}"
@@ -82,6 +89,11 @@ class WatchlistWidgetViewsFactory(
     return remoteView
   }
 
+  private fun createHeaderRemoteView(item: WatchlistItem) =
+    RemoteViews(context.packageName, R.layout.widget_watchlist_header).apply {
+      setTextViewText(R.id.watchlistWidgetHeaderTitle, context.getString(item.headerTextResId!!))
+    }
+
   override fun getItemId(position: Int) = adapterItems[position].show.ids.trakt.id
 
   override fun onDataSetChanged() = loadData()
@@ -93,7 +105,7 @@ class WatchlistWidgetViewsFactory(
 
   override fun hasStableIds() = true
 
-  override fun getViewTypeCount() = 1
+  override fun getViewTypeCount() = 2
 
   override fun onDestroy() {
     coroutineContext.cancelChildren()

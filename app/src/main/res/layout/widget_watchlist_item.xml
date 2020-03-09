@@ -98,7 +98,7 @@
       android:layout_marginTop="@dimen/spaceTiny"
       android:gravity="start|center_vertical"
       android:textColor="@color/colorTextSecondary"
-      android:textSize="12sp"
+      android:textSize="10sp"
       tools:text="999/999"
       />
 

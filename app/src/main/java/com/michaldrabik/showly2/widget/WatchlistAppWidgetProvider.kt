@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.widget
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.URI_INTENT_SCHEME
@@ -10,6 +11,19 @@ import android.widget.RemoteViews
 import com.michaldrabik.showly2.R
 
 class WatchlistAppWidgetProvider : AppWidgetProvider() {
+
+  companion object {
+    fun requestUpdate(context: Context) {
+      val applicationContext = context.applicationContext
+      val intent = Intent(applicationContext, WatchlistAppWidgetProvider::class.java).apply {
+        val ids: IntArray = AppWidgetManager.getInstance(applicationContext)
+          .getAppWidgetIds(ComponentName(applicationContext, WatchlistAppWidgetProvider::class.java))
+        action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+        putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+      }
+      applicationContext.sendBroadcast(intent)
+    }
+  }
 
   override fun onUpdate(
     context: Context,
@@ -31,5 +45,6 @@ class WatchlistAppWidgetProvider : AppWidgetProvider() {
     }
 
     appWidgetManager.updateAppWidget(widgetId, remoteViews)
+    appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.watchlistWidgetList)
   }
 }

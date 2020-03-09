@@ -21,6 +21,7 @@ import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.widget.WatchlistAppWidgetProvider
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 import kotlinx.android.synthetic.main.layout_watchlist_empty.*
 
@@ -111,6 +112,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
       adapter.setItems(it)
       watchlistRecycler.fadeIn()
       watchlistEmptyView.fadeIf(it.isEmpty())
+      WatchlistAppWidgetProvider.requestUpdate(requireContext())
     }
   }
 }
