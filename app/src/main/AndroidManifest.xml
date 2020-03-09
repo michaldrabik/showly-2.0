@@ -91,5 +91,9 @@
         />
     </receiver>
 
+    <service android:name=".widget.WatchlistWidgetService"
+      android:permission="android.permission.BIND_REMOTEVIEWS"
+      />
+
   </application>
 </manifest>
