@@ -6,6 +6,7 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:clipChildren="false"
+  android:descendantFocusability="blocksDescendants"
   android:orientation="horizontal"
   >
 
@@ -130,6 +131,29 @@
       android:indeterminate="false"
       android:progressBackgroundTint="@color/colorProgressBackgroundGray"
       android:progressTint="@color/colorAccent"
+      />
+
+    <ImageButton
+      android:id="@+id/watchlistWidgetItemCheckButton"
+      android:layout_width="70dp"
+      android:layout_height="26dp"
+      android:layout_below="@id/watchlistWidgetItemProgress"
+      android:layout_alignParentEnd="true"
+      android:background="@drawable/bg_widget_check_button"
+      android:src="@drawable/ic_check"
+      />
+
+    <TextView
+      android:id="@+id/watchlistWidgetItemDateButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/watchlistWidgetItemProgress"
+      android:layout_alignParentEnd="true"
+      android:textAllCaps="true"
+      android:textColor="@color/colorWatchlistDisabledButton"
+      android:textSize="12sp"
+      android:visibility="gone"
+      tools:text="Airs in 99 days"
       />
 
   </RelativeLayout>

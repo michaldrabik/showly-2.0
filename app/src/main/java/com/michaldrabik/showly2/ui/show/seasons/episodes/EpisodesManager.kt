@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.show.seasons.episodes
 import androidx.room.withTransaction
 import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.EpisodeBundle
+import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.SeasonBundle
 import com.michaldrabik.showly2.model.Show
@@ -74,6 +75,19 @@ class EpisodesManager @Inject constructor(
         }
       }
     }
+  }
+
+  suspend fun setEpisodeWatched(episodeId: Long, seasonId: Long, showId: IdTrakt) {
+    val episodeDb = database.episodesDao().getAllForSeason(seasonId).find { it.idTrakt == episodeId }!!
+    val seasonDb = database.seasonsDao().getById(seasonId)!!
+    val show = showsRepository.myShows.load(showId)!!
+    setEpisodeWatched(
+      EpisodeBundle(
+        mappers.episode.fromDatabase(episodeDb),
+        mappers.season.fromDatabase(seasonDb),
+        show
+      )
+    )
   }
 
   suspend fun setEpisodeWatched(episodeBundle: EpisodeBundle) {

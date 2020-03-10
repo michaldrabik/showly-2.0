@@ -15,8 +15,11 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.ui.watchlist.WatchlistInteractor
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.utilities.DurationPrinter
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.replace
+import com.michaldrabik.showly2.widget.WatchlistAppWidgetProvider.Companion.EXTRA_EPISODE_ID
+import com.michaldrabik.showly2.widget.WatchlistAppWidgetProvider.Companion.EXTRA_SEASON_ID
 import com.michaldrabik.showly2.widget.WatchlistAppWidgetProvider.Companion.EXTRA_SHOW_ID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +38,7 @@ class WatchlistWidgetViewsFactory(
   private val imageWidth by lazy { context.dimenToPx(R.dimen.watchlistWidgetImageWidth) }
   private val imageHeight by lazy { context.dimenToPx(R.dimen.watchlistWidgetImageHeight) }
   private val adapterItems by lazy { mutableListOf<WatchlistItem>() }
+  private val durationPrinter by lazy { DurationPrinter(context.applicationContext) }
 
   private fun loadData() {
     runBlocking {
@@ -67,6 +71,7 @@ class WatchlistWidgetViewsFactory(
     val subtitle = String.format("S.%02d E.%02d", item.episode.season, item.episode.number)
     val progressText = "${item.watchedEpisodesCount}/${item.episodesCount}"
     val imageUrl = "${Config.TVDB_IMAGE_BASE_BANNERS_URL}${item.image.fileUrl}"
+    val hasAired = item.episode.hasAired(item.season)
 
     val remoteView = RemoteViews(context.packageName, R.layout.widget_watchlist_item).apply {
       setTextViewText(R.id.watchlistWidgetItemTitle, item.show.title)
@@ -75,6 +80,14 @@ class WatchlistWidgetViewsFactory(
       setTextViewText(R.id.watchlistWidgetItemProgressText, progressText)
       setViewVisibility(R.id.watchlistWidgetItemBadge, if (item.isNew()) VISIBLE else GONE)
       setProgressBar(R.id.watchlistWidgetItemProgress, item.episodesCount, item.watchedEpisodesCount, false)
+      if (hasAired) {
+        setViewVisibility(R.id.watchlistWidgetItemCheckButton, VISIBLE)
+        setViewVisibility(R.id.watchlistWidgetItemDateButton, GONE)
+      } else {
+        setViewVisibility(R.id.watchlistWidgetItemCheckButton, GONE)
+        setViewVisibility(R.id.watchlistWidgetItemDateButton, VISIBLE)
+        setTextViewText(R.id.watchlistWidgetItemDateButton, durationPrinter.print(item.episode.firstAired))
+      }
 
       val fillIntent = Intent().apply {
         putExtras(Bundle().apply {
@@ -82,6 +95,15 @@ class WatchlistWidgetViewsFactory(
         })
       }
       setOnClickFillInIntent(R.id.watchlistWidgetItem, fillIntent)
+
+      val checkFillIntent = Intent().apply {
+        putExtras(Bundle().apply {
+          putExtra(EXTRA_EPISODE_ID, item.episode.ids.trakt.id)
+          putExtra(EXTRA_SEASON_ID, item.season.ids.trakt.id)
+          putExtra(EXTRA_SHOW_ID, item.show.ids.trakt.id)
+        })
+      }
+      setOnClickFillInIntent(R.id.watchlistWidgetItemCheckButton, checkFillIntent)
     }
 
     try {
