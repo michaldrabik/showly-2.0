@@ -69,7 +69,7 @@ class WatchlistAppWidgetProvider : AppWidgetProvider() {
     if (intent.action.equals(ACTION_SHOW_DETAILS)) {
       val showId = intent.getLongExtra(EXTRA_SHOW_ID, -1L)
       context.startActivity(Intent(context, MainActivity::class.java).apply {
-        putExtra(EXTRA_SHOW_ID, showId)
+        putExtra(EXTRA_SHOW_ID, showId.toString())
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
       })
     }
