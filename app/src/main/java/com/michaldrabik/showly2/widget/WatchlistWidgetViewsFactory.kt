@@ -73,6 +73,7 @@ class WatchlistWidgetViewsFactory(
       setTextViewText(R.id.watchlistWidgetItemSubtitle, subtitle)
       setTextViewText(R.id.watchlistWidgetItemSubtitle2, item.episode.title)
       setTextViewText(R.id.watchlistWidgetItemProgressText, progressText)
+      setViewVisibility(R.id.watchlistWidgetItemBadge, if (item.isNew()) VISIBLE else GONE)
       setProgressBar(R.id.watchlistWidgetItemProgress, item.episodesCount, item.watchedEpisodesCount, false)
 
       val fillIntent = Intent().apply {

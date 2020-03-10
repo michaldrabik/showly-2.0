@@ -38,7 +38,7 @@
   <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginEnd="@dimen/spaceSmall"
+    android:layout_marginEnd="@dimen/spaceMedium"
     android:gravity="center_vertical"
     >
 
@@ -54,6 +54,22 @@
       android:textStyle="bold"
       tools:ignore="RtlSymmetry"
       tools:text="Breaking Bad"
+      />
+
+    <TextView
+      android:id="@+id/watchlistWidgetItemBadge"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBaseline="@id/watchlistWidgetItemTitle"
+      android:layout_alignParentEnd="true"
+      android:gravity="center"
+      android:text="@string/textNew"
+      android:textAllCaps="true"
+      android:textColor="@color/colorAccent"
+      android:textSize="12sp"
+      android:textStyle="bold"
+      android:visibility="gone"
+      tools:visibility="visible"
       />
 
     <TextView
@@ -110,7 +126,6 @@
       android:layout_height="22dp"
       android:layout_below="@id/watchlistWidgetItemSubtitle"
       android:layout_marginStart="@dimen/spaceSmall"
-      android:layout_marginEnd="@dimen/spaceTiny"
       android:layout_toEndOf="@id/watchlistWidgetItemProgressText"
       android:indeterminate="false"
       android:progressBackgroundTint="@color/colorProgressBackgroundGray"
