@@ -9,19 +9,27 @@ import com.michaldrabik.showly2.fcm.FcmExtra
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.main.BaseActivity
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
+import com.michaldrabik.showly2.widget.WatchlistAppWidgetProvider
 import kotlinx.android.synthetic.main.activity_main.*
 
 abstract class NotificationActivity : BaseActivity() {
 
+  private val keys = arrayOf(
+    FcmExtra.SHOW_ID.key,
+    WatchlistAppWidgetProvider.EXTRA_SHOW_ID
+  )
+
   protected fun handleNotification(extras: Bundle?, action: () -> Unit = {}) {
     if (extras == null) return
-    if (extras.containsKey(FcmExtra.SHOW_ID.key)) {
-      handleFcmShowPush(extras, action)
+    keys.forEach {
+      if (extras.containsKey(it)) {
+        handleFcmShowPush(extras, it, action)
+      }
     }
   }
 
-  private fun handleFcmShowPush(extras: Bundle, action: () -> Unit) {
-    val showId = extras.getString(FcmExtra.SHOW_ID.key)?.toLong() ?: -1
+  private fun handleFcmShowPush(extras: Bundle, key: String, action: () -> Unit) {
+    val showId = extras.getString(key)?.toLong() ?: -1
     val bundle = Bundle().apply { putLong(ShowDetailsFragment.ARG_SHOW_ID, showId) }
     navigationHost.findNavController().run {
       try {

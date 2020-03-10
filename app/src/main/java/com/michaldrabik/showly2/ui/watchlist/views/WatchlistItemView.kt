@@ -17,6 +17,7 @@ import com.michaldrabik.showly2.utilities.extensions.bump
 import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_watchlist_item.view.*
 
@@ -59,7 +60,7 @@ class WatchlistItemView : ShowView<WatchlistItem> {
     watchlistItemNewBadge.visibleIf(item.isNew())
 
     bindProgress(item)
-    bindCheckButton(item, checkClickListener)
+    bindCheckButton(item, checkClickListener, detailsClickListener)
 
     loadImage(item, missingImageListener)
 
@@ -75,7 +76,8 @@ class WatchlistItemView : ShowView<WatchlistItem> {
 
   private fun bindCheckButton(
     item: WatchlistItem,
-    checkClickListener: (WatchlistItem) -> Unit
+    checkClickListener: (WatchlistItem) -> Unit,
+    detailsClickListener: (WatchlistItem) -> Unit
   ) {
     val hasAired = item.episode.hasAired(item.season)
     val color = if (hasAired) R.color.colorWatchlistEnabledButton else R.color.colorWatchlistDisabledButton
@@ -83,10 +85,12 @@ class WatchlistItemView : ShowView<WatchlistItem> {
       watchlistItemCheckButton.text = ""
       watchlistItemCheckButton.setIconResource(R.drawable.ic_check)
       watchlistItemCheckButton.onClick { it.bump { checkClickListener(item) } }
+      watchlistItemInfoButton.visible()
     } else {
       watchlistItemCheckButton.text = durationPrinter.print(item.episode.firstAired)
       watchlistItemCheckButton.icon = null
-      watchlistItemCheckButton.onClick { }
+      watchlistItemCheckButton.onClick { detailsClickListener(item) }
+      watchlistItemInfoButton.gone()
     }
     watchlistItemCheckButton.setTextColor(ContextCompat.getColor(context, color))
     watchlistItemCheckButton.setStrokeColorResource(color)

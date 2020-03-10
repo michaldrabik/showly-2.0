@@ -35,5 +35,6 @@
   <color name="colorEpisodeBadgeBackground">#313131</color>
 
   <color name="colorProgressGray">#333333</color>
+  <color name="colorProgressBackgroundGray">#676767</color>
   <color name="colorSeparatorGray">#2C2C2C</color>
 </resources>
