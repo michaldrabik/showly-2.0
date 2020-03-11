@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.widget
+package com.michaldrabik.showly2.widget.watchlist
 
 import android.content.Context
 import android.content.Intent
@@ -18,9 +18,9 @@ import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.DurationPrinter
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.replace
-import com.michaldrabik.showly2.widget.WatchlistAppWidgetProvider.Companion.EXTRA_EPISODE_ID
-import com.michaldrabik.showly2.widget.WatchlistAppWidgetProvider.Companion.EXTRA_SEASON_ID
-import com.michaldrabik.showly2.widget.WatchlistAppWidgetProvider.Companion.EXTRA_SHOW_ID
+import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider.Companion.EXTRA_EPISODE_ID
+import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider.Companion.EXTRA_SEASON_ID
+import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider.Companion.EXTRA_SHOW_ID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

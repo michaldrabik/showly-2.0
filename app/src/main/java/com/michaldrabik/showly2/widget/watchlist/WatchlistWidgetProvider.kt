@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.widget
+package com.michaldrabik.showly2.widget.watchlist
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -17,7 +17,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.ui.main.MainActivity
 
-class WatchlistAppWidgetProvider : AppWidgetProvider() {
+class WatchlistWidgetProvider : AppWidgetProvider() {
 
   companion object {
     const val ACTION_LIST_CLICK = "ACTION_LIST_CLICK"
@@ -27,9 +27,9 @@ class WatchlistAppWidgetProvider : AppWidgetProvider() {
 
     fun requestUpdate(context: Context) {
       val applicationContext = context.applicationContext
-      val intent = Intent(applicationContext, WatchlistAppWidgetProvider::class.java).apply {
+      val intent = Intent(applicationContext, WatchlistWidgetProvider::class.java).apply {
         val ids: IntArray = getInstance(applicationContext)
-          .getAppWidgetIds(ComponentName(applicationContext, WatchlistAppWidgetProvider::class.java))
+          .getAppWidgetIds(ComponentName(applicationContext, WatchlistWidgetProvider::class.java))
         action = ACTION_APPWIDGET_UPDATE
         putExtra(EXTRA_APPWIDGET_IDS, ids)
       }
@@ -57,7 +57,7 @@ class WatchlistAppWidgetProvider : AppWidgetProvider() {
       setEmptyView(R.id.watchlistWidgetList, R.id.watchlistWidgetEmptyView)
     }
 
-    val listClickIntent = Intent(context, WatchlistAppWidgetProvider::class.java).apply {
+    val listClickIntent = Intent(context, WatchlistWidgetProvider::class.java).apply {
       action = ACTION_LIST_CLICK
       data = Uri.parse(intent.toUri(URI_INTENT_SCHEME))
     }
@@ -75,7 +75,12 @@ class WatchlistAppWidgetProvider : AppWidgetProvider() {
           val episodeId = intent.getLongExtra(EXTRA_EPISODE_ID, -1L)
           val seasonId = intent.getLongExtra(EXTRA_SEASON_ID, -1L)
           val showId = intent.getLongExtra(EXTRA_SHOW_ID, -1L)
-          WatchlistWidgetEpisodeCheckService.initialize(context.applicationContext, episodeId, seasonId, IdTrakt(showId))
+          WatchlistWidgetEpisodeCheckService.initialize(
+            context.applicationContext,
+            episodeId,
+            seasonId,
+            IdTrakt(showId)
+          )
         }
         intent.extras?.containsKey(EXTRA_SHOW_ID) == true -> {
           val showId = intent.getLongExtra(EXTRA_SHOW_ID, -1L)

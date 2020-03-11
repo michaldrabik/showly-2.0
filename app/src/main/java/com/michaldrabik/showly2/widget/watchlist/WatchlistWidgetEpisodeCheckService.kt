@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.widget
+package com.michaldrabik.showly2.widget.watchlist
 
 import android.content.Context
 import android.content.Intent
@@ -33,7 +33,8 @@ class WatchlistWidgetEpisodeCheckService : JobIntentService(), CoroutineScope {
         putExtra(EXTRA_SEASON_ID, seasonId)
         putExtra(EXTRA_SHOW_ID, showId.id)
       }
-      enqueueWork(context, WatchlistWidgetEpisodeCheckService::class.java, JOB_ID, intent)
+      enqueueWork(context, WatchlistWidgetEpisodeCheckService::class.java,
+        JOB_ID, intent)
     }
   }
 
@@ -56,7 +57,7 @@ class WatchlistWidgetEpisodeCheckService : JobIntentService(), CoroutineScope {
 
     runBlocking {
       episodesManager.setEpisodeWatched(episodeId, seasonId, IdTrakt(showId))
-      WatchlistAppWidgetProvider.requestUpdate(applicationContext)
+      WatchlistWidgetProvider.requestUpdate(applicationContext)
     }
   }
 

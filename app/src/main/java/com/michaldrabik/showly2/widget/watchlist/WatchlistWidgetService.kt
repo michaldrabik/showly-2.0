@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.widget
+package com.michaldrabik.showly2.widget.watchlist
 
 import android.content.Intent
 import android.widget.RemoteViewsService

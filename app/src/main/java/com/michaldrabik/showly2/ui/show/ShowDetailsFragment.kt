@@ -65,7 +65,7 @@ import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.utilities.extensions.withFailListener
 import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
-import com.michaldrabik.showly2.widget.WatchlistAppWidgetProvider
+import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
@@ -339,7 +339,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       seasons?.let {
         renderSeasons(it)
         renderRuntimeLeft(it)
-        WatchlistAppWidgetProvider.requestUpdate(requireContext())
+        WatchlistWidgetProvider.requestUpdate(requireContext())
       }
       relatedShows?.let { renderRelatedShows(it) }
       comments?.let { showDetailsCommentsView.bind(it) }

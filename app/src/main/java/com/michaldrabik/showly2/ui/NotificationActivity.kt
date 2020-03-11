@@ -9,21 +9,44 @@ import com.michaldrabik.showly2.fcm.FcmExtra
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.main.BaseActivity
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
-import com.michaldrabik.showly2.widget.WatchlistAppWidgetProvider
+import com.michaldrabik.showly2.widget.search.SearchWidgetProvider
+import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider
 import kotlinx.android.synthetic.main.activity_main.*
 
 abstract class NotificationActivity : BaseActivity() {
 
-  private val keys = arrayOf(
+  private val showActionKeys = arrayOf(
     FcmExtra.SHOW_ID.key,
-    WatchlistAppWidgetProvider.EXTRA_SHOW_ID
+    WatchlistWidgetProvider.EXTRA_SHOW_ID
   )
 
   protected fun handleNotification(extras: Bundle?, action: () -> Unit = {}) {
     if (extras == null) return
-    keys.forEach {
+    if (extras.containsKey(SearchWidgetProvider.EXTRA_WIDGET_SEARCH_CLICK)) {
+      handleSearchWidgetClick(extras)
+      return
+    }
+    showActionKeys.forEach {
       if (extras.containsKey(it)) {
         handleFcmShowPush(extras, it, action)
+      }
+    }
+  }
+
+  private fun handleSearchWidgetClick(extras: Bundle?) {
+    navigationHost.findNavController().run {
+      try {
+        if (currentDestination?.id == R.id.showDetailsFragment) {
+          navigateUp()
+        }
+        if (currentDestination?.id != R.id.discoverFragment) {
+          bottomNavigationView.selectedItemId = R.id.menuDiscover
+        }
+        navigate(R.id.actionDiscoverFragmentToSearchFragment)
+        extras?.clear()
+      } catch (e: Throwable) {
+        // NOOP Simply leave app where it is in case of failure
+        Crashlytics.logException(e)
       }
     }
   }
