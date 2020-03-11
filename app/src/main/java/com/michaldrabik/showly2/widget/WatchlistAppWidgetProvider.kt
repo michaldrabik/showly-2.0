@@ -59,7 +59,7 @@ class WatchlistAppWidgetProvider : AppWidgetProvider() {
 
     val listClickIntent = Intent(context, WatchlistAppWidgetProvider::class.java).apply {
       action = ACTION_LIST_CLICK
-      data = Uri.parse(intent.toUri(URI_INTENT_SCHEME));
+      data = Uri.parse(intent.toUri(URI_INTENT_SCHEME))
     }
     val showDetailsPendingIntent = PendingIntent.getBroadcast(context, 0, listClickIntent, PendingIntent.FLAG_UPDATE_CURRENT)
     remoteViews.setPendingIntentTemplate(R.id.watchlistWidgetList, showDetailsPendingIntent)
