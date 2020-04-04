@@ -299,7 +299,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
         showDetailsCommentsButton.visible()
 
-        showDetailsShareIcon.run {
+        showDetailsShareButton.run {
           visibleIf(show.ids.imdb.id.isNotBlank())
           onClick { openShareSheet(show) }
         }
