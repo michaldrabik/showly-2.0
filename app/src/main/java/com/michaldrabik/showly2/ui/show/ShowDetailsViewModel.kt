@@ -48,7 +48,7 @@ class ShowDetailsViewModel @Inject constructor(
           withAnimation = false
         )
 
-        uiState = ShowDetailsUiModel(show = show, showLoading = false, isFollowed = followedState)
+        uiState = ShowDetailsUiModel(show = show, showLoading = false, isFollowed = followedState, isSignedIn = interactor.isSignedIn())
 
         launch { loadNextEpisode(show) }
         launch { loadBackgroundImage(show) }

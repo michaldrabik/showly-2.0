@@ -13,6 +13,7 @@ import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
+import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.repository.UserTvdbManager
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
@@ -25,6 +26,7 @@ import com.michaldrabik.storage.database.model.Season as SeasonDb
 class ShowDetailsInteractor @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
+  private val userTraktManager: UserTraktManager,
   private val userTvdbManager: UserTvdbManager,
   private val imagesProvider: ShowImagesProvider,
   private val mappers: Mappers,
@@ -82,6 +84,9 @@ class ShowDetailsInteractor @Inject constructor(
 
   suspend fun isFollowed(show: Show) =
     showsRepository.myShows.load(show.ids.trakt) != null
+
+  suspend fun isSignedIn() =
+    userTraktManager.isAuthorized()
 
   suspend fun addToFollowed(
     show: Show,

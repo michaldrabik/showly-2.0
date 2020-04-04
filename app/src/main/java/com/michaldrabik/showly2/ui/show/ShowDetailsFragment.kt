@@ -333,6 +333,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           else -> showDetailsAddButton.setState(ADD, it.withAnimation)
         }
       }
+      isSignedIn?.let { isSignedIn ->
+        showDetailsRateButton.onClick {
+          if (isSignedIn) Unit
+          else showInfoSnackbar(R.string.textSignBeforeRate)
+        }
+      }
       nextEpisode?.let { renderNextEpisode(it) }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }

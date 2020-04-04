@@ -18,7 +18,8 @@ data class ShowDetailsUiModel(
   val relatedShows: List<RelatedListItem>? = null,
   val seasons: List<SeasonListItem>? = null,
   val comments: List<Comment>? = null,
-  val isFollowed: FollowedState? = null
+  val isFollowed: FollowedState? = null,
+  val isSignedIn: Boolean? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -31,7 +32,8 @@ data class ShowDetailsUiModel(
       relatedShows = newModel.relatedShows ?: relatedShows,
       seasons = newModel.seasons ?: seasons,
       comments = newModel.comments ?: comments,
-      isFollowed = newModel.isFollowed ?: isFollowed
+      isFollowed = newModel.isFollowed ?: isFollowed,
+      isSignedIn = newModel.isSignedIn ?: isSignedIn
     )
 }
 
