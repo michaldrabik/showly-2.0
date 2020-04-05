@@ -45,6 +45,17 @@
 
   <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
 
+  <!--  Alert Dialog -->
+  <style name="AlertDialog" parent="@style/Theme.MaterialComponents.Dialog">
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="colorPrimary">@color/colorAccent</item>
+    <item name="buttonBarNegativeButtonStyle">@style/AlertDialog.NegativeButton</item>
+  </style>
+
+  <style name="AlertDialog.NegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <item name="android:textColor">@color/colorTextSecondary</item>
+  </style>
+
   <style name="MyShows" />
 
   <style name="MyShows.Label" parent="MyShows">

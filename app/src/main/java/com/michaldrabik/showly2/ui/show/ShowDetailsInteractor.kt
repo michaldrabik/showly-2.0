@@ -146,4 +146,13 @@ class ShowDetailsInteractor @Inject constructor(
 
   suspend fun removeFromWatchLater(show: Show) =
     showsRepository.seeLaterShows.delete(show.ids.trakt)
+
+  suspend fun addRating(show: Show, rating: Int) {
+    val token = userTraktManager.checkAuthorization().token
+    cloud.traktApi.postRating(
+      token,
+      mappers.show.toNetwork(show),
+      rating
+    )
+  }
 }

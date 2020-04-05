@@ -11,7 +11,8 @@
   <color name="colorMask">#99000000</color>
 
   <color name="colorInfoSnackbar">#313131</color>
-  <color name="colorTutorialView">#222327</color>
+  <color name="colorDialogView">#1D1E22</color>
+  <color name="colorTutorialView">#1D1E22</color>
   <color name="colorActorFullView">#BE000000</color>
 
   <color name="colorTextPrimary">#FEFEFE</color>

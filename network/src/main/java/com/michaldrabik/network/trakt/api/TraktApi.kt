@@ -6,10 +6,13 @@ import com.michaldrabik.network.Config.TRAKT_REDIRECT_URL
 import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.network.trakt.model.Episode
 import com.michaldrabik.network.trakt.model.OAuthResponse
+import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.network.trakt.model.SyncExportRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRevokeRequest
+import com.michaldrabik.network.trakt.model.request.RatingRequest
+import com.michaldrabik.network.trakt.model.request.RatingRequestShow
 
 class TraktApi(private val service: TraktService) {
 
@@ -94,4 +97,10 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun postSyncWatched(token: String, request: SyncExportRequest) =
     service.postSyncWatched("Bearer $token", request)
+
+  suspend fun postRating(token: String, show: Show, rating: Int) {
+    val requestShow = RatingRequestShow(rating, show.ids)
+    val body = RatingRequest(listOf(requestShow))
+    service.postRating("Bearer $token", body)
+  }
 }

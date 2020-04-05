@@ -152,6 +152,20 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
+  fun addRating(rating: Int) {
+    viewModelScope.launch {
+      try {
+        uiState = ShowDetailsUiModel(rateLoading = true)
+        interactor.addRating(show, rating)
+        _messageLiveData.value = R.string.textShowRated
+      } catch (error: Throwable) {
+        _errorLiveData.value = R.string.errorGeneral
+      } finally {
+        uiState = ShowDetailsUiModel(rateLoading = false)
+      }
+    }
+  }
+
   fun addFollowedShow(context: Context) {
     if (!checkSeasonsLoaded()) return
     viewModelScope.launch {

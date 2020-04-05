@@ -11,6 +11,7 @@
 
   <string name="textOk">OK</string>
   <string name="textNew">New</string>
+  <string name="textCancel">Cancel</string>
   <string name="textNextEpisode">Next Episode:</string>
   <string name="textSearchFor">Search…</string>
   <string name="textSearchForMyShows">Search my shows…</string>
@@ -65,6 +66,7 @@
   <string name="textRuntimeLeftHours">~%1$dh %2$dm of watching</string>
   <string name="textRuntimeLeftMinutes">~%1$dm of watching</string>
   <string name="textSignBeforeRate">Please sign in before rating a show.</string>
+  <string name="textShowRated">Your rating has been saved.</string>
 
   <string name="textSettings">Settings</string>
   <string name="textSettingsTrakt">Trakt.tv</string>

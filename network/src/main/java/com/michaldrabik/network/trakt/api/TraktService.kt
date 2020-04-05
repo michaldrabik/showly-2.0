@@ -15,6 +15,7 @@ import com.michaldrabik.network.trakt.model.User
 import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRevokeRequest
+import com.michaldrabik.network.trakt.model.request.RatingRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -95,4 +96,10 @@ interface TraktService {
     @Header("Authorization") authToken: String,
     @Body request: SyncExportRequest
   ): SyncExportResult
+
+  @POST("sync/ratings")
+  suspend fun postRating(
+    @Header("Authorization") authToken: String,
+    @Body request: RatingRequest
+  ): Response<Any>
 }

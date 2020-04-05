@@ -15,6 +15,7 @@ import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.view.setPadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -26,6 +27,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialContainerTransform
 import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_BANNERS_URL
@@ -44,6 +46,7 @@ import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.ADD
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_MY_SHOWS
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_WATCH_LATER
+import com.michaldrabik.showly2.ui.common.views.RateView
 import com.michaldrabik.showly2.ui.show.actors.ActorsAdapter
 import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryFragment
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
@@ -335,7 +338,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       isSignedIn?.let { isSignedIn ->
         showDetailsRateButton.onClick {
-          if (isSignedIn) Unit
+          if (isSignedIn) openRateDialog()
           else showInfoSnackbar(R.string.textSignBeforeRate)
         }
       }
@@ -349,6 +352,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       relatedShows?.let { renderRelatedShows(it) }
       comments?.let { showDetailsCommentsView.bind(it) }
+      rateLoading?.let {
+        showDetailsRateButton.visibleIf(!it, gone = false)
+        showDetailsRateProgress.visibleIf(it)
+      }
     }
   }
 
@@ -461,6 +468,19 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
     val shareIntent = Intent.createChooser(intent, "Share ${show.title}")
     startActivity(shareIntent)
+  }
+
+  private fun openRateDialog() {
+    val context = requireContext()
+    val rateView = RateView(context).apply {
+      setPadding(context.dimenToPx(R.dimen.spaceNormal))
+    }
+    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
+      .setView(rateView)
+      .setPositiveButton(R.string.textRate) { _, _ -> viewModel.addRating(rateView.getRating()) }
+      .setNegativeButton(R.string.textCancel) { _, _ -> }
+      .show()
   }
 
   private fun handleBackPressed() {

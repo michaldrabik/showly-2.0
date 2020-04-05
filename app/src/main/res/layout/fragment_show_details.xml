@@ -381,6 +381,18 @@
         app:layout_constraintTop_toTopOf="@id/showDetailsCommentsButton"
         />
 
+      <ProgressBar
+        android:id="@+id/showDetailsRateProgress"
+        style="@style/ProgressBarAccent"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/showDetailsRateButton"
+        app:layout_constraintEnd_toEndOf="@id/showDetailsRateButton"
+        app:layout_constraintStart_toStartOf="@id/showDetailsRateButton"
+        app:layout_constraintTop_toTopOf="@id/showDetailsRateButton"
+        />
+
       <TextView
         android:id="@+id/showDetailsCommentsButton"
         style="@style/ShowDetails.ExtraButton"
