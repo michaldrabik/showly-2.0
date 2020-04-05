@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+import android.content.res.ColorStateList
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.Color.TRANSPARENT
 import android.net.Uri
@@ -16,6 +17,7 @@ import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
+import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -47,6 +49,7 @@ import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.ADD
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_MY_SHOWS
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_WATCH_LATER
 import com.michaldrabik.showly2.ui.common.views.RateView
+import com.michaldrabik.showly2.ui.common.views.RateView.Companion.INITIAL_RATING
 import com.michaldrabik.showly2.ui.show.actors.ActorsAdapter
 import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryFragment
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
@@ -336,12 +339,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           else -> showDetailsAddButton.setState(ADD, it.withAnimation)
         }
       }
-      isSignedIn?.let { isSignedIn ->
-        showDetailsRateButton.onClick {
-          if (isSignedIn) openRateDialog()
-          else showInfoSnackbar(R.string.textSignBeforeRate)
-        }
-      }
       nextEpisode?.let { renderNextEpisode(it) }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
@@ -352,10 +349,25 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       relatedShows?.let { renderRelatedShows(it) }
       comments?.let { showDetailsCommentsView.bind(it) }
-      rateLoading?.let {
-        showDetailsRateButton.visibleIf(!it, gone = false)
-        showDetailsRateProgress.visibleIf(it)
-      }
+      ratingState?.let { renderRating(it) }
+    }
+  }
+
+  private fun renderRating(rating: RatingState) {
+    showDetailsRateButton.visibleIf(rating.rateLoading == false, gone = false)
+    showDetailsRateProgress.visibleIf(rating.rateLoading == true)
+
+    showDetailsRateButton.text =
+      if (rating.hasRating()) "${rating.userRating?.rating}/10"
+      else getString(R.string.textRate)
+
+    val color = ContextCompat.getColor(requireContext(), if (rating.hasRating()) R.color.colorAccent else R.color.colorTextPrimary)
+    showDetailsRateButton.setTextColor(color)
+    TextViewCompat.setCompoundDrawableTintList(showDetailsRateButton, ColorStateList.valueOf(color))
+
+    showDetailsRateButton.onClick {
+      if (rating.rateAllowed == true) openRateDialog(rating.userRating?.rating ?: INITIAL_RATING)
+      else showInfoSnackbar(R.string.textSignBeforeRate)
     }
   }
 
@@ -470,10 +482,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     startActivity(shareIntent)
   }
 
-  private fun openRateDialog() {
+  private fun openRateDialog(rating: Int) {
     val context = requireContext()
     val rateView = RateView(context).apply {
       setPadding(context.dimenToPx(R.dimen.spaceNormal))
+      setRating(rating)
     }
     MaterialAlertDialogBuilder(context, R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))

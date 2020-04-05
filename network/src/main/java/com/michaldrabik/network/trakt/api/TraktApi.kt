@@ -103,4 +103,7 @@ class TraktApi(private val service: TraktService) {
     val body = RatingRequest(listOf(requestShow))
     service.postRating("Bearer $token", body)
   }
+
+  suspend fun fetchShowsRatings(token: String) =
+    service.fetchShowsRatings("Bearer $token")
 }

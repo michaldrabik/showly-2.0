@@ -13,6 +13,7 @@ import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.SeasonBundle
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.model.ShowRating
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
@@ -22,6 +23,7 @@ import com.michaldrabik.showly2.utilities.extensions.findReplace
 import com.michaldrabik.showly2.utilities.extensions.replace
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
 
@@ -40,6 +42,8 @@ class ShowDetailsViewModel @Inject constructor(
       try {
         uiState = ShowDetailsUiModel(showLoading = true)
         show = interactor.loadShowDetails(id)
+
+        val isSignedIn = interactor.isSignedIn()
         val isFollowed = async { interactor.isFollowed(show) }
         val isWatchLater = async { interactor.isWatchLater(show) }
         val followedState = FollowedState(
@@ -48,7 +52,12 @@ class ShowDetailsViewModel @Inject constructor(
           withAnimation = false
         )
 
-        uiState = ShowDetailsUiModel(show = show, showLoading = false, isFollowed = followedState, isSignedIn = interactor.isSignedIn())
+        uiState = ShowDetailsUiModel(
+          show = show,
+          showLoading = false,
+          isFollowed = followedState,
+          ratingState = RatingState(rateAllowed = isSignedIn, rateLoading = false)
+        )
 
         launch { loadNextEpisode(show) }
         launch { loadBackgroundImage(show) }
@@ -63,6 +72,7 @@ class ShowDetailsViewModel @Inject constructor(
           areSeasonsLoaded = true
         }
         launch { loadRelatedShows(show) }
+        if (isSignedIn) launch { loadRating(show) }
       } catch (t: Throwable) {
         _errorLiveData.value = R.string.errorCouldNotLoadShow
       }
@@ -152,16 +162,29 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
+  private suspend fun loadRating(show: Show) {
+    try {
+      uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = true))
+      val rating = interactor.loadRating(show)
+      uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = rating))
+    } catch (error: Throwable) {
+      Timber.e(error)
+    } finally {
+      uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = false))
+    }
+  }
+
   fun addRating(rating: Int) {
     viewModelScope.launch {
       try {
-        uiState = ShowDetailsUiModel(rateLoading = true)
+        uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = true))
         interactor.addRating(show, rating)
         _messageLiveData.value = R.string.textShowRated
+        uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = ShowRating(show.ids, rating)))
       } catch (error: Throwable) {
         _errorLiveData.value = R.string.errorGeneral
       } finally {
-        uiState = ShowDetailsUiModel(rateLoading = false)
+        uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = false))
       }
     }
   }

@@ -5,6 +5,7 @@ import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.model.ShowRating
 import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
@@ -19,8 +20,7 @@ data class ShowDetailsUiModel(
   val seasons: List<SeasonListItem>? = null,
   val comments: List<Comment>? = null,
   val isFollowed: FollowedState? = null,
-  val isSignedIn: Boolean? = null,
-  val rateLoading: Boolean? = null
+  val ratingState: RatingState? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -34,8 +34,11 @@ data class ShowDetailsUiModel(
       seasons = newModel.seasons ?: seasons,
       comments = newModel.comments ?: comments,
       isFollowed = newModel.isFollowed ?: isFollowed,
-      isSignedIn = newModel.isSignedIn ?: isSignedIn,
-      rateLoading = newModel.rateLoading ?: rateLoading
+      ratingState = newModel.ratingState?.copy(
+        rateLoading = newModel.ratingState.rateLoading ?: ratingState?.rateLoading,
+        rateAllowed = newModel.ratingState.rateAllowed ?: ratingState?.rateAllowed,
+        userRating = newModel.ratingState.userRating ?: ratingState?.userRating
+      ) ?: ratingState
     )
 }
 
@@ -44,3 +47,12 @@ data class FollowedState(
   val isWatchLater: Boolean,
   val withAnimation: Boolean
 )
+
+data class RatingState(
+  val userRating: ShowRating? = null,
+  val rateAllowed: Boolean? = null,
+  val rateLoading: Boolean? = null
+) {
+
+  fun hasRating() = userRating != null && userRating.rating > 0
+}

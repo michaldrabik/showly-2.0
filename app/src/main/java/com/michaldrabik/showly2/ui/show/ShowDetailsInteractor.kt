@@ -12,6 +12,7 @@ import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.model.ShowRating
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.repository.UserTvdbManager
@@ -154,5 +155,12 @@ class ShowDetailsInteractor @Inject constructor(
       mappers.show.toNetwork(show),
       rating
     )
+  }
+
+  suspend fun loadRating(show: Show): ShowRating? {
+    val token = userTraktManager.checkAuthorization().token
+    val ratings = cloud.traktApi.fetchShowsRatings(token)
+    val rating = ratings.find { it.show.ids.trakt == show.ids.trakt.id }
+    return rating?.let { ShowRating(show.ids, it.rating) }
   }
 }
