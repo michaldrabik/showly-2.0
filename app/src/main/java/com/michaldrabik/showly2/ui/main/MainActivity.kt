@@ -76,7 +76,7 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
   }
 
   override fun onStop() {
-    viewModel.clear()
+    viewModel.clearUp()
     super.onStop()
   }
 

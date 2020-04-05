@@ -61,7 +61,5 @@ class MainInteractor @Inject constructor(
 
   fun setTutorialShown(tip: Tip) = tipsRepository.setShown(tip)
 
-  fun clear() {
-    ratingsRepository.clear()
-  }
+  fun clear() = ratingsRepository.clear()
 }
