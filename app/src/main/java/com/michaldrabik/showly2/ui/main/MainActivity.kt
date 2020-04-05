@@ -75,6 +75,11 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
     handleTraktAuthorization(intent?.data)
   }
 
+  override fun onStop() {
+    viewModel.clear()
+    super.onStop()
+  }
+
   private fun setupViewModel() {
     viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     viewModel.run {

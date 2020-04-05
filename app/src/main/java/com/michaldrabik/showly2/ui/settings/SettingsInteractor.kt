@@ -11,6 +11,7 @@ import com.michaldrabik.showly2.fcm.NotificationChannel
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.repository.UserTraktManager
+import com.michaldrabik.showly2.repository.rating.RatingsRepository
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import javax.inject.Inject
@@ -19,6 +20,7 @@ import javax.inject.Inject
 class SettingsInteractor @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val showsRepository: ShowsRepository,
+  private val ratingsRepository: RatingsRepository,
   private val announcementManager: AnnouncementManager,
   private val userManager: UserTraktManager
 ) {
@@ -87,7 +89,10 @@ class SettingsInteractor @Inject constructor(
     userManager.authorize(code)
   }
 
-  suspend fun logoutTrakt() = userManager.revokeToken()
+  suspend fun logoutTrakt() {
+    userManager.revokeToken()
+    ratingsRepository.clear()
+  }
 
   suspend fun isTraktAuthorized() = userManager.isAuthorized()
 

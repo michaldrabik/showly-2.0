@@ -16,6 +16,7 @@ import com.michaldrabik.showly2.model.ShowRating
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.repository.UserTvdbManager
+import com.michaldrabik.showly2.repository.rating.RatingsRepository
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
@@ -31,7 +32,8 @@ class ShowDetailsInteractor @Inject constructor(
   private val userTvdbManager: UserTvdbManager,
   private val imagesProvider: ShowImagesProvider,
   private val mappers: Mappers,
-  private val showsRepository: ShowsRepository
+  private val showsRepository: ShowsRepository,
+  private val ratingsRepository: RatingsRepository
 ) {
 
   suspend fun loadShowDetails(idTrakt: IdTrakt) =
@@ -150,17 +152,11 @@ class ShowDetailsInteractor @Inject constructor(
 
   suspend fun addRating(show: Show, rating: Int) {
     val token = userTraktManager.checkAuthorization().token
-    cloud.traktApi.postRating(
-      token,
-      mappers.show.toNetwork(show),
-      rating
-    )
+    ratingsRepository.addRating(token, show, rating)
   }
 
   suspend fun loadRating(show: Show): ShowRating? {
     val token = userTraktManager.checkAuthorization().token
-    val ratings = cloud.traktApi.fetchShowsRatings(token)
-    val rating = ratings.find { it.show.ids.trakt == show.ids.trakt.id }
-    return rating?.let { ShowRating(show.ids, it.rating) }
+    return ratingsRepository.loadRating(token, show)
   }
 }

@@ -34,4 +34,13 @@ class MainViewModel @Inject constructor(
   fun isTipShown(tip: Tip) = interactor.isTutorialShown(tip)
 
   fun setTipShown(tip: Tip) = interactor.setTutorialShown(tip)
+
+  fun clear() {
+    interactor.clear()
+  }
+
+  override fun onCleared() {
+    clear()
+    super.onCleared()
+  }
 }

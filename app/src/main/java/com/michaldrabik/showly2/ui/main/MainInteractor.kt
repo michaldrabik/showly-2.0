@@ -8,6 +8,7 @@ import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.fcm.NotificationChannel
 import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.model.Tip
+import com.michaldrabik.showly2.repository.rating.RatingsRepository
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.repository.tutorial.TipsRepository
 import javax.inject.Inject
@@ -16,6 +17,7 @@ import javax.inject.Inject
 class MainInteractor @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val tipsRepository: TipsRepository,
+  private val ratingsRepository: RatingsRepository,
   private val announcementManager: AnnouncementManager
 ) {
 
@@ -58,4 +60,8 @@ class MainInteractor @Inject constructor(
   }
 
   fun setTutorialShown(tip: Tip) = tipsRepository.setShown(tip)
+
+  fun clear() {
+   ratingsRepository.clear()
+  }
 }

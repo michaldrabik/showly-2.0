@@ -180,7 +180,7 @@ class ShowDetailsViewModel @Inject constructor(
         uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = true))
         interactor.addRating(show, rating)
         _messageLiveData.value = R.string.textShowRated
-        uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = ShowRating(show.ids, rating)))
+        uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = ShowRating(show.ids.trakt, rating)))
       } catch (error: Throwable) {
         _errorLiveData.value = R.string.errorGeneral
       } finally {
