@@ -42,7 +42,7 @@ class AnnouncementManager @Inject constructor(
 
   companion object {
     private const val ANNOUNCEMENT_WORK_TAG = "ANNOUNCEMENT_WORK_TAG"
-    private const val ANNOUNCEMENT_STATIC_DELAY = 300000 // 5 min
+    private const val ANNOUNCEMENT_STATIC_DELAY = 60000 // 1 min
   }
 
   suspend fun refreshEpisodesAnnouncements(context: Context) {

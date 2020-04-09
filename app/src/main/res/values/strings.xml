@@ -93,6 +93,9 @@
   <string name="textSettingsShowsNotificationsWhen1Hour">1 Hour After</string>
   <string name="textSettingsShowsNotificationsWhen3Hours">3 Hours After</string>
   <string name="textSettingsShowsNotificationsWhen6Hours">6 Hours After</string>
+  <string name="textSettingsShowsNotificationsWhen1HourBefore">1 Hour Before</string>
+  <string name="textSettingsShowsNotificationsWhen3HoursBefore">3 Hours Before</string>
+  <string name="textSettingsShowsNotificationsWhen6HoursBefore">6 Hours Before</string>
   <string name="textSettingsShowsNotificationsWhen12Hours">12 Hours After</string>
   <string name="textSettingsShowsNotificationsWhenNextDay">1 Day After</string>
   <string name="textSettingsMisc">Misc</string>
