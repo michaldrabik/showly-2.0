@@ -60,6 +60,16 @@
         />
 
       <ImageView
+        android:id="@+id/searchSortIcon"
+        android:layout_width="22dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:tint="@color/colorSearchViewIcon"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_sort"
+        />
+
+      <ImageView
         android:id="@+id/searchSettingsIcon"
         android:layout_width="22dp"
         android:layout_height="match_parent"

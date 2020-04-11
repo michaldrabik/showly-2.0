@@ -2,7 +2,6 @@ package com.michaldrabik.showly2.ui.discover
 
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.IdRes
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -19,6 +18,7 @@ import com.michaldrabik.showly2.utilities.extensions.disableUi
 import com.michaldrabik.showly2.utilities.extensions.enableUi
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
 import kotlinx.android.synthetic.main.fragment_discover.*
@@ -55,18 +55,27 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
 
   private fun setupView() {
     discoverSearchView.run {
+      sortIconVisible = true
+      settingsIconVisible = false
       isClickable = false
-      onClick { navigateTo(R.id.actionDiscoverFragmentToSearchFragment) }
-      onSettingsClickListener = { navigateTo(R.id.actionDiscoverFragmentToSettingsFragment) }
+      onClick { navigateToSearch() }
+      onSortClickListener = { discoverSortView.fadeIn() }
       translationY = mainActivity().discoverSearchViewPosition
+    }
+    discoverSortView.sortSelectedListener = {
+      viewModel.setSortOrder(it)
+      viewModel.loadDiscoverShows(scrollToTop = true)
+      discoverSortView.gone()
     }
   }
 
   private fun setupRecycler() {
     layoutManager = GridLayoutManager(context, gridSpan)
-    adapter = DiscoverAdapter()
-    adapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
-    adapter.itemClickListener = { navigateToDetails(it) }
+    adapter = DiscoverAdapter().apply {
+      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+      itemClickListener = { navigateToDetails(it) }
+      listChangeListener = { discoverRecycler.scrollToPosition(0) }
+    }
     discoverRecycler.apply {
       adapter = this@DiscoverFragment.adapter
       layoutManager = this@DiscoverFragment.layoutManager
@@ -87,13 +96,13 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     }
   }
 
-  private fun navigateTo(@IdRes id: Int) {
+  private fun navigateToSearch() {
     disableUi()
     saveUi()
     hideNavigation()
     discoverRecycler.fadeOut(duration = 200) {
       enableUi()
-      super.navigateTo(id, null)
+      super.navigateTo(R.id.actionDiscoverFragmentToSearchFragment, null)
     }
   }
 
@@ -131,7 +140,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
   private fun render(uiModel: DiscoverUiModel) {
     uiModel.run {
       shows?.let {
-        adapter.setItems(it)
+        adapter.setItems(it, scrollToTop == true)
         layoutManager.withSpanSizeLookup { pos -> adapter.getItems()[pos].image.type.spanSize }
         discoverRecycler.fadeIn()
       }
@@ -140,8 +149,9 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
         discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
       }
+      sortOrder?.let { discoverSortView.bind(it) }
     }
   }
 
-  override fun onTabReselected() = navigateTo(R.id.actionDiscoverFragmentToSearchFragment)
+  override fun onTabReselected() = navigateToSearch()
 }

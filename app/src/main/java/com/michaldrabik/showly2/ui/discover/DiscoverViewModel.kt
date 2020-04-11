@@ -3,6 +3,10 @@ package com.michaldrabik.showly2.ui.discover
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.model.DiscoverSortOrder
+import com.michaldrabik.showly2.model.DiscoverSortOrder.HOT
+import com.michaldrabik.showly2.model.DiscoverSortOrder.NEWEST
+import com.michaldrabik.showly2.model.DiscoverSortOrder.RATING
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.FANART_WIDE
@@ -22,7 +26,7 @@ class DiscoverViewModel @Inject constructor(
 
   private var lastPullToRefreshMs = 0L
 
-  fun loadDiscoverShows(pullToRefresh: Boolean = false) {
+  fun loadDiscoverShows(pullToRefresh: Boolean = false, scrollToTop: Boolean = false) {
     if (pullToRefresh && nowUtcMillis() - lastPullToRefreshMs < Config.PULL_TO_REFRESH_COOLDOWN_MS) {
       uiState = DiscoverUiModel(showLoading = false)
       return
@@ -41,13 +45,13 @@ class DiscoverViewModel @Inject constructor(
 
         if (!pullToRefresh) {
           val cachedShows = interactor.loadCachedShows()
-          onShowsLoaded(cachedShows, myShowsIds)
+          onShowsLoaded(cachedShows, myShowsIds, scrollToTop)
         }
 
         if (pullToRefresh || !interactor.isCacheValid()) {
           checkTvdbAuth()
           val remoteShows = interactor.loadRemoteShows()
-          onShowsLoaded(remoteShows, myShowsIds)
+          onShowsLoaded(remoteShows, myShowsIds, scrollToTop)
         }
 
         if (pullToRefresh) lastPullToRefreshMs = nowUtcMillis()
@@ -62,26 +66,36 @@ class DiscoverViewModel @Inject constructor(
 
   private suspend fun onShowsLoaded(
     shows: List<Show>,
-    followedShowsIds: List<Long>
+    followedShowsIds: List<Long>,
+    scrollToTop: Boolean
   ) {
-    val items = shows.mapIndexed { index, show ->
-      val itemType = when (index) {
-        in (0..500 step 14) -> FANART_WIDE
-        in (5..500 step 14), in (9..500 step 14) -> FANART
-        else -> POSTER
+    val items = shows
+      .sortedBy(interactor.sortOrder)
+      .mapIndexed { index, show ->
+        val itemType = when (index) {
+          in (0..500 step 14) -> FANART_WIDE
+          in (5..500 step 14), in (9..500 step 14) -> FANART
+          else -> POSTER
+        }
+        val image = interactor.findCachedImage(show, itemType)
+        DiscoverListItem(show, image, isFollowed = show.ids.trakt.id in followedShowsIds)
       }
-      val image = interactor.findCachedImage(show, itemType)
-      DiscoverListItem(show, image, isFollowed = show.ids.trakt.id in followedShowsIds)
-    }
-    uiState = DiscoverUiModel(shows = items)
+    uiState = DiscoverUiModel(shows = items, sortOrder = interactor.sortOrder, scrollToTop = scrollToTop)
   }
+
+  private fun List<Show>.sortedBy(order: DiscoverSortOrder) =
+    when (order) {
+      HOT -> this
+      RATING -> this.sortedWith(compareByDescending<Show> { it.votes }.thenBy { it.rating })
+      NEWEST -> this.sortedByDescending { it.year }
+    }
 
   fun loadMissingImage(item: DiscoverListItem, force: Boolean) {
 
     fun updateShowsItem(newItem: DiscoverListItem) {
       val currentItems = uiState?.shows?.toMutableList()
       currentItems?.findReplace(newItem) { it.isSameAs(newItem) }
-      uiState = DiscoverUiModel(shows = currentItems)
+      uiState = DiscoverUiModel(shows = currentItems, scrollToTop = false)
     }
 
     viewModelScope.launch {
@@ -93,6 +107,10 @@ class DiscoverViewModel @Inject constructor(
         updateShowsItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }
+  }
+
+  fun setSortOrder(order: DiscoverSortOrder) {
+    interactor.sortOrder = order
   }
 
   private suspend fun checkTvdbAuth() {

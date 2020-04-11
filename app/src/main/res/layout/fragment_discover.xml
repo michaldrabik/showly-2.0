@@ -46,4 +46,15 @@
     android:layout_marginRight="@dimen/spaceMedium"
     />
 
+  <com.michaldrabik.showly2.ui.common.views.DiscoverSortOrderView
+    android:id="@+id/discoverSortView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

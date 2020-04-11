@@ -16,7 +16,7 @@ import com.michaldrabik.showly2.model.SortOrder.RATING
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsBundle
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsAllSectionAdapter
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
-import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
+import com.michaldrabik.showly2.utilities.extensions.expandTouch
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
@@ -57,7 +57,7 @@ class MyShowsAllSection : ConstraintLayout {
   private fun setupView() {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     myShowsAllSectionSortView.setAvailable(listOf(NAME, NEWEST, RATING))
-    myShowsAllSectionSortButton.expandTouchArea()
+    myShowsAllSectionSortButton.expandTouch()
     myShowsAllSectionSortButton.onClick { button ->
       button.gone()
       myShowsAllSectionSortView.run {

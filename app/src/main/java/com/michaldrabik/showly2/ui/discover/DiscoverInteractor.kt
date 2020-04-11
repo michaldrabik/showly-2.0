@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.discover
 
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.di.scope.AppScope
+import com.michaldrabik.showly2.model.DiscoverSortOrder
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.repository.UserTvdbManager
@@ -14,6 +15,8 @@ class DiscoverInteractor @Inject constructor(
   private val tvdbUserManager: UserTvdbManager,
   private val showsRepository: ShowsRepository
 ) {
+
+  var sortOrder = DiscoverSortOrder.HOT
 
   suspend fun checkTvdbAuth() = tvdbUserManager.checkAuthorization()
 

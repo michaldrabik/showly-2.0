@@ -26,7 +26,6 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      tools:background="@color/colorTextPrimary"
       />
 
     <ImageView
@@ -34,7 +33,8 @@
       android:layout_width="@dimen/searchViewImageWidth"
       android:layout_height="@dimen/searchViewImageHeight"
       android:layout_gravity="center"
-      android:padding="@dimen/spaceMedium"
+      android:background="@drawable/bg_show_view_placeholder"
+      android:padding="16dp"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"

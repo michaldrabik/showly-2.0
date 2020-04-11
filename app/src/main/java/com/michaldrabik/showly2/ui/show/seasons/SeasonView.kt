@@ -10,7 +10,7 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
+import com.michaldrabik.showly2.utilities.extensions.expandTouch
 import com.michaldrabik.showly2.utilities.extensions.setAnimatedProgress
 import kotlinx.android.synthetic.main.view_season.view.*
 
@@ -25,7 +25,7 @@ class SeasonView : FrameLayout {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     clipChildren = false
     clipToPadding = false
-    post { seasonViewCheckbox.expandTouchArea() }
+    post { seasonViewCheckbox.expandTouch() }
   }
 
   @SuppressLint("SetTextI18n")

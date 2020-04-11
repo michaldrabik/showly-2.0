@@ -19,7 +19,7 @@ import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsBundle
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsSectionAdapter
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
+import com.michaldrabik.showly2.utilities.extensions.expandTouch
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
@@ -88,7 +88,7 @@ class MyShowsSection : ConstraintLayout {
   private fun setupView() {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     myShowsSectionSortView.setAvailable(listOf(NAME, NEWEST, RATING))
-    myShowsSectionSortButton.expandTouchArea()
+    myShowsSectionSortButton.expandTouch()
     myShowsSectionSortButton.onClick { button ->
       button.gone()
       myShowsSectionSortView.run {

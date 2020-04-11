@@ -24,7 +24,7 @@ class SortOrderView : LinearLayout {
   init {
     inflate(context, R.layout.view_sort_order, this)
     orientation = VERTICAL
-    setBackgroundResource(R.color.colorSortViewBackground)
+    setBackgroundResource(R.drawable.bg_sort_view)
 
     sortOrderName.onClick { sortSelectedListener(NAME) }
     sortOrderNewest.onClick { sortSelectedListener(NEWEST) }

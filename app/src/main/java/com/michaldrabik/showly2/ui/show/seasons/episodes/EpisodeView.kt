@@ -8,7 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.utilities.extensions.addRipple
-import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
+import com.michaldrabik.showly2.utilities.extensions.expandTouch
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.toDisplayString
 import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
@@ -24,7 +24,7 @@ class EpisodeView : ConstraintLayout {
     inflate(context, R.layout.view_episode, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     addRipple()
-    post { episodeCheckbox.expandTouchArea() }
+    post { episodeCheckbox.expandTouch() }
   }
 
   fun bind(

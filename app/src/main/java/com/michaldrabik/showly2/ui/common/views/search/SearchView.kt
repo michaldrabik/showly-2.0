@@ -8,7 +8,7 @@ import androidx.core.view.isVisible
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.behaviour.SearchViewBehaviour
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
+import com.michaldrabik.showly2.utilities.extensions.expandTouch
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_search.view.*
@@ -20,10 +20,13 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   var onSettingsClickListener: (() -> Unit)? = null
+  var onSortClickListener: (() -> Unit)? = null
 
   init {
     inflate(context, R.layout.view_search, this)
-    searchSettingsIcon.expandTouchArea()
+    searchSortIcon.expandTouch()
+    searchSettingsIcon.expandTouch()
+    searchSortIcon.onClick { onSortClickListener?.invoke() }
     searchSettingsIcon.onClick { onSettingsClickListener?.invoke() }
   }
 
@@ -38,6 +41,12 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
     get() = searchSettingsIcon.isVisible
     set(value) {
       searchSettingsIcon.visibleIf(value)
+    }
+
+  var sortIconVisible
+    get() = searchSortIcon.isVisible
+    set(value) {
+      searchSortIcon.visibleIf(value)
     }
 
   var isSearching = false

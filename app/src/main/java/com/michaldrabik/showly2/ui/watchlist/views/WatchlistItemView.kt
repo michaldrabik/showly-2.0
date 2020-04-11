@@ -14,7 +14,7 @@ import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.DurationPrinter
 import com.michaldrabik.showly2.utilities.extensions.addRipple
 import com.michaldrabik.showly2.utilities.extensions.bump
-import com.michaldrabik.showly2.utilities.extensions.expandTouchArea
+import com.michaldrabik.showly2.utilities.extensions.expandTouch
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visible
@@ -32,7 +32,7 @@ class WatchlistItemView : ShowView<WatchlistItem> {
     inflate(context, R.layout.view_watchlist_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     addRipple()
-    watchlistItemCheckButton.expandTouchArea(100)
+    watchlistItemCheckButton.expandTouch(100)
   }
 
   override val imageView: ImageView = watchlistItemImage

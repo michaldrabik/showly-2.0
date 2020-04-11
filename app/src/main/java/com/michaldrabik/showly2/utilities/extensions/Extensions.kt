@@ -49,7 +49,7 @@ fun View.addRipple() = with(TypedValue()) {
   setBackgroundResource(resourceId)
 }
 
-fun View.expandTouchArea(amount: Int = 50) {
+fun View.expandTouch(amount: Int = 50) {
   val rect = Rect()
   this.getHitRect(rect)
   rect.top -= amount
