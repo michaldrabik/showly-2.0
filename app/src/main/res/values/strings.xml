@@ -59,7 +59,9 @@
   <string name="textMyShowsEmpty">Your shows collection is currently empty.\nVisit Discover tab to add shows.</string>
   <string name="textSeeLaterEmpty">Your see later collection is currently empty.\nVisit Discover tab to add shows you might want to see in the future.</string>
   <string name="textNewEpisodeAvailable">New episode is available now!</string>
+  <string name="textNewEpisodeAvailableSoon">New episode will be available soon!</string>
   <string name="textNewSeasonAvailable">New season is available now!</string>
+  <string name="textNewSeasonAvailableSoon">New season will be available soon!</string>
   <string name="textTraktLoginSuccess">You\'ve been successfully authorized.</string>
   <string name="textTraktLogoutSuccess">You\'ve been signed out.</string>
   <string name="textSpoilersWarning">This comment contains spoilers. Click to read.</string>
@@ -96,6 +98,7 @@
   <string name="textSettingsShowsNotificationsWhen1HourBefore">1 Hour Before</string>
   <string name="textSettingsShowsNotificationsWhen3HoursBefore">3 Hours Before</string>
   <string name="textSettingsShowsNotificationsWhen6HoursBefore">6 Hours Before</string>
+  <string name="textSettingsShowsNotificationsWhen12HoursBefore">12 Hours Before</string>
   <string name="textSettingsShowsNotificationsWhen12Hours">12 Hours After</string>
   <string name="textSettingsShowsNotificationsWhenNextDay">1 Day After</string>
   <string name="textSettingsMisc">Misc</string>

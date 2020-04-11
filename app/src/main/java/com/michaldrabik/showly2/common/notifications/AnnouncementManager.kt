@@ -89,9 +89,9 @@ class AnnouncementManager @Inject constructor(
       putString(DATA_CHANNEL, NotificationChannel.EPISODES_ANNOUNCEMENTS.name)
       putString(DATA_TITLE, "${show.title} - Season ${episodeDb.seasonNumber}")
 
-      val stringResId = when {
-        episodeDb.episodeNumber == 1 -> R.string.textNewSeasonAvailable
-        else -> R.string.textNewEpisodeAvailable
+      val stringResId = when (episodeDb.episodeNumber) {
+        1 -> if (delay.isBefore()) R.string.textNewSeasonAvailableSoon else R.string.textNewSeasonAvailable
+        else -> if (delay.isBefore()) R.string.textNewEpisodeAvailableSoon else R.string.textNewEpisodeAvailable
       }
       putString(DATA_CONTENT, context.getString(stringResId))
 

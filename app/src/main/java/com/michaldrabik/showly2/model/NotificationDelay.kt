@@ -10,6 +10,7 @@ enum class NotificationDelay(
   @StringRes val stringRes: Int,
   val delayMs: Long
 ) {
+  HOURS_12_NEG(R.string.textSettingsShowsNotificationsWhen12HoursBefore, -HOUR_MS * 12),
   HOURS_6_NEG(R.string.textSettingsShowsNotificationsWhen6HoursBefore, -HOUR_MS * 6),
   HOURS_3_NEG(R.string.textSettingsShowsNotificationsWhen3HoursBefore, -HOUR_MS * 3),
   HOURS_1_NEG(R.string.textSettingsShowsNotificationsWhen1HourBefore, -HOUR_MS),
@@ -24,4 +25,6 @@ enum class NotificationDelay(
     fun fromDelay(delayMs: Long) =
       enumValues<NotificationDelay>().first { it.delayMs == delayMs }
   }
+
+  fun isBefore() = this in listOf(HOURS_1_NEG, HOURS_3_NEG, HOURS_6_NEG, HOURS_12_NEG)
 }
