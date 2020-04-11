@@ -383,7 +383,7 @@
 
       <ProgressBar
         android:id="@+id/showDetailsRateProgress"
-        style="@style/ProgressBarAccent"
+        style="@style/ProgressBarGray"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:visibility="gone"
