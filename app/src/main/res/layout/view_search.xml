@@ -15,7 +15,7 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingStart="@dimen/spaceMedium"
-    android:paddingEnd="@dimen/spaceMedium"
+    android:paddingEnd="@dimen/spaceMicro"
     >
 
     <ImageView
@@ -61,9 +61,10 @@
 
       <ImageView
         android:id="@+id/searchSortIcon"
-        android:layout_width="22dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
+        android:padding="9dp"
         android:tint="@color/colorSearchViewIcon"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_sort"
@@ -71,9 +72,10 @@
 
       <ImageView
         android:id="@+id/searchSettingsIcon"
-        android:layout_width="22dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
+        android:padding="9dp"
         android:tint="@color/colorSearchViewIcon"
         app:srcCompat="@drawable/ic_settings"
         />
