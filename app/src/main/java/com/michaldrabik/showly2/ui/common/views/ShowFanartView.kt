@@ -36,6 +36,7 @@ class ShowFanartView : ShowView<DiscoverListItem> {
     showFanartProgress.visibleIf(item.isLoading)
     showFanartRoot.onClick { itemClickListener(item) }
     showFanartBadge.visibleIf(item.isFollowed)
+    showFanartBadgeLater.visibleIf(item.isSeeLater)
     loadImage(item, missingImageListener)
   }
 

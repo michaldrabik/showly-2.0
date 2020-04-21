@@ -39,6 +39,13 @@
       tools:visibility="visible"
       />
 
+    <ImageView
+      android:id="@+id/showPosterLaterBadge"
+      style="@style/Show.BadgeLater"
+      app:srcCompat="@drawable/ic_bookmark_full"
+      tools:visibility="visible"
+      />
+
     <TextView
       android:id="@+id/showPosterTitle"
       android:layout_width="wrap_content"

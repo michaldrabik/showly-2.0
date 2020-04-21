@@ -42,12 +42,21 @@ class SearchViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         uiState = SearchUiModel.createLoading()
+
         val shows = interactor.searchShows(trimmed)
         val myShowsIds = interactor.loadMyShowsIds()
+        val seeLaterShowsIds = interactor.loadSeeLaterShowsIds()
+
         val items = shows.map {
           val image = interactor.findCachedImage(it, POSTER)
-          SearchListItem(it, image, isFollowed = it.ids.trakt.id in myShowsIds)
+          SearchListItem(
+            it,
+            image,
+            isFollowed = it.ids.trakt.id in myShowsIds,
+            isSeeLater = it.ids.trakt.id in seeLaterShowsIds
+          )
         }
+
         lastSearchItems.replace(items)
         uiState = SearchUiModel.createResults(items)
       } catch (t: Throwable) {

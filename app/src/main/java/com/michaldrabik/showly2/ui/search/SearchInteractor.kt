@@ -43,6 +43,8 @@ class SearchInteractor @Inject constructor(
 
   suspend fun loadMyShowsIds() = showsRepository.myShows.loadAllIds()
 
+  suspend fun loadSeeLaterShowsIds() = showsRepository.seeLaterShows.loadAllIds()
+
   suspend fun findCachedImage(show: Show, type: ImageType) =
     imagesProvider.findCachedImage(show, type)
 

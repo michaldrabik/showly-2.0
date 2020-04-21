@@ -38,6 +38,7 @@ class ShowPosterView : ShowView<DiscoverListItem> {
     showPosterProgress.visibleIf(item.isLoading)
     showPosterRoot.onClick { itemClickListener(item) }
     showPosterBadge.visibleIf(item.isFollowed)
+    showPosterLaterBadge.visibleIf(item.isSeeLater)
     loadImage(item, missingImageListener)
   }
 

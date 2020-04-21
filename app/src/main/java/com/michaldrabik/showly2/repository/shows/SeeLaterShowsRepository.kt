@@ -18,6 +18,8 @@ class SeeLaterShowsRepository @Inject constructor(
     database.seeLaterShowsDao().getAll()
       .map { mappers.show.fromDatabase(it) }
 
+  suspend fun loadAllIds() = database.seeLaterShowsDao().getAllTraktIds()
+
   suspend fun load(id: IdTrakt) =
     database.seeLaterShowsDao().getById(id.id)?.let {
       mappers.show.fromDatabase(it)

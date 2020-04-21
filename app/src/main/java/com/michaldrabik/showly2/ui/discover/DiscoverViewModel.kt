@@ -42,16 +42,17 @@ class DiscoverViewModel @Inject constructor(
 
       try {
         val myShowsIds = interactor.loadMyShowsIds()
+        val seeLaterShowsIds = interactor.loadSeeLaterShowsIds()
 
         if (!pullToRefresh) {
           val cachedShows = interactor.loadCachedShows()
-          onShowsLoaded(cachedShows, myShowsIds, scrollToTop)
+          onShowsLoaded(cachedShows, myShowsIds, seeLaterShowsIds, scrollToTop)
         }
 
         if (pullToRefresh || !interactor.isCacheValid()) {
           checkTvdbAuth()
           val remoteShows = interactor.loadRemoteShows()
-          onShowsLoaded(remoteShows, myShowsIds, scrollToTop)
+          onShowsLoaded(remoteShows, myShowsIds, seeLaterShowsIds, scrollToTop)
         }
 
         if (pullToRefresh) lastPullToRefreshMs = nowUtcMillis()
@@ -67,6 +68,7 @@ class DiscoverViewModel @Inject constructor(
   private suspend fun onShowsLoaded(
     shows: List<Show>,
     followedShowsIds: List<Long>,
+    seeLaterShowsIds: List<Long>,
     scrollToTop: Boolean
   ) {
     val items = shows
@@ -78,7 +80,12 @@ class DiscoverViewModel @Inject constructor(
           else -> POSTER
         }
         val image = interactor.findCachedImage(show, itemType)
-        DiscoverListItem(show, image, isFollowed = show.ids.trakt.id in followedShowsIds)
+        DiscoverListItem(
+          show,
+          image,
+          isFollowed = show.ids.trakt.id in followedShowsIds,
+          isSeeLater = show.ids.trakt.id in seeLaterShowsIds
+        )
       }
     uiState = DiscoverUiModel(shows = items, sortOrder = interactor.sortOrder, scrollToTop = scrollToTop)
   }
