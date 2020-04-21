@@ -1,7 +1,8 @@
 package com.michaldrabik.showly2.ui.show.gallery
 
 import android.annotation.SuppressLint
-import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_FULL_USER
+import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
@@ -17,7 +18,7 @@ import com.michaldrabik.showly2.utilities.extensions.nextPage
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.fragment_fanart_gallery.*
 
-@SuppressLint("SetTextI18n", "DefaultLocale")
+@SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
 class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>(R.layout.fragment_fanart_gallery) {
 
   companion object {
@@ -36,7 +37,7 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>(R.layout.frag
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    requireActivity().requestedOrientation = SCREEN_ORIENTATION_LANDSCAPE
+    requireActivity().requestedOrientation = SCREEN_ORIENTATION_FULL_USER
     setupView()
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
@@ -47,6 +48,11 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>(R.layout.frag
   override fun onResume() {
     super.onResume()
     handleBackPressed()
+  }
+
+  override fun onDestroyView() {
+    requireActivity().requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
+    super.onDestroyView()
   }
 
   private fun setupView() {
