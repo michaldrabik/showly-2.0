@@ -15,6 +15,7 @@ import com.michaldrabik.showly2.model.SeasonBundle
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.ShowRating
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
+import com.michaldrabik.showly2.ui.show.quickSetup.QuickSetupListItem
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodeListItem
@@ -285,5 +286,24 @@ class ShowDetailsViewModel @Inject constructor(
 
     seasonItems.replace(items)
     return items
+  }
+
+  fun setQuickProgress(item: QuickSetupListItem?) {
+    if (item == null) return
+    val seasons = seasonItems.map { it.season }
+    seasons
+      .filter { it.number < item.season.number }
+      .forEach { season ->
+        setWatchedSeason(season, true)
+      }
+
+    val season = seasons.find { it.number == item.season.number }
+    season?.episodes
+      ?.filter { it.number <= item.episode.number }
+      ?.forEach { episode ->
+        setWatchedEpisode(episode, season, true)
+      }
+
+    _messageLiveData.value = R.string.textShowQuickProgressDone
   }
 }

@@ -46,24 +46,46 @@
       app:rippleColor="@color/colorWhite"
       app:strokeWidth="0dp"
       />
+
   </LinearLayout>
 
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/inMyShowsButton"
-    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+  <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:includeFontPadding="false"
-    android:text="@string/textInMyShows"
-    android:textColor="@color/colorAccent"
-    android:visibility="gone"
-    app:icon="@drawable/ic_bookmark_full"
-    app:iconGravity="textStart"
-    app:iconPadding="@dimen/spaceTiny"
-    app:iconTint="@color/colorAccent"
-    app:rippleColor="@color/colorAccent"
-    app:strokeColor="@color/colorAccent"
-    tools:visibility="visible"
-    />
+    android:orientation="horizontal"
+    >
+
+    <com.google.android.material.button.MaterialButton
+      android:id="@+id/inMyShowsButton"
+      style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:gravity="center"
+      android:includeFontPadding="false"
+      android:text="@string/textInMyShows"
+      android:textColor="@color/colorAccent"
+      android:visibility="gone"
+      app:icon="@drawable/ic_bookmark_full"
+      app:iconGravity="textStart"
+      app:iconPadding="@dimen/spaceTiny"
+      app:iconTint="@color/colorAccent"
+      app:rippleColor="@color/colorAccent"
+      app:strokeColor="@color/colorAccent"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/quickSetupButton"
+      android:layout_width="28dp"
+      android:layout_height="match_parent"
+      android:layout_gravity="center_vertical|end"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:background="?android:attr/selectableItemBackgroundBorderless"
+      android:src="@drawable/ic_quick_setup"
+      android:tint="@color/colorAccent"
+      />
+
+  </LinearLayout>
+
 </merge>

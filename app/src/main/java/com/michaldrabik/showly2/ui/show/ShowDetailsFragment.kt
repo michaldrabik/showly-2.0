@@ -52,6 +52,7 @@ import com.michaldrabik.showly2.ui.common.views.RateView
 import com.michaldrabik.showly2.ui.common.views.RateView.Companion.INITIAL_RATING
 import com.michaldrabik.showly2.ui.show.actors.ActorsAdapter
 import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryFragment
+import com.michaldrabik.showly2.ui.show.quickSetup.QuickSetupView
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.related.RelatedShowAdapter
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
@@ -424,6 +425,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsSeasonsLabel.fadeIf(seasonsItems.isNotEmpty())
     showDetailsSeasonsEmptyView.fadeIf(seasonsItems.isEmpty())
     showDetailsSeasonsProgress.gone()
+    showDetailsAddButton.onQuickSetupClickListener = {
+      openQuickSetupDialog(seasonsItems.map { it.season })
+    }
   }
 
   private fun renderRuntimeLeft(seasonsItems: List<SeasonListItem>) {
@@ -492,6 +496,19 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
       .setView(rateView)
       .setPositiveButton(R.string.textRate) { _, _ -> viewModel.addRating(rateView.getRating()) }
+      .setNegativeButton(R.string.textCancel) { _, _ -> }
+      .show()
+  }
+
+  private fun openQuickSetupDialog(seasons: List<Season>) {
+    val context = requireContext()
+    val view = QuickSetupView(context).apply {
+      bind(seasons)
+    }
+    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
+      .setView(view)
+      .setPositiveButton(R.string.textSelect) { _, _ -> viewModel.setQuickProgress(view.getSelectedItem()) }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
       .show()
   }

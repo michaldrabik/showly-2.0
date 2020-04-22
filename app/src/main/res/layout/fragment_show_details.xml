@@ -284,6 +284,8 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/showDetailsSeasonsLabel"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/showDetailsSeasonsLabel"
         app:layout_constraintTop_toTopOf="@id/showDetailsSeasonsLabel"
         tools:text="~14h 12min of watching"
         tools:visibility="visible"

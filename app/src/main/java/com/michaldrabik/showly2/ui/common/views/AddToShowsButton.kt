@@ -22,6 +22,7 @@ class AddToShowsButton : FrameLayout {
   var onAddMyShowsClickListener: () -> Unit = {}
   var onAddWatchLaterClickListener: () -> Unit = {}
   var onRemoveClickListener: () -> Unit = {}
+  var onQuickSetupClickListener: () -> Unit = {}
 
   private var state: State = ADD
 
@@ -31,6 +32,7 @@ class AddToShowsButton : FrameLayout {
     addToMyShowsButton.onClick { onAddMyShowsClickListener() }
     seeLaterButton.onClick { onAddWatchLaterClickListener() }
     inMyShowsButton.onClick { onRemoveClickListener() }
+    quickSetupButton.onClick { onQuickSetupClickListener() }
   }
 
   fun setState(state: State, animate: Boolean = false) {
@@ -42,6 +44,7 @@ class AddToShowsButton : FrameLayout {
         addToMyShowsButton.fadeIn(duration)
         seeLaterButton.fadeIn(duration)
         inMyShowsButton.fadeOut(duration) { isEnabled = true }
+        quickSetupButton.fadeOut(duration) { isEnabled = true }
       }
       IN_MY_SHOWS -> {
         addToMyShowsButton.fadeOut(duration)
@@ -55,6 +58,7 @@ class AddToShowsButton : FrameLayout {
           setRippleColorResource(R.color.colorAccent)
           fadeIn(duration) { isEnabled = true }
         }
+        quickSetupButton.fadeIn(duration) { isEnabled = true }
       }
       IN_WATCH_LATER -> {
         addToMyShowsButton.fadeOut(duration)
@@ -68,6 +72,7 @@ class AddToShowsButton : FrameLayout {
           setRippleColorResource(R.color.colorWhite)
           fadeIn(duration) { isEnabled = true }
         }
+        quickSetupButton.fadeOut(duration)
       }
     }
   }
@@ -76,6 +81,7 @@ class AddToShowsButton : FrameLayout {
     addToMyShowsButton.isEnabled = enabled
     seeLaterButton.isEnabled = enabled
     inMyShowsButton.isEnabled = enabled
+    quickSetupButton.isEnabled = enabled
   }
 
   enum class State {
