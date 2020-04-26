@@ -39,7 +39,7 @@ class TraktImportWatchlistRunner @Inject constructor(
     Timber.d("Importing watchlist...")
     val syncResults = cloud.traktApi.fetchSyncWatchlist(token.token)
       .filter { it.show != null }
-      .distinctBy { it.show!!.ids.trakt }
+      .distinctBy { it.show!!.ids?.trakt }
 
     val localShowsIds =
       database.seeLaterShowsDao().getAll().map { it.idTrakt }
@@ -51,7 +51,7 @@ class TraktImportWatchlistRunner @Inject constructor(
         Timber.d("Processing \'${result.show!!.title}\'...")
         progressListener?.invoke(result.show!!, index, syncResults.size)
         try {
-          val showId = result.show!!.ids.trakt
+          val showId = result.show!!.ids?.trakt ?: -1
           database.withTransaction {
             if (showId !in localShowsIds) {
               val show = mappers.show.fromNetwork(result.show!!)

@@ -9,8 +9,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.model.Comment
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.toDayOnlyDisplayString
 import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone

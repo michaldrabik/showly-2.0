@@ -30,4 +30,5 @@ class ShowDetailsRepository @Inject constructor(
 
   suspend fun loadComments(idTrakt: IdTrakt, limit: Int = 10) =
     cloud.traktApi.fetchShowComments(idTrakt.id, limit)
+      .map { mappers.comment.fromNetwork(it) }
 }

@@ -9,30 +9,26 @@ import com.michaldrabik.showly2.model.IdTvRage
 import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.model.Season
+import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 import com.michaldrabik.network.trakt.model.Episode as EpisodeNetwork
 import com.michaldrabik.storage.database.model.Episode as EpisodeDb
 
-class EpisodeMapper @Inject constructor() {
+class EpisodeMapper @Inject constructor(
+  private val idsMapper: IdsMapper
+) {
 
   fun fromNetwork(episode: EpisodeNetwork) = Episode(
-    episode.season,
-    episode.number,
-    episode.title,
-    Ids(
-      IdTrakt(episode.ids.trakt),
-      IdSlug(episode.ids.slug),
-      IdTvdb(episode.ids.tvdb),
-      IdImdb(episode.ids.imdb),
-      IdTmdb(episode.ids.tmdb),
-      IdTvRage(episode.ids.tvrage)
-    ),
-    episode.overview,
-    episode.rating,
-    episode.votes,
-    episode.commentCount,
-    episode.firstAired,
-    episode.runtime
+    episode.season ?: -1,
+    episode.number ?: -1,
+    episode.title ?: "",
+    idsMapper.fromNetwork(episode.ids),
+    episode.overview ?: "",
+    episode.rating ?: 0F,
+    episode.votes ?: 0,
+    episode.comment_count ?: 0,
+    if (episode.first_aired.isNullOrBlank()) null else ZonedDateTime.parse(episode.first_aired),
+    episode.runtime ?: -1
   )
 
   fun toDatabase(

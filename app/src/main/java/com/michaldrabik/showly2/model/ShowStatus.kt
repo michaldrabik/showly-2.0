@@ -12,7 +12,7 @@ enum class ShowStatus(
   UNKNOWN("unknown", "");
 
   companion object {
-    fun fromKey(key: String) =
+    fun fromKey(key: String?) =
       enumValues<ShowStatus>().firstOrNull { it.key == key } ?: UNKNOWN
   }
 }

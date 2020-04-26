@@ -61,10 +61,10 @@ class ShowImagesProvider @Inject constructor(
     if (typeImages.isEmpty() && type in arrayOf(FANART, FANART_WIDE)) {
       val seasons = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
       if (seasons.isNotEmpty()) {
-        val episode = seasons[0].episodes.firstOrNull()
+        val episode = seasons[0].episodes?.firstOrNull()
         episode?.let { ep ->
           runCatching {
-            val backupImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getToken(), ep.ids.tvdb)
+            val backupImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getToken(), ep.ids?.tvdb ?: -1)
             backupImage?.let { img -> typeImages = listOf(img) }
           }
         }

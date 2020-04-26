@@ -7,6 +7,7 @@ import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Ids
+import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -14,6 +15,7 @@ import javax.inject.Inject
 
 class EpisodeDetailsViewModel @Inject constructor(
   private val imagesProvider: EpisodeImagesProvider,
+  private val mappers: Mappers,
   private val cloud: Cloud
 ) : BaseViewModel<EpisodeDetailsUiModel>() {
 
@@ -36,6 +38,7 @@ class EpisodeDetailsViewModel @Inject constructor(
       try {
         uiState = EpisodeDetailsUiModel(commentsLoading = true)
         val comments = cloud.traktApi.fetchEpisodeComments(idTrakt.id, season, episode)
+          .map { mappers.comment.fromNetwork(it) }
           .filter { it.parentId <= 0 }
           .sortedByDescending { it.id }
         uiState = EpisodeDetailsUiModel(comments = comments, commentsLoading = false)

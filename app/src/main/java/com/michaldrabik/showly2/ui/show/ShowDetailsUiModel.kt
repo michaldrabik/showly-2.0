@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2.ui.show
 
-import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.showly2.model.Actor
+import com.michaldrabik.showly2.model.Comment
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Show

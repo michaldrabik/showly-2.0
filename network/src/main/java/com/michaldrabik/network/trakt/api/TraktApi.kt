@@ -18,9 +18,9 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun fetchShow(traktId: Long) = service.fetchShow(traktId)
 
-  suspend fun fetchTrendingShows() = service.fetchTrendingShows().map { it.show }
+  suspend fun fetchTrendingShows() = service.fetchTrendingShows().map { it.show!! }
 
-  suspend fun fetchAnticipatedShows() = service.fetchAnticipatedShows().map { it.show }
+  suspend fun fetchAnticipatedShows() = service.fetchAnticipatedShows().map { it.show!! }
 
   suspend fun fetchRelatedShows(traktId: Long) = service.fetchRelatedShows(traktId)
 
@@ -32,9 +32,9 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun fetchShowsSearch(query: String) =
     service.fetchSearchResults(query)
-      .sortedWith(compareBy({ it.score }, { it.show.votes }))
+      .sortedWith(compareBy({ it.score }, { it.show?.votes ?: 0 }))
       .reversed()
-      .map { it.show }
+      .map { it.show!! }
 
   suspend fun fetchSeasons(traktId: Long) =
     service.fetchSeasons(traktId)

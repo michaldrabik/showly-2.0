@@ -5,6 +5,6 @@ data class SyncExportItem(
 ) {
 
   companion object {
-    fun create(traktId: Long) = SyncExportItem(Ids(traktId, 0, 0, 0, "", ""))
+    fun create(traktId: Long) = SyncExportItem(Ids(traktId, "", 0, "", 0, 0))
   }
 }

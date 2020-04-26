@@ -1,37 +1,27 @@
 package com.michaldrabik.showly2.model.mappers
 
-import com.michaldrabik.showly2.model.IdImdb
-import com.michaldrabik.showly2.model.IdSlug
-import com.michaldrabik.showly2.model.IdTmdb
 import com.michaldrabik.showly2.model.IdTrakt
-import com.michaldrabik.showly2.model.IdTvRage
-import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.model.Season
+import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 import com.michaldrabik.network.trakt.model.Season as SeasonNetwork
 import com.michaldrabik.storage.database.model.Season as SeasonDb
 
 class SeasonMapper @Inject constructor(
+  private val idsMapper: IdsMapper,
   private val episodeMapper: EpisodeMapper
 ) {
 
   fun fromNetwork(season: SeasonNetwork) = Season(
-    Ids(
-      IdTrakt(season.ids.trakt),
-      IdSlug(season.ids.slug),
-      IdTvdb(season.ids.tvdb),
-      IdImdb(season.ids.imdb),
-      IdTmdb(season.ids.tmdb),
-      IdTvRage(season.ids.tvrage)
-    ),
-    season.number,
-    season.episodeCount,
-    season.airedEpisodes,
-    season.title,
-    season.firstAired,
-    season.overview,
-    season.episodes.map { episodeMapper.fromNetwork(it) }
+    idsMapper.fromNetwork(season.ids),
+    season.number ?: -1,
+    season.episode_count ?: -1,
+    season.aired_episodes ?: -1,
+    season.title ?: "",
+    if (season.first_aired.isNullOrBlank()) null else ZonedDateTime.parse(season.first_aired),
+    season.overview ?: "",
+    season.episodes?.map { episodeMapper.fromNetwork(it) } ?: emptyList()
   )
 
   fun fromDatabase(seasonDb: SeasonDb) = Season(

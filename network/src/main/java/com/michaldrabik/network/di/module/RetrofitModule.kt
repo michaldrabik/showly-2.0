@@ -5,14 +5,6 @@ import com.michaldrabik.network.Config.TRAKT_BASE_URL
 import com.michaldrabik.network.Config.TVDB_BASE_URL
 import com.michaldrabik.network.di.CloudScope
 import com.michaldrabik.network.trakt.TraktInterceptor
-import com.michaldrabik.network.trakt.converters.CommentConverter
-import com.michaldrabik.network.trakt.converters.EpisodeConverter
-import com.michaldrabik.network.trakt.converters.SearchResultConverter
-import com.michaldrabik.network.trakt.converters.SeasonConverter
-import com.michaldrabik.network.trakt.converters.ShowConverter
-import com.michaldrabik.network.trakt.converters.SyncProgressItemConverter
-import com.michaldrabik.network.trakt.converters.TrendingResultConverter
-import com.michaldrabik.network.trakt.converters.UserConverter
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -50,27 +42,7 @@ object RetrofitModule {
 
   @Provides
   @CloudScope
-  fun providesMoshi(
-    showConverter: ShowConverter,
-    trendingResultConverter: TrendingResultConverter,
-    episodeConverter: EpisodeConverter,
-    userConverter: UserConverter,
-    seasonConverter: SeasonConverter,
-    syncProgressItemConverter: SyncProgressItemConverter,
-    searchResultConverter: SearchResultConverter,
-    commentConverter: CommentConverter
-  ): Moshi {
-    return Moshi.Builder()
-      .add(showConverter)
-      .add(userConverter)
-      .add(seasonConverter)
-      .add(episodeConverter)
-      .add(commentConverter)
-      .add(searchResultConverter)
-      .add(trendingResultConverter)
-      .add(syncProgressItemConverter)
-      .build()
-  }
+  fun providesMoshi(): Moshi = Moshi.Builder().build()
 
   @Provides
   @CloudScope

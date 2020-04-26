@@ -1,6 +1,6 @@
 package com.michaldrabik.showly2.ui.show.seasons.episodes.details
 
-import com.michaldrabik.network.trakt.model.Comment
+import com.michaldrabik.showly2.model.Comment
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.UiModel
 

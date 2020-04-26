@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.network.trakt.model.Comment
+import com.michaldrabik.showly2.model.Comment
 import com.michaldrabik.showly2.ui.common.views.CommentView
 
 class CommentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

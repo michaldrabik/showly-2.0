@@ -8,5 +8,5 @@ data class RatingRequest(
 
 data class RatingRequestShow(
   val rating: Int,
-  val ids: Ids
+  val ids: Ids?
 )

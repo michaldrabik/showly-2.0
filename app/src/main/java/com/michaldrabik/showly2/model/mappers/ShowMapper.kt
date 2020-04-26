@@ -1,66 +1,52 @@
 package com.michaldrabik.showly2.model.mappers
 
 import com.michaldrabik.showly2.model.AirTime
-import com.michaldrabik.showly2.model.IdImdb
-import com.michaldrabik.showly2.model.IdSlug
-import com.michaldrabik.showly2.model.IdTmdb
-import com.michaldrabik.showly2.model.IdTrakt
-import com.michaldrabik.showly2.model.IdTvRage
-import com.michaldrabik.showly2.model.IdTvdb
-import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.ShowStatus
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import javax.inject.Inject
+import com.michaldrabik.network.trakt.model.AirTime as AirTimeNetwork
 import com.michaldrabik.network.trakt.model.Show as ShowNetwork
 import com.michaldrabik.storage.database.model.Show as ShowDb
 
-class ShowMapper @Inject constructor() {
+class ShowMapper @Inject constructor(
+  private val idsMapper: IdsMapper
+) {
 
   fun fromNetwork(show: ShowNetwork) = Show(
-    Ids(
-      IdTrakt(show.ids.trakt),
-      IdSlug(show.ids.slug),
-      IdTvdb(show.ids.tvdb),
-      IdImdb(show.ids.imdb),
-      IdTmdb(show.ids.tmdb),
-      IdTvRage(show.ids.tvrage)
+    idsMapper.fromNetwork(show.ids),
+    show.title ?: "",
+    show.year ?: -1,
+    show.overview ?: "",
+    show.first_aired ?: "",
+    show.runtime ?: -1,
+    AirTime(
+      show.airs?.day ?: "",
+      show.airs?.time ?: "",
+      show.airs?.timezone ?: ""
     ),
-    show.title,
-    show.year,
-    show.overview,
-    show.firstAired,
-    show.runtime,
-    AirTime(show.airTime.day, show.airTime.time, show.airTime.timezone),
-    show.certification,
-    show.network,
-    show.country,
-    show.trailer,
-    show.homepage,
+    show.certification ?: "",
+    show.network ?: "",
+    show.country ?: "",
+    show.trailer ?: "",
+    show.homepage ?: "",
     ShowStatus.fromKey(show.status),
-    show.rating,
-    show.votes,
-    show.commentCount,
-    show.genres,
-    show.airedEpisodes,
+    show.rating ?: -1F,
+    show.votes ?: -1,
+    show.comment_count ?: -1,
+    show.genres ?: emptyList(),
+    show.aired_episodes ?: -1,
     nowUtcMillis()
   )
 
   fun toNetwork(show: Show) = ShowNetwork(
-    com.michaldrabik.network.trakt.model.Ids(
-      show.ids.trakt.id,
-      show.ids.tvdb.id,
-      show.ids.tmdb.id,
-      show.ids.tvrage.id,
-      show.ids.imdb.id,
-      show.ids.slug.id
-    ),
+    idsMapper.toNetwork(show.ids),
     show.title,
     show.year,
     show.overview,
     show.firstAired,
     show.runtime,
-    com.michaldrabik.network.trakt.model.AirTime(
+    AirTimeNetwork(
       show.airTime.day,
       show.airTime.time,
       show.airTime.timezone
@@ -79,14 +65,7 @@ class ShowMapper @Inject constructor() {
   )
 
   fun fromDatabase(show: ShowDb) = Show(
-    Ids(
-      IdTrakt(show.idTrakt),
-      IdSlug(show.idSlug),
-      IdTvdb(show.idTvdb),
-      IdImdb(show.idImdb),
-      IdTmdb(show.idTmdb),
-      IdTvRage(show.idTvrage)
-    ),
+    idsMapper.fromDatabase(show),
     show.title,
     show.year,
     show.overview,

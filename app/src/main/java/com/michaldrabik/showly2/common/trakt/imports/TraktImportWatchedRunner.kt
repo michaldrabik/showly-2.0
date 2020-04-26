@@ -51,7 +51,7 @@ class TraktImportWatchedRunner @Inject constructor(
     checkTvdbAuth()
     val syncResults = cloud.traktApi.fetchSyncWatched(token.token, "full")
       .filter { it.show != null }
-      .distinctBy { it.show!!.ids.trakt }
+      .distinctBy { it.show?.ids?.trakt }
 
     val myShowsIds = database.myShowsDao().getAll().map { it.idTrakt }
 
@@ -62,7 +62,7 @@ class TraktImportWatchedRunner @Inject constructor(
         progressListener?.invoke(result.show!!, index, syncResults.size)
 
         try {
-          val showId = result.show!!.ids.trakt
+          val showId = result.show!!.ids!!.trakt!!
 
           val (seasons, episodes) = loadSeasons(showId, result)
 
@@ -91,27 +91,27 @@ class TraktImportWatchedRunner @Inject constructor(
     val localEpisodesIds = database.episodesDao().getAllWatchedIdsForShows(listOf(showId))
 
     val seasons = remoteSeasons
-      .filterNot { localSeasonsIds.contains(it.ids.trakt) }
+      .filterNot { localSeasonsIds.contains(it.ids?.trakt) }
       .map { mappers.season.fromNetwork(it) }
       .map { remoteSeason ->
-        val isWatched = item.seasons.any {
-          it.number == remoteSeason.number && it.episodes.size == remoteSeason.episodes.size
-        }
+        val isWatched = item.seasons?.any {
+          it.number == remoteSeason.number && it.episodes?.size == remoteSeason.episodes.size
+        } ?: false
         mappers.season.toDatabase(remoteSeason, IdTrakt(showId), isWatched)
       }
 
     val episodes = remoteSeasons.flatMap { season ->
       season.episodes
-        .filterNot { localEpisodesIds.contains(it.ids.trakt) }
-        .map { episode ->
+        ?.filterNot { localEpisodesIds.contains(it.ids?.trakt) }
+        ?.map { episode ->
           val isWatched = item.seasons
-            .find { it.number == season.number }?.episodes
+            ?.find { it.number == season.number }?.episodes
             ?.find { it.number == episode.number } != null
 
           val seasonDb = mappers.season.fromNetwork(season)
           val episodeDb = mappers.episode.fromNetwork(episode)
           mappers.episode.toDatabase(episodeDb, seasonDb, IdTrakt(showId), isWatched)
-        }
+        } ?: emptyList()
     }
 
     return Pair(seasons, episodes)
