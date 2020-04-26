@@ -9,12 +9,12 @@ import com.michaldrabik.storage.database.model.Actor as ActorDb
 class ActorMapper @Inject constructor() {
 
   fun fromNetwork(actor: TvdbActor) = Actor(
-    actor.id,
-    actor.tvdbShowId,
-    actor.name,
-    actor.role,
-    actor.sortOrder,
-    actor.image
+    actor.id ?: -1,
+    actor.tvdbShowId ?: -1,
+    actor.name ?: "",
+    actor.role ?: "",
+    actor.sortOrder ?: -1,
+    actor.image ?: ""
   )
 
   fun fromDatabase(actor: ActorDb) = Actor(

@@ -59,7 +59,7 @@ class ShowDetailsInteractor @Inject constructor(
     val token = userTvdbManager.getToken()
     val remoteActors = cloud.tvdbApi.fetchActors(token, show.ids.tvdb.id)
       .distinctBy { (it.name + it.role).toLowerCase() }
-      .sortedWith(compareBy({ it.image.isBlank() }, { it.sortOrder }))
+      .sortedWith(compareBy({ it.image.isNullOrBlank() }, { it.sortOrder }))
       .take(20)
       .map { mappers.actor.fromNetwork(it) }
 
