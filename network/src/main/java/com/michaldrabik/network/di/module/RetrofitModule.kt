@@ -13,8 +13,6 @@ import com.michaldrabik.network.trakt.converters.ShowConverter
 import com.michaldrabik.network.trakt.converters.SyncProgressItemConverter
 import com.michaldrabik.network.trakt.converters.TrendingResultConverter
 import com.michaldrabik.network.trakt.converters.UserConverter
-import com.michaldrabik.network.tvdb.converters.TvdbImageConverter
-import com.michaldrabik.network.tvdb.converters.TvdbResultConverter
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -55,7 +53,6 @@ object RetrofitModule {
   fun providesMoshi(
     showConverter: ShowConverter,
     trendingResultConverter: TrendingResultConverter,
-    tvdbImageConverter: TvdbImageConverter,
     episodeConverter: EpisodeConverter,
     userConverter: UserConverter,
     seasonConverter: SeasonConverter,
@@ -69,11 +66,9 @@ object RetrofitModule {
       .add(seasonConverter)
       .add(episodeConverter)
       .add(commentConverter)
-      .add(tvdbImageConverter)
       .add(searchResultConverter)
       .add(trendingResultConverter)
       .add(syncProgressItemConverter)
-      .add(TvdbResultConverter(tvdbImageConverter))
       .build()
   }
 

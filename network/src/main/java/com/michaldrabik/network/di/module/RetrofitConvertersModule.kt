@@ -9,7 +9,6 @@ import com.michaldrabik.network.trakt.converters.ShowConverter
 import com.michaldrabik.network.trakt.converters.SyncProgressItemConverter
 import com.michaldrabik.network.trakt.converters.TrendingResultConverter
 import com.michaldrabik.network.trakt.converters.UserConverter
-import com.michaldrabik.network.tvdb.converters.TvdbImageConverter
 import dagger.Module
 import dagger.Provides
 
@@ -19,10 +18,6 @@ object RetrofitConvertersModule {
   @Provides
   @CloudScope
   fun providesShowConverter() = ShowConverter()
-
-  @Provides
-  @CloudScope
-  fun providesTvdbImageConverter() = TvdbImageConverter()
 
   @Provides
   @CloudScope

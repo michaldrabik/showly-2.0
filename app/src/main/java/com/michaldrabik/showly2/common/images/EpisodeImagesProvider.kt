@@ -43,7 +43,7 @@ class EpisodeImagesProvider @Inject constructor(
       val remoteImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getToken(), tvdbId.id)
       image = when (remoteImage) {
         null -> Image.createUnavailable(FANART)
-        else -> Image(remoteImage.id, tvdbId, FANART, EPISODE, remoteImage.fileName, remoteImage.thumbnail, AVAILABLE)
+        else -> Image(remoteImage.id ?: -1, tvdbId, FANART, EPISODE, remoteImage.fileName ?: "", remoteImage.thumbnail ?: "", AVAILABLE)
       }
     }
 
