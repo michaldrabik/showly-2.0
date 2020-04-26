@@ -3,8 +3,8 @@ package com.michaldrabik.showly2.repository.shows
 import BaseMockTest
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.network.trakt.api.TraktApi
-import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.network.trakt.model.User
+import com.michaldrabik.showly2.model.Comment
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.dao.ShowsDao
@@ -23,6 +23,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.TimeUnit
+import com.michaldrabik.network.trakt.model.Comment as CommentNetwork
 import com.michaldrabik.network.trakt.model.Show as ShowRemote
 
 class ShowDetailsRepositoryTest : BaseMockTest() {
@@ -64,7 +65,7 @@ class ShowDetailsRepositoryTest : BaseMockTest() {
   fun `Should load remote show details if force flag is set`() {
     runBlocking {
       val showRemote = mockk<ShowRemote>(relaxed = true) {
-        every { ids.trakt } returns 1
+        every { ids?.trakt } returns 1
       }
       coEvery { showsDao.getById(any()) } returns null
       coEvery { showsDao.upsert(any()) } just Runs
@@ -86,7 +87,7 @@ class ShowDetailsRepositoryTest : BaseMockTest() {
   fun `Should load remote show details if nothing is cached`() {
     runBlocking {
       val showRemote = mockk<ShowRemote>(relaxed = true) {
-        every { ids.trakt } returns 1
+        every { ids?.trakt } returns 1
       }
       coEvery { showsDao.getById(any()) } returns null
       coEvery { showsDao.upsert(any()) } just Runs
@@ -112,7 +113,7 @@ class ShowDetailsRepositoryTest : BaseMockTest() {
         every { updatedAt } returns nowUtcMillis() - TimeUnit.DAYS.toMillis(10)
       }
       val showRemote = mockk<ShowRemote>(relaxed = true) {
-        every { ids.trakt } returns 1
+        every { ids?.trakt } returns 1
       }
       coEvery { showsDao.getById(any()) } returns showDb
       coEvery { showsDao.upsert(any()) } just Runs
@@ -133,8 +134,9 @@ class ShowDetailsRepositoryTest : BaseMockTest() {
   @Test
   fun `Should load comments with given limit`() {
     runBlocking {
+      val commentNetwork = CommentNetwork(1, 2, "", 1, true, true, null, User("", ""))
       val comment = Comment(1, 2, "", 1, true, true, null, User("", ""))
-      coEvery { traktApi.fetchShowComments(any(), any()) } returns listOf(comment)
+      coEvery { traktApi.fetchShowComments(any(), any()) } returns listOf(commentNetwork)
 
       val comments = SUT.loadComments(IdTrakt(1), 10)
 

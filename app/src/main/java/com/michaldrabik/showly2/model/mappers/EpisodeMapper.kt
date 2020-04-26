@@ -2,10 +2,8 @@ package com.michaldrabik.showly2.model.mappers
 
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.IdImdb
-import com.michaldrabik.showly2.model.IdSlug
 import com.michaldrabik.showly2.model.IdTmdb
 import com.michaldrabik.showly2.model.IdTrakt
-import com.michaldrabik.showly2.model.IdTvRage
 import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.model.Season

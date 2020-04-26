@@ -2,7 +2,9 @@ import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.mappers.ActorMapper
+import com.michaldrabik.showly2.model.mappers.CommentMapper
 import com.michaldrabik.showly2.model.mappers.EpisodeMapper
+import com.michaldrabik.showly2.model.mappers.IdsMapper
 import com.michaldrabik.showly2.model.mappers.ImageMapper
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.model.mappers.SeasonMapper
@@ -21,12 +23,18 @@ abstract class BaseMockTest {
 
   @MockK lateinit var database: AppDatabase
   @MockK lateinit var cloud: Cloud
+
+  private val idsMapper = IdsMapper()
+  private val episodeMappers = EpisodeMapper(idsMapper)
+
   @SpyK var mappers = Mappers(
+    idsMapper,
     ImageMapper(),
-    ShowMapper(),
-    EpisodeMapper(),
-    SeasonMapper(EpisodeMapper()),
+    ShowMapper(idsMapper),
+    episodeMappers,
+    SeasonMapper(idsMapper, episodeMappers),
     ActorMapper(),
+    CommentMapper(),
     SettingsMapper()
   )
 
