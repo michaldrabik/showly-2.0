@@ -12,7 +12,7 @@ import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRevokeRequest
 import com.michaldrabik.network.trakt.model.request.RatingRequest
-import com.michaldrabik.network.trakt.model.request.RatingRequestShow
+import com.michaldrabik.network.trakt.model.request.RatingRequestValue
 
 class TraktApi(private val service: TraktService) {
 
@@ -99,8 +99,14 @@ class TraktApi(private val service: TraktService) {
     service.postSyncWatched("Bearer $token", request)
 
   suspend fun postRating(token: String, show: Show, rating: Int) {
-    val requestShow = RatingRequestShow(rating, show.ids)
-    val body = RatingRequest(listOf(requestShow))
+    val requestValue = RatingRequestValue(rating, show.ids)
+    val body = RatingRequest(shows = listOf(requestValue))
+    service.postRating("Bearer $token", body)
+  }
+
+  suspend fun postRating(token: String, episode: Episode, rating: Int) {
+    val requestValue = RatingRequestValue(rating, episode.ids)
+    val body = RatingRequest(episodes = listOf(requestValue))
     service.postRating("Bearer $token", body)
   }
 

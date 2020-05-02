@@ -150,18 +150,52 @@
         tools:text="That is not an example."
         />
 
-      <com.google.android.material.button.MaterialButton
-        android:id="@+id/episodeDetailsCommentsButton"
-        style="@style/Widget.MaterialComponents.Button"
+      <LinearLayout
+        android:id="@+id/episodeDetailsButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spaceNormal"
-        android:backgroundTint="@color/colorAccent"
-        android:gravity="center"
-        android:text="@string/textLoadComments"
-        android:textColor="@color/colorWhite"
-        app:rippleColor="@color/colorWhite"
-        />
+        android:divider="@drawable/divider_small"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        >
+
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/episodeDetailsCommentsButton"
+          style="@style/Widget.MaterialComponents.Button"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="4"
+          android:backgroundTint="@color/colorAccent"
+          android:gravity="center"
+          android:text="@string/textLoadComments"
+          android:textColor="@color/colorWhite"
+          app:rippleColor="@color/colorWhite"
+          />
+
+        <com.google.android.material.button.MaterialButton
+          android:id="@+id/episodeDetailsRateButton"
+          style="@style/Widget.MaterialComponents.Button.TextButton"
+          android:layout_width="0dp"
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          android:gravity="center"
+          android:text="@string/textRate"
+          android:textColor="@color/colorWhite"
+          app:rippleColor="@color/colorWhite"
+          />
+
+        <ProgressBar
+          android:id="@+id/episodeDetailsRateProgress"
+          style="@style/ProgressBarGray"
+          android:layout_width="0dp"
+          android:layout_height="28dp"
+          android:layout_gravity="center"
+          android:layout_weight="1"
+          android:visibility="gone"
+          />
+
+      </LinearLayout>
 
       <ProgressBar
         android:id="@+id/episodeDetailsCommentsProgress"
@@ -230,6 +264,16 @@
     app:layout_constraintTop_toBottomOf="@id/episodeDetailsSeparator"
     app:srcCompat="@drawable/ic_eye"
     app:tint="@color/colorWhite"
+    />
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/episodeDetailsSnackbarHost"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spaceNormal"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,7 @@ import com.michaldrabik.showly2.model.Comment
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.ShowRating
+import com.michaldrabik.showly2.model.TraktRating
 import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
@@ -49,7 +49,7 @@ data class FollowedState(
 )
 
 data class RatingState(
-  val userRating: ShowRating? = null,
+  val userRating: TraktRating? = null,
   val rateAllowed: Boolean? = null,
   val rateLoading: Boolean? = null
 ) {

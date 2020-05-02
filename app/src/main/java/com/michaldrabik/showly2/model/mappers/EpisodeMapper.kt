@@ -29,6 +29,19 @@ class EpisodeMapper @Inject constructor(
     episode.runtime ?: -1
   )
 
+  fun toNetwork(episode: Episode) = EpisodeNetwork(
+    season = episode.season,
+    number = episode.number,
+    title = episode.title,
+    ids = idsMapper.toNetwork(episode.ids),
+    overview = episode.overview,
+    rating = episode.rating,
+    votes = episode.votes,
+    comment_count = episode.commentCount,
+    first_aired = episode.firstAired.toString(),
+    runtime = episode.runtime
+  )
+
   fun toDatabase(
     episode: Episode,
     season: Season,

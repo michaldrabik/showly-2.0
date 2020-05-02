@@ -13,7 +13,7 @@ import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.SeasonBundle
 import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.ShowRating
+import com.michaldrabik.showly2.model.TraktRating
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.quickSetup.QuickSetupListItem
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
@@ -181,7 +181,7 @@ class ShowDetailsViewModel @Inject constructor(
         uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = true))
         interactor.addRating(show, rating)
         _messageLiveData.value = R.string.textShowRated
-        uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = ShowRating(show.ids.trakt, rating)))
+        uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = TraktRating(show.ids.trakt, rating)))
       } catch (error: Throwable) {
         _errorLiveData.value = R.string.errorGeneral
       } finally {

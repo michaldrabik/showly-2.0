@@ -3,12 +3,15 @@ package com.michaldrabik.showly2.ui.show.seasons.episodes.details
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.R
@@ -17,10 +20,12 @@ import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.ui.common.base.BaseBottomSheetFragment
 import com.michaldrabik.showly2.ui.common.views.CommentView
+import com.michaldrabik.showly2.ui.common.views.RateView
+import com.michaldrabik.showly2.ui.common.views.RateView.Companion.INITIAL_RATING
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
-import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.showly2.utilities.extensions.toDisplayString
 import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
 import com.michaldrabik.showly2.utilities.extensions.visible
@@ -81,6 +86,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     super.onViewCreated(view, savedInstanceState)
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it) })
+      messageLiveData.observe(viewLifecycleOwner, Observer { renderSnackbar(it) })
       loadImage(episode.ids.tvdb)
     }
     setupView(view)
@@ -105,7 +111,6 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       episodeDetailsRatingLayout.visibleIf(episode.votes > 0)
       episodeDetailsRating.text = String.format("%.1f (%d votes)", episode.rating, episode.votes)
       episodeDetailsCommentsButton.onClick {
-        episodeDetailsCommentsButton.gone()
         viewModel.loadComments(episodeTraktId, episode.season, episode.number)
       }
     }
@@ -122,6 +127,20 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     }
   }
 
+  private fun openRateDialog(rating: Int) {
+    val context = requireContext()
+    val rateView = RateView(context).apply {
+      setPadding(context.dimenToPx(R.dimen.spaceNormal))
+      setRating(rating)
+    }
+    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
+      .setView(rateView)
+      .setPositiveButton(R.string.textRate) { _, _ -> viewModel.addRating(rateView.getRating(), episode) }
+      .setNegativeButton(R.string.textCancel) { _, _ -> }
+      .show()
+  }
+
   private fun render(uiModel: EpisodeDetailsUiModel) {
     uiModel.run {
       imageLoading?.let { episodeDetailsProgress.visibleIf(it) }
@@ -134,6 +153,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
           .into(episodeDetailsImage)
       }
       commentsLoading?.let {
+        episodeDetailsButtons.visibleIf(!it && comments?.isEmpty() == true)
         episodeDetailsCommentsProgress.visibleIf(it)
       }
       comments?.let { comments ->
@@ -148,8 +168,19 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         episodeDetailsComments.fadeIf(comments.isNotEmpty())
         episodeDetailsCommentsEmpty.fadeIf(comments.isEmpty())
       }
+      ratingState?.let { state ->
+        episodeDetailsRateProgress.visibleIf(state.rateLoading == true)
+        episodeDetailsRateButton.visibleIf(state.rateLoading == false)
+        episodeDetailsRateButton.onClick {
+          if (state.rateAllowed == true) openRateDialog(state.userRating?.rating ?: INITIAL_RATING)
+          else renderSnackbar(R.string.textSignBeforeRate)
+        }
+      }
     }
   }
+
+  private fun renderSnackbar(stringRes: Int) =
+    episodeDetailsSnackbarHost.showInfoSnackbar(getString(stringRes))
 
   override fun onDismiss(dialog: DialogInterface) {
     onEpisodeWatchedClick = null
