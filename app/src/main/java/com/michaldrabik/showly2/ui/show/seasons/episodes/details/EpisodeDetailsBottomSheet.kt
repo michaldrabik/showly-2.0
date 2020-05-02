@@ -15,7 +15,6 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.IdTrakt
-import com.michaldrabik.showly2.model.IdTvdb
 import com.michaldrabik.showly2.ui.common.base.BaseBottomSheetFragment
 import com.michaldrabik.showly2.ui.common.views.CommentView
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
@@ -37,12 +36,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   companion object {
     private const val ARG_ID_TRAKT = "ARG_ID_TRAKT"
-    private const val ARG_ID_TVDB = "ARG_ID_TVDB"
-    private const val ARG_NUMBER = "ARG_NUMBER"
-    private const val ARG_SEASON = "ARG_SEASON"
-    private const val ARG_TITLE = "ARG_TITLE"
-    private const val ARG_OVERVIEW = "ARG_OVERVIEW"
-    private const val ARG_DATE = "ARG_DATE"
+    private const val ARG_EPISODE = "ARG_EPISODE"
     private const val ARG_IS_WATCHED = "ARG_IS_WATCHED"
     private const val ARG_SHOW_BUTTON = "ARG_SHOW_BUTTON"
 
@@ -54,12 +48,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     ): EpisodeDetailsBottomSheet {
       val bundle = Bundle().apply {
         putLong(ARG_ID_TRAKT, showId.id)
-        putLong(ARG_ID_TVDB, episode.ids.tvdb.id)
-        putString(ARG_TITLE, episode.title)
-        putString(ARG_OVERVIEW, episode.overview)
-        putInt(ARG_SEASON, episode.season)
-        putInt(ARG_NUMBER, episode.number)
-        putLong(ARG_DATE, episode.firstAired?.toInstant()?.toEpochMilli() ?: -1)
+        putParcelable(ARG_EPISODE, episode)
         putBoolean(ARG_IS_WATCHED, isWatched)
         putBoolean(ARG_SHOW_BUTTON, showButton)
       }
@@ -69,15 +58,10 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   var onEpisodeWatchedClick: ((Boolean) -> Unit)? = null
 
-  private val episodeTraktId by lazy { IdTrakt(arguments!!.getLong(ARG_ID_TRAKT)) }
-  private val episodeTvdbId by lazy { IdTvdb(arguments!!.getLong(ARG_ID_TVDB)) }
-  private val episodeTitle by lazy { arguments!!.getString(ARG_TITLE, "") }
-  private val episodeOverview by lazy { arguments!!.getString(ARG_OVERVIEW, "") }
-  private val episodeNumber by lazy { arguments!!.getInt(ARG_NUMBER) }
-  private val episodeSeason by lazy { arguments!!.getInt(ARG_SEASON) }
-  private val episodeDate by lazy { arguments!!.getLong(ARG_DATE, -1) }
-  private val isWatched by lazy { arguments!!.getBoolean(ARG_IS_WATCHED) }
-  private val showButton by lazy { arguments!!.getBoolean(ARG_SHOW_BUTTON) }
+  private val episodeTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_ID_TRAKT)) }
+  private val episode by lazy { requireArguments().getParcelable<Episode>(ARG_EPISODE)!! }
+  private val isWatched by lazy { requireArguments().getBoolean(ARG_IS_WATCHED) }
+  private val showButton by lazy { requireArguments().getBoolean(ARG_SHOW_BUTTON) }
 
   private val cornerRadius by lazy { requireContext().dimenToPx(R.dimen.episodeDetailsCorner).toFloat() }
 
@@ -97,7 +81,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     super.onViewCreated(view, savedInstanceState)
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it) })
-      loadImage(episodeTvdbId)
+      loadImage(episode.ids.tvdb)
     }
     setupView(view)
   }
@@ -106,10 +90,10 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     view.run {
       val date = getDateString()
       episodeDetailsName.text =
-        context.getString(R.string.textSeasonEpisodeDate, episodeSeason, episodeNumber, date)
-      episodeDetailsTitle.text = episodeTitle
+        context.getString(R.string.textSeasonEpisodeDate, episode.season, episode.number, date)
+      episodeDetailsTitle.text = episode.title
       episodeDetailsOverview.text =
-        if (episodeOverview.isBlank()) getString(R.string.textNoDescription) else episodeOverview
+        if (episode.overview.isBlank()) getString(R.string.textNoDescription) else episode.overview
       episodeDetailsButton.run {
         visibleIf(showButton)
         setImageResource(if (isWatched) R.drawable.ic_eye else R.drawable.ic_check)
@@ -118,21 +102,25 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
           dismiss()
         }
       }
+      episodeDetailsRatingLayout.visibleIf(episode.votes > 0)
+      episodeDetailsRating.text = String.format("%.1f (%d votes)", episode.rating, episode.votes)
       episodeDetailsCommentsButton.onClick {
         episodeDetailsCommentsButton.gone()
-        viewModel.loadComments(episodeTraktId, episodeSeason, episodeNumber)
+        viewModel.loadComments(episodeTraktId, episode.season, episode.number)
       }
     }
   }
 
-  private fun getDateString() =
-    if (episodeDate == -1L) {
+  private fun getDateString(): String {
+    val millis = episode.firstAired?.toInstant()?.toEpochMilli() ?: -1
+    return if (millis == -1L) {
       "TBA"
     } else {
-      ZonedDateTime.ofInstant(Instant.ofEpochMilli(episodeDate), ZoneId.of("UTC"))
+      ZonedDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneId.of("UTC"))
         .toLocalTimeZone()
         .toDisplayString()
     }
+  }
 
   private fun render(uiModel: EpisodeDetailsUiModel) {
     uiModel.run {

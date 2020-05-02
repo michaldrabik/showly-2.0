@@ -1,8 +1,11 @@
 package com.michaldrabik.showly2.model
 
+import android.os.Parcelable
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
+import kotlinx.android.parcel.Parcelize
 import org.threeten.bp.ZonedDateTime
 
+@Parcelize
 data class Episode(
   val season: Int,
   val number: Int,
@@ -14,7 +17,7 @@ data class Episode(
   val commentCount: Int,
   val firstAired: ZonedDateTime?,
   val runtime: Int
-) {
+) : Parcelable {
 
   companion object {
     val EMPTY = Episode(-1, -1, "", Ids.EMPTY, "", -1F, -1, -1, null, -1)

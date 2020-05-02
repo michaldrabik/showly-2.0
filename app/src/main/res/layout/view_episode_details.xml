@@ -94,6 +94,39 @@
         tools:text="S.01 E.99 | Thursday, 23 December 2019 at 15:00"
         />
 
+      <LinearLayout
+        android:id="@+id/episodeDetailsRatingLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spaceMicro"
+        android:layout_marginBottom="@dimen/spaceMicro"
+        android:gravity="center_vertical|start"
+        android:orientation="horizontal"
+        android:translationX="-1dp"
+        >
+
+        <ImageView
+          android:id="@+id/episodeDetailsRatingIcon"
+          android:layout_width="16dp"
+          android:layout_height="match_parent"
+          android:layout_marginEnd="@dimen/spaceMicro"
+          android:tint="@color/colorAccent"
+          app:srcCompat="@drawable/ic_star"
+          />
+
+        <TextView
+          android:id="@+id/episodeDetailsRating"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:gravity="center_vertical"
+          android:textColor="@color/colorTextSecondary"
+          android:textSize="12sp"
+          tools:text="8.2 (1000 votes)"
+          />
+
+      </LinearLayout>
+
       <TextView
         android:id="@+id/episodeDetailsTitle"
         android:layout_width="match_parent"

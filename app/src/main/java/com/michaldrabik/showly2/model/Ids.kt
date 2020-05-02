@@ -2,6 +2,10 @@
 
 package com.michaldrabik.showly2.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Ids(
   val trakt: IdTrakt,
   val slug: IdSlug,
@@ -9,7 +13,7 @@ data class Ids(
   val imdb: IdImdb,
   val tmdb: IdTmdb,
   val tvrage: IdTvRage
-) {
+) : Parcelable {
 
   companion object {
     val EMPTY = Ids(IdTrakt(), IdSlug(), IdTvdb(), IdImdb(), IdTmdb(), IdTvRage())
