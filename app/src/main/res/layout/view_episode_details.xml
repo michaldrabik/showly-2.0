@@ -145,6 +145,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spaceNormal"
+        android:ellipsize="end"
+        android:maxLines="12"
         android:textColor="@color/colorTextSecondary"
         android:textSize="14sp"
         tools:text="That is not an example."
