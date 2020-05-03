@@ -112,4 +112,7 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun fetchShowsRatings(token: String) =
     service.fetchShowsRatings("Bearer $token")
+
+  suspend fun fetchEpisodesRatings(token: String) =
+    service.fetchEpisodesRatings("Bearer $token")
 }

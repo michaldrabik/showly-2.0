@@ -26,13 +26,6 @@ class EpisodeDetailsViewModel @Inject constructor(
   private val cloud: Cloud
 ) : BaseViewModel<EpisodeDetailsUiModel>() {
 
-  init {
-    viewModelScope.launch {
-      val isAuthorized = userTraktManager.isAuthorized()
-      uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateAllowed = isAuthorized, rateLoading = false))
-    }
-  }
-
   fun loadImage(tvdb: IdTvdb) {
     viewModelScope.launch {
       try {
@@ -59,6 +52,23 @@ class EpisodeDetailsViewModel @Inject constructor(
       } catch (t: Throwable) {
         Timber.w("Failed to load comments. ${t.message}")
         uiState = EpisodeDetailsUiModel(commentsLoading = false)
+      }
+    }
+  }
+
+  fun loadRatings(episode: Episode) {
+    viewModelScope.launch {
+      try {
+        if (!userTraktManager.isAuthorized()) {
+          uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateAllowed = false, rateLoading = false))
+          return@launch
+        }
+        uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateAllowed = true, rateLoading = true))
+        val token = userTraktManager.checkAuthorization()
+        val rating = ratingsRepository.loadRating(token.token, episode)
+        uiState = EpisodeDetailsUiModel(ratingState = RatingState(userRating = rating, rateLoading = false))
+      } catch (error: Throwable) {
+        uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateLoading = false))
       }
     }
   }

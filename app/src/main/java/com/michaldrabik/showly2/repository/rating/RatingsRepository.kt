@@ -15,17 +15,29 @@ class RatingsRepository @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  private var cache: MutableList<TraktRating>? = null
+  private var showsCache: MutableList<TraktRating>? = null
+  private var episodesCache: MutableList<TraktRating>? = null
 
   suspend fun loadRating(token: String, show: Show): TraktRating? {
-    if (cache == null) {
+    if (showsCache == null) {
       val ratings = cloud.traktApi.fetchShowsRatings(token)
-      cache = ratings.map {
+      showsCache = ratings.map {
         val id = IdTrakt(it.show.ids.trakt ?: -1)
         TraktRating(id, it.rating)
       }.toMutableList()
     }
-    return cache?.find { it.idTrakt == show.ids.trakt }
+    return showsCache?.find { it.idTrakt == show.ids.trakt }
+  }
+
+  suspend fun loadRating(token: String, episode: Episode): TraktRating? {
+    if (episodesCache == null) {
+      val ratings = cloud.traktApi.fetchEpisodesRatings(token)
+      episodesCache = ratings.map {
+        val id = IdTrakt(it.episode.ids.trakt ?: -1)
+        TraktRating(id, it.rating)
+      }.toMutableList()
+    }
+    return episodesCache?.find { it.idTrakt == episode.ids.trakt }
   }
 
   suspend fun addRating(token: String, show: Show, rating: Int) {
@@ -34,7 +46,7 @@ class RatingsRepository @Inject constructor(
       mappers.show.toNetwork(show),
       rating
     )
-    cache?.run {
+    showsCache?.run {
       val index = indexOfFirst { it.idTrakt == show.ids.trakt }
       if (index != -1) removeAt(index)
       add(TraktRating(show.ids.trakt, rating))
@@ -47,9 +59,15 @@ class RatingsRepository @Inject constructor(
       mappers.episode.toNetwork(episode),
       rating
     )
+    episodesCache?.run {
+      val index = indexOfFirst { it.idTrakt == episode.ids.trakt }
+      if (index != -1) removeAt(index)
+      add(TraktRating(episode.ids.trakt, rating))
+    }
   }
 
   fun clear() {
-    cache = null
+    showsCache = null
+    episodesCache = null
   }
 }

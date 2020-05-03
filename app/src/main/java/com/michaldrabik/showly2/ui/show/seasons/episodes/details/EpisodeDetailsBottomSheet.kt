@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.show.seasons.episodes.details
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
@@ -25,7 +26,7 @@ import com.michaldrabik.showly2.ui.common.views.RateView.Companion.INITIAL_RATIN
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.showly2.utilities.extensions.showShortInfoSnackbar
 import com.michaldrabik.showly2.utilities.extensions.toDisplayString
 import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
 import com.michaldrabik.showly2.utilities.extensions.visible
@@ -88,6 +89,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it) })
       messageLiveData.observe(viewLifecycleOwner, Observer { renderSnackbar(it) })
       loadImage(episode.ids.tvdb)
+      loadRatings(episode)
     }
     setupView(view)
   }
@@ -141,6 +143,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       .show()
   }
 
+  @SuppressLint("SetTextI18n")
   private fun render(uiModel: EpisodeDetailsUiModel) {
     uiModel.run {
       imageLoading?.let { episodeDetailsProgress.visibleIf(it) }
@@ -175,12 +178,19 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
           if (state.rateAllowed == true) openRateDialog(state.userRating?.rating ?: INITIAL_RATING)
           else renderSnackbar(R.string.textSignBeforeRate)
         }
+        if (state.hasRating()) {
+          episodeDetailsRateButton.text = "${state.userRating?.rating}/10"
+          episodeDetailsRateButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorAccent))
+        } else {
+          episodeDetailsRateButton.setText(R.string.textRate)
+          episodeDetailsRateButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorTextPrimary))
+        }
       }
     }
   }
 
   private fun renderSnackbar(stringRes: Int) =
-    episodeDetailsSnackbarHost.showInfoSnackbar(getString(stringRes))
+    episodeDetailsSnackbarHost.showShortInfoSnackbar(getString(stringRes))
 
   override fun onDismiss(dialog: DialogInterface) {
     onEpisodeWatchedClick = null
