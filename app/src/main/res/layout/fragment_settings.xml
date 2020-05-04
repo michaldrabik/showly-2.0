@@ -275,12 +275,32 @@
       />
 
     <LinearLayout
-      android:id="@+id/settingsContactDevs"
+      android:id="@+id/settingsDeleteCache"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsRateApp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsCategoryMisc"
+      app:layout_constraintTop_toBottomOf="@+id/settingsContactDevs"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsDeleteCacheTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:text="@string/textSettingsDeleteCacheSummary"
+        />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/settingsContactDevs"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@+id/settingsDeleteCache"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/settingsRateApp"
       >
 
       <TextView
@@ -298,19 +318,22 @@
     <LinearLayout
       android:id="@+id/settingsRateApp"
       style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@+id/settingsContactDevs"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsContactDevs"
+      app:layout_constraintTop_toBottomOf="@id/settingsCategoryMisc"
       >
 
       <TextView
         style="@style/Settings.Title"
         android:text="@string/textSettingsRateAppTitle"
+        android:textColor="@color/colorAccent"
         />
 
       <TextView
         style="@style/Settings.Summary"
         android:text="@string/textSettingsRateAppSummary"
+        android:textColor="@color/colorAccent"
         />
 
     </LinearLayout>
@@ -324,7 +347,7 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsRateApp"
+      app:layout_constraintTop_toBottomOf="@id/settingsDeleteCache"
       tools:text="Version: 1.1.3"
       />
 

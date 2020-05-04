@@ -118,4 +118,6 @@ class ShowImagesProvider @Inject constructor(
         Image(it.id ?: -1, tvdbId, type, SHOW, it.fileName ?: "", it.thumbnail ?: "", Image.Status.AVAILABLE)
       }
   }
+
+  suspend fun deleteLocalCache() = database.imagesDao().deleteAll()
 }

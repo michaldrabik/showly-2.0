@@ -5,6 +5,7 @@ import android.net.Uri
 import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.Config
+import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.common.notifications.AnnouncementManager
 import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.fcm.NotificationChannel
@@ -22,7 +23,8 @@ class SettingsInteractor @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val ratingsRepository: RatingsRepository,
   private val announcementManager: AnnouncementManager,
-  private val userManager: UserTraktManager
+  private val userManager: UserTraktManager,
+  private val imagesProvider: ShowImagesProvider
 ) {
 
   suspend fun getSettings(): Settings = settingsRepository.load()
@@ -93,6 +95,8 @@ class SettingsInteractor @Inject constructor(
     userManager.revokeToken()
     ratingsRepository.clear()
   }
+
+  suspend fun deleteImagesCache() = imagesProvider.deleteLocalCache()
 
   suspend fun isTraktAuthorized() = userManager.isAuthorized()
 

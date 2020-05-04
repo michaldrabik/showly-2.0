@@ -75,6 +75,13 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
+  fun deleteImagesCache() {
+    viewModelScope.launch {
+      interactor.deleteImagesCache()
+      _messageLiveData.value = R.string.textImagesCacheCleared
+    }
+  }
+
   private suspend fun refreshSettings() {
     uiState = SettingsUiModel(
       settings = interactor.getSettings(),

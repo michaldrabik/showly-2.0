@@ -75,6 +75,7 @@
   <string name="textShowQuickProgressSubTitle">Select last seen episode to quickly bring your progress up to date.</string>
   <string name="textShowQuickProgressDone">Your progress has been updated.</string>
   <string name="textDiscoverShows">Discover Shows</string>
+  <string name="textImagesCacheCleared">Images cache has been cleared.</string>
 
   <string name="textSettings">Settings</string>
   <string name="textSettingsTrakt">Trakt.tv</string>
@@ -112,6 +113,8 @@
   <string name="textSettingsContactDevsSummary">Got an issue? Click to send us an email.</string>
   <string name="textSettingsRateAppTitle">Give Feedback</string>
   <string name="textSettingsRateAppSummary">Enjoying Showly? Let us know on PlayStore. Thanks!</string>
+  <string name="textSettingsDeleteCacheTitle">Clear Images Cache</string>
+  <string name="textSettingsDeleteCacheSummary">Click to clear images cache which can help if some of the shows images are not being loaded correctly.</string>
 
   <string name="textTraktSynchronize">Synchronize with Trakt.tv</string>
   <string name="textTraktSync">Trakt.tv Sync</string>

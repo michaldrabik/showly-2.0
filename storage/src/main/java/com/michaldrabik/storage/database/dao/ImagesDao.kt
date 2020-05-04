@@ -46,4 +46,7 @@ interface ImagesDao {
 
   @Query("DELETE FROM shows_images WHERE id_tvdb = :id AND type = :type AND family = 'episode'")
   suspend fun deleteByEpisodeId(id: Long, type: String)
+
+  @Query("DELETE FROM shows_images WHERE type = 'poster'")
+  suspend fun deleteAll()
 }
