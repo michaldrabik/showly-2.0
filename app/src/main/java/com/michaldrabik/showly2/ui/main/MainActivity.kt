@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
+import androidx.annotation.IdRes
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -41,7 +42,9 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
   }
 
   lateinit var fragmentComponent: FragmentComponent
-  @Inject lateinit var viewModelFactory: DaggerViewModelFactory
+
+  @Inject
+  lateinit var viewModelFactory: DaggerViewModelFactory
   private lateinit var viewModel: MainViewModel
 
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
@@ -173,10 +176,14 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
       .start()
   }
 
+  fun openTab(@IdRes navigationId: Int) {
+    bottomNavigationView.selectedItemId = navigationId
+  }
+
   private fun render(uiModel: MainUiModel) {
     uiModel.run {
       isInitialRun?.let {
-        if (it) bottomNavigationView.selectedItemId = R.id.menuDiscover
+        if (it) openTab(R.id.menuDiscover)
       }
     }
   }

@@ -41,4 +41,15 @@
     app:strokeColor="@color/colorWhite"
     />
 
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/watchlistEmptyDiscoverButton"
+    style="@style/Widget.MaterialComponents.Button.TextButton"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:text="@string/textDiscoverShows"
+    android:textColor="@color/colorWhite"
+    app:rippleColor="@color/colorWhite"
+    />
+
 </LinearLayout>

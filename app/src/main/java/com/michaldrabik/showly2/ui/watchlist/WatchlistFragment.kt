@@ -59,6 +59,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
 
   private fun setupView() {
     watchlistEmptyTraktButton.onClick { openTraktSync() }
+    watchlistEmptyDiscoverButton.onClick { mainActivity().openTab(R.id.menuDiscover) }
   }
 
   private fun setupRecycler() {
