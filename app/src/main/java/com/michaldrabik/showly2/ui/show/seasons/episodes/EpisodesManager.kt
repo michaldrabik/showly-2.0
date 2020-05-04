@@ -122,6 +122,19 @@ class EpisodesManager @Inject constructor(
     }
   }
 
+  suspend fun setAllUnwatched(show: Show) {
+    database.withTransaction {
+      val watchedEpisodes = database.episodesDao().getAllForShows(listOf(show.ids.trakt.id))
+      val watchedSeasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
+
+      val updateEpisodes = watchedEpisodes.map { it.copy(isWatched = false) }
+      val updateSeasons = watchedSeasons.map { it.copy(isWatched = false) }
+
+      database.episodesDao().upsert(updateEpisodes)
+      database.seasonsDao().update(updateSeasons)
+    }
+  }
+
   suspend fun invalidateEpisodes(show: Show, newSeasons: List<Season>) {
     if (newSeasons.isEmpty()) return
 
