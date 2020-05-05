@@ -260,7 +260,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .into(showDetailsActorFullImage)
 
     val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.id)
-    val transform = MaterialContainerTransform(requireContext()).apply {
+    val transform = MaterialContainerTransform().apply {
       startView = actorView
       endView = showDetailsActorFullContainer
       scrimColor = TRANSPARENT
@@ -284,7 +284,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun hideFullActorView(actor: Actor) {
     val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.id)
-    val transform = MaterialContainerTransform(requireContext()).apply {
+    val transform = MaterialContainerTransform().apply {
       startView = showDetailsActorFullContainer
       endView = actorView
       scrimColor = TRANSPARENT
