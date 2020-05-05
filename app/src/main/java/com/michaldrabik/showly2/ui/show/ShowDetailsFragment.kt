@@ -224,6 +224,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun hideExtraView(view: View) {
+    if (view.animation != null) return
+
     val animationEnter = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_left)
     val animationExit = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_left)
 
