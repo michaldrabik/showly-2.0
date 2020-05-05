@@ -21,6 +21,7 @@ import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodeListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.showly2.utilities.extensions.findReplace
+import com.michaldrabik.showly2.utilities.extensions.launchDelayed
 import com.michaldrabik.showly2.utilities.extensions.replace
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -40,8 +41,10 @@ class ShowDetailsViewModel @Inject constructor(
 
   fun loadShowDetails(id: IdTrakt, context: Context) {
     viewModelScope.launch {
-      try {
+      val progressJob = launchDelayed(500) {
         uiState = ShowDetailsUiModel(showLoading = true)
+      }
+      try {
         show = interactor.loadShowDetails(id)
 
         val isSignedIn = interactor.isSignedIn()
@@ -53,6 +56,7 @@ class ShowDetailsViewModel @Inject constructor(
           withAnimation = false
         )
 
+        progressJob.cancel()
         uiState = ShowDetailsUiModel(
           show = show,
           showLoading = false,
@@ -76,6 +80,7 @@ class ShowDetailsViewModel @Inject constructor(
         if (isSignedIn) launch { loadRating(show) }
       } catch (t: Throwable) {
         _errorLiveData.value = R.string.errorCouldNotLoadShow
+        progressJob.cancel()
       }
     }
   }

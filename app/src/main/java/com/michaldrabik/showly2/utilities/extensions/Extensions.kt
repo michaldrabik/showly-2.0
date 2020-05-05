@@ -15,6 +15,10 @@ import androidx.annotation.DimenRes
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.michaldrabik.showly2.utilities.SafeOnClickListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 fun View.onClick(safe: Boolean = true, action: (View) -> Unit) = setOnClickListener(SafeOnClickListener(safe, action))
 
@@ -96,4 +100,11 @@ inline fun <T> MutableList<T>.findReplace(newItem: T, predicate: (T) -> Boolean)
 fun <T> MutableList<T>.replace(newItems: List<T>) {
   clear()
   addAll(newItems)
+}
+
+fun CoroutineScope.launchDelayed(delayMs: Long, action: () -> Unit): Job {
+  return launch {
+    delay(delayMs)
+    action()
+  }
 }
