@@ -29,9 +29,9 @@ data class Settings(
       myShowsIncomingSortBy = SortOrder.NAME,
       myShowsRunningSortBy = SortOrder.NAME,
       myShowsAllSortBy = SortOrder.NAME,
-      myShowsEndedIsCollapsed = false,
-      myShowsIncomingIsCollapsed = false,
-      myShowsRunningIsCollapsed = false,
+      myShowsEndedIsCollapsed = true,
+      myShowsIncomingIsCollapsed = true,
+      myShowsRunningIsCollapsed = true,
       myShowsRecentsAmount = Config.MY_SHOWS_RECENTS_DEFAULT,
       seeLaterShowsSortBy = SortOrder.NAME,
       showAnticipatedShows = true

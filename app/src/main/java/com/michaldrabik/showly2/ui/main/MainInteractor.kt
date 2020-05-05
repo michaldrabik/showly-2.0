@@ -22,8 +22,9 @@ class MainInteractor @Inject constructor(
 ) {
 
   suspend fun initSettings() {
-    if (settingsRepository.isInitialized()) return
-    settingsRepository.update(Settings.createInitial())
+    if (!settingsRepository.isInitialized()) {
+      settingsRepository.update(Settings.createInitial())
+    }
   }
 
   suspend fun setInitialRun(value: Boolean) {
