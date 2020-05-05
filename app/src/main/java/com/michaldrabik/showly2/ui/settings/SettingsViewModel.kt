@@ -3,10 +3,13 @@ package com.michaldrabik.showly2.ui.settings
 import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
@@ -75,8 +78,10 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  fun deleteImagesCache() {
+  fun deleteImagesCache(context: Context) {
     viewModelScope.launch {
+      withContext(IO) { Glide.get(context).clearDiskCache() }
+      Glide.get(context).clearMemory()
       interactor.deleteImagesCache()
       _messageLiveData.value = R.string.textImagesCacheCleared
     }

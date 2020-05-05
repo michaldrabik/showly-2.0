@@ -54,7 +54,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsTraktSync.onClick {
       navigateTo(R.id.actionSettingsFragmentToTraktSync)
     }
-    settingsDeleteCache.onClick { viewModel.deleteImagesCache() }
+    settingsDeleteCache.onClick { viewModel.deleteImagesCache(requireContext().applicationContext) }
   }
 
   override fun onResume() {
