@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 data class Actor(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long,
   @ColumnInfo(name = "id_tvdb") var idTvdb: Long,
+  @ColumnInfo(name = "id_imdb") var idImdb: String?,
   @ColumnInfo(name = "id_tvdb_show") var idShowTvdb: Long,
   @ColumnInfo(name = "name") var name: String,
   @ColumnInfo(name = "role") var role: String,

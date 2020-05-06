@@ -1,6 +1,7 @@
 package com.michaldrabik.network.trakt.api
 
 import com.michaldrabik.network.Config
+import com.michaldrabik.network.trakt.model.ActorsResponse
 import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.network.trakt.model.Episode
 import com.michaldrabik.network.trakt.model.OAuthResponse
@@ -61,6 +62,11 @@ interface TraktService {
     @Path("seasonNumber") seasonNumber: Int,
     @Path("episodeNumber") episodeNumber: Int
   ): List<Comment>
+
+  @GET("shows/{traktId}/people")
+  suspend fun fetchShowPeople(
+    @Path("traktId") traktId: Long
+  ): ActorsResponse
 
   // Auth
 

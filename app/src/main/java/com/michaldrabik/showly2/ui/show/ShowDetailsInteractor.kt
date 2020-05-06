@@ -20,6 +20,7 @@ import com.michaldrabik.showly2.repository.rating.RatingsRepository
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
+import java.util.Locale.ENGLISH
 import javax.inject.Inject
 import com.michaldrabik.storage.database.model.Episode as EpisodeDb
 import com.michaldrabik.storage.database.model.Season as SeasonDb
@@ -57,14 +58,22 @@ class ShowDetailsInteractor @Inject constructor(
 
     userTvdbManager.checkAuthorization()
     val token = userTvdbManager.getToken()
-    val remoteActors = cloud.tvdbApi.fetchActors(token, show.ids.tvdb.id)
-      .distinctBy { (it.name + it.role).toLowerCase() }
+
+    val remoteTraktActors = cloud.traktApi.fetchShowActors(show.ids.trakt.id)
+    val remoteTmdbActors = cloud.tvdbApi.fetchActors(token, show.ids.tvdb.id)
+      .asSequence()
+      .distinctBy { (it.name + it.role).toLowerCase(ENGLISH) }
       .sortedWith(compareBy({ it.image.isNullOrBlank() }, { it.sortOrder }))
       .take(20)
       .map { mappers.actor.fromNetwork(it) }
+      .map {
+        val imdbId = remoteTraktActors.find { actor -> actor.person?.name?.equals(it.name, true) == true }?.person?.ids?.imdb
+        it.copy(imdbId = imdbId)
+      }
+      .toList()
 
-    database.actorsDao().replace(remoteActors.map { mappers.actor.toDatabase(it) }, show.ids.tvdb.id)
-    return remoteActors
+    database.actorsDao().replace(remoteTmdbActors.map { mappers.actor.toDatabase(it) }, show.ids.tvdb.id)
+    return remoteTmdbActors
   }
 
   suspend fun loadRelatedShows(show: Show): List<Show> =

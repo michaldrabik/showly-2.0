@@ -2,10 +2,9 @@ package com.michaldrabik.storage.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.DATABASE_NAME
+import com.michaldrabik.storage.database.Migrations.MIGRATIONS
 import dagger.Module
 import dagger.Provides
 import timber.log.Timber
@@ -22,14 +21,7 @@ class StorageModule(private val context: Context) {
   fun providesDatabase(context: Context): AppDatabase {
     Timber.d("Creating database...")
     return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
-      .addMigrations(MIGRATION_1_2)
+      .apply { MIGRATIONS.forEach { addMigrations(it) } }
       .build()
-  }
-
-  // TODO Extract migrations to SQL files if there are more.
-  private val MIGRATION_1_2 = object : Migration(1, 2) {
-    override fun migrate(database: SupportSQLiteDatabase) {
-      database.execSQL("ALTER TABLE settings ADD COLUMN show_anticipated_shows INTEGER NOT NULL DEFAULT 1")
-    }
   }
 }

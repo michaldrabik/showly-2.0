@@ -9,32 +9,35 @@ import com.michaldrabik.storage.database.model.Actor as ActorDb
 class ActorMapper @Inject constructor() {
 
   fun fromNetwork(actor: TvdbActor) = Actor(
-    actor.id ?: -1,
-    actor.tvdbShowId ?: -1,
-    actor.name ?: "",
-    actor.role ?: "",
-    actor.sortOrder ?: -1,
-    actor.image ?: ""
+    id = actor.id ?: -1,
+    imdbId = null,
+    tvdbShowId = actor.seriesId ?: -1,
+    name = actor.name ?: "",
+    role = actor.role ?: "",
+    sortOrder = actor.sortOrder ?: -1,
+    image = actor.image ?: ""
   )
 
   fun fromDatabase(actor: ActorDb) = Actor(
-    actor.idTvdb,
-    actor.idShowTvdb,
-    actor.name,
-    actor.role,
-    actor.sortOrder,
-    actor.image
+    id = actor.idTvdb,
+    imdbId = actor.idImdb,
+    tvdbShowId = actor.idShowTvdb,
+    name = actor.name,
+    role = actor.role,
+    sortOrder = actor.sortOrder,
+    image = actor.image
   )
 
   fun toDatabase(actor: Actor) = ActorDb(
     0,
-    actor.id,
-    actor.tvdbShowId,
-    actor.name,
-    actor.role,
-    actor.sortOrder,
-    actor.image,
-    nowUtcMillis(),
-    nowUtcMillis()
+    idTvdb = actor.id,
+    idImdb = actor.imdbId,
+    idShowTvdb = actor.tvdbShowId,
+    name = actor.name,
+    role = actor.role,
+    sortOrder = actor.sortOrder,
+    image = actor.image,
+    createdAt = nowUtcMillis(),
+    updatedAt = nowUtcMillis()
   )
 }

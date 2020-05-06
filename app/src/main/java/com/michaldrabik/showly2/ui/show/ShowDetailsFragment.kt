@@ -267,6 +267,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     TransitionManager.beginDelayedTransition(showDetailsRoot, transform)
     actorView.gone()
+    showDetailsActorFullImdb.apply {
+      val hasImdbId = actor.imdbId != null
+      visibleIf(hasImdbId)
+      if (hasImdbId) {
+        onClick { openIMDbLink(IdImdb(actor.imdbId!!), "name") }
+      }
+    }
     showDetailsActorFullName.apply {
       text = getString(R.string.textActorRole, actor.name, actor.role)
       fadeIn()
@@ -320,7 +327,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
         showDetailsImdbButton.run {
           visibleIf(show.ids.imdb.id.isNotBlank())
-          onClick { openIMDbLink(show.ids.imdb) }
+          onClick { openIMDbLink(show.ids.imdb, "title") }
         }
 
         showDetailsAddButton.run {
@@ -465,14 +472,14 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun openIMDbLink(id: IdImdb) {
+  private fun openIMDbLink(id: IdImdb, type: String) {
     val i = Intent(Intent.ACTION_VIEW)
-    i.data = Uri.parse("imdb:///title/${id.id}")
+    i.data = Uri.parse("imdb:///$type/${id.id}")
     try {
       startActivity(i)
     } catch (e: ActivityNotFoundException) {
       // IMDb App not installed. Start in web browser
-      i.data = Uri.parse("http://www.imdb.com/title/${id.id}")
+      i.data = Uri.parse("http://www.imdb.com/$type/${id.id}")
       startActivity(i)
     }
   }
