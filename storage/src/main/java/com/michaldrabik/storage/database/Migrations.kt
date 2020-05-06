@@ -13,7 +13,7 @@ object Migrations {
 
   private val MIGRATION_2_3 = object : Migration(2, 3) {
     override fun migrate(database: SupportSQLiteDatabase) {
-      database.execSQL("ALTER TABLE actors ADD COLUMN id_imdb STRING")
+      database.execSQL("ALTER TABLE actors ADD COLUMN id_imdb TEXT")
     }
   }
 
