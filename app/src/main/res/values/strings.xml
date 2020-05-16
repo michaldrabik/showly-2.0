@@ -122,10 +122,22 @@
   <string name="textTraktSyncStarted">Sync started. It will continue to run in the background.</string>
   <string name="textTraktSyncComplete">Sync completed successfully.</string>
   <string name="textTraktSyncError">Trakt.tv sync failed. Please try again or contact us if this keeps happening.</string>
-  <string name="textTraktSyncDescription">Sync your Trakt.tv account progress and watchlist data with Showly.\n\nNo items from your current collection will be deleted. Only missing items that are not currently in your collection will be added.</string>
-  <string name="textTraktSyncStart">Start Sync</string>
+  <string name="textTraktSyncDescription">Sync your Trakt.tv account progress and watchlist data with Showly.\n\nNone of the items from your current collection will be deleted. Sync will only handle missing items in your collections.</string>
+  <string name="textTraktSyncStart">Sync Now</string>
+  <string name="textTraktSyncSchedule">Schedule</string>
   <string name="textTraktSyncFromTraktToShowly">Import from Trakt.tv to Showly</string>
   <string name="textTraktSyncFromShowlyToTrakt">Export from Showly to Trakt.tv</string>
+  <string name="textTraktSyncOptionOff">Off</string>
+  <string name="textTraktSyncOptionDaily">Every Day</string>
+  <string name="textTraktSyncOption3Day">Every 3 Days</string>
+  <string name="textTraktSyncOptionWeekly">Every Week</string>
+  <string name="textTraktSyncOptionOffMessage">Sync will not run automatically.</string>
+  <string name="textTraktSyncOptionDailyMessage">Sync will run every day starting from now on.</string>
+  <string name="textTraktSyncOption3DayMessage">Sync will run every 3 days starting from now on.</string>
+  <string name="textTraktSyncOptionWeeklyMessage">Sync will run every week starting from now on.</string>
+  <string name="textTraktSyncOptionDailyButton">Scheduled to run every day</string>
+  <string name="textTraktSyncOption3DayButton">Scheduled to run every 3 days</string>
+  <string name="textTraktSyncOptionWeeklyButton">Scheduled to run every week</string>
 
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>

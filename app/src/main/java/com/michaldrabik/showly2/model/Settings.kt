@@ -16,7 +16,8 @@ data class Settings(
   val myShowsIncomingIsCollapsed: Boolean,
   val myShowsEndedIsCollapsed: Boolean,
   val myShowsRecentsAmount: Int,
-  val showAnticipatedShows: Boolean
+  val showAnticipatedShows: Boolean,
+  val traktSyncSchedule: TraktSyncSchedule
 ) {
 
   companion object {
@@ -34,7 +35,8 @@ data class Settings(
       myShowsRunningIsCollapsed = true,
       myShowsRecentsAmount = Config.MY_SHOWS_RECENTS_DEFAULT,
       seeLaterShowsSortBy = SortOrder.NAME,
-      showAnticipatedShows = true
+      showAnticipatedShows = true,
+      traktSyncSchedule = TraktSyncSchedule.OFF
     )
   }
 }

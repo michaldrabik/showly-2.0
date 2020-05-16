@@ -31,16 +31,22 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
   companion object {
     private const val ARG_IS_IMPORT = "ARG_IS_IMPORT"
     private const val ARG_IS_EXPORT = "ARG_IS_EXPORT"
+    private const val ARG_IS_SILENT = "ARG_IS_SILENT"
 
     private const val SYNC_NOTIFICATION_PROGRESS_ID = 826
     private const val SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID = 827
     private const val SYNC_NOTIFICATION_COMPLETE_ERROR_ID = 828
 
-    fun createIntent(context: Context, isImport: Boolean, isExport: Boolean) =
-      Intent(context, TraktSyncService::class.java).apply {
-        putExtra(ARG_IS_IMPORT, isImport)
-        putExtra(ARG_IS_EXPORT, isExport)
-      }
+    fun createIntent(
+      context: Context,
+      isImport: Boolean,
+      isExport: Boolean,
+      isSilent: Boolean = false
+    ) = Intent(context, TraktSyncService::class.java).apply {
+      putExtra(ARG_IS_IMPORT, isImport)
+      putExtra(ARG_IS_EXPORT, isExport)
+      putExtra(ARG_IS_SILENT, isSilent)
+    }
   }
 
   override val coroutineContext = Job() + Dispatchers.IO
@@ -48,7 +54,6 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
 
   @Inject lateinit var importWatchedRunner: TraktImportWatchedRunner
   @Inject lateinit var importWatchlistRunner: TraktImportWatchlistRunner
-
   @Inject lateinit var exportWatchedRunner: TraktExportWatchedRunner
   @Inject lateinit var exportWatchlistRunner: TraktExportWatchlistRunner
 
@@ -62,6 +67,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
 
     val isImport = intent?.extras?.getBoolean(ARG_IS_IMPORT) ?: false
     val isExport = intent?.extras?.getBoolean(ARG_IS_EXPORT) ?: false
+    val isSilent = intent?.extras?.getBoolean(ARG_IS_SILENT) ?: false
 
     if (runners.any { it.isRunning }) {
       Timber.d("Already running. Skipping...")
@@ -85,11 +91,15 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
         }
 
         EventsManager.sendEvent(TraktSyncSuccess)
-        notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification())
+        if (!isSilent) {
+          notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification())
+        }
       } catch (t: Throwable) {
         if (t is TraktAuthError) EventsManager.sendEvent(TraktSyncAuthError)
         EventsManager.sendEvent(TraktSyncError)
-        notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
+        if (!isSilent) {
+          notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
+        }
         Crashlytics.logException(t)
       } finally {
         Timber.d("Sync completed.")

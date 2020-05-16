@@ -31,6 +31,12 @@ class MainViewModel @Inject constructor(
     }
   }
 
+  fun refreshTraktSyncSchedule(context: Context) {
+    viewModelScope.launch {
+      interactor.refreshTraktSyncSchedule(context)
+    }
+  }
+
   fun isTipShown(tip: Tip) = interactor.isTutorialShown(tip)
 
   fun setTipShown(tip: Tip) = interactor.setTutorialShown(tip)

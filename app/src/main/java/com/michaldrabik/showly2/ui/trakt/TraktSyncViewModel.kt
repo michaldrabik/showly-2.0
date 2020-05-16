@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.trakt
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
@@ -9,16 +10,20 @@ import com.michaldrabik.showly2.common.events.TraktSyncError
 import com.michaldrabik.showly2.common.events.TraktSyncProgress
 import com.michaldrabik.showly2.common.events.TraktSyncStart
 import com.michaldrabik.showly2.common.events.TraktSyncSuccess
+import com.michaldrabik.showly2.common.trakt.TraktSyncWorker
 import com.michaldrabik.showly2.common.trakt.exports.TraktExportWatchlistRunner
 import com.michaldrabik.showly2.common.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.showly2.common.trakt.imports.TraktImportWatchlistRunner
+import com.michaldrabik.showly2.model.TraktSyncSchedule
 import com.michaldrabik.showly2.repository.UserTraktManager
+import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TraktSyncViewModel @Inject constructor(
   private val userManager: UserTraktManager,
+  private val settingsRepository: SettingsRepository,
   importWatchedRunner: TraktImportWatchedRunner,
   importWatchlistRunner: TraktImportWatchlistRunner,
   exportWatchedRunner: TraktImportWatchedRunner,
@@ -35,7 +40,8 @@ class TraktSyncViewModel @Inject constructor(
   fun invalidate() {
     viewModelScope.launch {
       val isAuthorized = userManager.isAuthorized()
-      uiState = TraktSyncUiModel(isAuthorized = isAuthorized)
+      val syncSchedule = settingsRepository.load().traktSyncSchedule
+      uiState = TraktSyncUiModel(isAuthorized = isAuthorized, traktSyncSchedule = syncSchedule)
     }
   }
 
@@ -53,6 +59,18 @@ class TraktSyncViewModel @Inject constructor(
       } catch (t: Throwable) {
         _errorLiveData.value = R.string.errorAuthorization
       }
+    }
+  }
+
+  fun saveTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {
+    viewModelScope.launch {
+      val settings = settingsRepository.load()
+      settings.let {
+        val new = it.copy(traktSyncSchedule = schedule)
+        settingsRepository.update(new)
+      }
+      TraktSyncWorker.schedule(schedule, context.applicationContext)
+      uiState = TraktSyncUiModel(traktSyncSchedule = schedule)
     }
   }
 

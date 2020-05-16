@@ -20,5 +20,7 @@ data class Settings(
   @ColumnInfo(name = "my_shows_incoming_is_collapsed", defaultValue = "0") var myShowsIncomingIsCollapsed: Boolean,
   @ColumnInfo(name = "my_shows_ended_is_collapsed", defaultValue = "0") var myShowsEndedIsCollapsed: Boolean,
   @ColumnInfo(name = "see_later_shows_sort_by", defaultValue = "NAME") var seeLaterShowsSortBy: String,
-  @ColumnInfo(name = "show_anticipated_shows", defaultValue = "1") var showAnticipatedShows: Boolean
+  @ColumnInfo(name = "show_anticipated_shows", defaultValue = "1") var showAnticipatedShows: Boolean,
+  @ColumnInfo(name = "trakt_sync_schedule", defaultValue = "OFF") var traktSyncSchedule: String
+
 )

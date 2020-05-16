@@ -88,6 +88,7 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
     viewModel.run {
       uiLiveData.observe(this@MainActivity, Observer { render(it!!) })
       initSettings()
+      refreshTraktSyncSchedule(applicationContext)
     }
   }
 

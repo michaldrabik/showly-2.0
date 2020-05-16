@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.common.notifications.AnnouncementManager
+import com.michaldrabik.showly2.common.trakt.TraktSyncWorker
 import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.fcm.NotificationChannel
 import com.michaldrabik.showly2.model.Settings
@@ -54,6 +55,12 @@ class MainInteractor @Inject constructor(
   }
 
   suspend fun refreshAnnouncements(context: Context) = announcementManager.refreshEpisodesAnnouncements(context)
+
+  suspend fun refreshTraktSyncSchedule(context: Context) {
+    if (!settingsRepository.isInitialized()) return
+    val schedule = settingsRepository.load().traktSyncSchedule
+    TraktSyncWorker.schedule(schedule, context.applicationContext)
+  }
 
   fun isTutorialShown(tip: Tip) = when {
     BuildConfig.DEBUG -> true

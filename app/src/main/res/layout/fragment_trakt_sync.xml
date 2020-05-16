@@ -142,6 +142,21 @@
     app:strokeColor="@color/colorWhite"
     />
 
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/traktSyncScheduleButton"
+    style="@style/Widget.MaterialComponents.Button.TextButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:minWidth="200dp"
+    android:text="@string/textTraktSyncSchedule"
+    android:textColor="@color/colorWhite"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/traktSyncButton"
+    app:rippleColor="@color/colorWhite"
+    app:strokeColor="@color/colorWhite"
+    />
+
   <ProgressBar
     android:id="@+id/traktSyncProgress"
     android:layout_width="wrap_content"

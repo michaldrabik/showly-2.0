@@ -21,7 +21,8 @@ class SettingsMapper @Inject constructor() {
     myShowsEndedIsCollapsed = settings.myShowsEndedIsCollapsed,
     myShowsRecentsAmount = settings.myShowsRecentsAmount,
     seeLaterShowsSortBy = enumValueOf(settings.seeLaterShowsSortBy),
-    showAnticipatedShows = settings.showAnticipatedShows
+    showAnticipatedShows = settings.showAnticipatedShows,
+    traktSyncSchedule = enumValueOf(settings.traktSyncSchedule)
   )
 
   fun toDatabase(settings: Settings) = SettingsDb(
@@ -38,6 +39,7 @@ class SettingsMapper @Inject constructor() {
     myShowsEndedIsCollapsed = settings.myShowsEndedIsCollapsed,
     myShowsRecentsAmount = settings.myShowsRecentsAmount,
     seeLaterShowsSortBy = settings.seeLaterShowsSortBy.name,
-    showAnticipatedShows = settings.showAnticipatedShows
+    showAnticipatedShows = settings.showAnticipatedShows,
+    traktSyncSchedule = settings.traktSyncSchedule.name
   )
 }
