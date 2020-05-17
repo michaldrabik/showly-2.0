@@ -1,6 +1,6 @@
 ext.versions = [
-    versionCode            : 63,
-    versionName            : '1.6.0',
+    versionCode            : 70,
+    versionName            : '1.7.0',
 
     minSdk                 : 21,
     compileSdk             : 29,
@@ -23,19 +23,19 @@ ext.versions = [
     circleIndicator        : '2.1.4',
     crashlytics            : '2.10.1',
     dagger                 : '2.26',
-    firebaseAnalytics      : '17.4.0',
-    firebaseMessaging      : '20.1.6',
+    firebaseAnalytics      : '17.4.1',
+    firebaseMessaging      : '20.1.7',
     glide                  : '4.11.0',
-    okHttpLogInterceptor   : '4.4.0',
-    retrofit               : '2.7.1',
+    okHttpLogInterceptor   : '4.6.0',
+    retrofit               : '2.8.1',
     room                   : '2.2.5',
-    threeTenAbp            : '1.2.2',
+    threeTenAbp            : '1.2.4',
     timber                 : '4.7.1',
 
     // Testing
     junit                  : '4.13',
     testRunner             : '1.2.0',
     truth                  : '1.0.1',
-    mockk                  : '1.9.3',
+    mockk                  : '1.10.0',
     debugDb                : '1.0.6'
 ]
