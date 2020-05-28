@@ -20,6 +20,7 @@ import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.TraktSyncSchedule
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
+import com.michaldrabik.showly2.utilities.MessageEvent
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
@@ -41,8 +42,7 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(R.layout.fragment_tra
     setupView()
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, Observer { showInfoSnackbar(it!!) })
-      errorLiveData.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
+      messageLiveData.observe(viewLifecycleOwner, Observer { showSnack(it) })
       invalidate()
     }
   }
@@ -84,7 +84,7 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(R.layout.fragment_tra
       .setSingleChoiceItems(optionsStrings, options.indexOf(currentSchedule)) { dialog, index ->
         val schedule = options[index]
         viewModel.saveTraktSyncSchedule(schedule, requireContext().applicationContext)
-        showInfoSnackbar(schedule.confirmationStringRes)
+        showSnack(MessageEvent.info(schedule.confirmationStringRes))
         dialog.dismiss()
       }
       .show()

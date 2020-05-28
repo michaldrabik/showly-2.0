@@ -58,6 +58,7 @@ import com.michaldrabik.showly2.ui.show.related.RelatedShowAdapter
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonsAdapter
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
+import com.michaldrabik.showly2.utilities.MessageEvent
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
@@ -116,8 +117,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, Observer { showInfoSnackbar(it!!) })
-      errorLiveData.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
+      messageLiveData.observe(viewLifecycleOwner, Observer { showSnack(it) })
       loadShowDetails(showId, requireContext().applicationContext)
     }
   }
@@ -377,7 +377,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
     showDetailsRateButton.onClick {
       if (rating.rateAllowed == true) openRateDialog(rating.userRating?.rating ?: INITIAL_RATING)
-      else showInfoSnackbar(R.string.textSignBeforeRate)
+      else showSnack(MessageEvent.info(R.string.textSignBeforeRate))
     }
   }
 

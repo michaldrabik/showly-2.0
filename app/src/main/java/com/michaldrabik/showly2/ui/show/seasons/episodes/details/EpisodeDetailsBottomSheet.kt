@@ -23,9 +23,14 @@ import com.michaldrabik.showly2.ui.common.base.BaseBottomSheetFragment
 import com.michaldrabik.showly2.ui.common.views.CommentView
 import com.michaldrabik.showly2.ui.common.views.RateView
 import com.michaldrabik.showly2.ui.common.views.RateView.Companion.INITIAL_RATING
+import com.michaldrabik.showly2.utilities.MessageEvent
+import com.michaldrabik.showly2.utilities.MessageEvent.Companion.info
+import com.michaldrabik.showly2.utilities.MessageEvent.Type.ERROR
+import com.michaldrabik.showly2.utilities.MessageEvent.Type.INFO
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.showly2.utilities.extensions.showShortInfoSnackbar
 import com.michaldrabik.showly2.utilities.extensions.toDisplayString
 import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
@@ -176,7 +181,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         episodeDetailsRateButton.visibleIf(state.rateLoading == false)
         episodeDetailsRateButton.onClick {
           if (state.rateAllowed == true) openRateDialog(state.userRating?.rating ?: INITIAL_RATING)
-          else renderSnackbar(R.string.textSignBeforeRate)
+          else renderSnackbar(info(R.string.textSignBeforeRate))
         }
         if (state.hasRating()) {
           episodeDetailsRateButton.text = "${state.userRating?.rating}/10"
@@ -189,8 +194,14 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     }
   }
 
-  private fun renderSnackbar(stringRes: Int) =
-    episodeDetailsSnackbarHost.showShortInfoSnackbar(getString(stringRes))
+  private fun renderSnackbar(message: MessageEvent) {
+    message.consume()?.let {
+      when (message.type) {
+        INFO -> episodeDetailsSnackbarHost.showShortInfoSnackbar(getString(it))
+        ERROR -> episodeDetailsSnackbarHost.showErrorSnackbar(getString(it))
+      }
+    }
+  }
 
   override fun onDismiss(dialog: DialogInterface) {
     onEpisodeWatchedClick = null

@@ -7,6 +7,7 @@ import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
+import com.michaldrabik.showly2.utilities.MessageEvent
 import com.michaldrabik.showly2.utilities.extensions.findReplace
 import com.michaldrabik.showly2.utilities.extensions.replace
 import kotlinx.coroutines.launch
@@ -90,6 +91,6 @@ class SearchViewModel @Inject constructor(
 
   private fun onError() {
     uiState = SearchUiModel(isSearching = false, isEmpty = false)
-    _errorLiveData.value = R.string.errorCouldNotLoadSearchResults
+    _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadSearchResults)
   }
 }

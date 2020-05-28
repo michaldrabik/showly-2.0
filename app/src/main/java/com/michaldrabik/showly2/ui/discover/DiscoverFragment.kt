@@ -48,7 +48,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
-      errorLiveData.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
+      messageLiveData.observe(viewLifecycleOwner, Observer { showSnack(it) })
       loadDiscoverShows()
     }
   }

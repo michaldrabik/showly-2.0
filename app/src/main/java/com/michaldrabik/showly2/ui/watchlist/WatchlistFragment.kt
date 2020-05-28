@@ -47,7 +47,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, Observer { showInfoSnackbar(it!!) })
+      messageLiveData.observe(viewLifecycleOwner, Observer { showSnack(it) })
     }
   }
 

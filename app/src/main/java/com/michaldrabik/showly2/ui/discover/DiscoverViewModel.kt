@@ -14,6 +14,7 @@ import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
+import com.michaldrabik.showly2.utilities.MessageEvent
 import com.michaldrabik.showly2.utilities.extensions.findReplace
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import kotlinx.coroutines.delay
@@ -129,6 +130,6 @@ class DiscoverViewModel @Inject constructor(
   }
 
   private fun onError() {
-    _errorLiveData.value = R.string.errorCouldNotLoadDiscover
+    _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadDiscover)
   }
 }

@@ -8,6 +8,7 @@ import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.utilities.MessageEvent
 import com.michaldrabik.showly2.utilities.extensions.findReplace
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -37,7 +38,7 @@ class WatchlistViewModel @Inject constructor(
   fun setWatchedEpisode(item: WatchlistItem) {
     viewModelScope.launch {
       if (!item.episode.hasAired(item.season)) {
-        _messageLiveData.value = R.string.errorEpisodeNotAired
+        _messageLiveData.value = MessageEvent.info(R.string.errorEpisodeNotAired)
         return@launch
       }
       val bundle = EpisodeBundle(item.episode, item.season, item.show)

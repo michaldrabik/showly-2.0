@@ -18,6 +18,8 @@ import com.michaldrabik.showly2.model.TraktSyncSchedule
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
+import com.michaldrabik.showly2.utilities.MessageEvent.Companion.error
+import com.michaldrabik.showly2.utilities.MessageEvent.Companion.info
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -54,10 +56,10 @@ class TraktSyncViewModel @Inject constructor(
           throw IllegalStateException("Invalid Trakt authorization code.")
         }
         userManager.authorize(code)
-        _messageLiveData.value = R.string.textTraktLoginSuccess
+        _messageLiveData.value = info(R.string.textTraktLoginSuccess)
         invalidate()
       } catch (t: Throwable) {
-        _errorLiveData.value = R.string.errorAuthorization
+        _messageLiveData.value = error(R.string.errorAuthorization)
       }
     }
   }
@@ -78,7 +80,7 @@ class TraktSyncViewModel @Inject constructor(
     viewModelScope.launch {
       when (event) {
         is TraktSyncStart -> {
-          _messageLiveData.value = R.string.textTraktSyncStarted
+          _messageLiveData.value = info(R.string.textTraktSyncStarted)
           uiState = TraktSyncUiModel(isProgress = true, progressStatus = "")
         }
         is TraktSyncProgress -> {
@@ -86,16 +88,16 @@ class TraktSyncViewModel @Inject constructor(
         }
         is TraktSyncSuccess -> {
           uiState = TraktSyncUiModel(isProgress = false, progressStatus = "")
-          _messageLiveData.value = R.string.textTraktSyncComplete
+          _messageLiveData.value = info(R.string.textTraktSyncComplete)
         }
         is TraktSyncError -> {
           uiState = TraktSyncUiModel(isProgress = false, progressStatus = "")
-          _messageLiveData.value = R.string.textTraktSyncError
+          _messageLiveData.value = info(R.string.textTraktSyncError)
         }
         is TraktSyncAuthError -> {
           viewModelScope.launch {
             userManager.revokeToken()
-            _errorLiveData.value = R.string.errorTraktAuthorization
+            _messageLiveData.value = error(R.string.errorTraktAuthorization)
             uiState = TraktSyncUiModel(isProgress = false, authError = true, progressStatus = "")
           }
         }

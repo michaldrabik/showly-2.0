@@ -20,6 +20,7 @@ import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodeListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
+import com.michaldrabik.showly2.utilities.MessageEvent
 import com.michaldrabik.showly2.utilities.extensions.findReplace
 import com.michaldrabik.showly2.utilities.extensions.launchDelayed
 import com.michaldrabik.showly2.utilities.extensions.replace
@@ -79,7 +80,7 @@ class ShowDetailsViewModel @Inject constructor(
         launch { loadRelatedShows(show) }
         if (isSignedIn) launch { loadRating(show) }
       } catch (t: Throwable) {
-        _errorLiveData.value = R.string.errorCouldNotLoadShow
+        _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadShow)
         progressJob.cancel()
       }
     }
@@ -185,10 +186,10 @@ class ShowDetailsViewModel @Inject constructor(
       try {
         uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = true))
         interactor.addRating(show, rating)
-        _messageLiveData.value = R.string.textShowRated
+        _messageLiveData.value = MessageEvent.info(R.string.textShowRated)
         uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = TraktRating(show.ids.trakt, rating)))
       } catch (error: Throwable) {
-        _errorLiveData.value = R.string.errorGeneral
+        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
       } finally {
         uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = false))
       }
@@ -262,7 +263,7 @@ class ShowDetailsViewModel @Inject constructor(
 
   private fun checkSeasonsLoaded(): Boolean {
     if (!areSeasonsLoaded) {
-      _messageLiveData.value = R.string.errorSeasonsNotLoaded
+      _messageLiveData.value = MessageEvent.info(R.string.errorSeasonsNotLoaded)
       return false
     }
     return true
@@ -296,7 +297,7 @@ class ShowDetailsViewModel @Inject constructor(
   fun setQuickProgress(item: QuickSetupListItem?) {
     if (item == null) return
     if (!areSeasonsLoaded) {
-      _messageLiveData.value = R.string.errorSeasonsNotLoaded
+      _messageLiveData.value = MessageEvent.info(R.string.errorSeasonsNotLoaded)
       return
     }
     viewModelScope.launch {
@@ -315,7 +316,7 @@ class ShowDetailsViewModel @Inject constructor(
           setWatchedEpisode(episode, season, true)
         }
 
-      _messageLiveData.value = R.string.textShowQuickProgressDone
+      _messageLiveData.value = MessageEvent.info(R.string.textShowQuickProgressDone)
     }
   }
 }

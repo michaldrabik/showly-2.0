@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
+import com.michaldrabik.showly2.utilities.MessageEvent
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -62,10 +63,10 @@ class SettingsViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         interactor.authorizeTrakt(authData)
-        _messageLiveData.value = R.string.textTraktLoginSuccess
+        _messageLiveData.value = MessageEvent.info(R.string.textTraktLoginSuccess)
         refreshSettings()
       } catch (t: Throwable) {
-        _errorLiveData.value = R.string.errorAuthorization
+        _messageLiveData.value = MessageEvent.error(R.string.errorAuthorization)
       }
     }
   }
@@ -73,7 +74,7 @@ class SettingsViewModel @Inject constructor(
   fun logoutTrakt() {
     viewModelScope.launch {
       interactor.logoutTrakt()
-      _messageLiveData.value = R.string.textTraktLogoutSuccess
+      _messageLiveData.value = MessageEvent.info(R.string.textTraktLogoutSuccess)
       refreshSettings()
     }
   }
@@ -83,7 +84,7 @@ class SettingsViewModel @Inject constructor(
       withContext(IO) { Glide.get(context).clearDiskCache() }
       Glide.get(context).clearMemory()
       interactor.deleteImagesCache()
-      _messageLiveData.value = R.string.textImagesCacheCleared
+      _messageLiveData.value = MessageEvent.info(R.string.textImagesCacheCleared)
     }
   }
 

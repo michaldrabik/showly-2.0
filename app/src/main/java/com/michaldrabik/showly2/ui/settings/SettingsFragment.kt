@@ -43,8 +43,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     setupView()
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, Observer { showInfoSnackbar(it) })
-      errorLiveData.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it) })
+      messageLiveData.observe(viewLifecycleOwner, Observer { showSnack(it) })
       loadSettings()
     }
   }

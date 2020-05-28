@@ -61,7 +61,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
     if (savedInstanceState == null && !isInitialized) isInitialized = true
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
-      errorLiveData.observe(viewLifecycleOwner, Observer { showErrorSnackbar(it!!) })
+      messageLiveData.observe(viewLifecycleOwner, Observer { showSnack(it) })
     }
   }
 

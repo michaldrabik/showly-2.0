@@ -14,6 +14,7 @@ import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.repository.rating.RatingsRepository
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.RatingState
+import com.michaldrabik.showly2.utilities.MessageEvent
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -79,10 +80,10 @@ class EpisodeDetailsViewModel @Inject constructor(
         val token = userTraktManager.checkAuthorization().token
         uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateLoading = true))
         ratingsRepository.addRating(token, episode, rating)
-        _messageLiveData.value = R.string.textShowRated
+        _messageLiveData.value = MessageEvent.info(R.string.textShowRated)
         uiState = EpisodeDetailsUiModel(ratingState = RatingState(userRating = TraktRating(episode.ids.trakt, rating)))
       } catch (error: Throwable) {
-        _errorLiveData.value = R.string.errorGeneral
+        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
       } finally {
         uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateLoading = false))
       }
