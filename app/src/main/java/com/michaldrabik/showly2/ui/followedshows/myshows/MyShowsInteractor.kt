@@ -13,25 +13,28 @@ import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.SortOrder.NEWEST
 import com.michaldrabik.showly2.model.SortOrder.RATING
-import com.michaldrabik.showly2.model.mappers.Mappers
+import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
-import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
 import javax.inject.Inject
 
 @AppScope
 class MyShowsInteractor @Inject constructor(
-  private val database: AppDatabase,
   private val imagesProvider: ShowImagesProvider,
-  private val mappers: Mappers,
-  private val showsRepository: ShowsRepository
+  private val showsRepository: ShowsRepository,
+  private val settingsRepository: SettingsRepository
 ) {
 
-  suspend fun loadShows(section: MyShowsSection): List<Show> {
+  suspend fun loadSettings() = settingsRepository.load()
+
+  suspend fun loadAllShows() = showsRepository.myShows.loadAll()
+
+  suspend fun filterSectionShows(allShows: List<MyShowsListItem>, section: MyShowsSection): List<MyShowsListItem> {
     val sortOrder = loadSortOrder(section)
-    val shows = showsRepository.myShows.loadAll()
+    val shows = allShows
       .filter {
         if (section.statuses.isEmpty()) true
-        else section.statuses.contains(it.status)
+        else section.statuses.contains(it.show.status)
       }
     return sortBy(sortOrder, shows)
   }
@@ -40,9 +43,6 @@ class MyShowsInteractor @Inject constructor(
     val amount = loadSettings().myShowsRecentsAmount
     return showsRepository.myShows.loadAllRecent(amount)
   }
-
-  suspend fun loadSettings() =
-    mappers.settings.fromDatabase(database.settingsDao().getAll())
 
   private suspend fun loadSortOrder(section: MyShowsSection): SortOrder {
     val settings = loadSettings()
@@ -55,11 +55,11 @@ class MyShowsInteractor @Inject constructor(
     }
   }
 
-  private fun sortBy(sortOrder: SortOrder, shows: List<Show>) =
+  private fun sortBy(sortOrder: SortOrder, shows: List<MyShowsListItem>) =
     when (sortOrder) {
-      NAME -> shows.sortedBy { it.title }
-      NEWEST -> shows.sortedByDescending { it.year }
-      RATING -> shows.sortedByDescending { it.rating }
+      NAME -> shows.sortedBy { it.show.title }
+      NEWEST -> shows.sortedByDescending { it.show.year }
+      RATING -> shows.sortedByDescending { it.show.rating }
       else -> throw IllegalStateException("Unsupported sort type.")
     }
 
@@ -72,7 +72,7 @@ class MyShowsInteractor @Inject constructor(
       ALL -> settings.copy(myShowsAllSortBy = order)
       else -> error("Should not be used here.")
     }
-    database.settingsDao().upsert(mappers.settings.toDatabase(newSettings))
+    settingsRepository.update(newSettings)
   }
 
   suspend fun setSectionCollapsed(section: MyShowsSection, isCollapsed: Boolean) {
@@ -84,7 +84,7 @@ class MyShowsInteractor @Inject constructor(
       ALL -> settings
       else -> error("Should not be used here.")
     }
-    database.settingsDao().upsert(mappers.settings.toDatabase(newSettings))
+    settingsRepository.update(newSettings)
   }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =

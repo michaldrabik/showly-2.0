@@ -24,8 +24,7 @@ class MyShowsRepository @Inject constructor(
       .map { mappers.show.fromDatabase(it) }
 
   suspend fun loadAllRecent(amount: Int) =
-    database.myShowsDao().getAllRecent()
-      .take(amount)
+    database.myShowsDao().getAllRecent(amount)
       .map { mappers.show.fromDatabase(it) }
 
   suspend fun loadAllIds() = database.myShowsDao().getAllTraktIds()

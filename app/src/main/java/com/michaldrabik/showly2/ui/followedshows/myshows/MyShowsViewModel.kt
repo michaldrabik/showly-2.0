@@ -16,6 +16,9 @@ import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsBundle
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
 import com.michaldrabik.showly2.utilities.extensions.findReplace
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,29 +28,25 @@ class MyShowsViewModel @Inject constructor(
 
   fun loadShows() {
     viewModelScope.launch {
-
-      suspend fun List<Show>.mapToListItem(imageType: ImageType) = this.map {
-        val image = interactor.findCachedImage(it, imageType)
-        MyShowsListItem(it, image)
-      }
-
       val settings = interactor.loadSettings()
-      val allShows = interactor.loadShows(ALL).mapToListItem(POSTER)
+      val shows = interactor.loadAllShows().map { toListItemAsync(it) }.awaitAll()
+
+      val allShows = interactor.filterSectionShows(shows, ALL)
 
       val runningShows =
-        if (settings.myShowsRunningIsEnabled) interactor.loadShows(RUNNING).mapToListItem(POSTER)
+        if (settings.myShowsRunningIsEnabled) interactor.filterSectionShows(shows, RUNNING)
         else emptyList()
 
       val endedShows =
-        if (settings.myShowsEndedIsEnabled) interactor.loadShows(ENDED).mapToListItem(POSTER)
+        if (settings.myShowsEndedIsEnabled) interactor.filterSectionShows(shows, ENDED)
         else emptyList()
 
       val incomingShows =
-        if (settings.myShowsIncomingIsEnabled) interactor.loadShows(COMING_SOON).mapToListItem(POSTER)
+        if (settings.myShowsIncomingIsEnabled) interactor.filterSectionShows(shows, COMING_SOON)
         else emptyList()
 
       val recentShows =
-        if (settings.myShowsRecentIsEnabled) interactor.loadRecentShows().mapToListItem(FANART)
+        if (settings.myShowsRecentIsEnabled) interactor.loadRecentShows().map { toListItemAsync(it, FANART) }.awaitAll()
         else emptyList()
 
       uiState = MyShowsUiModel(
@@ -82,10 +81,10 @@ class MyShowsViewModel @Inject constructor(
   fun loadSortedSection(section: MyShowsSection, order: SortOrder) {
     viewModelScope.launch {
       interactor.setSectionSortOrder(section, order)
-      val shows = interactor.loadShows(section).map {
-        val image = interactor.findCachedImage(it, POSTER)
-        MyShowsListItem(it, image)
-      }
+
+      val allShows = interactor.loadAllShows().map { toListItemAsync(it) }.awaitAll()
+      val shows = interactor.filterSectionShows(allShows, section)
+
       uiState = when (section) {
         ALL -> MyShowsUiModel(allShows = MyShowsBundle(shows, section, order, null, true))
         RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, order, null, true))
@@ -99,10 +98,10 @@ class MyShowsViewModel @Inject constructor(
   fun loadCollapsedSection(section: MyShowsSection, isCollapsed: Boolean) {
     viewModelScope.launch {
       interactor.setSectionCollapsed(section, isCollapsed)
-      val shows = interactor.loadShows(section).map {
-        val image = interactor.findCachedImage(it, POSTER)
-        MyShowsListItem(it, image)
-      }
+
+      val allShows = interactor.loadAllShows().map { toListItemAsync(it) }.awaitAll()
+      val shows = interactor.filterSectionShows(allShows, section)
+
       uiState = when (section) {
         ALL -> MyShowsUiModel(allShows = MyShowsBundle(shows, section, null, isCollapsed, false))
         RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, null, isCollapsed, true))
@@ -143,4 +142,10 @@ class MyShowsViewModel @Inject constructor(
       }
     }
   }
+
+  private fun CoroutineScope.toListItemAsync(show: Show, type: ImageType = POSTER) =
+    async {
+      val image = interactor.findCachedImage(show, type)
+      MyShowsListItem(show, image)
+    }
 }

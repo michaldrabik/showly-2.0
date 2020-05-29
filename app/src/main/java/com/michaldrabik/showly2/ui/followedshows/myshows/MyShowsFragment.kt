@@ -80,8 +80,8 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
         myShowsSearchContainer.gone()
         myShowsRecentsLabel.visibleIf(recentShowsVisible == true && it.isNotEmpty())
         myShowsRecentsContainer.visibleIf(recentShowsVisible == true && it.isNotEmpty())
-        myShowsRootContent.fadeIf(it.isNotEmpty())
-        myShowsEmptyView.fadeIf(it.isEmpty())
+        myShowsRootContent.fadeIf(allShows?.items?.isNotEmpty() == true || it.isNotEmpty())
+        myShowsEmptyView.fadeIf(allShows?.items?.isEmpty() == true && it.isEmpty())
         renderRecentsContainer(it)
         (parentFragment as FollowedShowsFragment).enableSearch(it.isNotEmpty())
       }
