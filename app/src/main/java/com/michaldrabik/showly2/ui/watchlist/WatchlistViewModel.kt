@@ -10,6 +10,8 @@ import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.MessageEvent
 import com.michaldrabik.showly2.utilities.extensions.findReplace
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,9 +23,11 @@ class WatchlistViewModel @Inject constructor(
   fun loadWatchlist() {
     viewModelScope.launch {
       val items = interactor.loadWatchlist().map {
-        val image = interactor.findCachedImage(it.show, POSTER)
-        it.copy(image = image)
-      }.toMutableList()
+        async {
+          val image = interactor.findCachedImage(it.show, POSTER)
+          it.copy(image = image)
+        }
+      }.awaitAll().toMutableList()
 
       val headerIndex = items.indexOfFirst { !it.isHeader() && !it.episode.hasAired(it.season) }
       if (headerIndex != -1) {
