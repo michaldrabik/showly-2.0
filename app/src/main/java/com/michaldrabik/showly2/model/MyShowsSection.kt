@@ -5,15 +5,24 @@ import com.michaldrabik.showly2.model.ShowStatus.IN_PRODUCTION
 import com.michaldrabik.showly2.model.ShowStatus.PLANNED
 import com.michaldrabik.showly2.model.ShowStatus.RETURNING
 
-enum class MyShowsSection(val statuses: List<ShowStatus> = emptyList()) {
-  ALL,
+enum class MyShowsSection(
+  val statuses: List<ShowStatus> = emptyList(),
+  val displayString: String = ""
+) {
+  RECENTS(
+    displayString = "Recently Added"
+  ),
   RUNNING(
-    listOf(RETURNING)
+    statuses = listOf(RETURNING),
+    displayString = "Running"
   ),
   ENDED(
-    listOf(CANCELED, ShowStatus.ENDED)
+    statuses = listOf(CANCELED, ShowStatus.ENDED),
+    displayString = "Ended"
   ),
   COMING_SOON(
-    listOf(IN_PRODUCTION, PLANNED)
-  )
+    statuses = listOf(IN_PRODUCTION, PLANNED),
+    displayString = "Coming Soon"
+  ),
+  ALL
 }

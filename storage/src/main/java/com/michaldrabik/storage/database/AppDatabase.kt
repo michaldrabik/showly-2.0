@@ -29,7 +29,7 @@ import com.michaldrabik.storage.database.model.Settings
 import com.michaldrabik.storage.database.model.Show
 import com.michaldrabik.storage.database.model.User
 
-const val DATABASE_VERSION = 4
+const val DATABASE_VERSION = 5
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 @Database(

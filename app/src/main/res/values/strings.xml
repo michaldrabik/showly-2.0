@@ -10,6 +10,7 @@
   <string name="tabSeeLater">See Later</string>
 
   <string name="textOk">OK</string>
+  <string name="textClose">Close</string>
   <string name="textNew">New</string>
   <string name="textHot">Hot</string>
   <string name="textCancel">Cancel</string>
@@ -90,7 +91,8 @@
   <string name="textSettingsRecentShowsSummary">Number of recent shows to display in \'My Shows\' screen.</string>
   <string name="textSettingsDiscoverAnticipatedTitle">Anticipated Shows in Discover Feed</string>
   <string name="textSettingsDiscoverAnticipatedSummary">Switch off if you want Discover feed to only contain shows that are already available to watch.</string>
-
+  <string name="textSettingsMyShowsSectionsTitle">My Shows Sections</string>
+  <string name="textSettingsMyShowsSectionSummary">Enable/disable sections in My Shows tab.</string>
   <string name="textSettingsNotifications">Notifications</string>
   <string name="textSettingsPushNotificationsTitle">Push Notifications</string>
   <string name="textSettingsPushNotificationsSummary">Receive general information push notifications.</string>

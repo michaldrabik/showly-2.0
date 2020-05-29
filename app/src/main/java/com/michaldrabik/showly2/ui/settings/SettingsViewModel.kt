@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.utilities.MessageEvent
@@ -47,6 +48,13 @@ class SettingsViewModel @Inject constructor(
   fun enableAnticipatedShows(enable: Boolean) {
     viewModelScope.launch {
       interactor.enableAnticipatedShows(enable)
+      refreshSettings()
+    }
+  }
+
+  fun enableMyShowsSection(section: MyShowsSection, isEnabled: Boolean) {
+    viewModelScope.launch {
+      interactor.enableMyShowsSection(section, isEnabled)
       refreshSettings()
     }
   }

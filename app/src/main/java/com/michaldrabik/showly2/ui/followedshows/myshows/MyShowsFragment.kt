@@ -22,7 +22,6 @@ import com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowFanartView
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 
@@ -79,8 +78,8 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
     uiModel.run {
       recentShows?.let {
         myShowsSearchContainer.gone()
-        myShowsRecentsLabel.visible()
-        myShowsRecentsContainer.visible()
+        myShowsRecentsLabel.visibleIf(recentShowsVisible == true && it.isNotEmpty())
+        myShowsRecentsContainer.visibleIf(recentShowsVisible == true && it.isNotEmpty())
         myShowsRootContent.fadeIf(it.isNotEmpty())
         myShowsEmptyView.fadeIf(it.isEmpty())
         renderRecentsContainer(it)
@@ -92,21 +91,21 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
       }
       runningShows?.let {
         myShowsRunningSection.bind(it, R.string.textRunning)
-        myShowsRunningSection.visibleIf(it.items.isNotEmpty())
+        myShowsRunningSection.visibleIf(it.isVisible == true && it.items.isNotEmpty())
         mainActivity().myShowsRunningPosition.let { pos ->
           myShowsRunningSection.scrollToPosition(pos.first, pos.second)
         }
       }
       endedShows?.let {
         myShowsEndedSection.bind(it, R.string.textEnded)
-        myShowsEndedSection.visibleIf(it.items.isNotEmpty())
+        myShowsEndedSection.visibleIf(it.isVisible == true && it.items.isNotEmpty())
         mainActivity().myShowsEndedPosition.let { pos ->
           myShowsEndedSection.scrollToPosition(pos.first, pos.second)
         }
       }
       incomingShows?.let {
         myShowsIncomingSection.bind(it, R.string.textIncoming)
-        myShowsIncomingSection.visibleIf(it.items.isNotEmpty())
+        myShowsIncomingSection.visibleIf(it.isVisible == true && it.items.isNotEmpty())
         mainActivity().myShowsIncomingPosition.let { pos ->
           myShowsIncomingSection.scrollToPosition(pos.first, pos.second)
         }

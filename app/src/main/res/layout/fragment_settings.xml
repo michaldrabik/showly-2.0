@@ -121,7 +121,7 @@
     <LinearLayout
       android:id="@+id/settingsDiscoverAnticipated"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsRecentShowsAmount"
+      app:layout_constraintBottom_toTopOf="@id/settingsMyShowsSections"
       app:layout_constraintEnd_toStartOf="@id/settingsDiscoverAnticipatedSwitch"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsCategoryGeneral"
@@ -140,12 +140,33 @@
     </LinearLayout>
 
     <LinearLayout
+      android:id="@+id/settingsMyShowsSections"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@id/settingsRecentShowsAmount"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsDiscoverAnticipated"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsMyShowsSectionsTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:text="@string/textSettingsMyShowsSectionSummary"
+        />
+
+    </LinearLayout>
+
+    <LinearLayout
       android:id="@+id/settingsRecentShowsAmount"
       style="@style/Settings.ItemLayout"
       app:layout_constraintBottom_toTopOf="@id/settingsCategoryNotifications"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsDiscoverAnticipated"
+      app:layout_constraintTop_toBottomOf="@id/settingsMyShowsSections"
       >
 
       <TextView

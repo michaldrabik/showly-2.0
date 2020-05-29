@@ -51,6 +51,7 @@ class MyShowsInteractor @Inject constructor(
       COMING_SOON -> settings.myShowsIncomingSortBy
       ENDED -> settings.myShowsEndedSortBy
       ALL -> settings.myShowsAllSortBy
+      else -> error("Should not be used here.")
     }
   }
 
@@ -69,6 +70,7 @@ class MyShowsInteractor @Inject constructor(
       ENDED -> settings.copy(myShowsEndedSortBy = order)
       COMING_SOON -> settings.copy(myShowsIncomingSortBy = order)
       ALL -> settings.copy(myShowsAllSortBy = order)
+      else -> error("Should not be used here.")
     }
     database.settingsDao().upsert(mappers.settings.toDatabase(newSettings))
   }
@@ -80,6 +82,7 @@ class MyShowsInteractor @Inject constructor(
       ENDED -> settings.copy(myShowsEndedIsCollapsed = isCollapsed)
       COMING_SOON -> settings.copy(myShowsIncomingIsCollapsed = isCollapsed)
       ALL -> settings
+      else -> error("Should not be used here.")
     }
     database.settingsDao().upsert(mappers.settings.toDatabase(newSettings))
   }

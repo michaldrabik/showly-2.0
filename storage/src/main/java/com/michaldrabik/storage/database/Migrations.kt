@@ -23,9 +23,19 @@ object Migrations {
     }
   }
 
+  private val MIGRATION_4_5 = object : Migration(4, 5) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      database.execSQL("ALTER TABLE settings ADD COLUMN my_shows_running_is_enabled INTEGER NOT NULL DEFAULT 1")
+      database.execSQL("ALTER TABLE settings ADD COLUMN my_shows_incoming_is_enabled INTEGER NOT NULL DEFAULT 1")
+      database.execSQL("ALTER TABLE settings ADD COLUMN my_shows_ended_is_enabled INTEGER NOT NULL DEFAULT 1")
+      database.execSQL("ALTER TABLE settings ADD COLUMN my_shows_recent_is_enabled INTEGER NOT NULL DEFAULT 1")
+    }
+  }
+
   val MIGRATIONS = listOf(
     MIGRATION_1_2,
     MIGRATION_2_3,
-    MIGRATION_3_4
+    MIGRATION_3_4,
+    MIGRATION_4_5
   )
 }

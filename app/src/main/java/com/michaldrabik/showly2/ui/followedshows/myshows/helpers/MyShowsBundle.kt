@@ -8,5 +8,6 @@ data class MyShowsBundle(
   val items: List<MyShowsListItem>,
   val section: MyShowsSection,
   val sortOrder: SortOrder?,
-  val isCollapsed: Boolean?
+  val isCollapsed: Boolean?,
+  val isVisible: Boolean?
 )

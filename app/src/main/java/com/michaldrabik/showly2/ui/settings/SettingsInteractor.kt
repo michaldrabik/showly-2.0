@@ -9,6 +9,11 @@ import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.common.notifications.AnnouncementManager
 import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.fcm.NotificationChannel
+import com.michaldrabik.showly2.model.MyShowsSection
+import com.michaldrabik.showly2.model.MyShowsSection.COMING_SOON
+import com.michaldrabik.showly2.model.MyShowsSection.ENDED
+import com.michaldrabik.showly2.model.MyShowsSection.RECENTS
+import com.michaldrabik.showly2.model.MyShowsSection.RUNNING
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.repository.UserTraktManager
@@ -71,6 +76,20 @@ class SettingsInteractor @Inject constructor(
       val new = it.copy(showAnticipatedShows = enable)
       settingsRepository.update(new)
       showsRepository.discoverShows.clearCache()
+    }
+  }
+
+  suspend fun enableMyShowsSection(section: MyShowsSection, isEnabled: Boolean) {
+    val settings = settingsRepository.load()
+    settings.let {
+      val new = when (section) {
+        RECENTS -> it.copy(myShowsRecentIsEnabled = isEnabled)
+        RUNNING -> it.copy(myShowsRunningIsEnabled = isEnabled)
+        ENDED -> it.copy(myShowsEndedIsEnabled = isEnabled)
+        COMING_SOON -> it.copy(myShowsIncomingIsEnabled = isEnabled)
+        else -> error("Should not be used here.")
+      }
+      settingsRepository.update(new)
     }
   }
 

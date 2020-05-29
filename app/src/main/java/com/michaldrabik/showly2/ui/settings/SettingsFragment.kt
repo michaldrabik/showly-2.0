@@ -19,6 +19,10 @@ import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_OPTIONS
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
+import com.michaldrabik.showly2.model.MyShowsSection.COMING_SOON
+import com.michaldrabik.showly2.model.MyShowsSection.ENDED
+import com.michaldrabik.showly2.model.MyShowsSection.RECENTS
+import com.michaldrabik.showly2.model.MyShowsSection.RUNNING
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
@@ -50,9 +54,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun setupView() {
     settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
-    settingsTraktSync.onClick {
-      navigateTo(R.id.actionSettingsFragmentToTraktSync)
-    }
+    settingsTraktSync.onClick { navigateTo(R.id.actionSettingsFragmentToTraktSync) }
     settingsDeleteCache.onClick { viewModel.deleteImagesCache(requireContext().applicationContext) }
   }
 
@@ -88,18 +90,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   }
 
   private fun renderSettings(settings: Settings) {
-    val applicationContext = requireContext().applicationContext
-
-    settingsRecentShowsAmount.onClick {
-      val options = MY_SHOWS_RECENTS_OPTIONS.map { it.toString() }.toTypedArray()
-      val default = options.indexOf(settings.myShowsRecentsAmount.toString())
-      AlertDialog.Builder(requireContext())
-        .setSingleChoiceItems(options, default) { dialog, index ->
-          viewModel.setRecentShowsAmount(options[index].toInt())
-          dialog.dismiss()
-        }
-        .show()
-    }
+    settingsRecentShowsAmount.onClick { showRecentShowsDialog(settings) }
+    settingsMyShowsSections.onClick { showSectionsDialog(settings) }
 
     settingsPushNotificationsSwitch
       .setCheckedSilent(settings.pushNotificationsEnabled) { _, isChecked ->
@@ -108,7 +100,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
     settingsShowsNotificationsSwitch
       .setCheckedSilent(settings.episodesNotificationsEnabled) { _, isChecked ->
-        viewModel.enableEpisodesAnnouncements(isChecked, applicationContext)
+        viewModel.enableEpisodesAnnouncements(isChecked, requireContext().applicationContext)
       }
 
     settingsDiscoverAnticipatedSwitch
@@ -118,16 +110,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
     settingsWhenToNotifyValue.run {
       setText(settings.episodesNotificationsDelay.stringRes)
-      onClick {
-        val options = NotificationDelay.values()
-        val default = options.indexOf(settings.episodesNotificationsDelay)
-        AlertDialog.Builder(requireContext())
-          .setSingleChoiceItems(options.map { getString(it.stringRes) }.toTypedArray(), default) { dialog, index ->
-            viewModel.setWhenToNotify(options[index], applicationContext)
-            dialog.dismiss()
-          }
-          .show()
-      }
+      onClick { showWhenToNotifyDialog(settings) }
     }
 
     settingsContactDevs.onClick {
@@ -152,6 +135,47 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     }
 
     settingsVersion.text = "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+  }
+
+  private fun showRecentShowsDialog(settings: Settings) {
+    val options = MY_SHOWS_RECENTS_OPTIONS.map { it.toString() }.toTypedArray()
+    val default = options.indexOf(settings.myShowsRecentsAmount.toString())
+    AlertDialog.Builder(requireContext())
+      .setSingleChoiceItems(options, default) { dialog, index ->
+        viewModel.setRecentShowsAmount(options[index].toInt())
+        dialog.dismiss()
+      }
+      .show()
+  }
+
+  private fun showSectionsDialog(settings: Settings) {
+    val options = listOf(RECENTS, RUNNING, ENDED, COMING_SOON)
+    val selected = booleanArrayOf(
+      settings.myShowsRecentIsEnabled,
+      settings.myShowsRunningIsEnabled,
+      settings.myShowsEndedIsEnabled,
+      settings.myShowsIncomingIsEnabled
+    )
+
+    AlertDialog.Builder(requireContext())
+      .setMultiChoiceItems(
+        options.map { it.displayString }.toTypedArray(),
+        selected
+      ) { _, index, isChecked ->
+        viewModel.enableMyShowsSection(options[index], isChecked)
+      }
+      .show()
+  }
+
+  private fun showWhenToNotifyDialog(settings: Settings) {
+    val options = NotificationDelay.values()
+    val default = options.indexOf(settings.episodesNotificationsDelay)
+    AlertDialog.Builder(requireContext())
+      .setSingleChoiceItems(options.map { getString(it.stringRes) }.toTypedArray(), default) { dialog, index ->
+        viewModel.setWhenToNotify(options[index], requireContext().applicationContext)
+        dialog.dismiss()
+      }
+      .show()
   }
 
   private fun openTraktWebAuthorization() {

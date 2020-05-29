@@ -5,6 +5,7 @@ import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsBundle
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
 
 data class MyShowsUiModel(
+  val recentShowsVisible: Boolean? = null,
   val recentShows: List<MyShowsListItem>? = null,
   val runningShows: MyShowsBundle? = null,
   val endedShows: MyShowsBundle? = null,
@@ -14,6 +15,7 @@ data class MyShowsUiModel(
 
   override fun update(newModel: UiModel) =
     (newModel as MyShowsUiModel).copy(
+      recentShowsVisible = newModel.recentShowsVisible ?: recentShowsVisible,
       recentShows = newModel.recentShows ?: recentShows,
       runningShows = newModel.runningShows ?: runningShows,
       endedShows = newModel.endedShows ?: endedShows,

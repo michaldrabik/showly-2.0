@@ -31,20 +31,50 @@ class MyShowsViewModel @Inject constructor(
         MyShowsListItem(it, image)
       }
 
-      val recentShows = interactor.loadRecentShows().mapToListItem(FANART)
-      val allShows = interactor.loadShows(ALL).mapToListItem(POSTER)
-      val runningShows = interactor.loadShows(RUNNING).mapToListItem(POSTER)
-      val endedShows = interactor.loadShows(ENDED).mapToListItem(POSTER)
-      val incomingShows = interactor.loadShows(COMING_SOON).mapToListItem(POSTER)
-
       val settings = interactor.loadSettings()
+      val allShows = interactor.loadShows(ALL).mapToListItem(POSTER)
+
+      val runningShows =
+        if (settings.myShowsRunningIsEnabled) interactor.loadShows(RUNNING).mapToListItem(POSTER)
+        else emptyList()
+
+      val endedShows =
+        if (settings.myShowsEndedIsEnabled) interactor.loadShows(ENDED).mapToListItem(POSTER)
+        else emptyList()
+
+      val incomingShows =
+        if (settings.myShowsIncomingIsEnabled) interactor.loadShows(COMING_SOON).mapToListItem(POSTER)
+        else emptyList()
+
+      val recentShows =
+        if (settings.myShowsRecentIsEnabled) interactor.loadRecentShows().mapToListItem(FANART)
+        else emptyList()
 
       uiState = MyShowsUiModel(
+        recentShowsVisible = settings.myShowsRecentIsEnabled,
         recentShows = recentShows,
-        runningShows = MyShowsBundle(runningShows, RUNNING, settings.myShowsRunningSortBy, settings.myShowsRunningIsCollapsed),
-        endedShows = MyShowsBundle(endedShows, ENDED, settings.myShowsEndedSortBy, settings.myShowsEndedIsCollapsed),
-        incomingShows = MyShowsBundle(incomingShows, COMING_SOON, settings.myShowsIncomingSortBy, settings.myShowsIncomingIsCollapsed),
-        allShows = MyShowsBundle(allShows, ALL, settings.myShowsAllSortBy, null)
+        runningShows = MyShowsBundle(
+          runningShows,
+          RUNNING,
+          settings.myShowsRunningSortBy,
+          settings.myShowsRunningIsCollapsed,
+          settings.myShowsRunningIsEnabled
+        ),
+        endedShows = MyShowsBundle(
+          endedShows,
+          ENDED,
+          settings.myShowsEndedSortBy,
+          settings.myShowsEndedIsCollapsed,
+          settings.myShowsEndedIsEnabled
+        ),
+        incomingShows = MyShowsBundle(
+          incomingShows,
+          COMING_SOON,
+          settings.myShowsIncomingSortBy,
+          settings.myShowsIncomingIsCollapsed,
+          settings.myShowsIncomingIsEnabled
+        ),
+        allShows = MyShowsBundle(allShows, ALL, settings.myShowsAllSortBy, null, true)
       )
     }
   }
@@ -57,10 +87,11 @@ class MyShowsViewModel @Inject constructor(
         MyShowsListItem(it, image)
       }
       uiState = when (section) {
-        ALL -> MyShowsUiModel(allShows = MyShowsBundle(shows, section, order, null))
-        RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, order, null))
-        ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, order, null))
-        COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, order, null))
+        ALL -> MyShowsUiModel(allShows = MyShowsBundle(shows, section, order, null, true))
+        RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, order, null, true))
+        ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, order, null, true))
+        COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, order, null, true))
+        else -> error("Should not be used here.")
       }
     }
   }
@@ -73,10 +104,11 @@ class MyShowsViewModel @Inject constructor(
         MyShowsListItem(it, image)
       }
       uiState = when (section) {
-        ALL -> MyShowsUiModel(allShows = MyShowsBundle(shows, section, null, isCollapsed))
-        RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, null, isCollapsed))
-        ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, null, isCollapsed))
-        COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, null, isCollapsed))
+        ALL -> MyShowsUiModel(allShows = MyShowsBundle(shows, section, null, isCollapsed, false))
+        RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, null, isCollapsed, true))
+        ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, null, isCollapsed, true))
+        COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, null, isCollapsed, true))
+        else -> error("Should not be used here.")
       }
     }
   }
