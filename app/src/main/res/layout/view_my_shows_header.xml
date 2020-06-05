@@ -11,7 +11,7 @@
   <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/myShowsHeaderRoot"
     android:layout_width="match_parent"
-    android:layout_height="52dp"
+    android:layout_height="56dp"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:paddingTop="@dimen/spaceNormal"
