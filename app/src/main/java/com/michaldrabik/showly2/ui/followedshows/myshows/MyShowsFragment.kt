@@ -2,27 +2,20 @@ package com.michaldrabik.showly2.ui.followedshows.myshows
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.widget.FrameLayout
 import androidx.fragment.app.viewModels
-import androidx.gridlayout.widget.GridLayout
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
-import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
-import com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowFanartView
-import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import com.michaldrabik.showly2.utilities.extensions.fadeIf
-import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsAdapter
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 
 class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_shows),
@@ -32,6 +25,9 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
 
   override val viewModel by viewModels<MyShowsViewModel> { viewModelFactory }
 
+  private val adapter by lazy { MyShowsAdapter() }
+  private lateinit var layoutManager: LinearLayoutManager
+
   override fun onCreate(savedInstanceState: Bundle?) {
     fragmentComponent().inject(this)
     super.onCreate(savedInstanceState)
@@ -39,120 +35,42 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    setupSectionsViews()
+    setupRecycler()
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
       loadShows()
     }
   }
 
-  private fun setupSectionsViews() {
-    val onSectionItemClick: (MyShowsListItem) -> Unit = { openShowDetails(it.show) }
-    val onSectionMissingImageListener: (MyShowsListItem, Boolean) -> Unit = { item, force ->
-      viewModel.loadMissingImage(item, force)
+  private fun setupRecycler() {
+    layoutManager = LinearLayoutManager(context, VERTICAL, false)
+    myShowsRecycler.apply {
+      adapter = this@MyShowsFragment.adapter
+      layoutManager = this@MyShowsFragment.layoutManager
+      (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+      setHasFixedSize(true)
     }
-    val onSectionSortOrderChange: (MyShowsSection, SortOrder) -> Unit = { section, order ->
-      viewModel.loadSortedSection(section, order)
+    adapter.run {
+      itemClickListener = { openShowDetails(it.show) }
+      missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) }
+      sectionMissingImageListener = { item, section, force -> viewModel.loadSectionMissingItem(item, section, force) }
+      onSortOrderChangeListener = { section, sortOrder -> viewModel.loadSortedSection(section, sortOrder) }
     }
-    val onSectionCollapsedListener: (MyShowsSection, Boolean) -> Unit = { section, isCollapsed ->
-      viewModel.loadCollapsedSection(section, isCollapsed)
-    }
-
-    listOf(
-      myShowsRunningSection,
-      myShowsEndedSection,
-      myShowsIncomingSection
-    ).forEach {
-      it.itemClickListener = onSectionItemClick
-      it.missingImageListener = onSectionMissingImageListener
-      it.sortSelectedListener = onSectionSortOrderChange
-      it.collapseListener = onSectionCollapsedListener
-    }
-
-    myShowsAllSection.itemClickListener = onSectionItemClick
-    myShowsAllSection.missingImageListener = onSectionMissingImageListener
-    myShowsAllSection.sortSelectedListener = onSectionSortOrderChange
   }
 
   private fun render(uiModel: MyShowsUiModel) {
     uiModel.run {
-      recentShows?.let {
-        myShowsSearchContainer.gone()
-        myShowsRecentsLabel.visibleIf(recentShowsVisible == true && it.isNotEmpty())
-        myShowsRecentsContainer.visibleIf(recentShowsVisible == true && it.isNotEmpty())
-        myShowsRootContent.fadeIf(allShows?.items?.isNotEmpty() == true || it.isNotEmpty())
-        myShowsEmptyView.fadeIf(allShows?.items?.isEmpty() == true && it.isEmpty())
-        renderRecentsContainer(it)
-        (parentFragment as FollowedShowsFragment).enableSearch(it.isNotEmpty())
-      }
-      allShows?.let {
-        myShowsAllSection.bind(it, R.string.textAllShows)
-        myShowsAllSection.visibleIf(it.items.isNotEmpty())
-      }
-      runningShows?.let {
-        myShowsRunningSection.bind(it, R.string.textRunning)
-        myShowsRunningSection.visibleIf(it.isVisible == true && it.items.isNotEmpty())
-        mainActivity().myShowsRunningPosition.let { pos ->
-          myShowsRunningSection.scrollToPosition(pos.first, pos.second)
-        }
-      }
-      endedShows?.let {
-        myShowsEndedSection.bind(it, R.string.textEnded)
-        myShowsEndedSection.visibleIf(it.isVisible == true && it.items.isNotEmpty())
-        mainActivity().myShowsEndedPosition.let { pos ->
-          myShowsEndedSection.scrollToPosition(pos.first, pos.second)
-        }
-      }
-      incomingShows?.let {
-        myShowsIncomingSection.bind(it, R.string.textIncoming)
-        myShowsIncomingSection.visibleIf(it.isVisible == true && it.items.isNotEmpty())
-        mainActivity().myShowsIncomingPosition.let { pos ->
-          myShowsIncomingSection.scrollToPosition(pos.first, pos.second)
-        }
-      }
-    }
-  }
-
-  private fun renderRecentsContainer(items: List<MyShowsListItem>) {
-    myShowsRecentsContainer.removeAllViews()
-
-    val context = requireContext()
-    val itemHeight = context.dimenToPx(R.dimen.myShowsFanartHeight)
-    val itemMargin = context.dimenToPx(R.dimen.spaceTiny)
-
-    val clickListener: (Show) -> Unit = { openShowDetails(it) }
-
-    items.forEachIndexed { index, item ->
-      val view = MyShowFanartView(context).apply {
-        layoutParams = FrameLayout.LayoutParams(0, MATCH_PARENT)
-        bind(item.show, item.image, clickListener)
-      }
-      val layoutParams = GridLayout.LayoutParams().apply {
-        width = 0
-        height = itemHeight
-        columnSpec = GridLayout.spec(index % 2, 1F)
-        setMargins(itemMargin, itemMargin, itemMargin, itemMargin)
-      }
-      myShowsRecentsContainer.addView(view, layoutParams)
+      listItems?.let { adapter.setItems(it) }
     }
   }
 
   private fun openShowDetails(show: Show) {
-    saveToUiCache()
     (parentFragment as? FollowedShowsFragment)?.openShowDetails(show)
-  }
-
-  private fun saveToUiCache() {
-    mainActivity().apply {
-      myShowsRunningSection.run { post { myShowsRunningPosition = getListPosition() } }
-      myShowsEndedSection.run { post { myShowsEndedPosition = getListPosition() } }
-      myShowsIncomingSection.run { post { myShowsIncomingPosition = getListPosition() } }
-    }
   }
 
   override fun onTabReselected() = onScrollReset()
 
-  override fun onScrollReset() = myShowsRootScroll.smoothScrollTo(0, 0)
+  override fun onScrollReset() = myShowsRecycler.scrollToPosition(0)
 
   override fun onTraktSyncProgress() = viewModel.loadShows()
 }

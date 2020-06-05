@@ -24,5 +24,7 @@ enum class MyShowsSection(
     statuses = listOf(IN_PRODUCTION, PLANNED),
     displayString = "Coming Soon"
   ),
-  ALL
+  ALL(
+    displayString = "All"
+  )
 }

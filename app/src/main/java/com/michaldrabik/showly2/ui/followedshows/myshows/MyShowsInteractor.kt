@@ -15,7 +15,7 @@ import com.michaldrabik.showly2.model.SortOrder.NEWEST
 import com.michaldrabik.showly2.model.SortOrder.RATING
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
-import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import javax.inject.Inject
 
 @AppScope
@@ -29,7 +29,10 @@ class MyShowsInteractor @Inject constructor(
 
   suspend fun loadAllShows() = showsRepository.myShows.loadAll()
 
-  suspend fun filterSectionShows(allShows: List<MyShowsListItem>, section: MyShowsSection): List<MyShowsListItem> {
+  suspend fun filterSectionShows(
+    allShows: List<MyShowsItem>,
+    section: MyShowsSection
+  ): List<MyShowsItem> {
     val sortOrder = loadSortOrder(section)
     val shows = allShows
       .filter {
@@ -44,7 +47,7 @@ class MyShowsInteractor @Inject constructor(
     return showsRepository.myShows.loadAllRecent(amount)
   }
 
-  private suspend fun loadSortOrder(section: MyShowsSection): SortOrder {
+  suspend fun loadSortOrder(section: MyShowsSection): SortOrder {
     val settings = loadSettings()
     return when (section) {
       RUNNING -> settings.myShowsRunningSortBy
@@ -55,7 +58,7 @@ class MyShowsInteractor @Inject constructor(
     }
   }
 
-  private fun sortBy(sortOrder: SortOrder, shows: List<MyShowsListItem>) =
+  private fun sortBy(sortOrder: SortOrder, shows: List<MyShowsItem>) =
     when (sortOrder) {
       NAME -> shows.sortedBy { it.show.title }
       NEWEST -> shows.sortedByDescending { it.show.year }

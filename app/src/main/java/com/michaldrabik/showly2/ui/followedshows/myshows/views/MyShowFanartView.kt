@@ -11,11 +11,11 @@ import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visible
-import kotlinx.android.synthetic.main.view_my_show.view.*
+import kotlinx.android.synthetic.main.view_my_shows_section_item.view.*
 
 class MyShowFanartView : FrameLayout {
 
@@ -24,17 +24,17 @@ class MyShowFanartView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   init {
-    inflate(context, R.layout.view_my_show, this)
+    inflate(context, R.layout.view_my_shows_section_item, this)
   }
 
   private val cornerRadius by lazy { context.dimenToPx(R.dimen.myShowsFanartCorner) }
 
-  fun bind(show: Show, image: Image, clickListener: (Show) -> Unit) {
+  fun bind(showItem: MyShowsItem, clickListener: (MyShowsItem) -> Unit) {
     clear()
-    myShowTitle.text = show.title
+    myShowTitle.text = showItem.show.title
     myShowTitle.visible()
-    onClick { clickListener(show) }
-    loadImage(image)
+    onClick { clickListener(showItem) }
+    loadImage(showItem.image)
   }
 
   private fun loadImage(image: Image) {

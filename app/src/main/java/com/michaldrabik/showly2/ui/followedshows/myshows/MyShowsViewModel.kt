@@ -3,18 +3,19 @@ package com.michaldrabik.showly2.ui.followedshows.myshows
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType
-import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.MyShowsSection.ALL
 import com.michaldrabik.showly2.model.MyShowsSection.COMING_SOON
 import com.michaldrabik.showly2.model.MyShowsSection.ENDED
+import com.michaldrabik.showly2.model.MyShowsSection.RECENTS
 import com.michaldrabik.showly2.model.MyShowsSection.RUNNING
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsBundle
-import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem.Type.ALL_SHOWS_ITEM
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem.Type.RECENT_SHOWS
 import com.michaldrabik.showly2.utilities.extensions.findReplace
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -29,7 +30,7 @@ class MyShowsViewModel @Inject constructor(
   fun loadShows() {
     viewModelScope.launch {
       val settings = interactor.loadSettings()
-      val shows = interactor.loadAllShows().map { toListItemAsync(it) }.awaitAll()
+      val shows = interactor.loadAllShows().map { toListItemAsync(ALL_SHOWS_ITEM, it) }.awaitAll()
 
       val allShows = interactor.filterSectionShows(shows, ALL)
 
@@ -46,90 +47,48 @@ class MyShowsViewModel @Inject constructor(
         else emptyList()
 
       val recentShows =
-        if (settings.myShowsRecentIsEnabled) interactor.loadRecentShows().map { toListItemAsync(it, FANART) }.awaitAll()
+        if (settings.myShowsRecentIsEnabled) interactor.loadRecentShows().map { toListItemAsync(RECENT_SHOWS, it, ImageType.FANART) }.awaitAll()
         else emptyList()
 
-      uiState = MyShowsUiModel(
-        recentShowsVisible = settings.myShowsRecentIsEnabled,
-        recentShows = recentShows,
-        runningShows = MyShowsBundle(
-          runningShows,
-          RUNNING,
-          settings.myShowsRunningSortBy,
-          settings.myShowsRunningIsCollapsed,
-          settings.myShowsRunningIsEnabled
-        ),
-        endedShows = MyShowsBundle(
-          endedShows,
-          ENDED,
-          settings.myShowsEndedSortBy,
-          settings.myShowsEndedIsCollapsed,
-          settings.myShowsEndedIsEnabled
-        ),
-        incomingShows = MyShowsBundle(
-          incomingShows,
-          COMING_SOON,
-          settings.myShowsIncomingSortBy,
-          settings.myShowsIncomingIsCollapsed,
-          settings.myShowsIncomingIsEnabled
-        ),
-        allShows = MyShowsBundle(allShows, ALL, settings.myShowsAllSortBy, null, true)
-      )
+      val listItems = mutableListOf<MyShowsItem>()
+      listItems.run {
+        if (recentShows.isNotEmpty()) {
+          add(MyShowsItem.createHeader(RECENTS, recentShows.count(), null))
+          add(MyShowsItem.createRecentsSection(recentShows))
+        }
+        if (runningShows.isNotEmpty()) {
+          add(MyShowsItem.createHeader(RUNNING, runningShows.count(), interactor.loadSortOrder(RUNNING)))
+          add(MyShowsItem.createHorizontalSection(RUNNING, runningShows))
+        }
+        if (endedShows.isNotEmpty()) {
+          add(MyShowsItem.createHeader(ENDED, endedShows.count(), interactor.loadSortOrder(ENDED)))
+          add(MyShowsItem.createHorizontalSection(ENDED, endedShows))
+        }
+        if (incomingShows.isNotEmpty()) {
+          add(MyShowsItem.createHeader(COMING_SOON, incomingShows.count(), interactor.loadSortOrder(COMING_SOON)))
+          add(MyShowsItem.createHorizontalSection(COMING_SOON, incomingShows))
+        }
+        add(MyShowsItem.createHeader(ALL, allShows.count(), interactor.loadSortOrder(ALL)))
+        addAll(allShows)
+      }
+
+      uiState = MyShowsUiModel(listItems = listItems)
     }
   }
 
   fun loadSortedSection(section: MyShowsSection, order: SortOrder) {
     viewModelScope.launch {
       interactor.setSectionSortOrder(section, order)
-
-      val allShows = interactor.loadAllShows().map { toListItemAsync(it) }.awaitAll()
-      val shows = interactor.filterSectionShows(allShows, section)
-
-      uiState = when (section) {
-        ALL -> MyShowsUiModel(allShows = MyShowsBundle(shows, section, order, null, true))
-        RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, order, null, true))
-        ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, order, null, true))
-        COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, order, null, true))
-        else -> error("Should not be used here.")
-      }
+      loadShows()
     }
   }
 
-  fun loadCollapsedSection(section: MyShowsSection, isCollapsed: Boolean) {
-    viewModelScope.launch {
-      interactor.setSectionCollapsed(section, isCollapsed)
+  fun loadMissingImage(item: MyShowsItem, force: Boolean) {
 
-      val allShows = interactor.loadAllShows().map { toListItemAsync(it) }.awaitAll()
-      val shows = interactor.filterSectionShows(allShows, section)
-
-      uiState = when (section) {
-        ALL -> MyShowsUiModel(allShows = MyShowsBundle(shows, section, null, isCollapsed, false))
-        RUNNING -> MyShowsUiModel(runningShows = MyShowsBundle(shows, section, null, isCollapsed, true))
-        ENDED -> MyShowsUiModel(endedShows = MyShowsBundle(shows, section, null, isCollapsed, true))
-        COMING_SOON -> MyShowsUiModel(incomingShows = MyShowsBundle(shows, section, null, isCollapsed, true))
-        else -> error("Should not be used here.")
-      }
-    }
-  }
-
-  fun loadMissingImage(item: MyShowsListItem, force: Boolean) {
-
-    fun updateItem(new: MyShowsListItem) {
-      val all = uiState?.allShows?.items?.toMutableList() ?: mutableListOf()
-      val incoming = uiState?.incomingShows?.items?.toMutableList() ?: mutableListOf()
-      val ended = uiState?.endedShows?.items?.toMutableList() ?: mutableListOf()
-      val running = uiState?.runningShows?.items?.toMutableList() ?: mutableListOf()
-
-      listOf(all, incoming, ended, running).forEach { section ->
-        section.findReplace(new) { it.isSameAs(new) }
-      }
-
-      uiState = uiState?.copy(
-        incomingShows = uiState?.incomingShows?.copy(items = incoming.toList()),
-        endedShows = uiState?.endedShows?.copy(items = ended.toList()),
-        runningShows = uiState?.runningShows?.copy(items = running.toList()),
-        allShows = uiState?.allShows?.copy(items = all.toList())
-      )
+    fun updateItem(new: MyShowsItem) {
+      val items = uiState?.listItems?.toMutableList() ?: mutableListOf()
+      items.findReplace(new) { it.isSameAs(new) }
+      uiState = uiState?.copy(listItems = items)
     }
 
     viewModelScope.launch {
@@ -143,9 +102,38 @@ class MyShowsViewModel @Inject constructor(
     }
   }
 
-  private fun CoroutineScope.toListItemAsync(show: Show, type: ImageType = POSTER) =
-    async {
-      val image = interactor.findCachedImage(show, type)
-      MyShowsListItem(show, image)
+  fun loadSectionMissingItem(item: MyShowsItem, itemSection: MyShowsItem.HorizontalSection, force: Boolean) {
+
+    fun updateItem(newItem: MyShowsItem, newSection: MyShowsItem.HorizontalSection) {
+      val items = uiState?.listItems?.toMutableList() ?: mutableListOf()
+      val section = items.find { it.horizontalSection?.section == newSection.section }?.horizontalSection
+
+      val sectionItems = section?.items?.toMutableList() ?: mutableListOf()
+      sectionItems.findReplace(newItem) { it.isSameAs(newItem) }
+
+      val newSecWithItems = section?.copy(items = sectionItems)
+      items.findReplace(newItem.copy(horizontalSection = newSecWithItems)) { it.horizontalSection?.section == newSection.section }
+
+      uiState = uiState?.copy(listItems = items)
     }
+
+    viewModelScope.launch {
+      updateItem(item.copy(isLoading = true), itemSection)
+      try {
+        val image = interactor.loadMissingImage(item.show, item.image.type, force)
+        updateItem(item.copy(isLoading = false, image = image), itemSection)
+      } catch (t: Throwable) {
+        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)), itemSection)
+      }
+    }
+  }
+
+  private fun CoroutineScope.toListItemAsync(
+    itemType: MyShowsItem.Type,
+    show: Show,
+    type: ImageType = POSTER
+  ) = async {
+    val image = interactor.findCachedImage(show, type)
+    MyShowsItem(itemType, null, null, null, show, image, false)
+  }
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/myShowsHeaderRoot"
+    android:layout_width="match_parent"
+    android:layout_height="52dp"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingTop="@dimen/spaceNormal"
+    android:paddingBottom="@dimen/spaceSmall"
+    >
+
+    <TextView
+      android:id="@+id/myShowsHeaderLabel"
+      style="@style/MyShows.Label"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="Section Label"
+      />
+
+    <ImageView
+      android:id="@+id/myShowsHeaderSortButton"
+      android:layout_width="24dp"
+      android:layout_height="0dp"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@id/myShowsHeaderLabel"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/myShowsHeaderLabel"
+      app:srcCompat="@drawable/ic_sort"
+      />
+
+    <com.michaldrabik.showly2.ui.common.views.SortOrderView
+      android:id="@+id/myShowsHeaderSortView"
+      android:layout_width="wrap_content"
+      android:layout_height="150dp"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:elevation="10dp"
+      android:visibility="gone"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

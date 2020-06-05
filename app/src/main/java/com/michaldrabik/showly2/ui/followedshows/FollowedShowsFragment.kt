@@ -184,7 +184,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
     items.forEachIndexed { index, item ->
       val view = MyShowFanartView(context).apply {
         layoutParams = FrameLayout.LayoutParams(0, MATCH_PARENT)
-        bind(item.show, item.image, clickListener)
+//        bind(item.show, item.image, clickListener)
       }
       val layoutParams = GridLayout.LayoutParams().apply {
         width = 0

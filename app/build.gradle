@@ -64,6 +64,7 @@ dependencies {
   implementation "androidx.constraintlayout:constraintlayout:$versions.androidConstraintLayout"
   implementation "androidx.gridlayout:gridlayout:$versions.androidGridLayout"
   implementation "androidx.lifecycle:lifecycle-extensions:$versions.androidLifecycle"
+  implementation "androidx.recyclerview:recyclerview:$versions.androidRecycler"
   implementation "androidx.swiperefreshlayout:swiperefreshlayout:$versions.androidSwipeRefresh"
   implementation "androidx.transition:transition:$versions.androidTransition"
   implementation "androidx.work:work-runtime-ktx:$versions.androidWork"

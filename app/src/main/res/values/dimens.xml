@@ -22,7 +22,7 @@
   <dimen name="episodeViewHeight">42dp</dimen>
 
   <dimen name="myShowsSearchViewPadding">64dp</dimen>
-  <dimen name="myShowsTabsViewPadding">108dp</dimen>
+  <dimen name="myShowsTabsViewPadding">100dp</dimen>
   <dimen name="myShowsBottomPadding">68dp</dimen>
   <dimen name="myShowsFanartCorner">4dp</dimen>
   <dimen name="myShowsFanartHeight">126dp</dimen>

@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.followedshows.myshows.views
+package com.michaldrabik.showly2.ui.followedshows.myshows.views.section
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,21 +8,22 @@ import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image.Status
 import com.michaldrabik.showly2.ui.common.views.ShowView
-import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
-import kotlinx.android.synthetic.main.view_my_show.view.*
+import kotlinx.android.synthetic.main.view_my_shows_section_item.view.*
 
-class MyShowHorizontalView : ShowView<MyShowsListItem> {
+class MyShowsSectionItemView : ShowView<MyShowsItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   init {
-    inflate(context, R.layout.view_my_show, this)
+    inflate(context, R.layout.view_my_shows_section_item, this)
     val width = context.dimenToPx(R.dimen.myShowsPosterWidth)
     layoutParams = LayoutParams(width, MATCH_PARENT)
   }
@@ -31,9 +32,9 @@ class MyShowHorizontalView : ShowView<MyShowsListItem> {
   override val placeholderView: ImageView = myShowPlaceholder
 
   override fun bind(
-    item: MyShowsListItem,
-    missingImageListener: (MyShowsListItem, Boolean) -> Unit,
-    itemClickListener: (MyShowsListItem) -> Unit
+    item: MyShowsItem,
+    missingImageListener: (MyShowsItem, Boolean) -> Unit,
+    itemClickListener: (MyShowsItem) -> Unit
   ) {
     clear()
     myShowTitle.text = item.show.title
@@ -42,7 +43,7 @@ class MyShowHorizontalView : ShowView<MyShowsListItem> {
     loadImage(item, missingImageListener)
   }
 
-  override fun loadImage(item: MyShowsListItem, missingImageListener: (MyShowsListItem, Boolean) -> Unit) {
+  override fun loadImage(item: MyShowsItem, missingImageListener: (MyShowsItem, Boolean) -> Unit) {
     if (item.image.status == Status.UNAVAILABLE) {
       myShowTitle.visible()
       myShowRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)
@@ -51,6 +52,8 @@ class MyShowHorizontalView : ShowView<MyShowsListItem> {
   }
 
   private fun clear() {
+    myShowTitle.gone()
+    placeholderView.gone()
     Glide.with(this).clear(myShowImage)
   }
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.gridlayout.widget.GridLayout
+    android:id="@+id/myShowsRecentsContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:divider="@drawable/divider_my_shows_fanart"
+    android:paddingStart="@dimen/spaceSmall"
+    android:paddingEnd="@dimen/spaceSmall"
+    android:showDividers="middle"
+    app:columnCount="2"
+    />
+
+</merge>

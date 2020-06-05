@@ -1,25 +1,14 @@
 package com.michaldrabik.showly2.ui.followedshows.myshows
 
 import com.michaldrabik.showly2.ui.common.UiModel
-import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsBundle
-import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 
 data class MyShowsUiModel(
-  val recentShowsVisible: Boolean? = null,
-  val recentShows: List<MyShowsListItem>? = null,
-  val runningShows: MyShowsBundle? = null,
-  val endedShows: MyShowsBundle? = null,
-  val incomingShows: MyShowsBundle? = null,
-  val allShows: MyShowsBundle? = null
+  val listItems: List<MyShowsItem>? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
     (newModel as MyShowsUiModel).copy(
-      recentShowsVisible = newModel.recentShowsVisible ?: recentShowsVisible,
-      recentShows = newModel.recentShows ?: recentShows,
-      runningShows = newModel.runningShows ?: runningShows,
-      endedShows = newModel.endedShows ?: endedShows,
-      incomingShows = newModel.incomingShows ?: incomingShows,
-      allShows = newModel.allShows ?: allShows
+      listItems = newModel.listItems?.toList() ?: listItems
     )
 }

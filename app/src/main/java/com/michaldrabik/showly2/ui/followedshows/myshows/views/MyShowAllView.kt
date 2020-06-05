@@ -9,14 +9,14 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.views.ShowView
-import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_my_show_all.view.*
 
 @SuppressLint("SetTextI18n")
-class MyShowAllView : ShowView<MyShowsListItem> {
+class MyShowAllView : ShowView<MyShowsItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -31,9 +31,9 @@ class MyShowAllView : ShowView<MyShowsListItem> {
   override val placeholderView: ImageView = myShowAllPlaceholder
 
   override fun bind(
-    item: MyShowsListItem,
-    missingImageListener: (MyShowsListItem, Boolean) -> Unit,
-    itemClickListener: (MyShowsListItem) -> Unit
+    item: MyShowsItem,
+    missingImageListener: (MyShowsItem, Boolean) -> Unit,
+    itemClickListener: (MyShowsItem) -> Unit
   ) {
     clear()
     myShowAllProgress.visibleIf(item.isLoading)
