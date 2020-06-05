@@ -24,7 +24,7 @@ import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsSearchRe
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.EMPTY
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.NO_RESULTS
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.RESULTS
-import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowFanartView
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
@@ -169,22 +169,22 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
     }
   }
 
-  private fun renderSearchContainer(items: List<MyShowsListItem>) {
+  private fun renderSearchContainer(items: List<MyShowsItem>) {
     followedShowsSearchContainer.removeAllViews()
 
     val context = requireContext()
     val itemHeight = context.dimenToPx(R.dimen.myShowsFanartHeight)
     val itemMargin = context.dimenToPx(R.dimen.spaceTiny)
 
-    val clickListener: (Show) -> Unit = {
+    val clickListener: (MyShowsItem) -> Unit = {
       followedShowsRoot.hideKeyboard()
-      openShowDetails(it)
+      openShowDetails(it.show)
     }
 
     items.forEachIndexed { index, item ->
       val view = MyShowFanartView(context).apply {
         layoutParams = FrameLayout.LayoutParams(0, MATCH_PARENT)
-//        bind(item.show, item.image, clickListener)
+        bind(item, clickListener)
       }
       val layoutParams = GridLayout.LayoutParams().apply {
         width = 0

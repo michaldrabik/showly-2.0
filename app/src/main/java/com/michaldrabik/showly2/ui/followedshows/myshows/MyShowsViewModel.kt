@@ -68,8 +68,10 @@ class MyShowsViewModel @Inject constructor(
           add(MyShowsItem.createHeader(COMING_SOON, incomingShows.count(), interactor.loadSortOrder(COMING_SOON)))
           add(MyShowsItem.createHorizontalSection(COMING_SOON, incomingShows))
         }
-        add(MyShowsItem.createHeader(ALL, allShows.count(), interactor.loadSortOrder(ALL)))
-        addAll(allShows)
+        if (allShows.isNotEmpty()) {
+          add(MyShowsItem.createHeader(ALL, allShows.count(), interactor.loadSortOrder(ALL)))
+          addAll(allShows)
+        }
       }
 
       uiState = MyShowsUiModel(listItems = listItems)

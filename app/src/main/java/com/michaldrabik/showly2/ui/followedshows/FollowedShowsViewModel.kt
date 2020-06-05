@@ -7,7 +7,7 @@ import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsSearchRe
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.EMPTY
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.NO_RESULTS
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.RESULTS
-import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsListItem
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,7 +33,7 @@ class FollowedShowsViewModel @Inject constructor(
       val results = interactor.searchFollowed(query)
         .map {
           val image = interactor.findCachedImage(it, ImageType.FANART)
-          MyShowsListItem(it, image)
+          MyShowsItem.createSearchItem(it, image)
         }
       val type = if (results.isEmpty()) NO_RESULTS else RESULTS
       val searchResult = MyShowsSearchResult(results, type)

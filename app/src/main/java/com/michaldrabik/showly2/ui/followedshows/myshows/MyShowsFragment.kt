@@ -60,7 +60,10 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
 
   private fun render(uiModel: MyShowsUiModel) {
     uiModel.run {
-      listItems?.let { adapter.setItems(it) }
+      listItems?.let {
+        adapter.setItems(it)
+        (parentFragment as FollowedShowsFragment).enableSearch(it.isNotEmpty())
+      }
     }
   }
 

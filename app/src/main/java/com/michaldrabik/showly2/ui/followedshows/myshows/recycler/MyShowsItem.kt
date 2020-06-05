@@ -21,7 +21,8 @@ data class MyShowsItem(
     HEADER,
     RECENT_SHOWS,
     HORIZONTAL_SHOWS,
-    ALL_SHOWS_ITEM
+    ALL_SHOWS_ITEM,
+    SEARCH_SHOWS_ITEM
   }
 
   data class Header(
@@ -76,6 +77,19 @@ data class MyShowsItem(
       HorizontalSection(section, shows.map { it.copy(type = Type.HORIZONTAL_SHOWS) }),
       Show.EMPTY,
       Image.createUnavailable(POSTER),
+      false
+    )
+
+    fun createSearchItem(
+      show: Show,
+      image: Image
+    ) = MyShowsItem(
+      Type.SEARCH_SHOWS_ITEM,
+      null,
+      null,
+      null,
+      show,
+      image,
       false
     )
   }
