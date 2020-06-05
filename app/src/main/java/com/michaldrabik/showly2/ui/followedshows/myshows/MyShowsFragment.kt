@@ -16,6 +16,7 @@ import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsAdapter
+import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 
 class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_shows),
@@ -62,6 +63,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
     uiModel.run {
       listItems?.let {
         adapter.setItems(it)
+        myShowsEmptyView.fadeIf(it.isEmpty())
         (parentFragment as FollowedShowsFragment).enableSearch(it.isNotEmpty())
       }
     }
