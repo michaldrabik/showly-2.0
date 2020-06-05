@@ -11,11 +11,13 @@ class RelatedShowAdapter : BaseAdapter<RelatedListItem>() {
   override val asyncDiffer = AsyncListDiffer(this, RelatedItemDiffCallback())
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ViewHolderShow(RelatedShowView(parent.context))
+    ViewHolderShow(RelatedShowView(parent.context).apply {
+      itemClickListener = { super.itemClickListener.invoke(it) }
+    })
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]
-    (holder.itemView as RelatedShowView).bind(item, missingImageListener, itemClickListener)
+    (holder.itemView as RelatedShowView).bind(item, missingImageListener)
   }
 
   class ViewHolderShow(itemView: View) : RecyclerView.ViewHolder(itemView)

@@ -25,17 +25,20 @@ class MyShowAllView : ShowView<MyShowsItem> {
   init {
     inflate(context, R.layout.view_my_show_all, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    myShowAllRoot.onClick { itemClickListener?.invoke(item) }
   }
 
   override val imageView: ImageView = myShowAllImage
   override val placeholderView: ImageView = myShowAllPlaceholder
 
+  private lateinit var item: MyShowsItem
+
   override fun bind(
     item: MyShowsItem,
-    missingImageListener: (MyShowsItem, Boolean) -> Unit,
-    itemClickListener: (MyShowsItem) -> Unit
+    missingImageListener: (MyShowsItem, Boolean) -> Unit
   ) {
     clear()
+    this.item = item
     myShowAllProgress.visibleIf(item.isLoading)
     myShowAllTitle.text = item.show.title
     myShowAllDescription.text = item.show.overview
@@ -45,7 +48,6 @@ class MyShowAllView : ShowView<MyShowsItem> {
 
     myShowAllDescription.visibleIf(item.show.overview.isNotBlank())
     myShowAllNetwork.visibleIf(item.show.network.isNotBlank())
-    myShowAllRoot.onClick { itemClickListener(item) }
 
     loadImage(item, missingImageListener)
   }

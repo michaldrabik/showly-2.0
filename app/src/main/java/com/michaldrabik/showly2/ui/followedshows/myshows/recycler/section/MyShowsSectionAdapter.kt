@@ -10,20 +10,16 @@ import com.michaldrabik.showly2.ui.followedshows.myshows.views.section.MyShowsSe
 
 open class MyShowsSectionAdapter : BaseAdapter<MyShowsItem>() {
 
-  override val asyncDiffer = AsyncListDiffer(this,
-    MyShowsSectionDiffCallback()
-  )
+  override val asyncDiffer = AsyncListDiffer(this, MyShowsSectionDiffCallback())
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ViewHolderShow(
-      MyShowsSectionItemView(
-        parent.context
-      )
-    )
+    ViewHolderShow(MyShowsSectionItemView(parent.context).apply {
+      itemClickListener = { super.itemClickListener.invoke(it) }
+    })
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]
-    (holder.itemView as MyShowsSectionItemView).bind(item, missingImageListener, itemClickListener)
+    (holder.itemView as MyShowsSectionItemView).bind(item, missingImageListener)
   }
 
   class ViewHolderShow(itemView: View) : RecyclerView.ViewHolder(itemView)

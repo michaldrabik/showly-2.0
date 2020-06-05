@@ -44,10 +44,11 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
   protected abstract val imageView: ImageView
   protected abstract val placeholderView: ImageView
 
+  var itemClickListener: ((Item) -> Unit)? = null
+
   open fun bind(
     item: Item,
-    missingImageListener: (Item, Boolean) -> Unit,
-    itemClickListener: (Item) -> Unit
+    missingImageListener: (Item, Boolean) -> Unit
   ) {
     layoutParams = LayoutParams((width * item.image.type.spanSize.toFloat()).toInt(), height.toInt())
   }

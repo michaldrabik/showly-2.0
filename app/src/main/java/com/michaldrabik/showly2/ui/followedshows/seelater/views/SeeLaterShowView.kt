@@ -25,17 +25,20 @@ class SeeLaterShowView : ShowView<SeeLaterListItem> {
   init {
     inflate(context, R.layout.view_see_later_show, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    seeLaterShowRoot.onClick { itemClickListener?.invoke(item) }
   }
 
   override val imageView: ImageView = seeLaterShowImage
   override val placeholderView: ImageView = seeLaterShowPlaceholder
 
+  private lateinit var item: SeeLaterListItem
+
   override fun bind(
     item: SeeLaterListItem,
-    missingImageListener: (SeeLaterListItem, Boolean) -> Unit,
-    itemClickListener: (SeeLaterListItem) -> Unit
+    missingImageListener: (SeeLaterListItem, Boolean) -> Unit
   ) {
     clear()
+    this.item = item
     seeLaterShowProgress.visibleIf(item.isLoading)
     seeLaterShowTitle.text = item.show.title
     seeLaterShowDescription.text = item.show.overview
@@ -45,7 +48,6 @@ class SeeLaterShowView : ShowView<SeeLaterListItem> {
 
     seeLaterShowDescription.visibleIf(item.show.overview.isNotBlank())
     seeLaterShowNetwork.visibleIf(item.show.network.isNotBlank())
-    seeLaterShowRoot.onClick { itemClickListener(item) }
 
     loadImage(item, missingImageListener)
   }

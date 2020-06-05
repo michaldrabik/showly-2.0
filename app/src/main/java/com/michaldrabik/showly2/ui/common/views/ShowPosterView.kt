@@ -22,21 +22,23 @@ class ShowPosterView : ShowView<DiscoverListItem> {
 
   init {
     inflate(context, R.layout.view_show_poster, this)
+    showPosterRoot.onClick { itemClickListener?.invoke(item) }
   }
 
   override val imageView: ImageView = showPosterImage
   override val placeholderView: ImageView = showPosterPlaceholder
 
+  private lateinit var item: DiscoverListItem
+
   override fun bind(
     item: DiscoverListItem,
-    missingImageListener: (DiscoverListItem, Boolean) -> Unit,
-    itemClickListener: (DiscoverListItem) -> Unit
+    missingImageListener: (DiscoverListItem, Boolean) -> Unit
   ) {
-    super.bind(item, missingImageListener, itemClickListener)
+    super.bind(item, missingImageListener)
     clear()
+    this.item = item
     showPosterTitle.text = item.show.title
     showPosterProgress.visibleIf(item.isLoading)
-    showPosterRoot.onClick { itemClickListener(item) }
     showPosterBadge.visibleIf(item.isFollowed)
     showPosterLaterBadge.visibleIf(item.isSeeLater)
     loadImage(item, missingImageListener)

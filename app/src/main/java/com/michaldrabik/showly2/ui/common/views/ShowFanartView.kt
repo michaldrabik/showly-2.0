@@ -20,21 +20,23 @@ class ShowFanartView : ShowView<DiscoverListItem> {
 
   init {
     inflate(context, R.layout.view_show_fanart, this)
+    showFanartRoot.onClick { itemClickListener?.invoke(item) }
   }
 
   override val imageView: ImageView = showFanartImage
   override val placeholderView: ImageView = showFanartPlaceholder
 
+  private lateinit var item: DiscoverListItem
+
   override fun bind(
     item: DiscoverListItem,
-    missingImageListener: (DiscoverListItem, Boolean) -> Unit,
-    itemClickListener: (DiscoverListItem) -> Unit
+    missingImageListener: (DiscoverListItem, Boolean) -> Unit
   ) {
-    super.bind(item, missingImageListener, itemClickListener)
+    super.bind(item, missingImageListener)
     clear()
+    this.item = item
     showFanartTitle.text = item.show.title
     showFanartProgress.visibleIf(item.isLoading)
-    showFanartRoot.onClick { itemClickListener(item) }
     showFanartBadge.visibleIf(item.isFollowed)
     showFanartBadgeLater.visibleIf(item.isSeeLater)
     loadImage(item, missingImageListener)

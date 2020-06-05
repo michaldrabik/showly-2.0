@@ -11,10 +11,12 @@ class SeeLaterAdapter : BaseAdapter<SeeLaterListItem>() {
   override val asyncDiffer = AsyncListDiffer(this, SeeLaterItemDiffCallback())
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    BaseViewHolder(SeeLaterShowView(parent.context))
+    BaseViewHolder(SeeLaterShowView(parent.context).apply {
+      itemClickListener = { super.itemClickListener.invoke(it) }
+    })
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]
-    (holder.itemView as SeeLaterShowView).bind(item, missingImageListener, itemClickListener)
+    (holder.itemView as SeeLaterShowView).bind(item, missingImageListener)
   }
 }

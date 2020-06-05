@@ -31,7 +31,9 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
       VIEW_TYPE_HEADER -> BaseViewHolder(MyShowHeaderView(parent.context))
-      VIEW_TYPE_SHOW_ITEM -> BaseViewHolder(MyShowAllView(parent.context))
+      VIEW_TYPE_SHOW_ITEM -> BaseViewHolder(MyShowAllView(parent.context).apply {
+        itemClickListener = { super.itemClickListener.invoke(it) }
+      })
       VIEW_TYPE_RECENTS_SECTION -> BaseViewHolder(MyShowsRecentsView(parent.context))
       VIEW_TYPE_HORIZONTAL_SECTION -> BaseViewHolder(MyShowsSectionView(parent.context).apply {
         scrollPositionListener = { section, position -> horizontalPositions[section] = position }
@@ -48,8 +50,7 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
       )
       VIEW_TYPE_SHOW_ITEM -> (holder.itemView as MyShowAllView).bind(
         item,
-        missingImageListener,
-        itemClickListener
+        missingImageListener
       )
       VIEW_TYPE_RECENTS_SECTION -> (holder.itemView as MyShowsRecentsView).bind(
         item.recentsSection!!,

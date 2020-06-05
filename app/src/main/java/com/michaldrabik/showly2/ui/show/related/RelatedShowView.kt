@@ -22,20 +22,21 @@ class RelatedShowView : ShowView<RelatedListItem> {
   init {
     inflate(context, R.layout.view_related_show, this)
     layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+    onClick { itemClickListener?.invoke(item) }
   }
 
   override val imageView: ImageView = relatedImage
   override val placeholderView: ImageView = relatedPlaceholder
 
+  private lateinit var item: RelatedListItem
+
   override fun bind(
     item: RelatedListItem,
-    missingImageListener: (RelatedListItem, Boolean) -> Unit,
-    itemClickListener: (RelatedListItem) -> Unit
+    missingImageListener: (RelatedListItem, Boolean) -> Unit
   ) {
     clear()
-    onClick { itemClickListener(item) }
+    this.item = item
     relatedTitle.text = item.show.title
-
     loadImage(item, missingImageListener)
   }
 

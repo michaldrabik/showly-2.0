@@ -26,20 +26,22 @@ class MyShowsSectionItemView : ShowView<MyShowsItem> {
     inflate(context, R.layout.view_my_shows_section_item, this)
     val width = context.dimenToPx(R.dimen.myShowsPosterWidth)
     layoutParams = LayoutParams(width, MATCH_PARENT)
+    onClick { itemClickListener?.invoke(item) }
   }
 
   override val imageView: ImageView = myShowImage
   override val placeholderView: ImageView = myShowPlaceholder
 
+  private lateinit var item: MyShowsItem
+
   override fun bind(
     item: MyShowsItem,
-    missingImageListener: (MyShowsItem, Boolean) -> Unit,
-    itemClickListener: (MyShowsItem) -> Unit
+    missingImageListener: (MyShowsItem, Boolean) -> Unit
   ) {
     clear()
+    this.item = item
     myShowTitle.text = item.show.title
     myShowProgress.visibleIf(item.isLoading)
-    onClick { itemClickListener(item) }
     loadImage(item, missingImageListener)
   }
 

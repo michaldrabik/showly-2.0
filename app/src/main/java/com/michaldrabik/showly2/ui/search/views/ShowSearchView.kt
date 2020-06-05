@@ -25,17 +25,20 @@ class ShowSearchView : ShowView<SearchListItem> {
   init {
     inflate(context, R.layout.view_show_search, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    showSearchRoot.onClick { itemClickListener?.invoke(item) }
   }
 
   override val imageView: ImageView = showSearchImage
   override val placeholderView: ImageView = showSearchPlaceholder
 
+  private lateinit var item: SearchListItem
+
   override fun bind(
     item: SearchListItem,
-    missingImageListener: (SearchListItem, Boolean) -> Unit,
-    itemClickListener: (SearchListItem) -> Unit
+    missingImageListener: (SearchListItem, Boolean) -> Unit
   ) {
     clear()
+    this.item = item
     showSearchTitle.text = item.show.title
     showSearchDescription.text = item.show.overview
     val year = if (item.show.year > 0) " (${item.show.year})" else ""
@@ -46,8 +49,6 @@ class ShowSearchView : ShowView<SearchListItem> {
     showSearchBadge.visibleIf(item.isFollowed)
     showSearchLaterBadge.visibleIf(item.isSeeLater)
     loadImage(item, missingImageListener)
-
-    showSearchRoot.onClick { itemClickListener(item) }
   }
 
   private fun clear() {
