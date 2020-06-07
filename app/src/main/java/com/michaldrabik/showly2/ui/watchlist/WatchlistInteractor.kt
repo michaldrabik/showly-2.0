@@ -8,7 +8,6 @@ import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.storage.database.AppDatabase
@@ -21,7 +20,6 @@ class WatchlistInteractor @Inject constructor(
   private val database: AppDatabase,
   private val imagesProvider: ShowImagesProvider,
   private val mappers: Mappers,
-  private val showsRepository: ShowsRepository,
   private val episodesManager: EpisodesManager
 ) {
 
