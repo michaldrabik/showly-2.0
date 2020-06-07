@@ -2,12 +2,16 @@ package com.michaldrabik.storage.database.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.michaldrabik.storage.database.converters.DateConverter
 import org.threeten.bp.ZonedDateTime
 
-@Entity(tableName = "seasons")
+@Entity(
+  tableName = "seasons",
+  indices = [Index("id_show_trakt")]
+)
 @TypeConverters(DateConverter::class)
 data class Season(
   @PrimaryKey @ColumnInfo(name = "id_trakt") var idTrakt: Long,

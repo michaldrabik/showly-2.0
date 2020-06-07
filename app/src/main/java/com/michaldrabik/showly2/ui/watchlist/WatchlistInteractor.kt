@@ -11,9 +11,8 @@ import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.EpisodeWatchlist
 import javax.inject.Inject
-import com.michaldrabik.storage.database.model.Episode as EpisodeDb
-import com.michaldrabik.storage.database.model.Season as SeasonDb
 
 @AppScope
 class WatchlistInteractor @Inject constructor(
@@ -23,33 +22,20 @@ class WatchlistInteractor @Inject constructor(
   private val episodesManager: EpisodesManager
 ) {
 
-  private var allSeasons: MutableList<SeasonDb> = mutableListOf()
-  private var allEpisodes: MutableList<EpisodeDb> = mutableListOf()
-
-  suspend fun preloadEpisodes(showsIds: List<Long>) {
-    allSeasons.run {
-      clear()
-      addAll(database.seasonsDao().getAllForShows(showsIds))
-    }
-    allEpisodes.run {
-      clear()
-      addAll(database.episodesDao().getAllForShows(showsIds))
-    }
-  }
-
-  fun loadWatchlistItem(show: Show): WatchlistItem {
-    val episodes = allEpisodes.filter { it.idShowTrakt == show.traktId }
-    val seasons = allSeasons.filter { it.idShowTrakt == show.traktId }
+  suspend fun loadWatchlistItem(show: Show): WatchlistItem {
+    val episodes = database.episodesDao().getAllForShowWatchlist(show.traktId)
+    val seasons = database.seasonsDao().getAllForShow(show.traktId)
 
     val episodesCount = episodes.count()
     val unwatchedEpisodes = episodes.filter { !it.isWatched }
     val unwatchedEpisodesCount = unwatchedEpisodes.count()
 
-    val episode = unwatchedEpisodes
-      .sortedWith(compareBy<EpisodeDb> { it.seasonNumber }.thenBy { it.episodeNumber })
+    val nextEpisode = unwatchedEpisodes
+      .sortedWith(compareBy<EpisodeWatchlist> { it.seasonNumber }.thenBy { it.episodeNumber })
       .firstOrNull() ?: return WatchlistItem.EMPTY
 
-    val season = seasons.first { it.idTrakt == episode.idSeason }
+    val season = seasons.first { it.idTrakt == nextEpisode.idSeason }
+    val episode = database.episodesDao().getById(nextEpisode.idTrakt)
 
     return WatchlistItem(
       show,

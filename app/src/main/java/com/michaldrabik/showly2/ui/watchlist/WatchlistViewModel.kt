@@ -22,8 +22,6 @@ class WatchlistViewModel @Inject constructor(
   fun loadWatchlist() {
     viewModelScope.launch {
       val shows = showsRepository.myShows.loadAll()
-      interactor.preloadEpisodes(shows.map { it.traktId })
-
       val items = shows.map { show ->
         async {
           val item = interactor.loadWatchlistItem(show)

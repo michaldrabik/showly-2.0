@@ -3,6 +3,9 @@ package com.michaldrabik.storage.database
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
+const val DATABASE_VERSION = 6
+const val DATABASE_NAME = "SHOWLY2_DB_2"
+
 object Migrations {
 
   private val MIGRATION_1_2 = object : Migration(1, 2) {
@@ -32,10 +35,18 @@ object Migrations {
     }
   }
 
+  private val MIGRATION_5_6 = object : Migration(5, 6) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      database.execSQL("CREATE INDEX index_episodes_id_show_trakt ON episodes(id_show_trakt)")
+      database.execSQL("CREATE INDEX index_seasons_id_show_trakt ON seasons(id_show_trakt)")
+    }
+  }
+
   val MIGRATIONS = listOf(
     MIGRATION_1_2,
     MIGRATION_2_3,
     MIGRATION_3_4,
-    MIGRATION_4_5
+    MIGRATION_4_5,
+    MIGRATION_5_6
   )
 }

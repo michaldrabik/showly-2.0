@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.michaldrabik.storage.database.converters.DateConverter
@@ -16,12 +17,16 @@ import org.threeten.bp.ZonedDateTime
     parentColumns = arrayOf("id_trakt"),
     childColumns = arrayOf("id_season"),
     onDelete = CASCADE
-  )]
+  )],
+  indices = [
+    Index("id_season"),
+    Index("id_show_trakt")
+  ]
 )
 @TypeConverters(DateConverter::class)
 data class Episode(
   @PrimaryKey @ColumnInfo(name = "id_trakt") var idTrakt: Long,
-  @ColumnInfo(name = "id_season", index = true) var idSeason: Long,
+  @ColumnInfo(name = "id_season") var idSeason: Long,
   @ColumnInfo(name = "id_show_trakt") var idShowTrakt: Long,
   @ColumnInfo(name = "id_show_tvdb") var idShowTvdb: Long,
   @ColumnInfo(name = "id_show_imdb") var idShowImdb: String,

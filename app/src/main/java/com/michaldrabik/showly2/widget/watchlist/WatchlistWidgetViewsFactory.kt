@@ -47,8 +47,6 @@ class WatchlistWidgetViewsFactory(
   private fun loadData() {
     runBlocking {
       val shows = showsRepository.myShows.loadAll()
-      watchlistInteractor.preloadEpisodes(shows.map { it.traktId })
-
       val items = shows.map { show ->
         async {
           val item = watchlistInteractor.loadWatchlistItem(show)

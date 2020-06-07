@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
 import com.michaldrabik.storage.database.model.Episode
+import com.michaldrabik.storage.database.model.EpisodeWatchlist
 
 @Dao
 interface EpisodesDao : BaseDao<Episode> {
@@ -12,11 +13,17 @@ interface EpisodesDao : BaseDao<Episode> {
   @Insert(onConflict = REPLACE)
   suspend fun upsert(episodes: List<Episode>)
 
+  @Query("SELECT * FROM episodes WHERE id_trakt = :idTrakt")
+  suspend fun getById(idTrakt: Long): Episode
+
   @Query("SELECT * FROM episodes WHERE id_season = :seasonTraktId")
   suspend fun getAllForSeason(seasonTraktId: Long): List<Episode>
 
   @Query("SELECT * FROM episodes WHERE id_show_trakt IN (:showsIds)")
   suspend fun getAllForShows(showsIds: List<Long>): List<Episode>
+
+  @Query("SELECT id_trakt, id_show_trakt, id_season, season_number, episode_number, is_watched FROM episodes WHERE id_show_trakt = :showTraktId")
+  suspend fun getAllForShowWatchlist(showTraktId: Long): List<EpisodeWatchlist>
 
   @Query("SELECT * FROM episodes WHERE id_show_trakt IN(:showsIds) AND is_watched = 1")
   suspend fun getAllWatchedForShows(showsIds: List<Long>): List<Episode>
