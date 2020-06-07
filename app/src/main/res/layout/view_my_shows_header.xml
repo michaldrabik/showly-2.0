@@ -39,17 +39,6 @@
       app:srcCompat="@drawable/ic_sort"
       />
 
-    <com.michaldrabik.showly2.ui.common.views.SortOrderView
-      android:id="@+id/myShowsHeaderSortView"
-      android:layout_width="wrap_content"
-      android:layout_height="150dp"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:elevation="10dp"
-      android:visibility="gone"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      />
-
   </androidx.constraintlayout.widget.ConstraintLayout>
 
 </merge>

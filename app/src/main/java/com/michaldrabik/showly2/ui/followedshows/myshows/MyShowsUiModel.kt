@@ -4,11 +4,13 @@ import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 
 data class MyShowsUiModel(
-  val listItems: List<MyShowsItem>? = null
+  val listItems: List<MyShowsItem>? = null,
+  val notifyListsUpdate: Boolean? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
     (newModel as MyShowsUiModel).copy(
-      listItems = newModel.listItems?.toList() ?: listItems
+      listItems = newModel.listItems?.toList() ?: listItems,
+      notifyListsUpdate = newModel.notifyListsUpdate ?: notifyListsUpdate
     )
 }

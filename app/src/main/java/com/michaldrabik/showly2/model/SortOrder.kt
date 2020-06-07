@@ -1,8 +1,12 @@
 package com.michaldrabik.showly2.model
 
-enum class SortOrder {
-  NAME,
-  NEWEST,
-  RATING,
-  DATE_ADDED
+import com.michaldrabik.showly2.R
+
+enum class SortOrder(
+  val displayString: Int
+) {
+  NAME(R.string.textSortName),
+  NEWEST(R.string.textSortNewest),
+  RATING(R.string.textSortRated),
+  DATE_ADDED(R.string.textSortDateAdded)
 }

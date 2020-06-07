@@ -42,16 +42,6 @@
       app:srcCompat="@drawable/ic_sort"
       />
 
-    <com.michaldrabik.showly2.ui.common.views.SortOrderView
-      android:id="@+id/seeLaterSortView"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="end"
-      android:layout_marginTop="@dimen/myShowsSearchViewPadding"
-      android:layout_marginEnd="@dimen/spaceMedium"
-      android:visibility="gone"
-      />
-
     <include
       android:id="@+id/seeLaterEmptyView"
       layout="@layout/layout_see_later_empty"

@@ -23,10 +23,15 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, MyShowsItemDiffCallback())
 
-  var onSortOrderChangeListener: ((MyShowsSection, SortOrder) -> Unit)? = null
+  var onSortOrderClickListener: ((MyShowsSection, SortOrder) -> Unit)? = null
   var sectionMissingImageListener: ((MyShowsItem, MyShowsItem.HorizontalSection, Boolean) -> Unit)? = null
 
   private val horizontalPositions = mutableMapOf<MyShowsSection, Pair<Int, Int>>()
+  var notifyListsUpdate = false
+
+  override fun setItems(newItems: List<MyShowsItem>, notifyChange: Boolean) {
+    super.setItems(newItems, notifyListsUpdate)
+  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
@@ -46,7 +51,7 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
     when (holder.itemViewType) {
       VIEW_TYPE_HEADER -> (holder.itemView as MyShowHeaderView).bind(
         item.header!!,
-        onSortOrderChangeListener
+        onSortOrderClickListener
       )
       VIEW_TYPE_RECENTS_SECTION -> (holder.itemView as MyShowsRecentsView).bind(
         item.recentsSection!!,
@@ -59,6 +64,7 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
       VIEW_TYPE_HORIZONTAL_SECTION -> (holder.itemView as MyShowsSectionView).bind(
         item.horizontalSection!!,
         horizontalPositions[item.horizontalSection.section] ?: Pair(0, 0),
+        notifyListsUpdate,
         itemClickListener,
         sectionMissingImageListener
       )

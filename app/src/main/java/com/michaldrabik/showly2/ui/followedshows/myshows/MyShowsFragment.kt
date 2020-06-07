@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.followedshows.myshows
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,7 +10,12 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
+import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.model.SortOrder
+import com.michaldrabik.showly2.model.SortOrder.NAME
+import com.michaldrabik.showly2.model.SortOrder.NEWEST
+import com.michaldrabik.showly2.model.SortOrder.RATING
 import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
@@ -55,13 +61,28 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
       itemClickListener = { openShowDetails(it.show) }
       missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) }
       sectionMissingImageListener = { item, section, force -> viewModel.loadSectionMissingItem(item, section, force) }
-      onSortOrderChangeListener = { section, sortOrder -> viewModel.loadSortedSection(section, sortOrder) }
+      onSortOrderClickListener = { section, order ->
+        showSortOrderDialog(section, order)
+      }
     }
+  }
+
+  private fun showSortOrderDialog(section: MyShowsSection, order: SortOrder) {
+    val options = listOf(NAME, RATING, NEWEST)
+    val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
+    AlertDialog.Builder(requireContext(), R.style.ChoiceDialog)
+      .setTitle(R.string.textSortBy)
+      .setSingleChoiceItems(optionsStrings, options.indexOf(order)) { dialog, index ->
+        viewModel.loadSortedSection(section, options[index])
+        dialog.dismiss()
+      }
+      .show()
   }
 
   private fun render(uiModel: MyShowsUiModel) {
     uiModel.run {
       listItems?.let {
+        adapter.notifyListsUpdate = notifyListsUpdate ?: false
         adapter.setItems(it)
         myShowsEmptyView.fadeIf(it.isEmpty())
         (parentFragment as FollowedShowsFragment).enableSearch(it.isNotEmpty())

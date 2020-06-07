@@ -27,7 +27,7 @@ class MyShowsViewModel @Inject constructor(
   private val interactor: MyShowsInteractor
 ) : BaseViewModel<MyShowsUiModel>() {
 
-  fun loadShows() {
+  fun loadShows(notifyListsUpdate: Boolean = false) {
     viewModelScope.launch {
       val settings = interactor.loadSettings()
       val shows = interactor.loadAllShows().map { toListItemAsync(ALL_SHOWS_ITEM, it) }.awaitAll()
@@ -74,14 +74,14 @@ class MyShowsViewModel @Inject constructor(
         }
       }
 
-      uiState = MyShowsUiModel(listItems = listItems)
+      uiState = MyShowsUiModel(listItems = listItems, notifyListsUpdate = notifyListsUpdate)
     }
   }
 
   fun loadSortedSection(section: MyShowsSection, order: SortOrder) {
     viewModelScope.launch {
       interactor.setSectionSortOrder(section, order)
-      loadShows()
+      loadShows(notifyListsUpdate = true)
     }
   }
 
