@@ -2,63 +2,70 @@ package com.michaldrabik.showly2.ui.watchlist
 
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.di.scope.AppScope
+import com.michaldrabik.showly2.model.EpisodeBundle
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
+import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.Episode
 import javax.inject.Inject
+import com.michaldrabik.storage.database.model.Episode as EpisodeDb
+import com.michaldrabik.storage.database.model.Season as SeasonDb
 
 @AppScope
 class WatchlistInteractor @Inject constructor(
   private val database: AppDatabase,
   private val imagesProvider: ShowImagesProvider,
   private val mappers: Mappers,
-  private val showsRepository: ShowsRepository
+  private val showsRepository: ShowsRepository,
+  private val episodesManager: EpisodesManager
 ) {
 
-  suspend fun loadWatchlist(): List<WatchlistItem> {
-    val unavailableImage = Image.createUnavailable(POSTER)
+  private var allSeasons: MutableList<SeasonDb> = mutableListOf()
+  private var allEpisodes: MutableList<EpisodeDb> = mutableListOf()
 
-    val shows = showsRepository.myShows.loadAll()
-    val episodes = database.episodesDao().getAllForShows(shows.map { it.ids.trakt.id })
-    val episodesUnwatched = episodes.filter { !it.isWatched && it.firstAired != null }
+  suspend fun preloadEpisodes(showsIds: List<Long>) {
+    allSeasons.run {
+      clear()
+      addAll(database.seasonsDao().getAllForShows(showsIds))
+    }
+    allEpisodes.run {
+      clear()
+      addAll(database.episodesDao().getAllForShows(showsIds))
+    }
+  }
 
-    val allItems = shows
-      .filter { show -> episodesUnwatched.any { it.idShowTrakt == show.ids.trakt.id } }
-      .map { show ->
-        val showEpisodes = episodesUnwatched.filter { it.idShowTrakt == show.ids.trakt.id }
-        val episode = showEpisodes.asSequence()
-          .sortedWith(compareBy<Episode> { it.seasonNumber }.thenBy { it.episodeNumber })
-          .first()
-        val season = database.seasonsDao().getById(episode.idSeason)!!
+  fun loadWatchlistItem(show: Show): WatchlistItem {
+    val episodes = allEpisodes.filter { it.idShowTrakt == show.traktId }
+    val seasons = allSeasons.filter { it.idShowTrakt == show.traktId }
 
-        val episodesCount = episodes.count { it.idShowTrakt == show.ids.trakt.id }
-        val watchedEpisodesCount = episodesCount - episodes.count {
-          it.idShowTrakt == show.ids.trakt.id && !it.isWatched
-        }
+    val episodesCount = episodes.count()
+    val unwatchedEpisodes = episodes.filter { !it.isWatched }
+    val unwatchedEpisodesCount = unwatchedEpisodes.count()
 
-        WatchlistItem(
-          show,
-          mappers.season.fromDatabase(season),
-          mappers.episode.fromDatabase(episode),
-          unavailableImage,
-          episodesCount,
-          watchedEpisodesCount
-        )
-      }
-      .groupBy { it.episode.hasAired(it.season) }
+    val episode = unwatchedEpisodes
+      .sortedWith(compareBy<EpisodeDb> { it.seasonNumber }.thenBy { it.episodeNumber })
+      .firstOrNull() ?: return WatchlistItem.EMPTY
 
-    val aired = (allItems[true] ?: emptyList())
-      .sortedWith(compareByDescending<WatchlistItem> { it.isNew() }.thenBy { it.show.title })
-    val notAired = (allItems[false] ?: emptyList())
-      .sortedBy { it.episode.firstAired?.toInstant()?.toEpochMilli() }
+    val season = seasons.first { it.idTrakt == episode.idSeason }
 
-    return aired + notAired
+    return WatchlistItem(
+      show,
+      mappers.season.fromDatabase(season),
+      mappers.episode.fromDatabase(episode),
+      Image.createUnavailable(POSTER),
+      episodesCount,
+      episodesCount - unwatchedEpisodesCount
+    )
+  }
+
+  suspend fun setEpisodeWatched(item: WatchlistItem) {
+    val bundle = EpisodeBundle(item.episode, item.season, item.show)
+    episodesManager.setEpisodeWatched(bundle)
   }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =

@@ -22,6 +22,8 @@ data class Show(
   val updatedAt: Long
 ) {
 
+  val traktId = ids.trakt.id
+
   companion object {
     val EMPTY = Show(
       ids = Ids(

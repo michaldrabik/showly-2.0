@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.watchlist.recycler
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
+import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.discover.recycler.ListItem
@@ -28,4 +29,15 @@ data class WatchlistItem(
 
   fun isNew() = episode.firstAired?.isBefore(nowUtc()) ?: false &&
     nowUtcMillis() - (episode.firstAired?.toMillis() ?: 0) < Config.NEW_BADGE_DURATION
+
+  companion object {
+    val EMPTY = WatchlistItem(
+      Show.EMPTY,
+      Season.EMPTY,
+      Episode.EMPTY,
+      Image.createUnavailable(ImageType.POSTER),
+      0,
+      0
+    )
+  }
 }

@@ -11,4 +11,18 @@ data class Season(
   val firstAired: ZonedDateTime?,
   val overview: String,
   val episodes: List<Episode>
-)
+) {
+
+  companion object {
+    val EMPTY = Season(
+      ids = Ids.EMPTY,
+      number = 0,
+      episodeCount = 0,
+      airedEpisodes = 0,
+      title = "",
+      firstAired = null,
+      overview = "",
+      episodes = listOf()
+    )
+  }
+}

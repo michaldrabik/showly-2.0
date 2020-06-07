@@ -2,11 +2,10 @@ package com.michaldrabik.showly2.ui.watchlist
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.EpisodeBundle
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.POSTER
+import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.MessageEvent
 import com.michaldrabik.showly2.utilities.extensions.findReplace
@@ -17,25 +16,38 @@ import javax.inject.Inject
 
 class WatchlistViewModel @Inject constructor(
   private val interactor: WatchlistInteractor,
-  private val episodesManager: EpisodesManager
+  private val showsRepository: ShowsRepository
 ) : BaseViewModel<WatchlistUiModel>() {
 
   fun loadWatchlist() {
     viewModelScope.launch {
-      val items = interactor.loadWatchlist().map {
-        async {
-          val image = interactor.findCachedImage(it.show, POSTER)
-          it.copy(image = image)
-        }
-      }.awaitAll().toMutableList()
+      val shows = showsRepository.myShows.loadAll()
+      interactor.preloadEpisodes(shows.map { it.traktId })
 
-      val headerIndex = items.indexOfFirst { !it.isHeader() && !it.episode.hasAired(it.season) }
+      val items = shows.map { show ->
+        async {
+          val item = interactor.loadWatchlistItem(show)
+          val image = interactor.findCachedImage(show, POSTER)
+          item.copy(image = image)
+        }
+      }.awaitAll()
+        .filter { it.episodesCount != 0 && it.episode.firstAired != null }
+        .groupBy { it.episode.hasAired(it.season) }
+
+      val aired = (items[true] ?: emptyList())
+        .sortedWith(compareByDescending<WatchlistItem> { it.isNew() }.thenBy { it.show.title.toLowerCase() })
+      val notAired = (items[false] ?: emptyList())
+        .sortedBy { it.episode.firstAired?.toInstant()?.toEpochMilli() }
+
+      val allItems = (aired + notAired).toMutableList()
+
+      val headerIndex = allItems.indexOfFirst { !it.isHeader() && !it.episode.hasAired(it.season) }
       if (headerIndex != -1) {
-        val item = items[headerIndex]
-        items.add(headerIndex, item.copy(headerTextResId = R.string.textWatchlistIncoming))
+        val item = allItems[headerIndex]
+        allItems.add(headerIndex, item.copy(headerTextResId = R.string.textWatchlistIncoming))
       }
 
-      uiState = WatchlistUiModel(items)
+      uiState = WatchlistUiModel(allItems)
     }
   }
 
@@ -45,8 +57,7 @@ class WatchlistViewModel @Inject constructor(
         _messageLiveData.value = MessageEvent.info(R.string.errorEpisodeNotAired)
         return@launch
       }
-      val bundle = EpisodeBundle(item.episode, item.season, item.show)
-      episodesManager.setEpisodeWatched(bundle)
+      interactor.setEpisodeWatched(item)
       loadWatchlist()
     }
   }

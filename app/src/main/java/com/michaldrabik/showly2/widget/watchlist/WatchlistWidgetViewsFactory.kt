@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.ImageType
+import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.watchlist.WatchlistInteractor
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.DurationPrinter
@@ -24,12 +25,15 @@ import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider.Compani
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 
 class WatchlistWidgetViewsFactory(
   private val context: Context,
-  private val watchlistInteractor: WatchlistInteractor
+  private val watchlistInteractor: WatchlistInteractor,
+  private val showsRepository: ShowsRepository
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.Main
@@ -42,18 +46,33 @@ class WatchlistWidgetViewsFactory(
 
   private fun loadData() {
     runBlocking {
-      val items = watchlistInteractor.loadWatchlist().map {
-        val image = watchlistInteractor.findCachedImage(it.show, ImageType.POSTER)
-        it.copy(image = image)
-      }.toMutableList()
+      val shows = showsRepository.myShows.loadAll()
+      watchlistInteractor.preloadEpisodes(shows.map { it.traktId })
 
-      val headerIndex = items.indexOfFirst { !it.isHeader() && !it.episode.hasAired(it.season) }
+      val items = shows.map { show ->
+        async {
+          val item = watchlistInteractor.loadWatchlistItem(show)
+          val image = watchlistInteractor.findCachedImage(show, ImageType.POSTER)
+          item.copy(image = image)
+        }
+      }.awaitAll()
+        .filter { it.episodesCount != 0 && it.episode.firstAired != null }
+        .groupBy { it.episode.hasAired(it.season) }
+
+      val aired = (items[true] ?: emptyList())
+        .sortedWith(compareByDescending<WatchlistItem> { it.isNew() }.thenBy { it.show.title.toLowerCase() })
+      val notAired = (items[false] ?: emptyList())
+        .sortedBy { it.episode.firstAired?.toInstant()?.toEpochMilli() }
+
+      val allItems = (aired + notAired).toMutableList()
+
+      val headerIndex = allItems.indexOfFirst { !it.isHeader() && !it.episode.hasAired(it.season) }
       if (headerIndex != -1) {
-        val item = items[headerIndex]
-        items.add(headerIndex, item.copy(headerTextResId = R.string.textWatchlistIncoming))
+        val item = allItems[headerIndex]
+        allItems.add(headerIndex, item.copy(headerTextResId = R.string.textWatchlistIncoming))
       }
 
-      adapterItems.replace(items)
+      adapterItems.replace(allItems)
     }
   }
 
