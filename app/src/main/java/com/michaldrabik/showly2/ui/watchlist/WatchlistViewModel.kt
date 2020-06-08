@@ -19,6 +19,8 @@ class WatchlistViewModel @Inject constructor(
   private val showsRepository: ShowsRepository
 ) : BaseViewModel<WatchlistUiModel>() {
 
+  private var searchQuery = ""
+
   fun loadWatchlist() {
     viewModelScope.launch {
       val shows = showsRepository.myShows.loadAll()
@@ -37,7 +39,12 @@ class WatchlistViewModel @Inject constructor(
       val notAired = (items[false] ?: emptyList())
         .sortedBy { it.episode.firstAired?.toInstant()?.toEpochMilli() }
 
-      val allItems = (aired + notAired).toMutableList()
+      val allItems = (aired + notAired)
+        .filter {
+          if (searchQuery.isBlank()) true
+          else it.show.title.contains(searchQuery, true) || it.episode.title.contains(searchQuery, true)
+        }
+        .toMutableList()
 
       val headerIndex = allItems.indexOfFirst { !it.isHeader() && !it.episode.hasAired(it.season) }
       if (headerIndex != -1) {
@@ -45,8 +52,13 @@ class WatchlistViewModel @Inject constructor(
         allItems.add(headerIndex, item.copy(headerTextResId = R.string.textWatchlistIncoming))
       }
 
-      uiState = WatchlistUiModel(allItems)
+      uiState = WatchlistUiModel(items = allItems, isSearching = searchQuery.isNotBlank())
     }
+  }
+
+  fun searchWatchlist(searchQuery: String) {
+    this.searchQuery = searchQuery.trim()
+    loadWatchlist()
   }
 
   fun setWatchedEpisode(item: WatchlistItem) {

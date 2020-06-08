@@ -16,7 +16,8 @@
   <string name="textCancel">Cancel</string>
   <string name="textNextEpisode">Next Episode:</string>
   <string name="textSearchFor">Search…</string>
-  <string name="textSearchForMyShows">Search my shows…</string>
+  <string name="textSearchForMyShows">Search…</string>
+  <string name="textSearchWatchlist">Search…</string>
   <string name="textAiredAlready">Aired</string>
   <string name="textAirsNow">Airs Now</string>
   <string name="textEmptyResults">There were no results…</string>

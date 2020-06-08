@@ -1,7 +1,9 @@
 package com.michaldrabik.showly2.ui.watchlist
 
+import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,10 +22,15 @@ import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
 import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.showKeyboard
+import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 import kotlinx.android.synthetic.main.layout_watchlist_empty.*
+import kotlinx.android.synthetic.main.view_search.*
 
 class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
   OnTabReselectedListener,
@@ -60,6 +67,12 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
   private fun setupView() {
     watchlistEmptyTraktButton.onClick { openTraktSync() }
     watchlistEmptyDiscoverButton.onClick { mainActivity().openTab(R.id.menuDiscover) }
+    watchlistSearchView.run {
+      hint = getString(R.string.textSearchWatchlist)
+      settingsIconVisible = false
+      isClickable = false
+      onClick { enterSearch() }
+    }
   }
 
   private fun setupRecycler() {
@@ -79,7 +92,37 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     }
   }
 
+  private fun enterSearch() {
+    if (watchlistSearchView.isSearching) return
+    watchlistSearchView.isSearching = true
+    searchViewText.gone()
+    searchViewInput.run {
+      setText("")
+      doAfterTextChanged { viewModel.searchWatchlist(it?.toString() ?: "") }
+      visible()
+      showKeyboard()
+      requestFocus()
+    }
+    (searchViewIcon.drawable as Animatable).start()
+    searchViewIcon.onClick { exitSearch() }
+    hideNavigation(false)
+  }
+
+  private fun exitSearch(showNavigation: Boolean = true) {
+    watchlistSearchView.isSearching = false
+    searchViewText.visible()
+    searchViewInput.run {
+      setText("")
+      gone()
+      hideKeyboard()
+      clearFocus()
+    }
+    searchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
+    if (showNavigation) showNavigation()
+  }
+
   private fun openShowDetails(item: WatchlistItem) {
+    exitSearch()
     hideNavigation()
     watchlistRoot.fadeOut {
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
@@ -109,11 +152,14 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
   override fun onTraktSyncProgress() = viewModel.loadWatchlist()
 
   private fun render(uiModel: WatchlistUiModel) {
-    uiModel.items?.let {
-      adapter.setItems(it)
-      watchlistRecycler.fadeIn()
-      watchlistEmptyView.fadeIf(it.isEmpty())
-      WatchlistWidgetProvider.requestUpdate(requireContext())
+    uiModel.run {
+      items?.let {
+        adapter.setItems(it)
+        watchlistRecycler.fadeIn()
+        watchlistEmptyView.fadeIf(it.isEmpty() && isSearching == false)
+        watchlistSearchView.isClickable = it.isNotEmpty() || isSearching == true
+        WatchlistWidgetProvider.requestUpdate(requireContext())
+      }
     }
   }
 }
