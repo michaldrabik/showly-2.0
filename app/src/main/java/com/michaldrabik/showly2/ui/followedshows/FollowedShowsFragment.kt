@@ -162,10 +162,13 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
         followedShowsSearchEmptyView.gone()
       }
     }
-    followedShowsSearchView.translationY = 0F
-    followedShowsTabs.translationY = 0F
-    childFragmentManager.fragments.forEach {
-      (it as? OnScrollResetListener)?.onScrollReset()
+
+    if (result.type != EMPTY) {
+      followedShowsSearchView.translationY = 0F
+      followedShowsTabs.translationY = 0F
+      childFragmentManager.fragments.forEach {
+        (it as? OnScrollResetListener)?.onScrollReset()
+      }
     }
   }
 
