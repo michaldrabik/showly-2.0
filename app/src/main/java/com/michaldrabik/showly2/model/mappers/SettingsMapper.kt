@@ -22,7 +22,7 @@ class SettingsMapper @Inject constructor() {
     myShowsRunningIsEnabled = settings.myShowsRunningIsEnabled,
     myShowsIncomingIsEnabled = settings.myShowsIncomingIsEnabled,
     myShowsEndedIsEnabled = settings.myShowsEndedIsEnabled,
-    myShowsRecentIsEnabled =settings.myShowsRecentIsEnabled,
+    myShowsRecentIsEnabled = settings.myShowsRecentIsEnabled,
     myShowsRecentsAmount = settings.myShowsRecentsAmount,
     seeLaterShowsSortBy = enumValueOf(settings.seeLaterShowsSortBy),
     showAnticipatedShows = settings.showAnticipatedShows,

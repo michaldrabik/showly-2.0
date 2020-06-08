@@ -54,5 +54,4 @@ data class Show(
       updatedAt = 0
     )
   }
-
 }
