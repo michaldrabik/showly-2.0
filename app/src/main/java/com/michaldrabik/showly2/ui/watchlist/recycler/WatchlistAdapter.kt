@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.watchlist.recycler
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
@@ -16,12 +17,21 @@ class WatchlistAdapter : BaseAdapter<WatchlistItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, WatchlistItemDiffCallback())
 
-  var detailsClickListener: (WatchlistItem) -> Unit = { }
-  var checkClickListener: (WatchlistItem) -> Unit = { }
+  var detailsClickListener: ((WatchlistItem) -> Unit)? = null
+  var checkClickListener: ((WatchlistItem) -> Unit)? = null
+  var itemLongClickListener: ((WatchlistItem, View) -> Unit)? = null
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
-      VIEW_TYPE_ITEM -> BaseViewHolder(WatchlistItemView(parent.context))
+      VIEW_TYPE_ITEM -> BaseViewHolder(WatchlistItemView(parent.context).apply {
+        itemClickListener = { super.itemClickListener.invoke(it) }
+        itemLongClickListener = { item, view ->
+          this@WatchlistAdapter.itemLongClickListener?.invoke(item, view)
+        }
+        detailsClickListener = { this@WatchlistAdapter.detailsClickListener?.invoke(it) }
+        checkClickListener = { this@WatchlistAdapter.checkClickListener?.invoke(it) }
+        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
+      })
       VIEW_TYPE_HEADER -> BaseViewHolder(WatchlistHeaderView(parent.context))
       else -> throw IllegalStateException()
     }
@@ -29,16 +39,8 @@ class WatchlistAdapter : BaseAdapter<WatchlistItem>() {
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]
     when (holder.itemViewType) {
-      VIEW_TYPE_HEADER -> (holder.itemView as WatchlistHeaderView).bind(
-        item.headerTextResId!!
-      )
-      VIEW_TYPE_ITEM -> (holder.itemView as WatchlistItemView).bind(
-        item,
-        itemClickListener,
-        detailsClickListener,
-        checkClickListener,
-        missingImageListener
-      )
+      VIEW_TYPE_HEADER -> (holder.itemView as WatchlistHeaderView).bind(item.headerTextResId!!)
+      VIEW_TYPE_ITEM -> (holder.itemView as WatchlistItemView).bind(item)
     }
   }
 

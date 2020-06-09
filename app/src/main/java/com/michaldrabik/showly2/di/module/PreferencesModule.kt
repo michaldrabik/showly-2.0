@@ -18,4 +18,13 @@ class PreferencesModule(private val context: Context) {
       "PREFERENCES_TUTORIALS",
       Context.MODE_PRIVATE
     )
+
+  @Provides
+  @AppScope
+  @Named("watchlistPreferences")
+  fun providesWatchlistPreferences(): SharedPreferences =
+    context.applicationContext.getSharedPreferences(
+      "PREFERENCES_WATCHLIST",
+      Context.MODE_PRIVATE
+    )
 }

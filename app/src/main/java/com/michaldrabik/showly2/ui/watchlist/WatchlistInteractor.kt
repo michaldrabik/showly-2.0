@@ -8,6 +8,7 @@ import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
+import com.michaldrabik.showly2.repository.watchlist.WatchlistRepository
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.storage.database.AppDatabase
@@ -19,7 +20,8 @@ class WatchlistInteractor @Inject constructor(
   private val database: AppDatabase,
   private val imagesProvider: ShowImagesProvider,
   private val mappers: Mappers,
-  private val episodesManager: EpisodesManager
+  private val episodesManager: EpisodesManager,
+  private val watchlistRepository: WatchlistRepository
 ) {
 
   suspend fun loadWatchlistItem(show: Show): WatchlistItem {
@@ -36,6 +38,7 @@ class WatchlistInteractor @Inject constructor(
 
     val season = seasons.first { it.idTrakt == nextEpisode.idSeason }
     val episode = database.episodesDao().getById(nextEpisode.idTrakt)
+    val isPinned = watchlistRepository.isItemPinned(show.traktId)
 
     return WatchlistItem(
       show,
@@ -43,7 +46,8 @@ class WatchlistInteractor @Inject constructor(
       mappers.episode.fromDatabase(episode),
       Image.createUnavailable(POSTER),
       episodesCount,
-      episodesCount - unwatchedEpisodesCount
+      episodesCount - unwatchedEpisodesCount,
+      isPinned = isPinned
     )
   }
 
@@ -51,6 +55,12 @@ class WatchlistInteractor @Inject constructor(
     val bundle = EpisodeBundle(item.episode, item.season, item.show)
     episodesManager.setEpisodeWatched(bundle)
   }
+
+  fun addPinnedItem(item: WatchlistItem) =
+    watchlistRepository.addPinnedItem(item.show.traktId)
+
+  fun removePinnedItem(item: WatchlistItem) =
+    watchlistRepository.removePinnedItem(item.show.traktId)
 
   suspend fun findCachedImage(show: Show, type: ImageType) =
     imagesProvider.findCachedImage(show, type)

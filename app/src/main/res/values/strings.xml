@@ -5,6 +5,8 @@
   <string name="menuDiscover">Discover</string>
   <string name="menuShows">My Shows</string>
   <string name="menuSeeLater">See Later</string>
+  <string name="menuPin">Pin to top</string>
+  <string name="menuUnpin">Unpin from top</string>
 
   <string name="tabMyShows">My Shows</string>
   <string name="tabSeeLater">See Later</string>

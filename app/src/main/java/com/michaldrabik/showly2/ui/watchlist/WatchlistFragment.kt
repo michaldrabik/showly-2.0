@@ -2,7 +2,9 @@ package com.michaldrabik.showly2.ui.watchlist
 
 import android.graphics.drawable.Animatable
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -86,10 +88,27 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     }
     adapter.run {
       itemClickListener = { openShowDetails(it) }
+      itemLongClickListener = { item, view -> openPopupMenu(item, view) }
       detailsClickListener = { openEpisodeDetails(it) }
       checkClickListener = { viewModel.setWatchedEpisode(it) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
     }
+  }
+
+  private fun openPopupMenu(item: WatchlistItem, view: View) {
+    val menu = PopupMenu(requireContext(), view, Gravity.CENTER)
+    if (item.isPinned) {
+      menu.inflate(R.menu.watchlist_item_menu_unpin)
+    } else {
+      menu.inflate(R.menu.watchlist_item_menu_pin)
+    }
+    menu.setOnMenuItemClickListener { menuItem ->
+      if (menuItem.itemId == R.id.menuWatchlistItemPin) {
+        viewModel.togglePinItem(item)
+      }
+      true
+    }
+    menu.show()
   }
 
   private fun enterSearch() {

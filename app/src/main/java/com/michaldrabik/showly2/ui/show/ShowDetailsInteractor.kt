@@ -18,6 +18,7 @@ import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.repository.UserTvdbManager
 import com.michaldrabik.showly2.repository.rating.RatingsRepository
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
+import com.michaldrabik.showly2.repository.watchlist.WatchlistRepository
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import java.util.Locale.ENGLISH
@@ -34,7 +35,8 @@ class ShowDetailsInteractor @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
-  private val ratingsRepository: RatingsRepository
+  private val ratingsRepository: RatingsRepository,
+  private val watchlistRepository: WatchlistRepository
 ) {
 
   suspend fun loadShowDetails(idTrakt: IdTrakt) =
@@ -147,6 +149,7 @@ class ShowDetailsInteractor @Inject constructor(
         }
       }
       database.seasonsDao().delete(toDelete)
+      watchlistRepository.removePinnedItem(show.traktId)
     }
   }
 

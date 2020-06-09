@@ -19,7 +19,8 @@ data class WatchlistItem(
   val episodesCount: Int,
   val watchedEpisodesCount: Int,
   override val isLoading: Boolean = false,
-  val headerTextResId: Int? = null
+  val headerTextResId: Int? = null,
+  val isPinned: Boolean = false
 ) : ListItem {
 
   fun isSameAs(other: WatchlistItem) =

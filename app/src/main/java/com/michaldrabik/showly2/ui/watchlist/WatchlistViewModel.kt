@@ -46,13 +46,18 @@ class WatchlistViewModel @Inject constructor(
         }
         .toMutableList()
 
-      val headerIndex = allItems.indexOfFirst { !it.isHeader() && !it.episode.hasAired(it.season) }
+      val headerIndex = allItems.indexOfFirst {
+        !it.isHeader() && !it.episode.hasAired(it.season) && !it.isPinned
+      }
       if (headerIndex != -1) {
         val item = allItems[headerIndex]
         allItems.add(headerIndex, item.copy(headerTextResId = R.string.textWatchlistIncoming))
       }
 
-      uiState = WatchlistUiModel(items = allItems, isSearching = searchQuery.isNotBlank())
+      val pinnedItems = allItems
+        .sortedByDescending { !it.isHeader() && it.isPinned }
+
+      uiState = WatchlistUiModel(items = pinnedItems, isSearching = searchQuery.isNotBlank())
     }
   }
 
@@ -70,6 +75,15 @@ class WatchlistViewModel @Inject constructor(
       interactor.setEpisodeWatched(item)
       loadWatchlist()
     }
+  }
+
+  fun togglePinItem(item: WatchlistItem) {
+    if (item.isPinned) {
+      interactor.removePinnedItem(item)
+    } else {
+      interactor.addPinnedItem(item)
+    }
+    loadWatchlist()
   }
 
   fun findMissingImage(item: WatchlistItem, force: Boolean) {
