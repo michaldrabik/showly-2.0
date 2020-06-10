@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
+import com.michaldrabik.showly2.model.Tip
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
@@ -29,6 +30,7 @@ import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showKeyboard
 import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 import kotlinx.android.synthetic.main.layout_watchlist_empty.*
@@ -69,6 +71,10 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
   private fun setupView() {
     watchlistEmptyTraktButton.onClick { openTraktSync() }
     watchlistEmptyDiscoverButton.onClick { mainActivity().openTab(R.id.menuDiscover) }
+    watchlistTipItem.onClick {
+      it.gone()
+      mainActivity().showTip(Tip.WATCHLIST_ITEM_PIN)
+    }
     watchlistSearchView.run {
       hint = getString(R.string.textSearchWatchlist)
       settingsIconVisible = false
@@ -177,6 +183,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
         watchlistRecycler.fadeIn()
         watchlistEmptyView.fadeIf(it.isEmpty() && isSearching == false)
         watchlistSearchView.isClickable = it.isNotEmpty() || isSearching == true
+        watchlistTipItem.visibleIf(it.count() >= 3 && !mainActivity().isTipShown(Tip.WATCHLIST_ITEM_PIN))
         WatchlistWidgetProvider.requestUpdate(requireContext())
       }
     }

@@ -163,6 +163,7 @@
   <string name="textTipDiscover">Double tap \'Discover\' menu button to quickly open search screen.</string>
   <string name="textTipMyShows">Double tap \'My Shows\' menu button to quickly switch between tabs.</string>
   <string name="textTipShowDetailsGallery">Tap show\'s image to open gallery.</string>
+  <string name="textTipWatchlistPinItem">Tap and hold list item to pin it to the top.</string>
 
   <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this keeps happening.</string>
   <string name="errorAuthorization">Authorization failed.\nPlease contact us if this keeps happening.</string>
