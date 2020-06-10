@@ -10,7 +10,6 @@ import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.repository.TraktAuthToken
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.repository.UserTvdbManager
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
@@ -38,19 +37,20 @@ class TraktImportWatchedRunner @Inject constructor(
 
     Timber.d("Checking authorization...")
     val authToken = checkAuthorization()
-    val syncedCount = importWatchedShows(authToken)
+    val syncedCount = importWatchedShows(authToken.token)
 
     isRunning = false
     Timber.d("Finished with success.")
     return syncedCount
   }
 
-  private suspend fun importWatchedShows(token: TraktAuthToken): Int {
+  private suspend fun importWatchedShows(token: String): Int {
     Timber.d("Importing watched shows...")
 
     checkTvdbAuth()
-    val syncResults = cloud.traktApi.fetchSyncWatched(token.token, "full")
-      .filter { it.show != null }
+    val hiddenShowsIds = cloud.traktApi.fetchHiddenShows(token).map { it.show.ids?.trakt }
+    val syncResults = cloud.traktApi.fetchSyncWatched(token, "full")
+      .filter { it.show != null && it.show?.ids?.trakt !in hiddenShowsIds }
       .distinctBy { it.show?.ids?.trakt }
 
     val myShowsIds = database.myShowsDao().getAll().map { it.idTrakt }

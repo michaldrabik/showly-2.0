@@ -4,6 +4,7 @@ import com.michaldrabik.network.Config
 import com.michaldrabik.network.trakt.model.ActorsResponse
 import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.network.trakt.model.Episode
+import com.michaldrabik.network.trakt.model.HiddenItem
 import com.michaldrabik.network.trakt.model.OAuthResponse
 import com.michaldrabik.network.trakt.model.RatingResultEpisode
 import com.michaldrabik.network.trakt.model.RatingResultShow
@@ -83,6 +84,12 @@ interface TraktService {
   suspend fun fetchMyProfile(@Header("Authorization") authToken: String): User
 
   // Sync
+
+  @GET("users/hidden/progress_watched?type=show")
+  suspend fun fetchHiddenShows(
+    @Header("Authorization") authToken: String,
+    @Query("limit") pageLimit: Int
+  ): List<HiddenItem>
 
   @GET("sync/watched/shows")
   suspend fun fetchSyncWatched(

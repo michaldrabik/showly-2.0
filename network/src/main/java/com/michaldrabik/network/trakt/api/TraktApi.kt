@@ -89,6 +89,9 @@ class TraktApi(private val service: TraktService) {
   suspend fun fetchMyProfile(token: String) =
     service.fetchMyProfile("Bearer $token")
 
+  suspend fun fetchHiddenShows(token: String) =
+    service.fetchHiddenShows("Bearer $token", pageLimit = 100)
+
   suspend fun fetchSyncWatched(token: String, extended: String? = null) =
     service.fetchSyncWatched("Bearer $token", extended)
 
