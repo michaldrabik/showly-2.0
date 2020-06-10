@@ -3,7 +3,7 @@ package com.michaldrabik.showly2.common
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.showly2.common.events.EventsManager
 import com.michaldrabik.showly2.common.events.ShowsSyncComplete
 import com.michaldrabik.showly2.serviceComponent
@@ -38,7 +38,7 @@ class ShowsSyncService : JobIntentService(), CoroutineScope {
         showsSyncRunner.run()
       } catch (t: Throwable) {
         Timber.e(t.toString())
-        Crashlytics.logException(t)
+        FirebaseCrashlytics.getInstance().recordException(t)
         0
       }
     }

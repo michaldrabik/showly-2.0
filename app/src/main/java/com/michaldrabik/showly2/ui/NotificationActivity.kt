@@ -3,7 +3,7 @@ package com.michaldrabik.showly2.ui
 import android.net.Uri
 import android.os.Bundle
 import androidx.navigation.fragment.findNavController
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fcm.FcmExtra
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
@@ -46,7 +46,7 @@ abstract class NotificationActivity : BaseActivity() {
         extras?.clear()
       } catch (e: Throwable) {
         // NOOP Simply leave app where it is in case of failure
-        Crashlytics.logException(e)
+        FirebaseCrashlytics.getInstance().recordException(e)
       }
     }
   }
@@ -67,7 +67,7 @@ abstract class NotificationActivity : BaseActivity() {
         action()
       } catch (e: Exception) {
         // NOOP Simply leave app where it is in case of failure
-        Crashlytics.logException(e)
+        FirebaseCrashlytics.getInstance().recordException(e)
       }
     }
   }

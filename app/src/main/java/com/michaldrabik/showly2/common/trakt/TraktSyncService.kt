@@ -3,7 +3,7 @@ package com.michaldrabik.showly2.common.trakt
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.showly2.common.events.EventsManager
 import com.michaldrabik.showly2.common.events.TraktSyncAuthError
@@ -52,10 +52,17 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
   override val coroutineContext = Job() + Dispatchers.IO
   private val runners = mutableListOf<TraktSyncRunner>()
 
-  @Inject lateinit var importWatchedRunner: TraktImportWatchedRunner
-  @Inject lateinit var importWatchlistRunner: TraktImportWatchlistRunner
-  @Inject lateinit var exportWatchedRunner: TraktExportWatchedRunner
-  @Inject lateinit var exportWatchlistRunner: TraktExportWatchlistRunner
+  @Inject
+  lateinit var importWatchedRunner: TraktImportWatchedRunner
+
+  @Inject
+  lateinit var importWatchlistRunner: TraktImportWatchlistRunner
+
+  @Inject
+  lateinit var exportWatchedRunner: TraktExportWatchedRunner
+
+  @Inject
+  lateinit var exportWatchlistRunner: TraktExportWatchlistRunner
 
   override fun onCreate() {
     super.onCreate()
@@ -100,7 +107,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
         if (!isSilent) {
           notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
         }
-        Crashlytics.logException(t)
+        FirebaseCrashlytics.getInstance().recordException(t)
       } finally {
         Timber.d("Sync completed.")
         notificationManager().cancel(SYNC_NOTIFICATION_PROGRESS_ID)

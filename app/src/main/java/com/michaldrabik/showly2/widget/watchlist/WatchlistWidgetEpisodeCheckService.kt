@@ -3,7 +3,7 @@ package com.michaldrabik.showly2.widget.watchlist
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
-import com.crashlytics.android.Crashlytics
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.serviceComponent
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
@@ -33,8 +33,10 @@ class WatchlistWidgetEpisodeCheckService : JobIntentService(), CoroutineScope {
         putExtra(EXTRA_SEASON_ID, seasonId)
         putExtra(EXTRA_SHOW_ID, showId.id)
       }
-      enqueueWork(context, WatchlistWidgetEpisodeCheckService::class.java,
-        JOB_ID, intent)
+      enqueueWork(
+        context, WatchlistWidgetEpisodeCheckService::class.java,
+        JOB_ID, intent
+      )
     }
   }
 
@@ -51,7 +53,9 @@ class WatchlistWidgetEpisodeCheckService : JobIntentService(), CoroutineScope {
     val showId = intent.getLongExtra(EXTRA_SHOW_ID, -1)
 
     if (episodeId == -1L || seasonId == -1L || showId == -1L) {
-      Crashlytics.logException(Throwable("WatchlistWidgetEpisodeCheckService error. One of the IDs is invalid."))
+      FirebaseCrashlytics
+        .getInstance()
+        .recordException(Throwable("WatchlistWidgetEpisodeCheckService error. One of the IDs is invalid."))
       return
     }
 
