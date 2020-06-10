@@ -77,9 +77,10 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     }
     watchlistSearchView.run {
       hint = getString(R.string.textSearchWatchlist)
-      settingsIconVisible = false
+      settingsIconVisible = true
       isClickable = false
       onClick { enterSearch() }
+      onSettingsClickListener = { openSettings() }
     }
   }
 
@@ -153,6 +154,11 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
       navigateTo(R.id.actionWatchlistFragmentToShowDetailsFragment, bundle)
     }
+  }
+
+  private fun openSettings() {
+    hideNavigation()
+    navigateTo(R.id.actionWatchlistFragmentToSettingsFragment)
   }
 
   private fun openEpisodeDetails(item: WatchlistItem) {
