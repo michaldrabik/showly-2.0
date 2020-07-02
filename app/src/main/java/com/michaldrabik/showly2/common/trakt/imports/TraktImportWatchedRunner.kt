@@ -54,6 +54,7 @@ class TraktImportWatchedRunner @Inject constructor(
       .distinctBy { it.show?.ids?.trakt }
 
     val myShowsIds = database.myShowsDao().getAll().map { it.idTrakt }
+    val seeLaterShowsIds = database.seeLaterShowsDao().getAll().map { it.idTrakt }
 
     syncResults
       .forEachIndexed { index, result ->
@@ -73,6 +74,10 @@ class TraktImportWatchedRunner @Inject constructor(
               database.showsDao().upsert(listOf(showDb))
               database.myShowsDao().insert(listOf(MyShow.fromTraktId(showDb.idTrakt, nowUtcMillis())))
               loadImage(show)
+
+              if (showId in seeLaterShowsIds) {
+                database.seeLaterShowsDao().deleteById(showId)
+              }
             }
             database.seasonsDao().upsert(seasons)
             database.episodesDao().upsert(episodes)
