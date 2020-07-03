@@ -15,11 +15,11 @@ Available on the Google Play Store and soon also on F-Droid.
 ## Screenshots
 
 <div>
-   <img src="assets/screenshots/screenshot1.png" width="170" alt="screenshot 1">
-   <img src="assets/screenshots/screenshot2.png" width="170" alt="screenshot 1">
-   <img src="assets/screenshots/screenshot5.png" width="170" alt="screenshot 1">
-   <img src="assets/screenshots/screenshot4.png" width="170" alt="screenshot 1">
-   <img src="assets/screenshots/screenshot3.png" width="170" alt="screenshot 1">
+   <img src="assets/screenshots/screenshot1.png" width="150" alt="screenshot 1">
+   <img src="assets/screenshots/screenshot2.png" width="150" alt="screenshot 1">
+   <img src="assets/screenshots/screenshot5.png" width="150" alt="screenshot 1">
+   <img src="assets/screenshots/screenshot3.png" width="150" alt="screenshot 1">
+   <img src="assets/screenshots/screenshot4.png" width="150" alt="screenshot 1">
 </div>
 
 ## Project Setup
