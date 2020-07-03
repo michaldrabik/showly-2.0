@@ -61,7 +61,7 @@ class MyShowsDaoTest : BaseDaoTest() {
       database.myShowsDao().insert(listOf(myShow1))
       database.myShowsDao().insert(listOf(myShow2))
 
-      val result = database.myShowsDao().getAllRecent()
+      val result = database.myShowsDao().getAllRecent(10)
       assertThat(result[0]).isEqualTo(shows[1])
       assertThat(result[1]).isEqualTo(shows[0])
     }
