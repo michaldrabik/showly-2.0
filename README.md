@@ -47,8 +47,6 @@ Feel free to post ideas and problems as Github Issues.
 
 Pull requests are welcome. Remember about leaving a comment in the relevant issue if you are working on something.
 
-## Slack
+## Contact
 
-Feel free to join official Slack workspace for all things related:
-
-[**Click to join Slack**](https://join.slack.com/t/showly2/shared_invite/enQtODE5MDYwNDMxNjIwLTQxOTA2YzBjNDFjNjU0M2Q2M2ZmMTBjNGQ2MWMxNjc0MmQyMTMxZGEyYjA0YTYzM2Y0OGIxMDU4NjBkODhkYzA)
+Feel free to write an email: showlyapp@gmail.com
