@@ -6,6 +6,7 @@ import com.michaldrabik.showly2.ui.discover.DiscoverViewModel
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsViewModel
 import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsViewModel
 import com.michaldrabik.showly2.ui.followedshows.seelater.SeeLaterViewModel
+import com.michaldrabik.showly2.ui.followedshows.statistics.StatisticsViewModel
 import com.michaldrabik.showly2.ui.main.MainViewModel
 import com.michaldrabik.showly2.ui.search.SearchViewModel
 import com.michaldrabik.showly2.ui.settings.SettingsViewModel
@@ -81,4 +82,9 @@ abstract class ViewModelsModule {
   @IntoMap
   @ViewModelKey(TraktSyncViewModel::class)
   abstract fun bindTraktSyncViewModel(viewModel: TraktSyncViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(StatisticsViewModel::class)
+  abstract fun bindStatisticsViewModel(viewModel: StatisticsViewModel): ViewModel
 }

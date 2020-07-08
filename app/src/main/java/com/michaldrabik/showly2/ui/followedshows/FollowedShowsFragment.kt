@@ -100,7 +100,8 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
     TabLayoutMediator(followedShowsTabs, followedShowsPager) { tab, position ->
       tab.text = when (position) {
         0 -> getString(R.string.tabMyShows)
-        else -> getString(R.string.tabSeeLater)
+        1 -> getString(R.string.tabSeeLater)
+        else -> getString(R.string.tabStatistics)
       }
     }.attach()
   }

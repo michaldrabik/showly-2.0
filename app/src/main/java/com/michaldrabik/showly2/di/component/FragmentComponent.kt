@@ -4,6 +4,7 @@ import com.michaldrabik.showly2.ui.discover.DiscoverFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.seelater.SeeLaterFragment
+import com.michaldrabik.showly2.ui.followedshows.statistics.StatisticsFragment
 import com.michaldrabik.showly2.ui.search.SearchFragment
 import com.michaldrabik.showly2.ui.settings.SettingsFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
@@ -40,6 +41,8 @@ interface FragmentComponent {
   fun inject(fragment: SettingsFragment)
 
   fun inject(fragment: TraktSyncFragment)
+
+  fun inject(fragment: StatisticsFragment)
 
   fun inject(fragment: EpisodeDetailsBottomSheet)
 }
