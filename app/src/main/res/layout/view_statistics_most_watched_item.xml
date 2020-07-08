@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/viewMostWatchedItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:paddingLeft="@dimen/spaceMedium"
+    android:paddingRight="@dimen/spaceMedium"
+    >
+
+    <ImageView
+      android:id="@+id/viewMostWatchedItemImage"
+      android:layout_width="@dimen/statisticsMostWatchedItemImageWidth"
+      android:layout_height="@dimen/statisticsMostWatchedItemImageHeight"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/viewMostWatchedItemPlaceholder"
+      android:layout_width="@dimen/statisticsMostWatchedItemImageWidth"
+      android:layout_height="@dimen/statisticsMostWatchedItemImageHeight"
+      android:layout_gravity="center"
+      android:background="@drawable/bg_show_view_placeholder"
+      android:padding="20dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_television"
+      tools:visibility="visible"
+      />
+
+    <ProgressBar
+      android:id="@+id/viewMostWatchedItemProgress"
+      style="@style/ProgressBarGray"
+      android:layout_width="28dp"
+      android:layout_height="28dp"
+      android:layout_gravity="center"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@id/viewMostWatchedItemImage"
+      app:layout_constraintStart_toStartOf="@id/viewMostWatchedItemImage"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/viewMostWatchedItemTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textColor="@color/colorTextPrimary"
+      android:textSize="18sp"
+      app:layout_constraintBottom_toBottomOf="@id/viewMostWatchedItemImage"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemImage"
+      app:layout_constraintTop_toTopOf="@id/viewMostWatchedItemImage"
+      tools:text="Game of Thrones"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

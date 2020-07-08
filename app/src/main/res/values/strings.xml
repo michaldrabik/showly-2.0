@@ -146,6 +146,8 @@
   <string name="textTraktSyncOption3DayButton">Scheduled to run every 3 days</string>
   <string name="textTraktSyncOptionWeeklyButton">Scheduled to run every week</string>
 
+  <string name="textStatisticsMostWatchedShows">Most watched shows</string>
+
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>
     <item quantity="other">Airs in %d days</item>

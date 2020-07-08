@@ -34,11 +34,14 @@
   <color name="colorWatchlistDisabledButton">#B5B5B5</color>
   <color name="colorWatchlistSecondaryButton">#B5B5B5</color>
 
-  <color name="colorShowDetailsEpisodeBackground">#313131</color>
+  <color name="colorShowDetailsEpisodeBackground">#2C2C2C</color>
   <color name="colorSortViewBackground">#222327</color>
   <color name="colorEpisodeBadgeBackground">#313131</color>
 
   <color name="colorProgressGray">#333333</color>
   <color name="colorProgressBackgroundGray">#676767</color>
   <color name="colorSeparatorGray">#2C2C2C</color>
+
+  <color name="colorStatisticsCardBackground">#232323</color>
+
 </resources>

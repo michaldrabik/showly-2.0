@@ -7,10 +7,13 @@ import androidx.lifecycle.Observer
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
+import kotlinx.android.synthetic.main.fragment_statistics.*
 
 class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_statistics) {
 
   override val viewModel by viewModels<StatisticsViewModel> { viewModelFactory }
+
+  private var isInitialized = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     fragmentComponent().inject(this)
@@ -21,11 +24,16 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
     super.onViewCreated(view, savedInstanceState)
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
+      if (!isInitialized) {
+        loadMostWatchedShows()
+        isInitialized = true
+      }
     }
   }
 
   private fun render(uiModel: StatisticsUiModel) {
     uiModel.run {
+      statisticsMostWatchedShows.bind(mostWatchedShows ?: emptyList())
     }
   }
 }

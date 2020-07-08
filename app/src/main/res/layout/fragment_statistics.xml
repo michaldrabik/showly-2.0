@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/statisticsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:fillViewport="true"
   >
 
-  <androidx.coordinatorlayout.widget.CoordinatorLayout
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/statisticsContent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
     android:clipToPadding="false"
+    android:paddingTop="@dimen/statisticsTopPadding"
     >
 
-    <TextView
-      android:layout_width="wrap_content"
+    <com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.StatisticsMostWatchedShowsView
+      android:id="@+id/statisticsMostWatchedShows"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:text="Statistics"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
       />
 
-  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>
