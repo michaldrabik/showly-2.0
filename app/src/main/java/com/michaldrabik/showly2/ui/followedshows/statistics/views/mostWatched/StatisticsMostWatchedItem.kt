@@ -8,6 +8,7 @@ import com.michaldrabik.showly2.ui.discover.recycler.ListItem
 data class StatisticsMostWatchedItem(
   override val show: Show,
   val episodes: List<Episode>,
+  val seasonsCount: Long,
   override val image: Image,
   override val isLoading: Boolean = false
 ) : ListItem

@@ -24,11 +24,13 @@ class StatisticsViewModel @Inject constructor(
       val myShows = showsRepository.myShows.loadAll()
       val myShowsIds = myShows.map { it.traktId }
       val episodes = database.episodesDao().getAllWatchedForShows(myShowsIds)
+      val seasons = database.seasonsDao().getAllWatchedForShows(myShowsIds)
 
       val mostWatchedShows = myShowsIds
         .map { showId ->
           StatisticsMostWatchedItem(
             show = myShows.first { it.traktId == showId },
+            seasonsCount = seasons.filter { it.idShowTrakt == showId }.count().toLong(),
             episodes = episodes
               .filter { it.idShowTrakt == showId }
               .map { mappers.episode.fromDatabase(it) },

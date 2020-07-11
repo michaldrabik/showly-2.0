@@ -32,6 +32,9 @@ class StatisticsMostWatchedItemView : ShowView<StatisticsMostWatchedItem> {
     this.item = item
     clear()
     viewMostWatchedItemTitle.text = item.show.title
+    viewMostWatchedItemHoursValue.text = (item.episodes.sumBy { it.runtime } / 60).toString()
+    viewMostWatchedItemEpisodesValue.text = item.episodes.count().toString()
+    viewMostWatchedItemSeasonsValue.text = item.seasonsCount.toString()
     loadImage(item) { _, _ -> }
   }
 

@@ -60,14 +60,140 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceMedium"
+      android:layout_marginTop="@dimen/spaceSmall"
       android:ellipsize="end"
+      android:gravity="center"
       android:maxLines="1"
       android:textColor="@color/colorTextPrimary"
-      android:textSize="18sp"
-      app:layout_constraintBottom_toBottomOf="@id/viewMostWatchedItemImage"
+      android:textSize="20sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toTopOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemImage"
       app:layout_constraintTop_toTopOf="@id/viewMostWatchedItemImage"
       tools:text="Game of Thrones"
+      />
+
+    <TextView
+      android:id="@+id/viewMostWatchedItemHoursValue"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:gravity="center|bottom"
+      android:maxLines="1"
+      android:textColor="@color/colorTextPrimary"
+      android:textSize="22sp"
+      app:layout_constraintBottom_toTopOf="@id/viewMostWatchedItemHoursLabel"
+      app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemImage"
+      app:layout_constraintTop_toTopOf="@id/viewMostWatchedItemSeparator1"
+      tools:text="999"
+      />
+
+    <TextView
+      android:id="@+id/viewMostWatchedItemHoursLabel"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:gravity="center|top"
+      android:maxLines="1"
+      android:text="Hours"
+      android:textColor="@color/colorTextPrimary"
+      android:textSize="14sp"
+      app:layout_constraintBottom_toBottomOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemImage"
+      app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemHoursValue"
+      />
+
+    <View
+      android:id="@+id/viewMostWatchedItemSeparator1"
+      android:layout_width="1dp"
+      android:layout_height="0dp"
+      android:layout_marginTop="@dimen/spaceMedium"
+      android:layout_marginBottom="@dimen/spaceSmall"
+      android:background="@color/colorAccent"
+      app:layout_constraintBottom_toBottomOf="@id/viewMostWatchedItemImage"
+      app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemSeasonsValue"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemHoursLabel"
+      app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemTitle"
+      />
+
+    <TextView
+      android:id="@+id/viewMostWatchedItemSeasonsValue"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:ellipsize="end"
+      android:gravity="center|bottom"
+      android:maxLines="1"
+      android:textColor="@color/colorTextPrimary"
+      android:textSize="22sp"
+      app:layout_constraintBottom_toTopOf="@id/viewMostWatchedItemSeasonsLabel"
+      app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemSeparator2"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintTop_toTopOf="@id/viewMostWatchedItemSeparator1"
+      tools:text="11"
+      />
+
+    <TextView
+      android:id="@+id/viewMostWatchedItemSeasonsLabel"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:ellipsize="end"
+      android:gravity="center|top"
+      android:maxLines="1"
+      android:text="Seasons"
+      android:textColor="@color/colorTextPrimary"
+      android:textSize="14sp"
+      app:layout_constraintBottom_toBottomOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemSeparator2"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemSeasonsValue"
+      />
+
+    <View
+      android:id="@+id/viewMostWatchedItemSeparator2"
+      android:layout_width="1dp"
+      android:layout_height="0dp"
+      android:background="@color/colorAccent"
+      app:layout_constraintBottom_toBottomOf="@id/viewMostWatchedItemHoursLabel"
+      app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemEpisodesValue"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemSeasonsLabel"
+      app:layout_constraintTop_toTopOf="@id/viewMostWatchedItemHoursValue"
+      />
+
+    <TextView
+      android:id="@+id/viewMostWatchedItemEpisodesValue"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:ellipsize="end"
+      android:gravity="center|bottom"
+      android:maxLines="1"
+      android:textColor="@color/colorTextPrimary"
+      android:textSize="22sp"
+      app:layout_constraintBottom_toTopOf="@id/viewMostWatchedItemEpisodesLabel"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemSeparator2"
+      app:layout_constraintTop_toTopOf="@id/viewMostWatchedItemSeparator1"
+      tools:text="11"
+      />
+
+    <TextView
+      android:id="@+id/viewMostWatchedItemEpisodesLabel"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:ellipsize="end"
+      android:gravity="center|top"
+      android:maxLines="1"
+      android:text="Episodes"
+      android:textColor="@color/colorTextPrimary"
+      android:textSize="14sp"
+      app:layout_constraintBottom_toBottomOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemSeparator2"
+      app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemEpisodesValue"
       />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

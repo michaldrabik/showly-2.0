@@ -25,10 +25,12 @@
     android:id="@+id/viewMostWatchedShowsItems"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="54dp"
-    android:divider="@drawable/divider_medium"
+    android:layout_marginTop="56dp"
+    android:layout_marginBottom="@dimen/spaceMedium"
+    android:divider="@drawable/divider_statistics"
+    android:dividerPadding="@dimen/spaceMedium"
     android:orientation="vertical"
-    android:showDividers="middle|end"
+    android:showDividers="middle"
     />
 
 </merge>
