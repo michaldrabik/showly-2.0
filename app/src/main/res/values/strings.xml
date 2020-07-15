@@ -50,7 +50,6 @@
   <string name="textInMyShows">Added to my shows</string>
   <string name="textInSeeLater">Added to see later</string>
   <string name="textNoDescription">Overview not available.</string>
-  <string name="textRecentlyAdded">Recently Added</string>
   <string name="textAllShows">All (%1$d)</string>
   <string name="textRunning">Running (%1$d)</string>
   <string name="textEnded">Ended (%1$d)</string>
@@ -146,7 +145,7 @@
   <string name="textTraktSyncOption3DayButton">Scheduled to run every 3 days</string>
   <string name="textTraktSyncOptionWeeklyButton">Scheduled to run every week</string>
 
-  <string name="textStatisticsMostWatchedShows">Most watched shows</string>
+  <string name="textStatisticsMostWatchedShows">Most Watched Shows</string>
 
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>

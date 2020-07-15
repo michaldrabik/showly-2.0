@@ -6,18 +6,17 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   app:cardBackgroundColor="@color/colorStatisticsCardBackground"
-  tools:parentTag="com.google.android.material.card.MaterialCardView"
+  tools:parentTag="android.widget.FrameLayout"
   >
 
   <TextView
     android:id="@+id/viewMostWatchedShowsTitle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/spaceNormal"
+    android:layout_marginBottom="@dimen/spaceNormal"
     android:text="@string/textStatisticsMostWatchedShows"
-    android:textAllCaps="true"
     android:textColor="@color/colorWhite"
-    android:textSize="18sp"
+    android:textSize="@dimen/listHeaderTextSize"
     android:textStyle="bold"
     />
 
@@ -25,10 +24,9 @@
     android:id="@+id/viewMostWatchedShowsItems"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="56dp"
+    android:layout_marginTop="40dp"
     android:layout_marginBottom="@dimen/spaceMedium"
     android:divider="@drawable/divider_statistics"
-    android:dividerPadding="@dimen/spaceMedium"
     android:orientation="vertical"
     android:showDividers="middle"
     />
