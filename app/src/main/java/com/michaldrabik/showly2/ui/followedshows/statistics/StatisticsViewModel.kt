@@ -43,7 +43,10 @@ class StatisticsViewModel @Inject constructor(
           it.copy(image = imagesProvider.findCachedImage(it.show, POSTER))
         }
 
-      uiState = StatisticsUiModel(mostWatchedShows = mostWatchedShows)
+      uiState = StatisticsUiModel(
+        mostWatchedShows = mostWatchedShows,
+        totalTimeSpentMinutes = episodes.sumBy { it.runtime }.toLong()
+      )
     }
   }
 }

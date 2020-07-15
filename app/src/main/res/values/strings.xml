@@ -146,6 +146,10 @@
   <string name="textTraktSyncOptionWeeklyButton">Scheduled to run every week</string>
 
   <string name="textStatisticsMostWatchedShows">Most Watched Shows</string>
+  <string name="textStatisticsTotalTimeSpent">Total Time Spent Watching</string>
+  <string name="textStatisticsTotalTimeSpentMinutes">%s hours\n%s minutes</string>
+  <string name="textStatisticsTotalTimeSpentMonthsDays">which is about %d months and %d days.</string>
+  <string name="textStatisticsTotalTimeSpentDays">which is about %d days.</string>
 
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>

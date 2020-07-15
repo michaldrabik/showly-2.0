@@ -34,6 +34,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
   private fun render(uiModel: StatisticsUiModel) {
     uiModel.run {
       statisticsMostWatchedShows.bind(mostWatchedShows ?: emptyList())
+      statisticsTotalTimeSpent.bind(uiModel.totalTimeSpentMinutes ?: 0)
     }
   }
 }

@@ -9,18 +9,6 @@
   android:clipToPadding="false"
   >
 
-  <!--  <androidx.core.widget.NestedScrollView-->
-  <!--    android:id="@+id/myShowsRootScroll"-->
-  <!--    android:layout_width="match_parent"-->
-  <!--    android:layout_height="match_parent"-->
-  <!--    android:clipToPadding="false"-->
-  <!--    android:fillViewport="true"-->
-  <!--    android:overScrollMode="never"-->
-  <!--    android:paddingTop="@dimen/myShowsTabsViewPadding"-->
-  <!--    android:paddingBottom="@dimen/myShowsBottomPadding"-->
-  <!--    >-->
-  <!--  </androidx.core.widget.NestedScrollView>-->
-
   <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/myShowsRootContent"
     android:layout_width="match_parent"
@@ -42,36 +30,6 @@
       app:layout_constraintRight_toRightOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       />
-
-    <!--      <com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowsSection-->
-    <!--        android:id="@+id/myShowsRunningSection"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:layout_constraintBottom_toTopOf="@id/myShowsEndedSection"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/myShowsRecentsContainer"-->
-    <!--        />-->
-
-    <!--      <com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowsSection-->
-    <!--        android:id="@+id/myShowsEndedSection"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:layout_constraintBottom_toTopOf="@id/myShowsIncomingSection"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/myShowsRunningSection"-->
-    <!--        />-->
-
-    <!--      <com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowsSection-->
-    <!--        android:id="@+id/myShowsIncomingSection"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        app:layout_constraintBottom_toTopOf="@id/myShowsAllSection"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toBottomOf="@id/myShowsEndedSection"-->
-    <!--        />-->
 
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/myShowsRecycler"

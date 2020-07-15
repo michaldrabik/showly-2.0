@@ -8,26 +8,50 @@
   android:fillViewport="true"
   >
 
-  <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/statisticsContent"
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/statisticsCoordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:paddingTop="@dimen/statisticsTopPadding"
+    android:paddingBottom="@dimen/statisticsBottomPadding"
     >
 
-    <com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.StatisticsMostWatchedShowsView
-      android:id="@+id/statisticsMostWatchedShows"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/spaceMedium"
-      android:layout_marginEnd="@dimen/spaceMedium"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      />
+    <androidx.constraintlayout.widget.ConstraintLayout
+      android:id="@+id/statisticsContent"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:clipChildren="false"
+      android:clipToPadding="false"
+      android:paddingTop="@dimen/statisticsTopPadding"
+      >
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+      <com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.StatisticsMostWatchedShowsView
+        android:id="@+id/statisticsMostWatchedShows"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginEnd="@dimen/spaceMedium"
+        app:layout_constraintBottom_toTopOf="@id/statisticsTotalTimeSpent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+      <com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.StatisticsTotalTimeSpentView
+        android:id="@+id/statisticsTotalTimeSpent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginEnd="@dimen/spaceMedium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statisticsMostWatchedShows"
+        />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.core.widget.NestedScrollView>
