@@ -150,6 +150,9 @@
   <string name="textStatisticsTotalTimeSpentMinutes">%s hours\n%s minutes</string>
   <string name="textStatisticsTotalTimeSpentMonthsDays">which is about %d months and %d days.</string>
   <string name="textStatisticsTotalTimeSpentDays">which is about %d days.</string>
+  <string name="textStatisticsTotalEpisodes">Total Episodes Watched</string>
+  <string name="textStatisticsTotalEpisodesCount">%s episodes</string>
+  <string name="textStatisticsTotalEpisodesShowsCount">spread across %s shows.</string>
 
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>

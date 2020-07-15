@@ -45,7 +45,9 @@ class StatisticsViewModel @Inject constructor(
 
       uiState = StatisticsUiModel(
         mostWatchedShows = mostWatchedShows,
-        totalTimeSpentMinutes = episodes.sumBy { it.runtime }.toLong()
+        totalTimeSpentMinutes = episodes.sumBy { it.runtime }.toLong(),
+        totalWatchedEpisodes = episodes.count().toLong(),
+        totalWatchedEpisodesShows = episodes.distinctBy { it.idShowTrakt }.count().toLong()
       )
     }
   }
