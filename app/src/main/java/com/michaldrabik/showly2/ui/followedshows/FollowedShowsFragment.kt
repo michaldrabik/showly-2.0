@@ -11,6 +11,7 @@ import android.widget.GridLayout
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.michaldrabik.showly2.R
@@ -26,6 +27,7 @@ import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.NO_R
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.RESULTS
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowFanartView
+import com.michaldrabik.showly2.ui.followedshows.seelater.SeeLaterFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.disableUi
@@ -61,6 +63,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
     }
   }
 
+
   private fun setupView() {
     followedShowsSearchView.run {
       hint = getString(R.string.textSearchForMyShows)
@@ -81,12 +84,19 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
     followedShowsSearchView.translationY = viewModel.searchViewTranslation
   }
 
+  override fun onDestroyView() {
+    followedShowsPager.unregisterOnPageChangeCallback(pageScrollCallback)
+    seeLaterFragment = null
+    super.onDestroyView()
+  }
+
   @SuppressLint("WrongConstant")
   private fun setupPager() {
     followedShowsPager.run {
       offscreenPageLimit = FollowedPagesAdapter.PAGES_COUNT
       isUserInputEnabled = false
       adapter = FollowedPagesAdapter(this@FollowedShowsFragment)
+      registerOnPageChangeCallback(pageScrollCallback)
     }
 
     followedShowsTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -235,6 +245,18 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
   override fun onTraktSyncProgress() {
     childFragmentManager.fragments.forEach {
       (it as? OnTraktSyncListener)?.onTraktSyncProgress()
+    }
+  }
+
+  private var seeLaterFragment: SeeLaterFragment? = null
+  private val pageScrollCallback = object : ViewPager2.OnPageChangeCallback() {
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+      if (position == 1) {
+        if (seeLaterFragment == null) {
+          seeLaterFragment = (childFragmentManager.findFragmentByTag("f1") as? SeeLaterFragment)
+        }
+        seeLaterFragment?.onTabScrollPosition(positionOffset)
+      }
     }
   }
 }

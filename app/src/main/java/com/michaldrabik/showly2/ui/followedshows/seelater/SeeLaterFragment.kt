@@ -91,6 +91,10 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(R.layout.fragment_see_l
     (parentFragment as? FollowedShowsFragment)?.openShowDetails(show)
   }
 
+  fun onTabScrollPosition(position: Float) {
+    seeLaterSortIcon.alpha = 1F - (2F * position)
+  }
+
   override fun onTabReselected() = onScrollReset()
 
   override fun onScrollReset() = seeLaterRoot.smoothScrollTo(0, 0)
