@@ -23,7 +23,7 @@
       android:clipToPadding="false"
       android:nestedScrollingEnabled="false"
       android:overScrollMode="never"
-      android:paddingTop="@dimen/myShowsTabsViewPadding"
+      android:paddingTop="@dimen/seeLaterTabsViewPadding"
       android:paddingBottom="@dimen/myShowsBottomPadding"
       android:scrollbarFadeDuration="150"
       android:scrollbarSize="@dimen/scrollBarWidth"

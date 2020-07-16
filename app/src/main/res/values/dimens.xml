@@ -29,6 +29,7 @@
   <dimen name="myShowsFanartHeight">126dp</dimen>
   <dimen name="myShowsPosterHeight">140dp</dimen>
   <dimen name="myShowsPosterWidth">94dp</dimen>
+  <dimen name="seeLaterTabsViewPadding">112dp</dimen>
 
   <dimen name="myShowAllImageHeight">120dp</dimen>
   <dimen name="myShowAllImageWidth">80dp</dimen>
