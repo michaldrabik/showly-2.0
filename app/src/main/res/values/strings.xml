@@ -65,6 +65,7 @@
   <string name="textWatchlistEmpty">Your watchlist is currently empty.\n\nVisit Discover tab to add shows or import your Trakt.tv collection.</string>
   <string name="textMyShowsEmpty">Your shows collection is currently empty.\nVisit Discover tab to add shows.</string>
   <string name="textSeeLaterEmpty">Your see later collection is currently empty.\nVisit Discover tab to add shows you might want to see in the future.</string>
+  <string name="textStatisticsEmpty">At least one show must be followed\nbefore statistics can be displayed.</string>
   <string name="textNewEpisodeAvailable">New episode is available now!</string>
   <string name="textNewEpisodeAvailableSoon">New episode will be available soon!</string>
   <string name="textNewSeasonAvailable">New season is available now!</string>

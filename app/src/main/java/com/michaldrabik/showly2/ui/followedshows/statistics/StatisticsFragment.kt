@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_statistics.*
 
 class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_statistics) {
@@ -37,6 +38,9 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
       statisticsTotalTimeSpent.bind(totalTimeSpentMinutes ?: 0)
       statisticsTotalEpisodes.bind(totalWatchedEpisodes ?: 0, totalWatchedEpisodesShows ?: 0)
       statisticsTopGenres.bind(topGenres ?: emptyList())
+
+      statisticsContent.visibleIf(!mostWatchedShows.isNullOrEmpty())
+      statisticsEmptyView.visibleIf(mostWatchedShows.isNullOrEmpty())
     }
   }
 }

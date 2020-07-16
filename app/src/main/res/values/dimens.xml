@@ -38,7 +38,7 @@
   <dimen name="statisticsTopPadding">116dp</dimen>
   <dimen name="statisticsMostWatchedItemImageHeight">100dp</dimen>
   <dimen name="statisticsMostWatchedItemImageWidth">67dp</dimen>
-  <dimen name="statisticsBottomPadding">72dp</dimen>
+  <dimen name="statisticsBottomPadding">62dp</dimen>
 
   <dimen name="actorTileCorner">4dp</dimen>
   <dimen name="actorTilePlaceholder">36dp</dimen>
