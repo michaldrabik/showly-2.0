@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.POSTER
+import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
@@ -19,6 +20,11 @@ class StatisticsViewModel @Inject constructor(
   private val mappers: Mappers
 ) : BaseViewModel<StatisticsUiModel>() {
 
+  companion object {
+    private const val MOST_VIEWED_LIMIT = 5
+    private const val TOP_GENRES_LIMIT = 3
+  }
+
   fun loadMostWatchedShows() {
     viewModelScope.launch {
       val myShows = showsRepository.myShows.loadAll()
@@ -26,6 +32,7 @@ class StatisticsViewModel @Inject constructor(
       val episodes = database.episodesDao().getAllWatchedForShows(myShowsIds)
       val seasons = database.seasonsDao().getAllWatchedForShows(myShowsIds)
 
+      val genres = extractTopGenres(myShows)
       val mostWatchedShows = myShowsIds
         .map { showId ->
           StatisticsMostWatchedItem(
@@ -38,7 +45,7 @@ class StatisticsViewModel @Inject constructor(
           )
         }
         .sortedByDescending { item -> item.episodes.sumBy { it.runtime } }
-        .take(3)
+        .take(MOST_VIEWED_LIMIT)
         .map {
           it.copy(image = imagesProvider.findCachedImage(it.show, POSTER))
         }
@@ -47,8 +54,20 @@ class StatisticsViewModel @Inject constructor(
         mostWatchedShows = mostWatchedShows,
         totalTimeSpentMinutes = episodes.sumBy { it.runtime }.toLong(),
         totalWatchedEpisodes = episodes.count().toLong(),
-        totalWatchedEpisodesShows = episodes.distinctBy { it.idShowTrakt }.count().toLong()
+        totalWatchedEpisodesShows = episodes.distinctBy { it.idShowTrakt }.count().toLong(),
+        topGenres = genres
       )
     }
   }
+
+  private fun extractTopGenres(myShows: List<Show>) =
+    myShows
+      .flatMap { it.genres }
+      .asSequence()
+      .distinct()
+      .map { genre -> Pair(genre, myShows.count { genre in it.genres }) }
+      .sortedByDescending { it.second }
+      .take(TOP_GENRES_LIMIT)
+      .map { it.first }
+      .toList()
 }

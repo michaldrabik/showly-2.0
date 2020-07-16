@@ -30,11 +30,8 @@ class StatisticsTotalTimeSpentView : MaterialCardView {
     val days = hours / 24
     val months = days / 30
 
-    viewTotalTimeSpentValue.text = context.getString(
-      R.string.textStatisticsTotalTimeSpentMinutes,
-      formatter.format(hours),
-      formatter.format(timeMinutes)
-    )
+    viewTotalTimeSpentHoursValue.text = context.getString(R.string.textStatisticsTotalTimeSpentHours, formatter.format(hours))
+    viewTotalTimeSpentMinutesValue.text = context.getString(R.string.textStatisticsTotalTimeSpentMinutes, formatter.format(timeMinutes))
 
     if (months > 0L) {
       viewTotalTimeSpentSubValue.text = context.getString(

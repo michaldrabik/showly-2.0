@@ -10,7 +10,7 @@
   >
 
   <LinearLayout
-    android:id="@+id/viewTotalTimeSpentContent"
+    android:id="@+id/viewTopGenresContent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -21,57 +21,38 @@
     >
 
     <TextView
-      android:id="@+id/viewTotalTimeSpentTitle"
+      android:id="@+id/viewTopGenresTitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginBottom="@dimen/spaceSmall"
-      android:drawableStart="@drawable/ic_clock"
+      android:drawableStart="@drawable/ic_stars_round"
       android:drawablePadding="@dimen/spaceSmall"
       android:gravity="center_vertical"
-      android:text="@string/textStatisticsTotalTimeSpent"
+      android:text="@string/textStatisticsTopGenre"
       android:textColor="@color/colorTextPrimary"
       android:textSize="@dimen/listHeaderTextSize"
       android:textStyle="bold"
       />
 
     <TextView
-      android:id="@+id/viewTotalTimeSpentHoursValue"
+      android:id="@+id/viewTopGenresValue"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginBottom="@dimen/spaceTiny"
+      android:lineSpacingExtra="2dp"
       android:textColor="@color/colorAccent"
       android:textSize="24sp"
       android:textStyle="bold"
-      tools:text="1 000 000 hours"
+      tools:text="Drama | Comedy | Thriller | SF"
       />
 
     <TextView
+      android:id="@+id/viewTopGenresSubValue"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="@dimen/spaceTiny"
-      android:text="@string/textStatisticsTotalTimeItIs"
+      android:text="@string/textStatisticsTopGenreSubValue"
       android:textColor="@color/colorTextSecondary"
       android:textSize="14sp"
-      />
-
-    <TextView
-      android:id="@+id/viewTotalTimeSpentMinutesValue"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="@dimen/spaceTiny"
-      android:textColor="@color/colorAccent"
-      android:textSize="24sp"
-      android:textStyle="bold"
-      tools:text="1000000 minutes"
-      />
-
-    <TextView
-      android:id="@+id/viewTotalTimeSpentSubValue"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textColor="@color/colorTextSecondary"
-      android:textSize="14sp"
-      tools:text="which is about 342 days and 23 hours."
       />
 
   </LinearLayout>

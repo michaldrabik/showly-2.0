@@ -25,11 +25,6 @@
       android:overScrollMode="never"
       android:paddingTop="@dimen/seeLaterTabsViewPadding"
       android:paddingBottom="@dimen/myShowsBottomPadding"
-      android:scrollbarFadeDuration="150"
-      android:scrollbarSize="@dimen/scrollBarWidth"
-      android:scrollbarStyle="outsideOverlay"
-      android:scrollbarThumbVertical="@color/colorScrollbar"
-      android:scrollbars="vertical"
       />
 
     <com.michaldrabik.showly2.ui.common.views.ScrollableImageView

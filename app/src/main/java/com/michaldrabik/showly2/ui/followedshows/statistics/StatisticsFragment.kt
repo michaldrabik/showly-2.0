@@ -36,6 +36,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
       statisticsMostWatchedShows.bind(mostWatchedShows ?: emptyList())
       statisticsTotalTimeSpent.bind(totalTimeSpentMinutes ?: 0)
       statisticsTotalEpisodes.bind(totalWatchedEpisodes ?: 0, totalWatchedEpisodesShows ?: 0)
+      statisticsTopGenres.bind(topGenres ?: emptyList())
     }
   }
 }

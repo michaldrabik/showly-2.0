@@ -63,7 +63,6 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
     }
   }
 
-
   private fun setupView() {
     followedShowsSearchView.run {
       hint = getString(R.string.textSearchForMyShows)

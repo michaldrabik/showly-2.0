@@ -23,7 +23,7 @@
   <dimen name="episodeViewHeight">42dp</dimen>
 
   <dimen name="myShowsSearchViewPadding">64dp</dimen>
-  <dimen name="myShowsTabsViewPadding">100dp</dimen>
+  <dimen name="myShowsTabsViewPadding">98dp</dimen>
   <dimen name="myShowsBottomPadding">68dp</dimen>
   <dimen name="myShowsFanartCorner">4dp</dimen>
   <dimen name="myShowsFanartHeight">126dp</dimen>
@@ -38,7 +38,7 @@
   <dimen name="statisticsTopPadding">116dp</dimen>
   <dimen name="statisticsMostWatchedItemImageHeight">100dp</dimen>
   <dimen name="statisticsMostWatchedItemImageWidth">67dp</dimen>
-  <dimen name="statisticsBottomPadding">68dp</dimen>
+  <dimen name="statisticsBottomPadding">72dp</dimen>
 
   <dimen name="actorTileCorner">4dp</dimen>
   <dimen name="actorTilePlaceholder">36dp</dimen>
