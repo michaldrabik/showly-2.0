@@ -74,6 +74,7 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
 
   override fun onNewIntent(intent: Intent?) {
     super.onNewIntent(intent)
+    handleAppShortcut(intent)
     handleNotification(intent?.extras) { hideNavigation(false) }
     handleTraktAuthorization(intent?.data)
   }
@@ -222,6 +223,18 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
           doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncProgress() }
         }
       }
+    }
+  }
+
+  private fun handleAppShortcut(intent: Intent?) {
+    when {
+      intent == null -> return
+      intent.extras?.containsKey("extraShortcutWatchlist") == true ->
+        bottomNavigationView.selectedItemId = R.id.menuWatchlist
+      intent.extras?.containsKey("extraShortcutDiscover") == true ->
+        bottomNavigationView.selectedItemId = R.id.menuDiscover
+      intent.extras?.containsKey("extraShortcutMyShows") == true ->
+        bottomNavigationView.selectedItemId = R.id.menuShows
     }
   }
 }

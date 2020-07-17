@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:targetApi="n_mr1"
+  >
+  <shortcut
+    android:enabled="true"
+    android:icon="@drawable/ic_shortcut_list"
+    android:shortcutId="shortcutMyShows"
+    android:shortcutLongLabel="@string/shortcutMyShows"
+    android:shortcutShortLabel="@string/shortcutMyShows"
+    >
+    <intent
+      android:action="android.intent.action.VIEW"
+      android:targetClass="com.michaldrabik.showly2.ui.main.MainActivity"
+      android:targetPackage="com.michaldrabik.showly2.debug"
+      >
+      <extra
+        android:name="extraShortcutMyShows"
+        android:value="extraShortcutMyShows"
+        />
+    </intent>
+  </shortcut>
+
+  <shortcut
+    android:enabled="true"
+    android:icon="@drawable/ic_shortcut_search"
+    android:shortcutId="shortcutDiscover"
+    android:shortcutLongLabel="@string/shortcutDiscover"
+    android:shortcutShortLabel="@string/shortcutDiscover"
+    >
+    <intent
+      android:action="android.intent.action.VIEW"
+      android:targetClass="com.michaldrabik.showly2.ui.main.MainActivity"
+      android:targetPackage="com.michaldrabik.showly2.debug"
+      >
+      <extra
+        android:name="extraShortcutDiscover"
+        android:value="extraShortcutDiscover"
+        />
+    </intent>
+  </shortcut>
+
+  <shortcut
+    android:enabled="true"
+    android:icon="@drawable/ic_shortcut_bookmark"
+    android:shortcutId="shortcutWatchlist"
+    android:shortcutLongLabel="@string/shortcutWatchlist"
+    android:shortcutShortLabel="@string/shortcutWatchlist"
+    >
+    <intent
+      android:action="android.intent.action.VIEW"
+      android:targetClass="com.michaldrabik.showly2.ui.main.MainActivity"
+      android:targetPackage="com.michaldrabik.showly2.debug"
+      >
+      <extra
+        android:name="extraShortcutWatchlist"
+        android:value="extraShortcutWatchlist"
+        />
+    </intent>
+  </shortcut>
+</shortcuts>
