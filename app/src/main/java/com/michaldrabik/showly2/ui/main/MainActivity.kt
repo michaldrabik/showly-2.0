@@ -235,6 +235,10 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
         bottomNavigationView.selectedItemId = R.id.menuDiscover
       intent.extras?.containsKey("extraShortcutMyShows") == true ->
         bottomNavigationView.selectedItemId = R.id.menuShows
+      intent.extras?.containsKey("extraShortcutSearch") == true -> {
+        bottomNavigationView.selectedItemId = R.id.menuDiscover
+        navigationHost.findNavController().navigate(R.id.actionDiscoverFragmentToSearchFragment)
+      }
     }
   }
 }

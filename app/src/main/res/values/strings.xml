@@ -182,6 +182,7 @@
   <string name="shortcutDiscover">Discover</string>
   <string name="shortcutMyShows">My Shows</string>
   <string name="shortcutWatchlist">Watchlist</string>
+  <string name="shortcutSearch">Search</string>
 
   <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this keeps happening.</string>
   <string name="errorAuthorization">Authorization failed.\nPlease contact us if this keeps happening.</string>

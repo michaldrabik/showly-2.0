@@ -6,6 +6,25 @@
   >
   <shortcut
     android:enabled="true"
+    android:icon="@drawable/ic_shortcut_search"
+    android:shortcutId="shortcutSearch"
+    android:shortcutLongLabel="@string/shortcutSearch"
+    android:shortcutShortLabel="@string/shortcutSearch"
+    >
+    <intent
+      android:action="android.intent.action.VIEW"
+      android:targetClass="com.michaldrabik.showly2.ui.main.MainActivity"
+      android:targetPackage="com.michaldrabik.showly2.debug"
+      >
+      <extra
+        android:name="extraShortcutSearch"
+        android:value="extraShortcutSearch"
+        />
+    </intent>
+  </shortcut>
+
+  <shortcut
+    android:enabled="true"
     android:icon="@drawable/ic_shortcut_list"
     android:shortcutId="shortcutMyShows"
     android:shortcutLongLabel="@string/shortcutMyShows"
