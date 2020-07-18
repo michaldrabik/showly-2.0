@@ -179,6 +179,10 @@
   <string name="textTipShowDetailsGallery">Tap show\'s image to open gallery.</string>
   <string name="textTipWatchlistPinItem">Tap and hold list item to pin it to the top.</string>
 
+  <string name="shortcutDiscover">Discover</string>
+  <string name="shortcutMyShows">My Shows</string>
+  <string name="shortcutWatchlist">Watchlist</string>
+
   <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this keeps happening.</string>
   <string name="errorAuthorization">Authorization failed.\nPlease contact us if this keeps happening.</string>
   <string name="errorTraktAuthorization">Trakt account authorization failed.\nPlease login and try again.</string>
