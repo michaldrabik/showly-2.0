@@ -14,7 +14,7 @@
     <intent
       android:action="android.intent.action.VIEW"
       android:targetClass="com.michaldrabik.showly2.ui.main.MainActivity"
-      android:targetPackage="com.michaldrabik.showly2.debug"
+      android:targetPackage="com.michaldrabik.showly2"
       >
       <extra
         android:name="extraShortcutSearch"
@@ -33,7 +33,7 @@
     <intent
       android:action="android.intent.action.VIEW"
       android:targetClass="com.michaldrabik.showly2.ui.main.MainActivity"
-      android:targetPackage="com.michaldrabik.showly2.debug"
+      android:targetPackage="com.michaldrabik.showly2"
       >
       <extra
         android:name="extraShortcutMyShows"
@@ -52,7 +52,7 @@
     <intent
       android:action="android.intent.action.VIEW"
       android:targetClass="com.michaldrabik.showly2.ui.main.MainActivity"
-      android:targetPackage="com.michaldrabik.showly2.debug"
+      android:targetPackage="com.michaldrabik.showly2"
       >
       <extra
         android:name="extraShortcutDiscover"
@@ -71,7 +71,7 @@
     <intent
       android:action="android.intent.action.VIEW"
       android:targetClass="com.michaldrabik.showly2.ui.main.MainActivity"
-      android:targetPackage="com.michaldrabik.showly2.debug"
+      android:targetPackage="com.michaldrabik.showly2"
       >
       <extra
         android:name="extraShortcutWatchlist"
