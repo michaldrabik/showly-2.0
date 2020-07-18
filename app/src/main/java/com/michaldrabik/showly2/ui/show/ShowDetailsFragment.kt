@@ -30,7 +30,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.showly2.R
@@ -264,6 +264,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       startView = actorView
       endView = showDetailsActorFullContainer
       scrimColor = TRANSPARENT
+      addTarget(showDetailsActorFullContainer)
     }
     TransitionManager.beginDelayedTransition(showDetailsRoot, transform)
     actorView.gone()
@@ -295,6 +296,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       startView = showDetailsActorFullContainer
       endView = actorView
       scrimColor = TRANSPARENT
+      addTarget(actorView)
     }
     TransitionManager.beginDelayedTransition(showDetailsRoot, transform)
     showDetailsActorFullContainer.gone()
