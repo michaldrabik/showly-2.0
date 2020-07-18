@@ -79,7 +79,7 @@ import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import org.threeten.bp.Duration
 
-@SuppressLint("SetTextI18n", "DefaultLocale")
+@SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
 class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment_show_details) {
 
   companion object {
