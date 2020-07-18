@@ -27,8 +27,8 @@
   <dimen name="myShowsBottomPadding">68dp</dimen>
   <dimen name="myShowsFanartCorner">4dp</dimen>
   <dimen name="myShowsFanartHeight">126dp</dimen>
-  <dimen name="myShowsPosterHeight">140dp</dimen>
-  <dimen name="myShowsPosterWidth">94dp</dimen>
+  <dimen name="myShowsPosterHeight">120dp</dimen>
+  <dimen name="myShowsPosterWidth">80dp</dimen>
   <dimen name="seeLaterTabsViewPadding">112dp</dimen>
 
   <dimen name="myShowAllImageHeight">120dp</dimen>
