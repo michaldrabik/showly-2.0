@@ -49,4 +49,6 @@ Pull requests are welcome. Remember about leaving a comment in the relevant issu
 
 ## Contact
 
+Landing Page: www.showlyapp.com
+
 Feel free to write an email: showlyapp@gmail.com
