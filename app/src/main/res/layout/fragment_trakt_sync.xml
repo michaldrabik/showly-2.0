@@ -6,6 +6,7 @@
   android:id="@+id/traktSyncRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:clipToPadding="false"
   >
 
   <androidx.appcompat.widget.Toolbar

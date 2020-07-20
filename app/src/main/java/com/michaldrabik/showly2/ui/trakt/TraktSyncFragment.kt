@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -21,6 +22,7 @@ import com.michaldrabik.showly2.model.TraktSyncSchedule
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.utilities.MessageEvent
+import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
@@ -40,6 +42,8 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(R.layout.fragment_tra
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
+    setupStatusBar()
+
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
       messageLiveData.observe(viewLifecycleOwner, Observer { showSnack(it) })
@@ -54,6 +58,12 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(R.layout.fragment_tra
     }
     traktSyncExportCheckbox.setOnCheckedChangeListener { _, isChecked ->
       traktSyncButton.isEnabled = (isChecked || traktSyncImportCheckbox.isChecked)
+    }
+  }
+
+  private fun setupStatusBar() {
+    traktSyncRoot.doOnApplyWindowInsets { view, insets, _, _ ->
+      view.updatePadding(top = insets.systemWindowInsetTop)
     }
   }
 
