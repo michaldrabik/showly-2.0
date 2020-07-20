@@ -12,11 +12,13 @@ import android.os.Bundle
 import android.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
+import androidx.core.view.updateMargins
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -60,6 +62,7 @@ import com.michaldrabik.showly2.ui.show.seasons.SeasonsAdapter
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.utilities.MessageEvent
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
@@ -111,6 +114,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     super.onViewCreated(view, savedInstanceState)
     requireActivity().requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
     setupView()
+    setupStatusBar()
     setupActorsList()
     setupRelatedList()
     setupSeasonsList()
@@ -128,7 +132,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun setupView() {
-    showDetailsImageGuideline.setGuidelineBegin((imageHeight * 0.33).toInt())
     showDetailsEpisodesView.itemClickListener = { episode, season, isWatched ->
       showEpisodeDetails(episode, season, isWatched, episode.hasAired(season))
     }
@@ -145,6 +148,16 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsTipGallery.onClick {
       it.gone()
       mainActivity().showTip(SHOW_DETAILS_GALLERY)
+    }
+  }
+
+  private fun setupStatusBar() {
+    showDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
+      showDetailsImageGuideline.setGuidelineBegin((imageHeight * 0.34).toInt() + insets.systemWindowInsetTop)
+      arrayOf<View>(view, showDetailsEpisodesView, showDetailsCommentsView)
+        .forEach { v ->
+          (v.layoutParams as MarginLayoutParams).updateMargins(top = insets.systemWindowInsetTop)
+        }
     }
   }
 
