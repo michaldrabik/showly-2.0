@@ -16,8 +16,6 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
 
   override val viewModel by viewModels<StatisticsViewModel> { viewModelFactory }
 
-  private var isInitialized = false
-
   override fun onCreate(savedInstanceState: Bundle?) {
     fragmentComponent().inject(this)
     super.onCreate(savedInstanceState)

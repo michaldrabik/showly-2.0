@@ -63,7 +63,7 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
   fun applyWindowInsetBehaviour(newInset: Int) {
     updateLayoutParams {
-      (layoutParams as CoordinatorLayout.LayoutParams).behavior = SearchViewBehaviour(newInset)
+      (layoutParams as? CoordinatorLayout.LayoutParams)?.behavior = SearchViewBehaviour(newInset)
     }
   }
 

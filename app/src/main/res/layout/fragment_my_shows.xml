@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/myShowsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
@@ -9,43 +8,15 @@
   android:clipToPadding="false"
   >
 
-  <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/myShowsRootContent"
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/myShowsRecycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
-
-    <GridLayout
-      android:id="@+id/myShowsSearchContainer"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:columnCount="2"
-      android:divider="@drawable/divider_my_shows_fanart"
-      android:paddingStart="@dimen/spaceSmall"
-      android:paddingTop="@dimen/spaceTiny"
-      android:paddingEnd="@dimen/spaceSmall"
-      android:showDividers="middle"
-      android:visibility="gone"
-      app:layout_constraintLeft_toLeftOf="parent"
-      app:layout_constraintRight_toRightOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      />
-
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/myShowsRecycler"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:clipChildren="false"
-      android:clipToPadding="false"
-      android:paddingTop="@dimen/myShowsTabsViewPadding"
-      android:paddingBottom="@dimen/myShowsBottomPadding"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      />
-
-  </androidx.constraintlayout.widget.ConstraintLayout>
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:paddingTop="@dimen/myShowsTabsViewPadding"
+    android:paddingBottom="@dimen/myShowsBottomPadding"
+    />
 
   <include
     android:id="@+id/myShowsEmptyView"

@@ -39,8 +39,6 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
 
   override val viewModel by viewModels<SearchViewModel> { viewModelFactory }
 
-  private var isInitialized = false
-
   private lateinit var adapter: SearchAdapter
   private lateinit var layoutManager: LinearLayoutManager
 
@@ -58,7 +56,11 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupRecycler()
-    if (savedInstanceState == null && !isInitialized) isInitialized = true
+
+    if (savedInstanceState == null && !isInitialized) {
+      isInitialized = true
+    }
+
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
       messageLiveData.observe(viewLifecycleOwner, Observer { showSnack(it) })

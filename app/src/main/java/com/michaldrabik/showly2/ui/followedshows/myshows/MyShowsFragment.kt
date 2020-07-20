@@ -63,8 +63,12 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
     }
     adapter.run {
       itemClickListener = { openShowDetails(it.show) }
-      missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) }
-      sectionMissingImageListener = { item, section, force -> viewModel.loadSectionMissingItem(item, section, force) }
+      missingImageListener = { item, force ->
+        viewModel.loadMissingImage(item, force)
+      }
+      sectionMissingImageListener = { item, section, force ->
+        viewModel.loadSectionMissingItem(item, section, force)
+      }
       onSortOrderClickListener = { section, order ->
         showSortOrderDialog(section, order)
       }
@@ -72,8 +76,8 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
   }
 
   private fun setupStatusBar() {
-    myShowsRecycler.doOnApplyWindowInsets { view, insets, padding, _ ->
-      view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+    myShowsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
+      view.updatePadding(top = insets.systemWindowInsetTop)
     }
   }
 

@@ -22,6 +22,7 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
   @Inject
   lateinit var viewModelFactory: DaggerViewModelFactory
   protected abstract val viewModel: T
+  protected var isInitialized = false
 
   protected fun hideNavigation(animate: Boolean = true) =
     mainActivity().hideNavigation(animate)

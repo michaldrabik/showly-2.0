@@ -1,11 +1,8 @@
 package com.michaldrabik.showly2.utilities.extensions
 
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowInsets
-import androidx.core.view.marginBottom
-import androidx.core.view.marginLeft
-import androidx.core.view.marginRight
-import androidx.core.view.marginTop
 
 /**
  * https://chris.banes.dev/2019/04/12/insets-listeners-to-layouts/
@@ -54,7 +51,10 @@ private fun recordInitialPaddingForView(view: View) = InitialSpacing(
   view.paddingLeft, view.paddingTop, view.paddingRight, view.paddingBottom
 )
 
-private fun recordInitialMarginForView(view: View) = InitialSpacing(
-  view.marginLeft, view.marginTop, view.marginRight, view.marginBottom
-)
+private fun recordInitialMarginForView(view: View): InitialSpacing {
+  val lp = view.layoutParams as? ViewGroup.MarginLayoutParams
+  return InitialSpacing(
+    lp?.leftMargin ?: 0, lp?.topMargin ?: 0, lp?.rightMargin ?: 0, lp?.bottomMargin ?: 0
+  )
+}
 

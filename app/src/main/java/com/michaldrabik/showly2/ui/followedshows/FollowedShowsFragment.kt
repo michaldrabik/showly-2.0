@@ -89,12 +89,18 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
   }
 
   private fun setupStatusBar() {
-    arrayOf<View>(followedShowsSearchView, followedShowsTabs).forEach { view ->
-      view.doOnApplyWindowInsets { v, insets, _, margin ->
-        (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = margin.top + insets.systemWindowInsetTop)
-        followedShowsSearchView.applyWindowInsetBehaviour(insets.systemWindowInsetTop + dimenToPx(R.dimen.spaceNormal))
+    arrayOf<View>(
+      followedShowsSearchView,
+      followedShowsTabs,
+      followedShowsSearchContainer,
+      followedShowsSearchEmptyView
+    )
+      .forEach { view ->
+        view.doOnApplyWindowInsets { v, insets, _, margin ->
+          (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = margin.top + insets.systemWindowInsetTop)
+          followedShowsSearchView.applyWindowInsetBehaviour(insets.systemWindowInsetTop + dimenToPx(R.dimen.spaceNormal))
+        }
       }
-    }
   }
 
   override fun onDestroyView() {
