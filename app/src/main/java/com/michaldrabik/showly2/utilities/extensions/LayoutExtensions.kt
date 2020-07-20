@@ -57,4 +57,3 @@ private fun recordInitialMarginForView(view: View): InitialSpacing {
     lp?.leftMargin ?: 0, lp?.topMargin ?: 0, lp?.rightMargin ?: 0, lp?.bottomMargin ?: 0
   )
 }
-
