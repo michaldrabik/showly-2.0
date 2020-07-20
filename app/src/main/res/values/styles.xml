@@ -8,6 +8,7 @@
     <item name="colorAccent">@color/colorAccent</item>
     <item name="android:windowBackground">@color/colorBackground</item>
     <item name="android:navigationBarColor">@color/colorBottomMenuBackground</item>
+    <item name="android:windowTranslucentStatus">true</item>
   </style>
 
   <style name="ProgressBarGray">

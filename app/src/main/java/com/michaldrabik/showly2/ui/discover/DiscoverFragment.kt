@@ -2,6 +2,9 @@ package com.michaldrabik.showly2.ui.discover
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup.MarginLayoutParams
+import androidx.core.view.updateMargins
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,6 +18,7 @@ import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.disableUi
+import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.enableUi
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
@@ -45,6 +49,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     setupView()
     setupRecycler()
     setupSwipeRefresh()
+    setupStatusBar()
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
@@ -93,6 +98,18 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
         mainActivity().discoverSearchViewPosition = 0F
         viewModel.loadDiscoverShows(pullToRefresh = true)
       }
+    }
+  }
+
+  private fun setupStatusBar() {
+    discoverRoot.doOnApplyWindowInsets { _, insets, _, _ ->
+      val statusBarSize = insets.systemWindowInsetTop
+      discoverRecycler
+        .updatePadding(top = statusBarSize + dimenToPx(R.dimen.discoverRecyclerPadding))
+      (discoverSearchView.layoutParams as MarginLayoutParams)
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
+      (discoverSortView.layoutParams as MarginLayoutParams)
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
     }
   }
 

@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.CompoundButton
 import android.widget.ProgressBar
 import androidx.annotation.DimenRes
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.michaldrabik.showly2.utilities.SafeOnClickListener
@@ -23,6 +24,8 @@ import kotlinx.coroutines.launch
 fun View.onClick(safe: Boolean = true, action: (View) -> Unit) = setOnClickListener(SafeOnClickListener(safe, action))
 
 fun Context.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSize(dimenResId)
+
+fun Fragment.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSize(dimenResId)
 
 fun Context.notificationManager() = (applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
 

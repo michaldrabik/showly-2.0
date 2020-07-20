@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.followedshows.myshows
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +23,7 @@ import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsAdapter
+import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 
@@ -43,6 +45,8 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupRecycler()
+    setupStatusBar()
+
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
       loadShows()
@@ -64,6 +68,12 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
       onSortOrderClickListener = { section, order ->
         showSortOrderDialog(section, order)
       }
+    }
+  }
+
+  private fun setupStatusBar() {
+    myShowsRecycler.doOnApplyWindowInsets { view, insets, padding, _ ->
+      view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
     }
   }
 

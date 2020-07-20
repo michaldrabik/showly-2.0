@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import android.widget.GridLayout
+import androidx.core.view.updateMargins
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -31,6 +33,7 @@ import com.michaldrabik.showly2.ui.followedshows.seelater.SeeLaterFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.disableUi
+import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.enableUi
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
@@ -57,6 +60,8 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupPager()
+    setupStatusBar()
+
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
       clearCache()
@@ -81,6 +86,15 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
 
     followedShowsTabs.translationY = viewModel.tabsTranslation
     followedShowsSearchView.translationY = viewModel.searchViewTranslation
+  }
+
+  private fun setupStatusBar() {
+    arrayOf<View>(followedShowsSearchView, followedShowsTabs).forEach { view ->
+      view.doOnApplyWindowInsets { v, insets, _, margin ->
+        (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = margin.top + insets.systemWindowInsetTop)
+        followedShowsSearchView.applyWindowInsetBehaviour(insets.systemWindowInsetTop + dimenToPx(R.dimen.spaceNormal))
+      }
+    }
   }
 
   override fun onDestroyView() {

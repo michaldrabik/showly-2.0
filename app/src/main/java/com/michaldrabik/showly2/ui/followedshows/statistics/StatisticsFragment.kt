@@ -2,11 +2,13 @@ package com.michaldrabik.showly2.ui.followedshows.statistics
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
+import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_statistics.*
 
@@ -23,12 +25,20 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    setupStatusBar()
+
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
       if (!isInitialized) {
         loadMostWatchedShows()
         isInitialized = true
       }
+    }
+  }
+
+  private fun setupStatusBar() {
+    statisticsContent.doOnApplyWindowInsets { view, insets, padding, _ ->
+      view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
     }
   }
 

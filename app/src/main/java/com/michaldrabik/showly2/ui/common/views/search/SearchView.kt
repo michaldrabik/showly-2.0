@@ -5,9 +5,11 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.behaviour.SearchViewBehaviour
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.expandTouch
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
@@ -24,6 +26,7 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
   init {
     inflate(context, R.layout.view_search, this)
+
     searchSortIcon.expandTouch()
     searchSettingsIcon.expandTouch()
     searchSortIcon.onClick { onSortClickListener?.invoke() }
@@ -51,8 +54,21 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
   var isSearching = false
 
+  override fun onAttachedToWindow() {
+    doOnApplyWindowInsets { _, insets, _, _ ->
+      applyWindowInsetBehaviour(context.dimenToPx(R.dimen.spaceNormal) + insets.systemWindowInsetTop)
+    }
+    super.onAttachedToWindow()
+  }
+
+  fun applyWindowInsetBehaviour(newInset: Int) {
+    updateLayoutParams {
+      (layoutParams as CoordinatorLayout.LayoutParams).behavior = SearchViewBehaviour(newInset)
+    }
+  }
+
   override fun getBehavior() =
-    SearchViewBehaviour(context.dimenToPx(R.dimen.spaceSmall))
+    SearchViewBehaviour(context.dimenToPx(R.dimen.spaceNormal))
 
   override fun setEnabled(enabled: Boolean) {
     searchViewInput.isEnabled = enabled

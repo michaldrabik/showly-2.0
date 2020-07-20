@@ -4,7 +4,10 @@ import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.updateMargins
+import androidx.core.view.updatePadding
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -22,6 +25,8 @@ import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_I
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistAdapter
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
@@ -55,6 +60,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupRecycler()
+    setupStatusBar()
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
@@ -99,6 +105,16 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
       detailsClickListener = { openEpisodeDetails(it) }
       checkClickListener = { viewModel.setWatchedEpisode(it) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
+    }
+  }
+
+  private fun setupStatusBar() {
+    watchlistRoot.doOnApplyWindowInsets { _, insets, _, _ ->
+      val statusBarSize = insets.systemWindowInsetTop
+      watchlistRecycler
+        .updatePadding(top = statusBarSize + dimenToPx(R.dimen.watchlistRecyclerPadding))
+      (watchlistSearchView.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
     }
   }
 

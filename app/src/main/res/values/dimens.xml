@@ -16,7 +16,7 @@
   <dimen name="showTileCorner">4dp</dimen>
   <dimen name="showTilePlaceholder">40dp</dimen>
 
-  <dimen name="discoverRecyclerPadding">64dp</dimen>
+  <dimen name="discoverRecyclerPadding">66dp</dimen>
   <dimen name="watchlistRecyclerPadding">64dp</dimen>
 
   <dimen name="seasonViewHeight">44dp</dimen>

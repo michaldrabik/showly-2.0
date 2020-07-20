@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.followedshows.seelater
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,6 +23,7 @@ import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.seelater.recycler.SeeLaterAdapter
+import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.fragment_see_later.*
@@ -44,6 +46,8 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(R.layout.fragment_see_l
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupRecycler()
+    setupStatusBar()
+
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
       loadShows()
@@ -60,6 +64,12 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(R.layout.fragment_see_l
       adapter = this@SeeLaterFragment.adapter
       layoutManager = this@SeeLaterFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+    }
+  }
+
+  private fun setupStatusBar() {
+    seeLaterContent.doOnApplyWindowInsets { view, insets, padding, _ ->
+      view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
     }
   }
 
