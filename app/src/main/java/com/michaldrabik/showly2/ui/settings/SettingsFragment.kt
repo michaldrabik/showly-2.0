@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -27,6 +28,7 @@ import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
+import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.setCheckedSilent
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
@@ -56,6 +58,9 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     settingsTraktSync.onClick { navigateTo(R.id.actionSettingsFragmentToTraktSync) }
     settingsDeleteCache.onClick { viewModel.deleteImagesCache(requireContext().applicationContext) }
+    settingsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
+      view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+    }
   }
 
   override fun onResume() {
@@ -196,5 +201,5 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     }
   }
 
-  override fun getSnackbarHost(): ViewGroup = settingsRoot
+  override fun getSnackbarHost(): ViewGroup = settingsContent
 }
