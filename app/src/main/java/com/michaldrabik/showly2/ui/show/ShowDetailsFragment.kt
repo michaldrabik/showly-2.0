@@ -132,6 +132,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun setupView() {
+    showDetailsImageGuideline.setGuidelineBegin((imageHeight * 0.35).toInt())
     showDetailsEpisodesView.itemClickListener = { episode, season, isWatched ->
       showEpisodeDetails(episode, season, isWatched, episode.hasAired(season))
     }
@@ -153,7 +154,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun setupStatusBar() {
     showDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
-      showDetailsImageGuideline.setGuidelineBegin((imageHeight * 0.34).toInt() + insets.systemWindowInsetTop)
       arrayOf<View>(view, showDetailsEpisodesView, showDetailsCommentsView)
         .forEach { v ->
           (v.layoutParams as MarginLayoutParams).updateMargins(top = insets.systemWindowInsetTop)
