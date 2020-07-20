@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -21,6 +22,7 @@ import com.michaldrabik.showly2.ui.search.views.RecentSearchView
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.disableUi
+import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.enableUi
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
@@ -56,6 +58,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupRecycler()
+    setupStatusBar()
 
     if (savedInstanceState == null && !isInitialized) {
       isInitialized = true
@@ -122,6 +125,12 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
       setProgressBackgroundColorSchemeResource(R.color.colorSearchViewBackground)
       setColorSchemeResources(R.color.colorAccent, R.color.colorAccent, R.color.colorAccent)
       setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
+    }
+  }
+
+  private fun setupStatusBar() {
+    searchRoot.doOnApplyWindowInsets { view, insets, _, _ ->
+      view.updatePadding(top = insets.systemWindowInsetTop)
     }
   }
 
