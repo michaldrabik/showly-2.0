@@ -2,6 +2,9 @@ package com.michaldrabik.showly2.ui.followedshows.statistics
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
+import androidx.core.view.updateLayoutParams
+import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -41,6 +44,10 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
   private fun setupStatusBar() {
     statisticsContent.doOnApplyWindowInsets { view, insets, padding, _ ->
       view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+      statisticsEmptyView.updateLayoutParams {
+        (statisticsEmptyView.layoutParams as ViewGroup.MarginLayoutParams)
+          .updateMargins(top = insets.systemWindowInsetTop)
+      }
     }
   }
 

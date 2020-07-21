@@ -3,7 +3,7 @@ package com.michaldrabik.storage.database
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 6
+const val DATABASE_VERSION = 7
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 object Migrations {
@@ -42,11 +42,19 @@ object Migrations {
     }
   }
 
+  private val MIGRATION_6_7 = object : Migration(6, 7) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      database.execSQL("ALTER TABLE settings ADD COLUMN discover_filter_genres TEXT NOT NULL DEFAULT ''")
+      database.execSQL("ALTER TABLE settings ADD COLUMN discover_filter_feed TEXT NOT NULL DEFAULT 'HOT'")
+    }
+  }
+
   val MIGRATIONS = listOf(
     MIGRATION_1_2,
     MIGRATION_2_3,
     MIGRATION_3_4,
     MIGRATION_4_5,
-    MIGRATION_5_6
+    MIGRATION_5_6,
+    MIGRATION_6_7
   )
 }

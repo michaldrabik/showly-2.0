@@ -21,6 +21,8 @@ data class Settings(
   val myShowsRecentIsEnabled: Boolean,
   val myShowsRecentsAmount: Int,
   val showAnticipatedShows: Boolean,
+  val discoverFilterGenres: List<Genre>,
+  val discoverFilterFeed: DiscoverSortOrder,
   val traktSyncSchedule: TraktSyncSchedule
 ) {
 
@@ -44,6 +46,8 @@ data class Settings(
       myShowsRecentsAmount = Config.MY_SHOWS_RECENTS_DEFAULT,
       seeLaterShowsSortBy = SortOrder.NAME,
       showAnticipatedShows = true,
+      discoverFilterFeed = DiscoverSortOrder.HOT,
+      discoverFilterGenres = emptyList(),
       traktSyncSchedule = TraktSyncSchedule.OFF
     )
   }

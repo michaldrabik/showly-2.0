@@ -5,11 +5,15 @@ import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
+import com.google.android.material.chip.Chip
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.DiscoverFilters
 import com.michaldrabik.showly2.model.DiscoverSortOrder.HOT
 import com.michaldrabik.showly2.model.DiscoverSortOrder.NEWEST
 import com.michaldrabik.showly2.model.DiscoverSortOrder.RATING
+import com.michaldrabik.showly2.model.Genre
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.view_discover_filters.view.*
@@ -38,20 +42,47 @@ class DiscoverFiltersView : ConstraintLayout {
   }
 
   fun bind(filters: DiscoverFilters) {
-    discoverFiltersChipHot.isChecked = filters.sortOrder == HOT
-    discoverFiltersChipTopRated.isChecked = filters.sortOrder == RATING
-    discoverFiltersChipMostRecent.isChecked = filters.sortOrder == NEWEST
+    discoverFiltersChipHot.isChecked = filters.feedOrder == HOT
+    discoverFiltersChipTopRated.isChecked = filters.feedOrder == RATING
+    discoverFiltersChipMostRecent.isChecked = filters.feedOrder == NEWEST
+    bindGenres(filters.genres)
+  }
+
+  private fun bindGenres(genres: List<Genre>) {
+    val genresNames = genres.map { it.name }
+    discoverFiltersGenresChipGroup.removeAllViews()
+    Genre.values().forEach { genre ->
+      val chip = Chip(context).apply {
+        tag = genre.name
+        text = genre.displayName
+        isCheckable = true
+        isCheckedIconVisible = false
+        setChipBackgroundColorResource(R.color.colorSearchViewBackground)
+        setChipStrokeColorResource(R.color.selector_discover_chip_text)
+        setChipStrokeWidthResource(R.dimen.discoverFilterChipStroke)
+        setTextColor(ContextCompat.getColorStateList(context, R.color.selector_discover_chip_text))
+        isChecked = genre.name in genresNames
+      }
+      discoverFiltersGenresChipGroup.addView(chip)
+    }
   }
 
   private fun onApplyFilters() {
-    val sortOrder = when {
+    val feedOrder = when {
       discoverFiltersChipHot.isChecked -> HOT
       discoverFiltersChipTopRated.isChecked -> RATING
       discoverFiltersChipMostRecent.isChecked -> NEWEST
       else -> throw IllegalStateException()
     }
 
-    val filters = DiscoverFilters(sortOrder, true)
+    val genres = mutableListOf<Genre>()
+    discoverFiltersGenresChipGroup.forEach { chip ->
+      if ((chip as Chip).isChecked) {
+        genres.add(Genre.valueOf(chip.tag.toString()))
+      }
+    }
+
+    val filters = DiscoverFilters(feedOrder, true, genres.toList())
     onApplyClickListener?.invoke(filters)
   }
 }

@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.model.DiscoverFilters
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
@@ -72,8 +71,12 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
 
     discoverSortView.onApplyClickListener = {
       discoverSortView.gone()
-      viewModel.setFilters(it)
-      viewModel.loadDiscoverShows(scrollToTop = true, skipCache = true)
+      viewModel.loadDiscoverShows(
+        scrollToTop = true,
+        skipCache = true,
+        instantProgress = true,
+        newFilters = it
+      )
     }
   }
 
@@ -120,6 +123,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     disableUi()
     saveUi()
     hideNavigation()
+    discoverSortView.fadeOut()
     discoverRecycler.fadeOut(duration = 200) {
       enableUi()
       super.navigateTo(R.id.actionDiscoverFragmentToSearchFragment, null)
@@ -132,6 +136,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     hideNavigation()
     animateItemsExit(item)
     discoverSearchView.fadeOut()
+    discoverSortView.fadeOut()
   }
 
   private fun animateItemsExit(item: DiscoverListItem) {
@@ -169,7 +174,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
         discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
       }
-      sortOrder?.let { discoverSortView.bind(DiscoverFilters(it)) }
+      filters?.let { discoverSortView.bind(it) }
     }
   }
 

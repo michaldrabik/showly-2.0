@@ -39,4 +39,24 @@ class DiscoverInteractor @Inject constructor(
 
   suspend fun loadMissingImage(show: Show, type: ImageType, force: Boolean) =
     imagesProvider.loadRemoteImage(show, type, force)
+
+  suspend fun saveFilters(filters: DiscoverFilters) {
+    val settings = settingsRepository.load()
+    settingsRepository.update(
+      settings.copy(
+        discoverFilterFeed = filters.feedOrder,
+        discoverFilterGenres = filters.genres,
+        showAnticipatedShows = filters.showAnticipated
+      )
+    )
+  }
+
+  suspend fun loadFilters(): DiscoverFilters {
+    val settings = settingsRepository.load()
+    return DiscoverFilters(
+      feedOrder = settings.discoverFilterFeed,
+      showAnticipated = settings.showAnticipatedShows,
+      genres = settings.discoverFilterGenres.toList()
+    )
+  }
 }

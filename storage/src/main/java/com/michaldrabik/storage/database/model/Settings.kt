@@ -25,6 +25,8 @@ data class Settings(
   @ColumnInfo(name = "my_shows_recent_is_enabled", defaultValue = "1") var myShowsRecentIsEnabled: Boolean,
   @ColumnInfo(name = "see_later_shows_sort_by", defaultValue = "NAME") var seeLaterShowsSortBy: String,
   @ColumnInfo(name = "show_anticipated_shows", defaultValue = "1") var showAnticipatedShows: Boolean,
+  @ColumnInfo(name = "discover_filter_genres", defaultValue = "") var discoverFilterGenres: String,
+  @ColumnInfo(name = "discover_filter_feed", defaultValue = "HOT") var discoverFilterFeed: String,
   @ColumnInfo(name = "trakt_sync_schedule", defaultValue = "OFF") var traktSyncSchedule: String
 
 )

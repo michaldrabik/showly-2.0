@@ -26,17 +26,14 @@ class DiscoverViewModel @Inject constructor(
   private val interactor: DiscoverInteractor
 ) : BaseViewModel<DiscoverUiModel>() {
 
-  private var filters = DiscoverFilters()
   private var lastPullToRefreshMs = 0L
-
-  fun setFilters(filters: DiscoverFilters) {
-    this.filters = filters.copy()
-  }
 
   fun loadDiscoverShows(
     pullToRefresh: Boolean = false,
     scrollToTop: Boolean = false,
-    skipCache: Boolean = false
+    skipCache: Boolean = false,
+    instantProgress: Boolean = false,
+    newFilters: DiscoverFilters? = null
   ) {
     if (pullToRefresh && nowUtcMillis() - lastPullToRefreshMs < Config.PULL_TO_REFRESH_COOLDOWN_MS) {
       uiState = DiscoverUiModel(showLoading = false)
@@ -47,23 +44,25 @@ class DiscoverViewModel @Inject constructor(
 
     viewModelScope.launch {
       val progressJob = launch {
-        delay(if (pullToRefresh) 0 else 750)
+        delay(if (pullToRefresh || instantProgress) 0 else 750)
         uiState = DiscoverUiModel(showLoading = true)
       }
 
       try {
+        newFilters?.let { interactor.saveFilters(it) }
+        val filters = interactor.loadFilters()
         val myShowsIds = interactor.loadMyShowsIds()
         val seeLaterShowsIds = interactor.loadSeeLaterShowsIds()
 
         if (!pullToRefresh && !skipCache) {
           val cachedShows = interactor.loadCachedShows()
-          onShowsLoaded(cachedShows, myShowsIds, seeLaterShowsIds, scrollToTop)
+          onShowsLoaded(cachedShows, myShowsIds, seeLaterShowsIds, scrollToTop, filters)
         }
 
         if (pullToRefresh || skipCache || !interactor.isCacheValid()) {
           checkTvdbAuth()
           val remoteShows = interactor.loadRemoteShows(filters)
-          onShowsLoaded(remoteShows, myShowsIds, seeLaterShowsIds, scrollToTop)
+          onShowsLoaded(remoteShows, myShowsIds, seeLaterShowsIds, scrollToTop, filters)
         }
 
         if (pullToRefresh) lastPullToRefreshMs = nowUtcMillis()
@@ -80,10 +79,11 @@ class DiscoverViewModel @Inject constructor(
     shows: List<Show>,
     followedShowsIds: List<Long>,
     seeLaterShowsIds: List<Long>,
-    scrollToTop: Boolean
+    scrollToTop: Boolean,
+    filters: DiscoverFilters?
   ) {
     val items = shows
-      .sortedBy(filters.sortOrder)
+      .sortedBy(filters?.feedOrder ?: HOT)
       .mapIndexed { index, show ->
         val itemType = when (index) {
           in (0..500 step 14) -> FANART_WIDE
@@ -98,9 +98,10 @@ class DiscoverViewModel @Inject constructor(
           isSeeLater = show.ids.trakt.id in seeLaterShowsIds
         )
       }
+
     uiState = DiscoverUiModel(
       shows = items,
-      sortOrder = filters.sortOrder,
+      filters = filters,
       scrollToTop = scrollToTop
     )
   }
