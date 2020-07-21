@@ -2,7 +2,9 @@ package com.michaldrabik.showly2.ui.discover
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewAnimationUtils
 import android.view.ViewGroup.MarginLayoutParams
+import androidx.core.animation.doOnEnd
 import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
@@ -23,11 +25,12 @@ import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.enableUi
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
-import com.michaldrabik.showly2.utilities.extensions.gone
+import com.michaldrabik.showly2.utilities.extensions.invisible
 import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.toggleFade
+import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
 import kotlinx.android.synthetic.main.fragment_discover.*
+import kotlin.math.hypot
 import kotlin.random.Random
 
 class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_discover), OnTabReselectedListener {
@@ -66,12 +69,12 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       settingsIconVisible = false
       isClickable = false
       onClick { navigateToSearch() }
-      onSortClickListener = { discoverSortView.toggleFade() }
+      onSortClickListener = { toggleFiltersView() }
       translationY = mainActivity().discoverSearchViewPosition
     }
 
     discoverSortView.onApplyClickListener = {
-      discoverSortView.gone()
+      toggleFiltersView()
       viewModel.loadDiscoverShows(
         scrollToTop = true,
         skipCache = true,
@@ -157,6 +160,27 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
       navigateTo(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
     })
+  }
+
+  private fun toggleFiltersView() {
+    if (!discoverSortView.isVisible) {
+      val cx = discoverSortView.width
+      val cy = discoverSortView.height
+      val radius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
+      val anim = ViewAnimationUtils.createCircularReveal(discoverSortView, cx, 0, 0F, radius)
+      discoverSortView.visible()
+      discoverMask.fadeIn()
+      anim.start()
+    } else {
+      val cx = discoverSortView.width
+      val cy = discoverSortView.height
+      val radius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
+      ViewAnimationUtils.createCircularReveal(discoverSortView, cx, 0, radius, 0F).apply {
+        doOnEnd { discoverSortView.invisible() }
+        start()
+      }
+      discoverMask.fadeOut()
+    }
   }
 
   private fun saveUi() {
