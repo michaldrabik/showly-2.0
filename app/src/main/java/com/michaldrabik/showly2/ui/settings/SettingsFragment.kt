@@ -108,11 +108,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         viewModel.enableEpisodesAnnouncements(isChecked, requireContext().applicationContext)
       }
 
-    settingsDiscoverAnticipatedSwitch
-      .setCheckedSilent(settings.showAnticipatedShows) { _, isChecked ->
-        viewModel.enableAnticipatedShows(isChecked)
-      }
-
     settingsWhenToNotifyValue.run {
       setText(settings.episodesNotificationsDelay.stringRes)
       onClick { showWhenToNotifyDialog(settings) }

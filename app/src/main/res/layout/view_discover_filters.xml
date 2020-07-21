@@ -32,8 +32,8 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/spaceSmall"
-    android:layout_marginBottom="@dimen/spaceSmall"
-    app:layout_constraintBottom_toTopOf="@id/discoverFiltersGenresTitle"
+    android:layout_marginBottom="@dimen/spaceMicro"
+    app:layout_constraintBottom_toTopOf="@id/discoverFiltersAnticipatedSwitch"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/discoverFiltersSortTitle"
@@ -83,6 +83,32 @@
 
   </com.google.android.material.chip.ChipGroup>
 
+  <androidx.appcompat.widget.SwitchCompat
+    android:id="@+id/discoverFiltersAnticipatedSwitch"
+    android:layout_width="wrap_content"
+    android:layout_height="34dp"
+    android:layout_marginBottom="@dimen/spaceSmall"
+    android:checked="true"
+    android:translationX="-4dp"
+    app:layout_constraintBottom_toTopOf="@id/discoverFiltersGenresTitle"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/discoverFiltersSortChipGroup"
+    />
+
+  <TextView
+    android:id="@+id/discoverFiltersAnticipatedText"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginStart="@dimen/spaceTiny"
+    android:gravity="center_vertical"
+    android:text="@string/textDiscoverFilterAnticipated"
+    android:textColor="@color/colorTextPrimary"
+    app:layout_constraintBottom_toBottomOf="@id/discoverFiltersAnticipatedSwitch"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/discoverFiltersAnticipatedSwitch"
+    app:layout_constraintTop_toTopOf="@id/discoverFiltersAnticipatedSwitch"
+    />
+
   <TextView
     android:id="@+id/discoverFiltersGenresTitle"
     android:layout_width="0dp"
@@ -95,7 +121,7 @@
     app:layout_constraintBottom_toTopOf="@id/discoverFiltersGenresChipGroup"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/discoverFiltersSortChipGroup"
+    app:layout_constraintTop_toBottomOf="@id/discoverFiltersAnticipatedSwitch"
     />
 
   <com.google.android.material.chip.ChipGroup

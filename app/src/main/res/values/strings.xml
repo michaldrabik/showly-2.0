@@ -84,6 +84,7 @@
   <string name="textShowQuickProgressSubTitle">Select last seen episode to quickly bring your progress up to date.</string>
   <string name="textShowQuickProgressDone">Your progress has been updated.</string>
   <string name="textDiscoverShows">Discover Shows</string>
+  <string name="textDiscoverFilterAnticipated">Display anticipated shows</string>
   <string name="textImagesCacheCleared">Images cache has been cleared.</string>
 
   <string name="textSettings">Settings</string>
@@ -97,8 +98,6 @@
   <string name="textSettingsGeneral">General &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Recently Added Amount</string>
   <string name="textSettingsRecentShowsSummary">Number of recent shows to display in \'My Shows\' screen.</string>
-  <string name="textSettingsDiscoverAnticipatedTitle">Anticipated Shows in Discover Feed</string>
-  <string name="textSettingsDiscoverAnticipatedSummary">Switch off if you want Discover feed to only contain shows that are already available to watch.</string>
   <string name="textSettingsMyShowsSectionsTitle">My Shows Sections</string>
   <string name="textSettingsMyShowsSectionSummary">Enable/disable sections in My Shows tab.</string>
   <string name="textSettingsNotifications">Notifications</string>

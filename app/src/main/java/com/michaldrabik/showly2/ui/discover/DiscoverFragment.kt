@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.discover
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
+import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
@@ -174,7 +175,11 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
         discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
       }
-      filters?.let { discoverSortView.bind(it) }
+      filters?.let {
+        discoverSortView.run {
+          if (!this.isVisible) bind(it)
+        }
+      }
     }
   }
 

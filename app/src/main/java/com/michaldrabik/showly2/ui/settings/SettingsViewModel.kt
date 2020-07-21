@@ -45,13 +45,6 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  fun enableAnticipatedShows(enable: Boolean) {
-    viewModelScope.launch {
-      interactor.enableAnticipatedShows(enable)
-      refreshSettings()
-    }
-  }
-
   fun enableMyShowsSection(section: MyShowsSection, isEnabled: Boolean) {
     viewModelScope.launch {
       interactor.enableMyShowsSection(section, isEnabled)

@@ -70,15 +70,6 @@ class SettingsInteractor @Inject constructor(
     }
   }
 
-  suspend fun enableAnticipatedShows(enable: Boolean) {
-    val settings = settingsRepository.load()
-    settings.let {
-      val new = it.copy(showAnticipatedShows = enable)
-      settingsRepository.update(new)
-      showsRepository.discoverShows.clearCache()
-    }
-  }
-
   suspend fun enableMyShowsSection(section: MyShowsSection, isEnabled: Boolean) {
     val settings = settingsRepository.load()
     settings.let {

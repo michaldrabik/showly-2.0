@@ -73,4 +73,10 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
   override fun setEnabled(enabled: Boolean) {
     searchViewInput.isEnabled = enabled
   }
+
+  override fun setClickable(clickable: Boolean) {
+    searchSettingsIcon.isClickable = clickable
+    searchSortIcon.isClickable = clickable
+    super.setClickable(clickable)
+  }
 }

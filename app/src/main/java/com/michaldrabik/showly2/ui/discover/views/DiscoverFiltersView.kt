@@ -45,6 +45,7 @@ class DiscoverFiltersView : ConstraintLayout {
     discoverFiltersChipHot.isChecked = filters.feedOrder == HOT
     discoverFiltersChipTopRated.isChecked = filters.feedOrder == RATING
     discoverFiltersChipMostRecent.isChecked = filters.feedOrder == NEWEST
+    discoverFiltersAnticipatedSwitch.isChecked = filters.showAnticipated
     bindGenres(filters.genres)
   }
 
@@ -68,6 +69,8 @@ class DiscoverFiltersView : ConstraintLayout {
   }
 
   private fun onApplyFilters() {
+    val showAnticipated = discoverFiltersAnticipatedSwitch.isChecked
+
     val feedOrder = when {
       discoverFiltersChipHot.isChecked -> HOT
       discoverFiltersChipTopRated.isChecked -> RATING
@@ -82,7 +85,7 @@ class DiscoverFiltersView : ConstraintLayout {
       }
     }
 
-    val filters = DiscoverFilters(feedOrder, true, genres.toList())
+    val filters = DiscoverFilters(feedOrder, showAnticipated, genres.toList())
     onApplyClickListener?.invoke(filters)
   }
 }
