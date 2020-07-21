@@ -7,12 +7,16 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
+import com.michaldrabik.showly2.ui.common.OnScrollResetListener
+import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_statistics.*
 
-class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_statistics) {
+class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_statistics),
+  OnTabReselectedListener,
+  OnScrollResetListener {
 
   override val viewModel by viewModels<StatisticsViewModel> { viewModelFactory }
 
@@ -51,4 +55,8 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
       statisticsEmptyView.visibleIf(mostWatchedShows.isNullOrEmpty())
     }
   }
+
+  override fun onTabReselected() = onScrollReset()
+
+  override fun onScrollReset() = statisticsRoot.smoothScrollTo(0, 0)
 }
