@@ -22,7 +22,6 @@ import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.enableUi
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
-import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
 import kotlinx.android.synthetic.main.fragment_discover.*
@@ -67,11 +66,11 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       onSortClickListener = { discoverSortView.fadeIn() }
       translationY = mainActivity().discoverSearchViewPosition
     }
-    discoverSortView.sortSelectedListener = {
-      viewModel.setSortOrder(it)
-      viewModel.loadDiscoverShows(scrollToTop = true)
-      discoverSortView.gone()
-    }
+//    discoverSortView.sortSelectedListener = {
+//      viewModel.setSortOrder(it)
+//      viewModel.loadDiscoverShows(scrollToTop = true)
+//      discoverSortView.gone()
+//    }
   }
 
   private fun setupRecycler() {
@@ -109,7 +108,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       (discoverSearchView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
       (discoverSortView.layoutParams as MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.searchViewHeight))
     }
   }
 
@@ -166,7 +165,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
         discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
       }
-      sortOrder?.let { discoverSortView.bind(it) }
+//      sortOrder?.let { discoverSortView.bind(it) }
     }
   }
 

@@ -12,6 +12,7 @@
   <string name="tabSeeLater">See Later</string>
   <string name="tabStatistics">Statistics</string>
 
+  <string name="textApply">Apply</string>
   <string name="textOk">OK</string>
   <string name="textClose">Close</string>
   <string name="textNew">New</string>
@@ -55,6 +56,8 @@
   <string name="textEnded">Ended (%1$d)</string>
   <string name="textIncoming">Coming Soon (%1$d)</string>
   <string name="textSortBy">Sort by:</string>
+  <string name="textSortOrder">Sort Order:</string>
+  <string name="textGenres">Genres:</string>
   <string name="textSortName">Name</string>
   <string name="textSortNewest">Most Recent</string>
   <string name="textSortRated">Top Rated</string>
