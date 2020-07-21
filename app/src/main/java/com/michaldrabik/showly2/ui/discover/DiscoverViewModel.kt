@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.discover
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.model.DiscoverFilters
 import com.michaldrabik.showly2.model.DiscoverSortOrder
 import com.michaldrabik.showly2.model.DiscoverSortOrder.HOT
 import com.michaldrabik.showly2.model.DiscoverSortOrder.NEWEST
@@ -25,9 +26,18 @@ class DiscoverViewModel @Inject constructor(
   private val interactor: DiscoverInteractor
 ) : BaseViewModel<DiscoverUiModel>() {
 
+  private var filters = DiscoverFilters()
   private var lastPullToRefreshMs = 0L
 
-  fun loadDiscoverShows(pullToRefresh: Boolean = false, scrollToTop: Boolean = false) {
+  fun setFilters(filters: DiscoverFilters) {
+    this.filters = filters.copy()
+  }
+
+  fun loadDiscoverShows(
+    pullToRefresh: Boolean = false,
+    scrollToTop: Boolean = false,
+    skipCache: Boolean = false
+  ) {
     if (pullToRefresh && nowUtcMillis() - lastPullToRefreshMs < Config.PULL_TO_REFRESH_COOLDOWN_MS) {
       uiState = DiscoverUiModel(showLoading = false)
       return
@@ -45,14 +55,14 @@ class DiscoverViewModel @Inject constructor(
         val myShowsIds = interactor.loadMyShowsIds()
         val seeLaterShowsIds = interactor.loadSeeLaterShowsIds()
 
-        if (!pullToRefresh) {
+        if (!pullToRefresh && !skipCache) {
           val cachedShows = interactor.loadCachedShows()
           onShowsLoaded(cachedShows, myShowsIds, seeLaterShowsIds, scrollToTop)
         }
 
-        if (pullToRefresh || !interactor.isCacheValid()) {
+        if (pullToRefresh || skipCache || !interactor.isCacheValid()) {
           checkTvdbAuth()
-          val remoteShows = interactor.loadRemoteShows()
+          val remoteShows = interactor.loadRemoteShows(filters)
           onShowsLoaded(remoteShows, myShowsIds, seeLaterShowsIds, scrollToTop)
         }
 
@@ -73,7 +83,7 @@ class DiscoverViewModel @Inject constructor(
     scrollToTop: Boolean
   ) {
     val items = shows
-      .sortedBy(interactor.sortOrder)
+      .sortedBy(filters.sortOrder)
       .mapIndexed { index, show ->
         val itemType = when (index) {
           in (0..500 step 14) -> FANART_WIDE
@@ -88,7 +98,11 @@ class DiscoverViewModel @Inject constructor(
           isSeeLater = show.ids.trakt.id in seeLaterShowsIds
         )
       }
-    uiState = DiscoverUiModel(shows = items, sortOrder = interactor.sortOrder, scrollToTop = scrollToTop)
+    uiState = DiscoverUiModel(
+      shows = items,
+      sortOrder = filters.sortOrder,
+      scrollToTop = scrollToTop
+    )
   }
 
   private fun List<Show>.sortedBy(order: DiscoverSortOrder) =
@@ -115,10 +129,6 @@ class DiscoverViewModel @Inject constructor(
         updateShowsItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }
-  }
-
-  fun setSortOrder(order: DiscoverSortOrder) {
-    interactor.sortOrder = order
   }
 
   private suspend fun checkTvdbAuth() {

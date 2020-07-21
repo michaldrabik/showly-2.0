@@ -4,6 +4,7 @@ import androidx.room.withTransaction
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.di.scope.AppScope
+import com.michaldrabik.showly2.model.Genre
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
@@ -34,14 +35,17 @@ class DiscoverShowsRepository @Inject constructor(
       .map { mappers.show.fromDatabase(it) }
   }
 
-  suspend fun loadAllRemote(): List<Show> {
+  suspend fun loadAllRemote(
+    showAnticipated: Boolean,
+    genres: List<Genre>
+  ): List<Show> {
+    val genresQuery = genres.joinToString(",") { it.slug }
     val remoteShows = mutableListOf<Show>()
-    val trendingShows = cloud.traktApi.fetchTrendingShows().map { mappers.show.fromNetwork(it) }
+    val trendingShows = cloud.traktApi.fetchTrendingShows(genresQuery).map { mappers.show.fromNetwork(it) }
 
-    val showAnticipated = database.settingsDao().getAll().showAnticipatedShows
     val anticipatedShows = mutableListOf<Show>()
     if (showAnticipated) {
-      val shows = cloud.traktApi.fetchAnticipatedShows().map { mappers.show.fromNetwork(it) }.toMutableList()
+      val shows = cloud.traktApi.fetchAnticipatedShows(genresQuery).map { mappers.show.fromNetwork(it) }.toMutableList()
       anticipatedShows.addAll(shows)
     }
 

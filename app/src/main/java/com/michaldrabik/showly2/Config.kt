@@ -11,7 +11,7 @@ object Config {
   const val DEVELOPER_MAIL = "showlyapp@gmail.com"
   const val PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=com.michaldrabik.showly2"
 
-  const val PULL_TO_REFRESH_COOLDOWN_MS = 15_000
+  const val PULL_TO_REFRESH_COOLDOWN_MS = 10_000
   const val SEARCH_RECENTS_AMOUNT = 5
   const val IMAGE_FADE_DURATION_MS = 200
   const val FANART_GALLERY_IMAGES_LIMIT = 30

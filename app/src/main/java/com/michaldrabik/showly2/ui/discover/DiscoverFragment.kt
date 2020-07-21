@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
+import com.michaldrabik.showly2.model.DiscoverFilters
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
@@ -22,7 +23,9 @@ import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.enableUi
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.toggleFade
 import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.random.Random
@@ -63,14 +66,15 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       settingsIconVisible = false
       isClickable = false
       onClick { navigateToSearch() }
-      onSortClickListener = { discoverSortView.fadeIn() }
+      onSortClickListener = { discoverSortView.toggleFade() }
       translationY = mainActivity().discoverSearchViewPosition
     }
-//    discoverSortView.sortSelectedListener = {
-//      viewModel.setSortOrder(it)
-//      viewModel.loadDiscoverShows(scrollToTop = true)
-//      discoverSortView.gone()
-//    }
+
+    discoverSortView.onApplyClickListener = {
+      discoverSortView.gone()
+      viewModel.setFilters(it)
+      viewModel.loadDiscoverShows(scrollToTop = true, skipCache = true)
+    }
   }
 
   private fun setupRecycler() {
@@ -165,7 +169,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
         discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
       }
-//      sortOrder?.let { discoverSortView.bind(it) }
+      sortOrder?.let { discoverSortView.bind(DiscoverFilters(it)) }
     }
   }
 

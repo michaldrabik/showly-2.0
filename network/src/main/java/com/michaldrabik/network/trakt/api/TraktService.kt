@@ -34,10 +34,14 @@ interface TraktService {
   suspend fun fetchShow(@Path("traktId") traktId: Long): Show
 
   @GET("shows/trending?extended=full&limit=${Config.TRAKT_TRENDING_SHOWS_LIMIT}")
-  suspend fun fetchTrendingShows(): List<ShowResult>
+  suspend fun fetchTrendingShows(
+    @Query("genres") genres: String
+  ): List<ShowResult>
 
   @GET("shows/anticipated?extended=full&limit=${Config.TRAKT_ANTICIPATED_SHOWS_LIMIT}")
-  suspend fun fetchAnticipatedShows(): List<ShowResult>
+  suspend fun fetchAnticipatedShows(
+    @Query("genres") genres: String
+  ): List<ShowResult>
 
   @GET("shows/{traktId}/related?extended=full&limit=${Config.TRAKT_RELATED_SHOWS_LIMIT}")
   suspend fun fetchRelatedShows(@Path("traktId") traktId: Long): List<Show>

@@ -56,7 +56,7 @@
   <string name="textEnded">Ended (%1$d)</string>
   <string name="textIncoming">Coming Soon (%1$d)</string>
   <string name="textSortBy">Sort by:</string>
-  <string name="textSortOrder">Sort Order:</string>
+  <string name="textSortOrder">Feed:</string>
   <string name="textGenres">Genres:</string>
   <string name="textSortName">Name</string>
   <string name="textSortNewest">Most Recent</string>
