@@ -37,6 +37,7 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(R.layout.fragment_see_l
 
   private lateinit var adapter: SeeLaterAdapter
   private lateinit var layoutManager: LinearLayoutManager
+  private var statusBarHeight = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
     fragmentComponent().inject(this)
@@ -45,8 +46,8 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(R.layout.fragment_see_l
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    setupRecycler()
     setupStatusBar()
+    setupRecycler()
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
@@ -56,9 +57,10 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(R.layout.fragment_see_l
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
-    adapter = SeeLaterAdapter()
-    adapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
-    adapter.itemClickListener = { openShowDetails(it.show) }
+    adapter = SeeLaterAdapter().apply {
+      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+      itemClickListener = { openShowDetails(it.show) }
+    }
     seeLaterRecycler.apply {
       setHasFixedSize(true)
       adapter = this@SeeLaterFragment.adapter
@@ -68,8 +70,13 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(R.layout.fragment_see_l
   }
 
   private fun setupStatusBar() {
+    if (statusBarHeight != 0) {
+      seeLaterContent.updatePadding(top = seeLaterContent.paddingTop + statusBarHeight)
+      return
+    }
     seeLaterContent.doOnApplyWindowInsets { view, insets, padding, _ ->
-      view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
+      statusBarHeight = insets.systemWindowInsetTop
+      view.updatePadding(top = padding.top + statusBarHeight)
     }
   }
 

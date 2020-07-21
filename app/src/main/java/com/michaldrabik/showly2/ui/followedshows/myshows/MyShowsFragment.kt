@@ -36,6 +36,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
 
   private val adapter by lazy { MyShowsAdapter() }
   private lateinit var layoutManager: LinearLayoutManager
+  private var statusBarHeight = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
     fragmentComponent().inject(this)
@@ -44,8 +45,8 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    setupRecycler()
     setupStatusBar()
+    setupRecycler()
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
@@ -76,8 +77,13 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
   }
 
   private fun setupStatusBar() {
-    myShowsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
-      view.updatePadding(top = insets.systemWindowInsetTop)
+    if (statusBarHeight != 0) {
+      myShowsRoot.updatePadding(top = statusBarHeight)
+      return
+    }
+    myShowsRoot.doOnApplyWindowInsets { view, insets, _, _ ->
+      statusBarHeight = insets.systemWindowInsetTop
+      view.updatePadding(top = statusBarHeight)
     }
   }
 
