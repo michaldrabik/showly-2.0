@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
+import androidx.core.view.updatePadding
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -154,6 +155,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun setupStatusBar() {
     showDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
+      showDetailsMainLayout.updatePadding(top = insets.systemWindowInsetTop)
       arrayOf<View>(view, showDetailsEpisodesView, showDetailsCommentsView)
         .forEach { v ->
           (v.layoutParams as MarginLayoutParams).updateMargins(top = insets.systemWindowInsetTop)
