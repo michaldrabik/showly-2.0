@@ -64,7 +64,7 @@
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:padding="9dp"
+        android:padding="8dp"
         android:tint="@color/colorSearchViewIcon"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_sort"
@@ -75,7 +75,7 @@
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:padding="9dp"
+        android:padding="8dp"
         android:tint="@color/colorSearchViewIcon"
         app:srcCompat="@drawable/ic_settings"
         />
