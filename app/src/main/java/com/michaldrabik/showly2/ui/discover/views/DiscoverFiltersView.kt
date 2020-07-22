@@ -58,6 +58,7 @@ class DiscoverFiltersView : ConstraintLayout {
         text = genre.displayName
         isCheckable = true
         isCheckedIconVisible = false
+        setEnsureMinTouchTargetSize(false)
         setChipBackgroundColorResource(R.color.colorSearchViewBackground)
         setChipStrokeColorResource(R.color.selector_discover_chip_text)
         setChipStrokeWidthResource(R.dimen.discoverFilterChipStroke)

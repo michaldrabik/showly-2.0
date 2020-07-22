@@ -128,12 +128,13 @@
     android:id="@+id/discoverFiltersGenresChipGroup"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/spaceSmall"
-    android:layout_marginBottom="@dimen/spaceSmall"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginBottom="@dimen/spaceNormal"
     app:layout_constraintBottom_toTopOf="@id/discoverFiltersApplyButton"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/discoverFiltersGenresTitle"
+    app:lineSpacing="10dp"
     />
 
   <com.google.android.material.button.MaterialButton

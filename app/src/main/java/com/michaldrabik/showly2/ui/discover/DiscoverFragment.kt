@@ -73,6 +73,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       translationY = mainActivity().discoverSearchViewPosition
     }
 
+    discoverMask.onClick { toggleFiltersView() }
     discoverSortView.onApplyClickListener = {
       toggleFiltersView()
       viewModel.loadDiscoverShows(
