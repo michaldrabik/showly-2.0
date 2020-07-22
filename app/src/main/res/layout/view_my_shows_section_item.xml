@@ -26,6 +26,7 @@
       android:layout_width="@dimen/showTilePlaceholder"
       android:layout_height="@dimen/showTilePlaceholder"
       android:layout_gravity="center"
+      android:layout_marginBottom="@dimen/spaceSmall"
       android:visibility="gone"
       app:srcCompat="@drawable/ic_television"
       tools:visibility="visible"
@@ -33,12 +34,12 @@
 
     <TextView
       android:id="@+id/myShowTitle"
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|start"
       android:layout_margin="@dimen/spaceSmall"
       android:ellipsize="end"
-      android:maxLines="2"
+      android:maxLines="1"
       android:shadowColor="@color/colorBlack"
       android:shadowDx="3"
       android:shadowDy="3"
@@ -46,7 +47,7 @@
       android:textColor="@color/colorWhite"
       android:textSize="14sp"
       android:visibility="gone"
-      tools:text="Game Of Thrones"
+      tools:text="@tools:sample/lorem/random"
       tools:visibility="visible"
       />
 
@@ -56,6 +57,7 @@
       android:layout_width="28dp"
       android:layout_height="28dp"
       android:layout_gravity="center"
+      android:layout_marginBottom="@dimen/spaceSmall"
       android:visibility="gone"
       tools:visibility="visible"
       />

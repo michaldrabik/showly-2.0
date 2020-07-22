@@ -13,8 +13,10 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.showly2.utilities.extensions.withFailListener
 import kotlinx.android.synthetic.main.view_my_shows_section_item.view.*
 
 class MyShowFanartView : FrameLayout {
@@ -50,10 +52,15 @@ class MyShowFanartView : FrameLayout {
       .load(url)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
       .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
+      .withFailListener {
+        myShowPlaceholder.visible()
+        myShowImage.gone()
+      }
       .into(myShowImage)
   }
 
   private fun clear() {
+    myShowPlaceholder.gone()
     myShowTitle.text = ""
     myShowRoot.setBackgroundResource(0)
     Glide.with(this).clear(myShowImage)
