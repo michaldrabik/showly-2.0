@@ -176,15 +176,14 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
   private fun toggleFiltersView() {
     val delta = dimenToPx(R.dimen.searchViewHeight)
     val cx = discoverFiltersView.width
-    val cy = discoverFiltersView.height + delta
+    val cy = discoverFiltersView.height + dimenToPx(R.dimen.searchViewHeight)
+    val radius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
     if (!discoverFiltersView.isVisible) {
-      val radius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
       val anim = ViewAnimationUtils.createCircularReveal(discoverFiltersView, cx, -delta, 0F, radius)
       discoverFiltersView.visible()
       discoverMask.fadeIn()
       anim.start()
     } else {
-      val radius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
       ViewAnimationUtils.createCircularReveal(discoverFiltersView, cx, -delta, radius, 0F).apply {
         doOnEnd { discoverFiltersView.invisible() }
         start()
