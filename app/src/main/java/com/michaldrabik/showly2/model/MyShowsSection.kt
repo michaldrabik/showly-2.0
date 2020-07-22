@@ -6,8 +6,8 @@ import com.michaldrabik.showly2.model.ShowStatus.PLANNED
 import com.michaldrabik.showly2.model.ShowStatus.RETURNING
 
 enum class MyShowsSection(
-  val statuses: List<ShowStatus> = emptyList(),
-  val displayString: String = ""
+  val displayString: String,
+  val statuses: List<ShowStatus> = emptyList()
 ) {
   RECENTS(
     displayString = "Recently Added"
@@ -22,7 +22,7 @@ enum class MyShowsSection(
   ),
   UPCOMING(
     statuses = listOf(IN_PRODUCTION, PLANNED),
-    displayString = "Upcoming & Returning"
+    displayString = "Returning & Upcoming"
   ),
   ALL(
     displayString = "All"
