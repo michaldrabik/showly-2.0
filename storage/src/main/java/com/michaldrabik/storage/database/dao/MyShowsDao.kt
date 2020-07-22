@@ -10,7 +10,7 @@ import com.michaldrabik.storage.database.model.Show
 @Dao
 interface MyShowsDao {
 
-  @Query("SELECT shows.* FROM shows INNER JOIN shows_my_shows USING(id_trakt)")
+  @Query("SELECT shows.*, shows_my_shows.updated_at AS updated_at FROM shows INNER JOIN shows_my_shows USING(id_trakt)")
   suspend fun getAll(): List<Show>
 
   @Query("SELECT shows.* FROM shows INNER JOIN shows_my_shows USING(id_trakt) ORDER BY id DESC LIMIT :limit")

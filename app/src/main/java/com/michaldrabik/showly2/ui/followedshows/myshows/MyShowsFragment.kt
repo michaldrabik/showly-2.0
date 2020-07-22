@@ -14,6 +14,7 @@ import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.SortOrder
+import com.michaldrabik.showly2.model.SortOrder.DATE_ADDED
 import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.SortOrder.NEWEST
 import com.michaldrabik.showly2.model.SortOrder.RATING
@@ -88,7 +89,7 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
   }
 
   private fun showSortOrderDialog(section: MyShowsSection, order: SortOrder) {
-    val options = listOf(NAME, RATING, NEWEST)
+    val options = listOf(NAME, RATING, NEWEST, DATE_ADDED)
     val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
     AlertDialog.Builder(requireContext(), R.style.ChoiceDialog)
       .setTitle(R.string.textSortBy)

@@ -11,6 +11,7 @@ import com.michaldrabik.showly2.model.MyShowsSection.WATCHING
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.ShowStatus.RETURNING
 import com.michaldrabik.showly2.model.SortOrder
+import com.michaldrabik.showly2.model.SortOrder.DATE_ADDED
 import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.SortOrder.NEWEST
 import com.michaldrabik.showly2.model.SortOrder.RATING
@@ -71,9 +72,9 @@ class MyShowsInteractor @Inject constructor(
   suspend fun loadSortOrder(section: MyShowsSection): SortOrder {
     val settings = loadSettings()
     return when (section) {
-      WATCHING -> settings.myShowsRunningSortBy
-      UPCOMING -> settings.myShowsIncomingSortBy
-      FINISHED -> settings.myShowsEndedSortBy
+      WATCHING -> settings.myShowsWatchingSortBy
+      UPCOMING -> settings.myShowsUpcomingSortBy
+      FINISHED -> settings.myShowsFinishedSortBy
       ALL -> settings.myShowsAllSortBy
       else -> error("Should not be used here.")
     }
@@ -84,15 +85,15 @@ class MyShowsInteractor @Inject constructor(
       NAME -> shows.sortedBy { it.show.title }
       NEWEST -> shows.sortedByDescending { it.show.year }
       RATING -> shows.sortedByDescending { it.show.rating }
-      else -> throw IllegalStateException("Unsupported sort type.")
+      DATE_ADDED -> shows.sortedByDescending { it.show.updatedAt }
     }
 
   suspend fun setSectionSortOrder(section: MyShowsSection, order: SortOrder) {
     val settings = loadSettings()
     val newSettings = when (section) {
-      WATCHING -> settings.copy(myShowsRunningSortBy = order)
-      FINISHED -> settings.copy(myShowsEndedSortBy = order)
-      UPCOMING -> settings.copy(myShowsIncomingSortBy = order)
+      WATCHING -> settings.copy(myShowsWatchingSortBy = order)
+      FINISHED -> settings.copy(myShowsFinishedSortBy = order)
+      UPCOMING -> settings.copy(myShowsUpcomingSortBy = order)
       ALL -> settings.copy(myShowsAllSortBy = order)
       else -> error("Should not be used here.")
     }
