@@ -19,6 +19,7 @@ import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import com.michaldrabik.showly2.utilities.extensions.nowUtc
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.Season
 import javax.inject.Inject
 
 @AppScope
@@ -33,14 +34,17 @@ class MyShowsInteractor @Inject constructor(
 
   suspend fun loadAllShows() = showsRepository.myShows.loadAll()
 
+  suspend fun loadSeasonsForShows(traktIds: List<Long>) = database.seasonsDao().getAllForShows(traktIds)
+
   suspend fun filterSectionShows(
     allShows: List<MyShowsItem>,
+    allSeasons: List<Season>,
     section: MyShowsSection
   ): List<MyShowsItem> {
     val sortOrder = loadSortOrder(section)
     val shows = allShows
       .filter {
-        val seasons = database.seasonsDao().getAllForShow(it.show.traktId)
+        val seasons = allSeasons.filter { s -> s.idShowTrakt == it.show.traktId }
         val airedSeasons = seasons.filter { s -> s.seasonFirstAired?.isBefore(nowUtc()) == true }
         when (section) {
           WATCHING -> {

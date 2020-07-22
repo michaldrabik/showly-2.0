@@ -8,6 +8,9 @@ import com.michaldrabik.storage.database.model.Season
 @Dao
 interface SeasonsDao : BaseDao<Season> {
 
+  @Query("SELECT * FROM seasons WHERE id_show_trakt IN (:traktIds)")
+  suspend fun getAllForShows(traktIds: List<Long>): List<Season>
+
   @Query("SELECT * FROM seasons WHERE id_show_trakt IN (:traktIds) AND is_watched = 1")
   suspend fun getAllWatchedForShows(traktIds: List<Long>): List<Season>
 

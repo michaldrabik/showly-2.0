@@ -31,24 +31,27 @@ class MyShowsViewModel @Inject constructor(
     viewModelScope.launch {
       val settings = interactor.loadSettings()
       val shows = interactor.loadAllShows().map { toListItemAsync(ALL_SHOWS_ITEM, it) }.awaitAll()
+      val seasons = interactor.loadSeasonsForShows(shows.map { it.show.traktId })
 
-      val allShows = interactor.filterSectionShows(shows, ALL)
+      val allShows = interactor.filterSectionShows(shows, seasons, ALL)
 
       val runningShows =
-        if (settings.myShowsRunningIsEnabled) interactor.filterSectionShows(shows, WATCHING)
+        if (settings.myShowsRunningIsEnabled) interactor.filterSectionShows(shows, seasons, WATCHING)
         else emptyList()
 
       val endedShows =
-        if (settings.myShowsEndedIsEnabled) interactor.filterSectionShows(shows, FINISHED)
+        if (settings.myShowsEndedIsEnabled) interactor.filterSectionShows(shows, seasons, FINISHED)
         else emptyList()
 
       val incomingShows =
-        if (settings.myShowsIncomingIsEnabled) interactor.filterSectionShows(shows, UPCOMING)
+        if (settings.myShowsIncomingIsEnabled) interactor.filterSectionShows(shows, seasons, UPCOMING)
         else emptyList()
 
-      val recentShows =
-        if (settings.myShowsRecentIsEnabled) interactor.loadRecentShows().map { toListItemAsync(RECENT_SHOWS, it, ImageType.FANART) }.awaitAll()
-        else emptyList()
+      val recentShows = if (settings.myShowsRecentIsEnabled) {
+        interactor.loadRecentShows().map { toListItemAsync(RECENT_SHOWS, it, ImageType.FANART) }.awaitAll()
+      } else {
+        emptyList()
+      }
 
       val listItems = mutableListOf<MyShowsItem>()
       listItems.run {
