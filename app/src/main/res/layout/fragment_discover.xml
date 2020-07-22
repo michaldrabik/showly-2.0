@@ -56,7 +56,7 @@
     />
 
   <com.michaldrabik.showly2.ui.discover.views.DiscoverFiltersView
-    android:id="@+id/discoverSortView"
+    android:id="@+id/discoverFiltersView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="end"
@@ -64,6 +64,17 @@
     android:layout_marginTop="@dimen/searchViewHeight"
     android:layout_marginEnd="@dimen/spaceMedium"
     android:visibility="invisible"
+    tools:visibility="invisible"
+    />
+
+  <com.michaldrabik.showly2.ui.tutorial.TipView
+    android:id="@+id/discoverTipFilters"
+    android:layout_width="@dimen/tutorialTipSize"
+    android:layout_height="@dimen/tutorialTipSize"
+    android:layout_gravity="end"
+    android:layout_marginTop="18dp"
+    android:layout_marginEnd="54dp"
+    android:visibility="gone"
     tools:visibility="visible"
     />
 

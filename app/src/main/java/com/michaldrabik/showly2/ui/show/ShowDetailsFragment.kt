@@ -47,6 +47,7 @@ import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
 import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.Tip.SHOW_DETAILS_GALLERY
+import com.michaldrabik.showly2.model.Tip.SHOW_DETAILS_QUICK_PROGRESS
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.ADD
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_MY_SHOWS
@@ -150,6 +151,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsTipGallery.onClick {
       it.gone()
       mainActivity().showTip(SHOW_DETAILS_GALLERY)
+    }
+    showDetailsTipQuickProgress.onClick {
+      it.gone()
+      mainActivity().showTip(SHOW_DETAILS_QUICK_PROGRESS)
     }
   }
 
@@ -348,7 +353,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
 
         showDetailsAddButton.run {
-          onAddMyShowsClickListener = { viewModel.addFollowedShow(requireContext().applicationContext) }
+          onAddMyShowsClickListener = {
+            viewModel.addFollowedShow(requireContext().applicationContext)
+            showDetailsTipQuickProgress.fadeIf(!mainActivity().isTipShown(SHOW_DETAILS_QUICK_PROGRESS))
+          }
           onAddWatchLaterClickListener = { viewModel.addWatchLaterShow() }
           onRemoveClickListener = { viewModel.removeFromFollowed(requireContext().applicationContext) }
         }

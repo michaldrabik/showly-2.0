@@ -94,6 +94,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/showDetailsImage"
+        tools:visibility="visible"
         />
 
       <TextView
@@ -161,6 +162,17 @@
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsStatus"
+        />
+
+      <com.michaldrabik.showly2.ui.tutorial.TipView
+        android:id="@+id/showDetailsTipQuickProgress"
+        android:layout_width="@dimen/tutorialTipSize"
+        android:layout_height="@dimen/tutorialTipSize"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsAddButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible"
         />
 
       <include

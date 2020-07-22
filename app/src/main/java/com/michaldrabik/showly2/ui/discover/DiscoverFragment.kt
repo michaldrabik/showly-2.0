@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
+import com.michaldrabik.showly2.model.Tip.DISCOVER_FILTERS
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
@@ -23,8 +24,10 @@ import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.disableUi
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.enableUi
+import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
+import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.invisible
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visible
@@ -72,9 +75,8 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       onSortClickListener = { toggleFiltersView() }
       translationY = mainActivity().discoverSearchViewPosition
     }
-
     discoverMask.onClick { toggleFiltersView() }
-    discoverSortView.onApplyClickListener = {
+    discoverFiltersView.onApplyClickListener = {
       toggleFiltersView()
       viewModel.loadDiscoverShows(
         scrollToTop = true,
@@ -82,6 +84,13 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
         instantProgress = true,
         newFilters = it
       )
+    }
+    discoverTipFilters.run {
+      fadeIf(!mainActivity().isTipShown(DISCOVER_FILTERS))
+      onClick {
+        it.gone()
+        mainActivity().showTip(DISCOVER_FILTERS)
+      }
     }
   }
 
@@ -119,8 +128,9 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
         .updatePadding(top = statusBarSize + dimenToPx(R.dimen.discoverRecyclerPadding))
       (discoverSearchView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
-      (discoverSortView.layoutParams as MarginLayoutParams)
+      (discoverFiltersView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.searchViewHeight))
+      discoverTipFilters.translationY = statusBarSize.toFloat()
     }
   }
 
@@ -128,7 +138,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     disableUi()
     saveUi()
     hideNavigation()
-    discoverSortView.fadeOut()
+    discoverFiltersView.fadeOut()
     discoverRecycler.fadeOut(duration = 200) {
       enableUi()
       super.navigateTo(R.id.actionDiscoverFragmentToSearchFragment, null)
@@ -141,7 +151,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     hideNavigation()
     animateItemsExit(item)
     discoverSearchView.fadeOut()
-    discoverSortView.fadeOut()
+    discoverFiltersView.fadeOut()
   }
 
   private fun animateItemsExit(item: DiscoverListItem) {
@@ -164,20 +174,20 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
   }
 
   private fun toggleFiltersView() {
-    if (!discoverSortView.isVisible) {
-      val cx = discoverSortView.width
-      val cy = discoverSortView.height
+    if (!discoverFiltersView.isVisible) {
+      val cx = discoverFiltersView.width
+      val cy = discoverFiltersView.height
       val radius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
-      val anim = ViewAnimationUtils.createCircularReveal(discoverSortView, cx, 0, 0F, radius)
-      discoverSortView.visible()
+      val anim = ViewAnimationUtils.createCircularReveal(discoverFiltersView, cx, 0, 0F, radius)
+      discoverFiltersView.visible()
       discoverMask.fadeIn()
       anim.start()
     } else {
-      val cx = discoverSortView.width
-      val cy = discoverSortView.height
+      val cx = discoverFiltersView.width
+      val cy = discoverFiltersView.height
       val radius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
-      ViewAnimationUtils.createCircularReveal(discoverSortView, cx, 0, radius, 0F).apply {
-        doOnEnd { discoverSortView.invisible() }
+      ViewAnimationUtils.createCircularReveal(discoverFiltersView, cx, 0, radius, 0F).apply {
+        doOnEnd { discoverFiltersView.invisible() }
         start()
       }
       discoverMask.fadeOut()
@@ -201,7 +211,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
         discoverSwipeRefresh.isRefreshing = it
       }
       filters?.let {
-        discoverSortView.run {
+        discoverFiltersView.run {
           if (!this.isVisible) bind(it)
         }
       }
