@@ -24,7 +24,7 @@
     android:layout_marginBottom="@dimen/spaceTiny"
     android:text="@string/textSearchInitial1"
     android:textColor="@color/colorWhite"
-    android:textSize="16sp"
+    android:textSize="18sp"
     />
 
   <TextView
