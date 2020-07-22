@@ -52,6 +52,12 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
       searchSortIcon.visibleIf(value)
     }
 
+  var sortIconClickable
+    get() = searchSortIcon.isClickable
+    set(value) {
+      searchSortIcon.isClickable = value
+    }
+
   var isSearching = false
 
   override fun onAttachedToWindow() {
@@ -72,11 +78,5 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
   override fun setEnabled(enabled: Boolean) {
     searchViewInput.isEnabled = enabled
-  }
-
-  override fun setClickable(clickable: Boolean) {
-    searchSettingsIcon.isClickable = clickable
-    searchSortIcon.isClickable = clickable
-    super.setClickable(clickable)
   }
 }

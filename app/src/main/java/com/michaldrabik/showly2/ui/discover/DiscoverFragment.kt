@@ -174,19 +174,18 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
   }
 
   private fun toggleFiltersView() {
+    val delta = dimenToPx(R.dimen.searchViewHeight)
+    val cx = discoverFiltersView.width
+    val cy = discoverFiltersView.height + delta
     if (!discoverFiltersView.isVisible) {
-      val cx = discoverFiltersView.width
-      val cy = discoverFiltersView.height
       val radius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
-      val anim = ViewAnimationUtils.createCircularReveal(discoverFiltersView, cx, 0, 0F, radius)
+      val anim = ViewAnimationUtils.createCircularReveal(discoverFiltersView, cx, -delta, 0F, radius)
       discoverFiltersView.visible()
       discoverMask.fadeIn()
       anim.start()
     } else {
-      val cx = discoverFiltersView.width
-      val cy = discoverFiltersView.height
       val radius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
-      ViewAnimationUtils.createCircularReveal(discoverFiltersView, cx, 0, radius, 0F).apply {
+      ViewAnimationUtils.createCircularReveal(discoverFiltersView, cx, -delta, radius, 0F).apply {
         doOnEnd { discoverFiltersView.invisible() }
         start()
       }
@@ -207,6 +206,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       }
       showLoading?.let {
         discoverSearchView.isClickable = !it
+        discoverSearchView.sortIconClickable = !it
         discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
       }
