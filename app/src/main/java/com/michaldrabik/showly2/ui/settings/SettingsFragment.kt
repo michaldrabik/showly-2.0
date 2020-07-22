@@ -20,10 +20,10 @@ import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_OPTIONS
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.model.MyShowsSection.COMING_SOON
-import com.michaldrabik.showly2.model.MyShowsSection.ENDED
+import com.michaldrabik.showly2.model.MyShowsSection.FINISHED
 import com.michaldrabik.showly2.model.MyShowsSection.RECENTS
-import com.michaldrabik.showly2.model.MyShowsSection.RUNNING
+import com.michaldrabik.showly2.model.MyShowsSection.UPCOMING
+import com.michaldrabik.showly2.model.MyShowsSection.WATCHING
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
@@ -149,7 +149,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   }
 
   private fun showSectionsDialog(settings: Settings) {
-    val options = listOf(RECENTS, RUNNING, ENDED, COMING_SOON)
+    val options = listOf(RECENTS, WATCHING, FINISHED, UPCOMING)
     val selected = booleanArrayOf(
       settings.myShowsRecentIsEnabled,
       settings.myShowsRunningIsEnabled,

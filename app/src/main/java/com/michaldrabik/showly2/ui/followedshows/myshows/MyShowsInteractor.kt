@@ -5,10 +5,11 @@ import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.MyShowsSection.ALL
-import com.michaldrabik.showly2.model.MyShowsSection.COMING_SOON
-import com.michaldrabik.showly2.model.MyShowsSection.ENDED
-import com.michaldrabik.showly2.model.MyShowsSection.RUNNING
+import com.michaldrabik.showly2.model.MyShowsSection.FINISHED
+import com.michaldrabik.showly2.model.MyShowsSection.UPCOMING
+import com.michaldrabik.showly2.model.MyShowsSection.WATCHING
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.showly2.model.ShowStatus.RETURNING
 import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.SortOrder.NEWEST
@@ -16,13 +17,16 @@ import com.michaldrabik.showly2.model.SortOrder.RATING
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
+import com.michaldrabik.showly2.utilities.extensions.nowUtc
+import com.michaldrabik.storage.database.AppDatabase
 import javax.inject.Inject
 
 @AppScope
 class MyShowsInteractor @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
   private val showsRepository: ShowsRepository,
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
+  private val database: AppDatabase
 ) {
 
   suspend fun loadSettings() = settingsRepository.load()
@@ -36,8 +40,21 @@ class MyShowsInteractor @Inject constructor(
     val sortOrder = loadSortOrder(section)
     val shows = allShows
       .filter {
-        if (section.statuses.isEmpty()) true
-        else section.statuses.contains(it.show.status)
+        val seasons = database.seasonsDao().getAllForShow(it.show.traktId)
+        val airedSeasons = seasons.filter { s -> s.seasonFirstAired?.isBefore(nowUtc()) == true }
+        when (section) {
+          WATCHING -> {
+            airedSeasons.any { s -> !s.isWatched }
+          }
+          FINISHED -> {
+            section.statuses.contains(it.show.status) && seasons.all { s -> s.isWatched }
+          }
+          UPCOMING -> {
+            section.statuses.contains(it.show.status) ||
+              (it.show.status == RETURNING && airedSeasons.all { s -> s.isWatched })
+          }
+          else -> true
+        }
       }
     return sortBy(sortOrder, shows)
   }
@@ -50,9 +67,9 @@ class MyShowsInteractor @Inject constructor(
   suspend fun loadSortOrder(section: MyShowsSection): SortOrder {
     val settings = loadSettings()
     return when (section) {
-      RUNNING -> settings.myShowsRunningSortBy
-      COMING_SOON -> settings.myShowsIncomingSortBy
-      ENDED -> settings.myShowsEndedSortBy
+      WATCHING -> settings.myShowsRunningSortBy
+      UPCOMING -> settings.myShowsIncomingSortBy
+      FINISHED -> settings.myShowsEndedSortBy
       ALL -> settings.myShowsAllSortBy
       else -> error("Should not be used here.")
     }
@@ -69,22 +86,10 @@ class MyShowsInteractor @Inject constructor(
   suspend fun setSectionSortOrder(section: MyShowsSection, order: SortOrder) {
     val settings = loadSettings()
     val newSettings = when (section) {
-      RUNNING -> settings.copy(myShowsRunningSortBy = order)
-      ENDED -> settings.copy(myShowsEndedSortBy = order)
-      COMING_SOON -> settings.copy(myShowsIncomingSortBy = order)
+      WATCHING -> settings.copy(myShowsRunningSortBy = order)
+      FINISHED -> settings.copy(myShowsEndedSortBy = order)
+      UPCOMING -> settings.copy(myShowsIncomingSortBy = order)
       ALL -> settings.copy(myShowsAllSortBy = order)
-      else -> error("Should not be used here.")
-    }
-    settingsRepository.update(newSettings)
-  }
-
-  suspend fun setSectionCollapsed(section: MyShowsSection, isCollapsed: Boolean) {
-    val settings = loadSettings()
-    val newSettings = when (section) {
-      RUNNING -> settings.copy(myShowsRunningIsCollapsed = isCollapsed)
-      ENDED -> settings.copy(myShowsEndedIsCollapsed = isCollapsed)
-      COMING_SOON -> settings.copy(myShowsIncomingIsCollapsed = isCollapsed)
-      ALL -> settings
       else -> error("Should not be used here.")
     }
     settingsRepository.update(newSettings)

@@ -6,10 +6,10 @@ import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.MyShowsSection.ALL
-import com.michaldrabik.showly2.model.MyShowsSection.COMING_SOON
-import com.michaldrabik.showly2.model.MyShowsSection.ENDED
+import com.michaldrabik.showly2.model.MyShowsSection.FINISHED
 import com.michaldrabik.showly2.model.MyShowsSection.RECENTS
-import com.michaldrabik.showly2.model.MyShowsSection.RUNNING
+import com.michaldrabik.showly2.model.MyShowsSection.UPCOMING
+import com.michaldrabik.showly2.model.MyShowsSection.WATCHING
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
@@ -35,15 +35,15 @@ class MyShowsViewModel @Inject constructor(
       val allShows = interactor.filterSectionShows(shows, ALL)
 
       val runningShows =
-        if (settings.myShowsRunningIsEnabled) interactor.filterSectionShows(shows, RUNNING)
+        if (settings.myShowsRunningIsEnabled) interactor.filterSectionShows(shows, WATCHING)
         else emptyList()
 
       val endedShows =
-        if (settings.myShowsEndedIsEnabled) interactor.filterSectionShows(shows, ENDED)
+        if (settings.myShowsEndedIsEnabled) interactor.filterSectionShows(shows, FINISHED)
         else emptyList()
 
       val incomingShows =
-        if (settings.myShowsIncomingIsEnabled) interactor.filterSectionShows(shows, COMING_SOON)
+        if (settings.myShowsIncomingIsEnabled) interactor.filterSectionShows(shows, UPCOMING)
         else emptyList()
 
       val recentShows =
@@ -57,16 +57,16 @@ class MyShowsViewModel @Inject constructor(
           add(MyShowsItem.createRecentsSection(recentShows))
         }
         if (runningShows.isNotEmpty()) {
-          add(MyShowsItem.createHeader(RUNNING, runningShows.count(), interactor.loadSortOrder(RUNNING)))
-          add(MyShowsItem.createHorizontalSection(RUNNING, runningShows))
-        }
-        if (endedShows.isNotEmpty()) {
-          add(MyShowsItem.createHeader(ENDED, endedShows.count(), interactor.loadSortOrder(ENDED)))
-          add(MyShowsItem.createHorizontalSection(ENDED, endedShows))
+          add(MyShowsItem.createHeader(WATCHING, runningShows.count(), interactor.loadSortOrder(WATCHING)))
+          add(MyShowsItem.createHorizontalSection(WATCHING, runningShows))
         }
         if (incomingShows.isNotEmpty()) {
-          add(MyShowsItem.createHeader(COMING_SOON, incomingShows.count(), interactor.loadSortOrder(COMING_SOON)))
-          add(MyShowsItem.createHorizontalSection(COMING_SOON, incomingShows))
+          add(MyShowsItem.createHeader(UPCOMING, incomingShows.count(), interactor.loadSortOrder(UPCOMING)))
+          add(MyShowsItem.createHorizontalSection(UPCOMING, incomingShows))
+        }
+        if (endedShows.isNotEmpty()) {
+          add(MyShowsItem.createHeader(FINISHED, endedShows.count(), interactor.loadSortOrder(FINISHED)))
+          add(MyShowsItem.createHorizontalSection(FINISHED, endedShows))
         }
         if (allShows.isNotEmpty()) {
           add(MyShowsItem.createHeader(ALL, allShows.count(), interactor.loadSortOrder(ALL)))

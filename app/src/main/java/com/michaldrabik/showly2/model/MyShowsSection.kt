@@ -12,17 +12,17 @@ enum class MyShowsSection(
   RECENTS(
     displayString = "Recently Added"
   ),
-  RUNNING(
+  WATCHING(
     statuses = listOf(RETURNING),
-    displayString = "Running"
+    displayString = "Watching"
   ),
-  ENDED(
+  FINISHED(
     statuses = listOf(CANCELED, ShowStatus.ENDED),
-    displayString = "Ended"
+    displayString = "Finished"
   ),
-  COMING_SOON(
+  UPCOMING(
     statuses = listOf(IN_PRODUCTION, PLANNED),
-    displayString = "Coming Soon"
+    displayString = "Upcoming & Returning"
   ),
   ALL(
     displayString = "All"
