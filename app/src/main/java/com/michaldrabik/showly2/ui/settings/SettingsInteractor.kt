@@ -19,13 +19,11 @@ import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.repository.rating.RatingsRepository
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
-import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope
 class SettingsInteractor @Inject constructor(
   private val settingsRepository: SettingsRepository,
-  private val showsRepository: ShowsRepository,
   private val ratingsRepository: RatingsRepository,
   private val announcementManager: AnnouncementManager,
   private val userManager: UserTraktManager,
@@ -110,5 +108,5 @@ class SettingsInteractor @Inject constructor(
 
   suspend fun isTraktAuthorized() = userManager.isAuthorized()
 
-  fun getTraktUsername() = userManager.traktUsername
+  suspend fun getTraktUsername() = userManager.getTraktUsername()
 }

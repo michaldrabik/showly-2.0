@@ -22,7 +22,7 @@ class UserTraktManager @Inject constructor(
     private const val TRAKT_TOKEN_EXPIRATION_MS = 5_184_000_000 // 2 months
   }
 
-  var traktUsername = ""
+  private var traktUsername = ""
   private var traktToken: TraktAuthToken? = null
   private var traktRefreshToken: TraktRefreshToken? = null
   private var traktTokenTimestamp = 0L
@@ -88,6 +88,14 @@ class UserTraktManager @Inject constructor(
     }
   }
 
+  suspend fun getTraktUsername(): String {
+    val user = database.userDao().get()
+    user?.let {
+      traktUsername = it.traktUsername
+    }
+    return traktUsername
+  }
+
   private suspend fun saveToken(token: String, refreshToken: String, userModel: UserModel) {
     val timestamp = nowUtcMillis()
     database.withTransaction {
@@ -97,7 +105,7 @@ class UserTraktManager @Inject constructor(
           traktToken = token,
           traktRefreshToken = refreshToken,
           traktTokenTimestamp = timestamp,
-          traktUsername = user.traktUsername
+          traktUsername = userModel.username
         ) ?: User(
           traktToken = token,
           traktRefreshToken = refreshToken,
