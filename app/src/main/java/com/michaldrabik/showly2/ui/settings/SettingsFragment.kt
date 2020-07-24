@@ -75,7 +75,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         settingsTraktSync.visibleIf(isSignedIn)
         settingsTraktAuthorizeIcon.visibleIf(isSignedIn)
         settingsTraktAuthorize.onClick {
-          if (isSignedIn) viewModel.logoutTrakt()
+          if (isSignedIn) viewModel.logoutTrakt(requireContext().applicationContext)
           else openTraktWebAuthorization()
         }
         val summaryText = when {

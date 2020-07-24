@@ -126,6 +126,7 @@
   <string name="textSettingsDeleteCacheSummary">Click to clear local images cache. This may help if shows images are not being loaded correctly.</string>
 
   <string name="textTraktSynchronize">Synchronize with Trakt.tv</string>
+  <string name="textTraktSyncLastTimestamp">Last Sync: %s</string>
   <string name="textTraktSync">Trakt.tv Sync</string>
   <string name="textTraktSyncRunning">Running…</string>
   <string name="textTraktSyncStarted">Sync started. It will continue to run in the background.</string>
@@ -137,13 +138,19 @@
   <string name="textTraktSyncFromTraktToShowly">Import from Trakt.tv to Showly</string>
   <string name="textTraktSyncFromShowlyToTrakt">Export from Showly to Trakt.tv</string>
   <string name="textTraktSyncOptionOff">Off</string>
+  <string name="textTraktSyncOption1Hour">Every Hour</string>
+  <string name="textTraktSyncOption3Hours">Every 3 Hours</string>
+  <string name="textTraktSyncOption6Hours">Every 6 Hours</string>
   <string name="textTraktSyncOptionDaily">Every Day</string>
   <string name="textTraktSyncOption3Day">Every 3 Days</string>
   <string name="textTraktSyncOptionWeekly">Every Week</string>
+
   <string name="textTraktSyncOptionOffMessage">Sync will not run automatically.</string>
-  <string name="textTraktSyncOptionDailyMessage">Sync will run every day starting from now on.</string>
-  <string name="textTraktSyncOption3DayMessage">Sync will run every 3 days starting from now on.</string>
-  <string name="textTraktSyncOptionWeeklyMessage">Sync will run every week starting from now on.</string>
+  <string name="textTraktSyncOptionConfirmMessage">Automatic sync has been scheduled.</string>
+
+  <string name="textTraktSyncOptionHourButton">Scheduled to run every hour</string>
+  <string name="textTraktSyncOption3HoursButton">Scheduled to run every 3 hours</string>
+  <string name="textTraktSyncOption6HoursButton">Scheduled to run every 6 hours</string>
   <string name="textTraktSyncOptionDailyButton">Scheduled to run every day</string>
   <string name="textTraktSyncOption3DayButton">Scheduled to run every 3 days</string>
   <string name="textTraktSyncOptionWeeklyButton">Scheduled to run every week</string>

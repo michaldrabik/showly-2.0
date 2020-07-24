@@ -27,4 +27,13 @@ class PreferencesModule(private val context: Context) {
       "PREFERENCES_WATCHLIST",
       Context.MODE_PRIVATE
     )
+
+  @Provides
+  @AppScope
+  @Named("miscPreferences")
+  fun providesMiscPreferences(): SharedPreferences =
+    context.applicationContext.getSharedPreferences(
+      "PREFERENCES_MISC",
+      Context.MODE_PRIVATE
+    )
 }

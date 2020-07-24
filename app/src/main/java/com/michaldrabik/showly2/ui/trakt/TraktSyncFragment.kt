@@ -22,9 +22,12 @@ import com.michaldrabik.showly2.model.TraktSyncSchedule
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.utilities.MessageEvent
+import com.michaldrabik.showly2.utilities.extensions.dateFromMillis
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.toDisplayString
+import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_trakt_sync.*
 
@@ -117,10 +120,17 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(R.layout.fragment_tra
         traktSyncImportCheckbox.visibleIf(!it)
         traktSyncExportCheckbox.visibleIf(!it)
         traktSyncScheduleButton.visibleIf(!it)
+        traktLastSyncTimestamp.visibleIf(!it)
       }
       progressStatus?.let { traktSyncStatus.text = it }
       authError?.let { findNavController().popBackStack() }
       traktSyncSchedule?.let { traktSyncScheduleButton.setText(it.buttonStringRes) }
+      lastTraktSyncTimestamp?.let {
+        if (it != 0L) {
+          val date = dateFromMillis(it).toLocalTimeZone().toDisplayString()
+          traktLastSyncTimestamp.text = getString(R.string.textTraktSyncLastTimestamp, date)
+        }
+      }
       isAuthorized?.let {
         when {
           it -> {

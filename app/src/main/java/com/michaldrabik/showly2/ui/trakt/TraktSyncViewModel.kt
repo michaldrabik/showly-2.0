@@ -1,6 +1,7 @@
 package com.michaldrabik.showly2.ui.trakt
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
@@ -10,6 +11,7 @@ import com.michaldrabik.showly2.common.events.TraktSyncError
 import com.michaldrabik.showly2.common.events.TraktSyncProgress
 import com.michaldrabik.showly2.common.events.TraktSyncStart
 import com.michaldrabik.showly2.common.events.TraktSyncSuccess
+import com.michaldrabik.showly2.common.trakt.TraktSyncService
 import com.michaldrabik.showly2.common.trakt.TraktSyncWorker
 import com.michaldrabik.showly2.common.trakt.exports.TraktExportWatchlistRunner
 import com.michaldrabik.showly2.common.trakt.imports.TraktImportWatchedRunner
@@ -22,8 +24,10 @@ import com.michaldrabik.showly2.utilities.MessageEvent.Companion.error
 import com.michaldrabik.showly2.utilities.MessageEvent.Companion.info
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 class TraktSyncViewModel @Inject constructor(
+  @Named("miscPreferences") private var miscPreferences: SharedPreferences,
   private val userManager: UserTraktManager,
   private val settingsRepository: SettingsRepository,
   importWatchedRunner: TraktImportWatchedRunner,
@@ -43,7 +47,12 @@ class TraktSyncViewModel @Inject constructor(
     viewModelScope.launch {
       val isAuthorized = userManager.isAuthorized()
       val syncSchedule = settingsRepository.load().traktSyncSchedule
-      uiState = TraktSyncUiModel(isAuthorized = isAuthorized, traktSyncSchedule = syncSchedule)
+      val timestamp = miscPreferences.getLong(TraktSyncService.KEY_LAST_SYNC_TIMESTAMP, 0)
+      uiState = TraktSyncUiModel(
+        isAuthorized = isAuthorized,
+        traktSyncSchedule = syncSchedule,
+        lastTraktSyncTimestamp = timestamp
+      )
     }
   }
 

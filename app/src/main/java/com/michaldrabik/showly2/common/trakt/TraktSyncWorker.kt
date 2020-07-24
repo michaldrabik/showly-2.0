@@ -34,6 +34,11 @@ class TraktSyncWorker(context: Context, workerParams: WorkerParameters) : Worker
       workManager.enqueueUniquePeriodicWork(TAG, KEEP, request)
       Timber.i("Trakt sync scheduled: $schedule")
     }
+
+    fun cancelAll(appContext: Context) {
+      val workManager = WorkManager.getInstance(appContext.applicationContext)
+      workManager.cancelUniqueWork(TAG)
+    }
   }
 
   override fun doWork(): Result {

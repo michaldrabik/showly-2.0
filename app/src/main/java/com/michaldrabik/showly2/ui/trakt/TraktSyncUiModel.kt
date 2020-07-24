@@ -8,7 +8,8 @@ data class TraktSyncUiModel(
   val progressStatus: String? = null,
   val isAuthorized: Boolean? = null,
   val authError: Boolean? = null,
-  val traktSyncSchedule: TraktSyncSchedule? = null
+  val traktSyncSchedule: TraktSyncSchedule? = null,
+  val lastTraktSyncTimestamp: Long? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -17,6 +18,7 @@ data class TraktSyncUiModel(
       progressStatus = newModel.progressStatus ?: progressStatus,
       isAuthorized = newModel.isAuthorized ?: isAuthorized,
       authError = newModel.authError ?: authError,
-      traktSyncSchedule = newModel.traktSyncSchedule ?: traktSyncSchedule
+      traktSyncSchedule = newModel.traktSyncSchedule ?: traktSyncSchedule,
+      lastTraktSyncTimestamp = newModel.lastTraktSyncTimestamp ?: lastTraktSyncTimestamp
     )
 }

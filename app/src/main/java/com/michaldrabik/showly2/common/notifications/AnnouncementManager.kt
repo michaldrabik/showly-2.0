@@ -19,15 +19,13 @@ import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
+import com.michaldrabik.showly2.utilities.extensions.dateFromMillis
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.showly2.utilities.extensions.toDisplayString
 import com.michaldrabik.showly2.utilities.extensions.toMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.Show
-import org.threeten.bp.Instant
-import org.threeten.bp.ZoneId
-import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import javax.inject.Inject
@@ -115,7 +113,7 @@ class AnnouncementManager @Inject constructor(
 
     WorkManager.getInstance(context.applicationContext).enqueue(request)
 
-    val logTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(nowUtcMillis() + delayed), ZoneId.of("UTC"))
+    val logTime = dateFromMillis(nowUtcMillis() + delayed)
     Timber.i("Notification set for: ${logTime.toDisplayString()} UTC")
   }
 }

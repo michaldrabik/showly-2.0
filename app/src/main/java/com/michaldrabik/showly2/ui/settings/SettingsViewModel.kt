@@ -72,9 +72,9 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  fun logoutTrakt() {
+  fun logoutTrakt(context: Context) {
     viewModelScope.launch {
-      interactor.logoutTrakt()
+      interactor.logoutTrakt(context)
       _messageLiveData.value = MessageEvent.info(R.string.textTraktLogoutSuccess)
       refreshSettings()
     }

@@ -27,6 +27,7 @@ import com.michaldrabik.showly2.utilities.MessageEvent
 import com.michaldrabik.showly2.utilities.MessageEvent.Companion.info
 import com.michaldrabik.showly2.utilities.MessageEvent.Type.ERROR
 import com.michaldrabik.showly2.utilities.MessageEvent.Type.INFO
+import com.michaldrabik.showly2.utilities.extensions.dateFromMillis
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.onClick
@@ -39,9 +40,6 @@ import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.utilities.extensions.withFailListener
 import kotlinx.android.synthetic.main.view_episode_details.*
 import kotlinx.android.synthetic.main.view_episode_details.view.*
-import org.threeten.bp.Instant
-import org.threeten.bp.ZoneId
-import org.threeten.bp.ZonedDateTime
 
 class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewModel>() {
 
@@ -128,7 +126,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     return if (millis == -1L) {
       "TBA"
     } else {
-      ZonedDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneId.of("UTC"))
+      dateFromMillis(millis)
         .toLocalTimeZone()
         .toDisplayString()
     }

@@ -7,6 +7,7 @@ import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.common.notifications.AnnouncementManager
+import com.michaldrabik.showly2.common.trakt.TraktSyncWorker
 import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.fcm.NotificationChannel
 import com.michaldrabik.showly2.model.MyShowsSection
@@ -99,9 +100,10 @@ class SettingsInteractor @Inject constructor(
     userManager.authorize(code)
   }
 
-  suspend fun logoutTrakt() {
+  suspend fun logoutTrakt(context: Context) {
     userManager.revokeToken()
     ratingsRepository.clear()
+    TraktSyncWorker.cancelAll(context)
   }
 
   suspend fun deleteImagesCache() = imagesProvider.deleteLocalCache()

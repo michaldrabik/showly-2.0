@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.common.trakt
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.IBinder
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.network.trakt.model.Show
@@ -18,6 +19,7 @@ import com.michaldrabik.showly2.common.trakt.imports.TraktImportWatchlistRunner
 import com.michaldrabik.showly2.model.error.TraktAuthError
 import com.michaldrabik.showly2.serviceComponent
 import com.michaldrabik.showly2.utilities.extensions.notificationManager
+import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -25,10 +27,13 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Named
 
 class TraktSyncService : TraktNotificationsService(), CoroutineScope {
 
   companion object {
+    const val KEY_LAST_SYNC_TIMESTAMP = "KEY_LAST_SYNC_TIMESTAMP"
+
     private const val ARG_IS_IMPORT = "ARG_IS_IMPORT"
     private const val ARG_IS_EXPORT = "ARG_IS_EXPORT"
     private const val ARG_IS_SILENT = "ARG_IS_SILENT"
@@ -64,6 +69,10 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
   @Inject
   lateinit var exportWatchlistRunner: TraktExportWatchlistRunner
 
+  @Inject
+  @Named("miscPreferences")
+  lateinit var miscPreferences: SharedPreferences
+
   override fun onCreate() {
     super.onCreate()
     serviceComponent().inject(this)
@@ -96,6 +105,8 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
           runExportWatched()
           runExportWatchlist()
         }
+
+        miscPreferences.edit().putLong(KEY_LAST_SYNC_TIMESTAMP, nowUtcMillis()).apply()
 
         EventsManager.sendEvent(TraktSyncSuccess)
         if (!isSilent) {
