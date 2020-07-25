@@ -24,8 +24,6 @@ class DiscoverShowsRepository @Inject constructor(
     return nowUtcMillis() - stamp < Config.DISCOVER_SHOWS_CACHE_DURATION
   }
 
-  suspend fun clearCache() = database.discoverShowsDao().deleteAll()
-
   suspend fun loadAllCached(): List<Show> {
     val cachedShows = database.discoverShowsDao().getAll().map { it.idTrakt }
     val shows = database.showsDao().getAll(cachedShows)
@@ -39,11 +37,19 @@ class DiscoverShowsRepository @Inject constructor(
     showAnticipated: Boolean,
     genres: List<Genre>
   ): List<Show> {
-    val genresQuery = genres.joinToString(",") { it.slug }
     val remoteShows = mutableListOf<Show>()
+    val anticipatedShows = mutableListOf<Show>()
+    val popularShows = mutableListOf<Show>()
+    val genresQuery = genres.joinToString(",") { it.slug }
+
     val trendingShows = cloud.traktApi.fetchTrendingShows(genresQuery).map { mappers.show.fromNetwork(it) }
 
-    val anticipatedShows = mutableListOf<Show>()
+    if (genres.isNotEmpty()) {
+      // Wa are adding popular results for genres filtered content to add more results.
+      val popular = cloud.traktApi.fetchPopularShows(genresQuery).map { mappers.show.fromNetwork(it) }
+      popularShows.addAll(popular)
+    }
+
     if (showAnticipated) {
       val shows = cloud.traktApi.fetchAnticipatedShows(genresQuery).map { mappers.show.fromNetwork(it) }.toMutableList()
       anticipatedShows.addAll(shows)
@@ -56,9 +62,9 @@ class DiscoverShowsRepository @Inject constructor(
         addIfMissing(remoteShows, element)
       }
     }
+    popularShows.forEach { show -> addIfMissing(remoteShows, show) }
 
     cacheDiscoverShows(remoteShows)
-
     return remoteShows
   }
 
@@ -77,8 +83,7 @@ class DiscoverShowsRepository @Inject constructor(
   }
 
   private fun addIfMissing(shows: MutableList<Show>, show: Show) {
-    if (shows.none { it.ids.trakt == show.ids.trakt }) {
-      shows.add(show)
-    }
+    if (shows.any { it.ids.trakt == show.ids.trakt }) return
+    shows.add(show)
   }
 }

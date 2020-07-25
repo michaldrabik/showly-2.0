@@ -8,6 +8,7 @@ object Config {
   const val TRAKT_REDIRECT_URL = "showly2://trakt"
   const val TRAKT_AUTHORIZE_URL = "https://trakt.tv/oauth/authorize?response_type=code&client_id=$TRAKT_CLIENT_ID&redirect_uri=$TRAKT_REDIRECT_URL"
 
+  const val TRAKT_POPULAR_SHOWS_LIMIT = 60
   const val TRAKT_TRENDING_SHOWS_LIMIT = 298
   const val TRAKT_ANTICIPATED_SHOWS_LIMIT = 40
   const val TRAKT_RELATED_SHOWS_LIMIT = 15

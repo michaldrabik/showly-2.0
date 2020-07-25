@@ -33,6 +33,11 @@ interface TraktService {
   @GET("shows/{traktId}?extended=full")
   suspend fun fetchShow(@Path("traktId") traktId: Long): Show
 
+  @GET("shows/popular?extended=full&limit=${Config.TRAKT_POPULAR_SHOWS_LIMIT}")
+  suspend fun fetchPopularShows(
+    @Query("genres") genres: String
+  ): List<Show>
+
   @GET("shows/trending?extended=full&limit=${Config.TRAKT_TRENDING_SHOWS_LIMIT}")
   suspend fun fetchTrendingShows(
     @Query("genres") genres: String
