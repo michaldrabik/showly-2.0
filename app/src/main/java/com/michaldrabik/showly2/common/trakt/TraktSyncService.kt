@@ -76,6 +76,9 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
   override fun onCreate() {
     super.onCreate()
     serviceComponent().inject(this)
+    runners.addAll(
+      arrayOf(importWatchedRunner, importWatchlistRunner, exportWatchedRunner, exportWatchlistRunner)
+    )
   }
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

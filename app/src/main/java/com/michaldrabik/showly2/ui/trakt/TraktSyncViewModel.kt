@@ -37,7 +37,12 @@ class TraktSyncViewModel @Inject constructor(
 ) : BaseViewModel<TraktSyncUiModel>() {
 
   init {
-    val runners = listOf(importWatchedRunner, importWatchlistRunner, exportWatchedRunner, exportWatchlistRunner)
+    val runners = listOf(
+      importWatchedRunner,
+      importWatchlistRunner,
+      exportWatchedRunner,
+      exportWatchlistRunner
+    )
     if (runners.any { it.isRunning }) {
       uiState = TraktSyncUiModel(isProgress = true)
     }
