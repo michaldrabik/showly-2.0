@@ -39,6 +39,7 @@ class DiscoverFiltersView : ConstraintLayout {
     setPadding(spaceNormal, spaceNormal, spaceNormal, spaceSmall)
 
     discoverFiltersApplyButton.onClick { onApplyFilters() }
+    discoverFiltersAnticipatedText.onClick { discoverFiltersAnticipatedSwitch.toggle() }
   }
 
   fun bind(filters: DiscoverFilters) {
