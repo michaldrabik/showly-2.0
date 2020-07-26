@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.IBinder
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.network.trakt.model.Show
+import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.events.EventsManager
 import com.michaldrabik.showly2.common.events.TraktSyncAuthError
 import com.michaldrabik.showly2.common.events.TraktSyncError
@@ -119,7 +120,10 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
         if (t is TraktAuthError) EventsManager.sendEvent(TraktSyncAuthError)
         EventsManager.sendEvent(TraktSyncError)
         if (!isSilent) {
-          notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
+          notificationManager().notify(
+            SYNC_NOTIFICATION_COMPLETE_ERROR_ID,
+            createErrorNotification(R.string.textTraktSyncError)
+          )
         }
         FirebaseCrashlytics.getInstance().recordException(t)
       } finally {

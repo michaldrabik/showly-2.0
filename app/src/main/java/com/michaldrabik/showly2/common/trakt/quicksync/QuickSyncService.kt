@@ -4,8 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.common.events.EventsManager
+import com.michaldrabik.showly2.common.events.TraktQuickSyncSuccess
 import com.michaldrabik.showly2.common.trakt.TraktNotificationsService
 import com.michaldrabik.showly2.serviceComponent
+import com.michaldrabik.showly2.utilities.extensions.notificationManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -18,6 +22,7 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
 
   companion object {
     private const val SYNC_NOTIFICATION_PROGRESS_ID = 916
+    private const val SYNC_NOTIFICATION_ERROR_ID = 917
 
     fun createIntent(context: Context) = Intent(context, QuickSyncService::class.java)
   }
@@ -44,24 +49,16 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
     Timber.d("Sync started.")
     launch {
       try {
-//        EventsManager.sendEvent(TraktSyncStart)
-
         quickSyncRunner.run()
-
-//        EventsManager.sendEvent(TraktSyncSuccess)
-//        if (!isSilent) {
-//          notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification())
-//        }
+        EventsManager.sendEvent(TraktQuickSyncSuccess)
       } catch (t: Throwable) {
-//        if (t is TraktAuthError) EventsManager.sendEvent(TraktSyncAuthError)
-//        EventsManager.sendEvent(TraktSyncError)
-//        if (!isSilent) {
-//          notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_ERROR_ID, createErrorNotification())
-//        }
+        notificationManager().notify(
+          SYNC_NOTIFICATION_ERROR_ID,
+          createErrorNotification(R.string.textTraktQuickSyncError)
+        )
         FirebaseCrashlytics.getInstance().recordException(t)
       } finally {
         Timber.d("Quick Sync completed.")
-//        notificationManager().cancel(SYNC_NOTIFICATION_PROGRESS_ID)
         clear()
         stopSelf()
       }
@@ -69,52 +66,6 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
 
     return START_NOT_STICKY
   }
-
-//  private suspend fun runImportWatched(): Int {
-//    importWatchedRunner.progressListener = { show: Show, progress: Int, total: Int ->
-//      val status = "Importing \'${show.title}\'..."
-//      val notification = createProgressNotification().run {
-//        setContentText(status)
-//        setProgress(total, progress, false)
-//      }
-//      notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
-//      EventsManager.sendEvent(TraktSyncProgress(status))
-//    }
-//    return importWatchedRunner.run()
-//  }
-//
-//  private suspend fun runImportWatchlist(totalProgress: Int) {
-//    importWatchlistRunner.progressListener = { show: Show, progress: Int, total: Int ->
-//      val status = "Importing \'${show.title}\'..."
-//      val notification = createProgressNotification().run {
-//        setContentText(status)
-//        setProgress(totalProgress + total, totalProgress + progress, false)
-//      }
-//      notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
-//      EventsManager.sendEvent(TraktSyncProgress(status))
-//    }
-//    importWatchlistRunner.run()
-//  }
-//
-//  private suspend fun runExportWatched() {
-//    val status = "Exporting progress..."
-//    val notification = createProgressNotification().run {
-//      setContentText(status)
-//    }
-//    notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
-//    EventsManager.sendEvent(TraktSyncProgress(status))
-//    exportWatchedRunner.run()
-//  }
-//
-//  private suspend fun runExportWatchlist() {
-//    val status = "Exporting watchlist..."
-//    val notification = createProgressNotification().run {
-//      setContentText(status)
-//    }
-//    notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
-//    EventsManager.sendEvent(TraktSyncProgress(status))
-//    exportWatchlistRunner.run()
-//  }
 
   override fun onDestroy() {
     coroutineContext.cancelChildren()

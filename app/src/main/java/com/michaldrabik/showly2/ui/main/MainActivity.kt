@@ -15,6 +15,7 @@ import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.events.Event
 import com.michaldrabik.showly2.common.events.EventObserver
 import com.michaldrabik.showly2.common.events.ShowsSyncComplete
+import com.michaldrabik.showly2.common.events.TraktQuickSyncSuccess
 import com.michaldrabik.showly2.common.events.TraktSyncProgress
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.di.component.FragmentComponent
@@ -29,6 +30,7 @@ import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.showly2.utilities.extensions.showShortInfoSnackbar
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.utilities.network.NetworkObserver
 import kotlinx.android.synthetic.main.activity_main.*
@@ -210,7 +212,10 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
   }
 
   override fun onNetworkAvailableListener(isAvailable: Boolean) =
-    runOnUiThread { noInternetView.visibleIf(!isAvailable) }
+    runOnUiThread {
+      statusView.visibleIf(!isAvailable)
+      statusView.text = getString(R.string.errorNoInternetConnection)
+    }
 
   override fun onNewEvent(event: Event) {
     runOnUiThread {
@@ -221,6 +226,9 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
         }
         is TraktSyncProgress -> {
           doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncProgress() }
+        }
+        is TraktQuickSyncSuccess -> {
+          snackBarHost.showShortInfoSnackbar(getString(R.string.textTraktQuickSyncComplete))
         }
       }
     }

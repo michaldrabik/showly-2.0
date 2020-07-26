@@ -6,6 +6,7 @@ import android.app.NotificationManager.IMPORTANCE_LOW
 import android.app.Service
 import android.os.Build
 import android.os.Build.VERSION
+import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.CATEGORY_SERVICE
 import androidx.core.app.NotificationCompat.PRIORITY_HIGH
@@ -34,8 +35,8 @@ abstract class TraktNotificationsService : Service() {
     .setPriority(PRIORITY_HIGH)
     .build()
 
-  protected fun createErrorNotification() = createBaseNotification()
-    .setContentText(getString(R.string.textTraktSyncError))
+  protected fun createErrorNotification(@StringRes textRes: Int) = createBaseNotification()
+    .setContentText(getString(textRes))
     .setPriority(PRIORITY_HIGH)
     .build()
 
