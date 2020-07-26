@@ -28,13 +28,13 @@
     />
 
   <com.google.android.material.button.MaterialButton
-    android:id="@+id/watchlistEmptyTraktButton"
+    android:id="@+id/watchlistEmptyDiscoverButton"
     style="@style/Widget.MaterialComponents.Button"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_marginTop="@dimen/spaceNormal"
-    android:text="@string/textTraktSynchronize"
+    android:text="@string/textDiscoverShows"
     android:textColor="@color/colorWhite"
     app:backgroundTint="@color/colorAccent"
     app:rippleColor="@color/colorWhite"
@@ -42,12 +42,12 @@
     />
 
   <com.google.android.material.button.MaterialButton
-    android:id="@+id/watchlistEmptyDiscoverButton"
+    android:id="@+id/watchlistEmptyTraktButton"
     style="@style/Widget.MaterialComponents.Button.TextButton"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:text="@string/textDiscoverShows"
+    android:text="@string/textTraktSynchronize"
     android:textColor="@color/colorWhite"
     app:rippleColor="@color/colorWhite"
     />

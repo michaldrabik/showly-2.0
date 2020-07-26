@@ -125,7 +125,7 @@
   <string name="textSettingsDeleteCacheTitle">Clear Images Cache</string>
   <string name="textSettingsDeleteCacheSummary">Click to clear local images cache. This may help if shows images are not being loaded correctly.</string>
 
-  <string name="textTraktSynchronize">Synchronize with Trakt.tv</string>
+  <string name="textTraktSynchronize">Import from Trakt.tv</string>
   <string name="textTraktSyncLastTimestamp">Last Sync: %s</string>
   <string name="textTraktSync">Trakt.tv Sync</string>
   <string name="textTraktSyncRunning">Running…</string>
