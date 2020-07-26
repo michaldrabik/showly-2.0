@@ -95,6 +95,8 @@
   <string name="textSettingsTraktAuthorizeSummarySignOutUser">Signed in as %1$s. Click to log out.</string>
   <string name="textSettingsTraktSyncTitle">Trakt.tv Sync</string>
   <string name="textSettingsTraktSyncSummary">Sync data between Trakt.tv and Showly.</string>
+  <string name="textSettingsTraktQuickSyncTitle">Trakt.tv Instant Sync</string>
+  <string name="textSettingsTraktQuickSyncSummary">Instantly sync episodes after you mark them as watched.</string>
   <string name="textSettingsGeneral">General &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Recently Added Amount</string>
   <string name="textSettingsRecentShowsSummary">Number of recent shows to display in \'My Shows\' screen.</string>
@@ -132,7 +134,6 @@
   <string name="textTraktSyncStarted">Sync started. It will continue to run in the background.</string>
   <string name="textTraktSyncComplete">Sync completed successfully.</string>
   <string name="textTraktSyncError">Trakt.tv sync failed. Please try again or contact us if this keeps happening.</string>
-  <string name="textTraktQuickSyncComplete">Episodes have been synced.</string>
   <string name="textTraktQuickSyncError">Instant Sync failed. We will try again next time you open the app or check another episode as watched.</string>
   <string name="textTraktSyncDescription">Sync your Trakt.tv account progress and watchlist data with Showly.\n\nNone of the items from your current collection will be deleted. Sync will only handle missing items in your collections.</string>
   <string name="textTraktSyncStart">Sync Now</string>
@@ -146,6 +147,10 @@
   <string name="textTraktSyncOptionDaily">Every Day</string>
   <string name="textTraktSyncOption3Day">Every 3 Days</string>
   <string name="textTraktSyncOptionWeekly">Every Week</string>
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="one">1 episode synced successfully.</item>
+    <item quantity="other">%d episodes synced successfully.</item>
+  </plurals>
 
   <string name="textTraktSyncOptionOffMessage">Sync will not run automatically.</string>
   <string name="textTraktSyncOptionConfirmMessage">Automatic sync has been scheduled.</string>

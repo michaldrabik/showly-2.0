@@ -228,7 +228,8 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
           doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncProgress() }
         }
         is TraktQuickSyncSuccess -> {
-          snackBarHost.showShortInfoSnackbar(getString(R.string.textTraktQuickSyncComplete))
+          val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)
+          snackBarHost.showShortInfoSnackbar(text)
         }
       }
     }

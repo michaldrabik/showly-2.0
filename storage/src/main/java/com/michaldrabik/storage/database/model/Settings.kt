@@ -27,6 +27,6 @@ data class Settings(
   @ColumnInfo(name = "show_anticipated_shows", defaultValue = "1") var showAnticipatedShows: Boolean,
   @ColumnInfo(name = "discover_filter_genres", defaultValue = "") var discoverFilterGenres: String,
   @ColumnInfo(name = "discover_filter_feed", defaultValue = "HOT") var discoverFilterFeed: String,
-  @ColumnInfo(name = "trakt_sync_schedule", defaultValue = "OFF") var traktSyncSchedule: String
-
+  @ColumnInfo(name = "trakt_sync_schedule", defaultValue = "OFF") var traktSyncSchedule: String,
+  @ColumnInfo(name = "trakt_quick_sync_enabled", defaultValue = "0") var traktQuickSyncEnabled: Boolean
 )

@@ -31,6 +31,13 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
+  fun enableQuickSync(enable: Boolean) {
+    viewModelScope.launch {
+      interactor.enableQuickSync(enable)
+      refreshSettings()
+    }
+  }
+
   fun enablePushNotifications(enable: Boolean) {
     viewModelScope.launch {
       interactor.enablePushNotifications(enable)

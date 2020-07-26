@@ -252,7 +252,9 @@ class ShowDetailsViewModel @Inject constructor(
       when {
         isChecked -> {
           episodesManager.setEpisodeWatched(bundle)
-          quickSyncManager.scheduleEpisode(context, episode.ids.trakt.id)
+          if (interactor.isFollowed(show)) {
+            quickSyncManager.scheduleEpisode(context, episode.ids.trakt.id)
+          }
         }
         else -> episodesManager.setEpisodeUnwatched(bundle)
       }

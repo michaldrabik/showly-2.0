@@ -49,8 +49,8 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
     Timber.d("Sync started.")
     launch {
       try {
-        quickSyncRunner.run()
-        EventsManager.sendEvent(TraktQuickSyncSuccess)
+        val count = quickSyncRunner.run()
+        EventsManager.sendEvent(TraktQuickSyncSuccess(count))
       } catch (t: Throwable) {
         notificationManager().notify(
           SYNC_NOTIFICATION_ERROR_ID,

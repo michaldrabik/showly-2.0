@@ -29,7 +29,8 @@ class SettingsMapper @Inject constructor() {
     showAnticipatedShows = settings.showAnticipatedShows,
     discoverFilterFeed = enumValueOf(settings.discoverFilterFeed),
     discoverFilterGenres = settings.discoverFilterGenres.split(",").filter { it.isNotBlank() }.map { Genre.valueOf(it) },
-    traktSyncSchedule = enumValueOf(settings.traktSyncSchedule)
+    traktSyncSchedule = enumValueOf(settings.traktSyncSchedule),
+    traktQuickSyncEnabled = settings.traktQuickSyncEnabled
   )
 
   fun toDatabase(settings: Settings) = SettingsDb(
@@ -53,6 +54,7 @@ class SettingsMapper @Inject constructor() {
     showAnticipatedShows = settings.showAnticipatedShows,
     discoverFilterFeed = settings.discoverFilterFeed.name,
     discoverFilterGenres = settings.discoverFilterGenres.joinToString(",") { it.name },
-    traktSyncSchedule = settings.traktSyncSchedule.name
+    traktSyncSchedule = settings.traktSyncSchedule.name,
+    traktQuickSyncEnabled = settings.traktQuickSyncEnabled
   )
 }

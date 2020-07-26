@@ -74,6 +74,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       settings?.let { renderSettings(it) }
       isSignedInTrakt?.let { isSignedIn ->
         settingsTraktSync.visibleIf(isSignedIn)
+        settingsTraktQuickSync.visibleIf(isSignedIn)
+        settingsTraktQuickSyncSwitch.visibleIf(isSignedIn)
         settingsTraktAuthorizeIcon.visibleIf(isSignedIn)
         settingsTraktAuthorize.onClick {
           if (isSignedIn) viewModel.logoutTrakt(requireAppContext())
@@ -98,6 +100,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   private fun renderSettings(settings: Settings) {
     settingsRecentShowsAmount.onClick { showRecentShowsDialog(settings) }
     settingsMyShowsSections.onClick { showSectionsDialog(settings) }
+
+    settingsTraktQuickSyncSwitch
+      .setCheckedSilent(settings.traktQuickSyncEnabled) { _, isChecked ->
+        viewModel.enableQuickSync(isChecked)
+      }
 
     settingsPushNotificationsSwitch
       .setCheckedSilent(settings.pushNotificationsEnabled) { _, isChecked ->

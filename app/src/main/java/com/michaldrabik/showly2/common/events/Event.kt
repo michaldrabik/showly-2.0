@@ -12,6 +12,6 @@ object TraktSyncError : Event()
 
 object TraktSyncAuthError : Event()
 
-object TraktQuickSyncSuccess : Event()
+data class TraktQuickSyncSuccess(val count: Int) : Event()
 
 data class TraktSyncProgress(val status: String = "") : Event()

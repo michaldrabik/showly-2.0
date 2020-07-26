@@ -42,6 +42,14 @@ class SettingsInteractor @Inject constructor(
     }
   }
 
+  suspend fun enableQuickSync(enable: Boolean) {
+    val settings = settingsRepository.load()
+    settings.let {
+      val new = it.copy(traktQuickSyncEnabled = enable)
+      settingsRepository.update(new)
+    }
+  }
+
   suspend fun enablePushNotifications(enable: Boolean) {
     val settings = settingsRepository.load()
     settings.let {
