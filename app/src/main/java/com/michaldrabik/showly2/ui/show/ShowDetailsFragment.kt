@@ -48,6 +48,7 @@ import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.showly2.model.Tip.SHOW_DETAILS_QUICK_PROGRESS
+import com.michaldrabik.showly2.requireAppContext
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.ADD
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_MY_SHOWS
@@ -124,7 +125,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
       messageLiveData.observe(viewLifecycleOwner, Observer { showSnack(it) })
-      loadShowDetails(showId, requireContext().applicationContext)
+      loadShowDetails(showId, requireAppContext())
     }
   }
 
@@ -220,7 +221,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       startAnimation(animationEnterRight)
       itemCheckedListener = { episode, season, isChecked ->
-        viewModel.setWatchedEpisode(episode, season, isChecked)
+        viewModel.setWatchedEpisode(requireAppContext(), episode, season, isChecked)
       }
       seasonCheckedListener = { season, isChecked ->
         viewModel.setWatchedSeason(season, isChecked)
@@ -267,7 +268,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   ) {
     val modal = EpisodeDetailsBottomSheet.create(showId, episode, isWatched, showButton)
     if (season != null) {
-      modal.onEpisodeWatchedClick = { viewModel.setWatchedEpisode(episode, season, it) }
+      modal.onEpisodeWatchedClick = { viewModel.setWatchedEpisode(requireAppContext(), episode, season, it) }
     }
     modal.show(requireActivity().supportFragmentManager, "MODAL")
   }
@@ -354,11 +355,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
         showDetailsAddButton.run {
           onAddMyShowsClickListener = {
-            viewModel.addFollowedShow(requireContext().applicationContext)
+            viewModel.addFollowedShow(requireAppContext())
             showDetailsTipQuickProgress.fadeIf(!mainActivity().isTipShown(SHOW_DETAILS_QUICK_PROGRESS))
           }
           onAddWatchLaterClickListener = { viewModel.addWatchLaterShow() }
-          onRemoveClickListener = { viewModel.removeFromFollowed(requireContext().applicationContext) }
+          onRemoveClickListener = { viewModel.removeFromFollowed(requireAppContext()) }
         }
       }
       showLoading?.let {
@@ -542,7 +543,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     MaterialAlertDialogBuilder(context, R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
       .setView(view)
-      .setPositiveButton(R.string.textSelect) { _, _ -> viewModel.setQuickProgress(view.getSelectedItem()) }
+      .setPositiveButton(R.string.textSelect) { _, _ ->
+        viewModel.setQuickProgress(requireAppContext(), view.getSelectedItem())
+      }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
       .show()
   }

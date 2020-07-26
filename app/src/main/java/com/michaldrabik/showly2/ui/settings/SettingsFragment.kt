@@ -26,6 +26,7 @@ import com.michaldrabik.showly2.model.MyShowsSection.UPCOMING
 import com.michaldrabik.showly2.model.MyShowsSection.WATCHING
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.Settings
+import com.michaldrabik.showly2.requireAppContext
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
@@ -57,7 +58,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   private fun setupView() {
     settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     settingsTraktSync.onClick { navigateTo(R.id.actionSettingsFragmentToTraktSync) }
-    settingsDeleteCache.onClick { viewModel.deleteImagesCache(requireContext().applicationContext) }
+    settingsDeleteCache.onClick { viewModel.deleteImagesCache(requireAppContext()) }
     settingsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
       view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
     }
@@ -75,7 +76,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         settingsTraktSync.visibleIf(isSignedIn)
         settingsTraktAuthorizeIcon.visibleIf(isSignedIn)
         settingsTraktAuthorize.onClick {
-          if (isSignedIn) viewModel.logoutTrakt(requireContext().applicationContext)
+          if (isSignedIn) viewModel.logoutTrakt(requireAppContext())
           else openTraktWebAuthorization()
         }
         val summaryText = when {
@@ -105,7 +106,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
     settingsShowsNotificationsSwitch
       .setCheckedSilent(settings.episodesNotificationsEnabled) { _, isChecked ->
-        viewModel.enableEpisodesAnnouncements(isChecked, requireContext().applicationContext)
+        viewModel.enableEpisodesAnnouncements(isChecked, requireAppContext())
       }
 
     settingsWhenToNotifyValue.run {
@@ -172,7 +173,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     val default = options.indexOf(settings.episodesNotificationsDelay)
     AlertDialog.Builder(requireContext())
       .setSingleChoiceItems(options.map { getString(it.stringRes) }.toTypedArray(), default) { dialog, index ->
-        viewModel.setWhenToNotify(options[index], requireContext().applicationContext)
+        viewModel.setWhenToNotify(options[index], requireAppContext())
         dialog.dismiss()
       }
       .show()

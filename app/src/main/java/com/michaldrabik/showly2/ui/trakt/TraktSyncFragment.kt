@@ -19,6 +19,7 @@ import com.michaldrabik.showly2.common.events.EventObserver
 import com.michaldrabik.showly2.common.trakt.TraktSyncService
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.TraktSyncSchedule
+import com.michaldrabik.showly2.requireAppContext
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.utilities.MessageEvent
@@ -76,7 +77,7 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(R.layout.fragment_tra
   }
 
   private fun startImport() {
-    val context = requireContext().applicationContext
+    val context = requireAppContext()
     TraktSyncService.createIntent(
       context,
       isImport = traktSyncImportCheckbox.isChecked,
@@ -96,7 +97,7 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(R.layout.fragment_tra
     AlertDialog.Builder(requireContext())
       .setSingleChoiceItems(optionsStrings, options.indexOf(currentSchedule)) { dialog, index ->
         val schedule = options[index]
-        viewModel.saveTraktSyncSchedule(schedule, requireContext().applicationContext)
+        viewModel.saveTraktSyncSchedule(schedule, requireAppContext())
         showSnack(MessageEvent.info(schedule.confirmationStringRes))
         dialog.dismiss()
       }

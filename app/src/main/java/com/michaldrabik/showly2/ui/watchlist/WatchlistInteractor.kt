@@ -57,7 +57,7 @@ class WatchlistInteractor @Inject constructor(
   suspend fun setEpisodeWatched(context: Context, item: WatchlistItem) {
     val bundle = EpisodeBundle(item.episode, item.season, item.show)
     episodesManager.setEpisodeWatched(bundle)
-    quickSyncManager.scheduleEpisode(context, item.episode)
+    quickSyncManager.scheduleEpisode(context, item.episode.ids.trakt.id)
   }
 
   fun addPinnedItem(item: WatchlistItem) =

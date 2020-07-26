@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.notifications.AnnouncementManager
+import com.michaldrabik.showly2.common.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.EpisodeBundle
 import com.michaldrabik.showly2.model.IdTrakt
@@ -33,6 +34,7 @@ import kotlin.properties.Delegates.notNull
 class ShowDetailsViewModel @Inject constructor(
   private val interactor: ShowDetailsInteractor,
   private val episodesManager: EpisodesManager,
+  private val quickSyncManager: QuickSyncManager,
   private val announcementManager: AnnouncementManager
 ) : BaseViewModel<ShowDetailsUiModel>() {
 
@@ -239,11 +241,19 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun setWatchedEpisode(episode: Episode, season: Season, isChecked: Boolean) {
+  fun setWatchedEpisode(
+    context: Context,
+    episode: Episode,
+    season: Season,
+    isChecked: Boolean
+  ) {
     viewModelScope.launch {
       val bundle = EpisodeBundle(episode, season, show)
       when {
-        isChecked -> episodesManager.setEpisodeWatched(bundle)
+        isChecked -> {
+          episodesManager.setEpisodeWatched(bundle)
+          quickSyncManager.scheduleEpisode(context, episode.ids.trakt.id)
+        }
         else -> episodesManager.setEpisodeUnwatched(bundle)
       }
       refreshWatchedEpisodes()
@@ -294,7 +304,7 @@ class ShowDetailsViewModel @Inject constructor(
     return items
   }
 
-  fun setQuickProgress(item: QuickSetupListItem?) {
+  fun setQuickProgress(context: Context, item: QuickSetupListItem?) {
     if (item == null) return
     if (!areSeasonsLoaded) {
       _messageLiveData.value = MessageEvent.info(R.string.errorSeasonsNotLoaded)
@@ -313,7 +323,7 @@ class ShowDetailsViewModel @Inject constructor(
       season?.episodes
         ?.filter { it.number <= item.episode.number }
         ?.forEach { episode ->
-          setWatchedEpisode(episode, season, true)
+          setWatchedEpisode(context, episode, season, true)
         }
 
       _messageLiveData.value = MessageEvent.info(R.string.textShowQuickProgressDone)

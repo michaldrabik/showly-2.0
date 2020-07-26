@@ -95,3 +95,5 @@ fun Activity.appComponent() = (application as App).appComponent
 fun Fragment.fragmentComponent() = (requireActivity() as MainActivity).fragmentComponent
 
 fun Service.serviceComponent() = (application as App).appComponent.serviceComponent().create()
+
+fun Fragment.requireAppContext(): Context = requireContext().applicationContext

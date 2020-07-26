@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.Tip
+import com.michaldrabik.showly2.requireAppContext
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
@@ -103,7 +104,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
       itemClickListener = { openShowDetails(it) }
       itemLongClickListener = { item, view -> openPopupMenu(item, view) }
       detailsClickListener = { openEpisodeDetails(it) }
-      checkClickListener = { viewModel.setWatchedEpisode(requireContext().applicationContext, it) }
+      checkClickListener = { viewModel.setWatchedEpisode(requireAppContext(), it) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
     }
   }

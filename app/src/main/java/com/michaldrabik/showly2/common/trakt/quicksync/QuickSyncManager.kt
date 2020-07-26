@@ -2,7 +2,6 @@ package com.michaldrabik.showly2.common.trakt.quicksync
 
 import android.content.Context
 import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
@@ -16,16 +15,16 @@ class QuickSyncManager @Inject constructor(
   private val database: AppDatabase
 ) {
 
-  suspend fun scheduleEpisode(context: Context, episode: Episode) {
+  suspend fun scheduleEpisode(context: Context, episodeTraktId: Long) {
     if (!userTraktManager.isAuthorized()) {
       Timber.d("User not logged into Trakt. Skipping...")
       return
     }
 
     val time = nowUtcMillis()
-    val item = TraktSyncQueue.createEpisode(episode.ids.trakt.id, time, time)
+    val item = TraktSyncQueue.createEpisode(episodeTraktId, time, time)
     database.traktSyncQueueDao().insert(listOf(item))
-    Timber.d("Episode added into sync queue. ID: ${episode.ids.trakt.id}")
+    Timber.d("Episode added into sync queue. ID: $episodeTraktId")
 
     QuickSyncWorker.schedule(context)
   }

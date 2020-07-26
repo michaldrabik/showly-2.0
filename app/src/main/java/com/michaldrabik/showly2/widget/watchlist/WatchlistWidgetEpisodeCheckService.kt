@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.michaldrabik.showly2.common.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.serviceComponent
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
@@ -45,6 +46,9 @@ class WatchlistWidgetEpisodeCheckService : JobIntentService(), CoroutineScope {
   @Inject
   lateinit var episodesManager: EpisodesManager
 
+  @Inject
+  lateinit var quickSyncManager: QuickSyncManager
+
   override fun onHandleWork(intent: Intent) {
     serviceComponent().inject(this)
 
@@ -61,6 +65,7 @@ class WatchlistWidgetEpisodeCheckService : JobIntentService(), CoroutineScope {
 
     runBlocking {
       episodesManager.setEpisodeWatched(episodeId, seasonId, IdTrakt(showId))
+      quickSyncManager.scheduleEpisode(applicationContext, episodeId)
       WatchlistWidgetProvider.requestUpdate(applicationContext)
     }
   }
