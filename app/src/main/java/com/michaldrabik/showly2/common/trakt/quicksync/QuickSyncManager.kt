@@ -17,7 +17,7 @@ class QuickSyncManager @Inject constructor(
   private val database: AppDatabase
 ) {
 
-  suspend fun scheduleEpisode(context: Context, episodeTraktId: Long) {
+  suspend fun scheduleEpisodes(context: Context, episodesIds: List<Long>) {
     val settings = settingsRepository.load()
     if (!settings.traktQuickSyncEnabled) {
       Timber.d("Quick Sync is disabled. Skipping...")
@@ -29,9 +29,9 @@ class QuickSyncManager @Inject constructor(
     }
 
     val time = nowUtcMillis()
-    val item = TraktSyncQueue.createEpisode(episodeTraktId, time, time)
-    database.traktSyncQueueDao().insert(listOf(item))
-    Timber.d("Episode added into sync queue. ID: $episodeTraktId")
+    val items = episodesIds.map { TraktSyncQueue.createEpisode(it, time, time) }
+    database.traktSyncQueueDao().insert(items)
+    Timber.d("Episodes added into sync queue. Count: ${items.size}")
 
     QuickSyncWorker.schedule(context)
   }

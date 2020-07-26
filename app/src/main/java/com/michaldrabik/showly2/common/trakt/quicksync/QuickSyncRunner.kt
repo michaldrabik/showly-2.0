@@ -43,20 +43,21 @@ class QuickSyncRunner @Inject constructor(
       return count
     }
 
+    val toExport = items.distinctBy { it.idTrakt }
     val request = SyncExportRequest(
-      episodes = items.map { SyncExportItem.create(it.idTrakt) }
+      episodes = toExport.map { SyncExportItem.create(it.idTrakt) }
     )
-    Timber.d("Exporting ${items.count()} quick sync items...")
+    Timber.d("Exporting ${toExport.count()} quick sync items...")
     cloud.traktApi.postSyncWatched(token.token, request)
     database.traktSyncQueueDao().deleteAll(items.map { it.idTrakt })
 
-    // Check if new items appeared during network calls
+    // Check for more items
     val newItems = database.traktSyncQueueDao().getAll()
     if (newItems.isNotEmpty()) {
       delay(1000)
-      exportItems(token, count + items.count())
+      return exportItems(token, count + toExport.count())
     }
 
-    return count + items.count()
+    return count + toExport.count()
   }
 }

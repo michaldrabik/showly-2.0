@@ -253,7 +253,7 @@ class ShowDetailsViewModel @Inject constructor(
         isChecked -> {
           episodesManager.setEpisodeWatched(bundle)
           if (interactor.isFollowed(show)) {
-            quickSyncManager.scheduleEpisode(context, episode.ids.trakt.id)
+            quickSyncManager.scheduleEpisodes(context, listOf(episode.ids.trakt.id))
           }
         }
         else -> episodesManager.setEpisodeUnwatched(bundle)
@@ -262,11 +262,16 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun setWatchedSeason(season: Season, isChecked: Boolean) {
+  fun setWatchedSeason(context: Context, season: Season, isChecked: Boolean) {
     viewModelScope.launch {
       val bundle = SeasonBundle(season, show)
       when {
-        isChecked -> episodesManager.setSeasonWatched(bundle)
+        isChecked -> {
+          val episodesAdded = episodesManager.setSeasonWatched(bundle)
+          if (interactor.isFollowed(show)) {
+            quickSyncManager.scheduleEpisodes(context, episodesAdded.map { it.ids.trakt.id })
+          }
+        }
         else -> episodesManager.setSeasonUnwatched(bundle)
       }
       refreshWatchedEpisodes()
@@ -318,7 +323,7 @@ class ShowDetailsViewModel @Inject constructor(
       seasons
         .filter { it.number < item.season.number }
         .forEach { season ->
-          setWatchedSeason(season, true)
+          setWatchedSeason(context, season, true)
         }
 
       val season = seasons.find { it.number == item.season.number }

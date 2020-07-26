@@ -209,7 +209,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     seasonsAdapter.itemClickListener = { showEpisodesView(it) }
     seasonsAdapter.itemCheckedListener = { item: SeasonListItem, isChecked: Boolean ->
-      viewModel.setWatchedSeason(item.season, isChecked)
+      viewModel.setWatchedSeason(requireAppContext(), item.season, isChecked)
     }
   }
 
@@ -224,7 +224,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         viewModel.setWatchedEpisode(requireAppContext(), episode, season, isChecked)
       }
       seasonCheckedListener = { season, isChecked ->
-        viewModel.setWatchedSeason(season, isChecked)
+        viewModel.setWatchedSeason(requireAppContext(), season, isChecked)
       }
     }
     showDetailsMainLayout.run {

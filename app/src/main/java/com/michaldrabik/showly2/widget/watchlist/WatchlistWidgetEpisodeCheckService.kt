@@ -65,7 +65,7 @@ class WatchlistWidgetEpisodeCheckService : JobIntentService(), CoroutineScope {
 
     runBlocking {
       episodesManager.setEpisodeWatched(episodeId, seasonId, IdTrakt(showId))
-      quickSyncManager.scheduleEpisode(applicationContext, episodeId)
+      quickSyncManager.scheduleEpisodes(applicationContext, listOf(episodeId))
       WatchlistWidgetProvider.requestUpdate(applicationContext)
     }
   }

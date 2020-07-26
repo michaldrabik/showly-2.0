@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.show.seasons.episodes
 
 import androidx.room.withTransaction
 import com.michaldrabik.showly2.di.scope.AppScope
+import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.EpisodeBundle
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.Season
@@ -29,7 +30,8 @@ class EpisodesManager @Inject constructor(
   suspend fun getWatchedEpisodesIds(show: Show) =
     database.episodesDao().getAllWatchedIdsForShows(listOf(show.ids.trakt.id))
 
-  suspend fun setSeasonWatched(seasonBundle: SeasonBundle) {
+  suspend fun setSeasonWatched(seasonBundle: SeasonBundle): List<Episode> {
+    val toAdd = mutableListOf<EpisodeDb>()
     database.withTransaction {
       val (season, show) = seasonBundle
 
@@ -40,7 +42,6 @@ class EpisodesManager @Inject constructor(
       }
 
       val episodes = database.episodesDao().getAllForSeason(season.ids.trakt.id).filter { it.isWatched }
-      val toAdd = mutableListOf<EpisodeDb>()
 
       season.episodes.forEach { ep ->
         if (episodes.none { it.idTrakt == ep.ids.trakt.id }) {
@@ -52,6 +53,7 @@ class EpisodesManager @Inject constructor(
       database.episodesDao().upsert(toAdd)
       database.seasonsDao().update(listOf(dbSeason))
     }
+    return toAdd.map { mappers.episode.fromDatabase(it) }
   }
 
   suspend fun setSeasonUnwatched(seasonBundle: SeasonBundle) {
