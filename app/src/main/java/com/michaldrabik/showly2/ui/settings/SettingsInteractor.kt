@@ -17,6 +17,7 @@ import com.michaldrabik.showly2.model.MyShowsSection.UPCOMING
 import com.michaldrabik.showly2.model.MyShowsSection.WATCHING
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.Settings
+import com.michaldrabik.showly2.model.TraktSyncSchedule
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.repository.rating.RatingsRepository
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
@@ -98,6 +99,15 @@ class SettingsInteractor @Inject constructor(
       settingsRepository.update(new)
       announcementManager.refreshEpisodesAnnouncements(context.applicationContext)
     }
+  }
+
+  suspend fun setTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {
+    val settings = settingsRepository.load()
+    settings.let {
+      val new = it.copy(traktSyncSchedule = schedule)
+      settingsRepository.update(new)
+    }
+    TraktSyncWorker.schedule(schedule, context.applicationContext)
   }
 
   suspend fun authorizeTrakt(authData: Uri) {

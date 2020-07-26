@@ -10,11 +10,12 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_OPTIONS
@@ -26,6 +27,7 @@ import com.michaldrabik.showly2.model.MyShowsSection.UPCOMING
 import com.michaldrabik.showly2.model.MyShowsSection.WATCHING
 import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.Settings
+import com.michaldrabik.showly2.model.TraktSyncSchedule.OFF
 import com.michaldrabik.showly2.requireAppContext
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
@@ -104,6 +106,9 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsTraktQuickSyncSwitch
       .setCheckedSilent(settings.traktQuickSyncEnabled) { _, isChecked ->
         viewModel.enableQuickSync(isChecked)
+        if (isChecked && settings.traktSyncSchedule != OFF) {
+          showQuickSyncConfirmationDialog()
+        }
       }
 
     settingsPushNotificationsSwitch
@@ -145,10 +150,24 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsVersion.text = "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
   }
 
+  private fun showQuickSyncConfirmationDialog() {
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setTitle(R.string.textSettingsQuickSyncConfirmationTitle)
+      .setMessage(R.string.textSettingsQuickSyncConfirmationMessage)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setPositiveButton(R.string.textTurnOff) { _, _ ->
+        viewModel.setTraktSyncSchedule(OFF, requireAppContext())
+      }
+      .setNegativeButton(R.string.textNotNow) { _, _ -> }
+      .show()
+  }
+
   private fun showRecentShowsDialog(settings: Settings) {
     val options = MY_SHOWS_RECENTS_OPTIONS.map { it.toString() }.toTypedArray()
     val default = options.indexOf(settings.myShowsRecentsAmount.toString())
-    AlertDialog.Builder(requireContext())
+
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setSingleChoiceItems(options, default) { dialog, index ->
         viewModel.setRecentShowsAmount(options[index].toInt())
         dialog.dismiss()
@@ -164,8 +183,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       settings.myShowsEndedIsEnabled,
       settings.myShowsIncomingIsEnabled
     )
-
-    AlertDialog.Builder(requireContext())
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setMultiChoiceItems(
         options.map { it.displayString }.toTypedArray(),
         selected
@@ -178,7 +197,9 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   private fun showWhenToNotifyDialog(settings: Settings) {
     val options = NotificationDelay.values()
     val default = options.indexOf(settings.episodesNotificationsDelay)
-    AlertDialog.Builder(requireContext())
+
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setSingleChoiceItems(options.map { getString(it.stringRes) }.toTypedArray(), default) { dialog, index ->
         viewModel.setWhenToNotify(options[index], requireAppContext())
         dialog.dismiss()

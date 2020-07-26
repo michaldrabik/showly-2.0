@@ -9,6 +9,7 @@ data class TraktSyncUiModel(
   val isAuthorized: Boolean? = null,
   val authError: Boolean? = null,
   val traktSyncSchedule: TraktSyncSchedule? = null,
+  val quickSyncEnabled: Boolean? = null,
   val lastTraktSyncTimestamp: Long? = null
 ) : UiModel() {
 
@@ -19,6 +20,7 @@ data class TraktSyncUiModel(
       isAuthorized = newModel.isAuthorized ?: isAuthorized,
       authError = newModel.authError ?: authError,
       traktSyncSchedule = newModel.traktSyncSchedule ?: traktSyncSchedule,
+      quickSyncEnabled = newModel.quickSyncEnabled ?: quickSyncEnabled,
       lastTraktSyncTimestamp = newModel.lastTraktSyncTimestamp ?: lastTraktSyncTimestamp
     )
 }

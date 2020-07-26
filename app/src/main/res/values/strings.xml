@@ -14,6 +14,8 @@
 
   <string name="textApply">Apply</string>
   <string name="textOk">OK</string>
+  <string name="textNotNow">Not Now</string>
+  <string name="textYes">Yes</string>
   <string name="textClose">Close</string>
   <string name="textNew">New</string>
   <string name="textHot">Hot</string>
@@ -41,6 +43,7 @@
   <string name="textTrailer">Trailer</string>
   <string name="textImdb">iMDB</string>
   <string name="textRate">Rate</string>
+  <string name="textTurnOff">Turn Off</string>
   <string name="textSelect">Select</string>
   <string name="textLoadComments">Show Comments</string>
   <string name="textComments">Comments:</string>
@@ -126,6 +129,10 @@
   <string name="textSettingsRateAppSummary">Enjoying Showly? Let us know on PlayStore. Thanks!</string>
   <string name="textSettingsDeleteCacheTitle">Clear Images Cache</string>
   <string name="textSettingsDeleteCacheSummary">Click to clear local images cache. This may help if shows images are not being loaded correctly.</string>
+  <string name="textSettingsQuickSyncConfirmationTitle">Disable Automatic Sync</string>
+  <string name="textSettingsQuickSyncConfirmationMessage">\nIt seems like Automatic Sync is already turned on.\n\nWould you like to turn it off before enabling instant sync (advised)?\n</string>
+  <string name="textSettingsScheduleImportConfirmationTitle">Instant Sync Enabled</string>
+  <string name="textSettingsScheduleImportConfirmationMessage">\nIt seems like Instant Sync is already turned on.\n\nDo you still want to schedule automatic sync?\n</string>
 
   <string name="textTraktSynchronize">Import from Trakt.tv</string>
   <string name="textTraktSyncLastTimestamp">Last Sync: %s</string>

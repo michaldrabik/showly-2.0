@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.NotificationDelay
+import com.michaldrabik.showly2.model.TraktSyncSchedule
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.utilities.MessageEvent
 import kotlinx.coroutines.Dispatchers.IO
@@ -66,7 +67,14 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  fun authorizeTrakt(authData: Uri?) {
+  fun setTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {
+    viewModelScope.launch {
+      interactor.setTraktSyncSchedule(schedule, context)
+      refreshSettings()
+    }
+  }
+
+    fun authorizeTrakt(authData: Uri?) {
     if (authData == null) return
     viewModelScope.launch {
       try {

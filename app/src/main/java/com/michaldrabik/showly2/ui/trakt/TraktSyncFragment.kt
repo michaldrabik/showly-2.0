@@ -7,11 +7,12 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.network.Config
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.events.Event
@@ -91,10 +92,25 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(R.layout.fragment_tra
     }
   }
 
+  private fun checkScheduleImport(currentSchedule: TraktSyncSchedule?, quickSyncEnabled: Boolean?) {
+    if (quickSyncEnabled == true && currentSchedule == TraktSyncSchedule.OFF) {
+      MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+        .setTitle(R.string.textSettingsScheduleImportConfirmationTitle)
+        .setMessage(R.string.textSettingsScheduleImportConfirmationMessage)
+        .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+        .setPositiveButton(R.string.textYes) { _, _ -> scheduleImport(currentSchedule) }
+        .setNegativeButton(R.string.textCancel) { _, _ -> }
+        .show()
+    } else {
+      scheduleImport(currentSchedule)
+    }
+  }
+
   private fun scheduleImport(currentSchedule: TraktSyncSchedule?) {
     val options = TraktSyncSchedule.values()
     val optionsStrings = options.map { getString(it.stringRes) }.toTypedArray()
-    AlertDialog.Builder(requireContext())
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setSingleChoiceItems(optionsStrings, options.indexOf(currentSchedule)) { dialog, index ->
         val schedule = options[index]
         viewModel.saveTraktSyncSchedule(schedule, requireAppContext())
@@ -137,7 +153,7 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(R.layout.fragment_tra
           it -> {
             traktSyncButton.text = getString(R.string.textTraktSyncStart)
             traktSyncButton.onClick { startImport() }
-            traktSyncScheduleButton.onClick { scheduleImport(traktSyncSchedule) }
+            traktSyncScheduleButton.onClick { checkScheduleImport(traktSyncSchedule, quickSyncEnabled) }
           }
           else -> {
             traktSyncButton.text = getString(R.string.textSettingsTraktAuthorizeTitle)

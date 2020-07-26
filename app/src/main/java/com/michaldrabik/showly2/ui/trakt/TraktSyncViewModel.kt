@@ -51,11 +51,13 @@ class TraktSyncViewModel @Inject constructor(
   fun invalidate() {
     viewModelScope.launch {
       val isAuthorized = userManager.isAuthorized()
-      val syncSchedule = settingsRepository.load().traktSyncSchedule
+      val settings = settingsRepository.load()
       val timestamp = miscPreferences.getLong(TraktSyncService.KEY_LAST_SYNC_TIMESTAMP, 0)
+
       uiState = TraktSyncUiModel(
         isAuthorized = isAuthorized,
-        traktSyncSchedule = syncSchedule,
+        traktSyncSchedule = settings.traktSyncSchedule,
+        quickSyncEnabled = settings.traktQuickSyncEnabled,
         lastTraktSyncTimestamp = timestamp
       )
     }
