@@ -77,6 +77,12 @@
       />
 
     <service
+      android:name=".common.trakt.quicksync.QuickSyncService"
+      android:exported="true"
+      android:permission="android.permission.BIND_JOB_SERVICE"
+      />
+
+    <service
       android:name=".widget.watchlist.WatchlistWidgetEpisodeCheckService"
       android:exported="true"
       android:permission="android.permission.BIND_JOB_SERVICE"

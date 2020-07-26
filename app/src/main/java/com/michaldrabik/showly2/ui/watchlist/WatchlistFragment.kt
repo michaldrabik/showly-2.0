@@ -103,7 +103,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
       itemClickListener = { openShowDetails(it) }
       itemLongClickListener = { item, view -> openPopupMenu(item, view) }
       detailsClickListener = { openEpisodeDetails(it) }
-      checkClickListener = { viewModel.setWatchedEpisode(it) }
+      checkClickListener = { viewModel.setWatchedEpisode(requireContext().applicationContext, it) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
     }
   }

@@ -39,6 +39,10 @@ abstract class TraktNotificationsService : Service() {
     .setPriority(PRIORITY_HIGH)
     .build()
 
+  protected fun cancelNotification(id: Int) {
+    notificationManager().cancel(id)
+  }
+
   private fun createNotificationChannel(): String {
     if (VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       val id = "Showly Trakt Sync Service"

@@ -1,6 +1,8 @@
 package com.michaldrabik.showly2.ui.watchlist
 
+import android.content.Context
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
+import com.michaldrabik.showly2.common.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.EpisodeBundle
 import com.michaldrabik.showly2.model.Image
@@ -21,6 +23,7 @@ class WatchlistInteractor @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
   private val mappers: Mappers,
   private val episodesManager: EpisodesManager,
+  private val quickSyncManager: QuickSyncManager,
   private val watchlistRepository: WatchlistRepository
 ) {
 
@@ -51,9 +54,10 @@ class WatchlistInteractor @Inject constructor(
     )
   }
 
-  suspend fun setEpisodeWatched(item: WatchlistItem) {
+  suspend fun setEpisodeWatched(context: Context, item: WatchlistItem) {
     val bundle = EpisodeBundle(item.episode, item.season, item.show)
     episodesManager.setEpisodeWatched(bundle)
+    quickSyncManager.scheduleEpisode(context, item.episode)
   }
 
   fun addPinnedItem(item: WatchlistItem) =

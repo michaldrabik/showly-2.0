@@ -79,5 +79,5 @@ abstract class AppDatabase : RoomDatabase() {
 
   abstract fun episodesSyncLogDao(): EpisodesSyncLogDao
 
-  abstract fun traktSyncQueueDap(): TraktSyncQueueDao
+  abstract fun traktSyncQueueDao(): TraktSyncQueueDao
 }

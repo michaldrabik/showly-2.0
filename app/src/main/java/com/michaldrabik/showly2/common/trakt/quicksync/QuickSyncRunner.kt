@@ -3,13 +3,12 @@ package com.michaldrabik.showly2.common.trakt.quicksync
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncExportItem
 import com.michaldrabik.network.trakt.model.SyncExportRequest
-import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.showly2.common.trakt.TraktSyncRunner
 import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.repository.TraktAuthToken
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.Episode
+import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -20,39 +19,44 @@ class QuickSyncRunner @Inject constructor(
   userTraktManager: UserTraktManager
 ) : TraktSyncRunner(userTraktManager) {
 
+  companion object {
+    private const val BATCH_LIMIT = 30
+  }
+
   override suspend fun run(): Int {
     Timber.d("Initialized.")
     isRunning = true
 
     Timber.d("Checking authorization...")
     val authToken = checkAuthorization()
-    exportWatched(authToken)
+    val count = exportItems(authToken)
 
     isRunning = false
     Timber.d("Finished with success.")
-    return 0
+    return count
   }
 
-  private suspend fun exportWatched(token: TraktAuthToken) {
-    Timber.d("Exporting watched...")
-
-    val remoteWatched = cloud.traktApi.fetchSyncWatched(token.token)
-      .filter { it.show != null }
-    val localMyShowsIds = database.myShowsDao().getAllTraktIds()
-    val localEpisodes = database.episodesDao().getAllWatchedForShows(localMyShowsIds)
-      .filter { !hasEpisodeBeenWatched(remoteWatched, it) }
+  private suspend fun exportItems(token: TraktAuthToken, count: Int = 0): Int {
+    val items = database.traktSyncQueueDao().getAll().take(BATCH_LIMIT)
+    if (items.isEmpty()) {
+      Timber.d("Nothing to export. Cancelling..")
+      return count
+    }
 
     val request = SyncExportRequest(
-      episodes = localEpisodes.map { SyncExportItem.create(it.idTrakt) }
+      episodes = items.map { SyncExportItem.create(it.idTrakt) }
     )
+    Timber.d("Exporting ${items.count()} quick sync items...")
     cloud.traktApi.postSyncWatched(token.token, request)
-  }
+    database.traktSyncQueueDao().deleteAll(items.map { it.idTrakt })
 
-  private fun hasEpisodeBeenWatched(remoteWatched: List<SyncItem>, episodeDb: Episode): Boolean {
-    val find = remoteWatched
-      .find { it.show?.ids?.trakt == episodeDb.idShowTrakt }
-      ?.seasons?.find { it.number == episodeDb.seasonNumber }
-      ?.episodes?.find { it.number == episodeDb.episodeNumber }
-    return find != null
+    // Check if new items appeared during network calls
+    val newItems = database.traktSyncQueueDao().getAll()
+    if (newItems.isNotEmpty()) {
+      delay(1000)
+      exportItems(token, count + items.count())
+    }
+
+    return count + items.count()
   }
 }

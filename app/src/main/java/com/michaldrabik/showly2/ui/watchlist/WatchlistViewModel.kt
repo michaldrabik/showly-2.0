@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.watchlist
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Image
@@ -66,13 +67,13 @@ class WatchlistViewModel @Inject constructor(
     loadWatchlist()
   }
 
-  fun setWatchedEpisode(item: WatchlistItem) {
+  fun setWatchedEpisode(context: Context, item: WatchlistItem) {
     viewModelScope.launch {
       if (!item.episode.hasAired(item.season)) {
         _messageLiveData.value = MessageEvent.info(R.string.errorEpisodeNotAired)
         return@launch
       }
-      interactor.setEpisodeWatched(item)
+      interactor.setEpisodeWatched(context, item)
       loadWatchlist()
     }
   }

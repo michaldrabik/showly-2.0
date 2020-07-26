@@ -33,7 +33,10 @@ class MainViewModel @Inject constructor(
 
   fun refreshTraktSyncSchedule(context: Context) {
     viewModelScope.launch {
-      interactor.refreshTraktSyncSchedule(context)
+      interactor.run {
+        refreshTraktSyncSchedule(context)
+        refreshTraktQuickSync(context)
+      }
     }
   }
 

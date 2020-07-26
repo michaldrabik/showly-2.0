@@ -5,6 +5,8 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.common.notifications.AnnouncementManager
 import com.michaldrabik.showly2.common.trakt.TraktSyncWorker
+import com.michaldrabik.showly2.common.trakt.quicksync.QuickSyncManager
+import com.michaldrabik.showly2.common.trakt.quicksync.QuickSyncWorker
 import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.fcm.NotificationChannel
 import com.michaldrabik.showly2.model.Settings
@@ -19,6 +21,7 @@ class MainInteractor @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val tipsRepository: TipsRepository,
   private val ratingsRepository: RatingsRepository,
+  private val quickSyncManager: QuickSyncManager,
   private val announcementManager: AnnouncementManager
 ) {
 
@@ -60,6 +63,12 @@ class MainInteractor @Inject constructor(
     if (!settingsRepository.isInitialized()) return
     val schedule = settingsRepository.load().traktSyncSchedule
     TraktSyncWorker.schedule(schedule, context.applicationContext)
+  }
+
+  suspend fun refreshTraktQuickSync(context: Context) {
+    if (quickSyncManager.isAnyScheduled()) {
+      QuickSyncWorker.schedule(context)
+    }
   }
 
   fun isTutorialShown(tip: Tip) = when {

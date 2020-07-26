@@ -11,4 +11,17 @@ data class TraktSyncQueue(
   @ColumnInfo(name = "type") var type: String,
   @ColumnInfo(name = "created_at") var createdAt: Long,
   @ColumnInfo(name = "updated_at") var updatedAt: Long
-)
+) {
+
+  companion object {
+    fun createEpisode(
+      idTrakt: Long,
+      createdAt: Long,
+      updatedAt: Long
+    ) = TraktSyncQueue(0, idTrakt, Type.EPISODE.slug, createdAt, updatedAt)
+  }
+
+  enum class Type(val slug: String) {
+    EPISODE("episode")
+  }
+}
