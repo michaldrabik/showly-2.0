@@ -54,7 +54,7 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
       } catch (t: Throwable) {
         notificationManager().notify(
           SYNC_NOTIFICATION_ERROR_ID,
-          createErrorNotification(R.string.textTraktQuickSyncError)
+          createErrorNotification(R.string.textTraktQuickSyncError, R.string.textTraktQuickSyncErrorFull)
         )
         FirebaseCrashlytics.getInstance().recordException(t)
       } finally {

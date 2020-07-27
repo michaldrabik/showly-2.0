@@ -35,8 +35,13 @@ abstract class TraktNotificationsService : Service() {
     .setPriority(PRIORITY_HIGH)
     .build()
 
-  protected fun createErrorNotification(@StringRes textRes: Int) = createBaseNotification()
-    .setContentText(getString(textRes))
+  protected fun createErrorNotification(@StringRes titleTextRes: Int, @StringRes bigTextRes: Int? = null) = createBaseNotification()
+    .setContentText(getString(titleTextRes))
+    .apply {
+      bigTextRes?.let {
+        setStyle(NotificationCompat.BigTextStyle().bigText(getString(bigTextRes)))
+      }
+    }
     .setPriority(PRIORITY_HIGH)
     .build()
 

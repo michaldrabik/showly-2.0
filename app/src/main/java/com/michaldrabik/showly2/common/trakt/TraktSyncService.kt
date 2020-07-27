@@ -122,7 +122,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
         if (!isSilent) {
           notificationManager().notify(
             SYNC_NOTIFICATION_COMPLETE_ERROR_ID,
-            createErrorNotification(R.string.textTraktSyncError)
+            createErrorNotification(R.string.textTraktSyncError, R.string.textTraktSyncErrorFull)
           )
         }
         FirebaseCrashlytics.getInstance().recordException(t)
