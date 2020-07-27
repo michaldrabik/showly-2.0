@@ -4,12 +4,12 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/navigationGraph"
-  app:startDestination="@id/watchlistFragment"
+  app:startDestination="@id/watchlistMainFragment"
   >
 
   <action
     android:id="@+id/actionNavigateWatchlistFragment"
-    app:destination="@id/watchlistFragment"
+    app:destination="@id/watchlistMainFragment"
     app:launchSingleTop="true"
     app:popUpTo="@id/navigationGraph"
     app:popUpToInclusive="true"
@@ -65,34 +65,41 @@
   </fragment>
 
   <fragment
-    android:id="@+id/watchlistFragment"
-    android:name="com.michaldrabik.showly2.ui.watchlist.WatchlistFragment"
-    android:label="fragmentWatchlist"
-    tools:layout="@layout/fragment_watchlist"
+    android:id="@+id/watchlistMainFragment"
+    android:name="com.michaldrabik.showly2.ui.watchlist.main.WatchlistMainFragment"
+    android:label="fragmentWatchlistMain"
+    tools:layout="@layout/fragment_watchlist_main"
     >
     <action
-      android:id="@+id/actionWatchlistFragmentToShowDetailsFragment"
+      android:id="@+id/actionWatchlistMainFragmentToShowDetailsFragment"
       app:destination="@id/showDetailsFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
     <action
-      android:id="@+id/actionWatchlistFragmentToTraktSyncFragment"
+      android:id="@+id/actionWatchlistMainFragmentToSettingsFragment"
+      app:destination="@id/settingsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionWatchlistMainFragmentToTraktSyncFragment"
       app:destination="@id/traktSyncFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:exitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
-    <action
-      android:id="@+id/actionWatchlistFragmentToSettingsFragment"
-      app:destination="@id/settingsFragment"
-      app:enterAnim="@anim/anim_fade_in"
-      app:launchSingleTop="true"
-      app:popExitAnim="@anim/anim_fade_out"
-      />
   </fragment>
+
+  <fragment
+    android:id="@+id/watchlistFragment"
+    android:name="com.michaldrabik.showly2.ui.watchlist.WatchlistFragment"
+    android:label="fragmentWatchlist"
+    tools:layout="@layout/fragment_watchlist"
+    />
 
   <fragment
     android:id="@+id/showDetailsFragment"

@@ -124,7 +124,7 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
       }
 
       navigationHost.findNavController().run {
-        if (currentDestination?.id == R.id.watchlistFragment) {
+        if (currentDestination?.id == R.id.watchlistMainFragment) {
           remove()
           super.onBackPressed()
         }

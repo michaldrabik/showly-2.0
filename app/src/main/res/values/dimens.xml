@@ -18,7 +18,6 @@
 
   <dimen name="discoverFilterChipStroke">1dp</dimen>
   <dimen name="discoverRecyclerPadding">66dp</dimen>
-  <dimen name="watchlistRecyclerPadding">64dp</dimen>
 
   <dimen name="seasonViewHeight">44dp</dimen>
   <dimen name="episodeViewHeight">42dp</dimen>
@@ -65,6 +64,9 @@
   <dimen name="searchViewImageWidth">67dp</dimen>
   <dimen name="searchViewImageHeight">100dp</dimen>
   <dimen name="searchViewItemPaddingHorizontal">20dp</dimen>
+
+  <dimen name="watchlistSearchViewPadding">64dp</dimen>
+  <dimen name="watchlistTabsViewPadding">112dp</dimen>
 
   <dimen name="watchlistImageHeight">120dp</dimen>
   <dimen name="watchlistImageWidth">80dp</dimen>

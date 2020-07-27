@@ -15,6 +15,7 @@ import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryViewModel
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsViewModel
 import com.michaldrabik.showly2.ui.trakt.TraktSyncViewModel
 import com.michaldrabik.showly2.ui.watchlist.WatchlistViewModel
+import com.michaldrabik.showly2.ui.watchlist.main.WatchlistMainViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -67,6 +68,11 @@ abstract class ViewModelsModule {
   @IntoMap
   @ViewModelKey(ShowDetailsViewModel::class)
   abstract fun bindShowDetailsViewModel(viewModel: ShowDetailsViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(WatchlistMainViewModel::class)
+  abstract fun bindWatchlistMainViewModel(viewModel: WatchlistMainViewModel): ViewModel
 
   @Binds
   @IntoMap

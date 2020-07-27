@@ -1,14 +1,10 @@
 package com.michaldrabik.showly2.ui.watchlist
 
-import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
-import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
-import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,37 +14,28 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.Tip
 import com.michaldrabik.showly2.requireAppContext
-import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
-import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
-import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
+import com.michaldrabik.showly2.ui.watchlist.main.WatchlistMainFragment
+import com.michaldrabik.showly2.ui.watchlist.main.WatchlistMainViewModel
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistAdapter
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
-import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
-import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
-import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
 import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.showKeyboard
-import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider
 import kotlinx.android.synthetic.main.fragment_watchlist.*
-import kotlinx.android.synthetic.main.layout_watchlist_empty.*
-import kotlinx.android.synthetic.main.view_search.*
 
 class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
-  OnTabReselectedListener,
-  OnEpisodesSyncedListener,
-  OnTraktSyncListener {
+  OnTabReselectedListener {
 
+  private val parentViewModel by viewModels<WatchlistMainViewModel>({ requireParentFragment() }) { viewModelFactory }
   override val viewModel by viewModels<WatchlistViewModel> { viewModelFactory }
 
+  private var statusBarHeight = 0
   private lateinit var adapter: WatchlistAdapter
   private lateinit var layoutManager: LinearLayoutManager
 
@@ -63,31 +50,14 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     setupRecycler()
     setupStatusBar()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, Observer { showSnack(it) })
-    }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    showNavigation()
-    viewModel.loadWatchlist()
+    parentViewModel.uiLiveData.observe(viewLifecycleOwner, Observer { viewModel.handleParentAction(it) })
+    viewModel.uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
   }
 
   private fun setupView() {
-    watchlistEmptyTraktButton.onClick { openTraktSync() }
-    watchlistEmptyDiscoverButton.onClick { mainActivity().openTab(R.id.menuDiscover) }
     watchlistTipItem.onClick {
       it.gone()
       mainActivity().showTip(Tip.WATCHLIST_ITEM_PIN)
-    }
-    watchlistSearchView.run {
-      hint = getString(R.string.textSearchWatchlist)
-      settingsIconVisible = true
-      isClickable = false
-      onClick { enterSearch() }
-      onSettingsClickListener = { openSettings() }
     }
   }
 
@@ -101,21 +71,22 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
       setHasFixedSize(true)
     }
     adapter.run {
-      itemClickListener = { openShowDetails(it) }
+      itemClickListener = { (requireParentFragment() as WatchlistMainFragment).openShowDetails(it) }
       itemLongClickListener = { item, view -> openPopupMenu(item, view) }
       detailsClickListener = { openEpisodeDetails(it) }
-      checkClickListener = { viewModel.setWatchedEpisode(requireAppContext(), it) }
+      checkClickListener = { parentViewModel.setWatchedEpisode(requireAppContext(), it) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
     }
   }
 
   private fun setupStatusBar() {
-    watchlistRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-      val statusBarSize = insets.systemWindowInsetTop
-      watchlistRecycler
-        .updatePadding(top = statusBarSize + dimenToPx(R.dimen.watchlistRecyclerPadding))
-      (watchlistSearchView.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
+    if (statusBarHeight != 0) {
+      watchlistRoot.updatePadding(top = statusBarHeight)
+      return
+    }
+    watchlistRoot.doOnApplyWindowInsets { view, insets, _, _ ->
+      statusBarHeight = insets.systemWindowInsetTop
+      view.updatePadding(top = statusBarHeight)
     }
   }
 
@@ -128,54 +99,11 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     }
     menu.setOnMenuItemClickListener { menuItem ->
       if (menuItem.itemId == R.id.menuWatchlistItemPin) {
-        viewModel.togglePinItem(item)
+        parentViewModel.togglePinItem(item)
       }
       true
     }
     menu.show()
-  }
-
-  private fun enterSearch() {
-    if (watchlistSearchView.isSearching) return
-    watchlistSearchView.isSearching = true
-    searchViewText.gone()
-    searchViewInput.run {
-      setText("")
-      doAfterTextChanged { viewModel.searchWatchlist(it?.toString() ?: "") }
-      visible()
-      showKeyboard()
-      requestFocus()
-    }
-    (searchViewIcon.drawable as Animatable).start()
-    searchViewIcon.onClick { exitSearch() }
-    hideNavigation(false)
-  }
-
-  private fun exitSearch(showNavigation: Boolean = true) {
-    watchlistSearchView.isSearching = false
-    searchViewText.visible()
-    searchViewInput.run {
-      setText("")
-      gone()
-      hideKeyboard()
-      clearFocus()
-    }
-    searchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
-    if (showNavigation) showNavigation()
-  }
-
-  private fun openShowDetails(item: WatchlistItem) {
-    exitSearch()
-    hideNavigation()
-    watchlistRoot.fadeOut {
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
-      navigateTo(R.id.actionWatchlistFragmentToShowDetailsFragment, bundle)
-    }
-  }
-
-  private fun openSettings() {
-    hideNavigation()
-    navigateTo(R.id.actionWatchlistFragmentToSettingsFragment)
   }
 
   private fun openEpisodeDetails(item: WatchlistItem) {
@@ -188,24 +116,13 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     modal.show(requireActivity().supportFragmentManager, "MODAL")
   }
 
-  private fun openTraktSync() {
-    navigateTo(R.id.actionWatchlistFragmentToTraktSyncFragment)
-    hideNavigation()
-  }
-
   override fun onTabReselected() = watchlistRecycler.smoothScrollToPosition(0)
-
-  override fun onEpisodesSyncFinished() = viewModel.loadWatchlist()
-
-  override fun onTraktSyncProgress() = viewModel.loadWatchlist()
 
   private fun render(uiModel: WatchlistUiModel) {
     uiModel.run {
       items?.let {
         adapter.setItems(it)
         watchlistRecycler.fadeIn()
-        watchlistEmptyView.fadeIf(it.isEmpty() && isSearching == false)
-        watchlistSearchView.isClickable = it.isNotEmpty() || isSearching == true
         watchlistTipItem.visibleIf(it.count() >= 3 && !mainActivity().isTipShown(Tip.WATCHLIST_ITEM_PIN))
         WatchlistWidgetProvider.requestUpdate(requireContext())
       }

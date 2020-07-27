@@ -11,6 +11,8 @@
   <string name="tabMyShows">My Shows</string>
   <string name="tabSeeLater">See Later</string>
   <string name="tabStatistics">Statistics</string>
+  <string name="tabWatchlist">Watchlist</string>
+  <string name="tabCalendar">Upcoming</string>
 
   <string name="textApply">Apply</string>
   <string name="textOk">OK</string>

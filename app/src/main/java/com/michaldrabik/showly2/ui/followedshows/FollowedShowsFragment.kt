@@ -245,6 +245,9 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
   private fun openSettings() {
     hideNavigation()
     navigateTo(R.id.actionFollowedShowsFragmentToSettingsFragment)
+
+    viewModel.tabsTranslation = followedShowsTabs.translationY
+    viewModel.searchViewTranslation = followedShowsSearchView.translationY
   }
 
   fun enableSearch(enable: Boolean) {

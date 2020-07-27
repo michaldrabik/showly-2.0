@@ -60,7 +60,7 @@ abstract class NotificationActivity : BaseActivity() {
           R.id.showDetailsFragment -> navigate(R.id.actionShowDetailsFragmentToSelf, bundle)
           else -> {
             bottomNavigationView.selectedItemId = R.id.menuWatchlist
-            navigate(R.id.actionWatchlistFragmentToShowDetailsFragment, bundle)
+            navigate(R.id.actionWatchlistMainFragmentToShowDetailsFragment, bundle)
           }
         }
         extras.clear()
