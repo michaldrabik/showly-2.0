@@ -48,7 +48,8 @@ object Migrations {
       database.execSQL("ALTER TABLE settings ADD COLUMN discover_filter_feed TEXT NOT NULL DEFAULT 'HOT'")
       database.execSQL("ALTER TABLE settings ADD COLUMN trakt_quick_sync_enabled INTEGER NOT NULL DEFAULT 0")
 
-      database.execSQL("CREATE TABLE IF NOT EXISTS `trakt_sync_queue` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `id_trakt` INTEGER NOT NULL, `type` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL)")
+      database.execSQL("CREATE TABLE IF NOT EXISTS `trakt_sync_queue` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+              "`id_trakt` INTEGER NOT NULL, `type` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL)")
     }
   }
 
