@@ -11,6 +11,7 @@
 
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/watchlistUpcomingRecycler"
+    style="@style/ScrollbarsStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
@@ -18,10 +19,6 @@
     android:overScrollMode="never"
     android:paddingTop="@dimen/watchlistTabsViewPadding"
     android:paddingBottom="@dimen/bottomNavigationHeightPadded"
-    android:scrollbarFadeDuration="100"
-    android:scrollbarSize="@dimen/scrollBarWidth"
-    android:scrollbarStyle="outsideOverlay"
-    android:scrollbarThumbVertical="@color/colorScrollbar"
     android:scrollbars="vertical"
     android:visibility="gone"
     tools:visibility="visible"

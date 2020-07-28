@@ -1,10 +1,10 @@
 package com.michaldrabik.showly2.ui.watchlist.pages.upcoming
 
 import com.michaldrabik.showly2.ui.common.UiModel
-import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistMainItem
 
 data class WatchlistUpcomingUiModel(
-  val items: List<WatchlistItem>? = null,
+  val items: List<WatchlistMainItem>? = null,
   val isSearching: Boolean? = null
 ) : UiModel() {
 

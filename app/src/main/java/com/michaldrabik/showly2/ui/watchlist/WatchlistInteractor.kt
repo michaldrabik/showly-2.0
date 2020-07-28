@@ -12,7 +12,7 @@ import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.watchlist.WatchlistRepository
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
-import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistMainItem
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.EpisodeWatchlist
 import javax.inject.Inject
@@ -27,7 +27,7 @@ class WatchlistInteractor @Inject constructor(
   private val watchlistRepository: WatchlistRepository
 ) {
 
-  suspend fun loadWatchlistItem(show: Show): WatchlistItem {
+  suspend fun loadWatchlistItem(show: Show): WatchlistMainItem {
     val episodes = database.episodesDao().getAllForShowWatchlist(show.traktId)
     val seasons = database.seasonsDao().getAllForShow(show.traktId)
 
@@ -37,13 +37,13 @@ class WatchlistInteractor @Inject constructor(
 
     val nextEpisode = unwatchedEpisodes
       .sortedWith(compareBy<EpisodeWatchlist> { it.seasonNumber }.thenBy { it.episodeNumber })
-      .firstOrNull() ?: return WatchlistItem.EMPTY
+      .firstOrNull() ?: return WatchlistMainItem.EMPTY
 
     val season = seasons.first { it.idTrakt == nextEpisode.idSeason }
     val episode = database.episodesDao().getById(nextEpisode.idTrakt)
     val isPinned = watchlistRepository.isItemPinned(show.traktId)
 
-    return WatchlistItem(
+    return WatchlistMainItem(
       show,
       mappers.season.fromDatabase(season),
       mappers.episode.fromDatabase(episode),
@@ -54,16 +54,16 @@ class WatchlistInteractor @Inject constructor(
     )
   }
 
-  suspend fun setEpisodeWatched(context: Context, item: WatchlistItem) {
+  suspend fun setEpisodeWatched(context: Context, item: WatchlistMainItem) {
     val bundle = EpisodeBundle(item.episode, item.season, item.show)
     episodesManager.setEpisodeWatched(bundle)
     quickSyncManager.scheduleEpisodes(context, listOf(item.episode.ids.trakt.id))
   }
 
-  fun addPinnedItem(item: WatchlistItem) =
+  fun addPinnedItem(item: WatchlistMainItem) =
     watchlistRepository.addPinnedItem(item.show.traktId)
 
-  fun removePinnedItem(item: WatchlistItem) =
+  fun removePinnedItem(item: WatchlistMainItem) =
     watchlistRepository.removePinnedItem(item.show.traktId)
 
   suspend fun findCachedImage(show: Show, type: ImageType) =

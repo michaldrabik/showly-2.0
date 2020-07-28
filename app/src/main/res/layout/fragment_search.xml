@@ -17,6 +17,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/searchRecycler"
+      style="@style/ScrollbarsStyle"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:background="@android:color/transparent"
@@ -25,10 +26,6 @@
       android:overScrollMode="never"
       android:paddingTop="@dimen/searchViewHeightPadded"
       android:paddingBottom="@dimen/spaceMedium"
-      android:scrollbarFadeDuration="100"
-      android:scrollbarSize="@dimen/scrollBarWidth"
-      android:scrollbarStyle="outsideOverlay"
-      android:scrollbarThumbVertical="@color/colorScrollbar"
       android:scrollbars="vertical"
       tools:listitem="@layout/view_show_search"
       />

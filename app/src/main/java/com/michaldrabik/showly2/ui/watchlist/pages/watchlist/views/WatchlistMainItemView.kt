@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.views.ShowView
-import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistMainItem
 import com.michaldrabik.showly2.utilities.DurationPrinter
 import com.michaldrabik.showly2.utilities.extensions.addRipple
 import com.michaldrabik.showly2.utilities.extensions.bump
@@ -22,22 +22,22 @@ import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
-import kotlinx.android.synthetic.main.view_watchlist_item.view.*
+import kotlinx.android.synthetic.main.view_watchlist_main_item.view.*
 
 @SuppressLint("SetTextI18n")
-class WatchlistItemView : ShowView<WatchlistItem> {
+class WatchlistMainItemView : ShowView<WatchlistMainItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  var itemLongClickListener: ((WatchlistItem, View) -> Unit)? = null
-  var detailsClickListener: ((WatchlistItem) -> Unit)? = null
-  var checkClickListener: ((WatchlistItem) -> Unit)? = null
-  var missingImageListener: ((WatchlistItem, Boolean) -> Unit)? = null
+  var itemLongClickListener: ((WatchlistMainItem, View) -> Unit)? = null
+  var detailsClickListener: ((WatchlistMainItem) -> Unit)? = null
+  var checkClickListener: ((WatchlistMainItem) -> Unit)? = null
+  var missingImageListener: ((WatchlistMainItem, Boolean) -> Unit)? = null
 
   init {
-    inflate(context, R.layout.view_watchlist_item, this)
+    inflate(context, R.layout.view_watchlist_main_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     addRipple()
     watchlistItemCheckButton.expandTouch(100)
@@ -50,7 +50,7 @@ class WatchlistItemView : ShowView<WatchlistItem> {
     watchlistItemInfoButton.onClick { detailsClickListener?.invoke(item) }
   }
 
-  private lateinit var item: WatchlistItem
+  private lateinit var item: WatchlistMainItem
 
   override val imageView: ImageView = watchlistItemImage
   override val placeholderView: ImageView = watchlistItemPlaceholder
@@ -59,7 +59,7 @@ class WatchlistItemView : ShowView<WatchlistItem> {
   private val checkButtonWidth by lazy { context.dimenToPx(R.dimen.watchlistItemCheckButtonWidth) }
   private val checkButtonHeight by lazy { context.dimenToPx(R.dimen.watchlistItemCheckButtonHeight) }
 
-  fun bind(item: WatchlistItem) {
+  fun bind(item: WatchlistMainItem) {
     this.item = item
     clear()
 
@@ -80,16 +80,16 @@ class WatchlistItemView : ShowView<WatchlistItem> {
     loadImage(item, missingImageListener!!)
   }
 
-  private fun bindProgress(item: WatchlistItem) {
+  private fun bindProgress(item: WatchlistMainItem) {
     watchlistItemProgress.max = item.episodesCount
     watchlistItemProgress.progress = item.watchedEpisodesCount
     watchlistItemProgressText.text = "${item.watchedEpisodesCount}/${item.episodesCount}"
   }
 
   private fun bindCheckButton(
-    item: WatchlistItem,
-    checkClickListener: ((WatchlistItem) -> Unit)?,
-    detailsClickListener: ((WatchlistItem) -> Unit)?
+    item: WatchlistMainItem,
+    checkClickListener: ((WatchlistMainItem) -> Unit)?,
+    detailsClickListener: ((WatchlistMainItem) -> Unit)?
   ) {
     val hasAired = item.episode.hasAired(item.season)
     val color = if (hasAired) R.color.colorWatchlistEnabledButton else R.color.colorWatchlistDisabledButton

@@ -2,12 +2,12 @@ package com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler
 
 import androidx.recyclerview.widget.DiffUtil
 
-class WatchlistItemDiffCallback : DiffUtil.ItemCallback<WatchlistItem>() {
+class WatchlistMainItemDiffCallback : DiffUtil.ItemCallback<WatchlistMainItem>() {
 
-  override fun areItemsTheSame(oldItem: WatchlistItem, newItem: WatchlistItem) =
+  override fun areItemsTheSame(oldItem: WatchlistMainItem, newItem: WatchlistMainItem) =
     oldItem.show.ids.trakt == newItem.show.ids.trakt && oldItem.isHeader() == newItem.isHeader()
 
-  override fun areContentsTheSame(oldItem: WatchlistItem, newItem: WatchlistItem) =
+  override fun areContentsTheSame(oldItem: WatchlistMainItem, newItem: WatchlistMainItem) =
     oldItem.episode.ids.trakt == newItem.episode.ids.trakt &&
       oldItem.episodesCount == newItem.episodesCount &&
       oldItem.watchedEpisodesCount == newItem.watchedEpisodesCount &&

@@ -11,7 +11,7 @@ import com.michaldrabik.showly2.utilities.extensions.nowUtc
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.showly2.utilities.extensions.toMillis
 
-data class WatchlistItem(
+data class WatchlistMainItem(
   override val show: Show,
   val season: Season,
   val episode: Episode,
@@ -23,7 +23,7 @@ data class WatchlistItem(
   val isPinned: Boolean = false
 ) : ListItem {
 
-  fun isSameAs(other: WatchlistItem) =
+  fun isSameAs(other: WatchlistMainItem) =
     show.ids.trakt == other.show.ids.trakt && isHeader() == other.isHeader()
 
   fun isHeader() = headerTextResId != null
@@ -32,7 +32,7 @@ data class WatchlistItem(
     nowUtcMillis() - (episode.firstAired?.toMillis() ?: 0) < Config.NEW_BADGE_DURATION
 
   companion object {
-    val EMPTY = WatchlistItem(
+    val EMPTY = WatchlistMainItem(
       Show.EMPTY,
       Season.EMPTY,
       Episode.EMPTY,

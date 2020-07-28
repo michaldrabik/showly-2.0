@@ -19,8 +19,8 @@ import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.ui.watchlist.WatchlistFragment
 import com.michaldrabik.showly2.ui.watchlist.WatchlistViewModel
-import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistAdapter
-import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistMainAdapter
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistMainItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
@@ -37,7 +37,7 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
   override val viewModel by viewModels<WatchlistMainViewModel> { viewModelFactory }
 
   private var statusBarHeight = 0
-  private lateinit var adapter: WatchlistAdapter
+  private lateinit var adapter: WatchlistMainAdapter
   private lateinit var layoutManager: LinearLayoutManager
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +63,7 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
   }
 
   private fun setupRecycler() {
-    adapter = WatchlistAdapter()
+    adapter = WatchlistMainAdapter()
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     watchlistMainRecycler.apply {
       adapter = this@WatchlistMainFragment.adapter
@@ -91,7 +91,7 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
     }
   }
 
-  private fun openPopupMenu(item: WatchlistItem, view: View) {
+  private fun openPopupMenu(item: WatchlistMainItem, view: View) {
     val menu = PopupMenu(requireContext(), view, Gravity.CENTER)
     if (item.isPinned) {
       menu.inflate(R.menu.watchlist_item_menu_unpin)
@@ -107,7 +107,7 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
     menu.show()
   }
 
-  private fun openEpisodeDetails(item: WatchlistItem) {
+  private fun openEpisodeDetails(item: WatchlistMainItem) {
     val modal = EpisodeDetailsBottomSheet.create(
       item.show.ids.trakt,
       item.episode,

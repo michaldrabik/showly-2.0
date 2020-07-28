@@ -18,7 +18,7 @@ import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
-import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistMainItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
@@ -117,7 +117,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     }
   }
 
-  fun openShowDetails(item: WatchlistItem) {
+  fun openShowDetails(item: WatchlistMainItem) {
     exitSearch()
     hideNavigation()
     saveUiTranslations()

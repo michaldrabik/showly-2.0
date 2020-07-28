@@ -26,6 +26,7 @@
 
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/commentsRecycler"
+    style="@style/ScrollbarsStyle"
     android:layout_width="0dp"
     android:layout_height="0dp"
     android:clipChildren="false"
@@ -33,10 +34,6 @@
     android:overScrollMode="never"
     android:paddingStart="@dimen/spaceNormal"
     android:paddingEnd="@dimen/spaceNormal"
-    android:scrollbarFadeDuration="100"
-    android:scrollbarSize="@dimen/scrollBarWidth"
-    android:scrollbarStyle="outsideOverlay"
-    android:scrollbarThumbVertical="@color/colorScrollbar"
     android:scrollbars="vertical"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"

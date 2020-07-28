@@ -66,12 +66,12 @@
       android:layout_width="20dp"
       android:layout_height="wrap_content"
       android:rotation="45"
+      android:tint="@color/colorWatchlistSecondaryButton"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="@id/watchlistItemButtons"
       app:layout_constraintStart_toStartOf="@id/watchlistItemButtons"
       app:layout_constraintTop_toTopOf="@id/watchlistItemButtons"
       app:srcCompat="@drawable/ic_pin"
-      android:tint="@color/colorWatchlistSecondaryButton"
       tools:visibility="visible"
       />
 

@@ -5,7 +5,7 @@ import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.watchlist.WatchlistInteractor
 import com.michaldrabik.showly2.ui.watchlist.WatchlistUiModel
-import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistMainItem
 import com.michaldrabik.showly2.utilities.extensions.findReplace
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,9 +18,9 @@ class WatchlistUpcomingViewModel @Inject constructor(
     uiState = WatchlistUpcomingUiModel(items = model.items?.toList())
   }
 
-  fun findMissingImage(item: WatchlistItem, force: Boolean) {
+  fun findMissingImage(item: WatchlistMainItem, force: Boolean) {
 
-    fun updateItem(new: WatchlistItem) {
+    fun updateItem(new: WatchlistMainItem) {
       val currentItems = uiState?.items?.toMutableList()
       currentItems?.findReplace(new) { it.isSameAs(new) }
       uiState = WatchlistUpcomingUiModel(items = currentItems)

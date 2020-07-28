@@ -11,7 +11,7 @@ import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.watchlist.WatchlistViewModel
-import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistAdapter
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistMainAdapter
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import kotlinx.android.synthetic.main.fragment_watchlist_upcoming.*
@@ -23,7 +23,7 @@ class WatchlistUpcomingFragment : BaseFragment<WatchlistUpcomingViewModel>(R.lay
   override val viewModel by viewModels<WatchlistUpcomingViewModel> { viewModelFactory }
 
   private var statusBarHeight = 0
-  private lateinit var adapter: WatchlistAdapter
+  private lateinit var adapter: WatchlistMainAdapter
   private lateinit var layoutManager: LinearLayoutManager
 
   override fun onCreate(savedInstanceState: Bundle?) {

@@ -6,7 +6,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistMainItem
 import com.michaldrabik.showly2.utilities.MessageEvent
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -34,7 +34,7 @@ class WatchlistViewModel @Inject constructor(
         .groupBy { it.episode.hasAired(it.season) }
 
       val aired = (items[true] ?: emptyList())
-        .sortedWith(compareByDescending<WatchlistItem> { it.isNew() }.thenBy { it.show.title.toLowerCase() })
+        .sortedWith(compareByDescending<WatchlistMainItem> { it.isNew() }.thenBy { it.show.title.toLowerCase() })
       val notAired = (items[false] ?: emptyList())
         .sortedBy { it.episode.firstAired?.toInstant()?.toEpochMilli() }
 
@@ -66,7 +66,7 @@ class WatchlistViewModel @Inject constructor(
     loadWatchlist()
   }
 
-  fun setWatchedEpisode(context: Context, item: WatchlistItem) {
+  fun setWatchedEpisode(context: Context, item: WatchlistMainItem) {
     viewModelScope.launch {
       if (!item.episode.hasAired(item.season)) {
         _messageLiveData.value = MessageEvent.info(R.string.errorEpisodeNotAired)
@@ -77,7 +77,7 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  fun togglePinItem(item: WatchlistItem) {
+  fun togglePinItem(item: WatchlistMainItem) {
     if (item.isPinned) {
       interactor.removePinnedItem(item)
     } else {

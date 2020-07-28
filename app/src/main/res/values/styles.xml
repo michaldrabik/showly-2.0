@@ -21,6 +21,14 @@
     <item name="android:indeterminateTintMode">src_in</item>
   </style>
 
+  <style name="ScrollbarsStyle">
+    <item name="android:scrollbarDefaultDelayBeforeFade">200</item>
+    <item name="android:scrollbarFadeDuration">100</item>
+    <item name="android:scrollbarSize">@dimen/scrollBarWidth</item>
+    <item name="android:scrollbarStyle">outsideOverlay</item>
+    <item name="android:scrollbarThumbVertical">@color/colorScrollbar</item>
+  </style>
+
   <style name="Show" />
 
   <style name="Show.Badge" parent="Show">
