@@ -11,9 +11,9 @@ import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
 import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryFragment
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.ui.trakt.TraktSyncFragment
-import com.michaldrabik.showly2.ui.watchlist.WatchlistMainFragment
+import com.michaldrabik.showly2.ui.watchlist.WatchlistFragment
 import com.michaldrabik.showly2.ui.watchlist.pages.upcoming.WatchlistUpcomingFragment
-import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistFragment
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistMainFragment
 import dagger.Subcomponent
 
 @Subcomponent
@@ -24,11 +24,11 @@ interface FragmentComponent {
     fun create(): FragmentComponent
   }
 
-  fun inject(fragment: WatchlistMainFragment)
+  fun inject(fragment: WatchlistFragment)
 
   fun inject(fragment: WatchlistUpcomingFragment)
 
-  fun inject(fragment: WatchlistFragment)
+  fun inject(fragment: WatchlistMainFragment)
 
   fun inject(fragment: DiscoverFragment)
 

@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.watchlist.pages.watchlist
+package com.michaldrabik.showly2.ui.watchlist
 
 import android.content.Context
 import com.michaldrabik.showly2.common.images.ShowImagesProvider

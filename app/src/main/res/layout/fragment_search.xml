@@ -25,7 +25,7 @@
       android:overScrollMode="never"
       android:paddingTop="@dimen/searchViewHeightPadded"
       android:paddingBottom="@dimen/spaceMedium"
-      android:scrollbarFadeDuration="150"
+      android:scrollbarFadeDuration="100"
       android:scrollbarSize="@dimen/scrollBarWidth"
       android:scrollbarStyle="outsideOverlay"
       android:scrollbarThumbVertical="@color/colorScrollbar"

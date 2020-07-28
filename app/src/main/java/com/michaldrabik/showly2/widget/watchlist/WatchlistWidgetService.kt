@@ -4,7 +4,7 @@ import android.content.Intent
 import android.widget.RemoteViewsService
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.serviceComponent
-import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistInteractor
+import com.michaldrabik.showly2.ui.watchlist.WatchlistInteractor
 import javax.inject.Inject
 
 class WatchlistWidgetService : RemoteViewsService() {

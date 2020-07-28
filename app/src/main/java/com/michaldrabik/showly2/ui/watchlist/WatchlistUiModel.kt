@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.watchlist.pages.watchlist
+package com.michaldrabik.showly2.ui.watchlist
 
 import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem

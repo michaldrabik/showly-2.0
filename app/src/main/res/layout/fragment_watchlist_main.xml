@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/watchlistMainRoot"
   android:layout_width="match_parent"
@@ -10,45 +9,31 @@
   android:clipToPadding="false"
   >
 
-  <androidx.viewpager2.widget.ViewPager2
-    android:id="@+id/watchlistMainPager"
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/watchlistMainRecycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    />
-
-  <com.michaldrabik.showly2.ui.common.views.ScrollableTabLayout
-    android:id="@+id/watchlistMainTabs"
-    style="@style/MyShowsTabStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="36dp"
-    android:layout_marginStart="@dimen/spaceMedium"
-    android:layout_marginTop="@dimen/watchlistSearchViewPadding"
-    android:translationX="-10dp"
-    app:tabMinWidth="84dp"
-    app:tabTextAppearance="@style/MyShowsTabTextStyle"
-    />
-
-  <com.michaldrabik.showly2.ui.common.views.search.SearchView
-    android:id="@+id/watchlistMainSearchView"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/searchViewHeight"
-    android:layout_marginLeft="@dimen/spaceMedium"
-    android:layout_marginTop="@dimen/spaceSmall"
-    android:layout_marginRight="@dimen/spaceMedium"
-    />
-
-  <include
-    android:id="@+id/watchlistMainEmptyView"
-    layout="@layout/layout_watchlist_empty"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginStart="@dimen/spaceBig"
-    android:layout_marginTop="@dimen/spaceBig"
-    android:layout_marginEnd="@dimen/spaceBig"
-    android:layout_marginBottom="@dimen/bottomNavigationHeight"
+    android:background="@android:color/transparent"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:paddingTop="@dimen/watchlistTabsViewPadding"
+    android:paddingBottom="@dimen/bottomNavigationHeightPadded"
+    android:scrollbarFadeDuration="100"
+    android:scrollbarSize="@dimen/scrollBarWidth"
+    android:scrollbarStyle="outsideOverlay"
+    android:scrollbarThumbVertical="@color/colorScrollbar"
+    android:scrollbars="vertical"
     android:visibility="gone"
     tools:visibility="visible"
+    />
+
+  <com.michaldrabik.showly2.ui.tutorial.TipView
+    android:id="@+id/watchlistMainTipItem"
+    android:layout_width="@dimen/tutorialTipSize"
+    android:layout_height="@dimen/tutorialTipSize"
+    android:layout_marginStart="110dp"
+    android:layout_marginTop="150dp"
+    android:visibility="gone"
     />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

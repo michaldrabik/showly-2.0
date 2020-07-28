@@ -3,8 +3,8 @@ package com.michaldrabik.showly2.ui.watchlist.pages.upcoming
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import com.michaldrabik.showly2.ui.watchlist.WatchlistMainUiModel
-import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistInteractor
+import com.michaldrabik.showly2.ui.watchlist.WatchlistInteractor
+import com.michaldrabik.showly2.ui.watchlist.WatchlistUiModel
 import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.findReplace
 import kotlinx.coroutines.launch
@@ -14,7 +14,7 @@ class WatchlistUpcomingViewModel @Inject constructor(
   private val interactor: WatchlistInteractor
 ) : BaseViewModel<WatchlistUpcomingUiModel>() {
 
-  fun handleParentAction(model: WatchlistMainUiModel) {
+  fun handleParentAction(model: WatchlistUiModel) {
     uiState = WatchlistUpcomingUiModel(items = model.items?.toList())
   }
 

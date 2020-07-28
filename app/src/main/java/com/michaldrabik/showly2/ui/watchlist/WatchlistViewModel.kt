@@ -6,7 +6,6 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistInteractor
 import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.MessageEvent
 import kotlinx.coroutines.async
@@ -14,10 +13,10 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class WatchlistMainViewModel @Inject constructor(
+class WatchlistViewModel @Inject constructor(
   private val interactor: WatchlistInteractor,
   private val showsRepository: ShowsRepository
-) : BaseViewModel<WatchlistMainUiModel>() {
+) : BaseViewModel<WatchlistUiModel>() {
 
   private var searchQuery = ""
 
@@ -58,7 +57,7 @@ class WatchlistMainViewModel @Inject constructor(
         .sortedByDescending { !it.isHeader() && it.isPinned }
 
       uiState =
-        WatchlistMainUiModel(items = pinnedItems, isSearching = searchQuery.isNotBlank())
+        WatchlistUiModel(items = pinnedItems, isSearching = searchQuery.isNotBlank())
     }
   }
 

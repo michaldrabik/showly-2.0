@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
+import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
@@ -24,18 +25,20 @@ import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
+import com.michaldrabik.showly2.utilities.extensions.nextPage
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showKeyboard
 import com.michaldrabik.showly2.utilities.extensions.visible
-import kotlinx.android.synthetic.main.fragment_watchlist_main.*
+import kotlinx.android.synthetic.main.fragment_watchlist.*
 import kotlinx.android.synthetic.main.layout_watchlist_empty.*
 import kotlinx.android.synthetic.main.view_search.*
 
-class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.fragment_watchlist_main),
+class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
   OnEpisodesSyncedListener,
+  OnTabReselectedListener,
   OnTraktSyncListener {
 
-  override val viewModel by viewModels<WatchlistMainViewModel> { viewModelFactory }
+  override val viewModel by viewModels<WatchlistViewModel> { viewModelFactory }
 
   private var searchViewTranslation = 0F
   private var tabsTranslation = 0F
@@ -66,7 +69,7 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
   private fun setupView() {
     watchlistEmptyTraktButton.onClick { openTraktSync() }
     watchlistEmptyDiscoverButton.onClick { mainActivity().openTab(R.id.menuDiscover) }
-    watchlistMainSearchView.run {
+    watchlistSearchView.run {
       hint = getString(R.string.textSearchWatchlist)
       settingsIconVisible = true
       isClickable = false
@@ -74,27 +77,27 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
       onSettingsClickListener = { openSettings() }
     }
 
-    watchlistMainTabs.translationY = tabsTranslation
-    watchlistMainSearchView.translationY = searchViewTranslation
+    watchlistTabs.translationY = tabsTranslation
+    watchlistSearchView.translationY = searchViewTranslation
   }
 
   @SuppressLint("WrongConstant")
   private fun setupPager() {
-    watchlistMainPager.run {
-      offscreenPageLimit = WatchlistMainPagesAdapter.PAGES_COUNT
+    watchlistPager.run {
+      offscreenPageLimit = WatchlistPagesAdapter.PAGES_COUNT
       isUserInputEnabled = false
-      adapter = WatchlistMainPagesAdapter(this@WatchlistMainFragment)
+      adapter = WatchlistPagesAdapter(this@WatchlistFragment)
     }
 
-    watchlistMainTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+    watchlistTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
       override fun onTabSelected(tab: TabLayout.Tab) {
-        watchlistMainPager.currentItem = tab.position
+        watchlistPager.currentItem = tab.position
       }
 
       override fun onTabReselected(tab: TabLayout.Tab) = Unit
       override fun onTabUnselected(tab: TabLayout.Tab) = Unit
     })
-    TabLayoutMediator(watchlistMainTabs, watchlistMainPager) { tab, position ->
+    TabLayoutMediator(watchlistTabs, watchlistPager) { tab, position ->
       tab.text = when (position) {
         0 -> getString(R.string.tabWatchlist)
         else -> getString(R.string.tabCalendar)
@@ -105,11 +108,11 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
   private fun setupStatusBar() {
     watchlistMainRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.systemWindowInsetTop
-      (watchlistMainEmptyView.layoutParams as ViewGroup.MarginLayoutParams)
+      (watchlistEmptyView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceBig))
-      (watchlistMainSearchView.layoutParams as ViewGroup.MarginLayoutParams)
+      (watchlistSearchView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
-      (watchlistMainTabs.layoutParams as ViewGroup.MarginLayoutParams)
+      (watchlistTabs.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.watchlistSearchViewPadding))
     }
   }
@@ -137,13 +140,13 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
   }
 
   private fun saveUiTranslations() {
-    tabsTranslation = watchlistMainTabs.translationY
-    searchViewTranslation = watchlistMainSearchView.translationY
+    tabsTranslation = watchlistTabs.translationY
+    searchViewTranslation = watchlistSearchView.translationY
   }
 
   private fun enterSearch() {
-    if (watchlistMainSearchView.isSearching) return
-    watchlistMainSearchView.isSearching = true
+    if (watchlistSearchView.isSearching) return
+    watchlistSearchView.isSearching = true
     searchViewText.gone()
     searchViewInput.run {
       setText("")
@@ -158,7 +161,7 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
   }
 
   private fun exitSearch(showNavigation: Boolean = true) {
-    watchlistMainSearchView.isSearching = false
+    watchlistSearchView.isSearching = false
     searchViewText.visible()
     searchViewInput.run {
       setText("")
@@ -174,11 +177,20 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
 
   override fun onTraktSyncProgress() = viewModel.loadWatchlist()
 
-  private fun render(uiModel: WatchlistMainUiModel) {
+  override fun onTabReselected() {
+    watchlistSearchView.translationY = 0F
+    watchlistTabs.translationY = 0F
+    watchlistPager.nextPage()
+    childFragmentManager.fragments.forEach {
+      (it as? OnTabReselectedListener)?.onTabReselected()
+    }
+  }
+
+  private fun render(uiModel: WatchlistUiModel) {
     uiModel.run {
       items?.let {
-        watchlistMainSearchView.isClickable = it.isNotEmpty() || isSearching == true
-        watchlistMainEmptyView.fadeIf(it.isEmpty() && isSearching == false)
+        watchlistSearchView.isClickable = it.isNotEmpty() || isSearching == true
+        watchlistEmptyView.fadeIf(it.isEmpty() && isSearching == false)
       }
     }
   }

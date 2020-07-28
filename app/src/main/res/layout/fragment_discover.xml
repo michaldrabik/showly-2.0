@@ -26,7 +26,7 @@
       android:paddingTop="@dimen/discoverRecyclerPadding"
       android:paddingRight="@dimen/gridPadding"
       android:paddingBottom="@dimen/bottomNavigationHeightPadded"
-      android:scrollbarFadeDuration="150"
+      android:scrollbarFadeDuration="100"
       android:scrollbarSize="@dimen/scrollBarWidth"
       android:scrollbarStyle="outsideOverlay"
       android:scrollbarThumbVertical="@color/colorScrollbar"
