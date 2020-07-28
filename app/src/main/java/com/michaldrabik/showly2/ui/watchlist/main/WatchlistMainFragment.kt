@@ -117,6 +117,7 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
   fun openShowDetails(item: WatchlistItem) {
     exitSearch()
     hideNavigation()
+    saveUiTranslations()
     watchlistMainRoot.fadeOut {
       val bundle = Bundle().apply { putLong(ShowDetailsFragment.ARG_SHOW_ID, item.show.ids.trakt.id) }
       navigateTo(R.id.actionWatchlistMainFragmentToShowDetailsFragment, bundle)

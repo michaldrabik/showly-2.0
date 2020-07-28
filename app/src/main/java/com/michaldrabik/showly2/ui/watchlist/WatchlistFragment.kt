@@ -21,6 +21,7 @@ import com.michaldrabik.showly2.ui.watchlist.main.WatchlistMainFragment
 import com.michaldrabik.showly2.ui.watchlist.main.WatchlistMainViewModel
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistAdapter
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.gone
@@ -81,12 +82,12 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
 
   private fun setupStatusBar() {
     if (statusBarHeight != 0) {
-      watchlistRoot.updatePadding(top = statusBarHeight)
+      watchlistRecycler.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.watchlistTabsViewPadding))
       return
     }
-    watchlistRoot.doOnApplyWindowInsets { view, insets, _, _ ->
+    watchlistRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
       statusBarHeight = insets.systemWindowInsetTop
-      view.updatePadding(top = statusBarHeight)
+      view.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.watchlistTabsViewPadding))
     }
   }
 
