@@ -1,19 +1,21 @@
-package com.michaldrabik.showly2.ui.watchlist.main
+package com.michaldrabik.showly2.ui.watchlist
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.michaldrabik.showly2.ui.watchlist.WatchlistFragment
+import com.michaldrabik.showly2.ui.watchlist.pages.upcoming.WatchlistUpcomingFragment
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistFragment
 
 class WatchlistMainPagesAdapter(hostFragment: Fragment) : FragmentStateAdapter(hostFragment) {
 
   companion object {
-    const val PAGES_COUNT = 1
+    const val PAGES_COUNT = 2
   }
 
   override fun getItemCount() = PAGES_COUNT
 
   override fun createFragment(position: Int): Fragment = when (position) {
     0 -> WatchlistFragment()
+    1 -> WatchlistUpcomingFragment()
     else -> throw IllegalStateException("Unknown position")
   }
 }

@@ -9,6 +9,7 @@
   android:clipToPadding="false"
   android:fillViewport="true"
   android:overScrollMode="never"
+  android:scrollbars="none"
   >
 
   <androidx.constraintlayout.widget.ConstraintLayout

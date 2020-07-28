@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.watchlist.main
+package com.michaldrabik.showly2.ui.watchlist
 
 import android.annotation.SuppressLint
 import android.graphics.drawable.Animatable
@@ -17,7 +17,7 @@ import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
-import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.fadeIf

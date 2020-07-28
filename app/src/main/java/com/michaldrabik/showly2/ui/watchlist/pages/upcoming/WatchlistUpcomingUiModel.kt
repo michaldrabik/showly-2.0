@@ -1,15 +1,15 @@
-package com.michaldrabik.showly2.ui.watchlist
+package com.michaldrabik.showly2.ui.watchlist.pages.upcoming
 
 import com.michaldrabik.showly2.ui.common.UiModel
-import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem
 
-data class WatchlistUiModel(
+data class WatchlistUpcomingUiModel(
   val items: List<WatchlistItem>? = null,
   val isSearching: Boolean? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
-    (newModel as WatchlistUiModel).copy(
+    (newModel as WatchlistUpcomingUiModel).copy(
       items = newModel.items?.toList() ?: items,
       isSearching = newModel.isSearching ?: isSearching
     )

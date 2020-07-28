@@ -1,12 +1,12 @@
-package com.michaldrabik.showly2.ui.watchlist.recycler
+package com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.showly2.ui.common.base.BaseAdapter
-import com.michaldrabik.showly2.ui.watchlist.views.WatchlistHeaderView
-import com.michaldrabik.showly2.ui.watchlist.views.WatchlistItemView
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.views.WatchlistHeaderView
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.views.WatchlistItemView
 
 class WatchlistAdapter : BaseAdapter<WatchlistItem>() {
 

@@ -1,10 +1,10 @@
-package com.michaldrabik.showly2.ui.watchlist
+package com.michaldrabik.showly2.ui.watchlist.pages.watchlist
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import com.michaldrabik.showly2.ui.watchlist.main.WatchlistMainUiModel
-import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.ui.watchlist.WatchlistMainUiModel
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.findReplace
 import kotlinx.coroutines.launch
 import javax.inject.Inject

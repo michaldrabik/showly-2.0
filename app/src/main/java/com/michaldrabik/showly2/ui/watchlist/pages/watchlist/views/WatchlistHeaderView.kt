@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.watchlist.views
+package com.michaldrabik.showly2.ui.watchlist.pages.watchlist.views
 
 import android.annotation.SuppressLint
 import android.content.Context

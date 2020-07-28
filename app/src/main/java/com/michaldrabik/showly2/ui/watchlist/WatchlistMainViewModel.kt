@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.watchlist.main
+package com.michaldrabik.showly2.ui.watchlist
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
@@ -6,8 +6,8 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import com.michaldrabik.showly2.ui.watchlist.WatchlistInteractor
-import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistInteractor
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.MessageEvent
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -57,7 +57,8 @@ class WatchlistMainViewModel @Inject constructor(
       val pinnedItems = allItems
         .sortedByDescending { !it.isHeader() && it.isPinned }
 
-      uiState = WatchlistMainUiModel(items = pinnedItems, isSearching = searchQuery.isNotBlank())
+      uiState =
+        WatchlistMainUiModel(items = pinnedItems, isSearching = searchQuery.isNotBlank())
     }
   }
 

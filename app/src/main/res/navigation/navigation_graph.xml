@@ -66,7 +66,7 @@
 
   <fragment
     android:id="@+id/watchlistMainFragment"
-    android:name="com.michaldrabik.showly2.ui.watchlist.main.WatchlistMainFragment"
+    android:name="com.michaldrabik.showly2.ui.watchlist.WatchlistMainFragment"
     android:label="fragmentWatchlistMain"
     tools:layout="@layout/fragment_watchlist_main"
     >
@@ -96,7 +96,7 @@
 
   <fragment
     android:id="@+id/watchlistFragment"
-    android:name="com.michaldrabik.showly2.ui.watchlist.WatchlistFragment"
+    android:name="com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistFragment"
     android:label="fragmentWatchlist"
     tools:layout="@layout/fragment_watchlist"
     />

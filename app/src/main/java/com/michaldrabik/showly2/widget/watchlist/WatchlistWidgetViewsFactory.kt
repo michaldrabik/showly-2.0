@@ -14,8 +14,8 @@ import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
-import com.michaldrabik.showly2.ui.watchlist.WatchlistInteractor
-import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistInteractor
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.DurationPrinter
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.replace

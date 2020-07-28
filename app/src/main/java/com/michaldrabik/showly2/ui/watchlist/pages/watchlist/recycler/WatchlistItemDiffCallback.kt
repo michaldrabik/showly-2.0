@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.watchlist.recycler
+package com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler
 
 import androidx.recyclerview.widget.DiffUtil
 

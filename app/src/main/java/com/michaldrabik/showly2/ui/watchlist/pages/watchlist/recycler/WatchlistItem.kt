@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.watchlist.recycler
+package com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler
 
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.model.Episode

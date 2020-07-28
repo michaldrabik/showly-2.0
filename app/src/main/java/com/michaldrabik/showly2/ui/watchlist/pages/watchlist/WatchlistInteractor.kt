@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.watchlist
+package com.michaldrabik.showly2.ui.watchlist.pages.watchlist
 
 import android.content.Context
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
@@ -12,7 +12,7 @@ import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.watchlist.WatchlistRepository
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
-import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.EpisodeWatchlist
 import javax.inject.Inject

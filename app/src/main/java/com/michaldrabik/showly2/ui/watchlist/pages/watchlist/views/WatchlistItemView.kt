@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.watchlist.views
+package com.michaldrabik.showly2.ui.watchlist.pages.watchlist.views
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.views.ShowView
-import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.DurationPrinter
 import com.michaldrabik.showly2.utilities.extensions.addRipple
 import com.michaldrabik.showly2.utilities.extensions.bump
