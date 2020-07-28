@@ -16,7 +16,7 @@
     android:background="@android:color/transparent"
     android:clipToPadding="false"
     android:overScrollMode="never"
-    android:paddingTop="@dimen/watchlistTabsViewPadding"
+    android:paddingTop="@dimen/watchlistUpcomingTabsViewPadding"
     android:paddingBottom="@dimen/bottomNavigationHeightPadded"
     android:visibility="gone"
     tools:visibility="visible"

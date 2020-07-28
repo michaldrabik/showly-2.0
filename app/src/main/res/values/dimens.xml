@@ -9,7 +9,7 @@
   <dimen name="scrollBarWidth">3dp</dimen>
   <dimen name="swipeRefreshStartOffset">8dp</dimen>
   <dimen name="swipeRefreshEndOffset">120dp</dimen>
-  <dimen name="listHeaderTextSize">20sp</dimen>
+  <dimen name="listHeaderTextSize">22sp</dimen>
   <dimen name="tutorialTipSize">28dp</dimen>
 
   <dimen name="episodeDetailsCorner">16dp</dimen>
@@ -23,7 +23,7 @@
   <dimen name="episodeViewHeight">42dp</dimen>
 
   <dimen name="myShowsSearchViewPadding">64dp</dimen>
-  <dimen name="myShowsTabsViewPadding">98dp</dimen>
+  <dimen name="myShowsTabsViewPadding">94dp</dimen>
   <dimen name="myShowsBottomPadding">68dp</dimen>
   <dimen name="myShowsFanartCorner">4dp</dimen>
   <dimen name="myShowsFanartHeight">126dp</dimen>
@@ -67,6 +67,7 @@
 
   <dimen name="watchlistSearchViewPadding">64dp</dimen>
   <dimen name="watchlistTabsViewPadding">112dp</dimen>
+  <dimen name="watchlistUpcomingTabsViewPadding">96dp</dimen>
 
   <dimen name="watchlistImageHeight">120dp</dimen>
   <dimen name="watchlistImageWidth">80dp</dimen>

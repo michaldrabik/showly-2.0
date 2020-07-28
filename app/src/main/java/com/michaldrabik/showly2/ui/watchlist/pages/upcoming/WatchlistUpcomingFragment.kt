@@ -62,12 +62,12 @@ class WatchlistUpcomingFragment : BaseFragment<WatchlistUpcomingViewModel>(R.lay
 
   private fun setupStatusBar() {
     if (statusBarHeight != 0) {
-      watchlistUpcomingRecycler.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.watchlistTabsViewPadding))
+      watchlistUpcomingRecycler.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.watchlistUpcomingTabsViewPadding))
       return
     }
     watchlistUpcomingRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
       statusBarHeight = insets.systemWindowInsetTop
-      view.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.watchlistTabsViewPadding))
+      view.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.watchlistUpcomingTabsViewPadding))
     }
   }
 

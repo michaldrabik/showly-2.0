@@ -13,7 +13,7 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/spaceMedium"
-    android:layout_marginBottom="@dimen/spaceMedium"
+    android:layout_marginBottom="@dimen/spaceNormal"
     android:textColor="@color/colorTextPrimary"
     android:textSize="@dimen/listHeaderTextSize"
     android:textStyle="bold"

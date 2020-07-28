@@ -12,7 +12,7 @@
   <string name="tabSeeLater">See Later</string>
   <string name="tabStatistics">Statistics</string>
   <string name="tabWatchlist">Watchlist</string>
-  <string name="tabCalendar">Upcoming</string>
+  <string name="tabCalendar">Calendar</string>
 
   <string name="textApply">Apply</string>
   <string name="textOk">OK</string>
@@ -69,6 +69,11 @@
   <string name="textSortDateAdded">Recently Added</string>
   <string name="textEpisodeInfo">Details</string>
   <string name="textWatchLater">See Later</string>
+  <string name="textWatchlistToday">Today</string>
+  <string name="textWatchlistTomorrow">Tomorrow</string>
+  <string name="textWatchlistThisWeek">This Week</string>
+  <string name="textWatchlistNextWeek">Next Week</string>
+  <string name="textWatchlistLater">Later</string>
   <string name="textWatchlistIncoming">Coming Soon</string>
   <string name="textWatchlistEmpty">Your watchlist is currently empty.\n\nVisit Discover tab to add shows or import your Trakt.tv collection.</string>
   <string name="textMyShowsEmpty">Your shows collection is currently empty.\nVisit Discover tab to add shows.</string>
