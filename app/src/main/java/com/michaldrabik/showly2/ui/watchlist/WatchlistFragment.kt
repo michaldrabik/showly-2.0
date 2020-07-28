@@ -13,12 +13,15 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
+import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
-import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistMainItem
+import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
+import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
@@ -117,7 +120,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     }
   }
 
-  fun openShowDetails(item: WatchlistMainItem) {
+  fun openShowDetails(item: WatchlistItem) {
     exitSearch()
     hideNavigation()
     saveUiTranslations()
@@ -137,6 +140,16 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     navigateTo(R.id.actionWatchlistMainFragmentToTraktSyncFragment)
     hideNavigation()
     saveUiTranslations()
+  }
+
+  fun openEpisodeDetails(showId: IdTrakt, episode: Episode) {
+    val modal = EpisodeDetailsBottomSheet.create(
+      showId,
+      episode,
+      isWatched = false,
+      showButton = false
+    )
+    modal.show(requireActivity().supportFragmentManager, "MODAL")
   }
 
   private fun saveUiTranslations() {

@@ -15,7 +15,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.watchlist.WatchlistInteractor
-import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistMainItem
+import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.DurationPrinter
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.replace
@@ -41,7 +41,7 @@ class WatchlistWidgetViewsFactory(
   private val imageCorner by lazy { context.dimenToPx(R.dimen.showTileCorner) }
   private val imageWidth by lazy { context.dimenToPx(R.dimen.watchlistWidgetImageWidth) }
   private val imageHeight by lazy { context.dimenToPx(R.dimen.watchlistWidgetImageHeight) }
-  private val adapterItems by lazy { mutableListOf<WatchlistMainItem>() }
+  private val adapterItems by lazy { mutableListOf<WatchlistItem>() }
   private val durationPrinter by lazy { DurationPrinter(context.applicationContext) }
 
   private fun loadData() {
@@ -58,7 +58,7 @@ class WatchlistWidgetViewsFactory(
         .groupBy { it.episode.hasAired(it.season) }
 
       val aired = (items[true] ?: emptyList())
-        .sortedWith(compareByDescending<WatchlistMainItem> { it.isNew() }.thenBy { it.show.title.toLowerCase() })
+        .sortedWith(compareByDescending<WatchlistItem> { it.isNew() }.thenBy { it.show.title.toLowerCase() })
       val notAired = (items[false] ?: emptyList())
         .sortedBy { it.episode.firstAired?.toInstant()?.toEpochMilli() }
 
@@ -84,7 +84,7 @@ class WatchlistWidgetViewsFactory(
     }
   }
 
-  private fun createItemRemoteView(item: WatchlistMainItem): RemoteViews {
+  private fun createItemRemoteView(item: WatchlistItem): RemoteViews {
     val subtitle = String.format("S.%02d E.%02d", item.episode.season, item.episode.number)
     val progressText = "${item.watchedEpisodesCount}/${item.episodesCount}"
     val imageUrl = "${Config.TVDB_IMAGE_BASE_BANNERS_URL}${item.image.fileUrl}"
@@ -139,7 +139,7 @@ class WatchlistWidgetViewsFactory(
     return remoteView
   }
 
-  private fun createHeaderRemoteView(item: WatchlistMainItem) =
+  private fun createHeaderRemoteView(item: WatchlistItem) =
     RemoteViews(context.packageName, R.layout.widget_watchlist_header).apply {
       setTextViewText(R.id.watchlistWidgetHeaderTitle, context.getString(item.headerTextResId!!))
     }

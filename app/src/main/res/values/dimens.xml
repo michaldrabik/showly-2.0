@@ -75,7 +75,7 @@
   <dimen name="watchlistWidgetImageWidth">67dp</dimen>
 
   <dimen name="watchlistItemCheckButtonWidth">72dp</dimen>
-  <dimen name="watchlistItemCheckButtonHeight">40dp</dimen>
+  <dimen name="watchlistItemButtonHeight">40dp</dimen>
 
   <dimen name="seeLaterImageHeight">120dp</dimen>
   <dimen name="seeLaterImageWidth">80dp</dimen>

@@ -16,11 +16,10 @@ import com.michaldrabik.showly2.model.Tip
 import com.michaldrabik.showly2.requireAppContext
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
-import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.ui.watchlist.WatchlistFragment
 import com.michaldrabik.showly2.ui.watchlist.WatchlistViewModel
 import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistMainAdapter
-import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistMainItem
+import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
@@ -74,7 +73,7 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
     adapter.run {
       itemClickListener = { (requireParentFragment() as WatchlistFragment).openShowDetails(it) }
       itemLongClickListener = { item, view -> openPopupMenu(item, view) }
-      detailsClickListener = { openEpisodeDetails(it) }
+      detailsClickListener = { (requireParentFragment() as WatchlistFragment).openEpisodeDetails(it.show.ids.trakt, it.episode) }
       checkClickListener = { parentViewModel.setWatchedEpisode(requireAppContext(), it) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
     }
@@ -91,7 +90,7 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
     }
   }
 
-  private fun openPopupMenu(item: WatchlistMainItem, view: View) {
+  private fun openPopupMenu(item: WatchlistItem, view: View) {
     val menu = PopupMenu(requireContext(), view, Gravity.CENTER)
     if (item.isPinned) {
       menu.inflate(R.menu.watchlist_item_menu_unpin)
@@ -105,16 +104,6 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
       true
     }
     menu.show()
-  }
-
-  private fun openEpisodeDetails(item: WatchlistMainItem) {
-    val modal = EpisodeDetailsBottomSheet.create(
-      item.show.ids.trakt,
-      item.episode,
-      isWatched = false,
-      showButton = false
-    )
-    modal.show(requireActivity().supportFragmentManager, "MODAL")
   }
 
   override fun onTabReselected() = watchlistMainRecycler.smoothScrollToPosition(0)
