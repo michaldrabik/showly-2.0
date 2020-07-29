@@ -80,7 +80,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         settingsTraktQuickSyncSwitch.visibleIf(isSignedIn)
         settingsTraktAuthorizeIcon.visibleIf(isSignedIn)
         settingsTraktAuthorize.onClick {
-          if (isSignedIn) viewModel.logoutTrakt(requireAppContext())
+          if (isSignedIn) showLogoutDialog()
           else openTraktWebAuthorization()
         }
         val summaryText = when {
@@ -204,6 +204,18 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         viewModel.setWhenToNotify(options[index], requireAppContext())
         dialog.dismiss()
       }
+      .show()
+  }
+
+  private fun showLogoutDialog() {
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setTitle(R.string.textSettingsLogoutTitle)
+      .setMessage(R.string.textSettingsLogoutMessage)
+      .setPositiveButton(R.string.textYes) { _, _ ->
+        viewModel.logoutTrakt(requireAppContext())
+      }
+      .setNegativeButton(R.string.textCancel) { _, _ -> }
       .show()
   }
 

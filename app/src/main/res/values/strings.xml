@@ -102,8 +102,8 @@
   <string name="textSettingsTrakt">Trakt.tv</string>
   <string name="textSettingsTraktAuthorizeTitle">Trakt.tv Authorization</string>
   <string name="textSettingsTraktAuthorizeSummarySignIn">Click to sign in into your Trakt.tv account.</string>
-  <string name="textSettingsTraktAuthorizeSummarySignOut">Signed in. Click to log out.</string>
-  <string name="textSettingsTraktAuthorizeSummarySignOutUser">Signed in as %1$s. Click to log out.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOut">Signed in. Click to sign out.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOutUser">Signed in as %1$s. Click to sign out.</string>
   <string name="textSettingsTraktSyncTitle">Trakt.tv Sync</string>
   <string name="textSettingsTraktSyncSummary">Sync data between Trakt.tv and Showly.</string>
   <string name="textSettingsTraktQuickSyncTitle">Trakt.tv Instant Sync</string>
@@ -139,6 +139,8 @@
   <string name="textSettingsDeleteCacheSummary">Click to clear local images cache. This may help if shows images are not being loaded correctly.</string>
   <string name="textSettingsQuickSyncConfirmationTitle">Disable Automatic Sync</string>
   <string name="textSettingsQuickSyncConfirmationMessage">\nIt seems like Automatic Sync is already turned on.\n\nWould you like to turn it off before enabling instant sync (advised)?\n</string>
+  <string name="textSettingsLogoutTitle">Trakt.tv Sign Out</string>
+  <string name="textSettingsLogoutMessage">\nAre you sure you want to sign out?\n</string>
   <string name="textSettingsScheduleImportConfirmationTitle">Instant Sync Enabled</string>
   <string name="textSettingsScheduleImportConfirmationMessage">\nIt seems like Instant Sync is already turned on.\n\nDo you still want to schedule automatic sync?\n</string>
 
