@@ -115,7 +115,7 @@
       android:layout_marginStart="@dimen/spaceNormal"
       android:gravity="start|center_vertical"
       android:textColor="@color/colorTextSecondary"
-      android:textSize="12sp"
+      android:textSize="13sp"
       app:layout_constraintBottom_toTopOf="@id/watchlistUpcomingItemInfoButton"
       app:layout_constraintStart_toEndOf="@id/watchlistUpcomingItemImage"
       app:layout_constraintTop_toBottomOf="@id/watchlistUpcomingItemSubtitle"
