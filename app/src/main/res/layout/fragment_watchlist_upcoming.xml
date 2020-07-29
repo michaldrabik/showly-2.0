@@ -22,4 +22,15 @@
     tools:visibility="visible"
     />
 
+  <include
+    android:id="@+id/watchlistUpcomingEmptyView"
+    layout="@layout/layout_calendar_empty"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginEnd="@dimen/spaceBig"
+    android:visibility="gone"
+    />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

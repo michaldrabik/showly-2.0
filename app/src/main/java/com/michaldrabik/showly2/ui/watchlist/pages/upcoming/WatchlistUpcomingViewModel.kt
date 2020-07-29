@@ -19,7 +19,7 @@ import com.michaldrabik.showly2.utilities.extensions.nowUtc
 import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
 import kotlinx.coroutines.launch
 import org.threeten.bp.DayOfWeek.SUNDAY
-import org.threeten.bp.LocalTime
+import org.threeten.bp.LocalTime.NOON
 import javax.inject.Inject
 
 class WatchlistUpcomingViewModel @Inject constructor(
@@ -61,9 +61,9 @@ class WatchlistUpcomingViewModel @Inject constructor(
           timeMap.getOrPut(TODAY, { mutableListOf() }).add(item)
         dateTime.dayOfYear == today.plusDays(1).dayOfYear ->
           timeMap.getOrPut(TOMORROW, { mutableListOf() }).add(item)
-        dateTime.with(LocalTime.NOON).isBefore(nextWeekStart.with(LocalTime.NOON)) ->
+        dateTime.with(NOON).isBefore(nextWeekStart.with(NOON)) ->
           timeMap.getOrPut(THIS_WEEK, { mutableListOf() }).add(item)
-        dateTime.with(LocalTime.NOON).isBefore(nextWeekStart.plusWeeks(1).with(LocalTime.NOON)) ->
+        dateTime.with(NOON).isBefore(nextWeekStart.plusWeeks(1).with(NOON)) ->
           timeMap.getOrPut(NEXT_WEEK, { mutableListOf() }).add(item)
         else ->
           timeMap.getOrPut(LATER, { mutableListOf() }).add(item)

@@ -18,6 +18,7 @@ import com.michaldrabik.showly2.ui.watchlist.pages.upcoming.recycler.WatchlistUp
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_watchlist_upcoming.*
 
 class WatchlistUpcomingFragment : BaseFragment<WatchlistUpcomingViewModel>(R.layout.fragment_watchlist_upcoming),
@@ -78,6 +79,7 @@ class WatchlistUpcomingFragment : BaseFragment<WatchlistUpcomingViewModel>(R.lay
       items?.let {
         adapter.setItems(it)
         watchlistUpcomingRecycler.fadeIn()
+        watchlistUpcomingEmptyView.visibleIf(it.isEmpty())
       }
     }
   }
