@@ -30,6 +30,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    setupView()
     setupStatusBar()
 
     viewModel.run {
@@ -38,6 +39,12 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
         loadMostWatchedShows()
         isInitialized = true
       }
+    }
+  }
+
+  private fun setupView() {
+    statisticsMostWatchedShows.onLoadMoreClickListener = { addLimit ->
+      viewModel.loadMostWatchedShows(addLimit)
     }
   }
 
@@ -53,7 +60,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
 
   private fun render(uiModel: StatisticsUiModel) {
     uiModel.run {
-      statisticsMostWatchedShows.bind(mostWatchedShows ?: emptyList())
+      statisticsMostWatchedShows.bind(mostWatchedShows ?: emptyList(), mostWatchedTotalCount ?: 0)
       statisticsTotalTimeSpent.bind(totalTimeSpentMinutes ?: 0)
       statisticsTotalEpisodes.bind(totalWatchedEpisodes ?: 0, totalWatchedEpisodesShows ?: 0)
       statisticsTopGenres.bind(topGenres ?: emptyList())

@@ -6,29 +6,53 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   app:cardBackgroundColor="@color/colorStatisticsCardBackground"
-  tools:parentTag="android.widget.FrameLayout"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
   >
 
   <TextView
     android:id="@+id/viewMostWatchedShowsTitle"
-    android:layout_width="wrap_content"
+    android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/spaceNormal"
     android:text="@string/textStatisticsMostWatchedShows"
     android:textColor="@color/colorWhite"
     android:textSize="@dimen/listHeaderTextSize"
     android:textStyle="bold"
+    app:layout_constraintBottom_toTopOf="@id/viewMostWatchedShowsItems"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0"
+    app:layout_constraintVertical_chainStyle="packed"
     />
 
   <LinearLayout
     android:id="@+id/viewMostWatchedShowsItems"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="40dp"
-    android:layout_marginBottom="@dimen/spaceMedium"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/spaceMedium"
     android:divider="@drawable/divider_statistics"
     android:orientation="vertical"
     android:showDividers="middle"
+    app:layout_constraintBottom_toTopOf="@id/viewMostWatchedShowsMoreButton"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewMostWatchedShowsTitle"
+    app:layout_goneMarginBottom="@dimen/spaceMedium"
+    />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/viewMostWatchedShowsMoreButton"
+    style="@style/Widget.MaterialComponents.Button.TextButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|center_horizontal"
+    android:text="@string/textStatisticsShowMore"
+    android:textColor="@color/colorTextSecondary"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewMostWatchedShowsItems"
+    app:rippleColor="@color/colorWhite"
     />
 
 </merge>

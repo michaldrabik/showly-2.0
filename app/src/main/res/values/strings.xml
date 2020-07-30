@@ -21,6 +21,7 @@
   <string name="textClose">Close</string>
   <string name="textNew">New</string>
   <string name="textHot">Hot</string>
+  <string name="textMore">More</string>
   <string name="textCancel">Cancel</string>
   <string name="textNextEpisode">Next Episode:</string>
   <string name="textSearchFor">Search…</string>
@@ -192,7 +193,9 @@
   <string name="textStatisticsTotalEpisodesCount">%s episodes</string>
   <string name="textStatisticsTotalEpisodesShowsCount">spread across %s shows.</string>
   <string name="textStatisticsTopGenre">Top Genres</string>
-  <string name="textStatisticsTopGenreSubValue">seem to be your cup of tea.</string>
+  <string name="textStatisticsTopGenreSubValue">seem to be your cup of tea. Tap to see more.</string>
+  <string name="textStatisticsTopGenreSubValue2">seem to be your cup of tea.</string>
+  <string name="textStatisticsShowMore">Show More</string>
 
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>

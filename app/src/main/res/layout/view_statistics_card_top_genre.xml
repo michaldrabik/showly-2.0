@@ -4,19 +4,18 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
+  android:layout_height="wrap_content"
   app:cardBackgroundColor="@color/colorStatisticsCardBackground"
   tools:parentTag="com.google.android.material.card.MaterialCardView"
   >
 
-  <LinearLayout
+  <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/viewTopGenresContent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:paddingStart="@dimen/spaceMedium"
     android:paddingTop="@dimen/spaceNormal"
-    android:paddingEnd="@dimen/spaceMedium"
+    android:paddingEnd="@dimen/spaceSmall"
     android:paddingBottom="@dimen/spaceNormal"
     >
 
@@ -24,7 +23,6 @@
       android:id="@+id/viewTopGenresTitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="@dimen/spaceSmall"
       android:drawableStart="@drawable/ic_stars_round"
       android:drawablePadding="@dimen/spaceSmall"
       android:gravity="center_vertical"
@@ -32,29 +30,36 @@
       android:textColor="@color/colorTextPrimary"
       android:textSize="@dimen/listHeaderTextSize"
       android:textStyle="bold"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
       />
 
     <TextView
       android:id="@+id/viewTopGenresValue"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="@dimen/spaceTiny"
+      android:layout_marginTop="@dimen/spaceSmall"
       android:lineSpacingExtra="2dp"
       android:textColor="@color/colorAccent"
       android:textSize="24sp"
       android:textStyle="bold"
-      tools:text="Drama | Comedy | Thriller | SF"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewTopGenresTitle"
+      tools:text="Drama\nComedy\nThriller"
       />
 
     <TextView
       android:id="@+id/viewTopGenresSubValue"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spaceTiny"
       android:text="@string/textStatisticsTopGenreSubValue"
       android:textColor="@color/colorTextSecondary"
       android:textSize="14sp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewTopGenresValue"
       />
 
-  </LinearLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
 
 </merge>

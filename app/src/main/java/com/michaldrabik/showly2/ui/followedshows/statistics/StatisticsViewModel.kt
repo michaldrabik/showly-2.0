@@ -20,12 +20,10 @@ class StatisticsViewModel @Inject constructor(
   private val mappers: Mappers
 ) : BaseViewModel<StatisticsUiModel>() {
 
-  companion object {
-    private const val MOST_VIEWED_LIMIT = 5
-    private const val TOP_GENRES_LIMIT = 3
-  }
+  private var takeLimit = 5
 
-  fun loadMostWatchedShows() {
+  fun loadMostWatchedShows(limit: Int = 0) {
+    takeLimit += limit
     viewModelScope.launch {
       val myShows = showsRepository.myShows.loadAll()
       val myShowsIds = myShows.map { it.traktId }
@@ -45,13 +43,14 @@ class StatisticsViewModel @Inject constructor(
           )
         }
         .sortedByDescending { item -> item.episodes.sumBy { it.runtime } }
-        .take(MOST_VIEWED_LIMIT)
+        .take(takeLimit)
         .map {
           it.copy(image = imagesProvider.findCachedImage(it.show, POSTER))
         }
 
       uiState = StatisticsUiModel(
         mostWatchedShows = mostWatchedShows,
+        mostWatchedTotalCount = myShowsIds.size,
         totalTimeSpentMinutes = episodes.sumBy { it.runtime }.toLong(),
         totalWatchedEpisodes = episodes.count().toLong(),
         totalWatchedEpisodesShows = episodes.distinctBy { it.idShowTrakt }.count().toLong(),
@@ -67,7 +66,6 @@ class StatisticsViewModel @Inject constructor(
       .distinct()
       .map { genre -> Pair(genre, myShows.count { genre in it.genres }) }
       .sortedByDescending { it.second }
-      .take(TOP_GENRES_LIMIT)
       .map { it.first }
       .toList()
 }

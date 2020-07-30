@@ -5,6 +5,7 @@ import com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.St
 
 data class StatisticsUiModel(
   val mostWatchedShows: List<StatisticsMostWatchedItem>? = null,
+  val mostWatchedTotalCount: Int? = null,
   val totalTimeSpentMinutes: Long? = null,
   val totalWatchedEpisodes: Long? = null,
   val totalWatchedEpisodesShows: Long? = null,
@@ -14,6 +15,7 @@ data class StatisticsUiModel(
   override fun update(newModel: UiModel) =
     (newModel as StatisticsUiModel).copy(
       mostWatchedShows = newModel.mostWatchedShows?.toList() ?: mostWatchedShows,
+      mostWatchedTotalCount = newModel.mostWatchedTotalCount ?: mostWatchedTotalCount,
       totalTimeSpentMinutes = newModel.totalTimeSpentMinutes ?: totalTimeSpentMinutes,
       totalWatchedEpisodes = newModel.totalWatchedEpisodes ?: totalWatchedEpisodes,
       totalWatchedEpisodesShows = newModel.totalWatchedEpisodesShows ?: totalWatchedEpisodesShows,

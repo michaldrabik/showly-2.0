@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched
+package com.michaldrabik.showly2.ui.followedshows.statistics.views
 
 import android.annotation.SuppressLint
 import android.content.Context
