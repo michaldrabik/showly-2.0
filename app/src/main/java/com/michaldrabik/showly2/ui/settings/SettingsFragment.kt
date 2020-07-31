@@ -29,6 +29,7 @@ import com.michaldrabik.showly2.model.NotificationDelay
 import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.model.TraktSyncSchedule.OFF
 import com.michaldrabik.showly2.requireAppContext
+import com.michaldrabik.showly2.ui.PlayStoreHelper
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
@@ -138,13 +139,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     }
 
     settingsRateApp.onClick {
-      val intent = Intent(ACTION_VIEW).apply {
-        data = Uri.parse(Config.PLAYSTORE_URL)
-        setPackage("com.android.vending")
-      }
-      if (intent.resolveActivity(requireActivity().packageManager) != null) {
-        startActivity(intent)
-      }
+      PlayStoreHelper.openPlayStorePage(requireActivity())
     }
 
     settingsVersion.text = "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"

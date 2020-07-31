@@ -1,8 +1,11 @@
 package com.michaldrabik.showly2.ui.main
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.google.firebase.messaging.FirebaseMessaging
-import com.michaldrabik.showly2.BuildConfig
+import com.michaldrabik.showly2.BuildConfig.DEBUG
+import com.michaldrabik.showly2.BuildConfig.VERSION_CODE
+import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.common.notifications.AnnouncementManager
 import com.michaldrabik.showly2.common.trakt.TraktSyncWorker
 import com.michaldrabik.showly2.common.trakt.quicksync.QuickSyncManager
@@ -15,6 +18,7 @@ import com.michaldrabik.showly2.repository.rating.RatingsRepository
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.repository.tutorial.TipsRepository
 import javax.inject.Inject
+import javax.inject.Named
 
 @AppScope
 class MainInteractor @Inject constructor(
@@ -22,7 +26,8 @@ class MainInteractor @Inject constructor(
   private val tipsRepository: TipsRepository,
   private val ratingsRepository: RatingsRepository,
   private val quickSyncManager: QuickSyncManager,
-  private val announcementManager: AnnouncementManager
+  private val announcementManager: AnnouncementManager,
+  @Named("miscPreferences") private var miscPreferences: SharedPreferences
 ) {
 
   suspend fun initSettings() {
@@ -46,7 +51,7 @@ class MainInteractor @Inject constructor(
   suspend fun initFcm() {
     val isEnabled = settingsRepository.load().pushNotificationsEnabled
     FirebaseMessaging.getInstance().run {
-      val suffix = if (BuildConfig.DEBUG) "-debug" else ""
+      val suffix = if (DEBUG) "-debug" else ""
       if (isEnabled) {
         subscribeToTopic(NotificationChannel.GENERAL_INFO.topicName + suffix)
         subscribeToTopic(NotificationChannel.SHOWS_INFO.topicName + suffix)
@@ -71,8 +76,18 @@ class MainInteractor @Inject constructor(
     }
   }
 
+  fun showWhatsNew(isInitialRun: Boolean): Boolean {
+    val version = miscPreferences.getInt("APP_VERSION", 0)
+    miscPreferences.edit().putInt("APP_VERSION", VERSION_CODE).apply()
+
+    if (Config.SHOW_WHATS_NEW && VERSION_CODE > version && !isInitialRun) {
+      return true
+    }
+    return false
+  }
+
   fun isTutorialShown(tip: Tip) = when {
-    BuildConfig.DEBUG -> true
+    DEBUG -> true
     else -> tipsRepository.isShown(tip)
   }
 

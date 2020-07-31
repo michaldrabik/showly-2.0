@@ -21,8 +21,11 @@ class MainViewModel @Inject constructor(
 
   private suspend fun checkInitialRun() {
     val isInitialRun = interactor.isInitialRun()
-    if (isInitialRun) interactor.setInitialRun(false)
-    uiState = MainUiModel(isInitialRun = isInitialRun)
+    if (isInitialRun) {
+      interactor.setInitialRun(false)
+    }
+    val showWhatsNew = interactor.showWhatsNew(isInitialRun)
+    uiState = MainUiModel(isInitialRun = isInitialRun, showWhatsNew = showWhatsNew)
   }
 
   fun refreshAnnouncements(context: Context) {

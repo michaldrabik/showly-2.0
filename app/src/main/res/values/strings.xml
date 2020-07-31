@@ -46,6 +46,7 @@
   <string name="textTrailer">Trailer</string>
   <string name="textImdb">iMDB</string>
   <string name="textRate">Rate</string>
+  <string name="textRatePlay">Rate on PlayStore</string>
   <string name="textTurnOff">Turn Off</string>
   <string name="textSelect">Select</string>
   <string name="textLoadComments">Show Comments</string>
@@ -135,7 +136,7 @@
   <string name="textSettingsContactDevsTitle">Contact Developers</string>
   <string name="textSettingsContactDevsSummary">Got an issue? Click to send us an email.</string>
   <string name="textSettingsRateAppTitle">Give Feedback</string>
-  <string name="textSettingsRateAppSummary">Enjoying Showly? Let us know on PlayStore. Thanks!</string>
+  <string name="textSettingsRateAppSummary">Enjoying Showly? Drop us a review on PlayStore. Thanks!</string>
   <string name="textSettingsDeleteCacheTitle">Clear Images Cache</string>
   <string name="textSettingsDeleteCacheSummary">Click to clear local images cache. This may help if shows images are not being loaded correctly.</string>
   <string name="textSettingsQuickSyncConfirmationTitle">Disable Automatic Sync</string>
@@ -218,6 +219,11 @@
   <string name="textTipShowDetailsQuickProgress">Tap Quick Progress icon to quickly set up watching progress of the show.</string>
   <string name="textTipDiscoverFilters">Use filters view to refine your Discover feed.</string>
   <string name="textTipWatchlistPinItem">Tap and hold list item to pin it to the top.</string>
+
+  <string name="textWhatsNewTitle">What\'s New</string>
+  <string name="textWhatsNewSubtitle">Version %s</string>
+  <string name="textWhatsNewMessage">- Added \'Calendar\' section in Watchlist that displays timeline of your shows new upcoming episodes\n\n- Added new, extended filters view for Discover feed\n\n- Added Trakt.tv Instant Sync option that allows you instantly sent episodes to Trakt after you mark them as watched\n\n- Added \'Show More\' options in Statistics section\n\n- Added support for translucent status bar and notches</string>
+  <string name="textWhatsNewRate">Enjoying Showly?\nDrop us a review on PlayStore. Thanks!</string>
 
   <string name="shortcutDiscover">Discover</string>
   <string name="shortcutMyShows">My Shows</string>

@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
 import androidx.annotation.IdRes
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.events.Event
@@ -26,6 +28,7 @@ import com.michaldrabik.showly2.ui.NotificationActivity
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
+import com.michaldrabik.showly2.ui.common.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
@@ -186,9 +189,8 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
 
   private fun render(uiModel: MainUiModel) {
     uiModel.run {
-      isInitialRun?.let {
-        if (it) openTab(R.id.menuDiscover)
-      }
+      isInitialRun?.let { if (it) openTab(R.id.menuDiscover) }
+      showWhatsNew?.let { if (it) showWhatsNew() }
     }
   }
 
@@ -249,5 +251,14 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
         navigationHost.findNavController().navigate(R.id.actionDiscoverFragmentToSearchFragment)
       }
     }
+  }
+
+  private fun showWhatsNew() {
+    MaterialAlertDialogBuilder(this, R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(this, R.drawable.bg_dialog))
+      .setView(WhatsNewView(this))
+      .setCancelable(false)
+      .setPositiveButton(R.string.textClose) { _, _ -> }
+      .show()
   }
 }
