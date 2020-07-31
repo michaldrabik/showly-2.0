@@ -80,6 +80,18 @@
         app:srcCompat="@drawable/ic_settings"
         />
 
+      <ImageView
+        android:id="@+id/searchDotBadge"
+        android:layout_width="6dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:tint="@color/colorAccent"
+        android:translationX="-10dp"
+        android:translationY="6dp"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_circle"
+        />
+
     </FrameLayout>
 
   </LinearLayout>

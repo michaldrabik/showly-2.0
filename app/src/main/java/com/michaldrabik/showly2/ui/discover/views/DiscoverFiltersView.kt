@@ -46,7 +46,7 @@ class DiscoverFiltersView : ConstraintLayout {
     discoverFiltersChipHot.isChecked = filters.feedOrder == HOT
     discoverFiltersChipTopRated.isChecked = filters.feedOrder == RATING
     discoverFiltersChipMostRecent.isChecked = filters.feedOrder == NEWEST
-    discoverFiltersAnticipatedSwitch.isChecked = filters.showAnticipated
+    discoverFiltersAnticipatedSwitch.isChecked = filters.hideAnticipated
     bindGenres(filters.genres)
   }
 

@@ -97,7 +97,7 @@
   <string name="textShowQuickProgressSubTitle">Select last seen episode to quickly bring your progress up to date.</string>
   <string name="textShowQuickProgressDone">Your progress has been updated.</string>
   <string name="textDiscoverShows">Discover Shows</string>
-  <string name="textDiscoverFilterAnticipated">Include anticipated shows</string>
+  <string name="textDiscoverFilterAnticipated">Hide Anticipated Shows</string>
   <string name="textImagesCacheCleared">Images cache has been cleared.</string>
 
   <string name="textSettings">Settings</string>

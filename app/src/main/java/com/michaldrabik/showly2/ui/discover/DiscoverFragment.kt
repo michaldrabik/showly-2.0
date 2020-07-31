@@ -213,6 +213,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
         discoverFiltersView.run {
           if (!this.isVisible) bind(it)
         }
+        discoverSearchView.iconBadgeVisible = !it.isDefault()
       }
     }
   }

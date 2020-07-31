@@ -25,7 +25,7 @@ class DiscoverInteractor @Inject constructor(
   suspend fun loadCachedShows() = showsRepository.discoverShows.loadAllCached()
 
   suspend fun loadRemoteShows(filters: DiscoverFilters): List<Show> {
-    val showAnticipated = filters.showAnticipated
+    val showAnticipated = !filters.hideAnticipated
     val genres = filters.genres.toList()
     return showsRepository.discoverShows.loadAllRemote(showAnticipated, genres)
   }
@@ -46,7 +46,7 @@ class DiscoverInteractor @Inject constructor(
       settings.copy(
         discoverFilterFeed = filters.feedOrder,
         discoverFilterGenres = filters.genres,
-        showAnticipatedShows = filters.showAnticipated
+        showAnticipatedShows = !filters.hideAnticipated
       )
     )
   }
@@ -55,7 +55,7 @@ class DiscoverInteractor @Inject constructor(
     val settings = settingsRepository.load()
     return DiscoverFilters(
       feedOrder = settings.discoverFilterFeed,
-      showAnticipated = settings.showAnticipatedShows,
+      hideAnticipated = !settings.showAnticipatedShows,
       genres = settings.discoverFilterGenres.toList()
     )
   }

@@ -51,6 +51,8 @@ class DiscoverViewModel @Inject constructor(
       try {
         newFilters?.let { interactor.saveFilters(it) }
         val filters = interactor.loadFilters()
+        uiState = DiscoverUiModel(filters = filters)
+
         val myShowsIds = interactor.loadMyShowsIds()
         val seeLaterShowsIds = interactor.loadSeeLaterShowsIds()
 

@@ -58,6 +58,12 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
       searchSortIcon.isClickable = value
     }
 
+  var iconBadgeVisible
+    get() = searchDotBadge.isVisible
+    set(value) {
+      searchDotBadge.visibleIf(value)
+    }
+
   var isSearching = false
 
   override fun onAttachedToWindow() {
