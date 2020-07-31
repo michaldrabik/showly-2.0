@@ -69,7 +69,7 @@
       android:tint="@color/colorWatchlistSecondaryButton"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="@id/watchlistItemButtons"
-      app:layout_constraintStart_toStartOf="@id/watchlistItemButtons"
+      app:layout_constraintStart_toStartOf="@id/watchlistItemProgressText"
       app:layout_constraintTop_toTopOf="@id/watchlistItemButtons"
       app:srcCompat="@drawable/ic_pin"
       tools:visibility="visible"
@@ -172,7 +172,7 @@
 
     <LinearLayout
       android:id="@+id/watchlistItemButtons"
-      android:layout_width="0dp"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceNormal"
       android:layout_marginTop="@dimen/spaceMicro"
@@ -182,6 +182,7 @@
       android:orientation="horizontal"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="1"
       app:layout_constraintStart_toEndOf="@id/watchlistItemImage"
       app:layout_constraintTop_toBottomOf="@id/watchlistItemProgress"
       >
