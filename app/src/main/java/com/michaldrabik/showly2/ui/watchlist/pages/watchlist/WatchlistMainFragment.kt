@@ -3,7 +3,9 @@ package com.michaldrabik.showly2.ui.watchlist.pages.watchlist
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -22,12 +24,14 @@ import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.recycler.WatchlistM
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider
 import kotlinx.android.synthetic.main.fragment_watchlist_main.*
+import kotlinx.android.synthetic.main.layout_watchlist_empty.*
 
 class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.fragment_watchlist_main),
   OnTabReselectedListener {
@@ -55,6 +59,8 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
   }
 
   private fun setupView() {
+    watchlistEmptyTraktButton.onClick { (parentFragment as WatchlistFragment).openTraktSync() }
+    watchlistEmptyDiscoverButton.onClick { mainActivity().openTab(R.id.menuDiscover) }
     watchlistMainTipItem.onClick {
       it.gone()
       mainActivity().showTip(Tip.WATCHLIST_ITEM_PIN)
@@ -87,6 +93,8 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
     watchlistMainRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
       statusBarHeight = insets.systemWindowInsetTop
       view.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.watchlistTabsViewPadding))
+      (watchlistEmptyView.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.spaceBig))
     }
   }
 
@@ -112,6 +120,7 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
     uiModel.run {
       items?.let {
         adapter.setItems(it)
+        watchlistEmptyView.fadeIf(it.isEmpty())
         watchlistMainRecycler.fadeIn()
         watchlistMainTipItem.visibleIf(it.count() >= 3 && !mainActivity().isTipShown(Tip.WATCHLIST_ITEM_PIN))
         WatchlistWidgetProvider.requestUpdate(requireContext())

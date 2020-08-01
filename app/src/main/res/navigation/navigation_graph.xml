@@ -4,12 +4,12 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/navigationGraph"
-  app:startDestination="@id/watchlistMainFragment"
+  app:startDestination="@id/watchlistFragment"
   >
 
   <action
     android:id="@+id/actionNavigateWatchlistFragment"
-    app:destination="@id/watchlistMainFragment"
+    app:destination="@id/watchlistFragment"
     app:launchSingleTop="true"
     app:popUpTo="@id/navigationGraph"
     app:popUpToInclusive="true"
@@ -65,27 +65,27 @@
   </fragment>
 
   <fragment
-    android:id="@+id/watchlistMainFragment"
+    android:id="@+id/watchlistFragment"
     android:name="com.michaldrabik.showly2.ui.watchlist.WatchlistFragment"
     android:label="fragmentWatchlistMain"
     tools:layout="@layout/fragment_watchlist"
     >
     <action
-      android:id="@+id/actionWatchlistMainFragmentToShowDetailsFragment"
+      android:id="@+id/actionWatchlistFragmentToShowDetailsFragment"
       app:destination="@id/showDetailsFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
     <action
-      android:id="@+id/actionWatchlistMainFragmentToSettingsFragment"
+      android:id="@+id/actionWatchlistFragmentToSettingsFragment"
       app:destination="@id/settingsFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
     <action
-      android:id="@+id/actionWatchlistMainFragmentToTraktSyncFragment"
+      android:id="@+id/actionWatchlistFragmentToTraktSyncFragment"
       app:destination="@id/traktSyncFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:exitAnim="@anim/anim_fade_out"
@@ -95,7 +95,7 @@
   </fragment>
 
   <fragment
-    android:id="@+id/watchlistFragment"
+    android:id="@+id/watchlistMainFragment"
     android:name="com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistMainFragment"
     android:label="fragmentWatchlist"
     tools:layout="@layout/fragment_watchlist_main"

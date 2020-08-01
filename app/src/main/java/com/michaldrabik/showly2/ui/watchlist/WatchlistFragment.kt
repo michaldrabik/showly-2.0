@@ -24,7 +24,6 @@ import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsB
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
-import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
@@ -33,7 +32,6 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showKeyboard
 import com.michaldrabik.showly2.utilities.extensions.visible
 import kotlinx.android.synthetic.main.fragment_watchlist.*
-import kotlinx.android.synthetic.main.layout_watchlist_empty.*
 import kotlinx.android.synthetic.main.view_search.*
 
 class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
@@ -70,8 +68,6 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
   }
 
   private fun setupView() {
-    watchlistEmptyTraktButton.onClick { openTraktSync() }
-    watchlistEmptyDiscoverButton.onClick { mainActivity().openTab(R.id.menuDiscover) }
     watchlistSearchView.run {
       hint = getString(R.string.textSearchWatchlist)
       settingsIconVisible = true
@@ -111,8 +107,6 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
   private fun setupStatusBar() {
     watchlistMainRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.systemWindowInsetTop
-      (watchlistEmptyView.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceBig))
       (watchlistSearchView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
       (watchlistTabs.layoutParams as ViewGroup.MarginLayoutParams)
@@ -126,18 +120,18 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     saveUiTranslations()
     watchlistMainRoot.fadeOut {
       val bundle = Bundle().apply { putLong(ShowDetailsFragment.ARG_SHOW_ID, item.show.ids.trakt.id) }
-      navigateTo(R.id.actionWatchlistMainFragmentToShowDetailsFragment, bundle)
+      navigateTo(R.id.actionWatchlistFragmentToShowDetailsFragment, bundle)
     }
   }
 
   private fun openSettings() {
     hideNavigation()
-    navigateTo(R.id.actionWatchlistMainFragmentToSettingsFragment)
+    navigateTo(R.id.actionWatchlistFragmentToSettingsFragment)
     saveUiTranslations()
   }
 
-  private fun openTraktSync() {
-    navigateTo(R.id.actionWatchlistMainFragmentToTraktSyncFragment)
+  fun openTraktSync() {
+    navigateTo(R.id.actionWatchlistFragmentToTraktSyncFragment)
     hideNavigation()
     saveUiTranslations()
   }
@@ -203,7 +197,6 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     uiModel.run {
       items?.let {
         watchlistSearchView.isClickable = it.isNotEmpty() || isSearching == true
-        watchlistEmptyView.fadeIf(it.isEmpty() && isSearching == false)
       }
     }
   }

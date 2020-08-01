@@ -2,7 +2,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/watchlistMainRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
@@ -35,20 +34,6 @@
     android:layout_marginLeft="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginRight="@dimen/spaceMedium"
-    />
-
-  <include
-    android:id="@+id/watchlistEmptyView"
-    layout="@layout/layout_watchlist_empty"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginStart="@dimen/spaceBig"
-    android:layout_marginTop="@dimen/spaceBig"
-    android:layout_marginEnd="@dimen/spaceBig"
-    android:layout_marginBottom="@dimen/bottomNavigationHeight"
-    android:visibility="gone"
-    tools:visibility="visible"
     />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
