@@ -39,13 +39,26 @@ class TraktExportWatchedRunner @Inject constructor(
     val remoteWatched = cloud.traktApi.fetchSyncWatched(token.token)
       .filter { it.show != null }
     val localMyShowsIds = database.myShowsDao().getAllTraktIds()
-    val localEpisodes = database.episodesDao().getAllWatchedForShows(localMyShowsIds)
+    val localEpisodes = batchEpisodes(localMyShowsIds)
       .filter { !hasEpisodeBeenWatched(remoteWatched, it) }
 
     val request = SyncExportRequest(
       episodes = localEpisodes.map { SyncExportItem.create(it.idTrakt) }
     )
     cloud.traktApi.postSyncWatched(token.token, request)
+  }
+
+  private suspend fun batchEpisodes(
+    showsIds: List<Long>,
+    allEpisodes: MutableList<Episode> = mutableListOf()
+  ): List<Episode> {
+    val batch = showsIds.take(500)
+    if (batch.isEmpty()) return allEpisodes
+
+    val episodes = database.episodesDao().getAllWatchedForShows(batch)
+    allEpisodes.addAll(episodes)
+
+    return batchEpisodes(showsIds.filter { it !in batch }, allEpisodes)
   }
 
   private fun hasEpisodeBeenWatched(remoteWatched: List<SyncItem>, episodeDb: Episode): Boolean {

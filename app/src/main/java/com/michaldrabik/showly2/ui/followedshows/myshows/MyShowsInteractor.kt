@@ -35,7 +35,13 @@ class MyShowsInteractor @Inject constructor(
 
   suspend fun loadAllShows() = showsRepository.myShows.loadAll()
 
-  suspend fun loadSeasonsForShows(traktIds: List<Long>) = database.seasonsDao().getAllForShows(traktIds)
+  suspend fun loadSeasonsForShows(traktIds: List<Long>, buffer: MutableList<Season> = mutableListOf()): List<Season> {
+    val batch = traktIds.take(500)
+    if (batch.isEmpty()) return buffer
+    val seasons = database.seasonsDao().getAllForShows(batch)
+    buffer.addAll(seasons)
+    return loadSeasonsForShows(traktIds.filter { it !in batch }, buffer)
+  }
 
   suspend fun filterSectionShows(
     allShows: List<MyShowsItem>,

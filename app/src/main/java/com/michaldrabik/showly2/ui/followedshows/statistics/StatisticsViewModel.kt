@@ -10,6 +10,8 @@ import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.StatisticsMostWatchedItem
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.Episode
+import com.michaldrabik.storage.database.model.Season
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,8 +29,8 @@ class StatisticsViewModel @Inject constructor(
     viewModelScope.launch {
       val myShows = showsRepository.myShows.loadAll()
       val myShowsIds = myShows.map { it.traktId }
-      val episodes = database.episodesDao().getAllWatchedForShows(myShowsIds)
-      val seasons = database.seasonsDao().getAllWatchedForShows(myShowsIds)
+      val episodes = batchEpisodes(myShowsIds)
+      val seasons = batchSeasons(myShowsIds)
 
       val genres = extractTopGenres(myShows)
       val mostWatchedShows = myShowsIds
@@ -57,6 +59,32 @@ class StatisticsViewModel @Inject constructor(
         topGenres = genres
       )
     }
+  }
+
+  private suspend fun batchEpisodes(
+    showsIds: List<Long>,
+    allEpisodes: MutableList<Episode> = mutableListOf()
+  ): List<Episode> {
+    val batch = showsIds.take(500)
+    if (batch.isEmpty()) return allEpisodes
+
+    val episodes = database.episodesDao().getAllWatchedForShows(batch)
+    allEpisodes.addAll(episodes)
+
+    return batchEpisodes(showsIds.filter { it !in batch }, allEpisodes)
+  }
+
+  private suspend fun batchSeasons(
+    showsIds: List<Long>,
+    allSeasons: MutableList<Season> = mutableListOf()
+  ): List<Season> {
+    val batch = showsIds.take(500)
+    if (batch.isEmpty()) return allSeasons
+
+    val seasons = database.seasonsDao().getAllWatchedForShows(batch)
+    allSeasons.addAll(seasons)
+
+    return batchSeasons(showsIds.filter { it !in batch }, allSeasons)
   }
 
   private fun extractTopGenres(myShows: List<Show>) =
