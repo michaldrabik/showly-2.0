@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.main
+package com.michaldrabik.showly2.ui.common.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

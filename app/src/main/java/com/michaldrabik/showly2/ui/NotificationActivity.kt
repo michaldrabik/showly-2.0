@@ -7,7 +7,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fcm.FcmExtra
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
-import com.michaldrabik.showly2.ui.main.BaseActivity
+import com.michaldrabik.showly2.ui.common.base.BaseActivity
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
 import com.michaldrabik.showly2.widget.search.SearchWidgetProvider
 import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider
