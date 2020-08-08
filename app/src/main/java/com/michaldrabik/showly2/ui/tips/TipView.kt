@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.tutorial
+package com.michaldrabik.showly2.ui.tips
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator

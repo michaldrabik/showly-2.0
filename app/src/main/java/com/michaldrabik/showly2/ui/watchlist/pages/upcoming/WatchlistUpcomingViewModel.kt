@@ -3,10 +3,10 @@ package com.michaldrabik.showly2.ui.watchlist.pages.upcoming
 import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import com.michaldrabik.showly2.ui.watchlist.WatchlistInteractor
 import com.michaldrabik.showly2.ui.watchlist.WatchlistUiModel
 import com.michaldrabik.showly2.ui.watchlist.pages.upcoming.WatchlistUpcomingViewModel.Section.LATER
 import com.michaldrabik.showly2.ui.watchlist.pages.upcoming.WatchlistUpcomingViewModel.Section.NEXT_WEEK
@@ -23,7 +23,7 @@ import org.threeten.bp.LocalTime.NOON
 import javax.inject.Inject
 
 class WatchlistUpcomingViewModel @Inject constructor(
-  private val interactor: WatchlistInteractor
+  private val imagesProvider: ShowImagesProvider
 ) : BaseViewModel<WatchlistUpcomingUiModel>() {
 
   enum class Section(@StringRes val headerRes: Int) {
@@ -91,7 +91,7 @@ class WatchlistUpcomingViewModel @Inject constructor(
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
-        val image = interactor.loadMissingImage(item.show, item.image.type, force)
+        val image = imagesProvider.loadRemoteImage(item.show, item.image.type, force)
         updateItem(item.copy(image = image, isLoading = false))
       } catch (t: Throwable) {
         val unavailable = Image.createUnavailable(item.image.type)

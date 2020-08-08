@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.repository.watchlist
+package com.michaldrabik.showly2.repository
 
 import android.content.SharedPreferences
 import com.michaldrabik.showly2.di.scope.AppScope
@@ -6,7 +6,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @AppScope
-class WatchlistRepository @Inject constructor(
+class PinnedItemsRepository @Inject constructor(
   @Named("watchlistPreferences") private val sharedPreferences: SharedPreferences
 ) {
 

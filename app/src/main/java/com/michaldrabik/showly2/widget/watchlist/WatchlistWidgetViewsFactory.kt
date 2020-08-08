@@ -12,9 +12,10 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
-import com.michaldrabik.showly2.ui.watchlist.WatchlistInteractor
+import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistLoadItemsCase
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.DurationPrinter
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
@@ -32,8 +33,9 @@ import kotlinx.coroutines.runBlocking
 
 class WatchlistWidgetViewsFactory(
   private val context: Context,
-  private val watchlistInteractor: WatchlistInteractor,
-  private val showsRepository: ShowsRepository
+  private val watchlistLoadItemsCase: WatchlistLoadItemsCase,
+  private val showsRepository: ShowsRepository,
+  private val imagesProvider: ShowImagesProvider
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.Main
@@ -49,8 +51,8 @@ class WatchlistWidgetViewsFactory(
       val shows = showsRepository.myShows.loadAll()
       val items = shows.map { show ->
         async {
-          val item = watchlistInteractor.loadWatchlistItem(show)
-          val image = watchlistInteractor.findCachedImage(show, ImageType.POSTER)
+          val item = watchlistLoadItemsCase.loadWatchlistItem(show)
+          val image = imagesProvider.findCachedImage(show, ImageType.POSTER)
           item.copy(image = image)
         }
       }.awaitAll()

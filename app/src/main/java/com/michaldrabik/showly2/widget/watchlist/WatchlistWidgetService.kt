@@ -2,15 +2,17 @@ package com.michaldrabik.showly2.widget.watchlist
 
 import android.content.Intent
 import android.widget.RemoteViewsService
+import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.serviceComponent
-import com.michaldrabik.showly2.ui.watchlist.WatchlistInteractor
+import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistLoadItemsCase
 import javax.inject.Inject
 
 class WatchlistWidgetService : RemoteViewsService() {
 
-  @Inject lateinit var watchlistInteractor: WatchlistInteractor
+  @Inject lateinit var watchlistLoadItemsCase: WatchlistLoadItemsCase
   @Inject lateinit var showsRepository: ShowsRepository
+  @Inject lateinit var imagesProvider: ShowImagesProvider
 
   override fun onCreate() {
     super.onCreate()
@@ -18,5 +20,10 @@ class WatchlistWidgetService : RemoteViewsService() {
   }
 
   override fun onGetViewFactory(intent: Intent?) =
-    WatchlistWidgetViewsFactory(applicationContext, watchlistInteractor, showsRepository)
+    WatchlistWidgetViewsFactory(
+      applicationContext,
+      watchlistLoadItemsCase,
+      showsRepository,
+      imagesProvider
+    )
 }

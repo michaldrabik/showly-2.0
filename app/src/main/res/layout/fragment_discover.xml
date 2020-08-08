@@ -64,7 +64,7 @@
     tools:visibility="invisible"
     />
 
-  <com.michaldrabik.showly2.ui.tutorial.TipView
+  <com.michaldrabik.showly2.ui.tips.TipView
     android:id="@+id/discoverTipFilters"
     android:layout_width="@dimen/tutorialTipSize"
     android:layout_height="@dimen/tutorialTipSize"

@@ -75,7 +75,7 @@
     app:layout_constraintTop_toTopOf="parent"
     />
 
-  <com.michaldrabik.showly2.ui.tutorial.TipView
+  <com.michaldrabik.showly2.ui.tips.TipView
     android:id="@+id/tutorialTipDiscover"
     android:layout_width="@dimen/tutorialTipSize"
     android:layout_height="@dimen/tutorialTipSize"
@@ -86,7 +86,7 @@
     app:layout_constraintStart_toStartOf="parent"
     />
 
-  <com.michaldrabik.showly2.ui.tutorial.TipView
+  <com.michaldrabik.showly2.ui.tips.TipView
     android:id="@+id/tutorialTipMyShows"
     android:layout_width="@dimen/tutorialTipSize"
     android:layout_height="@dimen/tutorialTipSize"
@@ -97,7 +97,7 @@
     app:layout_constraintStart_toStartOf="parent"
     />
 
-  <com.michaldrabik.showly2.ui.tutorial.TipOverlayView
+  <com.michaldrabik.showly2.ui.tips.TipOverlayView
     android:id="@+id/tutorialView"
     android:layout_width="0dp"
     android:layout_height="0dp"

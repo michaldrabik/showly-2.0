@@ -3,9 +3,12 @@ package com.michaldrabik.showly2.ui.watchlist
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.model.ImageType
-import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
+import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistEpisodesCase
+import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistLoadItemsCase
+import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistPinnedItemsCase
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.MessageEvent
 import kotlinx.coroutines.async
@@ -14,37 +17,26 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class WatchlistViewModel @Inject constructor(
-  private val interactor: WatchlistInteractor,
-  private val showsRepository: ShowsRepository
+  private val loadItemsCase: WatchlistLoadItemsCase,
+  private val pinnedItemsCase: WatchlistPinnedItemsCase,
+  private val episodesCase: WatchlistEpisodesCase,
+  private val imagesProvider: ShowImagesProvider
 ) : BaseViewModel<WatchlistUiModel>() {
 
   private var searchQuery = ""
 
   fun loadWatchlist() {
     viewModelScope.launch {
-      val shows = showsRepository.myShows.loadAll()
+      val shows = loadItemsCase.loadMyShows()
       val items = shows.map { show ->
         async {
-          val item = interactor.loadWatchlistItem(show)
-          val image = interactor.findCachedImage(show, ImageType.POSTER)
+          val item = loadItemsCase.loadWatchlistItem(show)
+          val image = imagesProvider.findCachedImage(show, ImageType.POSTER)
           item.copy(image = image)
         }
       }.awaitAll()
-        .filter { it.episodesCount != 0 && it.episode.firstAired != null }
-        .groupBy { it.episode.hasAired(it.season) }
 
-      val aired = (items[true] ?: emptyList())
-        .sortedWith(compareByDescending<WatchlistItem> { it.isNew() }.thenBy { it.show.title.toLowerCase() })
-      val notAired = (items[false] ?: emptyList())
-        .sortedBy { it.episode.firstAired?.toInstant()?.toEpochMilli() }
-
-      val allItems = (aired + notAired)
-        .filter {
-          if (searchQuery.isBlank()) true
-          else it.show.title.contains(searchQuery, true) || it.episode.title.contains(searchQuery, true)
-        }
-        .toMutableList()
-
+      val allItems = loadItemsCase.prepareWatchlistItems(items, searchQuery)
       uiState =
         WatchlistUiModel(items = allItems, isSearching = searchQuery.isNotBlank())
     }
@@ -61,16 +53,16 @@ class WatchlistViewModel @Inject constructor(
         _messageLiveData.value = MessageEvent.info(R.string.errorEpisodeNotAired)
         return@launch
       }
-      interactor.setEpisodeWatched(context, item)
+      episodesCase.setEpisodeWatched(context, item)
       loadWatchlist()
     }
   }
 
   fun togglePinItem(item: WatchlistItem) {
     if (item.isPinned) {
-      interactor.removePinnedItem(item)
+      pinnedItemsCase.removePinnedItem(item)
     } else {
-      interactor.addPinnedItem(item)
+      pinnedItemsCase.addPinnedItem(item)
     }
     loadWatchlist()
   }
