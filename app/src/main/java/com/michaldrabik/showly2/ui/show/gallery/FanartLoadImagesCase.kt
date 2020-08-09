@@ -10,7 +10,7 @@ import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope
-class FanartGalleryInteractor @Inject constructor(
+class FanartLoadImagesCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val imagesProvider: ShowImagesProvider
 ) {
