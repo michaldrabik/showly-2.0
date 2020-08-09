@@ -3,9 +3,12 @@ package com.michaldrabik.showly2.ui.search
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.Config.SEARCH_RECENTS_AMOUNT
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
+import com.michaldrabik.showly2.ui.search.cases.SearchMainCase
+import com.michaldrabik.showly2.ui.search.cases.SearchRecentsCase
 import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
 import com.michaldrabik.showly2.utilities.MessageEvent
 import com.michaldrabik.showly2.utilities.extensions.findReplace
@@ -14,7 +17,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
-  private val interactor: SearchInteractor
+  private val searchMainCase: SearchMainCase,
+  private val recentSearchesCase: SearchRecentsCase,
+  private val imagesProvider: ShowImagesProvider
 ) : BaseViewModel<SearchUiModel>() {
 
   private val lastSearchItems = mutableListOf<SearchListItem>()
@@ -25,14 +30,14 @@ class SearchViewModel @Inject constructor(
 
   fun loadRecentSearches() {
     viewModelScope.launch {
-      val searches = interactor.getRecentSearches(SEARCH_RECENTS_AMOUNT)
+      val searches = recentSearchesCase.getRecentSearches(SEARCH_RECENTS_AMOUNT)
       uiState = SearchUiModel(recentSearchItems = searches, isInitial = searches.isEmpty())
     }
   }
 
   fun clearRecentSearches() {
     viewModelScope.launch {
-      interactor.clearRecentSearches()
+      recentSearchesCase.clearRecentSearches()
       uiState = SearchUiModel(recentSearchItems = emptyList(), isInitial = true)
     }
   }
@@ -44,12 +49,12 @@ class SearchViewModel @Inject constructor(
       try {
         uiState = SearchUiModel.createLoading()
 
-        val shows = interactor.searchShows(trimmed)
-        val myShowsIds = interactor.loadMyShowsIds()
-        val seeLaterShowsIds = interactor.loadSeeLaterShowsIds()
+        val shows = searchMainCase.searchShows(trimmed)
+        val myShowsIds = searchMainCase.loadMyShowsIds()
+        val seeLaterShowsIds = searchMainCase.loadSeeLaterShowsIds()
 
         val items = shows.map {
-          val image = interactor.findCachedImage(it, POSTER)
+          val image = imagesProvider.findCachedImage(it, POSTER)
           SearchListItem(
             it,
             image,
@@ -59,6 +64,7 @@ class SearchViewModel @Inject constructor(
         }
 
         lastSearchItems.replace(items)
+        recentSearchesCase.saveRecentSearch(trimmed)
         uiState = SearchUiModel.createResults(items)
       } catch (t: Throwable) {
         onError()
@@ -81,7 +87,7 @@ class SearchViewModel @Inject constructor(
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
-        val image = interactor.loadMissingImage(item.show, item.image.type, force)
+        val image = imagesProvider.loadRemoteImage(item.show, item.image.type, force)
         updateItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
         updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
