@@ -4,12 +4,14 @@ import android.content.SharedPreferences
 import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.Config
+import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.fcm.NotificationChannel
 import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import javax.inject.Inject
 import javax.inject.Named
 
+@AppScope
 class MainInitialsCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
   @Named("miscPreferences") private var miscPreferences: SharedPreferences
