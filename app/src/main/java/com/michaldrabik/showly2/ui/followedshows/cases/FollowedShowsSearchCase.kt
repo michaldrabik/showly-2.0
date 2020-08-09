@@ -1,21 +1,22 @@
-package com.michaldrabik.showly2.ui.followedshows
+package com.michaldrabik.showly2.ui.followedshows.cases
 
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
+import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import javax.inject.Inject
 
 @AppScope
-class FollowedShowsInteractor @Inject constructor(
-  private val imagesProvider: ShowImagesProvider,
-  private val showsRepository: ShowsRepository
+class FollowedShowsSearchCase @Inject constructor(
+  private val showsRepository: ShowsRepository,
+  private val imagesProvider: ShowImagesProvider
 ) {
 
   private val searchItemsCache = mutableListOf<Show>()
 
-  suspend fun searchFollowed(query: String?): List<Show> {
+  suspend fun searchFollowed(query: String?): List<MyShowsItem> {
     if (query.isNullOrBlank()) return emptyList()
 
     if (searchItemsCache.isEmpty()) {
@@ -31,10 +32,11 @@ class FollowedShowsInteractor @Inject constructor(
     return searchItemsCache
       .filter { it.title.contains(query, true) || it.network.contains(query, true) }
       .sortedBy { it.title }
+      .map {
+        val image = imagesProvider.findCachedImage(it, ImageType.FANART)
+        MyShowsItem.createSearchItem(it, image)
+      }
   }
-
-  suspend fun findCachedImage(show: Show, type: ImageType) =
-    imagesProvider.findCachedImage(show, type)
 
   fun clearCache() = searchItemsCache.clear()
 }

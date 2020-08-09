@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.followedshows.myshows
+package com.michaldrabik.showly2.ui.followedshows.myshows.cases
 
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.di.scope.AppScope
@@ -24,7 +24,7 @@ import com.michaldrabik.storage.database.model.Season
 import javax.inject.Inject
 
 @AppScope
-class MyShowsInteractor @Inject constructor(
+class MyShowsLoadShowsCase @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
   private val showsRepository: ShowsRepository,
   private val settingsRepository: SettingsRepository,

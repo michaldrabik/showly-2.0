@@ -13,6 +13,7 @@ import com.michaldrabik.showly2.model.MyShowsSection.WATCHING
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
+import com.michaldrabik.showly2.ui.followedshows.myshows.cases.MyShowsLoadShowsCase
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem.Type.ALL_SHOWS_ITEM
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem.Type.RECENT_SHOWS
@@ -24,31 +25,31 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MyShowsViewModel @Inject constructor(
-  private val interactor: MyShowsInteractor
+  private val loadShowsCase: MyShowsLoadShowsCase
 ) : BaseViewModel<MyShowsUiModel>() {
 
   fun loadShows(notifyListsUpdate: Boolean = false) {
     viewModelScope.launch {
-      val settings = interactor.loadSettings()
-      val shows = interactor.loadAllShows().map { toListItemAsync(ALL_SHOWS_ITEM, it) }.awaitAll()
-      val seasons = interactor.loadSeasonsForShows(shows.map { it.show.traktId })
+      val settings = loadShowsCase.loadSettings()
+      val shows = loadShowsCase.loadAllShows().map { toListItemAsync(ALL_SHOWS_ITEM, it) }.awaitAll()
+      val seasons = loadShowsCase.loadSeasonsForShows(shows.map { it.show.traktId })
 
-      val allShows = interactor.filterSectionShows(shows, seasons, ALL)
+      val allShows = loadShowsCase.filterSectionShows(shows, seasons, ALL)
 
       val runningShows =
-        if (settings.myShowsRunningIsEnabled) interactor.filterSectionShows(shows, seasons, WATCHING)
+        if (settings.myShowsRunningIsEnabled) loadShowsCase.filterSectionShows(shows, seasons, WATCHING)
         else emptyList()
 
       val endedShows =
-        if (settings.myShowsEndedIsEnabled) interactor.filterSectionShows(shows, seasons, FINISHED)
+        if (settings.myShowsEndedIsEnabled) loadShowsCase.filterSectionShows(shows, seasons, FINISHED)
         else emptyList()
 
       val incomingShows =
-        if (settings.myShowsIncomingIsEnabled) interactor.filterSectionShows(shows, seasons, UPCOMING)
+        if (settings.myShowsIncomingIsEnabled) loadShowsCase.filterSectionShows(shows, seasons, UPCOMING)
         else emptyList()
 
       val recentShows = if (settings.myShowsRecentIsEnabled) {
-        interactor.loadRecentShows().map { toListItemAsync(RECENT_SHOWS, it, ImageType.FANART) }.awaitAll()
+        loadShowsCase.loadRecentShows().map { toListItemAsync(RECENT_SHOWS, it, ImageType.FANART) }.awaitAll()
       } else {
         emptyList()
       }
@@ -60,19 +61,19 @@ class MyShowsViewModel @Inject constructor(
           add(MyShowsItem.createRecentsSection(recentShows))
         }
         if (runningShows.isNotEmpty()) {
-          add(MyShowsItem.createHeader(WATCHING, runningShows.count(), interactor.loadSortOrder(WATCHING)))
+          add(MyShowsItem.createHeader(WATCHING, runningShows.count(), loadShowsCase.loadSortOrder(WATCHING)))
           add(MyShowsItem.createHorizontalSection(WATCHING, runningShows))
         }
         if (incomingShows.isNotEmpty()) {
-          add(MyShowsItem.createHeader(UPCOMING, incomingShows.count(), interactor.loadSortOrder(UPCOMING)))
+          add(MyShowsItem.createHeader(UPCOMING, incomingShows.count(), loadShowsCase.loadSortOrder(UPCOMING)))
           add(MyShowsItem.createHorizontalSection(UPCOMING, incomingShows))
         }
         if (endedShows.isNotEmpty()) {
-          add(MyShowsItem.createHeader(FINISHED, endedShows.count(), interactor.loadSortOrder(FINISHED)))
+          add(MyShowsItem.createHeader(FINISHED, endedShows.count(), loadShowsCase.loadSortOrder(FINISHED)))
           add(MyShowsItem.createHorizontalSection(FINISHED, endedShows))
         }
         if (allShows.isNotEmpty()) {
-          add(MyShowsItem.createHeader(ALL, allShows.count(), interactor.loadSortOrder(ALL)))
+          add(MyShowsItem.createHeader(ALL, allShows.count(), loadShowsCase.loadSortOrder(ALL)))
           addAll(allShows)
         }
       }
@@ -83,7 +84,7 @@ class MyShowsViewModel @Inject constructor(
 
   fun loadSortedSection(section: MyShowsSection, order: SortOrder) {
     viewModelScope.launch {
-      interactor.setSectionSortOrder(section, order)
+      loadShowsCase.setSectionSortOrder(section, order)
       loadShows(notifyListsUpdate = true)
     }
   }
@@ -99,7 +100,7 @@ class MyShowsViewModel @Inject constructor(
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
-        val image = interactor.loadMissingImage(item.show, item.image.type, force)
+        val image = loadShowsCase.loadMissingImage(item.show, item.image.type, force)
         updateItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
         updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
@@ -125,7 +126,7 @@ class MyShowsViewModel @Inject constructor(
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true), itemSection)
       try {
-        val image = interactor.loadMissingImage(item.show, item.image.type, force)
+        val image = loadShowsCase.loadMissingImage(item.show, item.image.type, force)
         updateItem(item.copy(isLoading = false, image = image), itemSection)
       } catch (t: Throwable) {
         updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)), itemSection)
@@ -138,7 +139,7 @@ class MyShowsViewModel @Inject constructor(
     show: Show,
     type: ImageType = POSTER
   ) = async {
-    val image = interactor.findCachedImage(show, type)
+    val image = loadShowsCase.findCachedImage(show, type)
     MyShowsItem(itemType, null, null, null, show, image, false)
   }
 }

@@ -27,7 +27,8 @@ class DiscoverShowsCase @Inject constructor(
     val myShowsIds = showsRepository.myShows.loadAllIds()
     val seeLaterShowsIds = showsRepository.seeLaterShows.loadAllIds()
     val cachedShows = showsRepository.discoverShows.loadAllCached()
-    return onShowsLoaded(cachedShows, myShowsIds, seeLaterShowsIds, filters)
+
+    return prepareShowItems(cachedShows, myShowsIds, seeLaterShowsIds, filters)
   }
 
   suspend fun loadRemoteShows(filters: DiscoverFilters): List<DiscoverListItem> {
@@ -44,32 +45,30 @@ class DiscoverShowsCase @Inject constructor(
     val seeLaterShowsIds = showsRepository.seeLaterShows.loadAllIds()
     val remoteShows = showsRepository.discoverShows.loadAllRemote(showAnticipated, genres)
 
-    return onShowsLoaded(remoteShows, myShowsIds, seeLaterShowsIds, filters)
+    return prepareShowItems(remoteShows, myShowsIds, seeLaterShowsIds, filters)
   }
 
-  private suspend fun onShowsLoaded(
+  private suspend fun prepareShowItems(
     shows: List<Show>,
     myShowsIds: List<Long>,
     seeLaterShowsIds: List<Long>,
     filters: DiscoverFilters?
-  ): List<DiscoverListItem> {
-    return shows
-      .sortedBy(filters?.feedOrder ?: HOT)
-      .mapIndexed { index, show ->
-        val itemType = when (index) {
-          in (0..500 step 14) -> ImageType.FANART_WIDE
-          in (5..500 step 14), in (9..500 step 14) -> ImageType.FANART
-          else -> ImageType.POSTER
-        }
-        val image = imagesProvider.findCachedImage(show, itemType)
-        DiscoverListItem(
-          show,
-          image,
-          isFollowed = show.ids.trakt.id in myShowsIds,
-          isSeeLater = show.ids.trakt.id in seeLaterShowsIds
-        )
+  ) = shows
+    .sortedBy(filters?.feedOrder ?: HOT)
+    .mapIndexed { index, show ->
+      val itemType = when (index) {
+        in (0..500 step 14) -> ImageType.FANART_WIDE
+        in (5..500 step 14), in (9..500 step 14) -> ImageType.FANART
+        else -> ImageType.POSTER
       }
-  }
+      val image = imagesProvider.findCachedImage(show, itemType)
+      DiscoverListItem(
+        show,
+        image,
+        isFollowed = show.ids.trakt.id in myShowsIds,
+        isSeeLater = show.ids.trakt.id in seeLaterShowsIds
+      )
+    }
 
   private fun List<Show>.sortedBy(order: DiscoverSortOrder) = when (order) {
     HOT -> this

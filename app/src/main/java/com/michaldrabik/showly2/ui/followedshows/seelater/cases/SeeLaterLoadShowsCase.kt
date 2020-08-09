@@ -1,10 +1,7 @@
-package com.michaldrabik.showly2.ui.followedshows.seelater
+package com.michaldrabik.showly2.ui.followedshows.seelater.cases
 
-import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.model.SortOrder.DATE_ADDED
 import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.SortOrder.NEWEST
@@ -14,8 +11,7 @@ import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope
-class SeeLaterInteractor @Inject constructor(
-  private val imagesProvider: ShowImagesProvider,
+class SeeLaterLoadShowsCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val settingsRepository: SettingsRepository
 ) {
@@ -30,19 +26,4 @@ class SeeLaterInteractor @Inject constructor(
       NEWEST -> shows.sortedByDescending { it.year }
     }
   }
-
-  suspend fun setSortOrder(sortOrder: SortOrder) {
-    val settings = settingsRepository.load()
-    settingsRepository.update(settings.copy(seeLaterShowsSortBy = sortOrder))
-  }
-
-  suspend fun loadSortOrder(): SortOrder {
-    return settingsRepository.load().seeLaterShowsSortBy
-  }
-
-  suspend fun findCachedImage(show: Show, type: ImageType) =
-    imagesProvider.findCachedImage(show, type)
-
-  suspend fun loadMissingImage(show: Show, type: ImageType, force: Boolean) =
-    imagesProvider.loadRemoteImage(show, type, force)
 }
