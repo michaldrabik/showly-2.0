@@ -29,5 +29,4 @@ class DiscoverFiltersCase @Inject constructor(
       genres = settings.discoverFilterGenres.toList()
     )
   }
-
 }
