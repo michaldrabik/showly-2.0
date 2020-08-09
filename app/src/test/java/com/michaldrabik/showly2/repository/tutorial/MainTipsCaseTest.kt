@@ -3,7 +3,9 @@ package com.michaldrabik.showly2.repository.tutorial
 import BaseMockTest
 import android.content.SharedPreferences
 import com.google.common.truth.Truth.assertThat
+import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.model.Tip
+import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
@@ -12,12 +14,15 @@ import io.mockk.verifyAll
 import org.junit.Before
 import org.junit.Test
 
-class TipsRepositoryTest : BaseMockTest() {
+class MainTipsCaseTest : BaseMockTest() {
 
-  @MockK lateinit var sharedPreferences: SharedPreferences
-  @MockK lateinit var sharedPreferencesEditor: SharedPreferences.Editor
+  @MockK
+  lateinit var sharedPreferences: SharedPreferences
 
-  private lateinit var SUT: TipsRepository
+  @MockK
+  lateinit var sharedPreferencesEditor: SharedPreferences.Editor
+
+  private lateinit var SUT: MainTipsCase
 
   @Before
   override fun setUp() {
@@ -26,7 +31,7 @@ class TipsRepositoryTest : BaseMockTest() {
     every { sharedPreferencesEditor.putBoolean(any(), any()) } returns sharedPreferencesEditor
     every { sharedPreferences.edit() } returns sharedPreferencesEditor
 
-    SUT = TipsRepository(sharedPreferences)
+    SUT = MainTipsCase(sharedPreferences)
   }
 
   @Test
@@ -34,7 +39,7 @@ class TipsRepositoryTest : BaseMockTest() {
     val tip = Tip.MENU_DISCOVER
     every { sharedPreferences.getBoolean(tip.name, false) } returns true
 
-    assertThat(SUT.isShown(tip)).isTrue()
+    assertThat(SUT.isTipShown(tip)).isTrue()
   }
 
   @Test
@@ -42,14 +47,18 @@ class TipsRepositoryTest : BaseMockTest() {
     val tip = Tip.MENU_DISCOVER
     every { sharedPreferences.getBoolean(tip.name, false) } returns false
 
-    assertThat(SUT.isShown(tip)).isFalse()
+    if (BuildConfig.DEBUG) {
+      assertThat(SUT.isTipShown(tip)).isTrue()
+    } else {
+      assertThat(SUT.isTipShown(tip)).isFalse()
+    }
   }
 
   @Test
   fun `Should store tips shown info properly`() {
     val tip = Tip.MENU_DISCOVER
 
-    SUT.setShown(tip)
+    SUT.setTipShown(tip)
 
     verifyAll {
       sharedPreferencesEditor.putBoolean(tip.name, true)
