@@ -50,17 +50,16 @@ class DiscoverViewModel @Inject constructor(
         val filters = filtersCase.loadFilters()
         uiState = DiscoverUiModel(filters = filters)
 
-        val shows = when {
-          !pullToRefresh && !skipCache -> {
-            showsCase.loadCachedShows(filters)
-          }
-          pullToRefresh || skipCache || !showsCase.isCacheValid() -> {
-            showsCase.loadRemoteShows(filters)
-          }
-          else -> throw IllegalStateException("Unsupported case")
+        if (!pullToRefresh && !skipCache) {
+          val shows = showsCase.loadCachedShows(filters)
+          uiState = DiscoverUiModel(shows = shows, filters = filters, scrollToTop = scrollToTop)
         }
 
-        uiState = DiscoverUiModel(shows = shows, filters = filters, scrollToTop = scrollToTop)
+        if (pullToRefresh || skipCache || !showsCase.isCacheValid()) {
+          val shows = showsCase.loadRemoteShows(filters)
+          uiState = DiscoverUiModel(shows = shows, filters = filters, scrollToTop = scrollToTop)
+        }
+
         if (pullToRefresh) {
           lastPullToRefreshMs = nowUtcMillis()
         }
