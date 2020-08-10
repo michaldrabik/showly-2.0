@@ -45,6 +45,7 @@ class DiscoverShowsCase @Inject constructor(
     val seeLaterShowsIds = showsRepository.seeLaterShows.loadAllIds()
     val remoteShows = showsRepository.discoverShows.loadAllRemote(showAnticipated, genres)
 
+    showsRepository.discoverShows.cacheDiscoverShows(remoteShows)
     return prepareShowItems(remoteShows, myShowsIds, seeLaterShowsIds, filters)
   }
 

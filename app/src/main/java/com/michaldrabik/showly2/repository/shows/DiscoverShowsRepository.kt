@@ -64,11 +64,10 @@ class DiscoverShowsRepository @Inject constructor(
     }
     popularShows.forEach { show -> addIfMissing(remoteShows, show) }
 
-    cacheDiscoverShows(remoteShows)
     return remoteShows
   }
 
-  private suspend fun cacheDiscoverShows(shows: MutableList<Show>) {
+  suspend fun cacheDiscoverShows(shows: List<Show>) {
     database.withTransaction {
       val timestamp = nowUtcMillis()
       database.showsDao().upsert(shows.map { mappers.show.toDatabase(it) })
