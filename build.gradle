@@ -10,8 +10,8 @@ buildscript {
     classpath "com.android.tools.build:gradle:$versions.gradleBuildTools"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
     classpath "com.google.gms:google-services:4.3.3"
-    classpath "com.google.firebase:firebase-appdistribution-gradle:1.4.1"
-    classpath 'com.google.firebase:firebase-crashlytics-gradle:2.1.1'
+    classpath "com.google.firebase:firebase-appdistribution-gradle:2.0.0"
+    classpath 'com.google.firebase:firebase-crashlytics-gradle:2.2.0'
   }
 }
 

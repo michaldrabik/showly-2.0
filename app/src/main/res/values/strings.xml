@@ -21,7 +21,6 @@
   <string name="textClose">Close</string>
   <string name="textNew">New</string>
   <string name="textHot">Hot</string>
-  <string name="textMore">More</string>
   <string name="textCancel">Cancel</string>
   <string name="textNextEpisode">Next Episode:</string>
   <string name="textSearchFor">Search…</string>
@@ -46,7 +45,6 @@
   <string name="textTrailer">Trailer</string>
   <string name="textImdb">iMDB</string>
   <string name="textRate">Rate</string>
-  <string name="textRatePlay">Rate on PlayStore</string>
   <string name="textTurnOff">Turn Off</string>
   <string name="textSelect">Select</string>
   <string name="textLoadComments">Show Comments</string>
@@ -58,10 +56,6 @@
   <string name="textInMyShows">Added to my shows</string>
   <string name="textInSeeLater">Added to see later</string>
   <string name="textNoDescription">Overview not available.</string>
-  <string name="textAllShows">All (%1$d)</string>
-  <string name="textRunning">Running (%1$d)</string>
-  <string name="textEnded">Ended (%1$d)</string>
-  <string name="textIncoming">Coming Soon (%1$d)</string>
   <string name="textSortBy">Sort by:</string>
   <string name="textSortOrder">Feed:</string>
   <string name="textGenres">Genres:</string>
@@ -223,7 +217,6 @@
   <string name="textWhatsNewTitle">What\'s New</string>
   <string name="textWhatsNewSubtitle">Version %s</string>
   <string name="textWhatsNewMessage">- Added \'Calendar\' section in Watchlist that displays timeline of your shows new upcoming episodes\n\n- Added new, extended filters view for Discover feed\n\n- Added Trakt.tv Instant Sync option that allows you instantly sent episodes to Trakt after you mark them as watched\n\n- Added \'Show More\' options in Statistics section\n\n- Added support for translucent status bar and notches</string>
-  <string name="textWhatsNewRate">Enjoying Showly?\nDrop us a review on PlayStore. Thanks!</string>
 
   <string name="shortcutDiscover">Discover</string>
   <string name="shortcutMyShows">My Shows</string>
