@@ -1,5 +1,7 @@
 package com.michaldrabik.showly2.ui.discover
 
+import androidx.annotation.VisibleForTesting
+import androidx.annotation.VisibleForTesting.PRIVATE
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.R
@@ -15,6 +17,7 @@ import com.michaldrabik.showly2.utilities.extensions.findReplace
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 class DiscoverViewModel @Inject constructor(
@@ -23,7 +26,8 @@ class DiscoverViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider
 ) : BaseViewModel<DiscoverUiModel>() {
 
-  private var lastPullToRefreshMs = 0L
+  @VisibleForTesting(otherwise = PRIVATE)
+  var lastPullToRefreshMs = 0L
 
   fun loadDiscoverShows(
     pullToRefresh: Boolean = false,
@@ -63,8 +67,8 @@ class DiscoverViewModel @Inject constructor(
         if (pullToRefresh) {
           lastPullToRefreshMs = nowUtcMillis()
         }
-      } catch (t: Throwable) {
-        onError()
+      } catch (error: Throwable) {
+        onError(error)
       } finally {
         uiState = DiscoverUiModel(showLoading = false)
         progressJob.cancel()
@@ -91,7 +95,8 @@ class DiscoverViewModel @Inject constructor(
     }
   }
 
-  private fun onError() {
+  private fun onError(error: Throwable) {
     _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadDiscover)
+    Timber.e(error)
   }
 }

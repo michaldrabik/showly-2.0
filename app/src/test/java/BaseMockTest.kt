@@ -17,9 +17,13 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.SpyK
 import io.mockk.mockkStatic
 import io.mockk.slot
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Before
 
+@Suppress("EXPERIMENTAL_API_USAGE")
 abstract class BaseMockTest {
+
+  protected val testDispatcher = TestCoroutineDispatcher()
 
   @MockK lateinit var database: AppDatabase
   @MockK lateinit var cloud: Cloud
