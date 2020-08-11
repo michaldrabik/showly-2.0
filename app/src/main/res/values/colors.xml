@@ -13,7 +13,7 @@
   <color name="colorItemPlaceholder">#1C1C1C</color>
   <color name="colorItemPlaceholderStroke">#3A3A3A</color>
 
-  <color name="colorInfoSnackbar">#313131</color>
+  <color name="colorInfoSnackbar">#FAFAFA</color>
   <color name="colorDialogView">#1D1E22</color>
   <color name="colorTutorialView">#1D1E22</color>
   <color name="colorActorFullView">#BE000000</color>

@@ -32,7 +32,7 @@ import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
-import com.michaldrabik.showly2.utilities.extensions.showShortInfoSnackbar
+import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.showly2.utilities.extensions.toDisplayString
 import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
 import com.michaldrabik.showly2.utilities.extensions.visible
@@ -195,7 +195,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   private fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
-        INFO -> episodeDetailsSnackbarHost.showShortInfoSnackbar(getString(it))
+        INFO -> episodeDetailsSnackbarHost.showInfoSnackbar(getString(it))
         ERROR -> episodeDetailsSnackbarHost.showErrorSnackbar(getString(it))
       }
     }

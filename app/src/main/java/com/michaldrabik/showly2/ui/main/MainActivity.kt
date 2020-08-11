@@ -33,7 +33,7 @@ import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.showShortInfoSnackbar
+import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.utilities.network.NetworkObserver
 import kotlinx.android.synthetic.main.activity_main.*
@@ -231,7 +231,7 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
         }
         is TraktQuickSyncSuccess -> {
           val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)
-          snackBarHost.showShortInfoSnackbar(text)
+          snackBarHost.showInfoSnackbar(text)
         }
       }
     }

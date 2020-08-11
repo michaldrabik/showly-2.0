@@ -10,9 +10,10 @@ import com.michaldrabik.showly2.R
 
 fun ViewGroup.showSnackbar(
   message: String,
-  actionText: Int = R.string.textOk,
-  backgroundRes: Int = R.drawable.bg_snackbar_info,
-  length: Int = LENGTH_INDEFINITE,
+  actionText: Int,
+  actionTextColor: Int,
+  backgroundRes: Int,
+  length: Int,
   action: (() -> Unit)? = null
 ) {
   Snackbar.make(this, message, length).apply {
@@ -20,8 +21,8 @@ fun ViewGroup.showSnackbar(
       it.maxLines = 5
     }
     view.setBackgroundResource(backgroundRes)
-    setTextColor(Color.WHITE)
-    setActionTextColor(Color.WHITE)
+    setTextColor(actionTextColor)
+    setActionTextColor(actionTextColor)
     if (action != null) {
       setAction(actionText) {
         dismiss()
@@ -33,13 +34,9 @@ fun ViewGroup.showSnackbar(
 }
 
 fun ViewGroup.showErrorSnackbar(message: String, actionText: Int = R.string.textOk, action: () -> Unit = {}) {
-  showSnackbar(message, actionText, R.drawable.bg_snackbar_error, LENGTH_INDEFINITE, action)
+  showSnackbar(message, actionText, Color.WHITE, R.drawable.bg_snackbar_error, LENGTH_INDEFINITE, action)
 }
 
 fun ViewGroup.showInfoSnackbar(message: String, actionText: Int = R.string.textOk) {
-  showSnackbar(message, actionText, R.drawable.bg_snackbar_info, LENGTH_SHORT)
-}
-
-fun ViewGroup.showShortInfoSnackbar(message: String, actionText: Int = R.string.textOk) {
-  showSnackbar(message, actionText, R.drawable.bg_snackbar_info, LENGTH_SHORT)
+  showSnackbar(message, actionText, Color.BLACK, R.drawable.bg_snackbar_info, LENGTH_SHORT)
 }
