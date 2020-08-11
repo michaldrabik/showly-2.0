@@ -20,6 +20,7 @@ import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
+import com.michaldrabik.showly2.utilities.extensions.attrToColor
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.disableUi
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
@@ -111,7 +112,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
 
   private fun setupSwipeRefresh() {
     discoverSwipeRefresh.apply {
-      setProgressBackgroundColorSchemeResource(R.color.colorSearchViewBackground)
+      setProgressBackgroundColorSchemeColor(requireContext().attrToColor(R.attr.colorSearchViewBackground))
       setColorSchemeResources(R.color.colorAccent, R.color.colorAccent, R.color.colorAccent)
       setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
       setOnRefreshListener {

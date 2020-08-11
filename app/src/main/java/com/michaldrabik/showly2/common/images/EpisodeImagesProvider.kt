@@ -22,7 +22,7 @@ class EpisodeImagesProvider @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  suspend fun findCachedImage(episode: Episode, type: ImageType): Image {
+  private suspend fun findCachedImage(episode: Episode, type: ImageType): Image {
     val cachedImage = database.imagesDao().getByEpisodeId(episode.ids.tvdb.id, type.key)
     return when (cachedImage) {
       null -> Image.createUnknown(type, EPISODE)

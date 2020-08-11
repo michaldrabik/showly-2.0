@@ -50,7 +50,7 @@
       android:text="@string/textHot"
       android:textColor="@color/selector_discover_chip_text"
       app:checkedIconTint="@color/selector_discover_chip_text"
-      app:chipBackgroundColor="@color/colorSearchViewBackground"
+      app:chipBackgroundColor="@color/colorPrimary"
       app:chipStrokeColor="@color/selector_discover_chip_text"
       app:chipStrokeWidth="1dp"
       />
@@ -63,7 +63,7 @@
       android:text="@string/textSortRated"
       android:textColor="@color/selector_discover_chip_text"
       app:checkedIconTint="@color/selector_discover_chip_text"
-      app:chipBackgroundColor="@color/colorSearchViewBackground"
+      app:chipBackgroundColor="@color/colorPrimary"
       app:chipStrokeColor="@color/selector_discover_chip_text"
       app:chipStrokeWidth="1dp"
       />
@@ -76,7 +76,7 @@
       android:text="@string/textSortNewest"
       android:textColor="@color/selector_discover_chip_text"
       app:checkedIconTint="@color/selector_discover_chip_text"
-      app:chipBackgroundColor="@color/colorSearchViewBackground"
+      app:chipBackgroundColor="@color/colorPrimary"
       app:chipStrokeColor="@color/selector_discover_chip_text"
       app:chipStrokeWidth="1dp"
       />

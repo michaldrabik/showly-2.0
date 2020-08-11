@@ -35,7 +35,7 @@
       android:id="@+id/statusView"
       android:layout_width="match_parent"
       android:layout_height="@dimen/bottomNoInternetViewHeight"
-      android:background="@color/colorError"
+      android:background="?attr/colorError"
       android:elevation="10dp"
       android:gravity="center"
       android:text="@string/errorNoInternetConnection"
@@ -49,14 +49,14 @@
       android:id="@+id/bottomNavigationSeparator"
       android:layout_width="match_parent"
       android:layout_height="1dp"
-      android:background="@color/colorBottomMenuSeparator"
+      android:background="?attr/colorBottomMenuSeparator"
       />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
       android:id="@+id/bottomNavigationView"
       android:layout_width="match_parent"
       android:layout_height="@dimen/bottomNavigationHeight"
-      android:background="@color/colorBottomMenuBackground"
+      android:background="?attr/colorBottomMenuBackground"
       app:itemIconTint="@drawable/selector_bottom_menu"
       app:itemTextColor="@drawable/selector_bottom_menu"
       app:labelVisibilityMode="labeled"

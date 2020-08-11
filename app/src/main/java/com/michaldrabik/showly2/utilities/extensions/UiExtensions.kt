@@ -6,7 +6,6 @@ import android.app.Activity
 import android.view.View
 import android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
 import androidx.core.animation.doOnEnd
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 
 fun View.visible() {
@@ -55,8 +54,6 @@ fun View.fadeOut(duration: Long = 250, startDelay: Long = 0, endAction: () -> Un
     endAction()
   }.start()
 }
-
-fun View.toggleFade() = if (isVisible) fadeOut() else fadeIn()
 
 fun View.shake() = ObjectAnimator.ofFloat(this, "translationX", 0F, -15F, 15F, -10F, 10F, -5F, 5F, 0F)
   .setDuration(500)

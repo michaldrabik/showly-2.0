@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <attr name="colorInfoSnackbar" format="color" />
+  <attr name="colorErrorSnackbar" format="color" />
+
+  <attr name="colorBottomMenuBackground" format="color" />
+  <attr name="colorBottomMenuItemChecked" format="color" />
+  <attr name="colorBottomMenuItem" format="color" />
+  <attr name="colorBottomMenuSeparator" format="color" />
+
+  <attr name="colorSearchViewBackground" format="color" />
+  <attr name="colorSearchViewControl" format="color" />
+</resources>

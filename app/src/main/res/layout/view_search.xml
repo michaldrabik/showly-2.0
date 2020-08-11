@@ -5,7 +5,7 @@
   android:id="@+id/searchViewRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  app:cardBackgroundColor="@color/colorSearchViewBackground"
+  app:cardBackgroundColor="?attr/colorSearchViewBackground"
   app:cardCornerRadius="@dimen/searchViewCorner"
   >
 
@@ -23,8 +23,8 @@
       android:layout_width="24dp"
       android:layout_height="match_parent"
       android:layout_marginEnd="@dimen/spaceMedium"
-      android:tint="@color/colorSearchViewIcon"
       app:srcCompat="@drawable/ic_anim_search_to_close"
+      app:tint="?attr/colorSearchViewControl"
       />
 
     <FrameLayout
@@ -38,7 +38,7 @@
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:text="@string/textSearchFor"
-        android:textColor="@color/colorSearchViewText"
+        android:textColor="?attr/colorSearchViewControl"
         android:textSize="16sp"
         />
 
@@ -54,7 +54,7 @@
         android:maxLines="1"
         android:selectAllOnFocus="true"
         android:textColor="@color/colorTextPrimary"
-        android:textColorHint="@color/colorSearchViewText"
+        android:textColorHint="?attr/colorSearchViewControl"
         android:textSize="16sp"
         android:visibility="gone"
         />
@@ -65,9 +65,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:padding="8dp"
-        android:tint="@color/colorSearchViewIcon"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_sort"
+        app:tint="?attr/colorSearchViewControl"
         />
 
       <ImageView
@@ -76,8 +76,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:padding="9dp"
-        android:tint="@color/colorSearchViewIcon"
         app:srcCompat="@drawable/ic_settings"
+        app:tint="?attr/colorSearchViewControl"
         />
 
       <ImageView
@@ -85,11 +85,11 @@
         android:layout_width="6dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:tint="@color/colorAccent"
         android:translationX="-10dp"
         android:translationY="6dp"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_circle"
+        app:tint="@color/colorAccent"
         />
 
     </FrameLayout>

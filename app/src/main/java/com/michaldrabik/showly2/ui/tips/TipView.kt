@@ -5,7 +5,7 @@ import android.animation.ObjectAnimator
 import android.animation.ValueAnimator.INFINITE
 import android.content.Context
 import android.util.AttributeSet
-import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import com.michaldrabik.showly2.R
 
@@ -21,7 +21,7 @@ class TipView : FrameLayout {
 
   init {
     inflate(context, R.layout.view_tip, this)
-    layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+    layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
     clipChildren = false
   }
 

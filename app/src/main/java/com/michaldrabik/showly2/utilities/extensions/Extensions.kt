@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.utilities.extensions
 
 import android.app.NotificationManager
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Rect
 import android.os.Build
@@ -11,6 +12,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.CompoundButton
 import android.widget.ProgressBar
+import androidx.annotation.AttrRes
+import androidx.annotation.ColorInt
 import androidx.annotation.DimenRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -26,6 +29,23 @@ fun View.onClick(safe: Boolean = true, action: (View) -> Unit) = setOnClickListe
 fun Context.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSize(dimenResId)
 
 fun Fragment.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSize(dimenResId)
+
+@ColorInt
+fun Context.attrToColor(
+  @AttrRes attrColor: Int,
+  typedValue: TypedValue = TypedValue(),
+  resolveRefs: Boolean = true
+): Int {
+  theme.resolveAttribute(attrColor, typedValue, resolveRefs)
+  return typedValue.data
+}
+
+fun Context.attrToColorStateList(
+  @AttrRes attrColor: Int,
+  typedValue: TypedValue = TypedValue(),
+  resolveRefs: Boolean = true
+): ColorStateList =
+  ColorStateList.valueOf(attrToColor(attrColor, typedValue, resolveRefs))
 
 fun Context.notificationManager() = (applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
 
