@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import androidx.core.content.ContextCompat
 import com.google.android.material.card.MaterialCardView
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.view_statistics_card_top_genre.view.*
 
@@ -22,7 +22,7 @@ class StatisticsTopGenresView : MaterialCardView {
   init {
     inflate(context, R.layout.view_statistics_card_top_genre, this)
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
-    setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorStatisticsCardBackground))
+    setCardBackgroundColor(context.colorFromAttr(R.attr.colorCardBackground))
     onClick {
       showGenres(10)
       isClickable = false

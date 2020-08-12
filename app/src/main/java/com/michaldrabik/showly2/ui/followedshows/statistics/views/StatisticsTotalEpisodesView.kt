@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import androidx.core.content.ContextCompat
 import com.google.android.material.card.MaterialCardView
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
 import kotlinx.android.synthetic.main.view_statistics_card_total_episodes.view.*
 import java.text.NumberFormat
 
@@ -20,7 +20,7 @@ class StatisticsTotalEpisodesView : MaterialCardView {
   init {
     inflate(context, R.layout.view_statistics_card_total_episodes, this)
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
-    setCardBackgroundColor(ContextCompat.getColor(context, R.color.colorStatisticsCardBackground))
+    setCardBackgroundColor(context.colorFromAttr(R.attr.colorCardBackground))
   }
 
   fun bind(episodesCount: Long, episodesShowsCount: Long) {

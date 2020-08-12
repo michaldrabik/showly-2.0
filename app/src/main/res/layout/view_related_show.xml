@@ -49,6 +49,7 @@
       android:textSize="11sp"
       android:visibility="gone"
       tools:text="Erin Moriarty"
+      tools:visibility="visible"
       />
 
   </FrameLayout>

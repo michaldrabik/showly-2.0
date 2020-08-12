@@ -2,13 +2,14 @@ package com.michaldrabik.showly2.ui.followedshows.seelater
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.Show
@@ -83,8 +84,10 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(R.layout.fragment_see_l
   private fun showSortOrderDialog(order: SortOrder) {
     val options = listOf(NAME, RATING, NEWEST, DATE_ADDED)
     val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
-    AlertDialog.Builder(requireContext(), R.style.ChoiceDialog)
+
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
       .setTitle(R.string.textSortBy)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setSingleChoiceItems(optionsStrings, options.indexOf(order)) { dialog, index ->
         viewModel.setSortOrder(options[index])
         dialog.dismiss()

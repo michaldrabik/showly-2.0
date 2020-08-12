@@ -1,29 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <color name="colorBackground">#121212</color>
   <color name="colorPrimary">#222327</color>
   <color name="colorPrimaryDark">#121212</color>
   <color name="colorAccent">#F44336</color>
-  <color name="colorScrollbar">#292929</color>
+  <color name="colorBackground">#121212</color>
+
   <color name="colorBlack">#000000</color>
+  <color name="colorBlackTranslucent">#B2000000</color>
   <color name="colorWhite">#FFFFFF</color>
+  <color name="colorGray">#646464</color>
   <color name="colorGrayLight">#B5B5B5</color>
-  <color name="colorMask">#B2000000</color>
-
-  <color name="colorItemPlaceholder">#1C1C1C</color>
-  <color name="colorItemPlaceholderStroke">#3A3A3A</color>
-
-  <color name="colorDialogView">#1D1E22</color>
-  <color name="colorTutorialView">#1D1E22</color>
-  <color name="colorActorFullView">#BE000000</color>
-
-  <color name="colorShowDetailsEpisodeBackground">#2C2C2C</color>
-  <color name="colorSortViewBackground">#222327</color>
-  <color name="colorEpisodeBadgeBackground">#313131</color>
-
-  <color name="colorProgressGray">#333333</color>
-  <color name="colorProgressBackgroundGray">#676767</color>
-  <color name="colorSeparatorGray">#2C2C2C</color>
-
-  <color name="colorStatisticsCardBackground">#232323</color>
+  <color name="colorGrayDark">#303030</color>
 </resources>
