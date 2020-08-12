@@ -7,6 +7,7 @@
   <color name="colorScrollbar">#292929</color>
   <color name="colorBlack">#000000</color>
   <color name="colorWhite">#FFFFFF</color>
+  <color name="colorGrayLight">#B5B5B5</color>
   <color name="colorMask">#B2000000</color>
 
   <color name="colorItemPlaceholder">#1C1C1C</color>
@@ -15,13 +16,6 @@
   <color name="colorDialogView">#1D1E22</color>
   <color name="colorTutorialView">#1D1E22</color>
   <color name="colorActorFullView">#BE000000</color>
-
-  <color name="colorTextPrimary">#FFFFFF</color>
-  <color name="colorTextSecondary">#B5B5B5</color>
-
-  <color name="colorWatchlistEnabledButton">#FFFFFF</color>
-  <color name="colorWatchlistDisabledButton">#B5B5B5</color>
-  <color name="colorWatchlistSecondaryButton">#B5B5B5</color>
 
   <color name="colorShowDetailsEpisodeBackground">#2C2C2C</color>
   <color name="colorSortViewBackground">#222327</color>

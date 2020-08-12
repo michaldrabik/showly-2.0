@@ -31,7 +31,7 @@ fun Context.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSi
 fun Fragment.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSize(dimenResId)
 
 @ColorInt
-fun Context.attrToColor(
+fun Context.colorFromAttr(
   @AttrRes attrColor: Int,
   typedValue: TypedValue = TypedValue(),
   resolveRefs: Boolean = true
@@ -40,12 +40,12 @@ fun Context.attrToColor(
   return typedValue.data
 }
 
-fun Context.attrToColorStateList(
+fun Context.colorStateListFromAttr(
   @AttrRes attrColor: Int,
   typedValue: TypedValue = TypedValue(),
   resolveRefs: Boolean = true
 ): ColorStateList =
-  ColorStateList.valueOf(attrToColor(attrColor, typedValue, resolveRefs))
+  ColorStateList.valueOf(colorFromAttr(attrColor, typedValue, resolveRefs))
 
 fun Context.notificationManager() = (applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
 

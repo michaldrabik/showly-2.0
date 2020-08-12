@@ -14,7 +14,7 @@
     android:layout_marginBottom="@dimen/spaceTiny"
     android:text="@string/menuWatchlist"
     android:textAllCaps="true"
-    android:textColor="@color/colorTextPrimary"
+    android:textColor="?android:attr/textColorPrimary"
     android:textSize="20sp"
     android:textStyle="bold"
     />
@@ -23,7 +23,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="@string/textWatchlistEmpty"
-    android:textColor="@color/colorTextSecondary"
+    android:textColor="?android:attr/textColorSecondary"
     android:textSize="14sp"
     />
 

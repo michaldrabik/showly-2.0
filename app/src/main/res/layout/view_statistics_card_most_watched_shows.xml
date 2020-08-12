@@ -47,7 +47,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|center_horizontal"
     android:text="@string/textStatisticsShowMore"
-    android:textColor="@color/colorTextSecondary"
+    android:textColor="?android:attr/textColorSecondary"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

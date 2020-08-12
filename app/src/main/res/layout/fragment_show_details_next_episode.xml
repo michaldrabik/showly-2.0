@@ -54,7 +54,7 @@
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
       android:layout_marginTop="@dimen/spaceMicro"
-      android:textColor="@color/colorTextPrimary"
+      android:textColor="?android:attr/textColorPrimary"
       android:textSize="14sp"
       tools:text="S.00 E.00 - Episode Title"
       />
@@ -63,7 +63,7 @@
       android:id="@+id/showDetailsEpisodeAirtime"
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
-      android:textColor="@color/colorTextSecondary"
+      android:textColor="?android:attr/textColorSecondary"
       android:textSize="12sp"
       android:visibility="gone"
       tools:ignore="SmallSp"

@@ -5,9 +5,9 @@ import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
-import androidx.core.content.ContextCompat
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.view_quick_setup_item.view.*
 
@@ -27,17 +27,17 @@ class QuickSetupItemView : FrameLayout {
     isChecked: Boolean,
     onItemClickListener: ((Episode, Boolean) -> Unit)?
   ) {
-    val titleColor = if (isChecked) R.color.colorAccent else R.color.colorTextSecondary
-    val subTitleColor = if (isChecked) R.color.colorAccent else R.color.colorTextPrimary
+    val titleColor = if (isChecked) R.attr.colorAccent else android.R.attr.textColorSecondary
+    val subTitleColor = if (isChecked) R.attr.colorAccent else android.R.attr.textColorPrimary
 
     viewQuickSetupItemRadio.isChecked = isChecked
     viewQuickSetupItemTitle.run {
       text = context.getString(R.string.textEpisode, item.number)
-      setTextColor(ContextCompat.getColor(context, titleColor))
+      setTextColor(context.colorFromAttr(titleColor))
     }
     viewQuickSetupItemSubtitle.run {
       text = item.title
-      setTextColor(ContextCompat.getColor(context, subTitleColor))
+      setTextColor(context.colorFromAttr(subTitleColor))
     }
 
     onClick { onItemClickListener?.invoke(item, isChecked) }

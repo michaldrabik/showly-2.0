@@ -6,11 +6,11 @@ import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Comment
+import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.toDayOnlyDisplayString
 import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
@@ -27,8 +27,8 @@ class CommentView : ConstraintLayout {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
   }
 
-  private val colorTextNormal by lazy { ContextCompat.getColor(context, R.color.colorTextPrimary) }
-  private val colorTextSpoiler by lazy { ContextCompat.getColor(context, R.color.colorAccent) }
+  private val colorTextNormal by lazy { context.colorFromAttr(android.R.attr.textColorPrimary) }
+  private val colorTextSpoiler by lazy { context.colorFromAttr(android.R.attr.colorAccent) }
 
   @SuppressLint("SetTextI18n", "DefaultLocale")
   fun bind(comment: Comment) {

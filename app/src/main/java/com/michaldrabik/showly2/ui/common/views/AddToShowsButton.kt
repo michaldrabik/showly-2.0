@@ -8,6 +8,8 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.ADD
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_MY_SHOWS
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_WATCH_LATER
+import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
+import com.michaldrabik.showly2.utilities.extensions.colorStateListFromAttr
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.onClick
@@ -66,10 +68,11 @@ class AddToShowsButton : FrameLayout {
         inMyShowsButton.run {
           icon = null
           setText(R.string.textInSeeLater)
-          setTextColor(ContextCompat.getColor(context, R.color.colorTextSecondary))
-          setIconTintResource(R.color.colorTextSecondary)
-          setStrokeColorResource(R.color.colorTextSecondary)
-          setRippleColorResource(R.color.colorWhite)
+          setTextColor(context.colorFromAttr(android.R.attr.textColorSecondary))
+          iconTint = context.colorStateListFromAttr(android.R.attr.textColorSecondary)
+          strokeColor = context.colorStateListFromAttr(android.R.attr.textColorSecondary)
+          rippleColor = context.colorStateListFromAttr(android.R.attr.textColorSecondary)
+          rippleColor = context.colorStateListFromAttr(android.R.attr.textColorSecondary)
           fadeIn(duration) { isEnabled = true }
         }
         quickSetupButton.fadeOut(duration)

@@ -42,7 +42,7 @@
       android:maxLines="1"
       android:padding="0dp"
       android:text="@string/textWatchLater"
-      android:textColor="@color/colorTextSecondary"
+      android:textColor="?android:attr/textColorSecondary"
       app:rippleColor="@color/colorWhite"
       app:strokeWidth="0dp"
       />

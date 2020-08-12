@@ -53,7 +53,7 @@
         android:maxLength="50"
         android:maxLines="1"
         android:selectAllOnFocus="true"
-        android:textColor="@color/colorTextPrimary"
+        android:textColor="?android:attr/textColorPrimary"
         android:textColorHint="?attr/colorSearchViewControl"
         android:textSize="16sp"
         android:visibility="gone"

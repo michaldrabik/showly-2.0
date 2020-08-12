@@ -27,6 +27,7 @@ import com.michaldrabik.showly2.utilities.MessageEvent
 import com.michaldrabik.showly2.utilities.MessageEvent.Companion.info
 import com.michaldrabik.showly2.utilities.MessageEvent.Type.ERROR
 import com.michaldrabik.showly2.utilities.MessageEvent.Type.INFO
+import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
 import com.michaldrabik.showly2.utilities.extensions.dateFromMillis
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
@@ -183,10 +184,10 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         }
         if (state.hasRating()) {
           episodeDetailsRateButton.text = "${state.userRating?.rating}/10"
-          episodeDetailsRateButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorAccent))
+          episodeDetailsRateButton.setTextColor(requireContext().colorFromAttr(android.R.attr.colorAccent))
         } else {
           episodeDetailsRateButton.setText(R.string.textRate)
-          episodeDetailsRateButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorTextPrimary))
+          episodeDetailsRateButton.setTextColor(requireContext().colorFromAttr(android.R.attr.textColorPrimary))
         }
       }
     }

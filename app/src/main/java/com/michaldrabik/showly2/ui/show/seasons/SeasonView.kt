@@ -7,9 +7,9 @@ import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
-import androidx.core.content.ContextCompat
 import androidx.core.widget.ImageViewCompat
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
 import com.michaldrabik.showly2.utilities.extensions.expandTouch
 import com.michaldrabik.showly2.utilities.extensions.setAnimatedProgress
 import kotlinx.android.synthetic.main.view_season.view.*
@@ -47,7 +47,7 @@ class SeasonView : FrameLayout {
     seasonViewCheckbox.isChecked = item.isWatched
     seasonViewCheckbox.isEnabled = item.episodes.all { it.episode.hasAired(item.season) }
 
-    val color = ContextCompat.getColor(context, if (item.isWatched) R.color.colorAccent else R.color.colorTextPrimary)
+    val color = context.colorFromAttr(if (item.isWatched) android.R.attr.colorAccent else android.R.attr.textColorPrimary)
     seasonViewTitle.setTextColor(color)
     seasonViewProgressText.setTextColor(color)
     ImageViewCompat.setImageTintList(seasonViewArrow, ColorStateList.valueOf(color))

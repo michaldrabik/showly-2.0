@@ -64,6 +64,7 @@ import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonsAdapter
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.utilities.MessageEvent
+import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
@@ -397,7 +398,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       if (rating.hasRating()) "${rating.userRating?.rating}/10"
       else getString(R.string.textRate)
 
-    val color = ContextCompat.getColor(requireContext(), if (rating.hasRating()) R.color.colorAccent else R.color.colorTextPrimary)
+    val color = requireContext().colorFromAttr(if (rating.hasRating()) android.R.attr.colorAccent else android.R.attr.textColorPrimary)
     showDetailsRateButton.setTextColor(color)
     TextViewCompat.setCompoundDrawableTintList(showDetailsRateButton, ColorStateList.valueOf(color))
 

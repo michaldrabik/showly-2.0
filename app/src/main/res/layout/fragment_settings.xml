@@ -368,7 +368,7 @@
       style="@style/Settings.Summary"
       android:layout_marginTop="@dimen/spaceNormal"
       android:layout_marginBottom="@dimen/spaceBig"
-      android:textColor="@color/colorTextPrimary"
+      android:textColor="?android:attr/textColorPrimary"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"

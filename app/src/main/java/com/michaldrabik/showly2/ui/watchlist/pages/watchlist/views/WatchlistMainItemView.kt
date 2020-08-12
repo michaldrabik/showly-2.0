@@ -8,7 +8,6 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.views.ShowView
@@ -16,6 +15,8 @@ import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.DurationPrinter
 import com.michaldrabik.showly2.utilities.extensions.addRipple
 import com.michaldrabik.showly2.utilities.extensions.bump
+import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
+import com.michaldrabik.showly2.utilities.extensions.colorStateListFromAttr
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.expandTouch
 import com.michaldrabik.showly2.utilities.extensions.gone
@@ -92,7 +93,7 @@ class WatchlistMainItemView : ShowView<WatchlistItem> {
     detailsClickListener: ((WatchlistItem) -> Unit)?
   ) {
     val hasAired = item.episode.hasAired(item.season)
-    val color = if (hasAired) R.color.colorWatchlistEnabledButton else R.color.colorWatchlistDisabledButton
+    val color = if (hasAired) android.R.attr.textColorPrimary else android.R.attr.textColorSecondary
     if (hasAired) {
       watchlistItemInfoButton.visible()
       watchlistItemCheckButton.run {
@@ -110,9 +111,9 @@ class WatchlistMainItemView : ShowView<WatchlistItem> {
         onClick { detailsClickListener?.invoke(item) }
       }
     }
-    watchlistItemCheckButton.setTextColor(ContextCompat.getColor(context, color))
-    watchlistItemCheckButton.setStrokeColorResource(color)
-    watchlistItemCheckButton.setIconTintResource(color)
+    watchlistItemCheckButton.setTextColor(context.colorFromAttr(color))
+    watchlistItemCheckButton.strokeColor = context.colorStateListFromAttr(color)
+    watchlistItemCheckButton.iconTint = context.colorStateListFromAttr(color)
   }
 
   private fun clear() {

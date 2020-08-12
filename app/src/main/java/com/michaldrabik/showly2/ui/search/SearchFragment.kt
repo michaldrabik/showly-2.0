@@ -20,7 +20,7 @@ import com.michaldrabik.showly2.ui.search.recycler.SearchAdapter
 import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
 import com.michaldrabik.showly2.ui.search.views.RecentSearchView
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
-import com.michaldrabik.showly2.utilities.extensions.attrToColor
+import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.disableUi
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
@@ -123,7 +123,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
 
     searchSwipeRefresh.apply {
       isEnabled = false
-      setProgressBackgroundColorSchemeColor(requireContext().attrToColor(R.attr.colorSearchViewBackground))
+      setProgressBackgroundColorSchemeColor(requireContext().colorFromAttr(R.attr.colorSearchViewBackground))
       setColorSchemeResources(R.color.colorAccent, R.color.colorAccent, R.color.colorAccent)
       setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
     }

@@ -12,6 +12,9 @@
     <item name="colorAccent">@color/colorAccent</item>
     <item name="colorError">@color/colorAccent</item>
 
+    <item name="android:textColorPrimary">@color/colorWhite</item>
+    <item name="android:textColorSecondary">@color/colorGrayLight</item>
+
     <item name="colorInfoSnackbar">@color/colorWhite</item>
     <item name="colorErrorSnackbar">@color/colorAccent</item>
 
@@ -21,7 +24,7 @@
     <item name="colorBottomMenuSeparator">#464646</item>
 
     <item name="colorSearchViewBackground">@color/colorPrimary</item>
-    <item name="colorSearchViewControl">#B5B5B5</item>
+    <item name="colorSearchViewControl">@color/colorGrayLight</item>
   </style>
 
   <style name="ProgressBarGray">
@@ -55,7 +58,7 @@
   </style>
 
   <style name="Show.BadgeLater" parent="Show.Badge">
-    <item name="android:tint">@color/colorTextSecondary</item>
+    <item name="android:tint">@color/colorGrayLight</item>
   </style>
 
   <!--  Bottom Sheet Dialog -->
@@ -64,7 +67,7 @@
     <item name="android:background">@drawable/bg_bottom_sheet</item>
   </style>
 
-  <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
+  <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.BottomSheetDialog">
     <item name="android:windowIsFloating">false</item>
     <item name="android:statusBarColor">@android:color/transparent</item>
     <item name="bottomSheetStyle">@style/BottomSheet</item>
@@ -80,7 +83,7 @@
   </style>
 
   <style name="AlertDialog.NegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-    <item name="android:textColor">@color/colorTextSecondary</item>
+    <item name="android:textColor">@color/colorGrayLight</item>
   </style>
 
   <style name="ChoiceDialog" parent="AlertDialog">
@@ -93,7 +96,7 @@
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_marginStart">@dimen/spaceMedium</item>
-    <item name="android:textColor">@color/colorTextPrimary</item>
+    <item name="android:textColor">@color/colorWhite</item>
     <item name="android:textSize">@dimen/listHeaderTextSize</item>
     <item name="android:textStyle">bold</item>
   </style>
@@ -116,7 +119,7 @@
     <item name="tabPaddingStart">0dp</item>
     <item name="tabPaddingEnd">0dp</item>
     <item name="tabTextAppearance">@style/MyShowsTabTextStyle</item>
-    <item name="tabSelectedTextColor">@color/colorTextPrimary</item>
+    <item name="tabSelectedTextColor">@color/colorWhite</item>
     <item name="tabIndicatorFullWidth">false</item>
     <item name="tabRippleColor">@android:color/transparent</item>
     <item name="tabIndicatorAnimationDuration">200</item>
@@ -124,7 +127,7 @@
 
   <style name="MyShowsTabTextStyle" parent="TextAppearance.Design.Tab">
     <item name="android:textSize">15sp</item>
-    <item name="android:textColor">@color/colorTextSecondary</item>
+    <item name="android:textColor">@color/colorGrayLight</item>
     <item name="android:layout_gravity">start</item>
     <item name="textAllCaps">false</item>
   </style>
@@ -140,7 +143,7 @@
     <item name="android:gravity">center</item>
     <item name="android:textAllCaps">true</item>
     <item name="android:maxLines">1</item>
-    <item name="android:textColor">@color/colorTextPrimary</item>
+    <item name="android:textColor">@color/colorWhite</item>
     <item name="android:textSize">13sp</item>
     <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
   </style>
@@ -163,14 +166,14 @@
   <style name="Settings.Title" parent="Settings">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">@color/colorTextPrimary</item>
+    <item name="android:textColor">@color/colorWhite</item>
     <item name="android:textSize">16sp</item>
   </style>
 
   <style name="Settings.Summary" parent="Settings">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">@color/colorTextSecondary</item>
+    <item name="android:textColor">@color/colorGrayLight</item>
     <item name="android:textSize">13sp</item>
   </style>
 
