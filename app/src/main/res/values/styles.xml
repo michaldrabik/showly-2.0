@@ -193,4 +193,15 @@
     <item name="android:background">?android:attr/selectableItemBackground</item>
   </style>
 
+  <!-- Other  -->
+
+  <style name="ImageTitle">
+    <item name="android:shadowColor">@color/colorBlack</item>
+    <item name="android:shadowDx">3</item>
+    <item name="android:shadowDy">3</item>
+    <item name="android:shadowRadius">1</item>
+    <item name="android:textColor">@color/colorWhite</item>
+    <item name="android:ellipsize">end</item>
+  </style>
+
 </resources>

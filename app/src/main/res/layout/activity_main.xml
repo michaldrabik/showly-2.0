@@ -39,7 +39,7 @@
       android:elevation="10dp"
       android:gravity="center"
       android:text="@string/errorNoInternetConnection"
-      android:textColor="@color/colorWhite"
+      android:textColor="?android:attr/textColorPrimary"
       android:textSize="14sp"
       android:visibility="gone"
       tools:visibility="visible"

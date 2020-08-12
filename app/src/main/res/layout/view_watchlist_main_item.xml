@@ -50,7 +50,7 @@
       android:paddingEnd="@dimen/spaceSmall"
       android:text="@string/textNew"
       android:textAllCaps="true"
-      android:textColor="@color/colorAccent"
+      android:textColor="?attr/colorAccent"
       android:textSize="12sp"
       android:textStyle="bold"
       android:visibility="gone"
@@ -66,12 +66,12 @@
       android:layout_width="20dp"
       android:layout_height="wrap_content"
       android:rotation="45"
-      android:tint="?android:attr/textColorSecondary"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="@id/watchlistItemButtons"
       app:layout_constraintStart_toStartOf="@id/watchlistItemProgressText"
       app:layout_constraintTop_toTopOf="@id/watchlistItemButtons"
       app:srcCompat="@drawable/ic_pin"
+      app:tint="?android:attr/textColorSecondary"
       tools:visibility="visible"
       />
 

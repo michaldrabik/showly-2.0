@@ -34,17 +34,12 @@
 
     <TextView
       android:id="@+id/myShowTitle"
+      style="@style/ImageTitle"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|start"
       android:layout_margin="@dimen/spaceSmall"
-      android:ellipsize="end"
       android:maxLines="1"
-      android:shadowColor="@color/colorBlack"
-      android:shadowDx="3"
-      android:shadowDy="3"
-      android:shadowRadius="1"
-      android:textColor="@color/colorWhite"
       android:textSize="14sp"
       android:visibility="gone"
       tools:text="@tools:sample/lorem/random"
