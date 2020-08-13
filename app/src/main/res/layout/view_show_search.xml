@@ -93,7 +93,7 @@
       android:layout_marginStart="@dimen/spaceMedium"
       android:ellipsize="end"
       android:maxLines="1"
-      android:textColor="@color/colorAccent"
+      android:textColor="?attr/colorAccent"
       android:textSize="10sp"
       app:layout_constraintBottom_toTopOf="@+id/showSearchTitle"
       app:layout_constraintEnd_toEndOf="parent"

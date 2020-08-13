@@ -61,11 +61,11 @@
       android:layout_marginEnd="@dimen/spaceSmall"
       android:layout_marginBottom="@dimen/spaceSmall"
       android:text="@string/textOk"
-      android:textColor="@color/colorAccent"
+      android:textColor="?attr/colorAccent"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toBottomOf="@id/tutorialViewText"
-      app:rippleColor="@color/colorAccent"
+      app:rippleColor="?attr/colorAccent"
       />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

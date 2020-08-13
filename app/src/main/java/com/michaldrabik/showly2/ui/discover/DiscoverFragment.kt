@@ -112,8 +112,9 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
 
   private fun setupSwipeRefresh() {
     discoverSwipeRefresh.apply {
+      val color = requireContext().colorFromAttr(R.attr.colorNotification)
       setProgressBackgroundColorSchemeColor(requireContext().colorFromAttr(R.attr.colorSearchViewBackground))
-      setColorSchemeResources(R.color.colorAccent, R.color.colorAccent, R.color.colorAccent)
+      setColorSchemeColors(color, color, color)
       setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
       setOnRefreshListener {
         mainActivity().discoverSearchViewPosition = 0F

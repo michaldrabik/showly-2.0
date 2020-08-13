@@ -14,7 +14,7 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:text="@string/textStatisticsMostWatchedShows"
-    android:textColor="@color/colorWhite"
+    android:textColor="?android:attr/textColorPrimary"
     android:textSize="@dimen/listHeaderTextSize"
     android:textStyle="bold"
     app:layout_constraintBottom_toTopOf="@id/viewMostWatchedShowsItems"
@@ -52,7 +52,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/viewMostWatchedShowsItems"
-    app:rippleColor="@color/colorWhite"
+    app:rippleColor="?android:attr/textColorSecondary"
     />
 
 </merge>

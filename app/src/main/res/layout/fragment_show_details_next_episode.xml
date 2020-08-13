@@ -32,7 +32,7 @@
         android:layout_height="20dp"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="@dimen/spaceTiny"
-        android:tint="@color/colorAccent"
+        app:tint="?attr/colorAccent"
         app:srcCompat="@drawable/ic_clock"
         />
 
@@ -41,7 +41,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="@string/textNextEpisode"
-        android:textColor="@color/colorAccent"
+        android:textColor="?attr/colorAccent"
         android:textSize="14sp"
         android:textStyle="bold"
         />

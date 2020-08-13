@@ -68,12 +68,12 @@
       android:layout_width="wrap_content"
       android:layout_height="0dp"
       android:layout_marginEnd="@dimen/spaceNormal"
-      android:tint="@color/colorAccent"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="@id/settingsTraktAuthorize"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/settingsTraktAuthorize"
       app:srcCompat="@drawable/ic_check"
+      app:tint="?attr/colorAccent"
       />
 
     <LinearLayout
@@ -285,7 +285,7 @@
       android:layout_height="wrap_content"
       android:layout_marginEnd="@dimen/spaceNormal"
       android:text="@string/textSettingsShowsNotificationsWhenAvailable"
-      android:textColor="@color/colorAccent"
+      android:textColor="?attr/colorAccent"
       app:layout_constraintBottom_toBottomOf="@id/settingsWhenToNotify"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/settingsWhenToNotify"
@@ -352,13 +352,13 @@
       <TextView
         style="@style/Settings.Title"
         android:text="@string/textSettingsRateAppTitle"
-        android:textColor="@color/colorAccent"
+        android:textColor="?attr/colorAccent"
         />
 
       <TextView
         style="@style/Settings.Summary"
         android:text="@string/textSettingsRateAppSummary"
-        android:textColor="@color/colorAccent"
+        android:textColor="?attr/colorAccent"
         />
 
     </LinearLayout>

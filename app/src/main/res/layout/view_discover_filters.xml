@@ -142,15 +142,15 @@
     style="@style/Widget.MaterialComponents.Button"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/colorAccent"
+    android:backgroundTint="?attr/colorAccent"
     android:gravity="center"
     android:text="@string/textApply"
-    android:textColor="@color/colorWhite"
+    android:textColor="?android:attr/textColorPrimary"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/discoverFiltersGenresChipGroup"
-    app:rippleColor="@color/colorWhite"
+    app:rippleColor="?android:attr/textColorPrimary"
     />
 
 </merge>

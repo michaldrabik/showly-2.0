@@ -35,10 +35,10 @@
     android:layout_gravity="center"
     android:layout_marginTop="@dimen/spaceNormal"
     android:text="@string/textDiscoverShows"
-    android:textColor="@color/colorWhite"
-    app:backgroundTint="@color/colorAccent"
-    app:rippleColor="@color/colorWhite"
-    app:strokeColor="@color/colorWhite"
+    android:textColor="?android:attr/textColorPrimary"
+    app:backgroundTint="?attr/colorAccent"
+    app:rippleColor="?android:attr/textColorPrimary"
+    app:strokeColor="?android:attr/textColorPrimary"
     />
 
   <com.google.android.material.button.MaterialButton
@@ -48,8 +48,8 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:text="@string/textTraktSynchronize"
-    android:textColor="@color/colorWhite"
-    app:rippleColor="@color/colorWhite"
+    android:textColor="?android:attr/textColorPrimary"
+    app:rippleColor="?android:attr/textColorPrimary"
     />
 
 </LinearLayout>

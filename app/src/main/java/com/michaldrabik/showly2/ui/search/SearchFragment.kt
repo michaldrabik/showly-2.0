@@ -123,8 +123,9 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
 
     searchSwipeRefresh.apply {
       isEnabled = false
+      val color = requireContext().colorFromAttr(R.attr.colorNotification)
       setProgressBackgroundColorSchemeColor(requireContext().colorFromAttr(R.attr.colorSearchViewBackground))
-      setColorSchemeResources(R.color.colorAccent, R.color.colorAccent, R.color.colorAccent)
+      setColorSchemeColors(color, color, color)
       setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
     }
   }

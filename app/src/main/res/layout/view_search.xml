@@ -89,7 +89,7 @@
         android:translationY="6dp"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_circle"
-        app:tint="@color/colorAccent"
+        app:tint="?attr/colorAccent"
         />
 
     </FrameLayout>

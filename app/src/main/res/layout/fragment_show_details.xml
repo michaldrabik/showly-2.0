@@ -127,7 +127,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/spaceTiny"
-        android:tint="@color/colorAccent"
+        app:tint="?attr/colorAccent"
         app:layout_constraintBottom_toBottomOf="@+id/showDetailsStatus"
         app:layout_constraintStart_toEndOf="@+id/showDetailsStatus"
         app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"

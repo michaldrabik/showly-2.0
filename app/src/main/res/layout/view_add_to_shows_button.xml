@@ -26,9 +26,9 @@
       android:gravity="center"
       android:includeFontPadding="false"
       android:text="@string/textAdd"
-      android:textColor="@color/colorWhite"
-      app:rippleColor="@color/colorWhite"
-      app:strokeColor="@color/colorWhite"
+      android:textColor="?android:attr/textColorPrimary"
+      app:rippleColor="?android:attr/textColorPrimary"
+      app:strokeColor="?android:attr/textColorPrimary"
       />
 
     <com.google.android.material.button.MaterialButton
@@ -43,7 +43,7 @@
       android:padding="0dp"
       android:text="@string/textWatchLater"
       android:textColor="?android:attr/textColorSecondary"
-      app:rippleColor="@color/colorWhite"
+      app:rippleColor="?android:attr/textColorSecondary"
       app:strokeWidth="0dp"
       />
 
@@ -64,14 +64,14 @@
       android:gravity="center"
       android:includeFontPadding="false"
       android:text="@string/textInMyShows"
-      android:textColor="@color/colorAccent"
+      android:textColor="?attr/colorAccent"
       android:visibility="gone"
       app:icon="@drawable/ic_bookmark_full"
       app:iconGravity="textStart"
       app:iconPadding="@dimen/spaceTiny"
-      app:iconTint="@color/colorAccent"
-      app:rippleColor="@color/colorAccent"
-      app:strokeColor="@color/colorAccent"
+      app:iconTint="?attr/colorAccent"
+      app:rippleColor="?attr/colorAccent"
+      app:strokeColor="?attr/colorAccent"
       tools:visibility="visible"
       />
 
@@ -83,7 +83,7 @@
       android:layout_marginStart="@dimen/spaceNormal"
       android:background="?android:attr/selectableItemBackgroundBorderless"
       android:src="@drawable/ic_quick_setup"
-      android:tint="@color/colorAccent"
+      app:tint="?attr/colorAccent"
       />
 
   </LinearLayout>

@@ -3,7 +3,6 @@ package com.michaldrabik.showly2.ui.common.views
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import androidx.core.content.ContextCompat
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.ADD
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_MY_SHOWS
@@ -52,12 +51,13 @@ class AddToShowsButton : FrameLayout {
         addToMyShowsButton.fadeOut(duration)
         seeLaterButton.fadeOut(duration)
         inMyShowsButton.run {
+          val color = context.colorStateListFromAttr(R.attr.colorNotification)
           setIconResource(R.drawable.ic_bookmark_full)
           setText(R.string.textInMyShows)
-          setTextColor(ContextCompat.getColor(context, R.color.colorAccent))
-          setIconTintResource(R.color.colorAccent)
-          setStrokeColorResource(R.color.colorAccent)
-          setRippleColorResource(R.color.colorAccent)
+          setTextColor(color)
+          iconTint = color
+          strokeColor = color
+          rippleColor = color
           fadeIn(duration) { isEnabled = true }
         }
         quickSetupButton.fadeIn(duration) { isEnabled = true }

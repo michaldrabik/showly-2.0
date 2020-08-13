@@ -14,14 +14,14 @@
     android:layout_height="130dp"
     android:adjustViewBounds="true"
     android:src="@drawable/vincent_vega"
-    android:tint="@color/colorWhite"
+    android:tint="?android:attr/textColorPrimary"
     />
 
   <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/textEmptyResults"
-    android:textColor="@color/colorWhite"
+    android:textColor="?android:attr/textColorPrimary"
     />
 
 </merge>

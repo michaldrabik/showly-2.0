@@ -14,7 +14,7 @@
     android:layout_width="100dp"
     android:layout_height="100dp"
     android:adjustViewBounds="true"
-    android:tint="@color/colorWhite"
+    android:tint="?android:attr/textColorPrimary"
     app:srcCompat="@drawable/ic_search"
     />
 
@@ -23,7 +23,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/spaceTiny"
     android:text="@string/textSearchInitial1"
-    android:textColor="@color/colorWhite"
+    android:textColor="?android:attr/textColorPrimary"
     android:textSize="18sp"
     />
 
@@ -31,7 +31,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/textSearchInitial2"
-    android:textColor="@color/colorWhite"
+    android:textColor="?android:attr/textColorPrimary"
     android:textSize="12sp"
     />
 
