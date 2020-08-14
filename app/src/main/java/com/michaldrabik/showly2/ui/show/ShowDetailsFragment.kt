@@ -136,6 +136,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun setupView() {
+    hideNavigation()
     showDetailsImageGuideline.setGuidelineBegin((imageHeight * 0.35).toInt())
     showDetailsEpisodesView.itemClickListener = { episode, season, isWatched ->
       showEpisodeDetails(episode, season, isWatched, episode.hasAired(season))
