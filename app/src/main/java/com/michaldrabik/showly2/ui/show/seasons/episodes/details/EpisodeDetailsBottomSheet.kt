@@ -3,7 +3,10 @@ package com.michaldrabik.showly2.ui.show.seasons.episodes.details
 import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.lifecycle.Observer
@@ -82,6 +85,11 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   override fun onCreate(savedInstanceState: Bundle?) {
     fragmentComponent().inject(this)
     super.onCreate(savedInstanceState)
+  }
+
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
+    return inflater.cloneInContext(contextThemeWrapper).inflate(R.layout.view_episode_details, container, false)
   }
 
   override fun createViewModel() =

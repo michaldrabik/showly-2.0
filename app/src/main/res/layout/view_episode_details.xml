@@ -6,6 +6,7 @@
   android:id="@+id/episodeDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:background="?android:attr/windowBackground"
   tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
   >
 
