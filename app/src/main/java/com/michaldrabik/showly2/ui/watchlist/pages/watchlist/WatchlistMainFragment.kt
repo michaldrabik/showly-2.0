@@ -120,7 +120,7 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
     uiModel.run {
       items?.let {
         adapter.setItems(it)
-        watchlistEmptyView.fadeIf(it.isEmpty())
+        watchlistEmptyView.fadeIf(it.isEmpty() && isSearching == false)
         watchlistMainRecycler.fadeIn()
         watchlistMainTipItem.visibleIf(it.count() >= 3 && !mainActivity().isTipShown(Tip.WATCHLIST_ITEM_PIN))
         WatchlistWidgetProvider.requestUpdate(requireContext())
