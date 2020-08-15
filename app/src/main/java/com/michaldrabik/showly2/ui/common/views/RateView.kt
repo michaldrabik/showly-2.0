@@ -17,7 +17,7 @@ class RateView : LinearLayout {
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   companion object {
-    const val INITIAL_RATING = 5
+    const val INITIAL_RATING = 0
   }
 
   init {

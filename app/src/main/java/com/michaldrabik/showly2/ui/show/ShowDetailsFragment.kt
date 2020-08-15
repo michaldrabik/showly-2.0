@@ -404,8 +404,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     TextViewCompat.setCompoundDrawableTintList(showDetailsRateButton, ColorStateList.valueOf(color))
 
     showDetailsRateButton.onClick {
-      if (rating.rateAllowed == true) openRateDialog(rating.userRating?.rating ?: INITIAL_RATING)
-      else showSnack(MessageEvent.info(R.string.textSignBeforeRate))
+      if (rating.rateAllowed == true) {
+        val rate = rating.userRating?.rating ?: INITIAL_RATING
+        openRateDialog(rate, rate != 0)
+      } else {
+        showSnack(MessageEvent.info(R.string.textSignBeforeRate))
+      }
     }
   }
 
@@ -523,7 +527,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     startActivity(shareIntent)
   }
 
-  private fun openRateDialog(rating: Int) {
+  private fun openRateDialog(rating: Int, showRemove: Boolean) {
     val context = requireContext()
     val rateView = RateView(context).apply {
       setPadding(context.dimenToPx(R.dimen.spaceNormal))
@@ -534,6 +538,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .setView(rateView)
       .setPositiveButton(R.string.textRate) { _, _ -> viewModel.addRating(rateView.getRating()) }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
+      .apply {
+        if (showRemove) {
+          setNeutralButton(R.string.textRateDelete) { _, _ -> viewModel.deleteRating() }
+        }
+      }
       .show()
   }
 

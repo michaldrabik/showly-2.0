@@ -12,12 +12,10 @@ import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.ImageType.FANART
 import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.TraktRating
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.PinnedItemsRepository
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.repository.UserTvdbManager
-import com.michaldrabik.showly2.repository.rating.RatingsRepository
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
@@ -35,7 +33,6 @@ class ShowDetailsInteractor @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
-  private val ratingsRepository: RatingsRepository,
   private val pinnedItemsRepository: PinnedItemsRepository
 ) {
 
@@ -161,14 +158,4 @@ class ShowDetailsInteractor @Inject constructor(
 
   suspend fun removeFromWatchLater(show: Show) =
     showsRepository.seeLaterShows.delete(show.ids.trakt)
-
-  suspend fun addRating(show: Show, rating: Int) {
-    val token = userTraktManager.checkAuthorization().token
-    ratingsRepository.addRating(token, show, rating)
-  }
-
-  suspend fun loadRating(show: Show): TraktRating? {
-    val token = userTraktManager.checkAuthorization().token
-    return ratingsRepository.loadRating(token, show)
-  }
 }

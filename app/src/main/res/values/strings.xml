@@ -45,6 +45,7 @@
   <string name="textTrailer">Trailer</string>
   <string name="textImdb">iMDB</string>
   <string name="textRate">Rate</string>
+  <string name="textRateDelete">Remove</string>
   <string name="textTurnOff">Turn Off</string>
   <string name="textSelect">Select</string>
   <string name="textLoadComments">Show Comments</string>
@@ -87,6 +88,7 @@
   <string name="textRuntimeLeftMinutes">~%1$dm remaining</string>
   <string name="textSignBeforeRate">Please sign in before rating a show.</string>
   <string name="textShowRated">Your rating has been saved.</string>
+  <string name="textShowRatingDeleted">Your rating has been removed.</string>
   <string name="textShowQuickProgressTitle">Quick Progress</string>
   <string name="textShowQuickProgressSubTitle">Select last seen episode to quickly bring your progress up to date.</string>
   <string name="textShowQuickProgressDone">Your progress has been updated.</string>

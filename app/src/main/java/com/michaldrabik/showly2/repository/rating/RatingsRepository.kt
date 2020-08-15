@@ -66,6 +66,28 @@ class RatingsRepository @Inject constructor(
     }
   }
 
+  suspend fun deleteRating(token: String, show: Show) {
+    cloud.traktApi.deleteRating(
+      token,
+      mappers.show.toNetwork(show)
+    )
+    showsCache?.run {
+      val index = indexOfFirst { it.idTrakt == show.ids.trakt }
+      if (index != -1) removeAt(index)
+    }
+  }
+
+  suspend fun deleteRating(token: String, episode: Episode) {
+    cloud.traktApi.deleteRating(
+      token,
+      mappers.episode.toNetwork(episode)
+    )
+    episodesCache?.run {
+      val index = indexOfFirst { it.idTrakt == episode.ids.trakt }
+      if (index != -1) removeAt(index)
+    }
+  }
+
   fun clear() {
     showsCache = null
     episodesCache = null

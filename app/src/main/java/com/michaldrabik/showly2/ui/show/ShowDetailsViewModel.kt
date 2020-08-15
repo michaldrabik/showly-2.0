@@ -16,6 +16,7 @@ import com.michaldrabik.showly2.model.SeasonBundle
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.TraktRating
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
+import com.michaldrabik.showly2.ui.show.cases.ShowDetailsRatingCase
 import com.michaldrabik.showly2.ui.show.quickSetup.QuickSetupListItem
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
@@ -33,6 +34,7 @@ import kotlin.properties.Delegates.notNull
 
 class ShowDetailsViewModel @Inject constructor(
   private val interactor: ShowDetailsInteractor,
+  private val ratingsCase: ShowDetailsRatingCase,
   private val episodesManager: EpisodesManager,
   private val quickSyncManager: QuickSyncManager,
   private val announcementManager: AnnouncementManager
@@ -174,11 +176,10 @@ class ShowDetailsViewModel @Inject constructor(
   private suspend fun loadRating(show: Show) {
     try {
       uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = true))
-      val rating = interactor.loadRating(show)
-      uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = rating))
+      val rating = ratingsCase.loadRating(show)
+      uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = rating ?: TraktRating.EMPTY, rateLoading = false))
     } catch (error: Throwable) {
       Timber.e(error)
-    } finally {
       uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = false))
     }
   }
@@ -187,13 +188,27 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = true))
-        interactor.addRating(show, rating)
+        ratingsCase.addRating(show, rating)
+        val userRating = TraktRating(show.ids.trakt, rating)
+        uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = userRating, rateLoading = false))
         _messageLiveData.value = MessageEvent.info(R.string.textShowRated)
-        uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = TraktRating(show.ids.trakt, rating)))
       } catch (error: Throwable) {
-        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
-      } finally {
         uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = false))
+        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+      }
+    }
+  }
+
+  fun deleteRating() {
+    viewModelScope.launch {
+      try {
+        uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = true))
+        ratingsCase.deleteRating(show)
+        uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = TraktRating.EMPTY, rateLoading = false))
+        _messageLiveData.value = MessageEvent.info(R.string.textShowRatingDeleted)
+      } catch (error: Throwable) {
+        uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = false))
+        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
       }
     }
   }

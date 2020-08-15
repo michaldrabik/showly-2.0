@@ -127,6 +127,12 @@ interface TraktService {
     @Body request: RatingRequest
   ): Response<Any>
 
+  @POST("sync/ratings/remove")
+  suspend fun postRemoveRating(
+    @Header("Authorization") authToken: String,
+    @Body request: RatingRequest
+  ): Response<Any>
+
   @GET("sync/ratings/shows")
   suspend fun fetchShowsRatings(
     @Header("Authorization") authToken: String
