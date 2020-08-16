@@ -22,6 +22,9 @@ interface MyShowsDao {
   @Query("SELECT shows.* FROM shows INNER JOIN shows_my_shows USING(id_trakt) WHERE id_trakt == :traktId")
   suspend fun getById(traktId: Long): Show?
 
+  @Query("UPDATE shows_my_shows SET updated_at = :updatedAt WHERE id_trakt == :traktId")
+  suspend fun updateTimestamp(traktId: Long, updatedAt: Long)
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(shows: List<MyShow>)
 

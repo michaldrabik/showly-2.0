@@ -8,5 +8,6 @@ enum class SortOrder(
   NAME(R.string.textSortName),
   NEWEST(R.string.textSortNewest),
   RATING(R.string.textSortRated),
-  DATE_ADDED(R.string.textSortDateAdded)
+  DATE_ADDED(R.string.textSortDateAdded),
+  RECENTLY_WATCHED(R.string.textSortRecentlyWatched)
 }

@@ -5,10 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.model.ImageType
+import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistEpisodesCase
 import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistLoadItemsCase
 import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistPinnedItemsCase
+import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistSortOrderCase
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.MessageEvent
 import kotlinx.coroutines.async
@@ -19,6 +21,7 @@ import javax.inject.Inject
 class WatchlistViewModel @Inject constructor(
   private val loadItemsCase: WatchlistLoadItemsCase,
   private val pinnedItemsCase: WatchlistPinnedItemsCase,
+  private val sortOrderCase: WatchlistSortOrderCase,
   private val episodesCase: WatchlistEpisodesCase,
   private val imagesProvider: ShowImagesProvider
 ) : BaseViewModel<WatchlistUiModel>() {
@@ -36,9 +39,14 @@ class WatchlistViewModel @Inject constructor(
         }
       }.awaitAll()
 
-      val allItems = loadItemsCase.prepareWatchlistItems(items, searchQuery)
+      val sortOrder = sortOrderCase.loadSortOrder()
+      val allItems = loadItemsCase.prepareWatchlistItems(items, searchQuery, sortOrder)
       uiState =
-        WatchlistUiModel(items = allItems, isSearching = searchQuery.isNotBlank())
+        WatchlistUiModel(
+          items = allItems,
+          isSearching = searchQuery.isNotBlank(),
+          sortOrder = sortOrder
+        )
     }
   }
 
@@ -54,6 +62,13 @@ class WatchlistViewModel @Inject constructor(
         return@launch
       }
       episodesCase.setEpisodeWatched(context, item)
+      loadWatchlist()
+    }
+  }
+
+  fun setSortOrder(sortOrder: SortOrder) {
+    viewModelScope.launch {
+      sortOrderCase.setSortOrder(sortOrder)
       loadWatchlist()
     }
   }

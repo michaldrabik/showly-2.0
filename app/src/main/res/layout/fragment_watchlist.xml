@@ -27,6 +27,16 @@
     app:tabTextAppearance="@style/MyShowsTabTextStyle"
     />
 
+  <com.michaldrabik.showly2.ui.common.views.ScrollableImageView
+    android:id="@+id/watchlistSortIcon"
+    android:layout_width="wrap_content"
+    android:layout_height="36dp"
+    android:layout_gravity="end"
+    android:layout_marginTop="@dimen/watchlistSearchViewPadding"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    app:srcCompat="@drawable/ic_sort"
+    />
+
   <com.michaldrabik.showly2.ui.common.views.search.SearchView
     android:id="@+id/watchlistSearchView"
     android:layout_width="match_parent"

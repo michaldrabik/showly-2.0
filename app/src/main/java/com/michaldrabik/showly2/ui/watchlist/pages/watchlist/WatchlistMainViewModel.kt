@@ -29,7 +29,11 @@ class WatchlistMainViewModel @Inject constructor(
     val pinnedItems = allItems
       .sortedByDescending { !it.isHeader() && it.isPinned }
 
-    uiState = WatchlistMainUiModel(items = pinnedItems, isSearching = model.isSearching)
+    uiState = WatchlistMainUiModel(
+      items = pinnedItems,
+      isSearching = model.isSearching,
+      sortOrder = model.sortOrder
+    )
   }
 
   fun findMissingImage(item: WatchlistItem, force: Boolean) {

@@ -52,6 +52,7 @@ class EpisodesManager @Inject constructor(
 
       database.episodesDao().upsert(toAdd)
       database.seasonsDao().update(listOf(dbSeason))
+      database.myShowsDao().updateTimestamp(show.traktId, nowUtcMillis())
     }
     return toAdd.map { mappers.episode.fromDatabase(it) }
   }
@@ -104,6 +105,7 @@ class EpisodesManager @Inject constructor(
         database.seasonsDao().upsert(listOf(dbSeason))
       }
       database.episodesDao().upsert(listOf(dbEpisode))
+      database.myShowsDao().updateTimestamp(show.traktId, nowUtcMillis())
       onEpisodeSet(season, show)
     }
   }

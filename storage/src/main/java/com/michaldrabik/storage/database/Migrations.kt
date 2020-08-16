@@ -3,7 +3,7 @@ package com.michaldrabik.storage.database
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 7
+const val DATABASE_VERSION = 8
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 object Migrations {
@@ -48,8 +48,16 @@ object Migrations {
       database.execSQL("ALTER TABLE settings ADD COLUMN discover_filter_feed TEXT NOT NULL DEFAULT 'HOT'")
       database.execSQL("ALTER TABLE settings ADD COLUMN trakt_quick_sync_enabled INTEGER NOT NULL DEFAULT 0")
 
-      database.execSQL("CREATE TABLE IF NOT EXISTS `trakt_sync_queue` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-              "`id_trakt` INTEGER NOT NULL, `type` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL)")
+      database.execSQL(
+        "CREATE TABLE IF NOT EXISTS `trakt_sync_queue` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+          "`id_trakt` INTEGER NOT NULL, `type` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL)"
+      )
+    }
+  }
+
+  private val MIGRATION_7_8 = object : Migration(7, 8) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      database.execSQL("ALTER TABLE settings ADD COLUMN watchlist_sort_by TEXT NOT NULL DEFAULT 'NAME'")
     }
   }
 
@@ -59,6 +67,7 @@ object Migrations {
     MIGRATION_3_4,
     MIGRATION_4_5,
     MIGRATION_5_6,
-    MIGRATION_6_7
+    MIGRATION_6_7,
+    MIGRATION_7_8
   )
 }

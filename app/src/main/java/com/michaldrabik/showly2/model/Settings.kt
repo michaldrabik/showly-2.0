@@ -24,7 +24,8 @@ data class Settings(
   val discoverFilterGenres: List<Genre>,
   val discoverFilterFeed: DiscoverSortOrder,
   val traktSyncSchedule: TraktSyncSchedule,
-  val traktQuickSyncEnabled: Boolean
+  val traktQuickSyncEnabled: Boolean,
+  val watchlistSortOrder: SortOrder
 ) {
 
   companion object {
@@ -50,7 +51,8 @@ data class Settings(
       discoverFilterFeed = DiscoverSortOrder.HOT,
       discoverFilterGenres = emptyList(),
       traktSyncSchedule = TraktSyncSchedule.OFF,
-      traktQuickSyncEnabled = false
+      traktQuickSyncEnabled = false,
+      watchlistSortOrder = SortOrder.NAME
     )
   }
 }

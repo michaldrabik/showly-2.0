@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
+import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.Tip
 import com.michaldrabik.showly2.requireAppContext
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
@@ -82,6 +83,10 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
       detailsClickListener = { (requireParentFragment() as WatchlistFragment).openEpisodeDetails(it.show.ids.trakt, it.episode) }
       checkClickListener = { parentViewModel.setWatchedEpisode(requireAppContext(), it) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
+      listChangeListener = {
+        (requireParentFragment() as WatchlistFragment).resetTranslations()
+        layoutManager.scrollToPosition(0)
+      }
     }
   }
 
@@ -119,7 +124,7 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
   private fun render(uiModel: WatchlistMainUiModel) {
     uiModel.run {
       items?.let {
-        adapter.setItems(it)
+        adapter.setItems(it, notifyChange = sortOrder != NAME)
         watchlistEmptyView.fadeIf(it.isEmpty() && isSearching == false)
         watchlistMainRecycler.fadeIn()
         watchlistMainTipItem.visibleIf(it.count() >= 3 && !mainActivity().isTipShown(Tip.WATCHLIST_ITEM_PIN))

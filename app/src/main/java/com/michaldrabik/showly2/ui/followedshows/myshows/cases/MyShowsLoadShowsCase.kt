@@ -92,6 +92,7 @@ class MyShowsLoadShowsCase @Inject constructor(
       NEWEST -> shows.sortedByDescending { it.show.year }
       RATING -> shows.sortedByDescending { it.show.rating }
       DATE_ADDED -> shows.sortedByDescending { it.show.updatedAt }
+      else -> error("Should not be used here.")
     }
 
   suspend fun setSectionSortOrder(section: MyShowsSection, order: SortOrder) {

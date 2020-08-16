@@ -24,6 +24,7 @@ class SeeLaterLoadShowsCase @Inject constructor(
       DATE_ADDED -> shows.sortedByDescending { it.updatedAt }
       RATING -> shows.sortedByDescending { it.rating }
       NEWEST -> shows.sortedByDescending { it.year }
+      else -> error("Should not be used here.")
     }
   }
 }

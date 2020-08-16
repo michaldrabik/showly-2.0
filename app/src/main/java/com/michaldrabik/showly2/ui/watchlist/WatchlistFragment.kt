@@ -5,16 +5,21 @@ import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.view.updateMargins
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.IdTrakt
+import com.michaldrabik.showly2.model.SortOrder
+import com.michaldrabik.showly2.model.SortOrder.NAME
+import com.michaldrabik.showly2.model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
@@ -31,6 +36,7 @@ import com.michaldrabik.showly2.utilities.extensions.nextPage
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showKeyboard
 import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 import kotlinx.android.synthetic.main.view_search.*
 
@@ -43,6 +49,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
 
   private var searchViewTranslation = 0F
   private var tabsTranslation = 0F
+  private var sortIconTranslation = 0F
 
   override fun onCreate(savedInstanceState: Bundle?) {
     fragmentComponent().inject(this)
@@ -78,6 +85,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
 
     watchlistTabs.translationY = tabsTranslation
     watchlistSearchView.translationY = searchViewTranslation
+    watchlistSortIcon.translationY = sortIconTranslation
   }
 
   @SuppressLint("WrongConstant")
@@ -110,6 +118,8 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
       (watchlistSearchView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
       (watchlistTabs.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.watchlistSearchViewPadding))
+      (watchlistSortIcon.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.watchlistSearchViewPadding))
     }
   }
@@ -146,9 +156,24 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     modal.show(requireActivity().supportFragmentManager, "MODAL")
   }
 
+  private fun openSortOrderDialog(order: SortOrder) {
+    val options = listOf(NAME, RECENTLY_WATCHED)
+    val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
+
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setTitle(R.string.textSortBy)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setSingleChoiceItems(optionsStrings, options.indexOf(order)) { dialog, index ->
+        viewModel.setSortOrder(options[index])
+        dialog.dismiss()
+      }
+      .show()
+  }
+
   private fun saveUiTranslations() {
     tabsTranslation = watchlistTabs.translationY
     searchViewTranslation = watchlistSearchView.translationY
+    sortIconTranslation = watchlistSortIcon.translationY
   }
 
   private fun enterSearch() {
@@ -187,16 +212,27 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
   override fun onTabReselected() {
     watchlistSearchView.translationY = 0F
     watchlistTabs.translationY = 0F
+    watchlistSortIcon.translationY = 0F
     watchlistPager.nextPage()
     childFragmentManager.fragments.forEach {
       (it as? OnTabReselectedListener)?.onTabReselected()
     }
   }
 
+  fun resetTranslations() {
+    watchlistSearchView.animate().translationY(0F).start()
+    watchlistTabs.animate().translationY(0F).start()
+    watchlistSortIcon.animate().translationY(0F).start()
+  }
+
   private fun render(uiModel: WatchlistUiModel) {
     uiModel.run {
       items?.let {
         watchlistSearchView.isClickable = it.isNotEmpty() || isSearching == true
+        watchlistSortIcon.visibleIf(it.isNotEmpty())
+        if (it.isNotEmpty() && sortOrder != null) {
+          watchlistSortIcon.onClick { openSortOrderDialog(sortOrder) }
+        }
       }
     }
   }
