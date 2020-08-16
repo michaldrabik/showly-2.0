@@ -32,7 +32,8 @@ class WatchlistMainViewModel @Inject constructor(
     uiState = WatchlistMainUiModel(
       items = pinnedItems,
       isSearching = model.isSearching,
-      sortOrder = model.sortOrder
+      sortOrder = model.sortOrder,
+      resetScroll = model.resetScroll
     )
   }
 

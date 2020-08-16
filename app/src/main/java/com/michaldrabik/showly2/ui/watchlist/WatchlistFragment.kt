@@ -125,6 +125,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
   }
 
   fun openShowDetails(item: WatchlistItem) {
+    viewModel.onOpenShowDetails()
     exitSearch()
     hideNavigation()
     saveUiTranslations()

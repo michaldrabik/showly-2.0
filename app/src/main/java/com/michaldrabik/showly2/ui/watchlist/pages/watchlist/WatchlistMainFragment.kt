@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.Tip
 import com.michaldrabik.showly2.requireAppContext
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
@@ -124,7 +123,7 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
   private fun render(uiModel: WatchlistMainUiModel) {
     uiModel.run {
       items?.let {
-        adapter.setItems(it, notifyChange = sortOrder != NAME)
+        adapter.setItems(it, notifyChange = resetScroll == true)
         watchlistEmptyView.fadeIf(it.isEmpty() && isSearching == false)
         watchlistMainRecycler.fadeIn()
         watchlistMainTipItem.visibleIf(it.count() >= 3 && !mainActivity().isTipShown(Tip.WATCHLIST_ITEM_PIN))

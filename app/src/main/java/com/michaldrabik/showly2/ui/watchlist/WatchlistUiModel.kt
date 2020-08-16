@@ -7,6 +7,7 @@ import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 data class WatchlistUiModel(
   val items: List<WatchlistItem>? = null,
   val isSearching: Boolean? = null,
+  val resetScroll: Boolean? = null,
   val sortOrder: SortOrder? = null
 ) : UiModel() {
 
@@ -14,6 +15,7 @@ data class WatchlistUiModel(
     (newModel as WatchlistUiModel).copy(
       items = newModel.items?.toList() ?: items,
       isSearching = newModel.isSearching ?: isSearching,
+      resetScroll = newModel.resetScroll ?: resetScroll,
       sortOrder = newModel.sortOrder ?: sortOrder
     )
 }

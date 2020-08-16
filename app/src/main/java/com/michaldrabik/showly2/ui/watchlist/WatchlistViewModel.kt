@@ -28,7 +28,7 @@ class WatchlistViewModel @Inject constructor(
 
   private var searchQuery = ""
 
-  fun loadWatchlist() {
+  fun loadWatchlist(resetScroll: Boolean = false) {
     viewModelScope.launch {
       val shows = loadItemsCase.loadMyShows()
       val items = shows.map { show ->
@@ -45,7 +45,8 @@ class WatchlistViewModel @Inject constructor(
         WatchlistUiModel(
           items = allItems,
           isSearching = searchQuery.isNotBlank(),
-          sortOrder = sortOrder
+          sortOrder = sortOrder,
+          resetScroll = resetScroll && sortOrder != SortOrder.NAME
         )
     }
   }
@@ -62,14 +63,14 @@ class WatchlistViewModel @Inject constructor(
         return@launch
       }
       episodesCase.setEpisodeWatched(context, item)
-      loadWatchlist()
+      loadWatchlist(resetScroll = true)
     }
   }
 
   fun setSortOrder(sortOrder: SortOrder) {
     viewModelScope.launch {
       sortOrderCase.setSortOrder(sortOrder)
-      loadWatchlist()
+      loadWatchlist(resetScroll = true)
     }
   }
 
@@ -80,5 +81,9 @@ class WatchlistViewModel @Inject constructor(
       pinnedItemsCase.addPinnedItem(item)
     }
     loadWatchlist()
+  }
+
+  fun onOpenShowDetails() {
+    uiState = WatchlistUiModel(resetScroll = false)
   }
 }
