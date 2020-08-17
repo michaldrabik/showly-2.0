@@ -267,7 +267,7 @@ class ShowDetailsViewModel @Inject constructor(
       when {
         isChecked -> {
           episodesManager.setEpisodeWatched(bundle)
-          if (interactor.isFollowed(show)) {
+          if (interactor.isFollowed(show) || interactor.isWatchLater(show)) {
             quickSyncManager.scheduleEpisodes(context, listOf(episode.ids.trakt.id))
           }
         }
@@ -283,7 +283,7 @@ class ShowDetailsViewModel @Inject constructor(
       when {
         isChecked -> {
           val episodesAdded = episodesManager.setSeasonWatched(bundle)
-          if (interactor.isFollowed(show)) {
+          if (interactor.isFollowed(show) || interactor.isWatchLater(show)) {
             quickSyncManager.scheduleEpisodes(context, episodesAdded.map { it.ids.trakt.id })
           }
         }
