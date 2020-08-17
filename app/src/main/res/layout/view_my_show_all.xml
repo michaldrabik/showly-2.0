@@ -84,6 +84,7 @@
       android:textColor="?attr/colorAccent"
       android:textSize="12sp"
       app:layout_constraintBottom_toTopOf="@+id/myShowAllTitle"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/myShowAllImage"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_chainStyle="packed"
@@ -95,11 +96,11 @@
       android:id="@+id/myShowAllStarIcon"
       android:layout_width="wrap_content"
       android:layout_height="0dp"
-      app:tint="?attr/colorAccent"
       app:layout_constraintBottom_toTopOf="@+id/myShowAllTitle"
       app:layout_constraintEnd_toStartOf="@id/myShowAllRating"
       app:layout_constraintTop_toTopOf="@id/myShowAllNetwork"
       app:srcCompat="@drawable/ic_star"
+      app:tint="?attr/colorAccent"
       />
 
     <TextView

@@ -4,8 +4,10 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.app.Activity
 import android.view.View
+import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
 import androidx.core.animation.doOnEnd
+import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
 
 fun View.visible() {
@@ -69,6 +71,10 @@ fun View.bump(action: () -> Unit = {}) {
     doOnEnd { action() }
     start()
   }
+}
+
+fun View.updateTopMargin(margin: Int) {
+  (layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = margin)
 }
 
 fun Activity.disableUi() = window.setFlags(FLAG_NOT_TOUCHABLE, FLAG_NOT_TOUCHABLE)

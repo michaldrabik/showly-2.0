@@ -4,12 +4,10 @@ import android.annotation.SuppressLint
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import android.widget.GridLayout
-import androidx.core.view.updateMargins
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -41,6 +39,7 @@ import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
 import com.michaldrabik.showly2.utilities.extensions.nextPage
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showKeyboard
+import com.michaldrabik.showly2.utilities.extensions.updateTopMargin
 import com.michaldrabik.showly2.utilities.extensions.visible
 import kotlinx.android.synthetic.main.fragment_followed_shows.*
 import kotlinx.android.synthetic.main.view_search.*
@@ -89,18 +88,14 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
   }
 
   private fun setupStatusBar() {
-    arrayOf<View>(
-      followedShowsSearchView,
-      followedShowsTabs,
-      followedShowsSearchContainer,
-      followedShowsSearchEmptyView
-    )
-      .forEach { view ->
-        view.doOnApplyWindowInsets { v, insets, _, margin ->
-          (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = margin.top + insets.systemWindowInsetTop)
-          followedShowsSearchView.applyWindowInsetBehaviour(insets.systemWindowInsetTop + dimenToPx(R.dimen.spaceNormal))
-        }
-      }
+    followedShowsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
+      val statusBarSize = insets.systemWindowInsetTop
+      followedShowsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
+      followedShowsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
+      followedShowsTabs.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
+      followedShowsSearchEmptyView.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
+      followedShowsSearchContainer.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
+    }
   }
 
   override fun onDestroyView() {
