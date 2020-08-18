@@ -46,7 +46,7 @@ class WatchlistViewModel @Inject constructor(
           items = allItems,
           isSearching = searchQuery.isNotBlank(),
           sortOrder = sortOrder,
-          resetScroll = resetScroll && sortOrder != SortOrder.NAME
+          resetScroll = resetScroll && sortOrder == SortOrder.RECENTLY_WATCHED
         )
     }
   }

@@ -6,11 +6,11 @@ import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.SortOrder
+import com.michaldrabik.showly2.model.SortOrder.EPISODES_LEFT
 import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.PinnedItemsRepository
-import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.nowUtc
@@ -24,8 +24,7 @@ class WatchlistLoadItemsCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
-  private val pinnedItemsRepository: PinnedItemsRepository,
-  private val settingsRepository: SettingsRepository
+  private val pinnedItemsRepository: PinnedItemsRepository
 ) {
 
   suspend fun loadMyShows() = showsRepository.myShows.loadAll()
@@ -80,6 +79,7 @@ class WatchlistLoadItemsCase @Inject constructor(
       .sortedWith(when (sortOrder) {
         NAME -> compareBy { it.show.title.toUpperCase(ROOT) }
         RECENTLY_WATCHED -> compareByDescending { it.show.updatedAt }
+        EPISODES_LEFT -> compareBy { it.episodesCount - it.watchedEpisodesCount }
         else -> throw IllegalStateException("Invalid sort order")
       })
 

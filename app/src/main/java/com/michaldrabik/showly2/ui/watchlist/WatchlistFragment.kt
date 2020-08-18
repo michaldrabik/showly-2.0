@@ -18,6 +18,7 @@ import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.SortOrder
+import com.michaldrabik.showly2.model.SortOrder.EPISODES_LEFT
 import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
@@ -158,7 +159,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
   }
 
   private fun openSortOrderDialog(order: SortOrder) {
-    val options = listOf(NAME, RECENTLY_WATCHED)
+    val options = listOf(NAME, RECENTLY_WATCHED, EPISODES_LEFT)
     val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
 
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)

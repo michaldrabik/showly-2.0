@@ -9,5 +9,6 @@ enum class SortOrder(
   NEWEST(R.string.textSortNewest),
   RATING(R.string.textSortRated),
   DATE_ADDED(R.string.textSortDateAdded),
-  RECENTLY_WATCHED(R.string.textSortRecentlyWatched)
+  RECENTLY_WATCHED(R.string.textSortRecentlyWatched),
+  EPISODES_LEFT(R.string.textSortEpisodesLeft)
 }

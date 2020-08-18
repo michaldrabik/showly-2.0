@@ -65,6 +65,7 @@
   <string name="textSortRated">Top Rated</string>
   <string name="textSortDateAdded">Recently Added</string>
   <string name="textSortRecentlyWatched">Recently Watched</string>
+  <string name="textSortEpisodesLeft">Episodes Left</string>
   <string name="textEpisodeInfo">Details</string>
   <string name="textWatchLater">See Later</string>
   <string name="textWatchlistToday">Today</string>
