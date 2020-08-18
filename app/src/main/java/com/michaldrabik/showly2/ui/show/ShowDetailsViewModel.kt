@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.show
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.common.notifications.AnnouncementManager
 import com.michaldrabik.showly2.common.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.showly2.model.Episode
@@ -15,8 +16,16 @@ import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.model.SeasonBundle
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.TraktRating
+import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
+import com.michaldrabik.showly2.ui.show.cases.ShowDetailsActorsCase
+import com.michaldrabik.showly2.ui.show.cases.ShowDetailsCommentsCase
+import com.michaldrabik.showly2.ui.show.cases.ShowDetailsEpisodesCase
+import com.michaldrabik.showly2.ui.show.cases.ShowDetailsFollowedCase
+import com.michaldrabik.showly2.ui.show.cases.ShowDetailsMainCase
 import com.michaldrabik.showly2.ui.show.cases.ShowDetailsRatingCase
+import com.michaldrabik.showly2.ui.show.cases.ShowDetailsRelatedShowsCase
+import com.michaldrabik.showly2.ui.show.cases.ShowDetailsWatchLaterCase
 import com.michaldrabik.showly2.ui.show.quickSetup.QuickSetupListItem
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
@@ -33,11 +42,19 @@ import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
 
 class ShowDetailsViewModel @Inject constructor(
-  private val interactor: ShowDetailsInteractor,
+  private val mainCase: ShowDetailsMainCase,
+  private val actorsCase: ShowDetailsActorsCase,
   private val ratingsCase: ShowDetailsRatingCase,
+  private val watchLaterCase: ShowDetailsWatchLaterCase,
+  private val followedCase: ShowDetailsFollowedCase,
+  private val episodesCase: ShowDetailsEpisodesCase,
+  private val commentsCase: ShowDetailsCommentsCase,
+  private val relatedShowsCase: ShowDetailsRelatedShowsCase,
+  private val userManager: UserTraktManager,
   private val episodesManager: EpisodesManager,
   private val quickSyncManager: QuickSyncManager,
-  private val announcementManager: AnnouncementManager
+  private val announcementManager: AnnouncementManager,
+  private val imagesProvider: ShowImagesProvider
 ) : BaseViewModel<ShowDetailsUiModel>() {
 
   private var show by notNull<Show>()
@@ -50,11 +67,11 @@ class ShowDetailsViewModel @Inject constructor(
         uiState = ShowDetailsUiModel(showLoading = true)
       }
       try {
-        show = interactor.loadShowDetails(id)
+        show = mainCase.loadDetails(id)
 
-        val isSignedIn = interactor.isSignedIn()
-        val isFollowed = async { interactor.isFollowed(show) }
-        val isWatchLater = async { interactor.isWatchLater(show) }
+        val isSignedIn = userManager.isAuthorized()
+        val isFollowed = async { followedCase.isFollowed(show) }
+        val isWatchLater = async { watchLaterCase.isWatchLater(show) }
         val followedState = FollowedState(
           isMyShows = isFollowed.await(),
           isWatchLater = isWatchLater.await(),
@@ -92,7 +109,7 @@ class ShowDetailsViewModel @Inject constructor(
 
   private suspend fun loadNextEpisode(show: Show) {
     try {
-      val episode = interactor.loadNextEpisode(show.ids.trakt)
+      val episode = episodesCase.loadNextEpisode(show.ids.trakt)
       uiState = ShowDetailsUiModel(nextEpisode = episode)
     } catch (t: Throwable) {
       // NOOP
@@ -101,7 +118,7 @@ class ShowDetailsViewModel @Inject constructor(
 
   private suspend fun loadBackgroundImage(show: Show) {
     uiState = try {
-      val backgroundImage = interactor.loadBackgroundImage(show)
+      val backgroundImage = imagesProvider.loadRemoteImage(show, FANART)
       ShowDetailsUiModel(image = backgroundImage)
     } catch (t: Throwable) {
       ShowDetailsUiModel(image = Image.createUnavailable(FANART))
@@ -110,7 +127,7 @@ class ShowDetailsViewModel @Inject constructor(
 
   private suspend fun loadActors(show: Show) {
     uiState = try {
-      val actors = interactor.loadActors(show)
+      val actors = actorsCase.loadActors(show)
       ShowDetailsUiModel(actors = actors)
     } catch (t: Throwable) {
       ShowDetailsUiModel(actors = emptyList())
@@ -118,7 +135,7 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   private suspend fun loadSeasons(show: Show): List<Season> = try {
-    val seasons = interactor.loadSeasons(show)
+    val seasons = episodesCase.loadSeasons(show)
     val seasonsItems = seasons.map {
       val episodes = it.episodes.map { episode -> EpisodeListItem(episode, it, false) }
       SeasonListItem(it, episodes, false)
@@ -133,8 +150,8 @@ class ShowDetailsViewModel @Inject constructor(
 
   private suspend fun loadRelatedShows(show: Show) {
     uiState = try {
-      val relatedShows = interactor.loadRelatedShows(show).map {
-        val image = interactor.findCachedImage(it, POSTER)
+      val relatedShows = relatedShowsCase.loadRelatedShows(show).map {
+        val image = imagesProvider.findCachedImage(it, POSTER)
         RelatedListItem(it, image)
       }
       ShowDetailsUiModel(relatedShows = relatedShows)
@@ -146,7 +163,7 @@ class ShowDetailsViewModel @Inject constructor(
   fun loadComments() {
     viewModelScope.launch {
       uiState = try {
-        val comments = interactor.loadComments(show)
+        val comments = commentsCase.loadComments(show)
         ShowDetailsUiModel(comments = comments)
       } catch (t: Throwable) {
         ShowDetailsUiModel(comments = emptyList())
@@ -165,7 +182,7 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
-        val image = interactor.loadMissingImage(item.show, item.image.type, force)
+        val image = imagesProvider.loadRemoteImage(item.show, item.image.type, force)
         updateItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
         updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
@@ -218,7 +235,7 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       val seasons = seasonItems.map { it.season }
       val episodes = seasonItems.flatMap { it.episodes.map { e -> e.episode } }
-      interactor.addToFollowed(show, seasons, episodes)
+      followedCase.addToFollowed(show, seasons, episodes)
 
       val followedState =
         FollowedState(isMyShows = true, isWatchLater = false, withAnimation = true)
@@ -231,7 +248,7 @@ class ShowDetailsViewModel @Inject constructor(
   fun addWatchLaterShow() {
     if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
-      interactor.addToWatchLater(show)
+      watchLaterCase.addToWatchLater(show)
 
       val followedState =
         FollowedState(isMyShows = false, isWatchLater = true, withAnimation = true)
@@ -242,11 +259,11 @@ class ShowDetailsViewModel @Inject constructor(
   fun removeFromFollowed(context: Context) {
     if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
-      val isFollowed = interactor.isFollowed(show)
-      val isWatchLater = interactor.isWatchLater(show)
+      val isFollowed = followedCase.isFollowed(show)
+      val isWatchLater = watchLaterCase.isWatchLater(show)
 
-      if (isFollowed) interactor.removeFromFollowed(show)
-      if (isWatchLater) interactor.removeFromWatchLater(show)
+      if (isFollowed) followedCase.removeFromFollowed(show)
+      if (isWatchLater) watchLaterCase.removeFromWatchLater(show)
 
       val followedState =
         FollowedState(isMyShows = false, isWatchLater = false, withAnimation = true)
@@ -267,7 +284,7 @@ class ShowDetailsViewModel @Inject constructor(
       when {
         isChecked -> {
           episodesManager.setEpisodeWatched(bundle)
-          if (interactor.isFollowed(show) || interactor.isWatchLater(show)) {
+          if (followedCase.isFollowed(show) || watchLaterCase.isWatchLater(show)) {
             quickSyncManager.scheduleEpisodes(context, listOf(episode.ids.trakt.id))
           }
         }
@@ -283,7 +300,7 @@ class ShowDetailsViewModel @Inject constructor(
       when {
         isChecked -> {
           val episodesAdded = episodesManager.setSeasonWatched(bundle)
-          if (interactor.isFollowed(show) || interactor.isWatchLater(show)) {
+          if (followedCase.isFollowed(show) || watchLaterCase.isWatchLater(show)) {
             quickSyncManager.scheduleEpisodes(context, episodesAdded.map { it.ids.trakt.id })
           }
         }
