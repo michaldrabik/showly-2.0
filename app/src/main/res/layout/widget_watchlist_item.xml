@@ -50,7 +50,7 @@
       android:layout_marginBottom="@dimen/spaceTiny"
       android:ellipsize="end"
       android:maxLines="1"
-      android:textColor="?android:attr/textColorPrimary"
+      android:textColor="@color/colorWhite"
       android:textSize="16sp"
       android:textStyle="bold"
       tools:ignore="RtlSymmetry"
@@ -66,7 +66,7 @@
       android:gravity="center"
       android:text="@string/textNew"
       android:textAllCaps="true"
-      android:textColor="?attr/colorAccent"
+      android:textColor="@color/colorAccent"
       android:textSize="12sp"
       android:textStyle="bold"
       android:visibility="gone"
@@ -78,7 +78,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_below="@id/watchlistWidgetItemTitle"
-      android:background="@drawable/bg_episode_badge"
+      android:background="@drawable/bg_widget_episode_badge"
       android:ellipsize="end"
       android:includeFontPadding="false"
       android:maxLines="1"
@@ -86,7 +86,7 @@
       android:paddingTop="2dp"
       android:paddingEnd="6dp"
       android:paddingBottom="2dp"
-      android:textColor="?android:attr/textColorPrimary"
+      android:textColor="@color/colorWhite"
       android:textSize="12sp"
       tools:text="S.01 E.01"
       />
@@ -103,7 +103,7 @@
       android:ellipsize="end"
       android:includeFontPadding="false"
       android:maxLines="1"
-      android:textColor="?android:attr/textColorPrimary"
+      android:textColor="@color/colorWhite"
       android:textSize="12sp"
       tools:text="Some Title of an Episode"
       />
@@ -115,7 +115,7 @@
       android:layout_below="@id/watchlistWidgetItemSubtitle"
       android:layout_marginTop="@dimen/spaceTiny"
       android:gravity="start|center_vertical"
-      android:textColor="?android:attr/textColorSecondary"
+      android:textColor="@color/colorGrayLight"
       android:textSize="10sp"
       tools:text="999/999"
       />
@@ -128,7 +128,8 @@
       android:layout_below="@id/watchlistWidgetItemSubtitle"
       android:layout_marginStart="@dimen/spaceSmall"
       android:layout_toEndOf="@id/watchlistWidgetItemProgressText"
-      android:progressTint="?attr/colorAccent"
+      android:progressBackgroundTint="@color/colorGrayLight"
+      android:progressTint="@color/colorAccent"
       />
 
     <ImageButton
@@ -148,7 +149,7 @@
       android:layout_below="@id/watchlistWidgetItemProgress"
       android:layout_alignParentEnd="true"
       android:textAllCaps="true"
-      android:textColor="?android:attr/textColorSecondary"
+      android:textColor="@color/colorGrayLight"
       android:textSize="12sp"
       android:visibility="gone"
       tools:text="Airs in 99 days"

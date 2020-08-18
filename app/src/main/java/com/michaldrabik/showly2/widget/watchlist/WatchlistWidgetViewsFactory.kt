@@ -16,6 +16,7 @@ import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistLoadItemsCase
+import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistSortOrderCase
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.DurationPrinter
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
@@ -33,7 +34,8 @@ import kotlinx.coroutines.runBlocking
 
 class WatchlistWidgetViewsFactory(
   private val context: Context,
-  private val watchlistLoadItemsCase: WatchlistLoadItemsCase,
+  private val loadItemsCase: WatchlistLoadItemsCase,
+  private val sortOrderCase: WatchlistSortOrderCase,
   private val showsRepository: ShowsRepository,
   private val imagesProvider: ShowImagesProvider
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
@@ -51,20 +53,14 @@ class WatchlistWidgetViewsFactory(
       val shows = showsRepository.myShows.loadAll()
       val items = shows.map { show ->
         async {
-          val item = watchlistLoadItemsCase.loadWatchlistItem(show)
+          val item = loadItemsCase.loadWatchlistItem(show)
           val image = imagesProvider.findCachedImage(show, ImageType.POSTER)
           item.copy(image = image)
         }
       }.awaitAll()
-        .filter { it.episodesCount != 0 && it.episode.firstAired != null }
-        .groupBy { it.episode.hasAired(it.season) }
 
-      val aired = (items[true] ?: emptyList())
-        .sortedWith(compareByDescending<WatchlistItem> { it.isNew() }.thenBy { it.show.title.toLowerCase() })
-      val notAired = (items[false] ?: emptyList())
-        .sortedBy { it.episode.firstAired?.toInstant()?.toEpochMilli() }
-
-      val allItems = (aired + notAired).toMutableList()
+      val sortOrder = sortOrderCase.loadSortOrder()
+      val allItems = loadItemsCase.prepareWatchlistItems(items, "", sortOrder).toMutableList()
 
       val headerIndex = allItems.indexOfFirst { !it.isHeader() && !it.episode.hasAired(it.season) }
       if (headerIndex != -1) {

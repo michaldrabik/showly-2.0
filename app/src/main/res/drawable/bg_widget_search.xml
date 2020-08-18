@@ -4,5 +4,5 @@
   android:shape="rectangle"
   >
   <corners android:radius="1000dp" />
-  <solid android:color="?attr/colorSearchViewBackground" />
+  <solid android:color="@color/colorPrimary" />
 </shape>
