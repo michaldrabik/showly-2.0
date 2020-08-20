@@ -8,6 +8,8 @@ import com.michaldrabik.showly2.common.trakt.TraktSyncRunner
 import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.repository.TraktAuthToken
 import com.michaldrabik.showly2.repository.UserTraktManager
+import com.michaldrabik.showly2.utilities.extensions.dateIsoStringFromMillis
+import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Episode
 import timber.log.Timber
@@ -38,12 +40,15 @@ class TraktExportWatchedRunner @Inject constructor(
 
     val remoteWatched = cloud.traktApi.fetchSyncWatched(token.token)
       .filter { it.show != null }
-    val localMyShowsIds = database.myShowsDao().getAllTraktIds()
-    val localEpisodes = batchEpisodes(localMyShowsIds)
+    val localMyShows = database.myShowsDao().getAll()
+    val localEpisodes = batchEpisodes(localMyShows.map { it.idTrakt })
       .filter { !hasEpisodeBeenWatched(remoteWatched, it) }
 
     val request = SyncExportRequest(
-      episodes = localEpisodes.map { SyncExportItem.create(it.idTrakt) }
+      episodes = localEpisodes.map { ep ->
+        val timestamp = localMyShows.find { it.idTrakt == ep.idShowTrakt }?.updatedAt ?: nowUtcMillis()
+        SyncExportItem.create(ep.idTrakt, dateIsoStringFromMillis(timestamp))
+      }
     )
     cloud.traktApi.postSyncWatched(token.token, request)
   }

@@ -7,6 +7,7 @@ import com.michaldrabik.showly2.common.trakt.TraktSyncRunner
 import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.repository.TraktAuthToken
 import com.michaldrabik.showly2.repository.UserTraktManager
+import com.michaldrabik.showly2.utilities.extensions.dateIsoStringFromMillis
 import com.michaldrabik.storage.database.AppDatabase
 import kotlinx.coroutines.delay
 import timber.log.Timber
@@ -45,7 +46,7 @@ class QuickSyncRunner @Inject constructor(
 
     val toExport = items.distinctBy { it.idTrakt }
     val request = SyncExportRequest(
-      episodes = toExport.map { SyncExportItem.create(it.idTrakt) }
+      episodes = toExport.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) }
     )
     Timber.d("Exporting ${toExport.count()} quick sync items...")
     cloud.traktApi.postSyncWatched(token.token, request)
