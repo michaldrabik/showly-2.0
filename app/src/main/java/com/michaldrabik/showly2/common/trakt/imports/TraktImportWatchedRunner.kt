@@ -12,12 +12,15 @@ import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.repository.UserTvdbManager
+import com.michaldrabik.showly2.utilities.extensions.nowUtc
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
+import com.michaldrabik.showly2.utilities.extensions.toMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.MyShow
 import com.michaldrabik.storage.database.model.Season
 import kotlinx.coroutines.delay
+import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -71,8 +74,12 @@ class TraktImportWatchedRunner @Inject constructor(
             if (showId !in myShowsIds) {
               val show = mappers.show.fromNetwork(result.show!!)
               val showDb = mappers.show.toDatabase(show)
+
+              val timestamp = result.last_watched_at?.let { ZonedDateTime.parse(result.last_watched_at) } ?: nowUtc()
+              val myShow = MyShow.fromTraktId(showDb.idTrakt, nowUtcMillis()).copy(updatedAt = timestamp.toMillis())
               database.showsDao().upsert(listOf(showDb))
-              database.myShowsDao().insert(listOf(MyShow.fromTraktId(showDb.idTrakt, nowUtcMillis())))
+              database.myShowsDao().insert(listOf(myShow))
+
               loadImage(show)
 
               if (showId in seeLaterShowsIds) {
