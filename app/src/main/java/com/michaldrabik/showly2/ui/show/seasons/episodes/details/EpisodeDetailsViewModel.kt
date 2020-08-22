@@ -89,4 +89,19 @@ class EpisodeDetailsViewModel @Inject constructor(
       }
     }
   }
+
+  fun deleteRating(episode: Episode) {
+    viewModelScope.launch {
+      try {
+        uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateLoading = true))
+        val token = userTraktManager.checkAuthorization().token
+        ratingsRepository.deleteRating(token, episode)
+        uiState = EpisodeDetailsUiModel(ratingState = RatingState(userRating = TraktRating.EMPTY, rateLoading = false))
+        _messageLiveData.value = MessageEvent.info(R.string.textShowRatingDeleted)
+      } catch (error: Throwable) {
+        uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateLoading = false))
+        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+      }
+    }
+  }
 }

@@ -141,7 +141,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     }
   }
 
-  private fun openRateDialog(rating: Int) {
+  private fun openRateDialog(rating: Int, showRemove: Boolean) {
     val context = requireContext()
     val rateView = RateView(context).apply {
       setPadding(context.dimenToPx(R.dimen.spaceNormal))
@@ -152,6 +152,11 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       .setView(rateView)
       .setPositiveButton(R.string.textRate) { _, _ -> viewModel.addRating(rateView.getRating(), episode) }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
+      .apply {
+        if (showRemove) {
+          setNeutralButton(R.string.textRateDelete) { _, _ -> viewModel.deleteRating(episode) }
+        }
+      }
       .show()
   }
 
@@ -187,8 +192,12 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         episodeDetailsRateProgress.visibleIf(state.rateLoading == true)
         episodeDetailsRateButton.visibleIf(state.rateLoading == false)
         episodeDetailsRateButton.onClick {
-          if (state.rateAllowed == true) openRateDialog(state.userRating?.rating ?: INITIAL_RATING)
-          else renderSnackbar(info(R.string.textSignBeforeRate))
+          if (state.rateAllowed == true) {
+            val rate = state.userRating?.rating ?: INITIAL_RATING
+            openRateDialog(rate, rate != 0)
+          } else {
+            renderSnackbar(info(R.string.textSignBeforeRate))
+          }
         }
         if (state.hasRating()) {
           episodeDetailsRateButton.text = "${state.userRating?.rating}/10"
