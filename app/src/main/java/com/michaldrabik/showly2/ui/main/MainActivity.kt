@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.events.Event
@@ -30,6 +31,7 @@ import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
@@ -72,6 +74,7 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
     setupNavigation()
     setupNavigationBackHandler()
     setupTips()
+    setupView()
 
     restoreState(savedInstanceState)
     onNewIntent(intent)
@@ -96,6 +99,20 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
       initSettings()
       refreshTraktSyncSchedule(applicationContext)
     }
+  }
+
+  private fun setupView() {
+    rateAppView.onYesClickListener = {
+      rateAppView.fadeOut()
+      val manager = ReviewManagerFactory.create(applicationContext)
+      val request = manager.requestReviewFlow()
+      request.addOnCompleteListener {
+        if (it.isSuccessful) {
+          manager.launchReviewFlow(this, it.result)
+        }
+      }
+    }
+    rateAppView.onNoClickListener = { rateAppView.fadeOut() }
   }
 
   private fun setupNavigation() {
@@ -191,6 +208,9 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
     uiModel.run {
       isInitialRun?.let { if (it) openTab(R.id.menuDiscover) }
       showWhatsNew?.let { if (it) showWhatsNew() }
+      showRateApp?.let {
+        rateAppView.fadeIf(it, startDelay = 1500)
+      }
     }
   }
 

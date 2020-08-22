@@ -29,11 +29,11 @@ fun View.visibleIf(condition: Boolean, gone: Boolean = true) =
     if (gone) gone() else invisible()
   }
 
-fun View.fadeIf(condition: Boolean, duration: Long = 250) =
+fun View.fadeIf(condition: Boolean, duration: Long = 250, startDelay: Long = 0) =
   if (condition) {
-    fadeIn(duration)
+    fadeIn(duration, startDelay)
   } else {
-    fadeOut(duration)
+    fadeOut(duration, startDelay)
   }
 
 fun View.fadeIn(duration: Long = 250, startDelay: Long = 0, endAction: () -> Unit = {}) {

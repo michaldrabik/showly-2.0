@@ -4,12 +4,14 @@ import com.michaldrabik.showly2.ui.common.UiModel
 
 data class MainUiModel(
   val isInitialRun: Boolean? = null,
-  val showWhatsNew: Boolean? = null
+  val showWhatsNew: Boolean? = null,
+  val showRateApp: Boolean? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
     (newModel as MainUiModel).copy(
       isInitialRun = newModel.isInitialRun ?: isInitialRun,
-      showWhatsNew = newModel.showWhatsNew ?: showWhatsNew
+      showWhatsNew = newModel.showWhatsNew ?: showWhatsNew,
+      showRateApp = newModel.showRateApp ?: showRateApp
     )
 }

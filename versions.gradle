@@ -1,6 +1,6 @@
 ext.versions = [
-    versionCode            : 95,
-    versionName            : '1.11.1',
+    versionCode            : 100,
+    versionName            : '1.12.0',
 
     minSdk                 : 21,
     compileSdk             : 29,
@@ -22,9 +22,9 @@ ext.versions = [
     androidViewPager       : '1.0.0',
     androidWork            : '2.4.0',
     circleIndicator        : '2.1.4',
-    crashlytics            : '17.1.1',
+    crashlytics            : '17.2.1',
     dagger                 : '2.26',
-    firebaseAnalytics      : '17.4.4',
+    firebaseAnalytics      : '17.5.0',
     firebaseMessaging      : '20.2.4',
     glide                  : '4.11.0',
     okHttpLogInterceptor   : '4.6.0',

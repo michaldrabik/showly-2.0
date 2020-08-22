@@ -6,6 +6,7 @@ import com.michaldrabik.showly2.model.Tip
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.main.cases.MainInitialsCase
 import com.michaldrabik.showly2.ui.main.cases.MainMiscCase
+import com.michaldrabik.showly2.ui.main.cases.MainRateAppCase
 import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTraktCase
 import kotlinx.coroutines.launch
@@ -15,7 +16,8 @@ class MainViewModel @Inject constructor(
   private val initCase: MainInitialsCase,
   private val tipsCase: MainTipsCase,
   private val traktCase: MainTraktCase,
-  private val miscCase: MainMiscCase
+  private val miscCase: MainMiscCase,
+  private val rateAppCase: MainRateAppCase
 ) : BaseViewModel<MainUiModel>() {
 
   fun initSettings() {
@@ -32,7 +34,8 @@ class MainViewModel @Inject constructor(
       initCase.setInitialRun(false)
     }
     val showWhatsNew = initCase.showWhatsNew(isInitialRun)
-    uiState = MainUiModel(isInitialRun = isInitialRun, showWhatsNew = showWhatsNew)
+    val showRateApp = rateAppCase.shouldShowRateApp()
+    uiState = MainUiModel(isInitialRun = isInitialRun, showWhatsNew = showWhatsNew, showRateApp = showRateApp)
   }
 
   fun refreshAnnouncements(context: Context) {
@@ -53,6 +56,10 @@ class MainViewModel @Inject constructor(
   fun isTipShown(tip: Tip) = tipsCase.isTipShown(tip)
 
   fun setTipShown(tip: Tip) = tipsCase.setTipShown(tip)
+
+  fun initRateApp() {
+
+  }
 
   fun clearUp() = miscCase.clear()
 }

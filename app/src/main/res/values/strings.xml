@@ -196,6 +196,12 @@
   <string name="textStatisticsTopGenreSubValue2">seem to be your cup of tea.</string>
   <string name="textStatisticsShowMore">Show More</string>
 
+  <string name="textRateAppTitle">Enjoying Showly 2.0?</string>
+  <string name="textRateAppMessage">Would you like to rate the app?\nIt will only take a few seconds.</string>
+  <string name="textRateAppYesButton">Sure, why not?</string>
+  <string name="textRateAppNoButton">Not now</string>
+
+
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>
     <item quantity="other">Airs in %d days</item>

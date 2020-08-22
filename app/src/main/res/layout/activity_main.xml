@@ -108,4 +108,14 @@
     app:layout_constraintTop_toTopOf="parent"
     />
 
+  <com.michaldrabik.showly2.ui.common.views.RateAppView
+    android:id="@+id/rateAppView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/spaceNormal"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@id/bottomNavigationWrapper"
+    tools:visibility="visible"
+    />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

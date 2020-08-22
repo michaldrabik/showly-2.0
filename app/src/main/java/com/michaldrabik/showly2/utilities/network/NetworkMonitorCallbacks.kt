@@ -9,6 +9,7 @@ import android.net.NetworkCapabilities.TRANSPORT_ETHERNET
 import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.net.NetworkRequest
 import android.os.Bundle
+import com.michaldrabik.showly2.ui.main.MainActivity
 import timber.log.Timber
 
 class NetworkMonitorCallbacks(
@@ -19,21 +20,26 @@ class NetworkMonitorCallbacks(
   private val availableNetworksIds = mutableListOf<String>()
 
   override fun onActivityStarted(activity: Activity) {
+    if (activity !is MainActivity) return
+
     foregroundActivity = activity
     val networkRequest = NetworkRequest.Builder()
       .addTransportType(TRANSPORT_WIFI)
       .addTransportType(TRANSPORT_CELLULAR)
       .addTransportType(TRANSPORT_ETHERNET)
       .build()
-
     connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+
     Timber.d("Registering network callback.")
   }
 
   override fun onActivityStopped(activity: Activity) {
+    if (activity !is MainActivity) return
+
     connectivityManager.unregisterNetworkCallback(networkCallback)
     availableNetworksIds.clear()
     foregroundActivity = null
+
     Timber.d("Unregistering network callback.")
   }
 
