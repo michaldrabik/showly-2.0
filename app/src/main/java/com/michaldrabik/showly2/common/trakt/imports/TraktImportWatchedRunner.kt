@@ -76,7 +76,7 @@ class TraktImportWatchedRunner @Inject constructor(
               val showDb = mappers.show.toDatabase(show)
 
               val timestamp = result.last_watched_at?.let { ZonedDateTime.parse(result.last_watched_at) } ?: nowUtc()
-              val myShow = MyShow.fromTraktId(showDb.idTrakt, nowUtcMillis()).copy(updatedAt = timestamp.toMillis())
+              val myShow = MyShow.fromTraktId(showDb.idTrakt, nowUtcMillis(), timestamp.toMillis())
               database.showsDao().upsert(listOf(showDb))
               database.myShowsDao().insert(listOf(myShow))
 

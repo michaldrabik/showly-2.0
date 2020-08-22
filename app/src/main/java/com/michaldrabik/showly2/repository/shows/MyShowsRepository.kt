@@ -30,7 +30,7 @@ class MyShowsRepository @Inject constructor(
   suspend fun loadAllIds() = database.myShowsDao().getAllTraktIds()
 
   suspend fun insert(id: IdTrakt) {
-    val dbShow = MyShow.fromTraktId(id.id, nowUtcMillis())
+    val dbShow = MyShow.fromTraktId(id.id, nowUtcMillis(), 0)
     database.myShowsDao().insert(listOf(dbShow))
   }
 
