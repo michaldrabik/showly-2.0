@@ -57,9 +57,5 @@ class MainViewModel @Inject constructor(
 
   fun setTipShown(tip: Tip) = tipsCase.setTipShown(tip)
 
-  fun initRateApp() {
-
-  }
-
   fun clearUp() = miscCase.clear()
 }
