@@ -44,4 +44,6 @@ class MainRateAppCase @Inject constructor(
       apply()
     }
   }
+
+  fun finalize() = updateTimestamp(MAX_COUNT)
 }

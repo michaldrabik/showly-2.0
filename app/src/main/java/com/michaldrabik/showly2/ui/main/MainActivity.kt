@@ -108,7 +108,8 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
       val request = manager.requestReviewFlow()
       request.addOnCompleteListener {
         if (it.isSuccessful) {
-          manager.launchReviewFlow(this, it.result)
+          val flow = manager.launchReviewFlow(this, it.result)
+          flow.addOnCompleteListener { viewModel.finishRateApp() }
         }
       }
     }
