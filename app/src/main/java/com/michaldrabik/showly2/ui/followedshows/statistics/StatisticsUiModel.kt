@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.followedshows.statistics
 
 import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.StatisticsMostWatchedItem
+import com.michaldrabik.showly2.ui.followedshows.statistics.views.ratings.recycler.StatisticsRatingItem
 
 data class StatisticsUiModel(
   val mostWatchedShows: List<StatisticsMostWatchedItem>? = null,
@@ -9,7 +10,8 @@ data class StatisticsUiModel(
   val totalTimeSpentMinutes: Long? = null,
   val totalWatchedEpisodes: Long? = null,
   val totalWatchedEpisodesShows: Long? = null,
-  val topGenres: List<String>? = null
+  val topGenres: List<String>? = null,
+  val ratings: List<StatisticsRatingItem>? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -19,6 +21,7 @@ data class StatisticsUiModel(
       totalTimeSpentMinutes = newModel.totalTimeSpentMinutes ?: totalTimeSpentMinutes,
       totalWatchedEpisodes = newModel.totalWatchedEpisodes ?: totalWatchedEpisodes,
       totalWatchedEpisodesShows = newModel.totalWatchedEpisodesShows ?: totalWatchedEpisodesShows,
-      topGenres = newModel.topGenres?.toList() ?: topGenres
+      topGenres = newModel.topGenres?.toList() ?: topGenres,
+      ratings = newModel.ratings?.toList() ?: ratings
     )
 }

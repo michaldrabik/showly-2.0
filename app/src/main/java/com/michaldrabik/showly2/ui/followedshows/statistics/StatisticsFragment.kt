@@ -39,6 +39,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
         loadMostWatchedShows()
         isInitialized = true
       }
+      loadRatings()
     }
   }
 
@@ -64,7 +65,9 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
       statisticsTotalTimeSpent.bind(totalTimeSpentMinutes ?: 0)
       statisticsTotalEpisodes.bind(totalWatchedEpisodes ?: 0, totalWatchedEpisodesShows ?: 0)
       statisticsTopGenres.bind(topGenres ?: emptyList())
+      statisticsRatings.bind(ratings ?: emptyList())
 
+      statisticsRatings.visibleIf(!ratings.isNullOrEmpty())
       statisticsContent.visibleIf(!mostWatchedShows.isNullOrEmpty())
       statisticsEmptyView.visibleIf(mostWatchedShows.isNullOrEmpty())
     }

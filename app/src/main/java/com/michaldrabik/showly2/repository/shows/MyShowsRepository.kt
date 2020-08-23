@@ -23,6 +23,10 @@ class MyShowsRepository @Inject constructor(
     database.myShowsDao().getAll()
       .map { mappers.show.fromDatabase(it) }
 
+  suspend fun loadAll(ids: List<IdTrakt>) =
+    database.myShowsDao().getAll(ids.map { it.id })
+      .map { mappers.show.fromDatabase(it) }
+
   suspend fun loadAllRecent(amount: Int) =
     database.myShowsDao().getAllRecent(amount)
       .map { mappers.show.fromDatabase(it) }

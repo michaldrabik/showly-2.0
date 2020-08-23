@@ -1,6 +1,7 @@
 package com.michaldrabik.network.trakt.model
 
 data class RatingResultShow(
+  val rated_at: String?,
   val rating: Int,
   val show: RatingResultValue
 )

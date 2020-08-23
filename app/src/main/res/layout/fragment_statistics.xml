@@ -2,6 +2,7 @@
 <androidx.core.widget.NestedScrollView
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/statisticsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
@@ -62,10 +63,25 @@
         android:layout_marginStart="@dimen/spaceMedium"
         android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceMedium"
-        app:layout_constraintBottom_toTopOf="@+id/statisticsMostWatchedShows"
+        app:layout_constraintBottom_toTopOf="@+id/statisticsRatings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/statisticsTotalEpisodes"
+        />
+
+      <com.michaldrabik.showly2.ui.followedshows.statistics.views.ratings.StatisticsRatingsView
+        android:id="@+id/statisticsRatings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceMedium"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/statisticsMostWatchedShows"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/statisticsTopGenres"
+        tools:visibility="visible"
         />
 
       <com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.StatisticsMostWatchedShowsView
@@ -78,7 +94,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statisticsTopGenres"
+        app:layout_constraintTop_toBottomOf="@+id/statisticsRatings"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

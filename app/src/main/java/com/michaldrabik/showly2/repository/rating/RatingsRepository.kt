@@ -7,6 +7,8 @@ import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.TraktRating
 import com.michaldrabik.showly2.model.mappers.Mappers
+import com.michaldrabik.showly2.utilities.extensions.nowUtc
+import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
 @AppScope
@@ -17,6 +19,18 @@ class RatingsRepository @Inject constructor(
 
   private var showsCache: MutableList<TraktRating>? = null
   private var episodesCache: MutableList<TraktRating>? = null
+
+  suspend fun loadShowsRatings(token: String): List<TraktRating> {
+    if (showsCache == null) {
+      val ratings = cloud.traktApi.fetchShowsRatings(token)
+      showsCache = ratings.map { rate ->
+        val id = IdTrakt(rate.show.ids.trakt ?: -1)
+        val date = rate.rated_at?.let { ZonedDateTime.parse(it) } ?: nowUtc()
+        TraktRating(id, rate.rating, date)
+      }.toMutableList()
+    }
+    return showsCache?.toList() ?: emptyList()
+  }
 
   suspend fun loadRating(token: String, show: Show): TraktRating? {
     if (showsCache == null) {

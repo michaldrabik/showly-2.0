@@ -13,6 +13,9 @@ interface MyShowsDao {
   @Query("SELECT shows.*, shows_my_shows.updated_at AS updated_at FROM shows INNER JOIN shows_my_shows USING(id_trakt)")
   suspend fun getAll(): List<Show>
 
+  @Query("SELECT shows.*, shows_my_shows.updated_at AS updated_at FROM shows INNER JOIN shows_my_shows USING(id_trakt) WHERE id_trakt IN (:ids)")
+  suspend fun getAll(ids: List<Long>): List<Show>
+
   @Query("SELECT shows.* FROM shows INNER JOIN shows_my_shows USING(id_trakt) ORDER BY id DESC LIMIT :limit")
   suspend fun getAllRecent(limit: Int): List<Show>
 

@@ -8,6 +8,7 @@ import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
+import com.michaldrabik.showly2.ui.followedshows.statistics.cases.StatisticsLoadRatingsCase
 import com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.StatisticsMostWatchedItem
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Episode
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class StatisticsViewModel @Inject constructor(
+  private val ratingsCase: StatisticsLoadRatingsCase,
   private val showsRepository: ShowsRepository,
   private val imagesProvider: ShowImagesProvider,
   private val database: AppDatabase,
@@ -58,6 +60,13 @@ class StatisticsViewModel @Inject constructor(
         totalWatchedEpisodesShows = episodes.distinctBy { it.idShowTrakt }.count().toLong(),
         topGenres = genres
       )
+    }
+  }
+
+  fun loadRatings() {
+    viewModelScope.launch {
+      val ratings = ratingsCase.loadRatings()
+      uiState = StatisticsUiModel(ratings = ratings)
     }
   }
 
