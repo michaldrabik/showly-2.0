@@ -34,6 +34,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.platform.MaterialContainerTransform
+import com.michaldrabik.showly2.Analytics
 import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.showly2.R
@@ -95,7 +96,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   override val viewModel by viewModels<ShowDetailsViewModel> { viewModelFactory }
 
-  private val showId by lazy { IdTrakt(arguments?.getLong(ARG_SHOW_ID, -1) ?: -1) }
+  private val showId by lazy { IdTrakt(requireArguments().getLong(ARG_SHOW_ID, -1)) }
 
   private val actorsAdapter by lazy { ActorsAdapter() }
   private val relatedAdapter by lazy { RelatedShowAdapter() }
@@ -145,6 +146,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsImage.onClick {
       val bundle = Bundle().apply { putLong(FanartGalleryFragment.ARG_SHOW_ID, showId.id) }
       navigateTo(R.id.actionShowDetailsFragmentToFanartGallery, bundle)
+      Analytics.logShowGalleryClick(showId.id)
     }
     showDetailsCommentsButton.onClick {
       showDetailsCommentsView.clear()
@@ -347,12 +349,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
         showDetailsTrailerButton.run {
           visibleIf(show.trailer.isNotBlank())
-          onClick { openTrailerLink(show.trailer) }
+          onClick {
+            openTrailerLink(show.trailer)
+            Analytics.logShowTrailerClick(show)
+          }
         }
 
         showDetailsImdbButton.run {
           visibleIf(show.ids.imdb.id.isNotBlank())
-          onClick { openIMDbLink(show.ids.imdb, "title") }
+          onClick {
+            openIMDbLink(show.ids.imdb, "title")
+            Analytics.logShowImdbClick(show)
+          }
         }
 
         showDetailsAddButton.run {
@@ -525,6 +533,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
     val shareIntent = Intent.createChooser(intent, "Share ${show.title}")
     startActivity(shareIntent)
+
+    Analytics.logShowShareClick(show)
   }
 
   private fun openRateDialog(rating: Int, showRemove: Boolean) {

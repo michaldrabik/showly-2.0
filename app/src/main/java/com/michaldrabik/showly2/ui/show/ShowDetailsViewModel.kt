@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.show
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.showly2.Analytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.common.notifications.AnnouncementManager
@@ -68,6 +69,7 @@ class ShowDetailsViewModel @Inject constructor(
       }
       try {
         show = mainCase.loadDetails(id)
+        Analytics.logShowDetailsDisplay(show)
 
         val isSignedIn = userManager.isAuthorized()
         val isFollowed = async { followedCase.isFollowed(show) }
@@ -169,6 +171,7 @@ class ShowDetailsViewModel @Inject constructor(
         ShowDetailsUiModel(comments = emptyList())
       }
     }
+    Analytics.logShowCommentsClick(show)
   }
 
   fun loadMissingImage(item: RelatedListItem, force: Boolean) {
@@ -209,6 +212,7 @@ class ShowDetailsViewModel @Inject constructor(
         val userRating = TraktRating(show.ids.trakt, rating)
         uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = userRating, rateLoading = false))
         _messageLiveData.value = MessageEvent.info(R.string.textShowRated)
+        Analytics.logShowRated(show, rating)
       } catch (error: Throwable) {
         uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = false))
         _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
@@ -242,6 +246,7 @@ class ShowDetailsViewModel @Inject constructor(
       uiState = ShowDetailsUiModel(isFollowed = followedState)
 
       announcementManager.refreshEpisodesAnnouncements(context)
+      Analytics.logShowAddToMyShows(show)
     }
   }
 
@@ -253,6 +258,8 @@ class ShowDetailsViewModel @Inject constructor(
       val followedState =
         FollowedState(isMyShows = false, isWatchLater = true, withAnimation = true)
       uiState = ShowDetailsUiModel(isFollowed = followedState)
+
+      Analytics.logShowAddToSeeLater(show)
     }
   }
 
@@ -366,6 +373,7 @@ class ShowDetailsViewModel @Inject constructor(
         }
 
       _messageLiveData.value = MessageEvent.info(R.string.textShowQuickProgressDone)
+      Analytics.logShowQuickProgress(show)
     }
   }
 }

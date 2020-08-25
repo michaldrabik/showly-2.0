@@ -72,13 +72,13 @@ dependencies {
   implementation "androidx.dynamicanimation:dynamicanimation:$versions.androidDynamicAnimation"
   implementation "androidx.navigation:navigation-fragment-ktx:$versions.androidNavigation"
   implementation "androidx.navigation:navigation-ui-ktx:$versions.androidNavigation"
-  implementation 'com.google.android.play:core:1.8.0'
+  implementation "com.google.android.play:core:$versions.androidPlayCore"
 
   implementation "me.relex:circleindicator:$versions.circleIndicator"
   implementation "com.google.android.material:material:$versions.androidMaterial"
   implementation "com.jakewharton.threetenabp:threetenabp:$versions.threeTenAbp"
 
-  implementation "com.google.firebase:firebase-analytics:$versions.firebaseAnalytics"
+  implementation "com.google.firebase:firebase-analytics-ktx:$versions.firebaseAnalytics"
   implementation "com.google.firebase:firebase-messaging:$versions.firebaseMessaging"
   implementation "com.google.firebase:firebase-crashlytics:$versions.crashlytics"
 

@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.discover.cases
 
+import com.michaldrabik.showly2.Analytics
 import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.DiscoverFilters
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
@@ -19,6 +20,7 @@ class DiscoverFiltersCase @Inject constructor(
         showAnticipatedShows = !filters.hideAnticipated
       )
     )
+    Analytics.logDiscoverFiltersApply(filters)
   }
 
   suspend fun loadFilters(): DiscoverFilters {

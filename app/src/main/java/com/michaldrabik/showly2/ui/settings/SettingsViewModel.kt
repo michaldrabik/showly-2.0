@@ -4,6 +4,8 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.michaldrabik.showly2.Analytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.model.NotificationDelay
@@ -32,6 +34,7 @@ class SettingsViewModel @Inject constructor(
     viewModelScope.launch {
       mainCase.setRecentShowsAmount(amount)
       refreshSettings()
+      Analytics.logSettingsRecentlyAddedAmount(amount.toLong())
     }
   }
 
@@ -39,6 +42,7 @@ class SettingsViewModel @Inject constructor(
     viewModelScope.launch {
       traktCase.enableTraktQuickSync(enable)
       refreshSettings()
+      Analytics.logSettingsTraktQuickSync(enable)
     }
   }
 
@@ -46,6 +50,7 @@ class SettingsViewModel @Inject constructor(
     viewModelScope.launch {
       mainCase.enablePushNotifications(enable)
       refreshSettings()
+      Analytics.logSettingsPushNotifications(enable)
     }
   }
 
@@ -53,6 +58,7 @@ class SettingsViewModel @Inject constructor(
     viewModelScope.launch {
       mainCase.enableEpisodesAnnouncements(enable, context)
       refreshSettings()
+      Analytics.logSettingsEpisodesAnnouncements(enable)
     }
   }
 
@@ -60,6 +66,7 @@ class SettingsViewModel @Inject constructor(
     viewModelScope.launch {
       mainCase.enableMyShowsSection(section, isEnabled)
       refreshSettings()
+      Analytics.logSettingsMyShowsSection(section, isEnabled)
     }
   }
 
@@ -67,6 +74,7 @@ class SettingsViewModel @Inject constructor(
     viewModelScope.launch {
       mainCase.setWhenToNotify(delay, context)
       refreshSettings()
+      Analytics.logSettingsWhenToNotify(delay.name)
     }
   }
 
@@ -84,8 +92,10 @@ class SettingsViewModel @Inject constructor(
         traktCase.authorizeTrakt(authData)
         _messageLiveData.value = MessageEvent.info(R.string.textTraktLoginSuccess)
         refreshSettings()
+        Analytics.logTraktLogin()
       } catch (t: Throwable) {
         _messageLiveData.value = MessageEvent.error(R.string.errorAuthorization)
+        FirebaseCrashlytics.getInstance().recordException(t)
       }
     }
   }
@@ -96,6 +106,7 @@ class SettingsViewModel @Inject constructor(
       traktCase.enableTraktQuickSync(false)
       _messageLiveData.value = MessageEvent.info(R.string.textTraktLogoutSuccess)
       refreshSettings()
+      Analytics.logTraktLogout()
     }
   }
 

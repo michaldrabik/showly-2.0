@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.michaldrabik.showly2.Analytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.common.events.Event
@@ -112,8 +113,12 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
           flow.addOnCompleteListener { viewModel.finishRateApp() }
         }
       }
+      Analytics.logInAppRateDecision(true)
     }
-    rateAppView.onNoClickListener = { rateAppView.fadeOut() }
+    rateAppView.onNoClickListener = {
+      rateAppView.fadeOut()
+      Analytics.logInAppRateDecision(false)
+    }
   }
 
   private fun setupNavigation() {
@@ -211,6 +216,7 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
       showWhatsNew?.let { if (it) showWhatsNew() }
       showRateApp?.let {
         rateAppView.fadeIf(it, startDelay = 1500)
+        if (it) Analytics.logInAppRateDisplayed()
       }
     }
   }

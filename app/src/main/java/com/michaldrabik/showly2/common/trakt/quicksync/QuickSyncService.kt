@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.michaldrabik.showly2.Analytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.events.EventsManager
 import com.michaldrabik.showly2.common.events.TraktQuickSyncSuccess
@@ -51,6 +52,7 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
       try {
         val count = quickSyncRunner.run()
         EventsManager.sendEvent(TraktQuickSyncSuccess(count))
+        Analytics.logTraktQuickSyncSuccess(count)
       } catch (t: Throwable) {
         notificationManager().notify(
           SYNC_NOTIFICATION_ERROR_ID,

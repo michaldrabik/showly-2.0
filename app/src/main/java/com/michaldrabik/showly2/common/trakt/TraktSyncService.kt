@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.IBinder
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.network.trakt.model.Show
+import com.michaldrabik.showly2.Analytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.events.EventsManager
 import com.michaldrabik.showly2.common.events.TraktSyncAuthError
@@ -113,6 +114,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
         miscPreferences.edit().putLong(KEY_LAST_SYNC_TIMESTAMP, nowUtcMillis()).apply()
 
         EventsManager.sendEvent(TraktSyncSuccess)
+        Analytics.logTraktFullSyncSuccess(isImport, isExport)
         if (!isSilent) {
           notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification())
         }

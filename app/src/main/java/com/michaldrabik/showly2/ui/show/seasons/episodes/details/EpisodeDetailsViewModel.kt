@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.show.seasons.episodes.details
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.network.Cloud
+import com.michaldrabik.showly2.Analytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.images.EpisodeImagesProvider
 import com.michaldrabik.showly2.model.Episode
@@ -74,7 +75,7 @@ class EpisodeDetailsViewModel @Inject constructor(
     }
   }
 
-  fun addRating(rating: Int, episode: Episode) {
+  fun addRating(rating: Int, episode: Episode, showTraktId: IdTrakt) {
     viewModelScope.launch {
       try {
         val token = userTraktManager.checkAuthorization().token
@@ -82,6 +83,7 @@ class EpisodeDetailsViewModel @Inject constructor(
         ratingsRepository.addRating(token, episode, rating)
         _messageLiveData.value = MessageEvent.info(R.string.textShowRated)
         uiState = EpisodeDetailsUiModel(ratingState = RatingState(userRating = TraktRating(episode.ids.trakt, rating)))
+        Analytics.logEpisodeRated(showTraktId.id, episode, rating)
       } catch (error: Throwable) {
         _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
       } finally {

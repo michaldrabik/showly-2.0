@@ -1,6 +1,7 @@
 package com.michaldrabik.showly2.ui.search.cases
 
 import com.michaldrabik.network.Cloud
+import com.michaldrabik.showly2.Analytics
 import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
@@ -15,6 +16,7 @@ class SearchMainCase @Inject constructor(
 ) {
 
   suspend fun searchShows(query: String): List<Show> {
+    Analytics.logSearchQuery(query)
     val shows = cloud.traktApi.fetchShowsSearch(query)
     return shows.map { mappers.show.fromNetwork(it) }
   }

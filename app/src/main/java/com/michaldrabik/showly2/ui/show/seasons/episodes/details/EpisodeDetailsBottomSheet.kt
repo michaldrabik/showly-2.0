@@ -71,7 +71,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   var onEpisodeWatchedClick: ((Boolean) -> Unit)? = null
 
-  private val episodeTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_ID_TRAKT)) }
+  private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_ID_TRAKT)) }
   private val episode by lazy { requireArguments().getParcelable<Episode>(ARG_EPISODE)!! }
   private val isWatched by lazy { requireArguments().getBoolean(ARG_IS_WATCHED) }
   private val showButton by lazy { requireArguments().getBoolean(ARG_SHOW_BUTTON) }
@@ -125,7 +125,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       episodeDetailsRatingLayout.visibleIf(episode.votes > 0)
       episodeDetailsRating.text = String.format("%.1f (%d votes)", episode.rating, episode.votes)
       episodeDetailsCommentsButton.onClick {
-        viewModel.loadComments(episodeTraktId, episode.season, episode.number)
+        viewModel.loadComments(showTraktId, episode.season, episode.number)
       }
     }
   }
@@ -150,7 +150,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     MaterialAlertDialogBuilder(context, R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
       .setView(rateView)
-      .setPositiveButton(R.string.textRate) { _, _ -> viewModel.addRating(rateView.getRating(), episode) }
+      .setPositiveButton(R.string.textRate) { _, _ -> viewModel.addRating(rateView.getRating(), episode, showTraktId) }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
       .apply {
         if (showRemove) {
