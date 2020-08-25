@@ -45,6 +45,7 @@ class ActorView : FrameLayout {
   private fun loadImage(actor: Actor) {
     if (actor.image.isBlank()) {
       actorPlaceholder.visible()
+      actorRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)
       return
     }
 
@@ -55,12 +56,14 @@ class ActorView : FrameLayout {
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
       .withFailListener {
         actorPlaceholder.visible()
+        actorRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)
       }
       .into(actorImage)
   }
 
   private fun clear() {
     actorPlaceholder.gone()
+    actorRoot.setBackgroundResource(0)
     Glide.with(this).clear(actorImage)
   }
 }
