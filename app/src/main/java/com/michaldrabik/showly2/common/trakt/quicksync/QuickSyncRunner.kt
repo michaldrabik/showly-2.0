@@ -21,7 +21,7 @@ class QuickSyncRunner @Inject constructor(
 ) : TraktSyncRunner(userTraktManager) {
 
   companion object {
-    private const val BATCH_LIMIT = 30
+    private const val BATCH_LIMIT = 50
   }
 
   override suspend fun run(): Int {
