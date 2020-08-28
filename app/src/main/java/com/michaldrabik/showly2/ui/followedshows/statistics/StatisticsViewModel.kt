@@ -65,8 +65,12 @@ class StatisticsViewModel @Inject constructor(
 
   fun loadRatings() {
     viewModelScope.launch {
-      val ratings = ratingsCase.loadRatings()
-      uiState = StatisticsUiModel(ratings = ratings)
+      uiState = try {
+        val ratings = ratingsCase.loadRatings()
+        StatisticsUiModel(ratings = ratings)
+      } catch (t: Throwable) {
+        StatisticsUiModel(ratings = emptyList())
+      }
     }
   }
 
