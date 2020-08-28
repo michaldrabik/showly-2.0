@@ -13,6 +13,7 @@ import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
+import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_statistics.*
@@ -44,8 +45,12 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
   }
 
   private fun setupView() {
-    statisticsMostWatchedShows.onLoadMoreClickListener = { addLimit ->
-      viewModel.loadMostWatchedShows(addLimit)
+    statisticsMostWatchedShows.run {
+      onLoadMoreClickListener = { addLimit -> viewModel.loadMostWatchedShows(addLimit) }
+      onShowClickListener = { (requireParentFragment() as FollowedShowsFragment).openShowDetails(it) }
+    }
+    statisticsRatings.onShowClickListener = {
+      (requireParentFragment() as FollowedShowsFragment).openShowDetails(it.show)
     }
   }
 

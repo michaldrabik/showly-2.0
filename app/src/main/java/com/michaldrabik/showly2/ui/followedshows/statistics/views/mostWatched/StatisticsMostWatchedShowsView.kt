@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_statistics_card_most_watched_shows.view.*
@@ -18,6 +19,7 @@ class StatisticsMostWatchedShowsView : ConstraintLayout {
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   var onLoadMoreClickListener: ((Int) -> Unit)? = null
+  var onShowClickListener: ((Show) -> Unit)? = null
 
   init {
     inflate(context, R.layout.view_statistics_card_most_watched_shows, this)
@@ -32,6 +34,7 @@ class StatisticsMostWatchedShowsView : ConstraintLayout {
     items.forEach { item ->
       val view = StatisticsMostWatchedItemView(context).apply {
         bind(item)
+        itemClickListener = { onShowClickListener?.invoke(it.show) }
       }
       viewMostWatchedShowsItems.addView(view)
     }

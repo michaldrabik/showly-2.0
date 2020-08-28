@@ -15,8 +15,10 @@
     >
 
     <FrameLayout
+      android:id="@+id/viewRateItemImageLayout"
       android:layout_width="match_parent"
       android:layout_height="@dimen/statisticsRatingItemHeight"
+      android:foreground="?attr/selectableItemBackground"
       >
 
       <ImageView
