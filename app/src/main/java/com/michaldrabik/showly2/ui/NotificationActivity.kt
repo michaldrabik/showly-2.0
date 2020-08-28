@@ -45,8 +45,8 @@ abstract class NotificationActivity : BaseActivity() {
         navigate(R.id.actionDiscoverFragmentToSearchFragment)
         extras?.clear()
       } catch (e: Throwable) {
-        // NOOP Simply leave app where it is in case of failure
-        FirebaseCrashlytics.getInstance().recordException(e)
+        val exception = Throwable(NotificationActivity::class.simpleName, e)
+        FirebaseCrashlytics.getInstance().recordException(exception)
       }
     }
   }
@@ -66,8 +66,8 @@ abstract class NotificationActivity : BaseActivity() {
         extras.clear()
         action()
       } catch (e: Exception) {
-        // NOOP Simply leave app where it is in case of failure
-        FirebaseCrashlytics.getInstance().recordException(e)
+        val exception = Throwable(NotificationActivity::class.simpleName, e)
+        FirebaseCrashlytics.getInstance().recordException(exception)
       }
     }
   }

@@ -127,7 +127,8 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
             createErrorNotification(R.string.textTraktSyncError, R.string.textTraktSyncErrorFull)
           )
         }
-        FirebaseCrashlytics.getInstance().recordException(t)
+        val exception = Throwable(TraktSyncService::class.simpleName, t)
+        FirebaseCrashlytics.getInstance().recordException(exception)
       } finally {
         Timber.d("Sync completed.")
         notificationManager().cancel(SYNC_NOTIFICATION_PROGRESS_ID)

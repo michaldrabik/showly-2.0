@@ -38,7 +38,8 @@ class ShowsSyncService : JobIntentService(), CoroutineScope {
         showsSyncRunner.run()
       } catch (t: Throwable) {
         Timber.e(t.toString())
-        FirebaseCrashlytics.getInstance().recordException(t)
+        val exception = Throwable(ShowsSyncService::class.simpleName, t)
+        FirebaseCrashlytics.getInstance().recordException(exception)
         0
       }
     }

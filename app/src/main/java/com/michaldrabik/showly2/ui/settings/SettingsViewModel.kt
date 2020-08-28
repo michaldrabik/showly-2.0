@@ -95,7 +95,8 @@ class SettingsViewModel @Inject constructor(
         Analytics.logTraktLogin()
       } catch (t: Throwable) {
         _messageLiveData.value = MessageEvent.error(R.string.errorAuthorization)
-        FirebaseCrashlytics.getInstance().recordException(t)
+        val exception = Throwable(SettingsViewModel::class.simpleName, t)
+        FirebaseCrashlytics.getInstance().recordException(exception)
       }
     }
   }

@@ -58,7 +58,8 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
           SYNC_NOTIFICATION_ERROR_ID,
           createErrorNotification(R.string.textTraktQuickSyncError, R.string.textTraktQuickSyncErrorFull)
         )
-        FirebaseCrashlytics.getInstance().recordException(t)
+        val exception = Throwable(QuickSyncService::class.simpleName, t)
+        FirebaseCrashlytics.getInstance().recordException(exception)
       } finally {
         Timber.d("Quick Sync completed.")
         clear()
