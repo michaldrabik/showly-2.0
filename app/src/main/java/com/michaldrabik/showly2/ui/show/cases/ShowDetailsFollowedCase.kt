@@ -56,21 +56,23 @@ class ShowDetailsFollowedCase @Inject constructor(
     }
   }
 
-  suspend fun removeFromFollowed(show: Show) {
+  suspend fun removeFromFollowed(show: Show, removeLocalData: Boolean) {
     database.withTransaction {
       showsRepository.myShows.delete(show.ids.trakt)
-      database.episodesDao().deleteAllUnwatchedForShow(show.ids.trakt.id)
 
-      val seasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
-      val episodes = database.episodesDao().getAllForShows(listOf(show.ids.trakt.id))
-
-      val toDelete = mutableListOf<SeasonDb>()
-      seasons.forEach { season ->
-        if (episodes.none { it.idSeason == season.idTrakt }) {
-          toDelete.add(season)
+      if (removeLocalData) {
+        database.episodesDao().deleteAllUnwatchedForShow(show.ids.trakt.id)
+        val seasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
+        val episodes = database.episodesDao().getAllForShows(listOf(show.ids.trakt.id))
+        val toDelete = mutableListOf<SeasonDb>()
+        seasons.forEach { season ->
+          if (episodes.none { it.idSeason == season.idTrakt }) {
+            toDelete.add(season)
+          }
         }
+        database.seasonsDao().delete(toDelete)
       }
-      database.seasonsDao().delete(toDelete)
+
       pinnedItemsRepository.removePinnedItem(show.traktId)
     }
   }

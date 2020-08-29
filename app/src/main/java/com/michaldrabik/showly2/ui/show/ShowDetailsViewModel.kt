@@ -60,6 +60,7 @@ class ShowDetailsViewModel @Inject constructor(
 
   private var show by notNull<Show>()
   private var areSeasonsLoaded = false
+  private var areSeasonsLocal = false
   private val seasonItems = mutableListOf<SeasonListItem>()
 
   fun loadShowDetails(id: IdTrakt, context: Context) {
@@ -93,9 +94,8 @@ class ShowDetailsViewModel @Inject constructor(
         launch { loadActors(show) }
         launch {
           areSeasonsLoaded = false
-          val seasons = loadSeasons(show)
+          loadSeasons(show)
           if (followedState.isMyShows) {
-            episodesManager.invalidateEpisodes(show, seasons)
             announcementManager.refreshEpisodesAnnouncements(context)
           }
           areSeasonsLoaded = true
@@ -137,11 +137,15 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   private suspend fun loadSeasons(show: Show): List<Season> = try {
-    val seasons = episodesCase.loadSeasons(show)
-    val seasonsItems = seasons.map {
-      val episodes = it.episodes.map { episode -> EpisodeListItem(episode, it, false) }
-      SeasonListItem(it, episodes, false)
-    }
+    val (seasons, isLocal) = episodesCase.loadSeasons(show)
+    areSeasonsLocal = isLocal
+    val seasonsItems = seasons
+      .map {
+        val episodes = it.episodes.map { episode -> EpisodeListItem(episode, it, false) }
+        SeasonListItem(it, episodes, isWatched = false)
+      }
+      .sortedByDescending { it.season.number }
+
     val calculated = markWatchedEpisodes(seasonsItems)
     uiState = ShowDetailsUiModel(seasons = calculated)
     seasons
@@ -269,7 +273,7 @@ class ShowDetailsViewModel @Inject constructor(
       val isFollowed = followedCase.isFollowed(show)
       val isWatchLater = watchLaterCase.isWatchLater(show)
 
-      if (isFollowed) followedCase.removeFromFollowed(show)
+      if (isFollowed) followedCase.removeFromFollowed(show, removeLocalData = !areSeasonsLocal)
       if (isWatchLater) watchLaterCase.removeFromWatchLater(show)
 
       val followedState =

@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.model.mappers
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.Ids
 import com.michaldrabik.showly2.model.Season
+import com.michaldrabik.storage.database.model.Episode
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 import com.michaldrabik.network.trakt.model.Season as SeasonNetwork
@@ -24,7 +25,7 @@ class SeasonMapper @Inject constructor(
     season.episodes?.map { episodeMapper.fromNetwork(it) } ?: emptyList()
   )
 
-  fun fromDatabase(seasonDb: SeasonDb) = Season(
+  fun fromDatabase(seasonDb: SeasonDb, episodes: List<Episode> = emptyList()) = Season(
     Ids.EMPTY.copy(trakt = IdTrakt(seasonDb.idTrakt)),
     seasonDb.seasonNumber,
     seasonDb.episodesCount,
@@ -32,7 +33,7 @@ class SeasonMapper @Inject constructor(
     seasonDb.seasonTitle,
     seasonDb.seasonFirstAired,
     seasonDb.seasonOverview,
-    emptyList()
+    episodes.map { episodeMapper.fromDatabase(it) }
   )
 
   fun toDatabase(
