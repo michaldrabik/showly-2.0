@@ -4,10 +4,12 @@ import android.app.Activity
 import android.app.Application
 import android.net.ConnectivityManager
 import android.net.Network
+import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
 import android.net.NetworkCapabilities.TRANSPORT_CELLULAR
 import android.net.NetworkCapabilities.TRANSPORT_ETHERNET
 import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.net.NetworkRequest
+import android.os.Build
 import android.os.Bundle
 import com.michaldrabik.showly2.ui.main.MainActivity
 import timber.log.Timber
@@ -27,8 +29,13 @@ class NetworkMonitorCallbacks(
       .addTransportType(TRANSPORT_WIFI)
       .addTransportType(TRANSPORT_CELLULAR)
       .addTransportType(TRANSPORT_ETHERNET)
+      .addCapability(NET_CAPABILITY_INTERNET)
       .build()
+
     connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      connectivityManager.requestNetwork(networkRequest, networkCallback, 1000)
+    }
 
     Timber.d("Registering network callback.")
   }
