@@ -127,11 +127,11 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/spaceTiny"
-        app:tint="?attr/colorAccent"
         app:layout_constraintBottom_toBottomOf="@+id/showDetailsStatus"
         app:layout_constraintStart_toEndOf="@+id/showDetailsStatus"
         app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"
         app:srcCompat="@drawable/ic_star"
+        app:tint="?attr/colorAccent"
         />
 
       <TextView
@@ -243,7 +243,7 @@
         android:id="@+id/showDetailsActorsProgress"
         style="@style/ProgressBarGray"
         android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_height="@dimen/actorTileImageHeight"
         android:layout_margin="@dimen/spaceMedium"
         app:layout_constraintBottom_toTopOf="@id/separator2"
         app:layout_constraintEnd_toEndOf="parent"
