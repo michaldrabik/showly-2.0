@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -14,6 +12,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.discover.recycler.ListItem
 import com.michaldrabik.showly2.ui.followedshows.statistics.views.ratings.recycler.StatisticsRatingItem
 import com.michaldrabik.showly2.ui.followedshows.statistics.views.ratings.recycler.StatisticsRatingsAdapter
+import com.michaldrabik.showly2.utilities.extensions.addDivider
 import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
 import kotlinx.android.synthetic.main.view_statistics_card_ratings.view.*
 
@@ -44,10 +43,7 @@ class StatisticsRatingsView : MaterialCardView {
       adapter = this@StatisticsRatingsView.adapter
       layoutManager = this@StatisticsRatingsView.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-      addItemDecoration(DividerItemDecoration(context, HORIZONTAL).apply {
-        val divider = ContextCompat.getDrawable(context, R.drawable.divider_statistics_ratings)!!
-        setDrawable(divider)
-      })
+      addDivider(R.drawable.divider_statistics_ratings, HORIZONTAL)
     }
     adapter.itemClickListener = {
       onShowClickListener?.invoke(it)

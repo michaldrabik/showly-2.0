@@ -4,12 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Comment
+import com.michaldrabik.showly2.utilities.extensions.addDivider
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
@@ -47,9 +46,7 @@ class CommentsView : ConstraintLayout {
       adapter = commentsAdapter
       layoutManager = LinearLayoutManager(context, VERTICAL, false)
       itemAnimator = null
-      addItemDecoration(DividerItemDecoration(context, VERTICAL).apply {
-        setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_comments_list)!!)
-      })
+      addDivider(R.drawable.divider_comments_list)
     }
   }
 }

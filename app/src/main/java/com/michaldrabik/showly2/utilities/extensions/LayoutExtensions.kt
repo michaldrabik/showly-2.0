@@ -3,6 +3,17 @@ package com.michaldrabik.showly2.utilities.extensions
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.recyclerview.widget.RecyclerView
+
+fun RecyclerView.addDivider(@DrawableRes dividerRes: Int, direction: Int = VERTICAL) {
+  addItemDecoration(DividerItemDecoration(context, direction).apply {
+    setDrawable(ContextCompat.getDrawable(context, dividerRes)!!)
+  })
+}
 
 /**
  * https://chris.banes.dev/2019/04/12/insets-listeners-to-layouts/

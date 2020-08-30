@@ -4,7 +4,7 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
+  android:layout_height="wrap_content"
   app:cardBackgroundColor="?attr/colorCardBackground"
   tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
   >
@@ -17,7 +17,7 @@
     android:textColor="?android:attr/textColorPrimary"
     android:textSize="@dimen/listHeaderTextSize"
     android:textStyle="bold"
-    app:layout_constraintBottom_toTopOf="@id/viewMostWatchedShowsItems"
+    app:layout_constraintBottom_toTopOf="@id/viewMostWatchedShowsRecycler"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
@@ -25,14 +25,15 @@
     app:layout_constraintVertical_chainStyle="packed"
     />
 
-  <LinearLayout
-    android:id="@+id/viewMostWatchedShowsItems"
-    android:layout_width="0dp"
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/viewMostWatchedShowsRecycler"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/spaceMedium"
-    android:divider="@drawable/divider_statistics"
-    android:orientation="vertical"
-    android:showDividers="middle"
+    android:clipToPadding="false"
+    android:nestedScrollingEnabled="false"
+    android:overScrollMode="never"
+    android:paddingTop="@dimen/spaceMedium"
+    app:layout_constrainedHeight="true"
     app:layout_constraintBottom_toTopOf="@id/viewMostWatchedShowsMoreButton"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +52,7 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/viewMostWatchedShowsItems"
+    app:layout_constraintTop_toBottomOf="@id/viewMostWatchedShowsRecycler"
     app:rippleColor="?android:attr/textColorSecondary"
     />
 

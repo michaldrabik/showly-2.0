@@ -24,7 +24,6 @@ import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
@@ -65,6 +64,7 @@ import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonsAdapter
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.utilities.MessageEvent
+import com.michaldrabik.showly2.utilities.extensions.addDivider
 import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
@@ -179,9 +179,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       setHasFixedSize(true)
       adapter = actorsAdapter
       layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-      addItemDecoration(DividerItemDecoration(context, HORIZONTAL).apply {
-        setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_actors)!!)
-      })
+      addDivider(R.drawable.divider_actors, HORIZONTAL)
     }
     actorsAdapter.itemClickListener = { showFullActorView(it) }
   }
@@ -192,9 +190,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       setHasFixedSize(true)
       adapter = relatedAdapter
       layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-      addItemDecoration(DividerItemDecoration(context, HORIZONTAL).apply {
-        setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_related_shows)!!)
-      })
+      addDivider(R.drawable.divider_related_shows, HORIZONTAL)
     }
     relatedAdapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
     relatedAdapter.itemClickListener = {

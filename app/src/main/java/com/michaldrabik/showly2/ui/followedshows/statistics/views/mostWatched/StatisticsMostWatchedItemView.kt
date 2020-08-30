@@ -9,7 +9,6 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.views.ShowView
-import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.view_statistics_most_watched_item.view.*
 
 @SuppressLint("SetTextI18n")
@@ -22,7 +21,6 @@ class StatisticsMostWatchedItemView : ShowView<StatisticsMostWatchedItem> {
   init {
     inflate(context, R.layout.view_statistics_most_watched_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-    viewMostWatchedItem.onClick { itemClickListener?.invoke(item) }
   }
 
   override val imageView: ImageView = viewMostWatchedItemImage

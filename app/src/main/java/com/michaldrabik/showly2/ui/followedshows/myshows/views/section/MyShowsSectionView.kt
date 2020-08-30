@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -15,6 +13,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.section.MyShowsSectionAdapter
+import com.michaldrabik.showly2.utilities.extensions.addDivider
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import kotlinx.android.synthetic.main.view_my_shows_section.view.*
 
@@ -45,9 +44,7 @@ class MyShowsSectionView : FrameLayout {
       adapter = sectionAdapter
       layoutManager = this@MyShowsSectionView.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-      addItemDecoration(DividerItemDecoration(context, HORIZONTAL).apply {
-        setDrawable(ContextCompat.getDrawable(context, R.drawable.divider_my_shows_horizontal)!!)
-      })
+      addDivider(R.drawable.divider_my_shows_horizontal, HORIZONTAL)
     }
   }
 
