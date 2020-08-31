@@ -5,6 +5,7 @@ import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateMargins
 import androidx.core.widget.doAfterTextChanged
@@ -71,6 +72,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
 
   override fun onResume() {
     super.onResume()
+    setupBackPress()
     showNavigation()
     viewModel.loadWatchlist()
   }
@@ -122,6 +124,18 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.watchlistSearchViewPadding))
       (watchlistSortIcon.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.watchlistSearchViewPadding))
+    }
+  }
+
+  private fun setupBackPress() {
+    val dispatcher = requireActivity().onBackPressedDispatcher
+    dispatcher.addCallback(viewLifecycleOwner) {
+      if (watchlistSearchView.isSearching) {
+        exitSearch()
+      } else {
+        remove()
+        dispatcher.onBackPressed()
+      }
     }
   }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.inputmethod.EditorInfo
 import android.widget.FrameLayout
 import android.widget.GridLayout
+import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -67,6 +68,11 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
     }
   }
 
+  override fun onResume() {
+    super.onResume()
+    setupBackPress()
+  }
+
   private fun setupView() {
     followedShowsSearchView.run {
       hint = getString(R.string.textSearchForMyShows)
@@ -95,6 +101,18 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
       followedShowsTabs.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
       followedShowsSearchEmptyView.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
       followedShowsSearchContainer.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
+    }
+  }
+
+  private fun setupBackPress() {
+    val dispatcher = requireActivity().onBackPressedDispatcher
+    dispatcher.addCallback(viewLifecycleOwner) {
+      if (followedShowsSearchView.isSearching) {
+        exitSearch()
+      } else {
+        remove()
+        dispatcher.onBackPressed()
+      }
     }
   }
 
