@@ -124,6 +124,8 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       }
       episodeDetailsRatingLayout.visibleIf(episode.votes > 0)
       episodeDetailsRating.text = String.format("%.1f (%d votes)", episode.rating, episode.votes)
+
+      episodeDetailsCommentsButton.text = getString(R.string.textLoadCommentsCount, episode.commentCount)
       episodeDetailsCommentsButton.onClick {
         viewModel.loadComments(showTraktId, episode.season, episode.number)
       }

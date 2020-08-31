@@ -49,6 +49,7 @@
   <string name="textTurnOff">Turn Off</string>
   <string name="textSelect">Select</string>
   <string name="textLoadComments">Show Comments</string>
+  <string name="textLoadCommentsCount">Show Comments (%d)</string>
   <string name="textComments">Comments:</string>
   <string name="textComments2">Comments</string>
   <string name="textShare">Share</string>
@@ -85,7 +86,7 @@
   <string name="textNewSeasonAvailableSoon">New season will be available soon!</string>
   <string name="textTraktLoginSuccess">You\'ve been successfully authorized.</string>
   <string name="textTraktLogoutSuccess">You\'ve been signed out.</string>
-  <string name="textSpoilersWarning">This comment contains spoilers. Click to read.</string>
+  <string name="textSpoilersWarning">This comment contains spoilers.\nTap to read.</string>
   <string name="textRuntimeLeftHours">~%1$dh %2$dm remaining</string>
   <string name="textRuntimeLeftMinutes">~%1$dm remaining</string>
   <string name="textSignBeforeRate">Please sign in before rating a show.</string>
