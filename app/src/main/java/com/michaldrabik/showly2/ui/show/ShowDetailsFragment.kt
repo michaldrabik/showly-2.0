@@ -163,7 +163,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       mainActivity().showTip(SHOW_DETAILS_QUICK_PROGRESS)
     }
     showDetailsRemoveTraktButton.onNoClickListener = {
-      showDetailsRemoveTraktButton.gone()
+      showDetailsAddButton.fadeIn()
+      showDetailsRemoveTraktButton.fadeOut()
     }
   }
 
@@ -368,12 +369,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
         showDetailsAddButton.run {
           onAddMyShowsClickListener = {
-            showDetailsRemoveTraktButton.gone()
             viewModel.addFollowedShow(requireAppContext())
             showDetailsTipQuickProgress.fadeIf(!mainActivity().isTipShown(SHOW_DETAILS_QUICK_PROGRESS))
           }
           onAddWatchLaterClickListener = {
-            showDetailsRemoveTraktButton.gone()
             viewModel.addSeeLaterShow(requireAppContext())
           }
           onRemoveClickListener = {
@@ -411,16 +410,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       removeFromTraktHistory?.let { event ->
         event.consume()?.let {
+          showDetailsAddButton.fadeIf(!it)
           showDetailsRemoveTraktButton.run {
-            visibleIf(it)
+            fadeIf(it)
             onYesClickListener = { viewModel.removeFromTraktHistory() }
           }
         }
       }
       removeFromTraktSeeLater?.let { event ->
         event.consume()?.let {
+          showDetailsAddButton.fadeIf(!it)
           showDetailsRemoveTraktButton.run {
-            visibleIf(it)
+            fadeIf(it)
             onYesClickListener = { viewModel.removeFromTraktSeeLater() }
           }
         }

@@ -149,14 +149,13 @@
         tools:text="7.62 (9239 votes)"
         />
 
-      <LinearLayout
+      <FrameLayout
         android:id="@+id/showDetailsButtonsLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceSmall"
-        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeCard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -173,12 +172,11 @@
           android:id="@+id/showDetailsRemoveTraktButton"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="@dimen/spaceTiny"
           android:visibility="gone"
           tools:visibility="visible"
           />
 
-      </LinearLayout>
+      </FrameLayout>
 
       <com.michaldrabik.showly2.ui.tips.TipView
         android:id="@+id/showDetailsTipQuickProgress"
