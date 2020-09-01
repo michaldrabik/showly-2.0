@@ -109,9 +109,9 @@
   <string name="textSettingsTraktSyncTitle">Trakt.tv Sync</string>
   <string name="textSettingsTraktSyncSummary">Sync data between Trakt.tv and Showly.</string>
   <string name="textSettingsTraktQuickSyncTitle">Trakt.tv Instant Upload</string>
-  <string name="textSettingsTraktQuickSyncSummary">Instantly upload episodes to Trakt.tv after you mark them as watched.</string>
+  <string name="textSettingsTraktQuickSyncSummary">Instantly upload episodes and See Later shows to Trakt.tv after you add them in the app.</string>
   <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv Instant Remove</string>
-  <string name="textSettingsTraktQuickRemoveSummary">Add option to remove show\'s data from Trakt.tv after you remove it from Showly app.</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Add option to remove show\'s data from Trakt.tv after you remove it in the app.</string>
   <string name="textSettingsGeneral">General &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Recently Added Amount</string>
   <string name="textSettingsRecentShowsSummary">Number of recent shows to display in \'My Shows\' screen.</string>
@@ -157,7 +157,7 @@
   <string name="textTraktSyncError">Trakt.tv sync failed.</string>
   <string name="textTraktSyncErrorFull">Trakt.tv sync failed. Please check your internet connection and try again or contact us if this keeps happening.</string>
   <string name="textTraktQuickSyncError">Instant Sync failed.</string>
-  <string name="textTraktQuickSyncErrorFull">Instant Sync failed. We will try again next time you open the app or check another episode as watched. Please check your internet connection.</string>
+  <string name="textTraktQuickSyncErrorFull">Instant Sync failed. We will try again next time you open the app. Please check your internet connection.</string>
   <string name="textTraktSyncDescription">Sync your Trakt.tv account progress and watchlist data with Showly.\n\nNone of the items from your current collection will be deleted. Sync will only handle missing items in your collections.</string>
   <string name="textTraktSyncStart">Sync Now</string>
   <string name="textTraktSyncSchedule">Schedule</string>
@@ -170,10 +170,10 @@
   <string name="textTraktSyncOptionDaily">Every Day</string>
   <string name="textTraktSyncOption3Day">Every 3 Days</string>
   <string name="textTraktSyncOptionWeekly">Every Week</string>
-  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv has been updated.</string>
+  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv synced successfully.</string>
   <plurals name="textTraktQuickSyncComplete">
-    <item quantity="one">1 episode synced successfully.</item>
-    <item quantity="other">%d episodes synced successfully.</item>
+    <item quantity="one">1 item synced successfully.</item>
+    <item quantity="other">%d items synced successfully.</item>
   </plurals>
 
   <string name="textTraktSyncOptionOffMessage">Sync will not run automatically.</string>

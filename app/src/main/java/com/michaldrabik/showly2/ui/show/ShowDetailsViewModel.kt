@@ -257,10 +257,11 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun addWatchLaterShow() {
+  fun addSeeLaterShow(context: Context) {
     if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
       watchLaterCase.addToWatchLater(show)
+      quickSyncManager.scheduleShowsSeeLater(context, listOf(show.traktId))
 
       val followedState =
         FollowedState(isMyShows = false, isWatchLater = true, withAnimation = true)
@@ -277,7 +278,10 @@ class ShowDetailsViewModel @Inject constructor(
       val isSeeLater = watchLaterCase.isSeeLater(show)
 
       if (isMyShows) followedCase.removeFromFollowed(show, removeLocalData = !areSeasonsLocal)
-      if (isSeeLater) watchLaterCase.removeFromWatchLater(show)
+      if (isSeeLater) {
+        watchLaterCase.removeFromWatchLater(show)
+        quickSyncManager.clearShowsSeeLater(listOf(show.traktId))
+      }
       val followedState = FollowedState(isMyShows = false, isWatchLater = false, withAnimation = true)
 
       val traktQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled

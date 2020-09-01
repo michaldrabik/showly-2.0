@@ -19,9 +19,16 @@ data class TraktSyncQueue(
       createdAt: Long,
       updatedAt: Long
     ) = TraktSyncQueue(0, idTrakt, Type.EPISODE.slug, createdAt, updatedAt)
+
+    fun createShowSeeLater(
+      idTrakt: Long,
+      createdAt: Long,
+      updatedAt: Long
+    ) = TraktSyncQueue(0, idTrakt, Type.SHOW_SEE_LATER.slug, createdAt, updatedAt)
   }
 
   enum class Type(val slug: String) {
-    EPISODE("episode")
+    EPISODE("episode"),
+    SHOW_SEE_LATER("show_see_later")
   }
 }

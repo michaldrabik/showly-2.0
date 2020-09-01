@@ -79,6 +79,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         settingsTraktSync.visibleIf(isSignedIn)
         settingsTraktQuickSync.visibleIf(isSignedIn)
         settingsTraktQuickSyncSwitch.visibleIf(isSignedIn)
+        settingsTraktQuickRemove.visibleIf(isSignedIn)
+        settingsTraktQuickRemoveSwitch.visibleIf(isSignedIn)
         settingsTraktAuthorizeIcon.visibleIf(isSignedIn)
         settingsTraktAuthorize.onClick {
           if (isSignedIn) showLogoutDialog()

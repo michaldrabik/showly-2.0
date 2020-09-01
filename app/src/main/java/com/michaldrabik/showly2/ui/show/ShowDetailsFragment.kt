@@ -370,7 +370,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           }
           onAddWatchLaterClickListener = {
             showDetailsRemoveTraktButton.gone()
-            viewModel.addWatchLaterShow()
+            viewModel.addSeeLaterShow(requireAppContext())
           }
           onRemoveClickListener = {
             viewModel.removeFromFollowed(requireAppContext())
@@ -401,7 +401,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       relatedShows?.let { renderRelatedShows(it) }
       comments?.let { showDetailsCommentsView.bind(it) }
       ratingState?.let { renderRating(it) }
-      showFromTraktLoading?.let { showDetailsRemoveTraktButton.isLoading = it }
+      showFromTraktLoading?.let {
+        showDetailsRemoveTraktButton.isLoading = it
+        showDetailsAddButton.isEnabled = !it
+      }
       removeFromTraktHistory?.let { event ->
         event.consume()?.let {
           showDetailsRemoveTraktButton.run {

@@ -36,6 +36,36 @@ class QuickSyncManager @Inject constructor(
     QuickSyncWorker.schedule(context)
   }
 
+  suspend fun scheduleShowsSeeLater(context: Context, showsIds: List<Long>) {
+    val settings = settingsRepository.load()
+    if (!settings.traktQuickSyncEnabled) {
+      Timber.d("Quick Sync is disabled. Skipping...")
+      return
+    }
+    if (!userTraktManager.isAuthorized()) {
+      Timber.d("User not logged into Trakt. Skipping...")
+      return
+    }
+
+    val time = nowUtcMillis()
+    val items = showsIds.map { TraktSyncQueue.createShowSeeLater(it, time, time) }
+    database.traktSyncQueueDao().insert(items)
+    Timber.d("Shows added into sync queue. Count: ${items.size}")
+
+    QuickSyncWorker.schedule(context)
+  }
+
+  suspend fun clearShowsSeeLater(showsIds: List<Long>) {
+    val settings = settingsRepository.load()
+    if (!settings.traktQuickSyncEnabled) {
+      Timber.d("Quick Sync is disabled. Skipping...")
+      return
+    }
+
+    database.traktSyncQueueDao().deleteAll(showsIds, TraktSyncQueue.Type.SHOW_SEE_LATER.slug)
+    Timber.d("Shows removed from sync queue. Count: ${showsIds.size}")
+  }
+
   suspend fun isAnyScheduled(): Boolean {
     if (!userTraktManager.isAuthorized()) {
       Timber.d("User not logged into Trakt. Skipping...")

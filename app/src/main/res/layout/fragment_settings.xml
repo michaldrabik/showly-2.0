@@ -135,7 +135,7 @@
       android:id="@+id/settingsTraktQuickRemove"
       style="@style/Settings.ItemLayout"
       app:layout_constraintBottom_toTopOf="@id/settingsCategoryGeneral"
-      app:layout_constraintEnd_toStartOf="@id/settingsTraktQuickSyncSwitch"
+      app:layout_constraintEnd_toStartOf="@id/settingsTraktQuickRemoveSwitch"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsTraktQuickSync"
       >

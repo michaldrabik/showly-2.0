@@ -51,8 +51,10 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
     launch {
       try {
         val count = quickSyncRunner.run()
-        EventsManager.sendEvent(TraktQuickSyncSuccess(count))
-        Analytics.logTraktQuickSyncSuccess(count)
+        if (count > 0) {
+          EventsManager.sendEvent(TraktQuickSyncSuccess(count))
+          Analytics.logTraktQuickSyncSuccess(count)
+        }
       } catch (t: Throwable) {
         notificationManager().notify(
           SYNC_NOTIFICATION_ERROR_ID,

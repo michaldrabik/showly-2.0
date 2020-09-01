@@ -9,6 +9,9 @@ import com.michaldrabik.showly2.repository.TraktAuthToken
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.utilities.extensions.dateIsoStringFromMillis
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.TraktSyncQueue
+import com.michaldrabik.storage.database.model.TraktSyncQueue.Type.EPISODE
+import com.michaldrabik.storage.database.model.TraktSyncQueue.Type.SHOW_SEE_LATER
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject
@@ -30,33 +33,49 @@ class QuickSyncRunner @Inject constructor(
 
     Timber.d("Checking authorization...")
     val authToken = checkAuthorization()
-    val count = exportItems(authToken)
+
+    val episodesCount = exportItems(authToken, EPISODE)
+    val seeLaterShowsCount = exportItems(authToken, SHOW_SEE_LATER)
 
     isRunning = false
     Timber.d("Finished with success.")
-    return count
+    return episodesCount + seeLaterShowsCount
   }
 
-  private suspend fun exportItems(token: TraktAuthToken, count: Int = 0): Int {
-    val items = database.traktSyncQueueDao().getAll().take(BATCH_LIMIT)
+  private suspend fun exportItems(
+    token: TraktAuthToken,
+    type: TraktSyncQueue.Type,
+    count: Int = 0
+  ): Int {
+    val items = database.traktSyncQueueDao().getAll(type.slug).take(BATCH_LIMIT)
     if (items.isEmpty()) {
       Timber.d("Nothing to export. Cancelling..")
       return count
     }
 
     val toExport = items.distinctBy { it.idTrakt }
-    val request = SyncExportRequest(
-      episodes = toExport.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) }
-    )
     Timber.d("Exporting ${toExport.count()} quick sync items...")
-    cloud.traktApi.postSyncWatched(token.token, request)
-    database.traktSyncQueueDao().deleteAll(items.map { it.idTrakt })
+    when (type) {
+        EPISODE -> {
+          val request = SyncExportRequest(
+            episodes = toExport.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) }
+          )
+          cloud.traktApi.postSyncWatched(token.token, request)
+        }
+        SHOW_SEE_LATER -> {
+          val request = SyncExportRequest(
+            shows = toExport.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) }
+          )
+          cloud.traktApi.postSyncWatchlist(token.token, request)
+        }
+    }
+    database.traktSyncQueueDao().deleteAll(items.map { it.idTrakt }, type.slug)
 
     // Check for more items
-    val newItems = database.traktSyncQueueDao().getAll()
+    val newItems = database.traktSyncQueueDao().getAll(type.slug)
     if (newItems.isNotEmpty()) {
       delay(1000)
-      return exportItems(token, count + toExport.count())
+      return exportItems(token, type, count + toExport.count())
     }
 
     return count + toExport.count()
