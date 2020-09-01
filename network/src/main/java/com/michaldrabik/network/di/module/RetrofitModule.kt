@@ -18,7 +18,7 @@ import javax.inject.Named
 @Module
 object RetrofitModule {
 
-  private const val TIMEOUT_DURATION = 30L
+  private const val TIMEOUT_DURATION = 20L
 
   @Provides
   @CloudScope
