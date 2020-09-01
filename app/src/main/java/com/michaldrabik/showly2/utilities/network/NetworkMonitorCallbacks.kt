@@ -11,6 +11,7 @@ import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.net.NetworkRequest
 import android.os.Build
 import android.os.Bundle
+import com.michaldrabik.showly2.App
 import com.michaldrabik.showly2.ui.main.MainActivity
 import timber.log.Timber
 
@@ -53,20 +54,29 @@ class NetworkMonitorCallbacks(
   private val networkCallback = object : NetworkCallbackAdapter() {
     override fun onAvailable(network: Network) {
       availableNetworksIds.add(network.toString())
-      foregroundActivity?.let { (it as? NetworkObserver)?.onNetworkAvailableListener(true) }
+      foregroundActivity?.let {
+        (it.applicationContext as App).isOnline = true
+        (it as? NetworkObserver)?.onNetworkAvailableListener(true)
+      }
       Timber.d("Network available: $network")
     }
 
     override fun onLost(network: Network) {
       availableNetworksIds.remove(network.toString())
       if (availableNetworksIds.isEmpty()) {
-        foregroundActivity?.let { (it as? NetworkObserver)?.onNetworkAvailableListener(false) }
+        foregroundActivity?.let {
+          (it.applicationContext as App).isOnline = false
+          (it as? NetworkObserver)?.onNetworkAvailableListener(false)
+        }
       }
       Timber.d("Network lost: $network. Available networks: ${availableNetworksIds.size}")
     }
 
     override fun onUnavailable() {
-      foregroundActivity?.let { (it as? NetworkObserver)?.onNetworkAvailableListener(false) }
+      foregroundActivity?.let {
+        (it.applicationContext as App).isOnline = false
+        (it as? NetworkObserver)?.onNetworkAvailableListener(false)
+      }
       Timber.d("Network unavailable")
     }
   }

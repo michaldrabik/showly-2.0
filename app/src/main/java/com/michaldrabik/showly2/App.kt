@@ -29,6 +29,8 @@ import timber.log.Timber
 class App : Application() {
 
   lateinit var appComponent: AppComponent
+  var isOnline = true
+
   private val activityCallbacks by lazy {
     listOf(
       EventsActivityCallbacks(),
@@ -89,6 +91,8 @@ class App : Application() {
 }
 
 fun Context.connectivityManager() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+fun Context.isOnline() = (applicationContext as App).isOnline
 
 fun Activity.appComponent() = (application as App).appComponent
 

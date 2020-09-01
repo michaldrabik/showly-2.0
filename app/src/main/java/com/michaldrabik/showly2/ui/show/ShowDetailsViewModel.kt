@@ -7,6 +7,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.common.notifications.AnnouncementManager
 import com.michaldrabik.showly2.common.trakt.quicksync.QuickSyncManager
+import com.michaldrabik.showly2.isOnline
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.EpisodeBundle
 import com.michaldrabik.showly2.model.IdTrakt
@@ -97,7 +98,7 @@ class ShowDetailsViewModel @Inject constructor(
         launch { loadActors(show) }
         launch {
           areSeasonsLoaded = false
-          loadSeasons(show)
+          loadSeasons(show, context.isOnline())
           if (followedState.isMyShows) {
             announcementManager.refreshEpisodesAnnouncements(context)
           }
@@ -139,8 +140,8 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun loadSeasons(show: Show): List<Season> = try {
-    val (seasons, isLocal) = episodesCase.loadSeasons(show)
+  private suspend fun loadSeasons(show: Show, isOnline: Boolean): List<Season> = try {
+    val (seasons, isLocal) = episodesCase.loadSeasons(show, isOnline)
     areSeasonsLocal = isLocal
     val seasonsItems = seasons
       .map {
