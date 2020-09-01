@@ -18,6 +18,7 @@
   <string name="textOk">OK</string>
   <string name="textNotNow">Not Now</string>
   <string name="textYes">Yes</string>
+  <string name="textNo">No</string>
   <string name="textClose">Close</string>
   <string name="textNew">New</string>
   <string name="textHot">Hot</string>
@@ -107,8 +108,10 @@
   <string name="textSettingsTraktAuthorizeSummarySignOutUser">Signed in as %1$s. Click to sign out.</string>
   <string name="textSettingsTraktSyncTitle">Trakt.tv Sync</string>
   <string name="textSettingsTraktSyncSummary">Sync data between Trakt.tv and Showly.</string>
-  <string name="textSettingsTraktQuickSyncTitle">Trakt.tv Instant Sync</string>
-  <string name="textSettingsTraktQuickSyncSummary">Instantly sync episodes after you mark them as watched.</string>
+  <string name="textSettingsTraktQuickSyncTitle">Trakt.tv Instant Upload</string>
+  <string name="textSettingsTraktQuickSyncSummary">Instantly upload episodes to Trakt.tv after you mark them as watched.</string>
+  <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv Instant Remove</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Add option to remove show\'s data from Trakt.tv after you remove it from Showly app.</string>
   <string name="textSettingsGeneral">General &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Recently Added Amount</string>
   <string name="textSettingsRecentShowsSummary">Number of recent shows to display in \'My Shows\' screen.</string>
@@ -167,6 +170,7 @@
   <string name="textTraktSyncOptionDaily">Every Day</string>
   <string name="textTraktSyncOption3Day">Every 3 Days</string>
   <string name="textTraktSyncOptionWeekly">Every Week</string>
+  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv has been updated.</string>
   <plurals name="textTraktQuickSyncComplete">
     <item quantity="one">1 episode synced successfully.</item>
     <item quantity="other">%d episodes synced successfully.</item>
@@ -244,5 +248,6 @@
   <string name="errorCouldNotLoadShow">We could not load this show\'s details at this moment.\nPlease contact us if this keeps happening.</string>
   <string name="errorCouldNotLoadSearchResults">We could not load search results at this moment.\nPlease contact us if this keeps happening.</string>
   <string name="errorNoInternetConnection">No Internet. Please check your connection.</string>
+  <string name="errorTraktSyncGeneral">Trakt.tv sync error.\nPlease check your internet connection and try again.</string>
 
 </resources>

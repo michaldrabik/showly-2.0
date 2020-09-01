@@ -116,7 +116,7 @@
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="13sp"
         android:textStyle=""
-        app:layout_constraintBottom_toTopOf="@id/showDetailsAddButton"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsButtonsLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"
         tools:text="Returning Series"
@@ -145,19 +145,36 @@
         tools:text="7.62 (9239 votes)"
         />
 
-      <com.michaldrabik.showly2.ui.common.views.AddToShowsButton
-        android:id="@+id/showDetailsAddButton"
+      <LinearLayout
+        android:id="@+id/showDetailsButtonsLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceSmall"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeCard"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsStatus"
-        />
+        >
+
+        <com.michaldrabik.showly2.ui.common.views.AddToShowsButton
+          android:id="@+id/showDetailsAddButton"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          />
+
+        <com.michaldrabik.showly2.ui.common.views.RemoveFromTraktButton
+          android:id="@+id/showDetailsRemoveTraktButton"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/spaceTiny"
+          android:visibility="gone"
+          tools:visibility="visible"
+          />
+
+      </LinearLayout>
 
       <com.michaldrabik.showly2.ui.tips.TipView
         android:id="@+id/showDetailsTipQuickProgress"
@@ -165,7 +182,7 @@
         android:layout_height="@dimen/tutorialTipSize"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsAddButton"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsButtonsLayout"
         app:layout_constraintEnd_toEndOf="parent"
         tools:visibility="visible"
         />
@@ -182,9 +199,9 @@
         app:layout_constraintBottom_toTopOf="@id/showDetailsDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsAddButton"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsButtonsLayout"
         app:layout_goneMarginBottom="0dp"
-        tools:visibility="gone"
+        tools:visibility="visible"
         />
 
       <com.michaldrabik.showly2.ui.common.views.FoldableTextView

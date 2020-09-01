@@ -106,6 +106,12 @@ class TraktApi(private val service: TraktService) {
   suspend fun postSyncWatched(token: String, request: SyncExportRequest) =
     service.postSyncWatched("Bearer $token", request)
 
+  suspend fun postDeleteProgress(token: String, request: SyncExportRequest) =
+    service.deleteHistory("Bearer $token", request)
+
+  suspend fun postDeleteWatchlist(token: String, request: SyncExportRequest) =
+    service.deleteWatchlist("Bearer $token", request)
+
   suspend fun deleteRating(token: String, show: Show) {
     val requestValue = RatingRequestValue(0, show.ids)
     val body = RatingRequest(shows = listOf(requestValue))

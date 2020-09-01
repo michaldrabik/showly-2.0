@@ -25,6 +25,7 @@ data class Settings(
   val discoverFilterFeed: DiscoverSortOrder,
   val traktSyncSchedule: TraktSyncSchedule,
   val traktQuickSyncEnabled: Boolean,
+  val traktQuickRemoveEnabled: Boolean,
   val watchlistSortOrder: SortOrder
 ) {
 
@@ -52,6 +53,7 @@ data class Settings(
       discoverFilterGenres = emptyList(),
       traktSyncSchedule = TraktSyncSchedule.OFF,
       traktQuickSyncEnabled = false,
+      traktQuickRemoveEnabled = false,
       watchlistSortOrder = SortOrder.NAME
     )
   }

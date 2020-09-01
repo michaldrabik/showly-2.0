@@ -18,6 +18,7 @@ import com.michaldrabik.showly2.model.SeasonBundle
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.TraktRating
 import com.michaldrabik.showly2.repository.UserTraktManager
+import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.cases.ShowDetailsActorsCase
 import com.michaldrabik.showly2.ui.show.cases.ShowDetailsCommentsCase
@@ -32,6 +33,7 @@ import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodeListItem
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
+import com.michaldrabik.showly2.utilities.ActionEvent
 import com.michaldrabik.showly2.utilities.MessageEvent
 import com.michaldrabik.showly2.utilities.extensions.findReplace
 import com.michaldrabik.showly2.utilities.extensions.launchDelayed
@@ -51,6 +53,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val episodesCase: ShowDetailsEpisodesCase,
   private val commentsCase: ShowDetailsCommentsCase,
   private val relatedShowsCase: ShowDetailsRelatedShowsCase,
+  private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
   private val episodesManager: EpisodesManager,
   private val quickSyncManager: QuickSyncManager,
@@ -73,8 +76,8 @@ class ShowDetailsViewModel @Inject constructor(
         Analytics.logShowDetailsDisplay(show)
 
         val isSignedIn = userManager.isAuthorized()
-        val isFollowed = async { followedCase.isFollowed(show) }
-        val isWatchLater = async { watchLaterCase.isWatchLater(show) }
+        val isFollowed = async { followedCase.isMyShows(show) }
+        val isWatchLater = async { watchLaterCase.isSeeLater(show) }
         val followedState = FollowedState(
           isMyShows = isFollowed.await(),
           isWatchLater = isWatchLater.await(),
@@ -270,17 +273,52 @@ class ShowDetailsViewModel @Inject constructor(
   fun removeFromFollowed(context: Context) {
     if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
-      val isFollowed = followedCase.isFollowed(show)
-      val isWatchLater = watchLaterCase.isWatchLater(show)
+      val isMyShows = followedCase.isMyShows(show)
+      val isSeeLater = watchLaterCase.isSeeLater(show)
 
-      if (isFollowed) followedCase.removeFromFollowed(show, removeLocalData = !areSeasonsLocal)
-      if (isWatchLater) watchLaterCase.removeFromWatchLater(show)
+      if (isMyShows) followedCase.removeFromFollowed(show, removeLocalData = !areSeasonsLocal)
+      if (isSeeLater) watchLaterCase.removeFromWatchLater(show)
+      val followedState = FollowedState(isMyShows = false, isWatchLater = false, withAnimation = true)
 
-      val followedState =
-        FollowedState(isMyShows = false, isWatchLater = false, withAnimation = true)
-      uiState = ShowDetailsUiModel(isFollowed = followedState)
+      val traktQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
+      val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal
+
+      uiState = if (isMyShows) {
+        ShowDetailsUiModel(isFollowed = followedState, removeFromTraktHistory = ActionEvent(showRemoveTrakt))
+      } else {
+        ShowDetailsUiModel(isFollowed = followedState, removeFromTraktSeeLater = ActionEvent(showRemoveTrakt))
+      }
 
       announcementManager.refreshEpisodesAnnouncements(context)
+    }
+  }
+
+  fun removeFromTraktHistory() {
+    viewModelScope.launch {
+      try {
+        uiState = ShowDetailsUiModel(showFromTraktLoading = true)
+        followedCase.removeTraktHistory(show)
+        refreshWatchedEpisodes()
+        _messageLiveData.value = MessageEvent.info(R.string.textTraktSyncRemovedFromTrakt)
+        uiState = ShowDetailsUiModel(showFromTraktLoading = false, removeFromTraktHistory = ActionEvent(false))
+      } catch (error: Throwable) {
+        _messageLiveData.value = MessageEvent.error(R.string.errorTraktSyncGeneral)
+        uiState = ShowDetailsUiModel(showFromTraktLoading = false)
+      }
+    }
+  }
+
+  fun removeFromTraktSeeLater() {
+    viewModelScope.launch {
+      try {
+        uiState = ShowDetailsUiModel(showFromTraktLoading = true)
+        watchLaterCase.removeTraktSeeLater(show)
+        _messageLiveData.value = MessageEvent.info(R.string.textTraktSyncRemovedFromTrakt)
+        uiState = ShowDetailsUiModel(showFromTraktLoading = false, removeFromTraktSeeLater = ActionEvent(false))
+      } catch (error: Throwable) {
+        _messageLiveData.value = MessageEvent.error(R.string.errorTraktSyncGeneral)
+        uiState = ShowDetailsUiModel(showFromTraktLoading = false)
+      }
     }
   }
 
@@ -295,7 +333,7 @@ class ShowDetailsViewModel @Inject constructor(
       when {
         isChecked -> {
           episodesManager.setEpisodeWatched(bundle)
-          if (followedCase.isFollowed(show) || watchLaterCase.isWatchLater(show)) {
+          if (followedCase.isMyShows(show) || watchLaterCase.isSeeLater(show)) {
             quickSyncManager.scheduleEpisodes(context, listOf(episode.ids.trakt.id))
           }
         }
@@ -311,7 +349,7 @@ class ShowDetailsViewModel @Inject constructor(
       when {
         isChecked -> {
           val episodesAdded = episodesManager.setSeasonWatched(bundle)
-          if (followedCase.isFollowed(show) || watchLaterCase.isWatchLater(show)) {
+          if (followedCase.isMyShows(show) || watchLaterCase.isSeeLater(show)) {
             quickSyncManager.scheduleEpisodes(context, episodesAdded.map { it.ids.trakt.id })
           }
         }

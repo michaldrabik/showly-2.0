@@ -31,6 +31,7 @@ class SettingsMapper @Inject constructor() {
     discoverFilterGenres = settings.discoverFilterGenres.split(",").filter { it.isNotBlank() }.map { Genre.valueOf(it) },
     traktSyncSchedule = enumValueOf(settings.traktSyncSchedule),
     traktQuickSyncEnabled = settings.traktQuickSyncEnabled,
+    traktQuickRemoveEnabled = settings.traktQuickRemoveEnabled,
     watchlistSortOrder = enumValueOf(settings.watchlistSortBy)
   )
 
@@ -57,6 +58,7 @@ class SettingsMapper @Inject constructor() {
     discoverFilterGenres = settings.discoverFilterGenres.joinToString(",") { it.name },
     traktSyncSchedule = settings.traktSyncSchedule.name,
     traktQuickSyncEnabled = settings.traktQuickSyncEnabled,
+    traktQuickRemoveEnabled = settings.traktQuickRemoveEnabled,
     watchlistSortBy = settings.watchlistSortOrder.name
   )
 }

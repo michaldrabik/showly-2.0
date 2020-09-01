@@ -112,6 +112,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         }
       }
 
+    settingsTraktQuickRemoveSwitch
+      .setCheckedSilent(settings.traktQuickRemoveEnabled) { _, isChecked ->
+        viewModel.enableQuickRemove(isChecked)
+      }
+
     settingsPushNotificationsSwitch
       .setCheckedSilent(settings.pushNotificationsEnabled) { _, isChecked ->
         viewModel.enablePushNotifications(isChecked)

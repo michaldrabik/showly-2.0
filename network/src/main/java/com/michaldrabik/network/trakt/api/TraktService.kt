@@ -121,6 +121,18 @@ interface TraktService {
     @Body request: SyncExportRequest
   ): SyncExportResult
 
+  @POST("sync/watchlist/remove")
+  suspend fun deleteWatchlist(
+    @Header("Authorization") authToken: String,
+    @Body request: SyncExportRequest
+  ): SyncExportResult
+
+  @POST("sync/history/remove")
+  suspend fun deleteHistory(
+    @Header("Authorization") authToken: String,
+    @Body request: SyncExportRequest
+  ): SyncExportResult
+
   @POST("sync/ratings")
   suspend fun postRating(
     @Header("Authorization") authToken: String,

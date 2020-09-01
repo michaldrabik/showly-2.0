@@ -46,6 +46,14 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
+  fun enableQuickRemove(enable: Boolean) {
+    viewModelScope.launch {
+      traktCase.enableTraktQuickRemove(enable)
+      refreshSettings()
+      Analytics.logSettingsTraktQuickRemove(enable)
+    }
+  }
+
   fun enablePushNotifications(enable: Boolean) {
     viewModelScope.launch {
       mainCase.enablePushNotifications(enable)

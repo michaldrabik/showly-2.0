@@ -25,6 +25,14 @@ class SettingsTraktCase @Inject constructor(
     }
   }
 
+  suspend fun enableTraktQuickRemove(enable: Boolean) {
+    val settings = settingsRepository.load()
+    settings.let {
+      val new = it.copy(traktQuickRemoveEnabled = enable)
+      settingsRepository.update(new)
+    }
+  }
+
   suspend fun setTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {
     val settings = settingsRepository.load()
     settings.let {

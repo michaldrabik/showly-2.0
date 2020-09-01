@@ -161,6 +161,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       it.gone()
       mainActivity().showTip(SHOW_DETAILS_QUICK_PROGRESS)
     }
+    showDetailsRemoveTraktButton.onNoClickListener = {
+      showDetailsRemoveTraktButton.gone()
+    }
   }
 
   private fun setupStatusBar() {
@@ -361,11 +364,17 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
         showDetailsAddButton.run {
           onAddMyShowsClickListener = {
+            showDetailsRemoveTraktButton.gone()
             viewModel.addFollowedShow(requireAppContext())
             showDetailsTipQuickProgress.fadeIf(!mainActivity().isTipShown(SHOW_DETAILS_QUICK_PROGRESS))
           }
-          onAddWatchLaterClickListener = { viewModel.addWatchLaterShow() }
-          onRemoveClickListener = { viewModel.removeFromFollowed(requireAppContext()) }
+          onAddWatchLaterClickListener = {
+            showDetailsRemoveTraktButton.gone()
+            viewModel.addWatchLaterShow()
+          }
+          onRemoveClickListener = {
+            viewModel.removeFromFollowed(requireAppContext())
+          }
         }
       }
       showLoading?.let {
@@ -392,6 +401,23 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       relatedShows?.let { renderRelatedShows(it) }
       comments?.let { showDetailsCommentsView.bind(it) }
       ratingState?.let { renderRating(it) }
+      showFromTraktLoading?.let { showDetailsRemoveTraktButton.isLoading = it }
+      removeFromTraktHistory?.let { event ->
+        event.consume()?.let {
+          showDetailsRemoveTraktButton.run {
+            visibleIf(it)
+            onYesClickListener = { viewModel.removeFromTraktHistory() }
+          }
+        }
+      }
+      removeFromTraktSeeLater?.let { event ->
+        event.consume()?.let {
+          showDetailsRemoveTraktButton.run {
+            visibleIf(it)
+            onYesClickListener = { viewModel.removeFromTraktSeeLater() }
+          }
+        }
+      }
     }
   }
 
