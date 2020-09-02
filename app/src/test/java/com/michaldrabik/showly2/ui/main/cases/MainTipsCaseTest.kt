@@ -1,11 +1,10 @@
-package com.michaldrabik.showly2.repository.tutorial
+package com.michaldrabik.showly2.ui.main.cases
 
 import BaseMockTest
 import android.content.SharedPreferences
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.model.Tip
-import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.impl.annotations.MockK

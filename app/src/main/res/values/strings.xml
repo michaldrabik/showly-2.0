@@ -207,7 +207,6 @@
   <string name="textRateAppYesButton">Sure, why not?</string>
   <string name="textRateAppNoButton">Not now</string>
 
-
   <plurals name="textDaysToAir">
     <item quantity="one">Airs tomorrow</item>
     <item quantity="other">Airs in %d days</item>
