@@ -24,6 +24,7 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.view_watchlist_main_item.view.*
+import kotlin.math.roundToInt
 
 @SuppressLint("SetTextI18n")
 class WatchlistMainItemView : ShowView<WatchlistItem> {
@@ -82,9 +83,10 @@ class WatchlistMainItemView : ShowView<WatchlistItem> {
   }
 
   private fun bindProgress(item: WatchlistItem) {
+    val percent = ((item.watchedEpisodesCount.toFloat() / item.episodesCount.toFloat()) * 100).roundToInt()
     watchlistItemProgress.max = item.episodesCount
     watchlistItemProgress.progress = item.watchedEpisodesCount
-    watchlistItemProgressText.text = "${item.watchedEpisodesCount}/${item.episodesCount}"
+    watchlistItemProgressText.text = "${item.watchedEpisodesCount}/${item.episodesCount} ($percent%)"
   }
 
   private fun bindCheckButton(

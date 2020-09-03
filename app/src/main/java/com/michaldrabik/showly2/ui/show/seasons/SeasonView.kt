@@ -13,6 +13,7 @@ import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
 import com.michaldrabik.showly2.utilities.extensions.expandTouch
 import com.michaldrabik.showly2.utilities.extensions.setAnimatedProgress
 import kotlinx.android.synthetic.main.view_season.view.*
+import kotlin.math.roundToInt
 
 class SeasonView : FrameLayout {
 
@@ -36,13 +37,14 @@ class SeasonView : FrameLayout {
   ) {
     clear()
     setOnClickListener { clickListener(item) }
-
     seasonViewTitle.text = context.getString(R.string.textSeason, item.season.number)
 
     val progressCount = item.episodes.count { it.isWatched }
+    val percent = ((progressCount.toFloat() / item.episodes.size.toFloat()) * 100).roundToInt()
+
     seasonViewProgress.max = item.season.episodeCount
     seasonViewProgress.setAnimatedProgress(item.episodes.count { it.isWatched })
-    seasonViewProgressText.text = "$progressCount/${item.episodes.size}"
+    seasonViewProgressText.text = "$progressCount/${item.episodes.size} ($percent%)"
 
     seasonViewCheckbox.isChecked = item.isWatched
     seasonViewCheckbox.isEnabled = item.episodes.all { it.episode.hasAired(item.season) }

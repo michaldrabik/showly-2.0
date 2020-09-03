@@ -61,7 +61,9 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:gravity="center"
-      android:minWidth="64dp"
+      android:minWidth="110dp"
+      android:paddingStart="@dimen/spaceSmall"
+      android:paddingEnd="@dimen/spaceSmall"
       android:paddingBottom="@dimen/spaceMicro"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="14sp"
@@ -69,7 +71,7 @@
       app:layout_constraintEnd_toStartOf="@id/seasonViewArrow"
       app:layout_constraintStart_toEndOf="@id/seasonViewProgress"
       app:layout_constraintTop_toTopOf="parent"
-      tools:text="999/999"
+      tools:text="20/20 (100%)"
       />
 
     <ProgressBar
