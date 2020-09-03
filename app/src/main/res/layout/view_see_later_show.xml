@@ -34,7 +34,7 @@
       android:layout_height="@dimen/seeLaterImageHeight"
       android:layout_gravity="center"
       android:background="@drawable/bg_show_view_placeholder"
-      android:padding="20dp"
+      android:padding="@dimen/spaceBig"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"

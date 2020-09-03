@@ -31,6 +31,7 @@
       android:layout_width="@dimen/watchlistImageWidth"
       android:layout_height="@dimen/watchlistImageHeight"
       android:layout_marginStart="@dimen/spaceMedium"
+      android:background="@drawable/bg_show_view_placeholder"
       android:padding="@dimen/spaceBig"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"

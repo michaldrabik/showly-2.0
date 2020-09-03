@@ -23,10 +23,11 @@
 
     <ImageView
       android:id="@+id/myShowPlaceholder"
-      android:layout_width="@dimen/showTilePlaceholder"
-      android:layout_height="@dimen/showTilePlaceholder"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
       android:layout_gravity="center"
-      android:layout_marginBottom="@dimen/spaceSmall"
+      android:background="@drawable/bg_show_view_placeholder"
+      android:padding="@dimen/spaceBig"
       android:visibility="gone"
       app:srcCompat="@drawable/ic_television"
       tools:visibility="visible"
