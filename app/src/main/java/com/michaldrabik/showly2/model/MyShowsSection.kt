@@ -1,6 +1,7 @@
 package com.michaldrabik.showly2.model
 
 import com.michaldrabik.showly2.model.ShowStatus.CANCELED
+import com.michaldrabik.showly2.model.ShowStatus.ENDED
 import com.michaldrabik.showly2.model.ShowStatus.IN_PRODUCTION
 import com.michaldrabik.showly2.model.ShowStatus.PLANNED
 import com.michaldrabik.showly2.model.ShowStatus.RETURNING
@@ -17,11 +18,11 @@ enum class MyShowsSection(
     displayString = "Watching"
   ),
   FINISHED(
-    statuses = listOf(CANCELED, ShowStatus.ENDED),
+    statuses = listOf(CANCELED, ENDED),
     displayString = "Finished"
   ),
   UPCOMING(
-    statuses = listOf(IN_PRODUCTION, PLANNED),
+    statuses = listOf(IN_PRODUCTION, PLANNED, ShowStatus.UPCOMING),
     displayString = "Returning & Upcoming"
   ),
   ALL(

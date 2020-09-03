@@ -5,6 +5,7 @@ enum class ShowStatus(
   val displayName: String
 ) {
   RETURNING("returning series", "Returning Series"),
+  UPCOMING("upcoming", "Upcoming"),
   IN_PRODUCTION("in production", "In Production"),
   PLANNED("planned", "Planned"),
   CANCELED("canceled", "Canceled"),
