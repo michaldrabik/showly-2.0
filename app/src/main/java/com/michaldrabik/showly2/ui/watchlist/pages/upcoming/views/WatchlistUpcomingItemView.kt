@@ -49,14 +49,21 @@ class WatchlistUpcomingItemView : ShowView<WatchlistItem> {
     clear()
 
     watchlistUpcomingItemTitle.text = item.show.title
-    val episodeTitle = if (item.upcomingEpisode.title.isBlank()) "TBA" else item.upcomingEpisode.title
-    watchlistUpcomingItemSubtitle.text = String.format(
-      "S.%02d E.%02d",
-      item.upcomingEpisode.season,
-      item.upcomingEpisode.number
-    )
-    watchlistUpcomingItemSubtitle2.text = episodeTitle
     watchlistUpcomingItemDateText.text = item.upcomingEpisode.firstAired?.toLocalTimeZone()?.toDisplayString()
+
+    val isNewSeason = item.upcomingEpisode.number == 1
+    if (isNewSeason) {
+      watchlistUpcomingItemSubtitle2.text = context.getString(R.string.textSeason, item.upcomingEpisode.season)
+      watchlistUpcomingItemSubtitle.text = context.getString(R.string.textNewSeason)
+    } else {
+      val subtitle = if (item.upcomingEpisode.title.isBlank()) "TBA" else item.upcomingEpisode.title
+      watchlistUpcomingItemSubtitle2.text = subtitle
+      watchlistUpcomingItemSubtitle.text = String.format(
+        "S.%02d E.%02d",
+        item.upcomingEpisode.season,
+        item.upcomingEpisode.number
+      )
+    }
 
     loadImage(item, missingImageListener!!)
   }

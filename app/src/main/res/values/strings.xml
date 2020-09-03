@@ -36,6 +36,7 @@
   <string name="textActorRole">%s\n(%s)</string>
   <string name="textActorsEmpty">Actors are not available</string>
   <string name="textYouMayAlsoLike">You may also like:</string>
+  <string name="textNewSeason">Season Premiere</string>
   <string name="textSeasons">Seasons:</string>
   <string name="textSeasonsEmpty">Seasons not available.</string>
   <string name="textSeason">Season %1$d</string>
