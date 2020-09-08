@@ -35,6 +35,13 @@ object Analytics {
     }
   }
 
+  fun logShowAddToArchive(show: Show) {
+    firebaseAnalytics.logEvent("show_add_to_archive") {
+      param("show_id_trakt", show.traktId)
+      param("show_title", show.title)
+    }
+  }
+
   fun logShowTrailerClick(show: Show) {
     firebaseAnalytics.logEvent("show_click_trailer") {
       param("show_id_trakt", show.traktId)

@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.repository.shows
 
+import androidx.room.withTransaction
 import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.mappers.Mappers
@@ -25,9 +26,18 @@ class ArchiveShowsRepository @Inject constructor(
 
   suspend fun insert(id: IdTrakt) {
     val dbShow = ArchiveShow.fromTraktId(id.id, nowUtcMillis())
-    database.archiveShowsDao().insert(listOf(dbShow))
+    database.run {
+      withTransaction {
+        archiveShowsDao().insert(dbShow)
+        myShowsDao().deleteById(id.id)
+        seeLaterShowsDao().deleteById(id.id)
+      }
+    }
   }
 
   suspend fun delete(id: IdTrakt) =
     database.archiveShowsDao().deleteById(id.id)
+
+  suspend fun isArchived(id: IdTrakt) =
+    database.archiveShowsDao().getById(id.id) != null
 }

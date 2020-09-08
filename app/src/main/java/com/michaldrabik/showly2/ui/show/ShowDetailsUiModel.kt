@@ -20,7 +20,7 @@ data class ShowDetailsUiModel(
   val relatedShows: List<RelatedListItem>? = null,
   val seasons: List<SeasonListItem>? = null,
   val comments: List<Comment>? = null,
-  val isFollowed: FollowedState? = null,
+  val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
   val removeFromTraktHistory: ActionEvent<Boolean>? = null,
   val removeFromTraktSeeLater: ActionEvent<Boolean>? = null,
@@ -38,7 +38,7 @@ data class ShowDetailsUiModel(
       relatedShows = newModel.relatedShows ?: relatedShows,
       seasons = newModel.seasons ?: seasons,
       comments = newModel.comments ?: comments,
-      isFollowed = newModel.isFollowed ?: isFollowed,
+      followedState = newModel.followedState ?: followedState,
       removeFromTraktHistory = newModel.removeFromTraktHistory ?: removeFromTraktHistory,
       removeFromTraktSeeLater = newModel.removeFromTraktSeeLater ?: removeFromTraktSeeLater,
       ratingState = newModel.ratingState?.copy(
@@ -51,9 +51,18 @@ data class ShowDetailsUiModel(
 
 data class FollowedState(
   val isMyShows: Boolean,
-  val isWatchLater: Boolean,
+  val isSeeLater: Boolean,
+  val isArchived: Boolean,
   val withAnimation: Boolean
-)
+) {
+
+  companion object {
+    fun inMyShows() = FollowedState(isMyShows = true, isSeeLater = false, isArchived = false, withAnimation = true)
+    fun inSeeLater() = FollowedState(isMyShows = false, isSeeLater = true, isArchived = false, withAnimation = true)
+    fun inArchive() = FollowedState(isMyShows = false, isSeeLater = false, isArchived = true, withAnimation = true)
+    fun notFollowed() = FollowedState(isMyShows = false, isSeeLater = false, isArchived = false, withAnimation = true)
+  }
+}
 
 data class RatingState(
   val userRating: TraktRating? = null,

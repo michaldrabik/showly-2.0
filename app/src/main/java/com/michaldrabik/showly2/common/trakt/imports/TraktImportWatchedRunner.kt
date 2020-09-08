@@ -53,11 +53,13 @@ class TraktImportWatchedRunner @Inject constructor(
     checkTvdbAuth()
     val hiddenShowsIds = cloud.traktApi.fetchHiddenShows(token).map { it.show.ids?.trakt }
     val syncResults = cloud.traktApi.fetchSyncWatched(token, "full")
-      .filter { it.show != null && it.show?.ids?.trakt !in hiddenShowsIds }
+      .filter { it.show != null }
+      .filter { it.show?.ids?.trakt !in hiddenShowsIds }
       .distinctBy { it.show?.ids?.trakt }
 
     val myShowsIds = database.myShowsDao().getAll().map { it.idTrakt }
     val seeLaterShowsIds = database.seeLaterShowsDao().getAll().map { it.idTrakt }
+    val archiveShowsIds = database.archiveShowsDao().getAll().map { it.idTrakt }
 
     syncResults
       .forEachIndexed { index, result ->
@@ -71,7 +73,7 @@ class TraktImportWatchedRunner @Inject constructor(
           val (seasons, episodes) = loadSeasons(showId, result)
 
           database.withTransaction {
-            if (showId !in myShowsIds) {
+            if (showId !in myShowsIds && showId !in archiveShowsIds) {
               val show = mappers.show.fromNetwork(result.show!!)
               val showDb = mappers.show.toDatabase(show)
 

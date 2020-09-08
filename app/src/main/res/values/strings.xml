@@ -59,6 +59,7 @@
   <string name="textNoComments">No comments.</string>
   <string name="textInMyShows">Added to my shows</string>
   <string name="textInSeeLater">Added to see later</string>
+  <string name="textInArchive">Archived</string>
   <string name="textNoDescription">Overview not available.</string>
   <string name="textSortBy">Sort by:</string>
   <string name="textSortOrder">Feed:</string>
@@ -149,6 +150,9 @@
   <string name="textSettingsScheduleImportConfirmationTitle">Instant Sync Enabled</string>
   <string name="textSettingsScheduleImportConfirmationMessage">\nIt seems like Instant Sync is already turned on.\n\nDo you still want to schedule automatic sync?\n</string>
 
+  <string name="textArchiveConfirmationTitle">Archive Show</string>
+  <string name="textArchiveConfirmationMessage">\nAre you sure you want to archive this show?\n</string>
+
   <string name="textTraktSynchronize">Import from Trakt.tv</string>
   <string name="textTraktSyncLastTimestamp">Last Sync: %s</string>
   <string name="textTraktSync">Trakt.tv Sync</string>
@@ -226,7 +230,7 @@
   <string name="textTipDiscover">Double tap \'Discover\' menu button to quickly open search screen.</string>
   <string name="textTipMyShows">Double tap \'My Shows\' menu button to quickly switch between tabs.</string>
   <string name="textTipShowDetailsGallery">Tap show\'s image to open gallery.</string>
-  <string name="textTipShowDetailsQuickProgress">Tap Quick Progress icon to quickly set up watching progress of the show.</string>
+  <string name="textTipShowDetailsQuickProgress">Tap \'Quick Progress\' icon to quickly set up your progress of the show.\n\nTap \'Archive\' icon to move show into the archive.</string>
   <string name="textTipDiscoverFilters">Use filters view to refine your Discover feed.</string>
   <string name="textTipWatchlistPinItem">Tap and hold list item to pin it to the top.</string>
 

@@ -20,7 +20,7 @@ interface ArchiveShowsDao {
   suspend fun getById(traktId: Long): Show?
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(shows: List<ArchiveShow>)
+  suspend fun insert(show: ArchiveShow)
 
   @Query("DELETE FROM shows_archive WHERE id_trakt == :traktId")
   suspend fun deleteById(traktId: Long)

@@ -44,6 +44,8 @@ class TraktImportWatchlistRunner @Inject constructor(
     val localShowsIds =
       database.seeLaterShowsDao().getAll().map { it.idTrakt }
         .plus(database.myShowsDao().getAll().map { it.idTrakt })
+        .plus(database.archiveShowsDao().getAll().map { it.idTrakt })
+        .distinct()
 
     syncResults
       .forEachIndexed { index, result ->

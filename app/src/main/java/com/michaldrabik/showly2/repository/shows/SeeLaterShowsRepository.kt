@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.repository.shows
 
+import androidx.room.withTransaction
 import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.mappers.Mappers
@@ -27,7 +28,13 @@ class SeeLaterShowsRepository @Inject constructor(
 
   suspend fun insert(id: IdTrakt) {
     val dbShow = SeeLaterShow.fromTraktId(id.id, nowUtcMillis())
-    database.seeLaterShowsDao().insert(dbShow)
+    database.run {
+      withTransaction {
+        seeLaterShowsDao().insert(dbShow)
+        myShowsDao().deleteById(id.id)
+        archiveShowsDao().deleteById(id.id)
+      }
+    }
   }
 
   suspend fun delete(id: IdTrakt) =
