@@ -3,6 +3,7 @@ package com.michaldrabik.storage.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.michaldrabik.storage.database.dao.ActorsDao
+import com.michaldrabik.storage.database.dao.ArchiveShowsDao
 import com.michaldrabik.storage.database.dao.DiscoverShowsDao
 import com.michaldrabik.storage.database.dao.EpisodesDao
 import com.michaldrabik.storage.database.dao.EpisodesSyncLogDao
@@ -17,6 +18,7 @@ import com.michaldrabik.storage.database.dao.ShowsDao
 import com.michaldrabik.storage.database.dao.TraktSyncQueueDao
 import com.michaldrabik.storage.database.dao.UserDao
 import com.michaldrabik.storage.database.model.Actor
+import com.michaldrabik.storage.database.model.ArchiveShow
 import com.michaldrabik.storage.database.model.DiscoverShow
 import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.EpisodesSyncLog
@@ -38,6 +40,7 @@ import com.michaldrabik.storage.database.model.User
     DiscoverShow::class,
     MyShow::class,
     SeeLaterShow::class,
+    ArchiveShow::class,
     RelatedShow::class,
     Image::class,
     User::class,
@@ -60,6 +63,8 @@ abstract class AppDatabase : RoomDatabase() {
   abstract fun myShowsDao(): MyShowsDao
 
   abstract fun seeLaterShowsDao(): SeeLaterShowsDao
+
+  abstract fun archiveShowsDao(): ArchiveShowsDao
 
   abstract fun relatedShowsDao(): RelatedShowsDao
 
