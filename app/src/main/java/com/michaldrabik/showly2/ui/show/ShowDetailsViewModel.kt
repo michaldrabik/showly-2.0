@@ -275,7 +275,7 @@ class ShowDetailsViewModel @Inject constructor(
   fun addArchiveShow() {
     if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
-      archiveCase.addToArchive(show)
+      archiveCase.addToArchive(show, removeLocalData = !areSeasonsLocal)
       uiState = ShowDetailsUiModel(followedState = FollowedState.inArchive())
       Analytics.logShowAddToArchive(show)
     }
