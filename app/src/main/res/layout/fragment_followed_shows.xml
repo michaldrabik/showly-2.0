@@ -17,7 +17,7 @@
 
   <com.michaldrabik.showly2.ui.common.views.ScrollableTabLayout
     android:id="@+id/followedShowsTabs"
-    style="@style/MyShowsTabStyle"
+    style="@style/ScrollableTabsStyle"
     android:layout_width="wrap_content"
     android:layout_height="36dp"
     android:layout_marginStart="@dimen/spaceMedium"

@@ -5,6 +5,7 @@
   <string name="menuDiscover">Discover</string>
   <string name="menuShows">My Shows</string>
   <string name="menuSeeLater">See Later</string>
+  <string name="menuArchive">Archive</string>
   <string name="menuPin">Pin to top</string>
   <string name="menuUnpin">Unpin from top</string>
 
@@ -12,6 +13,7 @@
   <string name="tabSeeLater">See Later</string>
   <string name="tabStatistics">Statistics</string>
   <string name="tabWatchlist">Watchlist</string>
+  <string name="tabArchive">Archive</string>
   <string name="tabCalendar">Calendar</string>
 
   <string name="textApply">Apply</string>
@@ -81,6 +83,7 @@
   <string name="textWatchlistEmpty">Your watchlist is currently empty.\n\nVisit Discover tab to add shows or import your Trakt.tv collection.</string>
   <string name="textMyShowsEmpty">Your shows collection is currently empty.\nVisit Discover tab to add shows.</string>
   <string name="textSeeLaterEmpty">Your see later collection is currently empty.\nVisit Discover tab to add shows you might want to see in the future.</string>
+  <string name="textArchiveEmpty">Your archive is currently empty.\n\n\Archive is a list of shows that have been dropped, abandoned or you are no longer interested in.</string>
   <string name="textCalendarEmpty">There are no new episodes on the way.</string>
   <string name="textStatisticsEmpty">At least one show must be followed\nbefore statistics can be displayed.</string>
   <string name="textNewEpisodeAvailable">New episode is available now!</string>
