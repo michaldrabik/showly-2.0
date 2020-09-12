@@ -21,7 +21,12 @@ class MainRateAppCase @Inject constructor(
 
   fun shouldShowRateApp(): Boolean {
     val count = miscPreferences.getInt(KEY_RATE_APP_COUNT, 0)
-    val timestamp = miscPreferences.getLong(KEY_RATE_APP_TIMESTAMP, nowUtcMillis())
+    val timestamp = miscPreferences.getLong(KEY_RATE_APP_TIMESTAMP, -1)
+
+    if (timestamp == -1L) {
+      updateTimestamp(count)
+      return false
+    }
 
     if (count < (MAX_COUNT - 1) && nowUtcMillis() - timestamp > TimeUnit.DAYS.toMillis(10)) {
       updateTimestamp(count + 1)
@@ -33,7 +38,6 @@ class MainRateAppCase @Inject constructor(
       return true
     }
 
-    updateTimestamp(count)
     return false
   }
 
