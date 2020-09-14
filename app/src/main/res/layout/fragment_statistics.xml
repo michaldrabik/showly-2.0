@@ -19,6 +19,19 @@
     android:layout_height="wrap_content"
     >
 
+    <androidx.appcompat.widget.Toolbar
+      android:id="@+id/statisticsToolbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:contentInsetStartWithNavigation="0dp"
+      app:layout_constraintBottom_toTopOf="@id/statisticsTotalTimeSpent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:navigationIcon="@drawable/ic_arrow_back"
+      app:title="@string/tabStatistics"
+      />
+
     <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/statisticsContent"
       android:layout_width="match_parent"
@@ -29,30 +42,17 @@
       tools:visibility="visible"
       >
 
-      <androidx.appcompat.widget.Toolbar
-        android:id="@+id/statisticsToolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:contentInsetStartWithNavigation="0dp"
-        app:layout_constraintBottom_toTopOf="@id/statisticsTotalTimeSpent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:title="@string/tabStatistics"
-        />
-
       <com.michaldrabik.showly2.ui.followedshows.statistics.views.StatisticsTotalTimeSpentView
         android:id="@+id/statisticsTotalTimeSpent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceMedium"
-        android:layout_marginTop="@dimen/spaceTiny"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="@dimen/spaceMedium"
         app:layout_constraintBottom_toTopOf="@id/statisticsTotalEpisodes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/statisticsToolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0"
         app:layout_constraintVertical_chainStyle="packed"
         />

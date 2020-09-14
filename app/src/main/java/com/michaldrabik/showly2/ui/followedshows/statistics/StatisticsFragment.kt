@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.ui.followedshows.statistics
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -13,7 +14,9 @@ import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
+import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_statistics.*
 
@@ -55,7 +58,8 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
       onShowClickListener = { (requireParentFragment() as FollowedShowsFragment).openShowDetails(it) }
     }
     statisticsRatings.onShowClickListener = {
-      (requireParentFragment() as FollowedShowsFragment).openShowDetails(it.show)
+      val bundle = bundleOf(ShowDetailsFragment.ARG_SHOW_ID to it.show.traktId)
+      navigateTo(R.id.actionStatisticsFragmentToShowDetailsFragment, bundle)
     }
   }
 
@@ -73,9 +77,11 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
       statisticsTopGenres.bind(topGenres ?: emptyList())
       statisticsRatings.bind(ratings ?: emptyList())
 
-      statisticsRatings.visibleIf(!ratings.isNullOrEmpty())
-      statisticsContent.visibleIf(!mostWatchedShows.isNullOrEmpty())
-      statisticsEmptyView.visibleIf(mostWatchedShows.isNullOrEmpty())
+      ratings?.let { statisticsRatings.visibleIf(it.isNotEmpty()) }
+      mostWatchedShows?.let {
+        statisticsContent.fadeIf(it.isNotEmpty())
+        statisticsEmptyView.fadeIf(it.isEmpty())
+      }
     }
   }
 

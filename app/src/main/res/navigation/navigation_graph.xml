@@ -194,7 +194,15 @@
     android:id="@+id/statisticsFragment"
     android:name="com.michaldrabik.showly2.ui.followedshows.statistics.StatisticsFragment"
     android:label="fragmentStatistics"
-    ></fragment>
+    >
+    <action
+      android:id="@+id/actionStatisticsFragmentToShowDetailsFragment"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
 
   <fragment
     android:id="@+id/traktSyncFragment"
