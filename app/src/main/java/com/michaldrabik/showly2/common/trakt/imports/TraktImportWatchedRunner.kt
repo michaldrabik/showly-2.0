@@ -57,9 +57,9 @@ class TraktImportWatchedRunner @Inject constructor(
       .filter { it.show?.ids?.trakt !in hiddenShowsIds }
       .distinctBy { it.show?.ids?.trakt }
 
-    val myShowsIds = database.myShowsDao().getAll().map { it.idTrakt }
-    val seeLaterShowsIds = database.seeLaterShowsDao().getAll().map { it.idTrakt }
-    val archiveShowsIds = database.archiveShowsDao().getAll().map { it.idTrakt }
+    val myShowsIds = database.myShowsDao().getAllTraktIds()
+    val seeLaterShowsIds = database.seeLaterShowsDao().getAllTraktIds()
+    val archiveShowsIds = database.archiveShowsDao().getAllTraktIds()
 
     syncResults
       .forEachIndexed { index, result ->
