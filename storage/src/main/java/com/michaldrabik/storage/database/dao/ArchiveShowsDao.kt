@@ -16,6 +16,9 @@ interface ArchiveShowsDao {
   @Query("SELECT shows.*, shows_archive.updated_at AS updated_at FROM shows INNER JOIN shows_archive USING(id_trakt) WHERE id_trakt IN (:ids)")
   suspend fun getAll(ids: List<Long>): List<Show>
 
+  @Query("SELECT shows.id_trakt FROM shows INNER JOIN shows_archive USING(id_trakt)")
+  suspend fun getAllTraktIds(): List<Long>
+
   @Query("SELECT shows.* FROM shows INNER JOIN shows_archive USING(id_trakt) WHERE id_trakt == :traktId")
   suspend fun getById(traktId: Long): Show?
 

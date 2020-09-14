@@ -24,6 +24,8 @@ class ArchiveShowsRepository @Inject constructor(
       mappers.show.fromDatabase(it)
     }
 
+  suspend fun loadAllIds() = database.archiveShowsDao().getAllTraktIds()
+
   suspend fun insert(id: IdTrakt) {
     val dbShow = ArchiveShow.fromTraktId(id.id, nowUtcMillis())
     database.run {
