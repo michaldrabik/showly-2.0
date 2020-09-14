@@ -13,7 +13,7 @@
   <string name="tabSeeLater">See Later</string>
   <string name="tabStatistics">Statistics</string>
   <string name="tabWatchlist">Watchlist</string>
-  <string name="tabArchive">Archive</string>
+  <string name="tabArchive">Archived\u0020</string>
   <string name="tabCalendar">Calendar</string>
 
   <string name="textApply">Apply</string>
@@ -83,7 +83,7 @@
   <string name="textWatchlistEmpty">Your <b>Watchlist</b> is currently empty.\n\nVisit <b>Discover</b> tab to add shows or import your Trakt.tv collection.</string>
   <string name="textMyShowsEmpty">Your shows collection is currently empty.\n\nVisit <b>Discover</b> tab to add your first show.</string>
   <string name="textSeeLaterEmpty">Your <b>See Later</b> collection is currently empty.\n\nVisit <b>Discover</b> tab to add shows you might want to see in the future.</string>
-  <string name="textArchiveEmpty">Your <b>Archive</b> is currently empty.\n\n\<b>Archive</b> is a place where you can put shows that have been dropped, abandoned or you are no longer interested in.\n\nThese shows will no longer appear in <b>Watchlist</b>, <b>Discover</b> and <b>My Shows</b> sections. They will also be skipped during Trakt.tv import.</string>
+  <string name="textArchiveEmpty">Your <b>Archive</b> is currently empty.\n\n\<b>Archive</b> is a place where you can put shows that have been dropped, abandoned or you are no longer interested in.\n\nThese shows will no longer appear in <b>Watchlist</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
   <string name="textCalendarEmpty">There are no new episodes on the way.</string>
   <string name="textStatisticsEmpty">At least one show must be followed\nbefore statistics can be displayed.</string>
   <string name="textNewEpisodeAvailable">New episode is available now!</string>

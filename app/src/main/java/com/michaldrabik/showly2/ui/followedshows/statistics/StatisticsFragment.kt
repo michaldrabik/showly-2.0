@@ -2,12 +2,11 @@ package com.michaldrabik.showly2.ui.followedshows.statistics
 
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.view.updateLayoutParams
-import androidx.core.view.updateMargins
+import androidx.activity.addCallback
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.ui.common.OnScrollResetListener
@@ -44,7 +43,13 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
     }
   }
 
+  override fun onResume() {
+    super.onResume()
+    handleBackPressed()
+  }
+
   private fun setupView() {
+    statisticsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     statisticsMostWatchedShows.run {
       onLoadMoreClickListener = { addLimit -> viewModel.loadMostWatchedShows(addLimit) }
       onShowClickListener = { (requireParentFragment() as FollowedShowsFragment).openShowDetails(it) }
@@ -55,12 +60,8 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
   }
 
   private fun setupStatusBar() {
-    statisticsContent.doOnApplyWindowInsets { view, insets, padding, _ ->
+    statisticsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
       view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
-      statisticsEmptyView.updateLayoutParams {
-        (statisticsEmptyView.layoutParams as ViewGroup.MarginLayoutParams)
-          .updateMargins(top = insets.systemWindowInsetTop)
-      }
     }
   }
 
@@ -75,6 +76,15 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
       statisticsRatings.visibleIf(!ratings.isNullOrEmpty())
       statisticsContent.visibleIf(!mostWatchedShows.isNullOrEmpty())
       statisticsEmptyView.visibleIf(mostWatchedShows.isNullOrEmpty())
+    }
+  }
+
+  private fun handleBackPressed() {
+    val dispatcher = requireActivity().onBackPressedDispatcher
+    dispatcher.addCallback(viewLifecycleOwner) {
+      remove()
+      showNavigation()
+      findNavController().popBackStack()
     }
   }
 
