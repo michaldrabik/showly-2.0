@@ -53,8 +53,7 @@ class StatisticsViewModel @Inject constructor(
           it.copy(image = imagesProvider.findCachedImage(it.show, POSTER))
         }
 
-      delay(200) // Let transition finish peacefully.
-
+      delay(150) // Let transition finish peacefully.
       uiState = StatisticsUiModel(
         mostWatchedShows = mostWatchedShows,
         mostWatchedTotalCount = myShowsIds.size,

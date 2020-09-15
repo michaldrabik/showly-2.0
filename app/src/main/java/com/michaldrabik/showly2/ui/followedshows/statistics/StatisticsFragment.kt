@@ -48,6 +48,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
 
   override fun onResume() {
     super.onResume()
+    hideNavigation()
     handleBackPressed()
   }
 
