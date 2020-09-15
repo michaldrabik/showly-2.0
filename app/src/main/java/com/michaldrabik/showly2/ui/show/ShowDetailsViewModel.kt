@@ -304,10 +304,12 @@ class ShowDetailsViewModel @Inject constructor(
       val traktQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
       val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal
 
-      uiState = if (isMyShows) {
-        ShowDetailsUiModel(followedState = FollowedState.notFollowed(), removeFromTraktHistory = ActionEvent(showRemoveTrakt))
-      } else {
-        ShowDetailsUiModel(followedState = FollowedState.notFollowed(), removeFromTraktSeeLater = ActionEvent(showRemoveTrakt))
+      val state = FollowedState.notFollowed()
+      val event = ActionEvent(showRemoveTrakt)
+      uiState = when {
+        isMyShows || isArchived -> ShowDetailsUiModel(followedState = state, removeFromTraktHistory = event)
+        isSeeLater -> ShowDetailsUiModel(followedState = state, removeFromTraktSeeLater = event)
+        else -> error("Unexpected show state")
       }
 
       announcementManager.refreshEpisodesAnnouncements(context)

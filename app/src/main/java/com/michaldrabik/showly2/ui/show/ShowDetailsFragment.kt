@@ -607,10 +607,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setTitle(R.string.textArchiveConfirmationTitle)
       .setMessage(R.string.textArchiveConfirmationMessage)
-      .setPositiveButton(R.string.textYes) { _, _ ->
-        viewModel.addArchiveShow()
-      }
+      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.addArchiveShow() }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
+      .setNeutralButton(R.string.textWhatIsArchive) { _, _ -> openArchiveDescriptionDialog() }
+      .show()
+  }
+
+  private fun openArchiveDescriptionDialog() {
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setTitle(R.string.textWhatIsArchive)
+      .setMessage(R.string.textArchiveDescription)
+      .setPositiveButton(R.string.textOk) { _, _ -> openArchiveConfirmationDialog() }
       .show()
   }
 
