@@ -122,8 +122,6 @@ class AddToShowsButton : FrameLayout {
     archiveButton.isEnabled = enabled
   }
 
-
-
   enum class State {
     ADD,
     IN_MY_SHOWS,
