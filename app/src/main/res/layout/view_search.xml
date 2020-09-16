@@ -2,6 +2,7 @@
 <com.google.android.material.card.MaterialCardView
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/searchViewRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
@@ -52,11 +53,14 @@
         android:inputType="text"
         android:maxLength="50"
         android:maxLines="1"
+        android:paddingStart="0dp"
+        android:paddingEnd="84dp"
         android:selectAllOnFocus="true"
         android:textColor="?android:attr/textColorPrimary"
         android:textColorHint="?attr/colorSearchViewControl"
         android:textSize="16sp"
         android:visibility="gone"
+        tools:visibility="visible"
         />
 
       <ImageView
@@ -68,6 +72,20 @@
         android:visibility="gone"
         app:srcCompat="@drawable/ic_sort"
         app:tint="?attr/colorSearchViewControl"
+        tools:visibility="visible"
+        />
+
+      <ImageView
+        android:id="@+id/searchStatsIcon"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:layout_marginEnd="40dp"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_chart"
+        app:tint="?attr/colorSearchViewControl"
+        tools:visibility="visible"
         />
 
       <ImageView

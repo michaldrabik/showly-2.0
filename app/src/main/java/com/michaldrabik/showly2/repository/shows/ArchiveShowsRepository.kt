@@ -6,37 +6,40 @@ import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.SeeLaterShow
+import com.michaldrabik.storage.database.model.ArchiveShow
 import javax.inject.Inject
 
 @AppScope
-class SeeLaterShowsRepository @Inject constructor(
+class ArchiveShowsRepository @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers
 ) {
 
   suspend fun loadAll() =
-    database.seeLaterShowsDao().getAll()
+    database.archiveShowsDao().getAll()
       .map { mappers.show.fromDatabase(it) }
 
-  suspend fun loadAllIds() = database.seeLaterShowsDao().getAllTraktIds()
-
   suspend fun load(id: IdTrakt) =
-    database.seeLaterShowsDao().getById(id.id)?.let {
+    database.archiveShowsDao().getById(id.id)?.let {
       mappers.show.fromDatabase(it)
     }
 
+  suspend fun loadAllIds() = database.archiveShowsDao().getAllTraktIds()
+
   suspend fun insert(id: IdTrakt) {
-    val dbShow = SeeLaterShow.fromTraktId(id.id, nowUtcMillis())
+    val dbShow = ArchiveShow.fromTraktId(id.id, nowUtcMillis())
     database.run {
       withTransaction {
-        seeLaterShowsDao().insert(dbShow)
+        archiveShowsDao().insert(dbShow)
         myShowsDao().deleteById(id.id)
-        archiveShowsDao().deleteById(id.id)
+        seeLaterShowsDao().deleteById(id.id)
       }
     }
   }
 
   suspend fun delete(id: IdTrakt) =
-    database.seeLaterShowsDao().deleteById(id.id)
+    database.archiveShowsDao().deleteById(id.id)
+
+  suspend fun isArchived(id: IdTrakt) =
+    database.archiveShowsDao().getById(id.id) != null
 }

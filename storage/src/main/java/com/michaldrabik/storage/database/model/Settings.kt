@@ -30,5 +30,6 @@ data class Settings(
   @ColumnInfo(name = "trakt_sync_schedule", defaultValue = "OFF") var traktSyncSchedule: String,
   @ColumnInfo(name = "trakt_quick_sync_enabled", defaultValue = "0") var traktQuickSyncEnabled: Boolean,
   @ColumnInfo(name = "trakt_quick_remove_enabled", defaultValue = "0") var traktQuickRemoveEnabled: Boolean,
-  @ColumnInfo(name = "watchlist_sort_by", defaultValue = "NAME") var watchlistSortBy: String
+  @ColumnInfo(name = "watchlist_sort_by", defaultValue = "NAME") var watchlistSortBy: String,
+  @ColumnInfo(name = "archive_shows_sort_by", defaultValue = "NAME") var archiveShowsSortBy: String
 )

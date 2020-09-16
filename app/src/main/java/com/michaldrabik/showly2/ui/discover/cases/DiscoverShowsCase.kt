@@ -26,9 +26,10 @@ class DiscoverShowsCase @Inject constructor(
   suspend fun loadCachedShows(filters: DiscoverFilters): List<DiscoverListItem> {
     val myShowsIds = showsRepository.myShows.loadAllIds()
     val seeLaterShowsIds = showsRepository.seeLaterShows.loadAllIds()
+    val archiveShowsIds = showsRepository.archiveShows.loadAllIds()
     val cachedShows = showsRepository.discoverShows.loadAllCached()
 
-    return prepareShowItems(cachedShows, myShowsIds, seeLaterShowsIds, filters)
+    return prepareShowItems(cachedShows, myShowsIds, seeLaterShowsIds, archiveShowsIds, filters)
   }
 
   suspend fun loadRemoteShows(filters: DiscoverFilters): List<DiscoverListItem> {
@@ -43,18 +44,21 @@ class DiscoverShowsCase @Inject constructor(
 
     val myShowsIds = showsRepository.myShows.loadAllIds()
     val seeLaterShowsIds = showsRepository.seeLaterShows.loadAllIds()
+    val archiveShowsIds = showsRepository.archiveShows.loadAllIds()
     val remoteShows = showsRepository.discoverShows.loadAllRemote(showAnticipated, genres)
 
     showsRepository.discoverShows.cacheDiscoverShows(remoteShows)
-    return prepareShowItems(remoteShows, myShowsIds, seeLaterShowsIds, filters)
+    return prepareShowItems(remoteShows, myShowsIds, seeLaterShowsIds, archiveShowsIds, filters)
   }
 
   private suspend fun prepareShowItems(
     shows: List<Show>,
     myShowsIds: List<Long>,
     seeLaterShowsIds: List<Long>,
+    archiveShowsIds: List<Long>,
     filters: DiscoverFilters?
   ) = shows
+    .filter { !archiveShowsIds.contains(it.traktId) }
     .sortedBy(filters?.feedOrder ?: HOT)
     .mapIndexed { index, show ->
       val itemType = when (index) {

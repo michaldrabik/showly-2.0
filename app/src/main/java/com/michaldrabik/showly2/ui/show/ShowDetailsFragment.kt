@@ -51,8 +51,9 @@ import com.michaldrabik.showly2.model.Tip.SHOW_DETAILS_QUICK_PROGRESS
 import com.michaldrabik.showly2.requireAppContext
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.ADD
+import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_ARCHIVE
 import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_MY_SHOWS
-import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_WATCH_LATER
+import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_SEE_LATER
 import com.michaldrabik.showly2.ui.common.views.RateView
 import com.michaldrabik.showly2.ui.common.views.RateView.Companion.INITIAL_RATING
 import com.michaldrabik.showly2.ui.show.actors.ActorsAdapter
@@ -161,6 +162,16 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsTipQuickProgress.onClick {
       it.gone()
       mainActivity().showTip(SHOW_DETAILS_QUICK_PROGRESS)
+    }
+    showDetailsAddButton.run {
+      isEnabled = false
+      onAddMyShowsClickListener = {
+        viewModel.addFollowedShow(requireAppContext())
+        showDetailsTipQuickProgress.fadeIf(!mainActivity().isTipShown(SHOW_DETAILS_QUICK_PROGRESS))
+      }
+      onAddWatchLaterClickListener = { viewModel.addSeeLaterShow(requireAppContext()) }
+      onArchiveClickListener = { openArchiveConfirmationDialog() }
+      onRemoveClickListener = { viewModel.removeFromFollowed(requireAppContext()) }
     }
     showDetailsRemoveTraktButton.onNoClickListener = {
       showDetailsAddButton.fadeIn()
@@ -367,18 +378,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           }
         }
 
-        showDetailsAddButton.run {
-          onAddMyShowsClickListener = {
-            viewModel.addFollowedShow(requireAppContext())
-            showDetailsTipQuickProgress.fadeIf(!mainActivity().isTipShown(SHOW_DETAILS_QUICK_PROGRESS))
-          }
-          onAddWatchLaterClickListener = {
-            viewModel.addSeeLaterShow(requireAppContext())
-          }
-          onRemoveClickListener = {
-            viewModel.removeFromFollowed(requireAppContext())
-          }
-        }
+        showDetailsAddButton.isEnabled = true
       }
       showLoading?.let {
         if (!showDetailsEpisodesView.isVisible && !showDetailsCommentsView.isVisible) {
@@ -386,10 +386,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           showDetailsMainProgress.visibleIf(it)
         }
       }
-      isFollowed?.let {
+      followedState?.let {
         when {
           it.isMyShows -> showDetailsAddButton.setState(IN_MY_SHOWS, it.withAnimation)
-          it.isWatchLater -> showDetailsAddButton.setState(IN_WATCH_LATER, it.withAnimation)
+          it.isSeeLater -> showDetailsAddButton.setState(IN_SEE_LATER, it.withAnimation)
+          it.isArchived -> showDetailsAddButton.setState(IN_ARCHIVE, it.withAnimation)
           else -> showDetailsAddButton.setState(ADD, it.withAnimation)
         }
       }
@@ -598,6 +599,26 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         viewModel.setQuickProgress(requireAppContext(), view.getSelectedItem())
       }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
+      .show()
+  }
+
+  private fun openArchiveConfirmationDialog() {
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setTitle(R.string.textArchiveConfirmationTitle)
+      .setMessage(R.string.textArchiveConfirmationMessage)
+      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.addArchiveShow() }
+      .setNegativeButton(R.string.textCancel) { _, _ -> }
+      .setNeutralButton(R.string.textWhatIsArchive) { _, _ -> openArchiveDescriptionDialog() }
+      .show()
+  }
+
+  private fun openArchiveDescriptionDialog() {
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setTitle(R.string.textWhatIsArchive)
+      .setMessage(R.string.textArchiveDescription)
+      .setPositiveButton(R.string.textOk) { _, _ -> openArchiveConfirmationDialog() }
       .show()
   }
 

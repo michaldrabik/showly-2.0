@@ -23,6 +23,7 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
 
   var onSettingsClickListener: (() -> Unit)? = null
   var onSortClickListener: (() -> Unit)? = null
+  var onStatsClickListener: (() -> Unit)? = null
 
   init {
     inflate(context, R.layout.view_search, this)
@@ -31,6 +32,7 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
     searchSettingsIcon.expandTouch()
     searchSortIcon.onClick { onSortClickListener?.invoke() }
     searchSettingsIcon.onClick { onSettingsClickListener?.invoke() }
+    searchStatsIcon.onClick { onStatsClickListener?.invoke() }
   }
 
   var hint: String
@@ -50,6 +52,12 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
     get() = searchSortIcon.isVisible
     set(value) {
       searchSortIcon.visibleIf(value)
+    }
+
+  var statsIconVisible
+    get() = searchStatsIcon.isVisible
+    set(value) {
+      searchStatsIcon.visibleIf(value)
     }
 
   var sortIconClickable

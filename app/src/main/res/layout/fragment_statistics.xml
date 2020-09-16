@@ -6,17 +6,31 @@
   android:id="@+id/statisticsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:clipChildren="false"
+  android:clipToPadding="false"
   android:fillViewport="true"
   android:overScrollMode="never"
+  android:scrollbars="none"
   >
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:id="@+id/statisticsCoordinator"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipChildren="false"
-    android:clipToPadding="false"
+    android:layout_height="wrap_content"
     >
+
+    <androidx.appcompat.widget.Toolbar
+      android:id="@+id/statisticsToolbar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:contentInsetStartWithNavigation="0dp"
+      app:layout_constraintBottom_toTopOf="@id/statisticsTotalTimeSpent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:navigationIcon="@drawable/ic_arrow_back"
+      app:title="@string/tabStatistics"
+      />
 
     <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/statisticsContent"
@@ -24,8 +38,8 @@
       android:layout_height="match_parent"
       android:clipChildren="false"
       android:clipToPadding="false"
-      android:paddingTop="@dimen/statisticsTopPadding"
-      android:paddingBottom="@dimen/statisticsBottomPadding"
+      android:visibility="gone"
+      tools:visibility="visible"
       >
 
       <com.michaldrabik.showly2.ui.followedshows.statistics.views.StatisticsTotalTimeSpentView
@@ -33,7 +47,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceMedium"
-        android:layout_marginTop="@dimen/spaceTiny"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="@dimen/spaceMedium"
         app:layout_constraintBottom_toTopOf="@id/statisticsTotalEpisodes"
         app:layout_constraintEnd_toEndOf="parent"
@@ -107,6 +121,7 @@
       android:layout_gravity="center"
       android:layout_marginStart="@dimen/spaceBig"
       android:layout_marginEnd="@dimen/spaceBig"
+      android:visibility="gone"
       />
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>

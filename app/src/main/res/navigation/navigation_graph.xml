@@ -151,6 +151,13 @@
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
+    <action
+      android:id="@+id/actionFollowedShowsFragmentToStatisticsFragment"
+      app:destination="@id/statisticsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
   </fragment>
 
   <fragment
@@ -178,6 +185,20 @@
       app:destination="@id/traktSyncFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:exitAnim="@anim/anim_fade_out"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/statisticsFragment"
+    android:name="com.michaldrabik.showly2.ui.followedshows.statistics.StatisticsFragment"
+    android:label="fragmentStatistics"
+    >
+    <action
+      android:id="@+id/actionStatisticsFragmentToShowDetailsFragment"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />

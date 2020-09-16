@@ -1,0 +1,12 @@
+package com.michaldrabik.showly2.ui.followedshows.archive.recycler
+
+import androidx.recyclerview.widget.DiffUtil
+
+class ArchiveDiffCallback : DiffUtil.ItemCallback<ArchiveListItem>() {
+
+  override fun areItemsTheSame(oldItem: ArchiveListItem, newItem: ArchiveListItem) =
+    oldItem.show.ids.trakt == newItem.show.ids.trakt
+
+  override fun areContentsTheSame(oldItem: ArchiveListItem, newItem: ArchiveListItem) =
+    oldItem.image == newItem.image && oldItem.isLoading == newItem.isLoading
+}

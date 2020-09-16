@@ -125,7 +125,7 @@
     <item name="android:nestedScrollingEnabled">false</item>
   </style>
 
-  <style name="MyShowsTabStyle" parent="Widget.Design.TabLayout">
+  <style name="ScrollableTabsStyle" parent="Widget.Design.TabLayout">
     <item name="tabMode">scrollable</item>
     <item name="tabIndicatorColor">@color/colorAccent</item>
     <item name="tabPaddingStart">0dp</item>

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.michaldrabik.showly2.di.ViewModelKey
 import com.michaldrabik.showly2.ui.discover.DiscoverViewModel
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsViewModel
+import com.michaldrabik.showly2.ui.followedshows.archive.ArchiveViewModel
 import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsViewModel
 import com.michaldrabik.showly2.ui.followedshows.seelater.SeeLaterViewModel
 import com.michaldrabik.showly2.ui.followedshows.statistics.StatisticsViewModel
@@ -64,6 +65,11 @@ abstract class ViewModelsModule {
   @IntoMap
   @ViewModelKey(SeeLaterViewModel::class)
   abstract fun bindSeeLaterViewModel(viewModel: SeeLaterViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(ArchiveViewModel::class)
+  abstract fun bindArchiveViewModel(viewModel: ArchiveViewModel): ViewModel
 
   @Binds
   @IntoMap

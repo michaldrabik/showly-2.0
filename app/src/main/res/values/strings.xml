@@ -5,6 +5,7 @@
   <string name="menuDiscover">Discover</string>
   <string name="menuShows">My Shows</string>
   <string name="menuSeeLater">See Later</string>
+  <string name="menuArchive">Archive</string>
   <string name="menuPin">Pin to top</string>
   <string name="menuUnpin">Unpin from top</string>
 
@@ -12,6 +13,7 @@
   <string name="tabSeeLater">See Later</string>
   <string name="tabStatistics">Statistics</string>
   <string name="tabWatchlist">Watchlist</string>
+  <string name="tabArchive">Archived\u0020</string>
   <string name="tabCalendar">Calendar</string>
 
   <string name="textApply">Apply</string>
@@ -59,6 +61,7 @@
   <string name="textNoComments">No comments.</string>
   <string name="textInMyShows">Added to my shows</string>
   <string name="textInSeeLater">Added to see later</string>
+  <string name="textInArchive">Archived</string>
   <string name="textNoDescription">Overview not available.</string>
   <string name="textSortBy">Sort by:</string>
   <string name="textSortOrder">Feed:</string>
@@ -77,9 +80,12 @@
   <string name="textWatchlistNextWeek">Next Week</string>
   <string name="textWatchlistLater">Later</string>
   <string name="textWatchlistIncoming">Coming Soon</string>
-  <string name="textWatchlistEmpty">Your watchlist is currently empty.\n\nVisit Discover tab to add shows or import your Trakt.tv collection.</string>
-  <string name="textMyShowsEmpty">Your shows collection is currently empty.\nVisit Discover tab to add shows.</string>
-  <string name="textSeeLaterEmpty">Your see later collection is currently empty.\nVisit Discover tab to add shows you might want to see in the future.</string>
+  <string name="textWatchlistEmpty">Your <b>Watchlist</b> is currently empty.\n\nVisit <b>Discover</b> tab to add shows or import your Trakt.tv collection.</string>
+  <string name="textMyShowsEmpty">Your shows collection is currently empty.\n\nVisit <b>Discover</b> tab to add your first show.</string>
+  <string name="textSeeLaterEmpty">Your <b>See Later</b> collection is currently empty.\n\nVisit <b>Discover</b> tab to add shows you might want to see in the future.</string>
+  <string name="textArchiveEmpty">Your <b>Archive</b> is currently empty.\n\n<b>Archive</b> is a list for shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Watchlist</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
+  <string name="textWhatIsArchive">What\'s Archive?</string>
+  <string name="textArchiveDescription"><b>Archive</b> is a list for shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Watchlist</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
   <string name="textCalendarEmpty">There are no new episodes on the way.</string>
   <string name="textStatisticsEmpty">At least one show must be followed\nbefore statistics can be displayed.</string>
   <string name="textNewEpisodeAvailable">New episode is available now!</string>
@@ -148,6 +154,9 @@
   <string name="textSettingsLogoutMessage">\nAre you sure you want to sign out?\n</string>
   <string name="textSettingsScheduleImportConfirmationTitle">Instant Sync Enabled</string>
   <string name="textSettingsScheduleImportConfirmationMessage">\nIt seems like Instant Sync is already turned on.\n\nDo you still want to schedule automatic sync?\n</string>
+
+  <string name="textArchiveConfirmationTitle">Archive Show</string>
+  <string name="textArchiveConfirmationMessage">\nAre you sure you want to archive this show?\n</string>
 
   <string name="textTraktSynchronize">Import from Trakt.tv</string>
   <string name="textTraktSyncLastTimestamp">Last Sync: %s</string>
@@ -226,7 +235,7 @@
   <string name="textTipDiscover">Double tap \'Discover\' menu button to quickly open search screen.</string>
   <string name="textTipMyShows">Double tap \'My Shows\' menu button to quickly switch between tabs.</string>
   <string name="textTipShowDetailsGallery">Tap show\'s image to open gallery.</string>
-  <string name="textTipShowDetailsQuickProgress">Tap Quick Progress icon to quickly set up watching progress of the show.</string>
+  <string name="textTipShowDetailsQuickProgress">Tap \'Quick Progress\' icon to quickly set up your progress of the show.\n\nTap \'Archive\' icon to move show into the archive.</string>
   <string name="textTipDiscoverFilters">Use filters view to refine your Discover feed.</string>
   <string name="textTipWatchlistPinItem">Tap and hold list item to pin it to the top.</string>
 

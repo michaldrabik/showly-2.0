@@ -19,7 +19,7 @@ import com.michaldrabik.storage.database.model.Episode as EpisodeDb
 import com.michaldrabik.storage.database.model.Season as SeasonDb
 
 @AppScope
-class ShowDetailsFollowedCase @Inject constructor(
+class ShowDetailsMyShowsCase @Inject constructor(
   private val database: AppDatabase,
   private val cloud: Cloud,
   private val mappers: Mappers,
@@ -32,13 +32,15 @@ class ShowDetailsFollowedCase @Inject constructor(
   suspend fun isMyShows(show: Show) =
     showsRepository.myShows.load(show.ids.trakt) != null
 
-  suspend fun addToFollowed(
+  suspend fun addToMyShows(
     show: Show,
     seasons: List<Season>,
     episodes: List<Episode>
   ) {
     database.withTransaction {
       showsRepository.myShows.insert(show.ids.trakt)
+      showsRepository.seeLaterShows.delete(show.ids.trakt)
+      showsRepository.archiveShows.delete(show.ids.trakt)
 
       val localSeasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
       val localEpisodes = database.episodesDao().getAllForShows(listOf(show.ids.trakt.id))
@@ -64,7 +66,7 @@ class ShowDetailsFollowedCase @Inject constructor(
     }
   }
 
-  suspend fun removeFromFollowed(show: Show, removeLocalData: Boolean) {
+  suspend fun removeFromMyShows(show: Show, removeLocalData: Boolean) {
     database.withTransaction {
       showsRepository.myShows.delete(show.ids.trakt)
 

@@ -10,7 +10,7 @@ import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope
-class ShowDetailsWatchLaterCase @Inject constructor(
+class ShowDetailsSeeLaterCase @Inject constructor(
   private val cloud: Cloud,
   private val userManager: UserTraktManager,
   private val showsRepository: ShowsRepository
@@ -19,10 +19,10 @@ class ShowDetailsWatchLaterCase @Inject constructor(
   suspend fun isSeeLater(show: Show) =
     showsRepository.seeLaterShows.load(show.ids.trakt) != null
 
-  suspend fun addToWatchLater(show: Show) =
+  suspend fun addToSeeLater(show: Show) =
     showsRepository.seeLaterShows.insert(show.ids.trakt)
 
-  suspend fun removeFromWatchLater(show: Show) =
+  suspend fun removeFromSeeLater(show: Show) =
     showsRepository.seeLaterShows.delete(show.ids.trakt)
 
   suspend fun removeTraktSeeLater(show: Show) {

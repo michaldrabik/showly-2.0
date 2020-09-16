@@ -22,13 +22,14 @@ import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.cases.ShowDetailsActorsCase
+import com.michaldrabik.showly2.ui.show.cases.ShowDetailsArchiveCase
 import com.michaldrabik.showly2.ui.show.cases.ShowDetailsCommentsCase
 import com.michaldrabik.showly2.ui.show.cases.ShowDetailsEpisodesCase
-import com.michaldrabik.showly2.ui.show.cases.ShowDetailsFollowedCase
 import com.michaldrabik.showly2.ui.show.cases.ShowDetailsMainCase
+import com.michaldrabik.showly2.ui.show.cases.ShowDetailsMyShowsCase
 import com.michaldrabik.showly2.ui.show.cases.ShowDetailsRatingCase
 import com.michaldrabik.showly2.ui.show.cases.ShowDetailsRelatedShowsCase
-import com.michaldrabik.showly2.ui.show.cases.ShowDetailsWatchLaterCase
+import com.michaldrabik.showly2.ui.show.cases.ShowDetailsSeeLaterCase
 import com.michaldrabik.showly2.ui.show.quickSetup.QuickSetupListItem
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
@@ -49,8 +50,9 @@ class ShowDetailsViewModel @Inject constructor(
   private val mainCase: ShowDetailsMainCase,
   private val actorsCase: ShowDetailsActorsCase,
   private val ratingsCase: ShowDetailsRatingCase,
-  private val watchLaterCase: ShowDetailsWatchLaterCase,
-  private val followedCase: ShowDetailsFollowedCase,
+  private val seeLaterCase: ShowDetailsSeeLaterCase,
+  private val archiveCase: ShowDetailsArchiveCase,
+  private val myShowsCase: ShowDetailsMyShowsCase,
   private val episodesCase: ShowDetailsEpisodesCase,
   private val commentsCase: ShowDetailsCommentsCase,
   private val relatedShowsCase: ShowDetailsRelatedShowsCase,
@@ -77,11 +79,13 @@ class ShowDetailsViewModel @Inject constructor(
         Analytics.logShowDetailsDisplay(show)
 
         val isSignedIn = userManager.isAuthorized()
-        val isFollowed = async { followedCase.isMyShows(show) }
-        val isWatchLater = async { watchLaterCase.isSeeLater(show) }
+        val isFollowed = async { myShowsCase.isMyShows(show) }
+        val isWatchLater = async { seeLaterCase.isSeeLater(show) }
+        val isArchived = async { archiveCase.isArchived(show) }
         val followedState = FollowedState(
           isMyShows = isFollowed.await(),
-          isWatchLater = isWatchLater.await(),
+          isSeeLater = isWatchLater.await(),
+          isArchived = isArchived.await(),
           withAnimation = false
         )
 
@@ -89,7 +93,7 @@ class ShowDetailsViewModel @Inject constructor(
         uiState = ShowDetailsUiModel(
           show = show,
           showLoading = false,
-          isFollowed = followedState,
+          followedState = followedState,
           ratingState = RatingState(rateAllowed = isSignedIn, rateLoading = false)
         )
 
@@ -247,11 +251,9 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       val seasons = seasonItems.map { it.season }
       val episodes = seasonItems.flatMap { it.episodes.map { e -> e.episode } }
-      followedCase.addToFollowed(show, seasons, episodes)
+      myShowsCase.addToMyShows(show, seasons, episodes)
 
-      val followedState =
-        FollowedState(isMyShows = true, isWatchLater = false, withAnimation = true)
-      uiState = ShowDetailsUiModel(isFollowed = followedState)
+      uiState = ShowDetailsUiModel(followedState = FollowedState.inMyShows())
 
       announcementManager.refreshEpisodesAnnouncements(context)
       Analytics.logShowAddToMyShows(show)
@@ -261,37 +263,53 @@ class ShowDetailsViewModel @Inject constructor(
   fun addSeeLaterShow(context: Context) {
     if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
-      watchLaterCase.addToWatchLater(show)
+      seeLaterCase.addToSeeLater(show)
       quickSyncManager.scheduleShowsSeeLater(context, listOf(show.traktId))
 
-      val followedState =
-        FollowedState(isMyShows = false, isWatchLater = true, withAnimation = true)
-      uiState = ShowDetailsUiModel(isFollowed = followedState)
+      uiState = ShowDetailsUiModel(followedState = FollowedState.inSeeLater())
 
       Analytics.logShowAddToSeeLater(show)
+    }
+  }
+
+  fun addArchiveShow() {
+    if (!checkSeasonsLoaded()) return
+    viewModelScope.launch {
+      archiveCase.addToArchive(show, removeLocalData = !areSeasonsLocal)
+      uiState = ShowDetailsUiModel(followedState = FollowedState.inArchive())
+      Analytics.logShowAddToArchive(show)
     }
   }
 
   fun removeFromFollowed(context: Context) {
     if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
-      val isMyShows = followedCase.isMyShows(show)
-      val isSeeLater = watchLaterCase.isSeeLater(show)
+      val isMyShows = myShowsCase.isMyShows(show)
+      val isSeeLater = seeLaterCase.isSeeLater(show)
+      val isArchived = archiveCase.isArchived(show)
 
-      if (isMyShows) followedCase.removeFromFollowed(show, removeLocalData = !areSeasonsLocal)
-      if (isSeeLater) {
-        watchLaterCase.removeFromWatchLater(show)
-        quickSyncManager.clearShowsSeeLater(listOf(show.traktId))
+      when {
+        isMyShows -> {
+          myShowsCase.removeFromMyShows(show, removeLocalData = !areSeasonsLocal)
+        }
+        isSeeLater -> {
+          seeLaterCase.removeFromSeeLater(show)
+          quickSyncManager.clearShowsSeeLater(listOf(show.traktId))
+        }
+        isArchived -> {
+          archiveCase.removeFromArchive(show)
+        }
       }
-      val followedState = FollowedState(isMyShows = false, isWatchLater = false, withAnimation = true)
 
       val traktQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
       val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal
 
-      uiState = if (isMyShows) {
-        ShowDetailsUiModel(isFollowed = followedState, removeFromTraktHistory = ActionEvent(showRemoveTrakt))
-      } else {
-        ShowDetailsUiModel(isFollowed = followedState, removeFromTraktSeeLater = ActionEvent(showRemoveTrakt))
+      val state = FollowedState.notFollowed()
+      val event = ActionEvent(showRemoveTrakt)
+      uiState = when {
+        isMyShows || isArchived -> ShowDetailsUiModel(followedState = state, removeFromTraktHistory = event)
+        isSeeLater -> ShowDetailsUiModel(followedState = state, removeFromTraktSeeLater = event)
+        else -> error("Unexpected show state")
       }
 
       announcementManager.refreshEpisodesAnnouncements(context)
@@ -302,7 +320,7 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         uiState = ShowDetailsUiModel(showFromTraktLoading = true)
-        followedCase.removeTraktHistory(show)
+        myShowsCase.removeTraktHistory(show)
         refreshWatchedEpisodes()
         _messageLiveData.value = MessageEvent.info(R.string.textTraktSyncRemovedFromTrakt)
         uiState = ShowDetailsUiModel(showFromTraktLoading = false, removeFromTraktHistory = ActionEvent(false))
@@ -317,7 +335,7 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         uiState = ShowDetailsUiModel(showFromTraktLoading = true)
-        watchLaterCase.removeTraktSeeLater(show)
+        seeLaterCase.removeTraktSeeLater(show)
         _messageLiveData.value = MessageEvent.info(R.string.textTraktSyncRemovedFromTrakt)
         uiState = ShowDetailsUiModel(showFromTraktLoading = false, removeFromTraktSeeLater = ActionEvent(false))
       } catch (error: Throwable) {
@@ -338,7 +356,7 @@ class ShowDetailsViewModel @Inject constructor(
       when {
         isChecked -> {
           episodesManager.setEpisodeWatched(bundle)
-          if (followedCase.isMyShows(show) || watchLaterCase.isSeeLater(show)) {
+          if (myShowsCase.isMyShows(show) || seeLaterCase.isSeeLater(show) || archiveCase.isArchived(show)) {
             quickSyncManager.scheduleEpisodes(context, listOf(episode.ids.trakt.id))
           }
         }
@@ -354,7 +372,7 @@ class ShowDetailsViewModel @Inject constructor(
       when {
         isChecked -> {
           val episodesAdded = episodesManager.setSeasonWatched(bundle)
-          if (followedCase.isMyShows(show) || watchLaterCase.isSeeLater(show)) {
+          if (myShowsCase.isMyShows(show) || seeLaterCase.isSeeLater(show) || archiveCase.isArchived(show)) {
             quickSyncManager.scheduleEpisodes(context, episodesAdded.map { it.ids.trakt.id })
           }
         }

@@ -76,8 +76,10 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
   private fun setupView() {
     followedShowsSearchView.run {
       hint = getString(R.string.textSearchForMyShows)
+      statsIconVisible = true
       onClick { enterSearch() }
       onSettingsClickListener = { openSettings() }
+      onStatsClickListener = { openStatistics() }
     }
 
     searchViewInput.run {
@@ -143,7 +145,8 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
       tab.text = when (position) {
         0 -> getString(R.string.tabMyShows)
         1 -> getString(R.string.tabSeeLater)
-        else -> getString(R.string.tabStatistics)
+        2 -> getString(R.string.tabArchive)
+        else -> error("Unsupported index")
       }
     }.attach()
   }
@@ -258,6 +261,14 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
   private fun openSettings() {
     hideNavigation()
     navigateTo(R.id.actionFollowedShowsFragmentToSettingsFragment)
+
+    viewModel.tabsTranslation = followedShowsTabs.translationY
+    viewModel.searchViewTranslation = followedShowsSearchView.translationY
+  }
+
+  private fun openStatistics() {
+    hideNavigation()
+    navigateTo(R.id.actionFollowedShowsFragmentToStatisticsFragment)
 
     viewModel.tabsTranslation = followedShowsTabs.translationY
     viewModel.searchViewTranslation = followedShowsSearchView.translationY

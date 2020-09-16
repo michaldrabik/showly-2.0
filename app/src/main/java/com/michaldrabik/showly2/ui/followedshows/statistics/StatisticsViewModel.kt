@@ -13,6 +13,7 @@ import com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.St
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.Season
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -52,6 +53,7 @@ class StatisticsViewModel @Inject constructor(
           it.copy(image = imagesProvider.findCachedImage(it.show, POSTER))
         }
 
+      delay(150) // Let transition finish peacefully.
       uiState = StatisticsUiModel(
         mostWatchedShows = mostWatchedShows,
         mostWatchedTotalCount = myShowsIds.size,
