@@ -4,6 +4,8 @@ import BaseMockTest
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.storage.database.dao.ArchiveShowsDao
+import com.michaldrabik.storage.database.dao.MyShowsDao
 import com.michaldrabik.storage.database.dao.SeeLaterShowsDao
 import com.michaldrabik.storage.database.model.SeeLaterShow
 import io.mockk.coEvery
@@ -22,6 +24,9 @@ import com.michaldrabik.storage.database.model.Show as ShowDb
 class SeeLaterShowsRepositoryTest : BaseMockTest() {
 
   @MockK lateinit var seeLaterShowsDao: SeeLaterShowsDao
+  @MockK lateinit var myShowsDao: MyShowsDao
+  @MockK lateinit var archivedShowsDao: ArchiveShowsDao
+
   @RelaxedMockK lateinit var showDb: ShowDb
 
   private lateinit var SUT: SeeLaterShowsRepository
@@ -32,6 +37,8 @@ class SeeLaterShowsRepositoryTest : BaseMockTest() {
     SUT = SeeLaterShowsRepository(database, mappers)
 
     coEvery { database.seeLaterShowsDao() } returns seeLaterShowsDao
+    coEvery { database.myShowsDao() } returns myShowsDao
+    coEvery { database.archiveShowsDao() } returns archivedShowsDao
   }
 
   @After
@@ -71,6 +78,9 @@ class SeeLaterShowsRepositoryTest : BaseMockTest() {
   @Test
   fun `Should insert show into database using Trakt ID`() {
     runBlocking {
+      coJustRun { myShowsDao.deleteById(any()) }
+      coJustRun { archivedShowsDao.deleteById(any()) }
+
       val slot = slot<SeeLaterShow>()
       coJustRun { seeLaterShowsDao.insert(capture(slot)) }
 
@@ -80,6 +90,26 @@ class SeeLaterShowsRepositoryTest : BaseMockTest() {
       assertThat(slot.captured.idTrakt).isEqualTo(1)
 
       coVerify(exactly = 1) { seeLaterShowsDao.insert(any()) }
+    }
+  }
+
+  @Test
+  fun `Should delete show from archived and my shows when inserting into see later`() {
+    runBlocking {
+      coJustRun { myShowsDao.deleteById(any()) }
+      coJustRun { archivedShowsDao.deleteById(any()) }
+
+      val slot = slot<SeeLaterShow>()
+      coJustRun { seeLaterShowsDao.insert(capture(slot)) }
+
+      SUT.insert(IdTrakt(1L))
+
+      assertThat(slot.captured.id).isEqualTo(0)
+      assertThat(slot.captured.idTrakt).isEqualTo(1)
+
+      coVerify(exactly = 1) { seeLaterShowsDao.insert(any()) }
+      coVerify(exactly = 1) { myShowsDao.deleteById(1L) }
+      coVerify(exactly = 1) { archivedShowsDao.deleteById(1L) }
     }
   }
 
