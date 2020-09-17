@@ -83,9 +83,9 @@
   <string name="textWatchlistEmpty">Your <b>Watchlist</b> is currently empty.\n\nVisit <b>Discover</b> tab to add shows or import your Trakt.tv collection.</string>
   <string name="textMyShowsEmpty">Your shows collection is currently empty.\n\nVisit <b>Discover</b> tab to add your first show.</string>
   <string name="textSeeLaterEmpty">Your <b>See Later</b> collection is currently empty.\n\nVisit <b>Discover</b> tab to add shows you might want to see in the future.</string>
-  <string name="textArchiveEmpty">Your <b>Archive</b> is currently empty.\n\n<b>Archive</b> is a list for shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Watchlist</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
+  <string name="textArchiveEmpty">Your <b>Archive</b> is currently empty.\n\n<b>Archive</b> is a list of shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Watchlist</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
   <string name="textWhatIsArchive">What\'s Archive?</string>
-  <string name="textArchiveDescription"><b>Archive</b> is a list for shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Watchlist</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
+  <string name="textArchiveDescription"><b>Archive</b> is a list of shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Watchlist</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
   <string name="textCalendarEmpty">There are no new episodes on the way.</string>
   <string name="textStatisticsEmpty">At least one show must be followed\nbefore statistics can be displayed.</string>
   <string name="textNewEpisodeAvailable">New episode is available now!</string>
@@ -241,7 +241,7 @@
 
   <string name="textWhatsNewTitle">What\'s New</string>
   <string name="textWhatsNewSubtitle">Version %s</string>
-  <string name="textWhatsNewMessage">- Added \'Calendar\' section in Watchlist that displays timeline of your shows new upcoming episodes\n\n- Added new, extended filters view for Discover feed\n\n- Added Trakt.tv Instant Sync option that allows you instantly sent episodes to Trakt after you mark them as watched\n\n- Added \'Show More\' options in Statistics section\n\n- Added support for translucent status bar and notches</string>
+  <string name="textWhatsNewMessage">* Added new <b>Archive</b> section in <b>My Shows</b> tab. You can now move shows that have abandoned, dropped or you are simply not interested in anymore, into the archive.\n\nArchived shows will no longer appear in <b>Watchlist</b>, <b>Discover</b> and <b>My Shows</b>. They will also be skipped during Trakt.tv import.\n\n* Added percentage value in progress indicators\n\n* Minor bugfixes</string>
 
   <string name="shortcutDiscover">Discover</string>
   <string name="shortcutMyShows">My Shows</string>
