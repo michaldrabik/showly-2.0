@@ -23,6 +23,7 @@ import com.michaldrabik.showly2.model.SortOrder.EPISODES_LEFT
 import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
+import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
@@ -45,7 +46,7 @@ import kotlinx.android.synthetic.main.view_search.*
 class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
   OnEpisodesSyncedListener,
   OnTabReselectedListener,
-  OnTraktSyncListener {
+  OnTraktSyncListener, TabLayout.OnTabSelectedListener {
 
   override val viewModel by viewModels<WatchlistViewModel> { viewModelFactory }
 
@@ -72,9 +73,14 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
 
   override fun onResume() {
     super.onResume()
-    setupBackPress()
+    setupBackPressed()
     showNavigation()
     viewModel.loadWatchlist()
+  }
+
+  override fun onDestroyView() {
+    watchlistTabs.removeOnTabSelectedListener(this)
+    super.onDestroyView()
   }
 
   private fun setupView() {
@@ -99,20 +105,14 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
       adapter = WatchlistPagesAdapter(this@WatchlistFragment)
     }
 
-    watchlistTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-      override fun onTabSelected(tab: TabLayout.Tab) {
-        watchlistPager.currentItem = tab.position
-      }
-
-      override fun onTabReselected(tab: TabLayout.Tab) = Unit
-      override fun onTabUnselected(tab: TabLayout.Tab) = Unit
-    })
     TabLayoutMediator(watchlistTabs, watchlistPager) { tab, position ->
       tab.text = when (position) {
         0 -> getString(R.string.tabWatchlist)
         else -> getString(R.string.tabCalendar)
       }
     }.attach()
+
+    watchlistTabs.addOnTabSelectedListener(this)
   }
 
   private fun setupStatusBar() {
@@ -127,7 +127,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     }
   }
 
-  private fun setupBackPress() {
+  private fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
       if (watchlistSearchView.isSearching) {
@@ -137,6 +137,10 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
         dispatcher.onBackPressed()
       }
     }
+  }
+
+  override fun onTabSelected(tab: TabLayout.Tab) {
+    watchlistPager.currentItem = tab.position
   }
 
   fun openShowDetails(item: WatchlistItem) {
@@ -231,7 +235,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     watchlistSortIcon.translationY = 0F
     watchlistPager.nextPage()
     childFragmentManager.fragments.forEach {
-      (it as? OnTabReselectedListener)?.onTabReselected()
+      (it as? OnScrollResetListener)?.onScrollReset()
     }
   }
 
@@ -252,4 +256,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
       }
     }
   }
+
+  override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
+  override fun onTabReselected(tab: TabLayout.Tab?) = Unit
 }

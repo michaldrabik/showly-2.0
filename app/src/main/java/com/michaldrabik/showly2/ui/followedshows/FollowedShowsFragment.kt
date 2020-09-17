@@ -47,7 +47,7 @@ import kotlinx.android.synthetic.main.view_search.*
 
 class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.fragment_followed_shows),
   OnTabReselectedListener,
-  OnTraktSyncListener {
+  OnTraktSyncListener, TabLayout.OnTabSelectedListener {
 
   override val viewModel by viewModels<FollowedShowsViewModel> { viewModelFactory }
 
@@ -119,6 +119,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
   }
 
   override fun onDestroyView() {
+    followedShowsTabs.removeOnTabSelectedListener(this)
     followedShowsPager.unregisterOnPageChangeCallback(pageScrollCallback)
     seeLaterFragment = null
     super.onDestroyView()
@@ -133,14 +134,6 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
       registerOnPageChangeCallback(pageScrollCallback)
     }
 
-    followedShowsTabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-      override fun onTabSelected(tab: TabLayout.Tab) {
-        followedShowsPager.currentItem = tab.position
-      }
-
-      override fun onTabReselected(tab: TabLayout.Tab) = Unit
-      override fun onTabUnselected(tab: TabLayout.Tab) = Unit
-    })
     TabLayoutMediator(followedShowsTabs, followedShowsPager) { tab, position ->
       tab.text = when (position) {
         0 -> getString(R.string.tabMyShows)
@@ -149,6 +142,12 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
         else -> error("Unsupported index")
       }
     }.attach()
+
+    followedShowsTabs.addOnTabSelectedListener(this)
+  }
+
+  override fun onTabSelected(tab: TabLayout.Tab) {
+    followedShowsPager.currentItem = tab.position
   }
 
   private fun enterSearch() {
@@ -284,7 +283,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
     followedShowsTabs.translationY = 0F
     followedShowsPager.nextPage()
     childFragmentManager.fragments.forEach {
-      (it as? OnTabReselectedListener)?.onTabReselected()
+      (it as? OnScrollResetListener)?.onScrollReset()
     }
   }
 
@@ -305,4 +304,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
       }
     }
   }
+
+  override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
+  override fun onTabReselected(tab: TabLayout.Tab?) = Unit
 }

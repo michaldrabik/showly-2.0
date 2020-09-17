@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
+import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.watchlist.WatchlistFragment
 import com.michaldrabik.showly2.ui.watchlist.WatchlistViewModel
@@ -22,7 +22,7 @@ import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_watchlist_upcoming.*
 
 class WatchlistUpcomingFragment : BaseFragment<WatchlistUpcomingViewModel>(R.layout.fragment_watchlist_upcoming),
-  OnTabReselectedListener {
+  OnScrollResetListener {
 
   private val parentViewModel by viewModels<WatchlistViewModel>({ requireParentFragment() }) { viewModelFactory }
   override val viewModel by viewModels<WatchlistUpcomingViewModel> { viewModelFactory }
@@ -72,7 +72,7 @@ class WatchlistUpcomingFragment : BaseFragment<WatchlistUpcomingViewModel>(R.lay
     }
   }
 
-  override fun onTabReselected() = watchlistUpcomingRecycler.smoothScrollToPosition(0)
+  override fun onScrollReset() = watchlistUpcomingRecycler.smoothScrollToPosition(0)
 
   private fun render(uiModel: WatchlistUpcomingUiModel) {
     uiModel.run {

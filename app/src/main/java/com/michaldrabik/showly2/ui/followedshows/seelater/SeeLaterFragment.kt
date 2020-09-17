@@ -19,7 +19,6 @@ import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.SortOrder.NEWEST
 import com.michaldrabik.showly2.model.SortOrder.RATING
 import com.michaldrabik.showly2.ui.common.OnScrollResetListener
-import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
@@ -30,7 +29,6 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.fragment_see_later.*
 
 class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(R.layout.fragment_see_later),
-  OnTabReselectedListener,
   OnScrollResetListener,
   OnTraktSyncListener {
 
@@ -114,8 +112,6 @@ class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(R.layout.fragment_see_l
   fun onTabScrollPosition(position: Float) {
     seeLaterSortIcon.alpha = 1F - (2F * position)
   }
-
-  override fun onTabReselected() = onScrollReset()
 
   override fun onScrollReset() = seeLaterRoot.smoothScrollTo(0, 0)
 

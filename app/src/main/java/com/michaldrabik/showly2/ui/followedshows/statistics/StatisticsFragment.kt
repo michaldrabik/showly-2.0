@@ -10,8 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.ui.common.OnScrollResetListener
-import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
@@ -20,9 +18,7 @@ import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import kotlinx.android.synthetic.main.fragment_statistics.*
 
-class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_statistics),
-  OnTabReselectedListener,
-  OnScrollResetListener {
+class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_statistics) {
 
   override val viewModel by viewModels<StatisticsViewModel> { viewModelFactory }
 
@@ -94,8 +90,4 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
       findNavController().popBackStack()
     }
   }
-
-  override fun onTabReselected() = onScrollReset()
-
-  override fun onScrollReset() = statisticsRoot.smoothScrollTo(0, 0)
 }

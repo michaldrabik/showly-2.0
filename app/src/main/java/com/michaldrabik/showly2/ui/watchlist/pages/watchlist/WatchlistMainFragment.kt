@@ -16,7 +16,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.model.Tip
 import com.michaldrabik.showly2.requireAppContext
-import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
+import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.watchlist.WatchlistFragment
 import com.michaldrabik.showly2.ui.watchlist.WatchlistViewModel
@@ -34,7 +34,7 @@ import kotlinx.android.synthetic.main.fragment_watchlist_main.*
 import kotlinx.android.synthetic.main.layout_watchlist_empty.*
 
 class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.fragment_watchlist_main),
-  OnTabReselectedListener {
+  OnScrollResetListener {
 
   private val parentViewModel by viewModels<WatchlistViewModel>({ requireParentFragment() }) { viewModelFactory }
   override val viewModel by viewModels<WatchlistMainViewModel> { viewModelFactory }
@@ -118,7 +118,7 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
     menu.show()
   }
 
-  override fun onTabReselected() = watchlistMainRecycler.smoothScrollToPosition(0)
+  override fun onScrollReset() = watchlistMainRecycler.smoothScrollToPosition(0)
 
   private fun render(uiModel: WatchlistMainUiModel) {
     uiModel.run {

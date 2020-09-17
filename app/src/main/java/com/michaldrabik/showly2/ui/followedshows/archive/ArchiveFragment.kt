@@ -19,7 +19,6 @@ import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.SortOrder.NEWEST
 import com.michaldrabik.showly2.model.SortOrder.RATING
 import com.michaldrabik.showly2.ui.common.OnScrollResetListener
-import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
@@ -30,7 +29,6 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.fragment_archive.*
 
 class ArchiveFragment : BaseFragment<ArchiveViewModel>(R.layout.fragment_archive),
-  OnTabReselectedListener,
   OnScrollResetListener,
   OnTraktSyncListener {
 
@@ -110,12 +108,6 @@ class ArchiveFragment : BaseFragment<ArchiveViewModel>(R.layout.fragment_archive
   private fun openShowDetails(show: Show) {
     (parentFragment as? FollowedShowsFragment)?.openShowDetails(show)
   }
-
-  fun onTabScrollPosition(position: Float) {
-    archiveSortIcon.alpha = 1F - (2F * position)
-  }
-
-  override fun onTabReselected() = onScrollReset()
 
   override fun onScrollReset() = archiveRoot.smoothScrollTo(0, 0)
 

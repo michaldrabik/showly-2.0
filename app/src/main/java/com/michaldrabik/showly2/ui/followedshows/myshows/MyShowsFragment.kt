@@ -20,7 +20,6 @@ import com.michaldrabik.showly2.model.SortOrder.NAME
 import com.michaldrabik.showly2.model.SortOrder.NEWEST
 import com.michaldrabik.showly2.model.SortOrder.RATING
 import com.michaldrabik.showly2.ui.common.OnScrollResetListener
-import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
@@ -30,7 +29,6 @@ import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 
 class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_shows),
-  OnTabReselectedListener,
   OnScrollResetListener,
   OnTraktSyncListener {
 
@@ -117,8 +115,6 @@ class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_show
   private fun openShowDetails(show: Show) {
     (parentFragment as? FollowedShowsFragment)?.openShowDetails(show)
   }
-
-  override fun onTabReselected() = onScrollReset()
 
   override fun onScrollReset() = myShowsRecycler.scrollToPosition(0)
 
