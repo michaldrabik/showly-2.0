@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.followedshows.statistics.views.ratings
+package com.michaldrabik.showly2.ui.statistics.views.ratings
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.card.MaterialCardView
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.discover.recycler.ListItem
-import com.michaldrabik.showly2.ui.followedshows.statistics.views.ratings.recycler.StatisticsRatingItem
-import com.michaldrabik.showly2.ui.followedshows.statistics.views.ratings.recycler.StatisticsRatingsAdapter
+import com.michaldrabik.showly2.ui.statistics.views.ratings.recycler.StatisticsRatingItem
+import com.michaldrabik.showly2.ui.statistics.views.ratings.recycler.StatisticsRatingsAdapter
 import com.michaldrabik.showly2.utilities.extensions.addDivider
 import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
 import kotlinx.android.synthetic.main.view_statistics_card_ratings.view.*

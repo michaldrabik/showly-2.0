@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.followedshows.statistics
+package com.michaldrabik.showly2.ui.statistics
 
 import android.os.Bundle
 import android.view.View

@@ -1,8 +1,8 @@
-package com.michaldrabik.showly2.ui.followedshows.statistics
+package com.michaldrabik.showly2.ui.statistics
 
 import com.michaldrabik.showly2.ui.common.UiModel
-import com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.StatisticsMostWatchedItem
-import com.michaldrabik.showly2.ui.followedshows.statistics.views.ratings.recycler.StatisticsRatingItem
+import com.michaldrabik.showly2.ui.statistics.views.mostWatched.StatisticsMostWatchedItem
+import com.michaldrabik.showly2.ui.statistics.views.ratings.recycler.StatisticsRatingItem
 
 data class StatisticsUiModel(
   val mostWatchedShows: List<StatisticsMostWatchedItem>? = null,

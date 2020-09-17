@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.followedshows.statistics
+package com.michaldrabik.showly2.ui.statistics
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
@@ -8,8 +8,8 @@ import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import com.michaldrabik.showly2.ui.followedshows.statistics.cases.StatisticsLoadRatingsCase
-import com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.StatisticsMostWatchedItem
+import com.michaldrabik.showly2.ui.statistics.cases.StatisticsLoadRatingsCase
+import com.michaldrabik.showly2.ui.statistics.views.mostWatched.StatisticsMostWatchedItem
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.Season

@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched
+package com.michaldrabik.showly2.ui.statistics.views.mostWatched
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.recycler.MostWatchedAdapter
+import com.michaldrabik.showly2.ui.statistics.views.mostWatched.recycler.MostWatchedAdapter
 import com.michaldrabik.showly2.utilities.extensions.addDivider
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf

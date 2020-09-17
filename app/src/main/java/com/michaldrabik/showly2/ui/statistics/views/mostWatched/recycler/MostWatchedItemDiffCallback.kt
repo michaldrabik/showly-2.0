@@ -1,7 +1,7 @@
-package com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.recycler
+package com.michaldrabik.showly2.ui.statistics.views.mostWatched.recycler
 
 import androidx.recyclerview.widget.DiffUtil
-import com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.StatisticsMostWatchedItem
+import com.michaldrabik.showly2.ui.statistics.views.mostWatched.StatisticsMostWatchedItem
 
 class MostWatchedItemDiffCallback : DiffUtil.ItemCallback<StatisticsMostWatchedItem>() {
 

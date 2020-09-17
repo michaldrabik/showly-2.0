@@ -42,7 +42,7 @@
       tools:visibility="visible"
       >
 
-      <com.michaldrabik.showly2.ui.followedshows.statistics.views.StatisticsTotalTimeSpentView
+      <com.michaldrabik.showly2.ui.statistics.views.StatisticsTotalTimeSpentView
         android:id="@+id/statisticsTotalTimeSpent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
         app:layout_constraintVertical_chainStyle="packed"
         />
 
-      <com.michaldrabik.showly2.ui.followedshows.statistics.views.StatisticsTotalEpisodesView
+      <com.michaldrabik.showly2.ui.statistics.views.StatisticsTotalEpisodesView
         android:id="@+id/statisticsTotalEpisodes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
         app:layout_constraintTop_toBottomOf="@id/statisticsTotalTimeSpent"
         />
 
-      <com.michaldrabik.showly2.ui.followedshows.statistics.views.StatisticsTopGenresView
+      <com.michaldrabik.showly2.ui.statistics.views.StatisticsTopGenresView
         android:id="@+id/statisticsTopGenres"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
         app:layout_constraintTop_toBottomOf="@id/statisticsTotalEpisodes"
         />
 
-      <com.michaldrabik.showly2.ui.followedshows.statistics.views.ratings.StatisticsRatingsView
+      <com.michaldrabik.showly2.ui.statistics.views.ratings.StatisticsRatingsView
         android:id="@+id/statisticsRatings"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
         tools:visibility="visible"
         />
 
-      <com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.StatisticsMostWatchedShowsView
+      <com.michaldrabik.showly2.ui.statistics.views.mostWatched.StatisticsMostWatchedShowsView
         android:id="@+id/statisticsMostWatchedShows"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.followedshows.statistics.cases
+package com.michaldrabik.showly2.ui.statistics.cases
 
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.di.scope.AppScope
@@ -6,7 +6,7 @@ import com.michaldrabik.showly2.model.ImageType
 import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.showly2.repository.rating.RatingsRepository
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
-import com.michaldrabik.showly2.ui.followedshows.statistics.views.ratings.recycler.StatisticsRatingItem
+import com.michaldrabik.showly2.ui.statistics.views.ratings.recycler.StatisticsRatingItem
 import javax.inject.Inject
 
 @AppScope

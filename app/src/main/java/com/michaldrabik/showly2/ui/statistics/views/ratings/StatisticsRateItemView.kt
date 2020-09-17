@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.followedshows.statistics.views.ratings
+package com.michaldrabik.showly2.ui.statistics.views.ratings
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,7 +7,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.views.ShowView
-import com.michaldrabik.showly2.ui.followedshows.statistics.views.ratings.recycler.StatisticsRatingItem
+import com.michaldrabik.showly2.ui.statistics.views.ratings.recycler.StatisticsRatingItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick

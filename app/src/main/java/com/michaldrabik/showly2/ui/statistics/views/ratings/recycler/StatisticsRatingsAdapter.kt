@@ -1,11 +1,11 @@
-package com.michaldrabik.showly2.ui.followedshows.statistics.views.ratings.recycler
+package com.michaldrabik.showly2.ui.statistics.views.ratings.recycler
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.showly2.ui.common.base.BaseAdapter
-import com.michaldrabik.showly2.ui.followedshows.statistics.views.ratings.StatisticsRateItemView
+import com.michaldrabik.showly2.ui.statistics.views.ratings.StatisticsRateItemView
 
 class StatisticsRatingsAdapter : BaseAdapter<StatisticsRatingItem>() {
 

@@ -192,7 +192,7 @@
 
   <fragment
     android:id="@+id/statisticsFragment"
-    android:name="com.michaldrabik.showly2.ui.followedshows.statistics.StatisticsFragment"
+    android:name="com.michaldrabik.showly2.ui.statistics.StatisticsFragment"
     android:label="fragmentStatistics"
     >
     <action

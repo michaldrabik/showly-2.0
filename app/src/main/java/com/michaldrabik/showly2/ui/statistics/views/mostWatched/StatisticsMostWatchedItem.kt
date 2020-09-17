@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched
+package com.michaldrabik.showly2.ui.statistics.views.mostWatched
 
 import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.model.Image

@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.followedshows.statistics.views
+package com.michaldrabik.showly2.ui.statistics.views
 
 import android.annotation.SuppressLint
 import android.content.Context

@@ -1,11 +1,11 @@
-package com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.recycler
+package com.michaldrabik.showly2.ui.statistics.views.mostWatched.recycler
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.showly2.ui.common.base.BaseAdapter
-import com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.StatisticsMostWatchedItem
-import com.michaldrabik.showly2.ui.followedshows.statistics.views.mostWatched.StatisticsMostWatchedItemView
+import com.michaldrabik.showly2.ui.statistics.views.mostWatched.StatisticsMostWatchedItem
+import com.michaldrabik.showly2.ui.statistics.views.mostWatched.StatisticsMostWatchedItemView
 
 class MostWatchedAdapter : BaseAdapter<StatisticsMostWatchedItem>() {
 

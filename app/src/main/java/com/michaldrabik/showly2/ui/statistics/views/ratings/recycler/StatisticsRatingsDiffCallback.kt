@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.followedshows.statistics.views.ratings.recycler
+package com.michaldrabik.showly2.ui.statistics.views.ratings.recycler
 
 import androidx.recyclerview.widget.DiffUtil
 
