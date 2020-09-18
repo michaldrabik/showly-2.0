@@ -213,7 +213,7 @@
   <string name="textStatisticsRatings">Recently Rated</string>
 
   <string name="textRateAppTitle">Enjoying Showly 2.0?</string>
-  <string name="textRateAppMessage">Would you like to rate the app?\nIt will only take a few seconds.</string>
+  <string name="textRateAppMessage">Would you like to rate the app?\nIt only takes a few seconds. Thanks!\n\n<i>The app will not be closed.</i></string>
   <string name="textRateAppYesButton">Sure, why not?</string>
   <string name="textRateAppNoButton">Not now</string>
 
