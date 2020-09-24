@@ -77,6 +77,14 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
+  suspend fun enableArchivedStatistics(enable: Boolean) {
+    val settings = settingsRepository.load()
+    settings.let {
+      val new = it.copy(archiveShowsIncludeStatistics = enable)
+      settingsRepository.update(new)
+    }
+  }
+
   suspend fun setWhenToNotify(delay: NotificationDelay, context: Context) {
     val settings = settingsRepository.load()
     settings.let {

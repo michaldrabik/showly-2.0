@@ -6,6 +6,7 @@ import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.model.mappers.Mappers
+import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.statistics.cases.StatisticsLoadRatingsCase
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class StatisticsViewModel @Inject constructor(
   private val ratingsCase: StatisticsLoadRatingsCase,
   private val showsRepository: ShowsRepository,
+  private val settingsRepository: SettingsRepository,
   private val imagesProvider: ShowImagesProvider,
   private val database: AppDatabase,
   private val mappers: Mappers
@@ -30,21 +32,29 @@ class StatisticsViewModel @Inject constructor(
   fun loadMostWatchedShows(limit: Int = 0) {
     takeLimit += limit
     viewModelScope.launch {
-      val myShows = showsRepository.myShows.loadAll()
-      val myShowsIds = myShows.map { it.traktId }
-      val episodes = batchEpisodes(myShowsIds)
-      val seasons = batchSeasons(myShowsIds)
+      val includeArchive = settingsRepository.load().archiveShowsIncludeStatistics
+      uiState = StatisticsUiModel(archivedShowsIncluded = includeArchive)
 
-      val genres = extractTopGenres(myShows)
-      val mostWatchedShows = myShowsIds
+      val myShows = showsRepository.myShows.loadAll()
+      val archiveShows = if (includeArchive) showsRepository.archiveShows.loadAll() else emptyList()
+
+      val allShows = (myShows + archiveShows).distinctBy { it.traktId }
+      val allShowsIds = allShows.map { it.traktId }
+
+      val episodes = batchEpisodes(allShowsIds)
+      val seasons = batchSeasons(allShowsIds)
+
+      val genres = extractTopGenres(allShows)
+      val mostWatchedShows = allShowsIds
         .map { showId ->
           StatisticsMostWatchedItem(
-            show = myShows.first { it.traktId == showId },
+            show = allShows.first { it.traktId == showId },
             seasonsCount = seasons.filter { it.idShowTrakt == showId }.count().toLong(),
             episodes = episodes
               .filter { it.idShowTrakt == showId }
               .map { mappers.episode.fromDatabase(it) },
-            image = Image.createUnknown(POSTER)
+            image = Image.createUnknown(POSTER),
+            isArchived = archiveShows.any { it.traktId == showId }
           )
         }
         .sortedByDescending { item -> item.episodes.sumBy { it.runtime } }
@@ -56,7 +66,7 @@ class StatisticsViewModel @Inject constructor(
       delay(150) // Let transition finish peacefully.
       uiState = StatisticsUiModel(
         mostWatchedShows = mostWatchedShows,
-        mostWatchedTotalCount = myShowsIds.size,
+        mostWatchedTotalCount = allShowsIds.size,
         totalTimeSpentMinutes = episodes.sumBy { it.runtime }.toLong(),
         totalWatchedEpisodes = episodes.count().toLong(),
         totalWatchedEpisodesShows = episodes.distinctBy { it.idShowTrakt }.count().toLong(),
@@ -102,12 +112,12 @@ class StatisticsViewModel @Inject constructor(
     return batchSeasons(showsIds.filter { it !in batch }, allSeasons)
   }
 
-  private fun extractTopGenres(myShows: List<Show>) =
-    myShows
+  private fun extractTopGenres(shows: List<Show>) =
+    shows
       .flatMap { it.genres }
       .asSequence()
       .distinct()
-      .map { genre -> Pair(genre, myShows.count { genre in it.genres }) }
+      .map { genre -> Pair(genre, shows.count { genre in it.genres }) }
       .sortedByDescending { it.second }
       .map { it.first }
       .toList()

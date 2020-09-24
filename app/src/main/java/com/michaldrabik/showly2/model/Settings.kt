@@ -27,7 +27,8 @@ data class Settings(
   val traktSyncSchedule: TraktSyncSchedule,
   val traktQuickSyncEnabled: Boolean,
   val traktQuickRemoveEnabled: Boolean,
-  val watchlistSortOrder: SortOrder
+  val watchlistSortOrder: SortOrder,
+  val archiveShowsIncludeStatistics: Boolean
 ) {
 
   companion object {
@@ -56,7 +57,8 @@ data class Settings(
       traktSyncSchedule = TraktSyncSchedule.OFF,
       traktQuickSyncEnabled = false,
       traktQuickRemoveEnabled = false,
-      watchlistSortOrder = SortOrder.NAME
+      watchlistSortOrder = SortOrder.NAME,
+      archiveShowsIncludeStatistics = true
     )
   }
 }

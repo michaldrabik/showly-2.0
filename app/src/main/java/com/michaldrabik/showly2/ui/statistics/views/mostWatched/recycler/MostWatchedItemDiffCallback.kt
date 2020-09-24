@@ -12,5 +12,6 @@ class MostWatchedItemDiffCallback : DiffUtil.ItemCallback<StatisticsMostWatchedI
     oldItem.image == newItem.image &&
       oldItem.isLoading == newItem.isLoading &&
       oldItem.seasonsCount == newItem.seasonsCount &&
-      oldItem.episodes.size == newItem.episodes.size
+      oldItem.episodes.size == newItem.episodes.size &&
+      oldItem.isArchived == newItem.isArchived
 }

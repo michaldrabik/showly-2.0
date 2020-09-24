@@ -33,7 +33,8 @@ class SettingsMapper @Inject constructor() {
     traktSyncSchedule = enumValueOf(settings.traktSyncSchedule),
     traktQuickSyncEnabled = settings.traktQuickSyncEnabled,
     traktQuickRemoveEnabled = settings.traktQuickRemoveEnabled,
-    watchlistSortOrder = enumValueOf(settings.watchlistSortBy)
+    watchlistSortOrder = enumValueOf(settings.watchlistSortBy),
+    archiveShowsIncludeStatistics = settings.archiveShowsIncludeStatistics
   )
 
   fun toDatabase(settings: Settings) = SettingsDb(
@@ -61,6 +62,7 @@ class SettingsMapper @Inject constructor() {
     traktSyncSchedule = settings.traktSyncSchedule.name,
     traktQuickSyncEnabled = settings.traktQuickSyncEnabled,
     traktQuickRemoveEnabled = settings.traktQuickRemoveEnabled,
-    watchlistSortBy = settings.watchlistSortOrder.name
+    watchlistSortBy = settings.watchlistSortOrder.name,
+    archiveShowsIncludeStatistics = settings.archiveShowsIncludeStatistics
   )
 }

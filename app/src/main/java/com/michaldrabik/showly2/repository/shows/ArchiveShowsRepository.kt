@@ -19,6 +19,10 @@ class ArchiveShowsRepository @Inject constructor(
     database.archiveShowsDao().getAll()
       .map { mappers.show.fromDatabase(it) }
 
+  suspend fun loadAll(ids: List<IdTrakt>) =
+    database.archiveShowsDao().getAll(ids.map { it.id })
+      .map { mappers.show.fromDatabase(it) }
+
   suspend fun load(id: IdTrakt) =
     database.archiveShowsDao().getById(id.id)?.let {
       mappers.show.fromDatabase(it)

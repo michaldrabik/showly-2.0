@@ -78,6 +78,14 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
+  fun enableArchivedStatistics(enable: Boolean) {
+    viewModelScope.launch {
+      mainCase.enableArchivedStatistics(enable)
+      refreshSettings()
+      Analytics.logSettingsArchivedStats(enable)
+    }
+  }
+
   fun setWhenToNotify(delay: NotificationDelay, context: Context) {
     viewModelScope.launch {
       mainCase.setWhenToNotify(delay, context)

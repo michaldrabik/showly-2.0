@@ -29,6 +29,7 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:navigationIcon="@drawable/ic_arrow_back"
+      app:subtitleTextAppearance="@style/ToolbarSubtitleAppearance"
       app:title="@string/tabStatistics"
       />
 

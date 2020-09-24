@@ -11,7 +11,8 @@ data class StatisticsUiModel(
   val totalWatchedEpisodes: Long? = null,
   val totalWatchedEpisodesShows: Long? = null,
   val topGenres: List<String>? = null,
-  val ratings: List<StatisticsRatingItem>? = null
+  val ratings: List<StatisticsRatingItem>? = null,
+  val archivedShowsIncluded: Boolean? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -22,6 +23,7 @@ data class StatisticsUiModel(
       totalWatchedEpisodes = newModel.totalWatchedEpisodes ?: totalWatchedEpisodes,
       totalWatchedEpisodesShows = newModel.totalWatchedEpisodesShows ?: totalWatchedEpisodesShows,
       topGenres = newModel.topGenres?.toList() ?: topGenres,
-      ratings = newModel.ratings?.toList() ?: ratings
+      ratings = newModel.ratings?.toList() ?: ratings,
+      archivedShowsIncluded = newModel.archivedShowsIncluded ?: archivedShowsIncluded
     )
 }

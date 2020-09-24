@@ -10,5 +10,6 @@ data class StatisticsMostWatchedItem(
   val episodes: List<Episode>,
   val seasonsCount: Long,
   override val image: Image,
-  override val isLoading: Boolean = false
+  override val isLoading: Boolean = false,
+  val isArchived: Boolean
 ) : ListItem

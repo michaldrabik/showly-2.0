@@ -79,6 +79,11 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
         statisticsContent.fadeIf(it.isNotEmpty())
         statisticsEmptyView.fadeIf(it.isEmpty())
       }
+      archivedShowsIncluded?.let {
+        if (!it) {
+          statisticsToolbar.subtitle = getString(R.string.textArchivedShowsExcluded)
+        }
+      }
     }
   }
 
