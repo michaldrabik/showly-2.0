@@ -24,3 +24,4 @@ jobs:
       run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.35.0/ktlint && chmod a+x ktlint && ./ktlint
     - name: Run Unit Tests
       run: ./gradlew :app:testDebugUnitTest
+      run: ./gradlew :ui-repository:testDebugUnitTest
