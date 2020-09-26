@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -97,8 +96,8 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, Observer { render(it) })
-      messageLiveData.observe(viewLifecycleOwner, Observer { renderSnackbar(it) })
+      uiLiveData.observe(viewLifecycleOwner, { render(it) })
+      messageLiveData.observe(viewLifecycleOwner, { renderSnackbar(it) })
       loadImage(episode.ids.tvdb)
       loadRatings(episode)
     }

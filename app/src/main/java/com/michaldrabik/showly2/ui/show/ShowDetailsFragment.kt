@@ -22,7 +22,6 @@ import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
@@ -127,8 +126,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     setupSeasonsList()
 
     viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, Observer { showSnack(it) })
+      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
+      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
       loadShowDetails(showId, requireAppContext())
     }
   }

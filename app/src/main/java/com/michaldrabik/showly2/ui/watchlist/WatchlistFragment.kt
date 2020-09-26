@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.updateMargins
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -66,8 +65,8 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     setupStatusBar()
 
     viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, Observer { showSnack(it) })
+      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
+      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
     }
   }
 

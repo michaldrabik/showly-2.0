@@ -11,7 +11,6 @@ import android.widget.GridLayout
 import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -63,7 +62,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
     setupStatusBar()
 
     viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
+      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
       clearCache()
     }
   }

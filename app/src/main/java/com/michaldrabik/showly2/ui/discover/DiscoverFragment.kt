@@ -9,7 +9,6 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
@@ -61,8 +60,8 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     setupStatusBar()
 
     viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, Observer { showSnack(it) })
+      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
+      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
       loadDiscoverShows()
     }
   }

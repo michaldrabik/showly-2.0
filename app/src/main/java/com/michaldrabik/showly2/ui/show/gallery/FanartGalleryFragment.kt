@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.view.updateMargins
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
@@ -45,7 +44,7 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>(R.layout.frag
     setupStatusBar()
 
     viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
+      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
       loadImage(showId)
     }
   }

@@ -8,7 +8,6 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -54,8 +53,8 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
     setupRecycler()
     setupStatusBar()
 
-    parentViewModel.uiLiveData.observe(viewLifecycleOwner, Observer { viewModel.handleParentAction(it) })
-    viewModel.uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
+    parentViewModel.uiLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
+    viewModel.uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
   }
 
   private fun setupView() {

@@ -6,7 +6,6 @@ import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
@@ -33,7 +32,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
     setupStatusBar()
 
     viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
+      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
       if (!isInitialized) {
         loadMostWatchedShows()
         isInitialized = true

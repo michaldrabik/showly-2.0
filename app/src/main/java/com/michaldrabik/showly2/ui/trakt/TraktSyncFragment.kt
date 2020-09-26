@@ -10,7 +10,6 @@ import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.common.extensions.toDisplayString
@@ -49,8 +48,8 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(R.layout.fragment_tra
     setupStatusBar()
 
     viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, Observer { showSnack(it) })
+      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
+      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
       invalidate()
     }
   }

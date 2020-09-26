@@ -8,7 +8,6 @@ import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
@@ -66,8 +65,8 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
     }
 
     viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, Observer { showSnack(it) })
+      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
+      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
     }
   }
 

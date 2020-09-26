@@ -5,7 +5,6 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -49,7 +48,7 @@ class ArchiveFragment : BaseFragment<ArchiveViewModel>(R.layout.fragment_archive
     setupRecycler()
 
     viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, Observer { render(it!!) })
+      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
       loadShows()
     }
   }

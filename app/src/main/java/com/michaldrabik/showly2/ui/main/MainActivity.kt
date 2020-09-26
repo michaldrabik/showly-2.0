@@ -8,7 +8,6 @@ import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -96,7 +95,7 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
   private fun setupViewModel() {
     viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     viewModel.run {
-      uiLiveData.observe(this@MainActivity, Observer { render(it!!) })
+      uiLiveData.observe(this@MainActivity) { render(it!!) }
       initSettings()
       refreshTraktSyncSchedule(applicationContext)
     }
