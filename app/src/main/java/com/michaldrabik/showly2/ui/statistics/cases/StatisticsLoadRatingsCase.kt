@@ -12,11 +12,11 @@ import javax.inject.Inject
 
 @AppScope
 class StatisticsLoadRatingsCase @Inject constructor(
-    private val userTraktManager: UserTraktManager,
-    private val showsRepository: ShowsRepository,
-    private val settingsRepository: SettingsRepository,
-    private val ratingsRepository: RatingsRepository,
-    private val imagesProvider: ShowImagesProvider
+  private val userTraktManager: UserTraktManager,
+  private val showsRepository: ShowsRepository,
+  private val settingsRepository: SettingsRepository,
+  private val ratingsRepository: RatingsRepository,
+  private val imagesProvider: ShowImagesProvider
 ) {
 
   companion object {

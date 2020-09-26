@@ -12,8 +12,8 @@ import javax.inject.Inject
 
 @AppScope
 class ArchiveLoadShowsCase @Inject constructor(
-    private val showsRepository: ShowsRepository,
-    private val settingsRepository: SettingsRepository
+  private val showsRepository: ShowsRepository,
+  private val settingsRepository: SettingsRepository
 ) {
 
   suspend fun loadShows(): List<Show> {

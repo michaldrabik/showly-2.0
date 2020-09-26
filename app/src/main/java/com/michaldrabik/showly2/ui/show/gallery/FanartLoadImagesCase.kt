@@ -11,8 +11,8 @@ import javax.inject.Inject
 
 @AppScope
 class FanartLoadImagesCase @Inject constructor(
-    private val showsRepository: ShowsRepository,
-    private val imagesProvider: ShowImagesProvider
+  private val showsRepository: ShowsRepository,
+  private val imagesProvider: ShowImagesProvider
 ) {
 
   suspend fun loadInitialImage(id: IdTrakt): Image {

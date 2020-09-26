@@ -26,12 +26,12 @@ import javax.inject.Inject
 
 @AppScope
 class TraktImportWatchedRunner @Inject constructor(
-    private val cloud: Cloud,
-    private val database: AppDatabase,
-    private val mappers: Mappers,
-    private val imagesProvider: ShowImagesProvider,
-    private val userTvdbManager: UserTvdbManager,
-    userTraktManager: UserTraktManager
+  private val cloud: Cloud,
+  private val database: AppDatabase,
+  private val mappers: Mappers,
+  private val imagesProvider: ShowImagesProvider,
+  private val userTvdbManager: UserTvdbManager,
+  userTraktManager: UserTraktManager
 ) : TraktSyncRunner(userTraktManager) {
 
   override suspend fun run(): Int {

@@ -20,10 +20,10 @@ import javax.inject.Inject
 
 @AppScope
 class ShowImagesProvider @Inject constructor(
-    private val cloud: Cloud,
-    private val database: AppDatabase,
-    private val userManager: UserTvdbManager,
-    private val mappers: Mappers
+  private val cloud: Cloud,
+  private val database: AppDatabase,
+  private val userManager: UserTvdbManager,
+  private val mappers: Mappers
 ) {
 
   private val unavailableCache = mutableListOf<IdTrakt>()

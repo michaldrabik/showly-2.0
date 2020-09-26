@@ -25,10 +25,10 @@ import javax.inject.Inject
 
 @AppScope
 class MyShowsLoadShowsCase @Inject constructor(
-    private val imagesProvider: ShowImagesProvider,
-    private val showsRepository: ShowsRepository,
-    private val settingsRepository: SettingsRepository,
-    private val database: AppDatabase
+  private val imagesProvider: ShowImagesProvider,
+  private val showsRepository: ShowsRepository,
+  private val settingsRepository: SettingsRepository,
+  private val database: AppDatabase
 ) {
 
   suspend fun loadSettings() = settingsRepository.load()

@@ -16,10 +16,10 @@ import javax.inject.Inject
 
 @AppScope
 class EpisodeImagesProvider @Inject constructor(
-    private val cloud: Cloud,
-    private val database: AppDatabase,
-    private val userManager: UserTvdbManager,
-    private val mappers: Mappers
+  private val cloud: Cloud,
+  private val database: AppDatabase,
+  private val userManager: UserTvdbManager,
+  private val mappers: Mappers
 ) {
 
   private suspend fun findCachedImage(episode: Episode, type: ImageType): Image {

@@ -33,11 +33,11 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 
 class WatchlistWidgetViewsFactory(
-    private val context: Context,
-    private val loadItemsCase: WatchlistLoadItemsCase,
-    private val sortOrderCase: WatchlistSortOrderCase,
-    private val showsRepository: ShowsRepository,
-    private val imagesProvider: ShowImagesProvider
+  private val context: Context,
+  private val loadItemsCase: WatchlistLoadItemsCase,
+  private val sortOrderCase: WatchlistSortOrderCase,
+  private val showsRepository: ShowsRepository,
+  private val imagesProvider: ShowImagesProvider
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.Main

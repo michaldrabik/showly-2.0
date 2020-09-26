@@ -27,13 +27,13 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class TraktSyncViewModel @Inject constructor(
-    @Named("miscPreferences") private var miscPreferences: SharedPreferences,
-    private val userManager: UserTraktManager,
-    private val settingsRepository: SettingsRepository,
-    importWatchedRunner: TraktImportWatchedRunner,
-    importWatchlistRunner: TraktImportWatchlistRunner,
-    exportWatchedRunner: TraktImportWatchedRunner,
-    exportWatchlistRunner: TraktExportWatchlistRunner
+  @Named("miscPreferences") private var miscPreferences: SharedPreferences,
+  private val userManager: UserTraktManager,
+  private val settingsRepository: SettingsRepository,
+  importWatchedRunner: TraktImportWatchedRunner,
+  importWatchlistRunner: TraktImportWatchlistRunner,
+  exportWatchedRunner: TraktImportWatchedRunner,
+  exportWatchlistRunner: TraktExportWatchlistRunner
 ) : BaseViewModel<TraktSyncUiModel>() {
 
   init {

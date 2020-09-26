@@ -10,8 +10,8 @@ import javax.inject.Inject
 
 @AppScope
 class FollowedShowsSearchCase @Inject constructor(
-    private val showsRepository: ShowsRepository,
-    private val imagesProvider: ShowImagesProvider
+  private val showsRepository: ShowsRepository,
+  private val imagesProvider: ShowImagesProvider
 ) {
 
   private val searchItemsCache = mutableListOf<Show>()

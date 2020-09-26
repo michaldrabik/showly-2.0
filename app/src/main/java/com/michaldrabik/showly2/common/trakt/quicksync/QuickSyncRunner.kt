@@ -42,9 +42,9 @@ class QuickSyncRunner @Inject constructor(
   }
 
   private suspend fun exportItems(
-      token: TraktAuthToken,
-      type: TraktSyncQueue.Type,
-      count: Int = 0
+    token: TraktAuthToken,
+    type: TraktSyncQueue.Type,
+    count: Int = 0
   ): Int {
     val items = database.traktSyncQueueDao().getAll(type.slug).take(BATCH_LIMIT)
     if (items.isEmpty()) {
@@ -55,18 +55,18 @@ class QuickSyncRunner @Inject constructor(
     val toExport = items.distinctBy { it.idTrakt }
     Timber.d("Exporting ${toExport.count()} quick sync items...")
     when (type) {
-        EPISODE -> {
-          val request = SyncExportRequest(
-            episodes = toExport.map { SyncExportItem.create(it.idTrakt, com.michaldrabik.common.extensions.dateIsoStringFromMillis(it.updatedAt)) }
-          )
-          cloud.traktApi.postSyncWatched(token.token, request)
-        }
-        SHOW_SEE_LATER -> {
-          val request = SyncExportRequest(
-            shows = toExport.map { SyncExportItem.create(it.idTrakt, com.michaldrabik.common.extensions.dateIsoStringFromMillis(it.updatedAt)) }
-          )
-          cloud.traktApi.postSyncWatchlist(token.token, request)
-        }
+      EPISODE -> {
+        val request = SyncExportRequest(
+          episodes = toExport.map { SyncExportItem.create(it.idTrakt, com.michaldrabik.common.extensions.dateIsoStringFromMillis(it.updatedAt)) }
+        )
+        cloud.traktApi.postSyncWatched(token.token, request)
+      }
+      SHOW_SEE_LATER -> {
+        val request = SyncExportRequest(
+          shows = toExport.map { SyncExportItem.create(it.idTrakt, com.michaldrabik.common.extensions.dateIsoStringFromMillis(it.updatedAt)) }
+        )
+        cloud.traktApi.postSyncWatchlist(token.token, request)
+      }
     }
     database.traktSyncQueueDao().deleteAll(items.map { it.idTrakt }, type.slug)
 
