@@ -3,12 +3,12 @@ package com.michaldrabik.showly2.ui.discover.recycler
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.showly2.model.ImageType.FANART
-import com.michaldrabik.showly2.model.ImageType.FANART_WIDE
-import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.common.base.BaseAdapter
 import com.michaldrabik.showly2.ui.common.views.ShowFanartView
 import com.michaldrabik.showly2.ui.common.views.ShowPosterView
+import com.michaldrabik.ui_model.ImageType.FANART
+import com.michaldrabik.ui_model.ImageType.FANART_WIDE
+import com.michaldrabik.ui_model.ImageType.POSTER
 
 class DiscoverAdapter : BaseAdapter<DiscoverListItem>() {
 

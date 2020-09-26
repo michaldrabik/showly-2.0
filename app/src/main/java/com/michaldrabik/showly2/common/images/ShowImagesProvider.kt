@@ -1,29 +1,29 @@
 package com.michaldrabik.showly2.common.images
 
+import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.tvdb.model.TvdbImage
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.IdTrakt
-import com.michaldrabik.showly2.model.IdTvdb
-import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
-import com.michaldrabik.showly2.model.ImageFamily.SHOW
-import com.michaldrabik.showly2.model.ImageType
-import com.michaldrabik.showly2.model.ImageType.FANART
-import com.michaldrabik.showly2.model.ImageType.FANART_WIDE
-import com.michaldrabik.showly2.model.ImageType.POSTER
-import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.repository.UserTvdbManager
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.IdTvdb
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
+import com.michaldrabik.ui_model.ImageFamily.SHOW
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.ImageType.FANART
+import com.michaldrabik.ui_model.ImageType.FANART_WIDE
+import com.michaldrabik.ui_model.ImageType.POSTER
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_repository.UserTvdbManager
+import com.michaldrabik.ui_repository.mappers.Mappers
 import javax.inject.Inject
 
 @AppScope
 class ShowImagesProvider @Inject constructor(
-  private val cloud: Cloud,
-  private val database: AppDatabase,
-  private val userManager: UserTvdbManager,
-  private val mappers: Mappers
+    private val cloud: Cloud,
+    private val database: AppDatabase,
+    private val userManager: UserTvdbManager,
+    private val mappers: Mappers
 ) {
 
   private val unavailableCache = mutableListOf<IdTrakt>()

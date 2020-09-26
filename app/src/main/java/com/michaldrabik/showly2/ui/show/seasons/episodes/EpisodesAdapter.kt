@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.showly2.model.Episode
+import com.michaldrabik.ui_model.Episode
 
 class EpisodesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

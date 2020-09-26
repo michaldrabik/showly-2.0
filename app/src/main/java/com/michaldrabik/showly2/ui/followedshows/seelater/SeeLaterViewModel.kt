@@ -2,14 +2,14 @@ package com.michaldrabik.showly2.ui.followedshows.seelater
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
-import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.ImageType.POSTER
-import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.followedshows.seelater.cases.SeeLaterLoadShowsCase
 import com.michaldrabik.showly2.ui.followedshows.seelater.cases.SeeLaterSortOrderCase
 import com.michaldrabik.showly2.ui.followedshows.seelater.recycler.SeeLaterListItem
 import com.michaldrabik.showly2.utilities.extensions.findReplace
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageType.POSTER
+import com.michaldrabik.ui_model.SortOrder
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

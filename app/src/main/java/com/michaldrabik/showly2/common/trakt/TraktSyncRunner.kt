@@ -1,8 +1,8 @@
 package com.michaldrabik.showly2.common.trakt
 
 import com.michaldrabik.network.trakt.model.Show
-import com.michaldrabik.showly2.model.error.TraktAuthError
-import com.michaldrabik.showly2.repository.UserTraktManager
+import com.michaldrabik.ui_model.error.TraktAuthError
+import com.michaldrabik.ui_repository.UserTraktManager
 
 abstract class TraktSyncRunner(
   private val userTraktManager: UserTraktManager

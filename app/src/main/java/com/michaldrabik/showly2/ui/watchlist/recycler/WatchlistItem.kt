@@ -1,15 +1,15 @@
 package com.michaldrabik.showly2.ui.watchlist.recycler
 
+import com.michaldrabik.common.extensions.nowUtc
+import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.showly2.Config
-import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.ImageType
-import com.michaldrabik.showly2.model.Season
-import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.discover.recycler.ListItem
-import com.michaldrabik.showly2.utilities.extensions.nowUtc
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
-import com.michaldrabik.showly2.utilities.extensions.toMillis
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.Season
+import com.michaldrabik.ui_model.Show
 
 data class WatchlistItem(
   override val show: Show,

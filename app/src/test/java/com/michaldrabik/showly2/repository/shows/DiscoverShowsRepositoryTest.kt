@@ -2,11 +2,12 @@ package com.michaldrabik.showly2.repository.shows
 
 import BaseMockTest
 import com.google.common.truth.Truth.assertThat
-import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.dao.DiscoverShowsDao
 import com.michaldrabik.storage.database.dao.ShowsDao
 import com.michaldrabik.storage.database.model.DiscoverShow
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_repository.shows.DiscoverShowsRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.confirmVerified

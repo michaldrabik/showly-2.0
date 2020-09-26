@@ -2,12 +2,12 @@ package com.michaldrabik.showly2.ui.main.cases
 
 import android.content.SharedPreferences
 import com.google.firebase.messaging.FirebaseMessaging
+import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.Config
-import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.fcm.NotificationChannel
-import com.michaldrabik.showly2.model.Settings
-import com.michaldrabik.showly2.repository.settings.SettingsRepository
+import com.michaldrabik.ui_model.Settings
+import com.michaldrabik.ui_repository.SettingsRepository
 import javax.inject.Inject
 import javax.inject.Named
 

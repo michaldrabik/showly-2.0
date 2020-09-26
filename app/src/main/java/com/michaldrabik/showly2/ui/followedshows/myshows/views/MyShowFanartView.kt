@@ -10,13 +10,13 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.withFailListener
+import com.michaldrabik.ui_model.Image
 import kotlinx.android.synthetic.main.view_my_shows_section_item.view.*
 
 class MyShowFanartView : FrameLayout {

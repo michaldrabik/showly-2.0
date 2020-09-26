@@ -4,6 +4,10 @@ import android.content.Context
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
+import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.common.extensions.toDisplayString
+import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
@@ -11,21 +15,16 @@ import com.michaldrabik.showly2.common.notifications.AnnouncementWorker.Companio
 import com.michaldrabik.showly2.common.notifications.AnnouncementWorker.Companion.DATA_CONTENT
 import com.michaldrabik.showly2.common.notifications.AnnouncementWorker.Companion.DATA_IMAGE_URL
 import com.michaldrabik.showly2.common.notifications.AnnouncementWorker.Companion.DATA_TITLE
-import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.fcm.NotificationChannel
-import com.michaldrabik.showly2.model.Image.Status.AVAILABLE
-import com.michaldrabik.showly2.model.ImageType.FANART
-import com.michaldrabik.showly2.model.ImageType.POSTER
-import com.michaldrabik.showly2.model.NotificationDelay
-import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.repository.settings.SettingsRepository
-import com.michaldrabik.showly2.utilities.extensions.dateFromMillis
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
-import com.michaldrabik.showly2.utilities.extensions.toDisplayString
-import com.michaldrabik.showly2.utilities.extensions.toMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.Show
+import com.michaldrabik.ui_model.Image.Status.AVAILABLE
+import com.michaldrabik.ui_model.ImageType.FANART
+import com.michaldrabik.ui_model.ImageType.POSTER
+import com.michaldrabik.ui_model.NotificationDelay
+import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_repository.mappers.Mappers
 import timber.log.Timber
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import javax.inject.Inject
@@ -113,7 +112,7 @@ class AnnouncementManager @Inject constructor(
 
     WorkManager.getInstance(context.applicationContext).enqueue(request)
 
-    val logTime = dateFromMillis(nowUtcMillis() + delayed)
+    val logTime = com.michaldrabik.common.extensions.dateFromMillis(nowUtcMillis() + delayed)
     Timber.i("Notification set for: ${logTime.toDisplayString()} UTC")
   }
 }

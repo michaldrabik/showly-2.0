@@ -9,14 +9,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import com.google.android.material.chip.Chip
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.DiscoverFilters
-import com.michaldrabik.showly2.model.DiscoverSortOrder.HOT
-import com.michaldrabik.showly2.model.DiscoverSortOrder.NEWEST
-import com.michaldrabik.showly2.model.DiscoverSortOrder.RATING
-import com.michaldrabik.showly2.model.Genre
 import com.michaldrabik.showly2.utilities.extensions.colorStateListFromAttr
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.ui_model.DiscoverFilters
+import com.michaldrabik.ui_model.DiscoverSortOrder.HOT
+import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
+import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
+import com.michaldrabik.ui_model.Genre
 import kotlinx.android.synthetic.main.view_discover_filters.view.*
 
 class DiscoverFiltersView : ConstraintLayout {

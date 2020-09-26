@@ -1,24 +1,24 @@
 package com.michaldrabik.showly2.common.trakt.imports
 
 import androidx.room.withTransaction
+import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.common.extensions.nowUtc
+import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.common.trakt.TraktSyncRunner
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.IdTrakt
-import com.michaldrabik.showly2.model.ImageType.FANART
-import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.repository.UserTraktManager
-import com.michaldrabik.showly2.repository.UserTvdbManager
-import com.michaldrabik.showly2.utilities.extensions.nowUtc
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
-import com.michaldrabik.showly2.utilities.extensions.toMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.MyShow
 import com.michaldrabik.storage.database.model.Season
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.ImageType.FANART
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_repository.UserTraktManager
+import com.michaldrabik.ui_repository.UserTvdbManager
+import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.delay
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
@@ -26,12 +26,12 @@ import javax.inject.Inject
 
 @AppScope
 class TraktImportWatchedRunner @Inject constructor(
-  private val cloud: Cloud,
-  private val database: AppDatabase,
-  private val mappers: Mappers,
-  private val imagesProvider: ShowImagesProvider,
-  private val userTvdbManager: UserTvdbManager,
-  userTraktManager: UserTraktManager
+    private val cloud: Cloud,
+    private val database: AppDatabase,
+    private val mappers: Mappers,
+    private val imagesProvider: ShowImagesProvider,
+    private val userTvdbManager: UserTvdbManager,
+    userTraktManager: UserTraktManager
 ) : TraktSyncRunner(userTraktManager) {
 
   override suspend fun run(): Int {

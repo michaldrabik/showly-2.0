@@ -4,9 +4,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.ui.show.quickSetup.views.QuickSetupHeaderView
 import com.michaldrabik.showly2.ui.show.quickSetup.views.QuickSetupItemView
+import com.michaldrabik.ui_model.Episode
 
 class QuickSetupAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

@@ -8,11 +8,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.utilities.extensions.setCheckedSilent
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.Season
 import kotlinx.android.synthetic.main.view_episodes.view.*
 
 class EpisodesView : ConstraintLayout {

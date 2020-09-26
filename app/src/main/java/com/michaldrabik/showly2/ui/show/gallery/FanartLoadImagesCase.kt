@@ -1,18 +1,18 @@
 package com.michaldrabik.showly2.ui.show.gallery
 
+import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.showly2.Config.FANART_GALLERY_IMAGES_LIMIT
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.IdTrakt
-import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.ImageType
-import com.michaldrabik.showly2.repository.shows.ShowsRepository
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope
 class FanartLoadImagesCase @Inject constructor(
-  private val showsRepository: ShowsRepository,
-  private val imagesProvider: ShowImagesProvider
+    private val showsRepository: ShowsRepository,
+    private val imagesProvider: ShowImagesProvider
 ) {
 
   suspend fun loadInitialImage(id: IdTrakt): Image {

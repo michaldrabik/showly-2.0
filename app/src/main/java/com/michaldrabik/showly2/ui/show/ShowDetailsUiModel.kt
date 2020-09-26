@@ -1,15 +1,15 @@
 package com.michaldrabik.showly2.ui.show
 
-import com.michaldrabik.showly2.model.Actor
-import com.michaldrabik.showly2.model.Comment
-import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.TraktRating
 import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
 import com.michaldrabik.showly2.utilities.ActionEvent
+import com.michaldrabik.ui_model.Actor
+import com.michaldrabik.ui_model.Comment
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.TraktRating
 
 data class ShowDetailsUiModel(
   val show: Show? = null,

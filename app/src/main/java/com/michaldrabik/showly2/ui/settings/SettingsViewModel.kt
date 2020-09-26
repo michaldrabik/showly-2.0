@@ -7,13 +7,13 @@ import com.bumptech.glide.Glide
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.showly2.Analytics
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.MyShowsSection
-import com.michaldrabik.showly2.model.NotificationDelay
-import com.michaldrabik.showly2.model.TraktSyncSchedule
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.settings.cases.SettingsMainCase
 import com.michaldrabik.showly2.ui.settings.cases.SettingsTraktCase
 import com.michaldrabik.showly2.utilities.MessageEvent
+import com.michaldrabik.ui_model.MyShowsSection
+import com.michaldrabik.ui_model.NotificationDelay
+import com.michaldrabik.ui_model.TraktSyncSchedule
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

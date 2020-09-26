@@ -1,34 +1,34 @@
 package com.michaldrabik.showly2.ui.followedshows.myshows.cases
 
+import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.ImageType
-import com.michaldrabik.showly2.model.MyShowsSection
-import com.michaldrabik.showly2.model.MyShowsSection.ALL
-import com.michaldrabik.showly2.model.MyShowsSection.FINISHED
-import com.michaldrabik.showly2.model.MyShowsSection.UPCOMING
-import com.michaldrabik.showly2.model.MyShowsSection.WATCHING
-import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.ShowStatus.RETURNING
-import com.michaldrabik.showly2.model.SortOrder
-import com.michaldrabik.showly2.model.SortOrder.DATE_ADDED
-import com.michaldrabik.showly2.model.SortOrder.NAME
-import com.michaldrabik.showly2.model.SortOrder.NEWEST
-import com.michaldrabik.showly2.model.SortOrder.RATING
-import com.michaldrabik.showly2.repository.settings.SettingsRepository
-import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
-import com.michaldrabik.showly2.utilities.extensions.nowUtc
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Season
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.MyShowsSection
+import com.michaldrabik.ui_model.MyShowsSection.ALL
+import com.michaldrabik.ui_model.MyShowsSection.FINISHED
+import com.michaldrabik.ui_model.MyShowsSection.UPCOMING
+import com.michaldrabik.ui_model.MyShowsSection.WATCHING
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.ShowStatus.RETURNING
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
+import com.michaldrabik.ui_model.SortOrder.NAME
+import com.michaldrabik.ui_model.SortOrder.NEWEST
+import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope
 class MyShowsLoadShowsCase @Inject constructor(
-  private val imagesProvider: ShowImagesProvider,
-  private val showsRepository: ShowsRepository,
-  private val settingsRepository: SettingsRepository,
-  private val database: AppDatabase
+    private val imagesProvider: ShowImagesProvider,
+    private val showsRepository: ShowsRepository,
+    private val settingsRepository: SettingsRepository,
+    private val database: AppDatabase
 ) {
 
   suspend fun loadSettings() = settingsRepository.load()

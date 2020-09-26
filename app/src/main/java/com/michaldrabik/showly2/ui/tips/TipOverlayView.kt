@@ -7,12 +7,12 @@ import android.widget.FrameLayout
 import androidx.dynamicanimation.animation.DynamicAnimation
 import androidx.dynamicanimation.animation.SpringAnimation
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Tip
 import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.fadeOut
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.screenHeight
+import com.michaldrabik.ui_model.Tip
 import kotlinx.android.synthetic.main.view_tip_overlay.view.*
 
 class TipOverlayView : FrameLayout {

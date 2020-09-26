@@ -16,12 +16,12 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.michaldrabik.common.extensions.toDisplayString
+import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.ui.common.base.BaseBottomSheetFragment
 import com.michaldrabik.showly2.ui.common.views.CommentView
 import com.michaldrabik.showly2.ui.common.views.RateView
@@ -31,17 +31,16 @@ import com.michaldrabik.showly2.utilities.MessageEvent.Companion.info
 import com.michaldrabik.showly2.utilities.MessageEvent.Type.ERROR
 import com.michaldrabik.showly2.utilities.MessageEvent.Type.INFO
 import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
-import com.michaldrabik.showly2.utilities.extensions.dateFromMillis
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.fadeIf
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
-import com.michaldrabik.showly2.utilities.extensions.toDisplayString
-import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.utilities.extensions.withFailListener
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.IdTrakt
 import kotlinx.android.synthetic.main.view_episode_details.*
 import kotlinx.android.synthetic.main.view_episode_details.view.*
 
@@ -137,7 +136,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     return if (millis == -1L) {
       "TBA"
     } else {
-      dateFromMillis(millis)
+      com.michaldrabik.common.extensions.dateFromMillis(millis)
         .toLocalTimeZone()
         .toDisplayString()
     }

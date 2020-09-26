@@ -6,12 +6,12 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.MyShowsSection
-import com.michaldrabik.showly2.model.MyShowsSection.RECENTS
-import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.ui_model.MyShowsSection
+import com.michaldrabik.ui_model.MyShowsSection.RECENTS
+import com.michaldrabik.ui_model.SortOrder
 import kotlinx.android.synthetic.main.view_my_shows_header.view.*
 
 class MyShowHeaderView : FrameLayout {

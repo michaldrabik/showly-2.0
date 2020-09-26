@@ -13,8 +13,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
-import com.michaldrabik.showly2.model.ImageType
-import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistLoadItemsCase
 import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistSortOrderCase
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
@@ -24,6 +22,8 @@ import com.michaldrabik.showly2.utilities.extensions.replace
 import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider.Companion.EXTRA_EPISODE_ID
 import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider.Companion.EXTRA_SEASON_ID
 import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider.Companion.EXTRA_SHOW_ID
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_repository.shows.ShowsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -33,11 +33,11 @@ import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 
 class WatchlistWidgetViewsFactory(
-  private val context: Context,
-  private val loadItemsCase: WatchlistLoadItemsCase,
-  private val sortOrderCase: WatchlistSortOrderCase,
-  private val showsRepository: ShowsRepository,
-  private val imagesProvider: ShowImagesProvider
+    private val context: Context,
+    private val loadItemsCase: WatchlistLoadItemsCase,
+    private val sortOrderCase: WatchlistSortOrderCase,
+    private val showsRepository: ShowsRepository,
+    private val imagesProvider: ShowImagesProvider
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.Main

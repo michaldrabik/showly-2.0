@@ -14,8 +14,8 @@ import android.content.Intent.URI_INTENT_SCHEME
 import android.net.Uri
 import android.widget.RemoteViews
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.IdTrakt
 import com.michaldrabik.showly2.ui.main.MainActivity
+import com.michaldrabik.ui_model.IdTrakt
 
 class WatchlistWidgetProvider : AppWidgetProvider() {
 

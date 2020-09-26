@@ -1,9 +1,9 @@
 package com.michaldrabik.showly2.ui.discover.cases
 
+import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.showly2.Analytics
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.DiscoverFilters
-import com.michaldrabik.showly2.repository.settings.SettingsRepository
+import com.michaldrabik.ui_model.DiscoverFilters
+import com.michaldrabik.ui_repository.SettingsRepository
 import javax.inject.Inject
 
 @AppScope

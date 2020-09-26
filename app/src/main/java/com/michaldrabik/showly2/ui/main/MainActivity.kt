@@ -23,9 +23,6 @@ import com.michaldrabik.showly2.common.events.TraktQuickSyncSuccess
 import com.michaldrabik.showly2.common.events.TraktSyncProgress
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.di.component.FragmentComponent
-import com.michaldrabik.showly2.model.Tip
-import com.michaldrabik.showly2.model.Tip.MENU_DISCOVER
-import com.michaldrabik.showly2.model.Tip.MENU_MY_SHOWS
 import com.michaldrabik.showly2.ui.NotificationActivity
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
@@ -39,6 +36,9 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.utilities.network.NetworkObserver
+import com.michaldrabik.ui_model.Tip
+import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
+import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 

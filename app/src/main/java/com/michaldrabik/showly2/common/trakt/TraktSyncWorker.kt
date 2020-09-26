@@ -8,7 +8,7 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.michaldrabik.showly2.model.TraktSyncSchedule
+import com.michaldrabik.ui_model.TraktSyncSchedule
 import timber.log.Timber
 
 class TraktSyncWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {

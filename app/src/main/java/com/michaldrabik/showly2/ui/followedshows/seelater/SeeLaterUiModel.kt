@@ -1,8 +1,8 @@
 package com.michaldrabik.showly2.ui.followedshows.seelater
 
-import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.followedshows.seelater.recycler.SeeLaterListItem
+import com.michaldrabik.ui_model.SortOrder
 
 data class SeeLaterUiModel(
   val items: List<SeeLaterListItem>? = null,

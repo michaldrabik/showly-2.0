@@ -3,7 +3,7 @@ package com.michaldrabik.showly2.ui.show.actors
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.showly2.model.Actor
+import com.michaldrabik.ui_model.Actor
 
 class ActorsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

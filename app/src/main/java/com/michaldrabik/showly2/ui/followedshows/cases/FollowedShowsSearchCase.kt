@@ -1,17 +1,17 @@
 package com.michaldrabik.showly2.ui.followedshows.cases
 
+import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.ImageType
-import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope
 class FollowedShowsSearchCase @Inject constructor(
-  private val showsRepository: ShowsRepository,
-  private val imagesProvider: ShowImagesProvider
+    private val showsRepository: ShowsRepository,
+    private val imagesProvider: ShowImagesProvider
 ) {
 
   private val searchItemsCache = mutableListOf<Show>()

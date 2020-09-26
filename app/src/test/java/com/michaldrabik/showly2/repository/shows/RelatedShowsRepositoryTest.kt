@@ -1,12 +1,13 @@
 package com.michaldrabik.showly2.repository.shows
 
 import BaseMockTest
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.trakt.api.TraktApi
 import com.michaldrabik.showly2.Config
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.dao.RelatedShowsDao
 import com.michaldrabik.storage.database.dao.ShowsDao
 import com.michaldrabik.storage.database.model.RelatedShow
+import com.michaldrabik.ui_repository.shows.RelatedShowsRepository
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify

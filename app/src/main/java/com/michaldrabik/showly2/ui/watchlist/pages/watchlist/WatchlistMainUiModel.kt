@@ -1,8 +1,8 @@
 package com.michaldrabik.showly2.ui.watchlist.pages.watchlist
 
-import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.ui_model.SortOrder
 
 data class WatchlistMainUiModel(
   val items: List<WatchlistItem>? = null,

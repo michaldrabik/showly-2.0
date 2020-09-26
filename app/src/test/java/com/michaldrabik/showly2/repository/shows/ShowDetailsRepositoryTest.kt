@@ -2,13 +2,14 @@ package com.michaldrabik.showly2.repository.shows
 
 import BaseMockTest
 import com.google.common.truth.Truth.assertThat
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.trakt.api.TraktApi
 import com.michaldrabik.network.trakt.model.User
-import com.michaldrabik.showly2.model.Comment
-import com.michaldrabik.showly2.model.IdTrakt
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.dao.ShowsDao
 import com.michaldrabik.storage.database.model.Show
+import com.michaldrabik.ui_model.Comment
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_repository.shows.ShowDetailsRepository
 import io.mockk.Called
 import io.mockk.Runs
 import io.mockk.coEvery

@@ -16,12 +16,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.model.IdTrakt
-import com.michaldrabik.showly2.model.SortOrder
-import com.michaldrabik.showly2.model.SortOrder.EPISODES_LEFT
-import com.michaldrabik.showly2.model.SortOrder.NAME
-import com.michaldrabik.showly2.model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
@@ -40,6 +34,12 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showKeyboard
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
+import com.michaldrabik.ui_model.SortOrder.NAME
+import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 import kotlinx.android.synthetic.main.view_search.*
 

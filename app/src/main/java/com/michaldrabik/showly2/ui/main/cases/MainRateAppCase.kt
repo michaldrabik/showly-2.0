@@ -1,8 +1,8 @@
 package com.michaldrabik.showly2.ui.main.cases
 
 import android.content.SharedPreferences
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
+import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.common.extensions.nowUtcMillis
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named

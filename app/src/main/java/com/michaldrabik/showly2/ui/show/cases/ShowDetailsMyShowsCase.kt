@@ -1,19 +1,19 @@
 package com.michaldrabik.showly2.ui.show.cases
 
 import androidx.room.withTransaction
+import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncExportItem
 import com.michaldrabik.network.trakt.model.SyncExportRequest
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.model.Season
-import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.repository.PinnedItemsRepository
-import com.michaldrabik.showly2.repository.UserTraktManager
-import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.Season
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_repository.PinnedItemsRepository
+import com.michaldrabik.ui_repository.UserTraktManager
+import com.michaldrabik.ui_repository.mappers.Mappers
+import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
 import com.michaldrabik.storage.database.model.Episode as EpisodeDb
 import com.michaldrabik.storage.database.model.Season as SeasonDb

@@ -1,8 +1,8 @@
 package com.michaldrabik.showly2.ui.discover
 
-import com.michaldrabik.showly2.model.DiscoverFilters
 import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
+import com.michaldrabik.ui_model.DiscoverFilters
 
 data class DiscoverUiModel(
   val shows: List<DiscoverListItem>? = null,

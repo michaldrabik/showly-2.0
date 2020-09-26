@@ -1,12 +1,12 @@
 package com.michaldrabik.showly2.common.trakt.quicksync
 
 import android.content.Context
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.repository.UserTraktManager
-import com.michaldrabik.showly2.repository.settings.SettingsRepository
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
+import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.TraktSyncQueue
+import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_repository.UserTraktManager
 import timber.log.Timber
 import javax.inject.Inject
 

@@ -1,22 +1,22 @@
 package com.michaldrabik.showly2.ui.statistics.cases
 
+import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.ImageType
-import com.michaldrabik.showly2.repository.UserTraktManager
-import com.michaldrabik.showly2.repository.rating.RatingsRepository
-import com.michaldrabik.showly2.repository.settings.SettingsRepository
-import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.statistics.views.ratings.recycler.StatisticsRatingItem
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_repository.RatingsRepository
+import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_repository.UserTraktManager
+import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope
 class StatisticsLoadRatingsCase @Inject constructor(
-  private val userTraktManager: UserTraktManager,
-  private val showsRepository: ShowsRepository,
-  private val settingsRepository: SettingsRepository,
-  private val ratingsRepository: RatingsRepository,
-  private val imagesProvider: ShowImagesProvider
+    private val userTraktManager: UserTraktManager,
+    private val showsRepository: ShowsRepository,
+    private val settingsRepository: SettingsRepository,
+    private val ratingsRepository: RatingsRepository,
+    private val imagesProvider: ShowImagesProvider
 ) {
 
   companion object {

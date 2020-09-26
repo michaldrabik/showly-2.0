@@ -1,14 +1,14 @@
 package com.michaldrabik.showly2.ui.show.cases
 
+import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.Config.ACTORS_CACHE_DURATION
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.Actor
-import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.repository.UserTvdbManager
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.ui_model.Actor
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_repository.UserTvdbManager
+import com.michaldrabik.ui_repository.mappers.Mappers
 import java.util.Locale.ENGLISH
 import javax.inject.Inject
 

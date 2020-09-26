@@ -1,10 +1,10 @@
 package com.michaldrabik.showly2.di.component
 
+import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.di.CloudMarker
 import com.michaldrabik.showly2.di.module.PreferencesModule
 import com.michaldrabik.showly2.di.module.SubcomponentsModule
 import com.michaldrabik.showly2.di.module.ViewModelsModule
-import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.storage.di.StorageMarker
 import dagger.Component

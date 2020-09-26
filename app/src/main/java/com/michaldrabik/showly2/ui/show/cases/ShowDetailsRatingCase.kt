@@ -1,10 +1,10 @@
 package com.michaldrabik.showly2.ui.show.cases
 
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.TraktRating
-import com.michaldrabik.showly2.repository.UserTraktManager
-import com.michaldrabik.showly2.repository.rating.RatingsRepository
+import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.TraktRating
+import com.michaldrabik.ui_repository.RatingsRepository
+import com.michaldrabik.ui_repository.UserTraktManager
 import javax.inject.Inject
 
 @AppScope

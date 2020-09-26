@@ -6,7 +6,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Season
+import com.michaldrabik.ui_model.Season
 import kotlinx.android.synthetic.main.view_quick_setup_header.view.*
 
 class QuickSetupHeaderView : FrameLayout {

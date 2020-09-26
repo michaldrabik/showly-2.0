@@ -1,8 +1,8 @@
 package com.michaldrabik.showly2.ui.watchlist.cases
 
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.repository.PinnedItemsRepository
+import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
+import com.michaldrabik.ui_repository.PinnedItemsRepository
 import javax.inject.Inject
 
 @AppScope

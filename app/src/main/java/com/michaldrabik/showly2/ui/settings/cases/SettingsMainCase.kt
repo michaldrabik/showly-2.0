@@ -2,20 +2,20 @@ package com.michaldrabik.showly2.ui.settings.cases
 
 import android.content.Context
 import com.google.firebase.messaging.FirebaseMessaging
+import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.common.notifications.AnnouncementManager
-import com.michaldrabik.showly2.di.scope.AppScope
 import com.michaldrabik.showly2.fcm.NotificationChannel
-import com.michaldrabik.showly2.model.MyShowsSection
-import com.michaldrabik.showly2.model.MyShowsSection.FINISHED
-import com.michaldrabik.showly2.model.MyShowsSection.RECENTS
-import com.michaldrabik.showly2.model.MyShowsSection.UPCOMING
-import com.michaldrabik.showly2.model.MyShowsSection.WATCHING
-import com.michaldrabik.showly2.model.NotificationDelay
-import com.michaldrabik.showly2.model.Settings
-import com.michaldrabik.showly2.repository.settings.SettingsRepository
+import com.michaldrabik.ui_model.MyShowsSection
+import com.michaldrabik.ui_model.MyShowsSection.FINISHED
+import com.michaldrabik.ui_model.MyShowsSection.RECENTS
+import com.michaldrabik.ui_model.MyShowsSection.UPCOMING
+import com.michaldrabik.ui_model.MyShowsSection.WATCHING
+import com.michaldrabik.ui_model.NotificationDelay
+import com.michaldrabik.ui_model.Settings
+import com.michaldrabik.ui_repository.SettingsRepository
 import javax.inject.Inject
 
 @AppScope

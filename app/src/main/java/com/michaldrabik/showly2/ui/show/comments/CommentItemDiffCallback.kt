@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2.ui.show.comments
 
 import androidx.recyclerview.widget.DiffUtil
-import com.michaldrabik.showly2.model.Comment
+import com.michaldrabik.ui_model.Comment
 
 class CommentItemDiffCallback : DiffUtil.ItemCallback<Comment>() {
 

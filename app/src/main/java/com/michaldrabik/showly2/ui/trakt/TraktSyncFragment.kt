@@ -13,24 +13,23 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.michaldrabik.common.extensions.toDisplayString
+import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.network.Config
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.events.Event
 import com.michaldrabik.showly2.common.events.EventObserver
 import com.michaldrabik.showly2.common.trakt.TraktSyncService
 import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.model.TraktSyncSchedule
 import com.michaldrabik.showly2.requireAppContext
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.utilities.MessageEvent
-import com.michaldrabik.showly2.utilities.extensions.dateFromMillis
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.toDisplayString
-import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.ui_model.TraktSyncSchedule
 import kotlinx.android.synthetic.main.fragment_trakt_sync.*
 
 class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(R.layout.fragment_trakt_sync),
@@ -144,7 +143,7 @@ class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(R.layout.fragment_tra
       traktSyncSchedule?.let { traktSyncScheduleButton.setText(it.buttonStringRes) }
       lastTraktSyncTimestamp?.let {
         if (it != 0L) {
-          val date = dateFromMillis(it).toLocalTimeZone().toDisplayString()
+          val date = com.michaldrabik.common.extensions.dateFromMillis(it).toLocalTimeZone().toDisplayString()
           traktLastSyncTimestamp.text = getString(R.string.textTraktSyncLastTimestamp, date)
         }
       }

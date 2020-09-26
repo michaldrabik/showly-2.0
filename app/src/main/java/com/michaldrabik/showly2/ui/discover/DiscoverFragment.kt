@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.model.Tip.DISCOVER_FILTERS
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
@@ -33,6 +32,7 @@ import com.michaldrabik.showly2.utilities.extensions.invisible
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
+import com.michaldrabik.ui_model.Tip.DISCOVER_FILTERS
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.math.hypot
 import kotlin.random.Random

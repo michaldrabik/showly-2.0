@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2.ui.discover.recycler
 
-import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.Show
 
 interface ListItem {
   val show: Show

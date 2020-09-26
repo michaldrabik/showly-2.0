@@ -1,9 +1,9 @@
 package com.michaldrabik.showly2.ui.statistics.views.mostWatched
 
-import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.discover.recycler.ListItem
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.Show
 
 data class StatisticsMostWatchedItem(
   override val show: Show,

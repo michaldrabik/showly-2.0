@@ -1,17 +1,16 @@
 package com.michaldrabik.showly2.common.trakt.exports
 
+import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncExportItem
 import com.michaldrabik.network.trakt.model.SyncExportRequest
 import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.showly2.common.trakt.TraktSyncRunner
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.repository.TraktAuthToken
-import com.michaldrabik.showly2.repository.UserTraktManager
-import com.michaldrabik.showly2.utilities.extensions.dateIsoStringFromMillis
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Episode
+import com.michaldrabik.ui_repository.TraktAuthToken
+import com.michaldrabik.ui_repository.UserTraktManager
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -47,7 +46,7 @@ class TraktExportWatchedRunner @Inject constructor(
     val request = SyncExportRequest(
       episodes = localEpisodes.map { ep ->
         val timestamp = localMyShows.find { it.idTrakt == ep.idShowTrakt }?.updatedAt ?: nowUtcMillis()
-        SyncExportItem.create(ep.idTrakt, dateIsoStringFromMillis(timestamp))
+        SyncExportItem.create(ep.idTrakt, com.michaldrabik.common.extensions.dateIsoStringFromMillis(timestamp))
       }
     )
     cloud.traktApi.postSyncWatched(token.token, request)

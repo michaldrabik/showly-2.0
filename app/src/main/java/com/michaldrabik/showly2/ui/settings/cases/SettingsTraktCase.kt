@@ -2,12 +2,12 @@ package com.michaldrabik.showly2.ui.settings.cases
 
 import android.content.Context
 import android.net.Uri
+import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.showly2.common.trakt.TraktSyncWorker
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.TraktSyncSchedule
-import com.michaldrabik.showly2.repository.UserTraktManager
-import com.michaldrabik.showly2.repository.rating.RatingsRepository
-import com.michaldrabik.showly2.repository.settings.SettingsRepository
+import com.michaldrabik.ui_model.TraktSyncSchedule
+import com.michaldrabik.ui_repository.RatingsRepository
+import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_repository.UserTraktManager
 import javax.inject.Inject
 
 @AppScope

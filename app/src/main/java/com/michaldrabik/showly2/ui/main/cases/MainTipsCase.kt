@@ -1,9 +1,9 @@
 package com.michaldrabik.showly2.ui.main.cases
 
 import android.content.SharedPreferences
+import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.showly2.BuildConfig
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.Tip
+import com.michaldrabik.ui_model.Tip
 import javax.inject.Inject
 import javax.inject.Named
 

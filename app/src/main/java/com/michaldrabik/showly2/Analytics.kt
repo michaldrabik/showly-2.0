@@ -4,10 +4,10 @@ import android.os.Bundle
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
-import com.michaldrabik.showly2.model.DiscoverFilters
-import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.model.MyShowsSection
-import com.michaldrabik.showly2.model.Show
+import com.michaldrabik.ui_model.DiscoverFilters
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.MyShowsSection
+import com.michaldrabik.ui_model.Show
 import java.util.Locale.ROOT
 
 object Analytics {

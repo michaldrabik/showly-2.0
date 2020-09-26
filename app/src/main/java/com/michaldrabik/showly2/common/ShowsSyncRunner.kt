@@ -1,15 +1,15 @@
 package com.michaldrabik.showly2.common
 
+import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.Config
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.ShowStatus.CANCELED
-import com.michaldrabik.showly2.model.ShowStatus.ENDED
-import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.ui_model.ShowStatus.CANCELED
+import com.michaldrabik.ui_model.ShowStatus.ENDED
+import com.michaldrabik.ui_repository.mappers.Mappers
+import com.michaldrabik.ui_repository.shows.ShowsRepository
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject

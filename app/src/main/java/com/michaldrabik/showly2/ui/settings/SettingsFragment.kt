@@ -21,13 +21,6 @@ import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.Config.MY_SHOWS_RECENTS_OPTIONS
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.model.MyShowsSection.FINISHED
-import com.michaldrabik.showly2.model.MyShowsSection.RECENTS
-import com.michaldrabik.showly2.model.MyShowsSection.UPCOMING
-import com.michaldrabik.showly2.model.MyShowsSection.WATCHING
-import com.michaldrabik.showly2.model.NotificationDelay
-import com.michaldrabik.showly2.model.Settings
-import com.michaldrabik.showly2.model.TraktSyncSchedule.OFF
 import com.michaldrabik.showly2.requireAppContext
 import com.michaldrabik.showly2.ui.PlayStoreHelper
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
@@ -36,6 +29,13 @@ import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.setCheckedSilent
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.ui_model.MyShowsSection.FINISHED
+import com.michaldrabik.ui_model.MyShowsSection.RECENTS
+import com.michaldrabik.ui_model.MyShowsSection.UPCOMING
+import com.michaldrabik.ui_model.MyShowsSection.WATCHING
+import com.michaldrabik.ui_model.NotificationDelay
+import com.michaldrabik.ui_model.Settings
+import com.michaldrabik.ui_model.TraktSyncSchedule.OFF
 import kotlinx.android.synthetic.main.fragment_settings.*
 import com.michaldrabik.network.Config as ConfigNetwork
 

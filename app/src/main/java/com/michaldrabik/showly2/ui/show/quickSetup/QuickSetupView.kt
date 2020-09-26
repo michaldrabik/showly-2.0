@@ -7,9 +7,9 @@ import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.model.Season
 import com.michaldrabik.showly2.utilities.extensions.findReplace
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.Season
 import kotlinx.android.synthetic.main.view_quick_setup.view.*
 
 class QuickSetupView : FrameLayout {

@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2.utilities
 
 import android.view.View
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
+import com.michaldrabik.common.extensions.nowUtcMillis
 
 private const val SAFE_INTERVAL = 650
 

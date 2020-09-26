@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.model.Tip
 import com.michaldrabik.showly2.requireAppContext
 import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
@@ -30,6 +29,7 @@ import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider
+import com.michaldrabik.ui_model.Tip
 import kotlinx.android.synthetic.main.fragment_watchlist_main.*
 import kotlinx.android.synthetic.main.layout_watchlist_empty.*
 

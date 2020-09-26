@@ -9,11 +9,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.showly2.ui.statistics.views.mostWatched.recycler.MostWatchedAdapter
 import com.michaldrabik.showly2.utilities.extensions.addDivider
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.ui_model.Show
 import kotlinx.android.synthetic.main.view_statistics_card_most_watched_shows.view.*
 
 @SuppressLint("SetTextI18n")

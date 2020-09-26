@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2.ui.trakt
 
-import com.michaldrabik.showly2.model.TraktSyncSchedule
 import com.michaldrabik.showly2.ui.common.UiModel
+import com.michaldrabik.ui_model.TraktSyncSchedule
 
 data class TraktSyncUiModel(
   val isProgress: Boolean? = null,

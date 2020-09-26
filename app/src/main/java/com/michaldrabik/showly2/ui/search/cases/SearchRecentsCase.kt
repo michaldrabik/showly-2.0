@@ -1,9 +1,9 @@
 package com.michaldrabik.showly2.ui.search.cases
 
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.RecentSearch
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
+import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.ui_model.RecentSearch
 import javax.inject.Inject
 import com.michaldrabik.storage.database.model.RecentSearch as RecentSearchDb
 

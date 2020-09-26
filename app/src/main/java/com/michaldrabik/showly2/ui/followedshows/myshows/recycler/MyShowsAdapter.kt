@@ -3,14 +3,14 @@ package com.michaldrabik.showly2.ui.followedshows.myshows.recycler
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.showly2.model.MyShowsSection
-import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.common.base.BaseAdapter
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem.Type
 import com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowAllView
 import com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowHeaderView
 import com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowsRecentsView
 import com.michaldrabik.showly2.ui.followedshows.myshows.views.section.MyShowsSectionView
+import com.michaldrabik.ui_model.MyShowsSection
+import com.michaldrabik.ui_model.SortOrder
 
 class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
 

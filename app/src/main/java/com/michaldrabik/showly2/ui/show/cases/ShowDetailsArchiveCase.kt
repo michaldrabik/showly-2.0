@@ -1,12 +1,12 @@
 package com.michaldrabik.showly2.ui.show.cases
 
 import androidx.room.withTransaction
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.repository.PinnedItemsRepository
-import com.michaldrabik.showly2.repository.shows.ShowsRepository
+import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Season
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_repository.PinnedItemsRepository
+import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope

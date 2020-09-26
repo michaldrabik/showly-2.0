@@ -3,9 +3,9 @@ package com.michaldrabik.showly2.ui.main.cases
 import BaseMockTest
 import android.content.SharedPreferences
 import com.google.common.truth.Truth.assertThat
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.showly2.ui.main.cases.MainRateAppCase.Companion.KEY_RATE_APP_COUNT
 import com.michaldrabik.showly2.ui.main.cases.MainRateAppCase.Companion.KEY_RATE_APP_TIMESTAMP
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import io.mockk.Runs
 import io.mockk.confirmVerified
 import io.mockk.every

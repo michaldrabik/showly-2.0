@@ -1,17 +1,17 @@
 package com.michaldrabik.showly2.ui.discover.cases
 
+import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.DiscoverFilters
-import com.michaldrabik.showly2.model.DiscoverSortOrder
-import com.michaldrabik.showly2.model.DiscoverSortOrder.HOT
-import com.michaldrabik.showly2.model.DiscoverSortOrder.NEWEST
-import com.michaldrabik.showly2.model.DiscoverSortOrder.RATING
-import com.michaldrabik.showly2.model.ImageType
-import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.repository.UserTvdbManager
-import com.michaldrabik.showly2.repository.shows.ShowsRepository
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
+import com.michaldrabik.ui_model.DiscoverFilters
+import com.michaldrabik.ui_model.DiscoverSortOrder
+import com.michaldrabik.ui_model.DiscoverSortOrder.HOT
+import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
+import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_repository.UserTvdbManager
+import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope

@@ -1,21 +1,21 @@
 package com.michaldrabik.showly2.ui.watchlist.cases
 
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.ImageType
-import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.SortOrder
-import com.michaldrabik.showly2.model.SortOrder.EPISODES_LEFT
-import com.michaldrabik.showly2.model.SortOrder.NAME
-import com.michaldrabik.showly2.model.SortOrder.RECENTLY_WATCHED
-import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.repository.PinnedItemsRepository
-import com.michaldrabik.showly2.repository.shows.ShowsRepository
+import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
-import com.michaldrabik.showly2.utilities.extensions.nowUtc
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.EpisodeWatchlist
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
+import com.michaldrabik.ui_model.SortOrder.NAME
+import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
+import com.michaldrabik.ui_repository.PinnedItemsRepository
+import com.michaldrabik.ui_repository.mappers.Mappers
+import com.michaldrabik.ui_repository.shows.ShowsRepository
 import java.util.Locale.ROOT
 import javax.inject.Inject
 

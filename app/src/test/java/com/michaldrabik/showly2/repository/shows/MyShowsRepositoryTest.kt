@@ -2,10 +2,11 @@ package com.michaldrabik.showly2.repository.shows
 
 import BaseMockTest
 import com.google.common.truth.Truth.assertThat
-import com.michaldrabik.showly2.model.IdTrakt
-import com.michaldrabik.showly2.model.Show
 import com.michaldrabik.storage.database.dao.MyShowsDao
 import com.michaldrabik.storage.database.model.MyShow
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_repository.shows.MyShowsRepository
 import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerify

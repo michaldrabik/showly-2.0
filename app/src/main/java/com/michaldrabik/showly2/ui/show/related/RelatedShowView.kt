@@ -6,11 +6,11 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Image.Status.AVAILABLE
 import com.michaldrabik.showly2.ui.common.views.ShowView
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.ui_model.Image.Status.AVAILABLE
 import kotlinx.android.synthetic.main.view_related_show.view.*
 
 class RelatedShowView : ShowView<RelatedListItem> {

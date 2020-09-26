@@ -8,12 +8,12 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.michaldrabik.common.extensions.toDayOnlyDisplayString
+import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Comment
 import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
 import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.toDayOnlyDisplayString
-import com.michaldrabik.showly2.utilities.extensions.toLocalTimeZone
+import com.michaldrabik.ui_model.Comment
 import kotlinx.android.synthetic.main.view_comment.view.*
 
 class CommentView : ConstraintLayout {

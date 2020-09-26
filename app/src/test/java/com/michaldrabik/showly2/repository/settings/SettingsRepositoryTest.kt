@@ -2,9 +2,9 @@ package com.michaldrabik.showly2.repository.settings
 
 import BaseMockTest
 import com.google.common.truth.Truth.assertThat
-import com.michaldrabik.showly2.model.Settings
-import com.michaldrabik.showly2.model.mappers.SettingsMapper
 import com.michaldrabik.storage.database.dao.SettingsDao
+import com.michaldrabik.ui_model.Settings
+import com.michaldrabik.ui_model.mappers.SettingsMapper
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify

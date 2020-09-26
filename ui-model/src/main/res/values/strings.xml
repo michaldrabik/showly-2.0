@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSortName">Name</string>
+  <string name="textSortNewest">Most Recent</string>
+  <string name="textSortRated">Top Rated</string>
+  <string name="textSortDateAdded">Recently Added</string>
+  <string name="textSortRecentlyWatched">Recently Watched</string>
+  <string name="textSortEpisodesLeft">Episodes Left</string>
+
+  <string name="textSettingsShowsNotificationsWhenTitle">When To Notify</string>
+  <string name="textSettingsShowsNotificationsWhenSummary">When would you like ro receive episodes announcements.</string>
+  <string name="textSettingsShowsNotificationsWhenAvailable">When Available</string>
+  <string name="textSettingsShowsNotificationsWhen1Hour">1 Hour After</string>
+  <string name="textSettingsShowsNotificationsWhen3Hours">3 Hours After</string>
+  <string name="textSettingsShowsNotificationsWhen6Hours">6 Hours After</string>
+  <string name="textSettingsShowsNotificationsWhen1HourBefore">1 Hour Before</string>
+  <string name="textSettingsShowsNotificationsWhen3HoursBefore">3 Hours Before</string>
+  <string name="textSettingsShowsNotificationsWhen6HoursBefore">6 Hours Before</string>
+  <string name="textSettingsShowsNotificationsWhen12HoursBefore">12 Hours Before</string>
+  <string name="textSettingsShowsNotificationsWhen12Hours">12 Hours After</string>
+  <string name="textSettingsShowsNotificationsWhenNextDay">1 Day After</string>
+
+  <string name="textTipDiscover">Double tap \'Discover\' menu button to quickly open search screen.</string>
+  <string name="textTipMyShows">Double tap \'My Shows\' menu button to quickly switch between tabs.</string>
+  <string name="textTipShowDetailsGallery">Tap show\'s image to open gallery.</string>
+  <string name="textTipShowDetailsQuickProgress">Tap \'Quick Progress\' icon to quickly set up your progress of the show.\n\nTap \'Archive\' icon to move show into the archive.</string>
+  <string name="textTipDiscoverFilters">Use filters view to refine your Discover feed.</string>
+  <string name="textTipWatchlistPinItem">Tap and hold list item to pin it to the top.</string>
+
+  <string name="textTraktSyncSchedule">Schedule</string>
+  <string name="textTraktSyncOptionOff">Off</string>
+  <string name="textTraktSyncOption1Hour">Every Hour</string>
+  <string name="textTraktSyncOption3Hours">Every 3 Hours</string>
+  <string name="textTraktSyncOption6Hours">Every 6 Hours</string>
+  <string name="textTraktSyncOptionDaily">Every Day</string>
+  <string name="textTraktSyncOption3Day">Every 3 Days</string>
+  <string name="textTraktSyncOptionWeekly">Every Week</string>
+
+  <string name="textTraktSyncOptionOffMessage">Sync will not run automatically.</string>
+  <string name="textTraktSyncOptionConfirmMessage">Automatic sync has been scheduled.</string>
+
+  <string name="textTraktSyncOptionHourButton">Scheduled to run every hour</string>
+  <string name="textTraktSyncOption3HoursButton">Scheduled to run every 3 hours</string>
+  <string name="textTraktSyncOption6HoursButton">Scheduled to run every 6 hours</string>
+  <string name="textTraktSyncOptionDailyButton">Scheduled to run every day</string>
+  <string name="textTraktSyncOption3DayButton">Scheduled to run every 3 days</string>
+  <string name="textTraktSyncOptionWeeklyButton">Scheduled to run every week</string>
+</resources>

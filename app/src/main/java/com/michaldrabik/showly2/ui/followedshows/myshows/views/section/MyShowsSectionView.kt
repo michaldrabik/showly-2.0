@@ -10,11 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.MyShowsSection
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.section.MyShowsSectionAdapter
 import com.michaldrabik.showly2.utilities.extensions.addDivider
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_model.MyShowsSection
 import kotlinx.android.synthetic.main.view_my_shows_section.view.*
 
 class MyShowsSectionView : FrameLayout {

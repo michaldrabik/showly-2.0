@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.IBinder
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.showly2.Analytics
 import com.michaldrabik.showly2.R
@@ -18,10 +19,9 @@ import com.michaldrabik.showly2.common.trakt.exports.TraktExportWatchedRunner
 import com.michaldrabik.showly2.common.trakt.exports.TraktExportWatchlistRunner
 import com.michaldrabik.showly2.common.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.showly2.common.trakt.imports.TraktImportWatchlistRunner
-import com.michaldrabik.showly2.model.error.TraktAuthError
 import com.michaldrabik.showly2.serviceComponent
 import com.michaldrabik.showly2.utilities.extensions.notificationManager
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
+import com.michaldrabik.ui_model.error.TraktAuthError
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

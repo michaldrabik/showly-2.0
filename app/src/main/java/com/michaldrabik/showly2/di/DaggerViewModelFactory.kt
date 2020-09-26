@@ -2,7 +2,7 @@ package com.michaldrabik.showly2.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.michaldrabik.showly2.di.scope.AppScope
+import com.michaldrabik.common.di.AppScope
 import javax.inject.Inject
 import javax.inject.Provider
 

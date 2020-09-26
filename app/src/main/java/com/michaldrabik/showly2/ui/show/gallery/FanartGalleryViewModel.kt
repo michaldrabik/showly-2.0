@@ -1,9 +1,9 @@
 package com.michaldrabik.showly2.ui.show.gallery
 
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.showly2.model.IdTrakt
-import com.michaldrabik.showly2.model.Image.Status
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Image.Status
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

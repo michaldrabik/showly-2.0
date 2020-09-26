@@ -1,17 +1,16 @@
-import com.michaldrabik.showly2.model.AirTime
-import com.michaldrabik.showly2.model.IdImdb
-import com.michaldrabik.showly2.model.IdSlug
-import com.michaldrabik.showly2.model.IdTmdb
-import com.michaldrabik.showly2.model.IdTrakt
-import com.michaldrabik.showly2.model.IdTvRage
-import com.michaldrabik.showly2.model.IdTvdb
-import com.michaldrabik.showly2.model.Ids
-import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.ImageFamily
-import com.michaldrabik.showly2.model.ImageType
-import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.ShowStatus
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
+import com.michaldrabik.ui_model.IdImdb
+import com.michaldrabik.ui_model.IdSlug
+import com.michaldrabik.ui_model.IdTmdb
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.IdTvRage
+import com.michaldrabik.ui_model.IdTvdb
+import com.michaldrabik.ui_model.Ids
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageFamily
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.ShowStatus
 
 object TestData {
 

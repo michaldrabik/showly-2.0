@@ -4,7 +4,7 @@ import BaseMockTest
 import android.content.SharedPreferences
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.showly2.BuildConfig
-import com.michaldrabik.showly2.model.Tip
+import com.michaldrabik.ui_model.Tip
 import io.mockk.Runs
 import io.mockk.every
 import io.mockk.impl.annotations.MockK

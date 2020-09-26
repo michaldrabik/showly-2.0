@@ -2,13 +2,13 @@ package com.michaldrabik.showly2.ui.main
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.showly2.model.Tip
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.main.cases.MainInitialsCase
 import com.michaldrabik.showly2.ui.main.cases.MainMiscCase
 import com.michaldrabik.showly2.ui.main.cases.MainRateAppCase
 import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTraktCase
+import com.michaldrabik.ui_model.Tip
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

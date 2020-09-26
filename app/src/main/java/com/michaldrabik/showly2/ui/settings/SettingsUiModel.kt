@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2.ui.settings
 
-import com.michaldrabik.showly2.model.Settings
 import com.michaldrabik.showly2.ui.common.UiModel
+import com.michaldrabik.ui_model.Settings
 
 data class SettingsUiModel(
   val settings: Settings? = null,

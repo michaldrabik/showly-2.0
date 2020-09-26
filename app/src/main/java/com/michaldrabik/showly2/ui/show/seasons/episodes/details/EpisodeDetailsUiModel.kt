@@ -1,9 +1,9 @@
 package com.michaldrabik.showly2.ui.show.seasons.episodes.details
 
-import com.michaldrabik.showly2.model.Comment
-import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.show.RatingState
+import com.michaldrabik.ui_model.Comment
+import com.michaldrabik.ui_model.Image
 
 data class EpisodeDetailsUiModel(
   val image: Image? = null,

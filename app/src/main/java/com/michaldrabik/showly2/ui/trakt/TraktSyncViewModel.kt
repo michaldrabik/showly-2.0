@@ -16,24 +16,24 @@ import com.michaldrabik.showly2.common.trakt.TraktSyncWorker
 import com.michaldrabik.showly2.common.trakt.exports.TraktExportWatchlistRunner
 import com.michaldrabik.showly2.common.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.showly2.common.trakt.imports.TraktImportWatchlistRunner
-import com.michaldrabik.showly2.model.TraktSyncSchedule
-import com.michaldrabik.showly2.repository.UserTraktManager
-import com.michaldrabik.showly2.repository.settings.SettingsRepository
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.utilities.MessageEvent.Companion.error
 import com.michaldrabik.showly2.utilities.MessageEvent.Companion.info
+import com.michaldrabik.ui_model.TraktSyncSchedule
+import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_repository.UserTraktManager
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
 
 class TraktSyncViewModel @Inject constructor(
-  @Named("miscPreferences") private var miscPreferences: SharedPreferences,
-  private val userManager: UserTraktManager,
-  private val settingsRepository: SettingsRepository,
-  importWatchedRunner: TraktImportWatchedRunner,
-  importWatchlistRunner: TraktImportWatchlistRunner,
-  exportWatchedRunner: TraktImportWatchedRunner,
-  exportWatchlistRunner: TraktExportWatchlistRunner
+    @Named("miscPreferences") private var miscPreferences: SharedPreferences,
+    private val userManager: UserTraktManager,
+    private val settingsRepository: SettingsRepository,
+    importWatchedRunner: TraktImportWatchedRunner,
+    importWatchlistRunner: TraktImportWatchlistRunner,
+    exportWatchedRunner: TraktImportWatchedRunner,
+    exportWatchlistRunner: TraktExportWatchlistRunner
 ) : BaseViewModel<TraktSyncUiModel>() {
 
   init {

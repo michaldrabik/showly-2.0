@@ -6,9 +6,9 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Episode
 import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
 import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.ui_model.Episode
 import kotlinx.android.synthetic.main.view_quick_setup_item.view.*
 
 class QuickSetupItemView : FrameLayout {

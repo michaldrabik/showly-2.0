@@ -13,16 +13,16 @@ import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_FANART_URL
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_POSTER_URL
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Image.Status.AVAILABLE
-import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
-import com.michaldrabik.showly2.model.Image.Status.UNKNOWN
-import com.michaldrabik.showly2.model.ImageType.POSTER
 import com.michaldrabik.showly2.ui.discover.recycler.ListItem
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.screenWidth
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.withFailListener
 import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
+import com.michaldrabik.ui_model.Image.Status.AVAILABLE
+import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
+import com.michaldrabik.ui_model.Image.Status.UNKNOWN
+import com.michaldrabik.ui_model.ImageType.POSTER
 
 abstract class ShowView<Item : ListItem> : FrameLayout {
 

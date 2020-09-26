@@ -1,0 +1,54 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply from: '../versions.gradle'
+
+android {
+  kotlinOptions { jvmTarget = "1.8" }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  compileSdkVersion versions.compileSdk
+
+  defaultConfig {
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.compileSdk
+    versionCode versions.versionCode
+    versionName versions.versionName
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    consumerProguardFiles "consumer-rules.pro"
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+  }
+}
+
+dependencies {
+  implementation project(':common')
+  implementation project(':network')
+  implementation project(':storage')
+  implementation project(':ui-model')
+
+  implementation "androidx.core:core-ktx:$versions.androidKtx"
+  implementation "com.jakewharton.threetenabp:threetenabp:$versions.threeTenAbp"
+
+  implementation "com.google.dagger:dagger:$versions.dagger"
+  kapt "com.google.dagger:dagger-compiler:$versions.dagger"
+  kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
+
+  testImplementation "junit:junit:$versions.junit"
+  testImplementation "io.mockk:mockk:$versions.mockk"
+  testImplementation "com.google.truth:truth:$versions.truth"
+  testImplementation "androidx.arch.core:core-testing:$versions.coreTesting"
+  testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutinesTesting"
+  androidTestImplementation "androidx.test:runner:$versions.testRunner"
+
+}

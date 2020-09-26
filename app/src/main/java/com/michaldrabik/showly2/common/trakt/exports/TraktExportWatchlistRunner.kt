@@ -1,13 +1,13 @@
 package com.michaldrabik.showly2.common.trakt.exports
 
+import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncExportItem
 import com.michaldrabik.network.trakt.model.SyncExportRequest
 import com.michaldrabik.showly2.common.trakt.TraktSyncRunner
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.repository.TraktAuthToken
-import com.michaldrabik.showly2.repository.UserTraktManager
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.ui_repository.TraktAuthToken
+import com.michaldrabik.ui_repository.UserTraktManager
 import timber.log.Timber
 import javax.inject.Inject
 

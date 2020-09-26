@@ -5,11 +5,11 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Image
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.ui_model.Image
 import kotlinx.android.synthetic.main.view_show_fanart.view.*
 
 class ShowFanartView : ShowView<DiscoverListItem> {

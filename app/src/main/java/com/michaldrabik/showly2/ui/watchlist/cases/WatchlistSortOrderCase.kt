@@ -1,9 +1,9 @@
 package com.michaldrabik.showly2.ui.watchlist.cases
 
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.Settings
-import com.michaldrabik.showly2.model.SortOrder
-import com.michaldrabik.showly2.repository.settings.SettingsRepository
+import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.ui_model.Settings
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_repository.SettingsRepository
 import javax.inject.Inject
 
 @AppScope

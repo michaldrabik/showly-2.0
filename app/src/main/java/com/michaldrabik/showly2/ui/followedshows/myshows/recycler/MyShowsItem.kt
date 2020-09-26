@@ -1,11 +1,11 @@
 package com.michaldrabik.showly2.ui.followedshows.myshows.recycler
 
-import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.ImageType.POSTER
-import com.michaldrabik.showly2.model.MyShowsSection
-import com.michaldrabik.showly2.model.Show
-import com.michaldrabik.showly2.model.SortOrder
 import com.michaldrabik.showly2.ui.discover.recycler.ListItem
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageType.POSTER
+import com.michaldrabik.ui_model.MyShowsSection
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SortOrder
 
 data class MyShowsItem(
   val type: Type,

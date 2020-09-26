@@ -1,15 +1,15 @@
 package com.michaldrabik.showly2.common.trakt.imports
 
 import androidx.room.withTransaction
+import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.showly2.common.trakt.TraktSyncRunner
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.repository.TraktAuthToken
-import com.michaldrabik.showly2.repository.UserTraktManager
-import com.michaldrabik.showly2.utilities.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.SeeLaterShow
+import com.michaldrabik.ui_repository.TraktAuthToken
+import com.michaldrabik.ui_repository.UserTraktManager
+import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject

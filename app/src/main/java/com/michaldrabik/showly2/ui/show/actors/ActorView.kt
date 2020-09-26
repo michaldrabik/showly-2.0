@@ -12,11 +12,11 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.model.Actor
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.withFailListener
+import com.michaldrabik.ui_model.Actor
 import kotlinx.android.synthetic.main.view_actor.view.*
 
 class ActorView : FrameLayout {

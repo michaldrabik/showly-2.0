@@ -1,8 +1,8 @@
 package com.michaldrabik.showly2.utilities
 
 import android.content.Context
+import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.utilities.extensions.nowUtc
 import org.threeten.bp.Duration
 import org.threeten.bp.ZonedDateTime
 

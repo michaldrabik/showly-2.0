@@ -2,7 +2,7 @@ package com.michaldrabik.showly2.di.module
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.michaldrabik.showly2.di.scope.AppScope
+import com.michaldrabik.common.di.AppScope
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named

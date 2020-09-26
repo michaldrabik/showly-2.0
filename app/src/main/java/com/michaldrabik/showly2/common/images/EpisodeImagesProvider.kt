@@ -1,25 +1,25 @@
 package com.michaldrabik.showly2.common.images
 
+import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.showly2.di.scope.AppScope
-import com.michaldrabik.showly2.model.Episode
-import com.michaldrabik.showly2.model.Image
-import com.michaldrabik.showly2.model.Image.Status.AVAILABLE
-import com.michaldrabik.showly2.model.Image.Status.UNAVAILABLE
-import com.michaldrabik.showly2.model.ImageFamily.EPISODE
-import com.michaldrabik.showly2.model.ImageType
-import com.michaldrabik.showly2.model.ImageType.FANART
-import com.michaldrabik.showly2.model.mappers.Mappers
-import com.michaldrabik.showly2.repository.UserTvdbManager
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.Image.Status.AVAILABLE
+import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
+import com.michaldrabik.ui_model.ImageFamily.EPISODE
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.ImageType.FANART
+import com.michaldrabik.ui_repository.UserTvdbManager
+import com.michaldrabik.ui_repository.mappers.Mappers
 import javax.inject.Inject
 
 @AppScope
 class EpisodeImagesProvider @Inject constructor(
-  private val cloud: Cloud,
-  private val database: AppDatabase,
-  private val userManager: UserTvdbManager,
-  private val mappers: Mappers
+    private val cloud: Cloud,
+    private val database: AppDatabase,
+    private val userManager: UserTvdbManager,
+    private val mappers: Mappers
 ) {
 
   private suspend fun findCachedImage(episode: Episode, type: ImageType): Image {
