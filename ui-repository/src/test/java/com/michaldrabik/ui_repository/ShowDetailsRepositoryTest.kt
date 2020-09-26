@@ -1,14 +1,14 @@
-package com.michaldrabik.showly2.repository.shows
+package com.michaldrabik.ui_repository
 
-import BaseMockTest
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.trakt.api.TraktApi
-import com.michaldrabik.network.trakt.model.User
 import com.michaldrabik.storage.database.dao.ShowsDao
 import com.michaldrabik.storage.database.model.Show
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.User
+import com.michaldrabik.ui_repository.common.BaseMockTest
 import com.michaldrabik.ui_repository.shows.ShowDetailsRepository
 import io.mockk.Called
 import io.mockk.Runs
@@ -26,6 +26,7 @@ import org.junit.Test
 import java.util.concurrent.TimeUnit
 import com.michaldrabik.network.trakt.model.Comment as CommentNetwork
 import com.michaldrabik.network.trakt.model.Show as ShowRemote
+import com.michaldrabik.network.trakt.model.User as UserNetwork
 
 class ShowDetailsRepositoryTest : BaseMockTest() {
 
@@ -135,7 +136,7 @@ class ShowDetailsRepositoryTest : BaseMockTest() {
   @Test
   fun `Should load comments with given limit`() {
     runBlocking {
-      val commentNetwork = CommentNetwork(1, 2, "", 1, true, true, null, User("", ""))
+      val commentNetwork = CommentNetwork(1, 2, "", 1, true, true, null, UserNetwork("", ""))
       val comment = Comment(1, 2, "", 1, true, true, null, User("", ""))
       coEvery { traktApi.fetchShowComments(any(), any()) } returns listOf(commentNetwork)
 

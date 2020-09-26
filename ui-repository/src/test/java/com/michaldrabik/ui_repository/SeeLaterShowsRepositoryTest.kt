@@ -1,6 +1,5 @@
-package com.michaldrabik.showly2.repository.shows
+package com.michaldrabik.ui_repository
 
-import BaseMockTest
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.storage.database.dao.ArchiveShowsDao
 import com.michaldrabik.storage.database.dao.MyShowsDao
@@ -8,6 +7,7 @@ import com.michaldrabik.storage.database.dao.SeeLaterShowsDao
 import com.michaldrabik.storage.database.model.SeeLaterShow
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_repository.common.BaseMockTest
 import com.michaldrabik.ui_repository.shows.SeeLaterShowsRepository
 import io.mockk.coEvery
 import io.mockk.coJustRun
