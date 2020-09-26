@@ -22,6 +22,7 @@ jobs:
         KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
     - name: Run ktlint
       run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.35.0/ktlint && chmod a+x ktlint && ./ktlint
-    - name: Run Unit Tests
+    - name: Run Unit Tests (app)
       run: ./gradlew :app:testDebugUnitTest
+    - name: Run Unit Tests (ui-repository)
       run: ./gradlew :ui-repository:testDebugUnitTest
