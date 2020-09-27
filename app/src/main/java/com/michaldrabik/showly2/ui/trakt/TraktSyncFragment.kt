@@ -16,9 +16,6 @@ import com.michaldrabik.common.extensions.toDisplayString
 import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.network.Config
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.common.events.Event
-import com.michaldrabik.showly2.common.events.EventObserver
-import com.michaldrabik.showly2.common.trakt.TraktSyncService
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.requireAppContext
 import com.michaldrabik.showly2.ui.common.OnTraktAuthorizeListener
@@ -28,6 +25,9 @@ import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.events.Event
+import com.michaldrabik.ui_base.events.EventObserver
+import com.michaldrabik.ui_base.trakt.TraktSyncService
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import kotlinx.android.synthetic.main.fragment_trakt_sync.*
 

@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.michaldrabik.showly2.common.events.EventsManager
-import com.michaldrabik.showly2.common.events.ShowsSyncComplete
 import com.michaldrabik.showly2.serviceComponent
+import com.michaldrabik.ui_base.events.EventsManager
+import com.michaldrabik.ui_base.events.ShowsSyncComplete
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

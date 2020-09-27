@@ -6,7 +6,6 @@ import com.michaldrabik.showly2.ui.followedshows.archive.ArchiveFragment
 import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.seelater.SeeLaterFragment
 import com.michaldrabik.showly2.ui.search.SearchFragment
-import com.michaldrabik.showly2.ui.settings.SettingsFragment
 import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
 import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryFragment
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
@@ -46,8 +45,6 @@ interface FragmentComponent {
   fun inject(fragment: SeeLaterFragment)
 
   fun inject(fragment: ArchiveFragment)
-
-  fun inject(fragment: SettingsFragment)
 
   fun inject(fragment: TraktSyncFragment)
 

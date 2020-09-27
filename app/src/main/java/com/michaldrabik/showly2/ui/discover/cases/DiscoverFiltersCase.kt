@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2.ui.discover.cases
 
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.showly2.Analytics
+import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_repository.SettingsRepository
 import javax.inject.Inject

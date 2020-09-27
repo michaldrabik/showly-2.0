@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
 import androidx.annotation.IdRes
@@ -12,14 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.play.core.review.ReviewManagerFactory
-import com.michaldrabik.showly2.Analytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
-import com.michaldrabik.showly2.common.events.Event
-import com.michaldrabik.showly2.common.events.EventObserver
-import com.michaldrabik.showly2.common.events.ShowsSyncComplete
-import com.michaldrabik.showly2.common.events.TraktQuickSyncSuccess
-import com.michaldrabik.showly2.common.events.TraktSyncProgress
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.di.component.FragmentComponent
 import com.michaldrabik.showly2.ui.NotificationActivity
@@ -35,13 +30,28 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.utilities.network.NetworkObserver
+import com.michaldrabik.ui_base.Analytics
+import com.michaldrabik.ui_base.NavigationHost
+import com.michaldrabik.ui_base.SnackbarHost
+import com.michaldrabik.ui_base.events.Event
+import com.michaldrabik.ui_base.events.EventObserver
+import com.michaldrabik.ui_base.events.ShowsSyncComplete
+import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
+import com.michaldrabik.ui_base.events.TraktSyncProgress
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
+import com.michaldrabik.ui_settings.di.UiSettingsComponent
+import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
+class MainActivity : NotificationActivity(),
+  EventObserver,
+  NetworkObserver,
+  SnackbarHost,
+  NavigationHost,
+  UiSettingsComponentProvider {
 
   companion object {
     private const val NAVIGATION_TRANSITION_DURATION_MS = 350L
@@ -49,6 +59,7 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
   }
 
   lateinit var fragmentComponent: FragmentComponent
+  lateinit var uiSettingsComponent: UiSettingsComponent
 
   @Inject
   lateinit var viewModelFactory: DaggerViewModelFactory
@@ -63,9 +74,12 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
     )
   }
 
+  override fun uiSettingsComponent() = uiSettingsComponent
+
   override fun onCreate(savedInstanceState: Bundle?) {
     appComponent().inject(this)
     fragmentComponent = appComponent().fragmentComponent().create()
+    uiSettingsComponent = appComponent().uiSettingsComponent().create()
 
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
@@ -136,7 +150,7 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
 
       clearUiCache()
       navigationHost.findNavController().navigate(target)
-      showNavigation()
+      showNavigation(true)
       return@setOnNavigationItemSelectedListener true
     }
   }
@@ -179,7 +193,7 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
 
   fun isTipShown(tip: Tip) = viewModel.isTipShown(tip)
 
-  fun hideNavigation(animate: Boolean = true) {
+  override fun hideNavigation(animate: Boolean) {
     bottomNavigationView.run {
       isEnabled = false
       isClickable = false
@@ -192,7 +206,7 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
       .start()
   }
 
-  fun showNavigation(animate: Boolean = true) {
+  override fun showNavigation(animate: Boolean) {
     bottomNavigationView.run {
       isEnabled = true
       isClickable = true
@@ -227,7 +241,7 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
 
   private fun restoreState(savedInstanceState: Bundle?) {
     val isNavigationVisible = savedInstanceState?.getBoolean(ARG_NAVIGATION_VISIBLE, true) ?: true
-    if (!isNavigationVisible) hideNavigation()
+    if (!isNavigationVisible) hideNavigation(true)
   }
 
   private fun doForFragments(action: (Fragment) -> Unit) {
@@ -287,4 +301,6 @@ class MainActivity : NotificationActivity(), EventObserver, NetworkObserver {
       .setPositiveButton(R.string.textClose) { _, _ -> }
       .show()
   }
+
+  override fun provideSnackbarLayout(): ViewGroup = snackBarHost
 }

@@ -38,7 +38,6 @@ dependencies {
   implementation project(':ui-model')
 
   implementation "androidx.core:core-ktx:$versions.androidKtx"
-  implementation "com.jakewharton.threetenabp:threetenabp:$versions.threeTenAbp"
 
   implementation "com.google.dagger:dagger:$versions.dagger"
   kapt "com.google.dagger:dagger-compiler:$versions.dagger"

@@ -1,0 +1,66 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply from: '../versions.gradle'
+
+android {
+  kotlinOptions { jvmTarget = "1.8" }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  compileSdkVersion versions.compileSdk
+
+  defaultConfig {
+    minSdkVersion versions.minSdk
+    targetSdkVersion versions.compileSdk
+    versionCode versions.versionCode
+    versionName versions.versionName
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    consumerProguardFiles "consumer-rules.pro"
+  }
+
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+  }
+}
+
+dependencies {
+  implementation project(':common')
+  implementation project(':network')
+  implementation project(':storage')
+  implementation project(':ui-model')
+  implementation project(':ui-repository')
+
+  api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinCoroutines"
+
+  api "androidx.appcompat:appcompat:$versions.androidAppCompat"
+  api "androidx.core:core-ktx:$versions.androidKtx"
+  api "androidx.lifecycle:lifecycle-extensions:$versions.androidLifecycle"
+  api "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.androidLifecycle"
+  api "androidx.navigation:navigation-fragment-ktx:$versions.androidNavigation"
+  api "androidx.navigation:navigation-ui-ktx:$versions.androidNavigation"
+  api "androidx.constraintlayout:constraintlayout:$versions.androidConstraintLayout"
+  implementation "androidx.work:work-runtime-ktx:$versions.androidWork"
+  api "com.google.android.material:material:$versions.androidMaterial"
+
+  api "com.google.firebase:firebase-crashlytics:$versions.crashlytics"
+  api "com.google.firebase:firebase-analytics-ktx:$versions.firebaseAnalytics"
+  api "com.google.firebase:firebase-messaging:$versions.firebaseMessaging"
+
+  implementation "com.github.bumptech.glide:glide:$versions.glide"
+  kapt "com.github.bumptech.glide:compiler:$versions.glide"
+
+  implementation "com.google.dagger:dagger:$versions.dagger"
+  kapt "com.google.dagger:dagger-compiler:$versions.dagger"
+  kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
+
+  implementation "com.jakewharton.threetenabp:threetenabp:$versions.threeTenAbp"
+  implementation "com.jakewharton.timber:timber:$versions.timber"
+}

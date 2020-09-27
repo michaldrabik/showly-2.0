@@ -59,8 +59,11 @@ dependencies {
   implementation project(':common')
   implementation project(':network')
   implementation project(':storage')
+  implementation project(':ui-base')
   implementation project(':ui-model')
   implementation project(':ui-repository')
+  implementation project(':ui-navigation')
+  implementation project(':ui-settings')
 
   implementation "androidx.appcompat:appcompat:$versions.androidAppCompat"
   implementation "androidx.core:core-ktx:$versions.androidKtx"

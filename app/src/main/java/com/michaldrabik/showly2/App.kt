@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.michaldrabik.network.di.DaggerCloudComponent
 import com.michaldrabik.showly2.common.ShowsSyncActivityCallbacks
-import com.michaldrabik.showly2.common.events.EventsActivityCallbacks
 import com.michaldrabik.showly2.di.component.AppComponent
 import com.michaldrabik.showly2.di.component.DaggerAppComponent
 import com.michaldrabik.showly2.di.module.PreferencesModule
@@ -24,9 +23,11 @@ import com.michaldrabik.showly2.utilities.extensions.notificationManager
 import com.michaldrabik.showly2.utilities.network.NetworkMonitorCallbacks
 import com.michaldrabik.storage.di.DaggerStorageComponent
 import com.michaldrabik.storage.di.StorageModule
+import com.michaldrabik.ui_base.di.UiBaseComponentProvider
+import com.michaldrabik.ui_base.events.EventsActivityCallbacks
 import timber.log.Timber
 
-class App : Application() {
+class App : Application(), UiBaseComponentProvider {
 
   lateinit var appComponent: AppComponent
   var isOnline = true
@@ -88,6 +89,8 @@ class App : Application() {
       createNotificationChannel(createChannel(EPISODES_ANNOUNCEMENTS))
     }
   }
+
+  override fun uiBaseComponent() = appComponent.uiBaseComponent().create()
 }
 
 fun Context.connectivityManager() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

@@ -1,11 +1,4 @@
 <resources>
-  <dimen name="spaceMicro">2dp</dimen>
-  <dimen name="spaceTiny">4dp</dimen>
-  <dimen name="spaceSmall">8dp</dimen>
-  <dimen name="spaceMedium">12dp</dimen>
-  <dimen name="spaceNormal">16dp</dimen>
-  <dimen name="spaceBig">24dp</dimen>
-
   <dimen name="scrollBarWidth">3dp</dimen>
   <dimen name="swipeRefreshStartOffset">8dp</dimen>
   <dimen name="swipeRefreshEndOffset">120dp</dimen>

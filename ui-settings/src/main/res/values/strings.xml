@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textTraktLoginSuccess">You\'ve been successfully authorized.</string>
+  <string name="textTraktLogoutSuccess">You\'ve been signed out.</string>
+  <string name="textImagesCacheCleared">Images cache has been cleared.</string>
+  <string name="textTurnOff">Turn Off</string>
+
+  <string name="textSettings">Settings</string>
+  <string name="textSettingsTrakt">Trakt.tv</string>
+  <string name="textSettingsTraktAuthorizeTitle">Trakt.tv Authorization</string>
+  <string name="textSettingsTraktAuthorizeSummarySignIn">Click to sign in into your Trakt.tv account.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOut">Signed in. Click to sign out.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOutUser">Signed in as %1$s. Click to sign out.</string>
+  <string name="textSettingsTraktSyncTitle">Trakt.tv Sync</string>
+  <string name="textSettingsTraktSyncSummary">Sync data between Trakt.tv and Showly.</string>
+  <string name="textSettingsTraktQuickSyncTitle">Trakt.tv Instant Upload</string>
+  <string name="textSettingsTraktQuickSyncSummary">Instantly upload episodes and See Later shows to Trakt.tv after you add them in the app.</string>
+  <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv Instant Remove</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Add option to remove show\'s data from Trakt.tv after you remove it in the app.</string>
+  <string name="textSettingsGeneral">General &amp; UX</string>
+  <string name="textSettingsRecentShowsTitle">Recently Added Amount</string>
+  <string name="textSettingsRecentShowsSummary">Number of recent shows to display in \'My Shows\' screen.</string>
+  <string name="textSettingsMyShowsSectionsTitle">My Shows Sections</string>
+  <string name="textSettingsMyShowsSectionSummary">Enable/disable sections in My Shows tab.</string>
+  <string name="textSettingsIncludeArchiveStatsTitle">Archived Statistics</string>
+  <string name="textSettingsIncludeArchiveStatsSummary">Include archived shows data in the statistics.</string>
+  <string name="textSettingsNotifications">Notifications</string>
+  <string name="textSettingsPushNotificationsTitle">Push Notifications</string>
+  <string name="textSettingsPushNotificationsSummary">Receive general information push notifications.</string>
+  <string name="textSettingsShowsNotificationsTitle">Episodes Announcements</string>
+  <string name="textSettingsShowsNotificationsSummary">Receive notifications about new episodes, seasons for shows you are following.</string>
+  <string name="textSettingsShowsNotificationsWhenTitle">When To Notify</string>
+  <string name="textSettingsShowsNotificationsWhenSummary">When would you like ro receive episodes announcements.</string>
+  <string name="textSettingsShowsNotificationsWhenAvailable">When Available</string>
+  <string name="textSettingsShowsNotificationsWhen1Hour">1 Hour After</string>
+  <string name="textSettingsShowsNotificationsWhen3Hours">3 Hours After</string>
+  <string name="textSettingsShowsNotificationsWhen6Hours">6 Hours After</string>
+  <string name="textSettingsShowsNotificationsWhen1HourBefore">1 Hour Before</string>
+  <string name="textSettingsShowsNotificationsWhen3HoursBefore">3 Hours Before</string>
+  <string name="textSettingsShowsNotificationsWhen6HoursBefore">6 Hours Before</string>
+  <string name="textSettingsShowsNotificationsWhen12HoursBefore">12 Hours Before</string>
+  <string name="textSettingsShowsNotificationsWhen12Hours">12 Hours After</string>
+  <string name="textSettingsShowsNotificationsWhenNextDay">1 Day After</string>
+  <string name="textSettingsMisc">Misc</string>
+  <string name="textSettingsContactDevsTitle">Contact Developers</string>
+  <string name="textSettingsContactDevsSummary">Got an issue? Click to send us an email.</string>
+  <string name="textSettingsRateAppTitle">Give Feedback</string>
+  <string name="textSettingsRateAppSummary">Enjoying Showly? Drop us a review on PlayStore. Thanks!</string>
+  <string name="textSettingsDeleteCacheTitle">Clear Images Cache</string>
+  <string name="textSettingsDeleteCacheSummary">Click to clear local images cache. This may help if shows images are not being loaded correctly.</string>
+  <string name="textSettingsQuickSyncConfirmationTitle">Disable Automatic Sync</string>
+  <string name="textSettingsQuickSyncConfirmationMessage">\nIt seems like Automatic Sync is already turned on.\n\nWould you like to turn it off before enabling instant sync (advised)?\n</string>
+  <string name="textSettingsLogoutTitle">Trakt.tv Sign Out</string>
+  <string name="textSettingsLogoutMessage">\nAre you sure you want to sign out?\n</string>
+  <string name="textSettingsScheduleImportConfirmationTitle">Instant Sync Enabled</string>
+  <string name="textSettingsScheduleImportConfirmationMessage">\nIt seems like Instant Sync is already turned on.\n\nDo you still want to schedule automatic sync?\n</string>
+</resources>

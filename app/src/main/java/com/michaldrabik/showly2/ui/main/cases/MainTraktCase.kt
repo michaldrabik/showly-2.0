@@ -2,9 +2,9 @@ package com.michaldrabik.showly2.ui.main.cases
 
 import android.content.Context
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.showly2.common.trakt.TraktSyncWorker
-import com.michaldrabik.showly2.common.trakt.quicksync.QuickSyncManager
-import com.michaldrabik.showly2.common.trakt.quicksync.QuickSyncWorker
+import com.michaldrabik.ui_base.trakt.TraktSyncWorker
+import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
+import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncWorker
 import com.michaldrabik.ui_repository.SettingsRepository
 import javax.inject.Inject
 

@@ -7,6 +7,8 @@ import com.michaldrabik.showly2.di.module.SubcomponentsModule
 import com.michaldrabik.showly2.di.module.ViewModelsModule
 import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.storage.di.StorageMarker
+import com.michaldrabik.ui_base.di.UiBaseComponent
+import com.michaldrabik.ui_settings.di.UiSettingsComponent
 import dagger.Component
 
 @AppScope
@@ -26,6 +28,10 @@ interface AppComponent {
   fun fragmentComponent(): FragmentComponent.Factory
 
   fun serviceComponent(): ServiceComponent.Factory
+
+  fun uiBaseComponent(): UiBaseComponent.Factory
+
+  fun uiSettingsComponent(): UiSettingsComponent.Factory
 
   fun inject(activity: MainActivity)
 }

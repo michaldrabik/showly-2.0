@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textOk">OK</string>
+  <string name="textApply">Apply</string>
+  <string name="textNotNow">Not Now</string>
+  <string name="textYes">Yes</string>
+  <string name="textNo">No</string>
+  <string name="textClose">Close</string>
+  <string name="textNew">New</string>
+  <string name="textHot">Hot</string>
+  <string name="textCancel">Cancel</string>
+
+  <string name="textNewEpisodeAvailable">New episode is available now!</string>
+  <string name="textNewEpisodeAvailableSoon">New episode will be available soon!</string>
+  <string name="textNewSeasonAvailable">New season is available now!</string>
+  <string name="textNewSeasonAvailableSoon">New season will be available soon!</string>
+
+  <string name="textTraktSync">Trakt.tv Sync</string>
+  <string name="textTraktSyncComplete">Sync completed successfully.</string>
+  <string name="textTraktSyncRunning">Running…</string>
+  <string name="textTraktSyncError">Trakt.tv sync failed.</string>
+  <string name="textTraktSyncErrorFull">Trakt.tv sync failed. Please check your internet connection and try again or contact us if this keeps happening.</string>
+  <string name="textTraktQuickSyncError">Instant Sync failed.</string>
+  <string name="textTraktQuickSyncErrorFull">Instant Sync failed. We will try again next time you open the app. Please check your internet connection.</string>
+
+  <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this keeps happening.</string>
+  <string name="errorAuthorization">Authorization failed.\nPlease contact us if this keeps happening.</string>
+  <string name="errorTraktAuthorization">Trakt account authorization failed.\nPlease login and try again.</string>
+  <string name="errorSeasonsNotLoaded">Please wait for seasons data to load.</string>
+  <string name="errorEpisodeNotAired">This episode hasn\'t been aired yet.</string>
+  <string name="errorCouldNotLoadDiscover">We could not load discover page at this moment.\nPlease contact us if this keeps happening.</string>
+  <string name="errorCouldNotLoadShow">We could not load this show\'s details at this moment.\nPlease contact us if this keeps happening.</string>
+  <string name="errorCouldNotLoadSearchResults">We could not load search results at this moment.\nPlease contact us if this keeps happening.</string>
+  <string name="errorNoInternetConnection">No Internet. Please check your connection.</string>
+  <string name="errorTraktSyncGeneral">Trakt.tv sync error.\nPlease check your internet connection and try again.</string>
+</resources>

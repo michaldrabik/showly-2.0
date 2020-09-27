@@ -9,7 +9,6 @@ import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsViewModel
 import com.michaldrabik.showly2.ui.followedshows.seelater.SeeLaterViewModel
 import com.michaldrabik.showly2.ui.main.MainViewModel
 import com.michaldrabik.showly2.ui.search.SearchViewModel
-import com.michaldrabik.showly2.ui.settings.SettingsViewModel
 import com.michaldrabik.showly2.ui.show.ShowDetailsViewModel
 import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryViewModel
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsViewModel
@@ -18,6 +17,7 @@ import com.michaldrabik.showly2.ui.trakt.TraktSyncViewModel
 import com.michaldrabik.showly2.ui.watchlist.WatchlistViewModel
 import com.michaldrabik.showly2.ui.watchlist.pages.upcoming.WatchlistUpcomingViewModel
 import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistMainViewModel
+import com.michaldrabik.ui_settings.SettingsViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap

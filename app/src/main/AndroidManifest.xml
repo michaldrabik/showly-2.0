@@ -72,13 +72,13 @@
       />
 
     <service
-      android:name=".common.trakt.TraktSyncService"
+      android:name="com.michaldrabik.ui_base.trakt.TraktSyncService"
       android:exported="true"
       android:permission="android.permission.BIND_JOB_SERVICE"
       />
 
     <service
-      android:name=".common.trakt.quicksync.QuickSyncService"
+      android:name="com.michaldrabik.ui_base.trakt.quicksync.QuickSyncService"
       android:exported="true"
       android:permission="android.permission.BIND_JOB_SERVICE"
       />

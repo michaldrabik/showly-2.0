@@ -2,7 +2,7 @@ package com.michaldrabik.showly2.ui.search.cases
 
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.showly2.Analytics
+import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.shows.ShowsRepository

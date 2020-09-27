@@ -34,5 +34,4 @@ dependencies {
   implementation project(':common')
 
   implementation "androidx.appcompat:appcompat:$versions.androidAppCompat"
-  implementation "com.jakewharton.threetenabp:threetenabp:$versions.threeTenAbp"
 }

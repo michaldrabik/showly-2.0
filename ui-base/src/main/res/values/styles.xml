@@ -1,0 +1,53 @@
+<resources>
+
+  <!-- Base app theme -->
+  <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
+    <item name="android:windowBackground">@color/colorBackground</item>
+    <item name="android:navigationBarColor">@color/colorPrimary</item>
+    <item name="android:windowTranslucentStatus">true</item>
+
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="colorError">@color/colorAccent</item>
+    <item name="colorMask">@color/colorBlackTranslucent</item>
+    <item name="colorNotification">@color/colorAccent</item>
+
+    <item name="android:textColorPrimary">@color/colorWhite</item>
+    <item name="android:textColorSecondary">@color/colorGrayLight</item>
+
+    <item name="colorInfoSnackbar">@color/colorWhite</item>
+    <item name="colorErrorSnackbar">@color/colorAccent</item>
+    <item name="colorRateAppSnackbar">@color/colorWhite</item>
+    <item name="colorRateAppSnackbarTextPrimary">@color/colorBlack</item>
+    <item name="colorRateAppSnackbarTextSecondary">@color/colorGrayLight</item>
+
+    <item name="colorBottomMenuBackground">@color/colorPrimary</item>
+    <item name="colorBottomMenuItem">#838383</item>
+    <item name="colorBottomMenuItemChecked">@color/colorWhite</item>
+    <item name="colorBottomMenuSeparator">#464646</item>
+
+    <item name="colorSearchViewBackground">@color/colorPrimary</item>
+    <item name="colorSearchViewControl">@color/colorGrayLight</item>
+
+    <item name="colorPlaceholderBackground">#1C1C1C</item>
+    <item name="colorPlaceholderStroke">#3A3A3A</item>
+
+    <item name="colorSeparator">@color/colorGrayDark</item>
+    <item name="colorCardBackground">#282828</item>
+    <item name="colorBadgeBackground">@color/colorGrayDark</item>
+  </style>
+
+  <!-- Dialogs -->
+
+  <style name="AlertDialog" parent="@style/Theme.MaterialComponents.Dialog">
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="colorPrimary">@color/colorAccent</item>
+    <item name="buttonBarNegativeButtonStyle">@style/AlertDialog.NegativeButton</item>
+  </style>
+
+  <style name="AlertDialog.NegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <item name="android:textColor">@color/colorGrayLight</item>
+  </style>
+
+</resources>

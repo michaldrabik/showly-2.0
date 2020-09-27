@@ -34,7 +34,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.michaldrabik.common.extensions.toDisplayString
 import com.michaldrabik.common.extensions.toLocalTimeZone
-import com.michaldrabik.showly2.Analytics
 import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.showly2.R
@@ -72,6 +71,7 @@ import com.michaldrabik.showly2.utilities.extensions.visibleIf
 import com.michaldrabik.showly2.utilities.extensions.withFailListener
 import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
 import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider
+import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdImdb

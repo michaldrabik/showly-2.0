@@ -2,12 +2,12 @@ package com.michaldrabik.showly2.ui.show.seasons.episodes.details
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.showly2.Analytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.images.EpisodeImagesProvider
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.RatingState
 import com.michaldrabik.showly2.utilities.MessageEvent
+import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb

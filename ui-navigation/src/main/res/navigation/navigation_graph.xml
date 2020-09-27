@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress AndroidDomInspection -->
+<navigation
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/navigationGraph"
+  app:startDestination="@id/watchlistFragment"
+  >
+
+  <action
+    android:id="@+id/actionNavigateWatchlistFragment"
+    app:destination="@id/watchlistFragment"
+    app:launchSingleTop="true"
+    app:popUpTo="@id/navigationGraph"
+    app:popUpToInclusive="true"
+    />
+
+  <action
+    android:id="@+id/actionNavigateDiscoverFragment"
+    app:destination="@id/discoverFragment"
+    app:launchSingleTop="true"
+    app:popUpTo="@id/navigationGraph"
+    app:popUpToInclusive="true"
+    />
+
+  <action
+    android:id="@+id/actionNavigateFollowedShowsFragment"
+    app:destination="@id/followedShowsFragment"
+    app:launchSingleTop="true"
+    app:popUpTo="@id/navigationGraph"
+    app:popUpToInclusive="true"
+    />
+
+  <action
+    android:id="@+id/actionNavigateShowDetailsFragment"
+    app:destination="@id/showDetailsFragment"
+    app:launchSingleTop="true"
+    app:popUpTo="@id/navigationGraph"
+    app:popUpToInclusive="true"
+    />
+
+  <fragment
+    android:id="@+id/discoverFragment"
+    android:name="com.michaldrabik.showly2.ui.discover.DiscoverFragment"
+    android:label="fragmentDiscover"
+    >
+    <action
+      android:id="@+id/actionDiscoverFragmentToShowDetailsFragment"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionDiscoverFragmentToSearchFragment"
+      app:destination="@id/searchFragment"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionDiscoverFragmentToSettingsFragment"
+      app:destination="@id/settingsFragment"
+      app:launchSingleTop="true"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/watchlistFragment"
+    android:name="com.michaldrabik.showly2.ui.watchlist.WatchlistFragment"
+    android:label="fragmentWatchlistMain"
+    >
+    <action
+      android:id="@+id/actionWatchlistFragmentToShowDetailsFragment"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionWatchlistFragmentToSettingsFragment"
+      app:destination="@id/settingsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionWatchlistFragmentToTraktSyncFragment"
+      app:destination="@id/traktSyncFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:exitAnim="@anim/anim_fade_out"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/watchlistMainFragment"
+    android:name="com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistMainFragment"
+    android:label="fragmentWatchlist"
+    />
+
+  <fragment
+    android:id="@+id/showDetailsFragment"
+    android:name="com.michaldrabik.showly2.ui.show.ShowDetailsFragment"
+    android:label="fragmentShowDetails"
+    >
+    <action
+      android:id="@+id/actionShowDetailsFragmentToSelf"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:exitAnim="@anim/anim_fade_out"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToFanartGallery"
+      app:destination="@id/fanartGalleryFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:exitAnim="@anim/anim_fade_out"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/fanartGalleryFragment"
+    android:name="com.michaldrabik.showly2.ui.show.gallery.FanartGalleryFragment"
+    android:label="fragmentFanartGallery"
+    />
+
+  <fragment
+    android:id="@+id/followedShowsFragment"
+    android:name="com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment"
+    android:label="fragmentFollowedShows"
+    >
+    <action
+      android:id="@+id/actionFollowedShowsFragmentToShowDetailsFragment"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionFollowedShowsFragmentToSettingsFragment"
+      app:destination="@id/settingsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionFollowedShowsFragmentToStatisticsFragment"
+      app:destination="@id/statisticsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/searchFragment"
+    android:name="com.michaldrabik.showly2.ui.search.SearchFragment"
+    android:label="fragmentSearch"
+    >
+    <action
+      android:id="@+id/actionSearchFragmentToShowDetailsFragment"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/settingsFragment"
+    android:name="com.michaldrabik.ui_settings.SettingsFragment"
+    android:label="fragmentSettings"
+    >
+    <action
+      android:id="@+id/actionSettingsFragmentToTraktSync"
+      app:destination="@id/traktSyncFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:exitAnim="@anim/anim_fade_out"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/statisticsFragment"
+    android:name="com.michaldrabik.showly2.ui.statistics.StatisticsFragment"
+    android:label="fragmentStatistics"
+    >
+    <action
+      android:id="@+id/actionStatisticsFragmentToShowDetailsFragment"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/traktSyncFragment"
+    android:name="com.michaldrabik.showly2.ui.trakt.TraktSyncFragment"
+    android:label="fragmentTraktSync"
+    />
+
+</navigation>

@@ -2,11 +2,8 @@ package com.michaldrabik.showly2.ui.show
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.showly2.Analytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.common.images.ShowImagesProvider
-import com.michaldrabik.showly2.common.notifications.AnnouncementManager
-import com.michaldrabik.showly2.common.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.showly2.isOnline
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.show.cases.ShowDetailsActorsCase
@@ -28,6 +25,9 @@ import com.michaldrabik.showly2.utilities.MessageEvent
 import com.michaldrabik.showly2.utilities.extensions.findReplace
 import com.michaldrabik.showly2.utilities.extensions.launchDelayed
 import com.michaldrabik.showly2.utilities.extensions.replace
+import com.michaldrabik.ui_base.Analytics
+import com.michaldrabik.ui_base.notifications.AnnouncementManager
+import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.IdTrakt

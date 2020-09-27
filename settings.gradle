@@ -1,3 +1,6 @@
+include ':ui-navigation'
+include ':ui-settings'
+include ':ui-base'
 include ':ui-model'
 include ':ui-repository'
 include ':app', ':network', ':storage', ':common'
