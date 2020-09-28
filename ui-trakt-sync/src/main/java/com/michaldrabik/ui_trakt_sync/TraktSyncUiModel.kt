@@ -1,6 +1,6 @@
-package com.michaldrabik.showly2.ui.trakt
+package com.michaldrabik.ui_trakt_sync
 
-import com.michaldrabik.showly2.ui.common.UiModel
+import com.michaldrabik.ui_base.UiModel
 import com.michaldrabik.ui_model.TraktSyncSchedule
 
 data class TraktSyncUiModel(

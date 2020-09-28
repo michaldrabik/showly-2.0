@@ -43,6 +43,8 @@ import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
 import com.michaldrabik.ui_settings.di.UiSettingsComponent
 import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
+import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponent
+import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponentProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -51,6 +53,7 @@ class MainActivity : NotificationActivity(),
   NetworkObserver,
   SnackbarHost,
   NavigationHost,
+  UiTraktSyncComponentProvider,
   UiSettingsComponentProvider {
 
   companion object {
@@ -59,7 +62,8 @@ class MainActivity : NotificationActivity(),
   }
 
   lateinit var fragmentComponent: FragmentComponent
-  lateinit var uiSettingsComponent: UiSettingsComponent
+  private lateinit var uiSettingsComponent: UiSettingsComponent
+  private lateinit var uiTraktSyncComponent: UiTraktSyncComponent
 
   @Inject
   lateinit var viewModelFactory: DaggerViewModelFactory
@@ -74,13 +78,8 @@ class MainActivity : NotificationActivity(),
     )
   }
 
-  override fun uiSettingsComponent() = uiSettingsComponent
-
   override fun onCreate(savedInstanceState: Bundle?) {
-    appComponent().inject(this)
-    fragmentComponent = appComponent().fragmentComponent().create()
-    uiSettingsComponent = appComponent().uiSettingsComponent().create()
-
+    setupComponents()
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
@@ -92,6 +91,13 @@ class MainActivity : NotificationActivity(),
 
     restoreState(savedInstanceState)
     onNewIntent(intent)
+  }
+
+  private fun setupComponents() {
+    appComponent().inject(this)
+    fragmentComponent = appComponent().fragmentComponent().create()
+    uiSettingsComponent = appComponent().uiSettingsComponent().create()
+    uiTraktSyncComponent = appComponent().uiTraktSyncComponent().create()
   }
 
   override fun onNewIntent(intent: Intent?) {
@@ -303,4 +309,8 @@ class MainActivity : NotificationActivity(),
   }
 
   override fun provideSnackbarLayout(): ViewGroup = snackBarHost
+
+  override fun provideSettingsComponent() = uiSettingsComponent
+
+  override fun provideTraktSyncComponent() = uiTraktSyncComponent
 }

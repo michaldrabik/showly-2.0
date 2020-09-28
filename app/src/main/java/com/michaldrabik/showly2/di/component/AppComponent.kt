@@ -9,6 +9,7 @@ import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.storage.di.StorageMarker
 import com.michaldrabik.ui_base.di.UiBaseComponent
 import com.michaldrabik.ui_settings.di.UiSettingsComponent
+import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponent
 import dagger.Component
 
 @AppScope
@@ -32,6 +33,8 @@ interface AppComponent {
   fun uiBaseComponent(): UiBaseComponent.Factory
 
   fun uiSettingsComponent(): UiSettingsComponent.Factory
+
+  fun uiTraktSyncComponent(): UiTraktSyncComponent.Factory
 
   fun inject(activity: MainActivity)
 }

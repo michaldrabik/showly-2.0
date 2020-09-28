@@ -63,6 +63,7 @@ dependencies {
   implementation project(':ui-model')
   implementation project(':ui-repository')
   implementation project(':ui-navigation')
+  implementation project(':ui-trakt-sync')
   implementation project(':ui-settings')
 
   implementation "androidx.appcompat:appcompat:$versions.androidAppCompat"

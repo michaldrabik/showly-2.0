@@ -7,15 +7,12 @@ object Config {
   const val TVDB_IMAGE_BASE_BANNERS_URL = "$TVDB_IMAGE_PERSON_BASE_URL/banners/"
   const val TVDB_IMAGE_BASE_POSTER_URL = "${TVDB_IMAGE_BASE_BANNERS_URL}posters/"
   const val TVDB_IMAGE_BASE_FANART_URL = "${TVDB_IMAGE_BASE_BANNERS_URL}fanart/original/"
-  const val DEVELOPER_MAIL = "showlyapp@gmail.com"
-  const val PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=com.michaldrabik.showly2"
   const val SHOW_WHATS_NEW = true
 
   const val PULL_TO_REFRESH_COOLDOWN_MS = 10_000
   const val SEARCH_RECENTS_AMOUNT = 5
   const val IMAGE_FADE_DURATION_MS = 200
   const val FANART_GALLERY_IMAGES_LIMIT = 30
-  val MY_SHOWS_RECENTS_OPTIONS = arrayOf(2, 4, 6, 8)
 
   val ACTORS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(3) }
   val NEW_BADGE_DURATION by lazy { TimeUnit.HOURS.toMillis(30) }

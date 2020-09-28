@@ -52,6 +52,4 @@
   <string name="textSettingsQuickSyncConfirmationMessage">\nIt seems like Automatic Sync is already turned on.\n\nWould you like to turn it off before enabling instant sync (advised)?\n</string>
   <string name="textSettingsLogoutTitle">Trakt.tv Sign Out</string>
   <string name="textSettingsLogoutMessage">\nAre you sure you want to sign out?\n</string>
-  <string name="textSettingsScheduleImportConfirmationTitle">Instant Sync Enabled</string>
-  <string name="textSettingsScheduleImportConfirmationMessage">\nIt seems like Instant Sync is already turned on.\n\nDo you still want to schedule automatic sync?\n</string>
 </resources>

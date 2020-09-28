@@ -199,7 +199,7 @@
 
   <fragment
     android:id="@+id/traktSyncFragment"
-    android:name="com.michaldrabik.showly2.ui.trakt.TraktSyncFragment"
+    android:name="com.michaldrabik.ui_trakt_sync.TraktSyncFragment"
     android:label="fragmentTraktSync"
     />
 

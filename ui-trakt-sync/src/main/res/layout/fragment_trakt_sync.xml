@@ -7,6 +7,8 @@
   android:layout_height="match_parent"
   android:fillViewport="true"
   android:overScrollMode="never"
+  tools:background="@color/colorBackground"
+  tools:theme="@style/AppTheme"
   >
 
   <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,7 +66,7 @@
       app:layout_constraintHorizontal_chainStyle="packed"
       app:layout_constraintStart_toEndOf="@id/traktSyncIconArrow"
       app:layout_constraintTop_toTopOf="@id/traktSyncIconArrow"
-      app:srcCompat="@mipmap/ic_launcher_round"
+      app:srcCompat="@drawable/ic_showly"
       />
 
     <TextView

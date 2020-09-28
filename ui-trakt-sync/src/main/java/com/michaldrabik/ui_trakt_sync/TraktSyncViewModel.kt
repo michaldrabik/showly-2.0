@@ -1,13 +1,10 @@
-package com.michaldrabik.showly2.ui.trakt
+package com.michaldrabik.ui_trakt_sync
 
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.ui.common.base.BaseViewModel
-import com.michaldrabik.showly2.utilities.MessageEvent.Companion.error
-import com.michaldrabik.showly2.utilities.MessageEvent.Companion.info
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
 import com.michaldrabik.ui_base.events.TraktSyncError
@@ -19,6 +16,8 @@ import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.trakt.exports.TraktExportWatchlistRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchlistRunner
+import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.error
+import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.info
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.UserTraktManager

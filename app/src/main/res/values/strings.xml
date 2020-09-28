@@ -96,35 +96,11 @@
   <string name="textThisShowIsArchived">This is an archived show</string>
 
   <string name="textTraktSynchronize">Import from Trakt.tv</string>
-  <string name="textTraktSyncLastTimestamp">Last Sync: %s</string>
-  <string name="textTraktSyncStarted">Sync started. It will continue to run in the background.</string>
-  <string name="textTraktSyncDescription">Sync your Trakt.tv account progress and watchlist data with Showly.\n\nNone of the items from your current collection will be deleted. Sync will only handle missing items in your collections.</string>
-  <string name="textTraktSyncStart">Sync Now</string>
-  <string name="textTraktSyncSchedule">Schedule</string>
-  <string name="textTraktSyncFromTraktToShowly">Import from Trakt.tv to Showly</string>
-  <string name="textTraktSyncFromShowlyToTrakt">Export from Showly to Trakt.tv</string>
-  <string name="textTraktSyncOptionOff">Off</string>
-  <string name="textTraktSyncOption1Hour">Every Hour</string>
-  <string name="textTraktSyncOption3Hours">Every 3 Hours</string>
-  <string name="textTraktSyncOption6Hours">Every 6 Hours</string>
-  <string name="textTraktSyncOptionDaily">Every Day</string>
-  <string name="textTraktSyncOption3Day">Every 3 Days</string>
-  <string name="textTraktSyncOptionWeekly">Every Week</string>
   <string name="textTraktSyncRemovedFromTrakt">Trakt.tv synced successfully.</string>
   <plurals name="textTraktQuickSyncComplete">
     <item quantity="one">1 item synced successfully.</item>
     <item quantity="other">%d items synced successfully.</item>
   </plurals>
-
-  <string name="textTraktSyncOptionOffMessage">Sync will not run automatically.</string>
-  <string name="textTraktSyncOptionConfirmMessage">Automatic sync has been scheduled.</string>
-
-  <string name="textTraktSyncOptionHourButton">Scheduled to run every hour</string>
-  <string name="textTraktSyncOption3HoursButton">Scheduled to run every 3 hours</string>
-  <string name="textTraktSyncOption6HoursButton">Scheduled to run every 6 hours</string>
-  <string name="textTraktSyncOptionDailyButton">Scheduled to run every day</string>
-  <string name="textTraktSyncOption3DayButton">Scheduled to run every 3 days</string>
-  <string name="textTraktSyncOptionWeeklyButton">Scheduled to run every week</string>
 
   <string name="textStatisticsMostWatchedShows">Most Viewed Shows</string>
   <string name="textStatisticsTotalTimeSpent">Total Time Spent Watching</string>
