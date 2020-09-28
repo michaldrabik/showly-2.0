@@ -2,6 +2,7 @@ package com.michaldrabik.ui_base.notifications
 
 import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.res.ResourcesCompat
@@ -50,13 +51,12 @@ class AnnouncementWorker(context: Context, workerParams: WorkerParameters) : Wor
   }
 
   private fun createIntent(): PendingIntent {
-    // TODO
-    throw error("")
-//    val notifyIntent = Intent(applicationContext, MainActivity::class.java).apply {
-//      flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-//    }
-//    return PendingIntent.getActivity(
-//      applicationContext, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT
-//    )
+    val targetClass = Class.forName("com.michaldrabik.showly2.ui.main.MainActivity")
+    val notifyIntent = Intent(applicationContext, targetClass).apply {
+      flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+    }
+    return PendingIntent.getActivity(
+      applicationContext, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT
+    )
   }
 }

@@ -38,7 +38,7 @@ dependencies {
   implementation project(':ui-model')
   implementation project(':ui-repository')
 
-  api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlinCoroutines"
+  api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlinCoroutines"
 
   api "androidx.appcompat:appcompat:$versions.androidAppCompat"
   api "androidx.core:core-ktx:$versions.androidKtx"
