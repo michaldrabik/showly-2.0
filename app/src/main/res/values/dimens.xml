@@ -10,7 +10,7 @@
   <dimen name="showTilePlaceholder">40dp</dimen>
 
   <dimen name="discoverFilterChipStroke">1dp</dimen>
-  <dimen name="discoverRecyclerPadding">62dp</dimen>
+  <dimen name="discoverRecyclerPadding">63dp</dimen>
 
   <dimen name="seasonViewHeight">44dp</dimen>
   <dimen name="episodeViewHeight">42dp</dimen>

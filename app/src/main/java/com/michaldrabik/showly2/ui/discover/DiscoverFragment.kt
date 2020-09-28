@@ -114,7 +114,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       val color = requireContext().colorFromAttr(R.attr.colorNotification)
       setProgressBackgroundColorSchemeColor(requireContext().colorFromAttr(R.attr.colorSearchViewBackground))
       setColorSchemeColors(color, color, color)
-      setProgressViewOffset(false, swipeRefreshStartOffset, swipeRefreshEndOffset)
       setOnRefreshListener {
         mainActivity().discoverSearchViewPosition = 0F
         viewModel.loadDiscoverShows(pullToRefresh = true)
@@ -132,6 +131,11 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       (discoverFiltersView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.searchViewHeight))
       discoverTipFilters.translationY = statusBarSize.toFloat()
+      discoverSwipeRefresh.setProgressViewOffset(
+        true,
+        swipeRefreshStartOffset + statusBarSize,
+        swipeRefreshEndOffset
+      )
     }
   }
 
