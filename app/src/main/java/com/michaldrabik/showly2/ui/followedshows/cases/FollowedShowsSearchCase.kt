@@ -1,8 +1,8 @@
 package com.michaldrabik.showly2.ui.followedshows.cases
 
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
+import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.shows.ShowsRepository

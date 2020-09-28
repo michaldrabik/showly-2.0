@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textOk">OK</string>
-  <string name="textApply">Apply</string>
-  <string name="textNotNow">Not Now</string>
   <string name="textYes">Yes</string>
   <string name="textNo">No</string>
+  <string name="textApply">Apply</string>
+  <string name="textCancel">Cancel</string>
   <string name="textClose">Close</string>
+  <string name="textNotNow">Not Now</string>
   <string name="textNew">New</string>
   <string name="textHot">Hot</string>
-  <string name="textCancel">Cancel</string>
 
   <string name="textNewEpisodeAvailable">New episode is available now!</string>
   <string name="textNewEpisodeAvailableSoon">New episode will be available soon!</string>

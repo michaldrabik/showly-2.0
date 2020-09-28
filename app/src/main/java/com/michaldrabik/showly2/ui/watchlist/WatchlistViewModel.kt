@@ -3,7 +3,6 @@ package com.michaldrabik.showly2.ui.watchlist
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistEpisodesCase
 import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistLoadItemsCase
@@ -11,6 +10,7 @@ import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistPinnedItemsCase
 import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistSortOrderCase
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.MessageEvent
+import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.SortOrder
 import kotlinx.coroutines.async

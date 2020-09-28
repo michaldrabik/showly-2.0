@@ -2,10 +2,10 @@ package com.michaldrabik.showly2.ui.followedshows.myshows.cases
 
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
-import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Season
+import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.MyShowsSection.ALL

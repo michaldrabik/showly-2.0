@@ -16,15 +16,6 @@
   <string name="tabArchive">Archived\u0020</string>
   <string name="tabCalendar">Calendar</string>
 
-  <string name="textApply">Apply</string>
-  <string name="textOk">OK</string>
-  <string name="textNotNow">Not Now</string>
-  <string name="textYes">Yes</string>
-  <string name="textNo">No</string>
-  <string name="textClose">Close</string>
-  <string name="textNew">New</string>
-  <string name="textHot">Hot</string>
-  <string name="textCancel">Cancel</string>
   <string name="textNextEpisode">Next Episode:</string>
   <string name="textSearchFor">Search…</string>
   <string name="textSearchForMyShows">Search…</string>
@@ -50,7 +41,6 @@
   <string name="textImdb">iMDB</string>
   <string name="textRate">Rate</string>
   <string name="textRateDelete">Remove</string>
-  <string name="textTurnOff">Turn Off</string>
   <string name="textSelect">Select</string>
   <string name="textLoadComments">Show Comments</string>
   <string name="textLoadCommentsCount">Show Comments (%d)</string>
@@ -88,12 +78,6 @@
   <string name="textArchiveDescription"><b>Archive</b> is a list of shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Watchlist</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
   <string name="textCalendarEmpty">There are no new episodes on the way.</string>
   <string name="textStatisticsEmpty">At least one show must be present in <b>My Shows</b>\nbefore statistics can be displayed.</string>
-  <string name="textNewEpisodeAvailable">New episode is available now!</string>
-  <string name="textNewEpisodeAvailableSoon">New episode will be available soon!</string>
-  <string name="textNewSeasonAvailable">New season is available now!</string>
-  <string name="textNewSeasonAvailableSoon">New season will be available soon!</string>
-  <string name="textTraktLoginSuccess">You\'ve been successfully authorized.</string>
-  <string name="textTraktLogoutSuccess">You\'ve been signed out.</string>
   <string name="textSpoilersWarning">This comment contains spoilers.\nTap to read.</string>
   <string name="textRuntimeLeftHours">~%1$dh %2$dm remaining</string>
   <string name="textRuntimeLeftMinutes">~%1$dm remaining</string>
@@ -105,7 +89,6 @@
   <string name="textShowQuickProgressDone">Your progress has been updated.</string>
   <string name="textDiscoverShows">Discover Shows</string>
   <string name="textDiscoverFilterAnticipated">Hide Anticipated Shows</string>
-  <string name="textImagesCacheCleared">Images cache has been cleared.</string>
 
   <string name="textArchiveConfirmationTitle">Archive Show</string>
   <string name="textArchiveConfirmationMessage">\nAre you sure you want to archive this show?\n</string>
@@ -114,14 +97,7 @@
 
   <string name="textTraktSynchronize">Import from Trakt.tv</string>
   <string name="textTraktSyncLastTimestamp">Last Sync: %s</string>
-  <string name="textTraktSync">Trakt.tv Sync</string>
-  <string name="textTraktSyncRunning">Running…</string>
   <string name="textTraktSyncStarted">Sync started. It will continue to run in the background.</string>
-  <string name="textTraktSyncComplete">Sync completed successfully.</string>
-  <string name="textTraktSyncError">Trakt.tv sync failed.</string>
-  <string name="textTraktSyncErrorFull">Trakt.tv sync failed. Please check your internet connection and try again or contact us if this keeps happening.</string>
-  <string name="textTraktQuickSyncError">Instant Sync failed.</string>
-  <string name="textTraktQuickSyncErrorFull">Instant Sync failed. We will try again next time you open the app. Please check your internet connection.</string>
   <string name="textTraktSyncDescription">Sync your Trakt.tv account progress and watchlist data with Showly.\n\nNone of the items from your current collection will be deleted. Sync will only handle missing items in your collections.</string>
   <string name="textTraktSyncStart">Sync Now</string>
   <string name="textTraktSyncSchedule">Schedule</string>
@@ -201,16 +177,4 @@
   <string name="shortcutMyShows">My Shows</string>
   <string name="shortcutWatchlist">Watchlist</string>
   <string name="shortcutSearch">Search</string>
-
-  <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this keeps happening.</string>
-  <string name="errorAuthorization">Authorization failed.\nPlease contact us if this keeps happening.</string>
-  <string name="errorTraktAuthorization">Trakt account authorization failed.\nPlease login and try again.</string>
-  <string name="errorSeasonsNotLoaded">Please wait for seasons data to load.</string>
-  <string name="errorEpisodeNotAired">This episode hasn\'t been aired yet.</string>
-  <string name="errorCouldNotLoadDiscover">We could not load discover page at this moment.\nPlease contact us if this keeps happening.</string>
-  <string name="errorCouldNotLoadShow">We could not load this show\'s details at this moment.\nPlease contact us if this keeps happening.</string>
-  <string name="errorCouldNotLoadSearchResults">We could not load search results at this moment.\nPlease contact us if this keeps happening.</string>
-  <string name="errorNoInternetConnection">No Internet. Please check your connection.</string>
-  <string name="errorTraktSyncGeneral">Trakt.tv sync error.\nPlease check your internet connection and try again.</string>
-
 </resources>

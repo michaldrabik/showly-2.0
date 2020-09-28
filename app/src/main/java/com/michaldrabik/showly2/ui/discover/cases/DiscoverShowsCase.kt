@@ -1,8 +1,8 @@
 package com.michaldrabik.showly2.ui.discover.cases
 
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
+import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.DiscoverSortOrder
 import com.michaldrabik.ui_model.DiscoverSortOrder.HOT

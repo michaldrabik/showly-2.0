@@ -1,43 +1,5 @@
 <resources>
 
-  <!-- Base app theme -->
-  <style name="AppTheme" parent="Theme.MaterialComponents.NoActionBar">
-    <item name="android:windowBackground">@color/colorBackground</item>
-    <item name="android:navigationBarColor">@color/colorPrimary</item>
-    <item name="android:windowTranslucentStatus">true</item>
-
-    <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-    <item name="colorAccent">@color/colorAccent</item>
-    <item name="colorError">@color/colorAccent</item>
-    <item name="colorMask">@color/colorBlackTranslucent</item>
-    <item name="colorNotification">@color/colorAccent</item>
-
-    <item name="android:textColorPrimary">@color/colorWhite</item>
-    <item name="android:textColorSecondary">@color/colorGrayLight</item>
-
-    <item name="colorInfoSnackbar">@color/colorWhite</item>
-    <item name="colorErrorSnackbar">@color/colorAccent</item>
-    <item name="colorRateAppSnackbar">@color/colorWhite</item>
-    <item name="colorRateAppSnackbarTextPrimary">@color/colorBlack</item>
-    <item name="colorRateAppSnackbarTextSecondary">@color/colorGrayLight</item>
-
-    <item name="colorBottomMenuBackground">@color/colorPrimary</item>
-    <item name="colorBottomMenuItem">#838383</item>
-    <item name="colorBottomMenuItemChecked">@color/colorWhite</item>
-    <item name="colorBottomMenuSeparator">#464646</item>
-
-    <item name="colorSearchViewBackground">@color/colorPrimary</item>
-    <item name="colorSearchViewControl">@color/colorGrayLight</item>
-
-    <item name="colorPlaceholderBackground">#1C1C1C</item>
-    <item name="colorPlaceholderStroke">#3A3A3A</item>
-
-    <item name="colorSeparator">@color/colorGrayDark</item>
-    <item name="colorCardBackground">#282828</item>
-    <item name="colorBadgeBackground">@color/colorGrayDark</item>
-  </style>
-
   <style name="ToolbarSubtitleAppearance" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
     <item name="android:textSize">12sp</item>
   </style>
@@ -162,43 +124,6 @@
     <item name="android:textColor">@color/colorWhite</item>
     <item name="android:textSize">13sp</item>
     <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
-  </style>
-
-  <!-- Settings -->
-
-  <style name="Settings" />
-
-  <style name="Settings.Category" parent="Settings">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:paddingStart">@dimen/spaceNormal</item>
-    <item name="android:paddingEnd">@dimen/spaceNormal</item>
-    <item name="android:layout_marginTop">@dimen/spaceBig</item>
-    <item name="android:textColor">@color/colorAccent</item>
-    <item name="android:textSize">14sp</item>
-    <item name="android:textStyle">bold</item>
-  </style>
-
-  <style name="Settings.Title" parent="Settings">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">@color/colorWhite</item>
-    <item name="android:textSize">16sp</item>
-  </style>
-
-  <style name="Settings.Summary" parent="Settings">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:textColor">@color/colorGrayLight</item>
-    <item name="android:textSize">13sp</item>
-  </style>
-
-  <style name="Settings.ItemLayout" parent="Settings">
-    <item name="android:layout_width">0dp</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:padding">@dimen/spaceNormal</item>
-    <item name="android:orientation">vertical</item>
-    <item name="android:background">?android:attr/selectableItemBackground</item>
   </style>
 
   <!-- Other  -->

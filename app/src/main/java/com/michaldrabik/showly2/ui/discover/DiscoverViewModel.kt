@@ -6,13 +6,13 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.discover.cases.DiscoverFiltersCase
 import com.michaldrabik.showly2.ui.discover.cases.DiscoverShowsCase
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
 import com.michaldrabik.showly2.utilities.MessageEvent
 import com.michaldrabik.showly2.utilities.extensions.findReplace
+import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.Image
 import kotlinx.coroutines.delay

@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.common.images.ShowImagesProvider
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.watchlist.WatchlistUiModel
 import com.michaldrabik.showly2.ui.watchlist.pages.upcoming.WatchlistUpcomingViewModel.Section.LATER
@@ -15,6 +14,7 @@ import com.michaldrabik.showly2.ui.watchlist.pages.upcoming.WatchlistUpcomingVie
 import com.michaldrabik.showly2.ui.watchlist.pages.upcoming.WatchlistUpcomingViewModel.Section.TOMORROW
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.findReplace
+import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Image
 import kotlinx.coroutines.launch
