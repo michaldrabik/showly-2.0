@@ -35,8 +35,4 @@ dependencies {
   implementation project(':ui-base')
   implementation project(':ui-repository')
   implementation project(':ui-model')
-
-  implementation "com.google.dagger:dagger:$versions.dagger"
-  kapt "com.google.dagger:dagger-compiler:$versions.dagger"
-  kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
 }
