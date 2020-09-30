@@ -36,7 +36,4 @@ dependencies {
   implementation project(':ui-repository')
   implementation project(':ui-model')
   implementation project(':ui-navigation')
-
-  implementation "com.github.bumptech.glide:glide:$versions.glide"
-  kapt "com.github.bumptech.glide:compiler:$versions.glide"
 }

@@ -45,14 +45,14 @@ dependencies {
   api "androidx.navigation:navigation-fragment-ktx:$versions.androidNavigation"
   api "androidx.navigation:navigation-ui-ktx:$versions.androidNavigation"
   api "androidx.constraintlayout:constraintlayout:$versions.androidConstraintLayout"
-  implementation "androidx.work:work-runtime-ktx:$versions.androidWork"
+  api "androidx.work:work-runtime-ktx:$versions.androidWork"
   api "com.google.android.material:material:$versions.androidMaterial"
 
   api "com.google.firebase:firebase-crashlytics:$versions.crashlytics"
   api "com.google.firebase:firebase-analytics-ktx:$versions.firebaseAnalytics"
   api "com.google.firebase:firebase-messaging:$versions.firebaseMessaging"
 
-  implementation "com.github.bumptech.glide:glide:$versions.glide"
+  api "com.github.bumptech.glide:glide:$versions.glide"
   kapt "com.github.bumptech.glide:compiler:$versions.glide"
 
   api "com.google.dagger:dagger:$versions.dagger"
