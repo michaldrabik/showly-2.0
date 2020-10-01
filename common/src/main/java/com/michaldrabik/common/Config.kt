@@ -6,9 +6,15 @@ import java.util.concurrent.TimeUnit
 object Config {
   private const val TVDB_IMAGE_PERSON_BASE_URL = "https://artworks.thetvdb.com"
   const val TVDB_IMAGE_BASE_BANNERS_URL = "$TVDB_IMAGE_PERSON_BASE_URL/banners/"
+  const val TVDB_IMAGE_BASE_POSTER_URL = "${TVDB_IMAGE_BASE_BANNERS_URL}posters/"
+  const val TVDB_IMAGE_BASE_FANART_URL = "${TVDB_IMAGE_BASE_BANNERS_URL}fanart/original/"
+  const val SHOW_WHATS_NEW = true
 
   const val DEVELOPER_MAIL = "showlyapp@gmail.com"
   const val PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=com.michaldrabik.showly2"
+
+  const val MAIN_GRID_SPAN = 3
+  const val IMAGE_FADE_DURATION_MS = 200
 
   val MY_SHOWS_RECENTS_OPTIONS = arrayOf(2, 4, 6, 8)
   val DISCOVER_SHOWS_CACHE_DURATION by lazy { TimeUnit.HOURS.toMillis(12) }

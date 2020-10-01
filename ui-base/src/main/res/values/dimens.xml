@@ -5,4 +5,11 @@
   <dimen name="spaceMedium">12dp</dimen>
   <dimen name="spaceNormal">16dp</dimen>
   <dimen name="spaceBig">24dp</dimen>
+
+  <dimen name="gridSpacing">3dp</dimen>
+  <dimen name="gridPadding">6dp</dimen>
+
+  <dimen name="showTileCorner">4dp</dimen>
+  <dimen name="showTilePlaceholder">40dp</dimen>
+
 </resources>

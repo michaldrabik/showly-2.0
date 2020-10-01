@@ -5,7 +5,9 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
+  tools:background="@color/colorBackground"
   tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  tools:theme="@style/AppTheme"
   >
 
   <TextView
@@ -14,7 +16,7 @@
     android:layout_height="wrap_content"
     android:text="@string/textStatisticsMostWatchedShows"
     android:textColor="?android:attr/textColorPrimary"
-    android:textSize="@dimen/listHeaderTextSize"
+    android:textSize="@dimen/statisticsHeaderSize"
     android:textStyle="bold"
     app:layout_constraintBottom_toTopOf="@id/viewMostWatchedShowsRecycler"
     app:layout_constraintEnd_toEndOf="parent"

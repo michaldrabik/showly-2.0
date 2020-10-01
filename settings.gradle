@@ -1,3 +1,4 @@
+include ':ui-statistics'
 include ':ui-trakt-sync'
 include ':ui-navigation'
 include ':ui-settings'

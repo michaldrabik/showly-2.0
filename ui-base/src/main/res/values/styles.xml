@@ -38,6 +38,18 @@
     <item name="colorBadgeBackground">@color/colorGrayDark</item>
   </style>
 
+  <!-- Progress Bars -->
+
+  <style name="ProgressBarGray">
+    <item name="android:indeterminateTint">@color/colorGrayDark</item>
+    <item name="android:indeterminateTintMode">src_in</item>
+  </style>
+
+  <style name="ProgressBarAccent">
+    <item name="android:indeterminateTint">@color/colorAccent</item>
+    <item name="android:indeterminateTintMode">src_in</item>
+  </style>
+
   <!-- Dialogs -->
 
   <style name="AlertDialog" parent="@style/Theme.MaterialComponents.Dialog">
@@ -48,6 +60,17 @@
 
   <style name="AlertDialog.NegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
     <item name="android:textColor">@color/colorGrayLight</item>
+  </style>
+
+  <!-- Other  -->
+
+  <style name="ImageTitle">
+    <item name="android:shadowColor">@color/colorBlack</item>
+    <item name="android:shadowDx">3</item>
+    <item name="android:shadowDy">3</item>
+    <item name="android:shadowRadius">1</item>
+    <item name="android:textColor">@color/colorWhite</item>
+    <item name="android:ellipsize">end</item>
   </style>
 
 </resources>
