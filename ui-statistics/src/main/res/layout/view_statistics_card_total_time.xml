@@ -6,7 +6,9 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   app:cardBackgroundColor="?attr/colorCardBackground"
+  tools:background="@color/colorBackground"
   tools:parentTag="com.google.android.material.card.MaterialCardView"
+  tools:theme="@style/AppTheme"
   >
 
   <LinearLayout
@@ -25,13 +27,14 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginBottom="@dimen/spaceSmall"
-      android:drawableStart="@drawable/ic_clock"
       android:drawablePadding="@dimen/spaceSmall"
       android:gravity="center_vertical"
       android:text="@string/textStatisticsTotalTimeSpent"
       android:textColor="?android:attr/textColorPrimary"
-      android:textSize="@dimen/listHeaderTextSize"
+      android:textSize="@dimen/statisticsHeaderSize"
       android:textStyle="bold"
+      app:drawableStartCompat="@drawable/ic_clock"
+      tools:drawableStart="@drawable/ic_clock"
       />
 
     <TextView

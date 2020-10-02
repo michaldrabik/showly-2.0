@@ -1,13 +1,13 @@
-package com.michaldrabik.showly2.ui.statistics.views
+package com.michaldrabik.ui_statistics.views
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import com.google.android.material.card.MaterialCardView
-import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
-import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_statistics.R
 import kotlinx.android.synthetic.main.view_statistics_card_top_genre.view.*
 
 @SuppressLint("SetTextI18n")

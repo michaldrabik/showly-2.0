@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--suppress AndroidDomInspection -->
+<?xml version="1.0" encoding="utf-8"?><!--suppress AndroidDomInspection -->
 <navigation
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -185,7 +184,7 @@
 
   <fragment
     android:id="@+id/statisticsFragment"
-    android:name="com.michaldrabik.showly2.ui.statistics.StatisticsFragment"
+    android:name="com.michaldrabik.ui_statistics.StatisticsFragment"
     android:label="fragmentStatistics"
     >
     <action

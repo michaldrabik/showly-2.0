@@ -12,11 +12,11 @@ import com.michaldrabik.showly2.ui.search.SearchViewModel
 import com.michaldrabik.showly2.ui.show.ShowDetailsViewModel
 import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryViewModel
 import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsViewModel
-import com.michaldrabik.showly2.ui.statistics.StatisticsViewModel
 import com.michaldrabik.showly2.ui.watchlist.WatchlistViewModel
 import com.michaldrabik.showly2.ui.watchlist.pages.upcoming.WatchlistUpcomingViewModel
 import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistMainViewModel
 import com.michaldrabik.ui_settings.SettingsViewModel
+import com.michaldrabik.ui_statistics.StatisticsViewModel
 import com.michaldrabik.ui_trakt_sync.TraktSyncViewModel
 import dagger.Binds
 import dagger.Module

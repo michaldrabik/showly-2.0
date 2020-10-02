@@ -2,6 +2,8 @@
 <resources>
   <string name="textThisShowIsArchived">This is an archived show</string>
 
+  <string name="textStatistics">Statistics</string>
+  <string name="textStatisticsEmpty">At least one show must be present in <b>My Shows</b>\nbefore statistics can be displayed.</string>
   <string name="textStatisticsMostWatchedShows">Most Viewed Shows</string>
   <string name="textStatisticsTotalTimeSpent">Total Time Spent Watching</string>
   <string name="textStatisticsTotalTimeItIs">and it is</string>
@@ -17,4 +19,6 @@
   <string name="textStatisticsTopGenreSubValue2">seem to be your cup of tea.</string>
   <string name="textStatisticsShowMore">Show More</string>
   <string name="textStatisticsRatings">Recently Rated</string>
+
+  <string name="textArchivedShowsExcluded">Archived shows excluded</string>
 </resources>

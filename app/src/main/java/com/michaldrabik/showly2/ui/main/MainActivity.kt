@@ -43,6 +43,8 @@ import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
 import com.michaldrabik.ui_settings.di.UiSettingsComponent
 import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
+import com.michaldrabik.ui_statistics.di.UiStatisticsComponent
+import com.michaldrabik.ui_statistics.di.UiStatisticsComponentProvider
 import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponent
 import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponentProvider
 import kotlinx.android.synthetic.main.activity_main.*
@@ -54,6 +56,7 @@ class MainActivity : NotificationActivity(),
   SnackbarHost,
   NavigationHost,
   UiTraktSyncComponentProvider,
+  UiStatisticsComponentProvider,
   UiSettingsComponentProvider {
 
   companion object {
@@ -64,6 +67,7 @@ class MainActivity : NotificationActivity(),
   lateinit var fragmentComponent: FragmentComponent
   private lateinit var uiSettingsComponent: UiSettingsComponent
   private lateinit var uiTraktSyncComponent: UiTraktSyncComponent
+  private lateinit var uiStatisticsComponent: UiStatisticsComponent
 
   @Inject
   lateinit var viewModelFactory: DaggerViewModelFactory
@@ -98,6 +102,7 @@ class MainActivity : NotificationActivity(),
     fragmentComponent = appComponent().fragmentComponent().create()
     uiSettingsComponent = appComponent().uiSettingsComponent().create()
     uiTraktSyncComponent = appComponent().uiTraktSyncComponent().create()
+    uiStatisticsComponent = appComponent().uiStatisticsComponent().create()
   }
 
   override fun onNewIntent(intent: Intent?) {
@@ -313,4 +318,6 @@ class MainActivity : NotificationActivity(),
   override fun provideSettingsComponent() = uiSettingsComponent
 
   override fun provideTraktSyncComponent() = uiTraktSyncComponent
+
+  override fun provideStatisticsComponent() = uiStatisticsComponent
 }

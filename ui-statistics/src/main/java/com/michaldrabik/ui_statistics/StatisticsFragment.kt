@@ -1,20 +1,16 @@
-package com.michaldrabik.showly2.ui.statistics
+package com.michaldrabik.ui_statistics
 
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
-import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.ui.common.base.BaseFragment
-import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
-import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
-import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
-import com.michaldrabik.showly2.utilities.extensions.fadeIf
-import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_statistics.di.UiStatisticsComponentProvider
 import kotlinx.android.synthetic.main.fragment_statistics.*
 
 class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_statistics) {
@@ -22,7 +18,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
   override val viewModel by viewModels<StatisticsViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    fragmentComponent().inject(this)
+    (requireActivity() as UiStatisticsComponentProvider).provideStatisticsComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 
@@ -51,11 +47,12 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
     statisticsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     statisticsMostWatchedShows.run {
       onLoadMoreClickListener = { addLimit -> viewModel.loadMostWatchedShows(addLimit) }
-      onShowClickListener = { (requireParentFragment() as FollowedShowsFragment).openShowDetails(it) }
+      // TODO
+//      onShowClickListener = { (requireParentFragment() as FollowedShowsFragment).openShowDetails(it) }
     }
     statisticsRatings.onShowClickListener = {
-      val bundle = bundleOf(ShowDetailsFragment.ARG_SHOW_ID to it.show.traktId)
-      navigateTo(R.id.actionStatisticsFragmentToShowDetailsFragment, bundle)
+//      val bundle = bundleOf(ShowDetailsFragment.ARG_SHOW_ID to it.show.traktId)
+//      navigateTo(R.id.actionStatisticsFragmentToShowDetailsFragment, bundle)
     }
   }
 
