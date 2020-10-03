@@ -5,9 +5,7 @@ import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.archive.ArchiveFragment
 import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.seelater.SeeLaterFragment
-import com.michaldrabik.showly2.ui.show.ShowDetailsFragment
 import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryFragment
-import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.showly2.ui.watchlist.WatchlistFragment
 import com.michaldrabik.showly2.ui.watchlist.pages.upcoming.WatchlistUpcomingFragment
 import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistMainFragment
@@ -29,8 +27,6 @@ interface FragmentComponent {
 
   fun inject(fragment: DiscoverFragment)
 
-  fun inject(fragment: ShowDetailsFragment)
-
   fun inject(fragment: FanartGalleryFragment)
 
   fun inject(fragment: FollowedShowsFragment)
@@ -40,6 +36,4 @@ interface FragmentComponent {
   fun inject(fragment: SeeLaterFragment)
 
   fun inject(fragment: ArchiveFragment)
-
-  fun inject(fragment: EpisodeDetailsBottomSheet)
 }

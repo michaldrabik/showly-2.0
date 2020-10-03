@@ -41,10 +41,12 @@ import com.michaldrabik.ui_base.events.TraktSyncProgress
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
+import com.michaldrabik.ui_search.di.UiSearchComponentProvider
 import com.michaldrabik.ui_settings.di.UiSettingsComponent
 import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
+import com.michaldrabik.ui_show.di.UiShowDetailsComponent
+import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
 import com.michaldrabik.ui_statistics.di.UiSearchComponent
-import com.michaldrabik.ui_statistics.di.UiSearchComponentProvider
 import com.michaldrabik.ui_statistics.di.UiStatisticsComponent
 import com.michaldrabik.ui_statistics.di.UiStatisticsComponentProvider
 import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponent
@@ -59,6 +61,7 @@ class MainActivity : NotificationActivity(),
   NavigationHost,
   UiTraktSyncComponentProvider,
   UiStatisticsComponentProvider,
+  UiShowDetailsComponentProvider,
   UiSearchComponentProvider,
   UiSettingsComponentProvider {
 
@@ -70,6 +73,7 @@ class MainActivity : NotificationActivity(),
   lateinit var fragmentComponent: FragmentComponent
   private lateinit var uiSettingsComponent: UiSettingsComponent
   private lateinit var uiTraktSyncComponent: UiTraktSyncComponent
+  private lateinit var uiShowDetailsComponent: UiShowDetailsComponent
   private lateinit var uiSearchComponent: UiSearchComponent
   private lateinit var uiStatisticsComponent: UiStatisticsComponent
 
@@ -106,6 +110,7 @@ class MainActivity : NotificationActivity(),
     fragmentComponent = appComponent().fragmentComponent().create()
     uiSettingsComponent = appComponent().uiSettingsComponent().create()
     uiTraktSyncComponent = appComponent().uiTraktSyncComponent().create()
+    uiShowDetailsComponent = appComponent().uiShowDetailsComponent().create()
     uiSearchComponent = appComponent().uiSearchComponent().create()
     uiStatisticsComponent = appComponent().uiStatisticsComponent().create()
   }
@@ -322,6 +327,7 @@ class MainActivity : NotificationActivity(),
 
   override fun provideSettingsComponent() = uiSettingsComponent
   override fun provideTraktSyncComponent() = uiTraktSyncComponent
+  override fun provideShowDetailsComponent() = uiShowDetailsComponent
   override fun provideStatisticsComponent() = uiStatisticsComponent
   override fun provideSearchComponent() = uiSearchComponent
 }

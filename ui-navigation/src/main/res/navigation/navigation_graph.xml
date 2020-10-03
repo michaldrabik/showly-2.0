@@ -99,7 +99,7 @@
 
   <fragment
     android:id="@+id/showDetailsFragment"
-    android:name="com.michaldrabik.showly2.ui.show.ShowDetailsFragment"
+    android:name="com.michaldrabik.ui_show.ShowDetailsFragment"
     android:label="fragmentShowDetails"
     >
     <action

@@ -19,6 +19,7 @@
   <string name="textShowQuickProgressSubTitle">Select last seen episode to quickly bring your progress up to date.</string>
   <string name="textShowQuickProgressDone">Your progress has been updated.</string>
 
+  <string name="textActorRole">%s\n(%s)</string>
   <string name="textShowRated">Your rating has been saved.</string>
   <string name="textShowRatingDeleted">Your rating has been removed.</string>
   <string name="textLoadComments">Show Comments</string>
@@ -27,4 +28,20 @@
   <string name="textEpisodeDate">Episode %1$d | %2$s</string>
   <string name="textNoDescription">Overview not available.</string>
   <string name="textTraktSyncRemovedFromTrakt">Trakt.tv synced successfully.</string>
+  <string name="textActorsEmpty">Actors are not available</string>
+  <string name="textSeasons">Seasons:</string>
+  <string name="textSeasonsEmpty">Seasons not available.</string>
+  <string name="textTrailer">Trailer</string>
+  <string name="textImdb">iMDB</string>
+  <string name="textShare">Share</string>
+  <string name="textYouMayAlsoLike">You may also like:</string>
+  <string name="textRuntimeLeftHours">~%1$dh %2$dm remaining</string>
+  <string name="textRuntimeLeftMinutes">~%1$dm remaining</string>
+
+  <string name="textWhatIsArchive">What\'s Archive?</string>
+  <string name="textArchiveDescription"><b>Archive</b> is a list of shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Watchlist</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
+  <string name="textArchiveConfirmationTitle">Archive Show</string>
+  <string name="textArchiveConfirmationMessage">\nAre you sure you want to archive this show?\n</string>
+  <string name="textArchivedShowsExcluded">Archived shows excluded</string>
+  <string name="textThisShowIsArchived">This is an archived show</string>
 </resources>

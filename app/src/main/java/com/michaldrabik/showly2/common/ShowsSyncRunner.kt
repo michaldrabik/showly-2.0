@@ -4,12 +4,12 @@ import com.michaldrabik.common.Config.SHOW_SYNC_COOLDOWN
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.ShowStatus.CANCELED
 import com.michaldrabik.ui_model.ShowStatus.ENDED
 import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.shows.ShowsRepository
+import com.michaldrabik.ui_show.helpers.EpisodesManager
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject

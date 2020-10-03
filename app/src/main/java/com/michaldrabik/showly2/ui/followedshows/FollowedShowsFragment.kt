@@ -27,7 +27,6 @@ import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.RESU
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowFanartView
 import com.michaldrabik.showly2.ui.followedshows.seelater.SeeLaterFragment
-import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.disableUi
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
@@ -44,6 +43,7 @@ import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import kotlinx.android.synthetic.main.fragment_followed_shows.*
 
 class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.fragment_followed_shows),

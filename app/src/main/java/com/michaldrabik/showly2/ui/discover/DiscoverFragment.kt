@@ -17,7 +17,6 @@ import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverAdapter
 import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
-import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.disableUi
@@ -32,6 +31,7 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_model.Tip.DISCOVER_FILTERS
+import com.michaldrabik.ui_show.ShowDetailsFragment.Companion.ARG_SHOW_ID
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.math.hypot
 import kotlin.random.Random

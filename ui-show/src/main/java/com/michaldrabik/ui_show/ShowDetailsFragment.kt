@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.show
+package com.michaldrabik.ui_show
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
@@ -36,42 +36,29 @@ import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.common.extensions.toDisplayString
 import com.michaldrabik.common.extensions.toLocalTimeZone
-import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.requireAppContext
-import com.michaldrabik.showly2.ui.common.base.BaseFragment
-import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.ADD
-import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_ARCHIVE
-import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_MY_SHOWS
-import com.michaldrabik.showly2.ui.common.views.AddToShowsButton.State.IN_SEE_LATER
-import com.michaldrabik.showly2.ui.common.views.RateView
-import com.michaldrabik.showly2.ui.common.views.RateView.Companion.INITIAL_RATING
 import com.michaldrabik.showly2.ui.show.actors.ActorsAdapter
 import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryFragment
 import com.michaldrabik.showly2.ui.show.quickSetup.QuickSetupView
 import com.michaldrabik.showly2.ui.show.related.RelatedListItem
 import com.michaldrabik.showly2.ui.show.related.RelatedShowAdapter
-import com.michaldrabik.showly2.ui.show.seasons.SeasonListItem
-import com.michaldrabik.showly2.ui.show.seasons.SeasonsAdapter
-import com.michaldrabik.showly2.ui.show.seasons.episodes.details.EpisodeDetailsBottomSheet
-import com.michaldrabik.showly2.utilities.MessageEvent
-import com.michaldrabik.showly2.utilities.extensions.addDivider
-import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
-import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
-import com.michaldrabik.showly2.utilities.extensions.fadeIf
-import com.michaldrabik.showly2.utilities.extensions.fadeIn
-import com.michaldrabik.showly2.utilities.extensions.fadeOut
-import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.screenHeight
-import com.michaldrabik.showly2.utilities.extensions.screenWidth
-import com.michaldrabik.showly2.utilities.extensions.visible
-import com.michaldrabik.showly2.utilities.extensions.visibleIf
-import com.michaldrabik.showly2.utilities.extensions.withFailListener
-import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
-import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider
 import com.michaldrabik.ui_base.Analytics
+import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.addDivider
+import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
+import com.michaldrabik.ui_base.utilities.extensions.fadeOut
+import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.screenHeight
+import com.michaldrabik.ui_base.utilities.extensions.screenWidth
+import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.extensions.withFailListener
+import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdImdb
@@ -80,8 +67,16 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
-import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_QUICK_PROGRESS
+import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
+import com.michaldrabik.ui_show.episode_details.EpisodeDetailsBottomSheet
+import com.michaldrabik.ui_show.seasons.SeasonListItem
+import com.michaldrabik.ui_show.seasons.SeasonsAdapter
+import com.michaldrabik.ui_show.views.AddToShowsButton.State.ADD
+import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_ARCHIVE
+import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_MY_SHOWS
+import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_SEE_LATER
+import com.michaldrabik.ui_show.views.RateView
+import com.michaldrabik.ui_show.views.RateView.Companion.INITIAL_RATING
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
@@ -112,7 +107,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private val animationExitRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    fragmentComponent().inject(this)
+    (requireActivity() as UiShowDetailsComponentProvider).provideShowDetailsComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 
@@ -156,17 +151,17 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsTipGallery.onClick {
       it.gone()
-      mainActivity().showTip(SHOW_DETAILS_GALLERY)
+//      mainActivity().showTip(SHOW_DETAILS_GALLERY) TODO
     }
     showDetailsTipQuickProgress.onClick {
       it.gone()
-      mainActivity().showTip(SHOW_DETAILS_QUICK_PROGRESS)
+//      mainActivity().showTip(SHOW_DETAILS_QUICK_PROGRESS) TODO
     }
     showDetailsAddButton.run {
       isEnabled = false
       onAddMyShowsClickListener = {
         viewModel.addFollowedShow(requireAppContext())
-        showDetailsTipQuickProgress.fadeIf(!mainActivity().isTipShown(SHOW_DETAILS_QUICK_PROGRESS))
+//        showDetailsTipQuickProgress.fadeIf(!mainActivity().isTipShown(SHOW_DETAILS_QUICK_PROGRESS)) TODO
       }
       onAddWatchLaterClickListener = { viewModel.addSeeLaterShow(requireAppContext()) }
       onArchiveClickListener = { openArchiveConfirmationDialog() }
@@ -194,7 +189,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       setHasFixedSize(true)
       adapter = actorsAdapter
       layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-      addDivider(R.drawable.divider_actors, HORIZONTAL)
+      addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
     }
     actorsAdapter.itemClickListener = { showFullActorView(it) }
   }
@@ -205,7 +200,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       setHasFixedSize(true)
       adapter = relatedAdapter
       layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-      addDivider(R.drawable.divider_related_shows, HORIZONTAL)
+      addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
     }
     relatedAdapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
     relatedAdapter.itemClickListener = {
@@ -399,7 +394,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       seasons?.let {
         renderSeasons(it)
         renderRuntimeLeft(it)
-        WatchlistWidgetProvider.requestUpdate(requireContext())
+        // TODO
+//        WatchlistWidgetProvider.requestUpdate(requireContext())
       }
       relatedShows?.let { renderRelatedShows(it) }
       comments?.let { showDetailsCommentsView.bind(it) }
@@ -469,7 +465,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       .withSuccessListener {
         showDetailsImageProgress.gone()
-        showDetailsTipGallery.fadeIf(!mainActivity().isTipShown(SHOW_DETAILS_GALLERY))
+//        showDetailsTipGallery.fadeIf(!mainActivity().isTipShown(SHOW_DETAILS_GALLERY)) TODO
       }
       .into(showDetailsImage)
   }

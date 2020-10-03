@@ -33,7 +33,7 @@ import com.michaldrabik.ui_base.utilities.extensions.shake
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_model.RecentSearch
-import com.michaldrabik.ui_statistics.di.UiSearchComponentProvider
+import com.michaldrabik.ui_search.di.UiSearchComponentProvider
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlin.random.Random
 
