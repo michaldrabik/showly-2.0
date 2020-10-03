@@ -11,6 +11,9 @@
   <string name="textHot">Hot</string>
   <string name="textEmptyResults">There were no results…</string>
   <string name="textSearchFor">Search…</string>
+  <string name="textTip">Tip:</string>
+  <string name="textSeason">Season %1$d</string>
+  <string name="textEpisode">Episode %1$d</string>
 
   <string name="textNewEpisodeAvailable">New episode is available now!</string>
   <string name="textNewEpisodeAvailableSoon">New episode will be available soon!</string>

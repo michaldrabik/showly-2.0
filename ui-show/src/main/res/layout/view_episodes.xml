@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/episodesRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  >
+
+  <TextView
+    android:id="@+id/episodesTitle"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/backArrowSize"
+    android:layout_marginStart="@dimen/backArrowSize"
+    android:gravity="center_vertical"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="18sp"
+    android:textStyle="bold"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/showDetailsImageGuideline"
+    tools:text="Season 2"
+    />
+
+  <androidx.appcompat.widget.AppCompatCheckBox
+    android:id="@+id/episodesCheckbox"
+    android:layout_width="32dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    app:layout_constraintBottom_toTopOf="@id/episodesOverview"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <com.michaldrabik.ui_base.common.views.FoldableTextView
+    android:id="@+id/episodesOverview"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spaceSmall"
+    android:ellipsize="end"
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/spaceNormal"
+    android:paddingRight="@dimen/spaceNormal"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="14sp"
+    app:layout_constraintBottom_toTopOf="@id/episodesSeparator"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/episodesTitle"
+    app:layout_goneMarginBottom="0dp"
+    tools:text="@tools:sample/lorem/random"
+    />
+
+  <View
+    android:id="@+id/episodesSeparator"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:background="?attr/colorSeparator"
+    app:layout_constraintBottom_toTopOf="@id/episodesRecycler"
+    app:layout_constraintTop_toBottomOf="@id/episodesOverview"
+    />
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/episodesRecycler"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:layoutAnimation="@anim/anim_recycler_fall_down_fast"
+    android:nestedScrollingEnabled="false"
+    android:overScrollMode="never"
+    android:paddingTop="@dimen/spaceSmall"
+    android:paddingBottom="@dimen/spaceSmall"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/episodesSeparator"
+    />
+
+</merge>

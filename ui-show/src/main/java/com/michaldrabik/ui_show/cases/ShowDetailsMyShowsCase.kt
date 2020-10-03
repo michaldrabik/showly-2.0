@@ -1,0 +1,96 @@
+package com.michaldrabik.showly2.ui.show.cases
+
+import androidx.room.withTransaction
+import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.network.Cloud
+import com.michaldrabik.network.trakt.model.SyncExportItem
+import com.michaldrabik.network.trakt.model.SyncExportRequest
+import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.Season
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_repository.PinnedItemsRepository
+import com.michaldrabik.ui_repository.UserTraktManager
+import com.michaldrabik.ui_repository.mappers.Mappers
+import com.michaldrabik.ui_repository.shows.ShowsRepository
+import com.michaldrabik.ui_show.helpers.EpisodesManager
+import javax.inject.Inject
+import com.michaldrabik.storage.database.model.Episode as EpisodeDb
+import com.michaldrabik.storage.database.model.Season as SeasonDb
+
+@AppScope
+class ShowDetailsMyShowsCase @Inject constructor(
+    private val database: AppDatabase,
+    private val cloud: Cloud,
+    private val mappers: Mappers,
+    private val showsRepository: ShowsRepository,
+    private val pinnedItemsRepository: PinnedItemsRepository,
+    private val episodesManager: EpisodesManager,
+    private val userManager: UserTraktManager
+) {
+
+  suspend fun isMyShows(show: Show) =
+    showsRepository.myShows.load(show.ids.trakt) != null
+
+  suspend fun addToMyShows(
+    show: Show,
+    seasons: List<Season>,
+    episodes: List<Episode>
+  ) {
+    database.withTransaction {
+      showsRepository.myShows.insert(show.ids.trakt)
+      showsRepository.seeLaterShows.delete(show.ids.trakt)
+      showsRepository.archiveShows.delete(show.ids.trakt)
+
+      val localSeasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
+      val localEpisodes = database.episodesDao().getAllForShows(listOf(show.ids.trakt.id))
+
+      val seasonsToAdd = mutableListOf<SeasonDb>()
+      val episodesToAdd = mutableListOf<EpisodeDb>()
+
+      seasons.forEach { season ->
+        if (localSeasons.none { it.idTrakt == season.ids.trakt.id }) {
+          seasonsToAdd.add(mappers.season.toDatabase(season, show.ids.trakt, false))
+        }
+      }
+
+      episodes.forEach { episode ->
+        if (localEpisodes.none { it.idTrakt == episode.ids.trakt.id }) {
+          val season = seasons.find { it.number == episode.season }!!
+          episodesToAdd.add(mappers.episode.toDatabase(episode, season, show.ids.trakt, false))
+        }
+      }
+
+      database.seasonsDao().upsert(seasonsToAdd)
+      database.episodesDao().upsert(episodesToAdd)
+    }
+  }
+
+  suspend fun removeFromMyShows(show: Show, removeLocalData: Boolean) {
+    database.withTransaction {
+      showsRepository.myShows.delete(show.ids.trakt)
+
+      if (removeLocalData) {
+        database.episodesDao().deleteAllUnwatchedForShow(show.ids.trakt.id)
+        val seasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
+        val episodes = database.episodesDao().getAllForShows(listOf(show.ids.trakt.id))
+        val toDelete = mutableListOf<SeasonDb>()
+        seasons.forEach { season ->
+          if (episodes.none { it.idSeason == season.idTrakt }) {
+            toDelete.add(season)
+          }
+        }
+        database.seasonsDao().delete(toDelete)
+      }
+
+      pinnedItemsRepository.removePinnedItem(show.traktId)
+    }
+  }
+
+  suspend fun removeTraktHistory(show: Show) {
+    val token = userManager.checkAuthorization()
+    val request = SyncExportRequest(listOf(SyncExportItem.create(show.traktId)))
+    cloud.traktApi.postDeleteProgress(token.token, request)
+    episodesManager.setAllUnwatched(show)
+  }
+}

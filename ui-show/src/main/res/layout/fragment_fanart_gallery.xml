@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/fanartGalleryRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  >
+
+  <androidx.viewpager2.widget.ViewPager2
+    android:id="@+id/fanartGalleryPager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    />
+
+  <ImageView
+    android:id="@+id/fanartGalleryBackArrow"
+    android:layout_width="@dimen/backArrowSize"
+    android:layout_height="@dimen/backArrowSize"
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="@dimen/backArrowPadding"
+    app:srcCompat="@drawable/ic_arrow_back"
+    />
+
+  <me.relex.circleindicator.CircleIndicator3
+    android:id="@+id/fanartGalleryPagerIndicator"
+    android:layout_width="match_parent"
+    android:layout_height="12dp"
+    android:layout_gravity="center_horizontal|bottom"
+    android:layout_margin="@dimen/spaceNormal"
+    />
+
+</FrameLayout>

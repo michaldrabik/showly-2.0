@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/tutorialTipRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <ImageView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scaleX="0.9"
+    android:scaleY="0.9"
+    app:srcCompat="@drawable/ic_circle"
+    app:tint="@color/colorWhite"
+    />
+
+
+  <ImageView
+    android:id="@+id/tutorialTipIcon"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:srcCompat="@drawable/ic_info"
+    app:tint="?attr/colorAccent"
+    />
+
+</merge>

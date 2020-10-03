@@ -6,9 +6,13 @@
   <dimen name="spaceNormal">16dp</dimen>
   <dimen name="spaceBig">24dp</dimen>
 
+  <dimen name="backArrowSize">56dp</dimen>
+  <dimen name="backArrowPadding">16dp</dimen>
+
   <dimen name="gridSpacing">3dp</dimen>
   <dimen name="gridPadding">6dp</dimen>
 
+  <dimen name="bottomSheetCorner">16dp</dimen>
   <dimen name="showTileCorner">4dp</dimen>
   <dimen name="showTilePlaceholder">40dp</dimen>
 

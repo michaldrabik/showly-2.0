@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="actorTileCorner">4dp</dimen>
+  <dimen name="actorTilePlaceholder">36dp</dimen>
+  <dimen name="actorTileImageHeight">120dp</dimen>
+  <dimen name="actorTileImageWidth">80dp</dimen>
+  <dimen name="actorFullTileCorner">8dp</dimen>
+  <dimen name="actorFullTileImageHeight">400dp</dimen>
+  <dimen name="actorFullTileImageWidth">267dp</dimen>
+
+  <dimen name="relatedShowHeight">120dp</dimen>
+  <dimen name="relatedShowWidth">80dp</dimen>
+
+  <dimen name="seasonViewHeight">44dp</dimen>
+  <dimen name="episodeViewHeight">42dp</dimen>
+</resources>

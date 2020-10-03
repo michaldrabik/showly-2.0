@@ -47,6 +47,7 @@ dependencies {
   api "androidx.constraintlayout:constraintlayout:$versions.androidConstraintLayout"
   api "androidx.swiperefreshlayout:swiperefreshlayout:$versions.androidSwipeRefresh"
   api "androidx.work:work-runtime-ktx:$versions.androidWork"
+  api "androidx.dynamicanimation:dynamicanimation:$versions.androidDynamicAnimation"
   api "com.google.android.material:material:$versions.androidMaterial"
 
   api "com.google.firebase:firebase-crashlytics:$versions.crashlytics"
@@ -60,6 +61,6 @@ dependencies {
   kapt "com.google.dagger:dagger-compiler:$versions.dagger"
   kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
 
-  implementation "com.jakewharton.threetenabp:threetenabp:$versions.threeTenAbp"
-  implementation "com.jakewharton.timber:timber:$versions.timber"
+  api "com.jakewharton.threetenabp:threetenabp:$versions.threeTenAbp"
+  api "com.jakewharton.timber:timber:$versions.timber"
 }
