@@ -1,9 +1,9 @@
 package com.michaldrabik.showly2.ui.watchlist.recycler
 
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
-import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.ui.discover.recycler.ListItem
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Image

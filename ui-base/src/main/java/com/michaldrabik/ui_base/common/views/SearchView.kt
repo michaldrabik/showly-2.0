@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.common.views.search
+package com.michaldrabik.ui_base.common.views
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,13 +6,15 @@ import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
-import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.ui.common.behaviour.SearchViewBehaviour
-import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
-import com.michaldrabik.showly2.utilities.extensions.expandTouch
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import androidx.fragment.app.Fragment
+import com.michaldrabik.ui_base.R
+import com.michaldrabik.ui_base.common.behaviour.SearchViewBehaviour
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.expandTouch
+import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import kotlinx.android.synthetic.main.view_search.*
 import kotlinx.android.synthetic.main.view_search.view.*
 
 class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
@@ -94,3 +96,7 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
     searchViewInput.isEnabled = enabled
   }
 }
+
+inline val Fragment.exSearchViewInput get() = searchViewInput
+inline val Fragment.exSearchViewText get() = searchViewText
+inline val Fragment.exSearchViewIcon get() = searchViewIcon

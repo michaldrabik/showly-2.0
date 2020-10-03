@@ -3,8 +3,8 @@ package com.michaldrabik.showly2.ui.discover
 import androidx.annotation.VisibleForTesting
 import androidx.annotation.VisibleForTesting.PRIVATE
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.common.base.BaseViewModel
 import com.michaldrabik.showly2.ui.discover.cases.DiscoverFiltersCase

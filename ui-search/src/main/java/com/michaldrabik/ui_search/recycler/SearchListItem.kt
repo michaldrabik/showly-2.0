@@ -1,6 +1,6 @@
 package com.michaldrabik.showly2.ui.search.recycler
 
-import com.michaldrabik.showly2.ui.discover.recycler.ListItem
+import com.michaldrabik.ui_base.common.ListItem
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Show
 

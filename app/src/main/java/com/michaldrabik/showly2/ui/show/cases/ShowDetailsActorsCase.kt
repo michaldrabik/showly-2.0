@@ -1,9 +1,9 @@
 package com.michaldrabik.showly2.ui.show.cases
 
+import com.michaldrabik.common.Config.ACTORS_CACHE_DURATION
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.showly2.Config.ACTORS_CACHE_DURATION
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Show

@@ -4,8 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
-import com.michaldrabik.showly2.R
 import com.michaldrabik.ui_model.RecentSearch
+import com.michaldrabik.ui_search.R
 import kotlinx.android.synthetic.main.view_search_recent.view.*
 
 class RecentSearchView : FrameLayout {

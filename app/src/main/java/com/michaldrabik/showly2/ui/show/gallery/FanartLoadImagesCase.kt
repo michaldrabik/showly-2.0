@@ -1,7 +1,7 @@
 package com.michaldrabik.showly2.ui.show.gallery
 
+import com.michaldrabik.common.Config.FANART_GALLERY_IMAGES_LIMIT
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.showly2.Config.FANART_GALLERY_IMAGES_LIMIT
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image

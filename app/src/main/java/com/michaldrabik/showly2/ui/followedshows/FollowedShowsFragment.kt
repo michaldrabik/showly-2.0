@@ -40,9 +40,11 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showKeyboard
 import com.michaldrabik.showly2.utilities.extensions.updateTopMargin
 import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.ui_base.common.views.exSearchViewIcon
+import com.michaldrabik.ui_base.common.views.exSearchViewInput
+import com.michaldrabik.ui_base.common.views.exSearchViewText
 import com.michaldrabik.ui_model.Show
 import kotlinx.android.synthetic.main.fragment_followed_shows.*
-import kotlinx.android.synthetic.main.view_search.*
 
 class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.fragment_followed_shows),
   OnTabReselectedListener,
@@ -81,7 +83,7 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
       onStatsClickListener = { openStatistics() }
     }
 
-    searchViewInput.run {
+    exSearchViewInput.run {
       imeOptions = EditorInfo.IME_ACTION_DONE
       setOnEditorActionListener { _, _, _ ->
         clearFocus()
@@ -152,29 +154,29 @@ class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.frag
   private fun enterSearch() {
     if (followedShowsSearchView.isSearching) return
     followedShowsSearchView.isSearching = true
-    searchViewText.gone()
-    searchViewInput.run {
+    exSearchViewText.gone()
+    exSearchViewInput.run {
       setText("")
       doAfterTextChanged { viewModel.searchFollowedShows(it?.toString() ?: "") }
       visible()
       showKeyboard()
       requestFocus()
     }
-    (searchViewIcon.drawable as Animatable).start()
-    searchViewIcon.onClick { exitSearch() }
+    (exSearchViewIcon.drawable as Animatable).start()
+    exSearchViewIcon.onClick { exitSearch() }
     hideNavigation(false)
   }
 
   private fun exitSearch(showNavigation: Boolean = true) {
     followedShowsSearchView.isSearching = false
-    searchViewText.visible()
-    searchViewInput.run {
+    exSearchViewText.visible()
+    exSearchViewInput.run {
       setText("")
       gone()
       hideKeyboard()
       clearFocus()
     }
-    searchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
+    exSearchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
     if (showNavigation) showNavigation()
   }
 

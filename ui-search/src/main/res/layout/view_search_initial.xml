@@ -7,15 +7,17 @@
   android:layout_height="wrap_content"
   android:gravity="center"
   android:orientation="vertical"
+  tools:background="@color/colorBackground"
   tools:parentTag="android.widget.LinearLayout"
+  tools:theme="@style/AppTheme"
   >
 
   <ImageView
     android:layout_width="100dp"
     android:layout_height="100dp"
     android:adjustViewBounds="true"
-    android:tint="?android:attr/textColorPrimary"
     app:srcCompat="@drawable/ic_search"
+    app:tint="?android:attr/textColorPrimary"
     />
 
   <TextView

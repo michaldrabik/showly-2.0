@@ -33,6 +33,9 @@ import com.michaldrabik.showly2.utilities.extensions.onClick
 import com.michaldrabik.showly2.utilities.extensions.showKeyboard
 import com.michaldrabik.showly2.utilities.extensions.visible
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.common.views.exSearchViewIcon
+import com.michaldrabik.ui_base.common.views.exSearchViewInput
+import com.michaldrabik.ui_base.common.views.exSearchViewText
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.SortOrder
@@ -40,7 +43,6 @@ import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import kotlinx.android.synthetic.main.fragment_watchlist.*
-import kotlinx.android.synthetic.main.view_search.*
 
 class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
   OnEpisodesSyncedListener,
@@ -198,29 +200,29 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
   private fun enterSearch() {
     if (watchlistSearchView.isSearching) return
     watchlistSearchView.isSearching = true
-    searchViewText.gone()
-    searchViewInput.run {
+    exSearchViewText.gone()
+    exSearchViewInput.run {
       setText("")
       doAfterTextChanged { viewModel.searchWatchlist(it?.toString() ?: "") }
       visible()
       showKeyboard()
       requestFocus()
     }
-    (searchViewIcon.drawable as Animatable).start()
-    searchViewIcon.onClick { exitSearch() }
+    (exSearchViewIcon.drawable as Animatable).start()
+    exSearchViewIcon.onClick { exitSearch() }
     hideNavigation(false)
   }
 
   private fun exitSearch(showNavigation: Boolean = true) {
     watchlistSearchView.isSearching = false
-    searchViewText.visible()
-    searchViewInput.run {
+    exSearchViewText.visible()
+    exSearchViewInput.run {
       setText("")
       gone()
       hideKeyboard()
       clearFocus()
     }
-    searchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
+    exSearchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
     if (showNavigation) showNavigation()
   }
 

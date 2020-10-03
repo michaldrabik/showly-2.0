@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import com.bumptech.glide.Glide
-import com.michaldrabik.showly2.Config
+import com.michaldrabik.common.Config
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.utilities.extensions.gone
 import com.michaldrabik.showly2.utilities.extensions.onClick

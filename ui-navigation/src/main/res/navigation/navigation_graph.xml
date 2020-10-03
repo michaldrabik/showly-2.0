@@ -155,7 +155,7 @@
 
   <fragment
     android:id="@+id/searchFragment"
-    android:name="com.michaldrabik.showly2.ui.search.SearchFragment"
+    android:name="com.michaldrabik.ui_search.SearchFragment"
     android:label="fragmentSearch"
     >
     <action

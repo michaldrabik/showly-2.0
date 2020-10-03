@@ -40,7 +40,7 @@
     android:visibility="gone"
     />
 
-  <com.michaldrabik.showly2.ui.common.views.search.EmptySearchView
+  <com.michaldrabik.ui_base.common.views.EmptySearchView
     android:id="@+id/followedShowsSearchEmptyView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
     android:visibility="gone"
     />
 
-  <com.michaldrabik.showly2.ui.common.views.search.SearchView
+  <com.michaldrabik.ui_base.common.views.SearchView
     android:id="@+id/followedShowsSearchView"
     android:layout_width="match_parent"
     android:layout_height="@dimen/searchViewHeight"

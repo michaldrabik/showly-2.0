@@ -9,8 +9,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy.DATA
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.michaldrabik.showly2.Config.IMAGE_FADE_DURATION_MS
-import com.michaldrabik.showly2.Config.TVDB_IMAGE_BASE_BANNERS_URL
+import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
+import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.gone

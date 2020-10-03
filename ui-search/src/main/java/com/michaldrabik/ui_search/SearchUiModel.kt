@@ -1,7 +1,7 @@
-package com.michaldrabik.showly2.ui.search
+package com.michaldrabik.ui_search
 
-import com.michaldrabik.showly2.ui.common.UiModel
 import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
+import com.michaldrabik.ui_base.UiModel
 import com.michaldrabik.ui_model.RecentSearch
 
 data class SearchUiModel(

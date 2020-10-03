@@ -45,6 +45,7 @@ dependencies {
   api "androidx.navigation:navigation-fragment-ktx:$versions.androidNavigation"
   api "androidx.navigation:navigation-ui-ktx:$versions.androidNavigation"
   api "androidx.constraintlayout:constraintlayout:$versions.androidConstraintLayout"
+  api "androidx.swiperefreshlayout:swiperefreshlayout:$versions.androidSwipeRefresh"
   api "androidx.work:work-runtime-ktx:$versions.androidWork"
   api "com.google.android.material:material:$versions.androidMaterial"
 

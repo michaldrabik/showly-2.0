@@ -3,8 +3,8 @@ package com.michaldrabik.showly2.ui.search.recycler
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.showly2.ui.common.base.BaseAdapter
 import com.michaldrabik.showly2.ui.search.views.ShowSearchView
+import com.michaldrabik.ui_base.BaseAdapter
 
 class SearchAdapter : BaseAdapter<SearchListItem>() {
 

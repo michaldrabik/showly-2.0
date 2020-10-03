@@ -10,7 +10,7 @@ import android.widget.RemoteViewsService
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.michaldrabik.showly2.Config
+import com.michaldrabik.common.Config
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistLoadItemsCase
 import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistSortOrderCase

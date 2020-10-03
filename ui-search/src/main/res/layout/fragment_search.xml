@@ -42,7 +42,7 @@
     app:layout_constraintTop_toTopOf="parent"
     />
 
-  <com.michaldrabik.showly2.ui.common.views.search.SearchView
+  <com.michaldrabik.ui_base.common.views.SearchView
     android:id="@+id/searchViewLayout"
     android:layout_width="0dp"
     android:layout_height="@dimen/searchViewHeight"
@@ -76,7 +76,7 @@
     app:layout_constraintTop_toBottomOf="@+id/searchRecentsLayout"
     />
 
-  <com.michaldrabik.showly2.ui.common.views.search.EmptySearchView
+  <com.michaldrabik.ui_base.common.views.EmptySearchView
     android:id="@+id/searchEmptyView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
     tools:visibility="visible"
     />
 
-  <com.michaldrabik.showly2.ui.common.views.search.InitialSearchView
+  <com.michaldrabik.ui_search.views.InitialSearchView
     android:id="@+id/searchInitialView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

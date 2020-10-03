@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.search
+package com.michaldrabik.ui_search
 
 import android.graphics.drawable.Animatable
 import android.os.Bundle
@@ -11,30 +11,30 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
-import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.search.recycler.SearchAdapter
 import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
 import com.michaldrabik.showly2.ui.search.views.RecentSearchView
-import com.michaldrabik.showly2.ui.show.ShowDetailsFragment.Companion.ARG_SHOW_ID
-import com.michaldrabik.showly2.utilities.extensions.colorFromAttr
-import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import com.michaldrabik.showly2.utilities.extensions.disableUi
-import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
-import com.michaldrabik.showly2.utilities.extensions.enableUi
-import com.michaldrabik.showly2.utilities.extensions.fadeIf
-import com.michaldrabik.showly2.utilities.extensions.fadeIn
-import com.michaldrabik.showly2.utilities.extensions.fadeOut
-import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.shake
-import com.michaldrabik.showly2.utilities.extensions.showKeyboard
-import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.views.exSearchViewIcon
+import com.michaldrabik.ui_base.common.views.exSearchViewInput
+import com.michaldrabik.ui_base.common.views.exSearchViewText
+import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.disableUi
+import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.enableUi
+import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
+import com.michaldrabik.ui_base.utilities.extensions.fadeOut
+import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
+import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.shake
+import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_model.RecentSearch
+import com.michaldrabik.ui_statistics.di.UiSearchComponentProvider
 import kotlinx.android.synthetic.main.fragment_search.*
-import kotlinx.android.synthetic.main.view_search.*
 import kotlin.random.Random
 
 class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
@@ -50,7 +50,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
   override fun getSnackbarHost(): ViewGroup = searchRoot
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    fragmentComponent().inject(this)
+    (requireActivity() as UiSearchComponentProvider).provideSearchComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 
@@ -77,18 +77,18 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
 
   private fun setupView() {
     hideNavigation()
-    searchViewInput.visible()
-    searchViewText.gone()
-    (searchViewIcon.drawable as Animatable).start()
+    exSearchViewInput.visible()
+    exSearchViewText.gone()
+    (exSearchViewIcon.drawable as Animatable).start()
     searchViewLayout.settingsIconVisible = false
     viewModel.loadLastSearch()
     if (!isInitialized) {
-      searchViewInput.showKeyboard()
-      searchViewInput.requestFocus()
+      exSearchViewInput.showKeyboard()
+      exSearchViewInput.requestFocus()
       viewModel.loadRecentSearches()
     }
 
-    searchViewInput.setOnEditorActionListener { textView, id, _ ->
+    exSearchViewInput.setOnEditorActionListener { textView, id, _ ->
       if (id == EditorInfo.IME_ACTION_SEARCH) {
         val query = textView.text.toString()
         if (query.trim().isBlank()) {
@@ -96,14 +96,14 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
           return@setOnEditorActionListener true
         }
         viewModel.searchForShow(query)
-        searchViewInput.hideKeyboard()
-        searchViewInput.clearFocus()
+        exSearchViewInput.hideKeyboard()
+        exSearchViewInput.clearFocus()
       }
       true
     }
 
-    searchViewIcon.onClick {
-      searchViewInput.hideKeyboard()
+    exSearchViewIcon.onClick {
+      exSearchViewInput.hideKeyboard()
       requireActivity().onBackPressed()
     }
   }
@@ -150,8 +150,9 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
     val clickedView = searchRecycler.findViewHolderForAdapterPosition(clickedIndex)
     clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350, endAction = {
       enableUi()
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
-      navigateTo(R.id.actionSearchFragmentToShowDetailsFragment, bundle)
+      // TODO
+//      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
+//      navigateTo(R.id.actionSearchFragmentToShowDetailsFragment, bundle)
     })
   }
 
@@ -192,7 +193,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
         setPadding(paddingH, paddingV, paddingH, paddingV)
         bind(item)
         onClick {
-          searchViewInput.setText(item.text)
+          exSearchViewInput.setText(item.text)
           viewModel.searchForShow(item.text)
         }
       }

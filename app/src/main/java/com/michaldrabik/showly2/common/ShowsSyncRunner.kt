@@ -1,9 +1,9 @@
 package com.michaldrabik.showly2.common
 
+import com.michaldrabik.common.Config.SHOW_SYNC_COOLDOWN
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.showly2.Config
 import com.michaldrabik.showly2.ui.show.seasons.episodes.EpisodesManager
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.ShowStatus.CANCELED
@@ -47,7 +47,7 @@ class ShowsSyncRunner @Inject constructor(
     showsToSync.forEach { show ->
 
       val lastSync = syncLog.find { it.idTrakt == show.ids.trakt.id }?.syncedAt ?: 0
-      if (nowUtcMillis() - lastSync < Config.SHOW_SYNC_COOLDOWN) {
+      if (nowUtcMillis() - lastSync < SHOW_SYNC_COOLDOWN) {
         Timber.i("${show.title} is on cooldown. No need to sync.")
         return@forEach
       }

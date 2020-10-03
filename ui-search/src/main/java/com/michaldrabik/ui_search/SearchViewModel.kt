@@ -1,16 +1,15 @@
-package com.michaldrabik.showly2.ui.search
+package com.michaldrabik.ui_search
 
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.showly2.Config.SEARCH_RECENTS_AMOUNT
-import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.ui.common.base.BaseViewModel
+import com.michaldrabik.common.Config.SEARCH_RECENTS_AMOUNT
 import com.michaldrabik.showly2.ui.search.cases.SearchMainCase
 import com.michaldrabik.showly2.ui.search.cases.SearchRecentsCase
 import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
-import com.michaldrabik.showly2.utilities.MessageEvent
-import com.michaldrabik.showly2.utilities.extensions.findReplace
-import com.michaldrabik.showly2.utilities.extensions.replace
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.findReplace
+import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import kotlinx.coroutines.launch
