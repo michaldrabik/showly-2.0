@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.show.gallery
+package com.michaldrabik.ui_show.gallery
 
 import com.michaldrabik.common.Config.FANART_GALLERY_IMAGES_LIMIT
 import com.michaldrabik.common.di.AppScope

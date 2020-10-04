@@ -1,6 +1,6 @@
-package com.michaldrabik.ui_trakt_sync.di
+package com.michaldrabik.ui_show.gallery.di
 
-import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryFragment
+import com.michaldrabik.ui_show.gallery.FanartGalleryFragment
 import dagger.Subcomponent
 
 @Subcomponent

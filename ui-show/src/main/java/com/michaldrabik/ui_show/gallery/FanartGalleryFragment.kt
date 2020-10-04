@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.show.gallery
+package com.michaldrabik.ui_show.gallery
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_FULL_USER
@@ -10,14 +10,14 @@ import androidx.activity.addCallback
 import androidx.core.view.updateMargins
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.michaldrabik.showly2.ui.show.gallery.recycler.FanartGalleryAdapter
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_show.R
-import com.michaldrabik.ui_trakt_sync.di.UiFanartGalleryComponentProvider
+import com.michaldrabik.ui_show.gallery.di.UiFanartGalleryComponentProvider
+import com.michaldrabik.ui_show.gallery.recycler.FanartGalleryAdapter
 import kotlinx.android.synthetic.main.fragment_fanart_gallery.*
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")

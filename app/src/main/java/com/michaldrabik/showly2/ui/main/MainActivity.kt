@@ -22,22 +22,12 @@ import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
 import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.views.WhatsNewView
-import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import com.michaldrabik.showly2.utilities.extensions.fadeIf
-import com.michaldrabik.showly2.utilities.extensions.fadeOut
-import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.showInfoSnackbar
-import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.showly2.utilities.extensions.*
 import com.michaldrabik.showly2.utilities.network.NetworkObserver
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.NavigationHost
 import com.michaldrabik.ui_base.SnackbarHost
-import com.michaldrabik.ui_base.events.Event
-import com.michaldrabik.ui_base.events.EventObserver
-import com.michaldrabik.ui_base.events.ShowsSyncComplete
-import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
-import com.michaldrabik.ui_base.events.TraktSyncProgress
+import com.michaldrabik.ui_base.events.*
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
@@ -46,6 +36,10 @@ import com.michaldrabik.ui_settings.di.UiSettingsComponent
 import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
 import com.michaldrabik.ui_show.di.UiShowDetailsComponent
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
+import com.michaldrabik.ui_show.episode_details.di.UiEpisodeDetailsComponent
+import com.michaldrabik.ui_show.episode_details.di.UiEpisodeDetailsComponentProvider
+import com.michaldrabik.ui_show.gallery.di.UiFanartGalleryComponent
+import com.michaldrabik.ui_show.gallery.di.UiFanartGalleryComponentProvider
 import com.michaldrabik.ui_statistics.di.UiSearchComponent
 import com.michaldrabik.ui_statistics.di.UiStatisticsComponent
 import com.michaldrabik.ui_statistics.di.UiStatisticsComponentProvider
@@ -62,6 +56,8 @@ class MainActivity : NotificationActivity(),
   UiTraktSyncComponentProvider,
   UiStatisticsComponentProvider,
   UiShowDetailsComponentProvider,
+  UiFanartGalleryComponentProvider,
+  UiEpisodeDetailsComponentProvider,
   UiSearchComponentProvider,
   UiSettingsComponentProvider {
 
@@ -74,6 +70,8 @@ class MainActivity : NotificationActivity(),
   private lateinit var uiSettingsComponent: UiSettingsComponent
   private lateinit var uiTraktSyncComponent: UiTraktSyncComponent
   private lateinit var uiShowDetailsComponent: UiShowDetailsComponent
+  private lateinit var uiShowGalleryComponent: UiFanartGalleryComponent
+  private lateinit var uiEpisodeDetailsComponent: UiEpisodeDetailsComponent
   private lateinit var uiSearchComponent: UiSearchComponent
   private lateinit var uiStatisticsComponent: UiStatisticsComponent
 
@@ -113,6 +111,8 @@ class MainActivity : NotificationActivity(),
     uiShowDetailsComponent = appComponent().uiShowDetailsComponent().create()
     uiSearchComponent = appComponent().uiSearchComponent().create()
     uiStatisticsComponent = appComponent().uiStatisticsComponent().create()
+    uiShowGalleryComponent = appComponent().uiShowGalleryComponent().create()
+    uiEpisodeDetailsComponent = appComponent().uiEpisodeDetailsComponent().create()
   }
 
   override fun onNewIntent(intent: Intent?) {
@@ -330,4 +330,6 @@ class MainActivity : NotificationActivity(),
   override fun provideShowDetailsComponent() = uiShowDetailsComponent
   override fun provideStatisticsComponent() = uiStatisticsComponent
   override fun provideSearchComponent() = uiSearchComponent
+  override fun provideEpisodeDetailsComponent() = uiEpisodeDetailsComponent
+  override fun provideFanartGalleryComponent() = uiShowGalleryComponent
 }

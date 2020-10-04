@@ -5,10 +5,10 @@ import com.michaldrabik.showly2.ui.followedshows.FollowedShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.archive.ArchiveFragment
 import com.michaldrabik.showly2.ui.followedshows.myshows.MyShowsFragment
 import com.michaldrabik.showly2.ui.followedshows.seelater.SeeLaterFragment
-import com.michaldrabik.showly2.ui.show.gallery.FanartGalleryFragment
 import com.michaldrabik.showly2.ui.watchlist.WatchlistFragment
 import com.michaldrabik.showly2.ui.watchlist.pages.upcoming.WatchlistUpcomingFragment
 import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistMainFragment
+import com.michaldrabik.ui_show.gallery.FanartGalleryFragment
 import dagger.Subcomponent
 
 @Subcomponent

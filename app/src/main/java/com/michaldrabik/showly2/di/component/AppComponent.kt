@@ -10,6 +10,8 @@ import com.michaldrabik.storage.di.StorageMarker
 import com.michaldrabik.ui_base.di.UiBaseComponent
 import com.michaldrabik.ui_settings.di.UiSettingsComponent
 import com.michaldrabik.ui_show.di.UiShowDetailsComponent
+import com.michaldrabik.ui_show.episode_details.di.UiEpisodeDetailsComponent
+import com.michaldrabik.ui_show.gallery.di.UiFanartGalleryComponent
 import com.michaldrabik.ui_statistics.di.UiSearchComponent
 import com.michaldrabik.ui_statistics.di.UiStatisticsComponent
 import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponent
@@ -44,6 +46,10 @@ interface AppComponent {
   fun uiSearchComponent(): UiSearchComponent.Factory
 
   fun uiStatisticsComponent(): UiStatisticsComponent.Factory
+
+  fun uiShowGalleryComponent(): UiFanartGalleryComponent.Factory
+
+  fun uiEpisodeDetailsComponent(): UiEpisodeDetailsComponent.Factory
 
   fun inject(activity: MainActivity)
 }

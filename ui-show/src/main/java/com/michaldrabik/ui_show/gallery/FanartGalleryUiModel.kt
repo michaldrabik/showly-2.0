@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.show.gallery
+package com.michaldrabik.ui_show.gallery
 
 import com.michaldrabik.ui_base.UiModel
 import com.michaldrabik.ui_model.Image

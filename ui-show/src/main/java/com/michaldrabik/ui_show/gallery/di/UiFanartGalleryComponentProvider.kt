@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_trakt_sync.di
+package com.michaldrabik.ui_show.gallery.di
 
 interface UiFanartGalleryComponentProvider {
   fun provideFanartGalleryComponent(): UiFanartGalleryComponent

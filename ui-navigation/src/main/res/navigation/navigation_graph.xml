@@ -121,7 +121,7 @@
 
   <fragment
     android:id="@+id/fanartGalleryFragment"
-    android:name="com.michaldrabik.showly2.ui.show.gallery.FanartGalleryFragment"
+    android:name="com.michaldrabik.ui_show.gallery.FanartGalleryFragment"
     android:label="fragmentFanartGallery"
     />
 
