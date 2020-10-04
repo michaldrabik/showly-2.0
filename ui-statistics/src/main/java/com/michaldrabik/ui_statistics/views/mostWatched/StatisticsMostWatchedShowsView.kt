@@ -38,7 +38,9 @@ class StatisticsMostWatchedShowsView : ConstraintLayout {
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     adapter = MostWatchedAdapter().apply {
-      itemClickListener = { onShowClickListener?.invoke(it.show) }
+      itemClickListener = {
+        onShowClickListener?.invoke(it.show)
+      }
     }
     viewMostWatchedShowsRecycler.apply {
       adapter = this@StatisticsMostWatchedShowsView.adapter

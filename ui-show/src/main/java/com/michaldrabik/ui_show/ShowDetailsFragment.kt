@@ -46,9 +46,9 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.*
 import com.michaldrabik.ui_model.*
 import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
 import com.michaldrabik.ui_show.episode_details.EpisodeDetailsBottomSheet
-import com.michaldrabik.ui_show.gallery.FanartGalleryFragment
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import com.michaldrabik.ui_show.seasons.SeasonsAdapter
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.*
@@ -62,10 +62,6 @@ import java.util.Locale.ROOT
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
 class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment_show_details) {
-
-  companion object {
-    const val ARG_SHOW_ID = "ARG_SHOW_ID"
-  }
 
   override val viewModel by viewModels<ShowDetailsViewModel> { viewModelFactory }
 
@@ -117,7 +113,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
     showDetailsImage.onClick {
-      val bundle = Bundle().apply { putLong(FanartGalleryFragment.ARG_SHOW_ID, showId.id) }
+      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, showId.id) }
       navigateTo(R.id.actionShowDetailsFragmentToFanartGallery, bundle)
       Analytics.logShowGalleryClick(showId.id)
     }

@@ -21,26 +21,15 @@ import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
-import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
-import com.michaldrabik.showly2.utilities.extensions.fadeOut
-import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
-import com.michaldrabik.showly2.utilities.extensions.nextPage
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.showKeyboard
-import com.michaldrabik.showly2.utilities.extensions.visible
-import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.showly2.utilities.extensions.*
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
-import com.michaldrabik.ui_model.SortOrder.NAME
-import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
-import com.michaldrabik.ui_show.ShowDetailsFragment
+import com.michaldrabik.ui_model.SortOrder.*
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_show.episode_details.EpisodeDetailsBottomSheet
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 
@@ -150,7 +139,7 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
     hideNavigation()
     saveUiTranslations()
     watchlistMainRoot.fadeOut {
-      val bundle = Bundle().apply { putLong(ShowDetailsFragment.ARG_SHOW_ID, item.show.ids.trakt.id) }
+      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
       navigateTo(R.id.actionWatchlistFragmentToShowDetailsFragment, bundle)
     }
   }

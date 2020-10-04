@@ -15,6 +15,7 @@ import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.gallery.di.UiFanartGalleryComponentProvider
 import com.michaldrabik.ui_show.gallery.recycler.FanartGalleryAdapter
@@ -22,10 +23,6 @@ import kotlinx.android.synthetic.main.fragment_fanart_gallery.*
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
 class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>(R.layout.fragment_fanart_gallery) {
-
-  companion object {
-    const val ARG_SHOW_ID = "ARG_SHOW_ID"
-  }
 
   override val viewModel by viewModels<FanartGalleryViewModel> { viewModelFactory }
 

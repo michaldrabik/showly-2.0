@@ -10,7 +10,7 @@ import com.michaldrabik.showly2.ui.common.base.BaseActivity
 import com.michaldrabik.showly2.widget.search.SearchWidgetProvider
 import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
-import com.michaldrabik.ui_show.ShowDetailsFragment
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import kotlinx.android.synthetic.main.activity_main.*
 
 abstract class NotificationActivity : BaseActivity() {
@@ -53,7 +53,7 @@ abstract class NotificationActivity : BaseActivity() {
 
   private fun handleFcmShowPush(extras: Bundle, key: String, action: () -> Unit) {
     val showId = extras.getString(key)?.toLong() ?: -1
-    val bundle = Bundle().apply { putLong(ShowDetailsFragment.ARG_SHOW_ID, showId) }
+    val bundle = Bundle().apply { putLong(ARG_SHOW_ID, showId) }
     navigationHost.findNavController().run {
       try {
         when (currentDestination?.id) {

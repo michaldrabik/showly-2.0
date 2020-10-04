@@ -3,6 +3,7 @@ package com.michaldrabik.ui_statistics
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -10,6 +11,7 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_statistics.di.UiStatisticsComponentProvider
 import kotlinx.android.synthetic.main.fragment_statistics.*
 
@@ -47,12 +49,12 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
     statisticsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     statisticsMostWatchedShows.run {
       onLoadMoreClickListener = { addLimit -> viewModel.loadMostWatchedShows(addLimit) }
-      // TODO
-//      onShowClickListener = { (requireParentFragment() as FollowedShowsFragment).openShowDetails(it) }
+      onShowClickListener = {
+        openShowDetails(it.traktId)
+      }
     }
     statisticsRatings.onShowClickListener = {
-//      val bundle = bundleOf(ShowDetailsFragment.ARG_SHOW_ID to it.show.traktId)
-//      navigateTo(R.id.actionStatisticsFragmentToShowDetailsFragment, bundle)
+      openShowDetails(it.show.traktId)
     }
   }
 
@@ -81,6 +83,11 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
         }
       }
     }
+  }
+
+  private fun openShowDetails(traktId: Long) {
+    val bundle = bundleOf(ARG_SHOW_ID to traktId)
+    navigateTo(R.id.actionStatisticsFragmentToShowDetailsFragment, bundle)
   }
 
   private fun handleBackPressed() {

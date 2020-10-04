@@ -22,7 +22,7 @@
     tools:visibility="visible"
     />
 
-  <com.michaldrabik.showly2.ui.tips.TipView
+  <com.michaldrabik.ui_base.common.views.tips.TipView
     android:id="@+id/watchlistMainTipItem"
     android:layout_width="@dimen/tutorialTipSize"
     android:layout_height="@dimen/tutorialTipSize"

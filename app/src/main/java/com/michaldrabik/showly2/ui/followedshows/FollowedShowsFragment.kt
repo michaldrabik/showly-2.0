@@ -21,29 +21,16 @@ import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
 import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.MyShowsSearchResult
-import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.EMPTY
-import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.NO_RESULTS
-import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.RESULTS
+import com.michaldrabik.showly2.ui.followedshows.myshows.helpers.ResultType.*
 import com.michaldrabik.showly2.ui.followedshows.myshows.recycler.MyShowsItem
 import com.michaldrabik.showly2.ui.followedshows.myshows.views.MyShowFanartView
 import com.michaldrabik.showly2.ui.followedshows.seelater.SeeLaterFragment
-import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import com.michaldrabik.showly2.utilities.extensions.disableUi
-import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
-import com.michaldrabik.showly2.utilities.extensions.enableUi
-import com.michaldrabik.showly2.utilities.extensions.fadeOut
-import com.michaldrabik.showly2.utilities.extensions.gone
-import com.michaldrabik.showly2.utilities.extensions.hideKeyboard
-import com.michaldrabik.showly2.utilities.extensions.nextPage
-import com.michaldrabik.showly2.utilities.extensions.onClick
-import com.michaldrabik.showly2.utilities.extensions.showKeyboard
-import com.michaldrabik.showly2.utilities.extensions.updateTopMargin
-import com.michaldrabik.showly2.utilities.extensions.visible
+import com.michaldrabik.showly2.utilities.extensions.*
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_show.ShowDetailsFragment.Companion.ARG_SHOW_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import kotlinx.android.synthetic.main.fragment_followed_shows.*
 
 class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.fragment_followed_shows),

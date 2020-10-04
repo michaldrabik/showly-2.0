@@ -25,6 +25,7 @@ class StatisticsMostWatchedItemView : ShowView<StatisticsMostWatchedItem> {
     inflate(context, R.layout.view_statistics_most_watched_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
 
+    viewMostWatchedItem.onClick { itemClickListener?.invoke(item) }
     viewMostWatchedItemArchivedIcon.onClick {
       showInfoSnackbar(context.getString(R.string.textThisShowIsArchived))
     }
