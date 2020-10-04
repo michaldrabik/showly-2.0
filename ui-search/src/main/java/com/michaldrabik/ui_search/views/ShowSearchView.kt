@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.search.views
+package com.michaldrabik.ui_search.views
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,12 +7,12 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_search.R
+import com.michaldrabik.ui_search.recycler.SearchListItem
 import kotlinx.android.synthetic.main.view_show_search.view.*
 
 @SuppressLint("SetTextI18n")

@@ -1,8 +1,7 @@
-package com.michaldrabik.showly2.ui.show.cases
+package com.michaldrabik.ui_show.cases
 
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.showly2.ui.show.helpers.SeasonsBundle
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
@@ -10,6 +9,7 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.shows.ShowsRepository
 import com.michaldrabik.ui_show.helpers.EpisodesManager
+import com.michaldrabik.ui_show.helpers.SeasonsBundle
 import timber.log.Timber
 import javax.inject.Inject
 

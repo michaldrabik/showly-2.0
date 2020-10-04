@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.show.quickSetup
+package com.michaldrabik.ui_show.quickSetup
 
 import android.content.Context
 import android.util.AttributeSet

@@ -11,9 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
-import com.michaldrabik.showly2.ui.search.recycler.SearchAdapter
-import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
-import com.michaldrabik.showly2.ui.search.views.RecentSearchView
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
@@ -22,6 +19,9 @@ import com.michaldrabik.ui_base.utilities.extensions.*
 import com.michaldrabik.ui_model.RecentSearch
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_search.di.UiSearchComponentProvider
+import com.michaldrabik.ui_search.recycler.SearchAdapter
+import com.michaldrabik.ui_search.recycler.SearchListItem
+import com.michaldrabik.ui_search.views.RecentSearchView
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlin.random.Random
 

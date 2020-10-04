@@ -4,10 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.net.ConnectivityManager
 import android.net.Network
-import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
-import android.net.NetworkCapabilities.TRANSPORT_CELLULAR
-import android.net.NetworkCapabilities.TRANSPORT_ETHERNET
-import android.net.NetworkCapabilities.TRANSPORT_WIFI
+import android.net.NetworkCapabilities.*
 import android.net.NetworkRequest
 import android.os.Build
 import android.os.Bundle
@@ -55,7 +52,7 @@ class NetworkMonitorCallbacks(
     override fun onAvailable(network: Network) {
       availableNetworksIds.add(network.toString())
       foregroundActivity?.let {
-        (it.applicationContext as App).isOnline = true
+        (it.applicationContext as App).isAppOnline = true
         (it as? NetworkObserver)?.onNetworkAvailableListener(true)
       }
       Timber.d("Network available: $network")
@@ -65,7 +62,7 @@ class NetworkMonitorCallbacks(
       availableNetworksIds.remove(network.toString())
       if (availableNetworksIds.isEmpty()) {
         foregroundActivity?.let {
-          (it.applicationContext as App).isOnline = false
+          (it.applicationContext as App).isAppOnline = false
           (it as? NetworkObserver)?.onNetworkAvailableListener(false)
         }
       }
@@ -74,7 +71,7 @@ class NetworkMonitorCallbacks(
 
     override fun onUnavailable() {
       foregroundActivity?.let {
-        (it.applicationContext as App).isOnline = false
+        (it.applicationContext as App).isAppOnline = false
         (it as? NetworkObserver)?.onNetworkAvailableListener(false)
       }
       Timber.d("Network unavailable")

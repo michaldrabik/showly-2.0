@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
-import com.michaldrabik.showly2.ui.common.OnScrollResetListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.watchlist.WatchlistFragment
 import com.michaldrabik.showly2.ui.watchlist.WatchlistViewModel
@@ -18,6 +17,7 @@ import com.michaldrabik.showly2.utilities.extensions.dimenToPx
 import com.michaldrabik.showly2.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.showly2.utilities.extensions.fadeIn
 import com.michaldrabik.showly2.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.common.OnScrollResetListener
 import kotlinx.android.synthetic.main.fragment_watchlist_upcoming.*
 
 class WatchlistUpcomingFragment : BaseFragment<WatchlistUpcomingViewModel>(R.layout.fragment_watchlist_upcoming),

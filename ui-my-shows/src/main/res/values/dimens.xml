@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="myShowHeaderSize">22sp</dimen>
+
+  <dimen name="myShowsSearchViewPadding">64dp</dimen>
+  <dimen name="myShowsTabsViewPadding">94dp</dimen>
+  <dimen name="myShowsBottomPadding">68dp</dimen>
+  <dimen name="myShowsFanartCorner">4dp</dimen>
+  <dimen name="myShowsFanartHeight">126dp</dimen>
+  <dimen name="myShowsPosterHeight">120dp</dimen>
+  <dimen name="myShowsPosterWidth">80dp</dimen>
+
+  <dimen name="myShowAllImageHeight">120dp</dimen>
+  <dimen name="myShowAllImageWidth">80dp</dimen>
+  <dimen name="myShowAllMarginHorizontal">12dp</dimen>
+
+  <dimen name="seeLaterTabsViewPadding">112dp</dimen>
+  <dimen name="seeLaterImageHeight">120dp</dimen>
+  <dimen name="seeLaterImageWidth">80dp</dimen>
+  <dimen name="seeLaterMarginHorizontal">12dp</dimen>
+
+  <dimen name="archiveTabsViewPadding">112dp</dimen>
+  <dimen name="archiveImageHeight">120dp</dimen>
+  <dimen name="archiveImageWidth">80dp</dimen>
+  <dimen name="archiveMarginHorizontal">12dp</dimen>
+</resources>

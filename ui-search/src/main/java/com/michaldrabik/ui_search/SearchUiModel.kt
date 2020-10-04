@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_search
 
-import com.michaldrabik.showly2.ui.search.recycler.SearchListItem
 import com.michaldrabik.ui_base.UiModel
 import com.michaldrabik.ui_model.RecentSearch
+import com.michaldrabik.ui_search.recycler.SearchListItem
 
 data class SearchUiModel(
   val searchItems: List<SearchListItem>? = null,

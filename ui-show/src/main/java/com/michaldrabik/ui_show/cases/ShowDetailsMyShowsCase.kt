@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.show.cases
+package com.michaldrabik.ui_show.cases
 
 import androidx.room.withTransaction
 import com.michaldrabik.common.di.AppScope

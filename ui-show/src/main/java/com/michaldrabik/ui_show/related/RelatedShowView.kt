@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.show.related
+package com.michaldrabik.ui_show.related
 
 import android.content.Context
 import android.util.AttributeSet

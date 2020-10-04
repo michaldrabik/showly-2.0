@@ -36,10 +36,6 @@ import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.common.extensions.toDisplayString
 import com.michaldrabik.common.extensions.toLocalTimeZone
-import com.michaldrabik.showly2.ui.show.actors.ActorsAdapter
-import com.michaldrabik.showly2.ui.show.quickSetup.QuickSetupView
-import com.michaldrabik.showly2.ui.show.related.RelatedListItem
-import com.michaldrabik.showly2.ui.show.related.RelatedShowAdapter
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -47,8 +43,12 @@ import com.michaldrabik.ui_base.utilities.extensions.*
 import com.michaldrabik.ui_model.*
 import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
+import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
 import com.michaldrabik.ui_show.episode_details.EpisodeDetailsBottomSheet
+import com.michaldrabik.ui_show.quickSetup.QuickSetupView
+import com.michaldrabik.ui_show.related.RelatedListItem
+import com.michaldrabik.ui_show.related.RelatedShowAdapter
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import com.michaldrabik.ui_show.seasons.SeasonsAdapter
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.*

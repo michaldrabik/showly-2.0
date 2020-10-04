@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.search.views
+package com.michaldrabik.ui_search.views
 
 import android.content.Context
 import android.util.AttributeSet

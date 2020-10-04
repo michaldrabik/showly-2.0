@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.search.cases
+package com.michaldrabik.ui_search.cases
 
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud

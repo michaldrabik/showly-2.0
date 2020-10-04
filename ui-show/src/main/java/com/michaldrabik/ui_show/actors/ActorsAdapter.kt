@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.show.actors
+package com.michaldrabik.ui_show.actors
 
 import android.view.View
 import android.view.ViewGroup

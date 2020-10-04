@@ -15,22 +15,21 @@ import com.michaldrabik.showly2.common.ShowsSyncActivityCallbacks
 import com.michaldrabik.showly2.di.component.AppComponent
 import com.michaldrabik.showly2.di.component.DaggerAppComponent
 import com.michaldrabik.showly2.di.module.PreferencesModule
-import com.michaldrabik.showly2.fcm.NotificationChannel.EPISODES_ANNOUNCEMENTS
-import com.michaldrabik.showly2.fcm.NotificationChannel.GENERAL_INFO
-import com.michaldrabik.showly2.fcm.NotificationChannel.SHOWS_INFO
+import com.michaldrabik.showly2.fcm.NotificationChannel.*
 import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.showly2.utilities.extensions.notificationManager
 import com.michaldrabik.showly2.utilities.network.NetworkMonitorCallbacks
 import com.michaldrabik.storage.di.DaggerStorageComponent
 import com.michaldrabik.storage.di.StorageModule
+import com.michaldrabik.ui_base.common.OnlineStatusProvider
 import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsActivityCallbacks
 import timber.log.Timber
 
-class App : Application(), UiBaseComponentProvider {
+class App : Application(), UiBaseComponentProvider, OnlineStatusProvider {
 
   lateinit var appComponent: AppComponent
-  var isOnline = true
+  var isAppOnline = true
 
   private val activityCallbacks by lazy {
     listOf(
@@ -91,11 +90,11 @@ class App : Application(), UiBaseComponentProvider {
   }
 
   override fun uiBaseComponent() = appComponent.uiBaseComponent().create()
+
+  override fun isOnline() = isAppOnline
 }
 
 fun Context.connectivityManager() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-fun Context.isOnline() = (applicationContext as App).isOnline
 
 fun Activity.appComponent() = (application as App).appComponent
 

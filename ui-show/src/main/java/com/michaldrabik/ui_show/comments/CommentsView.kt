@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.show.comments
+package com.michaldrabik.ui_show.comments
 
 import android.content.Context
 import android.util.AttributeSet

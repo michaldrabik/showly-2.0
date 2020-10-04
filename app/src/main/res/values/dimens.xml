@@ -6,8 +6,6 @@
   <dimen name="tutorialTipSize">28dp</dimen>
 
   <dimen name="episodeDetailsCorner">16dp</dimen>
-  <dimen name="showTileCorner">4dp</dimen>
-  <dimen name="showTilePlaceholder">40dp</dimen>
 
   <dimen name="discoverFilterChipStroke">1dp</dimen>
   <dimen name="discoverRecyclerPadding">63dp</dimen>

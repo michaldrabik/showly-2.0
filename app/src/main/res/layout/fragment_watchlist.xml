@@ -15,7 +15,7 @@
     android:layout_height="match_parent"
     />
 
-  <com.michaldrabik.showly2.ui.common.views.ScrollableTabLayout
+  <com.michaldrabik.ui_base.common.views.ScrollableTabLayout
     android:id="@+id/watchlistTabs"
     style="@style/ScrollableTabsStyle"
     android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
     app:tabTextAppearance="@style/MyShowsTabTextStyle"
     />
 
-  <com.michaldrabik.showly2.ui.common.views.ScrollableImageView
+  <com.michaldrabik.ui_base.common.views.ScrollableImageView
     android:id="@+id/watchlistSortIcon"
     android:layout_width="wrap_content"
     android:layout_height="36dp"

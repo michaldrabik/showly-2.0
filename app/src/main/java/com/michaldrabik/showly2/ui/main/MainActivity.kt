@@ -19,18 +19,20 @@ import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.di.component.FragmentComponent
 import com.michaldrabik.showly2.ui.NotificationActivity
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
-import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
-import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.extensions.*
 import com.michaldrabik.showly2.utilities.network.NetworkObserver
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.NavigationHost
 import com.michaldrabik.ui_base.SnackbarHost
+import com.michaldrabik.ui_base.common.OnTabReselectedListener
+import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.events.*
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
+import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
+import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_search.di.UiSearchComponentProvider
 import com.michaldrabik.ui_settings.di.UiSettingsComponent
 import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
@@ -58,6 +60,7 @@ class MainActivity : NotificationActivity(),
   UiShowDetailsComponentProvider,
   UiFanartGalleryComponentProvider,
   UiEpisodeDetailsComponentProvider,
+  UiMyShowsComponentProvider,
   UiSearchComponentProvider,
   UiSettingsComponentProvider {
 
@@ -74,6 +77,7 @@ class MainActivity : NotificationActivity(),
   private lateinit var uiEpisodeDetailsComponent: UiEpisodeDetailsComponent
   private lateinit var uiSearchComponent: UiSearchComponent
   private lateinit var uiStatisticsComponent: UiStatisticsComponent
+  private lateinit var uiMyShowsComponent: UiMyShowsComponent
 
   @Inject
   lateinit var viewModelFactory: DaggerViewModelFactory
@@ -113,6 +117,7 @@ class MainActivity : NotificationActivity(),
     uiStatisticsComponent = appComponent().uiStatisticsComponent().create()
     uiShowGalleryComponent = appComponent().uiShowGalleryComponent().create()
     uiEpisodeDetailsComponent = appComponent().uiEpisodeDetailsComponent().create()
+    uiMyShowsComponent = appComponent().uiMyShowsComponent().create()
   }
 
   override fun onNewIntent(intent: Intent?) {
@@ -332,4 +337,5 @@ class MainActivity : NotificationActivity(),
   override fun provideSearchComponent() = uiSearchComponent
   override fun provideEpisodeDetailsComponent() = uiEpisodeDetailsComponent
   override fun provideFanartGalleryComponent() = uiShowGalleryComponent
+  override fun provideMyShowsComponent() = uiMyShowsComponent
 }

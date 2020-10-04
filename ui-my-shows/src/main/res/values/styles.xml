@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <style name="MyShows" />
+
+  <style name="MyShows.Label" parent="MyShows">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginStart">@dimen/spaceMedium</item>
+    <item name="android:textColor">@color/colorWhite</item>
+    <item name="android:textSize">@dimen/myShowHeaderSize</item>
+    <item name="android:textStyle">bold</item>
+  </style>
+
+  <style name="MyShows.RecyclerHorizontal" parent="MyShows">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">@dimen/myShowsPosterHeight</item>
+    <item name="android:clipToPadding">false</item>
+    <item name="android:overScrollMode">never</item>
+    <item name="android:paddingStart">@dimen/spaceMedium</item>
+    <item name="android:paddingEnd">@dimen/spaceMedium</item>
+    <item name="android:nestedScrollingEnabled">false</item>
+  </style>
+
+  <style name="ScrollableTabsStyle" parent="Widget.Design.TabLayout">
+    <item name="tabMode">scrollable</item>
+    <item name="tabIndicatorColor">@color/colorAccent</item>
+    <item name="tabPaddingStart">0dp</item>
+    <item name="tabPaddingEnd">0dp</item>
+    <item name="tabTextAppearance">@style/MyShowsTabTextStyle</item>
+    <item name="tabSelectedTextColor">@color/colorWhite</item>
+    <item name="tabIndicatorFullWidth">false</item>
+    <item name="tabRippleColor">@android:color/transparent</item>
+    <item name="tabIndicatorAnimationDuration">200</item>
+  </style>
+
+  <style name="MyShowsTabTextStyle" parent="TextAppearance.Design.Tab">
+    <item name="android:textSize">15sp</item>
+    <item name="android:textColor">@color/colorGrayLight</item>
+    <item name="android:layout_gravity">start</item>
+    <item name="textAllCaps">false</item>
+  </style>
+
+</resources>

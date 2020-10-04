@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.show.cases
+package com.michaldrabik.ui_show.cases
 
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_model.IdTrakt

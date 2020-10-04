@@ -2,19 +2,10 @@ package com.michaldrabik.ui_show
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.showly2.ui.show.cases.ShowDetailsActorsCase
-import com.michaldrabik.showly2.ui.show.cases.ShowDetailsArchiveCase
-import com.michaldrabik.showly2.ui.show.cases.ShowDetailsCommentsCase
-import com.michaldrabik.showly2.ui.show.cases.ShowDetailsEpisodesCase
-import com.michaldrabik.showly2.ui.show.cases.ShowDetailsMainCase
-import com.michaldrabik.showly2.ui.show.cases.ShowDetailsMyShowsCase
-import com.michaldrabik.showly2.ui.show.cases.ShowDetailsRatingCase
-import com.michaldrabik.showly2.ui.show.cases.ShowDetailsRelatedShowsCase
-import com.michaldrabik.showly2.ui.show.cases.ShowDetailsSeeLaterCase
-import com.michaldrabik.showly2.ui.show.quickSetup.QuickSetupListItem
-import com.michaldrabik.showly2.ui.show.related.RelatedListItem
+import com.michaldrabik.showly2.ui.show.cases.*
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.common.OnlineStatusProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
@@ -22,21 +13,17 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.replace
-import com.michaldrabik.ui_model.Episode
-import com.michaldrabik.ui_model.EpisodeBundle
-import com.michaldrabik.ui_model.IdTrakt
-import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.*
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.POSTER
-import com.michaldrabik.ui_model.Season
-import com.michaldrabik.ui_model.SeasonBundle
-import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
+import com.michaldrabik.ui_show.cases.*
 import com.michaldrabik.ui_show.episodes.EpisodeListItem
 import com.michaldrabik.ui_show.helpers.ActionEvent
 import com.michaldrabik.ui_show.helpers.EpisodesManager
+import com.michaldrabik.ui_show.quickSetup.QuickSetupListItem
+import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -100,7 +87,7 @@ class ShowDetailsViewModel @Inject constructor(
         launch { loadActors(show) }
         launch {
           areSeasonsLoaded = false
-          loadSeasons(show, true) //TODO isOnline()
+          loadSeasons(show, (context as OnlineStatusProvider).isOnline())
           if (followedState.isMyShows) {
             announcementManager.refreshEpisodesAnnouncements(context)
           }

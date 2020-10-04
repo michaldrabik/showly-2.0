@@ -1,3 +1,4 @@
+include ':ui-my-shows'
 include ':ui-show'
 include ':ui-search'
 include ':ui-statistics'

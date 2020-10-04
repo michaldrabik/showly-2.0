@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.show.actors
+package com.michaldrabik.ui_show.actors
 
 import android.content.Context
 import android.util.AttributeSet

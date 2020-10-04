@@ -16,12 +16,12 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fragmentComponent
 import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
-import com.michaldrabik.showly2.ui.common.OnScrollResetListener
-import com.michaldrabik.showly2.ui.common.OnTabReselectedListener
-import com.michaldrabik.showly2.ui.common.OnTraktSyncListener
 import com.michaldrabik.showly2.ui.common.base.BaseFragment
 import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
 import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnTabReselectedListener
+import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
@@ -36,7 +36,8 @@ import kotlinx.android.synthetic.main.fragment_watchlist.*
 class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
   OnEpisodesSyncedListener,
   OnTabReselectedListener,
-  OnTraktSyncListener, TabLayout.OnTabSelectedListener {
+  OnTraktSyncListener,
+  TabLayout.OnTabSelectedListener {
 
   override val viewModel by viewModels<WatchlistViewModel> { viewModelFactory }
 

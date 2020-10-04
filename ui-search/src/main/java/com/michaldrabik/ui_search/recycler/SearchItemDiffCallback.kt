@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.search.recycler
+package com.michaldrabik.ui_search.recycler
 
 import androidx.recyclerview.widget.DiffUtil
 

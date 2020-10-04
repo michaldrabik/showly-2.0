@@ -1,10 +1,10 @@
-package com.michaldrabik.showly2.ui.search.recycler
+package com.michaldrabik.ui_search.recycler
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.showly2.ui.search.views.ShowSearchView
 import com.michaldrabik.ui_base.BaseAdapter
+import com.michaldrabik.ui_search.views.ShowSearchView
 
 class SearchAdapter : BaseAdapter<SearchListItem>() {
 

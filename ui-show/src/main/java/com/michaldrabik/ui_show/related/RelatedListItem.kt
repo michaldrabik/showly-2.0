@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.show.related
+package com.michaldrabik.ui_show.related
 
 import com.michaldrabik.ui_base.common.ListItem
 import com.michaldrabik.ui_model.Image
