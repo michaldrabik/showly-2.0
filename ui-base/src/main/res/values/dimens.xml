@@ -6,6 +6,10 @@
   <dimen name="spaceNormal">16dp</dimen>
   <dimen name="spaceBig">24dp</dimen>
 
+  <dimen name="bottomNavigationHeight">56dp</dimen>
+  <dimen name="bottomNavigationHeightPadded">64dp</dimen>
+  <dimen name="bottomNoInternetViewHeight">30dp</dimen>
+
   <dimen name="backArrowSize">56dp</dimen>
   <dimen name="backArrowPadding">16dp</dimen>
 
@@ -27,4 +31,5 @@
   <dimen name="swipeRefreshEndOffset">120dp</dimen>
 
   <dimen name="tutorialTipSize">28dp</dimen>
+  <dimen name="scrollBarWidth">3dp</dimen>
 </resources>

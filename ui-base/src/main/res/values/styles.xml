@@ -38,6 +38,22 @@
     <item name="colorBadgeBackground">@color/colorGrayDark</item>
   </style>
 
+  <style name="Show" />
+
+  <style name="Show.Badge" parent="Show">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_gravity">top|end</item>
+    <item name="android:layout_marginEnd">@dimen/spaceTiny</item>
+    <item name="android:layout_marginTop">-5dp</item>
+    <item name="android:visibility">gone</item>
+    <item name="android:tint">@color/colorAccent</item>
+  </style>
+
+  <style name="Show.BadgeLater" parent="Show.Badge">
+    <item name="android:tint">@color/colorGrayLight</item>
+  </style>
+
   <!--  Bottom Sheet Dialogs -->
 
   <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
