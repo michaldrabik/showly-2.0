@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="watchlistHeaderTextSize">22sp</dimen>
+
+  <dimen name="watchlistSearchViewPadding">64dp</dimen>
+  <dimen name="watchlistTabsViewPadding">112dp</dimen>
+  <dimen name="watchlistUpcomingTabsViewPadding">96dp</dimen>
+
+  <dimen name="watchlistImageHeight">120dp</dimen>
+  <dimen name="watchlistImageWidth">80dp</dimen>
+
+  <dimen name="watchlistWidgetImageHeight">100dp</dimen>
+  <dimen name="watchlistWidgetImageWidth">67dp</dimen>
+
+  <dimen name="watchlistItemCheckButtonWidth">72dp</dimen>
+  <dimen name="watchlistItemButtonHeight">40dp</dimen>
+</resources>

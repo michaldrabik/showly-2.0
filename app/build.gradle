@@ -70,6 +70,7 @@ dependencies {
   implementation project(':ui-search')
   implementation project(':ui-statistics')
   implementation project(':ui-settings')
+  implementation project(':ui-watchlist')
 
   implementation "androidx.appcompat:appcompat:$versions.androidAppCompat"
   implementation "androidx.core:core-ktx:$versions.androidKtx"

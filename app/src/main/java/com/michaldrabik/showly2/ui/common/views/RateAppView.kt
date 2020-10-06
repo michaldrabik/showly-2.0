@@ -6,7 +6,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.view_rate_app.view.*
 
 class RateAppView : FrameLayout {

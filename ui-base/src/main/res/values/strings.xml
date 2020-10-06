@@ -17,6 +17,24 @@
   <string name="textEpisode">Episode %1$d</string>
   <string name="textSortBy">Sort by:</string>
 
+  <string name="textAiredAlready">Aired</string>
+  <string name="textAirsNow">Airs Now</string>
+
+  <plurals name="textDaysToAir">
+    <item quantity="one">Airs tomorrow</item>
+    <item quantity="other">Airs in %d days</item>
+  </plurals>
+
+  <plurals name="textHoursToAir">
+    <item quantity="one">Airs in 1 hour</item>
+    <item quantity="other">Airs in %d hours</item>
+  </plurals>
+
+  <plurals name="textMinutesToAir">
+    <item quantity="one">Airs now</item>
+    <item quantity="other">Airs in %d minutes</item>
+  </plurals>
+
   <string name="textNewEpisodeAvailable">New episode is available now!</string>
   <string name="textNewEpisodeAvailableSoon">New episode will be available soon!</string>
   <string name="textNewSeasonAvailable">New season is available now!</string>

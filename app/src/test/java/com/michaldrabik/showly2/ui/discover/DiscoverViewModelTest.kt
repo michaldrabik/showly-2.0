@@ -9,16 +9,10 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.discover.cases.DiscoverFiltersCase
 import com.michaldrabik.showly2.ui.discover.cases.DiscoverShowsCase
-import com.michaldrabik.showly2.utilities.MessageEvent
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.DiscoverFilters
-import io.mockk.Runs
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
-import io.mockk.just
-import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain

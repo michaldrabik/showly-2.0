@@ -1,6 +1,6 @@
 package com.michaldrabik.showly2.ui.main
 
-import com.michaldrabik.showly2.ui.common.UiModel
+import com.michaldrabik.ui_base.UiModel
 
 data class MainUiModel(
   val isInitialRun: Boolean? = null,

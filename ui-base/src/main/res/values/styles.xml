@@ -113,4 +113,23 @@
     <item name="android:ellipsize">end</item>
   </style>
 
+  <style name="ScrollableTabsStyle" parent="Widget.Design.TabLayout">
+    <item name="tabMode">scrollable</item>
+    <item name="tabIndicatorColor">@color/colorAccent</item>
+    <item name="tabPaddingStart">0dp</item>
+    <item name="tabPaddingEnd">0dp</item>
+    <item name="tabTextAppearance">@style/ScrollableTabTextStyle</item>
+    <item name="tabSelectedTextColor">@color/colorWhite</item>
+    <item name="tabIndicatorFullWidth">false</item>
+    <item name="tabRippleColor">@android:color/transparent</item>
+    <item name="tabIndicatorAnimationDuration">200</item>
+  </style>
+
+  <style name="ScrollableTabTextStyle" parent="TextAppearance.Design.Tab">
+    <item name="android:textSize">15sp</item>
+    <item name="android:textColor">@color/colorGrayLight</item>
+    <item name="android:layout_gravity">start</item>
+    <item name="textAllCaps">false</item>
+  </style>
+
 </resources>
