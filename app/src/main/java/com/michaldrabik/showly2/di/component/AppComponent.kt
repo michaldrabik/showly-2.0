@@ -8,6 +8,7 @@ import com.michaldrabik.showly2.di.module.ViewModelsModule
 import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.storage.di.StorageMarker
 import com.michaldrabik.ui_base.di.UiBaseComponent
+import com.michaldrabik.ui_discover.di.UiDiscoverComponent
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
 import com.michaldrabik.ui_settings.di.UiSettingsComponent
 import com.michaldrabik.ui_show.di.UiShowDetailsComponent
@@ -51,6 +52,8 @@ interface AppComponent {
   fun uiShowGalleryComponent(): UiFanartGalleryComponent.Factory
 
   fun uiEpisodeDetailsComponent(): UiEpisodeDetailsComponent.Factory
+
+  fun uiDiscoverComponent(): UiDiscoverComponent.Factory
 
   fun uiMyShowsComponent(): UiMyShowsComponent.Factory
 

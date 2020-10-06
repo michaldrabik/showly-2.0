@@ -9,19 +9,14 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
+import com.michaldrabik.common.Config.MAIN_GRID_SPAN
 import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_FANART_URL
 import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_POSTER_URL
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.ui.discover.recycler.ListItem
-import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import com.michaldrabik.showly2.utilities.extensions.screenWidth
-import com.michaldrabik.showly2.utilities.extensions.visible
-import com.michaldrabik.showly2.utilities.extensions.withFailListener
-import com.michaldrabik.showly2.utilities.extensions.withSuccessListener
-import com.michaldrabik.ui_model.Image.Status.AVAILABLE
-import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
-import com.michaldrabik.ui_model.Image.Status.UNKNOWN
+import com.michaldrabik.showly2.utilities.extensions.*
+import com.michaldrabik.ui_base.common.ListItem
+import com.michaldrabik.ui_model.Image.Status.*
 import com.michaldrabik.ui_model.ImageType.POSTER
 
 abstract class ShowView<Item : ListItem> : FrameLayout {
@@ -36,9 +31,8 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
 
   private val cornerRadius by lazy { context.dimenToPx(R.dimen.showTileCorner) }
   private val gridPadding by lazy { context.dimenToPx(R.dimen.gridPadding) }
-  private val gridSpan by lazy { resources.getInteger(R.integer.discoverGridSpan).toFloat() }
 
-  private val width by lazy { (screenWidth().toFloat() - (2.0 * gridPadding)) / gridSpan }
+  private val width by lazy { (screenWidth().toFloat() - (2.0 * gridPadding)) / MAIN_GRID_SPAN }
   private val height by lazy { width * ASPECT_RATIO }
 
   protected abstract val imageView: ImageView

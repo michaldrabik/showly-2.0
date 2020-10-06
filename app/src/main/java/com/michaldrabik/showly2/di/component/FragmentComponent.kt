@@ -1,6 +1,5 @@
 package com.michaldrabik.showly2.di.component
 
-import com.michaldrabik.showly2.ui.discover.DiscoverFragment
 import com.michaldrabik.showly2.ui.watchlist.WatchlistFragment
 import com.michaldrabik.showly2.ui.watchlist.pages.upcoming.WatchlistUpcomingFragment
 import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistMainFragment
@@ -20,5 +19,4 @@ interface FragmentComponent {
 
   fun inject(fragment: WatchlistMainFragment)
 
-  fun inject(fragment: DiscoverFragment)
 }

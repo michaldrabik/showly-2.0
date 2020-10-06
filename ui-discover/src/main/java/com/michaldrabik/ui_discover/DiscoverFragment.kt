@@ -11,9 +11,11 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.michaldrabik.common.Config.MAIN_GRID_SPAN
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.utilities.extensions.*
+import com.michaldrabik.ui_discover.di.UiDiscoverComponentProvider
 import com.michaldrabik.ui_discover.recycler.DiscoverAdapter
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
@@ -25,7 +27,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
 
   override val viewModel by viewModels<DiscoverViewModel> { viewModelFactory }
 
-  private val gridSpan by lazy { resources.getInteger(R.integer.discoverGridSpan) }
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
 
@@ -33,7 +34,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
   private lateinit var layoutManager: GridLayoutManager
 
   override fun onCreate(savedInstanceState: Bundle?) {
-//    fragmentComponent().inject(this)
+    (requireActivity() as UiDiscoverComponentProvider).provideDiscoverComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 
@@ -58,7 +59,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       isClickable = false
       onClick { navigateToSearch() }
       onSortClickListener = { toggleFiltersView() }
-      translationY = mainActivity().discoverSearchViewPosition
+//      translationY = mainActivity().discoverSearchViewPosition TODO
     }
     discoverMask.onClick { toggleFiltersView() }
     discoverFiltersView.onApplyClickListener = {
@@ -80,7 +81,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
   }
 
   private fun setupRecycler() {
-    layoutManager = GridLayoutManager(context, gridSpan)
+    layoutManager = GridLayoutManager(context, MAIN_GRID_SPAN)
     adapter = DiscoverAdapter().apply {
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
       itemClickListener = { navigateToDetails(it) }

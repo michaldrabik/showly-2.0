@@ -3,7 +3,7 @@ package com.michaldrabik.showly2.ui.common.base
 import android.view.View
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.showly2.ui.discover.recycler.ListItem
+import com.michaldrabik.ui_base.common.ListItem
 
 abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListDiffer.ListListener<Item> {
 

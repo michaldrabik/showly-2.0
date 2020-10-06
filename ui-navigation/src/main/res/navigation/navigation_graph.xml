@@ -40,7 +40,7 @@
 
   <fragment
     android:id="@+id/discoverFragment"
-    android:name="com.michaldrabik.showly2.ui.discover.DiscoverFragment"
+    android:name="com.michaldrabik.ui_discover.DiscoverFragment"
     android:label="fragmentDiscover"
     >
     <action

@@ -28,6 +28,8 @@ import com.michaldrabik.ui_base.SnackbarHost
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.events.*
+import com.michaldrabik.ui_discover.di.UiDiscoverComponent
+import com.michaldrabik.ui_discover.di.UiDiscoverComponentProvider
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
@@ -57,6 +59,7 @@ class MainActivity : NotificationActivity(),
   NavigationHost,
   UiTraktSyncComponentProvider,
   UiStatisticsComponentProvider,
+  UiDiscoverComponentProvider,
   UiShowDetailsComponentProvider,
   UiFanartGalleryComponentProvider,
   UiEpisodeDetailsComponentProvider,
@@ -76,6 +79,7 @@ class MainActivity : NotificationActivity(),
   private lateinit var uiShowGalleryComponent: UiFanartGalleryComponent
   private lateinit var uiEpisodeDetailsComponent: UiEpisodeDetailsComponent
   private lateinit var uiSearchComponent: UiSearchComponent
+  private lateinit var uiDiscoverComponent: UiDiscoverComponent
   private lateinit var uiStatisticsComponent: UiStatisticsComponent
   private lateinit var uiMyShowsComponent: UiMyShowsComponent
 
@@ -117,6 +121,7 @@ class MainActivity : NotificationActivity(),
     uiStatisticsComponent = appComponent().uiStatisticsComponent().create()
     uiShowGalleryComponent = appComponent().uiShowGalleryComponent().create()
     uiEpisodeDetailsComponent = appComponent().uiEpisodeDetailsComponent().create()
+    uiDiscoverComponent = appComponent().uiDiscoverComponent().create()
     uiMyShowsComponent = appComponent().uiMyShowsComponent().create()
   }
 
@@ -338,4 +343,5 @@ class MainActivity : NotificationActivity(),
   override fun provideEpisodeDetailsComponent() = uiEpisodeDetailsComponent
   override fun provideFanartGalleryComponent() = uiShowGalleryComponent
   override fun provideMyShowsComponent() = uiMyShowsComponent
+  override fun provideDiscoverComponent() = uiDiscoverComponent
 }

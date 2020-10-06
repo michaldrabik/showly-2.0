@@ -2,11 +2,11 @@ package com.michaldrabik.showly2.di.module
 
 import androidx.lifecycle.ViewModel
 import com.michaldrabik.showly2.di.ViewModelKey
-import com.michaldrabik.showly2.ui.discover.DiscoverViewModel
 import com.michaldrabik.showly2.ui.main.MainViewModel
 import com.michaldrabik.showly2.ui.watchlist.WatchlistViewModel
 import com.michaldrabik.showly2.ui.watchlist.pages.upcoming.WatchlistUpcomingViewModel
 import com.michaldrabik.showly2.ui.watchlist.pages.watchlist.WatchlistMainViewModel
+import com.michaldrabik.ui_discover.DiscoverViewModel
 import com.michaldrabik.ui_my_shows.archive.ArchiveViewModel
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
 import com.michaldrabik.ui_my_shows.myshows.MyShowsViewModel
