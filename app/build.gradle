@@ -64,11 +64,13 @@ dependencies {
   implementation project(':ui-repository')
   implementation project(':ui-navigation')
   implementation project(':ui-trakt-sync')
+  implementation project(':ui-discover')
   implementation project(':ui-show')
   implementation project(':ui-my-shows')
   implementation project(':ui-search')
   implementation project(':ui-statistics')
   implementation project(':ui-settings')
+  implementation project(':ui-watchlist')
 
   implementation "androidx.appcompat:appcompat:$versions.androidAppCompat"
   implementation "androidx.core:core-ktx:$versions.androidKtx"

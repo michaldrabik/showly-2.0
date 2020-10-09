@@ -1,3 +1,5 @@
+include ':ui-watchlist'
+include ':ui-discover'
 include ':ui-my-shows'
 include ':ui-show'
 include ':ui-search'

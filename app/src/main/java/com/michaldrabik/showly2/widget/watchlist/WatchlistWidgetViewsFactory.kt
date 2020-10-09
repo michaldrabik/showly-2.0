@@ -12,25 +12,19 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.common.Config
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistLoadItemsCase
-import com.michaldrabik.showly2.ui.watchlist.cases.WatchlistSortOrderCase
-import com.michaldrabik.showly2.ui.watchlist.recycler.WatchlistItem
-import com.michaldrabik.showly2.utilities.DurationPrinter
-import com.michaldrabik.showly2.utilities.extensions.dimenToPx
-import com.michaldrabik.showly2.utilities.extensions.replace
 import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider.Companion.EXTRA_EPISODE_ID
 import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider.Companion.EXTRA_SEASON_ID
 import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider.Companion.EXTRA_SHOW_ID
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.utilities.DurationPrinter
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_repository.shows.ShowsRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.runBlocking
+import com.michaldrabik.ui_watchlist.WatchlistItem
+import com.michaldrabik.ui_watchlist.main.cases.WatchlistLoadItemsCase
+import com.michaldrabik.ui_watchlist.main.cases.WatchlistSortOrderCase
+import kotlinx.coroutines.*
 
 class WatchlistWidgetViewsFactory(
   private val context: Context,

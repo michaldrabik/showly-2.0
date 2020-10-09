@@ -6,6 +6,7 @@ import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncExportItem
 import com.michaldrabik.network.trakt.model.SyncExportRequest
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.ui_base.EpisodesManager
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
@@ -13,20 +14,19 @@ import com.michaldrabik.ui_repository.PinnedItemsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.shows.ShowsRepository
-import com.michaldrabik.ui_show.helpers.EpisodesManager
 import javax.inject.Inject
 import com.michaldrabik.storage.database.model.Episode as EpisodeDb
 import com.michaldrabik.storage.database.model.Season as SeasonDb
 
 @AppScope
 class ShowDetailsMyShowsCase @Inject constructor(
-    private val database: AppDatabase,
-    private val cloud: Cloud,
-    private val mappers: Mappers,
-    private val showsRepository: ShowsRepository,
-    private val pinnedItemsRepository: PinnedItemsRepository,
-    private val episodesManager: EpisodesManager,
-    private val userManager: UserTraktManager
+  private val database: AppDatabase,
+  private val cloud: Cloud,
+  private val mappers: Mappers,
+  private val showsRepository: ShowsRepository,
+  private val pinnedItemsRepository: PinnedItemsRepository,
+  private val episodesManager: EpisodesManager,
+  private val userManager: UserTraktManager
 ) {
 
   suspend fun isMyShows(show: Show) =

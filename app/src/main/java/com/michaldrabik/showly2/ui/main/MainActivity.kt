@@ -16,18 +16,18 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
-import com.michaldrabik.showly2.di.component.FragmentComponent
-import com.michaldrabik.showly2.ui.NotificationActivity
-import com.michaldrabik.showly2.ui.common.OnEpisodesSyncedListener
+import com.michaldrabik.showly2.ui.common.NotificationActivity
 import com.michaldrabik.showly2.ui.common.views.WhatsNewView
-import com.michaldrabik.showly2.utilities.extensions.*
-import com.michaldrabik.showly2.utilities.network.NetworkObserver
+import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.NavigationHost
 import com.michaldrabik.ui_base.SnackbarHost
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.events.*
+import com.michaldrabik.ui_base.utilities.extensions.*
+import com.michaldrabik.ui_discover.di.UiDiscoverComponent
+import com.michaldrabik.ui_discover.di.UiDiscoverComponentProvider
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
@@ -47,6 +47,9 @@ import com.michaldrabik.ui_statistics.di.UiStatisticsComponent
 import com.michaldrabik.ui_statistics.di.UiStatisticsComponentProvider
 import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponent
 import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponentProvider
+import com.michaldrabik.ui_watchlist.di.UiWatchlistComponent
+import com.michaldrabik.ui_watchlist.di.UiWatchlistComponentProvider
+import com.michaldrabik.ui_watchlist.main.OnEpisodesSyncedListener
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -57,10 +60,12 @@ class MainActivity : NotificationActivity(),
   NavigationHost,
   UiTraktSyncComponentProvider,
   UiStatisticsComponentProvider,
+  UiDiscoverComponentProvider,
   UiShowDetailsComponentProvider,
   UiFanartGalleryComponentProvider,
   UiEpisodeDetailsComponentProvider,
   UiMyShowsComponentProvider,
+  UiWatchlistComponentProvider,
   UiSearchComponentProvider,
   UiSettingsComponentProvider {
 
@@ -69,14 +74,15 @@ class MainActivity : NotificationActivity(),
     private const val ARG_NAVIGATION_VISIBLE = "ARG_NAVIGATION_VISIBLE"
   }
 
-  lateinit var fragmentComponent: FragmentComponent
   private lateinit var uiSettingsComponent: UiSettingsComponent
   private lateinit var uiTraktSyncComponent: UiTraktSyncComponent
   private lateinit var uiShowDetailsComponent: UiShowDetailsComponent
   private lateinit var uiShowGalleryComponent: UiFanartGalleryComponent
   private lateinit var uiEpisodeDetailsComponent: UiEpisodeDetailsComponent
   private lateinit var uiSearchComponent: UiSearchComponent
+  private lateinit var uiDiscoverComponent: UiDiscoverComponent
   private lateinit var uiStatisticsComponent: UiStatisticsComponent
+  private lateinit var uiWatchlistComponent: UiWatchlistComponent
   private lateinit var uiMyShowsComponent: UiMyShowsComponent
 
   @Inject
@@ -109,7 +115,6 @@ class MainActivity : NotificationActivity(),
 
   private fun setupComponents() {
     appComponent().inject(this)
-    fragmentComponent = appComponent().fragmentComponent().create()
     uiSettingsComponent = appComponent().uiSettingsComponent().create()
     uiTraktSyncComponent = appComponent().uiTraktSyncComponent().create()
     uiShowDetailsComponent = appComponent().uiShowDetailsComponent().create()
@@ -117,7 +122,9 @@ class MainActivity : NotificationActivity(),
     uiStatisticsComponent = appComponent().uiStatisticsComponent().create()
     uiShowGalleryComponent = appComponent().uiShowGalleryComponent().create()
     uiEpisodeDetailsComponent = appComponent().uiEpisodeDetailsComponent().create()
+    uiDiscoverComponent = appComponent().uiDiscoverComponent().create()
     uiMyShowsComponent = appComponent().uiMyShowsComponent().create()
+    uiWatchlistComponent = appComponent().uiWatchlistComponent().create()
   }
 
   override fun onNewIntent(intent: Intent?) {
@@ -338,4 +345,6 @@ class MainActivity : NotificationActivity(),
   override fun provideEpisodeDetailsComponent() = uiEpisodeDetailsComponent
   override fun provideFanartGalleryComponent() = uiShowGalleryComponent
   override fun provideMyShowsComponent() = uiMyShowsComponent
+  override fun provideDiscoverComponent() = uiDiscoverComponent
+  override fun provideWatchlistComponent() = uiWatchlistComponent
 }

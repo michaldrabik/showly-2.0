@@ -8,6 +8,7 @@ import com.michaldrabik.showly2.di.module.ViewModelsModule
 import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.storage.di.StorageMarker
 import com.michaldrabik.ui_base.di.UiBaseComponent
+import com.michaldrabik.ui_discover.di.UiDiscoverComponent
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
 import com.michaldrabik.ui_settings.di.UiSettingsComponent
 import com.michaldrabik.ui_show.di.UiShowDetailsComponent
@@ -16,6 +17,7 @@ import com.michaldrabik.ui_show.gallery.di.UiFanartGalleryComponent
 import com.michaldrabik.ui_statistics.di.UiSearchComponent
 import com.michaldrabik.ui_statistics.di.UiStatisticsComponent
 import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponent
+import com.michaldrabik.ui_watchlist.di.UiWatchlistComponent
 import dagger.Component
 
 @AppScope
@@ -31,8 +33,6 @@ import dagger.Component
   ]
 )
 interface AppComponent {
-
-  fun fragmentComponent(): FragmentComponent.Factory
 
   fun serviceComponent(): ServiceComponent.Factory
 
@@ -52,7 +52,11 @@ interface AppComponent {
 
   fun uiEpisodeDetailsComponent(): UiEpisodeDetailsComponent.Factory
 
+  fun uiDiscoverComponent(): UiDiscoverComponent.Factory
+
   fun uiMyShowsComponent(): UiMyShowsComponent.Factory
+
+  fun uiWatchlistComponent(): UiWatchlistComponent.Factory
 
   fun inject(activity: MainActivity)
 }
