@@ -33,27 +33,30 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
+import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.common.extensions.toDisplayString
 import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.WidgetsProvider
+import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.*
+import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_model.*
 import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
+import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
+import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_QUICK_PROGRESS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
-import com.michaldrabik.ui_show.episode_details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_show.quickSetup.QuickSetupView
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.related.RelatedShowAdapter
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import com.michaldrabik.ui_show.seasons.SeasonsAdapter
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.*
-import com.michaldrabik.ui_show.views.RateView
-import com.michaldrabik.ui_show.views.RateView.Companion.INITIAL_RATING
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
@@ -124,17 +127,17 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsTipGallery.onClick {
       it.gone()
-//      mainActivity().showTip(SHOW_DETAILS_GALLERY) TODO
+      showTip(SHOW_DETAILS_GALLERY)
     }
     showDetailsTipQuickProgress.onClick {
       it.gone()
-//      mainActivity().showTip(SHOW_DETAILS_QUICK_PROGRESS) TODO
+      showTip(SHOW_DETAILS_QUICK_PROGRESS)
     }
     showDetailsAddButton.run {
       isEnabled = false
       onAddMyShowsClickListener = {
         viewModel.addFollowedShow(requireAppContext())
-//        showDetailsTipQuickProgress.fadeIf(!mainActivity().isTipShown(SHOW_DETAILS_QUICK_PROGRESS)) TODO
+        showDetailsTipQuickProgress.fadeIf(!isTipShown(SHOW_DETAILS_QUICK_PROGRESS))
       }
       onAddWatchLaterClickListener = { viewModel.addSeeLaterShow(requireAppContext()) }
       onArchiveClickListener = { openArchiveConfirmationDialog() }
@@ -367,8 +370,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       seasons?.let {
         renderSeasons(it)
         renderRuntimeLeft(it)
-        // TODO
-//        WatchlistWidgetProvider.requestUpdate(requireContext())
+        (requireAppContext() as WidgetsProvider).requestWidgetsUpdate()
       }
       relatedShows?.let { renderRelatedShows(it) }
       comments?.let { showDetailsCommentsView.bind(it) }
@@ -438,7 +440,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       .withSuccessListener {
         showDetailsImageProgress.gone()
-//        showDetailsTipGallery.fadeIf(!mainActivity().isTipShown(SHOW_DETAILS_GALLERY)) TODO
+        showDetailsTipGallery.fadeIf(!isTipShown(SHOW_DETAILS_GALLERY))
       }
       .into(showDetailsImage)
   }
@@ -584,7 +586,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun openArchiveDescriptionDialog() {
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setTitle(R.string.textWhatIsArchive)
+      .setTitle(R.string.textWhatIsArchiveFull)
       .setMessage(R.string.textArchiveDescription)
       .setPositiveButton(R.string.textOk) { _, _ -> openArchiveConfirmationDialog() }
       .show()

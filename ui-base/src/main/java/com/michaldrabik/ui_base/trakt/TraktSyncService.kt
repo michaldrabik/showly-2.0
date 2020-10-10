@@ -9,12 +9,7 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.di.UiBaseComponentProvider
-import com.michaldrabik.ui_base.events.EventsManager
-import com.michaldrabik.ui_base.events.TraktSyncAuthError
-import com.michaldrabik.ui_base.events.TraktSyncError
-import com.michaldrabik.ui_base.events.TraktSyncProgress
-import com.michaldrabik.ui_base.events.TraktSyncStart
-import com.michaldrabik.ui_base.events.TraktSyncSuccess
+import com.michaldrabik.ui_base.events.*
 import com.michaldrabik.ui_base.trakt.exports.TraktExportWatchedRunner
 import com.michaldrabik.ui_base.trakt.exports.TraktExportWatchlistRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchedRunner
@@ -22,11 +17,7 @@ import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchlistRunner
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.error.TraktAuthError
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
@@ -77,7 +68,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
 
   override fun onCreate() {
     super.onCreate()
-    (applicationContext as UiBaseComponentProvider).uiBaseComponent().inject(this)
+    (applicationContext as UiBaseComponentProvider).provideBaseComponent().inject(this)
     runners.addAll(
       arrayOf(importWatchedRunner, importWatchlistRunner, exportWatchedRunner, exportWatchlistRunner)
     )

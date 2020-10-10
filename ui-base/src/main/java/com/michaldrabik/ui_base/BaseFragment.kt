@@ -13,9 +13,10 @@ import com.michaldrabik.ui_base.utilities.MessageEvent.Type.ERROR
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.ui_model.Tip
 import javax.inject.Inject
 
-abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId) {
+abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId), TipsHost {
 
   @Inject
   lateinit var viewModelFactory: DaggerViewModelFactory
@@ -37,10 +38,14 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
     }
   }
 
-  protected open fun getSnackbarHost(): ViewGroup = (requireActivity() as SnackbarHost).provideSnackbarLayout()
-
   protected fun navigateTo(@IdRes destination: Int, bundle: Bundle? = null) =
     findNavController().navigate(destination, bundle)
+
+  protected open fun getSnackbarHost(): ViewGroup = (requireActivity() as SnackbarHost).provideSnackbarLayout()
+
+  override fun isTipShown(tip: Tip) = (requireActivity() as TipsHost).isTipShown(tip)
+
+  override fun showTip(tip: Tip) = (requireActivity() as TipsHost).showTip(tip)
 
   fun Fragment.requireAppContext(): Context = requireContext().applicationContext
 }

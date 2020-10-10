@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   package="com.michaldrabik.showly2"
   >
@@ -71,23 +70,7 @@
       android:permission="android.permission.BIND_JOB_SERVICE"
       />
 
-    <service
-      android:name="com.michaldrabik.ui_base.trakt.TraktSyncService"
-      android:exported="true"
-      android:permission="android.permission.BIND_JOB_SERVICE"
-      />
-
-    <service
-      android:name="com.michaldrabik.ui_base.trakt.quicksync.QuickSyncService"
-      android:exported="true"
-      android:permission="android.permission.BIND_JOB_SERVICE"
-      />
-
-    <service
-      android:name=".widget.watchlist.WatchlistWidgetEpisodeCheckService"
-      android:exported="true"
-      android:permission="android.permission.BIND_JOB_SERVICE"
-      />
+    <!-- Meta -->
 
     <meta-data
       android:name="com.google.firebase.messaging.default_notification_icon"
@@ -97,39 +80,6 @@
     <meta-data
       android:name="com.google.firebase.messaging.default_notification_color"
       android:resource="@color/colorAccent"
-      />
-
-    <receiver
-      android:name=".widget.watchlist.WatchlistWidgetProvider"
-      android:label="Watchlist Widget"
-      >
-      <intent-filter>
-        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-      </intent-filter>
-
-      <meta-data
-        android:name="android.appwidget.provider"
-        android:resource="@xml/watchlist_widgets_provider"
-        />
-    </receiver>
-
-    <receiver
-      android:name=".widget.search.SearchWidgetProvider"
-      android:label="Search Widget"
-      >
-      <intent-filter>
-        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-      </intent-filter>
-
-      <meta-data
-        android:name="android.appwidget.provider"
-        android:resource="@xml/search_widgets_provider"
-        />
-    </receiver>
-
-    <service
-      android:name=".widget.watchlist.WatchlistWidgetService"
-      android:permission="android.permission.BIND_REMOTEVIEWS"
       />
 
   </application>

@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
-import com.michaldrabik.ui_base.EpisodesManager
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
@@ -13,27 +12,12 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.replace
-import com.michaldrabik.ui_model.Episode
-import com.michaldrabik.ui_model.EpisodeBundle
-import com.michaldrabik.ui_model.IdTrakt
-import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.*
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.POSTER
-import com.michaldrabik.ui_model.Season
-import com.michaldrabik.ui_model.SeasonBundle
-import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
-import com.michaldrabik.ui_show.cases.ShowDetailsActorsCase
-import com.michaldrabik.ui_show.cases.ShowDetailsArchiveCase
-import com.michaldrabik.ui_show.cases.ShowDetailsCommentsCase
-import com.michaldrabik.ui_show.cases.ShowDetailsEpisodesCase
-import com.michaldrabik.ui_show.cases.ShowDetailsMainCase
-import com.michaldrabik.ui_show.cases.ShowDetailsMyShowsCase
-import com.michaldrabik.ui_show.cases.ShowDetailsRatingCase
-import com.michaldrabik.ui_show.cases.ShowDetailsRelatedShowsCase
-import com.michaldrabik.ui_show.cases.ShowDetailsSeeLaterCase
+import com.michaldrabik.ui_show.cases.*
 import com.michaldrabik.ui_show.episodes.EpisodeListItem
 import com.michaldrabik.ui_show.helpers.ActionEvent
 import com.michaldrabik.ui_show.quickSetup.QuickSetupListItem
@@ -57,7 +41,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val relatedShowsCase: ShowDetailsRelatedShowsCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
-  private val episodesManager: EpisodesManager,
+  private val episodesManager: com.michaldrabik.ui_episodes.EpisodesManager,
   private val quickSyncManager: QuickSyncManager,
   private val announcementManager: AnnouncementManager,
   private val imagesProvider: ShowImagesProvider

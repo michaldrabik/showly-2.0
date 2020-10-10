@@ -24,7 +24,7 @@
     android:layout_marginTop="@dimen/myShowsSearchViewPadding"
     android:translationX="-6dp"
     app:tabMinWidth="84dp"
-    app:tabTextAppearance="@style/MyShowsTabTextStyle"
+    app:tabTextAppearance="@style/ScrollableTabTextStyle"
     />
 
   <GridLayout

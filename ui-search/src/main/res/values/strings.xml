@@ -2,4 +2,5 @@
 <resources>
   <string name="textSearchInitial1">Find your favorite shows</string>
   <string name="textSearchInitial2">Search powered by Trakt.tv</string>
+  <string name="textClear">Clear recent searches</string>
 </resources>

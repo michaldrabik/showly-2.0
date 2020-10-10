@@ -4,136 +4,11 @@
   <string name="menuWatchlist">Watchlist</string>
   <string name="menuDiscover">Discover</string>
   <string name="menuShows">My Shows</string>
-  <string name="menuSeeLater">See Later</string>
-  <string name="menuArchive">Archive</string>
-  <string name="menuPin">Pin to top</string>
-  <string name="menuUnpin">Unpin from top</string>
-
-  <string name="tabMyShows">My Shows</string>
-  <string name="tabSeeLater">See Later</string>
-  <string name="tabStatistics">Statistics</string>
-  <string name="tabWatchlist">Watchlist</string>
-  <string name="tabArchive">Archived\u0020</string>
-  <string name="tabCalendar">Calendar</string>
-
-  <string name="textNextEpisode">Next Episode:</string>
-  <string name="textSearchFor">Search…</string>
-  <string name="textSearchForMyShows">Search…</string>
-  <string name="textSearchWatchlist">Search…</string>
-  <string name="textAiredAlready">Aired</string>
-  <string name="textAirsNow">Airs Now</string>
-  <string name="textClear">Clear recent searches</string>
-  <string name="textActorRole">%s\n(%s)</string>
-  <string name="textActorsEmpty">Actors are not available</string>
-  <string name="textYouMayAlsoLike">You may also like:</string>
-  <string name="textNewSeason">Season Premiere</string>
-  <string name="textSeasons">Seasons:</string>
-  <string name="textSeasonsEmpty">Seasons not available.</string>
-  <string name="textSeason">Season %1$d</string>
-  <string name="textEpisode">Episode %1$d</string>
-  <string name="textEpisodeDate">Episode %1$d | %2$s</string>
-  <string name="textSeasonEpisodeDate">S.%1$02d E.%2$02d | %3$s</string>
-  <string name="textAdd">Add to my shows</string>
-  <string name="textTrailer">Trailer</string>
-  <string name="textImdb">iMDB</string>
-  <string name="textRate">Rate</string>
-  <string name="textRateDelete">Remove</string>
-  <string name="textSelect">Select</string>
-  <string name="textLoadComments">Show Comments</string>
-  <string name="textLoadCommentsCount">Show Comments (%d)</string>
-  <string name="textComments">Comments:</string>
-  <string name="textComments2">Comments</string>
-  <string name="textShare">Share</string>
-  <string name="textTip">Tip:</string>
-  <string name="textNoComments">No comments.</string>
-  <string name="textInMyShows">Added to my shows</string>
-  <string name="textInSeeLater">Added to see later</string>
-  <string name="textInArchive">Archived</string>
-  <string name="textNoDescription">Overview not available.</string>
-  <string name="textSortBy">Sort by:</string>
-  <string name="textSortOrder">Feed:</string>
-  <string name="textGenres">Genres:</string>
-  <string name="textSortName">Name</string>
-  <string name="textSortNewest">Most Recent</string>
-  <string name="textSortRated">Top Rated</string>
-  <string name="textSortDateAdded">Recently Added</string>
-  <string name="textSortRecentlyWatched">Recently Watched</string>
-  <string name="textSortEpisodesLeft">Episodes Left</string>
-  <string name="textEpisodeInfo">Details</string>
-  <string name="textWatchLater">See Later</string>
-  <string name="textWatchlistToday">Today</string>
-  <string name="textWatchlistTomorrow">Tomorrow</string>
-  <string name="textWatchlistThisWeek">This Week</string>
-  <string name="textWatchlistNextWeek">Next Week</string>
-  <string name="textWatchlistLater">Later</string>
-  <string name="textWatchlistIncoming">Coming Soon</string>
-  <string name="textWatchlistEmpty">Your <b>Watchlist</b> is currently empty.\n\nVisit <b>Discover</b> tab to add shows or import your Trakt.tv collection.</string>
-  <string name="textMyShowsEmpty">Your shows collection is currently empty.\n\nVisit <b>Discover</b> tab to add your first show.</string>
-  <string name="textSeeLaterEmpty">Your <b>See Later</b> collection is currently empty.\n\nVisit <b>Discover</b> tab to add shows you might want to see in the future.</string>
-  <string name="textArchiveEmpty">Your <b>Archive</b> is currently empty.\n\n<b>Archive</b> is a list of shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Watchlist</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
-  <string name="textWhatIsArchive">What\'s Archive?</string>
-  <string name="textArchiveDescription"><b>Archive</b> is a list of shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Watchlist</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
-  <string name="textCalendarEmpty">There are no new episodes on the way.</string>
-  <string name="textStatisticsEmpty">At least one show must be present in <b>My Shows</b>\nbefore statistics can be displayed.</string>
-  <string name="textSpoilersWarning">This comment contains spoilers.\nTap to read.</string>
-  <string name="textRuntimeLeftHours">~%1$dh %2$dm remaining</string>
-  <string name="textRuntimeLeftMinutes">~%1$dm remaining</string>
-  <string name="textSignBeforeRate">Please sign in before rating a show.</string>
-  <string name="textShowRated">Your rating has been saved.</string>
-  <string name="textShowRatingDeleted">Your rating has been removed.</string>
-  <string name="textShowQuickProgressTitle">Quick Progress</string>
-  <string name="textShowQuickProgressSubTitle">Select last seen episode to quickly bring your progress up to date.</string>
-  <string name="textShowQuickProgressDone">Your progress has been updated.</string>
-  <string name="textDiscoverShows">Discover Shows</string>
-  <string name="textDiscoverFilterAnticipated">Hide Anticipated Shows</string>
-
-  <string name="textArchiveConfirmationTitle">Archive Show</string>
-  <string name="textArchiveConfirmationMessage">\nAre you sure you want to archive this show?\n</string>
-  <string name="textArchivedShowsExcluded">Archived shows excluded</string>
-  <string name="textThisShowIsArchived">This is an archived show</string>
-
-  <string name="textTraktSynchronize">Import from Trakt.tv</string>
-  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv synced successfully.</string>
-  <plurals name="textTraktQuickSyncComplete">
-    <item quantity="one">1 item synced successfully.</item>
-    <item quantity="other">%d items synced successfully.</item>
-  </plurals>
-
-  <string name="textStatisticsMostWatchedShows">Most Viewed Shows</string>
-  <string name="textStatisticsTotalTimeSpent">Total Time Spent Watching</string>
-  <string name="textStatisticsTotalTimeItIs">and it is</string>
-  <string name="textStatisticsTotalTimeSpentHours">%s hours</string>
-  <string name="textStatisticsTotalTimeSpentMinutes">%s minutes</string>
-  <string name="textStatisticsTotalTimeSpentMonthsDays">which is about %d months and %d days.</string>
-  <string name="textStatisticsTotalTimeSpentDays">which is about %d days.</string>
-  <string name="textStatisticsTotalEpisodes">Total Episodes Watched</string>
-  <string name="textStatisticsTotalEpisodesCount">%s episodes</string>
-  <string name="textStatisticsTotalEpisodesShowsCount">spread across %s shows.</string>
-  <string name="textStatisticsTopGenre">Top Genres</string>
-  <string name="textStatisticsTopGenreSubValue">seem to be your cup of tea. Tap to see more.</string>
-  <string name="textStatisticsTopGenreSubValue2">seem to be your cup of tea.</string>
-  <string name="textStatisticsShowMore">Show More</string>
-  <string name="textStatisticsRatings">Recently Rated</string>
 
   <string name="textRateAppTitle">Enjoying Showly 2.0?</string>
   <string name="textRateAppMessage">Would you like to rate the app?\nIt only takes a few seconds. Thanks!\n\n<i>The app will not be closed.</i></string>
   <string name="textRateAppYesButton">Sure, why not?</string>
   <string name="textRateAppNoButton">Not now</string>
-
-  <plurals name="textDaysToAir">
-    <item quantity="one">Airs tomorrow</item>
-    <item quantity="other">Airs in %d days</item>
-  </plurals>
-
-  <plurals name="textHoursToAir">
-    <item quantity="one">Airs in 1 hour</item>
-    <item quantity="other">Airs in %d hours</item>
-  </plurals>
-
-  <plurals name="textMinutesToAir">
-    <item quantity="one">Airs now</item>
-    <item quantity="other">Airs in %d minutes</item>
-  </plurals>
 
   <string name="textTipDiscover">Double tap \'Discover\' menu button to quickly open search screen.</string>
   <string name="textTipMyShows">Double tap \'My Shows\' menu button to quickly switch between tabs.</string>
@@ -150,4 +25,9 @@
   <string name="shortcutMyShows">My Shows</string>
   <string name="shortcutWatchlist">Watchlist</string>
   <string name="shortcutSearch">Search</string>
+
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="one">1 item synced successfully.</item>
+    <item quantity="other">%d items synced successfully.</item>
+  </plurals>
 </resources>

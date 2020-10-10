@@ -21,6 +21,7 @@ import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
 import com.michaldrabik.ui_base.utilities.extensions.*
+import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.SortOrder
@@ -156,14 +157,13 @@ class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_wat
   }
 
   fun openEpisodeDetails(showId: IdTrakt, episode: Episode) {
-    // TODO
-//    val modal = EpisodeDetailsBottomSheet.create(
-//      showId,
-//      episode,
-//      isWatched = false,
-//      showButton = false
-//    )
-//    modal.show(requireActivity().supportFragmentManager, "MODAL")
+    val modal = EpisodeDetailsBottomSheet.create(
+      showId,
+      episode,
+      isWatched = false,
+      showButton = false
+    )
+    modal.show(requireActivity().supportFragmentManager, "MODAL")
   }
 
   private fun openSortOrderDialog(order: SortOrder) {

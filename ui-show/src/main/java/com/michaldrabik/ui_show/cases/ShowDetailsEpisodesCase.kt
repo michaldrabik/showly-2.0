@@ -3,7 +3,6 @@ package com.michaldrabik.ui_show.cases
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.ui_base.EpisodesManager
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Show
@@ -19,7 +18,7 @@ class ShowDetailsEpisodesCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
-  private val episodesManager: EpisodesManager
+  private val episodesManager: com.michaldrabik.ui_episodes.EpisodesManager
 ) {
 
   suspend fun loadNextEpisode(traktId: IdTrakt): Episode? {

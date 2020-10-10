@@ -7,11 +7,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.showly2.serviceComponent
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ShowsSyncComplete
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import timber.log.Timber
 import javax.inject.Inject
 

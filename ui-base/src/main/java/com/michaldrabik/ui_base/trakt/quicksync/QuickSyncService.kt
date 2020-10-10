@@ -11,11 +11,7 @@ import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.trakt.TraktNotificationsService
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -35,7 +31,7 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
 
   override fun onCreate() {
     super.onCreate()
-    (applicationContext as UiBaseComponentProvider).uiBaseComponent().inject(this)
+    (applicationContext as UiBaseComponentProvider).provideBaseComponent().inject(this)
   }
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

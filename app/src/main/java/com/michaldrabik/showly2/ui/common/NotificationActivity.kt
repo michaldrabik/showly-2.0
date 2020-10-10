@@ -6,10 +6,10 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fcm.FcmExtra
-import com.michaldrabik.showly2.widget.search.SearchWidgetProvider
-import com.michaldrabik.showly2.widget.watchlist.WatchlistWidgetProvider
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
+import com.michaldrabik.ui_widgets.search.SearchWidgetProvider
+import com.michaldrabik.ui_widgets.watchlist.WatchlistWidgetProvider
 import kotlinx.android.synthetic.main.activity_main.*
 
 abstract class NotificationActivity : BaseActivity() {

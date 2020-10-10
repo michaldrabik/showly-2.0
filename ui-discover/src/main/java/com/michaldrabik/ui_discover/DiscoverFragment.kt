@@ -18,6 +18,7 @@ import com.michaldrabik.ui_base.utilities.extensions.*
 import com.michaldrabik.ui_discover.di.UiDiscoverComponentProvider
 import com.michaldrabik.ui_discover.recycler.DiscoverAdapter
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
+import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.math.hypot
@@ -32,6 +33,8 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
 
   private lateinit var adapter: DiscoverAdapter
   private lateinit var layoutManager: GridLayoutManager
+
+  var discoverSearchViewPosition = 0F
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiDiscoverComponentProvider).provideDiscoverComponent().inject(this)
@@ -59,7 +62,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       isClickable = false
       onClick { navigateToSearch() }
       onSortClickListener = { toggleFiltersView() }
-//      translationY = mainActivity().discoverSearchViewPosition TODO
+      translationY = discoverSearchViewPosition
     }
     discoverMask.onClick { toggleFiltersView() }
     discoverFiltersView.onApplyClickListener = {
@@ -72,10 +75,10 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       )
     }
     discoverTipFilters.run {
-//      fadeIf(!mainActivity().isTipShown(DISCOVER_FILTERS)) TODO
+      fadeIf(!isTipShown(Tip.DISCOVER_FILTERS))
       onClick {
         it.gone()
-//        mainActivity().showTip(DISCOVER_FILTERS) TODO
+        showTip(Tip.DISCOVER_FILTERS)
       }
     }
   }
@@ -101,7 +104,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       setProgressBackgroundColorSchemeColor(requireContext().colorFromAttr(R.attr.colorSearchViewBackground))
       setColorSchemeColors(color, color, color)
       setOnRefreshListener {
-//        mainActivity().discoverSearchViewPosition = 0F TODO
+        discoverSearchViewPosition = 0F
         viewModel.loadDiscoverShows(pullToRefresh = true)
       }
     }
@@ -184,7 +187,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
   }
 
   private fun saveUi() {
-//    mainActivity().discoverSearchViewPosition = discoverSearchView.translationY TODO
+    discoverSearchViewPosition = discoverSearchView.translationY
   }
 
   private fun render(uiModel: DiscoverUiModel) {

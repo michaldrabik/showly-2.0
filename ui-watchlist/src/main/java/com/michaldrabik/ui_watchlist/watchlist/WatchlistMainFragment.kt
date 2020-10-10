@@ -12,8 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.NavigationHost
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.utilities.extensions.*
+import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_watchlist.R
 import com.michaldrabik.ui_watchlist.WatchlistItem
 import com.michaldrabik.ui_watchlist.di.UiWatchlistComponentProvider
@@ -50,10 +53,12 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
 
   private fun setupView() {
     watchlistEmptyTraktButton.onClick { (parentFragment as WatchlistFragment).openTraktSync() }
-//    watchlistEmptyDiscoverButton.onClick { mainActivity().openTab(R.id.menuDiscover) } TODO
+    watchlistEmptyDiscoverButton.onClick {
+      (requireActivity() as NavigationHost).openTab(R.id.menuDiscover)
+    }
     watchlistMainTipItem.onClick {
       it.gone()
-//      mainActivity().showTip(Tip.WATCHLIST_ITEM_PIN) TODO
+      showTip(Tip.WATCHLIST_ITEM_PIN)
     }
   }
 
@@ -116,8 +121,8 @@ class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.frag
         adapter.setItems(it, notifyChange = resetScroll == true)
         watchlistEmptyView.fadeIf(it.isEmpty() && isSearching == false)
         watchlistMainRecycler.fadeIn()
-//        watchlistMainTipItem.visibleIf(it.count() >= 3 && !mainActivity().isTipShown(Tip.WATCHLIST_ITEM_PIN)) TODO
-//        WatchlistWidgetProvider.requestUpdate(requireContext()) TODO
+        watchlistMainTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
+        (requireAppContext() as WidgetsProvider).requestWidgetsUpdate()
       }
     }
   }

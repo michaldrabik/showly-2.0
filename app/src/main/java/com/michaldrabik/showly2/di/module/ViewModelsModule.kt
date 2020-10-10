@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.michaldrabik.showly2.di.ViewModelKey
 import com.michaldrabik.showly2.ui.main.MainViewModel
 import com.michaldrabik.ui_discover.DiscoverViewModel
+import com.michaldrabik.ui_episodes.details.EpisodeDetailsViewModel
 import com.michaldrabik.ui_my_shows.archive.ArchiveViewModel
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
 import com.michaldrabik.ui_my_shows.myshows.MyShowsViewModel
@@ -11,7 +12,6 @@ import com.michaldrabik.ui_my_shows.seelater.SeeLaterViewModel
 import com.michaldrabik.ui_search.SearchViewModel
 import com.michaldrabik.ui_settings.SettingsViewModel
 import com.michaldrabik.ui_show.ShowDetailsViewModel
-import com.michaldrabik.ui_show.episode_details.EpisodeDetailsViewModel
 import com.michaldrabik.ui_show.gallery.FanartGalleryViewModel
 import com.michaldrabik.ui_statistics.StatisticsViewModel
 import com.michaldrabik.ui_trakt_sync.TraktSyncViewModel

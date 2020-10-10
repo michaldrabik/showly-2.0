@@ -5,7 +5,7 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.ui_base.EpisodesManager
+import com.michaldrabik.ui_episodes.EpisodesManager
 import com.michaldrabik.ui_model.ShowStatus.CANCELED
 import com.michaldrabik.ui_model.ShowStatus.ENDED
 import com.michaldrabik.ui_repository.mappers.Mappers

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="menuWatchlist">Watchlist</string>
+  <string name="menuDiscover">Discover</string>
+  <string name="menuShows">My Shows</string>
+
   <string name="tabCalendar">Calendar</string>
   <string name="tabWatchlist">Watchlist</string>
   <string name="textCalendarEmpty">There are no new episodes on the way.</string>

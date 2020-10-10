@@ -22,12 +22,15 @@ import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.NavigationHost
 import com.michaldrabik.ui_base.SnackbarHost
+import com.michaldrabik.ui_base.TipsHost
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.events.*
 import com.michaldrabik.ui_base.utilities.extensions.*
 import com.michaldrabik.ui_discover.di.UiDiscoverComponent
 import com.michaldrabik.ui_discover.di.UiDiscoverComponentProvider
+import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponent
+import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponentProvider
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
@@ -38,8 +41,6 @@ import com.michaldrabik.ui_settings.di.UiSettingsComponent
 import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
 import com.michaldrabik.ui_show.di.UiShowDetailsComponent
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
-import com.michaldrabik.ui_show.episode_details.di.UiEpisodeDetailsComponent
-import com.michaldrabik.ui_show.episode_details.di.UiEpisodeDetailsComponentProvider
 import com.michaldrabik.ui_show.gallery.di.UiFanartGalleryComponent
 import com.michaldrabik.ui_show.gallery.di.UiFanartGalleryComponentProvider
 import com.michaldrabik.ui_statistics.di.UiSearchComponent
@@ -58,6 +59,7 @@ class MainActivity : NotificationActivity(),
   NetworkObserver,
   SnackbarHost,
   NavigationHost,
+  TipsHost,
   UiTraktSyncComponentProvider,
   UiStatisticsComponentProvider,
   UiDiscoverComponentProvider,
@@ -219,12 +221,12 @@ class MainActivity : NotificationActivity(),
     }
   }
 
-  fun showTip(tip: Tip) {
+  override fun showTip(tip: Tip) {
     tutorialView.showTip(tip)
     viewModel.setTipShown(tip)
   }
 
-  fun isTipShown(tip: Tip) = viewModel.isTipShown(tip)
+  override fun isTipShown(tip: Tip) = viewModel.isTipShown(tip)
 
   override fun hideNavigation(animate: Boolean) {
     bottomNavigationView.run {
@@ -252,7 +254,7 @@ class MainActivity : NotificationActivity(),
       .start()
   }
 
-  fun openTab(@IdRes navigationId: Int) {
+  override fun openTab(@IdRes navigationId: Int) {
     bottomNavigationView.selectedItemId = navigationId
   }
 

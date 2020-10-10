@@ -16,6 +16,7 @@
   <string name="textSeason">Season %1$d</string>
   <string name="textEpisode">Episode %1$d</string>
   <string name="textSortBy">Sort by:</string>
+  <string name="textSpoilersWarning">This comment contains spoilers.\nTap to read.</string>
 
   <string name="textAiredAlready">Aired</string>
   <string name="textAirsNow">Airs Now</string>

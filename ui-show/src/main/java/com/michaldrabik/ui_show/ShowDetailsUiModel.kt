@@ -58,12 +58,3 @@ data class FollowedState(
     fun notFollowed() = FollowedState(isMyShows = false, isSeeLater = false, isArchived = false, withAnimation = true)
   }
 }
-
-data class RatingState(
-  val userRating: TraktRating? = null,
-  val rateAllowed: Boolean? = null,
-  val rateLoading: Boolean? = null
-) {
-
-  fun hasRating() = userRating != null && userRating.rating > 0
-}

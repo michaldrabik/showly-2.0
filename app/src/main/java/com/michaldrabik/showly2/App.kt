@@ -19,12 +19,19 @@ import com.michaldrabik.showly2.utilities.NetworkMonitorCallbacks
 import com.michaldrabik.storage.di.DaggerStorageComponent
 import com.michaldrabik.storage.di.StorageModule
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
+import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsActivityCallbacks
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
+import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
+import com.michaldrabik.ui_widgets.watchlist.WatchlistWidgetProvider
 import timber.log.Timber
 
-class App : Application(), UiBaseComponentProvider, OnlineStatusProvider {
+class App : Application(),
+  UiBaseComponentProvider,
+  UiWidgetsComponentProvider,
+  OnlineStatusProvider,
+  WidgetsProvider {
 
   lateinit var appComponent: AppComponent
   var isAppOnline = true
@@ -87,9 +94,11 @@ class App : Application(), UiBaseComponentProvider, OnlineStatusProvider {
     }
   }
 
-  override fun uiBaseComponent() = appComponent.uiBaseComponent().create()
-
   override fun isOnline() = isAppOnline
+  override fun requestWidgetsUpdate() = WatchlistWidgetProvider.requestUpdate(applicationContext)
+
+  override fun provideBaseComponent() = appComponent.uiBaseComponent().create()
+  override fun provideWidgetsComponent() = appComponent.uiWidgetsComponent().create()
 }
 
 fun Context.connectivityManager() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

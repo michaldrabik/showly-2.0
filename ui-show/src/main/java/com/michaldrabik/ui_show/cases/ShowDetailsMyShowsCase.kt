@@ -6,7 +6,7 @@ import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncExportItem
 import com.michaldrabik.network.trakt.model.SyncExportRequest
 import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.ui_base.EpisodesManager
+import com.michaldrabik.ui_episodes.EpisodesManager
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show

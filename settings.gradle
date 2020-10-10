@@ -1,3 +1,5 @@
+include ':ui-episodes'
+include ':ui-widgets'
 include ':ui-watchlist'
 include ':ui-discover'
 include ':ui-my-shows'
