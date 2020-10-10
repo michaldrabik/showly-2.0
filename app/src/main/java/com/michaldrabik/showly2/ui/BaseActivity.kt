@@ -6,19 +6,85 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.showly2.R
+import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.fcm.FcmExtra
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
+import com.michaldrabik.ui_discover.di.UiDiscoverComponent
+import com.michaldrabik.ui_discover.di.UiDiscoverComponentProvider
+import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponent
+import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponentProvider
+import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
+import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
+import com.michaldrabik.ui_search.di.UiSearchComponentProvider
+import com.michaldrabik.ui_settings.di.UiSettingsComponent
+import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
+import com.michaldrabik.ui_show.di.UiShowDetailsComponent
+import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
+import com.michaldrabik.ui_show.gallery.di.UiFanartGalleryComponent
+import com.michaldrabik.ui_show.gallery.di.UiFanartGalleryComponentProvider
+import com.michaldrabik.ui_statistics.di.UiSearchComponent
+import com.michaldrabik.ui_statistics.di.UiStatisticsComponent
+import com.michaldrabik.ui_statistics.di.UiStatisticsComponentProvider
+import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponent
+import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponentProvider
+import com.michaldrabik.ui_watchlist.di.UiWatchlistComponent
+import com.michaldrabik.ui_watchlist.di.UiWatchlistComponentProvider
 import com.michaldrabik.ui_widgets.search.SearchWidgetProvider
 import com.michaldrabik.ui_widgets.watchlist.WatchlistWidgetProvider
 import kotlinx.android.synthetic.main.activity_main.*
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity(),
+  UiTraktSyncComponentProvider,
+  UiStatisticsComponentProvider,
+  UiDiscoverComponentProvider,
+  UiShowDetailsComponentProvider,
+  UiFanartGalleryComponentProvider,
+  UiEpisodeDetailsComponentProvider,
+  UiMyShowsComponentProvider,
+  UiWatchlistComponentProvider,
+  UiSearchComponentProvider,
+  UiSettingsComponentProvider {
 
   private val showActionKeys = arrayOf(
     FcmExtra.SHOW_ID.key,
     WatchlistWidgetProvider.EXTRA_SHOW_ID
   )
+
+  private lateinit var uiDiscoverComponent: UiDiscoverComponent
+  private lateinit var uiEpisodeDetailsComponent: UiEpisodeDetailsComponent
+  private lateinit var uiMyShowsComponent: UiMyShowsComponent
+  private lateinit var uiSearchComponent: UiSearchComponent
+  private lateinit var uiSettingsComponent: UiSettingsComponent
+  private lateinit var uiShowDetailsComponent: UiShowDetailsComponent
+  private lateinit var uiShowGalleryComponent: UiFanartGalleryComponent
+  private lateinit var uiStatisticsComponent: UiStatisticsComponent
+  private lateinit var uiTraktSyncComponent: UiTraktSyncComponent
+  private lateinit var uiWatchlistComponent: UiWatchlistComponent
+
+  override fun provideDiscoverComponent() = uiDiscoverComponent
+  override fun provideEpisodeDetailsComponent() = uiEpisodeDetailsComponent
+  override fun provideFanartGalleryComponent() = uiShowGalleryComponent
+  override fun provideMyShowsComponent() = uiMyShowsComponent
+  override fun provideSearchComponent() = uiSearchComponent
+  override fun provideSettingsComponent() = uiSettingsComponent
+  override fun provideShowDetailsComponent() = uiShowDetailsComponent
+  override fun provideStatisticsComponent() = uiStatisticsComponent
+  override fun provideTraktSyncComponent() = uiTraktSyncComponent
+  override fun provideWatchlistComponent() = uiWatchlistComponent
+
+  protected open fun setupComponents() {
+    uiDiscoverComponent = appComponent().uiDiscoverComponent().create()
+    uiEpisodeDetailsComponent = appComponent().uiEpisodeDetailsComponent().create()
+    uiMyShowsComponent = appComponent().uiMyShowsComponent().create()
+    uiSearchComponent = appComponent().uiSearchComponent().create()
+    uiSettingsComponent = appComponent().uiSettingsComponent().create()
+    uiShowDetailsComponent = appComponent().uiShowDetailsComponent().create()
+    uiShowGalleryComponent = appComponent().uiShowGalleryComponent().create()
+    uiStatisticsComponent = appComponent().uiStatisticsComponent().create()
+    uiTraktSyncComponent = appComponent().uiTraktSyncComponent().create()
+    uiWatchlistComponent = appComponent().uiWatchlistComponent().create()
+  }
 
   protected fun handleNotification(extras: Bundle?, action: () -> Unit = {}) {
     if (extras == null) return

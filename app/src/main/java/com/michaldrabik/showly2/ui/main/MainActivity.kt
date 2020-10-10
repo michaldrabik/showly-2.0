@@ -27,29 +27,9 @@ import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost
 import com.michaldrabik.ui_base.utilities.extensions.*
-import com.michaldrabik.ui_discover.di.UiDiscoverComponent
-import com.michaldrabik.ui_discover.di.UiDiscoverComponentProvider
-import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponent
-import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponentProvider
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
-import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
-import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
-import com.michaldrabik.ui_search.di.UiSearchComponentProvider
-import com.michaldrabik.ui_settings.di.UiSettingsComponent
-import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
-import com.michaldrabik.ui_show.di.UiShowDetailsComponent
-import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
-import com.michaldrabik.ui_show.gallery.di.UiFanartGalleryComponent
-import com.michaldrabik.ui_show.gallery.di.UiFanartGalleryComponentProvider
-import com.michaldrabik.ui_statistics.di.UiSearchComponent
-import com.michaldrabik.ui_statistics.di.UiStatisticsComponent
-import com.michaldrabik.ui_statistics.di.UiStatisticsComponentProvider
-import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponent
-import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponentProvider
-import com.michaldrabik.ui_watchlist.di.UiWatchlistComponent
-import com.michaldrabik.ui_watchlist.di.UiWatchlistComponentProvider
 import com.michaldrabik.ui_watchlist.main.OnEpisodesSyncedListener
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -59,33 +39,12 @@ class MainActivity : BaseActivity(),
   NetworkObserver,
   SnackbarHost,
   NavigationHost,
-  TipsHost,
-  UiTraktSyncComponentProvider,
-  UiStatisticsComponentProvider,
-  UiDiscoverComponentProvider,
-  UiShowDetailsComponentProvider,
-  UiFanartGalleryComponentProvider,
-  UiEpisodeDetailsComponentProvider,
-  UiMyShowsComponentProvider,
-  UiWatchlistComponentProvider,
-  UiSearchComponentProvider,
-  UiSettingsComponentProvider {
+  TipsHost {
 
   companion object {
     private const val NAVIGATION_TRANSITION_DURATION_MS = 350L
     private const val ARG_NAVIGATION_VISIBLE = "ARG_NAVIGATION_VISIBLE"
   }
-
-  private lateinit var uiSettingsComponent: UiSettingsComponent
-  private lateinit var uiTraktSyncComponent: UiTraktSyncComponent
-  private lateinit var uiShowDetailsComponent: UiShowDetailsComponent
-  private lateinit var uiShowGalleryComponent: UiFanartGalleryComponent
-  private lateinit var uiEpisodeDetailsComponent: UiEpisodeDetailsComponent
-  private lateinit var uiSearchComponent: UiSearchComponent
-  private lateinit var uiDiscoverComponent: UiDiscoverComponent
-  private lateinit var uiStatisticsComponent: UiStatisticsComponent
-  private lateinit var uiWatchlistComponent: UiWatchlistComponent
-  private lateinit var uiMyShowsComponent: UiMyShowsComponent
 
   @Inject
   lateinit var viewModelFactory: DaggerViewModelFactory
@@ -115,18 +74,9 @@ class MainActivity : BaseActivity(),
     onNewIntent(intent)
   }
 
-  private fun setupComponents() {
+  override fun setupComponents() {
     appComponent().inject(this)
-    uiSettingsComponent = appComponent().uiSettingsComponent().create()
-    uiTraktSyncComponent = appComponent().uiTraktSyncComponent().create()
-    uiShowDetailsComponent = appComponent().uiShowDetailsComponent().create()
-    uiSearchComponent = appComponent().uiSearchComponent().create()
-    uiStatisticsComponent = appComponent().uiStatisticsComponent().create()
-    uiShowGalleryComponent = appComponent().uiShowGalleryComponent().create()
-    uiEpisodeDetailsComponent = appComponent().uiEpisodeDetailsComponent().create()
-    uiDiscoverComponent = appComponent().uiDiscoverComponent().create()
-    uiMyShowsComponent = appComponent().uiMyShowsComponent().create()
-    uiWatchlistComponent = appComponent().uiWatchlistComponent().create()
+    super.setupComponents()
   }
 
   override fun onNewIntent(intent: Intent?) {
@@ -337,15 +287,4 @@ class MainActivity : BaseActivity(),
   }
 
   override fun provideSnackbarLayout(): ViewGroup = snackBarHost
-
-  override fun provideSettingsComponent() = uiSettingsComponent
-  override fun provideTraktSyncComponent() = uiTraktSyncComponent
-  override fun provideShowDetailsComponent() = uiShowDetailsComponent
-  override fun provideStatisticsComponent() = uiStatisticsComponent
-  override fun provideSearchComponent() = uiSearchComponent
-  override fun provideEpisodeDetailsComponent() = uiEpisodeDetailsComponent
-  override fun provideFanartGalleryComponent() = uiShowGalleryComponent
-  override fun provideMyShowsComponent() = uiMyShowsComponent
-  override fun provideDiscoverComponent() = uiDiscoverComponent
-  override fun provideWatchlistComponent() = uiWatchlistComponent
 }
