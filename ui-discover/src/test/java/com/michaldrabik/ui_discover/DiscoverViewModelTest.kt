@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.discover
+package com.michaldrabik.ui_discover
 
 import BaseMockTest
 import TestData
@@ -6,10 +6,10 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.ui.discover.cases.DiscoverFiltersCase
-import com.michaldrabik.showly2.ui.discover.cases.DiscoverShowsCase
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_discover.cases.DiscoverFiltersCase
+import com.michaldrabik.ui_discover.cases.DiscoverShowsCase
 import com.michaldrabik.ui_model.DiscoverFilters
 import io.mockk.*
 import io.mockk.impl.annotations.MockK

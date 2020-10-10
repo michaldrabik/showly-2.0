@@ -1,17 +1,5 @@
-import com.michaldrabik.showly2.ui.discover.recycler.DiscoverListItem
-import com.michaldrabik.ui_model.AirTime
-import com.michaldrabik.ui_model.IdImdb
-import com.michaldrabik.ui_model.IdSlug
-import com.michaldrabik.ui_model.IdTmdb
-import com.michaldrabik.ui_model.IdTrakt
-import com.michaldrabik.ui_model.IdTvRage
-import com.michaldrabik.ui_model.IdTvdb
-import com.michaldrabik.ui_model.Ids
-import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_model.ImageFamily
-import com.michaldrabik.ui_model.ImageType
-import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_model.ShowStatus
+import com.michaldrabik.ui_discover.recycler.DiscoverListItem
+import com.michaldrabik.ui_model.*
 
 object TestData {
 

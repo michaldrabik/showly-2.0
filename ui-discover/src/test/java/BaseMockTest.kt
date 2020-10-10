@@ -1,17 +1,21 @@
 import androidx.room.withTransaction
-import com.michaldrabik.showly2.R
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.ui_discover.R
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockkStatic
 import io.mockk.slot
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Before
 
 @Suppress("EXPERIMENTAL_API_USAGE")
 abstract class BaseMockTest {
 
-  @MockK lateinit var database: AppDatabase
+  protected val testDispatcher = TestCoroutineDispatcher()
+
+  @MockK
+  lateinit var database: AppDatabase
 
   @Before
   open fun setUp() {

@@ -31,8 +31,16 @@ android {
 
 dependencies {
     implementation project(':common')
+    implementation project(':storage')
     implementation project(':ui-base')
     implementation project(':ui-repository')
     implementation project(':ui-model')
     implementation project(':ui-navigation')
+
+    testImplementation "junit:junit:$versions.junit"
+    testImplementation "io.mockk:mockk:$versions.mockk"
+    testImplementation "com.google.truth:truth:$versions.truth"
+    testImplementation "androidx.arch.core:core-testing:$versions.coreTesting"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutinesTesting"
+    androidTestImplementation "androidx.test:runner:$versions.testRunner"
 }

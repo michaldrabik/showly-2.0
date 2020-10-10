@@ -74,38 +74,13 @@ dependencies {
   implementation project(':ui-watchlist')
   implementation project(':ui-widgets')
 
-  implementation "androidx.appcompat:appcompat:$versions.androidAppCompat"
-  implementation "androidx.core:core-ktx:$versions.androidKtx"
-  implementation "androidx.constraintlayout:constraintlayout:$versions.androidConstraintLayout"
-  implementation "androidx.gridlayout:gridlayout:$versions.androidGridLayout"
-  implementation "androidx.lifecycle:lifecycle-extensions:$versions.androidLifecycle"
-  implementation "androidx.recyclerview:recyclerview:$versions.androidRecycler"
-  implementation "androidx.swiperefreshlayout:swiperefreshlayout:$versions.androidSwipeRefresh"
-  implementation "androidx.transition:transition:$versions.androidTransition"
-  implementation "androidx.work:work-runtime-ktx:$versions.androidWork"
-  implementation "androidx.viewpager2:viewpager2:$versions.androidViewPager"
-  implementation "androidx.dynamicanimation:dynamicanimation:$versions.androidDynamicAnimation"
-  implementation "androidx.navigation:navigation-fragment-ktx:$versions.androidNavigation"
-  implementation "androidx.navigation:navigation-ui-ktx:$versions.androidNavigation"
   implementation "com.google.android.play:core:$versions.androidPlayCore"
-
-  implementation "me.relex:circleindicator:$versions.circleIndicator"
-  implementation "com.google.android.material:material:$versions.androidMaterial"
-  implementation "com.jakewharton.threetenabp:threetenabp:$versions.threeTenAbp"
-
-  implementation "com.google.firebase:firebase-analytics-ktx:$versions.firebaseAnalytics"
-  implementation "com.google.firebase:firebase-messaging:$versions.firebaseMessaging"
-  implementation "com.google.firebase:firebase-crashlytics:$versions.crashlytics"
-
-  implementation "com.github.bumptech.glide:glide:$versions.glide"
-  kapt "com.github.bumptech.glide:compiler:$versions.glide"
 
   implementation "com.google.dagger:dagger:$versions.dagger"
   kapt "com.google.dagger:dagger-compiler:$versions.dagger"
   kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
 
   debugImplementation "com.amitshekhar.android:debug-db:$versions.debugDb"
-  implementation "com.jakewharton.timber:timber:$versions.timber"
 
   testImplementation "junit:junit:$versions.junit"
   testImplementation "io.mockk:mockk:$versions.mockk"

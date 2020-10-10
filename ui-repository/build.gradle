@@ -47,5 +47,4 @@ dependencies {
   testImplementation "androidx.arch.core:core-testing:$versions.coreTesting"
   testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutinesTesting"
   androidTestImplementation "androidx.test:runner:$versions.testRunner"
-
 }

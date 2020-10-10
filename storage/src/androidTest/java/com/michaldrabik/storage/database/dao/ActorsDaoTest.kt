@@ -35,7 +35,7 @@ class ActorsDaoTest : BaseDaoTest() {
       database.actorsDao().upsert(listOf(actor1, actor2))
       val result = database.actorsDao().getAllByShow(22)
       assertThat(result).hasSize(2)
-      assertThat(result).containsAllIn(listOf(actor1, actor2))
+      assertThat(result).containsExactlyElementsIn(listOf(actor1, actor2))
     }
   }
 
@@ -52,7 +52,7 @@ class ActorsDaoTest : BaseDaoTest() {
       database.actorsDao().upsert(listOf(actor1Updated, actor2Updated))
       val result = database.actorsDao().getAllByShow(99)
       assertThat(result).hasSize(2)
-      assertThat(result).containsAllIn(listOf(actor1Updated, actor2Updated))
+      assertThat(result).containsExactlyElementsIn(listOf(actor1Updated, actor2Updated))
     }
   }
 

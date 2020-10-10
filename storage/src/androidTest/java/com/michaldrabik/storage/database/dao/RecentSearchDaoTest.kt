@@ -40,7 +40,7 @@ class RecentSearchDaoTest : BaseDaoTest() {
 
       val result = database.recentSearchDao().getAll(10)
       assertThat(result).containsExactlyElementsIn(items)
-      assertThat(result).isOrdered(compareByDescending<RecentSearch> { it.createdAt })
+      assertThat(result).isInOrder(compareByDescending<RecentSearch> { it.createdAt })
     }
   }
 

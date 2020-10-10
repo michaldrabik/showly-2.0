@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_repository
 
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.trakt.api.TraktApi
 import com.michaldrabik.storage.database.dao.RelatedShowsDao
@@ -7,16 +8,9 @@ import com.michaldrabik.storage.database.dao.ShowsDao
 import com.michaldrabik.storage.database.model.RelatedShow
 import com.michaldrabik.ui_repository.common.BaseMockTest
 import com.michaldrabik.ui_repository.shows.RelatedShowsRepository
-import io.mockk.Runs
-import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.coVerifyOrder
-import io.mockk.coVerifySequence
-import io.mockk.every
+import io.mockk.*
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.just
-import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
@@ -24,9 +18,14 @@ import java.util.concurrent.TimeUnit.HOURS
 
 class RelatedShowsRepositoryTest : BaseMockTest() {
 
-  @MockK lateinit var traktApi: TraktApi
-  @RelaxedMockK lateinit var relatedShowsDao: RelatedShowsDao
-  @MockK lateinit var showsDao: ShowsDao
+  @MockK
+  lateinit var traktApi: TraktApi
+
+  @RelaxedMockK
+  lateinit var relatedShowsDao: RelatedShowsDao
+
+  @MockK
+  lateinit var showsDao: ShowsDao
 
   private lateinit var SUT: RelatedShowsRepository
 
