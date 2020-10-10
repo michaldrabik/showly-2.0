@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.common.views
+package com.michaldrabik.showly2.ui.views
 
 import android.content.Context
 import android.util.AttributeSet

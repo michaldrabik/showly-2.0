@@ -16,8 +16,8 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
-import com.michaldrabik.showly2.ui.common.NotificationActivity
-import com.michaldrabik.showly2.ui.common.views.WhatsNewView
+import com.michaldrabik.showly2.ui.BaseActivity
+import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
@@ -54,7 +54,7 @@ import com.michaldrabik.ui_watchlist.main.OnEpisodesSyncedListener
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : NotificationActivity(),
+class MainActivity : BaseActivity(),
   EventObserver,
   NetworkObserver,
   SnackbarHost,
@@ -183,7 +183,6 @@ class MainActivity : NotificationActivity(),
         else -> throw IllegalStateException("Invalid menu item.")
       }
 
-      clearUiCache()
       navigationHost.findNavController().navigate(target)
       showNavigation(true)
       return@setOnNavigationItemSelectedListener true

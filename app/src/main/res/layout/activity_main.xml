@@ -108,7 +108,7 @@
     app:layout_constraintTop_toTopOf="parent"
     />
 
-  <com.michaldrabik.showly2.ui.common.views.RateAppView
+  <com.michaldrabik.showly2.ui.views.RateAppView
     android:id="@+id/rateAppView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

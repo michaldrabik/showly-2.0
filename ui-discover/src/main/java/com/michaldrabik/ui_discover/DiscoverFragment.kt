@@ -34,11 +34,17 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
   private lateinit var adapter: DiscoverAdapter
   private lateinit var layoutManager: GridLayoutManager
 
-  var discoverSearchViewPosition = 0F
+  private var searchViewPosition = 0F
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiDiscoverComponentProvider).provideDiscoverComponent().inject(this)
     super.onCreate(savedInstanceState)
+    if (!isInitialized) {
+      isInitialized = true
+      savedInstanceState?.let {
+        searchViewPosition = it.getFloat("ARG_DISCOVER_SEARCH_POS", 0F)
+      }
+    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,7 +68,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       isClickable = false
       onClick { navigateToSearch() }
       onSortClickListener = { toggleFiltersView() }
-      translationY = discoverSearchViewPosition
+      translationY = searchViewPosition
     }
     discoverMask.onClick { toggleFiltersView() }
     discoverFiltersView.onApplyClickListener = {
@@ -104,7 +110,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       setProgressBackgroundColorSchemeColor(requireContext().colorFromAttr(R.attr.colorSearchViewBackground))
       setColorSchemeColors(color, color, color)
       setOnRefreshListener {
-        discoverSearchViewPosition = 0F
+        searchViewPosition = 0F
         viewModel.loadDiscoverShows(pullToRefresh = true)
       }
     }
@@ -187,7 +193,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
   }
 
   private fun saveUi() {
-    discoverSearchViewPosition = discoverSearchView.translationY
+    searchViewPosition = discoverSearchView.translationY
   }
 
   private fun render(uiModel: DiscoverUiModel) {
@@ -213,4 +219,9 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
   }
 
   override fun onTabReselected() = navigateToSearch()
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putFloat("ARG_DISCOVER_SEARCH_POS", searchViewPosition)
+  }
 }

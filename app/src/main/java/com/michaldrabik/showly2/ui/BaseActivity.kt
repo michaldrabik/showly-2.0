@@ -1,7 +1,8 @@
-package com.michaldrabik.showly2.ui.common
+package com.michaldrabik.showly2.ui
 
 import android.net.Uri
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.showly2.R
@@ -12,7 +13,7 @@ import com.michaldrabik.ui_widgets.search.SearchWidgetProvider
 import com.michaldrabik.ui_widgets.watchlist.WatchlistWidgetProvider
 import kotlinx.android.synthetic.main.activity_main.*
 
-abstract class NotificationActivity : BaseActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
   private val showActionKeys = arrayOf(
     FcmExtra.SHOW_ID.key,
@@ -44,7 +45,7 @@ abstract class NotificationActivity : BaseActivity() {
         navigate(R.id.actionDiscoverFragmentToSearchFragment)
         extras?.clear()
       } catch (e: Throwable) {
-        val exception = Throwable(NotificationActivity::class.simpleName, e)
+        val exception = Throwable(BaseActivity::class.simpleName, e)
         FirebaseCrashlytics.getInstance().recordException(exception)
       }
     }
@@ -65,7 +66,7 @@ abstract class NotificationActivity : BaseActivity() {
         extras.clear()
         action()
       } catch (e: Exception) {
-        val exception = Throwable(NotificationActivity::class.simpleName, e)
+        val exception = Throwable(BaseActivity::class.simpleName, e)
         FirebaseCrashlytics.getInstance().recordException(exception)
       }
     }
