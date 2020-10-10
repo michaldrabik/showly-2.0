@@ -11,6 +11,9 @@ import com.michaldrabik.ui_base.di.DaggerViewModelFactory
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.ERROR
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
+import com.michaldrabik.ui_base.utilities.NavigationHost
+import com.michaldrabik.ui_base.utilities.SnackbarHost
+import com.michaldrabik.ui_base.utilities.TipsHost
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_model.Tip

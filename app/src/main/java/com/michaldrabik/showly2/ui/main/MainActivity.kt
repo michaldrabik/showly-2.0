@@ -20,12 +20,12 @@ import com.michaldrabik.showly2.ui.common.NotificationActivity
 import com.michaldrabik.showly2.ui.common.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.ui_base.Analytics
-import com.michaldrabik.ui_base.NavigationHost
-import com.michaldrabik.ui_base.SnackbarHost
-import com.michaldrabik.ui_base.TipsHost
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.events.*
+import com.michaldrabik.ui_base.utilities.NavigationHost
+import com.michaldrabik.ui_base.utilities.SnackbarHost
+import com.michaldrabik.ui_base.utilities.TipsHost
 import com.michaldrabik.ui_base.utilities.extensions.*
 import com.michaldrabik.ui_discover.di.UiDiscoverComponent
 import com.michaldrabik.ui_discover.di.UiDiscoverComponentProvider

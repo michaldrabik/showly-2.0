@@ -14,7 +14,6 @@ import com.michaldrabik.showly2.common.ShowsSyncActivityCallbacks
 import com.michaldrabik.showly2.di.component.AppComponent
 import com.michaldrabik.showly2.di.component.DaggerAppComponent
 import com.michaldrabik.showly2.di.module.PreferencesModule
-import com.michaldrabik.showly2.fcm.NotificationChannel.*
 import com.michaldrabik.showly2.utilities.NetworkMonitorCallbacks
 import com.michaldrabik.storage.di.DaggerStorageComponent
 import com.michaldrabik.storage.di.StorageModule
@@ -26,6 +25,7 @@ import com.michaldrabik.ui_base.utilities.extensions.notificationManager
 import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
 import com.michaldrabik.ui_widgets.watchlist.WatchlistWidgetProvider
 import timber.log.Timber
+import com.michaldrabik.ui_base.fcm.NotificationChannel as AppNotificationChannel
 
 class App : Application(),
   UiBaseComponentProvider,
@@ -82,15 +82,15 @@ class App : Application(),
   private fun setupNotificationChannels() {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
 
-    fun createChannel(channel: com.michaldrabik.showly2.fcm.NotificationChannel) =
+    fun createChannel(channel: AppNotificationChannel) =
       NotificationChannel(channel.name, channel.displayName, channel.importance).apply {
         description = channel.description
       }
 
     notificationManager().run {
-      createNotificationChannel(createChannel(GENERAL_INFO))
-      createNotificationChannel(createChannel(SHOWS_INFO))
-      createNotificationChannel(createChannel(EPISODES_ANNOUNCEMENTS))
+      createNotificationChannel(createChannel(AppNotificationChannel.GENERAL_INFO))
+      createNotificationChannel(createChannel(AppNotificationChannel.SHOWS_INFO))
+      createNotificationChannel(createChannel(AppNotificationChannel.EPISODES_ANNOUNCEMENTS))
     }
   }
 

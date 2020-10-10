@@ -5,7 +5,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.showly2.BuildConfig
-import com.michaldrabik.showly2.fcm.NotificationChannel
+import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_repository.SettingsRepository
 import javax.inject.Inject

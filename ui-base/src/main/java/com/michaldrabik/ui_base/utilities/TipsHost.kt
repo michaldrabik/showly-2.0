@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_base
+package com.michaldrabik.ui_base.utilities
 
 import com.michaldrabik.ui_model.Tip
 
