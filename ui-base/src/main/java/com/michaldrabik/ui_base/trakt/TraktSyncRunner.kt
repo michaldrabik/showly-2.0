@@ -7,6 +7,11 @@ import com.michaldrabik.ui_repository.UserTraktManager
 abstract class TraktSyncRunner(
   private val userTraktManager: UserTraktManager
 ) {
+
+  companion object {
+    const val RETRY_DELAY_MS = 5000L
+  }
+
   var isRunning = false
   var progressListener: ((Show, Int, Int) -> Unit)? = null
 

@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-  implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
+  api "com.squareup.retrofit2:retrofit:$versions.retrofit"
   implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
   implementation "com.squareup.okhttp3:logging-interceptor:$versions.okHttpLogInterceptor"
 

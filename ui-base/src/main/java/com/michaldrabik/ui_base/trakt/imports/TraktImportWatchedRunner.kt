@@ -21,6 +21,7 @@ import com.michaldrabik.ui_repository.UserTvdbManager
 import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.delay
 import org.threeten.bp.ZonedDateTime
+import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -40,7 +41,16 @@ class TraktImportWatchedRunner @Inject constructor(
 
     Timber.d("Checking authorization...")
     val authToken = checkAuthorization()
-    val syncedCount = importWatchedShows(authToken.token)
+    val syncedCount = try {
+      importWatchedShows(authToken.token)
+    } catch (error: Throwable) {
+      if (error is HttpException) {
+        Timber.w("importWatchedShows HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        delay(RETRY_DELAY_MS)
+        importWatchedShows(authToken.token)
+      }
+      throw error
+    }
 
     isRunning = false
     Timber.d("Finished with success.")
