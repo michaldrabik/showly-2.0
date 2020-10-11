@@ -506,6 +506,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun renderRuntimeLeft(seasonsItems: List<SeasonListItem>) {
     val runtimeLeft = seasonsItems
+      .filter { !it.season.isSpecial() }
       .flatMap { it.episodes }
       .filterNot { it.isWatched }
       .sumBy { it.episode.runtime }

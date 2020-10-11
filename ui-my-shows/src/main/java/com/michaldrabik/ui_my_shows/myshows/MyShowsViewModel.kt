@@ -16,6 +16,7 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsLoadShowsCase
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
+import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -29,7 +30,7 @@ class MyShowsViewModel @Inject constructor(
   fun loadShows(notifyListsUpdate: Boolean = false) {
     viewModelScope.launch {
       val settings = loadShowsCase.loadSettings()
-      val shows = loadShowsCase.loadAllShows().map { toListItemAsync(MyShowsItem.Type.ALL_SHOWS_ITEM, it) }.awaitAll()
+      val shows = loadShowsCase.loadAllShows().map { toListItemAsync(Type.ALL_SHOWS_ITEM, it) }.awaitAll()
       val seasons = loadShowsCase.loadSeasonsForShows(shows.map { it.show.traktId })
 
       val allShows = loadShowsCase.filterSectionShows(shows, seasons, ALL)
@@ -47,7 +48,7 @@ class MyShowsViewModel @Inject constructor(
         else emptyList()
 
       val recentShows = if (settings.myShowsRecentIsEnabled) {
-        loadShowsCase.loadRecentShows().map { toListItemAsync(MyShowsItem.Type.RECENT_SHOWS, it, ImageType.FANART) }.awaitAll()
+        loadShowsCase.loadRecentShows().map { toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART) }.awaitAll()
       } else {
         emptyList()
       }
@@ -133,7 +134,7 @@ class MyShowsViewModel @Inject constructor(
   }
 
   private fun CoroutineScope.toListItemAsync(
-    itemType: MyShowsItem.Type,
+    itemType: Type,
     show: Show,
     type: ImageType = POSTER
   ) = async {

@@ -39,6 +39,7 @@ class MyShowsLoadShowsCase @Inject constructor(
     val batch = traktIds.take(500)
     if (batch.isEmpty()) return buffer
     val seasons = database.seasonsDao().getAllForShows(batch)
+      .filter { it.seasonNumber != 0 }
     buffer.addAll(seasons)
     return loadSeasonsForShows(traktIds.filter { it !in batch }, buffer)
   }

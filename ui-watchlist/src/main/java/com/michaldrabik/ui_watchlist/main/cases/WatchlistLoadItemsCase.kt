@@ -31,7 +31,9 @@ class WatchlistLoadItemsCase @Inject constructor(
 
   suspend fun loadWatchlistItem(show: Show): WatchlistItem {
     val episodes = database.episodesDao().getAllForShowWatchlist(show.traktId)
+      .filter { it.seasonNumber != 0 }
     val seasons = database.seasonsDao().getAllForShow(show.traktId)
+      .filter { it.seasonNumber != 0 }
 
     val episodesCount = episodes.count()
     val unwatchedEpisodes = episodes.filter { !it.isWatched }

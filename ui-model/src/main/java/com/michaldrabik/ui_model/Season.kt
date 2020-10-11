@@ -25,4 +25,6 @@ data class Season(
       episodes = listOf()
     )
   }
+
+  fun isSpecial() = number == 0
 }

@@ -37,7 +37,9 @@ class SeasonView : FrameLayout {
   ) {
     clear()
     setOnClickListener { clickListener(item) }
-    seasonViewTitle.text = context.getString(R.string.textSeason, item.season.number)
+    seasonViewTitle.text =
+      if (item.season.isSpecial()) context.getString(R.string.textSpecials)
+      else context.getString(R.string.textSeason, item.season.number)
 
     val progressCount = item.episodes.count { it.isWatched }
     val episodesCount = item.episodes.size
