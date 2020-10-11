@@ -26,3 +26,5 @@ jobs:
       run: ./gradlew :app:testDebugUnitTest
     - name: Run Unit Tests (ui-repository)
       run: ./gradlew :ui-repository:testDebugUnitTest
+    - name: Run Unit Tests (ui-discover)
+      run: ./gradlew :ui-discover:testDebugUnitTest
