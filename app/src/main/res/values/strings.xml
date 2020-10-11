@@ -19,7 +19,7 @@
 
   <string name="textWhatsNewTitle">What\'s New</string>
   <string name="textWhatsNewSubtitle">Version %s</string>
-  <string name="textWhatsNewMessage">* Added new <b>Archive</b> section in <b>My Shows</b> tab. You can now move shows that have abandoned, dropped or you are simply not interested in anymore, into the archive.\n\nArchived shows will no longer appear in <b>Watchlist</b>, <b>Discover</b> and <b>My Shows</b>. They will also be skipped during Trakt.tv import.\n\n* Added percentage value in progress indicators\n\n* Statistics have been moved into separate screen\n\n* Minor bugfixes</string>
+  <string name="textWhatsNewMessage">* Added support for \'Special\' seasons in show details section (enable/disable via settings)\n\n* Archived shows can now be included in the statistics (enabled/disable via settings)\n\n* Bugfixes</string>
 
   <string name="shortcutDiscover">Discover</string>
   <string name="shortcutMyShows">My Shows</string>
