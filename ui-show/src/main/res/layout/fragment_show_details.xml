@@ -499,6 +499,7 @@
     android:id="@+id/showDetailsEpisodesView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground"
     android:visibility="gone"
     />
 
@@ -506,6 +507,7 @@
     android:id="@+id/showDetailsCommentsView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground"
     android:visibility="gone"
     />
 

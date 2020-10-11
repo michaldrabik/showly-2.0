@@ -6,7 +6,7 @@
   android:shareInterpolator="true"
   >
   <translate
-    android:fromXDelta="-100%"
+    android:fromXDelta="-15%"
     android:fromYDelta="0%"
     android:toXDelta="0%"
     android:toYDelta="0%"

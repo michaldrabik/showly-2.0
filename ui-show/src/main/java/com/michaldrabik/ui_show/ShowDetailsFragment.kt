@@ -226,7 +226,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun showEpisodesView(item: SeasonListItem) {
     showDetailsEpisodesView.run {
       bind(item)
-      fadeIn(275) {
+      fadeIn(280) {
         bindEpisodes(item.episodes)
       }
       startAnimation(animationEnterRight)
@@ -238,18 +238,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
     }
     showDetailsMainLayout.run {
-      fadeOut()
+      fadeOut(200)
       startAnimation(animationExitRight)
     }
   }
 
   private fun showCommentsView() {
     showDetailsCommentsView.run {
-      fadeIn(275)
+      fadeIn(280)
       startAnimation(animationEnterRight)
     }
     showDetailsMainLayout.run {
-      fadeOut()
+      fadeOut(200)
       startAnimation(animationExitRight)
     }
   }
@@ -261,7 +261,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     val animationExit = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_left)
 
     view.run {
-      fadeOut()
+      fadeOut(300)
       startAnimation(animationExit)
     }
     showDetailsMainLayout.run {
@@ -346,7 +346,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         val country = if (show.country.isEmpty()) "" else " (${show.country.toUpperCase(ROOT)})"
         showDetailsExtraInfo.text =
           "${show.network} $year$country | ${show.runtime} min | ${
-          show.genres.take(2).joinToString(", ") { it.capitalize() }
+            show.genres.take(2).joinToString(", ") { it.capitalize() }
           }"
         showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
         showDetailsCommentsButton.visible()
