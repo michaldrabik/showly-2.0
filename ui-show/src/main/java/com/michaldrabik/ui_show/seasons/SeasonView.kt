@@ -40,7 +40,11 @@ class SeasonView : FrameLayout {
     seasonViewTitle.text = context.getString(R.string.textSeason, item.season.number)
 
     val progressCount = item.episodes.count { it.isWatched }
-    val percent = ((progressCount.toFloat() / item.episodes.size.toFloat()) * 100).roundToInt()
+    val episodesCount = item.episodes.size
+    var percent = 0
+    if (episodesCount != 0) {
+      percent = ((progressCount.toFloat() / episodesCount.toFloat()) * 100F).roundToInt()
+    }
 
     seasonViewProgress.max = item.season.episodeCount
     seasonViewProgress.setAnimatedProgress(item.episodes.count { it.isWatched })
