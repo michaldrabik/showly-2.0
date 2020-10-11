@@ -22,11 +22,13 @@ class WatchlistUpcomingAdapter : BaseAdapter<WatchlistItem>() {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
-      VIEW_TYPE_ITEM -> BaseViewHolder(WatchlistUpcomingItemView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
-        detailsClickListener = { this@WatchlistUpcomingAdapter.detailsClickListener?.invoke(it) }
-        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
-      })
+      VIEW_TYPE_ITEM -> BaseViewHolder(
+        WatchlistUpcomingItemView(parent.context).apply {
+          itemClickListener = { super.itemClickListener.invoke(it) }
+          detailsClickListener = { this@WatchlistUpcomingAdapter.detailsClickListener?.invoke(it) }
+          missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
+        }
+      )
       VIEW_TYPE_HEADER -> BaseViewHolder(WatchlistUpcomingHeaderView(parent.context))
       else -> throw IllegalStateException()
     }

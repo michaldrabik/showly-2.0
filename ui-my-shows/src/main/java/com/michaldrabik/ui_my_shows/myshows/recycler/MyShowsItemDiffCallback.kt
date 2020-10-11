@@ -1,7 +1,9 @@
 package com.michaldrabik.ui_my_shows.myshows.recycler
 
 import androidx.recyclerview.widget.DiffUtil
-import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.*
+import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.HEADER
+import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.HORIZONTAL_SHOWS
+import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type.RECENT_SHOWS
 
 class MyShowsItemDiffCallback : DiffUtil.ItemCallback<MyShowsItem>() {
 

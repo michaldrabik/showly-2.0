@@ -9,7 +9,11 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
-import com.michaldrabik.ui_base.utilities.extensions.*
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem

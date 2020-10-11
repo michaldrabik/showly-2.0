@@ -8,12 +8,14 @@ import androidx.room.PrimaryKey
 
 @Entity(
   tableName = "shows_related",
-  foreignKeys = [ForeignKey(
-    entity = Show::class,
-    parentColumns = arrayOf("id_trakt"),
-    childColumns = arrayOf("id_trakt_related_show"),
-    onDelete = CASCADE
-  )]
+  foreignKeys = [
+    ForeignKey(
+      entity = Show::class,
+      parentColumns = arrayOf("id_trakt"),
+      childColumns = arrayOf("id_trakt_related_show"),
+      onDelete = CASCADE
+    )
+  ]
 )
 data class RelatedShow(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,

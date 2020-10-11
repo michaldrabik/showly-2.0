@@ -13,7 +13,9 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_discover.R
 import com.michaldrabik.ui_model.DiscoverFilters
-import com.michaldrabik.ui_model.DiscoverSortOrder.*
+import com.michaldrabik.ui_model.DiscoverSortOrder.HOT
+import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
+import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import com.michaldrabik.ui_model.Genre
 import kotlinx.android.synthetic.main.view_discover_filters.view.*
 

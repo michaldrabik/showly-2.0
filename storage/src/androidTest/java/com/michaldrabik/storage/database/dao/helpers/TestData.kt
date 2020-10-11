@@ -1,6 +1,10 @@
 package com.michaldrabik.storage.database.dao.helpers
 
-import com.michaldrabik.storage.database.model.*
+import com.michaldrabik.storage.database.model.Actor
+import com.michaldrabik.storage.database.model.Episode
+import com.michaldrabik.storage.database.model.Season
+import com.michaldrabik.storage.database.model.Settings
+import com.michaldrabik.storage.database.model.Show
 
 object TestData {
 
@@ -33,7 +37,35 @@ object TestData {
     0
   )
 
-  fun createSettings() = Settings(1, false, true, true, 0, 2, "", "", "", "", false, false, false, false, false, false, false, "", true, "OFF", "", "", false, false, "","", false)
+  fun createSettings() = Settings(
+    1,
+    false,
+    true,
+    true,
+    0,
+    2,
+    "",
+    "",
+    "",
+    "",
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    "",
+    true,
+    "OFF",
+    "",
+    "",
+    false,
+    false,
+    "",
+    "",
+    false
+  )
 
   fun createActor() = Actor(0, 1, "imdb", 1, "Name", "Role", 1, "Image", 99, 99)
 

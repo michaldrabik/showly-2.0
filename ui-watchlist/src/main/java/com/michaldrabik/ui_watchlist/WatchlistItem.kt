@@ -5,7 +5,11 @@ import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.ui_base.common.ListItem
-import com.michaldrabik.ui_model.*
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.Season
+import com.michaldrabik.ui_model.Show
 
 data class WatchlistItem(
   override val show: Show,

@@ -4,8 +4,14 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.EpisodeWatchlist
-import com.michaldrabik.ui_model.*
-import com.michaldrabik.ui_model.SortOrder.*
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
+import com.michaldrabik.ui_model.SortOrder.NAME
+import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_repository.PinnedItemsRepository
 import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.shows.ShowsRepository
@@ -70,12 +76,14 @@ class WatchlistLoadItemsCase @Inject constructor(
       .groupBy { it.episode.hasAired(it.season) }
 
     val aired = (items[true] ?: emptyList())
-      .sortedWith(when (sortOrder) {
-        NAME -> compareBy { it.show.title.toUpperCase(ROOT) }
-        RECENTLY_WATCHED -> compareByDescending { it.show.updatedAt }
-        EPISODES_LEFT -> compareBy { it.episodesCount - it.watchedEpisodesCount }
-        else -> throw IllegalStateException("Invalid sort order")
-      })
+      .sortedWith(
+        when (sortOrder) {
+          NAME -> compareBy { it.show.title.toUpperCase(ROOT) }
+          RECENTLY_WATCHED -> compareByDescending { it.show.updatedAt }
+          EPISODES_LEFT -> compareBy { it.episodesCount - it.watchedEpisodesCount }
+          else -> throw IllegalStateException("Invalid sort order")
+        }
+      )
 
     val notAired = (items[false] ?: emptyList())
       .sortedBy { it.episode.firstAired?.toInstant()?.toEpochMilli() }

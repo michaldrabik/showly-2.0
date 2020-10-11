@@ -8,9 +8,16 @@ import com.michaldrabik.storage.database.dao.ShowsDao
 import com.michaldrabik.storage.database.model.RelatedShow
 import com.michaldrabik.ui_repository.common.BaseMockTest
 import com.michaldrabik.ui_repository.shows.RelatedShowsRepository
-import io.mockk.*
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.coVerifyOrder
+import io.mockk.coVerifySequence
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.just
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test

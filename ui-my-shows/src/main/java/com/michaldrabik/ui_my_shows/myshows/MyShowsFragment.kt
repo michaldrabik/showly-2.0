@@ -17,14 +17,18 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortOrder.*
+import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
+import com.michaldrabik.ui_model.SortOrder.NAME
+import com.michaldrabik.ui_model.SortOrder.NEWEST
+import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsAdapter
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 
-class MyShowsFragment : BaseFragment<MyShowsViewModel>(R.layout.fragment_my_shows),
+class MyShowsFragment :
+  BaseFragment<MyShowsViewModel>(R.layout.fragment_my_shows),
   OnScrollResetListener,
   OnTraktSyncListener {
 

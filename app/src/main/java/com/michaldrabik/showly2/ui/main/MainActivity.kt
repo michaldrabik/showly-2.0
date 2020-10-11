@@ -22,11 +22,21 @@ import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
-import com.michaldrabik.ui_base.events.*
+import com.michaldrabik.ui_base.events.Event
+import com.michaldrabik.ui_base.events.EventObserver
+import com.michaldrabik.ui_base.events.ShowsSyncComplete
+import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
+import com.michaldrabik.ui_base.events.TraktSyncProgress
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost
-import com.michaldrabik.ui_base.utilities.extensions.*
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.fadeOut
+import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
@@ -34,7 +44,8 @@ import com.michaldrabik.ui_watchlist.main.OnEpisodesSyncedListener
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity(),
+class MainActivity :
+  BaseActivity(),
   EventObserver,
   NetworkObserver,
   SnackbarHost,

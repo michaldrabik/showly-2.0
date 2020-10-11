@@ -11,9 +11,11 @@ class SeeLaterAdapter : BaseAdapter<SeeLaterListItem>() {
   override val asyncDiffer = AsyncListDiffer(this, SeeLaterItemDiffCallback())
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    BaseViewHolder(SeeLaterShowView(parent.context).apply {
-      itemClickListener = { super.itemClickListener.invoke(it) }
-    })
+    BaseViewHolder(
+      SeeLaterShowView(parent.context).apply {
+        itemClickListener = { super.itemClickListener.invoke(it) }
+      }
+    )
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]

@@ -25,15 +25,17 @@ class WatchlistMainAdapter : BaseAdapter<WatchlistItem>() {
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
-      VIEW_TYPE_ITEM -> BaseViewHolder(WatchlistMainItemView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
-        itemLongClickListener = { item, view ->
-          this@WatchlistMainAdapter.itemLongClickListener?.invoke(item, view)
+      VIEW_TYPE_ITEM -> BaseViewHolder(
+        WatchlistMainItemView(parent.context).apply {
+          itemClickListener = { super.itemClickListener.invoke(it) }
+          itemLongClickListener = { item, view ->
+            this@WatchlistMainAdapter.itemLongClickListener?.invoke(item, view)
+          }
+          detailsClickListener = { this@WatchlistMainAdapter.detailsClickListener?.invoke(it) }
+          checkClickListener = { this@WatchlistMainAdapter.checkClickListener?.invoke(it) }
+          missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
         }
-        detailsClickListener = { this@WatchlistMainAdapter.detailsClickListener?.invoke(it) }
-        checkClickListener = { this@WatchlistMainAdapter.checkClickListener?.invoke(it) }
-        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
-      })
+      )
       VIEW_TYPE_HEADER -> BaseViewHolder(WatchlistMainHeaderView(parent.context))
       else -> throw IllegalStateException()
     }

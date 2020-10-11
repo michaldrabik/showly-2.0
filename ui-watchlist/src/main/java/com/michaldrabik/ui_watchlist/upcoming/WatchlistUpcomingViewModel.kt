@@ -12,7 +12,11 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_watchlist.R
 import com.michaldrabik.ui_watchlist.WatchlistItem
 import com.michaldrabik.ui_watchlist.main.WatchlistUiModel
-import com.michaldrabik.ui_watchlist.upcoming.WatchlistUpcomingViewModel.Section.*
+import com.michaldrabik.ui_watchlist.upcoming.WatchlistUpcomingViewModel.Section.LATER
+import com.michaldrabik.ui_watchlist.upcoming.WatchlistUpcomingViewModel.Section.NEXT_WEEK
+import com.michaldrabik.ui_watchlist.upcoming.WatchlistUpcomingViewModel.Section.THIS_WEEK
+import com.michaldrabik.ui_watchlist.upcoming.WatchlistUpcomingViewModel.Section.TODAY
+import com.michaldrabik.ui_watchlist.upcoming.WatchlistUpcomingViewModel.Section.TOMORROW
 import kotlinx.coroutines.launch
 import org.threeten.bp.DayOfWeek.SUNDAY
 import org.threeten.bp.LocalTime.NOON

@@ -15,7 +15,13 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.utilities.NavigationHost
-import com.michaldrabik.ui_base.utilities.extensions.*
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
+import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_watchlist.R
 import com.michaldrabik.ui_watchlist.WatchlistItem
@@ -26,7 +32,8 @@ import com.michaldrabik.ui_watchlist.watchlist.recycler.WatchlistMainAdapter
 import kotlinx.android.synthetic.main.fragment_watchlist_main.*
 import kotlinx.android.synthetic.main.layout_watchlist_empty.*
 
-class WatchlistMainFragment : BaseFragment<WatchlistMainViewModel>(R.layout.fragment_watchlist_main),
+class WatchlistMainFragment :
+  BaseFragment<WatchlistMainViewModel>(R.layout.fragment_watchlist_main),
   OnScrollResetListener {
 
   private val parentViewModel by viewModels<WatchlistViewModel>({ requireParentFragment() }) { viewModelFactory }

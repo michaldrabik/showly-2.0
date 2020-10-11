@@ -1,7 +1,12 @@
 package com.michaldrabik.ui_show
 
 import com.michaldrabik.ui_base.UiModel
-import com.michaldrabik.ui_model.*
+import com.michaldrabik.ui_model.Actor
+import com.michaldrabik.ui_model.Comment
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_show.helpers.ActionEvent
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem

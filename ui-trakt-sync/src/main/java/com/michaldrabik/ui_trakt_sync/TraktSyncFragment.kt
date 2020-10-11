@@ -29,7 +29,8 @@ import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponentProvider
 import kotlinx.android.synthetic.main.fragment_trakt_sync.*
 
-class TraktSyncFragment : BaseFragment<TraktSyncViewModel>(R.layout.fragment_trakt_sync),
+class TraktSyncFragment :
+  BaseFragment<TraktSyncViewModel>(R.layout.fragment_trakt_sync),
   OnTraktAuthorizeListener,
   EventObserver {
 

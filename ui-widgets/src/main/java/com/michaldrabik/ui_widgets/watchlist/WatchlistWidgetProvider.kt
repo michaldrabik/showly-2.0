@@ -2,7 +2,10 @@ package com.michaldrabik.ui_widgets.watchlist
 
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
-import android.appwidget.AppWidgetManager.*
+import android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
+import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID
+import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_IDS
+import android.appwidget.AppWidgetManager.getInstance
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
@@ -83,11 +86,13 @@ class WatchlistWidgetProvider : AppWidgetProvider() {
         }
         intent.extras?.containsKey(EXTRA_SHOW_ID) == true -> {
           val showId = intent.getLongExtra(EXTRA_SHOW_ID, -1L)
-          context.startActivity(Intent().apply {
-            setClassName(context, HOST_ACTIVITY_NAME)
-            putExtra(EXTRA_SHOW_ID, showId.toString())
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-          })
+          context.startActivity(
+            Intent().apply {
+              setClassName(context, HOST_ACTIVITY_NAME)
+              putExtra(EXTRA_SHOW_ID, showId.toString())
+              flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+          )
         }
       }
     }

@@ -11,9 +11,11 @@ class SearchAdapter : BaseAdapter<SearchListItem>() {
   override val asyncDiffer = AsyncListDiffer(this, SearchItemDiffCallback())
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    BaseViewHolder(ShowSearchView(parent.context).apply {
-      itemClickListener = { super.itemClickListener.invoke(it) }
-    })
+    BaseViewHolder(
+      ShowSearchView(parent.context).apply {
+        itemClickListener = { super.itemClickListener.invoke(it) }
+      }
+    )
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]

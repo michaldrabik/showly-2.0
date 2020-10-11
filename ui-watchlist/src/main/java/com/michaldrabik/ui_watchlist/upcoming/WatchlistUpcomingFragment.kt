@@ -20,7 +20,8 @@ import com.michaldrabik.ui_watchlist.main.WatchlistViewModel
 import com.michaldrabik.ui_watchlist.upcoming.recycler.WatchlistUpcomingAdapter
 import kotlinx.android.synthetic.main.fragment_watchlist_upcoming.*
 
-class WatchlistUpcomingFragment : BaseFragment<WatchlistUpcomingViewModel>(R.layout.fragment_watchlist_upcoming),
+class WatchlistUpcomingFragment :
+  BaseFragment<WatchlistUpcomingViewModel>(R.layout.fragment_watchlist_upcoming),
   OnScrollResetListener {
 
   private val parentViewModel by viewModels<WatchlistViewModel>({ requireParentFragment() }) { viewModelFactory }

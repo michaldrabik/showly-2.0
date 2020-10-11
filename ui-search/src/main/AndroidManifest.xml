@@ -1,6 +1,3 @@
-<manifest
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.michaldrabik.ui_search"
-  />
+<manifest package="com.michaldrabik.ui_search" />
 
 

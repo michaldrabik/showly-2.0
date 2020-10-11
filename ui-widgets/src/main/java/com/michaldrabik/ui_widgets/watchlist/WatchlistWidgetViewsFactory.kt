@@ -24,7 +24,13 @@ import com.michaldrabik.ui_widgets.R
 import com.michaldrabik.ui_widgets.watchlist.WatchlistWidgetProvider.Companion.EXTRA_EPISODE_ID
 import com.michaldrabik.ui_widgets.watchlist.WatchlistWidgetProvider.Companion.EXTRA_SEASON_ID
 import com.michaldrabik.ui_widgets.watchlist.WatchlistWidgetProvider.Companion.EXTRA_SHOW_ID
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.runBlocking
 
 class WatchlistWidgetViewsFactory(
   private val context: Context,
@@ -99,18 +105,22 @@ class WatchlistWidgetViewsFactory(
       }
 
       val fillIntent = Intent().apply {
-        putExtras(Bundle().apply {
-          putExtra(EXTRA_SHOW_ID, item.show.ids.trakt.id)
-        })
+        putExtras(
+          Bundle().apply {
+            putExtra(EXTRA_SHOW_ID, item.show.ids.trakt.id)
+          }
+        )
       }
       setOnClickFillInIntent(R.id.watchlistWidgetItem, fillIntent)
 
       val checkFillIntent = Intent().apply {
-        putExtras(Bundle().apply {
-          putExtra(EXTRA_EPISODE_ID, item.episode.ids.trakt.id)
-          putExtra(EXTRA_SEASON_ID, item.season.ids.trakt.id)
-          putExtra(EXTRA_SHOW_ID, item.show.ids.trakt.id)
-        })
+        putExtras(
+          Bundle().apply {
+            putExtra(EXTRA_EPISODE_ID, item.episode.ids.trakt.id)
+            putExtra(EXTRA_SEASON_ID, item.season.ids.trakt.id)
+            putExtra(EXTRA_SHOW_ID, item.show.ids.trakt.id)
+          }
+        )
       }
       setOnClickFillInIntent(R.id.watchlistWidgetItemCheckButton, checkFillIntent)
     }

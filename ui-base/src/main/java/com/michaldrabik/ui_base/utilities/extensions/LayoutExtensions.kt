@@ -10,9 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 
 fun RecyclerView.addDivider(@DrawableRes dividerRes: Int, direction: Int = VERTICAL) {
-  addItemDecoration(DividerItemDecoration(context, direction).apply {
-    setDrawable(ContextCompat.getDrawable(context, dividerRes)!!)
-  })
+  addItemDecoration(
+    DividerItemDecoration(context, direction).apply {
+      setDrawable(ContextCompat.getDrawable(context, dividerRes)!!)
+    }
+  )
 }
 
 /**

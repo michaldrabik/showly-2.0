@@ -27,7 +27,15 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.info
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.ERROR
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
-import com.michaldrabik.ui_base.utilities.extensions.*
+import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
+import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_episodes.R
 import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponentProvider
 import com.michaldrabik.ui_model.Episode

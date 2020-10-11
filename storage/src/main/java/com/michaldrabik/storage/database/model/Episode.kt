@@ -12,12 +12,14 @@ import org.threeten.bp.ZonedDateTime
 
 @Entity(
   tableName = "episodes",
-  foreignKeys = [ForeignKey(
-    entity = Season::class,
-    parentColumns = arrayOf("id_trakt"),
-    childColumns = arrayOf("id_season"),
-    onDelete = CASCADE
-  )],
+  foreignKeys = [
+    ForeignKey(
+      entity = Season::class,
+      parentColumns = arrayOf("id_trakt"),
+      childColumns = arrayOf("id_season"),
+      onDelete = CASCADE
+    )
+  ],
   indices = [
     Index("id_season"),
     Index("id_show_trakt")

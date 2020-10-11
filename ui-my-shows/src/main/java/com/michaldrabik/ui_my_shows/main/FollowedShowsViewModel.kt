@@ -4,7 +4,9 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_my_shows.main.cases.FollowedShowsSearchCase
 import com.michaldrabik.ui_my_shows.myshows.helpers.MyShowsSearchResult
-import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.*
+import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.EMPTY
+import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.NO_RESULTS
+import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.RESULTS
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject

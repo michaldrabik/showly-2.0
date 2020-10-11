@@ -11,8 +11,13 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_discover.cases.DiscoverFiltersCase
 import com.michaldrabik.ui_discover.cases.DiscoverShowsCase
 import com.michaldrabik.ui_model.DiscoverFilters
-import io.mockk.*
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
+import io.mockk.just
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain

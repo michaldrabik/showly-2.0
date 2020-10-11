@@ -17,14 +17,18 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortOrder.*
+import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
+import com.michaldrabik.ui_model.SortOrder.NAME
+import com.michaldrabik.ui_model.SortOrder.NEWEST
+import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.seelater.recycler.SeeLaterAdapter
 import kotlinx.android.synthetic.main.fragment_see_later.*
 
-class SeeLaterFragment : BaseFragment<SeeLaterViewModel>(R.layout.fragment_see_later),
+class SeeLaterFragment :
+  BaseFragment<SeeLaterViewModel>(R.layout.fragment_see_later),
   OnScrollResetListener,
   OnTraktSyncListener {
 

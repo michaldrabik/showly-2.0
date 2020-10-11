@@ -34,7 +34,8 @@ import com.michaldrabik.ui_widgets.search.SearchWidgetProvider
 import com.michaldrabik.ui_widgets.watchlist.WatchlistWidgetProvider
 import kotlinx.android.synthetic.main.activity_main.*
 
-abstract class BaseActivity : AppCompatActivity(),
+abstract class BaseActivity :
+  AppCompatActivity(),
   UiTraktSyncComponentProvider,
   UiStatisticsComponentProvider,
   UiDiscoverComponentProvider,

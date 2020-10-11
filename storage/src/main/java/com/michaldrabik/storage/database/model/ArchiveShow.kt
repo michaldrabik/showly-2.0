@@ -9,12 +9,14 @@ import androidx.room.PrimaryKey
 @Entity(
   tableName = "shows_archive",
   indices = [Index(value = ["id_trakt"], unique = true)],
-  foreignKeys = [ForeignKey(
-    entity = Show::class,
-    parentColumns = arrayOf("id_trakt"),
-    childColumns = arrayOf("id_trakt"),
-    onDelete = ForeignKey.CASCADE
-  )]
+  foreignKeys = [
+    ForeignKey(
+      entity = Show::class,
+      parentColumns = arrayOf("id_trakt"),
+      childColumns = arrayOf("id_trakt"),
+      onDelete = ForeignKey.CASCADE
+    )
+  ]
 )
 data class ArchiveShow(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,

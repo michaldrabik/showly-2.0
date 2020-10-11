@@ -9,7 +9,11 @@ import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_episodes.EpisodesManager
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class WatchlistWidgetEpisodeCheckService : JobIntentService(), CoroutineScope {

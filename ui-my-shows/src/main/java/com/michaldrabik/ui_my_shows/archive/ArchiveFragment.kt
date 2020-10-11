@@ -17,14 +17,18 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortOrder.*
+import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
+import com.michaldrabik.ui_model.SortOrder.NAME
+import com.michaldrabik.ui_model.SortOrder.NEWEST
+import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveAdapter
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import kotlinx.android.synthetic.main.fragment_archive.*
 
-class ArchiveFragment : BaseFragment<ArchiveViewModel>(R.layout.fragment_archive),
+class ArchiveFragment :
+  BaseFragment<ArchiveViewModel>(R.layout.fragment_archive),
   OnScrollResetListener,
   OnTraktSyncListener {
 

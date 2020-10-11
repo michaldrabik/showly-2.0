@@ -11,7 +11,16 @@ import android.widget.LinearLayout
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.DurationPrinter
-import com.michaldrabik.ui_base.utilities.extensions.*
+import com.michaldrabik.ui_base.utilities.extensions.addRipple
+import com.michaldrabik.ui_base.utilities.extensions.bump
+import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.expandTouch
+import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_watchlist.R
 import com.michaldrabik.ui_watchlist.WatchlistItem
 import kotlinx.android.synthetic.main.view_watchlist_main_item.view.*

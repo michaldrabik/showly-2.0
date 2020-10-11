@@ -1,5 +1,17 @@
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
-import com.michaldrabik.ui_model.*
+import com.michaldrabik.ui_model.AirTime
+import com.michaldrabik.ui_model.IdImdb
+import com.michaldrabik.ui_model.IdSlug
+import com.michaldrabik.ui_model.IdTmdb
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.IdTvRage
+import com.michaldrabik.ui_model.IdTvdb
+import com.michaldrabik.ui_model.Ids
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageFamily
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.ShowStatus
 
 object TestData {
 
@@ -31,7 +43,8 @@ object TestData {
       genres = listOf(),
       airedEpisodes = 0,
       updatedAt = 0
-    ), image = Image(
+    ),
+    image = Image(
       id = 0,
       idTvdb = IdTvdb(id = 0),
       type = ImageType.POSTER,
@@ -39,6 +52,7 @@ object TestData {
       fileUrl = "",
       thumbnailUrl = "",
       status = Image.Status.UNKNOWN
-    ), isLoading = false, isFollowed = false, isSeeLater = false
+    ),
+    isLoading = false, isFollowed = false, isSeeLater = false
   )
 }

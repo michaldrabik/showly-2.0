@@ -5,7 +5,9 @@ import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.DiscoverSortOrder
-import com.michaldrabik.ui_model.DiscoverSortOrder.*
+import com.michaldrabik.ui_model.DiscoverSortOrder.HOT
+import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
+import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.UserTvdbManager

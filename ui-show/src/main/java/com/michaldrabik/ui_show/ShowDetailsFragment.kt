@@ -42,10 +42,31 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
-import com.michaldrabik.ui_base.utilities.extensions.*
+import com.michaldrabik.ui_base.utilities.extensions.addDivider
+import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
+import com.michaldrabik.ui_base.utilities.extensions.fadeOut
+import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.screenHeight
+import com.michaldrabik.ui_base.utilities.extensions.screenWidth
+import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.extensions.withFailListener
+import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
-import com.michaldrabik.ui_model.*
+import com.michaldrabik.ui_model.Actor
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.IdImdb
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
+import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.Season
+import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_QUICK_PROGRESS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
@@ -56,7 +77,10 @@ import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.related.RelatedShowAdapter
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import com.michaldrabik.ui_show.seasons.SeasonsAdapter
-import com.michaldrabik.ui_show.views.AddToShowsButton.State.*
+import com.michaldrabik.ui_show.views.AddToShowsButton.State.ADD
+import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_ARCHIVE
+import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_MY_SHOWS
+import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_SEE_LATER
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
@@ -322,7 +346,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         val country = if (show.country.isEmpty()) "" else " (${show.country.toUpperCase(ROOT)})"
         showDetailsExtraInfo.text =
           "${show.network} $year$country | ${show.runtime} min | ${
-            show.genres.take(2).joinToString(", ") { it.capitalize() }
+          show.genres.take(2).joinToString(", ") { it.capitalize() }
           }"
         showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
         showDetailsCommentsButton.visible()

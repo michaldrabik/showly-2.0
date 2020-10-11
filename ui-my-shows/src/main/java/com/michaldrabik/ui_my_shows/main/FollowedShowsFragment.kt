@@ -21,19 +21,33 @@ import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
-import com.michaldrabik.ui_base.utilities.extensions.*
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.disableUi
+import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.enableUi
+import com.michaldrabik.ui_base.utilities.extensions.fadeOut
+import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
+import com.michaldrabik.ui_base.utilities.extensions.nextPage
+import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
+import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_my_shows.myshows.helpers.MyShowsSearchResult
-import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.*
+import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.EMPTY
+import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.NO_RESULTS
+import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.RESULTS
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import com.michaldrabik.ui_my_shows.myshows.views.MyShowFanartView
 import com.michaldrabik.ui_my_shows.seelater.SeeLaterFragment
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import kotlinx.android.synthetic.main.fragment_followed_shows.*
 
-class FollowedShowsFragment : BaseFragment<FollowedShowsViewModel>(R.layout.fragment_followed_shows),
+class FollowedShowsFragment :
+  BaseFragment<FollowedShowsViewModel>(R.layout.fragment_followed_shows),
   OnTabReselectedListener,
   OnTraktSyncListener,
   TabLayout.OnTabSelectedListener {

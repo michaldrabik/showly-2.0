@@ -5,7 +5,12 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.EpisodesSyncLog
-import com.michaldrabik.ui_model.*
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.EpisodeBundle
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Season
+import com.michaldrabik.ui_model.SeasonBundle
+import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject

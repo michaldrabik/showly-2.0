@@ -20,19 +20,31 @@ import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
-import com.michaldrabik.ui_base.utilities.extensions.*
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.fadeOut
+import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
+import com.michaldrabik.ui_base.utilities.extensions.nextPage
+import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
+import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortOrder.*
+import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
+import com.michaldrabik.ui_model.SortOrder.NAME
+import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_watchlist.R
 import com.michaldrabik.ui_watchlist.WatchlistItem
 import com.michaldrabik.ui_watchlist.di.UiWatchlistComponentProvider
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 
-class WatchlistFragment : BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
+class WatchlistFragment :
+  BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
   OnEpisodesSyncedListener,
   OnTabReselectedListener,
   OnTraktSyncListener,

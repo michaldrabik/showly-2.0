@@ -14,7 +14,19 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config.MAIN_GRID_SPAN
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
-import com.michaldrabik.ui_base.utilities.extensions.*
+import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.disableUi
+import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.enableUi
+import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
+import com.michaldrabik.ui_base.utilities.extensions.fadeOut
+import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.invisible
+import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_discover.di.UiDiscoverComponentProvider
 import com.michaldrabik.ui_discover.recycler.DiscoverAdapter
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
@@ -166,11 +178,14 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       }
     }
     val clickedView = discoverRecycler.findViewHolderForAdapterPosition(clickedIndex)
-    clickedView?.itemView?.fadeOut(duration = 150, startDelay = 350, endAction = {
-      enableUi()
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
-      navigateTo(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
-    })
+    clickedView?.itemView?.fadeOut(
+      duration = 150, startDelay = 350,
+      endAction = {
+        enableUi()
+        val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
+        navigateTo(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
+      }
+    )
   }
 
   private fun toggleFiltersView() {

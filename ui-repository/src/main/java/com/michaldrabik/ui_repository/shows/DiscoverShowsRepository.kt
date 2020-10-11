@@ -71,13 +71,15 @@ class DiscoverShowsRepository @Inject constructor(
     database.withTransaction {
       val timestamp = nowUtcMillis()
       database.showsDao().upsert(shows.map { mappers.show.toDatabase(it) })
-      database.discoverShowsDao().replace(shows.map {
-        DiscoverShow(
-          idTrakt = it.ids.trakt.id,
-          createdAt = timestamp,
-          updatedAt = timestamp
-        )
-      })
+      database.discoverShowsDao().replace(
+        shows.map {
+          DiscoverShow(
+            idTrakt = it.ids.trakt.id,
+            createdAt = timestamp,
+            updatedAt = timestamp
+          )
+        }
+      )
     }
   }
 

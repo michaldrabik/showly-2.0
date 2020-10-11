@@ -4,7 +4,10 @@ import android.app.Activity
 import android.app.Application
 import android.net.ConnectivityManager
 import android.net.Network
-import android.net.NetworkCapabilities.*
+import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
+import android.net.NetworkCapabilities.TRANSPORT_CELLULAR
+import android.net.NetworkCapabilities.TRANSPORT_ETHERNET
+import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.net.NetworkRequest
 import android.os.Build
 import android.os.Bundle

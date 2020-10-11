@@ -7,7 +7,12 @@ import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.EpisodeImagesProvider
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_episodes.R
-import com.michaldrabik.ui_model.*
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.IdTvdb
+import com.michaldrabik.ui_model.Ids
+import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_repository.RatingsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.mappers.Mappers

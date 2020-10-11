@@ -28,7 +28,8 @@ import com.michaldrabik.ui_widgets.watchlist.WatchlistWidgetProvider
 import timber.log.Timber
 import com.michaldrabik.ui_base.fcm.NotificationChannel as AppNotificationChannel
 
-class App : Application(),
+class App :
+  Application(),
   UiBaseComponentProvider,
   UiWidgetsComponentProvider,
   OnlineStatusProvider,

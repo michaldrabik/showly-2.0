@@ -31,11 +31,12 @@ class ShowImagesProvider @Inject constructor(
   suspend fun findCachedImage(show: Show, type: ImageType): Image {
     val cachedImage = database.imagesDao().getByShowId(show.ids.tvdb.id, type.key)
     return when (cachedImage) {
-      null -> if (unavailableCache.contains(show.ids.trakt)) {
-        Image.createUnavailable(type, SHOW)
-      } else {
-        Image.createUnknown(type, SHOW)
-      }
+      null ->
+        if (unavailableCache.contains(show.ids.trakt)) {
+          Image.createUnavailable(type, SHOW)
+        } else {
+          Image.createUnknown(type, SHOW)
+        }
       else -> mappers.image.fromDatabase(cachedImage).copy(type = type)
     }
   }

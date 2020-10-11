@@ -37,12 +37,16 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
     when (viewType) {
       VIEW_TYPE_HEADER -> BaseViewHolder(MyShowHeaderView(parent.context))
       VIEW_TYPE_RECENTS_SECTION -> BaseViewHolder(MyShowsRecentsView(parent.context))
-      VIEW_TYPE_SHOW_ITEM -> BaseViewHolder(MyShowAllView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
-      })
-      VIEW_TYPE_HORIZONTAL_SECTION -> BaseViewHolder(MyShowsSectionView(parent.context).apply {
-        scrollPositionListener = { section, position -> horizontalPositions[section] = position }
-      })
+      VIEW_TYPE_SHOW_ITEM -> BaseViewHolder(
+        MyShowAllView(parent.context).apply {
+          itemClickListener = { super.itemClickListener.invoke(it) }
+        }
+      )
+      VIEW_TYPE_HORIZONTAL_SECTION -> BaseViewHolder(
+        MyShowsSectionView(parent.context).apply {
+          scrollPositionListener = { section, position -> horizontalPositions[section] = position }
+        }
+      )
       else -> throw IllegalStateException()
     }
 

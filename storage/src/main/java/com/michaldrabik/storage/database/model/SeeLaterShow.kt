@@ -7,12 +7,14 @@ import androidx.room.PrimaryKey
 
 @Entity(
   tableName = "shows_see_later",
-  foreignKeys = [ForeignKey(
-    entity = Show::class,
-    parentColumns = arrayOf("id_trakt"),
-    childColumns = arrayOf("id_trakt"),
-    onDelete = ForeignKey.CASCADE
-  )]
+  foreignKeys = [
+    ForeignKey(
+      entity = Show::class,
+      parentColumns = arrayOf("id_trakt"),
+      childColumns = arrayOf("id_trakt"),
+      onDelete = ForeignKey.CASCADE
+    )
+  ]
 )
 data class SeeLaterShow(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,

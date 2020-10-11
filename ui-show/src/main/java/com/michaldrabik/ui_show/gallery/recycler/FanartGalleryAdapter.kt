@@ -18,9 +18,11 @@ class FanartGalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ViewHolderShow(FanartGalleryImageView(parent.context).apply {
-      onItemClickListener = this@FanartGalleryAdapter.onItemClickListener
-    })
+    ViewHolderShow(
+      FanartGalleryImageView(parent.context).apply {
+        onItemClickListener = this@FanartGalleryAdapter.onItemClickListener
+      }
+    )
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     (holder.itemView as FanartGalleryImageView).bind(items[position])
