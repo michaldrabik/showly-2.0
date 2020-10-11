@@ -10,4 +10,9 @@ class NotificationsService : FirebaseMessagingService() {
     super.onMessageReceived(message)
     Timber.d("onMessageReceived: $message")
   }
+
+  override fun onNewToken(token: String) {
+    super.onNewToken(token)
+    Timber.d("onNewToken: $token")
+  }
 }

@@ -8,6 +8,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.StrictMode
+import com.google.firebase.messaging.FirebaseMessaging
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.michaldrabik.network.di.DaggerCloudComponent
 import com.michaldrabik.showly2.common.ShowsSyncActivityCallbacks
@@ -49,7 +50,12 @@ class App : Application(),
     activityCallbacks.forEach { registerActivityLifecycleCallbacks(it) }
 
     AndroidThreeTen.init(this)
-    if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
+    if (BuildConfig.DEBUG) {
+      Timber.plant(Timber.DebugTree())
+      FirebaseMessaging.getInstance().token.addOnCompleteListener {
+        Timber.d("FCM Token: ${it.result}")
+      }
+    }
 
     setupComponents()
     setupStrictMode()
