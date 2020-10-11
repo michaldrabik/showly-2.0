@@ -37,7 +37,9 @@ class EpisodesView : ConstraintLayout {
   fun bind(seasonItem: SeasonListItem) {
     clear()
     this.season = seasonItem.season.copy()
-    episodesTitle.text = context.getString(R.string.textSeason, season.number)
+    episodesTitle.text =
+      if (seasonItem.season.isSpecial()) context.getString(R.string.textSpecials)
+      else context.getString(R.string.textSeason, season.number)
     episodesOverview.text = season.overview
     episodesOverview.visibleIf(season.overview.isNotBlank())
     episodesCheckbox.run {

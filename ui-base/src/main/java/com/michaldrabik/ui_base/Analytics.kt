@@ -183,6 +183,12 @@ object Analytics {
     }
   }
 
+  fun logSettingsSpecialSeasons(enabled: Boolean) {
+    firebaseAnalytics.logEvent("settings_special_seasons") {
+      param("enabled", enabled.toString())
+    }
+  }
+
   fun logSettingsWhenToNotify(value: String) {
     firebaseAnalytics.logEvent("settings_when_to_notify") {
       param("value", value.toLowerCase(ROOT))

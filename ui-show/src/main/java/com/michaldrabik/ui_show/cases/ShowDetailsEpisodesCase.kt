@@ -3,9 +3,11 @@ package com.michaldrabik.ui_show.cases
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.ui_episodes.EpisodesManager
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.shows.ShowsRepository
 import com.michaldrabik.ui_show.helpers.SeasonsBundle
@@ -18,7 +20,8 @@ class ShowDetailsEpisodesCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
-  private val episodesManager: com.michaldrabik.ui_episodes.EpisodesManager
+  private val settingsRepository: SettingsRepository,
+  private val episodesManager: EpisodesManager
 ) {
 
   suspend fun loadNextEpisode(traktId: IdTrakt): Episode? {
@@ -32,6 +35,7 @@ class ShowDetailsEpisodesCase @Inject constructor(
 
       val remoteSeasons = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
         .map { mappers.season.fromNetwork(it) }
+        .filter { if (!showSpecials()) !it.isSpecial() else true }
 
       val isFollowed = showsRepository.myShows.load(show.ids.trakt) != null
       if (isFollowed) {
@@ -47,9 +51,14 @@ class ShowDetailsEpisodesCase @Inject constructor(
       val localSeasons = database.seasonsDao().getAllByShowId(show.traktId).map { season ->
         val seasonEpisodes = localEpisodes.filter { ep -> ep.idSeason == season.idTrakt }
         mappers.season.fromDatabase(season, seasonEpisodes)
+      }.filter {
+        if (!showSpecials()) !it.isSpecial() else true
       }
 
       return SeasonsBundle(localSeasons, isLocal = true)
     }
   }
+
+  private suspend fun showSpecials() =
+    settingsRepository.load().specialSeasonsEnabled
 }

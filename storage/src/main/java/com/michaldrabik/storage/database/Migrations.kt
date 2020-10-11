@@ -3,7 +3,7 @@ package com.michaldrabik.storage.database
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 11
+const val DATABASE_VERSION = 12
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 object Migrations {
@@ -85,6 +85,12 @@ object Migrations {
     }
   }
 
+  private val MIGRATION_11_12 = object : Migration(11, 12) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      database.execSQL("ALTER TABLE settings ADD COLUMN special_seasons_enabled INTEGER NOT NULL DEFAULT 0")
+    }
+  }
+
   val MIGRATIONS = listOf(
     MIGRATION_1_2,
     MIGRATION_2_3,
@@ -95,6 +101,7 @@ object Migrations {
     MIGRATION_7_8,
     MIGRATION_8_9,
     MIGRATION_9_10,
-    MIGRATION_10_11
+    MIGRATION_10_11,
+    MIGRATION_11_12
   )
 }

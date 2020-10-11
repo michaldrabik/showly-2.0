@@ -135,6 +135,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         viewModel.enableArchivedStatistics(isChecked)
       }
 
+    settingsIncludeSpecialsSwitch
+      .setCheckedSilent(settings.specialSeasonsEnabled) { _, isChecked ->
+        viewModel.enableSpecialSeasons(isChecked)
+      }
+
     settingsContactDevs.onClick {
       val intent = Intent(ACTION_SENDTO).apply {
         data = Uri.parse("mailto:")

@@ -346,7 +346,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         val country = if (show.country.isEmpty()) "" else " (${show.country.toUpperCase(ROOT)})"
         showDetailsExtraInfo.text =
           "${show.network} $year$country | ${show.runtime} min | ${
-            show.genres.take(2).joinToString(", ") { it.capitalize() }
+          show.genres.take(2).joinToString(", ") { it.capitalize() }
           }"
         showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
         showDetailsCommentsButton.visible()

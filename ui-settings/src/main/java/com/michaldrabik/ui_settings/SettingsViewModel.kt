@@ -85,6 +85,14 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
+  fun enableSpecialSeasons(enable: Boolean) {
+    viewModelScope.launch {
+      mainCase.enableSpecialSeasons(enable)
+      refreshSettings()
+      Analytics.logSettingsSpecialSeasons(enable)
+    }
+  }
+
   fun setWhenToNotify(delay: NotificationDelay, context: Context) {
     viewModelScope.launch {
       mainCase.setWhenToNotify(delay, context)
