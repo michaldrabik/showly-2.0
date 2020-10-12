@@ -24,8 +24,8 @@
   <string name="textSettingsMyShowsSectionSummary">Enable/disable sections in My Shows tab.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Archived Statistics</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Include archived shows data in the statistics.</string>
-  <string name="textSettingsIncludeSpecialsTitle">Show Special Seasons</string>
-  <string name="textSettingsIncludeSpecialsSummary">Include \'Special\' seasons in show\'s details.</string>
+  <string name="textSettingsIncludeSpecialsTitle">Special Seasons</string>
+  <string name="textSettingsIncludeSpecialsSummary">Display \'Special\' seasons in show\'s details screen.</string>
   <string name="textSettingsNotifications">Notifications</string>
   <string name="textSettingsPushNotificationsTitle">Push Notifications</string>
   <string name="textSettingsPushNotificationsSummary">Receive general information push notifications.</string>
