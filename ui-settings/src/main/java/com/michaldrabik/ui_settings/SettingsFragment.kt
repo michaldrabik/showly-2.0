@@ -155,7 +155,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       PlayStoreHelper.openPlayStorePage(requireActivity())
     }
 
-    settingsVersion.text = "v${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
+    settingsVersion.text = "v${BuildConfig.VER_NAME} (${BuildConfig.VER_CODE})"
   }
 
   private fun showQuickSyncConfirmationDialog() {
