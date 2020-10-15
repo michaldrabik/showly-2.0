@@ -12,6 +12,8 @@ enum class ShowStatus(
   ENDED("ended", "Ended"),
   UNKNOWN("unknown", "");
 
+  fun isAnticipated() = this in arrayOf(UPCOMING, IN_PRODUCTION, PLANNED)
+
   companion object {
     fun fromKey(key: String?) =
       enumValues<ShowStatus>().firstOrNull { it.key == key } ?: UNKNOWN

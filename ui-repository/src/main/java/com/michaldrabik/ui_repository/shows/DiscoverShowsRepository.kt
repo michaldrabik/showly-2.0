@@ -33,6 +33,7 @@ class DiscoverShowsRepository @Inject constructor(
       .map { mappers.show.fromDatabase(it) }
   }
 
+  // TODO This logic should probably sit in a case and not repository.
   suspend fun loadAllRemote(
     showAnticipated: Boolean,
     genres: List<Genre>
@@ -63,6 +64,10 @@ class DiscoverShowsRepository @Inject constructor(
       }
     }
     popularShows.forEach { show -> addIfMissing(remoteShows, show) }
+
+    if (!showAnticipated) {
+      return remoteShows.filter { !it.status.isAnticipated() }
+    }
 
     return remoteShows
   }
