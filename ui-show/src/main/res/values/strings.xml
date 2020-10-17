@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textAdd">Add to my shows</string>
-  <string name="textWatchLater">See Later</string>
+  <string name="textWatchLater">Watch Later</string>
   <string name="textNextEpisode">Next Episode:</string>
   <string name="textInMyShows">Added to my shows</string>
-  <string name="textInSeeLater">Added to see later</string>
+  <string name="textInSeeLater">Added to watchlist</string>
   <string name="textInArchive">Archived</string>
   <string name="textRate">Rate</string>
   <string name="textRateDelete">Remove</string>
@@ -36,7 +36,7 @@
 
   <string name="textWhatIsArchive">Archive?</string>
   <string name="textWhatIsArchiveFull">What\'s Archive?</string>
-  <string name="textArchiveDescription"><b>Archive</b> is a list of shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Watchlist</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
+  <string name="textArchiveDescription"><b>Archive</b> is a list of shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Progress</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
   <string name="textArchiveConfirmationTitle">Archive Show</string>
   <string name="textArchiveConfirmationMessage">\nAre you sure you want to archive this show?\n</string>
   <string name="textArchivedShowsExcluded">Archived shows excluded</string>

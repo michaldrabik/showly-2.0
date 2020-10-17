@@ -1,7 +1,7 @@
 <resources>
   <string name="app_name">Showly 2.0</string>
 
-  <string name="menuWatchlist">Watchlist</string>
+  <string name="menuWatchlist">Progress</string>
   <string name="menuDiscover">Discover</string>
   <string name="menuShows">My Shows</string>
 
@@ -23,7 +23,7 @@
 
   <string name="shortcutDiscover">Discover</string>
   <string name="shortcutMyShows">My Shows</string>
-  <string name="shortcutWatchlist">Watchlist</string>
+  <string name="shortcutWatchlist">Progress</string>
   <string name="shortcutSearch">Search</string>
 
   <plurals name="textTraktQuickSyncComplete">

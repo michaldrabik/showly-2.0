@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuWatchlist">Watchlist</string>
+  <string name="menuWatchlist">Progress</string>
   <string name="menuDiscover">Discover</string>
   <string name="menuShows">My Shows</string>
 
   <string name="tabCalendar">Calendar</string>
-  <string name="tabWatchlist">Watchlist</string>
+  <string name="tabWatchlist">Progress</string>
   <string name="textCalendarEmpty">There are no new episodes on the way.</string>
 
   <string name="textWatchlistIncoming">Coming Soon</string>
@@ -13,7 +13,7 @@
   <string name="textDiscoverShows">Discover Shows</string>
   <string name="textEpisodeInfo">Details</string>
   <string name="textTraktSynchronize">Import from Trakt.tv</string>
-  <string name="textWatchlistEmpty">Your <b>Watchlist</b> is currently empty.\n\nVisit <b>Discover</b> tab to add shows or import your Trakt.tv collection.</string>
+  <string name="textWatchlistEmpty">Your <b>Progress</b> is currently empty.\n\nVisit <b>Discover</b> tab to add shows or import your Trakt.tv collection.</string>
   <string name="textNewSeason">Season Premiere</string>
 
   <string name="textWatchlistToday">Today</string>
