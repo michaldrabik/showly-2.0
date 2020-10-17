@@ -5,19 +5,19 @@
   <application>
 
     <service
-      android:name=".watchlist.WatchlistWidgetEpisodeCheckService"
+      android:name=".progress.ProgressWidgetEpisodeCheckService"
       android:exported="true"
       android:permission="android.permission.BIND_JOB_SERVICE"
       />
 
     <service
-      android:name=".watchlist.WatchlistWidgetService"
+      android:name=".progress.ProgressWidgetService"
       android:permission="android.permission.BIND_REMOTEVIEWS"
       />
 
     <receiver
-      android:name="com.michaldrabik.ui_widgets.watchlist.WatchlistWidgetProvider"
-      android:label="Watchlist Widget"
+      android:name="com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider"
+      android:label="Progress Widget"
       >
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -25,7 +25,7 @@
 
       <meta-data
         android:name="android.appwidget.provider"
-        android:resource="@xml/watchlist_widgets_provider"
+        android:resource="@xml/progress_widgets_provider"
         />
     </receiver>
 

@@ -9,15 +9,15 @@ import com.michaldrabik.ui_my_shows.archive.ArchiveViewModel
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
 import com.michaldrabik.ui_my_shows.myshows.MyShowsViewModel
 import com.michaldrabik.ui_my_shows.seelater.SeeLaterViewModel
+import com.michaldrabik.ui_progress.calendar.ProgressCalendarViewModel
+import com.michaldrabik.ui_progress.main.ProgressViewModel
+import com.michaldrabik.ui_progress.progress.ProgressMainViewModel
 import com.michaldrabik.ui_search.SearchViewModel
 import com.michaldrabik.ui_settings.SettingsViewModel
 import com.michaldrabik.ui_show.ShowDetailsViewModel
 import com.michaldrabik.ui_show.gallery.FanartGalleryViewModel
 import com.michaldrabik.ui_statistics.StatisticsViewModel
 import com.michaldrabik.ui_trakt_sync.TraktSyncViewModel
-import com.michaldrabik.ui_watchlist.main.WatchlistViewModel
-import com.michaldrabik.ui_watchlist.upcoming.WatchlistUpcomingViewModel
-import com.michaldrabik.ui_watchlist.watchlist.WatchlistMainViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -78,18 +78,18 @@ abstract class ViewModelsModule {
 
   @Binds
   @IntoMap
-  @ViewModelKey(WatchlistViewModel::class)
-  abstract fun bindWatchlistMainViewModel(viewModel: WatchlistViewModel): ViewModel
+  @ViewModelKey(ProgressViewModel::class)
+  abstract fun bindProgressViewModel(viewModel: ProgressViewModel): ViewModel
 
   @Binds
   @IntoMap
-  @ViewModelKey(WatchlistMainViewModel::class)
-  abstract fun bindWatchlistViewModel(viewModel: WatchlistMainViewModel): ViewModel
+  @ViewModelKey(ProgressMainViewModel::class)
+  abstract fun bindProgressMainViewModel(viewModel: ProgressMainViewModel): ViewModel
 
   @Binds
   @IntoMap
-  @ViewModelKey(WatchlistUpcomingViewModel::class)
-  abstract fun bindWatchlistUpcomingViewModel(viewModel: WatchlistUpcomingViewModel): ViewModel
+  @ViewModelKey(ProgressCalendarViewModel::class)
+  abstract fun bindProgressCalendarViewModel(viewModel: ProgressCalendarViewModel): ViewModel
 
   @Binds
   @IntoMap

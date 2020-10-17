@@ -1,6 +1,6 @@
 include ':ui-episodes'
 include ':ui-widgets'
-include ':ui-watchlist'
+include ':ui-progress'
 include ':ui-discover'
 include ':ui-my-shows'
 include ':ui-show'

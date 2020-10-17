@@ -15,7 +15,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 /**
- * This class is responsible for fetching and syncing missing/updated episodes data for current watchlist items.
+ * This class is responsible for fetching and syncing missing/updated episodes data for current progress shows.
  */
 @AppScope
 class ShowsSyncRunner @Inject constructor(

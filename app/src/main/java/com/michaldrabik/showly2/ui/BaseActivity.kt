@@ -16,6 +16,8 @@ import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponentProvider
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
+import com.michaldrabik.ui_progress.di.UiProgressComponent
+import com.michaldrabik.ui_progress.di.UiProgressComponentProvider
 import com.michaldrabik.ui_search.di.UiSearchComponentProvider
 import com.michaldrabik.ui_settings.di.UiSettingsComponent
 import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
@@ -28,10 +30,8 @@ import com.michaldrabik.ui_statistics.di.UiStatisticsComponent
 import com.michaldrabik.ui_statistics.di.UiStatisticsComponentProvider
 import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponent
 import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponentProvider
-import com.michaldrabik.ui_watchlist.di.UiWatchlistComponent
-import com.michaldrabik.ui_watchlist.di.UiWatchlistComponentProvider
+import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider
 import com.michaldrabik.ui_widgets.search.SearchWidgetProvider
-import com.michaldrabik.ui_widgets.watchlist.WatchlistWidgetProvider
 import kotlinx.android.synthetic.main.activity_main.*
 
 abstract class BaseActivity :
@@ -43,13 +43,13 @@ abstract class BaseActivity :
   UiFanartGalleryComponentProvider,
   UiEpisodeDetailsComponentProvider,
   UiMyShowsComponentProvider,
-  UiWatchlistComponentProvider,
+  UiProgressComponentProvider,
   UiSearchComponentProvider,
   UiSettingsComponentProvider {
 
   private val showActionKeys = arrayOf(
     FcmExtra.SHOW_ID.key,
-    WatchlistWidgetProvider.EXTRA_SHOW_ID
+    ProgressWidgetProvider.EXTRA_SHOW_ID
   )
 
   private lateinit var uiDiscoverComponent: UiDiscoverComponent
@@ -61,7 +61,7 @@ abstract class BaseActivity :
   private lateinit var uiShowGalleryComponent: UiFanartGalleryComponent
   private lateinit var uiStatisticsComponent: UiStatisticsComponent
   private lateinit var uiTraktSyncComponent: UiTraktSyncComponent
-  private lateinit var uiWatchlistComponent: UiWatchlistComponent
+  private lateinit var uiProgressComponent: UiProgressComponent
 
   override fun provideDiscoverComponent() = uiDiscoverComponent
   override fun provideEpisodeDetailsComponent() = uiEpisodeDetailsComponent
@@ -72,7 +72,7 @@ abstract class BaseActivity :
   override fun provideShowDetailsComponent() = uiShowDetailsComponent
   override fun provideStatisticsComponent() = uiStatisticsComponent
   override fun provideTraktSyncComponent() = uiTraktSyncComponent
-  override fun provideWatchlistComponent() = uiWatchlistComponent
+  override fun provideProgressComponent() = uiProgressComponent
 
   protected open fun setupComponents() {
     uiDiscoverComponent = appComponent().uiDiscoverComponent().create()
@@ -84,7 +84,7 @@ abstract class BaseActivity :
     uiShowGalleryComponent = appComponent().uiShowGalleryComponent().create()
     uiStatisticsComponent = appComponent().uiStatisticsComponent().create()
     uiTraktSyncComponent = appComponent().uiTraktSyncComponent().create()
-    uiWatchlistComponent = appComponent().uiWatchlistComponent().create()
+    uiProgressComponent = appComponent().uiWatchlistComponent().create()
   }
 
   protected fun handleNotification(extras: Bundle?, action: () -> Unit = {}) {
@@ -126,8 +126,8 @@ abstract class BaseActivity :
         when (currentDestination?.id) {
           R.id.showDetailsFragment -> navigate(R.id.actionShowDetailsFragmentToSelf, bundle)
           else -> {
-            bottomNavigationView.selectedItemId = R.id.menuWatchlist
-            navigate(R.id.actionWatchlistFragmentToShowDetailsFragment, bundle)
+            bottomNavigationView.selectedItemId = R.id.menuProgress
+            navigate(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
           }
         }
         extras.clear()

@@ -33,5 +33,5 @@ dependencies {
   implementation project(':ui-repository')
   implementation project(':ui-model')
   implementation project(':ui-episodes')
-  implementation project(':ui-watchlist')
+  implementation project(':ui-progress')
 }

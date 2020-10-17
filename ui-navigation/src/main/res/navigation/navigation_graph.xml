@@ -3,12 +3,12 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/navigationGraph"
-  app:startDestination="@id/watchlistFragment"
+  app:startDestination="@id/progressFragment"
   >
 
   <action
-    android:id="@+id/actionNavigateWatchlistFragment"
-    app:destination="@id/watchlistFragment"
+    android:id="@+id/actionNavigateProgressFragment"
+    app:destination="@id/progressFragment"
     app:launchSingleTop="true"
     app:popUpTo="@id/navigationGraph"
     app:popUpToInclusive="true"
@@ -63,26 +63,26 @@
   </fragment>
 
   <fragment
-    android:id="@+id/watchlistFragment"
-    android:name="com.michaldrabik.ui_watchlist.main.WatchlistFragment"
+    android:id="@+id/progressFragment"
+    android:name="com.michaldrabik.ui_progress.main.ProgressFragment"
     android:label="fragmentWatchlistMain"
     >
     <action
-      android:id="@+id/actionWatchlistFragmentToShowDetailsFragment"
+      android:id="@+id/actionProgressFragmentToShowDetailsFragment"
       app:destination="@id/showDetailsFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
     <action
-      android:id="@+id/actionWatchlistFragmentToSettingsFragment"
+      android:id="@+id/actionProgressFragmentToSettingsFragment"
       app:destination="@id/settingsFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
     <action
-      android:id="@+id/actionWatchlistFragmentToTraktSyncFragment"
+      android:id="@+id/actionProgressFragmentToTraktSyncFragment"
       app:destination="@id/traktSyncFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:exitAnim="@anim/anim_fade_out"
@@ -93,7 +93,7 @@
 
   <fragment
     android:id="@+id/watchlistMainFragment"
-    android:name="com.michaldrabik.ui_watchlist.watchlist.WatchlistMainFragment"
+    android:name="com.michaldrabik.ui_progress.progress.WatchlistMainFragment"
     android:label="fragmentWatchlist"
     />
 

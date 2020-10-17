@@ -40,7 +40,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
-import com.michaldrabik.ui_watchlist.main.OnEpisodesSyncedListener
+import com.michaldrabik.ui_progress.main.OnEpisodesSyncedListener
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -138,7 +138,7 @@ class MainActivity :
       }
 
       val target = when (item.itemId) {
-        R.id.menuWatchlist -> R.id.actionNavigateWatchlistFragment
+        R.id.menuProgress -> R.id.actionNavigateProgressFragment
         R.id.menuDiscover -> R.id.actionNavigateDiscoverFragment
         R.id.menuShows -> R.id.actionNavigateFollowedShowsFragment
         else -> throw IllegalStateException("Invalid menu item.")
@@ -158,13 +158,13 @@ class MainActivity :
       }
 
       navigationHost.findNavController().run {
-        if (currentDestination?.id == R.id.watchlistFragment) {
+        if (currentDestination?.id == R.id.progressFragment) {
           remove()
           super.onBackPressed()
         }
         when (currentDestination?.id) {
           R.id.discoverFragment, R.id.followedShowsFragment -> {
-            bottomNavigationView.selectedItemId = R.id.menuWatchlist
+            bottomNavigationView.selectedItemId = R.id.menuProgress
           }
         }
       }
@@ -217,6 +217,8 @@ class MainActivity :
   override fun openTab(@IdRes navigationId: Int) {
     bottomNavigationView.selectedItemId = navigationId
   }
+
+  override fun openDiscoverTab() = openTab(R.id.menuDiscover)
 
   private fun render(uiModel: MainUiModel) {
     uiModel.run {
@@ -275,8 +277,8 @@ class MainActivity :
   private fun handleAppShortcut(intent: Intent?) {
     when {
       intent == null -> return
-      intent.extras?.containsKey("extraShortcutWatchlist") == true ->
-        bottomNavigationView.selectedItemId = R.id.menuWatchlist
+      intent.extras?.containsKey("extraShortcutProgress") == true ->
+        bottomNavigationView.selectedItemId = R.id.menuProgress
       intent.extras?.containsKey("extraShortcutDiscover") == true ->
         bottomNavigationView.selectedItemId = R.id.menuDiscover
       intent.extras?.containsKey("extraShortcutMyShows") == true ->

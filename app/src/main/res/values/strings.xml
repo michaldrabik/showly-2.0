@@ -1,7 +1,7 @@
 <resources>
   <string name="app_name">Showly 2.0</string>
 
-  <string name="menuWatchlist">Progress</string>
+  <string name="menuProgress">Progress</string>
   <string name="menuDiscover">Discover</string>
   <string name="menuShows">My Shows</string>
 
@@ -10,21 +10,14 @@
   <string name="textRateAppYesButton">Sure, why not?</string>
   <string name="textRateAppNoButton">Not now</string>
 
-  <string name="textTipDiscover">Double tap \'Discover\' menu button to quickly open search screen.</string>
-  <string name="textTipMyShows">Double tap \'My Shows\' menu button to quickly switch between tabs.</string>
-  <string name="textTipShowDetailsGallery">Tap show\'s image to open gallery.</string>
-  <string name="textTipShowDetailsQuickProgress">Tap \'Quick Progress\' icon to quickly set up your progress of the show.\n\nTap \'Archive\' icon to move show into the archive.</string>
-  <string name="textTipDiscoverFilters">Use filters view to refine your Discover feed.</string>
-  <string name="textTipWatchlistPinItem">Tap and hold list item to pin it to the top.</string>
-
   <string name="textWhatsNewTitle">What\'s New</string>
   <string name="textWhatsNewSubtitle">Version %s</string>
   <string name="textWhatsNewMessage">* Added support for \'Special\' seasons in show details section (enable/disable via settings)\n\n* Archived shows can now be included in the statistics (enabled/disable via settings)\n\n* Bugfixes</string>
 
   <string name="shortcutDiscover">Discover</string>
   <string name="shortcutMyShows">My Shows</string>
-  <string name="shortcutWatchlist">Progress</string>
   <string name="shortcutSearch">Search</string>
+  <string name="shortcutProgress">Progress</string>
 
   <plurals name="textTraktQuickSyncComplete">
     <item quantity="one">1 item synced successfully.</item>

@@ -13,8 +13,8 @@
   >
 
   <ImageView
-    android:layout_width="100dp"
-    android:layout_height="100dp"
+    android:layout_width="80dp"
+    android:layout_height="80dp"
     android:adjustViewBounds="true"
     app:srcCompat="@drawable/ic_search"
     app:tint="?android:attr/textColorPrimary"
@@ -26,14 +26,14 @@
     android:layout_marginBottom="@dimen/spaceTiny"
     android:text="@string/textSearchInitial1"
     android:textColor="?android:attr/textColorPrimary"
-    android:textSize="18sp"
+    android:textSize="16sp"
     />
 
   <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/textSearchInitial2"
-    android:textColor="?android:attr/textColorPrimary"
+    android:textColor="?android:attr/textColorSecondary"
     android:textSize="12sp"
     />
 

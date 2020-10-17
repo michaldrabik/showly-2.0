@@ -65,8 +65,8 @@
     android:enabled="true"
     android:icon="@drawable/ic_shortcut_bookmark"
     android:shortcutId="shortcutWatchlist"
-    android:shortcutLongLabel="@string/shortcutWatchlist"
-    android:shortcutShortLabel="@string/shortcutWatchlist"
+    android:shortcutLongLabel="@string/shortcutProgress"
+    android:shortcutShortLabel="@string/shortcutProgress"
     >
     <intent
       android:action="android.intent.action.VIEW"
@@ -74,8 +74,8 @@
       android:targetPackage="com.michaldrabik.showly2"
       >
       <extra
-        android:name="extraShortcutWatchlist"
-        android:value="extraShortcutWatchlist"
+        android:name="extraShortcutProgress"
+        android:value="extraShortcutProgress"
         />
     </intent>
   </shortcut>

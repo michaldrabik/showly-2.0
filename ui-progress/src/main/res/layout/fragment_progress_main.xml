@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/progressMainRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  >
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/progressMainRecycler"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:paddingTop="@dimen/progressTabsViewPadding"
+    android:paddingBottom="@dimen/bottomNavigationHeightPadded"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
+  <com.michaldrabik.ui_base.common.views.tips.TipView
+    android:id="@+id/progressMainTipItem"
+    android:layout_width="@dimen/tutorialTipSize"
+    android:layout_height="@dimen/tutorialTipSize"
+    android:layout_marginStart="110dp"
+    android:layout_marginTop="150dp"
+    android:visibility="gone"
+    />
+
+  <include
+    android:id="@+id/progressEmptyView"
+    layout="@layout/layout_progress_empty"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginTop="@dimen/spaceBig"
+    android:layout_marginEnd="@dimen/spaceBig"
+    android:layout_marginBottom="@dimen/bottomNavigationHeight"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

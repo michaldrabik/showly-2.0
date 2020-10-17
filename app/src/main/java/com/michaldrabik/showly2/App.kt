@@ -24,7 +24,7 @@ import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsActivityCallbacks
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
 import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
-import com.michaldrabik.ui_widgets.watchlist.WatchlistWidgetProvider
+import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider
 import timber.log.Timber
 import com.michaldrabik.ui_base.fcm.NotificationChannel as AppNotificationChannel
 
@@ -102,7 +102,7 @@ class App :
   }
 
   override fun isOnline() = isAppOnline
-  override fun requestWidgetsUpdate() = WatchlistWidgetProvider.requestUpdate(applicationContext)
+  override fun requestWidgetsUpdate() = ProgressWidgetProvider.requestUpdate(applicationContext)
 
   override fun provideBaseComponent() = appComponent.uiBaseComponent().create()
   override fun provideWidgetsComponent() = appComponent.uiWidgetsComponent().create()
