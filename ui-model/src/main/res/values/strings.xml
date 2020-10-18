@@ -21,7 +21,7 @@
   <string name="textSettingsShowsNotificationsWhenNextDay">1 Day After</string>
 
   <string name="textTipDiscover">Double tap \'Discover\' menu button to quickly open search screen.</string>
-  <string name="textTipMyShows">Double tap \'My Shows\' menu button to quickly switch between tabs.</string>
+  <string name="textTipMyShows">Double tap \'Collection\' menu button to quickly switch between tabs.</string>
   <string name="textTipShowDetailsGallery">Tap show\'s image to open gallery.</string>
   <string name="textTipShowDetailsQuickProgress">Tap \'Quick Progress\' icon to quickly set up your progress of the show.\n\nTap \'Archive\' icon to move show into the archive.</string>
   <string name="textTipDiscoverFilters">Use filters view to refine your Discover feed.</string>

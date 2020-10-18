@@ -3,7 +3,7 @@
 
   <string name="menuProgress">Progress</string>
   <string name="menuDiscover">Discover</string>
-  <string name="menuShows">My Shows</string>
+  <string name="menuCollection">Collection</string>
 
   <string name="textRateAppTitle">Enjoying Showly 2.0?</string>
   <string name="textRateAppMessage">Would you like to rate the app?\nIt only takes a few seconds. Thanks!\n\n<i>The app will not be closed.</i></string>

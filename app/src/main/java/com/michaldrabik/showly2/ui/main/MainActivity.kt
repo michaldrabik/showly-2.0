@@ -140,7 +140,7 @@ class MainActivity :
       val target = when (item.itemId) {
         R.id.menuProgress -> R.id.actionNavigateProgressFragment
         R.id.menuDiscover -> R.id.actionNavigateDiscoverFragment
-        R.id.menuShows -> R.id.actionNavigateFollowedShowsFragment
+        R.id.menuCollection -> R.id.actionNavigateFollowedShowsFragment
         else -> throw IllegalStateException("Invalid menu item.")
       }
 
@@ -282,7 +282,7 @@ class MainActivity :
       intent.extras?.containsKey("extraShortcutDiscover") == true ->
         bottomNavigationView.selectedItemId = R.id.menuDiscover
       intent.extras?.containsKey("extraShortcutMyShows") == true ->
-        bottomNavigationView.selectedItemId = R.id.menuShows
+        bottomNavigationView.selectedItemId = R.id.menuCollection
       intent.extras?.containsKey("extraShortcutSearch") == true -> {
         bottomNavigationView.selectedItemId = R.id.menuDiscover
         navigationHost.findNavController().navigate(R.id.actionDiscoverFragmentToSearchFragment)

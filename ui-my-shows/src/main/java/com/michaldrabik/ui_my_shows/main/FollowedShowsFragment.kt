@@ -139,7 +139,7 @@ class FollowedShowsFragment :
 
     TabLayoutMediator(followedShowsTabs, followedShowsPager) { tab, position ->
       tab.text = when (position) {
-        0 -> getString(R.string.menuShows)
+        0 -> getString(R.string.menuMyShows)
         1 -> getString(R.string.menuSeeLater)
         2 -> getString(R.string.menuArchive)
         else -> error("Unsupported index")

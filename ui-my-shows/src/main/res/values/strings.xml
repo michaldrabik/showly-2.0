@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuShows">My Shows</string>
+  <string name="menuMyShows">My Shows</string>
   <string name="menuSeeLater">Watchlist</string>
   <string name="menuArchive">Archive</string>
 
