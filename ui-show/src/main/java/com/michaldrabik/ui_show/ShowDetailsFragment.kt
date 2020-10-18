@@ -226,7 +226,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun showEpisodesView(item: SeasonListItem) {
     showDetailsEpisodesView.run {
       bind(item)
-      fadeIn(280) {
+      fadeIn(265) {
         bindEpisodes(item.episodes)
       }
       startAnimation(animationEnterRight)
@@ -245,7 +245,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun showCommentsView() {
     showDetailsCommentsView.run {
-      fadeIn(280)
+      fadeIn(275)
       startAnimation(animationEnterRight)
     }
     showDetailsMainLayout.run {
