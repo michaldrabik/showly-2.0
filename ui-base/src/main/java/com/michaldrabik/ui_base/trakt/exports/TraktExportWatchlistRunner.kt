@@ -8,6 +8,7 @@ import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import com.michaldrabik.ui_repository.TraktAuthToken
 import com.michaldrabik.ui_repository.UserTraktManager
+import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -24,9 +25,25 @@ class TraktExportWatchlistRunner @Inject constructor(
 
     Timber.d("Checking authorization...")
     val authToken = checkAuthorization()
-    exportWatchlist(authToken)
+
+    try {
+      exportWatchlist(authToken)
+    } catch (error: Throwable) {
+      if (retryCount < MAX_RETRY_COUNT) {
+        Timber.w("exportWatchlist failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        retryCount += 1
+        delay(RETRY_DELAY_MS)
+        run()
+      } else {
+        isRunning = false
+        retryCount = 0
+        throw error
+      }
+    }
 
     isRunning = false
+    retryCount = 0
+
     Timber.d("Finished with success.")
     return 0
   }
