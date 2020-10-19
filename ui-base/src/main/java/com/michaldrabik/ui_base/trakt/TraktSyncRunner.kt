@@ -10,9 +10,11 @@ abstract class TraktSyncRunner(
 
   companion object {
     const val RETRY_DELAY_MS = 5000L
+    const val MAX_RETRY_COUNT = 3
   }
 
   var isRunning = false
+  var retryCount = 0
   var progressListener: ((Show, Int, Int) -> Unit)? = null
 
   abstract suspend fun run(): Int

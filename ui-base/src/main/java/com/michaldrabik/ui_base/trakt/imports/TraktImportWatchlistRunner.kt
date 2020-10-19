@@ -11,7 +11,6 @@ import com.michaldrabik.ui_repository.TraktAuthToken
 import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.delay
-import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -33,14 +32,21 @@ class TraktImportWatchlistRunner @Inject constructor(
     try {
       importWatchlist(authToken)
     } catch (error: Throwable) {
-      if (error is HttpException) {
+      if (retryCount < MAX_RETRY_COUNT) {
         Timber.w("importWatchlist HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        retryCount += 1
         delay(RETRY_DELAY_MS)
-        importWatchlist(authToken)
+        run()
+      } else {
+        retryCount = 0
+        isRunning = false
+        throw error
       }
     }
 
     isRunning = false
+    retryCount = 0
+
     Timber.d("Finished with success.")
     return 0
   }
