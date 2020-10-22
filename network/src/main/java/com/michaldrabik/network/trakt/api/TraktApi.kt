@@ -45,6 +45,9 @@ class TraktApi(private val service: TraktService) {
   suspend fun fetchShowComments(traktId: Long, limit: Int) =
     service.fetchShowComments(traktId, limit)
 
+  suspend fun fetchShowTranslations(traktId: Long, code: String) =
+    service.fetchShowTranslations(traktId, code)
+
   suspend fun fetchEpisodeComments(
     traktId: Long,
     seasonNumber: Int,

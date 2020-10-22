@@ -15,6 +15,7 @@ import com.michaldrabik.network.trakt.model.ShowResult
 import com.michaldrabik.network.trakt.model.SyncExportRequest
 import com.michaldrabik.network.trakt.model.SyncExportResult
 import com.michaldrabik.network.trakt.model.SyncItem
+import com.michaldrabik.network.trakt.model.Translation
 import com.michaldrabik.network.trakt.model.User
 import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRequest
@@ -65,6 +66,12 @@ interface TraktService {
     @Path("traktId") traktId: Long,
     @Query("limit") limit: Int
   ): List<Comment>
+
+  @GET("shows/{traktId}/translations/{code}")
+  suspend fun fetchShowTranslations(
+    @Path("traktId") traktId: Long,
+    @Path("code") countryCode: String,
+  ): List<Translation>
 
   @GET("shows/{traktId}/seasons/{seasonNumber}/episodes/{episodeNumber}/comments?limit=40&extended=full")
   suspend fun fetchEpisodeComments(

@@ -11,5 +11,6 @@ class Mappers @Inject constructor(
   val season: SeasonMapper,
   val actor: ActorMapper,
   val comment: CommentMapper,
-  val settings: SettingsMapper
+  val settings: SettingsMapper,
+  val translation: TranslationMapper
 )

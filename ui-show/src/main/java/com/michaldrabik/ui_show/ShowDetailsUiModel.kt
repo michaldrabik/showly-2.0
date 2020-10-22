@@ -7,6 +7,7 @@ import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_show.helpers.ActionEvent
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
@@ -24,7 +25,8 @@ data class ShowDetailsUiModel(
   val ratingState: RatingState? = null,
   val removeFromTraktHistory: ActionEvent<Boolean>? = null,
   val removeFromTraktSeeLater: ActionEvent<Boolean>? = null,
-  val showFromTraktLoading: Boolean? = null
+  val showFromTraktLoading: Boolean? = null,
+  val translation: Translation? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -41,6 +43,7 @@ data class ShowDetailsUiModel(
       followedState = newModel.followedState ?: followedState,
       removeFromTraktHistory = newModel.removeFromTraktHistory ?: removeFromTraktHistory,
       removeFromTraktSeeLater = newModel.removeFromTraktSeeLater ?: removeFromTraktSeeLater,
+      translation = newModel.translation ?: translation,
       ratingState = newModel.ratingState?.copy(
         rateLoading = newModel.ratingState.rateLoading ?: ratingState?.rateLoading,
         rateAllowed = newModel.ratingState.rateAllowed ?: ratingState?.rateAllowed,

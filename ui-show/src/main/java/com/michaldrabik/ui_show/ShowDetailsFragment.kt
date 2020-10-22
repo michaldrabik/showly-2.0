@@ -389,6 +389,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
       }
       nextEpisode?.let { renderNextEpisode(it) }
+      translation?.let {
+        if (it.overview.isNotBlank()) {
+          showDetailsDescription.text = it.overview
+        }
+      }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
       seasons?.let {

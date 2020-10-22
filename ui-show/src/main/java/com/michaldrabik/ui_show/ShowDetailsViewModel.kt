@@ -2,6 +2,7 @@ package com.michaldrabik.ui_show
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
@@ -34,6 +35,7 @@ import com.michaldrabik.ui_show.cases.ShowDetailsMyShowsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsRatingCase
 import com.michaldrabik.ui_show.cases.ShowDetailsRelatedShowsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsSeeLaterCase
+import com.michaldrabik.ui_show.cases.ShowDetailsTranslationCase
 import com.michaldrabik.ui_show.episodes.EpisodeListItem
 import com.michaldrabik.ui_show.helpers.ActionEvent
 import com.michaldrabik.ui_show.quickSetup.QuickSetupListItem
@@ -48,6 +50,7 @@ import kotlin.properties.Delegates.notNull
 class ShowDetailsViewModel @Inject constructor(
   private val mainCase: ShowDetailsMainCase,
   private val actorsCase: ShowDetailsActorsCase,
+  private val translationCase: ShowDetailsTranslationCase,
   private val ratingsCase: ShowDetailsRatingCase,
   private val seeLaterCase: ShowDetailsSeeLaterCase,
   private val archiveCase: ShowDetailsArchiveCase,
@@ -108,6 +111,7 @@ class ShowDetailsViewModel @Inject constructor(
           areSeasonsLoaded = true
         }
         launch { loadRelatedShows(show) }
+        launch { loadTranslation(show) }
         if (isSignedIn) launch { loadRating(show) }
       } catch (t: Throwable) {
         _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadShow)
@@ -121,7 +125,8 @@ class ShowDetailsViewModel @Inject constructor(
       val episode = episodesCase.loadNextEpisode(show.ids.trakt)
       uiState = ShowDetailsUiModel(nextEpisode = episode)
     } catch (t: Throwable) {
-      // NOOP
+      Timber.e(t)
+      FirebaseCrashlytics.getInstance().recordException(t)
     }
   }
 
@@ -170,6 +175,15 @@ class ShowDetailsViewModel @Inject constructor(
       ShowDetailsUiModel(relatedShows = relatedShows)
     } catch (t: Throwable) {
       ShowDetailsUiModel(relatedShows = emptyList())
+    }
+  }
+
+  private suspend fun loadTranslation(show: Show) {
+    uiState = try {
+      val translation = translationCase.loadTranslation(show)
+      ShowDetailsUiModel(translation = translation)
+    } catch (t: Throwable) {
+      ShowDetailsUiModel(translation = null)
     }
   }
 
