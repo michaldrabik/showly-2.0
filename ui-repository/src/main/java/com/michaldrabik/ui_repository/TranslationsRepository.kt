@@ -45,4 +45,21 @@ class TranslationsRepository @Inject constructor(
 
     return translation
   }
+
+  suspend fun updateLocalTranslation(show: Show, locale: Locale = Locale.ENGLISH) {
+    val localTranslation = database.showTranslationsDao().getById(show.traktId, locale.language)
+    val remoteTranslation = cloud.traktApi.fetchShowTranslations(show.traktId, locale.language).firstOrNull()
+
+    val translationDb = ShowTranslation.fromTraktId(
+      show.traktId,
+      remoteTranslation?.title ?: "",
+      remoteTranslation?.language ?: "",
+      remoteTranslation?.overview ?: "",
+      nowUtcMillis()
+    ).copy(id = localTranslation?.id ?: 0)
+
+    if (translationDb.overview.isNotBlank()) {
+      database.showTranslationsDao().insert(translationDb)
+    }
+  }
 }

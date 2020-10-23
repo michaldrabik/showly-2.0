@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.common
 
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.SHOW_SYNC_COOLDOWN
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
@@ -8,10 +9,12 @@ import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_episodes.EpisodesManager
 import com.michaldrabik.ui_model.ShowStatus.CANCELED
 import com.michaldrabik.ui_model.ShowStatus.ENDED
+import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.shows.ShowsRepository
 import kotlinx.coroutines.delay
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -23,7 +26,8 @@ class ShowsSyncRunner @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val episodesManager: EpisodesManager,
-  private val showsRepository: ShowsRepository
+  private val showsRepository: ShowsRepository,
+  private val translationsRepository: TranslationsRepository
 ) {
 
   companion object {
@@ -55,6 +59,11 @@ class ShowsSyncRunner @Inject constructor(
       try {
         Timber.i("Syncing ${show.title}(${show.ids.trakt}) show...")
         showsRepository.detailsShow.load(show.ids.trakt, force = true)
+
+        val locale = Locale.getDefault()
+        if (locale.language !== Config.DEFAULT_LANGUAGE) {
+          translationsRepository.updateLocalTranslation(show, locale)
+        }
         syncCount++
 
         Timber.i("${show.title}(${show.ids.trakt}) show synced.")
