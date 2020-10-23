@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_show.helpers
 
 class ActionEvent<T>(
-  val action: T
+  private val action: T
 ) {
 
   private var isConsumed: Boolean = false

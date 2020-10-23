@@ -6,6 +6,7 @@ import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+import android.widget.TextView
 import androidx.core.animation.doOnEnd
 import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
@@ -75,6 +76,17 @@ fun View.bump(action: () -> Unit = {}) {
 
 fun View.updateTopMargin(margin: Int) {
   (layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = margin)
+}
+
+fun TextView.setTextIfEmpty(text: String) {
+  if (this.text.isBlank()) this.text = text
+}
+
+fun TextView.setTextFade(text: String) {
+  fadeOut(duration = 100, endAction = {
+    setText(text)
+    fadeIn(duration = 100)
+  })
 }
 
 fun Activity.disableUi() = window.setFlags(FLAG_NOT_TOUCHABLE, FLAG_NOT_TOUCHABLE)

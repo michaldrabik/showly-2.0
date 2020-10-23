@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textAdd">Dodaj do moich</string>
+  <string name="textWatchLater">Na później</string>
+  <string name="textNextEpisode">Następny Odcinek:</string>
+  <string name="textInMyShows">W moich serialach</string>
+  <string name="textInSeeLater">W odłożonych</string>
+  <string name="textInArchive">W archiwum</string>
+  <string name="textRate">Oceń</string>
+  <string name="textRateDelete">Usuń</string>
+  <string name="textSignBeforeRate">Zaloguj się aby móc ocenić.</string>
+
+  <string name="textComments">Opinie:</string>
+  <string name="textComments2">Opinie</string>
+  <string name="textNoComments">Brak opinii.</string>
+
+  <string name="textShowQuickProgressTitle">Szybki Progres</string>
+  <string name="textShowQuickProgressSubTitle">Wybierz ostatni obejrzany odcinek aby zaktualizować swój progres.</string>
+  <string name="textShowQuickProgressDone">Progres został zaktualizowany.</string>
+
+  <string name="textActorRole">%s\n(%s)</string>
+  <string name="textShowRated">Ocena została zapisana.</string>
+  <string name="textShowRatingDeleted">Ocena została usunięta.</string>
+  <string name="textLoadComments">Zobacz Opinie</string>
+  <string name="textEpisodeDate">Odcinek %1$d | %2$s</string>
+  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv zostało zaktualizowane.</string>
+  <string name="textActorsEmpty">Obsada jest niedostępna.</string>
+  <string name="textSeasons">Seasons:</string>
+  <string name="textSeasonsEmpty">Sezony są niedosepnet.</string>
+  <string name="textTrailer">Trailer</string>
+  <string name="textImdb">iMDB</string>
+  <string name="textShare">Prześlij</string>
+  <string name="textYouMayAlsoLike">Zobacz również:</string>
+  <string name="textRuntimeLeftHours">~%1$dh %2$dm oglądania</string>
+  <string name="textRuntimeLeftMinutes">~%1$dm oglądania</string>
+
+  <string name="textWhatIsArchive">Archiwum?</string>
+  <string name="textWhatIsArchiveFull">Czym jest Archiwum?</string>
+  <string name="textArchiveDescription"><b>Archiwum</b> jest listą porzuconych seriali które już cię nie interesują.\n\nZarchiwizowane seriale nie będą się wyświetlać w sekcjach <b>Progres</b>, <b>Odkrywaj</b> i <b>Moje Seriale</b> oraz będą pominięte podczas importu z Trakt.tv.</string>
+  <string name="textArchiveConfirmationTitle">Dodaj do Archiwum</string>
+  <string name="textArchiveConfirmationMessage">\nCzy na pewno chcesz przenieść serial do Archiwum?\n</string>
+  <string name="textArchivedShowsExcluded">Archiwum pominięte w statystykach</string>
+  <string name="textThisShowIsArchived">W archiwum</string>
+</resources>

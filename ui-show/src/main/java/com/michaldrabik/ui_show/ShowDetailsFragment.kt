@@ -53,6 +53,8 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
+import com.michaldrabik.ui_base.utilities.extensions.setTextFade
+import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
@@ -69,6 +71,7 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_QUICK_PROGRESS
+import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
@@ -340,13 +343,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     uiModel.run {
       show?.let { show ->
         showDetailsTitle.text = show.title
-        showDetailsDescription.text = show.overview
+        showDetailsDescription.setTextIfEmpty(show.overview)
         showDetailsStatus.text = show.status.displayName
         val year = if (show.year > 0) show.year.toString() else ""
         val country = if (show.country.isEmpty()) "" else " (${show.country.toUpperCase(ROOT)})"
         showDetailsExtraInfo.text =
           "${show.network} $year$country | ${show.runtime} min | ${
-          show.genres.take(2).joinToString(", ") { it.capitalize() }
+            show.genres.take(2).joinToString(", ") { it.capitalize() }
           }"
         showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
         showDetailsCommentsButton.visible()
@@ -389,11 +392,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
       }
       nextEpisode?.let { renderNextEpisode(it) }
-      translation?.let {
-        if (it.overview.isNotBlank()) {
-          showDetailsDescription.text = it.overview
-        }
-      }
+      translation?.let { renderTranslation(it.consume()) }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
       seasons?.let {
@@ -534,6 +533,16 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsRelatedRecycler.fadeIf(items.isNotEmpty())
     showDetailsRelatedLabel.fadeIf(items.isNotEmpty())
     showDetailsRelatedProgress.gone()
+  }
+
+  private fun renderTranslation(translation: Translation?) {
+    if (translation != null && translation.overview.isNotBlank()) {
+      if (translation.isLocal) {
+        showDetailsDescription.text = translation.overview
+      } else {
+        showDetailsDescription.setTextFade(translation.overview)
+      }
+    }
   }
 
   private fun openTrailerLink(url: String) {

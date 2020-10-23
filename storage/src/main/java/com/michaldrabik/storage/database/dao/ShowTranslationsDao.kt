@@ -1,0 +1,17 @@
+package com.michaldrabik.storage.database.dao
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.michaldrabik.storage.database.model.ShowTranslation
+
+@Dao
+interface ShowTranslationsDao : BaseDao<ShowTranslation> {
+
+  @Query("SELECT * FROM shows_translations WHERE id_trakt == :traktId AND language == :language")
+  suspend fun getById(traktId: Long, language: String): ShowTranslation?
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insert(translation: ShowTranslation)
+}

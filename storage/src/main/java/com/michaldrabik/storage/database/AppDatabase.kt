@@ -14,6 +14,7 @@ import com.michaldrabik.storage.database.dao.RelatedShowsDao
 import com.michaldrabik.storage.database.dao.SeasonsDao
 import com.michaldrabik.storage.database.dao.SeeLaterShowsDao
 import com.michaldrabik.storage.database.dao.SettingsDao
+import com.michaldrabik.storage.database.dao.ShowTranslationsDao
 import com.michaldrabik.storage.database.dao.ShowsDao
 import com.michaldrabik.storage.database.dao.TraktSyncQueueDao
 import com.michaldrabik.storage.database.dao.UserDao
@@ -30,6 +31,7 @@ import com.michaldrabik.storage.database.model.Season
 import com.michaldrabik.storage.database.model.SeeLaterShow
 import com.michaldrabik.storage.database.model.Settings
 import com.michaldrabik.storage.database.model.Show
+import com.michaldrabik.storage.database.model.ShowTranslation
 import com.michaldrabik.storage.database.model.TraktSyncQueue
 import com.michaldrabik.storage.database.model.User
 
@@ -50,7 +52,8 @@ import com.michaldrabik.storage.database.model.User
     Settings::class,
     RecentSearch::class,
     EpisodesSyncLog::class,
-    TraktSyncQueue::class
+    TraktSyncQueue::class,
+    ShowTranslation::class
   ],
   exportSchema = false
 )
@@ -85,4 +88,6 @@ abstract class AppDatabase : RoomDatabase() {
   abstract fun episodesSyncLogDao(): EpisodesSyncLogDao
 
   abstract fun traktSyncQueueDao(): TraktSyncQueueDao
+
+  abstract fun showTranslationsDao(): ShowTranslationsDao
 }

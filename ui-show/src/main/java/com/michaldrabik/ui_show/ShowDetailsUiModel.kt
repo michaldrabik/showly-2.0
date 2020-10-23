@@ -26,7 +26,7 @@ data class ShowDetailsUiModel(
   val removeFromTraktHistory: ActionEvent<Boolean>? = null,
   val removeFromTraktSeeLater: ActionEvent<Boolean>? = null,
   val showFromTraktLoading: Boolean? = null,
-  val translation: Translation? = null
+  val translation: ActionEvent<Translation>? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =

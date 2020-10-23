@@ -7,6 +7,7 @@ import org.threeten.bp.ZoneOffset
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.temporal.Temporal
+import java.util.*
 
 fun nowUtc(): ZonedDateTime = ZonedDateTime.now(ZoneOffset.UTC)
 
@@ -20,6 +21,6 @@ fun ZonedDateTime.toMillis() = this.toInstant().toEpochMilli()
 
 fun ZonedDateTime.toLocalTimeZone(): ZonedDateTime = this.withZoneSameInstant(ZoneId.systemDefault())
 
-fun Temporal.toDisplayString(): String = Config.DISPLAY_DATE_FORMAT.format(this)
+fun Temporal.toDisplayString(): String = Config.DISPLAY_DATE_FORMAT.format(this).capitalize(Locale.ROOT)
 
 fun Temporal.toDayOnlyDisplayString(): String = Config.DISPLAY_DATE_DAY_ONLY_FORMAT.format(this)

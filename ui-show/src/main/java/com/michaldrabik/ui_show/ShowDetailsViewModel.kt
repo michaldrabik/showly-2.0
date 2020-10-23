@@ -179,11 +179,14 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   private suspend fun loadTranslation(show: Show) {
-    uiState = try {
+    try {
       val translation = translationCase.loadTranslation(show)
-      ShowDetailsUiModel(translation = translation)
-    } catch (t: Throwable) {
-      ShowDetailsUiModel(translation = null)
+      translation?.let {
+        uiState = ShowDetailsUiModel(translation = ActionEvent(it))
+      }
+    } catch (error: Throwable) {
+      Timber.e(error)
+      FirebaseCrashlytics.getInstance().recordException(error)
     }
   }
 
