@@ -12,7 +12,7 @@
 
   <string name="textWhatsNewTitle">What\'s New</string>
   <string name="textWhatsNewSubtitle">Version %s</string>
-  <string name="textWhatsNewMessage">* Added support for \'Special\' seasons in show details section (enable/disable via settings)\n\n* Archived shows can now be included in the statistics (enabled/disable via settings)\n\n* Bugfixes</string>
+  <string name="textWhatsNewMessage" translatable="false">* Added support for \'Special\' seasons in show details section (enable/disable via settings)\n\n* Archived shows can now be included in the statistics (enabled/disable via settings)\n\n* Bugfixes</string>
 
   <string name="shortcutDiscover">Discover</string>
   <string name="shortcutMyShows">My Shows</string>
