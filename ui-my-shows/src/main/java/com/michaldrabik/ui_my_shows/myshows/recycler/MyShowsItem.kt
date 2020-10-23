@@ -6,6 +6,7 @@ import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.Translation
 
 data class MyShowsItem(
   val type: Type,
@@ -14,7 +15,8 @@ data class MyShowsItem(
   val horizontalSection: HorizontalSection?,
   override val show: Show,
   override val image: Image,
-  override val isLoading: Boolean
+  override val isLoading: Boolean,
+  val translation: Translation? = null,
 ) : ListItem {
 
   enum class Type {

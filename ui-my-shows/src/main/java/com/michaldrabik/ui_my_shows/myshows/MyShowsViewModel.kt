@@ -139,6 +139,7 @@ class MyShowsViewModel @Inject constructor(
     type: ImageType = POSTER
   ) = async {
     val image = loadShowsCase.findCachedImage(show, type)
-    MyShowsItem(itemType, null, null, null, show, image, false)
+    val translation = loadShowsCase.loadTranslation(show)
+    MyShowsItem(itemType, null, null, null, show, image, false, translation)
   }
 }

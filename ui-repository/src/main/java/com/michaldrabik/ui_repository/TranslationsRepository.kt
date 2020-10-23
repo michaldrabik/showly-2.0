@@ -18,11 +18,16 @@ class TranslationsRepository @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  suspend fun loadTranslation(show: Show, locale: Locale = Locale.ENGLISH): Translation? {
+  suspend fun loadTranslation(
+    show: Show,
+    locale: Locale = Locale.ENGLISH,
+    onlyLocal: Boolean = false
+  ): Translation? {
     val local = database.showTranslationsDao().getById(show.traktId, locale.language)
     local?.let {
       return mappers.translation.fromDatabase(it).copy(isLocal = true)
     }
+    if (onlyLocal) return null
 
     val remoteTranslation = cloud.traktApi.fetchShowTranslations(show.traktId, locale.language).firstOrNull()
     val translation = mappers.translation.fromNetwork(remoteTranslation)

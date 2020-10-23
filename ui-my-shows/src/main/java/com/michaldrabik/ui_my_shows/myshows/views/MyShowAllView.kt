@@ -42,7 +42,9 @@ class MyShowAllView : ShowView<MyShowsItem> {
     this.item = item
     myShowAllProgress.visibleIf(item.isLoading)
     myShowAllTitle.text = item.show.title
-    myShowAllDescription.text = item.show.overview
+    myShowAllDescription.text =
+      if (item.translation?.overview.isNullOrBlank()) item.show.overview
+      else item.translation?.overview
     val year = if (item.show.year > 0) " (${item.show.year})" else ""
     myShowAllNetwork.text = "${item.show.network}$year"
     myShowAllRating.text = String.format(ROOT, "%.1f", item.show.rating)
