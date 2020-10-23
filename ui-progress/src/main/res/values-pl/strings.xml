@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="tabCalendar">Kalendarz</string>
+  <string name="tabWatchlist">Progres</string>
+  <string name="textCalendarEmpty">Brak nowych nadchodzących odcinków.</string>
+
+  <string name="textWatchlistIncoming">Nadchodzące</string>
+  <string name="textSearchWatchlist">Szukaj…</string>
+  <string name="textDiscoverShows">Odkrywaj Seriale</string>
+  <string name="textEpisodeInfo">Szczegóły</string>
+  <string name="textTraktSynchronize">Import z Trakt.tv</string>
+  <string name="textWatchlistEmpty">Twój <b>Progres</b> jest obecnie pusty.\n\nDodaj nowe seriale w zakładce <b>Odkrywaj</b> lub zaimportuj swoją kolekcję z Trakt.tv.</string>
+  <string name="textNewSeason">Premiera Sesonu</string>
+
+  <string name="textWatchlistToday">Dzisiaj</string>
+  <string name="textWatchlistTomorrow">Jutro</string>
+  <string name="textWatchlistThisWeek">Ten Tydzień</string>
+  <string name="textWatchlistNextWeek">Następny Tydzień</string>
+  <string name="textWatchlistLater">Później</string>
+
+  <string name="menuPin">Przypnij u góry</string>
+  <string name="menuUnpin">Odepnij z góry</string>
+</resources>
