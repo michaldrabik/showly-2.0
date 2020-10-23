@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textGenres">Gatunki:</string>
+  <string name="textSortOrder">Feed:</string>
+  <string name="textDiscoverFilterAnticipated">Ukryj nadchodzące</string>
+</resources>

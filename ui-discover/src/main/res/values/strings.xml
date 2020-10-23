@@ -2,6 +2,5 @@
 <resources>
   <string name="textGenres">Genres:</string>
   <string name="textSortOrder">Feed:</string>
-  <string name="textDiscoverShows">Discover Shows</string>
   <string name="textDiscoverFilterAnticipated">Hide Anticipated Shows</string>
 </resources>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textOk">OK</string>
+  <string name="textYes">Tak</string>
+  <string name="textNo">Nie</string>
+  <string name="textApply">Zastosuj</string>
+  <string name="textCancel">Anuluj</string>
+  <string name="textClose">Zamknij</string>
+  <string name="textNotNow">Nie Teraz</string>
+  <string name="textNew">Nowy</string>
+  <string name="textSelect">Wybierz</string>
+  <string name="textHot">Gorące</string>
+  <string name="textEmptyResults">Brak wyników…</string>
+  <string name="textSearchFor">Szukaj…</string>
+  <string name="textTip">Wskazówka:</string>
+  <string name="textSeason">Sezon %1$d</string>
+  <string name="textSpecials">Specjalne</string>
+  <string name="textEpisode">Odcinek %1$d</string>
+  <string name="textSortBy">Sortuj:</string>
+  <string name="textSpoilersWarning">Opinia zawiera spoilery.\nKliknij aby przeczytać.</string>
+
+  <string name="textAiredAlready">Po premierze</string>
+  <string name="textAirsNow">Premiera teraz</string>
+
+  <plurals name="textDaysToAir">
+    <item quantity="one">Premiera jutro</item>
+    <item quantity="other">Premiera za %d dni</item>
+    <item quantity="few">Premiera za %d dni</item>
+    <item quantity="many">Premiera za %d dni</item>
+  </plurals>
+
+  <plurals name="textHoursToAir">
+    <item quantity="one">Premiera za godzinę</item>
+    <item quantity="other">Premiera za %d godzin</item>
+    <item quantity="few">Premiera za %d godzin</item>
+    <item quantity="many">Premiera za %d godzin</item>
+  </plurals>
+
+  <plurals name="textMinutesToAir">
+    <item quantity="one">Premiera teraz</item>
+    <item quantity="other">Premiera za %d minut</item>
+    <item quantity="few">Premiera za %d minut</item>
+    <item quantity="many">Premiera za %d minut</item>
+  </plurals>
+
+  <string name="textNewEpisodeAvailable">Nowy odcinek jest już dostępny!</string>
+  <string name="textNewEpisodeAvailableSoon">Nowy odcinek będzie wkrótce dostępny!</string>
+  <string name="textNewSeasonAvailable">Nowy sezon jest już dostępny!</string>
+  <string name="textNewSeasonAvailableSoon">Nowy sezon będzie wkrótce dostępny!</string>
+
+  <string name="textTraktSync">Synchronizacja Trakt.tv</string>
+  <string name="textTraktSyncComplete">Synchronizacja zakończona.</string>
+  <string name="textTraktSyncRunning">Przetwarzanie…</string>
+  <string name="textTraktSyncError">Błąd synchronizacji Trakt.tv.</string>
+  <string name="textTraktSyncErrorFull">Błąd synchronizacji Trakt.tv. Sprawdź połączenie z internetem lub skontaktuj się z nami jeżeli błąd się powtarza.</string>
+  <string name="textTraktQuickSyncError">Błąd szybkiej synchronizacji.</string>
+  <string name="textTraktQuickSyncErrorFull">Błąd szybkiej synchronizacji. Spróbujemy ponownie przy następnym uruchomieniu aplikacji.</string>
+
+  <string name="errorGeneral">Oj… Coś poszło nie tak.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
+  <string name="errorAuthorization">Błąd autoryzacji.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
+  <string name="errorTraktAuthorization">Błąd autoryzacji Trakt.tv.\nZaloguj się i spróbuj ponownie.</string>
+  <string name="errorSeasonsNotLoaded">Proszę poczekać na dane o sezonach.</string>
+  <string name="errorEpisodeNotAired">Ten odcinek nie miał jeszcze premiery.</string>
+  <string name="errorCouldNotLoadDiscover">W tej chwili nie można załadować świeżych danych.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
+  <string name="errorCouldNotLoadShow">W tej chwili nie można załadować informacji o serialu.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
+  <string name="errorCouldNotLoadSearchResults">W tej chwili nie można załadować wyników wyszukiwania.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
+  <string name="errorNoInternetConnection">Brak Internetu. Sprawdź swoje połączenie.</string>
+  <string name="errorTraktSyncGeneral">Błąd synchronizacji Trakt.tv\nSprawdź połączenie z internetem i spróbuj ponownie.</string>
+</resources>

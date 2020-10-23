@@ -25,13 +25,13 @@
   <string name="textEpisodeDate">Odcinek %1$d | %2$s</string>
   <string name="textTraktSyncRemovedFromTrakt">Trakt.tv zostało zaktualizowane.</string>
   <string name="textActorsEmpty">Obsada jest niedostępna.</string>
-  <string name="textSeasons">Seasons:</string>
-  <string name="textSeasonsEmpty">Sezony są niedosepnet.</string>
+  <string name="textSeasons">Sezony:</string>
+  <string name="textSeasonsEmpty">Sezony są niedostępne.</string>
   <string name="textTrailer">Trailer</string>
   <string name="textImdb">iMDB</string>
   <string name="textShare">Prześlij</string>
   <string name="textYouMayAlsoLike">Zobacz również:</string>
-  <string name="textRuntimeLeftHours">~%1$dh %2$dm oglądania</string>
+  <string name="textRuntimeLeftHours">~%1$dg %2$dm oglądania</string>
   <string name="textRuntimeLeftMinutes">~%1$dm oglądania</string>
 
   <string name="textWhatIsArchive">Archiwum?</string>

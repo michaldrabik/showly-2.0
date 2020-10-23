@@ -8,7 +8,7 @@
   <string name="textSortEpisodesLeft">Episodes Left</string>
 
   <string name="textSettingsShowsNotificationsWhenTitle">When To Notify</string>
-  <string name="textSettingsShowsNotificationsWhenSummary">When would you like ro receive episodes announcements.</string>
+  <string name="textSettingsShowsNotificationsWhenSummary">When would you like to receive episodes announcements.</string>
   <string name="textSettingsShowsNotificationsWhenAvailable">When Available</string>
   <string name="textSettingsShowsNotificationsWhen1Hour">1 Hour After</string>
   <string name="textSettingsShowsNotificationsWhen3Hours">3 Hours After</string>

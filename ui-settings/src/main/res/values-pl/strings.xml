@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textTraktLoginSuccess">Zalogowano.</string>
+  <string name="textTraktLogoutSuccess">Wylogowano.</string>
+  <string name="textImagesCacheCleared">Pamięć podręczna obrazków została wyczyszczona.</string>
+  <string name="textTurnOff">Wyłącz</string>
+
+  <string name="textSettings">Ustawienia</string>
+  <string name="textSettingsTrakt">Trakt.tv</string>
+  <string name="textSettingsTraktAuthorizeTitle">Autoryzacja Trakt.tv</string>
+  <string name="textSettingsTraktAuthorizeSummarySignIn">Kliknij aby zalogować się do konta Trakt.tv.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOut">Zalogowano. Kliknij aby wylogować.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOutUser">Zalogowano jako %1$s. Kliknij aby wylogować.</string>
+  <string name="textSettingsTraktSyncTitle">Synchronizacja Trakt.tv</string>
+  <string name="textSettingsTraktSyncSummary">Synchronizuj dane między Trakt.tv i Showly</string>
+  <string name="textSettingsTraktQuickSyncTitle">Trakt.tv Szybki Upload</string>
+  <string name="textSettingsTraktQuickSyncSummary">Natychmiast wyślij odcinki i seriale \'Na Później\' do Trakt.tv po dodaniu w aplikacji.</string>
+  <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv Szybkie Usunięcie</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Uruchom opcję natychmiastowego usunięcia danych z Trakt.tv po usunięciu z aplikacji.</string>
+  <string name="textSettingsGeneral">Ogólne</string>
+  <string name="textSettingsRecentShowsTitle">Ilość Ostatnio Dodanych</string>
+  <string name="textSettingsRecentShowsSummary">Liczba ostatnio dodanych seriali w zakładce \'Moje Seriale\'</string>
+  <string name="textSettingsMyShowsSectionsTitle">Moje Seriale - Sekcje</string>
+  <string name="textSettingsMyShowsSectionSummary">Włącz/wyłącz sekcje w zakładce \'Moje Seriale\'</string>
+  <string name="textSettingsIncludeArchiveStatsTitle">Statystyki Archiwum</string>
+  <string name="textSettingsIncludeArchiveStatsSummary">Uwzględniaj seriale z Archiwum w statystykach.</string>
+  <string name="textSettingsIncludeSpecialsTitle">Sezony Specjalne</string>
+  <string name="textSettingsIncludeSpecialsSummary">Pokaż \'Specjalne\' sezony na ekranie informacji o serialu.</string>
+  <string name="textSettingsNotifications">Notyfikacje</string>
+  <string name="textSettingsPushNotificationsTitle">Push Notyfikacje</string>
+  <string name="textSettingsPushNotificationsSummary">Otrzymuj notyfikacje na ogólne tematy.</string>
+  <string name="textSettingsShowsNotificationsTitle">Notyfikacje Odcinków</string>
+  <string name="textSettingsShowsNotificationsSummary">Otrzymuj notyfikacje o nowych odcinkach i sezonach twoich seriali.</string>
+  <string name="textSettingsMisc">Różne</string>
+  <string name="textSettingsContactDevsTitle">Kontakt z twórcami</string>
+  <string name="textSettingsContactDevsSummary">Masz problem/pytanie? Kliknij aby wysłać wiadomość email.</string>
+  <string name="textSettingsRateAppTitle">Dodaj Recenzję</string>
+  <string name="textSettingsRateAppSummary">Podoba ci się aplikacja? Kliknij aby dodać swoją ocenę w sklepie Play Store!</string>
+  <string name="textSettingsDeleteCacheTitle">Wyczyść Obrazki</string>
+  <string name="textSettingsDeleteCacheSummary">Kliknij aby wyczyścić pamięć podręczną obrazków jeżeli występują problemy z ich ładowaniem.</string>
+  <string name="textSettingsQuickSyncConfirmationTitle">Wyłącz Planowane Synchronizacje</string>
+  <string name="textSettingsQuickSyncConfirmationMessage">\nPlanowane synchronizacje są obecnie włączone.\n\nWyłączyć przed włączeniem Szybkiej Synchronizacji (zalecane)?\n</string>
+  <string name="textSettingsLogoutTitle">Trakt.tv Wylogowanie</string>
+  <string name="textSettingsLogoutMessage">\nCzy na pewno chcesz się wylogować?\n</string>
+</resources>

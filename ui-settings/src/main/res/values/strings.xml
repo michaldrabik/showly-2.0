@@ -31,9 +31,6 @@
   <string name="textSettingsPushNotificationsSummary">Receive general information push notifications.</string>
   <string name="textSettingsShowsNotificationsTitle">Episodes Announcements</string>
   <string name="textSettingsShowsNotificationsSummary">Receive notifications about new episodes, seasons for shows you are following.</string>
-  <string name="textSettingsShowsNotificationsWhenTitle">When To Notify</string>
-  <string name="textSettingsShowsNotificationsWhenSummary">When would you like ro receive episodes announcements.</string>
-  <string name="textSettingsShowsNotificationsWhenAvailable">When Available</string>
   <string name="textSettingsMisc">Misc</string>
   <string name="textSettingsContactDevsTitle">Contact Developers</string>
   <string name="textSettingsContactDevsSummary">Got an issue? Click to send us an email.</string>
