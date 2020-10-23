@@ -6,7 +6,7 @@
   <string name="textStatisticsEmpty">Dodaj przynajmniej jeden serial do <b>Kolekcji</b> aby zobaczyć statystyki</string>
   <string name="textStatisticsMostWatchedShows">Najwięcej Obejrzanych</string>
   <string name="textStatisticsTotalTimeSpent">Całkowity Czas</string>
-  <string name="textStatisticsTotalTimeItIs">co daje</string>
+  <string name="textStatisticsTotalTimeItIs">czyli</string>
   <string name="textStatisticsTotalTimeSpentHours">%s godzin</string>
   <string name="textStatisticsTotalTimeSpentMinutes">%s minut</string>
   <string name="textStatisticsTotalTimeSpentMonthsDays">co daje około %d miesięcy i %d dni.</string>

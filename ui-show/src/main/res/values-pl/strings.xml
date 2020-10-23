@@ -31,8 +31,8 @@
   <string name="textImdb">iMDB</string>
   <string name="textShare">Prześlij</string>
   <string name="textYouMayAlsoLike">Zobacz również:</string>
-  <string name="textRuntimeLeftHours">~%1$dg %2$dm oglądania</string>
-  <string name="textRuntimeLeftMinutes">~%1$dm oglądania</string>
+  <string name="textRuntimeLeftHours">~%1$dg %2$dm do obejrzenia</string>
+  <string name="textRuntimeLeftMinutes">~%1$dm do obejrzenia</string>
 
   <string name="textWhatIsArchive">Archiwum?</string>
   <string name="textWhatIsArchiveFull">Czym jest Archiwum?</string>

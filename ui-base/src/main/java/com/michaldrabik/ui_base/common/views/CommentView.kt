@@ -33,7 +33,12 @@ class CommentView : ConstraintLayout {
   @SuppressLint("SetTextI18n", "DefaultLocale")
   fun bind(comment: Comment) {
     clear()
-    commentHeader.text = "${comment.user.username.capitalize()} commented on ${comment.createdAt?.toLocalTimeZone()?.toDayOnlyDisplayString()}:"
+
+    commentHeader.text = context.getString(
+      R.string.textCommentedOn,
+      comment.user.username.capitalize(),
+      comment.createdAt?.toLocalTimeZone()?.toDayOnlyDisplayString()
+    )
 
     if (comment.hasSpoilers()) {
       commentText.text = context.getString(R.string.textSpoilersWarning)

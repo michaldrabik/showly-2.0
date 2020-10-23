@@ -18,6 +18,7 @@
   <string name="textEpisode">Odcinek %1$d</string>
   <string name="textSortBy">Sortuj:</string>
   <string name="textSpoilersWarning">Opinia zawiera spoilery.\nKliknij aby przeczytać.</string>
+  <string name="textCommentedOn">%s skomentował %s:</string>
 
   <string name="textAiredAlready">Po premierze</string>
   <string name="textAirsNow">Premiera teraz</string>
