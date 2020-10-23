@@ -7,6 +7,12 @@
   <string name="textSortRecentlyWatched">Recently Watched</string>
   <string name="textSortEpisodesLeft">Episodes Left</string>
 
+  <string name="textHeaderRecentlyAdded">Recently Added</string>
+  <string name="textHeaderWatching">Watching</string>
+  <string name="textHeaderFinished">Finished</string>
+  <string name="textHeaderReturning">Returning &amp; Upcoming</string>
+  <string name="textHeaderAll">All</string>
+
   <string name="textSettingsShowsNotificationsWhenTitle">When To Notify</string>
   <string name="textSettingsShowsNotificationsWhenSummary">When would you like to receive episodes announcements.</string>
   <string name="textSettingsShowsNotificationsWhenAvailable">When Available</string>

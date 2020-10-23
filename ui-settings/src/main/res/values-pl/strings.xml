@@ -10,7 +10,7 @@
   <string name="textSettingsTraktAuthorizeTitle">Autoryzacja Trakt.tv</string>
   <string name="textSettingsTraktAuthorizeSummarySignIn">Kliknij aby zalogować się do konta Trakt.tv.</string>
   <string name="textSettingsTraktAuthorizeSummarySignOut">Zalogowano. Kliknij aby wylogować.</string>
-  <string name="textSettingsTraktAuthorizeSummarySignOutUser">Zalogowano jako %1$s. Kliknij aby wylogować.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOutUser">Zalogowano jako %1$s.\nKliknij aby wylogować.</string>
   <string name="textSettingsTraktSyncTitle">Synchronizacja Trakt.tv</string>
   <string name="textSettingsTraktSyncSummary">Synchronizuj dane między Trakt.tv i Showly</string>
   <string name="textSettingsTraktQuickSyncTitle">Trakt.tv Szybki Upload</string>

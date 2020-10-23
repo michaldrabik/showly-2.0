@@ -7,6 +7,12 @@
   <string name="textSortRecentlyWatched">Ostatnio Widziane</string>
   <string name="textSortEpisodesLeft">Pozostałe Odcinki</string>
 
+  <string name="textHeaderRecentlyAdded">Ostatnio Dodane</string>
+  <string name="textHeaderWatching">Oglądane</string>
+  <string name="textHeaderFinished">Skończone</string>
+  <string name="textHeaderReturning">Powracające</string>
+  <string name="textHeaderAll">Wszystkie</string>
+
   <string name="textSettingsShowsNotificationsWhenTitle">Czas Notyfikacji</string>
   <string name="textSettingsShowsNotificationsWhenSummary">Kiedy chciałbyś otrzymać powiadomienie o odcinku?</string>
   <string name="textSettingsShowsNotificationsWhenAvailable">Jak Najszybciej</string>

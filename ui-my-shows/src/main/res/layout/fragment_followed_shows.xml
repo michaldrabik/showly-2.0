@@ -22,8 +22,8 @@
     android:layout_height="36dp"
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/myShowsSearchViewPadding"
-    android:translationX="-6dp"
-    app:tabMinWidth="84dp"
+    android:translationX="@dimen/myShowsTabsTranslation"
+    app:tabMinWidth="@dimen/myShowsTabsMinWidth"
     app:tabTextAppearance="@style/ScrollableTabTextStyle"
     />
 

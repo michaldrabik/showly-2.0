@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <dimen name="myShowsTabsTranslation">-6dp</dimen>
+  <dimen name="myShowsTabsMinWidth">84dp</dimen>
+
   <dimen name="myShowHeaderSize">22sp</dimen>
 
   <dimen name="myShowsSearchViewPadding">64dp</dimen>

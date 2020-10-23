@@ -351,7 +351,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           "${show.network} $year$country | ${show.runtime} min | ${
             show.genres.take(2).joinToString(", ") { it.capitalize() }
           }"
-        showDetailsRating.text = String.format("%.1f (%d votes)", show.rating, show.votes)
+        showDetailsRating.text = String.format(ROOT, getString(R.string.textVotes), show.rating, show.votes)
         showDetailsCommentsButton.visible()
 
         showDetailsShareButton.run {

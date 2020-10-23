@@ -39,9 +39,10 @@ class MyShowHeaderView : FrameLayout {
   }
 
   private fun bindLabel(item: MyShowsItem.Header) {
+    val headerLabel = context.getString(item.section.displayString)
     myShowsHeaderLabel.text = when (item.section) {
-      RECENTS -> item.section.displayString
-      else -> "${item.section.displayString} (${item.itemCount})"
+      RECENTS -> headerLabel
+      else -> "$headerLabel (${item.itemCount})"
     }
   }
 }

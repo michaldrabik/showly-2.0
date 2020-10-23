@@ -194,7 +194,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setMultiChoiceItems(
-        options.map { it.displayString }.toTypedArray(),
+        options.map { getString(it.displayString) }.toTypedArray(),
         selected
       ) { _, index, isChecked ->
         viewModel.enableMyShowsSection(options[index], isChecked)
