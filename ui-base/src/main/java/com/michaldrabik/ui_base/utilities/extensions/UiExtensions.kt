@@ -83,9 +83,9 @@ fun TextView.setTextIfEmpty(text: String) {
 }
 
 fun TextView.setTextFade(text: String) {
-  fadeOut(duration = 100, endAction = {
+  fadeOut(duration = 125, endAction = {
     setText(text)
-    fadeIn(duration = 100)
+    fadeIn(duration = 125)
   })
 }
 

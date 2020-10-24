@@ -344,7 +344,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       show?.let { show ->
         showDetailsTitle.text = show.title
         showDetailsDescription.setTextIfEmpty(show.overview)
-        showDetailsStatus.text = show.status.displayName
+        showDetailsStatus.text = getString(show.status.displayName)
         val year = if (show.year > 0) show.year.toString() else ""
         val country = if (show.country.isEmpty()) "" else " (${show.country.toUpperCase(ROOT)})"
         showDetailsExtraInfo.text =

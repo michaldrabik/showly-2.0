@@ -52,7 +52,7 @@
   <string name="textTraktQuickSyncErrorFull">Instant Sync failed. We will try again next time you open the app. Please check your internet connection.</string>
 
   <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this keeps happening.</string>
-  <string name="errorAuthorization">Authorization failed.\nPlease contact us if this keeps happening.</string>
+  <string name="errorAuthorization">Authorization failed. Please contact us if this keeps happening.</string>
   <string name="errorTraktAuthorization">Trakt account authorization failed.\nPlease login and try again.</string>
   <string name="errorSeasonsNotLoaded">Please wait for seasons data to load.</string>
   <string name="errorEpisodeNotAired">This episode hasn\'t been aired yet.</string>

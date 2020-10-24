@@ -41,7 +41,6 @@
   <string name="textTraktSyncOptionDaily">Every Day</string>
   <string name="textTraktSyncOption3Day">Every 3 Days</string>
   <string name="textTraktSyncOptionWeekly">Every Week</string>
-
   <string name="textTraktSyncOptionOffMessage">Sync will not run automatically.</string>
   <string name="textTraktSyncOptionConfirmMessage">Automatic sync has been scheduled.</string>
 
@@ -51,4 +50,12 @@
   <string name="textTraktSyncOptionDailyButton">Scheduled to run every day</string>
   <string name="textTraktSyncOption3DayButton">Scheduled to run every 3 days</string>
   <string name="textTraktSyncOptionWeeklyButton">Scheduled to run every week</string>
+
+  <string name="textShowStatusReturning">Returning Series</string>
+  <string name="textShowStatusUpcoming">Upcoming</string>
+  <string name="textShowStatusInProduction">In Production</string>
+  <string name="textShowStatusPlanned">Planned</string>
+  <string name="textShowStatusCanceled">Canceled</string>
+  <string name="textShowStatusEnded">Ended</string>
+  <string name="textShowStatusUnknown" translatable="false" />
 </resources>
