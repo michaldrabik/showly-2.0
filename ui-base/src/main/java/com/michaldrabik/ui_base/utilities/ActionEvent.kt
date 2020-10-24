@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.helpers
+package com.michaldrabik.ui_base.utilities
 
 class ActionEvent<T>(
   private val action: T

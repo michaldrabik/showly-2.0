@@ -1,16 +1,19 @@
 package com.michaldrabik.ui_episodes.details
 
 import com.michaldrabik.ui_base.UiModel
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.Translation
 
 data class EpisodeDetailsUiModel(
   val image: Image? = null,
   val imageLoading: Boolean? = null,
   val comments: List<Comment>? = null,
   val commentsLoading: Boolean? = null,
-  val ratingState: RatingState? = null
+  val ratingState: RatingState? = null,
+  val translation: ActionEvent<Translation>? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -19,6 +22,7 @@ data class EpisodeDetailsUiModel(
       imageLoading = newModel.imageLoading ?: imageLoading,
       comments = newModel.comments?.toList() ?: comments,
       commentsLoading = newModel.commentsLoading ?: commentsLoading,
+      translation = newModel.translation ?: translation,
       ratingState = newModel.ratingState?.copy(
         rateLoading = newModel.ratingState.rateLoading ?: ratingState?.rateLoading,
         rateAllowed = newModel.ratingState.rateAllowed ?: ratingState?.rateAllowed,

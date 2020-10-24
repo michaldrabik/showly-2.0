@@ -1,10 +1,12 @@
 package com.michaldrabik.ui_episodes.details
 
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.Config
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.EpisodeImagesProvider
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_episodes.R
 import com.michaldrabik.ui_model.Episode
@@ -14,15 +16,18 @@ import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_repository.RatingsRepository
+import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 class EpisodeDetailsViewModel @Inject constructor(
   private val imagesProvider: EpisodeImagesProvider,
   private val ratingsRepository: RatingsRepository,
+  private val translationsRepository: TranslationsRepository,
   private val userTraktManager: UserTraktManager,
   private val mappers: Mappers,
   private val cloud: Cloud
@@ -38,6 +43,21 @@ class EpisodeDetailsViewModel @Inject constructor(
         uiState = EpisodeDetailsUiModel(image = episodeImage, imageLoading = false)
       } catch (t: Throwable) {
         uiState = EpisodeDetailsUiModel(imageLoading = false)
+      }
+    }
+  }
+
+  fun loadTranslation(showTraktId: IdTrakt, episode: Episode) {
+    viewModelScope.launch {
+      try {
+        val locale = Locale.getDefault()
+        if (locale.language == Config.DEFAULT_LANGUAGE) return@launch
+        val translation = translationsRepository.loadTranslation(episode, showTraktId, locale)
+        translation?.let {
+          uiState = EpisodeDetailsUiModel(translation = ActionEvent(it))
+        }
+      } catch (error: Throwable) {
+        Timber.e(error)
       }
     }
   }

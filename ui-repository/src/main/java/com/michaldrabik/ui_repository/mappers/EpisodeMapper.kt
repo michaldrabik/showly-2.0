@@ -47,26 +47,24 @@ class EpisodeMapper @Inject constructor(
     season: Season,
     showId: IdTrakt,
     isWatched: Boolean
-  ): EpisodeDb {
-    return EpisodeDb(
-      episode.ids.trakt.id,
-      season.ids.trakt.id,
-      showId.id,
-      episode.ids.tvdb.id,
-      episode.ids.imdb.id,
-      episode.ids.tmdb.id,
-      season.number,
-      episode.number,
-      episode.overview,
-      episode.title,
-      episode.firstAired,
-      episode.commentCount,
-      episode.rating,
-      episode.runtime,
-      episode.votes,
-      isWatched
-    )
-  }
+  ) = EpisodeDb(
+    episode.ids.trakt.id,
+    season.ids.trakt.id,
+    showId.id,
+    episode.ids.tvdb.id,
+    episode.ids.imdb.id,
+    episode.ids.tmdb.id,
+    season.number,
+    episode.number,
+    episode.overview,
+    episode.title,
+    episode.firstAired,
+    episode.commentCount,
+    episode.rating,
+    episode.runtime,
+    episode.votes,
+    isWatched
+  )
 
   fun fromDatabase(episodeDb: EpisodeDb) =
     Episode(

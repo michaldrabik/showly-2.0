@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_show
 
 import com.michaldrabik.ui_base.UiModel
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
@@ -8,7 +9,6 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_show.helpers.ActionEvent
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 
@@ -16,7 +16,7 @@ data class ShowDetailsUiModel(
   val show: Show? = null,
   val showLoading: Boolean? = null,
   val image: Image? = null,
-  val nextEpisode: Episode? = null,
+  val nextEpisode: ActionEvent<Episode>? = null,
   val actors: List<Actor>? = null,
   val relatedShows: List<RelatedListItem>? = null,
   val seasons: List<SeasonListItem>? = null,

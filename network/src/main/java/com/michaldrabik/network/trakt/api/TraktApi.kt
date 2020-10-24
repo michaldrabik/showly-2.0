@@ -48,6 +48,9 @@ class TraktApi(private val service: TraktService) {
   suspend fun fetchShowTranslations(traktId: Long, code: String) =
     service.fetchShowTranslations(traktId, code)
 
+  suspend fun fetchEpisodeTranslations(showTraktId: Long, seasonNumber: Int, episodeNumber: Int, code: String) =
+    service.fetchEpisodeTranslations(showTraktId, seasonNumber, episodeNumber, code)
+
   suspend fun fetchEpisodeComments(
     traktId: Long,
     seasonNumber: Int,

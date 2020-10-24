@@ -9,6 +9,7 @@ import com.michaldrabik.ui_base.common.OnlineStatusProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
@@ -37,7 +38,6 @@ import com.michaldrabik.ui_show.cases.ShowDetailsRelatedShowsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsSeeLaterCase
 import com.michaldrabik.ui_show.cases.ShowDetailsTranslationCase
 import com.michaldrabik.ui_show.episodes.EpisodeListItem
-import com.michaldrabik.ui_show.helpers.ActionEvent
 import com.michaldrabik.ui_show.quickSetup.QuickSetupListItem
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
@@ -123,7 +123,14 @@ class ShowDetailsViewModel @Inject constructor(
   private suspend fun loadNextEpisode(show: Show) {
     try {
       val episode = episodesCase.loadNextEpisode(show.ids.trakt)
-      uiState = ShowDetailsUiModel(nextEpisode = episode)
+      episode?.let {
+        val translation = translationCase.loadTranslation(episode, show)
+        uiState = if (translation != null && translation.title.isNotBlank()) {
+          ShowDetailsUiModel(nextEpisode = ActionEvent(episode.copy(title = translation.title)))
+        } else {
+          ShowDetailsUiModel(nextEpisode = ActionEvent(episode))
+        }
+      }
     } catch (t: Throwable) {
       Timber.e(t)
       FirebaseCrashlytics.getInstance().recordException(t)

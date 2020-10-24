@@ -391,7 +391,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           else -> showDetailsAddButton.setState(ADD, it.withAnimation)
         }
       }
-      nextEpisode?.let { renderNextEpisode(it) }
+      nextEpisode?.let {
+        it.consume()?.let { e -> renderNextEpisode(e) }
+      }
       translation?.let { renderTranslation(it.consume()) }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }

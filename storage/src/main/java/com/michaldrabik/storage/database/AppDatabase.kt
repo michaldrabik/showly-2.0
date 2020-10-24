@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import com.michaldrabik.storage.database.dao.ActorsDao
 import com.michaldrabik.storage.database.dao.ArchiveShowsDao
 import com.michaldrabik.storage.database.dao.DiscoverShowsDao
+import com.michaldrabik.storage.database.dao.EpisodeTranslationsDao
 import com.michaldrabik.storage.database.dao.EpisodesDao
 import com.michaldrabik.storage.database.dao.EpisodesSyncLogDao
 import com.michaldrabik.storage.database.dao.ImagesDao
@@ -22,6 +23,7 @@ import com.michaldrabik.storage.database.model.Actor
 import com.michaldrabik.storage.database.model.ArchiveShow
 import com.michaldrabik.storage.database.model.DiscoverShow
 import com.michaldrabik.storage.database.model.Episode
+import com.michaldrabik.storage.database.model.EpisodeTranslation
 import com.michaldrabik.storage.database.model.EpisodesSyncLog
 import com.michaldrabik.storage.database.model.Image
 import com.michaldrabik.storage.database.model.MyShow
@@ -53,7 +55,8 @@ import com.michaldrabik.storage.database.model.User
     RecentSearch::class,
     EpisodesSyncLog::class,
     TraktSyncQueue::class,
-    ShowTranslation::class
+    ShowTranslation::class,
+    EpisodeTranslation::class
   ],
   exportSchema = false
 )
@@ -90,4 +93,6 @@ abstract class AppDatabase : RoomDatabase() {
   abstract fun traktSyncQueueDao(): TraktSyncQueueDao
 
   abstract fun showTranslationsDao(): ShowTranslationsDao
+
+  abstract fun episodeTranslationsDao(): EpisodeTranslationsDao
 }

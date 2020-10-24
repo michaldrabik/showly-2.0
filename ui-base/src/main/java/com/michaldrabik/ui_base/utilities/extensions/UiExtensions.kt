@@ -82,10 +82,10 @@ fun TextView.setTextIfEmpty(text: String) {
   if (this.text.isBlank()) this.text = text
 }
 
-fun TextView.setTextFade(text: String) {
-  fadeOut(duration = 125, endAction = {
+fun TextView.setTextFade(text: String, duration: Long = 125) {
+  fadeOut(duration = duration, endAction = {
     setText(text)
-    fadeIn(duration = 125)
+    fadeIn(duration = duration)
   })
 }
 

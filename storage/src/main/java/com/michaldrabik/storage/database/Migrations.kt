@@ -100,6 +100,15 @@ object Migrations {
           "FOREIGN KEY(`id_trakt`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE)"
       )
       database.execSQL("CREATE UNIQUE INDEX index_shows_translations_id_trakt ON shows_translations(id_trakt)")
+
+      database.execSQL(
+        "CREATE TABLE IF NOT EXISTS `episodes_translations` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+          "`id_trakt` INTEGER NOT NULL, `id_trakt_show` INTEGER NOT NULL, `title` TEXT NOT NULL, `language` TEXT NOT NULL, `overview` TEXT NOT NULL, " +
+          "`created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, " +
+          "FOREIGN KEY(`id_trakt_show`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE)"
+      )
+      database.execSQL("CREATE UNIQUE INDEX index_episodes_translations_id_trakt ON episodes_translations(id_trakt)")
+      database.execSQL("CREATE UNIQUE INDEX index_episodes_translations_id_trakt_show ON episodes_translations(id_trakt_show)")
     }
   }
 

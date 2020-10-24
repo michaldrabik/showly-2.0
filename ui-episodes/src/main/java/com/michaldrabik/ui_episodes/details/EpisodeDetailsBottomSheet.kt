@@ -31,6 +31,7 @@ import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.setTextFade
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
@@ -99,6 +100,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it) })
       messageLiveData.observe(viewLifecycleOwner, { renderSnackbar(it) })
+      loadTranslation(showTraktId, episode)
       loadImage(episode.ids.tvdb)
       loadRatings(episode)
     }
@@ -206,6 +208,13 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         } else {
           episodeDetailsRateButton.setText(R.string.textRate)
           episodeDetailsRateButton.setTextColor(requireContext().colorFromAttr(android.R.attr.textColorPrimary))
+        }
+      }
+      translation?.let { t ->
+        t.consume()?.let {
+          val duration = if (it.isLocal) 0L else 125L
+          if (it.overview.isNotBlank()) episodeDetailsOverview.setTextFade(it.overview, duration)
+          if (it.title.isNotBlank()) episodeDetailsTitle.setTextFade(it.title, duration)
         }
       }
     }

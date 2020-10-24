@@ -73,6 +73,14 @@ interface TraktService {
     @Path("code") countryCode: String,
   ): List<Translation>
 
+  @GET("shows/{showId}/seasons/{seasonNumber}/episodes/{episodeNumber}/translations/{code}")
+  suspend fun fetchEpisodeTranslations(
+    @Path("showId") showTraktId: Long,
+    @Path("seasonNumber") seasonNumber: Int,
+    @Path("episodeNumber") episodeNumber: Int,
+    @Path("code") countryCode: String,
+  ): List<Translation>
+
   @GET("shows/{traktId}/seasons/{seasonNumber}/episodes/{episodeNumber}/comments?limit=40&extended=full")
   suspend fun fetchEpisodeComments(
     @Path("traktId") traktId: Long,

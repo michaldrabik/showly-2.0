@@ -4,7 +4,10 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.EpisodeTranslation
 import com.michaldrabik.storage.database.model.ShowTranslation
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_repository.mappers.Mappers
@@ -41,6 +44,36 @@ class TranslationsRepository @Inject constructor(
 
     if (translationDb.overview.isNotBlank()) {
       database.showTranslationsDao().insert(translationDb)
+    }
+
+    return translation
+  }
+
+  suspend fun loadTranslation(
+    episode: Episode,
+    showId: IdTrakt,
+    locale: Locale = Locale.ENGLISH,
+    onlyLocal: Boolean = false
+  ): Translation? {
+    val local = database.episodeTranslationsDao().getById(episode.ids.trakt.id, showId.id, locale.language)
+    local?.let {
+      return mappers.translation.fromDatabase(it).copy(isLocal = true)
+    }
+    if (onlyLocal) return null
+
+    val remoteTranslation = cloud.traktApi.fetchEpisodeTranslations(showId.id, episode.season, episode.number, locale.language).firstOrNull()
+    val translation = mappers.translation.fromNetwork(remoteTranslation)
+    val translationDb = EpisodeTranslation.fromTraktId(
+      episode.ids.trakt.id,
+      showId.id,
+      translation.title,
+      translation.language,
+      translation.overview,
+      nowUtcMillis()
+    )
+
+    if (translationDb.overview.isNotBlank() && translationDb.title.isNotBlank()) {
+      database.episodeTranslationsDao().insert(translationDb)
     }
 
     return translation
