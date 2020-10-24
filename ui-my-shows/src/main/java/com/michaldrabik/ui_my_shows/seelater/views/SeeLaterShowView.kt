@@ -14,6 +14,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.seelater.recycler.SeeLaterListItem
 import kotlinx.android.synthetic.main.view_see_later_show.view.*
+import java.util.Locale.ROOT
 
 @SuppressLint("SetTextI18n")
 class SeeLaterShowView : ShowView<SeeLaterListItem> {
@@ -41,10 +42,13 @@ class SeeLaterShowView : ShowView<SeeLaterListItem> {
     this.item = item
     seeLaterShowProgress.visibleIf(item.isLoading)
     seeLaterShowTitle.text = item.show.title
-    seeLaterShowDescription.text = item.show.overview
+    seeLaterShowDescription.text =
+      if (item.translation?.overview.isNullOrBlank()) item.show.overview
+      else item.translation?.overview
+
     val year = if (item.show.year > 0) " (${item.show.year})" else ""
     seeLaterShowNetwork.text = "${item.show.network}$year"
-    seeLaterShowRating.text = String.format("%.1f", item.show.rating)
+    seeLaterShowRating.text = String.format(ROOT, "%.1f", item.show.rating)
 
     seeLaterShowDescription.visibleIf(item.show.overview.isNotBlank())
     seeLaterShowNetwork.visibleIf(item.show.network.isNotBlank())

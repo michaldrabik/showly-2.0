@@ -8,5 +8,7 @@ class SeeLaterItemDiffCallback : DiffUtil.ItemCallback<SeeLaterListItem>() {
     oldItem.show.ids.trakt == newItem.show.ids.trakt
 
   override fun areContentsTheSame(oldItem: SeeLaterListItem, newItem: SeeLaterListItem) =
-    oldItem.image == newItem.image && oldItem.isLoading == newItem.isLoading
+    oldItem.image == newItem.image &&
+      oldItem.isLoading == newItem.isLoading &&
+      oldItem.translation == newItem.translation
 }

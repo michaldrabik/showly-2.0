@@ -24,7 +24,8 @@ class SeeLaterViewModel @Inject constructor(
       val sortOrder = sortOrderCase.loadSortOrder()
       val items = loadShowsCase.loadShows().map {
         val image = imagesProvider.findCachedImage(it, POSTER)
-        SeeLaterListItem(it, image, false)
+        val translation = loadShowsCase.loadTranslation(it)
+        SeeLaterListItem(it, image, false, translation)
       }
       uiState = SeeLaterUiModel(items = items, sortOrder = sortOrder)
     }

@@ -11,5 +11,6 @@ class SearchItemDiffCallback : DiffUtil.ItemCallback<SearchListItem>() {
     oldItem.image == newItem.image &&
       oldItem.isFollowed == newItem.isFollowed &&
       oldItem.isSeeLater == newItem.isSeeLater &&
-      oldItem.isLoading == newItem.isLoading
+      oldItem.isLoading == newItem.isLoading &&
+      oldItem.translation == newItem.translation
 }

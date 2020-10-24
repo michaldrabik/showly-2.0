@@ -24,7 +24,8 @@ class ArchiveViewModel @Inject constructor(
       val sortOrder = sortOrderCase.loadSortOrder()
       val items = loadShowsCase.loadShows().map {
         val image = imagesProvider.findCachedImage(it, POSTER)
-        ArchiveListItem(it, image, false)
+        val translation = loadShowsCase.loadTranslation(it)
+        ArchiveListItem(it, image, false, translation)
       }
       uiState = ArchiveUiModel(items = items, sortOrder = sortOrder)
     }

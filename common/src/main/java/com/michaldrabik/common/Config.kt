@@ -20,6 +20,7 @@ object Config {
   const val PULL_TO_REFRESH_COOLDOWN_MS = 10_000
   const val INITIAL_RATING = 0
   const val DEFAULT_LANGUAGE = "en"
+  val LANGUAGES = arrayOf("en", "pl")
 
   val MY_SHOWS_RECENTS_OPTIONS = arrayOf(2, 4, 6, 8)
   val DISCOVER_SHOWS_CACHE_DURATION by lazy { TimeUnit.HOURS.toMillis(12) }

@@ -54,11 +54,13 @@ class SearchViewModel @Inject constructor(
 
         val items = shows.map {
           val image = imagesProvider.findCachedImage(it, POSTER)
+          val translation = searchMainCase.loadTranslation(it)
           SearchListItem(
             it,
             image,
             isFollowed = it.ids.trakt.id in myShowsIds,
-            isSeeLater = it.ids.trakt.id in seeLaterShowsIds
+            isSeeLater = it.ids.trakt.id in seeLaterShowsIds,
+            translation = translation
           )
         }
 

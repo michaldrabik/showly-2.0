@@ -14,6 +14,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveListItem
 import kotlinx.android.synthetic.main.view_archive_show.view.*
+import java.util.Locale.ROOT
 
 @SuppressLint("SetTextI18n")
 class ArchiveShowView : ShowView<ArchiveListItem> {
@@ -41,11 +42,13 @@ class ArchiveShowView : ShowView<ArchiveListItem> {
     this.item = item
     archiveShowProgress.visibleIf(item.isLoading)
     archiveShowTitle.text = item.show.title
-    archiveShowDescription.text = item.show.overview
+    archiveShowDescription.text =
+      if (item.translation?.overview.isNullOrBlank()) item.show.overview
+      else item.translation?.overview
+
     val year = if (item.show.year > 0) " (${item.show.year})" else ""
     archiveShowNetwork.text = "${item.show.network}$year"
-    archiveShowRating.text = String.format("%.1f", item.show.rating)
-
+    archiveShowRating.text = String.format(ROOT, "%.1f", item.show.rating)
     archiveShowDescription.visibleIf(item.show.overview.isNotBlank())
     archiveShowNetwork.visibleIf(item.show.network.isNotBlank())
 

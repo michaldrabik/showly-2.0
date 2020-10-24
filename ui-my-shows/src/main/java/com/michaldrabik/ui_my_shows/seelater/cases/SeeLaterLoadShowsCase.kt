@@ -1,18 +1,23 @@
 package com.michaldrabik.ui_my_shows.seelater.cases
 
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.shows.ShowsRepository
+import java.util.*
 import javax.inject.Inject
 
 @AppScope
 class SeeLaterLoadShowsCase @Inject constructor(
   private val showsRepository: ShowsRepository,
+  private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository
 ) {
 
@@ -26,5 +31,11 @@ class SeeLaterLoadShowsCase @Inject constructor(
       NEWEST -> shows.sortedByDescending { it.year }
       else -> error("Should not be used here.")
     }
+  }
+
+  suspend fun loadTranslation(show: Show): Translation? {
+    val locale = Locale.getDefault()
+    if (locale.language == Config.DEFAULT_LANGUAGE) return null
+    return translationsRepository.loadTranslation(show, locale, onlyLocal = true)
   }
 }

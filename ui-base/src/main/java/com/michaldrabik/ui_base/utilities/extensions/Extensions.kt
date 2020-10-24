@@ -121,7 +121,7 @@ inline fun <T> MutableList<T>.findReplace(newItem: T, predicate: (T) -> Boolean)
   find(predicate)?.let { replaceItem(it, newItem) }
 }
 
-fun <T> MutableList<T>.replace(newItems: List<T>) {
+fun <T> MutableList<T>.replace(newItems: Collection<T>) {
   clear()
   addAll(newItems)
 }

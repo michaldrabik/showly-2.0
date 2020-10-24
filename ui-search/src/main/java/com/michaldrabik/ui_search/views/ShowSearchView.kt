@@ -40,7 +40,10 @@ class ShowSearchView : ShowView<SearchListItem> {
     clear()
     this.item = item
     showSearchTitle.text = item.show.title
-    showSearchDescription.text = item.show.overview
+    showSearchDescription.text =
+      if (item.translation?.overview.isNullOrBlank()) item.show.overview
+      else item.translation?.overview
+
     val year = if (item.show.year > 0) " (${item.show.year})" else ""
     showSearchNetwork.text = "${item.show.network}$year"
 
