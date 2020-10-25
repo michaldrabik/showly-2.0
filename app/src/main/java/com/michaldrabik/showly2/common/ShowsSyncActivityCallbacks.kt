@@ -6,8 +6,10 @@ import android.os.Bundle
 
 class ShowsSyncActivityCallbacks : Application.ActivityLifecycleCallbacks {
 
-  override fun onActivityStarted(activity: Activity) =
+  override fun onActivityStarted(activity: Activity) {
     ShowsSyncService.initialize(activity.applicationContext)
+    TranslationsSyncService.initialize(activity.applicationContext)
+  }
 
   override fun onActivityCreated(activity: Activity, p1: Bundle?) = Unit
   override fun onActivityStopped(activity: Activity) = Unit

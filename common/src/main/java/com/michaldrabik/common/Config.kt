@@ -31,6 +31,9 @@ object Config {
   val SHOW_SYNC_COOLDOWN by lazy {
     if (BuildConfig.DEBUG) TimeUnit.MINUTES.toMillis(5) else TimeUnit.HOURS.toMillis(8)
   }
+  val TRANSLATION_SYNC_COOLDOWN by lazy {
+    if (BuildConfig.DEBUG) TimeUnit.MINUTES.toMillis(5) else TimeUnit.DAYS.toMillis(7)
+  }
 
   val DISPLAY_DATE_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, HH:mm") }
   val DISPLAY_DATE_DAY_ONLY_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("dd MMM yyyy") }

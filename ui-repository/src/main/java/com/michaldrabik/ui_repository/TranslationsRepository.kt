@@ -6,6 +6,7 @@ import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.EpisodeTranslation
 import com.michaldrabik.storage.database.model.ShowTranslation
+import com.michaldrabik.storage.database.model.TranslationsSyncLog
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Show
@@ -94,5 +95,7 @@ class TranslationsRepository @Inject constructor(
     if (translationDb.overview.isNotBlank()) {
       database.showTranslationsDao().insert(translationDb)
     }
+
+    database.translationsSyncLogDao().upsert(TranslationsSyncLog(show.ids.trakt.id, nowUtcMillis()))
   }
 }

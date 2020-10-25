@@ -70,6 +70,12 @@
       android:permission="android.permission.BIND_JOB_SERVICE"
       />
 
+    <service
+      android:name=".common.TranslationsSyncService"
+      android:exported="true"
+      android:permission="android.permission.BIND_JOB_SERVICE"
+      />
+
     <!-- Meta -->
 
     <meta-data

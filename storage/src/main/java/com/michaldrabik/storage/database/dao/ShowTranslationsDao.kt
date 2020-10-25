@@ -12,6 +12,9 @@ interface ShowTranslationsDao : BaseDao<ShowTranslation> {
   @Query("SELECT * FROM shows_translations WHERE id_trakt == :traktId AND language == :language")
   suspend fun getById(traktId: Long, language: String): ShowTranslation?
 
+  @Query("SELECT * FROM shows_translations WHERE language == :language")
+  suspend fun getAll(language: String): List<ShowTranslation>
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(translation: ShowTranslation)
 }

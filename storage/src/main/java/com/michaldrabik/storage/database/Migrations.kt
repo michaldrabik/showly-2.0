@@ -109,6 +109,11 @@ object Migrations {
       )
       database.execSQL("CREATE UNIQUE INDEX index_episodes_translations_id_trakt ON episodes_translations(id_trakt)")
       database.execSQL("CREATE UNIQUE INDEX index_episodes_translations_id_trakt_show ON episodes_translations(id_trakt_show)")
+
+      database.execSQL(
+        "CREATE TABLE IF NOT EXISTS `sync_translations_log` (`id_show_trakt` INTEGER PRIMARY KEY NOT NULL, " +
+          "`synced_at` INTEGER NOT NULL)"
+      )
     }
   }
 
