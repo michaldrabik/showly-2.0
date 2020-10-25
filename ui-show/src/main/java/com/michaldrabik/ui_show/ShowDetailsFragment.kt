@@ -231,6 +231,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       bind(item)
       fadeIn(265) {
         bindEpisodes(item.episodes)
+        viewModel.loadSeasonTranslation(item)
       }
       startAnimation(animationEnterRight)
       itemCheckedListener = { episode, season, isChecked ->
@@ -394,13 +395,16 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       nextEpisode?.let {
         it.consume()?.let { e -> renderNextEpisode(e) }
       }
-      translation?.let { renderTranslation(it.consume()) }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
       seasons?.let {
         renderSeasons(it)
         renderRuntimeLeft(it)
         (requireAppContext() as WidgetsProvider).requestWidgetsUpdate()
+      }
+      translation?.let { renderTranslation(it.consume()) }
+      seasonTranslation?.let { item ->
+        item.consume()?.let { showDetailsEpisodesView.bindEpisodes(it.episodes, animate = false) }
       }
       relatedShows?.let { renderRelatedShows(it) }
       comments?.let { showDetailsCommentsView.bind(it) }

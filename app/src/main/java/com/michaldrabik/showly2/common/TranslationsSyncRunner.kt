@@ -59,7 +59,7 @@ class TranslationsSyncRunner @Inject constructor(
         }
 
         Timber.i("Syncing ${show.title}(${show.ids.trakt}) translations...")
-        translationsRepository.updateLocalTranslation(show, locale)
+        translationsRepository.updateLocalShowTranslation(show, locale)
         syncCount++
         Timber.i("${show.title}(${show.ids.trakt}) translation synced.")
       } catch (t: Throwable) {

@@ -9,6 +9,8 @@ import com.michaldrabik.storage.database.model.ShowTranslation
 import com.michaldrabik.storage.database.model.TranslationsSyncLog
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Season
+import com.michaldrabik.ui_model.SeasonTranslation
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_repository.mappers.Mappers
@@ -91,7 +93,65 @@ class TranslationsRepository @Inject constructor(
     return null
   }
 
-  suspend fun updateLocalTranslation(show: Show, locale: Locale = Locale.ENGLISH) {
+  suspend fun loadTranslations(
+    season: Season,
+    showId: IdTrakt,
+    locale: Locale = Locale.ENGLISH,
+    onlyLocal: Boolean = false
+  ): List<SeasonTranslation> {
+    val episodes = season.episodes.toList()
+    val episodesIds = season.episodes.map { it.ids.trakt.id }
+    val local = database.episodeTranslationsDao().getByIds(episodesIds, showId.id, locale.language)
+
+    if (local.isNotEmpty()) {
+      return episodes.map { episode ->
+        val translation = local.find { it.idTrakt == episode.ids.trakt.id }
+        SeasonTranslation(
+          ids = episode.ids.copy(),
+          title = translation?.title ?: "",
+          seasonNumber = season.number,
+          episodeNumber = episode.number,
+          overview = translation?.overview ?: "",
+          language = translation?.language ?: locale.language,
+          isLocal = true
+        )
+      }
+    }
+
+    if (onlyLocal) return emptyList()
+
+    val remoteTranslation = cloud.traktApi.fetchSeasonTranslations(showId.id, season.number, locale.language)
+      .map { mappers.translation.fromNetwork(it) }
+
+    remoteTranslation
+      .filter { it.overview.isNotBlank() }
+      .forEach { item ->
+        val dbItem = EpisodeTranslation.fromTraktId(
+          item.ids.trakt.id,
+          showId.id,
+          item.title,
+          item.language,
+          item.overview,
+          nowUtcMillis()
+        )
+        database.episodeTranslationsDao().insert(dbItem)
+      }
+
+    return episodes.map { episode ->
+      val translation = remoteTranslation.find { it.ids.trakt.id == episode.ids.trakt.id }
+      SeasonTranslation(
+        ids = episode.ids.copy(),
+        title = translation?.title ?: "",
+        seasonNumber = season.number,
+        episodeNumber = episode.number,
+        overview = translation?.overview ?: "",
+        language = translation?.language ?: locale.language,
+        isLocal = true
+      )
+    }
+  }
+
+  suspend fun updateLocalShowTranslation(show: Show, locale: Locale = Locale.ENGLISH) {
     val localTranslation = database.showTranslationsDao().getById(show.traktId, locale.language)
     val remoteTranslation = cloud.traktApi.fetchShowTranslations(show.traktId, locale.language).firstOrNull()
 

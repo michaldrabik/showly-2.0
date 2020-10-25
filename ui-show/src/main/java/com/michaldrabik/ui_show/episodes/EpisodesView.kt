@@ -51,9 +51,9 @@ class EpisodesView : ConstraintLayout {
     }
   }
 
-  fun bindEpisodes(episodes: List<EpisodeListItem>) {
+  fun bindEpisodes(episodes: List<EpisodeListItem>, animate: Boolean = true) {
     episodesAdapter.setItems(episodes)
-    episodesRecycler.scheduleLayoutAnimation()
+    if (animate) episodesRecycler.scheduleLayoutAnimation()
   }
 
   fun updateEpisodes(seasonListItems: List<SeasonListItem>) {

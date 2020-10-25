@@ -25,6 +25,7 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.SeasonBundle
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.TraktRating
+import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_show.cases.ShowDetailsActorsCase
@@ -197,6 +198,30 @@ class ShowDetailsViewModel @Inject constructor(
     } catch (error: Throwable) {
       Timber.e(error)
       FirebaseCrashlytics.getInstance().recordException(error)
+    }
+  }
+
+  fun loadSeasonTranslation(seasonItem: SeasonListItem) {
+    viewModelScope.launch {
+      try {
+        val translations = translationCase.loadTranslations(seasonItem.season, show)
+        if (translations.isEmpty()) return@launch
+
+        val episodes = seasonItem.episodes.toMutableList()
+        translations.forEach { translation ->
+          val episode = episodes.find { it.id == translation.ids.trakt.id }
+          episode?.let { ep ->
+            val t = Translation(translation.title, translation.overview, translation.language)
+            val withTranslation = ep.copy(translation = t)
+            episodes.findReplace(withTranslation) { it.id == withTranslation.id }
+          }
+        }
+
+        uiState = ShowDetailsUiModel(seasonTranslation = ActionEvent(seasonItem.copy(episodes = episodes)))
+      } catch (error: Throwable) {
+        Timber.e(error)
+        FirebaseCrashlytics.getInstance().recordException(error)
+      }
     }
   }
 

@@ -14,7 +14,8 @@ class EpisodeListItemDiffCallback(
     val (_, _, isWatched, translation) = oldList[oldItemPosition]
     val (_, _, isWatched2, translation2) = newList[newItemPosition]
 
-    return isWatched == isWatched2 && translation == translation2
+    return isWatched == isWatched2 &&
+      translation?.title == translation2?.title
   }
 
   override fun getOldListSize() = oldList.size

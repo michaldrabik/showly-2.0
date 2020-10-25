@@ -32,10 +32,10 @@
   <string name="textSettingsShowsNotificationsTitle">Notyfikacje Odcinków</string>
   <string name="textSettingsShowsNotificationsSummary">Otrzymuj notyfikacje o nowych odcinkach i sezonach twoich seriali.</string>
   <string name="textSettingsMisc">Różne</string>
-  <string name="textSettingsContactDevsTitle">Kontakt z twórcami</string>
+  <string name="textSettingsContactDevsTitle">Kontakt</string>
   <string name="textSettingsContactDevsSummary">Masz problem/pytanie? Kliknij aby wysłać wiadomość email.</string>
-  <string name="textSettingsRateAppTitle">Dodaj Recenzję</string>
-  <string name="textSettingsRateAppSummary">Podoba ci się aplikacja? Kliknij aby dodać swoją ocenę w sklepie Play Store!</string>
+  <string name="textSettingsRateAppTitle">Oceń Showly</string>
+  <string name="textSettingsRateAppSummary">Podoba ci się aplikacja? Kliknij aby dodać swoją recenzję w sklepie Play Store!</string>
   <string name="textSettingsDeleteCacheTitle">Wyczyść Obrazki</string>
   <string name="textSettingsDeleteCacheSummary">Kliknij aby wyczyścić pamięć podręczną obrazków jeżeli występują problemy z ich ładowaniem.</string>
   <string name="textSettingsQuickSyncConfirmationTitle">Wyłącz Planowane Synchronizacje</string>
