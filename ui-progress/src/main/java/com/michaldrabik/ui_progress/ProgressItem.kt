@@ -10,6 +10,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.Translation
 
 data class ProgressItem(
   override val show: Show,
@@ -21,7 +22,9 @@ data class ProgressItem(
   val watchedEpisodesCount: Int,
   override val isLoading: Boolean = false,
   val headerTextResId: Int? = null,
-  val isPinned: Boolean = false
+  val isPinned: Boolean = false,
+  val translation: Translation? = null,
+  val upcomingEpisodeTranslation: Translation? = null
 ) : ListItem {
 
   fun isSameAs(other: ProgressItem) =

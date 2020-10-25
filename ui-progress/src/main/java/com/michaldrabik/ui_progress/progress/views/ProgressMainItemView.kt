@@ -66,12 +66,17 @@ class ProgressMainItemView : ShowView<ProgressItem> {
     clear()
 
     progressItemTitle.text = item.show.title
-    val episodeTitle = if (item.episode.title.isBlank()) "TBA" else item.episode.title
     progressItemSubtitle.text = String.format(
       "S.%02d E.%02d",
       item.episode.season,
       item.episode.number
     )
+
+    val episodeTitle = when {
+      item.episode.title.isBlank() -> "TBA"
+      item.translation?.title?.isBlank() == false -> item.translation.title
+      else -> item.episode.title
+    }
     progressItemSubtitle2.text = episodeTitle
     progressItemNewBadge.visibleIf(item.isNew())
     progressItemPin.visibleIf(item.isPinned)

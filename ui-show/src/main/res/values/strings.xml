@@ -21,7 +21,6 @@
   <string name="textActorRole">%s\n(%s)</string>
   <string name="textShowRated">Your rating has been saved.</string>
   <string name="textShowRatingDeleted">Your rating has been removed.</string>
-  <string name="textLoadComments">Show Comments</string>
   <string name="textEpisodeDate">Episode %1$d | %2$s</string>
   <string name="textTraktSyncRemovedFromTrakt">Trakt.tv synced successfully.</string>
   <string name="textActorsEmpty">Actors are not available</string>

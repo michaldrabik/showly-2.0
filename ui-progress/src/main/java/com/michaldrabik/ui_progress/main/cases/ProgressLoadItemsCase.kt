@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_progress.main.cases
 
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.storage.database.AppDatabase
@@ -12,10 +13,13 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
+import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_repository.PinnedItemsRepository
+import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.shows.ShowsRepository
+import java.util.*
 import java.util.Locale.ROOT
 import javax.inject.Inject
 
@@ -24,12 +28,13 @@ class ProgressLoadItemsCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
+  private val translationsRepository: TranslationsRepository,
   private val pinnedItemsRepository: PinnedItemsRepository
 ) {
 
   suspend fun loadMyShows() = showsRepository.myShows.loadAll()
 
-  suspend fun loadWatchlistItem(show: Show): ProgressItem {
+  suspend fun loadProgressItem(show: Show): ProgressItem {
     val episodes = database.episodesDao().getAllForShowWatchlist(show.traktId)
       .filter { it.seasonNumber != 0 }
     val seasons = database.seasonsDao().getAllForShow(show.traktId)
@@ -51,20 +56,32 @@ class ProgressLoadItemsCase @Inject constructor(
     val isPinned = pinnedItemsRepository.isItemPinned(show.traktId)
     val season = seasons.first { it.idTrakt == nextEpisode.idSeason }
     val episode = database.episodesDao().getById(nextEpisode.idTrakt)
+    val episodeUi = mappers.episode.fromDatabase(episode)
     val upEpisode = upcomingEpisode?.let {
       val epDb = database.episodesDao().getById(it.idTrakt)
       mappers.episode.fromDatabase(epDb)
     } ?: Episode.EMPTY
 
+    var translation: Translation? = null
+    var upcomingTranslation: Translation? = null
+
+    val locale = Locale.getDefault()
+    if (locale.language !== Config.DEFAULT_LANGUAGE) {
+      translation = translationsRepository.loadTranslation(episodeUi, show.ids.trakt, locale, true)
+      upcomingTranslation = translationsRepository.loadTranslation(upEpisode, show.ids.trakt, locale, true)
+    }
+
     return ProgressItem(
       show,
       mappers.season.fromDatabase(season),
-      mappers.episode.fromDatabase(episode),
+      episodeUi,
       upEpisode,
       Image.createUnavailable(ImageType.POSTER),
       episodesCount,
       episodesCount - unwatchedEpisodesCount,
-      isPinned = isPinned
+      isPinned = isPinned,
+      translation = translation,
+      upcomingEpisodeTranslation = upcomingTranslation
     )
   }
 

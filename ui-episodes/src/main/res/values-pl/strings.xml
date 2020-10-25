@@ -9,4 +9,8 @@
   <string name="textNoDescription">Opis niedostępny.</string>
   <string name="textLoadCommentsCount">Pokaż Opinie (%d)</string>
   <string name="textVotes">%.1f (%d ocen)</string>
+
+  <string name="textNoComments">Brak opinii.</string>
+  <string name="textComments">Comments:</string>
+
 </resources>

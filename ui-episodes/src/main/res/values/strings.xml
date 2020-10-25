@@ -9,4 +9,7 @@
   <string name="textNoDescription">Overview not available.</string>
   <string name="textLoadCommentsCount">Show Comments (%d)</string>
   <string name="textVotes">%.1f (%d votes)</string>
+
+  <string name="textNoComments">No comments.</string>
+  <string name="textComments">Comments:</string>
 </resources>
