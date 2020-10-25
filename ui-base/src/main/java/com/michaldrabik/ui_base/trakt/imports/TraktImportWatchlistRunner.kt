@@ -9,13 +9,13 @@ import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.SeeLaterShow
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TraktAuthToken
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.delay
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 @AppScope
@@ -24,6 +24,7 @@ class TraktImportWatchlistRunner @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository,
   userTraktManager: UserTraktManager
 ) : TraktSyncRunner(userTraktManager) {
 
@@ -93,10 +94,10 @@ class TraktImportWatchlistRunner @Inject constructor(
 
   private suspend fun updateTranslation(showUi: Show) {
     try {
-      val locale = Locale.getDefault()
-      if (locale.language !== Config.DEFAULT_LANGUAGE) {
+      val language = settingsRepository.load().language
+      if (language !== Config.DEFAULT_LANGUAGE) {
         Timber.d("Fetching \'${showUi.title}\' translation...")
-        translationsRepository.updateLocalShowTranslation(showUi, locale)
+        translationsRepository.updateLocalShowTranslation(showUi, language)
       }
     } catch (error: Throwable) {
       Timber.w("Processing \'${showUi.title}\' translation failed. Skipping translation...")

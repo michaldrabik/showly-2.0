@@ -24,7 +24,6 @@ import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.shows.ShowsRepository
-import java.util.*
 import javax.inject.Inject
 
 @AppScope
@@ -114,9 +113,9 @@ class MyShowsLoadShowsCase @Inject constructor(
   }
 
   suspend fun loadTranslation(show: Show): Translation? {
-    val locale = Locale.getDefault()
-    if (locale.language == Config.DEFAULT_LANGUAGE) return null
-    return translationsRepository.loadTranslation(show, locale, onlyLocal = true)
+    val language = settingsRepository.load().language
+    if (language == Config.DEFAULT_LANGUAGE) return null
+    return translationsRepository.loadTranslation(show, language, onlyLocal = true)
   }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =

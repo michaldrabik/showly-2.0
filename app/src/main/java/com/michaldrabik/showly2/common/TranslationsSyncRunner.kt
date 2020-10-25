@@ -4,11 +4,11 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.shows.ShowsRepository
 import kotlinx.coroutines.delay
 import timber.log.Timber
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -18,7 +18,8 @@ import javax.inject.Inject
 class TranslationsSyncRunner @Inject constructor(
   private val database: AppDatabase,
   private val showsRepository: ShowsRepository,
-  private val translationsRepository: TranslationsRepository
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository
 ) {
 
   companion object {
@@ -27,13 +28,13 @@ class TranslationsSyncRunner @Inject constructor(
 
   suspend fun run(): Int {
     Timber.i("Sync initialized.")
-    val locale = Locale.getDefault()
-    if (locale.language === Config.DEFAULT_LANGUAGE) {
+    val language = settingsRepository.load().language
+    if (language === Config.DEFAULT_LANGUAGE) {
       Timber.i("Language is default. Nothing to process. Exiting...")
       return 0
     }
 
-    val translations = database.showTranslationsDao().getAll(locale.language)
+    val translations = database.showTranslationsDao().getAll(language)
     val translationsIds = translations.map { it.idTrakt }
 
     val showsToSync = showsRepository.myShows.loadAll()
@@ -59,7 +60,7 @@ class TranslationsSyncRunner @Inject constructor(
         }
 
         Timber.i("Syncing ${show.title}(${show.ids.trakt}) translations...")
-        translationsRepository.updateLocalShowTranslation(show, locale)
+        translationsRepository.updateLocalShowTranslation(show, language)
         syncCount++
         Timber.i("${show.title}(${show.ids.trakt}) translation synced.")
       } catch (t: Throwable) {

@@ -7,30 +7,31 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.SeasonTranslation
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
-import java.util.*
 import javax.inject.Inject
 
 @AppScope
 class ShowDetailsTranslationCase @Inject constructor(
-  private val translationsRepository: TranslationsRepository
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository
 ) {
 
   suspend fun loadTranslation(show: Show): Translation? {
-    val locale = Locale.getDefault()
-    if (locale.language == DEFAULT_LANGUAGE) return null
-    return translationsRepository.loadTranslation(show, locale)
+    val language = settingsRepository.load().language
+    if (language == DEFAULT_LANGUAGE) return null
+    return translationsRepository.loadTranslation(show, language)
   }
 
   suspend fun loadTranslation(episode: Episode, show: Show, onlyLocal: Boolean = false): Translation? {
-    val locale = Locale.getDefault()
-    if (locale.language == DEFAULT_LANGUAGE) return null
-    return translationsRepository.loadTranslation(episode, show.ids.trakt, locale, onlyLocal)
+    val language = settingsRepository.load().language
+    if (language == DEFAULT_LANGUAGE) return null
+    return translationsRepository.loadTranslation(episode, show.ids.trakt, language, onlyLocal)
   }
 
   suspend fun loadTranslations(season: Season, show: Show, onlyLocal: Boolean = false): List<SeasonTranslation> {
-    val locale = Locale.getDefault()
-    if (locale.language == DEFAULT_LANGUAGE) return emptyList()
-    return translationsRepository.loadTranslations(season, show.ids.trakt, locale, onlyLocal)
+    val language = settingsRepository.load().language
+    if (language == DEFAULT_LANGUAGE) return emptyList()
+    return translationsRepository.loadTranslations(season, show.ids.trakt, language, onlyLocal)
   }
 }

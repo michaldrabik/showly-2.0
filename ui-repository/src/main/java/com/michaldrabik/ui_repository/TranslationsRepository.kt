@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_repository
 
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
@@ -14,7 +15,6 @@ import com.michaldrabik.ui_model.SeasonTranslation
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_repository.mappers.Mappers
-import java.util.*
 import javax.inject.Inject
 
 @AppScope
@@ -26,16 +26,16 @@ class TranslationsRepository @Inject constructor(
 
   suspend fun loadTranslation(
     show: Show,
-    locale: Locale = Locale.ENGLISH,
+    language: String = Config.DEFAULT_LANGUAGE,
     onlyLocal: Boolean = false
   ): Translation? {
-    val local = database.showTranslationsDao().getById(show.traktId, locale.language)
+    val local = database.showTranslationsDao().getById(show.traktId, language)
     local?.let {
       return mappers.translation.fromDatabase(it).copy(isLocal = true)
     }
     if (onlyLocal) return null
 
-    val remoteTranslation = cloud.traktApi.fetchShowTranslations(show.traktId, locale.language).firstOrNull()
+    val remoteTranslation = cloud.traktApi.fetchShowTranslations(show.traktId, language).firstOrNull()
     val translation = mappers.translation.fromNetwork(remoteTranslation)
     val translationDb = ShowTranslation.fromTraktId(
       show.traktId,
@@ -55,17 +55,17 @@ class TranslationsRepository @Inject constructor(
   suspend fun loadTranslation(
     episode: Episode,
     showId: IdTrakt,
-    locale: Locale = Locale.ENGLISH,
+    language: String = Config.DEFAULT_LANGUAGE,
     onlyLocal: Boolean = false
   ): Translation? {
-    val local = database.episodeTranslationsDao().getById(episode.ids.trakt.id, showId.id, locale.language)
+    val local = database.episodeTranslationsDao().getById(episode.ids.trakt.id, showId.id, language)
     local?.let {
       return mappers.translation.fromDatabase(it).copy(isLocal = true)
     }
 
     if (onlyLocal) return null
 
-    val remoteTranslation = cloud.traktApi.fetchSeasonTranslations(showId.id, episode.season, locale.language)
+    val remoteTranslation = cloud.traktApi.fetchSeasonTranslations(showId.id, episode.season, language)
       .map { mappers.translation.fromNetwork(it) }
     val targetTranslation = remoteTranslation.find { it.ids.trakt == episode.ids.trakt }
 
@@ -96,12 +96,12 @@ class TranslationsRepository @Inject constructor(
   suspend fun loadTranslations(
     season: Season,
     showId: IdTrakt,
-    locale: Locale = Locale.ENGLISH,
+    language: String = Config.DEFAULT_LANGUAGE,
     onlyLocal: Boolean = false
   ): List<SeasonTranslation> {
     val episodes = season.episodes.toList()
     val episodesIds = season.episodes.map { it.ids.trakt.id }
-    val local = database.episodeTranslationsDao().getByIds(episodesIds, showId.id, locale.language)
+    val local = database.episodeTranslationsDao().getByIds(episodesIds, showId.id, language)
 
     if (local.isNotEmpty()) {
       return episodes.map { episode ->
@@ -112,7 +112,7 @@ class TranslationsRepository @Inject constructor(
           seasonNumber = season.number,
           episodeNumber = episode.number,
           overview = translation?.overview ?: "",
-          language = translation?.language ?: locale.language,
+          language = translation?.language ?: language,
           isLocal = true
         )
       }
@@ -120,7 +120,7 @@ class TranslationsRepository @Inject constructor(
 
     if (onlyLocal) return emptyList()
 
-    val remoteTranslation = cloud.traktApi.fetchSeasonTranslations(showId.id, season.number, locale.language)
+    val remoteTranslation = cloud.traktApi.fetchSeasonTranslations(showId.id, season.number, language)
       .map { mappers.translation.fromNetwork(it) }
 
     remoteTranslation
@@ -145,15 +145,15 @@ class TranslationsRepository @Inject constructor(
         seasonNumber = season.number,
         episodeNumber = episode.number,
         overview = translation?.overview ?: "",
-        language = translation?.language ?: locale.language,
+        language = translation?.language ?: language,
         isLocal = true
       )
     }
   }
 
-  suspend fun updateLocalShowTranslation(show: Show, locale: Locale = Locale.ENGLISH) {
-    val localTranslation = database.showTranslationsDao().getById(show.traktId, locale.language)
-    val remoteTranslation = cloud.traktApi.fetchShowTranslations(show.traktId, locale.language).firstOrNull()
+  suspend fun updateLocalShowTranslation(show: Show, language: String = Config.DEFAULT_LANGUAGE) {
+    val localTranslation = database.showTranslationsDao().getById(show.traktId, language)
+    val remoteTranslation = cloud.traktApi.fetchShowTranslations(show.traktId, language).firstOrNull()
 
     val translationDb = ShowTranslation.fromTraktId(
       show.traktId,
