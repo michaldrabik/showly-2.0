@@ -20,9 +20,9 @@ class ShowDetailsTranslationCase @Inject constructor(
     return translationsRepository.loadTranslation(show, locale)
   }
 
-  suspend fun loadTranslation(episode: Episode, show: Show): Translation? {
+  suspend fun loadTranslation(episode: Episode, show: Show, onlyLocal: Boolean = false): Translation? {
     val locale = Locale.getDefault()
     if (locale.language == DEFAULT_LANGUAGE) return null
-    return translationsRepository.loadTranslation(episode, show.ids.trakt, locale)
+    return translationsRepository.loadTranslation(episode, show.ids.trakt, locale, onlyLocal)
   }
 }

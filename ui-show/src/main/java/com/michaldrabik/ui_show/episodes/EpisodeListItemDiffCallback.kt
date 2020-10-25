@@ -11,10 +11,10 @@ class EpisodeListItemDiffCallback(
     oldList[oldItemPosition].id == newList[newItemPosition].id
 
   override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-    val (_, _, isWatched) = oldList[oldItemPosition]
-    val (_, _, isWatched2) = newList[newItemPosition]
+    val (_, _, isWatched, translation) = oldList[oldItemPosition]
+    val (_, _, isWatched2, translation2) = newList[newItemPosition]
 
-    return isWatched == isWatched2
+    return isWatched == isWatched2 && translation == translation2
   }
 
   override fun getOldListSize() = oldList.size

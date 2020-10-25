@@ -160,7 +160,10 @@ class ShowDetailsViewModel @Inject constructor(
     areSeasonsLocal = isLocal
     val seasonsItems = seasons
       .map {
-        val episodes = it.episodes.map { episode -> EpisodeListItem(episode, it, false) }
+        val episodes = it.episodes.map { episode ->
+          val translation = translationCase.loadTranslation(episode, show, onlyLocal = true)
+          EpisodeListItem(episode, it, false, translation)
+        }
         SeasonListItem(it, episodes, isWatched = false)
       }
       .sortedByDescending { it.season.number }
@@ -428,7 +431,7 @@ class ShowDetailsViewModel @Inject constructor(
       val isSeasonWatched = watchedSeasonsIds.any { id -> id == item.id }
       val episodes = item.episodes.map { episodeItem ->
         val isEpisodeWatched = watchedEpisodesIds.any { id -> id == episodeItem.id }
-        EpisodeListItem(episodeItem.episode, item.season, isEpisodeWatched)
+        EpisodeListItem(episodeItem.episode, item.season, isEpisodeWatched, episodeItem.translation)
       }
       val updated = item.copy(episodes = episodes, isWatched = isSeasonWatched)
       items.add(updated)

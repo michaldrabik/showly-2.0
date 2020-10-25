@@ -10,6 +10,7 @@ import com.michaldrabik.network.trakt.model.RatingResultEpisode
 import com.michaldrabik.network.trakt.model.RatingResultShow
 import com.michaldrabik.network.trakt.model.SearchResult
 import com.michaldrabik.network.trakt.model.Season
+import com.michaldrabik.network.trakt.model.SeasonTranslation
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.network.trakt.model.ShowResult
 import com.michaldrabik.network.trakt.model.SyncExportRequest
@@ -72,6 +73,13 @@ interface TraktService {
     @Path("traktId") traktId: Long,
     @Path("code") countryCode: String,
   ): List<Translation>
+
+  @GET("shows/{showId}/seasons/{seasonNumber}")
+  suspend fun fetchSeasonTranslations(
+    @Path("showId") showTraktId: Long,
+    @Path("seasonNumber") seasonNumber: Int,
+    @Query("translations") countryCode: String,
+  ): List<SeasonTranslation>
 
   @GET("shows/{showId}/seasons/{seasonNumber}/episodes/{episodeNumber}/translations/{code}")
   suspend fun fetchEpisodeTranslations(

@@ -60,24 +60,35 @@ class TranslationsRepository @Inject constructor(
     local?.let {
       return mappers.translation.fromDatabase(it).copy(isLocal = true)
     }
+
     if (onlyLocal) return null
 
-    val remoteTranslation = cloud.traktApi.fetchEpisodeTranslations(showId.id, episode.season, episode.number, locale.language).firstOrNull()
-    val translation = mappers.translation.fromNetwork(remoteTranslation)
-    val translationDb = EpisodeTranslation.fromTraktId(
-      episode.ids.trakt.id,
-      showId.id,
-      translation.title,
-      translation.language,
-      translation.overview,
-      nowUtcMillis()
-    )
+    val remoteTranslation = cloud.traktApi.fetchSeasonTranslations(showId.id, episode.season, locale.language)
+      .map { mappers.translation.fromNetwork(it) }
+    val targetTranslation = remoteTranslation.find { it.ids.trakt == episode.ids.trakt }
 
-    if (translationDb.overview.isNotBlank()) {
-      database.episodeTranslationsDao().insert(translationDb)
+    remoteTranslation
+      .filter { it.overview.isNotBlank() }
+      .forEach { item ->
+        val dbItem = EpisodeTranslation.fromTraktId(
+          item.ids.trakt.id,
+          showId.id,
+          item.title,
+          item.language,
+          item.overview,
+          nowUtcMillis()
+        )
+        database.episodeTranslationsDao().insert(dbItem)
+      }
+
+    if (targetTranslation != null) {
+      return Translation(
+        targetTranslation.title,
+        targetTranslation.overview,
+        targetTranslation.language
+      )
     }
-
-    return translation
+    return null
   }
 
   suspend fun updateLocalTranslation(show: Show, locale: Locale = Locale.ENGLISH) {
