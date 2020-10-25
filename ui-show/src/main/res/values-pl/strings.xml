@@ -23,9 +23,9 @@
   <string name="textShowRatingDeleted">Ocena została usunięta.</string>
   <string name="textEpisodeDate">Odcinek %1$d | %2$s</string>
   <string name="textTraktSyncRemovedFromTrakt">Trakt.tv zostało zaktualizowane.</string>
-  <string name="textActorsEmpty">Obsada jest niedostępna.</string>
+  <string name="textActorsEmpty">Obsada niedostępna</string>
   <string name="textSeasons">Sezony:</string>
-  <string name="textSeasonsEmpty">Sezony są niedostępne.</string>
+  <string name="textSeasonsEmpty">Sezony niedostępne</string>
   <string name="textTrailer">Trailer</string>
   <string name="textImdb">iMDB</string>
   <string name="textShare">Prześlij</string>
