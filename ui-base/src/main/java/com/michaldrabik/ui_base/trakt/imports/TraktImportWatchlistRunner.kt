@@ -1,17 +1,21 @@
 package com.michaldrabik.ui_base.trakt.imports
 
 import androidx.room.withTransaction
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.SeeLaterShow
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
+import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.TraktAuthToken
+import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.delay
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 @AppScope
@@ -19,6 +23,7 @@ class TraktImportWatchlistRunner @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
   private val mappers: Mappers,
+  private val translationsRepository: TranslationsRepository,
   userTraktManager: UserTraktManager
 ) : TraktSyncRunner(userTraktManager) {
 
@@ -79,9 +84,22 @@ class TraktImportWatchlistRunner @Inject constructor(
               database.seeLaterShowsDao().insert(SeeLaterShow.fromTraktId(showId, nowUtcMillis()))
             }
           }
+          updateTranslation(showUi)
         } catch (t: Throwable) {
           Timber.w("Processing \'${result.show!!.title}\' failed. Skipping...")
         }
       }
+  }
+
+  private suspend fun updateTranslation(showUi: Show) {
+    try {
+      val locale = Locale.getDefault()
+      if (locale.language !== Config.DEFAULT_LANGUAGE) {
+        Timber.d("Fetching \'${showUi.title}\' translation...")
+        translationsRepository.updateLocalTranslation(showUi, locale)
+      }
+    } catch (error: Throwable) {
+      Timber.w("Processing \'${showUi.title}\' translation failed. Skipping translation...")
+    }
   }
 }

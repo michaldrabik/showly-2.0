@@ -73,7 +73,7 @@ class TranslationsRepository @Inject constructor(
       nowUtcMillis()
     )
 
-    if (translationDb.overview.isNotBlank() && translationDb.title.isNotBlank()) {
+    if (translationDb.overview.isNotBlank()) {
       database.episodeTranslationsDao().insert(translationDb)
     }
 

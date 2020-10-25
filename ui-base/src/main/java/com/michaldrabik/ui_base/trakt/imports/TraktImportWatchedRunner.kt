@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_base.trakt.imports
 
 import androidx.room.withTransaction
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
@@ -16,12 +17,14 @@ import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.UserTvdbManager
 import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.delay
 import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 @AppScope
@@ -31,6 +34,7 @@ class TraktImportWatchedRunner @Inject constructor(
   private val mappers: Mappers,
   private val imagesProvider: ShowImagesProvider,
   private val userTvdbManager: UserTvdbManager,
+  private val translationsRepository: TranslationsRepository,
   userTraktManager: UserTraktManager
 ) : TraktSyncRunner(userTraktManager) {
 
@@ -87,7 +91,6 @@ class TraktImportWatchedRunner @Inject constructor(
 
         try {
           val showId = result.show!!.ids!!.trakt!!
-
           val (seasons, episodes) = loadSeasons(showId, result)
 
           database.withTransaction {
@@ -109,6 +112,8 @@ class TraktImportWatchedRunner @Inject constructor(
             database.seasonsDao().upsert(seasons)
             database.episodesDao().upsert(episodes)
           }
+
+          updateTranslation(showUi)
         } catch (t: Throwable) {
           Timber.w("Processing \'${result.show!!.title}\' failed. Skipping...")
         }
@@ -163,6 +168,18 @@ class TraktImportWatchedRunner @Inject constructor(
       userTvdbManager.checkAuthorization()
     } catch (t: Throwable) {
       // Ignore for now
+    }
+  }
+
+  private suspend fun updateTranslation(showUi: Show) {
+    try {
+      val locale = Locale.getDefault()
+      if (locale.language !== Config.DEFAULT_LANGUAGE) {
+        Timber.d("Fetching \'${showUi.title}\' translation...")
+        translationsRepository.updateLocalTranslation(showUi, locale)
+      }
+    } catch (error: Throwable) {
+      Timber.w("Processing \'${showUi.title}\' translation failed. Skipping translation...")
     }
   }
 }

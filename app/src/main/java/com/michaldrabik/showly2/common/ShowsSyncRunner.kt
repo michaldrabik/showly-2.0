@@ -5,6 +5,7 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.EpisodesSyncLog
 import com.michaldrabik.ui_episodes.EpisodesManager
 import com.michaldrabik.ui_model.ShowStatus.CANCELED
 import com.michaldrabik.ui_model.ShowStatus.ENDED
@@ -66,7 +67,9 @@ class ShowsSyncRunner @Inject constructor(
         Timber.e("${show.title}(${show.ids.trakt}) show sync error. Skipping... \n$t")
       }
 
-      if (!isInWatchlist) {
+      if (isInWatchlist) {
+        database.episodesSyncLogDao().upsert(EpisodesSyncLog(show.ids.trakt.id, nowUtcMillis()))
+      } else {
         try {
           Timber.i("Syncing ${show.title}(${show.ids.trakt}) episodes...")
 
