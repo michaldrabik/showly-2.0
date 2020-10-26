@@ -109,7 +109,7 @@ class ProgressFragment :
 
     TabLayoutMediator(progressTabs, progressPager) { tab, position ->
       tab.text = when (position) {
-        0 -> getString(R.string.tabWatchlist)
+        0 -> getString(R.string.tabProgress)
         else -> getString(R.string.tabCalendar)
       }
     }.attach()

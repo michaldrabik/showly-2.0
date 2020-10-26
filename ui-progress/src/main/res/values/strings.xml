@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="tabCalendar">Calendar</string>
-  <string name="tabWatchlist">Progress</string>
+  <string name="tabProgress">Progress</string>
   <string name="textCalendarEmpty">There are no new episodes on the way.</string>
 
   <string name="textWatchlistIncoming">Upcoming</string>
