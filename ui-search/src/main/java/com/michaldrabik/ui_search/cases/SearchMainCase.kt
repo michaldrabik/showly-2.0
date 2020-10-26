@@ -32,7 +32,7 @@ class SearchMainCase @Inject constructor(
   suspend fun loadSeeLaterShowsIds() = showsRepository.seeLaterShows.loadAllIds()
 
   suspend fun loadTranslation(show: Show): Translation? {
-    val language = settingsRepository.load().language
+    val language = settingsRepository.getLanguage()
     if (language == Config.DEFAULT_LANGUAGE) return null
     return translationsRepository.loadTranslation(show, language, onlyLocal = true)
   }

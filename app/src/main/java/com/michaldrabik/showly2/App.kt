@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.StrictMode
 import com.google.firebase.messaging.FirebaseMessaging
 import com.jakewharton.threetenabp.AndroidThreeTen
+import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.network.di.DaggerCloudComponent
 import com.michaldrabik.showly2.common.ShowsSyncActivityCallbacks
 import com.michaldrabik.showly2.di.component.AppComponent
@@ -23,9 +24,12 @@ import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsActivityCallbacks
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
+import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
 import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider
+import com.yariksoffice.lingver.Lingver
 import timber.log.Timber
+import javax.inject.Inject
 import com.michaldrabik.ui_base.fcm.NotificationChannel as AppNotificationChannel
 
 class App :
@@ -34,6 +38,8 @@ class App :
   UiWidgetsComponentProvider,
   OnlineStatusProvider,
   WidgetsProvider {
+
+  @Inject lateinit var settingsRepository: SettingsRepository
 
   lateinit var appComponent: AppComponent
   var isAppOnline = true
@@ -61,6 +67,13 @@ class App :
     setupComponents()
     setupStrictMode()
     setupNotificationChannels()
+    setupLanguage()
+  }
+
+  private fun setupLanguage() {
+    Lingver.init(this, DEFAULT_LANGUAGE)
+    val language = settingsRepository.getLanguage()
+    Lingver.getInstance().setLocale(this, language)
   }
 
   private fun setupComponents() {
@@ -73,6 +86,7 @@ class App :
       )
       .preferencesModule(PreferencesModule(applicationContext))
       .build()
+    appComponent.inject(this)
   }
 
   private fun setupStrictMode() {

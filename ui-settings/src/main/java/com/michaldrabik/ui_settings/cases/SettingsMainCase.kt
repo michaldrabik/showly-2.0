@@ -17,6 +17,7 @@ import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_settings.helpers.AppLanguage
 import javax.inject.Inject
 
 @AppScope
@@ -27,6 +28,8 @@ class SettingsMainCase @Inject constructor(
 ) {
 
   suspend fun getSettings(): Settings = settingsRepository.load()
+
+  suspend fun getLanguage() = AppLanguage.fromCode(settingsRepository.getLanguage())
 
   suspend fun setRecentShowsAmount(amount: Int) {
     check(amount in Config.MY_SHOWS_RECENTS_OPTIONS)
@@ -102,6 +105,10 @@ class SettingsMainCase @Inject constructor(
       settingsRepository.update(new)
       announcementManager.refreshEpisodesAnnouncements(context.applicationContext)
     }
+  }
+
+  suspend fun setLanguage(language: AppLanguage) {
+    settingsRepository.setLanguage(language.code)
   }
 
   suspend fun deleteImagesCache() = imagesProvider.deleteLocalCache()

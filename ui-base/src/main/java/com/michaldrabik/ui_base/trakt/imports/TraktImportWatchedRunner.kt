@@ -174,7 +174,7 @@ class TraktImportWatchedRunner @Inject constructor(
 
   private suspend fun updateTranslation(showUi: Show) {
     try {
-      val language = settingsRepository.load().language
+      val language = settingsRepository.getLanguage()
       if (language !== Config.DEFAULT_LANGUAGE) {
         Timber.d("Fetching \'${showUi.title}\' translation...")
         translationsRepository.updateLocalShowTranslation(showUi, language)

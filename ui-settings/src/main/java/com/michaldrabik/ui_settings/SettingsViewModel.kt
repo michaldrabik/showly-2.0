@@ -13,6 +13,7 @@ import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_settings.cases.SettingsMainCase
 import com.michaldrabik.ui_settings.cases.SettingsTraktCase
+import com.michaldrabik.ui_settings.helpers.AppLanguage
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -101,6 +102,14 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
+  fun setLanguage(language: AppLanguage) {
+    viewModelScope.launch {
+      mainCase.setLanguage(language)
+      refreshSettings()
+      Analytics.logSettingsLanguage(language.code)
+    }
+  }
+
   fun setTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {
     viewModelScope.launch {
       traktCase.setTraktSyncSchedule(schedule, context)
@@ -146,6 +155,7 @@ class SettingsViewModel @Inject constructor(
   private suspend fun refreshSettings() {
     uiState = SettingsUiModel(
       settings = mainCase.getSettings(),
+      language = mainCase.getLanguage(),
       isSignedInTrakt = traktCase.isTraktAuthorized(),
       traktUsername = traktCase.getTraktUsername()
     )

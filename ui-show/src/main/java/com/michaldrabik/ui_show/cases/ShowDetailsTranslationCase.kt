@@ -18,19 +18,19 @@ class ShowDetailsTranslationCase @Inject constructor(
 ) {
 
   suspend fun loadTranslation(show: Show): Translation? {
-    val language = settingsRepository.load().language
+    val language = settingsRepository.getLanguage()
     if (language == DEFAULT_LANGUAGE) return null
     return translationsRepository.loadTranslation(show, language)
   }
 
   suspend fun loadTranslation(episode: Episode, show: Show, onlyLocal: Boolean = false): Translation? {
-    val language = settingsRepository.load().language
+    val language = settingsRepository.getLanguage()
     if (language == DEFAULT_LANGUAGE) return null
     return translationsRepository.loadTranslation(episode, show.ids.trakt, language, onlyLocal)
   }
 
   suspend fun loadTranslations(season: Season, show: Show, onlyLocal: Boolean = false): List<SeasonTranslation> {
-    val language = settingsRepository.load().language
+    val language = settingsRepository.getLanguage()
     if (language == DEFAULT_LANGUAGE) return emptyList()
     return translationsRepository.loadTranslations(season, show.ids.trakt, language, onlyLocal)
   }

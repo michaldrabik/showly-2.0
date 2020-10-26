@@ -33,6 +33,5 @@ data class Settings(
   @ColumnInfo(name = "watchlist_sort_by", defaultValue = "NAME") var watchlistSortBy: String,
   @ColumnInfo(name = "archive_shows_sort_by", defaultValue = "NAME") var archiveShowsSortBy: String,
   @ColumnInfo(name = "archive_shows_include_statistics", defaultValue = "1") var archiveShowsIncludeStatistics: Boolean,
-  @ColumnInfo(name = "special_seasons_enabled", defaultValue = "0") var specialSeasonsEnabled: Boolean,
-  @ColumnInfo(name = "language", defaultValue = "en") var language: String
+  @ColumnInfo(name = "special_seasons_enabled", defaultValue = "0") var specialSeasonsEnabled: Boolean
 )

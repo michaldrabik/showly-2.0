@@ -15,6 +15,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.MY_SHOWS_RECENTS_OPTIONS
 import com.michaldrabik.ui_base.BaseFragment
@@ -22,6 +23,7 @@ import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
+import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MyShowsSection.FINISHED
 import com.michaldrabik.ui_model.MyShowsSection.RECENTS
@@ -31,6 +33,7 @@ import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.TraktSyncSchedule.OFF
 import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
+import com.michaldrabik.ui_settings.helpers.AppLanguage
 import com.michaldrabik.ui_settings.helpers.PlayStoreHelper
 import kotlinx.android.synthetic.main.fragment_settings.*
 import com.michaldrabik.network.Config as ConfigNetwork
@@ -71,6 +74,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   private fun render(uiModel: SettingsUiModel) {
     uiModel.run {
       settings?.let { renderSettings(it) }
+      language?.let { renderLanguage(it) }
       isSignedInTrakt?.let { isSignedIn ->
         settingsTraktSync.visibleIf(isSignedIn)
         settingsTraktQuickSync.visibleIf(isSignedIn)
@@ -158,6 +162,13 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsVersion.text = "v${BuildConfig.VER_NAME} (${BuildConfig.VER_CODE})"
   }
 
+  private fun renderLanguage(language: AppLanguage) {
+    settingsLanguageValue.run {
+      setText(language.displayName)
+      onClick { showLanguageDialog(language) }
+    }
+  }
+
   private fun showQuickSyncConfirmationDialog() {
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
       .setTitle(R.string.textSettingsQuickSyncConfirmationTitle)
@@ -198,6 +209,20 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         selected
       ) { _, index, isChecked ->
         viewModel.enableMyShowsSection(options[index], isChecked)
+      }
+      .show()
+  }
+
+  private fun showLanguageDialog(language: AppLanguage) {
+    val options = AppLanguage.values()
+    val default = options.indexOf(language)
+
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setSingleChoiceItems(options.map { getString(it.displayName) }.toTypedArray(), default) { dialog, index ->
+        viewModel.setLanguage(options[index])
+        settingsRoot.showInfoSnackbar(getString(R.string.textSettingsLanguageChangeMessage), length = LENGTH_LONG)
+        dialog.dismiss()
       }
       .show()
   }

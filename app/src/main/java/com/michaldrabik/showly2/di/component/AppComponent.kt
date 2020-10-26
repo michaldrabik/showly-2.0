@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.di.component
 
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.di.CloudMarker
+import com.michaldrabik.showly2.App
 import com.michaldrabik.showly2.di.module.PreferencesModule
 import com.michaldrabik.showly2.di.module.SubcomponentsModule
 import com.michaldrabik.showly2.di.module.ViewModelsModule
@@ -35,6 +36,10 @@ import dagger.Component
 )
 interface AppComponent {
 
+  fun inject(application: App)
+
+  fun inject(activity: MainActivity)
+
   fun serviceComponent(): ServiceComponent.Factory
 
   fun uiBaseComponent(): UiBaseComponent.Factory
@@ -60,6 +65,4 @@ interface AppComponent {
   fun uiWatchlistComponent(): UiProgressComponent.Factory
 
   fun uiWidgetsComponent(): UiWidgetsComponent.Factory
-
-  fun inject(activity: MainActivity)
 }

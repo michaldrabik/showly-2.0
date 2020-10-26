@@ -28,7 +28,7 @@ class TranslationsSyncRunner @Inject constructor(
 
   suspend fun run(): Int {
     Timber.i("Sync initialized.")
-    val language = settingsRepository.load().language
+    val language = settingsRepository.getLanguage()
     if (language === Config.DEFAULT_LANGUAGE) {
       Timber.i("Language is default. Nothing to process. Exiting...")
       return 0

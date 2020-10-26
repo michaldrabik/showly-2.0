@@ -51,7 +51,7 @@ class EpisodeDetailsViewModel @Inject constructor(
   fun loadTranslation(showTraktId: IdTrakt, episode: Episode) {
     viewModelScope.launch {
       try {
-        val language = settingsRepository.load().language
+        val language = settingsRepository.getLanguage()
         if (language == Config.DEFAULT_LANGUAGE) return@launch
         val translation = translationsRepository.loadTranslation(episode, showTraktId, language)
         translation?.let {

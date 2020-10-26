@@ -1,7 +1,5 @@
 package com.michaldrabik.ui_model
 
-import com.michaldrabik.common.Config
-
 data class Settings(
   val isInitialRun: Boolean,
   val pushNotificationsEnabled: Boolean,
@@ -29,8 +27,7 @@ data class Settings(
   val traktQuickRemoveEnabled: Boolean,
   val watchlistSortOrder: SortOrder,
   val archiveShowsIncludeStatistics: Boolean,
-  val specialSeasonsEnabled: Boolean,
-  val language: String
+  val specialSeasonsEnabled: Boolean
 ) {
 
   companion object {
@@ -61,8 +58,7 @@ data class Settings(
       traktQuickRemoveEnabled = false,
       watchlistSortOrder = SortOrder.NAME,
       archiveShowsIncludeStatistics = true,
-      specialSeasonsEnabled = false,
-      language = Config.DEFAULT_LANGUAGE
+      specialSeasonsEnabled = false
     )
   }
 }
