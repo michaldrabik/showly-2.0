@@ -17,4 +17,7 @@ interface ShowTranslationsDao : BaseDao<ShowTranslation> {
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(translation: ShowTranslation)
+
+  @Query("DELETE FROM shows_translations WHERE language IN (:languages)")
+  suspend fun deleteByLanguage(languages: List<String>)
 }

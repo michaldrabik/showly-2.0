@@ -37,4 +37,6 @@ dependencies {
   implementation project(':ui-repository')
   implementation project(':ui-model')
   implementation project(':ui-navigation')
+
+  api "com.jakewharton:process-phoenix:$versions.phoenix"
 }

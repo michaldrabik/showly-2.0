@@ -15,7 +15,8 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
+import com.jakewharton.processphoenix.ProcessPhoenix
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.MY_SHOWS_RECENTS_OPTIONS
 import com.michaldrabik.ui_base.BaseFragment
@@ -215,13 +216,20 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun showLanguageDialog(language: AppLanguage) {
     val options = AppLanguage.values()
-    val default = options.indexOf(language)
+    val selected = options.indexOf(language)
 
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setSingleChoiceItems(options.map { getString(it.displayName) }.toTypedArray(), default) { dialog, index ->
-        viewModel.setLanguage(options[index])
-        settingsRoot.showInfoSnackbar(getString(R.string.textSettingsLanguageChangeMessage), length = LENGTH_LONG)
+      .setSingleChoiceItems(options.map { getString(it.displayName) }.toTypedArray(), selected) { dialog, index ->
+        if (index != selected) {
+          viewModel.setLanguage(options[index])
+          settingsRoot.showInfoSnackbar(
+            getString(R.string.textSettingsLanguageChangeMessage),
+            actionText = R.string.textOk,
+            length = LENGTH_INDEFINITE,
+            action = { ProcessPhoenix.triggerRebirth(requireContext().applicationContext) }
+          )
+        }
         dialog.dismiss()
       }
       .show()

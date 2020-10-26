@@ -9,6 +9,7 @@ import android.net.ConnectivityManager
 import android.os.Build
 import android.os.StrictMode
 import com.google.firebase.messaging.FirebaseMessaging
+import com.jakewharton.processphoenix.ProcessPhoenix
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.network.di.DaggerCloudComponent
@@ -54,6 +55,8 @@ class App :
 
   override fun onCreate() {
     super.onCreate()
+    if (ProcessPhoenix.isPhoenixProcess(this)) return
+
     activityCallbacks.forEach { registerActivityLifecycleCallbacks(it) }
 
     AndroidThreeTen.init(this)

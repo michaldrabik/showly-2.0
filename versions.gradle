@@ -35,6 +35,7 @@ ext.versions = [
     threeTenAbp            : '1.2.4',
     timber                 : '4.7.1',
     lingver                : '1.3.0',
+    phoenix                : '2.0.0',
 
     // Testing
     junit                  : '4.13.1',

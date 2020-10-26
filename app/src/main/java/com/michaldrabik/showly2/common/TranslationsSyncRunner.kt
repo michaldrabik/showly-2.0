@@ -1,5 +1,7 @@
 package com.michaldrabik.showly2.common
 
+import androidx.room.withTransaction
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
@@ -7,6 +9,7 @@ import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.shows.ShowsRepository
+import com.michaldrabik.ui_settings.helpers.AppLanguage
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject
@@ -29,7 +32,8 @@ class TranslationsSyncRunner @Inject constructor(
   suspend fun run(): Int {
     Timber.i("Sync initialized.")
     val language = settingsRepository.getLanguage()
-    if (language === Config.DEFAULT_LANGUAGE) {
+    if (language == Config.DEFAULT_LANGUAGE) {
+      clearUnusedTranslations(language)
       Timber.i("Language is default. Nothing to process. Exiting...")
       return 0
     }
@@ -70,6 +74,23 @@ class TranslationsSyncRunner @Inject constructor(
       }
     }
 
+    clearUnusedTranslations(language)
     return syncCount
+  }
+
+  private suspend fun clearUnusedTranslations(language: String) {
+    try {
+      Timber.i("Deleting unused translations...")
+      val toClear = AppLanguage.values()
+        .filter { it.code != Config.DEFAULT_LANGUAGE && it.code != language }
+        .map { it.code }
+      database.withTransaction {
+        database.showTranslationsDao().deleteByLanguage(toClear)
+        database.episodeTranslationsDao().deleteByLanguage(toClear)
+      }
+    } catch (error: Throwable) {
+      Timber.e(error)
+      FirebaseCrashlytics.getInstance().recordException(error)
+    }
   }
 }
