@@ -23,7 +23,7 @@
   <string name="textSettingsMyShowsSectionsTitle">Moje Seriale - Sekcje</string>
   <string name="textSettingsMyShowsSectionSummary">Włącz/wyłącz sekcje w zakładce \'Moje Seriale\'</string>
   <string name="textSettingsMyShowsLanguageTitle">Język</string>
-  <string name="textSettingsMyShowsLanguageSummary">W przypadku braku tłumaczenia, zostanie użyty język angielski.</string>
+  <string name="textSettingsMyShowsLanguageSummary">Opisy będą tłumaczone na bieżąco w miarę dostępności.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Statystyki Archiwum</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Uwzględniaj seriale z Archiwum w statystykach.</string>
   <string name="textSettingsIncludeSpecialsTitle">Sezony Specjalne</string>

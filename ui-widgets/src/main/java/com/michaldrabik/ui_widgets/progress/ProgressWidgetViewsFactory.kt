@@ -87,11 +87,16 @@ class ProgressWidgetViewsFactory(
     val progressText = "${item.watchedEpisodesCount}/${item.episodesCount}"
     val imageUrl = "${Config.TVDB_IMAGE_BASE_BANNERS_URL}${item.image.fileUrl}"
     val hasAired = item.episode.hasAired(item.season)
+    val subtitle2 = when {
+      item.episode.title.isBlank() -> "TBA"
+      item.translation?.title?.isBlank() == false -> item.translation?.title ?: "TBA"
+      else -> item.episode.title
+    }
 
     val remoteView = RemoteViews(context.packageName, R.layout.widget_progress_item).apply {
       setTextViewText(R.id.progressWidgetItemTitle, item.show.title)
       setTextViewText(R.id.progressWidgetItemSubtitle, subtitle)
-      setTextViewText(R.id.progressWidgetItemSubtitle2, item.episode.title)
+      setTextViewText(R.id.progressWidgetItemSubtitle2, subtitle2)
       setTextViewText(R.id.progressWidgetItemProgressText, progressText)
       setViewVisibility(R.id.progressWidgetItemBadge, if (item.isNew()) VISIBLE else GONE)
       setProgressBar(R.id.progressWidgetItemProgress, item.episodesCount, item.watchedEpisodesCount, false)

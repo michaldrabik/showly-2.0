@@ -54,21 +54,23 @@ class DiscoverFiltersView : ConstraintLayout {
   private fun bindGenres(genres: List<Genre>) {
     val genresNames = genres.map { it.name }
     discoverFiltersGenresChipGroup.removeAllViews()
-    Genre.values().forEach { genre ->
-      val chip = Chip(context).apply {
-        tag = genre.name
-        text = genre.displayName
-        isCheckable = true
-        isCheckedIconVisible = false
-        setEnsureMinTouchTargetSize(false)
-        chipBackgroundColor = context.colorStateListFromAttr(R.attr.colorSearchViewBackground)
-        setChipStrokeColorResource(R.color.selector_discover_chip_text)
-        setChipStrokeWidthResource(R.dimen.discoverFilterChipStroke)
-        setTextColor(ContextCompat.getColorStateList(context, R.color.selector_discover_chip_text))
-        isChecked = genre.name in genresNames
+    Genre.values()
+      .sortedBy { context.getString(it.displayName) }
+      .forEach { genre ->
+        val chip = Chip(context).apply {
+          tag = genre.name
+          text = context.getString(genre.displayName)
+          isCheckable = true
+          isCheckedIconVisible = false
+          setEnsureMinTouchTargetSize(false)
+          chipBackgroundColor = context.colorStateListFromAttr(R.attr.colorSearchViewBackground)
+          setChipStrokeColorResource(R.color.selector_discover_chip_text)
+          setChipStrokeWidthResource(R.dimen.discoverFilterChipStroke)
+          setTextColor(ContextCompat.getColorStateList(context, R.color.selector_discover_chip_text))
+          isChecked = genre.name in genresNames
+        }
+        discoverFiltersGenresChipGroup.addView(chip)
       }
-      discoverFiltersGenresChipGroup.addView(chip)
-    }
   }
 
   private fun onApplyFilters() {

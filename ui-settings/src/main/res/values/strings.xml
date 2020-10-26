@@ -23,7 +23,7 @@
   <string name="textSettingsMyShowsSectionsTitle">My Shows Sections</string>
   <string name="textSettingsMyShowsSectionSummary">Enable/disable sections in My Shows tab.</string>
   <string name="textSettingsMyShowsLanguageTitle">Language</string>
-  <string name="textSettingsMyShowsLanguageSummary">English will be used as a backup if given translation is not yet available.</string>
+  <string name="textSettingsMyShowsLanguageSummary">Descriptions and titles will be translated when available.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Archived Statistics</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Include archived shows data in the statistics.</string>
   <string name="textSettingsIncludeSpecialsTitle">Special Seasons</string>

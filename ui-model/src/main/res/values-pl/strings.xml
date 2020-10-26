@@ -33,6 +33,22 @@
   <string name="textTipDiscoverFilters">Użyj filtrów aby dostosować zakładkę \'Odkrywaj\' pod swoje upodobania.</string>
   <string name="textTipWatchlistPinItem">Kliknij i przytrzymaj element aby przypiąć go u góry listy.</string>
 
+  <string name="textGenreAction">Akcja</string>
+  <string name="textGenreAdventure">Przygoda</string>
+  <string name="textGenreAnimation">Animacja</string>
+  <string name="textGenreAnime">Anime</string>
+  <string name="textGenreComedy">Komedia</string>
+  <string name="textGenreCrime">Kryminał</string>
+  <string name="textGenreDocumentary">Dokument</string>
+  <string name="textGenreDrama">Dramat</string>
+  <string name="textGenreFantasy">Fantasy</string>
+  <string name="textGenreHistory">Historia</string>
+  <string name="textGenreHorror">Horror</string>
+  <string name="textGenreScienceFiction">Science-Fiction</string>
+  <string name="textGenreThriller">Thriller</string>
+  <string name="textGenreWar">Wojna</string>
+  <string name="textGenreWestern">Western</string>
+
   <string name="textTraktSyncSchedule">Zaplanuj</string>
   <string name="textTraktSyncOptionOff">Wyłączone</string>
   <string name="textTraktSyncOption1Hour">Co Godzinę</string>

@@ -33,6 +33,22 @@
   <string name="textTipDiscoverFilters">Use filters view to refine your Discover feed.</string>
   <string name="textTipWatchlistPinItem">Tap and hold list item to pin it to the top.</string>
 
+  <string name="textGenreAction">Action</string>
+  <string name="textGenreAdventure">Adventure</string>
+  <string name="textGenreAnimation">Animation</string>
+  <string name="textGenreAnime">Anime</string>
+  <string name="textGenreComedy">Comedy</string>
+  <string name="textGenreCrime">Crime</string>
+  <string name="textGenreDocumentary">Documentary</string>
+  <string name="textGenreDrama">Drama</string>
+  <string name="textGenreFantasy">Fantasy</string>
+  <string name="textGenreHistory">History</string>
+  <string name="textGenreHorror">Horror</string>
+  <string name="textGenreScienceFiction">Science-Fiction</string>
+  <string name="textGenreThriller">Thriller</string>
+  <string name="textGenreWar">War</string>
+  <string name="textGenreWestern">Western</string>
+
   <string name="textTraktSyncSchedule">Schedule</string>
   <string name="textTraktSyncOptionOff">Off</string>
   <string name="textTraktSyncOption1Hour">Every Hour</string>
