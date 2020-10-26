@@ -29,8 +29,6 @@ class SettingsMainCase @Inject constructor(
 
   suspend fun getSettings(): Settings = settingsRepository.load()
 
-  suspend fun getLanguage() = AppLanguage.fromCode(settingsRepository.getLanguage())
-
   suspend fun setRecentShowsAmount(amount: Int) {
     check(amount in Config.MY_SHOWS_RECENTS_OPTIONS)
     val settings = settingsRepository.load()
@@ -107,9 +105,9 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
-  suspend fun setLanguage(language: AppLanguage) {
-    settingsRepository.setLanguage(language.code)
-  }
+  fun getLanguage() = AppLanguage.fromCode(settingsRepository.getLanguage())
+
+  fun setLanguage(language: AppLanguage) = settingsRepository.setLanguage(language.code)
 
   suspend fun deleteImagesCache() = imagesProvider.deleteLocalCache()
 }

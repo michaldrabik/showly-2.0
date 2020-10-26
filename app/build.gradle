@@ -76,7 +76,7 @@ dependencies {
   implementation project(':ui-widgets')
 
   implementation "com.google.android.play:core:$versions.androidPlayCore"
-  implementation "com.github.YarikSOffice:lingver:1.3.0"
+  implementation "com.github.YarikSOffice:lingver:$versions.lingver"
 
   implementation "com.google.dagger:dagger:$versions.dagger"
   kapt "com.google.dagger:dagger-compiler:$versions.dagger"
