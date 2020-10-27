@@ -13,6 +13,7 @@ import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.mappers.SeasonMapper
 import com.michaldrabik.ui_repository.mappers.SettingsMapper
 import com.michaldrabik.ui_repository.mappers.ShowMapper
+import com.michaldrabik.ui_repository.mappers.TranslationMapper
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
@@ -41,7 +42,8 @@ abstract class BaseMockTest {
     SeasonMapper(idsMapper, episodeMappers),
     ActorMapper(),
     CommentMapper(),
-    SettingsMapper()
+    SettingsMapper(),
+    TranslationMapper(idsMapper)
   )
 
   @Before

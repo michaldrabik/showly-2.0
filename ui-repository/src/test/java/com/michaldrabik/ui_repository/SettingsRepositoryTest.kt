@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_repository
 
+import android.content.SharedPreferences
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.storage.database.dao.SettingsDao
 import com.michaldrabik.ui_model.Settings
@@ -19,6 +20,7 @@ import org.junit.Test
 class SettingsRepositoryTest : BaseMockTest() {
 
   @MockK lateinit var settingsDao: SettingsDao
+  @MockK lateinit var sharedPreferences: SharedPreferences
 
   private lateinit var SUT: SettingsRepository
 
@@ -26,7 +28,7 @@ class SettingsRepositoryTest : BaseMockTest() {
   override fun setUp() {
     super.setUp()
     every { database.settingsDao() } returns settingsDao
-    SUT = SettingsRepository(database, mappers)
+    SUT = SettingsRepository(database, mappers, sharedPreferences)
   }
 
   @Test
