@@ -48,7 +48,7 @@ dependencies {
   api "androidx.dynamicanimation:dynamicanimation:$versions.androidDynamicAnimation"
   api "com.google.android.material:material:$versions.androidMaterial"
 
-  api "com.google.firebase:firebase-crashlytics:$versions.crashlytics"
+  api "com.google.firebase:firebase-crashlytics:$versions.firebaseCrashlytics"
   api "com.google.firebase:firebase-analytics-ktx:$versions.firebaseAnalytics"
   api "com.google.firebase:firebase-messaging:$versions.firebaseMessaging"
 

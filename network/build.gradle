@@ -47,5 +47,7 @@ dependencies {
   implementation "com.google.dagger:dagger:$versions.dagger"
   kapt "com.google.dagger:dagger-compiler:$versions.dagger"
 
+  implementation "com.google.firebase:firebase-crashlytics:$versions.firebaseCrashlytics"
+
   testImplementation "junit:junit:$versions.junit"
 }
