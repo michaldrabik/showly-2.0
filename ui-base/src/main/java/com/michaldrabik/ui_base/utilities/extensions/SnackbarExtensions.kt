@@ -37,6 +37,6 @@ fun ViewGroup.showErrorSnackbar(message: String, actionText: Int = R.string.text
   showSnackbar(message, actionText, Color.WHITE, R.drawable.bg_snackbar_error, LENGTH_INDEFINITE, action)
 }
 
-fun ViewGroup.showInfoSnackbar(message: String, actionText: Int = R.string.textOk, action: () -> Unit = {}, length: Int = LENGTH_SHORT) {
+fun ViewGroup.showInfoSnackbar(message: String, actionText: Int = R.string.textOk, action: (() -> Unit)? = null, length: Int = LENGTH_SHORT) {
   showSnackbar(message, actionText, Color.BLACK, R.drawable.bg_snackbar_info, length, action)
 }
