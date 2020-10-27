@@ -107,7 +107,12 @@ class SettingsMainCase @Inject constructor(
 
   fun getLanguage() = AppLanguage.fromCode(settingsRepository.getLanguage())
 
-  fun setLanguage(language: AppLanguage) = settingsRepository.setLanguage(language.code)
+  suspend fun setLanguage(language: AppLanguage) {
+    settingsRepository.run {
+      setLanguage(language.code)
+      clearLanguageLogs()
+    }
+  }
 
   suspend fun deleteImagesCache() = imagesProvider.deleteLocalCache()
 }

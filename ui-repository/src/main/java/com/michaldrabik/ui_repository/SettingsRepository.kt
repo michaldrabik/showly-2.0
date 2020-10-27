@@ -39,4 +39,6 @@ class SettingsRepository @Inject constructor(
   fun getLanguage() = miscPreferences.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
 
   fun setLanguage(language: String) = miscPreferences.edit().putString(KEY_LANGUAGE, language).apply()
+
+  suspend fun clearLanguageLogs() = database.translationsSyncLogDao().deleteAll()
 }

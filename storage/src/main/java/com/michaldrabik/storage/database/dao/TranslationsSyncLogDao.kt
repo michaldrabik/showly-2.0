@@ -14,4 +14,7 @@ interface TranslationsSyncLogDao {
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun upsert(log: TranslationsSyncLog)
+
+  @Query("DELETE FROM sync_translations_log")
+  suspend fun deleteAll()
 }
