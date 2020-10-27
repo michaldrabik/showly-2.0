@@ -83,10 +83,13 @@ fun TextView.setTextIfEmpty(text: String) {
 }
 
 fun TextView.setTextFade(text: String, duration: Long = 125) {
-  fadeOut(duration = duration, endAction = {
-    setText(text)
-    fadeIn(duration = duration)
-  })
+  fadeOut(
+    duration = duration,
+    endAction = {
+      setText(text)
+      fadeIn(duration = duration)
+    }
+  )
 }
 
 fun Activity.disableUi() = window.setFlags(FLAG_NOT_TOUCHABLE, FLAG_NOT_TOUCHABLE)

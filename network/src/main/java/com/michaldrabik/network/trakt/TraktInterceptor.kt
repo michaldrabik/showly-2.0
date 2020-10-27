@@ -16,7 +16,7 @@ class TraktInterceptor : Interceptor {
 
     val response = chain.proceed(request)
     if (response.code == 429) {
-      //Log Firebase error in case of rate limit hits start appearing.
+      // Log Firebase error in case of rate limit hits start appearing.
       Timber.e("429 Too Many Requests")
       FirebaseCrashlytics.getInstance().recordException(Throwable("429 Too Many Requests"))
     }

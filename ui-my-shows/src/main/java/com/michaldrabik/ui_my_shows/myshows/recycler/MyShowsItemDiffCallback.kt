@@ -21,8 +21,9 @@ class MyShowsItemDiffCallback : DiffUtil.ItemCallback<MyShowsItem>() {
       HEADER -> oldItem.header == newItem.header
       RECENT_SHOWS -> oldItem.recentsSection == newItem.recentsSection
       HORIZONTAL_SHOWS -> oldItem.horizontalSection?.items == newItem.horizontalSection?.items
-      else -> oldItem.image == newItem.image
-        && oldItem.isLoading == newItem.isLoading
-        && oldItem.translation == newItem.translation
+      else ->
+        oldItem.image == newItem.image &&
+          oldItem.isLoading == newItem.isLoading &&
+          oldItem.translation == newItem.translation
     }
 }

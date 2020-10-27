@@ -10,4 +10,4 @@ data class SeeLaterListItem(
   override val image: Image,
   override val isLoading: Boolean = false,
   val translation: Translation? = null,
-  ) : ListItem
+) : ListItem
