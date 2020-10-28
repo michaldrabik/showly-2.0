@@ -12,7 +12,6 @@
 
   <string name="textWhatsNewTitle">Co Nowego?</string>
   <string name="textWhatsNewSubtitle">Wersja %s</string>
-
   <string name="shortcutDiscover">Odkrywaj</string>
   <string name="shortcutMyShows">Moje Seriale</string>
   <string name="shortcutSearch">Szukaj</string>
@@ -20,8 +19,8 @@
 
   <plurals name="textTraktQuickSyncComplete">
     <item quantity="one">1 element zsynchronizowany.</item>
-    <item quantity="other">%d elementów zsynchronizowanych.</item>
     <item quantity="few">%d elementów zsynchronizowanych.</item>
     <item quantity="many">%d elementów zsynchronizowanych.</item>
+    <item quantity="other">%d elementów zsynchronizowanych.</item>
   </plurals>
 </resources>
