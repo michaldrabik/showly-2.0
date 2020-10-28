@@ -19,6 +19,9 @@
   <string name="textStatisticsTopGenreSubValue2">zdają się być ulubionymi.</string>
   <string name="textStatisticsShowMore">Pokaż Więcej</string>
   <string name="textStatisticsRatings">Niedawno Ocenione</string>
+  <string name="textStatisticsHours">Godziny</string>
+  <string name="textStatisticsEpisodes">Odcinki</string>
+  <string name="textStatisticsSeasons">Sezony</string>
 
   <string name="textArchivedShowsExcluded">Archiwalne seriale są pomijane</string>
 </resources>

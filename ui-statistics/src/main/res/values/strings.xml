@@ -19,6 +19,9 @@
   <string name="textStatisticsTopGenreSubValue2">seem to be your cup of tea.</string>
   <string name="textStatisticsShowMore">Show More</string>
   <string name="textStatisticsRatings">Recently Rated</string>
-
+  <string name="textStatisticsHours">Hours</string>
+  <string name="textStatisticsEpisodes">Episodes</string>
+  <string name="textStatisticsSeasons">Seasons</string>
+  
   <string name="textArchivedShowsExcluded">Archived shows excluded</string>
 </resources>
