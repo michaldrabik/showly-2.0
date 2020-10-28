@@ -14,12 +14,13 @@
     android:id="@+id/viewMostWatchedItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="@dimen/statisticsMostWatchedItemImageHeight"
     >
 
     <ImageView
       android:id="@+id/viewMostWatchedItemImage"
       android:layout_width="@dimen/statisticsMostWatchedItemImageWidth"
-      android:layout_height="@dimen/statisticsMostWatchedItemImageHeight"
+      android:layout_height="0dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
@@ -28,7 +29,7 @@
     <ImageView
       android:id="@+id/viewMostWatchedItemPlaceholder"
       android:layout_width="@dimen/statisticsMostWatchedItemImageWidth"
-      android:layout_height="@dimen/statisticsMostWatchedItemImageHeight"
+      android:layout_height="0dp"
       android:layout_gravity="center"
       android:background="@drawable/bg_show_view_placeholder"
       android:padding="20dp"
@@ -84,7 +85,7 @@
       app:layout_constraintBottom_toTopOf="@id/viewMostWatchedItemSeparator1"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemImage"
-      app:layout_constraintTop_toTopOf="@id/viewMostWatchedItemImage"
+      app:layout_constraintTop_toTopOf="parent"
       tools:text="Game of Thrones"
       />
 
@@ -101,7 +102,7 @@
       app:layout_constraintBottom_toTopOf="@id/viewMostWatchedItemHoursLabel"
       app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemSeparator1"
       app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemImage"
-      app:layout_constraintTop_toTopOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemTitle"
       tools:text="999"
       />
 
@@ -113,10 +114,10 @@
       android:ellipsize="end"
       android:gravity="center|top"
       android:maxLines="1"
-      android:text="Hours"
+      android:text="@string/textStatisticsHours"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="14sp"
-      app:layout_constraintBottom_toBottomOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemSeparator1"
       app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemImage"
       app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemHoursValue"
@@ -126,10 +127,10 @@
       android:id="@+id/viewMostWatchedItemSeparator1"
       android:layout_width="1dp"
       android:layout_height="0dp"
-      android:layout_marginTop="@dimen/spaceMedium"
+      android:layout_marginTop="@dimen/spaceSmall"
       android:layout_marginBottom="@dimen/spaceSmall"
       android:background="?attr/colorAccent"
-      app:layout_constraintBottom_toBottomOf="@id/viewMostWatchedItemImage"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemSeasonsValue"
       app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemHoursLabel"
       app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemTitle"
@@ -147,7 +148,7 @@
       app:layout_constraintBottom_toTopOf="@id/viewMostWatchedItemSeasonsLabel"
       app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemSeparator2"
       app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemSeparator1"
-      app:layout_constraintTop_toTopOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemTitle"
       tools:text="11"
       />
 
@@ -158,10 +159,10 @@
       android:ellipsize="end"
       android:gravity="center|top"
       android:maxLines="1"
-      android:text="Seasons"
+      android:text="@string/textStatisticsSeasons"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="14sp"
-      app:layout_constraintBottom_toBottomOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemSeparator2"
       app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemSeparator1"
       app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemSeasonsValue"
@@ -171,11 +172,13 @@
       android:id="@+id/viewMostWatchedItemSeparator2"
       android:layout_width="1dp"
       android:layout_height="0dp"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:layout_marginBottom="@dimen/spaceSmall"
       android:background="?attr/colorAccent"
-      app:layout_constraintBottom_toBottomOf="@id/viewMostWatchedItemHoursLabel"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toStartOf="@id/viewMostWatchedItemEpisodesValue"
       app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemSeasonsLabel"
-      app:layout_constraintTop_toTopOf="@id/viewMostWatchedItemHoursValue"
+      app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemTitle"
       />
 
     <TextView
@@ -190,7 +193,7 @@
       app:layout_constraintBottom_toTopOf="@id/viewMostWatchedItemEpisodesLabel"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemSeparator2"
-      app:layout_constraintTop_toTopOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemTitle"
       tools:text="11"
       />
 
@@ -201,10 +204,10 @@
       android:ellipsize="end"
       android:gravity="center|top"
       android:maxLines="1"
-      android:text="Episodes"
+      android:text="@string/textStatisticsEpisodes"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="14sp"
-      app:layout_constraintBottom_toBottomOf="@id/viewMostWatchedItemSeparator1"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemSeparator2"
       app:layout_constraintTop_toBottomOf="@id/viewMostWatchedItemEpisodesValue"
