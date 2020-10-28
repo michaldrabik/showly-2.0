@@ -45,4 +45,5 @@
   <string name="textSettingsLogoutTitle">Trakt.tv Wylogowanie</string>
   <string name="textSettingsLogoutMessage">\nCzy na pewno chcesz się wylogować?\n</string>
   <string name="textSettingsLanguageChangeMessage">Zrestartuj aplikację aby dokończyć zmianę języka.</string>
-</resources>
+
+  </resources>
