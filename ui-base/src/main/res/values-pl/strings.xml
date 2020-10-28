@@ -25,23 +25,23 @@
 
   <plurals name="textDaysToAir">
     <item quantity="one">Premiera jutro</item>
-    <item quantity="other">Premiera za %d dni</item>
     <item quantity="few">Premiera za %d dni</item>
     <item quantity="many">Premiera za %d dni</item>
+    <item quantity="other">Premiera za %d dni</item>
   </plurals>
 
   <plurals name="textHoursToAir">
     <item quantity="one">Premiera za godzinę</item>
-    <item quantity="other">Premiera za %d godzin</item>
     <item quantity="few">Premiera za %d godzin</item>
     <item quantity="many">Premiera za %d godzin</item>
+    <item quantity="other">Premiera za %d godzin</item>
   </plurals>
 
   <plurals name="textMinutesToAir">
     <item quantity="one">Premiera teraz</item>
-    <item quantity="other">Premiera za %d minut</item>
     <item quantity="few">Premiera za %d minut</item>
     <item quantity="many">Premiera za %d minut</item>
+    <item quantity="other">Premiera za %d minut</item>
   </plurals>
 
   <string name="textNewEpisodeAvailable">Nowy odcinek jest już dostępny!</string>
