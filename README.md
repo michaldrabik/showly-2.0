@@ -49,11 +49,11 @@ Pull requests are welcome. Remember about leaving a comment in the relevant issu
 
 ### Language Translations
 
-I am currently looking for help with translating app's resources into Spanish and English.
+I am currently looking for help with translating app's resources into Spanish and German.
 If you are interested in helping, please visit relevant Issues ([#98](https://github.com/michaldrabik/showly-2.0/issues/98), [#99](https://github.com/michaldrabik/showly-2.0/issues/99)) for more info.
 
 ## Contact
 
 Landing Page: www.showlyapp.com
 
-Feel free to write an email: showlyapp@gmail.com
+Email: showlyapp@gmail.com
