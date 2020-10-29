@@ -5,6 +5,8 @@ import android.content.Intent
 import androidx.core.app.JobIntentService
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.showly2.serviceComponent
+import com.michaldrabik.ui_base.events.EventsManager
+import com.michaldrabik.ui_base.events.TranslationsSyncComplete
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,7 +33,7 @@ class TranslationsSyncService : JobIntentService(), CoroutineScope {
   override fun onHandleWork(intent: Intent) {
     Timber.d("Sync service initialized")
     serviceComponent().inject(this)
-    runBlocking {
+    val syncCount = runBlocking {
       try {
         syncRunner.run()
       } catch (t: Throwable) {
@@ -41,6 +43,8 @@ class TranslationsSyncService : JobIntentService(), CoroutineScope {
         0
       }
     }
+
+    if (syncCount > 0) EventsManager.sendEvent(TranslationsSyncComplete)
   }
 
   override fun onDestroy() {

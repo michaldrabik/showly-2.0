@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_progress.main
+package com.michaldrabik.ui_base.common
 
 interface OnEpisodesSyncedListener {
   fun onEpisodesSyncFinished()

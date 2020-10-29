@@ -12,6 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
+import com.michaldrabik.ui_base.common.OnTranslationsSyncedListener
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_model.MyShowsSection
@@ -30,7 +31,8 @@ import kotlinx.android.synthetic.main.fragment_my_shows.*
 class MyShowsFragment :
   BaseFragment<MyShowsViewModel>(R.layout.fragment_my_shows),
   OnScrollResetListener,
-  OnTraktSyncListener {
+  OnTraktSyncListener,
+  OnTranslationsSyncedListener {
 
   override val viewModel by viewModels<MyShowsViewModel> { viewModelFactory }
 
@@ -119,4 +121,6 @@ class MyShowsFragment :
   override fun onScrollReset() = myShowsRecycler.scrollToPosition(0)
 
   override fun onTraktSyncProgress() = viewModel.loadShows()
+
+  override fun onTranslationsSyncFinished() = viewModel.loadShows()
 }

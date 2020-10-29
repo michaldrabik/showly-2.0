@@ -4,6 +4,8 @@ sealed class Event
 
 object ShowsSyncComplete : Event()
 
+object TranslationsSyncComplete : Event()
+
 object TraktSyncStart : Event()
 
 object TraktSyncSuccess : Event()

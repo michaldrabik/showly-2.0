@@ -20,13 +20,16 @@ import com.michaldrabik.showly2.ui.BaseActivity
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.ui_base.Analytics
+import com.michaldrabik.ui_base.common.OnEpisodesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
+import com.michaldrabik.ui_base.common.OnTranslationsSyncedListener
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventObserver
 import com.michaldrabik.ui_base.events.ShowsSyncComplete
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.events.TraktSyncProgress
+import com.michaldrabik.ui_base.events.TranslationsSyncComplete
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost
@@ -40,7 +43,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
-import com.michaldrabik.ui_progress.main.OnEpisodesSyncedListener
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -262,6 +264,9 @@ class MainActivity :
         is ShowsSyncComplete -> {
           doForFragments { (it as? OnEpisodesSyncedListener)?.onEpisodesSyncFinished() }
           viewModel.refreshAnnouncements(applicationContext)
+        }
+        is TranslationsSyncComplete -> {
+          doForFragments { (it as? OnTranslationsSyncedListener)?.onTranslationsSyncFinished() }
         }
         is TraktSyncProgress -> {
           doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncProgress() }

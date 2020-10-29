@@ -39,6 +39,7 @@ class TranslationsSyncRunner @Inject constructor(
     }
 
     val translations = database.showTranslationsDao().getAll(language)
+      .filter { it.overview.isNotBlank() }
     val translationsIds = translations.map { it.idTrakt }
 
     val showsToSync = showsRepository.myShows.loadAll()

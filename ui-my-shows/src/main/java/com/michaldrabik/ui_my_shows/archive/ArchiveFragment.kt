@@ -12,6 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
+import com.michaldrabik.ui_base.common.OnTranslationsSyncedListener
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -30,7 +31,8 @@ import kotlinx.android.synthetic.main.fragment_archive.*
 class ArchiveFragment :
   BaseFragment<ArchiveViewModel>(R.layout.fragment_archive),
   OnScrollResetListener,
-  OnTraktSyncListener {
+  OnTraktSyncListener,
+  OnTranslationsSyncedListener {
 
   override val viewModel by viewModels<ArchiveViewModel> { viewModelFactory }
 
@@ -112,4 +114,6 @@ class ArchiveFragment :
   override fun onScrollReset() = archiveRoot.smoothScrollTo(0, 0)
 
   override fun onTraktSyncProgress() = viewModel.loadShows()
+
+  override fun onTranslationsSyncFinished() = viewModel.loadShows()
 }

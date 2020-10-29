@@ -43,10 +43,9 @@ class ShowsSyncService : JobIntentService(), CoroutineScope {
         0
       }
     }
-    if (syncCount > 0) notifyComplete()
-  }
 
-  private fun notifyComplete() = EventsManager.sendEvent(ShowsSyncComplete)
+    if (syncCount > 0) EventsManager.sendEvent(ShowsSyncComplete)
+  }
 
   override fun onDestroy() {
     coroutineContext.cancelChildren()
