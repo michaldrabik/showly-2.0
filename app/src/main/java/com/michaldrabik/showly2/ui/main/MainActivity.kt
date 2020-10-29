@@ -44,6 +44,7 @@ import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity :
@@ -244,7 +245,7 @@ class MainActivity :
   }
 
   private fun doForFragments(action: (Fragment) -> Unit) {
-    navigationHost.findNavController().currentDestination?.id?.let {
+    navigationHost?.findNavController()?.currentDestination?.id?.let {
       val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
       navHost?.childFragmentManager?.primaryNavigationFragment?.let {
         action(it)
@@ -275,6 +276,7 @@ class MainActivity :
           val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)
           snackBarHost.showInfoSnackbar(text)
         }
+        else -> Timber.d("Event ignored. Noop.")
       }
     }
   }

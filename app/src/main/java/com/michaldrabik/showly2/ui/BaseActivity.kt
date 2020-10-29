@@ -33,6 +33,7 @@ import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponentProvider
 import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider
 import com.michaldrabik.ui_widgets.search.SearchWidgetProvider
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 
 abstract class BaseActivity :
   AppCompatActivity(),
@@ -103,16 +104,18 @@ abstract class BaseActivity :
   private fun handleSearchWidgetClick(extras: Bundle?) {
     navigationHost.findNavController().run {
       try {
-        if (currentDestination?.id == R.id.showDetailsFragment) {
-          navigateUp()
+        when (currentDestination?.id) {
+          R.id.searchFragment -> return@run
+          R.id.showDetailsFragment -> navigateUp()
         }
         if (currentDestination?.id != R.id.discoverFragment) {
           bottomNavigationView.selectedItemId = R.id.menuDiscover
         }
         navigate(R.id.actionDiscoverFragmentToSearchFragment)
         extras?.clear()
-      } catch (e: Throwable) {
-        val exception = Throwable(BaseActivity::class.simpleName, e)
+      } catch (error: Throwable) {
+        val exception = Throwable(BaseActivity::class.simpleName, error)
+        Timber.e(error)
         FirebaseCrashlytics.getInstance().recordException(exception)
       }
     }

@@ -14,6 +14,7 @@ import com.michaldrabik.ui_discover.cases.DiscoverShowsCase
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.Image
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -95,7 +96,9 @@ class DiscoverViewModel @Inject constructor(
   }
 
   private fun onError(error: Throwable) {
-    _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadDiscover)
-    Timber.e(error)
+    if (error !is CancellationException) {
+      _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadDiscover)
+      Timber.e(error)
+    }
   }
 }
