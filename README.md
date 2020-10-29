@@ -47,6 +47,11 @@ Feel free to post ideas and problems as Github Issues.
 
 Pull requests are welcome. Remember about leaving a comment in the relevant issue if you are working on something.
 
+### Language Translations
+
+I am currently looking for help with translating app's resources into Spanish and English.
+If you are interested in helping, please visit relevant Issues ([#98](https://github.com/michaldrabik/showly-2.0/issues/98), [#99](https://github.com/michaldrabik/showly-2.0/issues/99)) for more info.
+
 ## Contact
 
 Landing Page: www.showlyapp.com
