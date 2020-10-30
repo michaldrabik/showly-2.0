@@ -19,7 +19,7 @@
     <item name="android:overScrollMode">never</item>
     <item name="android:paddingStart">@dimen/spaceMedium</item>
     <item name="android:paddingEnd">@dimen/spaceMedium</item>
-    <item name="android:nestedScrollingEnabled">false</item>
+    <item name="android:nestedScrollingEnabled">true</item>
   </style>
 
 </resources>

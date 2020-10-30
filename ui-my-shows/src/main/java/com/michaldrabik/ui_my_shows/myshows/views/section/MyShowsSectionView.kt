@@ -2,12 +2,14 @@ package com.michaldrabik.ui_my_shows.myshows.views.section
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -16,6 +18,7 @@ import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import com.michaldrabik.ui_my_shows.myshows.recycler.section.MyShowsSectionAdapter
 import kotlinx.android.synthetic.main.view_my_shows_section.view.*
+import kotlin.math.abs
 
 class MyShowsSectionView : FrameLayout {
 
@@ -38,6 +41,31 @@ class MyShowsSectionView : FrameLayout {
   }
 
   private fun setupRecycler() {
+    val recyclerTouchListener = object : RecyclerView.OnItemTouchListener {
+      val touchOffset = 25F
+      var initialX = 0F
+      var initialY = 0F
+
+      override fun onInterceptTouchEvent(rv: RecyclerView, event: MotionEvent): Boolean {
+        when (event.action) {
+          MotionEvent.ACTION_DOWN -> {
+            initialX = event.x
+            initialY = event.y
+            myShowsSectionRecycler.parent?.requestDisallowInterceptTouchEvent(true)
+          }
+          MotionEvent.ACTION_MOVE -> {
+            if (abs(event.y - initialY) > touchOffset && abs(event.x - initialX) < touchOffset) {
+              myShowsSectionRecycler.parent?.requestDisallowInterceptTouchEvent(false)
+            }
+          }
+        }
+        return false
+      }
+
+      override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) = Unit
+      override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) = Unit
+    }
+
     myShowsSectionRecycler.apply {
       clearOnScrollListeners()
       setHasFixedSize(true)
@@ -45,6 +73,7 @@ class MyShowsSectionView : FrameLayout {
       layoutManager = this@MyShowsSectionView.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       addDivider(R.drawable.divider_my_shows_horizontal, HORIZONTAL)
+      addOnItemTouchListener(recyclerTouchListener)
     }
   }
 

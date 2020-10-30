@@ -134,7 +134,6 @@ class FollowedShowsFragment :
   private fun setupPager() {
     followedShowsPager.run {
       offscreenPageLimit = FollowedPagesAdapter.PAGES_COUNT
-      isUserInputEnabled = false
       adapter = FollowedPagesAdapter(this@FollowedShowsFragment)
       registerOnPageChangeCallback(pageScrollCallback)
     }
@@ -153,6 +152,16 @@ class FollowedShowsFragment :
 
   override fun onTabSelected(tab: TabLayout.Tab) {
     followedShowsPager.currentItem = tab.position
+    if (followedShowsTabs.translationY != 0F) {
+      val duration = 225L
+      followedShowsSearchView.animate().translationY(0F).setDuration(duration).start()
+      followedShowsTabs.animate().translationY(0F).setDuration(duration).start()
+      requireView().postDelayed({
+        childFragmentManager.fragments.forEach {
+          (it as? OnScrollResetListener)?.onScrollReset()
+        }
+      }, duration)
+    }
   }
 
   private fun enterSearch() {

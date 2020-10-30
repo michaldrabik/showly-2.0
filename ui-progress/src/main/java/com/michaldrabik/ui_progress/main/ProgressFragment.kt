@@ -144,11 +144,11 @@ class ProgressFragment :
   override fun onTabSelected(tab: TabLayout.Tab) {
     progressPager.currentItem = tab.position
     if (progressTabs.translationY != 0F) {
-      val duration = 200L
+      val duration = 225L
       progressSearchView.animate().translationY(0F).setDuration(duration).start()
       progressTabs.animate().translationY(0F).setDuration(duration).start()
       progressSortIcon.animate().translationY(0F).setDuration(duration).start()
-      progressRoot.postDelayed({
+      requireView().postDelayed({
         childFragmentManager.fragments.forEach {
           (it as? OnScrollResetListener)?.onScrollReset()
         }
