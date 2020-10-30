@@ -16,7 +16,7 @@ data class ShowDetailsUiModel(
   val show: Show? = null,
   val showLoading: Boolean? = null,
   val image: Image? = null,
-  val nextEpisode: ActionEvent<Episode>? = null,
+  val nextEpisode: Episode? = null,
   val actors: List<Actor>? = null,
   val relatedShows: List<RelatedListItem>? = null,
   val seasons: List<SeasonListItem>? = null,
@@ -26,7 +26,7 @@ data class ShowDetailsUiModel(
   val removeFromTraktHistory: ActionEvent<Boolean>? = null,
   val removeFromTraktSeeLater: ActionEvent<Boolean>? = null,
   val showFromTraktLoading: Boolean? = null,
-  val translation: ActionEvent<Translation>? = null,
+  val translation: Translation? = null,
   val seasonTranslation: ActionEvent<SeasonListItem>? = null
 ) : UiModel() {
 

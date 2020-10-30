@@ -125,11 +125,10 @@ class ShowDetailsViewModel @Inject constructor(
     try {
       val episode = episodesCase.loadNextEpisode(show.ids.trakt)
       episode?.let {
+        uiState = ShowDetailsUiModel(nextEpisode = it)
         val translation = translationCase.loadTranslation(episode, show)
-        uiState = if (translation != null && translation.title.isNotBlank()) {
-          ShowDetailsUiModel(nextEpisode = ActionEvent(episode.copy(title = translation.title)))
-        } else {
-          ShowDetailsUiModel(nextEpisode = ActionEvent(episode))
+        if (translation?.title?.isNotBlank() == true) {
+          uiState = ShowDetailsUiModel(nextEpisode = it.copy(title = translation.title))
         }
       }
     } catch (t: Throwable) {
@@ -193,7 +192,7 @@ class ShowDetailsViewModel @Inject constructor(
     try {
       val translation = translationCase.loadTranslation(show)
       translation?.let {
-        uiState = ShowDetailsUiModel(translation = ActionEvent(it))
+        uiState = ShowDetailsUiModel(translation = it)
       }
     } catch (error: Throwable) {
       Timber.e(error)

@@ -53,7 +53,6 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
-import com.michaldrabik.ui_base.utilities.extensions.setTextFade
 import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -126,7 +125,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
       messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
-      loadShowDetails(showId, requireAppContext())
+      if (!isInitialized) {
+        loadShowDetails(showId, requireAppContext())
+        isInitialized = true
+      }
     }
   }
 
@@ -350,7 +352,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         val country = if (show.country.isEmpty()) "" else " (${show.country.toUpperCase(ROOT)})"
         showDetailsExtraInfo.text =
           "${show.network} $year$country | ${show.runtime} min | ${
-          show.genres.take(2).joinToString(", ") { it.capitalize() }
+            show.genres.take(2).joinToString(", ") { it.capitalize() }
           }"
         showDetailsRating.text = String.format(ROOT, getString(R.string.textVotes), show.rating, show.votes)
         showDetailsCommentsButton.visible()
@@ -392,9 +394,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           else -> showDetailsAddButton.setState(ADD, it.withAnimation)
         }
       }
-      nextEpisode?.let {
-        it.consume()?.let { e -> renderNextEpisode(e) }
-      }
+      nextEpisode?.let { renderNextEpisode(it) }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
       seasons?.let {
@@ -402,7 +402,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         renderRuntimeLeft(it)
         (requireAppContext() as WidgetsProvider).requestWidgetsUpdate()
       }
-      translation?.let { renderTranslation(it.consume()) }
+      translation?.let { renderTranslation(it) }
       seasonTranslation?.let { item ->
         item.consume()?.let { showDetailsEpisodesView.bindEpisodes(it.episodes, animate = false) }
       }
@@ -542,12 +542,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun renderTranslation(translation: Translation?) {
-    if (translation != null && translation.overview.isNotBlank()) {
-      if (translation.isLocal) {
-        showDetailsDescription.text = translation.overview
-      } else {
-        showDetailsDescription.setTextFade(translation.overview)
-      }
+    if (translation?.overview?.isNotBlank() == true) {
+      showDetailsDescription.text = translation.overview
     }
   }
 
