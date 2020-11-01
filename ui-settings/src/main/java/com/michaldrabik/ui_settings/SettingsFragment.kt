@@ -227,7 +227,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
             getString(R.string.textSettingsLanguageChangeMessage),
             actionText = R.string.textOk,
             length = LENGTH_INDEFINITE,
-            action = { ProcessPhoenix.triggerRebirth(requireAppContext()) }
+            action = { restartApp() }
           )
         }
         dialog.dismiss()
@@ -264,6 +264,14 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     Intent(ACTION_VIEW).run {
       data = Uri.parse(ConfigNetwork.TRAKT_AUTHORIZE_URL)
       startActivity(this)
+    }
+  }
+
+  private fun restartApp() {
+    try {
+      ProcessPhoenix.triggerRebirth(requireAppContext())
+    } catch (error: Throwable) {
+      Runtime.getRuntime().exit(0)
     }
   }
 
