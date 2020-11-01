@@ -304,11 +304,14 @@ class FollowedShowsFragment :
         followedShowsSearchView.animate().translationY(0F).setDuration(225L).start()
         followedShowsTabs.animate().translationY(0F).setDuration(225L).start()
         followedShowsSortIcon.animate().translationY(0F).setDuration(225L).start()
-        requireView().postDelayed({
-          childFragmentManager.fragments.forEach {
-            (it as? OnScrollResetListener)?.onScrollReset()
-          }
-        }, 225L)
+        requireView().postDelayed(
+          {
+            childFragmentManager.fragments.forEach {
+              (it as? OnScrollResetListener)?.onScrollReset()
+            }
+          },
+          225L
+        )
       }
 
       currentPage = position
