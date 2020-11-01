@@ -3,6 +3,7 @@ package com.michaldrabik.ui_my_shows.archive
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
@@ -19,15 +20,21 @@ class ArchiveViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider
 ) : BaseViewModel<ArchiveUiModel>() {
 
-  fun loadShows() {
+  fun loadShows(scrollToTop: Boolean = false) {
     viewModelScope.launch {
-      val sortOrder = sortOrderCase.loadSortOrder()
       val items = loadShowsCase.loadShows().map {
         val image = imagesProvider.findCachedImage(it, POSTER)
         val translation = loadShowsCase.loadTranslation(it)
         ArchiveListItem(it, image, false, translation)
       }
-      uiState = ArchiveUiModel(items = items, sortOrder = sortOrder)
+      uiState = ArchiveUiModel(items = items, scrollToTop = ActionEvent(scrollToTop))
+    }
+  }
+
+  fun loadSortOrder() {
+    viewModelScope.launch {
+      val sortOrder = sortOrderCase.loadSortOrder()
+      uiState = ArchiveUiModel(sortOrder = ActionEvent(sortOrder))
     }
   }
 
@@ -53,7 +60,7 @@ class ArchiveViewModel @Inject constructor(
   fun setSortOrder(sortOrder: SortOrder) {
     viewModelScope.launch {
       sortOrderCase.setSortOrder(sortOrder)
-      loadShows()
+      loadShows(scrollToTop = true)
     }
   }
 }

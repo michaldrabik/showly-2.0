@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
-import timber.log.Timber
 
 /**
  * Note: some extra work is added because of an issue:
@@ -25,7 +24,6 @@ class SearchViewBehaviour(private val padding: Int) : CoordinatorLayout.Behavior
     consumed: IntArray,
     type: Int
   ) {
-    Timber.d("onNestedPreScroll")
     super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type)
     stopNestedScrollIfNeeded(dy, target, type)
   }
@@ -38,7 +36,6 @@ class SearchViewBehaviour(private val padding: Int) : CoordinatorLayout.Behavior
     axes: Int,
     type: Int
   ): Boolean {
-    Timber.d("onStartNestedScroll")
     return when (axes) {
       ViewCompat.SCROLL_AXIS_VERTICAL -> true
       else -> super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, axes, type)
@@ -56,7 +53,6 @@ class SearchViewBehaviour(private val padding: Int) : CoordinatorLayout.Behavior
     type: Int,
     consumed: IntArray
   ) {
-    Timber.d("onNestedScroll")
     super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed)
     if (dyConsumed > 0) {
       val limit = -(child.height + 1.5F * padding)
@@ -70,7 +66,6 @@ class SearchViewBehaviour(private val padding: Int) : CoordinatorLayout.Behavior
   private fun stopNestedScrollIfNeeded(dy: Int, target: View, type: Int) {
     if (type == ViewCompat.TYPE_NON_TOUCH) {
       if (dy == 0) {
-        Timber.d("stopNestedScrollIfNeeded")
         ViewCompat.stopNestedScroll(target, ViewCompat.TYPE_NON_TOUCH)
       }
     }

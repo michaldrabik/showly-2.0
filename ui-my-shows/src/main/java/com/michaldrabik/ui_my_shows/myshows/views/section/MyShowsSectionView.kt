@@ -2,15 +2,12 @@ package com.michaldrabik.ui_my_shows.myshows.views.section
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.MotionEvent
-import android.view.MotionEvent.ACTION_DOWN
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -41,20 +38,6 @@ class MyShowsSectionView : FrameLayout {
   }
 
   private fun setupRecycler() {
-    val recyclerTouchListener = object : RecyclerView.OnItemTouchListener {
-      override fun onInterceptTouchEvent(rv: RecyclerView, event: MotionEvent) =
-        when (event.action) {
-          ACTION_DOWN -> {
-            myShowsSectionRecycler?.parent?.requestDisallowInterceptTouchEvent(true)
-            false
-          }
-          else -> false
-        }
-
-      override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) = Unit
-      override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) = Unit
-    }
-
     myShowsSectionRecycler.apply {
       clearOnScrollListeners()
       setHasFixedSize(true)
@@ -62,7 +45,6 @@ class MyShowsSectionView : FrameLayout {
       layoutManager = this@MyShowsSectionView.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       addDivider(R.drawable.divider_my_shows_horizontal, HORIZONTAL)
-//      addOnItemTouchListener(recyclerTouchListener)
     }
   }
 

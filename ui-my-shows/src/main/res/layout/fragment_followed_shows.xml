@@ -28,6 +28,17 @@
     app:tabTextAppearance="@style/ScrollableTabTextStyle"
     />
 
+  <com.michaldrabik.ui_base.common.views.ScrollableImageView
+    android:id="@+id/followedShowsSortIcon"
+    android:layout_width="wrap_content"
+    android:layout_height="36dp"
+    android:layout_gravity="end"
+    android:layout_marginTop="@dimen/myShowsSearchViewPadding"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:visibility="gone"
+    app:srcCompat="@drawable/ic_sort"
+    />
+
   <GridLayout
     android:id="@+id/followedShowsSearchContainer"
     android:layout_width="match_parent"

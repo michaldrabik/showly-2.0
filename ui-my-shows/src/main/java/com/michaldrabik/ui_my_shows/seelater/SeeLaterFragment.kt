@@ -15,7 +15,6 @@ import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnTranslationsSyncedListener
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
-import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
@@ -25,7 +24,7 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
-import com.michaldrabik.ui_my_shows.main.utilities.OnPageScrollListener
+import com.michaldrabik.ui_my_shows.main.utilities.OnSortClickListener
 import com.michaldrabik.ui_my_shows.seelater.recycler.SeeLaterAdapter
 import kotlinx.android.synthetic.main.fragment_see_later.*
 
@@ -34,14 +33,13 @@ class SeeLaterFragment :
   OnScrollResetListener,
   OnTraktSyncListener,
   OnTranslationsSyncedListener,
-  OnPageScrollListener {
+  OnSortClickListener {
 
   override val viewModel by viewModels<SeeLaterViewModel> { viewModelFactory }
 
   private lateinit var adapter: SeeLaterAdapter
   private lateinit var layoutManager: LinearLayoutManager
   private var statusBarHeight = 0
-  private var isAnimating = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiMyShowsComponentProvider).provideMyShowsComponent().inject(this)
@@ -64,6 +62,7 @@ class SeeLaterFragment :
     adapter = SeeLaterAdapter().apply {
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
       itemClickListener = { openShowDetails(it.show) }
+      listChangeListener = { seeLaterRecycler.scrollToPosition(0) }
     }
     seeLaterRecycler.apply {
       setHasFixedSize(true)
@@ -101,11 +100,12 @@ class SeeLaterFragment :
   private fun render(uiModel: SeeLaterUiModel) {
     uiModel.run {
       items?.let {
-        adapter.setItems(it)
+        val notifyChange = scrollToTop?.consume() == true
+        adapter.setItems(it, notifyChange = notifyChange)
         seeLaterEmptyView.fadeIf(it.isEmpty())
       }
-      sortOrder?.let { order ->
-        seeLaterSortIcon.onClick { showSortOrderDialog(order) }
+      sortOrder?.let { event ->
+        event.consume()?.let { showSortOrderDialog(it) }
       }
     }
   }
@@ -114,11 +114,11 @@ class SeeLaterFragment :
     (parentFragment as? FollowedShowsFragment)?.openShowDetails(show)
   }
 
-  override fun onPageScroll(page: Int, position: Float) {
-    seeLaterSortIcon.alpha = 1F - (8F * position)
-  }
+  override fun onSortClick(page: Int) = viewModel.loadSortOrder()
 
-  override fun onScrollReset() = seeLaterRecycler.scrollToPosition(0)
+  override fun onScrollReset() {
+    seeLaterRecycler.scrollToPosition(0)
+  }
 
   override fun onTraktSyncProgress() = viewModel.loadShows()
 

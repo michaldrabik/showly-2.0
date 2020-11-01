@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_my_shows.main
 
-import android.annotation.SuppressLint
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
@@ -12,7 +11,6 @@ import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
@@ -25,6 +23,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.enableUi
+import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
@@ -33,10 +32,11 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
-import com.michaldrabik.ui_my_shows.main.utilities.OnPageScrollListener
+import com.michaldrabik.ui_my_shows.main.utilities.OnSortClickListener
 import com.michaldrabik.ui_my_shows.myshows.helpers.MyShowsSearchResult
 import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.EMPTY
 import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.NO_RESULTS
@@ -50,10 +50,10 @@ class FollowedShowsFragment :
   BaseFragment<FollowedShowsViewModel>(R.layout.fragment_followed_shows),
   OnTabReselectedListener,
   OnTraktSyncListener,
-  OnTranslationsSyncedListener,
-  TabLayout.OnTabSelectedListener {
+  OnTranslationsSyncedListener {
 
   override val viewModel by viewModels<FollowedShowsViewModel> { viewModelFactory }
+  private var currentPage = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiMyShowsComponentProvider).provideMyShowsComponent().inject(this)
@@ -77,6 +77,11 @@ class FollowedShowsFragment :
     setupBackPress()
   }
 
+  override fun onDestroyView() {
+    followedShowsPager.removeOnPageChangeListener(pageChangeListener)
+    super.onDestroyView()
+  }
+
   private fun setupView() {
     followedShowsSearchView.run {
       hint = getString(R.string.textSearchForMyShows)
@@ -85,7 +90,13 @@ class FollowedShowsFragment :
       onSettingsClickListener = { openSettings() }
       onStatsClickListener = { openStatistics() }
     }
-
+    followedShowsSortIcon.run {
+      visibleIf(currentPage != 0)
+      onClick {
+        val currentIndex = followedShowsPager.currentItem
+        (childFragmentManager.fragments[currentIndex] as? OnSortClickListener)?.onSortClick(currentIndex)
+      }
+    }
     exSearchViewInput.run {
       imeOptions = EditorInfo.IME_ACTION_DONE
       setOnEditorActionListener { _, _, _ ->
@@ -99,12 +110,22 @@ class FollowedShowsFragment :
     followedShowsSearchView.translationY = viewModel.searchViewTranslation
   }
 
+  private fun setupPager() {
+    followedShowsPager.run {
+      offscreenPageLimit = FollowedPagesAdapter.PAGES_COUNT
+      adapter = FollowedPagesAdapter(childFragmentManager, requireAppContext())
+      addOnPageChangeListener(pageChangeListener)
+    }
+    followedShowsTabs.setupWithViewPager(followedShowsPager)
+  }
+
   private fun setupStatusBar() {
     followedShowsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.systemWindowInsetTop
       followedShowsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
       followedShowsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
       followedShowsTabs.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
+      followedShowsSortIcon.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
       followedShowsSearchEmptyView.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
       followedShowsSearchContainer.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
     }
@@ -119,39 +140,6 @@ class FollowedShowsFragment :
         remove()
         dispatcher.onBackPressed()
       }
-    }
-  }
-
-  override fun onDestroyView() {
-    followedShowsTabs.removeOnTabSelectedListener(this)
-    followedShowsPager.removeOnPageChangeListener(pageChangeListener)
-    super.onDestroyView()
-  }
-
-  @SuppressLint("WrongConstant")
-  private fun setupPager() {
-    followedShowsPager.run {
-      offscreenPageLimit = FollowedPagesAdapter.PAGES_COUNT
-      adapter = FollowedPagesAdapter(childFragmentManager, requireAppContext())
-      addOnPageChangeListener(pageChangeListener)
-    }
-    followedShowsTabs.run {
-      setupWithViewPager(followedShowsPager)
-      addOnTabSelectedListener(this@FollowedShowsFragment)
-    }
-  }
-
-  override fun onTabSelected(tab: TabLayout.Tab) {
-    followedShowsPager.currentItem = tab.position
-    if (followedShowsTabs.translationY != 0F) {
-      val duration = 225L
-      followedShowsSearchView.animate().translationY(0F).setDuration(duration).start()
-      followedShowsTabs.animate().translationY(0F).setDuration(duration).start()
-      requireView().postDelayed({
-        childFragmentManager.fragments.forEach {
-          (it as? OnScrollResetListener)?.onScrollReset()
-        }
-      }, duration)
     }
   }
 
@@ -305,17 +293,24 @@ class FollowedShowsFragment :
   }
 
   private val pageChangeListener = object : ViewPager.OnPageChangeListener {
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-      if (position != 1) return // Only middle tab needs it at this moment.
-      childFragmentManager.fragments.forEach { f ->
-        (f as? OnPageScrollListener)?.onPageScroll(position, positionOffset)
+    override fun onPageSelected(position: Int) {
+      if (currentPage == position) return
+
+      followedShowsSortIcon.fadeIf(position != 0, duration = 150)
+      if (followedShowsTabs.translationY != 0F) {
+        followedShowsSearchView.animate().translationY(0F).setDuration(225L).start()
+        followedShowsTabs.animate().translationY(0F).setDuration(225L).start()
+        requireView().postDelayed({
+          childFragmentManager.fragments.forEach {
+            (it as? OnScrollResetListener)?.onScrollReset()
+          }
+        }, 225L)
       }
+
+      currentPage = position
     }
 
-    override fun onPageSelected(position: Int) = Unit
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
     override fun onPageScrollStateChanged(state: Int) = Unit
   }
-
-  override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
-  override fun onTabReselected(tab: TabLayout.Tab?) = Unit
 }

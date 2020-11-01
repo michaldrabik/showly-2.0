@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress.main
 
-import android.annotation.SuppressLint
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
@@ -10,8 +9,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.updateMargins
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
+import androidx.viewpager.widget.ViewPager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.tabs.TabLayout
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnEpisodesSyncedListener
 import com.michaldrabik.ui_base.common.OnScrollResetListener
@@ -22,6 +21,7 @@ import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
@@ -47,14 +47,14 @@ class ProgressFragment :
   BaseFragment<ProgressViewModel>(R.layout.fragment_progress),
   OnEpisodesSyncedListener,
   OnTabReselectedListener,
-  OnTraktSyncListener,
-  TabLayout.OnTabSelectedListener {
+  OnTraktSyncListener {
 
   override val viewModel by viewModels<ProgressViewModel> { viewModelFactory }
 
   private var searchViewTranslation = 0F
   private var tabsTranslation = 0F
   private var sortIconTranslation = 0F
+  private var currentPage = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiProgressComponentProvider).provideProgressComponent().inject(this)
@@ -81,11 +81,12 @@ class ProgressFragment :
   }
 
   override fun onDestroyView() {
-    progressTabs.removeOnTabSelectedListener(this)
+    progressPager.removeOnPageChangeListener(pageChangeListener)
     super.onDestroyView()
   }
 
   private fun setupView() {
+    progressSortIcon.visibleIf(currentPage == 0)
     progressSearchView.run {
       hint = getString(R.string.textSearchWatchlist)
       settingsIconVisible = true
@@ -99,16 +100,13 @@ class ProgressFragment :
     progressSortIcon.translationY = sortIconTranslation
   }
 
-  @SuppressLint("WrongConstant")
   private fun setupPager() {
     progressPager.run {
       offscreenPageLimit = ProgressPagesAdapter.PAGES_COUNT
       adapter = ProgressPagesAdapter(childFragmentManager, requireAppContext())
+      addOnPageChangeListener(pageChangeListener)
     }
-    progressTabs.run {
-      setupWithViewPager(progressPager)
-      addOnTabSelectedListener(this@ProgressFragment)
-    }
+    progressTabs.setupWithViewPager(progressPager)
   }
 
   private fun setupStatusBar() {
@@ -132,21 +130,6 @@ class ProgressFragment :
         remove()
         dispatcher.onBackPressed()
       }
-    }
-  }
-
-  override fun onTabSelected(tab: TabLayout.Tab) {
-    progressPager.currentItem = tab.position
-    if (progressTabs.translationY != 0F) {
-      val duration = 225L
-      progressSearchView.animate().translationY(0F).setDuration(duration).start()
-      progressTabs.animate().translationY(0F).setDuration(duration).start()
-      progressSortIcon.animate().translationY(0F).setDuration(duration).start()
-      requireView().postDelayed({
-        childFragmentManager.fragments.forEach {
-          (it as? OnScrollResetListener)?.onScrollReset()
-        }
-      }, duration)
     }
   }
 
@@ -256,7 +239,7 @@ class ProgressFragment :
     uiModel.run {
       items?.let {
         progressSearchView.isClickable = it.isNotEmpty() || isSearching == true
-        progressSortIcon.visibleIf(it.isNotEmpty())
+        progressSortIcon.visibleIf(it.isNotEmpty() && currentPage == 0)
         if (it.isNotEmpty() && sortOrder != null) {
           progressSortIcon.onClick { openSortOrderDialog(sortOrder) }
         }
@@ -264,6 +247,27 @@ class ProgressFragment :
     }
   }
 
-  override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
-  override fun onTabReselected(tab: TabLayout.Tab?) = Unit
+  private val pageChangeListener = object : ViewPager.OnPageChangeListener {
+    override fun onPageSelected(position: Int) {
+      if (currentPage == position) return
+
+      progressSortIcon.fadeIf(position == 0, duration = 150)
+      if (progressTabs.translationY != 0F) {
+        val duration = 225L
+        progressSearchView.animate().translationY(0F).setDuration(duration).start()
+        progressTabs.animate().translationY(0F).setDuration(duration).start()
+        progressSortIcon.animate().translationY(0F).setDuration(duration).start()
+        requireView().postDelayed({
+          childFragmentManager.fragments.forEach {
+            (it as? OnScrollResetListener)?.onScrollReset()
+          }
+        }, duration)
+      }
+
+      currentPage = position
+    }
+
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
+    override fun onPageScrollStateChanged(state: Int) = Unit
+  }
 }

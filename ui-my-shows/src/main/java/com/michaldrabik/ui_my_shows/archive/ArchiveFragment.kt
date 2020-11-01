@@ -15,7 +15,6 @@ import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnTranslationsSyncedListener
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
-import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
@@ -26,13 +25,15 @@ import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveAdapter
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
+import com.michaldrabik.ui_my_shows.main.utilities.OnSortClickListener
 import kotlinx.android.synthetic.main.fragment_archive.*
 
 class ArchiveFragment :
   BaseFragment<ArchiveViewModel>(R.layout.fragment_archive),
   OnScrollResetListener,
   OnTraktSyncListener,
-  OnTranslationsSyncedListener {
+  OnTranslationsSyncedListener,
+  OnSortClickListener {
 
   override val viewModel by viewModels<ArchiveViewModel> { viewModelFactory }
 
@@ -61,6 +62,7 @@ class ArchiveFragment :
     adapter = ArchiveAdapter().apply {
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
       itemClickListener = { openShowDetails(it.show) }
+      listChangeListener = { archiveRecycler.scrollToPosition(0) }
     }
     archiveRecycler.apply {
       setHasFixedSize(true)
@@ -98,11 +100,12 @@ class ArchiveFragment :
   private fun render(uiModel: ArchiveUiModel) {
     uiModel.run {
       items?.let {
-        adapter.setItems(it)
+        val notifyChange = scrollToTop?.consume() == true
+        adapter.setItems(it, notifyChange = notifyChange)
         archiveEmptyView.fadeIf(it.isEmpty())
       }
-      sortOrder?.let { order ->
-        archiveSortIcon.onClick { showSortOrderDialog(order) }
+      sortOrder?.let { event ->
+        event.consume()?.let { showSortOrderDialog(it) }
       }
     }
   }
@@ -110,6 +113,8 @@ class ArchiveFragment :
   private fun openShowDetails(show: Show) {
     (parentFragment as? FollowedShowsFragment)?.openShowDetails(show)
   }
+
+  override fun onSortClick(page: Int) = viewModel.loadSortOrder()
 
   override fun onScrollReset() = archiveRecycler.scrollToPosition(0)
 
