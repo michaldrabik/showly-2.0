@@ -227,7 +227,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
             getString(R.string.textSettingsLanguageChangeMessage),
             actionText = R.string.textOk,
             length = LENGTH_INDEFINITE,
-            action = { ProcessPhoenix.triggerRebirth(requireContext().applicationContext) }
+            action = { ProcessPhoenix.triggerRebirth(requireAppContext()) }
           )
         }
         dialog.dismiss()

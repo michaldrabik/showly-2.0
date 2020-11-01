@@ -50,7 +50,7 @@ data class Settings(
       myShowsRecentsAmount = 4,
       seeLaterShowsSortBy = SortOrder.NAME,
       archiveShowsSortBy = SortOrder.NAME,
-      showAnticipatedShows = true,
+      showAnticipatedShows = false,
       discoverFilterFeed = DiscoverSortOrder.HOT,
       discoverFilterGenres = emptyList(),
       traktSyncSchedule = TraktSyncSchedule.OFF,
