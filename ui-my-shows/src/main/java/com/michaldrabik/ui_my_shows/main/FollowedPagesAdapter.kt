@@ -1,23 +1,37 @@
 package com.michaldrabik.ui_my_shows.main
 
+import android.content.Context
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
+import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.archive.ArchiveFragment
 import com.michaldrabik.ui_my_shows.myshows.MyShowsFragment
 import com.michaldrabik.ui_my_shows.seelater.SeeLaterFragment
 
-class FollowedPagesAdapter(hostFragment: Fragment) : FragmentStateAdapter(hostFragment) {
+class FollowedPagesAdapter(
+  fragManager: FragmentManager,
+  private val context: Context
+) : FragmentStatePagerAdapter(fragManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
   companion object {
     const val PAGES_COUNT = 3
   }
 
-  override fun getItemCount() = PAGES_COUNT
+  override fun getCount() = PAGES_COUNT
 
-  override fun createFragment(position: Int): Fragment = when (position) {
+  override fun getItem(position: Int): Fragment = when (position) {
     0 -> MyShowsFragment()
     1 -> SeeLaterFragment()
     2 -> ArchiveFragment()
     else -> throw IllegalStateException("Unknown position")
   }
+
+  override fun getPageTitle(position: Int) =
+    when (position) {
+      0 -> context.getString(R.string.menuMyShows)
+      1 -> context.getString(R.string.menuSeeLater)
+      2 -> context.getString(R.string.menuArchive)
+      else -> throw IllegalStateException()
+    }
 }

@@ -11,9 +11,8 @@ import android.widget.GridLayout
 import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
@@ -37,13 +36,13 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
+import com.michaldrabik.ui_my_shows.main.utilities.OnPageScrollListener
 import com.michaldrabik.ui_my_shows.myshows.helpers.MyShowsSearchResult
 import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.EMPTY
 import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.NO_RESULTS
 import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.RESULTS
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import com.michaldrabik.ui_my_shows.myshows.views.MyShowFanartView
-import com.michaldrabik.ui_my_shows.seelater.SeeLaterFragment
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import kotlinx.android.synthetic.main.fragment_followed_shows.*
 
@@ -125,8 +124,7 @@ class FollowedShowsFragment :
 
   override fun onDestroyView() {
     followedShowsTabs.removeOnTabSelectedListener(this)
-    followedShowsPager.unregisterOnPageChangeCallback(pageScrollCallback)
-    seeLaterFragment = null
+    followedShowsPager.removeOnPageChangeListener(pageChangeListener)
     super.onDestroyView()
   }
 
@@ -134,20 +132,13 @@ class FollowedShowsFragment :
   private fun setupPager() {
     followedShowsPager.run {
       offscreenPageLimit = FollowedPagesAdapter.PAGES_COUNT
-      adapter = FollowedPagesAdapter(this@FollowedShowsFragment)
-      registerOnPageChangeCallback(pageScrollCallback)
+      adapter = FollowedPagesAdapter(childFragmentManager, requireAppContext())
+      addOnPageChangeListener(pageChangeListener)
     }
-
-    TabLayoutMediator(followedShowsTabs, followedShowsPager) { tab, position ->
-      tab.text = when (position) {
-        0 -> getString(R.string.menuMyShows)
-        1 -> getString(R.string.menuSeeLater)
-        2 -> getString(R.string.menuArchive)
-        else -> error("Unsupported index")
-      }
-    }.attach()
-
-    followedShowsTabs.addOnTabSelectedListener(this)
+    followedShowsTabs.run {
+      setupWithViewPager(followedShowsPager)
+      addOnTabSelectedListener(this@FollowedShowsFragment)
+    }
   }
 
   override fun onTabSelected(tab: TabLayout.Tab) {
@@ -313,16 +304,16 @@ class FollowedShowsFragment :
     }
   }
 
-  private var seeLaterFragment: SeeLaterFragment? = null
-  private val pageScrollCallback = object : ViewPager2.OnPageChangeCallback() {
+  private val pageChangeListener = object : ViewPager.OnPageChangeListener {
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-      if (position == 1) {
-        if (seeLaterFragment == null) {
-          seeLaterFragment = (childFragmentManager.findFragmentByTag("f1") as? SeeLaterFragment)
-        }
-        seeLaterFragment?.onTabScrollPosition(positionOffset)
+      if (position != 1) return // Only middle tab needs it at this moment.
+      childFragmentManager.fragments.forEach { f ->
+        (f as? OnPageScrollListener)?.onPageScroll(position, positionOffset)
       }
     }
+
+    override fun onPageSelected(position: Int) = Unit
+    override fun onPageScrollStateChanged(state: Int) = Unit
   }
 
   override fun onTabUnselected(tab: TabLayout.Tab?) = Unit

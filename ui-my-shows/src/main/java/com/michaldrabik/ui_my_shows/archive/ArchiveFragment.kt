@@ -111,7 +111,7 @@ class ArchiveFragment :
     (parentFragment as? FollowedShowsFragment)?.openShowDetails(show)
   }
 
-  override fun onScrollReset() = archiveRoot.smoothScrollTo(0, 0)
+  override fun onScrollReset() = archiveRecycler.scrollToPosition(0)
 
   override fun onTraktSyncProgress() = viewModel.loadShows()
 

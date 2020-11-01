@@ -12,7 +12,6 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnEpisodesSyncedListener
 import com.michaldrabik.ui_base.common.OnScrollResetListener
@@ -104,17 +103,12 @@ class ProgressFragment :
   private fun setupPager() {
     progressPager.run {
       offscreenPageLimit = ProgressPagesAdapter.PAGES_COUNT
-      adapter = ProgressPagesAdapter(this@ProgressFragment)
+      adapter = ProgressPagesAdapter(childFragmentManager, requireAppContext())
     }
-
-    TabLayoutMediator(progressTabs, progressPager) { tab, position ->
-      tab.text = when (position) {
-        0 -> getString(R.string.tabProgress)
-        else -> getString(R.string.tabCalendar)
-      }
-    }.attach()
-
-    progressTabs.addOnTabSelectedListener(this)
+    progressTabs.run {
+      setupWithViewPager(progressPager)
+      addOnTabSelectedListener(this@ProgressFragment)
+    }
   }
 
   private fun setupStatusBar() {

@@ -25,6 +25,7 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
+import com.michaldrabik.ui_my_shows.main.utilities.OnPageScrollListener
 import com.michaldrabik.ui_my_shows.seelater.recycler.SeeLaterAdapter
 import kotlinx.android.synthetic.main.fragment_see_later.*
 
@@ -32,13 +33,15 @@ class SeeLaterFragment :
   BaseFragment<SeeLaterViewModel>(R.layout.fragment_see_later),
   OnScrollResetListener,
   OnTraktSyncListener,
-  OnTranslationsSyncedListener {
+  OnTranslationsSyncedListener,
+  OnPageScrollListener {
 
   override val viewModel by viewModels<SeeLaterViewModel> { viewModelFactory }
 
   private lateinit var adapter: SeeLaterAdapter
   private lateinit var layoutManager: LinearLayoutManager
   private var statusBarHeight = 0
+  private var isAnimating = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiMyShowsComponentProvider).provideMyShowsComponent().inject(this)
@@ -111,11 +114,11 @@ class SeeLaterFragment :
     (parentFragment as? FollowedShowsFragment)?.openShowDetails(show)
   }
 
-  fun onTabScrollPosition(position: Float) {
-    seeLaterSortIcon.alpha = 1F - (2F * position)
+  override fun onPageScroll(page: Int, position: Float) {
+    seeLaterSortIcon.alpha = 1F - (8F * position)
   }
 
-  override fun onScrollReset() = seeLaterRoot.smoothScrollTo(0, 0)
+  override fun onScrollReset() = seeLaterRecycler.scrollToPosition(0)
 
   override fun onTraktSyncProgress() = viewModel.loadShows()
 

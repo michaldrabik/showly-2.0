@@ -17,6 +17,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DimenRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.SafeOnClickListener
@@ -98,6 +99,16 @@ fun ProgressBar.setAnimatedProgress(value: Int) {
     setProgress(value, true)
   } else {
     progress = value
+  }
+}
+
+fun ViewPager.nextPage() {
+  val itemsCount = adapter?.count ?: 0
+  if (itemsCount == 0) return
+
+  when (currentItem) {
+    itemsCount - 1 -> currentItem = 0
+    else -> currentItem += 1
   }
 }
 

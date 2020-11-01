@@ -9,10 +9,11 @@
   android:clipToPadding="false"
   >
 
-  <androidx.viewpager2.widget.ViewPager2
+  <androidx.viewpager.widget.ViewPager
     android:id="@+id/followedShowsPager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:overScrollMode="never"
     />
 
   <com.michaldrabik.ui_base.common.views.ScrollableTabLayout
