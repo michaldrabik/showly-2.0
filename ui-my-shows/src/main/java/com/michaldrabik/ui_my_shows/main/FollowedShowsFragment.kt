@@ -108,6 +108,7 @@ class FollowedShowsFragment :
 
     followedShowsTabs.translationY = viewModel.tabsTranslation
     followedShowsSearchView.translationY = viewModel.searchViewTranslation
+    followedShowsSortIcon.translationY = viewModel.tabsTranslation
   }
 
   private fun setupPager() {
@@ -204,6 +205,7 @@ class FollowedShowsFragment :
     if (result.type != EMPTY) {
       followedShowsSearchView.translationY = 0F
       followedShowsTabs.translationY = 0F
+      followedShowsSortIcon.translationY = 0F
       childFragmentManager.fragments.forEach {
         (it as? OnScrollResetListener)?.onScrollReset()
       }
@@ -274,6 +276,7 @@ class FollowedShowsFragment :
   override fun onTabReselected() {
     followedShowsSearchView.translationY = 0F
     followedShowsTabs.translationY = 0F
+    followedShowsSortIcon.translationY = 0F
     followedShowsPager.nextPage()
     childFragmentManager.fragments.forEach {
       (it as? OnScrollResetListener)?.onScrollReset()
@@ -300,6 +303,7 @@ class FollowedShowsFragment :
       if (followedShowsTabs.translationY != 0F) {
         followedShowsSearchView.animate().translationY(0F).setDuration(225L).start()
         followedShowsTabs.animate().translationY(0F).setDuration(225L).start()
+        followedShowsSortIcon.animate().translationY(0F).setDuration(225L).start()
         requireView().postDelayed({
           childFragmentManager.fragments.forEach {
             (it as? OnScrollResetListener)?.onScrollReset()
