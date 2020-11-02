@@ -61,6 +61,7 @@ import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
@@ -351,9 +352,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         val year = if (show.year > 0) show.year.toString() else ""
         val country = if (show.country.isEmpty()) "" else " (${show.country.toUpperCase(ROOT)})"
         showDetailsExtraInfo.text =
-          "${show.network} $year$country | ${show.runtime} min | ${
-          show.genres.take(2).joinToString(", ") { it.capitalize() }
-          }"
+          "${show.network} $year$country | ${show.runtime} min | ${renderGenres(show.genres)}"
         showDetailsRating.text = String.format(ROOT, getString(R.string.textVotes), show.rating, show.votes)
         showDetailsCommentsButton.visible()
 
@@ -433,6 +432,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
     }
   }
+
+  private fun renderGenres(genres: List<String>) =
+    genres
+      .take(2)
+      .mapNotNull { Genre.fromSlug(it) }
+      .joinToString(", ") { getString(it.displayName) }
 
   private fun renderRating(rating: RatingState) {
     showDetailsRateButton.visibleIf(rating.rateLoading == false, gone = false)

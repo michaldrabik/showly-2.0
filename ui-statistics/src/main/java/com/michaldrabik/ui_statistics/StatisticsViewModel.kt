@@ -119,7 +119,7 @@ class StatisticsViewModel @Inject constructor(
       .asSequence()
       .filter { it.isNotBlank() }
       .distinct()
-      .map { genre -> Pair(Genre.fromString(genre), shows.count { genre in it.genres }) }
+      .map { genre -> Pair(Genre.fromSlug(genre), shows.count { genre in it.genres }) }
       .sortedByDescending { it.second }
       .map { it.first }
       .toList()
