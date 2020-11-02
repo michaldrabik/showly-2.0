@@ -20,7 +20,7 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_weight="3"
-      android:text="Remove from Trakt.tv?"
+      android:text="@string/textRemoveFromTrakt"
       android:textAllCaps="true"
       android:textColor="?attr/colorAccent"
       android:textStyle="bold"
