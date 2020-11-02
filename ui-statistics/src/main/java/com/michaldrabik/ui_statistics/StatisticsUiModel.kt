@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_statistics
 
 import com.michaldrabik.ui_base.UiModel
+import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_statistics.views.mostWatched.StatisticsMostWatchedItem
 import com.michaldrabik.ui_statistics.views.ratings.recycler.StatisticsRatingItem
 
@@ -10,7 +11,7 @@ data class StatisticsUiModel(
   val totalTimeSpentMinutes: Long? = null,
   val totalWatchedEpisodes: Long? = null,
   val totalWatchedEpisodesShows: Long? = null,
-  val topGenres: List<String>? = null,
+  val topGenres: List<Genre>? = null,
   val ratings: List<StatisticsRatingItem>? = null,
   val archivedShowsIncluded: Boolean? = null
 ) : UiModel() {

@@ -7,6 +7,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import com.google.android.material.card.MaterialCardView
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_statistics.R
 import kotlinx.android.synthetic.main.view_statistics_card_top_genre.view.*
 
@@ -17,7 +18,7 @@ class StatisticsTopGenresView : MaterialCardView {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  private var topGenres = emptyList<String>()
+  private var topGenres = emptyList<Genre>()
 
   init {
     inflate(context, R.layout.view_statistics_card_top_genre, this)
@@ -30,7 +31,7 @@ class StatisticsTopGenresView : MaterialCardView {
     }
   }
 
-  fun bind(genres: List<String>) {
+  fun bind(genres: List<Genre>) {
     topGenres = genres.toList()
     showGenres(3)
   }
@@ -39,7 +40,7 @@ class StatisticsTopGenresView : MaterialCardView {
     viewTopGenresValue.text = topGenres
       .take(limit)
       .joinToString("\n") {
-        it[0].toUpperCase() + it.substring(1)
+        context.getString(it.displayName)
       }
   }
 }

@@ -20,5 +20,9 @@ enum class Genre(
   SF("science-fiction", R.string.textGenreScienceFiction),
   THRILLER("thriller", R.string.textGenreThriller),
   WAR("war", R.string.textGenreWar),
-  WESTERN("western", R.string.textGenreWestern)
+  WESTERN("western", R.string.textGenreWestern);
+
+  companion object {
+    fun fromString(value: String) = values().find { it.slug.equals(value, true) }
+  }
 }

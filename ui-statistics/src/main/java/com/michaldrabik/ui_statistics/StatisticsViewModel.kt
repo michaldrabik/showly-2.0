@@ -6,6 +6,7 @@ import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.Season
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Show
@@ -116,9 +117,11 @@ class StatisticsViewModel @Inject constructor(
     shows
       .flatMap { it.genres }
       .asSequence()
+      .filter { it.isNotBlank() }
       .distinct()
-      .map { genre -> Pair(genre, shows.count { genre in it.genres }) }
+      .map { genre -> Pair(Genre.fromString(genre), shows.count { genre in it.genres }) }
       .sortedByDescending { it.second }
       .map { it.first }
       .toList()
+      .filterNotNull()
 }

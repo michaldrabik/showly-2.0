@@ -72,7 +72,7 @@
 
     <TextView
       android:id="@+id/viewMostWatchedItemTitle"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceMedium"
       android:layout_marginTop="@dimen/spaceSmall"
