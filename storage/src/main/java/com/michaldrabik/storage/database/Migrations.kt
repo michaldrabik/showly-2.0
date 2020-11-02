@@ -93,8 +93,6 @@ object Migrations {
 
   private val MIGRATION_12_13 = object : Migration(12, 13) {
     override fun migrate(database: SupportSQLiteDatabase) {
-      database.execSQL("ALTER TABLE settings ADD COLUMN language TEXT NOT NULL DEFAULT 'en'")
-
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `shows_translations` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
           "`id_trakt` INTEGER NOT NULL, `title` TEXT NOT NULL, `language` TEXT NOT NULL, `overview` TEXT NOT NULL, " +
@@ -111,7 +109,7 @@ object Migrations {
           "FOREIGN KEY(`id_trakt_show`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE)"
       )
       database.execSQL("CREATE UNIQUE INDEX index_episodes_translations_id_trakt ON episodes_translations(id_trakt)")
-      database.execSQL("CREATE UNIQUE INDEX index_episodes_translations_id_trakt_show ON episodes_translations(id_trakt_show)")
+      database.execSQL("CREATE INDEX index_episodes_translations_id_trakt_show ON episodes_translations(id_trakt_show)")
 
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `sync_translations_log` (`id_show_trakt` INTEGER PRIMARY KEY NOT NULL, " +

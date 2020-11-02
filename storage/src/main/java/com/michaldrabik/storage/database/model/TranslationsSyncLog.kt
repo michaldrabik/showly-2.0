@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "sync_translations_log")
 data class TranslationsSyncLog(
-  @PrimaryKey @ColumnInfo(name = "id_show_trakt", defaultValue = "-1") var idTrakt: Long,
-  @ColumnInfo(name = "synced_at", defaultValue = "0") var syncedAt: Long
+  @PrimaryKey @ColumnInfo(name = "id_show_trakt") var idTrakt: Long,
+  @ColumnInfo(name = "synced_at") var syncedAt: Long
 )
