@@ -9,48 +9,48 @@
   >
 
   <FrameLayout
-    android:id="@+id/myShowRoot"
+    android:id="@+id/myShowFanartRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:foreground="?android:attr/selectableItemBackground"
     >
 
     <ImageView
-      android:id="@+id/myShowImage"
+      android:id="@+id/myShowFanartImage"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       />
 
     <ImageView
-      android:id="@+id/myShowPlaceholder"
+      android:id="@+id/myShowFanartPlaceholder"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_gravity="center"
       android:background="@drawable/bg_show_view_placeholder"
-      android:padding="@dimen/spaceBig"
+      android:padding="42dp"
       android:visibility="gone"
       app:srcCompat="@drawable/ic_television"
       tools:visibility="visible"
       />
 
     <TextView
-      android:id="@+id/myShowTitle"
+      android:id="@+id/myShowFanartTitle"
       style="@style/ImageTitle"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|start"
-      android:layout_marginStart="6dp"
-      android:layout_marginEnd="6dp"
+      android:layout_marginStart="@dimen/spaceSmall"
+      android:layout_marginEnd="@dimen/spaceSmall"
       android:layout_marginBottom="@dimen/spaceTiny"
       android:maxLines="1"
-      android:textSize="12sp"
+      android:textSize="14sp"
       android:visibility="gone"
       tools:text="@tools:sample/lorem/random"
       tools:visibility="visible"
       />
 
     <ProgressBar
-      android:id="@+id/myShowProgress"
+      android:id="@+id/myShowFanartProgress"
       style="@style/ProgressBarGray"
       android:layout_width="28dp"
       android:layout_height="28dp"
