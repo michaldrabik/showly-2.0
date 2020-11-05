@@ -8,6 +8,7 @@ enum class AppLanguage(
   @StringRes val displayName: Int
 ) {
   ENGLISH("en", R.string.textLanguageEnglish),
+  ARABIC("ar", R.string.textLanguageArabic),
   POLISH("pl", R.string.textLanguagePolish);
 
   companion object {
