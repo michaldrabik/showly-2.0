@@ -34,15 +34,15 @@ class ShowImagesProvider @Inject constructor(
   private var awsImagesCache: AwsImages? = null
 
   suspend fun findCachedImage(show: Show, type: ImageType): Image {
-    val cachedImage = database.imagesDao().getByShowId(show.ids.tvdb.id, type.key)
-    return when (cachedImage) {
+    val image = database.imagesDao().getByShowId(show.ids.tvdb.id, type.key)
+    return when (image) {
       null ->
         if (unavailableCache.contains(show.ids.trakt)) {
           Image.createUnavailable(type, SHOW)
         } else {
           Image.createUnknown(type, SHOW)
         }
-      else -> mappers.image.fromDatabase(cachedImage).copy(type = type)
+      else -> mappers.image.fromDatabase(image).copy(type = type)
     }
   }
 
@@ -96,7 +96,7 @@ class ShowImagesProvider @Inject constructor(
       }
     }
 
-    val remoteImage = typeImages.maxBy { it.rating?.count ?: 0 }
+    val remoteImage = typeImages.maxByOrNull { it.rating?.count ?: 0 }
     val image = when (remoteImage) {
       null -> Image.createUnavailable(type)
       else -> Image(
@@ -133,7 +133,7 @@ class ShowImagesProvider @Inject constructor(
     val extraType = if (targetType == POSTER) FANART else POSTER
     images
       .filter { it.keyType == extraType.key }
-      .maxBy { it.rating?.count ?: 0 }
+      .maxByOrNull { it.rating?.count ?: 0 }
       ?.let {
         val extraImage = Image(it.id ?: -1, id, extraType, SHOW, it.fileName ?: "", it.thumbnail ?: "", AVAILABLE, TVDB)
         database.imagesDao().insertShowImage(mappers.image.toDatabase(extraImage))

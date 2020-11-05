@@ -21,7 +21,7 @@ class RelatedShowsRepository @Inject constructor(
 
   suspend fun loadAll(show: Show): List<Show> {
     val relatedShows = database.relatedShowsDao().getAllById(show.ids.trakt.id)
-    val latest = relatedShows.maxBy { it.updatedAt }
+    val latest = relatedShows.maxByOrNull { it.updatedAt }
 
     if (latest != null && nowUtcMillis() - latest.updatedAt < Config.RELATED_CACHE_DURATION) {
       val relatedShowsIds = relatedShows.map { it.idTrakt }

@@ -1,5 +1,8 @@
 package com.michaldrabik.ui_model
 
+import com.michaldrabik.common.Config.AWS_IMAGE_BASE_URL
+import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
+import com.michaldrabik.ui_model.ImageSource.AWS
 import com.michaldrabik.ui_model.ImageSource.TVDB
 
 data class Image(
@@ -22,6 +25,11 @@ data class Image(
     AVAILABLE,
     UNKNOWN,
     UNAVAILABLE
+  }
+
+  val fullFileUrl = when (source) {
+    TVDB -> "$TVDB_IMAGE_BASE_BANNERS_URL$fileUrl"
+    AWS -> "$AWS_IMAGE_BASE_URL$fileUrl"
   }
 
   companion object {

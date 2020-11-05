@@ -4,15 +4,14 @@ import org.threeten.bp.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 object Config {
-  private const val TVDB_IMAGE_PERSON_BASE_URL = "https://artworks.thetvdb.com"
-  const val TVDB_IMAGE_BASE_BANNERS_URL = "$TVDB_IMAGE_PERSON_BASE_URL/banners/"
+  const val TVDB_IMAGE_BASE_BANNERS_URL = "https://artworks.thetvdb.com/banners/"
   const val TVDB_IMAGE_BASE_POSTER_URL = "${TVDB_IMAGE_BASE_BANNERS_URL}posters/"
   const val TVDB_IMAGE_BASE_FANART_URL = "${TVDB_IMAGE_BASE_BANNERS_URL}fanart/original/"
   const val AWS_IMAGE_BASE_URL = "https://showly2.s3.eu-west-2.amazonaws.com/images/"
-  const val SHOW_WHATS_NEW = true
 
   const val DEVELOPER_MAIL = "showlyapp@gmail.com"
   const val PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=com.michaldrabik.showly2"
+  const val SHOW_WHATS_NEW = false
 
   const val MAIN_GRID_SPAN = 3
   const val IMAGE_FADE_DURATION_MS = 200

@@ -6,7 +6,6 @@ import androidx.annotation.RequiresApi
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toDisplayString
@@ -98,11 +97,11 @@ class AnnouncementManager @Inject constructor(
 
       val posterImage = imagesProvider.findCachedImage(show, POSTER)
       if (posterImage.status == AVAILABLE) {
-        putString(DATA_IMAGE_URL, "${TVDB_IMAGE_BASE_BANNERS_URL}${posterImage.fileUrl}")
+        putString(DATA_IMAGE_URL, posterImage.fullFileUrl)
       } else {
         val fanartImage = imagesProvider.findCachedImage(show, FANART)
         if (fanartImage.status == AVAILABLE) {
-          putString(DATA_IMAGE_URL, "${TVDB_IMAGE_BASE_BANNERS_URL}${fanartImage.fileUrl}")
+          putString(DATA_IMAGE_URL, fanartImage.fullFileUrl)
         }
       }
     }

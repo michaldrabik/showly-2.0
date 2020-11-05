@@ -10,7 +10,6 @@ import android.widget.RemoteViewsService
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.DurationPrinter
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -85,7 +84,7 @@ class ProgressWidgetViewsFactory(
   private fun createItemRemoteView(item: ProgressItem): RemoteViews {
     val subtitle = String.format("S.%02d E.%02d", item.episode.season, item.episode.number)
     val progressText = "${item.watchedEpisodesCount}/${item.episodesCount}"
-    val imageUrl = "${Config.TVDB_IMAGE_BASE_BANNERS_URL}${item.image.fileUrl}"
+    val imageUrl = item.image.fullFileUrl
     val hasAired = item.episode.hasAired(item.season)
     val subtitle2 = when {
       item.episode.title.isBlank() -> "TBA"

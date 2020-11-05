@@ -8,10 +8,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.michaldrabik.common.Config.AWS_IMAGE_BASE_URL
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.MAIN_GRID_SPAN
-import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_FANART_URL
 import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_POSTER_URL
 import com.michaldrabik.ui_base.R
@@ -24,8 +22,6 @@ import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_model.Image.Status.AVAILABLE
 import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
 import com.michaldrabik.ui_model.Image.Status.UNKNOWN
-import com.michaldrabik.ui_model.ImageSource.AWS
-import com.michaldrabik.ui_model.ImageSource.TVDB
 import com.michaldrabik.ui_model.ImageType.POSTER
 
 abstract class ShowView<Item : ListItem> : FrameLayout {
@@ -70,12 +66,7 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
     }
     val url = when (item.image.status) {
       UNKNOWN -> "${unknownBase}${item.show.ids.tvdb.id}-1.jpg"
-      AVAILABLE -> {
-        when (item.image.source) {
-          TVDB -> "$TVDB_IMAGE_BASE_BANNERS_URL${item.image.fileUrl}"
-          AWS -> "${AWS_IMAGE_BASE_URL}${item.image.fileUrl}"
-        }
-      }
+      AVAILABLE -> item.image.fullFileUrl
       else -> error("Should not handle other statuses.")
     }
 
