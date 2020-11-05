@@ -5,13 +5,15 @@ import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import com.bumptech.glide.Glide
-import com.michaldrabik.common.Config
+import com.michaldrabik.common.Config.AWS_IMAGE_BASE_URL
+import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageSource.TVDB
 import com.michaldrabik.ui_show.R
 import kotlinx.android.synthetic.main.view_fanart_gallery_image.view.*
 
@@ -32,8 +34,15 @@ class FanartGalleryImageView : FrameLayout {
     clear()
     fanartGalleryImage.onClick { onItemClickListener?.invoke() }
     fanartGalleryImageProgress.visible()
+    loadImage(image)
+  }
+
+  private fun loadImage(image: Image) {
+    val baseImageUrl =
+      if (image.source == TVDB) TVDB_IMAGE_BASE_BANNERS_URL
+      else AWS_IMAGE_BASE_URL
     Glide.with(this)
-      .load("${Config.TVDB_IMAGE_BASE_BANNERS_URL}${image.fileUrl}")
+      .load("$baseImageUrl${image.fileUrl}")
       .withFailListener { fanartGalleryImageProgress.gone() }
       .withSuccessListener { fanartGalleryImageProgress.gone() }
       .into(fanartGalleryImage)

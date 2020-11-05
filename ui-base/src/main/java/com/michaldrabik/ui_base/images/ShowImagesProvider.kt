@@ -2,7 +2,7 @@ package com.michaldrabik.ui_base.images
 
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.network.aws.model.AwsImage
+import com.michaldrabik.network.aws.model.AwsImages
 import com.michaldrabik.network.tvdb.model.TvdbImage
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.IdTrakt
@@ -31,7 +31,7 @@ class ShowImagesProvider @Inject constructor(
 ) {
 
   private val unavailableCache = mutableListOf<IdTrakt>()
-  private var awsImagesCache: List<AwsImage>? = null
+  private var awsImagesCache: AwsImages? = null
 
   suspend fun findCachedImage(show: Show, type: ImageType): Image {
     val cachedImage = database.imagesDao().getByShowId(show.ids.tvdb.id, type.key)
@@ -64,11 +64,8 @@ class ShowImagesProvider @Inject constructor(
       typeImages = images.filter { it.keyType == FANART.key }
       if (typeImages.isEmpty()) {
         // Use custom uploaded S3 image as a final backup
-        if (awsImagesCache == null) {
-          val awsPosters = cloud.awsApi.fetchAvailablePosters()
-          awsImagesCache = awsPosters.toList()
-        }
-        awsImagesCache?.find { poster -> poster.idTvdb == tvdbId.id }?.let {
+        loadAwsImagesCache()
+        awsImagesCache?.posters?.find { poster -> poster.idTvdb == tvdbId.id }?.let {
           val path = "posters/${it.idTvdb}.${it.fileType}"
           typeImages = listOf(TvdbImage(0, path, path, POSTER.key, null))
           source = AWS
@@ -76,15 +73,24 @@ class ShowImagesProvider @Inject constructor(
       }
     }
 
-    // If requested fanart is unavailable try backing up to an episode image
+    // Use custom uploaded S3 image as a first backup for fanart.
     if (typeImages.isEmpty() && type in arrayOf(FANART, FANART_WIDE)) {
-      val seasons = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
-      if (seasons.isNotEmpty()) {
-        val episode = seasons[0].episodes?.firstOrNull()
-        episode?.let { ep ->
-          runCatching {
-            val backupImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getToken(), ep.ids?.tvdb ?: -1)
-            backupImage?.let { img -> typeImages = listOf(img) }
+      loadAwsImagesCache()
+      val awsImage = awsImagesCache?.fanarts?.find { fanart -> fanart.idTvdb == tvdbId.id }
+      if (awsImage != null) {
+        val path = "fanarts/${awsImage.idTvdb}.${awsImage.fileType}"
+        typeImages = listOf(TvdbImage(0, path, path, FANART.key, null))
+        source = AWS
+      } else {
+        // If requested fanart is unavailable try backing up to an episode image
+        val seasons = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
+        if (seasons.isNotEmpty()) {
+          val episode = seasons[0].episodes?.firstOrNull()
+          episode?.let { ep ->
+            runCatching {
+              val backupImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getToken(), ep.ids?.tvdb ?: -1)
+              backupImage?.let { img -> typeImages = listOf(img) }
+            }
           }
         }
       }
@@ -145,6 +151,13 @@ class ShowImagesProvider @Inject constructor(
       .map {
         Image(it.id ?: -1, tvdbId, type, SHOW, it.fileName ?: "", it.thumbnail ?: "", AVAILABLE, TVDB)
       }
+  }
+
+  private suspend fun loadAwsImagesCache() {
+    if (awsImagesCache == null) {
+      val awsImages = cloud.awsApi.fetchImagesList()
+      awsImagesCache = awsImages.copy()
+    }
   }
 
   suspend fun deleteLocalCache() = database.imagesDao().deleteAll()

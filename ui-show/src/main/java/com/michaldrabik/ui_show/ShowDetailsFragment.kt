@@ -32,6 +32,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.platform.MaterialContainerTransform
+import com.michaldrabik.common.Config.AWS_IMAGE_BASE_URL
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
@@ -66,6 +67,7 @@ import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
+import com.michaldrabik.ui_model.ImageSource.TVDB
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
@@ -468,8 +470,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       showDetailsImage.isEnabled = false
       return
     }
+    val baseImageUrl =
+      if (image.source == TVDB) TVDB_IMAGE_BASE_BANNERS_URL
+      else AWS_IMAGE_BASE_URL
     Glide.with(this)
-      .load("$TVDB_IMAGE_BASE_BANNERS_URL${image.fileUrl}")
+      .load("$baseImageUrl${image.fileUrl}")
       .transform(CenterCrop())
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
       .withFailListener {
