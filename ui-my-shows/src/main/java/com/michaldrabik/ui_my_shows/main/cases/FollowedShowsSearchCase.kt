@@ -20,13 +20,9 @@ class FollowedShowsSearchCase @Inject constructor(
     if (query.isNullOrBlank()) return emptyList()
 
     if (searchItemsCache.isEmpty()) {
-      val seeLaterShows = showsRepository.seeLaterShows.loadAll()
-      val myShows = showsRepository.myShows.loadAll()
-
-      val allShows = (seeLaterShows + myShows)
-
+      val collection = showsRepository.loadCollection()
       searchItemsCache.clear()
-      searchItemsCache.addAll(allShows)
+      searchItemsCache.addAll(collection)
     }
 
     return searchItemsCache

@@ -42,10 +42,7 @@ class TranslationsSyncRunner @Inject constructor(
       .filter { it.overview.isNotBlank() }
     val translationsIds = translations.map { it.idTrakt }
 
-    val showsToSync = showsRepository.myShows.loadAll()
-      .plus(showsRepository.seeLaterShows.loadAll())
-      .plus(showsRepository.archiveShows.loadAll())
-      .distinctBy { it.traktId }
+    val showsToSync = showsRepository.loadCollection()
       .filter { it.traktId !in translationsIds }
 
     if (showsToSync.isEmpty()) {
