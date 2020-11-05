@@ -11,5 +11,6 @@ data class Image(
   @ColumnInfo(name = "type", defaultValue = "") var type: String,
   @ColumnInfo(name = "family", defaultValue = "") var family: String,
   @ColumnInfo(name = "file_url", defaultValue = "") var fileUrl: String,
-  @ColumnInfo(name = "thumbnail_url", defaultValue = "") var thumbnailUrl: String
+  @ColumnInfo(name = "thumbnail_url", defaultValue = "") var thumbnailUrl: String,
+  @ColumnInfo(name = "source", defaultValue = "tvdb") var source: String
 )

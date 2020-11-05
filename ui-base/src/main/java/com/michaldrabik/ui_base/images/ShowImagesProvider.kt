@@ -7,8 +7,10 @@ import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.Image.Status.AVAILABLE
 import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageFamily.SHOW
+import com.michaldrabik.ui_model.ImageSource.TVDB
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.FANART_WIDE
@@ -44,7 +46,7 @@ class ShowImagesProvider @Inject constructor(
   suspend fun loadRemoteImage(show: Show, type: ImageType, force: Boolean = false): Image {
     val tvdbId = show.ids.tvdb
     val cachedImage = findCachedImage(show, type)
-    if (cachedImage.status == Image.Status.AVAILABLE && !force) {
+    if (cachedImage.status == AVAILABLE && !force) {
       return cachedImage
     }
 
@@ -75,7 +77,16 @@ class ShowImagesProvider @Inject constructor(
     val remoteImage = typeImages.maxBy { it.rating?.count ?: 0 }
     val image = when (remoteImage) {
       null -> Image.createUnavailable(type)
-      else -> Image(remoteImage.id ?: -1, tvdbId, type, SHOW, remoteImage.fileName ?: "", remoteImage.thumbnail ?: "", Image.Status.AVAILABLE)
+      else -> Image(
+        remoteImage.id ?: -1,
+        tvdbId,
+        type,
+        SHOW,
+        remoteImage.fileName ?: "",
+        remoteImage.thumbnail ?: "",
+        AVAILABLE,
+        TVDB
+      )
     }
 
     when (image.status) {
@@ -102,7 +113,7 @@ class ShowImagesProvider @Inject constructor(
       .filter { it.keyType == extraType.key }
       .maxBy { it.rating?.count ?: 0 }
       ?.let {
-        val extraImage = Image(it.id ?: -1, id, extraType, SHOW, it.fileName ?: "", it.thumbnail ?: "", Image.Status.AVAILABLE)
+        val extraImage = Image(it.id ?: -1, id, extraType, SHOW, it.fileName ?: "", it.thumbnail ?: "", AVAILABLE, TVDB)
         database.imagesDao().insertShowImage(mappers.image.toDatabase(extraImage))
       }
   }
@@ -116,7 +127,7 @@ class ShowImagesProvider @Inject constructor(
     return remoteImages
       .filter { it.keyType == type.key }
       .map {
-        Image(it.id ?: -1, tvdbId, type, SHOW, it.fileName ?: "", it.thumbnail ?: "", Image.Status.AVAILABLE)
+        Image(it.id ?: -1, tvdbId, type, SHOW, it.fileName ?: "", it.thumbnail ?: "", AVAILABLE, TVDB)
       }
   }
 

@@ -1,5 +1,7 @@
 package com.michaldrabik.ui_model
 
+import com.michaldrabik.ui_model.ImageSource.TVDB
+
 data class Image(
   val id: Long,
   val idTvdb: IdTvdb,
@@ -7,7 +9,8 @@ data class Image(
   val family: ImageFamily,
   val fileUrl: String,
   val thumbnailUrl: String,
-  val status: Status
+  val status: Status,
+  val source: ImageSource
 ) {
 
   /**
@@ -23,9 +26,9 @@ data class Image(
 
   companion object {
     fun createUnknown(type: ImageType, family: ImageFamily = ImageFamily.SHOW) =
-      Image(0, IdTvdb(0), type, family, "", "", Status.UNKNOWN)
+      Image(0, IdTvdb(0), type, family, "", "", Status.UNKNOWN, TVDB)
 
     fun createUnavailable(type: ImageType, family: ImageFamily = ImageFamily.SHOW) =
-      Image(0, IdTvdb(0), type, family, "", "", Status.UNAVAILABLE)
+      Image(0, IdTvdb(0), type, family, "", "", Status.UNAVAILABLE, TVDB)
   }
 }

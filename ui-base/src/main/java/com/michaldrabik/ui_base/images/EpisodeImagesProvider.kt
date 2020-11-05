@@ -8,6 +8,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Image.Status.AVAILABLE
 import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageFamily.EPISODE
+import com.michaldrabik.ui_model.ImageSource
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_repository.UserTvdbManager
@@ -43,7 +44,16 @@ class EpisodeImagesProvider @Inject constructor(
       val remoteImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getToken(), tvdbId.id)
       image = when (remoteImage) {
         null -> Image.createUnavailable(FANART)
-        else -> Image(remoteImage.id ?: -1, tvdbId, FANART, EPISODE, remoteImage.fileName ?: "", remoteImage.thumbnail ?: "", AVAILABLE)
+        else -> Image(
+          remoteImage.id ?: -1,
+          tvdbId,
+          FANART,
+          EPISODE,
+          remoteImage.fileName ?: "",
+          remoteImage.thumbnail ?: "",
+          AVAILABLE,
+          ImageSource.TVDB
+        )
       }
     }
 
