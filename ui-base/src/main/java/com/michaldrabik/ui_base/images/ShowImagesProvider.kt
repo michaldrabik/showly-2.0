@@ -2,6 +2,7 @@ package com.michaldrabik.ui_base.images
 
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
+import com.michaldrabik.network.aws.model.AwsImage
 import com.michaldrabik.network.tvdb.model.TvdbImage
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.IdTrakt
@@ -10,6 +11,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Image.Status.AVAILABLE
 import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageFamily.SHOW
+import com.michaldrabik.ui_model.ImageSource.AWS
 import com.michaldrabik.ui_model.ImageSource.TVDB
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.FANART
@@ -29,6 +31,7 @@ class ShowImagesProvider @Inject constructor(
 ) {
 
   private val unavailableCache = mutableListOf<IdTrakt>()
+  private var awsImagesCache: List<AwsImage>? = null
 
   suspend fun findCachedImage(show: Show, type: ImageType): Image {
     val cachedImage = database.imagesDao().getByShowId(show.ids.tvdb.id, type.key)
@@ -51,6 +54,7 @@ class ShowImagesProvider @Inject constructor(
     }
 
     userManager.checkAuthorization()
+    var source = TVDB
     val images = cloud.tvdbApi.fetchShowImages(userManager.getToken(), tvdbId.id)
 
     var typeImages = images.filter { it.keyType == type.key }
@@ -58,6 +62,18 @@ class ShowImagesProvider @Inject constructor(
     // If requested poster is unavailable try backing up to a fanart
     if (typeImages.isEmpty() && type == POSTER) {
       typeImages = images.filter { it.keyType == FANART.key }
+      if (typeImages.isEmpty()) {
+        // Use custom uploaded S3 image as a final backup
+        if (awsImagesCache == null) {
+          val awsPosters = cloud.awsApi.fetchAvailablePosters()
+          awsImagesCache = awsPosters.toList()
+        }
+        awsImagesCache?.find { poster -> poster.idTvdb == tvdbId.id }?.let {
+          val path = "posters/${it.idTvdb}.${it.fileType}"
+          typeImages = listOf(TvdbImage(0, path, path, POSTER.key, null))
+          source = AWS
+        }
+      }
     }
 
     // If requested fanart is unavailable try backing up to an episode image
@@ -85,7 +101,7 @@ class ShowImagesProvider @Inject constructor(
         remoteImage.fileName ?: "",
         remoteImage.thumbnail ?: "",
         AVAILABLE,
-        TVDB
+        source
       )
     }
 
