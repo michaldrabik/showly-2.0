@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string name="app_name">Showly 2.0</string>
+  
+  <string name="menuProgress">مستوى التقدم</string>
+  <string name="menuDiscover">إكتشف</string>
+  <string name="menuCollection">المجموعة</string>
+  
+  <string name="textRateAppTitle">تستمتع بإستخدام Showly 2.0؟</string>
+  <string name="textRateAppMessage">هل تريد تقييم التطبيق؟\nلن يأخذ سوى ثوانٍ قليلة. شكراً!\n\n<i>التطبيق لن يتم إغلاقه.</i></string>
+  <string name="textRateAppYesButton">بالطبع، لما لا؟</string>
+  <string name="textRateAppNoButton">ليس الآن</string>
+  
+  <string name="textWhatsNewTitle">ما الجديد</string>
+  <string name="textWhatsNewSubtitle">الإصدار %s</string>
+  
+  <string name="shortcutDiscover">إكتشف</string>
+  <string name="shortcutMyShows">مسلسلاتي</string>
+  <string name="shortcutSearch">البحث</string>
+  <string name="shortcutProgress">مستوى التقدم</string>
+  
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="one">عنصر واحد تمت مزامنته بنجاح.</item>
+    <item quantity="other">تمت مزامنة %d عناصر بنجاح.</item>
+  </plurals>
+</resources>

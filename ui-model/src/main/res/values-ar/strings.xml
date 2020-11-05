@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSortName">الإسم</string>
+  <string name="textSortNewest">الأحدث</string>
+  <string name="textSortRated">الأعلى تقيماً</string>
+  <string name="textSortDateAdded">أضيف مؤخراً</string>
+  <string name="textSortRecentlyWatched">شاهدت مؤخراً</string>
+  <string name="textSortEpisodesLeft">عدد الحلقات المتبقية</string>
+
+  <string name="textHeaderRecentlyAdded">أضيف مؤخراً</string>
+  <string name="textHeaderWatching">تتم مشاهدته حالياً</string>
+  <string name="textHeaderFinished">تم الإنتهاء من مشاهدته</string>
+  <string name="textHeaderReturning">قادم بموسم جديد &amp; يُعرض قريباً</string>
+  <string name="textHeaderAll">الكل</string>
+
+  <string name="textSettingsShowsNotificationsWhenTitle">وقت إستلام الإشعار</string>
+  <string name="textSettingsShowsNotificationsWhenSummary">متى ترغب بإستلام إشعارات الحلقات؟</string>
+  <string name="textSettingsShowsNotificationsWhenAvailable">عندما تتوفر</string>
+  <string name="textSettingsShowsNotificationsWhen1Hour">بعد التوفر بساعة</string>
+  <string name="textSettingsShowsNotificationsWhen3Hours">بعد التوفر ب 3 ساعات</string>
+  <string name="textSettingsShowsNotificationsWhen6Hours">بعد التوفر ب 6 ساعات</string>
+  <string name="textSettingsShowsNotificationsWhen1HourBefore">قبل التوفر بساعة</string>
+  <string name="textSettingsShowsNotificationsWhen3HoursBefore">قبل التوفر ب 3 ساعات</string>
+  <string name="textSettingsShowsNotificationsWhen6HoursBefore">قبل التوفر ب 6 ساعات</string>
+  <string name="textSettingsShowsNotificationsWhen12HoursBefore">قبل التوفر ب 12 ساعة</string>
+  <string name="textSettingsShowsNotificationsWhen12Hours">بعد التوفر ب 12 ساعة</string>
+  <string name="textSettingsShowsNotificationsWhenNextDay">بعد التوفر بيوم</string>
+
+  <string name="textTipDiscover">انقر نقراً مزدوجاً على زر صفحة \'إكتشف\' لِفتح صفحة البحث بسرعة.</string>
+  <string name="textTipMyShows">انقر نقراً مزدوجاً على زر صفحة \'المجموعة\' للتبديل بين النوافذ بسرعة.</string>
+  <string name="textTipShowDetailsGallery">انقر على صورة المسلسل لفتح معرض الصور.</string>
+  <string name="textTipShowDetailsQuickProgress">انقر على أيقونة \'مستوى التقدم السريع\' لتعيين مستوى تقدمك في المسلسل بسرعة.\n\nانقر على أيقونة \'الأرشيف\' لنقل المسلسل إلى الأرشيف.</string>
+  <string name="textTipDiscoverFilters">إستخدم الفلاتر لفلترة محتويات صفحة إكتشف.</string>
+  <string name="textTipWatchlistPinItem">إضغط مطولاً على أي مسلسل لتثبيته في الأعلى.</string>
+
+  <string name="textGenreAction">أكشن</string>
+  <string name="textGenreAdventure">مغامرة</string>
+  <string name="textGenreAnimation">أنميشن</string>
+  <string name="textGenreAnime">انمي</string>
+  <string name="textGenreComedy">كوميديا</string>
+  <string name="textGenreCrime">جريمة</string>
+  <string name="textGenreDocumentary">وثائقي</string>
+  <string name="textGenreDrama">دراما</string>
+  <string name="textGenreFantasy">خيال</string>
+  <string name="textGenreHistory">تاريخ</string>
+  <string name="textGenreHorror"> رعب</string>
+  <string name="textGenreScienceFiction">خيال علمي</string>
+  <string name="textGenreThriller">إثارة</string>
+  <string name="textGenreWar">حرب</string>
+  <string name="textGenreWestern">غربي</string>
+
+  <string name="textTraktSyncSchedule">جدولة المزامنة</string>
+  <string name="textTraktSyncOptionOff">تعطيل</string>
+  <string name="textTraktSyncOption1Hour">كُل ساعة</string>
+  <string name="textTraktSyncOption3Hours">كُل 3 ساعات</string>
+  <string name="textTraktSyncOption6Hours">كُل 6 ساعات</string>
+  <string name="textTraktSyncOptionDaily">كُل يوم</string>
+  <string name="textTraktSyncOption3Day">كُل 3 أيام</string>
+  <string name="textTraktSyncOptionWeekly">كُل إسبوع</string>
+  <string name="textTraktSyncOptionOffMessage">لن تتم المزامنة بشكل تلقائي.</string>
+  <string name="textTraktSyncOptionConfirmMessage">تم جدولة المزامنة التلقائية.</string>
+
+  <string name="textTraktSyncOptionHourButton">تم توقيت الجدولة لتعمل كُل ساعة</string>
+  <string name="textTraktSyncOption3HoursButton">تم توقيت الجدولة لتعمل كُل 3 ساعات</string>
+  <string name="textTraktSyncOption6HoursButton">تم توقيت الجدولة لتعمل كُل 6 ساعات</string>
+  <string name="textTraktSyncOptionDailyButton">تم توقيت الجدولة لتعمل كُل يوم</string>
+  <string name="textTraktSyncOption3DayButton">تم توقيت الجدولة لتعمل كُل 3 أيام</string>
+  <string name="textTraktSyncOptionWeeklyButton">تم توقيت الجدولة لتعمل كُل إسبوع</string>
+
+  <string name="textShowStatusReturning">قادم بموسم جديد</string>
+  <string name="textShowStatusUpcoming">يُعرض قريباً</string>
+  <string name="textShowStatusInProduction">قيد الإنتاج</string>
+  <string name="textShowStatusPlanned">مُخطط له</string>
+  <string name="textShowStatusCanceled">تم إلغاءه</string>
+  <string name="textShowStatusEnded">إنتهى</string>
+  <string name="textShowStatusUnknown" translatable="false" />
+</resources>

@@ -9,6 +9,7 @@ enum class AppLanguage(
 ) {
   ENGLISH("en", R.string.textLanguageEnglish),
   POLISH("pl", R.string.textLanguagePolish);
+  ARABIC("ar", R.string.textLanguageArabic);
 
   companion object {
     fun fromCode(code: String) = values().first { it.code == code }
