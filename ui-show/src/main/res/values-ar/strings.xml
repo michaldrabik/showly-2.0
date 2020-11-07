@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textAdd">إضافة إلى مسلسلاتي</string>
+  <string name="textWatchLater">مشاهدة لاحقاً</string>
+  <string name="textNextEpisode">الحلقة التالية:</string>
+  <string name="textInMyShows">تمت الإضافة إلى مسلسلاتي</string>
+  <string name="textInSeeLater">تمت الإضافة إلى قائمة المشاهدة</string>
+  <string name="textInArchive">تمت الإضافة إلى الأرشيف</string>
+  <string name="textRate">قيم</string>
+  <string name="textRateDelete">حذف التقييم</string>
+  <string name="textSignBeforeRate">رجاءً قُم بتسجيل الدخول قبل تقييم مسلسل.</string>
+  <string name="textRemoveFromTrakt">حذف من Trakt.tv؟</string>
+
+  <string name="textComments">التعليقات:</string>
+  <string name="textComments2">التعليقات</string>
+  <string name="textNoComments">لا توجد تعليقات.</string>
+
+  <string name="textShowQuickProgressTitle">مستوى التقدم السريع</string>
+  <string name="textShowQuickProgressSubTitle">إختر آخر حلقة قمت بمتابعتها لتحديث قائمة مستوى التقدم بسرعة.</string>
+  <string name="textShowQuickProgressDone">لقد تم تحديث مستوى تقدمك.</string>
+
+  <string name="textActorRole">%s\n(%s)</string>
+  <string name="textShowRated">لقد تم حفظ تقييمك.</string>
+  <string name="textShowRatingDeleted">لقد تم حذف تقييمك.</string>
+  <string name="textEpisodeDate">الحلقة %1$d | %2$s</string>
+  <string name="textTraktSyncRemovedFromTrakt">إكتملت مزامنة Trakt.tv بنجاح.</string>
+  <string name="textActorsEmpty">قائمة الممثلين غير متاحة</string>
+  <string name="textSeasons">المواسم:</string>
+  <string name="textSeasonsEmpty">المواسم غير متاحة.</string>
+  <string name="textTrailer">العرض التشويقي</string>
+  <string name="textImdb">iMDB</string>
+  <string name="textShare">مشاركة</string>
+  <string name="textYouMayAlsoLike">قد يعجبك أيضاً:</string>
+  <string name="textRuntimeLeftHours">المتبقي ~%1$dh %2$dm</string>
+  <string name="textRuntimeLeftMinutes">المتبقي ~%1$dm</string>
+
+  <string name="textWhatIsArchive">الأرشيف؟</string>
+  <string name="textWhatIsArchiveFull">ما هو الأرشيف؟</string>
+  <string name="textArchiveDescription"><b>الأرشيف</b> الأرشيف عبارة عن قائمة بالمسلسلات التي لم تعد ترغب بمتابعتها بعد الآن\n\nالمسلسلات في قائمة الأرشيف لن تظهر في أقسام<b>مستوى التقدم</b>، <b>إكتشف</b> و <b>مسلسلاتي</b>وسيتم تخطيها أثناء المزامنة إلى Trakt.tv.</string>
+  <string name="textArchiveConfirmationTitle">أرشفة مسلسل</string>
+  <string name="textArchiveConfirmationMessage">\nهل أنت متأكد من رغبتك في أرشفة هذا المسلسل؟\n</string>
+</resources>
