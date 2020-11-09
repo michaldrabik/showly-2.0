@@ -19,7 +19,7 @@ class CommentMapper @Inject constructor() {
       createdAt = if (comment?.created_at.isNullOrBlank()) null else ZonedDateTime.parse(comment?.created_at),
       user = User(
         username = comment?.user?.username ?: "",
-        avatarUrl = comment?.user?.avatarUrl ?: ""
+        avatarUrl = comment?.user?.images?.avatar?.full ?: ""
       )
     )
 }

@@ -352,8 +352,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         val year = if (show.year > 0) show.year.toString() else ""
         val country = if (show.country.isEmpty()) "" else " (${show.country.toUpperCase(ROOT)})"
         showDetailsExtraInfo.text =
-          "${show.network} $year$country | ${show.runtime} min | ${renderGenres(show.genres)}"
-        showDetailsRating.text = String.format(ROOT, getString(R.string.textVotes), show.rating, show.votes)
+          String.format("%s %s%s | %d min | %s", show.network, year, country, show.runtime, renderGenres(show.genres))
+        showDetailsRating.text =
+          String.format(ROOT, getString(R.string.textVotes), show.rating, show.votes)
         showDetailsCommentsButton.visible()
 
         showDetailsShareButton.run {

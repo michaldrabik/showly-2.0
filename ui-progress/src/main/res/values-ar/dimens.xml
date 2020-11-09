@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="progressTabsViewTranslation">10dp</dimen>
+  <dimen name="progressTabViewMinWidth">100dp</dimen>
 </resources>

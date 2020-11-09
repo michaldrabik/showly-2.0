@@ -50,7 +50,7 @@ class SeasonView : FrameLayout {
 
     seasonViewProgress.max = item.season.episodeCount
     seasonViewProgress.setAnimatedProgress(item.episodes.count { it.isWatched })
-    seasonViewProgressText.text = "$progressCount/${item.episodes.size} ($percent%)"
+    seasonViewProgressText.text = String.format("%d/%d (%d%%)", progressCount, item.episodes.size, percent)
 
     seasonViewCheckbox.isChecked = item.isWatched
     seasonViewCheckbox.isEnabled = item.episodes.all { it.episode.hasAired(item.season) }
