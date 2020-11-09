@@ -10,8 +10,8 @@
   <string name="textNew">جديد</string>
   <string name="textSelect">إختر</string>
   <string name="textHot">شائع</string>
-  <string name="textEmptyResults">لا توجد نتائج...</string>
-  <string name="textSearchFor">بحث...</string>
+  <string name="textEmptyResults">لا توجد نتائج…</string>
+  <string name="textSearchFor">بحث…</string>
   <string name="textTip">نصيحة:</string>
   <string name="textSeason">الموسم %1$d</string>
   <string name="textSpecials">الحلقات الخاصة</string>
@@ -57,13 +57,13 @@
 
   <string name="textTraktSync">مزامنة Trakt.tv</string>
   <string name="textTraktSyncComplete">إكتملت المزامنة بنجاح.</string>
-  <string name="textTraktSyncRunning">بدء المزامنة...</string>
+  <string name="textTraktSyncRunning">بدء المزامنة…</string>
   <string name="textTraktSyncError">فشلت مزامنة Trakt.tv.</string>
   <string name="textTraktSyncErrorFull">فشلت مزامنة Trakt.tv. رجاءً تأكد من أنك مُتصل بالإنترنت ثم حاول مجدداً، وإذا إستمرت المشكلة بالحدوث، تواصل معنا.</string>
   <string name="textTraktQuickSyncError">فشلت المزامنة الفورية.</string>
   <string name="textTraktQuickSyncErrorFull">فشلت المزامنة الفورية. سيتم محاولة المزامنة الفورية بعد تشغيل التطبيق مرة أخرى، رجاءً تأكد من إتصالك بالإنترنت.</string>
 
-  <string name="errorGeneral">عفواً... حدث خطأ ما.\nإذا استمرت المشكلة بالحدوث، رجاءً تواصل معنا.</string>
+  <string name="errorGeneral">عفواً… حدث خطأ ما.\nإذا استمرت المشكلة بالحدوث، رجاءً تواصل معنا.</string>
   <string name="errorAuthorization">فشلت المصادقة. إذا استمرت المشكلة بالحدوث، رجاءً تواصل معنا.</string>
   <string name="errorTraktAuthorization">فشلت مصادقة Trakt.\nقُم بتسجيل الدخول وحاول مرة أخرى.</string>
   <string name="errorSeasonsNotLoaded">رجاءً إنتظر قليلاً حتى يكتمل تحميل بيانات المواسم.</string>
