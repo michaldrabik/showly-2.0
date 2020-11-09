@@ -48,5 +48,6 @@
 
   <string name="textLanguageEnglish" translatable="false">English</string>
   <string name="textLanguagePolish" translatable="false">Polski</string>
+  <string name="textLanguageArabic" translatable="false">عربى</string>
   <string name="textLanguageSpanish" translatable="false">Español</string>
 </resources>

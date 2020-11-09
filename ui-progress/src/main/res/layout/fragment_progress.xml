@@ -23,7 +23,7 @@
     android:layout_height="36dp"
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/progressSearchViewPadding"
-    android:translationX="-10dp"
+    android:translationX="@dimen/progressTabsViewTranslation"
     app:tabMinWidth="84dp"
     app:tabTextAppearance="@style/ScrollableTabTextStyle"
     />
