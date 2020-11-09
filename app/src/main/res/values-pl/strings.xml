@@ -1,6 +1,4 @@
 <resources>
-  <string name="app_name">Showly 2.0</string>
-
   <string name="menuProgress">Progres</string>
   <string name="menuDiscover">Odkrywaj</string>
   <string name="menuCollection">Kolekcja</string>

@@ -1,5 +1,5 @@
 <resources>
-  <string name="app_name">Showly 2.0</string>
+  <string name="app_name" translatable="false">Showly 2.0</string>
 
   <string name="menuProgress">Progress</string>
   <string name="menuDiscover">Discover</string>
