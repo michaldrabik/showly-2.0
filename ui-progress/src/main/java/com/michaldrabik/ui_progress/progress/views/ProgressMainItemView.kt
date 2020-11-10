@@ -91,7 +91,7 @@ class ProgressMainItemView : ShowView<ProgressItem> {
     val percent = ((item.watchedEpisodesCount.toFloat() / item.episodesCount.toFloat()) * 100).roundToInt()
     progressItemProgress.max = item.episodesCount
     progressItemProgress.progress = item.watchedEpisodesCount
-    progressItemProgressText.text = "${item.watchedEpisodesCount}/${item.episodesCount} ($percent%)"
+    progressItemProgressText.text = String.format("%d/%d (%d%%)", item.watchedEpisodesCount, item.episodesCount, percent)
   }
 
   private fun bindCheckButton(

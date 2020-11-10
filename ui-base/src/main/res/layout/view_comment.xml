@@ -52,6 +52,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toEndOf="@id/commentImage"
     app:layout_constraintTop_toBottomOf="@id/commentHeader"
+    tools:targetApi="o"
     tools:text="@tools:sample/lorem"
     />
 

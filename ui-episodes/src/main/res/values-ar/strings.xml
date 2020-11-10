@@ -8,7 +8,7 @@
   <string name="textSeasonEpisodeDate">S.%1$02d E.%2$02d | %3$s</string>
   <string name="textNoDescription">لا يتوفر وصف.</string>
   <string name="textLoadCommentsCount">إظهار التعليقات (%d)</string>
-  <string name="textVotes">%.1f (%d تقييم)</string>
+  <string name="textVotes">%s (%d تقييم)</string>
 
   <string name="textNoComments">لا توجد تعليقات.</string>
   <string name="textComments">التعليقات:</string>

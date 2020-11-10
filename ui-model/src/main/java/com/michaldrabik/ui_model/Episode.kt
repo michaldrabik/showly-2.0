@@ -4,6 +4,8 @@ import android.os.Parcelable
 import com.michaldrabik.common.extensions.nowUtcMillis
 import kotlinx.android.parcel.Parcelize
 import org.threeten.bp.ZonedDateTime
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 
 @Parcelize
 data class Episode(
@@ -30,4 +32,11 @@ data class Episode(
     }
 
   fun toDisplayString() = String.format("S.%02d E.%02d - \'%s\'", season, number, title)
+
+  fun getRatingString(): String {
+    val decimalSymbols = DecimalFormatSymbols.getInstance().apply {
+      decimalSeparator = '.'
+    }
+    return DecimalFormat("0.0", decimalSymbols).format(rating)
+  }
 }

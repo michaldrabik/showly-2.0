@@ -44,8 +44,9 @@ class ShowSearchView : ShowView<SearchListItem> {
       if (item.translation?.overview.isNullOrBlank()) item.show.overview
       else item.translation?.overview
 
-    val year = if (item.show.year > 0) " (${item.show.year})" else ""
-    showSearchNetwork.text = "${item.show.network}$year"
+    showSearchNetwork.text =
+      if (item.show.year > 0) String.format("%s (%d)", item.show.network, item.show.year)
+      else String.format("%s", item.show.network)
 
     showSearchDescription.visibleIf(item.show.overview.isNotBlank())
     showSearchNetwork.visibleIf(item.show.network.isNotBlank())

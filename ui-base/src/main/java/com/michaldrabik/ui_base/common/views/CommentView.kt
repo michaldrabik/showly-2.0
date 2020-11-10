@@ -54,6 +54,7 @@ class CommentView : ConstraintLayout {
     if (comment.user.avatarUrl.isNotEmpty()) {
       Glide.with(this)
         .load(comment.user.avatarUrl)
+        .placeholder(R.drawable.ic_person_outline)
         .transform(CircleCrop())
         .into(commentImage)
     }

@@ -42,7 +42,6 @@ import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import kotlinx.android.synthetic.main.view_episode_details.*
 import kotlinx.android.synthetic.main.view_episode_details.view.*
-import java.util.Locale.ROOT
 
 class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewModel>() {
 
@@ -123,7 +122,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         }
       }
       episodeDetailsRatingLayout.visibleIf(episode.votes > 0)
-      episodeDetailsRating.text = String.format(ROOT, getString(R.string.textVotes), episode.rating, episode.votes)
+      episodeDetailsRating.text = String.format(getString(R.string.textVotes), episode.getRatingString(), episode.votes)
 
       episodeDetailsCommentsButton.text = getString(R.string.textLoadCommentsCount, episode.commentCount)
       episodeDetailsCommentsButton.onClick {

@@ -8,7 +8,7 @@
   <string name="textSeasonEpisodeDate">S.%1$02d E.%2$02d | %3$s</string>
   <string name="textNoDescription">Overview not available.</string>
   <string name="textLoadCommentsCount">Show Comments (%d)</string>
-  <string name="textVotes">%.1f (%d votes)</string>
+  <string name="textVotes">%s (%d votes)</string>
 
   <string name="textNoComments">No comments.</string>
   <string name="textComments">Comments:</string>

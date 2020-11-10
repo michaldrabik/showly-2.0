@@ -215,6 +215,7 @@
         android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:ellipsize="end"
+        android:justificationMode="inter_word"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@id/showDetailsActorsRecycler"
@@ -222,6 +223,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showDetailsEpisodeCard"
         app:layout_goneMarginBottom="@dimen/spaceBig"
+        tools:targetApi="o"
         tools:text="Description"
         />
 
