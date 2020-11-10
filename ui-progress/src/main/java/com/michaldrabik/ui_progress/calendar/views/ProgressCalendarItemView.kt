@@ -57,7 +57,7 @@ class ProgressCalendarItemView : ShowView<ProgressItem> {
       progressCalendarItemSubtitle.text = context.getString(R.string.textNewSeason)
     } else {
       val episodeTitle = when {
-        item.upcomingEpisode.title.isBlank() -> "TBA"
+        item.upcomingEpisode.title.isBlank() -> context.getString(R.string.textTba)
         item.upcomingEpisodeTranslation?.title?.isBlank() == false -> item.upcomingEpisodeTranslation.title
         else -> item.upcomingEpisode.title
       }

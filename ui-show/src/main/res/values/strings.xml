@@ -10,6 +10,7 @@
   <string name="textRateDelete">Remove</string>
   <string name="textSignBeforeRate">Please sign in before rating a show.</string>
   <string name="textRemoveFromTrakt">Remove from Trakt.tv?</string>
+  <string name="textShowExtraInfo">%s %s %s | %d min | %s</string>
 
   <string name="textComments">Comments:</string>
   <string name="textComments2">Comments</string>

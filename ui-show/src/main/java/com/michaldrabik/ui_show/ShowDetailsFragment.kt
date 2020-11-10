@@ -88,7 +88,6 @@ import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import org.threeten.bp.Duration
-import java.util.Locale.ROOT
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
 class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment_show_details) {
@@ -349,19 +348,16 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         showDetailsTitle.text = show.title
         showDetailsDescription.setTextIfEmpty(show.overview)
         showDetailsStatus.text = getString(show.status.displayName)
-        val year = if (show.year > 0) show.year.toString() else ""
-        val country = if (show.country.isEmpty()) "" else " (${show.country.toUpperCase(ROOT)})"
+        val year = if (show.year > 0) String.format("%d", show.year) else ""
+        val country = if (show.country.isNotBlank()) String.format("(%s)", show.country) else ""
         showDetailsExtraInfo.text =
-          String.format("%s %s%s | %d min | %s", show.network, year, country, show.runtime, renderGenres(show.genres))
-
+          getString(R.string.textShowExtraInfo, show.network, year, country.toUpperCase(), show.runtime, renderGenres(show.genres))
         showDetailsRating.text = String.format(getString(R.string.textVotes), show.getRatingString(), show.votes)
         showDetailsCommentsButton.visible()
-
         showDetailsShareButton.run {
           visibleIf(show.ids.imdb.id.isNotBlank())
           onClick { openShareSheet(show) }
         }
-
         showDetailsTrailerButton.run {
           visibleIf(show.trailer.isNotBlank())
           onClick {
@@ -369,7 +365,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
             Analytics.logShowTrailerClick(show)
           }
         }
-
         showDetailsImdbButton.run {
           visibleIf(show.ids.imdb.id.isNotBlank())
           onClick {
@@ -377,7 +372,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
             Analytics.logShowImdbClick(show)
           }
         }
-
         showDetailsAddButton.isEnabled = true
       }
       showLoading?.let {

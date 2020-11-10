@@ -10,6 +10,7 @@
   <string name="textRateDelete">حذف التقييم</string>
   <string name="textSignBeforeRate">رجاءً قُم بتسجيل الدخول قبل تقييم مسلسل.</string>
   <string name="textRemoveFromTrakt">حذف من Trakt.tv؟</string>
+  <string name="textShowExtraInfo">%s %s %s | %d دقائق | %s</string>
 
   <string name="textComments">التعليقات:</string>
   <string name="textComments2">التعليقات</string>

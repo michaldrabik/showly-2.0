@@ -38,7 +38,7 @@ class EpisodeView : ConstraintLayout {
     episodeTitle.text = context.getString(R.string.textEpisode, item.episode.number)
     episodeOverview.text = when {
       !item.translation?.title.isNullOrBlank() -> item.translation?.title
-      else -> item.episode.title.ifEmpty { "TBA" }
+      else -> item.episode.title.ifEmpty { context.getString(R.string.textTba) }
     }
     episodeCheckbox.isChecked = item.isWatched
     episodeCheckbox.isEnabled = hasAired
@@ -49,7 +49,8 @@ class EpisodeView : ConstraintLayout {
       }
     } else {
       val date = item.episode.firstAired?.toLocalTimeZone()
-      episodeTitle.text = context.getString(R.string.textEpisodeDate, item.episode.number, date?.toDisplayString() ?: "TBA")
+      val displayDate = date?.toDisplayString() ?: context.getString(R.string.textTba)
+      episodeTitle.text = context.getString(R.string.textEpisodeDate, item.episode.number, displayDate)
     }
 
     onClick { itemClickListener(item.episode, item.isWatched) }

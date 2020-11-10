@@ -87,8 +87,8 @@ class ProgressWidgetViewsFactory(
     val imageUrl = item.image.fullFileUrl
     val hasAired = item.episode.hasAired(item.season)
     val subtitle2 = when {
-      item.episode.title.isBlank() -> "TBA"
-      item.translation?.title?.isBlank() == false -> item.translation?.title ?: "TBA"
+      item.episode.title.isBlank() -> context.getString(R.string.textTba)
+      item.translation?.title?.isBlank() == false -> item.translation?.title ?: context.getString(R.string.textTba)
       else -> item.episode.title
     }
 

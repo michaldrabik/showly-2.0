@@ -134,7 +134,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   private fun getDateString(): String {
     val millis = episode.firstAired?.toInstant()?.toEpochMilli() ?: -1
     return if (millis == -1L) {
-      "TBA"
+      getString(R.string.textTba)
     } else {
       com.michaldrabik.common.extensions.dateFromMillis(millis)
         .toLocalTimeZone()

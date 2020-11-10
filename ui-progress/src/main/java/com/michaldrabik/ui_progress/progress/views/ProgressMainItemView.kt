@@ -73,7 +73,7 @@ class ProgressMainItemView : ShowView<ProgressItem> {
     )
 
     val episodeTitle = when {
-      item.episode.title.isBlank() -> "TBA"
+      item.episode.title.isBlank() -> context.getString(R.string.textTba)
       item.translation?.title?.isBlank() == false -> item.translation.title
       else -> item.episode.title
     }
