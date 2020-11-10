@@ -107,6 +107,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private val actorViewCorner by lazy { requireContext().dimenToPx(R.dimen.actorFullTileCorner) }
   private val animationEnterRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_right) }
   private val animationExitRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right) }
+  private val animationEnterLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_left) }
+  private val animationExitLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_left) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiShowDetailsComponentProvider).provideShowDetailsComponent().inject(this)
@@ -263,16 +265,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun hideExtraView(view: View) {
     if (view.animation != null) return
 
-    val animationEnter = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_left)
-    val animationExit = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_left)
-
     view.run {
       fadeOut(300)
-      startAnimation(animationExit)
+      startAnimation(animationExitLeft)
     }
     showDetailsMainLayout.run {
       fadeIn()
-      startAnimation(animationEnter)
+      startAnimation(animationEnterLeft)
     }
   }
 
@@ -481,7 +480,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun renderNextEpisode(nextEpisode: Episode) {
     nextEpisode.run {
-      showDetailsEpisodeText.text = toDisplayString()
+      showDetailsEpisodeText.text = getString(R.string.textEpisodeTitle, season, number, title)
       showDetailsEpisodeCard.visible()
       showDetailsEpisodeCard.onClick {
         showEpisodeDetails(nextEpisode, null, isWatched = false, showButton = false)

@@ -24,6 +24,7 @@
   <string name="textShowRated">لقد تم حفظ تقييمك.</string>
   <string name="textShowRatingDeleted">لقد تم حذف تقييمك.</string>
   <string name="textEpisodeDate">الحلقة %1$d | %2$s</string>
+  <string name="textEpisodeTitle">الموسم %02d الحلقة %02d - %s</string>
   <string name="textTraktSyncRemovedFromTrakt">إكتملت مزامنة Trakt.tv بنجاح.</string>
   <string name="textActorsEmpty">قائمة الممثلين غير متاحة</string>
   <string name="textSeasons">المواسم:</string>
