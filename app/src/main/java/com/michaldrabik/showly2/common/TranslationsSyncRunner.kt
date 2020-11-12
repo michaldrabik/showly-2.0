@@ -6,6 +6,8 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.ui_base.events.EventsManager
+import com.michaldrabik.ui_base.events.TranslationsSyncProgress
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.shows.ShowsRepository
@@ -64,6 +66,7 @@ class TranslationsSyncRunner @Inject constructor(
         Timber.i("Syncing ${show.title}(${show.ids.trakt}) translations...")
         translationsRepository.updateLocalShowTranslation(show, language)
         syncCount++
+        EventsManager.sendEvent(TranslationsSyncProgress)
         Timber.i("${show.title}(${show.ids.trakt}) translation synced.")
       } catch (t: Throwable) {
         Timber.e("${show.title}(${show.ids.trakt}) translation sync error. Skipping... \n$t")
