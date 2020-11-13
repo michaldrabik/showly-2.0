@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -40,7 +41,9 @@ class ArchiveShowView : ShowView<ArchiveListItem> {
     clear()
     this.item = item
     archiveShowProgress.visibleIf(item.isLoading)
-    archiveShowTitle.text = item.show.title
+    archiveShowTitle.text =
+      if (item.translation?.title.isNullOrBlank()) item.show.title
+      else item.translation?.title?.capitalizeWords()
 
     archiveShowDescription.text =
       if (item.translation?.overview.isNullOrBlank()) item.show.overview

@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_statistics
 
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.Config
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.Season
@@ -11,6 +12,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.shows.ShowsRepository
 import com.michaldrabik.ui_statistics.cases.StatisticsLoadRatingsCase
@@ -23,6 +25,7 @@ class StatisticsViewModel @Inject constructor(
   private val ratingsCase: StatisticsLoadRatingsCase,
   private val showsRepository: ShowsRepository,
   private val settingsRepository: SettingsRepository,
+  private val translationsRepository: TranslationsRepository,
   private val imagesProvider: ShowImagesProvider,
   private val database: AppDatabase,
   private val mappers: Mappers
@@ -36,6 +39,7 @@ class StatisticsViewModel @Inject constructor(
       val includeArchive = settingsRepository.load().archiveShowsIncludeStatistics
       uiState = StatisticsUiModel(archivedShowsIncluded = includeArchive)
 
+      val language = settingsRepository.getLanguage()
       val myShows = showsRepository.myShows.loadAll()
       val archiveShows = if (includeArchive) showsRepository.archiveShows.loadAll() else emptyList()
 
@@ -46,16 +50,18 @@ class StatisticsViewModel @Inject constructor(
       val seasons = batchSeasons(allShowsIds)
 
       val genres = extractTopGenres(allShows)
-      val mostWatchedShows = allShowsIds
-        .map { showId ->
+      val mostWatchedShows = allShows
+        .map { show ->
+          val translation = loadTranslation(language, show)
           StatisticsMostWatchedItem(
-            show = allShows.first { it.traktId == showId },
-            seasonsCount = seasons.filter { it.idShowTrakt == showId }.count().toLong(),
+            show = allShows.first { it.traktId == show.traktId },
+            seasonsCount = seasons.filter { it.idShowTrakt == show.traktId }.count().toLong(),
             episodes = episodes
-              .filter { it.idShowTrakt == showId }
+              .filter { it.idShowTrakt == show.traktId }
               .map { mappers.episode.fromDatabase(it) },
             image = Image.createUnknown(POSTER),
-            isArchived = archiveShows.any { it.traktId == showId }
+            isArchived = archiveShows.any { it.traktId == show.traktId },
+            translation = translation
           )
         }
         .sortedByDescending { item -> item.episodes.sumBy { it.runtime } }
@@ -71,7 +77,7 @@ class StatisticsViewModel @Inject constructor(
         totalTimeSpentMinutes = episodes.sumBy { it.runtime }.toLong(),
         totalWatchedEpisodes = episodes.count().toLong(),
         totalWatchedEpisodesShows = episodes.distinctBy { it.idShowTrakt }.count().toLong(),
-        topGenres = genres
+        topGenres = genres,
       )
     }
   }
@@ -124,4 +130,8 @@ class StatisticsViewModel @Inject constructor(
       .map { it.first }
       .toList()
       .filterNotNull()
+
+  private suspend fun loadTranslation(language: String, show: Show) =
+    if (language == Config.DEFAULT_LANGUAGE) null
+    else translationsRepository.loadTranslation(show, language, true)
 }

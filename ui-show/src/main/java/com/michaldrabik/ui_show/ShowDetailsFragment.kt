@@ -43,6 +43,7 @@ import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -543,6 +544,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun renderTranslation(translation: Translation?) {
     if (translation?.overview?.isNotBlank() == true) {
       showDetailsDescription.text = translation.overview
+    }
+    if (translation?.title?.isNotBlank() == true) {
+      showDetailsTitle.text = translation.title.capitalizeWords()
     }
   }
 

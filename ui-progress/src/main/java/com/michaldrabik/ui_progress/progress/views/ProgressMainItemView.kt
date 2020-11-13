@@ -13,6 +13,7 @@ import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.DurationPrinter
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
 import com.michaldrabik.ui_base.utilities.extensions.bump
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -65,7 +66,11 @@ class ProgressMainItemView : ShowView<ProgressItem> {
     this.item = item
     clear()
 
-    progressItemTitle.text = item.show.title
+    val translationTitle = item.showTranslation?.title
+    progressItemTitle.text =
+      if (translationTitle.isNullOrBlank()) item.show.title
+      else translationTitle.capitalizeWords()
+
     progressItemSubtitle.text = String.format(
       "S.%02d E.%02d",
       item.episode.season,
@@ -74,7 +79,7 @@ class ProgressMainItemView : ShowView<ProgressItem> {
 
     val episodeTitle = when {
       item.episode.title.isBlank() -> context.getString(R.string.textTba)
-      item.translation?.title?.isBlank() == false -> item.translation.title
+      item.episodeTranslation?.title?.isBlank() == false -> item.episodeTranslation.title
       else -> item.episode.title
     }
     progressItemSubtitle2.text = episodeTitle

@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -40,7 +41,9 @@ class StatisticsMostWatchedItemView : ShowView<StatisticsMostWatchedItem> {
     this.item = item
     clear()
 
-    viewMostWatchedItemTitle.text = item.show.title
+    viewMostWatchedItemTitle.text =
+      if (item.translation?.title.isNullOrBlank()) item.show.title
+      else item.translation?.title?.capitalizeWords()
     viewMostWatchedItemHoursValue.text = String.format("%d", item.episodes.sumBy { it.runtime } / 60)
     viewMostWatchedItemEpisodesValue.text = String.format("%d", item.episodes.size)
     viewMostWatchedItemSeasonsValue.text = String.format("%d", item.seasonsCount)

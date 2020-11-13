@@ -63,12 +63,14 @@ class ProgressLoadItemsCase @Inject constructor(
       mappers.episode.fromDatabase(epDb)
     } ?: Episode.EMPTY
 
-    var translation: Translation? = null
+    var showTranslation: Translation? = null
+    var episodeTranslation: Translation? = null
     var upcomingTranslation: Translation? = null
 
     val language = settingsRepository.getLanguage()
     if (language !== Config.DEFAULT_LANGUAGE) {
-      translation = translationsRepository.loadTranslation(episodeUi, show.ids.trakt, language, true)
+      showTranslation = translationsRepository.loadTranslation(show, language, true)
+      episodeTranslation = translationsRepository.loadTranslation(episodeUi, show.ids.trakt, language, true)
       upcomingTranslation = translationsRepository.loadTranslation(upEpisode, show.ids.trakt, language, true)
     }
 
@@ -81,7 +83,8 @@ class ProgressLoadItemsCase @Inject constructor(
       episodesCount,
       episodesCount - unwatchedEpisodesCount,
       isPinned = isPinned,
-      translation = translation,
+      showTranslation = showTranslation,
+      episodeTranslation = episodeTranslation,
       upcomingEpisodeTranslation = upcomingTranslation
     )
   }

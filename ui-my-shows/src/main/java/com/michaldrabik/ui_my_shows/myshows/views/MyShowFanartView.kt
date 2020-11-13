@@ -8,6 +8,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -32,8 +33,10 @@ class MyShowFanartView : FrameLayout {
 
   fun bind(showItem: MyShowsItem, clickListener: (MyShowsItem) -> Unit) {
     clear()
-    myShowFanartTitle.text = showItem.show.title
     myShowFanartTitle.visible()
+    myShowFanartTitle.text =
+      if (showItem.translation?.title.isNullOrBlank()) showItem.show.title
+      else showItem.translation?.title?.capitalizeWords()
     onClick { clickListener(showItem) }
     loadImage(showItem.image)
   }

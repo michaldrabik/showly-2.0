@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -39,10 +40,16 @@ class ShowSearchView : ShowView<SearchListItem> {
   ) {
     clear()
     this.item = item
-    showSearchTitle.text = item.show.title
+
+    val translationTitle = item.translation?.title
+    showSearchTitle.text =
+      if (translationTitle.isNullOrBlank()) item.show.title
+      else translationTitle.capitalizeWords()
+
+    val translationOverview = item.translation?.overview
     showSearchDescription.text =
-      if (item.translation?.overview.isNullOrBlank()) item.show.overview
-      else item.translation?.overview
+      if (translationOverview.isNullOrBlank()) item.show.overview
+      else translationOverview
 
     showSearchNetwork.text =
       if (item.show.year > 0) String.format("%s (%d)", item.show.network, item.show.year)

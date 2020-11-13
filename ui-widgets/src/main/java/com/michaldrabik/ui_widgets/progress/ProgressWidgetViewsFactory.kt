@@ -12,6 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.DurationPrinter
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.ImageType
@@ -82,18 +83,21 @@ class ProgressWidgetViewsFactory(
   }
 
   private fun createItemRemoteView(item: ProgressItem): RemoteViews {
+    val title =
+      if (item.showTranslation?.title?.isBlank() == true) item.show.title
+      else item.showTranslation?.title?.capitalizeWords()
     val subtitle = String.format("S.%02d E.%02d", item.episode.season, item.episode.number)
     val progressText = "${item.watchedEpisodesCount}/${item.episodesCount}"
     val imageUrl = item.image.fullFileUrl
     val hasAired = item.episode.hasAired(item.season)
     val subtitle2 = when {
       item.episode.title.isBlank() -> context.getString(R.string.textTba)
-      item.translation?.title?.isBlank() == false -> item.translation?.title ?: context.getString(R.string.textTba)
+      item.episodeTranslation?.title?.isBlank() == false -> item.episodeTranslation?.title ?: context.getString(R.string.textTba)
       else -> item.episode.title
     }
 
     val remoteView = RemoteViews(context.packageName, R.layout.widget_progress_item).apply {
-      setTextViewText(R.id.progressWidgetItemTitle, item.show.title)
+      setTextViewText(R.id.progressWidgetItemTitle, title)
       setTextViewText(R.id.progressWidgetItemSubtitle, subtitle)
       setTextViewText(R.id.progressWidgetItemSubtitle2, subtitle2)
       setTextViewText(R.id.progressWidgetItemProgressText, progressText)

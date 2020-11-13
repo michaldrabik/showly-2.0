@@ -45,7 +45,7 @@ class TranslationsRepository @Inject constructor(
       nowUtcMillis()
     )
 
-    if (translationDb.overview.isNotBlank()) {
+    if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
       database.showTranslationsDao().insert(translationDb)
     }
 
@@ -163,7 +163,7 @@ class TranslationsRepository @Inject constructor(
       nowUtcMillis()
     ).copy(id = localTranslation?.id ?: 0)
 
-    if (translationDb.overview.isNotBlank()) {
+    if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
       database.showTranslationsDao().insert(translationDb)
     }
 

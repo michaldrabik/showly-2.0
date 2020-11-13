@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_discover.cases
 
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
@@ -10,6 +11,8 @@ import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
 import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.UserTvdbManager
 import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
@@ -18,7 +21,9 @@ import javax.inject.Inject
 class DiscoverShowsCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val tvdbUserManager: UserTvdbManager,
-  private val imagesProvider: ShowImagesProvider
+  private val imagesProvider: ShowImagesProvider,
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository
 ) {
 
   suspend fun isCacheValid() = showsRepository.discoverShows.isCacheValid()
@@ -28,8 +33,16 @@ class DiscoverShowsCase @Inject constructor(
     val seeLaterShowsIds = showsRepository.seeLaterShows.loadAllIds()
     val archiveShowsIds = showsRepository.archiveShows.loadAllIds()
     val cachedShows = showsRepository.discoverShows.loadAllCached()
+    val language = settingsRepository.getLanguage()
 
-    return prepareShowItems(cachedShows, myShowsIds, seeLaterShowsIds, archiveShowsIds, filters)
+    return prepareShowItems(
+      cachedShows,
+      myShowsIds,
+      seeLaterShowsIds,
+      archiveShowsIds,
+      filters,
+      language
+    )
   }
 
   suspend fun loadRemoteShows(filters: DiscoverFilters): List<DiscoverListItem> {
@@ -46,9 +59,10 @@ class DiscoverShowsCase @Inject constructor(
     val seeLaterShowsIds = showsRepository.seeLaterShows.loadAllIds()
     val archiveShowsIds = showsRepository.archiveShows.loadAllIds()
     val remoteShows = showsRepository.discoverShows.loadAllRemote(showAnticipated, genres)
+    val language = settingsRepository.getLanguage()
 
     showsRepository.discoverShows.cacheDiscoverShows(remoteShows)
-    return prepareShowItems(remoteShows, myShowsIds, seeLaterShowsIds, archiveShowsIds, filters)
+    return prepareShowItems(remoteShows, myShowsIds, seeLaterShowsIds, archiveShowsIds, filters, language)
   }
 
   private suspend fun prepareShowItems(
@@ -56,7 +70,8 @@ class DiscoverShowsCase @Inject constructor(
     myShowsIds: List<Long>,
     seeLaterShowsIds: List<Long>,
     archiveShowsIds: List<Long>,
-    filters: DiscoverFilters?
+    filters: DiscoverFilters?,
+    language: String
   ) = shows
     .filter { !archiveShowsIds.contains(it.traktId) }
     .sortedBy(filters?.feedOrder ?: HOT)
@@ -67,13 +82,19 @@ class DiscoverShowsCase @Inject constructor(
         else -> ImageType.POSTER
       }
       val image = imagesProvider.findCachedImage(show, itemType)
+      val translation = loadTranslation(language, itemType, show)
       DiscoverListItem(
         show,
         image,
         isFollowed = show.ids.trakt.id in myShowsIds,
-        isSeeLater = show.ids.trakt.id in seeLaterShowsIds
+        isSeeLater = show.ids.trakt.id in seeLaterShowsIds,
+        translation = translation
       )
     }
+
+  private suspend fun loadTranslation(language: String, itemType: ImageType, show: Show) =
+    if (language == Config.DEFAULT_LANGUAGE || itemType == ImageType.POSTER) null
+    else translationsRepository.loadTranslation(show, language, true)
 
   private fun List<Show>.sortedBy(order: DiscoverSortOrder) = when (order) {
     HOT -> this
