@@ -16,6 +16,7 @@ import com.michaldrabik.ui_base.common.OnEpisodesSyncedListener
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
+import com.michaldrabik.ui_base.common.OnTranslationsSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
@@ -47,7 +48,8 @@ class ProgressFragment :
   BaseFragment<ProgressViewModel>(R.layout.fragment_progress),
   OnEpisodesSyncedListener,
   OnTabReselectedListener,
-  OnTraktSyncListener {
+  OnTraktSyncListener,
+  OnTranslationsSyncListener {
 
   override val viewModel by viewModels<ProgressViewModel> { viewModelFactory }
 
@@ -218,6 +220,8 @@ class ProgressFragment :
   override fun onEpisodesSyncFinished() = viewModel.loadWatchlist()
 
   override fun onTraktSyncProgress() = viewModel.loadWatchlist()
+
+  override fun onTranslationsSyncProgress() = viewModel.loadWatchlist()
 
   override fun onTabReselected() {
     progressSearchView.translationY = 0F
