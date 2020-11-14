@@ -36,7 +36,7 @@
 
   <string name="textWhatIsArchive">الأرشيف؟</string>
   <string name="textWhatIsArchiveFull">ما هو الأرشيف؟</string>
-  <string name="textArchiveDescription"><b>الأرشيف</b> الأرشيف عبارة عن قائمة بالمسلسلات التي لم تعد ترغب بمتابعتها بعد الآن\n\nالمسلسلات في قائمة الأرشيف لن تظهر في أقسام<b>مستوى التقدم</b>، <b>إكتشف</b> و <b>مسلسلاتي</b>وسيتم تخطيها أثناء المزامنة إلى Trakt.tv.</string>
+  <string name="textArchiveDescription"><b>الأرشيف</b> عبارة عن قائمة بالمسلسلات التي لم تعد ترغب بمتابعتها بعد الآن\n\nالمسلسلات في قائمة الأرشيف لن تظهر في أقسام <b>مستوى التقدم</b>، <b>إكتشف</b> و <b>مسلسلاتي</b> وسيتم تخطيها أثناء المزامنة إلى Trakt.tv.</string>
   <string name="textArchiveConfirmationTitle">أرشفة مسلسل</string>
   <string name="textArchiveConfirmationMessage">\nهل أنت متأكد من رغبتك في أرشفة هذا المسلسل؟\n</string>
 </resources>
