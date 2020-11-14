@@ -12,7 +12,7 @@
   <string name="textStatisticsTotalTimeSpentMonthsDays">وهو حوالي %d أشهر و %d أيام.</string>
   <string name="textStatisticsTotalTimeSpentDays">وهو حوالي %d أيام.</string>
   <string name="textStatisticsTotalEpisodes">إجمالي الحلقات التي تمت مشاهدتها</string>
-  <string name="textStatisticsTotalEpisodesCount">%s حلقات</string>
+  <string name="textStatisticsTotalEpisodesCount">%s حلقة</string>
   <string name="textStatisticsTotalEpisodesShowsCount">مقسمة على %s مسلسلات</string>
   <string name="textStatisticsTopGenre">أعلى التصنيفات</string>
   <string name="textStatisticsTopGenreSubValue">يبدو أنهم تصنيفاتك المفضلة. انقر للمزيد.</string>
