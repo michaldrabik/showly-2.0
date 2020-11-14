@@ -3,10 +3,13 @@ package com.michaldrabik.ui_base.common.views
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
+import com.google.android.material.textfield.TextInputEditText
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.behaviour.SearchViewBehaviour
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -97,6 +100,6 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
   }
 }
 
-inline val Fragment.exSearchViewInput get() = searchViewInput
-inline val Fragment.exSearchViewText get() = searchViewText
-inline val Fragment.exSearchViewIcon get() = searchViewIcon
+inline val Fragment.exSearchViewInput: TextInputEditText get() = searchViewInput
+inline val Fragment.exSearchViewText: TextView get() = searchViewText
+inline val Fragment.exSearchViewIcon: ImageView get() = searchViewIcon
