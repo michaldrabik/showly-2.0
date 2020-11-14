@@ -24,6 +24,18 @@ class TranslationsRepository @Inject constructor(
   private val mappers: Mappers
 ) {
 
+  suspend fun loadAllShowsLocal(
+    language: String = Config.DEFAULT_LANGUAGE,
+  ): Map<Long, Translation> {
+    val local = database.showTranslationsDao().getAll(language)
+    return local.associate {
+      Pair(
+        it.idTrakt,
+        mappers.translation.fromDatabase(it)
+      )
+    }
+  }
+
   suspend fun loadTranslation(
     show: Show,
     language: String = Config.DEFAULT_LANGUAGE,

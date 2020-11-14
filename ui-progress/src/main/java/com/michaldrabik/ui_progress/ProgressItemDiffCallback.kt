@@ -15,5 +15,7 @@ class ProgressItemDiffCallback : DiffUtil.ItemCallback<ProgressItem>() {
       oldItem.season == newItem.season &&
       oldItem.season.episodes == newItem.season.episodes &&
       oldItem.isPinned == newItem.isPinned &&
-      oldItem.image == newItem.image
+      oldItem.image == newItem.image &&
+      oldItem.showTranslation == newItem.showTranslation &&
+      oldItem.episodeTranslation == newItem.episodeTranslation
 }
