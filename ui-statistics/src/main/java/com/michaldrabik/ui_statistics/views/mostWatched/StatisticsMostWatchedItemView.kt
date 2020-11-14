@@ -44,9 +44,9 @@ class StatisticsMostWatchedItemView : ShowView<StatisticsMostWatchedItem> {
     viewMostWatchedItemTitle.text =
       if (item.translation?.title.isNullOrBlank()) item.show.title
       else item.translation?.title?.capitalizeWords()
-    viewMostWatchedItemHoursValue.text = String.format("%d", item.episodes.sumBy { it.runtime } / 60)
-    viewMostWatchedItemEpisodesValue.text = String.format("%d", item.episodes.size)
-    viewMostWatchedItemSeasonsValue.text = String.format("%d", item.seasonsCount)
+    viewMostWatchedItemHoursValue.text = "${item.episodes.sumBy { it.runtime } / 60}"
+    viewMostWatchedItemEpisodesValue.text = "${item.episodes.size}"
+    viewMostWatchedItemSeasonsValue.text = "${item.seasonsCount}"
     viewMostWatchedItemArchivedIcon.visibleIf(item.isArchived)
     loadImage(item) { _, _ -> }
   }

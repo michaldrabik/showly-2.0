@@ -10,7 +10,8 @@
   <string name="textRateDelete">Remove</string>
   <string name="textSignBeforeRate">Please sign in before rating a show.</string>
   <string name="textRemoveFromTrakt">Remove from Trakt.tv?</string>
-  <string name="textShowExtraInfo">%s %s %s | %d min | %s</string>
+  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
+  <string name="textMinutesShort">min</string>
 
   <string name="textComments">Comments:</string>
   <string name="textComments2">Comments</string>
@@ -33,8 +34,8 @@
   <string name="textImdb">iMDB</string>
   <string name="textShare">Share</string>
   <string name="textYouMayAlsoLike">You may also like:</string>
-  <string name="textRuntimeLeftHours">~%1$dh %2$dm remaining</string>
-  <string name="textRuntimeLeftMinutes">~%1$dm remaining</string>
+  <string name="textRuntimeLeftHours">~%sh %sm remaining</string>
+  <string name="textRuntimeLeftMinutes">~%sm remaining</string>
 
   <string name="textWhatIsArchive">Archive?</string>
   <string name="textWhatIsArchiveFull">What\'s Archive?</string>

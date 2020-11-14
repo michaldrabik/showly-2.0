@@ -10,7 +10,8 @@
   <string name="textRateDelete">Usuń</string>
   <string name="textSignBeforeRate">Zaloguj się aby móc ocenić.</string>
   <string name="textRemoveFromTrakt">Usunąć z Trakt.tv?</string>
-  <string name="textShowExtraInfo">%s %s %s | %d min | %s</string>
+  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
+  <string name="textMinutesShort">min</string>
 
   <string name="textComments">Opinie:</string>
   <string name="textComments2">Opinie</string>
@@ -33,8 +34,8 @@
   <string name="textImdb">iMDB</string>
   <string name="textShare">Prześlij</string>
   <string name="textYouMayAlsoLike">Zobacz również:</string>
-  <string name="textRuntimeLeftHours">~%1$dg %2$dm do obejrzenia</string>
-  <string name="textRuntimeLeftMinutes">~%1$dm do obejrzenia</string>
+  <string name="textRuntimeLeftHours">~%sg %sm do obejrzenia</string>
+  <string name="textRuntimeLeftMinutes">~%sm do obejrzenia</string>
 
   <string name="textWhatIsArchive">Archiwum?</string>
   <string name="textWhatIsArchiveFull">Czym jest Archiwum?</string>

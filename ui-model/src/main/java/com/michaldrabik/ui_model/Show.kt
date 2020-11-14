@@ -1,8 +1,5 @@
 package com.michaldrabik.ui_model
 
-import com.michaldrabik.common.Config
-import java.text.DecimalFormat
-
 data class Show(
   val ids: Ids,
   val title: String,
@@ -26,9 +23,6 @@ data class Show(
 ) {
 
   val traktId = ids.trakt.id
-
-  fun getRatingString(): String =
-    DecimalFormat("0.0", Config.DISPLAY_DECIMAL_SYMBOLS).format(rating)
 
   companion object {
     val EMPTY = Show(

@@ -53,6 +53,8 @@
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
       android:layout_marginTop="@dimen/spaceMicro"
+      android:gravity="start"
+      android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="14sp"
       tools:text="S.00 E.00 - Episode Title"

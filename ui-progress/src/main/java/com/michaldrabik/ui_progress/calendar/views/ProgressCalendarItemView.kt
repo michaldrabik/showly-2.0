@@ -17,6 +17,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
 import kotlinx.android.synthetic.main.view_progress_calendar_item.view.*
+import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
 class ProgressCalendarItemView : ShowView<ProgressItem> {
@@ -53,7 +54,7 @@ class ProgressCalendarItemView : ShowView<ProgressItem> {
 
     val isNewSeason = item.upcomingEpisode.number == 1
     if (isNewSeason) {
-      progressCalendarItemSubtitle2.text = context.getString(R.string.textSeason, item.upcomingEpisode.season)
+      progressCalendarItemSubtitle2.text = String.format(ENGLISH, context.getString(R.string.textSeason), item.upcomingEpisode.season)
       progressCalendarItemSubtitle.text = context.getString(R.string.textNewSeason)
     } else {
       val episodeTitle = when {
@@ -63,6 +64,7 @@ class ProgressCalendarItemView : ShowView<ProgressItem> {
       }
       progressCalendarItemSubtitle2.text = episodeTitle
       progressCalendarItemSubtitle.text = String.format(
+        ENGLISH,
         "S.%02d E.%02d",
         item.upcomingEpisode.season,
         item.upcomingEpisode.number

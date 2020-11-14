@@ -89,6 +89,7 @@ import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import org.threeten.bp.Duration
+import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
 class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment_show_details) {
@@ -348,11 +349,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         showDetailsTitle.text = show.title
         showDetailsDescription.setTextIfEmpty(show.overview)
         showDetailsStatus.text = getString(show.status.displayName)
-        val year = if (show.year > 0) String.format("%d", show.year) else ""
-        val country = if (show.country.isNotBlank()) String.format("(%s)", show.country) else ""
-        showDetailsExtraInfo.text =
-          getString(R.string.textShowExtraInfo, show.network, year, country.toUpperCase(), show.runtime, renderGenres(show.genres))
-        showDetailsRating.text = String.format(getString(R.string.textVotes), show.getRatingString(), show.votes)
+        val year = if (show.year > 0) String.format(ENGLISH, "%d", show.year) else ""
+        val country = if (show.country.isNotBlank()) String.format(ENGLISH, "(%s)", show.country) else ""
+        showDetailsExtraInfo.text = getString(
+          R.string.textShowExtraInfo,
+          show.network,
+          year,
+          country.toUpperCase(),
+          show.runtime.toString(),
+          getString(R.string.textMinutesShort),
+          renderGenres(show.genres)
+        )
+        showDetailsRating.text = String.format(ENGLISH, getString(R.string.textVotes), show.rating, show.votes)
         showDetailsCommentsButton.visible()
         showDetailsShareButton.run {
           visibleIf(show.ids.imdb.id.isNotBlank())
@@ -481,7 +489,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun renderNextEpisode(nextEpisode: Episode) {
     nextEpisode.run {
-      showDetailsEpisodeText.text = getString(R.string.textEpisodeTitle, season, number, title)
+      showDetailsEpisodeText.text = String.format(ENGLISH, getString(R.string.textEpisodeTitle), season, number, title)
       showDetailsEpisodeCard.visible()
       showDetailsEpisodeCard.onClick {
         showEpisodeDetails(nextEpisode, null, isWatched = false, showButton = false)
@@ -527,8 +535,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     val minutes = duration.minusHours(hours).toMinutes()
 
     val runtimeText = when {
-      hours <= 0 -> getString(R.string.textRuntimeLeftMinutes, minutes)
-      else -> getString(R.string.textRuntimeLeftHours, hours, minutes)
+      hours <= 0 -> getString(R.string.textRuntimeLeftMinutes, minutes.toString())
+      else -> getString(R.string.textRuntimeLeftHours, hours.toString(), minutes.toString())
     }
     showDetailsRuntimeLeft.text = runtimeText
     showDetailsRuntimeLeft.fadeIf(seasonsItems.isNotEmpty() && runtimeLeft > 0)

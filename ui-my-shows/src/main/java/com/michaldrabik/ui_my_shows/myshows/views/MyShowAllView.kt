@@ -15,6 +15,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import kotlinx.android.synthetic.main.view_my_show_all.view.*
+import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
 class MyShowAllView : ShowView<MyShowsItem> {
@@ -50,10 +51,10 @@ class MyShowAllView : ShowView<MyShowsItem> {
       else item.translation?.overview
 
     myShowAllNetwork.text =
-      if (item.show.year > 0) String.format("%s (%d)", item.show.network, item.show.year)
+      if (item.show.year > 0) String.format(ENGLISH, "%s (%d)", item.show.network, item.show.year)
       else String.format("%s", item.show.network)
 
-    myShowAllRating.text = item.show.getRatingString()
+    myShowAllRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
     myShowAllDescription.visibleIf(item.show.overview.isNotBlank())
     myShowAllNetwork.visibleIf(item.show.network.isNotBlank())
 

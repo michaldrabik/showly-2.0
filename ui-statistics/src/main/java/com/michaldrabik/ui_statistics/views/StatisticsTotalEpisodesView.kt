@@ -9,6 +9,7 @@ import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_statistics.R
 import kotlinx.android.synthetic.main.view_statistics_card_total_episodes.view.*
 import java.text.NumberFormat
+import java.util.*
 
 @SuppressLint("SetTextI18n")
 class StatisticsTotalEpisodesView : MaterialCardView {
@@ -24,7 +25,7 @@ class StatisticsTotalEpisodesView : MaterialCardView {
   }
 
   fun bind(episodesCount: Long, episodesShowsCount: Long) {
-    val formatter = NumberFormat.getNumberInstance()
+    val formatter = NumberFormat.getNumberInstance(Locale.ENGLISH)
 
     viewTotalEpisodesValue.text = context.getString(
       R.string.textStatisticsTotalEpisodesCount,

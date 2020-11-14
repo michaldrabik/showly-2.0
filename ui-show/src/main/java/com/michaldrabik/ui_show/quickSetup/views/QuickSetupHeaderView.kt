@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_show.R
 import kotlinx.android.synthetic.main.view_quick_setup_header.view.*
+import java.util.*
 
 class QuickSetupHeaderView : FrameLayout {
 
@@ -21,6 +22,7 @@ class QuickSetupHeaderView : FrameLayout {
   }
 
   fun bind(season: Season) {
-    viewQuickSetupHeaderTitle.text = context.getString(R.string.textSeason, season.number)
+    viewQuickSetupHeaderTitle.text =
+      String.format(Locale.ENGLISH, context.getString(R.string.textSeason), season.number)
   }
 }

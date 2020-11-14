@@ -10,7 +10,8 @@
   <string name="textRateDelete">حذف التقييم</string>
   <string name="textSignBeforeRate">رجاءً قُم بتسجيل الدخول قبل تقييم مسلسل.</string>
   <string name="textRemoveFromTrakt">حذف من Trakt.tv؟</string>
-  <string name="textShowExtraInfo">%s %s %s | %d دقائق | %s</string>
+  <string name="textShowExtraInfo">%6$s | %5$s %4$s | %3$s %2$s %1$s</string>
+  <string name="textMinutesShort">دقائق</string>
 
   <string name="textComments">التعليقات:</string>
   <string name="textComments2">التعليقات</string>
@@ -33,8 +34,8 @@
   <string name="textImdb">iMDB</string>
   <string name="textShare">مشاركة</string>
   <string name="textYouMayAlsoLike">قد يعجبك أيضاً:</string>
-  <string name="textRuntimeLeftHours">المتبقي ~%1$dh %2$dm</string>
-  <string name="textRuntimeLeftMinutes">المتبقي ~%1$dm</string>
+  <string name="textRuntimeLeftHours">المتبقي ~%sh و %sm</string>
+  <string name="textRuntimeLeftMinutes">المتبقي ~%sm</string>
 
   <string name="textWhatIsArchive">الأرشيف؟</string>
   <string name="textWhatIsArchiveFull">ما هو الأرشيف؟</string>
