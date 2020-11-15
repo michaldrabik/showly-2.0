@@ -15,7 +15,7 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
-import com.michaldrabik.ui_base.common.OnTranslationsSyncedListener
+import com.michaldrabik.ui_base.common.OnTranslationsSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
@@ -50,7 +50,7 @@ class FollowedShowsFragment :
   BaseFragment<FollowedShowsViewModel>(R.layout.fragment_followed_shows),
   OnTabReselectedListener,
   OnTraktSyncListener,
-  OnTranslationsSyncedListener {
+  OnTranslationsSyncListener {
 
   override val viewModel by viewModels<FollowedShowsViewModel> { viewModelFactory }
   private var currentPage = 0
@@ -289,9 +289,9 @@ class FollowedShowsFragment :
     }
   }
 
-  override fun onTranslationsSyncFinished() {
+  override fun onTranslationsSyncProgress() {
     childFragmentManager.fragments.forEach {
-      (it as? OnTranslationsSyncedListener)?.onTranslationsSyncFinished()
+      (it as? OnTranslationsSyncListener)?.onTranslationsSyncProgress()
     }
   }
 

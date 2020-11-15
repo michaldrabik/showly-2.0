@@ -8,13 +8,14 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import kotlinx.android.synthetic.main.view_my_show_all.view.*
-import java.util.Locale.ROOT
+import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
 class MyShowAllView : ShowView<MyShowsItem> {
@@ -41,14 +42,19 @@ class MyShowAllView : ShowView<MyShowsItem> {
     clear()
     this.item = item
     myShowAllProgress.visibleIf(item.isLoading)
-    myShowAllTitle.text = item.show.title
+    myShowAllTitle.text =
+      if (item.translation?.title.isNullOrBlank()) item.show.title
+      else item.translation?.title?.capitalizeWords()
+
     myShowAllDescription.text =
       if (item.translation?.overview.isNullOrBlank()) item.show.overview
       else item.translation?.overview
-    val year = if (item.show.year > 0) " (${item.show.year})" else ""
-    myShowAllNetwork.text = "${item.show.network}$year"
-    myShowAllRating.text = String.format(ROOT, "%.1f", item.show.rating)
 
+    myShowAllNetwork.text =
+      if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
+      else String.format("%s", item.show.network)
+
+    myShowAllRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
     myShowAllDescription.visibleIf(item.show.overview.isNotBlank())
     myShowAllNetwork.visibleIf(item.show.network.isNotBlank())
 

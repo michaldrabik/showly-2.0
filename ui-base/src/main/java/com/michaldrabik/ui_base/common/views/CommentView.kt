@@ -13,8 +13,10 @@ import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Comment
 import kotlinx.android.synthetic.main.view_comment.view.*
+import java.util.*
 
 class CommentView : ConstraintLayout {
 
@@ -39,6 +41,8 @@ class CommentView : ConstraintLayout {
       comment.user.username.capitalize(),
       comment.createdAt?.toLocalTimeZone()?.toDayOnlyDisplayString()
     )
+    commentRating.visibleIf(comment.userRating > 0)
+    commentRating.text = String.format(Locale.ENGLISH, "%d", comment.userRating)
 
     if (comment.hasSpoilers()) {
       commentText.text = context.getString(R.string.textSpoilersWarning)
@@ -54,6 +58,7 @@ class CommentView : ConstraintLayout {
     if (comment.user.avatarUrl.isNotEmpty()) {
       Glide.with(this)
         .load(comment.user.avatarUrl)
+        .placeholder(R.drawable.ic_person_placeholder)
         .transform(CircleCrop())
         .into(commentImage)
     }

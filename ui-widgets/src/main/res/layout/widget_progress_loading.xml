@@ -2,15 +2,16 @@
 <FrameLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent"
+  android:layout_height="wrap_content"
   >
 
   <ProgressBar
     style="@style/ProgressBarAccent"
     android:layout_width="28dp"
-    android:layout_height="28dp"
+    android:layout_height="@dimen/progressWidgetImageHeight"
     android:layout_gravity="center"
-    android:layout_margin="@dimen/spaceNormal"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginBottom="@dimen/spaceSmall"
     />
 
 </FrameLayout>

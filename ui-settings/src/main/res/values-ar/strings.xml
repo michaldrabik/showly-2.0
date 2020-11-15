@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textTraktLoginSuccess">لقد تمت المصادقة بنجاح.</string>
+  <string name="textTraktLogoutSuccess">لقد تم تسجيل خروجك.</string>
+  <string name="textImagesCacheCleared">تم مسح ذاكرة التخزين المؤقت للصور.</string>
+  <string name="textTurnOff">إيقاف التشغيل</string>
+
+  <string name="textSettings">الإعدادات</string>
+  <string name="textSettingsTrakt">Trakt.tv</string>
+  <string name="textSettingsTraktAuthorizeTitle">مصادقة Trakt.tv</string>
+  <string name="textSettingsTraktAuthorizeSummarySignIn">إضغط لتسجيل الدخول لحسابك في Trakt.tv.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOut">تم تسجيل الدخول. انقر لتسجيل الخروج.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOutUser">تم تسجيل الدخول ك %1$s. إضغط لتسجيل الخروج.</string>
+  <string name="textSettingsTraktSyncTitle">مزامنة Trakt.tv</string>
+  <string name="textSettingsTraktSyncSummary">مزامنة البيانات بين Trakt.tv و Showly.</string>
+  <string name="textSettingsTraktQuickSyncTitle">الرفع الفوري ل Trakt.tv</string>
+  <string name="textSettingsTraktQuickSyncSummary">رفع فوري لبيانات المسلسلات ل Trakt.tv بعد أن تقوم بإضافتهم في Showly.</string>
+  <string name="textSettingsTraktQuickRemoveTitle">الحذف الفوري في Trakt.tv</string>
+  <string name="textSettingsTraktQuickRemoveSummary">حذف فوري لبيانات المسلسلات في Trakt.tv بعد أن تقوم بحذفهم في Showly.</string>
+  <string name="textSettingsGeneral">إعدادات عامة &amp; إعدادت واجهة المستخدم</string>
+  <string name="textSettingsRecentShowsTitle">عدد المسلسلات الأخيرة</string>
+  <string name="textSettingsRecentShowsSummary">عدد المسلسلات الأخيرة التي تابعتها التي سيتم عرضها في صفحة \'مسلسلاتي\'.</string>
+  <string name="textSettingsMyShowsSectionsTitle">أقسام صفحة مسلسلاتي</string>
+  <string name="textSettingsMyShowsSectionSummary">تفعيل/إلغاء تفعيل أقسام في صفحة مسلسلاتي</string>
+  <string name="textSettingsMyShowsLanguageTitle">اللغة</string>
+  <string name="textSettingsMyShowsLanguageSummary">سيتم ترجمة الأوصاف والعناوين عندما تتوفر الترجمة.</string>
+  <string name="textSettingsIncludeArchiveStatsTitle">إحصائيات الأرشيف</string>
+  <string name="textSettingsIncludeArchiveStatsSummary">تضمين بيانات المسلسلات المؤرشفة في صفحة الإحصائيات.</string>
+  <string name="textSettingsIncludeSpecialsTitle">الحلقات الخاصة</string>
+  <string name="textSettingsIncludeSpecialsSummary">عرض \'الحلقات الخاصة\' في صفحة تفاصيل المسلسل</string>
+  <string name="textSettingsNotifications">الإشعارات</string>
+  <string name="textSettingsPushNotificationsTitle">ضبط الإشعارات</string>
+  <string name="textSettingsPushNotificationsSummary">إستلام إشعارات عامة.</string>
+  <string name="textSettingsShowsNotificationsTitle">إشعارات الحلقات</string>
+  <string name="textSettingsShowsNotificationsSummary">إستلام إشعارات الحلقات والمواسم الجديدة للمسلسلات التي تتابعها.</string>
+  <string name="textSettingsMisc">إعدادات متنوعة</string>
+  <string name="textSettingsContactDevsTitle">التواصل مع المطورين</string>
+  <string name="textSettingsContactDevsSummary">هل واجهتك مشكلة؟ إضغط لإرسال ايميل لنا.</string>
+  <string name="textSettingsRateAppTitle">قيم التطبيق</string>
+  <string name="textSettingsRateAppSummary">تستمتع بإستخدام Showly؟ أرسل لنا مراجعة في قوقل بلاي. شكراً!</string>
+  <string name="textSettingsDeleteCacheTitle">مسح بيانات الصور في الذاكرة المؤقتة</string>
+  <string name="textSettingsDeleteCacheSummary">إضغط لمسح بيانات الصور في الذاكرة المحلية المؤقتة. إذا تواجهك مشكلة في تحميل الصور، جرب الضغط هنا.</string>
+  <string name="textSettingsQuickSyncConfirmationTitle">تعطيل المزامنة التلقائية</string>
+  <string name="textSettingsQuickSyncConfirmationMessage">\nيبدو أنك مفعل المزامنة التلقائية.\n\nهل ترغب في إطفاء المزامنة التلقائية قبل تفعيل المزامنة الفورية(يُنصح به)؟\n</string>
+  <string name="textSettingsLogoutTitle">تسجيل الخروج من Trakt.tv</string>
+  <string name="textSettingsLogoutMessage">\nهل فعلاً ترغب في تسجيل الخروج؟\n</string>
+  <string name="textSettingsLanguageChangeMessage">رجاءً قُم بإعادة تشغيل التطبيق ليتم تغيير اللغة بنجاح.</string>
+
+  </resources>

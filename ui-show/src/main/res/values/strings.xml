@@ -10,6 +10,8 @@
   <string name="textRateDelete">Remove</string>
   <string name="textSignBeforeRate">Please sign in before rating a show.</string>
   <string name="textRemoveFromTrakt">Remove from Trakt.tv?</string>
+  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
+  <string name="textMinutesShort">min</string>
 
   <string name="textComments">Comments:</string>
   <string name="textComments2">Comments</string>
@@ -23,6 +25,7 @@
   <string name="textShowRated">Your rating has been saved.</string>
   <string name="textShowRatingDeleted">Your rating has been removed.</string>
   <string name="textEpisodeDate">Episode %1$d | %2$s</string>
+  <string name="textEpisodeTitle">S.%02d E.%02d - \'%s\'</string>
   <string name="textTraktSyncRemovedFromTrakt">Trakt.tv synced successfully.</string>
   <string name="textActorsEmpty">Actors are not available</string>
   <string name="textSeasons">Seasons:</string>
@@ -31,8 +34,8 @@
   <string name="textImdb">iMDB</string>
   <string name="textShare">Share</string>
   <string name="textYouMayAlsoLike">You may also like:</string>
-  <string name="textRuntimeLeftHours">~%1$dh %2$dm remaining</string>
-  <string name="textRuntimeLeftMinutes">~%1$dm remaining</string>
+  <string name="textRuntimeLeftHours">~%sh %sm remaining</string>
+  <string name="textRuntimeLeftMinutes">~%sm remaining</string>
 
   <string name="textWhatIsArchive">Archive?</string>
   <string name="textWhatIsArchiveFull">What\'s Archive?</string>

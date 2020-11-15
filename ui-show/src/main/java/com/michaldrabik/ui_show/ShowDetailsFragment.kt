@@ -43,6 +43,7 @@ import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -88,7 +89,7 @@ import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import org.threeten.bp.Duration
-import java.util.Locale.ROOT
+import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
 class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment_show_details) {
@@ -108,6 +109,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private val actorViewCorner by lazy { requireContext().dimenToPx(R.dimen.actorFullTileCorner) }
   private val animationEnterRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_right) }
   private val animationExitRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right) }
+  private val animationEnterLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_left) }
+  private val animationExitLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_left) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiShowDetailsComponentProvider).provideShowDetailsComponent().inject(this)
@@ -264,16 +267,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun hideExtraView(view: View) {
     if (view.animation != null) return
 
-    val animationEnter = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_left)
-    val animationExit = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_left)
-
     view.run {
       fadeOut(300)
-      startAnimation(animationExit)
+      startAnimation(animationExitLeft)
     }
     showDetailsMainLayout.run {
       fadeIn()
-      startAnimation(animationEnter)
+      startAnimation(animationEnterLeft)
     }
   }
 
@@ -349,18 +349,23 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         showDetailsTitle.text = show.title
         showDetailsDescription.setTextIfEmpty(show.overview)
         showDetailsStatus.text = getString(show.status.displayName)
-        val year = if (show.year > 0) show.year.toString() else ""
-        val country = if (show.country.isEmpty()) "" else " (${show.country.toUpperCase(ROOT)})"
-        showDetailsExtraInfo.text =
-          "${show.network} $year$country | ${show.runtime} min | ${renderGenres(show.genres)}"
-        showDetailsRating.text = String.format(ROOT, getString(R.string.textVotes), show.rating, show.votes)
+        val year = if (show.year > 0) String.format(ENGLISH, "%d", show.year) else ""
+        val country = if (show.country.isNotBlank()) String.format(ENGLISH, "(%s)", show.country) else ""
+        showDetailsExtraInfo.text = getString(
+          R.string.textShowExtraInfo,
+          show.network,
+          year,
+          country.toUpperCase(),
+          show.runtime.toString(),
+          getString(R.string.textMinutesShort),
+          renderGenres(show.genres)
+        )
+        showDetailsRating.text = String.format(ENGLISH, getString(R.string.textVotes), show.rating, show.votes)
         showDetailsCommentsButton.visible()
-
         showDetailsShareButton.run {
           visibleIf(show.ids.imdb.id.isNotBlank())
           onClick { openShareSheet(show) }
         }
-
         showDetailsTrailerButton.run {
           visibleIf(show.trailer.isNotBlank())
           onClick {
@@ -368,7 +373,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
             Analytics.logShowTrailerClick(show)
           }
         }
-
         showDetailsImdbButton.run {
           visibleIf(show.ids.imdb.id.isNotBlank())
           onClick {
@@ -376,7 +380,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
             Analytics.logShowImdbClick(show)
           }
         }
-
         showDetailsAddButton.isEnabled = true
       }
       showLoading?.let {
@@ -486,7 +489,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun renderNextEpisode(nextEpisode: Episode) {
     nextEpisode.run {
-      showDetailsEpisodeText.text = toDisplayString()
+      showDetailsEpisodeText.text = String.format(ENGLISH, getString(R.string.textEpisodeTitle), season, number, title)
       showDetailsEpisodeCard.visible()
       showDetailsEpisodeCard.onClick {
         showEpisodeDetails(nextEpisode, null, isWatched = false, showButton = false)
@@ -532,8 +535,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     val minutes = duration.minusHours(hours).toMinutes()
 
     val runtimeText = when {
-      hours <= 0 -> getString(R.string.textRuntimeLeftMinutes, minutes)
-      else -> getString(R.string.textRuntimeLeftHours, hours, minutes)
+      hours <= 0 -> getString(R.string.textRuntimeLeftMinutes, minutes.toString())
+      else -> getString(R.string.textRuntimeLeftHours, hours.toString(), minutes.toString())
     }
     showDetailsRuntimeLeft.text = runtimeText
     showDetailsRuntimeLeft.fadeIf(seasonsItems.isNotEmpty() && runtimeLeft > 0)
@@ -549,6 +552,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun renderTranslation(translation: Translation?) {
     if (translation?.overview?.isNotBlank() == true) {
       showDetailsDescription.text = translation.overview
+    }
+    if (translation?.title?.isNotBlank() == true) {
+      showDetailsTitle.text = translation.title.capitalizeWords()
     }
   }
 

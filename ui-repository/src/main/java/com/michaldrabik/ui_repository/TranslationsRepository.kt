@@ -24,6 +24,18 @@ class TranslationsRepository @Inject constructor(
   private val mappers: Mappers
 ) {
 
+  suspend fun loadAllShowsLocal(
+    language: String = Config.DEFAULT_LANGUAGE,
+  ): Map<Long, Translation> {
+    val local = database.showTranslationsDao().getAll(language)
+    return local.associate {
+      Pair(
+        it.idTrakt,
+        mappers.translation.fromDatabase(it)
+      )
+    }
+  }
+
   suspend fun loadTranslation(
     show: Show,
     language: String = Config.DEFAULT_LANGUAGE,
@@ -45,7 +57,7 @@ class TranslationsRepository @Inject constructor(
       nowUtcMillis()
     )
 
-    if (translationDb.overview.isNotBlank()) {
+    if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
       database.showTranslationsDao().insert(translationDb)
     }
 
@@ -163,7 +175,7 @@ class TranslationsRepository @Inject constructor(
       nowUtcMillis()
     ).copy(id = localTranslation?.id ?: 0)
 
-    if (translationDb.overview.isNotBlank()) {
+    if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
       database.showTranslationsDao().insert(translationDb)
     }
 

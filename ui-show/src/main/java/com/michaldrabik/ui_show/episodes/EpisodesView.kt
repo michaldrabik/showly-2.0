@@ -14,6 +14,7 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import kotlinx.android.synthetic.main.view_episodes.view.*
+import java.util.Locale.ENGLISH
 
 class EpisodesView : ConstraintLayout {
 
@@ -39,7 +40,7 @@ class EpisodesView : ConstraintLayout {
     this.season = seasonItem.season.copy()
     episodesTitle.text =
       if (seasonItem.season.isSpecial()) context.getString(R.string.textSpecials)
-      else context.getString(R.string.textSeason, season.number)
+      else String.format(ENGLISH, context.getString(R.string.textSeason), season.number)
     episodesOverview.text = season.overview
     episodesOverview.visibleIf(season.overview.isNotBlank())
     episodesCheckbox.run {

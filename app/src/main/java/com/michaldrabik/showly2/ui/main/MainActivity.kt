@@ -23,13 +23,13 @@ import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.common.OnEpisodesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
-import com.michaldrabik.ui_base.common.OnTranslationsSyncedListener
+import com.michaldrabik.ui_base.common.OnTranslationsSyncListener
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventObserver
 import com.michaldrabik.ui_base.events.ShowsSyncComplete
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.events.TraktSyncProgress
-import com.michaldrabik.ui_base.events.TranslationsSyncComplete
+import com.michaldrabik.ui_base.events.TranslationsSyncProgress
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost
@@ -266,8 +266,8 @@ class MainActivity :
           doForFragments { (it as? OnEpisodesSyncedListener)?.onEpisodesSyncFinished() }
           viewModel.refreshAnnouncements(applicationContext)
         }
-        is TranslationsSyncComplete -> {
-          doForFragments { (it as? OnTranslationsSyncedListener)?.onTranslationsSyncFinished() }
+        is TranslationsSyncProgress -> {
+          doForFragments { (it as? OnTranslationsSyncListener)?.onTranslationsSyncProgress() }
         }
         is TraktSyncProgress -> {
           doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncProgress() }

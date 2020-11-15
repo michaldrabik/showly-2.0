@@ -8,5 +8,5 @@ data class Comment(
   val spoiler: Boolean?,
   val review: Boolean?,
   val created_at: String?,
-  val user: User?
+  val user: TraktUser?
 )

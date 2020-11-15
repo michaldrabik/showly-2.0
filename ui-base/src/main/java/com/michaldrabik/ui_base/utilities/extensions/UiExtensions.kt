@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.core.animation.doOnEnd
 import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
+import java.util.*
 
 fun View.visible() {
   if (visibility != View.VISIBLE) visibility = View.VISIBLE
@@ -99,3 +100,11 @@ fun Activity.enableUi() = window.clearFlags(FLAG_NOT_TOUCHABLE)
 fun Fragment.disableUi() = activity?.disableUi()
 
 fun Fragment.enableUi() = activity?.enableUi()
+
+fun String.capitalizeWords(): String {
+  return this
+    .split(" ")
+    .joinToString(separator = " ") {
+      it.capitalize(Locale.getDefault())
+    }
+}

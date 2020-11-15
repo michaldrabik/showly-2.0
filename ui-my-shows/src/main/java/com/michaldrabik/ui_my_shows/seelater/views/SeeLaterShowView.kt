@@ -8,13 +8,14 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.seelater.recycler.SeeLaterListItem
 import kotlinx.android.synthetic.main.view_see_later_show.view.*
-import java.util.Locale.ROOT
+import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
 class SeeLaterShowView : ShowView<SeeLaterListItem> {
@@ -41,15 +42,19 @@ class SeeLaterShowView : ShowView<SeeLaterListItem> {
     clear()
     this.item = item
     seeLaterShowProgress.visibleIf(item.isLoading)
-    seeLaterShowTitle.text = item.show.title
+    seeLaterShowTitle.text =
+      if (item.translation?.title.isNullOrBlank()) item.show.title
+      else item.translation?.title?.capitalizeWords()
+
     seeLaterShowDescription.text =
       if (item.translation?.overview.isNullOrBlank()) item.show.overview
       else item.translation?.overview
 
-    val year = if (item.show.year > 0) " (${item.show.year})" else ""
-    seeLaterShowNetwork.text = "${item.show.network}$year"
-    seeLaterShowRating.text = String.format(ROOT, "%.1f", item.show.rating)
+    seeLaterShowNetwork.text =
+      if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
+      else String.format("%s", item.show.network)
 
+    seeLaterShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
     seeLaterShowDescription.visibleIf(item.show.overview.isNotBlank())
     seeLaterShowNetwork.visibleIf(item.show.network.isNotBlank())
 

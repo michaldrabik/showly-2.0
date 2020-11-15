@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -39,13 +40,20 @@ class ShowSearchView : ShowView<SearchListItem> {
   ) {
     clear()
     this.item = item
-    showSearchTitle.text = item.show.title
-    showSearchDescription.text =
-      if (item.translation?.overview.isNullOrBlank()) item.show.overview
-      else item.translation?.overview
 
-    val year = if (item.show.year > 0) " (${item.show.year})" else ""
-    showSearchNetwork.text = "${item.show.network}$year"
+    val translationTitle = item.translation?.title
+    showSearchTitle.text =
+      if (translationTitle.isNullOrBlank()) item.show.title
+      else translationTitle.capitalizeWords()
+
+    val translationOverview = item.translation?.overview
+    showSearchDescription.text =
+      if (translationOverview.isNullOrBlank()) item.show.overview
+      else translationOverview
+
+    showSearchNetwork.text =
+      if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
+      else String.format("%s", item.show.network)
 
     showSearchDescription.visibleIf(item.show.overview.isNotBlank())
     showSearchNetwork.visibleIf(item.show.network.isNotBlank())

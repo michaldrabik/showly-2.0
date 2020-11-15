@@ -84,7 +84,8 @@ data class MyShowsItem(
 
     fun createSearchItem(
       show: Show,
-      image: Image
+      image: Image,
+      translation: Translation? = null
     ) = MyShowsItem(
       Type.SEARCH_SHOWS_ITEM,
       null,
@@ -92,7 +93,8 @@ data class MyShowsItem(
       null,
       show,
       image,
-      false
+      false,
+      translation
     )
   }
 }

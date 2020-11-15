@@ -42,7 +42,7 @@ import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import kotlinx.android.synthetic.main.view_episode_details.*
 import kotlinx.android.synthetic.main.view_episode_details.view.*
-import java.util.Locale.ROOT
+import java.util.Locale.ENGLISH
 
 class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewModel>() {
 
@@ -110,7 +110,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     view.run {
       val date = getDateString()
       episodeDetailsName.text =
-        context.getString(R.string.textSeasonEpisodeDate, episode.season, episode.number, date)
+        String.format(ENGLISH, context.getString(R.string.textSeasonEpisodeDate), episode.season, episode.number, date)
       episodeDetailsTitle.text = episode.title
       episodeDetailsOverview.text =
         if (episode.overview.isBlank()) getString(R.string.textNoDescription) else episode.overview
@@ -123,9 +123,8 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         }
       }
       episodeDetailsRatingLayout.visibleIf(episode.votes > 0)
-      episodeDetailsRating.text = String.format(ROOT, getString(R.string.textVotes), episode.rating, episode.votes)
-
-      episodeDetailsCommentsButton.text = getString(R.string.textLoadCommentsCount, episode.commentCount)
+      episodeDetailsRating.text = String.format(ENGLISH, getString(R.string.textVotes), episode.rating, episode.votes)
+      episodeDetailsCommentsButton.text = String.format(ENGLISH, getString(R.string.textLoadCommentsCount), episode.commentCount)
       episodeDetailsCommentsButton.onClick {
         viewModel.loadComments(showTraktId, episode.season, episode.number)
       }
@@ -135,7 +134,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   private fun getDateString(): String {
     val millis = episode.firstAired?.toInstant()?.toEpochMilli() ?: -1
     return if (millis == -1L) {
-      "TBA"
+      getString(R.string.textTba)
     } else {
       com.michaldrabik.common.extensions.dateFromMillis(millis)
         .toLocalTimeZone()

@@ -12,7 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
-import com.michaldrabik.ui_base.common.OnTranslationsSyncedListener
+import com.michaldrabik.ui_base.common.OnTranslationsSyncListener
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_model.Show
@@ -32,7 +32,7 @@ class ArchiveFragment :
   BaseFragment<ArchiveViewModel>(R.layout.fragment_archive),
   OnScrollResetListener,
   OnTraktSyncListener,
-  OnTranslationsSyncedListener,
+  OnTranslationsSyncListener,
   OnSortClickListener {
 
   override val viewModel by viewModels<ArchiveViewModel> { viewModelFactory }
@@ -120,5 +120,5 @@ class ArchiveFragment :
 
   override fun onTraktSyncProgress() = viewModel.loadShows()
 
-  override fun onTranslationsSyncFinished() = viewModel.loadShows()
+  override fun onTranslationsSyncProgress() = viewModel.loadShows()
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textTraktLoginSuccess">لقد تمت المصادقة بنجاح.</string>
+  <string name="textTraktSyncStarted">بدأت المزامنة. ستستمر المزامنة في الخلفية.</string>
+  <string name="textTraktSyncStart">المزامنة الآن</string>
+  <string name="textTraktSyncSchedule">مزامنة مجدولة</string>
+  <string name="textTraktSyncFromTraktToShowly">إستيراد من Trakt.tv ل Showly</string>
+  <string name="textTraktSyncFromShowlyToTrakt">تصدير من Showly ل Trakt.tv</string>
+  <string name="textTraktSyncDescription">مزامنة بيانات حسابك في Trakt.tv مع Showly، البيانات تتضمن مستوى تقدمك، قائمة المشاهدة.\n\nلن يتم حذف أي عنصر من مجموعتك الحالية. المزامنة فقط ستقوم بإضافة العناصر الغير موجودة في مجموعتك.</string>
+  <string name="textTraktSyncLastTimestamp">وقت آخر مزامنة: %s</string>
+
+  <string name="textSettingsTraktAuthorizeTitle">مصادقة Trakt.tv</string>
+  <string name="textSettingsScheduleImportConfirmationTitle">تم تفعيل المزامنة الفورية</string>
+  <string name="textSettingsScheduleImportConfirmationMessage">\nيبدو أن المزامنة الفورية مفعلة بالفعل.\n\nهل ما زلت ترغب في جدولة المزامنة التلقائية؟\n</string>
+</resources>

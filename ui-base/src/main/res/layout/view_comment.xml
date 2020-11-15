@@ -16,7 +16,7 @@
     app:layout_constraintEnd_toStartOf="@id/commentHeader"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    app:srcCompat="@drawable/ic_person_outline"
+    app:srcCompat="@drawable/ic_person_placeholder"
     />
 
   <TextView
@@ -25,13 +25,16 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceSmall"
     android:ellipsize="end"
+    android:gravity="start"
     android:maxLines="1"
+    android:textAlignment="viewStart"
     android:textColor="?android:attr/textColorSecondary"
     android:textSize="10sp"
     app:layout_constraintBottom_toTopOf="@id/commentText"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toEndOf="@id/commentImage"
     app:layout_constraintTop_toTopOf="parent"
+    tools:ignore="SmallSp"
     tools:text="Marvelfan commented on 28/12/2019:"
     />
 
@@ -41,15 +44,35 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceSmall"
     android:ellipsize="end"
-    android:gravity="center_vertical"
+    android:gravity="center_vertical|start"
     android:justificationMode="inter_word"
+    android:textAlignment="viewStart"
     android:textColor="?android:attr/textColorPrimary"
     android:textSize="14sp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toEndOf="@id/commentImage"
     app:layout_constraintTop_toBottomOf="@id/commentHeader"
+    tools:targetApi="o"
     tools:text="@tools:sample/lorem"
+    />
+
+  <TextView
+    android:id="@+id/commentRating"
+    android:layout_width="18dp"
+    android:layout_height="18dp"
+    android:background="@drawable/bg_comment_rating"
+    android:gravity="center"
+    android:includeFontPadding="false"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="10sp"
+    android:textStyle="bold"
+    android:translationY="-10dp"
+    android:visibility="visible"
+    app:layout_constraintEnd_toEndOf="@id/commentImage"
+    app:layout_constraintTop_toBottomOf="@id/commentImage"
+    tools:ignore="SmallSp"
+    tools:text="10"
     />
 
 </merge>

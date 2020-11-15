@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textShowRated">لقد تم حفظ تقييمك.</string>
+  <string name="textShowRatingDeleted">لقد تم حذف تقييمك.</string>
+  <string name="textSignBeforeRate">رجاءً قُم بتسجيل الدخول قبل تقييم مسلسل.</string>
+  <string name="textRate">تقييم</string>
+  <string name="textRateDelete">حذف</string>
+  <string name="textSeasonEpisodeDate">الموسم %02d الحلقة %02d | %s</string>
+  <string name="textNoDescription">لا يتوفر وصف.</string>
+  <string name="textLoadCommentsCount">إظهار التعليقات (%d)</string>
+  <string name="textVotes">%.1f (%d تقييم)</string>
+
+  <string name="textNoComments">لا توجد تعليقات.</string>
+  <string name="textComments">التعليقات:</string>
+</resources>

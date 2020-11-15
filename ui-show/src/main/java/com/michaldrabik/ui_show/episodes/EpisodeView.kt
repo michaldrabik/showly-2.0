@@ -13,6 +13,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_show.R
 import kotlinx.android.synthetic.main.view_episode.view.*
+import java.util.Locale.ENGLISH
 
 class EpisodeView : ConstraintLayout {
 
@@ -35,10 +36,10 @@ class EpisodeView : ConstraintLayout {
     clear()
 
     val hasAired = item.episode.hasAired(item.season)
-    episodeTitle.text = context.getString(R.string.textEpisode, item.episode.number)
+    episodeTitle.text = String.format(ENGLISH, context.getString(R.string.textEpisode), item.episode.number)
     episodeOverview.text = when {
       !item.translation?.title.isNullOrBlank() -> item.translation?.title
-      else -> item.episode.title.ifEmpty { "TBA" }
+      else -> item.episode.title.ifEmpty { context.getString(R.string.textTba) }
     }
     episodeCheckbox.isChecked = item.isWatched
     episodeCheckbox.isEnabled = hasAired
@@ -49,7 +50,8 @@ class EpisodeView : ConstraintLayout {
       }
     } else {
       val date = item.episode.firstAired?.toLocalTimeZone()
-      episodeTitle.text = context.getString(R.string.textEpisodeDate, item.episode.number, date?.toDisplayString() ?: "TBA")
+      val displayDate = date?.toDisplayString() ?: context.getString(R.string.textTba)
+      episodeTitle.text = String.format(ENGLISH, context.getString(R.string.textEpisodeDate), item.episode.number, displayDate)
     }
 
     onClick { itemClickListener(item.episode, item.isWatched) }
