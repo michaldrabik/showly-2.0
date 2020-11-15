@@ -31,6 +31,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
+import java.util.Locale.ENGLISH
+import kotlin.math.roundToInt
 
 class ProgressWidgetViewsFactory(
   private val context: Context,
@@ -84,10 +86,16 @@ class ProgressWidgetViewsFactory(
 
   private fun createItemRemoteView(item: ProgressItem): RemoteViews {
     val title =
-      if (item.showTranslation?.title?.isBlank() == true) item.show.title
-      else item.showTranslation?.title?.capitalizeWords()
-    val subtitle = String.format("S.%02d E.%02d", item.episode.season, item.episode.number)
-    val progressText = "${item.watchedEpisodesCount}/${item.episodesCount}"
+      if (item.showTranslation?.title?.isBlank() == false) item.showTranslation?.title?.capitalizeWords()
+      else item.show.title
+    val subtitle = String.format(ENGLISH, "S.%02d E.%02d", item.episode.season, item.episode.number)
+
+    var percent = 0
+    if (item.episodesCount != 0) {
+      percent = ((item.watchedEpisodesCount.toFloat() / item.episodesCount.toFloat()) * 100F).roundToInt()
+    }
+    val progressText =
+      String.format(ENGLISH, "%d/%d (%d%%)", item.watchedEpisodesCount, item.episodesCount, percent)
     val imageUrl = item.image.fullFileUrl
     val hasAired = item.episode.hasAired(item.season)
     val subtitle2 = when {
