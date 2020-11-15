@@ -51,7 +51,7 @@ class SeeLaterShowView : ShowView<SeeLaterListItem> {
       else item.translation?.overview
 
     seeLaterShowNetwork.text =
-      if (item.show.year > 0) String.format(ENGLISH, "%s (%d)", item.show.network, item.show.year)
+      if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
       else String.format("%s", item.show.network)
 
     seeLaterShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)

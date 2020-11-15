@@ -52,7 +52,7 @@ class ShowSearchView : ShowView<SearchListItem> {
       else translationOverview
 
     showSearchNetwork.text =
-      if (item.show.year > 0) String.format("%s (%d)", item.show.network, item.show.year)
+      if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
       else String.format("%s", item.show.network)
 
     showSearchDescription.visibleIf(item.show.overview.isNotBlank())
