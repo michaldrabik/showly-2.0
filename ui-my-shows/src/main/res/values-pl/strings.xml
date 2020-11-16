@@ -4,6 +4,7 @@
   <string name="menuSeeLater">Na Później</string>
   <string name="menuArchive">Archiwum</string>
 
+  <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textSearchForMyShows">Szukaj…</string>
   <string name="textMyShowsEmpty">Kolekcja jest obecnie pusta.\n\nWybierz zakładkę <b>Odkrywaj</b> aby dodać swój pierwszy serial.</string>
   <string name="textSeeLaterEmpty">Kolekcja <b>Na Później</b> jest obecnie pusta.\n\nWybierz zakładkę <b>Odkrywaj</b> aby dodać seriale które chcesz sprawdzić w przyszłości.</string>
