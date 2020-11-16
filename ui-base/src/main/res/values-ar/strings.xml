@@ -19,7 +19,7 @@
   <string name="textSortBy">ترتيب حسب:</string>
   <string name="textSpoilersWarning">هذا التعليق يحتوى على حرق للأحداث.\nإضغط للقراءة.</string>
   <string name="textCommentedOn">%s علق على %s:</string>
-
+  <string name="textNetwork">(%2$s) %1$s</string>
   <string name="textAiredAlready">تم عرضها</string>
   <string name="textAirsNow">تُعرض الآن</string>
 
