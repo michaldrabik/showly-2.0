@@ -9,8 +9,8 @@
   <string name="textStatisticsTotalTimeItIs">يساوي</string>
   <string name="textStatisticsTotalTimeSpentHours">%s ساعات</string>
   <string name="textStatisticsTotalTimeSpentMinutes">%s دقائق</string>
-  <string name="textStatisticsTotalTimeSpentMonthsDays">وهو حوالي %d أشهر و %d أيام.</string>
-  <string name="textStatisticsTotalTimeSpentDays">وهو حوالي %d أيام.</string>
+  <string name="textStatisticsTotalTimeSpentMonthsDays">وهو حوالي %s أشهر و %s أيام.</string>
+  <string name="textStatisticsTotalTimeSpentDays">وهو حوالي %s أيام.</string>
   <string name="textStatisticsTotalEpisodes">إجمالي الحلقات التي تمت مشاهدتها</string>
   <string name="textStatisticsTotalEpisodesCount">%s حلقة</string>
   <string name="textStatisticsTotalEpisodesShowsCount">مقسمة على %s مسلسلات</string>
