@@ -114,10 +114,10 @@ class ProgressLoadItemsCase @Inject constructor(
     return (aired + notAired)
       .filter {
         if (searchQuery.isBlank()) true
-        else it.show.title.contains(searchQuery, true)
-          || it.episode.title.contains(searchQuery, true)
-          || it.showTranslation?.title?.contains(searchQuery, true) == true
-          || it.episodeTranslation?.title?.contains(searchQuery, true) == true
+        else it.show.title.contains(searchQuery, true) ||
+          it.episode.title.contains(searchQuery, true) ||
+          it.showTranslation?.title?.contains(searchQuery, true) == true ||
+          it.episodeTranslation?.title?.contains(searchQuery, true) == true
       }
       .toMutableList()
   }

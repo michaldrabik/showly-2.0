@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.core.animation.doOnEnd
 import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
-import java.util.*
+import java.util.Locale
 
 fun View.visible() {
   if (visibility != View.VISIBLE) visibility = View.VISIBLE

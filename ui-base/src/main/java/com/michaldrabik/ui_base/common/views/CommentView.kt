@@ -16,7 +16,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Comment
 import kotlinx.android.synthetic.main.view_comment.view.*
-import java.util.*
+import java.util.Locale
 
 class CommentView : ConstraintLayout {
 
