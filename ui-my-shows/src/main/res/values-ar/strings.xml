@@ -4,6 +4,7 @@
   <string name="menuSeeLater">قائمة المشاهدة</string>
   <string name="menuArchive">الأرشيف</string>
 
+  <string name="textNetwork">(%2$s) %1$s</string>
   <string name="textSearchForMyShows">بحث…</string>
   <string name="textMyShowsEmpty">مجموعة مسلسلاتك فارغة حالياً.\n\nإذهب إلى صفحة <b>إكتشف</b> وأضف مسلسلك صفح.</string>
   <string name="textSeeLaterEmpty">مجموعة <b>قائمة المشاهدة</b> فارغة حالياً.\n\nإذهب إلى صفحة <b>إكتشف</b> وأضف ما قد ترغب بمشاهدته في المستقبل.</string>
