@@ -4,7 +4,6 @@
   <string name="menuSeeLater">Watchlist</string>
   <string name="menuArchive">Archive</string>
 
-  <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textSearchForMyShows">Search…</string>
   <string name="textMyShowsEmpty">Your shows collection is currently empty.\n\nVisit <b>Discover</b> tab to add your first show.</string>
   <string name="textSeeLaterEmpty">Your <b>Watchlist</b> collection is currently empty.\n\nVisit <b>Discover</b> tab to add shows you might want to watch in the future.</string>
