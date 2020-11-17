@@ -23,7 +23,7 @@
   <string name="textSettingsMyShowsSectionsTitle">Meine Serien Abschnitt</string>
   <string name="textSettingsMyShowsSectionSummary">Aktiviere/Deaktiviere die Abschnitte im \'Meine Serien\' Tab.</string>
   <string name="textSettingsMyShowsLanguageTitle">Sprache</string>
-  <string name="textSettingsMyShowsLanguageSummary">Beschreibungen & Titel werden übersetzt, sofern eine Übersetzung vorhanden ist.</string>
+  <string name="textSettingsMyShowsLanguageSummary">Beschreibungen &amp; Titel werden übersetzt, sofern eine Übersetzung vorhanden ist.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Archivierte Statistik</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Berücksichtige archivierte Serien in der Statistik mit.</string>
   <string name="textSettingsIncludeSpecialsTitle">Spezial Staffel</string>
@@ -32,7 +32,7 @@
   <string name="textSettingsPushNotificationsTitle">Pushbenachrichtigungen</string>
   <string name="textSettingsPushNotificationsSummary">Erhalte allgemeine Push-Benachrichtigungen.</string>
   <string name="textSettingsShowsNotificationsTitle">Episodenankündigungen</string>
-  <string name="textSettingsShowsNotificationsSummary">Erhalte Benachrichtigungen über neue Folgen & Staffeln von Serien denen die du gespeichert hast.</string>
+  <string name="textSettingsShowsNotificationsSummary">Erhalte Benachrichtigungen über neue Folgen &amp; Staffeln von Serien denen die du gespeichert hast.</string>
   <string name="textSettingsMisc">Gemischt</string>
   <string name="textSettingsContactDevsTitle">Entwickler kontaktieren</string>
   <string name="textSettingsContactDevsSummary">Du hast einen Fehler entdeckt oder ein Problem? Schreib uns gerne eine E-Mail.</string>
