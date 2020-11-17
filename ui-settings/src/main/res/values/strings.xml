@@ -50,4 +50,5 @@
   <string name="textLanguagePolish" translatable="false">Polski</string>
   <string name="textLanguageArabic" translatable="false">العربية</string>
   <string name="textLanguageSpanish" translatable="false">Español</string>
+  <string name="textLanguageGerman" translatable="false">Deutsche</string>
 </resources>
