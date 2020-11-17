@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textTraktLoginSuccess">Du wurdest erfolgreich autorisiert.</string>
+  <string name="textTraktLogoutSuccess">Du hast dich erfolgreich ausgeloggt.</string>
+  <string name="textImagesCacheCleared">Bildcache wurde gelöscht.</string>
+  <string name="textTurnOff">Ausschalten</string>
+
+  <string name="textSettings">Einstellungen</string>
+  <string name="textSettingsTrakt">Trakt.tv</string>
+  <string name="textSettingsTraktAuthorizeTitle">Trakt.tv Autorisierung</string>
+  <string name="textSettingsTraktAuthorizeSummarySignIn">Tippe hier um dich in deinen Trakt.tv Account einzuloggen.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOut">Eingeloggt. Tippe hier zum ausloggen.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOutUser">Eingeloggt als %1$s. Tippe hier zum ausloggen.</string>
+  <string name="textSettingsTraktSyncTitle">Trakt.tv Sync</string>
+  <string name="textSettingsTraktSyncSummary">Sync deine Daten zwischen Trakt.tv und Showly.</string>
+  <string name="textSettingsTraktQuickSyncTitle">Sofortupload Zu Trakt.tv</string>
+  <string name="textSettingsTraktQuickSyncSummary">Lade deine Episoden und deine Watchlist sofort auf Trakt.tv hoch, nachdem du sie in der App hinzugefügt hast.</string>
+  <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv Sofort Entfernen</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Option zum Entfernen von Serien aus Trakt.tv hinzufügen, nachdem du diese in der App entfernt hast.</string>
+  <string name="textSettingsGeneral">Allgemein &amp; UX</string>
+  <string name="textSettingsRecentShowsTitle">Kürzlich hinzugefügte Menge</string>
+  <string name="textSettingsRecentShowsSummary">Anzahl der letzten Shows, die auf dem Bildschirm \'Meine Shows\' angezeigt werden sollen.</string>
+  <string name="textSettingsMyShowsSectionsTitle">Meine Serien Abschnitt</string>
+  <string name="textSettingsMyShowsSectionSummary">Aktiviere/Deaktiviere die Abschnitte im \'Meine Serien\' Tab.</string>
+  <string name="textSettingsMyShowsLanguageTitle">Sprache</string>
+  <string name="textSettingsMyShowsLanguageSummary">Beschreibungen & Titel werden übersetzt, sofern eine Übersetzung vorhanden ist.</string>
+  <string name="textSettingsIncludeArchiveStatsTitle">Archivierte Statistik</string>
+  <string name="textSettingsIncludeArchiveStatsSummary">Berücksichtige archivierte Serien in der Statistik mit.</string>
+  <string name="textSettingsIncludeSpecialsTitle">Spezial Staffel</string>
+  <string name="textSettingsIncludeSpecialsSummary">Zeige \'Spezial\' Staffeln in den Seriendetails.</string>
+  <string name="textSettingsNotifications">Benachrichtigungen </string>
+  <string name="textSettingsPushNotificationsTitle">Pushbenachrichtigungen</string>
+  <string name="textSettingsPushNotificationsSummary">Erhalte allgemeine Push-Benachrichtigungen.</string>
+  <string name="textSettingsShowsNotificationsTitle">Episodenankündigungen</string>
+  <string name="textSettingsShowsNotificationsSummary">Erhalte Benachrichtigungen über neue Folgen & Staffeln von Serien denen die du gespeichert hast.</string>
+  <string name="textSettingsMisc">Gemischt</string>
+  <string name="textSettingsContactDevsTitle">Entwickler kontaktieren</string>
+  <string name="textSettingsContactDevsSummary">Du hast einen Fehler entdeckt oder ein Problem? Schreib uns gerne eine E-Mail.</string>
+  <string name="textSettingsRateAppTitle">Gib uns dein Feedback </string>
+  <string name="textSettingsRateAppSummary">Gefällt dir Showly? Hinterlass uns gerne ein Review im PlayStore. Danke!</string>
+  <string name="textSettingsDeleteCacheTitle">Lösche Bildcache</string>
+  <string name="textSettingsDeleteCacheSummary">Klicke hier, um den lokalen Bildcache zu löschen. Dies kann hilfreich sein, wenn Bilder nicht korrekt geladen werden.</string>
+  <string name="textSettingsQuickSyncConfirmationTitle">Deaktiviere die automatische Synchronisation</string>
+  <string name="textSettingsQuickSyncConfirmationMessage">\nEs scheint, als sei die automatische Synchronisation bereits aktiviert.\n\nMöchtest du diese Einstellung deaktivieren bevor du Instant Synchronisation aktivierst (Empfohlen!)?\n</string>
+  <string name="textSettingsLogoutTitle">Bei Trakt.tv Ausloggen</string>
+  <string name="textSettingsLogoutMessage">\nBist du sicher, dass du dich ausloggen möchtest?\n</string>
+  <string name="textSettingsLanguageChangeMessage">Bitte starte die App neu um die Sprachänderung wirksam zu machen.</string>
+
+  </resources>
