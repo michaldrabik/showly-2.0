@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
 import androidx.core.view.updatePadding
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,12 +30,14 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.shake
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.RecentSearch
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_search.di.UiSearchComponentProvider
 import com.michaldrabik.ui_search.recycler.SearchAdapter
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.views.RecentSearchView
+import com.michaldrabik.ui_search.views.ShowSearchView
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlin.random.Random
 
@@ -89,20 +92,22 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
       viewModel.loadRecentSearches()
     }
 
-    exSearchViewInput.setOnEditorActionListener { textView, id, _ ->
-      if (id == EditorInfo.IME_ACTION_SEARCH) {
-        val query = textView.text.toString()
-        if (query.trim().isBlank()) {
-          searchViewLayout.shake()
-          return@setOnEditorActionListener true
+    exSearchViewInput.run {
+      addTextChangedListener { text -> viewModel.loadSuggestions(text.toString()) }
+      setOnEditorActionListener { textView, id, _ ->
+        if (id == EditorInfo.IME_ACTION_SEARCH) {
+          val query = textView.text.toString()
+          if (query.trim().isBlank()) {
+            searchViewLayout.shake()
+            return@setOnEditorActionListener true
+          }
+          viewModel.searchForShow(query)
+          exSearchViewInput.hideKeyboard()
+          exSearchViewInput.clearFocus()
         }
-        viewModel.searchForShow(query)
-        exSearchViewInput.hideKeyboard()
-        exSearchViewInput.clearFocus()
+        true
       }
-      true
     }
-
     exSearchViewIcon.onClick {
       exSearchViewInput.hideKeyboard()
       requireActivity().onBackPressed()
@@ -166,12 +171,25 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
         if (searchItemsAnimate == true) searchRecycler.scheduleLayoutAnimation()
       }
       recentSearchItems?.let { renderRecentSearches(it) }
+      suggestionsItems?.let { renderSuggestions(it) }
       isSearching?.let {
         searchSwipeRefresh.isRefreshing = it
         searchViewLayout.isEnabled = !it
       }
       isEmpty?.let { searchEmptyView.fadeIf(it) }
       isInitial?.let { searchInitialView.fadeIf(it) }
+    }
+  }
+
+  private fun renderSuggestions(suggestions: List<SearchListItem>) {
+    searchSuggestionsLayout.visibleIf(suggestions.isNotEmpty())
+    searchSuggestionsLayout.removeAllViews()
+    val missingImageListener: (SearchListItem, Boolean) -> Unit = { item, force -> }
+    suggestions.forEach { item ->
+      val view = ShowSearchView(requireContext()).apply {
+        bind(item, missingImageListener)
+      }
+      searchSuggestionsLayout.addView(view)
     }
   }
 

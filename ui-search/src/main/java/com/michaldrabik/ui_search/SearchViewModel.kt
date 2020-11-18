@@ -11,6 +11,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_search.cases.SearchMainCase
 import com.michaldrabik.ui_search.cases.SearchRecentsCase
+import com.michaldrabik.ui_search.cases.SearchSuggestionsCase
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
   private val searchMainCase: SearchMainCase,
   private val recentSearchesCase: SearchRecentsCase,
+  private val suggestionsCase: SearchSuggestionsCase,
   private val imagesProvider: ShowImagesProvider
 ) : BaseViewModel<SearchUiModel>() {
 
@@ -31,6 +33,28 @@ class SearchViewModel @Inject constructor(
     viewModelScope.launch {
       val searches = recentSearchesCase.getRecentSearches(SEARCH_RECENTS_AMOUNT)
       uiState = SearchUiModel(recentSearchItems = searches, isInitial = searches.isEmpty())
+    }
+  }
+
+  fun loadSuggestions(query: String) {
+    viewModelScope.launch {
+      if (query.trim().length < 2) {
+        uiState = SearchUiModel(suggestionsItems = emptyList())
+        return@launch
+      }
+      val suggestions = suggestionsCase.loadSuggestions(query.trim(), 5)
+      val items = suggestions.map {
+        val image = imagesProvider.findCachedImage(it, POSTER)
+        val translation = searchMainCase.loadTranslation(it)
+        SearchListItem(
+          it,
+          image,
+          isFollowed = false,
+          isSeeLater = false,
+          translation = translation
+        )
+      }
+      uiState = SearchUiModel(suggestionsItems = items)
     }
   }
 
