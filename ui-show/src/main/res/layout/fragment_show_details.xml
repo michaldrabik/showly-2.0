@@ -391,7 +391,6 @@
         app:drawableTopCompat="@drawable/ic_play"
         app:layout_constraintBottom_toBottomOf="@id/showDetailsCommentsButton"
         app:layout_constraintEnd_toStartOf="@+id/showDetailsRateButton"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/showDetailsCommentsButton"
         />
