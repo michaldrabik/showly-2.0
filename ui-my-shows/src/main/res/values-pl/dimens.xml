@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="myShowsTabsTranslation">-2dp</dimen>
-  <dimen name="myShowsTabsMinWidth">90dp</dimen>
+  <dimen name="myShowsTabsTranslation">-6dp</dimen>
 </resources>

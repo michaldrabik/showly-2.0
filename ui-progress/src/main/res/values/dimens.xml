@@ -4,8 +4,7 @@
 
   <dimen name="progressSearchViewPadding">64dp</dimen>
   <dimen name="progressTabsViewPadding">112dp</dimen>
-  <dimen name="progressTabsViewTranslation">-10dp</dimen>
-  <dimen name="progressTabViewMinWidth">84dp</dimen>
+  <dimen name="progressTabsViewTranslation">-6dp</dimen>
   <dimen name="progressCalendarTabsViewPadding">96dp</dimen>
 
   <dimen name="progressImageHeight">120dp</dimen>

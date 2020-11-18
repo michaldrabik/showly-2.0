@@ -10,8 +10,8 @@
   <string name="textNew">Neu</string>
   <string name="textSelect">Ausgewählt</string>
   <string name="textHot">Hot</string>
-  <string name="textEmptyResults">Keine Ergebnisse...</string>
-  <string name="textSearchFor">Suche...</string>
+  <string name="textEmptyResults">Keine Ergebnisse…</string>
+  <string name="textSearchFor">Suche…</string>
   <string name="textTip">Tipp:</string>
   <string name="textSeason">Staffel %1$d</string>
   <string name="textSpecials">Specials</string>
@@ -45,13 +45,13 @@
 
   <string name="textTraktSync">Trakt.tv Sync</string>
   <string name="textTraktSyncComplete">Synchronisation komplett erfolgreich!</string>
-  <string name="textTraktSyncRunning">Im Gang...</string>
+  <string name="textTraktSyncRunning">Im Gang…</string>
   <string name="textTraktSyncError">Synchronisation mit Trakt.tv fehlgeschlagen.</string>
   <string name="textTraktSyncErrorFull">Trakt.tv Synchronisation fehlgeschlagen. Bitte überprüfe deine Internetverbindung und versuch es erneut oder kontaktiere uns, wenn der Fehler weiterhin besteht.</string>
   <string name="textTraktQuickSyncError">Sofortige Synchronisation fehlgeschlagen.</string>
   <string name="textTraktQuickSyncErrorFull">Sofortige Synchronisation fehlgeschlagen. Wir versuchen es beim nächsten öffnen der App. Bitte überprüfe deine Internetverbindung.</string>
 
-  <string name="errorGeneral">Hoppla... Da ging etwas schief.\nBitte kontaktiere uns, wenn dies weiterhin geschieht.</string>
+  <string name="errorGeneral">Hoppla… Da ging etwas schief.\nBitte kontaktiere uns, wenn dies weiterhin geschieht.</string>
   <string name="errorAuthorization">Autorisation fehlgeschlagen. Bitte kontaktiere uns, wenn dies weiterhin geschieht.</string>
   <string name="errorTraktAuthorization">Trakt.tv Authentifizierung fehlgeschlagen.\nBitte einloggen und erneut versuchen.</string>
   <string name="errorSeasonsNotLoaded">Bitte warte bis die Staffelinformationen geladen sind.</string>

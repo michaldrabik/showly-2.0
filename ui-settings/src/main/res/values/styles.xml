@@ -24,8 +24,8 @@
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:textColor">@color/colorGrayLight</item>
-    <item name="android:textSize">13sp</item>
-    <item name="android:maxLines">2</item>
+    <item name="android:textSize">12sp</item>
+    <item name="android:maxLines">3</item>
   </style>
 
   <style name="Settings.ItemLayout" parent="Settings">
