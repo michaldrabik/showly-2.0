@@ -2,8 +2,6 @@
 <resources>
   <dimen name="myShowsTabsTranslation">-6dp</dimen>
 
-  <dimen name="myShowHeaderSize">22sp</dimen>
-
   <dimen name="myShowsSearchViewPadding">64dp</dimen>
   <dimen name="myShowsTabsViewPadding">94dp</dimen>
   <dimen name="myShowsBottomPadding">68dp</dimen>
