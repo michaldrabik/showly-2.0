@@ -32,7 +32,7 @@ class ShowFanartView : ShowView<DiscoverListItem> {
 
   override fun bind(
     item: DiscoverListItem,
-    missingImageListener: (DiscoverListItem, Boolean) -> Unit
+    missingImageListener: ((DiscoverListItem, Boolean) -> Unit)?
   ) {
     super.bind(item, missingImageListener)
     clear()
@@ -46,7 +46,7 @@ class ShowFanartView : ShowView<DiscoverListItem> {
     loadImage(item, missingImageListener)
   }
 
-  override fun loadImage(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
+  override fun loadImage(item: DiscoverListItem, missingImageListener: ((DiscoverListItem, Boolean) -> Unit)?) {
     super.loadImage(item, missingImageListener)
     if (item.image.status == Image.Status.UNAVAILABLE) {
       showFanartRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)

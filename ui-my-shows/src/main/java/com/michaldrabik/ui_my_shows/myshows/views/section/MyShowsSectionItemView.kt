@@ -36,7 +36,7 @@ class MyShowsSectionItemView : ShowView<MyShowsItem> {
 
   override fun bind(
     item: MyShowsItem,
-    missingImageListener: (MyShowsItem, Boolean) -> Unit
+    missingImageListener: ((MyShowsItem, Boolean) -> Unit)?
   ) {
     clear()
     this.item = item
@@ -45,7 +45,7 @@ class MyShowsSectionItemView : ShowView<MyShowsItem> {
     loadImage(item, missingImageListener)
   }
 
-  override fun loadImage(item: MyShowsItem, missingImageListener: (MyShowsItem, Boolean) -> Unit) {
+  override fun loadImage(item: MyShowsItem, missingImageListener: ((MyShowsItem, Boolean) -> Unit)?) {
     if (item.image.status == Status.UNAVAILABLE) {
       myShowTitle.visible()
       myShowRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)

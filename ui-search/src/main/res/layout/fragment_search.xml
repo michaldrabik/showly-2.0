@@ -63,20 +63,6 @@
     tools:visibility="visible"
     />
 
-  <LinearLayout
-    android:id="@+id/searchSuggestionsLayout"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:background="?attr/colorSearchViewBackground"
-    android:orientation="vertical"
-    android:translationY="-4dp"
-    android:visibility="gone"
-    app:layout_constraintEnd_toEndOf="@id/searchViewLayout"
-    app:layout_constraintStart_toStartOf="@id/searchViewLayout"
-    app:layout_constraintTop_toBottomOf="@id/searchViewLayout"
-    tools:visibility="visible"
-    />
-
   <TextView
     android:id="@+id/searchRecentsClearButton"
     android:layout_width="wrap_content"
@@ -114,5 +100,32 @@
     app:layout_constraintTop_toBottomOf="@+id/searchViewLayout"
     tools:visibility="visible"
     />
+
+  <ScrollView
+    android:id="@+id/searchSuggestionsWrapper"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_suggestions"
+    android:overScrollMode="never"
+    android:translationY="-4dp"
+    android:visibility="gone"
+    app:layout_constrainedHeight="true"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="@id/searchViewLayout"
+    app:layout_constraintHeight_max="@dimen/suggestionsMaxHeight"
+    app:layout_constraintStart_toStartOf="@id/searchViewLayout"
+    app:layout_constraintTop_toBottomOf="@id/searchViewLayout"
+    app:layout_constraintVertical_bias="0"
+    tools:visibility="visible"
+    >
+
+    <LinearLayout
+      android:id="@+id/searchSuggestionsLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      />
+
+  </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

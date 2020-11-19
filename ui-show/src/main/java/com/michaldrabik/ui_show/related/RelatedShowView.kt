@@ -32,7 +32,7 @@ class RelatedShowView : ShowView<RelatedListItem> {
 
   override fun bind(
     item: RelatedListItem,
-    missingImageListener: (RelatedListItem, Boolean) -> Unit
+    missingImageListener: ((RelatedListItem, Boolean) -> Unit)?
   ) {
     clear()
     this.item = item
@@ -40,7 +40,7 @@ class RelatedShowView : ShowView<RelatedListItem> {
     loadImage(item, missingImageListener)
   }
 
-  override fun onImageLoadFail(item: RelatedListItem, missingImageListener: (RelatedListItem, Boolean) -> Unit) {
+  override fun onImageLoadFail(item: RelatedListItem, missingImageListener: ((RelatedListItem, Boolean) -> Unit)?) {
     super.onImageLoadFail(item, missingImageListener)
     if (item.image.status == AVAILABLE) relatedTitle.visible()
   }

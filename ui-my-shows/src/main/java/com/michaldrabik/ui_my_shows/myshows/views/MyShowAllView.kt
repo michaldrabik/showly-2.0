@@ -37,7 +37,7 @@ class MyShowAllView : ShowView<MyShowsItem> {
 
   override fun bind(
     item: MyShowsItem,
-    missingImageListener: (MyShowsItem, Boolean) -> Unit
+    missingImageListener: ((MyShowsItem, Boolean) -> Unit)?
   ) {
     clear()
     this.item = item

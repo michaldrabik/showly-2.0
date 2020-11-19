@@ -14,23 +14,23 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_search.R
 import com.michaldrabik.ui_search.recycler.SearchListItem
-import kotlinx.android.synthetic.main.view_show_search.view.*
+import kotlinx.android.synthetic.main.view_suggestion_search.view.*
 
 @SuppressLint("SetTextI18n")
-class ShowSearchView : ShowView<SearchListItem> {
+class ShowSuggestionView : ShowView<SearchListItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   init {
-    inflate(context, R.layout.view_show_search, this)
+    inflate(context, R.layout.view_suggestion_search, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-    showSearchRoot.onClick { itemClickListener?.invoke(item) }
+    suggestionRoot.onClick { itemClickListener?.invoke(item) }
   }
 
-  override val imageView: ImageView = showSearchImage
-  override val placeholderView: ImageView = showSearchPlaceholder
+  override val imageView: ImageView = suggestionImage
+  override val placeholderView: ImageView = suggestionPlaceholder
 
   private lateinit var item: SearchListItem
 
@@ -42,32 +42,29 @@ class ShowSearchView : ShowView<SearchListItem> {
     this.item = item
 
     val translationTitle = item.translation?.title
-    showSearchTitle.text =
+    suggestionTitle.text =
       if (translationTitle.isNullOrBlank()) item.show.title
       else translationTitle.capitalizeWords()
 
     val translationOverview = item.translation?.overview
-    showSearchDescription.text =
+    suggestionDescription.text =
       if (translationOverview.isNullOrBlank()) item.show.overview
       else translationOverview
 
-    showSearchNetwork.text =
+    suggestionNetwork.text =
       if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
       else String.format("%s", item.show.network)
 
-    showSearchDescription.visibleIf(item.show.overview.isNotBlank())
-    showSearchNetwork.visibleIf(item.show.network.isNotBlank())
-    showSearchBadge.visibleIf(item.isFollowed)
-    showSearchLaterBadge.visibleIf(item.isSeeLater)
+    suggestionDescription.visibleIf(item.show.overview.isNotBlank())
+    suggestionNetwork.visibleIf(item.show.network.isNotBlank())
     loadImage(item, missingImageListener)
   }
 
   private fun clear() {
-    showSearchTitle.text = ""
-    showSearchDescription.text = ""
-    showSearchNetwork.text = ""
-    showSearchPlaceholder.gone()
-    showSearchBadge.gone()
-    Glide.with(this).clear(showSearchImage)
+    suggestionTitle.text = ""
+    suggestionDescription.text = ""
+    suggestionNetwork.text = ""
+    suggestionPlaceholder.gone()
+    Glide.with(this).clear(suggestionImage)
   }
 }

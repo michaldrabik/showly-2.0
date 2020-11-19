@@ -37,7 +37,7 @@ class SeeLaterShowView : ShowView<SeeLaterListItem> {
 
   override fun bind(
     item: SeeLaterListItem,
-    missingImageListener: (SeeLaterListItem, Boolean) -> Unit
+    missingImageListener: ((SeeLaterListItem, Boolean) -> Unit)?
   ) {
     clear()
     this.item = item

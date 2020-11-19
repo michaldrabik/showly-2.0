@@ -102,11 +102,19 @@ class SearchViewModel @Inject constructor(
     fun updateItem(new: SearchListItem) {
       val currentModel = uiState
       val currentItems = currentModel?.searchItems?.toMutableList()
+      val currentSuggestions = currentModel?.suggestionsItems?.toMutableList()
       currentItems?.run {
         findReplace(new) { it.isSameAs(new) }
         lastSearchItems.replace(this)
       }
-      uiState = currentModel?.copy(searchItems = currentItems, searchItemsAnimate = false)
+      currentSuggestions?.run {
+        findReplace(new) { it.isSameAs(new) }
+      }
+      uiState = currentModel?.copy(
+        searchItems = currentItems,
+        suggestionsItems = currentSuggestions,
+        searchItemsAnimate = false
+      )
     }
 
     viewModelScope.launch {
@@ -123,5 +131,10 @@ class SearchViewModel @Inject constructor(
   private fun onError() {
     uiState = SearchUiModel(isSearching = false, isEmpty = false)
     _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadSearchResults)
+  }
+
+  override fun onCleared() {
+    suggestionsCase.clearCache()
+    super.onCleared()
   }
 }

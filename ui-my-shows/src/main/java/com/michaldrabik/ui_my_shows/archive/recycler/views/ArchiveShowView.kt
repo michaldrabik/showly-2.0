@@ -37,7 +37,7 @@ class ArchiveShowView : ShowView<ArchiveListItem> {
 
   override fun bind(
     item: ArchiveListItem,
-    missingImageListener: (ArchiveListItem, Boolean) -> Unit
+    missingImageListener: ((ArchiveListItem, Boolean) -> Unit)?
   ) {
     clear()
     this.item = item

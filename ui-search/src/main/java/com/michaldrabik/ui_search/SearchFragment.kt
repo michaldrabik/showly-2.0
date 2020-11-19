@@ -37,7 +37,7 @@ import com.michaldrabik.ui_search.di.UiSearchComponentProvider
 import com.michaldrabik.ui_search.recycler.SearchAdapter
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.views.RecentSearchView
-import com.michaldrabik.ui_search.views.ShowSearchView
+import com.michaldrabik.ui_search.views.ShowSuggestionView
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlin.random.Random
 
@@ -158,10 +158,14 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
       duration = 150, startDelay = 350,
       endAction = {
         enableUi()
-        val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
-        navigateTo(R.id.actionSearchFragmentToShowDetailsFragment, bundle)
+        openShow(item.show.traktId)
       }
     )
+  }
+
+  private fun openShow(idTrakt: Long) {
+    val bundle = Bundle().apply { putLong(ARG_SHOW_ID, idTrakt) }
+    navigateTo(R.id.actionSearchFragmentToShowDetailsFragment, bundle)
   }
 
   private fun render(uiModel: SearchUiModel) {
@@ -182,12 +186,16 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
   }
 
   private fun renderSuggestions(suggestions: List<SearchListItem>) {
-    searchSuggestionsLayout.visibleIf(suggestions.isNotEmpty())
+    searchSuggestionsWrapper.visibleIf(suggestions.isNotEmpty())
     searchSuggestionsLayout.removeAllViews()
-    val missingImageListener: (SearchListItem, Boolean) -> Unit = { item, force -> }
+    val itemClick: (SearchListItem) -> Unit = { openShow(it.show.traktId) }
+    val missingImageListener: (SearchListItem, Boolean) -> Unit = { item, force ->
+      viewModel.loadMissingImage(item, force)
+    }
     suggestions.forEach { item ->
-      val view = ShowSearchView(requireContext()).apply {
+      val view = ShowSuggestionView(requireContext()).apply {
         bind(item, missingImageListener)
+        itemClickListener = itemClick
       }
       searchSuggestionsLayout.addView(view)
     }
