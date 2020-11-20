@@ -23,6 +23,7 @@ class SearchViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider
 ) : BaseViewModel<SearchUiModel>() {
 
+  private var isSearching = false
   private val lastSearchItems = mutableListOf<SearchListItem>()
 
   fun loadLastSearch() {
@@ -38,7 +39,7 @@ class SearchViewModel @Inject constructor(
 
   fun loadSuggestions(query: String) {
     viewModelScope.launch {
-      if (query.trim().length < 2) {
+      if (query.trim().length < 2 || isSearching) {
         uiState = SearchUiModel(suggestionsItems = emptyList())
         return@launch
       }
@@ -70,6 +71,7 @@ class SearchViewModel @Inject constructor(
     if (trimmed.isEmpty()) return
     viewModelScope.launch {
       try {
+        isSearching = true
         uiState = SearchUiModel.createLoading()
 
         val shows = searchMainCase.searchShows(trimmed)
@@ -93,6 +95,8 @@ class SearchViewModel @Inject constructor(
         uiState = SearchUiModel.createResults(items)
       } catch (t: Throwable) {
         onError()
+      } finally {
+        isSearching = false
       }
     }
   }

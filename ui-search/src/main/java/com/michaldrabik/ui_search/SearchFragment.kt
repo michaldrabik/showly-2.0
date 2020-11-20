@@ -222,8 +222,8 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
         setPadding(paddingH, paddingV, paddingH, paddingV)
         bind(item)
         onClick {
-          exSearchViewInput.setText(item.text)
           viewModel.searchForShow(item.text)
+          exSearchViewInput.setText(item.text)
         }
       }
       searchRecentsLayout.addView(view)
