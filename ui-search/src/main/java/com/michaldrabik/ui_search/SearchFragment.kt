@@ -188,7 +188,10 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
   private fun renderSuggestions(suggestions: List<SearchListItem>) {
     searchSuggestionsWrapper.visibleIf(suggestions.isNotEmpty())
     searchSuggestionsLayout.removeAllViews()
-    val itemClick: (SearchListItem) -> Unit = { openShow(it.show.traktId) }
+    val itemClick: (SearchListItem) -> Unit = {
+      viewModel.saveRecentSearch(it.translation?.title ?: it.show.title)
+      openShow(it.show.traktId)
+    }
     val missingImageListener: (SearchListItem, Boolean) -> Unit = { item, force ->
       viewModel.loadMissingImage(item, force)
     }

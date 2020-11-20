@@ -101,6 +101,12 @@ class SearchViewModel @Inject constructor(
     }
   }
 
+  fun saveRecentSearch(query: String) {
+    viewModelScope.launch {
+      recentSearchesCase.saveRecentSearch(query)
+    }
+  }
+
   fun loadMissingImage(item: SearchListItem, force: Boolean) {
 
     fun updateItem(new: SearchListItem) {
