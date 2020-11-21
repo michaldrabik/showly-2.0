@@ -99,6 +99,7 @@
 
 -keep class com.michaldrabik.network.trakt.model.** { *; }
 -keep class com.michaldrabik.network.tvdb.model.** { *; }
+-keep class com.michaldrabik.network.aws.model.** { *; }
 
 ### OkHttp
 
