@@ -10,11 +10,13 @@ import android.graphics.Color.TRANSPARENT
 import android.net.Uri
 import android.os.Bundle
 import android.transition.TransitionManager
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
@@ -65,6 +67,7 @@ import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
 import com.michaldrabik.ui_model.RatingState
@@ -76,6 +79,12 @@ import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
+import com.michaldrabik.ui_show.helpers.ShowLink
+import com.michaldrabik.ui_show.helpers.ShowLink.IMDB
+import com.michaldrabik.ui_show.helpers.ShowLink.TMDB
+import com.michaldrabik.ui_show.helpers.ShowLink.TRAKT
+import com.michaldrabik.ui_show.helpers.ShowLink.TVDB
+import com.michaldrabik.ui_show.helpers.ShowLink.values
 import com.michaldrabik.ui_show.quickSetup.QuickSetupView
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.related.RelatedShowAdapter
@@ -363,21 +372,22 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         showDetailsRating.text = String.format(ENGLISH, getString(R.string.textVotes), show.rating, show.votes)
         showDetailsCommentsButton.visible()
         showDetailsShareButton.run {
-          visibleIf(show.ids.imdb.id.isNotBlank())
+          isEnabled = show.ids.imdb.id.isNotBlank()
+          alpha = if (isEnabled) 1.0F else 0.35F
           onClick { openShareSheet(show) }
         }
         showDetailsTrailerButton.run {
-          visibleIf(show.trailer.isNotBlank())
+          isEnabled = show.trailer.isNotBlank()
+          alpha = if (isEnabled) 1.0F else 0.35F
           onClick {
             openTrailerLink(show.trailer)
             Analytics.logShowTrailerClick(show)
           }
         }
-        showDetailsImdbButton.run {
-          visibleIf(show.ids.imdb.id.isNotBlank())
+        showDetailsLinksButton.run {
           onClick {
-            openIMDbLink(show.ids.imdb, "title")
-            Analytics.logShowImdbClick(show)
+            openLinksMenu(show.ids)
+            Analytics.logShowLinksClick(show)
           }
         }
         showDetailsAddButton.isEnabled = true
@@ -575,6 +585,36 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       i.data = Uri.parse("http://www.imdb.com/$type/${id.id}")
       startActivity(i)
     }
+  }
+
+  private fun openShowLink(link: ShowLink, id: String) {
+    if (link == IMDB) {
+      openIMDbLink(IdImdb(id), "title")
+    } else {
+      val i = Intent(Intent.ACTION_VIEW)
+      i.data = Uri.parse(link.getUri(id))
+      startActivity(i)
+    }
+  }
+
+  private fun openLinksMenu(ids: Ids) {
+    val menu = PopupMenu(requireContext(), showDetailsLinksButton, Gravity.CENTER)
+    if (ids.imdb.id.isNotBlank()) menu.menu.add(IMDB.displayName)
+    if (ids.trakt.id != -1L) menu.menu.add(TRAKT.displayName)
+    if (ids.tvdb.id != -1L) menu.menu.add(TVDB.displayName)
+    if (ids.tmdb.id != -1L) menu.menu.add(TMDB.displayName)
+    menu.setOnMenuItemClickListener { item ->
+      val link = values().first { it.displayName == item.title }
+      val id = when (link) {
+        IMDB -> ids.imdb.id
+        TRAKT -> ids.trakt.id
+        TVDB -> ids.tvdb.id
+        TMDB -> ids.tmdb.id
+      }.toString()
+      openShowLink(link, id)
+      true
+    }
+    menu.show()
   }
 
   private fun openShareSheet(show: Show) {

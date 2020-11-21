@@ -31,7 +31,7 @@
   <string name="textSeasons">Seasons:</string>
   <string name="textSeasonsEmpty">Seasons not available.</string>
   <string name="textTrailer">Trailer</string>
-  <string name="textImdb">iMDB</string>
+  <string name="textLink">Link</string>
   <string name="textShare">Share</string>
   <string name="textYouMayAlsoLike">You may also like:</string>
   <string name="textRuntimeLeftHours">~%sh %sm remaining</string>

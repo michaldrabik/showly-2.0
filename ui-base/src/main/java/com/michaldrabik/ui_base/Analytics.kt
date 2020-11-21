@@ -56,8 +56,8 @@ object Analytics {
     }
   }
 
-  fun logShowImdbClick(show: Show) {
-    firebaseAnalytics.logEvent("show_click_imdb") {
+  fun logShowLinksClick(show: Show) {
+    firebaseAnalytics.logEvent("show_click_links") {
       param("show_id_trakt", show.traktId)
       param("show_title", show.title)
     }
