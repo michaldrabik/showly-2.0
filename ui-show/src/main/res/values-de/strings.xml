@@ -31,7 +31,7 @@
   <string name="textSeasons">Staffel:</string>
   <string name="textSeasonsEmpty">Staffel nicht verfügbar.</string>
   <string name="textTrailer">Trailer</string>
-  <string name="textImdb">iMBD</string>
+  <string name="textLink">Link</string>
   <string name="textShare">Teilen</string>
   <string name="textYouMayAlsoLike">Vielleicht magst du auch:</string>
   <string name="textRuntimeLeftHours">Noch ~%sh %sm</string>
