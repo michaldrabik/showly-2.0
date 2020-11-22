@@ -10,13 +10,12 @@ import android.graphics.Color.TRANSPARENT
 import android.net.Uri
 import android.os.Bundle
 import android.transition.TransitionManager
-import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
@@ -84,7 +83,6 @@ import com.michaldrabik.ui_show.helpers.ShowLink.IMDB
 import com.michaldrabik.ui_show.helpers.ShowLink.TMDB
 import com.michaldrabik.ui_show.helpers.ShowLink.TRAKT
 import com.michaldrabik.ui_show.helpers.ShowLink.TVDB
-import com.michaldrabik.ui_show.helpers.ShowLink.values
 import com.michaldrabik.ui_show.quickSetup.QuickSetupView
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.related.RelatedShowAdapter
@@ -97,6 +95,7 @@ import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_SEE_LATER
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
+import kotlinx.android.synthetic.main.view_links_menu.view.*
 import org.threeten.bp.Duration
 import java.util.Locale.ENGLISH
 
@@ -597,24 +596,37 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
+  @SuppressLint("ClickableViewAccessibility")
   private fun openLinksMenu(ids: Ids) {
-    val menu = PopupMenu(requireContext(), showDetailsLinksButton, Gravity.CENTER)
-    if (ids.imdb.id.isNotBlank()) menu.menu.add(IMDB.displayName)
-    if (ids.trakt.id != -1L) menu.menu.add(TRAKT.displayName)
-    if (ids.tvdb.id != -1L) menu.menu.add(TVDB.displayName)
-    if (ids.tmdb.id != -1L) menu.menu.add(TMDB.displayName)
-    menu.setOnMenuItemClickListener { item ->
-      val link = values().first { it.displayName == item.title }
-      val id = when (link) {
-        IMDB -> ids.imdb.id
-        TRAKT -> ids.trakt.id
-        TVDB -> ids.tvdb.id
-        TMDB -> ids.tmdb.id
-      }.toString()
-      openShowLink(link, id)
-      true
+    showDetailsMainLayout.setOnTouchListener { _, event ->
+      if (event.action == MotionEvent.ACTION_DOWN) {
+        showDetailsLinksMenu.fadeOut()
+      }
+      false
     }
-    menu.show()
+    showDetailsLinksMenu.run {
+      fadeIn()
+      viewLinkTrakt.visibleIf(ids.trakt.id != -1L)
+      viewLinkTrakt.onClick {
+        openShowLink(TRAKT, ids.trakt.id.toString())
+        fadeOut(125)
+      }
+      viewLinkTmdb.visibleIf(ids.tmdb.id != -1L)
+      viewLinkTmdb.onClick {
+        openShowLink(TMDB, ids.tmdb.id.toString())
+        fadeOut(125)
+      }
+      viewLinkImdb.visibleIf(ids.imdb.id.isNotBlank())
+      viewLinkImdb.onClick {
+        openShowLink(IMDB, ids.imdb.id)
+        fadeOut(125)
+      }
+      viewLinkTvdb.visibleIf(ids.tvdb.id != -1L)
+      viewLinkTvdb.onClick {
+        openShowLink(TVDB, ids.tvdb.id.toString())
+        fadeOut(125)
+      }
+    }
   }
 
   private fun openShareSheet(show: Show) {
