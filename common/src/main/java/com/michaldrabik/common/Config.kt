@@ -1,7 +1,6 @@
 package com.michaldrabik.common
 
 import org.threeten.bp.format.DateTimeFormatter
-import java.text.DecimalFormatSymbols
 import java.util.concurrent.TimeUnit
 
 object Config {
@@ -37,9 +36,6 @@ object Config {
 
   val DISPLAY_DATE_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, HH:mm") }
   val DISPLAY_DATE_DAY_ONLY_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("dd MMM yyyy") }
-  val DISPLAY_DECIMAL_SYMBOLS: DecimalFormatSymbols by lazy {
-    DecimalFormatSymbols.getInstance().apply { decimalSeparator = '.' }
-  }
 
   const val HOST_ACTIVITY_NAME = "com.michaldrabik.showly2.ui.main.MainActivity"
 }
