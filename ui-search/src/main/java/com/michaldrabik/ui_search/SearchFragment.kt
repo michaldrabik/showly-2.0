@@ -164,6 +164,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
   }
 
   private fun openShow(idTrakt: Long) {
+    exSearchViewInput.setText("")
     val bundle = Bundle().apply { putLong(ARG_SHOW_ID, idTrakt) }
     navigateTo(R.id.actionSearchFragmentToShowDetailsFragment, bundle)
   }
@@ -189,7 +190,10 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
     searchSuggestionsWrapper.visibleIf(suggestions.isNotEmpty())
     searchSuggestionsLayout.removeAllViews()
     val itemClick: (SearchListItem) -> Unit = {
-      viewModel.saveRecentSearch(it.translation?.title ?: it.show.title)
+      val query =
+        if (it.translation?.title?.isNotBlank() == true) it.translation.title
+        else it.show.title
+      viewModel.saveRecentSearch(query)
       openShow(it.show.traktId)
     }
     val missingImageListener: (SearchListItem, Boolean) -> Unit = { item, force ->

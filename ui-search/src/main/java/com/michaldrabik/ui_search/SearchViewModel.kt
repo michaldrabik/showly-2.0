@@ -102,6 +102,7 @@ class SearchViewModel @Inject constructor(
   }
 
   fun saveRecentSearch(query: String) {
+    if (query.trim().isBlank()) return
     viewModelScope.launch {
       recentSearchesCase.saveRecentSearch(query)
     }
