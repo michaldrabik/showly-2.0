@@ -601,6 +601,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsMainLayout.setOnTouchListener { _, event ->
       if (event.action == MotionEvent.ACTION_DOWN) {
         showDetailsLinksMenu.fadeOut()
+        showDetailsMainLayout.setOnTouchListener(null)
       }
       false
     }
