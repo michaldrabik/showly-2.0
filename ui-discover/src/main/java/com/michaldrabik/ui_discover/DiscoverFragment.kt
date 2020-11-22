@@ -59,6 +59,11 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     }
   }
 
+  override fun onPause() {
+    enableUi()
+    super.onPause()
+  }
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
@@ -181,7 +186,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     clickedView?.itemView?.fadeOut(
       duration = 150, startDelay = 350,
       endAction = {
-        enableUi()
+        if (!isResumed) return@fadeOut
         val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
         navigateTo(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
       }
