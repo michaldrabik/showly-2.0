@@ -85,7 +85,7 @@ class TraktImportWatchedRunner @Inject constructor(
 
     syncResults
       .forEachIndexed { index, result ->
-        delay(200)
+        delay(100)
         Timber.d("Processing \'${result.show!!.title}\'...")
         val showUi = mappers.show.fromNetwork(result.show!!)
         progressListener?.invoke(showUi, index, syncResults.size)
@@ -175,7 +175,7 @@ class TraktImportWatchedRunner @Inject constructor(
   private suspend fun updateTranslation(showUi: Show) {
     try {
       val language = settingsRepository.getLanguage()
-      if (language !== Config.DEFAULT_LANGUAGE) {
+      if (language != Config.DEFAULT_LANGUAGE) {
         Timber.d("Fetching \'${showUi.title}\' translation...")
         translationsRepository.updateLocalShowTranslation(showUi, language)
       }

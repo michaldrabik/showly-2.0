@@ -68,7 +68,7 @@ class ProgressLoadItemsCase @Inject constructor(
     var upcomingTranslation: Translation? = null
 
     val language = settingsRepository.getLanguage()
-    if (language !== Config.DEFAULT_LANGUAGE) {
+    if (language != Config.DEFAULT_LANGUAGE) {
       showTranslation = translationsRepository.loadTranslation(show, language, true)
       episodeTranslation = translationsRepository.loadTranslation(episodeUi, show.ids.trakt, language, true)
       upcomingTranslation = translationsRepository.loadTranslation(upEpisode, show.ids.trakt, language, true)
