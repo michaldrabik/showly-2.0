@@ -33,6 +33,8 @@
   <dimen name="swipeRefreshStartOffset">8dp</dimen>
   <dimen name="swipeRefreshEndOffset">120dp</dimen>
 
+  <dimen name="showsMoviesTabsMargin">63dp</dimen>
+
   <dimen name="tutorialTipSize">28dp</dimen>
   <dimen name="scrollBarWidth">3dp</dimen>
 </resources>

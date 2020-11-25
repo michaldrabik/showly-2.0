@@ -109,7 +109,7 @@
     <item name="android:shadowDx">3</item>
     <item name="android:shadowDy">3</item>
     <item name="android:shadowRadius">1</item>
-    <item name="android:textColor">@color/colorWhite</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
     <item name="android:ellipsize">end</item>
   </style>
 
@@ -119,7 +119,7 @@
     <item name="tabPaddingStart">8dp</item>
     <item name="tabPaddingEnd">8dp</item>
     <item name="tabTextAppearance">@style/ScrollableTabTextStyle</item>
-    <item name="tabSelectedTextColor">@color/colorWhite</item>
+    <item name="tabSelectedTextColor">?android:attr/textColorPrimary</item>
     <item name="tabIndicatorFullWidth">false</item>
     <item name="tabRippleColor">@android:color/transparent</item>
     <item name="tabIndicatorAnimationDuration">200</item>
@@ -127,7 +127,7 @@
 
   <style name="ScrollableTabTextStyle" parent="TextAppearance.Design.Tab">
     <item name="android:textSize">15sp</item>
-    <item name="android:textColor">@color/colorGrayLight</item>
+    <item name="android:textColor">?android:attr/textColorSecondary</item>
     <item name="android:layout_gravity">start</item>
     <item name="textAllCaps">false</item>
   </style>

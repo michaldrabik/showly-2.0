@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:orientation="horizontal"
+  tools:parentTag="android.widget.LinearLayout"
+  >
+
+  <TextView
+    android:id="@+id/viewShows"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceSmall"
+    android:gravity="center"
+    android:text="@string/textShows"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="22sp"
+    android:textStyle="bold"
+    />
+
+  <TextView
+    android:id="@+id/viewMovies"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceSmall"
+    android:alpha="0.5"
+    android:gravity="center"
+    android:text="@string/textMovies"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="22sp"
+    android:textStyle="bold"
+    />
+
+</merge>

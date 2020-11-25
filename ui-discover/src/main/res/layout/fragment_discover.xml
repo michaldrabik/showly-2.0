@@ -44,6 +44,14 @@
     android:visibility="gone"
     />
 
+  <com.michaldrabik.ui_base.common.views.ShowsMoviesTabsView
+    android:id="@+id/discoverTabsView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/showsMoviesTabsMargin"
+    />
+
   <com.michaldrabik.ui_base.common.views.SearchView
     android:id="@+id/discoverSearchView"
     android:layout_width="match_parent"

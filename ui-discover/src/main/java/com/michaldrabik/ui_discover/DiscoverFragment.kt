@@ -142,6 +142,8 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
       (discoverFiltersView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.searchViewHeight))
+      (discoverTabsView.layoutParams as MarginLayoutParams)
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.showsMoviesTabsMargin))
       discoverTipFilters.translationY = statusBarSize.toFloat()
       discoverSwipeRefresh.setProgressViewOffset(
         true,
