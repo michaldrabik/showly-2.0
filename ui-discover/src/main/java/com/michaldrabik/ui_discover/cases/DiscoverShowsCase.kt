@@ -15,6 +15,9 @@ import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.UserTvdbManager
 import com.michaldrabik.ui_repository.shows.ShowsRepository
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
 @AppScope
@@ -28,18 +31,18 @@ class DiscoverShowsCase @Inject constructor(
 
   suspend fun isCacheValid() = showsRepository.discoverShows.isCacheValid()
 
-  suspend fun loadCachedShows(filters: DiscoverFilters): List<DiscoverListItem> {
-    val myShowsIds = showsRepository.myShows.loadAllIds()
-    val watchlistShowsIds = showsRepository.watchlistShows.loadAllIds()
-    val archiveShowsIds = showsRepository.archiveShows.loadAllIds()
-    val cachedShows = showsRepository.discoverShows.loadAllCached()
+  suspend fun loadCachedShows(filters: DiscoverFilters) = coroutineScope {
+    val myShowsIds = async { showsRepository.myShows.loadAllIds() }
+    val watchlistShowsIds = async { showsRepository.watchlistShows.loadAllIds() }
+    val archiveShowsIds = async { showsRepository.archiveShows.loadAllIds() }
+    val cachedShows = async { showsRepository.discoverShows.loadAllCached() }
     val language = settingsRepository.getLanguage()
 
-    return prepareItems(
-      cachedShows,
-      myShowsIds,
-      watchlistShowsIds,
-      archiveShowsIds,
+    prepareItems(
+      cachedShows.await(),
+      myShowsIds.await(),
+      watchlistShowsIds.await(),
+      archiveShowsIds.await(),
       filters,
       language
     )
@@ -72,25 +75,29 @@ class DiscoverShowsCase @Inject constructor(
     archiveShowsIds: List<Long>,
     filters: DiscoverFilters?,
     language: String
-  ) = shows
-    .filter { !archiveShowsIds.contains(it.traktId) }
-    .sortedBy(filters?.feedOrder ?: HOT)
-    .mapIndexed { index, show ->
-      val itemType = when (index) {
-        in (0..500 step 14) -> ImageType.FANART_WIDE
-        in (5..500 step 14), in (9..500 step 14) -> ImageType.FANART
-        else -> ImageType.POSTER
-      }
-      val image = imagesProvider.findCachedImage(show, itemType)
-      val translation = loadTranslation(language, itemType, show)
-      DiscoverListItem(
-        show,
-        image,
-        isFollowed = show.ids.trakt.id in myShowsIds,
-        isWatchlist = show.ids.trakt.id in watchlistShowsIds,
-        translation = translation
-      )
-    }
+  ) = coroutineScope {
+    shows
+      .filter { !archiveShowsIds.contains(it.traktId) }
+      .sortedBy(filters?.feedOrder ?: HOT)
+      .mapIndexed { index, show ->
+        async {
+          val itemType = when (index) {
+            in (0..500 step 14) -> ImageType.FANART_WIDE
+            in (5..500 step 14), in (9..500 step 14) -> ImageType.FANART
+            else -> ImageType.POSTER
+          }
+          val image = imagesProvider.findCachedImage(show, itemType)
+          val translation = loadTranslation(language, itemType, show)
+          DiscoverListItem(
+            show,
+            image,
+            isFollowed = show.ids.trakt.id in myShowsIds,
+            isWatchlist = show.ids.trakt.id in watchlistShowsIds,
+            translation = translation
+          )
+        }
+      }.awaitAll()
+  }
 
   private suspend fun loadTranslation(language: String, itemType: ImageType, show: Show) =
     if (language == Config.DEFAULT_LANGUAGE || itemType == ImageType.POSTER) null
