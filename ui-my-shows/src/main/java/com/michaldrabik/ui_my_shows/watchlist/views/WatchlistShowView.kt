@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.seelater.views
+package com.michaldrabik.ui_my_shows.watchlist.views
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -13,60 +13,60 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
-import com.michaldrabik.ui_my_shows.seelater.recycler.SeeLaterListItem
-import kotlinx.android.synthetic.main.view_see_later_show.view.*
+import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
+import kotlinx.android.synthetic.main.view_watchlist_show.view.*
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
-class SeeLaterShowView : ShowView<SeeLaterListItem> {
+class WatchlistShowView : ShowView<WatchlistListItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   init {
-    inflate(context, R.layout.view_see_later_show, this)
+    inflate(context, R.layout.view_watchlist_show, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-    seeLaterShowRoot.onClick { itemClickListener?.invoke(item) }
+    watchlistShowRoot.onClick { itemClickListener?.invoke(item) }
   }
 
-  override val imageView: ImageView = seeLaterShowImage
-  override val placeholderView: ImageView = seeLaterShowPlaceholder
+  override val imageView: ImageView = watchlistShowImage
+  override val placeholderView: ImageView = watchlistShowPlaceholder
 
-  private lateinit var item: SeeLaterListItem
+  private lateinit var item: WatchlistListItem
 
   override fun bind(
-    item: SeeLaterListItem,
-    missingImageListener: ((SeeLaterListItem, Boolean) -> Unit)?
+    item: WatchlistListItem,
+    missingImageListener: ((WatchlistListItem, Boolean) -> Unit)?
   ) {
     clear()
     this.item = item
-    seeLaterShowProgress.visibleIf(item.isLoading)
-    seeLaterShowTitle.text =
+    watchlistShowProgress.visibleIf(item.isLoading)
+    watchlistShowTitle.text =
       if (item.translation?.title.isNullOrBlank()) item.show.title
       else item.translation?.title?.capitalizeWords()
 
-    seeLaterShowDescription.text =
+    watchlistShowDescription.text =
       if (item.translation?.overview.isNullOrBlank()) item.show.overview
       else item.translation?.overview
 
-    seeLaterShowNetwork.text =
+    watchlistShowNetwork.text =
       if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
       else String.format("%s", item.show.network)
 
-    seeLaterShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
-    seeLaterShowDescription.visibleIf(item.show.overview.isNotBlank())
-    seeLaterShowNetwork.visibleIf(item.show.network.isNotBlank())
+    watchlistShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
+    watchlistShowDescription.visibleIf(item.show.overview.isNotBlank())
+    watchlistShowNetwork.visibleIf(item.show.network.isNotBlank())
 
     loadImage(item, missingImageListener)
   }
 
   private fun clear() {
-    seeLaterShowTitle.text = ""
-    seeLaterShowDescription.text = ""
-    seeLaterShowNetwork.text = ""
-    seeLaterShowRating.text = ""
-    seeLaterShowPlaceholder.gone()
-    Glide.with(this).clear(seeLaterShowImage)
+    watchlistShowTitle.text = ""
+    watchlistShowDescription.text = ""
+    watchlistShowNetwork.text = ""
+    watchlistShowRating.text = ""
+    watchlistShowPlaceholder.gone()
+    Glide.with(this).clear(watchlistShowImage)
   }
 }

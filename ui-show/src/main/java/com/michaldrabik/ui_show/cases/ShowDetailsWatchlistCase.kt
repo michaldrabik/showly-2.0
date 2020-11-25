@@ -10,22 +10,22 @@ import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope
-class ShowDetailsSeeLaterCase @Inject constructor(
+class ShowDetailsWatchlistCase @Inject constructor(
   private val cloud: Cloud,
   private val userManager: UserTraktManager,
   private val showsRepository: ShowsRepository
 ) {
 
-  suspend fun isSeeLater(show: Show) =
-    showsRepository.seeLaterShows.load(show.ids.trakt) != null
+  suspend fun isWatchlist(show: Show) =
+    showsRepository.watchlistShows.load(show.ids.trakt) != null
 
-  suspend fun addToSeeLater(show: Show) =
-    showsRepository.seeLaterShows.insert(show.ids.trakt)
+  suspend fun addToWatchlist(show: Show) =
+    showsRepository.watchlistShows.insert(show.ids.trakt)
 
-  suspend fun removeFromSeeLater(show: Show) =
-    showsRepository.seeLaterShows.delete(show.ids.trakt)
+  suspend fun removeFromWatchlist(show: Show) =
+    showsRepository.watchlistShows.delete(show.ids.trakt)
 
-  suspend fun removeTraktSeeLater(show: Show) {
+  suspend fun removeTraktWatchlist(show: Show) {
     val token = userManager.checkAuthorization()
     val request = SyncExportRequest(listOf(SyncExportItem.create(show.traktId)))
     cloud.traktApi.postDeleteWatchlist(token.token, request)

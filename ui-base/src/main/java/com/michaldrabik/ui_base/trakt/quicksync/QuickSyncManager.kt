@@ -36,7 +36,7 @@ class QuickSyncManager @Inject constructor(
     QuickSyncWorker.schedule(context)
   }
 
-  suspend fun scheduleShowsSeeLater(context: Context, showsIds: List<Long>) {
+  suspend fun scheduleShowsWatchlist(context: Context, showsIds: List<Long>) {
     val settings = settingsRepository.load()
     if (!settings.traktQuickSyncEnabled) {
       Timber.d("Quick Sync is disabled. Skipping...")
@@ -48,21 +48,21 @@ class QuickSyncManager @Inject constructor(
     }
 
     val time = nowUtcMillis()
-    val items = showsIds.map { TraktSyncQueue.createShowSeeLater(it, time, time) }
+    val items = showsIds.map { TraktSyncQueue.createShowWatchlist(it, time, time) }
     database.traktSyncQueueDao().insert(items)
     Timber.d("Shows added into sync queue. Count: ${items.size}")
 
     QuickSyncWorker.schedule(context)
   }
 
-  suspend fun clearShowsSeeLater(showsIds: List<Long>) {
+  suspend fun clearShowsWatchlist(showsIds: List<Long>) {
     val settings = settingsRepository.load()
     if (!settings.traktQuickSyncEnabled) {
       Timber.d("Quick Sync is disabled. Skipping...")
       return
     }
 
-    database.traktSyncQueueDao().deleteAll(showsIds, TraktSyncQueue.Type.SHOW_SEE_LATER.slug)
+    database.traktSyncQueueDao().deleteAll(showsIds, TraktSyncQueue.Type.SHOW_WATCHLIST.slug)
     Timber.d("Shows removed from sync queue. Count: ${showsIds.size}")
   }
 

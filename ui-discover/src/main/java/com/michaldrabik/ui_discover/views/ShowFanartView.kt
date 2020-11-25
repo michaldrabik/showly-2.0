@@ -42,7 +42,7 @@ class ShowFanartView : ShowView<DiscoverListItem> {
       else item.translation?.title?.capitalizeWords()
     showFanartProgress.visibleIf(item.isLoading)
     showFanartBadge.visibleIf(item.isFollowed)
-    showFanartBadgeLater.visibleIf(item.isSeeLater)
+    showFanartBadgeLater.visibleIf(item.isWatchlist)
     loadImage(item, missingImageListener)
   }
 

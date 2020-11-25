@@ -34,7 +34,7 @@ class ShowsSyncRunner @Inject constructor(
   suspend fun run(): Int {
     Timber.i("Sync initialized.")
 
-    val watchlistShows = showsRepository.seeLaterShows.loadAll()
+    val watchlistShows = showsRepository.watchlistShows.loadAll()
     val watchlistShowsIds = watchlistShows.map { it.traktId }
 
     val showsToSync = showsRepository.myShows.loadAll()

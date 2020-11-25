@@ -80,7 +80,7 @@ class TraktImportWatchedRunner @Inject constructor(
       .distinctBy { it.show?.ids?.trakt }
 
     val myShowsIds = database.myShowsDao().getAllTraktIds()
-    val seeLaterShowsIds = database.seeLaterShowsDao().getAllTraktIds()
+    val watchlistShowsIds = database.watchlistShowsDao().getAllTraktIds()
     val archiveShowsIds = database.archiveShowsDao().getAllTraktIds()
 
     syncResults
@@ -106,8 +106,8 @@ class TraktImportWatchedRunner @Inject constructor(
 
               loadImage(show)
 
-              if (showId in seeLaterShowsIds) {
-                database.seeLaterShowsDao().deleteById(showId)
+              if (showId in watchlistShowsIds) {
+                database.watchlistShowsDao().deleteById(showId)
               }
             }
             database.seasonsDao().upsert(seasons)

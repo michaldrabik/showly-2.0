@@ -28,7 +28,7 @@ object Analytics {
     }
   }
 
-  fun logShowAddToSeeLater(show: Show) {
+  fun logShowAddToWatchlistShows(show: Show) {
     firebaseAnalytics.logEvent("show_add_to_see_later") {
       param("show_id_trakt", show.traktId)
       param("show_title", show.title)

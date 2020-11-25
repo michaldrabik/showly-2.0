@@ -5,23 +5,23 @@ package com.michaldrabik.storage.database.dao
 import androidx.test.runner.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.storage.database.dao.helpers.TestData
-import com.michaldrabik.storage.database.model.SeeLaterShow
+import com.michaldrabik.storage.database.model.WatchlistShow
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class SeeLaterShowsDaoTest : BaseDaoTest() {
+class WatchlistShowsDaoTest : BaseDaoTest() {
 
   @Test
   fun shouldInsertAndStoreSingleEntity() {
     runBlocking {
       val show = TestData.createShow()
-      val seeLaterShow = SeeLaterShow.fromTraktId(show.idTrakt, 999)
+      val seeLaterShow = WatchlistShow.fromTraktId(show.idTrakt, 999)
 
       database.showsDao().upsert(listOf(show))
-      database.seeLaterShowsDao().insert(seeLaterShow)
-      val result = database.seeLaterShowsDao().getAll()
+      database.watchlistShowsDao().insert(seeLaterShow)
+      val result = database.watchlistShowsDao().getAll()
       assertThat(result).containsExactlyElementsIn(listOf(show.copy(updatedAt = 999)))
     }
   }
@@ -31,14 +31,14 @@ class SeeLaterShowsDaoTest : BaseDaoTest() {
     runBlocking {
       val show = TestData.createShow()
       val show2 = TestData.createShow().copy(idTrakt = 2)
-      val seeLaterShow = SeeLaterShow.fromTraktId(show.idTrakt, 999)
-      val seeLaterShow2 = SeeLaterShow.fromTraktId(show2.idTrakt, 999)
+      val seeLaterShow = WatchlistShow.fromTraktId(show.idTrakt, 999)
+      val seeLaterShow2 = WatchlistShow.fromTraktId(show2.idTrakt, 999)
 
       database.showsDao().upsert(listOf(show, show2))
-      database.seeLaterShowsDao().insert(seeLaterShow)
-      database.seeLaterShowsDao().insert(seeLaterShow2)
+      database.watchlistShowsDao().insert(seeLaterShow)
+      database.watchlistShowsDao().insert(seeLaterShow2)
 
-      val result = database.seeLaterShowsDao().getById(2)
+      val result = database.watchlistShowsDao().getById(2)
       assertThat(result).isEqualTo(show2)
     }
   }
@@ -48,15 +48,15 @@ class SeeLaterShowsDaoTest : BaseDaoTest() {
     runBlocking {
       val show = TestData.createShow()
       val show2 = TestData.createShow().copy(idTrakt = 2)
-      val seeLaterShow = SeeLaterShow.fromTraktId(show.idTrakt, 999)
-      val seeLaterShow2 = SeeLaterShow.fromTraktId(show2.idTrakt, 999)
+      val seeLaterShow = WatchlistShow.fromTraktId(show.idTrakt, 999)
+      val seeLaterShow2 = WatchlistShow.fromTraktId(show2.idTrakt, 999)
 
       database.showsDao().upsert(listOf(show, show2))
-      database.seeLaterShowsDao().insert(seeLaterShow)
-      database.seeLaterShowsDao().insert(seeLaterShow2)
-      database.seeLaterShowsDao().deleteById(2)
+      database.watchlistShowsDao().insert(seeLaterShow)
+      database.watchlistShowsDao().insert(seeLaterShow2)
+      database.watchlistShowsDao().deleteById(2)
 
-      val result = database.seeLaterShowsDao().getAll()
+      val result = database.watchlistShowsDao().getAll()
       assertThat(result).containsExactlyElementsIn(listOf(show.copy(updatedAt = 999)))
     }
   }

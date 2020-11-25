@@ -51,7 +51,7 @@ class SearchViewModel @Inject constructor(
           it,
           image,
           isFollowed = false,
-          isSeeLater = false,
+          isWatchlist = false,
           translation = translation
         )
       }
@@ -76,7 +76,7 @@ class SearchViewModel @Inject constructor(
 
         val shows = searchMainCase.searchShows(trimmed)
         val myShowsIds = searchMainCase.loadMyShowsIds()
-        val seeLaterShowsIds = searchMainCase.loadSeeLaterShowsIds()
+        val watchlistShowsIds = searchMainCase.loadWatchlistShowsIds()
 
         val items = shows.map {
           val image = imagesProvider.findCachedImage(it, POSTER)
@@ -85,7 +85,7 @@ class SearchViewModel @Inject constructor(
             it,
             image,
             isFollowed = it.ids.trakt.id in myShowsIds,
-            isSeeLater = it.ids.trakt.id in seeLaterShowsIds,
+            isWatchlist = it.ids.trakt.id in watchlistShowsIds,
             translation = translation
           )
         }

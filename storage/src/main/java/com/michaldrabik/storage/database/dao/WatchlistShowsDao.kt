@@ -4,11 +4,11 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.michaldrabik.storage.database.model.SeeLaterShow
 import com.michaldrabik.storage.database.model.Show
+import com.michaldrabik.storage.database.model.WatchlistShow
 
 @Dao
-interface SeeLaterShowsDao {
+interface WatchlistShowsDao {
 
   @Query("SELECT shows.*, shows_see_later.updated_at FROM shows INNER JOIN shows_see_later USING(id_trakt)")
   suspend fun getAll(): List<Show>
@@ -20,7 +20,7 @@ interface SeeLaterShowsDao {
   suspend fun getById(traktId: Long): Show?
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(show: SeeLaterShow)
+  suspend fun insert(show: WatchlistShow)
 
   @Query("DELETE FROM shows_see_later WHERE id_trakt == :traktId")
   suspend fun deleteById(traktId: Long)

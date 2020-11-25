@@ -13,13 +13,13 @@ import com.michaldrabik.storage.database.dao.MyShowsDao
 import com.michaldrabik.storage.database.dao.RecentSearchDao
 import com.michaldrabik.storage.database.dao.RelatedShowsDao
 import com.michaldrabik.storage.database.dao.SeasonsDao
-import com.michaldrabik.storage.database.dao.SeeLaterShowsDao
 import com.michaldrabik.storage.database.dao.SettingsDao
 import com.michaldrabik.storage.database.dao.ShowTranslationsDao
 import com.michaldrabik.storage.database.dao.ShowsDao
 import com.michaldrabik.storage.database.dao.TraktSyncQueueDao
 import com.michaldrabik.storage.database.dao.TranslationsSyncLogDao
 import com.michaldrabik.storage.database.dao.UserDao
+import com.michaldrabik.storage.database.dao.WatchlistShowsDao
 import com.michaldrabik.storage.database.model.Actor
 import com.michaldrabik.storage.database.model.ArchiveShow
 import com.michaldrabik.storage.database.model.DiscoverShow
@@ -31,13 +31,13 @@ import com.michaldrabik.storage.database.model.MyShow
 import com.michaldrabik.storage.database.model.RecentSearch
 import com.michaldrabik.storage.database.model.RelatedShow
 import com.michaldrabik.storage.database.model.Season
-import com.michaldrabik.storage.database.model.SeeLaterShow
 import com.michaldrabik.storage.database.model.Settings
 import com.michaldrabik.storage.database.model.Show
 import com.michaldrabik.storage.database.model.ShowTranslation
 import com.michaldrabik.storage.database.model.TraktSyncQueue
 import com.michaldrabik.storage.database.model.TranslationsSyncLog
 import com.michaldrabik.storage.database.model.User
+import com.michaldrabik.storage.database.model.WatchlistShow
 
 @Database(
   version = DATABASE_VERSION,
@@ -45,7 +45,7 @@ import com.michaldrabik.storage.database.model.User
     Show::class,
     DiscoverShow::class,
     MyShow::class,
-    SeeLaterShow::class,
+    WatchlistShow::class,
     ArchiveShow::class,
     RelatedShow::class,
     Image::class,
@@ -71,7 +71,7 @@ abstract class AppDatabase : RoomDatabase() {
 
   abstract fun myShowsDao(): MyShowsDao
 
-  abstract fun seeLaterShowsDao(): SeeLaterShowsDao
+  abstract fun watchlistShowsDao(): WatchlistShowsDao
 
   abstract fun archiveShowsDao(): ArchiveShowsDao
 

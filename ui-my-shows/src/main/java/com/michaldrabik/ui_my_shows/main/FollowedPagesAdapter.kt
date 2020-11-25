@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.archive.ArchiveFragment
 import com.michaldrabik.ui_my_shows.myshows.MyShowsFragment
-import com.michaldrabik.ui_my_shows.seelater.SeeLaterFragment
+import com.michaldrabik.ui_my_shows.watchlist.WatchlistFragment
 
 class FollowedPagesAdapter(
   fragManager: FragmentManager,
@@ -22,7 +22,7 @@ class FollowedPagesAdapter(
 
   override fun getItem(position: Int): Fragment = when (position) {
     0 -> MyShowsFragment()
-    1 -> SeeLaterFragment()
+    1 -> WatchlistFragment()
     2 -> ArchiveFragment()
     else -> throw IllegalStateException("Unknown position")
   }
@@ -30,7 +30,7 @@ class FollowedPagesAdapter(
   override fun getPageTitle(position: Int) =
     when (position) {
       0 -> context.getString(R.string.menuMyShows)
-      1 -> context.getString(R.string.menuSeeLater)
+      1 -> context.getString(R.string.menuWatchlist)
       2 -> context.getString(R.string.menuArchive)
       else -> throw IllegalStateException()
     }

@@ -6,7 +6,7 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.SeeLaterShow
+import com.michaldrabik.storage.database.model.WatchlistShow
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.SettingsRepository
@@ -64,7 +64,7 @@ class TraktImportWatchlistRunner @Inject constructor(
       .distinctBy { it.show!!.ids?.trakt }
 
     val localShowsIds =
-      database.seeLaterShowsDao().getAllTraktIds()
+      database.watchlistShowsDao().getAllTraktIds()
         .plus(database.myShowsDao().getAllTraktIds())
         .plus(database.archiveShowsDao().getAllTraktIds())
         .distinct()
@@ -82,7 +82,7 @@ class TraktImportWatchlistRunner @Inject constructor(
               val show = mappers.show.fromNetwork(result.show!!)
               val showDb = mappers.show.toDatabase(show)
               database.showsDao().upsert(listOf(showDb))
-              database.seeLaterShowsDao().insert(SeeLaterShow.fromTraktId(showId, nowUtcMillis()))
+              database.watchlistShowsDao().insert(WatchlistShow.fromTraktId(showId, nowUtcMillis()))
             }
           }
           updateTranslation(showUi)

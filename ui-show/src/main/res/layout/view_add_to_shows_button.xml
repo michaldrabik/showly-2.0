@@ -32,7 +32,7 @@
       />
 
     <com.google.android.material.button.MaterialButton
-      android:id="@+id/seeLaterButton"
+      android:id="@+id/watchlistButton"
       style="@style/Widget.MaterialComponents.Button.OutlinedButton"
       android:layout_width="0dp"
       android:layout_height="wrap_content"

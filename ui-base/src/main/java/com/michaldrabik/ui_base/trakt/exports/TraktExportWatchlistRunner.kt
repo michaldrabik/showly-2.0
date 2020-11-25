@@ -51,7 +51,7 @@ class TraktExportWatchlistRunner @Inject constructor(
   private suspend fun exportWatchlist(token: TraktAuthToken) {
     Timber.d("Exporting watchlist...")
 
-    val localShows = database.seeLaterShowsDao().getAll()
+    val localShows = database.watchlistShowsDao().getAll()
       .map { SyncExportItem.create(it.idTrakt) }
 
     val request = SyncExportRequest(shows = localShows)

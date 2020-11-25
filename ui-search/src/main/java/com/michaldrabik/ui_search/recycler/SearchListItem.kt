@@ -10,6 +10,6 @@ data class SearchListItem(
   override val image: Image,
   override val isLoading: Boolean = false,
   val isFollowed: Boolean = false,
-  val isSeeLater: Boolean = false,
+  val isWatchlist: Boolean = false,
   val translation: Translation? = null
 ) : ListItem

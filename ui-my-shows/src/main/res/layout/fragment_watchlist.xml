@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/seeLaterContent"
+  android:id="@+id/watchlistContent"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:clipChildren="false"
@@ -9,19 +9,19 @@
   >
 
   <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/seeLaterRecycler"
+    android:id="@+id/watchlistRecycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
     android:clipToPadding="false"
     android:overScrollMode="never"
-    android:paddingTop="@dimen/seeLaterTabsViewPadding"
+    android:paddingTop="@dimen/watchlistTabsViewPadding"
     android:paddingBottom="@dimen/myShowsBottomPadding"
     />
 
   <include
-    android:id="@+id/seeLaterEmptyView"
-    layout="@layout/layout_see_later_empty"
+    android:id="@+id/watchlistEmptyView"
+    layout="@layout/layout_watchlist_empty"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"

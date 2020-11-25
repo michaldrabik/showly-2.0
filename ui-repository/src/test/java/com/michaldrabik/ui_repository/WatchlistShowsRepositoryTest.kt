@@ -3,12 +3,12 @@ package com.michaldrabik.ui_repository
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.storage.database.dao.ArchiveShowsDao
 import com.michaldrabik.storage.database.dao.MyShowsDao
-import com.michaldrabik.storage.database.dao.SeeLaterShowsDao
-import com.michaldrabik.storage.database.model.SeeLaterShow
+import com.michaldrabik.storage.database.dao.WatchlistShowsDao
+import com.michaldrabik.storage.database.model.WatchlistShow
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.common.BaseMockTest
-import com.michaldrabik.ui_repository.shows.SeeLaterShowsRepository
+import com.michaldrabik.ui_repository.shows.WatchlistShowsRepository
 import io.mockk.coEvery
 import io.mockk.coJustRun
 import io.mockk.coVerify
@@ -22,22 +22,22 @@ import org.junit.Before
 import org.junit.Test
 import com.michaldrabik.storage.database.model.Show as ShowDb
 
-class SeeLaterShowsRepositoryTest : BaseMockTest() {
+class WatchlistShowsRepositoryTest : BaseMockTest() {
 
-  @MockK lateinit var seeLaterShowsDao: SeeLaterShowsDao
+  @MockK lateinit var seeLaterShowsDao: WatchlistShowsDao
   @MockK lateinit var myShowsDao: MyShowsDao
   @MockK lateinit var archivedShowsDao: ArchiveShowsDao
 
   @RelaxedMockK lateinit var showDb: ShowDb
 
-  private lateinit var SUT: SeeLaterShowsRepository
+  private lateinit var SUT: WatchlistShowsRepository
 
   @Before
   override fun setUp() {
     super.setUp()
-    SUT = SeeLaterShowsRepository(database, mappers)
+    SUT = WatchlistShowsRepository(database, mappers)
 
-    coEvery { database.seeLaterShowsDao() } returns seeLaterShowsDao
+    coEvery { database.watchlistShowsDao() } returns seeLaterShowsDao
     coEvery { database.myShowsDao() } returns myShowsDao
     coEvery { database.archiveShowsDao() } returns archivedShowsDao
   }
@@ -82,7 +82,7 @@ class SeeLaterShowsRepositoryTest : BaseMockTest() {
       coJustRun { myShowsDao.deleteById(any()) }
       coJustRun { archivedShowsDao.deleteById(any()) }
 
-      val slot = slot<SeeLaterShow>()
+      val slot = slot<WatchlistShow>()
       coJustRun { seeLaterShowsDao.insert(capture(slot)) }
 
       SUT.insert(IdTrakt(1L))
@@ -100,7 +100,7 @@ class SeeLaterShowsRepositoryTest : BaseMockTest() {
       coJustRun { myShowsDao.deleteById(any()) }
       coJustRun { archivedShowsDao.deleteById(any()) }
 
-      val slot = slot<SeeLaterShow>()
+      val slot = slot<WatchlistShow>()
       coJustRun { seeLaterShowsDao.insert(capture(slot)) }
 
       SUT.insert(IdTrakt(1L))

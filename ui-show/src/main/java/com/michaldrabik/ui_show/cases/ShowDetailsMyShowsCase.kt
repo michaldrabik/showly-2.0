@@ -39,7 +39,7 @@ class ShowDetailsMyShowsCase @Inject constructor(
   ) {
     database.withTransaction {
       showsRepository.myShows.insert(show.ids.trakt)
-      showsRepository.seeLaterShows.delete(show.ids.trakt)
+      showsRepository.watchlistShows.delete(show.ids.trakt)
       showsRepository.archiveShows.delete(show.ids.trakt)
 
       val localSeasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)

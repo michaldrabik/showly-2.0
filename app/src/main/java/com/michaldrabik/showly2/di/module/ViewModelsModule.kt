@@ -8,7 +8,7 @@ import com.michaldrabik.ui_episodes.details.EpisodeDetailsViewModel
 import com.michaldrabik.ui_my_shows.archive.ArchiveViewModel
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
 import com.michaldrabik.ui_my_shows.myshows.MyShowsViewModel
-import com.michaldrabik.ui_my_shows.seelater.SeeLaterViewModel
+import com.michaldrabik.ui_my_shows.watchlist.WatchlistViewModel
 import com.michaldrabik.ui_progress.calendar.ProgressCalendarViewModel
 import com.michaldrabik.ui_progress.main.ProgressViewModel
 import com.michaldrabik.ui_progress.progress.ProgressMainViewModel
@@ -63,8 +63,8 @@ abstract class ViewModelsModule {
 
   @Binds
   @IntoMap
-  @ViewModelKey(SeeLaterViewModel::class)
-  abstract fun bindSeeLaterViewModel(viewModel: SeeLaterViewModel): ViewModel
+  @ViewModelKey(WatchlistViewModel::class)
+  abstract fun bindWatchlistViewModel(viewModel: WatchlistViewModel): ViewModel
 
   @Binds
   @IntoMap

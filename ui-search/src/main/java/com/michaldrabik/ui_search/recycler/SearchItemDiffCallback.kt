@@ -10,7 +10,7 @@ class SearchItemDiffCallback : DiffUtil.ItemCallback<SearchListItem>() {
   override fun areContentsTheSame(oldItem: SearchListItem, newItem: SearchListItem) =
     oldItem.image == newItem.image &&
       oldItem.isFollowed == newItem.isFollowed &&
-      oldItem.isSeeLater == newItem.isSeeLater &&
+      oldItem.isWatchlist == newItem.isWatchlist &&
       oldItem.isLoading == newItem.isLoading &&
       oldItem.translation == newItem.translation
 }

@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.seelater
+package com.michaldrabik.ui_my_shows.watchlist
 
 import android.os.Bundle
 import android.view.View
@@ -25,19 +25,19 @@ import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.utilities.OnSortClickListener
-import com.michaldrabik.ui_my_shows.seelater.recycler.SeeLaterAdapter
-import kotlinx.android.synthetic.main.fragment_see_later.*
+import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistAdapter
+import kotlinx.android.synthetic.main.fragment_watchlist.*
 
-class SeeLaterFragment :
-  BaseFragment<SeeLaterViewModel>(R.layout.fragment_see_later),
+class WatchlistFragment :
+  BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
   OnScrollResetListener,
   OnTraktSyncListener,
   OnTranslationsSyncListener,
   OnSortClickListener {
 
-  override val viewModel by viewModels<SeeLaterViewModel> { viewModelFactory }
+  override val viewModel by viewModels<WatchlistViewModel> { viewModelFactory }
 
-  private lateinit var adapter: SeeLaterAdapter
+  private lateinit var adapter: WatchlistAdapter
   private lateinit var layoutManager: LinearLayoutManager
   private var statusBarHeight = 0
 
@@ -59,25 +59,25 @@ class SeeLaterFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
-    adapter = SeeLaterAdapter().apply {
+    adapter = WatchlistAdapter().apply {
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
       itemClickListener = { openShowDetails(it.show) }
-      listChangeListener = { seeLaterRecycler.scrollToPosition(0) }
+      listChangeListener = { watchlistRecycler.scrollToPosition(0) }
     }
-    seeLaterRecycler.apply {
+    watchlistRecycler.apply {
       setHasFixedSize(true)
-      adapter = this@SeeLaterFragment.adapter
-      layoutManager = this@SeeLaterFragment.layoutManager
+      adapter = this@WatchlistFragment.adapter
+      layoutManager = this@WatchlistFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
     }
   }
 
   private fun setupStatusBar() {
     if (statusBarHeight != 0) {
-      seeLaterContent.updatePadding(top = seeLaterContent.paddingTop + statusBarHeight)
+      watchlistContent.updatePadding(top = watchlistContent.paddingTop + statusBarHeight)
       return
     }
-    seeLaterContent.doOnApplyWindowInsets { view, insets, padding, _ ->
+    watchlistContent.doOnApplyWindowInsets { view, insets, padding, _ ->
       statusBarHeight = insets.systemWindowInsetTop
       view.updatePadding(top = padding.top + statusBarHeight)
     }
@@ -97,12 +97,12 @@ class SeeLaterFragment :
       .show()
   }
 
-  private fun render(uiModel: SeeLaterUiModel) {
+  private fun render(uiModel: WatchlistUiModel) {
     uiModel.run {
       items?.let {
         val notifyChange = scrollToTop?.consume() == true
         adapter.setItems(it, notifyChange = notifyChange)
-        seeLaterEmptyView.fadeIf(it.isEmpty())
+        watchlistEmptyView.fadeIf(it.isEmpty())
       }
       sortOrder?.let { event ->
         event.consume()?.let { showSortOrderDialog(it) }
@@ -117,7 +117,7 @@ class SeeLaterFragment :
   override fun onSortClick(page: Int) = viewModel.loadSortOrder()
 
   override fun onScrollReset() {
-    seeLaterRecycler.scrollToPosition(0)
+    watchlistRecycler.scrollToPosition(0)
   }
 
   override fun onTraktSyncProgress() = viewModel.loadShows()

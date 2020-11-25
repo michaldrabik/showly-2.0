@@ -41,7 +41,7 @@ class ShowPosterView : ShowView<DiscoverListItem> {
     showPosterTitle.text = item.show.title
     showPosterProgress.visibleIf(item.isLoading)
     showPosterBadge.visibleIf(item.isFollowed)
-    showPosterLaterBadge.visibleIf(item.isSeeLater)
+    showPosterLaterBadge.visibleIf(item.isWatchlist)
     loadImage(item, missingImageListener)
   }
 

@@ -91,7 +91,7 @@ import com.michaldrabik.ui_show.seasons.SeasonsAdapter
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.ADD
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_ARCHIVE
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_MY_SHOWS
-import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_SEE_LATER
+import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_WATCHLIST
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
@@ -180,7 +180,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         viewModel.addFollowedShow(requireAppContext())
         showDetailsTipQuickProgress.fadeIf(!isTipShown(SHOW_DETAILS_QUICK_PROGRESS))
       }
-      onAddWatchLaterClickListener = { viewModel.addSeeLaterShow(requireAppContext()) }
+      onAddWatchLaterClickListener = { viewModel.addWatchlistShow(requireAppContext()) }
       onArchiveClickListener = { openArchiveConfirmationDialog() }
       onRemoveClickListener = { viewModel.removeFromFollowed(requireAppContext()) }
     }
@@ -400,7 +400,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       followedState?.let {
         when {
           it.isMyShows -> showDetailsAddButton.setState(IN_MY_SHOWS, it.withAnimation)
-          it.isSeeLater -> showDetailsAddButton.setState(IN_SEE_LATER, it.withAnimation)
+          it.isWatchlist -> showDetailsAddButton.setState(IN_WATCHLIST, it.withAnimation)
           it.isArchived -> showDetailsAddButton.setState(IN_ARCHIVE, it.withAnimation)
           else -> showDetailsAddButton.setState(ADD, it.withAnimation)
         }
@@ -433,12 +433,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           }
         }
       }
-      removeFromTraktSeeLater?.let { event ->
+      removeFromTraktWatchlist?.let { event ->
         event.consume()?.let {
           showDetailsAddButton.fadeIf(!it)
           showDetailsRemoveTraktButton.run {
             fadeIf(it)
-            onYesClickListener = { viewModel.removeFromTraktSeeLater() }
+            onYesClickListener = { viewModel.removeFromTraktWatchlist() }
           }
         }
       }

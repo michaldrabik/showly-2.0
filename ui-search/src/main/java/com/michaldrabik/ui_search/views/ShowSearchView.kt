@@ -58,7 +58,7 @@ class ShowSearchView : ShowView<SearchListItem> {
     showSearchDescription.visibleIf(item.show.overview.isNotBlank())
     showSearchNetwork.visibleIf(item.show.network.isNotBlank())
     showSearchBadge.visibleIf(item.isFollowed)
-    showSearchLaterBadge.visibleIf(item.isSeeLater)
+    showSearchWatchlistBadge.visibleIf(item.isWatchlist)
     loadImage(item, missingImageListener)
   }
 

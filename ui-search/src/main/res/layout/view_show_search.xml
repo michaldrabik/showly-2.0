@@ -57,7 +57,7 @@
       />
 
     <ImageView
-      android:id="@+id/showSearchLaterBadge"
+      android:id="@+id/showSearchWatchlistBadge"
       style="@style/Show.BadgeLater"
       android:layout_width="18dp"
       android:layout_height="18dp"

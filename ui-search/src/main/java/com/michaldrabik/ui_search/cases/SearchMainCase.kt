@@ -29,7 +29,7 @@ class SearchMainCase @Inject constructor(
 
   suspend fun loadMyShowsIds() = showsRepository.myShows.loadAllIds()
 
-  suspend fun loadSeeLaterShowsIds() = showsRepository.seeLaterShows.loadAllIds()
+  suspend fun loadWatchlistShowsIds() = showsRepository.watchlistShows.loadAllIds()
 
   suspend fun loadTranslation(show: Show): Translation? {
     val language = settingsRepository.getLanguage()

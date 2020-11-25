@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.seelater
+package com.michaldrabik.ui_my_shows.watchlist
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
@@ -8,39 +8,39 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_my_shows.seelater.cases.SeeLaterLoadShowsCase
-import com.michaldrabik.ui_my_shows.seelater.cases.SeeLaterSortOrderCase
-import com.michaldrabik.ui_my_shows.seelater.recycler.SeeLaterListItem
+import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistLoadShowsCase
+import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistSortOrderCase
+import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SeeLaterViewModel @Inject constructor(
-  private val sortOrderCase: SeeLaterSortOrderCase,
-  private val loadShowsCase: SeeLaterLoadShowsCase,
+class WatchlistViewModel @Inject constructor(
+  private val sortOrderCase: WatchlistSortOrderCase,
+  private val loadShowsCase: WatchlistLoadShowsCase,
   private val imagesProvider: ShowImagesProvider
-) : BaseViewModel<SeeLaterUiModel>() {
+) : BaseViewModel<WatchlistUiModel>() {
 
   fun loadShows(scrollToTop: Boolean = false) {
     viewModelScope.launch {
       val items = loadShowsCase.loadShows().map {
         val image = imagesProvider.findCachedImage(it, POSTER)
         val translation = loadShowsCase.loadTranslation(it)
-        SeeLaterListItem(it, image, false, translation)
+        WatchlistListItem(it, image, false, translation)
       }
-      uiState = SeeLaterUiModel(items = items, scrollToTop = ActionEvent(scrollToTop))
+      uiState = WatchlistUiModel(items = items, scrollToTop = ActionEvent(scrollToTop))
     }
   }
 
   fun loadSortOrder() {
     viewModelScope.launch {
       val sortOrder = sortOrderCase.loadSortOrder()
-      uiState = SeeLaterUiModel(sortOrder = ActionEvent(sortOrder))
+      uiState = WatchlistUiModel(sortOrder = ActionEvent(sortOrder))
     }
   }
 
-  fun loadMissingImage(item: SeeLaterListItem, force: Boolean) {
+  fun loadMissingImage(item: WatchlistListItem, force: Boolean) {
 
-    fun updateItem(new: SeeLaterListItem) {
+    fun updateItem(new: WatchlistListItem) {
       val currentItems = uiState?.items?.toMutableList()
       currentItems?.findReplace(new) { it.isSameAs(new) }
       uiState = uiState?.copy(items = currentItems)

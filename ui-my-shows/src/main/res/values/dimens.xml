@@ -14,10 +14,10 @@
   <dimen name="myShowAllImageWidth">80dp</dimen>
   <dimen name="myShowAllMarginHorizontal">12dp</dimen>
 
-  <dimen name="seeLaterTabsViewPadding">112dp</dimen>
-  <dimen name="seeLaterImageHeight">120dp</dimen>
-  <dimen name="seeLaterImageWidth">80dp</dimen>
-  <dimen name="seeLaterMarginHorizontal">12dp</dimen>
+  <dimen name="watchlistTabsViewPadding">112dp</dimen>
+  <dimen name="watchlistImageHeight">120dp</dimen>
+  <dimen name="watchlistImageWidth">80dp</dimen>
+  <dimen name="watchlistMarginHorizontal">12dp</dimen>
 
   <dimen name="archiveTabsViewPadding">112dp</dimen>
   <dimen name="archiveImageHeight">120dp</dimen>

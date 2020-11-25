@@ -7,7 +7,7 @@ import com.michaldrabik.network.trakt.model.SyncExportRequest
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.TraktSyncQueue
 import com.michaldrabik.storage.database.model.TraktSyncQueue.Type.EPISODE
-import com.michaldrabik.storage.database.model.TraktSyncQueue.Type.SHOW_SEE_LATER
+import com.michaldrabik.storage.database.model.TraktSyncQueue.Type.SHOW_WATCHLIST
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import com.michaldrabik.ui_repository.TraktAuthToken
 import com.michaldrabik.ui_repository.UserTraktManager
@@ -34,11 +34,11 @@ class QuickSyncRunner @Inject constructor(
     val authToken = checkAuthorization()
 
     val episodesCount = exportItems(authToken, EPISODE)
-    val seeLaterShowsCount = exportItems(authToken, SHOW_SEE_LATER)
+    val watchlistShowsCount = exportItems(authToken, SHOW_WATCHLIST)
 
     isRunning = false
     Timber.d("Finished with success.")
-    return episodesCount + seeLaterShowsCount
+    return episodesCount + watchlistShowsCount
   }
 
   private suspend fun exportItems(
@@ -61,7 +61,7 @@ class QuickSyncRunner @Inject constructor(
         )
         cloud.traktApi.postSyncWatched(token.token, request)
       }
-      SHOW_SEE_LATER -> {
+      SHOW_WATCHLIST -> {
         val request = SyncExportRequest(
           shows = toExport.map { SyncExportItem.create(it.idTrakt, com.michaldrabik.common.extensions.dateIsoStringFromMillis(it.updatedAt)) }
         )

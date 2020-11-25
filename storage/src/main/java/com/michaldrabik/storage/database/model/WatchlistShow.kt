@@ -16,7 +16,7 @@ import androidx.room.PrimaryKey
     )
   ]
 )
-data class SeeLaterShow(
+data class WatchlistShow(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
   @ColumnInfo(name = "id_trakt", defaultValue = "-1", index = true) var idTrakt: Long,
   @ColumnInfo(name = "created_at", defaultValue = "-1") var createdAt: Long,
@@ -25,6 +25,6 @@ data class SeeLaterShow(
 
   companion object {
     fun fromTraktId(traktId: Long, nowUtcMillis: Long) =
-      SeeLaterShow(idTrakt = traktId, createdAt = nowUtcMillis, updatedAt = nowUtcMillis)
+      WatchlistShow(idTrakt = traktId, createdAt = nowUtcMillis, updatedAt = nowUtcMillis)
   }
 }

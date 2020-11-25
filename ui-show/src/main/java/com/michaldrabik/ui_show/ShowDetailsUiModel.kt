@@ -24,7 +24,7 @@ data class ShowDetailsUiModel(
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
   val removeFromTraktHistory: ActionEvent<Boolean>? = null,
-  val removeFromTraktSeeLater: ActionEvent<Boolean>? = null,
+  val removeFromTraktWatchlist: ActionEvent<Boolean>? = null,
   val showFromTraktLoading: Boolean? = null,
   val translation: Translation? = null,
   val seasonTranslation: ActionEvent<SeasonListItem>? = null
@@ -43,7 +43,7 @@ data class ShowDetailsUiModel(
       comments = newModel.comments ?: comments,
       followedState = newModel.followedState ?: followedState,
       removeFromTraktHistory = newModel.removeFromTraktHistory ?: removeFromTraktHistory,
-      removeFromTraktSeeLater = newModel.removeFromTraktSeeLater ?: removeFromTraktSeeLater,
+      removeFromTraktWatchlist = newModel.removeFromTraktWatchlist ?: removeFromTraktWatchlist,
       translation = newModel.translation ?: translation,
       seasonTranslation = newModel.seasonTranslation ?: seasonTranslation,
       ratingState = newModel.ratingState?.copy(
@@ -56,15 +56,15 @@ data class ShowDetailsUiModel(
 
 data class FollowedState(
   val isMyShows: Boolean,
-  val isSeeLater: Boolean,
+  val isWatchlist: Boolean,
   val isArchived: Boolean,
   val withAnimation: Boolean
 ) {
 
   companion object {
-    fun inMyShows() = FollowedState(isMyShows = true, isSeeLater = false, isArchived = false, withAnimation = true)
-    fun inSeeLater() = FollowedState(isMyShows = false, isSeeLater = true, isArchived = false, withAnimation = true)
-    fun inArchive() = FollowedState(isMyShows = false, isSeeLater = false, isArchived = true, withAnimation = true)
-    fun notFollowed() = FollowedState(isMyShows = false, isSeeLater = false, isArchived = false, withAnimation = true)
+    fun inMyShows() = FollowedState(isMyShows = true, isWatchlist = false, isArchived = false, withAnimation = true)
+    fun inWatchlist() = FollowedState(isMyShows = false, isWatchlist = true, isArchived = false, withAnimation = true)
+    fun inArchive() = FollowedState(isMyShows = false, isWatchlist = false, isArchived = true, withAnimation = true)
+    fun notFollowed() = FollowedState(isMyShows = false, isWatchlist = false, isArchived = false, withAnimation = true)
   }
 }

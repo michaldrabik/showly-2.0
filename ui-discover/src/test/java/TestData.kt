@@ -55,6 +55,6 @@ object TestData {
       status = Image.Status.UNKNOWN,
       source = ImageSource.TVDB
     ),
-    isLoading = false, isFollowed = false, isSeeLater = false
+    isLoading = false, isFollowed = false, isWatchlist = false
   )
 }

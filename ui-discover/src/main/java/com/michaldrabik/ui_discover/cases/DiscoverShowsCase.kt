@@ -30,15 +30,15 @@ class DiscoverShowsCase @Inject constructor(
 
   suspend fun loadCachedShows(filters: DiscoverFilters): List<DiscoverListItem> {
     val myShowsIds = showsRepository.myShows.loadAllIds()
-    val seeLaterShowsIds = showsRepository.seeLaterShows.loadAllIds()
+    val watchlistShowsIds = showsRepository.watchlistShows.loadAllIds()
     val archiveShowsIds = showsRepository.archiveShows.loadAllIds()
     val cachedShows = showsRepository.discoverShows.loadAllCached()
     val language = settingsRepository.getLanguage()
 
-    return prepareShowItems(
+    return prepareItems(
       cachedShows,
       myShowsIds,
-      seeLaterShowsIds,
+      watchlistShowsIds,
       archiveShowsIds,
       filters,
       language
@@ -56,19 +56,19 @@ class DiscoverShowsCase @Inject constructor(
     }
 
     val myShowsIds = showsRepository.myShows.loadAllIds()
-    val seeLaterShowsIds = showsRepository.seeLaterShows.loadAllIds()
+    val watchlistShowsIds = showsRepository.watchlistShows.loadAllIds()
     val archiveShowsIds = showsRepository.archiveShows.loadAllIds()
     val remoteShows = showsRepository.discoverShows.loadAllRemote(showAnticipated, genres)
     val language = settingsRepository.getLanguage()
 
     showsRepository.discoverShows.cacheDiscoverShows(remoteShows)
-    return prepareShowItems(remoteShows, myShowsIds, seeLaterShowsIds, archiveShowsIds, filters, language)
+    return prepareItems(remoteShows, myShowsIds, watchlistShowsIds, archiveShowsIds, filters, language)
   }
 
-  private suspend fun prepareShowItems(
+  private suspend fun prepareItems(
     shows: List<Show>,
     myShowsIds: List<Long>,
-    seeLaterShowsIds: List<Long>,
+    watchlistShowsIds: List<Long>,
     archiveShowsIds: List<Long>,
     filters: DiscoverFilters?,
     language: String
@@ -87,7 +87,7 @@ class DiscoverShowsCase @Inject constructor(
         show,
         image,
         isFollowed = show.ids.trakt.id in myShowsIds,
-        isSeeLater = show.ids.trakt.id in seeLaterShowsIds,
+        isWatchlist = show.ids.trakt.id in watchlistShowsIds,
         translation = translation
       )
     }
