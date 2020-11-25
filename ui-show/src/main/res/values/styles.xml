@@ -25,8 +25,8 @@
     <item name="android:orientation">horizontal</item>
     <item name="android:paddingStart">@dimen/spaceMedium</item>
     <item name="android:paddingEnd">@dimen/spaceMedium</item>
-    <item name="android:paddingTop">@dimen/spaceSmall</item>
-    <item name="android:paddingBottom">@dimen/spaceSmall</item>
+    <item name="android:paddingTop">10dp</item>
+    <item name="android:paddingBottom">10dp</item>
     <item name="android:background">?android:attr/selectableItemBackground</item>
   </style>
 
