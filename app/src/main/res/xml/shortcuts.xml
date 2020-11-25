@@ -25,7 +25,7 @@
 
   <shortcut
     android:enabled="true"
-    android:icon="@drawable/ic_shortcut_list"
+    android:icon="@drawable/ic_shortcut_bookmark"
     android:shortcutId="shortcutMyShows"
     android:shortcutLongLabel="@string/shortcutMyShows"
     android:shortcutShortLabel="@string/shortcutMyShows"
@@ -63,7 +63,7 @@
 
   <shortcut
     android:enabled="true"
-    android:icon="@drawable/ic_shortcut_bookmark"
+    android:icon="@drawable/ic_shortcut_check"
     android:shortcutId="shortcutWatchlist"
     android:shortcutLongLabel="@string/shortcutProgress"
     android:shortcutShortLabel="@string/shortcutProgress"
