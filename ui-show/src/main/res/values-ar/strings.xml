@@ -4,7 +4,7 @@
   <string name="textWatchLater">مشاهدة لاحقاً</string>
   <string name="textNextEpisode">الحلقة التالية:</string>
   <string name="textInMyShows">تمت الإضافة إلى مسلسلاتي</string>
-  <string name="textInSeeLater">تمت الإضافة إلى قائمة المشاهدة</string>
+  <string name="textInWatchlist">تمت الإضافة إلى قائمة المشاهدة</string>
   <string name="textInArchive">تمت الإضافة إلى الأرشيف</string>
   <string name="textRate">قيم</string>
   <string name="textRateDelete">حذف التقييم</string>
