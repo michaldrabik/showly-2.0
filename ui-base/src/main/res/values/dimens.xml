@@ -31,7 +31,7 @@
   <dimen name="searchViewItemPaddingHorizontal">20dp</dimen>
 
   <dimen name="swipeRefreshStartOffset">8dp</dimen>
-  <dimen name="swipeRefreshEndOffset">120dp</dimen>
+  <dimen name="swipeRefreshEndOffset">140dp</dimen>
 
   <dimen name="showsMoviesTabsMargin">63dp</dimen>
 

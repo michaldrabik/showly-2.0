@@ -47,6 +47,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
   private lateinit var layoutManager: GridLayoutManager
 
   private var searchViewPosition = 0F
+  private var tabsViewPosition = 0F
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiDiscoverComponentProvider).provideDiscoverComponent().inject(this)
@@ -55,6 +56,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       isInitialized = true
       savedInstanceState?.let {
         searchViewPosition = it.getFloat("ARG_DISCOVER_SEARCH_POS", 0F)
+        tabsViewPosition = it.getFloat("ARG_DISCOVER_TABS_POS", 0F)
       }
     }
   }
@@ -86,6 +88,9 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       onClick { navigateToSearch() }
       onSortClickListener = { toggleFiltersView() }
       translationY = searchViewPosition
+    }
+    discoverTabsView.run {
+      translationY = tabsViewPosition
     }
     discoverMask.onClick { toggleFiltersView() }
     discoverFiltersView.onApplyClickListener = {
@@ -128,6 +133,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       setColorSchemeColors(color, color, color)
       setOnRefreshListener {
         searchViewPosition = 0F
+        tabsViewPosition = 0F
         viewModel.loadDiscoverShows(pullToRefresh = true)
       }
     }
@@ -216,6 +222,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
 
   private fun saveUi() {
     searchViewPosition = discoverSearchView.translationY
+    tabsViewPosition = discoverTabsView.translationY
   }
 
   private fun render(uiModel: DiscoverUiModel) {
@@ -245,5 +252,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
     outState.putFloat("ARG_DISCOVER_SEARCH_POS", searchViewPosition)
+    outState.putFloat("ARG_DISCOVER_TABS_POS", tabsViewPosition)
   }
 }
