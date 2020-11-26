@@ -50,6 +50,11 @@ class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fr
 //      onSortClickListener = { toggleFiltersView() }
 //      translationY = searchViewPosition
     }
+    discoverMoviesTabsView.run {
+//      translationY = tabsViewPosition
+      onModeSelected = { setMode(it) }
+      animateMovies()
+    }
   }
 
   private fun setupStatusBar() {

@@ -11,6 +11,7 @@ import com.michaldrabik.ui_base.di.DaggerViewModelFactory
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.ERROR
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
+import com.michaldrabik.ui_base.utilities.Mode
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost
@@ -49,6 +50,8 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
   override fun isTipShown(tip: Tip) = (requireActivity() as TipsHost).isTipShown(tip)
 
   override fun showTip(tip: Tip) = (requireActivity() as TipsHost).showTip(tip)
+
+  protected fun setMode(mode: Mode) = (requireActivity() as NavigationHost).setMode(mode)
 
   fun Fragment.requireAppContext(): Context = requireContext().applicationContext
 }

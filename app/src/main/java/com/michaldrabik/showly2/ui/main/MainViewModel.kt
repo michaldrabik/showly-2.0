@@ -8,6 +8,7 @@ import com.michaldrabik.showly2.ui.main.cases.MainRateAppCase
 import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTraktCase
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.utilities.Mode
 import com.michaldrabik.ui_model.Tip
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,8 +25,14 @@ class MainViewModel @Inject constructor(
     viewModelScope.launch {
       initCase.initSettings()
       checkInitialRun()
+      checkIsMovies()
       initCase.initFcm()
     }
+  }
+
+  private suspend fun checkIsMovies() {
+    val mode = miscCase.getMode()
+    uiState = MainUiModel(mode = mode)
   }
 
   private suspend fun checkInitialRun() {
@@ -50,6 +57,13 @@ class MainViewModel @Inject constructor(
         refreshTraktSyncSchedule(context)
         refreshTraktQuickSync(context)
       }
+    }
+  }
+
+  fun setMode(mode: Mode) {
+    viewModelScope.launch {
+      miscCase.setMode(mode)
+      uiState = MainUiModel(mode = mode)
     }
   }
 

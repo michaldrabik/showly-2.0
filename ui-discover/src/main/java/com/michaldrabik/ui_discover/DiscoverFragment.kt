@@ -91,6 +91,8 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     }
     discoverTabsView.run {
       translationY = tabsViewPosition
+      onModeSelected = { setMode(it) }
+      animateShows()
     }
     discoverMask.onClick { toggleFiltersView() }
     discoverFiltersView.onApplyClickListener = {
@@ -176,6 +178,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     hideNavigation()
     animateItemsExit(item)
     discoverSearchView.fadeOut()
+    discoverTabsView.fadeOut()
     discoverFiltersView.fadeOut()
   }
 
@@ -237,6 +240,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
         discoverSearchView.sortIconClickable = !it
         discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
+        discoverTabsView.isEnabled = !it
       }
       filters?.let {
         discoverFiltersView.run {

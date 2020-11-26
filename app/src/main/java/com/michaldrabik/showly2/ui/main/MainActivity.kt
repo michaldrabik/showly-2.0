@@ -30,6 +30,8 @@ import com.michaldrabik.ui_base.events.ShowsSyncComplete
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.events.TraktSyncProgress
 import com.michaldrabik.ui_base.events.TranslationsSyncProgress
+import com.michaldrabik.ui_base.utilities.Mode
+import com.michaldrabik.ui_base.utilities.Mode.*
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost
@@ -64,6 +66,7 @@ class MainActivity :
   lateinit var viewModelFactory: DaggerViewModelFactory
   private lateinit var viewModel: MainViewModel
 
+  private var mode = SHOWS
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
   private val tips by lazy {
@@ -142,7 +145,10 @@ class MainActivity :
 
       val target = when (item.itemId) {
         R.id.menuProgress -> R.id.actionNavigateProgressFragment
-        R.id.menuDiscover -> R.id.actionNavigateDiscoverMoviesFragment
+        R.id.menuDiscover -> {
+          if (mode == MOVIES) R.id.actionNavigateDiscoverMoviesFragment
+          else R.id.actionNavigateDiscoverFragment
+        }
         R.id.menuCollection -> R.id.actionNavigateFollowedShowsFragment
         else -> throw IllegalStateException("Invalid menu item.")
       }
@@ -166,7 +172,9 @@ class MainActivity :
           super.onBackPressed()
         }
         when (currentDestination?.id) {
-          R.id.discoverFragment, R.id.followedShowsFragment -> {
+          R.id.discoverFragment,
+          R.id.discoverMoviesFragment,
+          R.id.followedShowsFragment -> {
             bottomNavigationView.selectedItemId = R.id.menuProgress
           }
         }
@@ -223,9 +231,22 @@ class MainActivity :
 
   override fun openDiscoverTab() = openTab(R.id.menuDiscover)
 
+  override fun setMode(mode: Mode) {
+    if (this.mode != mode) viewModel.setMode(mode)
+  }
+
   private fun render(uiModel: MainUiModel) {
     uiModel.run {
       isInitialRun?.let { if (it) openTab(R.id.menuDiscover) }
+      mode?.let {
+        this@MainActivity.mode = it
+        if (bottomNavigationView.selectedItemId == R.id.menuDiscover) {
+          val target =
+            if (it == MOVIES) R.id.actionNavigateDiscoverMoviesFragment
+            else R.id.actionNavigateDiscoverFragment
+          navigationHost.findNavController().navigate(target)
+        }
+      }
       showWhatsNew?.let { if (it) showWhatsNew() }
       showRateApp?.let {
         rateAppView.fadeIf(it, startDelay = 1500)

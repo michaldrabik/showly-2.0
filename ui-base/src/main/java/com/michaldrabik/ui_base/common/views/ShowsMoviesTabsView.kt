@@ -7,6 +7,9 @@ import android.widget.LinearLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour
+import com.michaldrabik.ui_base.utilities.Mode
+import com.michaldrabik.ui_base.utilities.Mode.MOVIES
+import com.michaldrabik.ui_base.utilities.Mode.SHOWS
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.view_shows_movies_tabs.view.*
 
@@ -21,23 +24,20 @@ class ShowsMoviesTabsView : LinearLayout, CoordinatorLayout.AttachedBehavior {
     layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
     orientation = HORIZONTAL
 
-    viewMovies.onClick { setMovies() }
-    viewShows.onClick { setShows() }
+    viewMovies.onClick { onModeSelected?.invoke(MOVIES) }
+    viewShows.onClick { onModeSelected?.invoke(SHOWS) }
   }
 
-  var onMoviesSet: (() -> Unit)? = null
-  var onShowsSet: (() -> Unit)? = null
+  var onModeSelected: ((Mode) -> Unit)? = null
 
-  private fun setMovies() {
-    viewShows.animate().alpha(0.5F).setDuration(100).start()
-    viewMovies.animate().alpha(1F).setDuration(100).start()
-    onMoviesSet?.invoke()
+  fun animateMovies() {
+    viewShows.alpha = 0.5F
+    viewMovies.alpha = 1F
   }
 
-  private fun setShows() {
-    viewShows.animate().alpha(1F).setDuration(100).start()
-    viewMovies.animate().alpha(0.5F).setDuration(100).start()
-    onShowsSet?.invoke()
+  fun animateShows() {
+    viewShows.alpha = 1F
+    viewMovies.alpha = 0.5F
   }
 
   override fun setEnabled(enabled: Boolean) {

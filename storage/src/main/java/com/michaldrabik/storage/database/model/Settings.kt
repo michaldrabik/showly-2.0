@@ -33,5 +33,7 @@ data class Settings(
   @ColumnInfo(name = "watchlist_sort_by", defaultValue = "NAME") var watchlistSortBy: String,
   @ColumnInfo(name = "archive_shows_sort_by", defaultValue = "NAME") var archiveShowsSortBy: String,
   @ColumnInfo(name = "archive_shows_include_statistics", defaultValue = "1") var archiveShowsIncludeStatistics: Boolean,
-  @ColumnInfo(name = "special_seasons_enabled", defaultValue = "0") var specialSeasonsEnabled: Boolean
+  @ColumnInfo(name = "special_seasons_enabled", defaultValue = "0") var specialSeasonsEnabled: Boolean,
+  @ColumnInfo(name = "movies_enabled", defaultValue = "1") var moviesEnabled: Boolean,
+  @ColumnInfo(name = "movies_active", defaultValue = "0") var moviesActive: Boolean
 )

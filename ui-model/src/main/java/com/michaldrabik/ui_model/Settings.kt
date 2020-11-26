@@ -27,7 +27,9 @@ data class Settings(
   val traktQuickRemoveEnabled: Boolean,
   val watchlistSortOrder: SortOrder,
   val archiveShowsIncludeStatistics: Boolean,
-  val specialSeasonsEnabled: Boolean
+  val specialSeasonsEnabled: Boolean,
+  val moviesEnabled: Boolean,
+  val moviesActive: Boolean
 ) {
 
   companion object {
@@ -58,7 +60,9 @@ data class Settings(
       traktQuickRemoveEnabled = false,
       watchlistSortOrder = SortOrder.NAME,
       archiveShowsIncludeStatistics = true,
-      specialSeasonsEnabled = false
+      specialSeasonsEnabled = false,
+      moviesEnabled = true,
+      moviesActive = false
     )
   }
 }
