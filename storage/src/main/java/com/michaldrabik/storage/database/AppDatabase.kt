@@ -4,11 +4,13 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.michaldrabik.storage.database.dao.ActorsDao
 import com.michaldrabik.storage.database.dao.ArchiveShowsDao
+import com.michaldrabik.storage.database.dao.DiscoverMoviesDao
 import com.michaldrabik.storage.database.dao.DiscoverShowsDao
 import com.michaldrabik.storage.database.dao.EpisodeTranslationsDao
 import com.michaldrabik.storage.database.dao.EpisodesDao
 import com.michaldrabik.storage.database.dao.EpisodesSyncLogDao
 import com.michaldrabik.storage.database.dao.ImagesDao
+import com.michaldrabik.storage.database.dao.MoviesDao
 import com.michaldrabik.storage.database.dao.MyShowsDao
 import com.michaldrabik.storage.database.dao.RecentSearchDao
 import com.michaldrabik.storage.database.dao.RelatedShowsDao
@@ -22,11 +24,13 @@ import com.michaldrabik.storage.database.dao.UserDao
 import com.michaldrabik.storage.database.dao.WatchlistShowsDao
 import com.michaldrabik.storage.database.model.Actor
 import com.michaldrabik.storage.database.model.ArchiveShow
+import com.michaldrabik.storage.database.model.DiscoverMovie
 import com.michaldrabik.storage.database.model.DiscoverShow
 import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.EpisodeTranslation
 import com.michaldrabik.storage.database.model.EpisodesSyncLog
 import com.michaldrabik.storage.database.model.Image
+import com.michaldrabik.storage.database.model.Movie
 import com.michaldrabik.storage.database.model.MyShow
 import com.michaldrabik.storage.database.model.RecentSearch
 import com.michaldrabik.storage.database.model.RelatedShow
@@ -43,7 +47,9 @@ import com.michaldrabik.storage.database.model.WatchlistShow
   version = DATABASE_VERSION,
   entities = [
     Show::class,
+    Movie::class,
     DiscoverShow::class,
+    DiscoverMovie::class,
     MyShow::class,
     WatchlistShow::class,
     ArchiveShow::class,
@@ -67,7 +73,11 @@ abstract class AppDatabase : RoomDatabase() {
 
   abstract fun showsDao(): ShowsDao
 
+  abstract fun moviesDao(): MoviesDao
+
   abstract fun discoverShowsDao(): DiscoverShowsDao
+
+  abstract fun discoverMoviesDao(): DiscoverMoviesDao
 
   abstract fun myShowsDao(): MyShowsDao
 

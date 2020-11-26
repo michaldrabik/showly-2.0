@@ -23,6 +23,7 @@ object Config {
 
   val MY_SHOWS_RECENTS_OPTIONS = arrayOf(2, 4, 6, 8)
   val DISCOVER_SHOWS_CACHE_DURATION by lazy { TimeUnit.HOURS.toMillis(12) }
+  val DISCOVER_MOVIES_CACHE_DURATION by lazy { TimeUnit.HOURS.toMillis(12) }
   val RELATED_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(7) }
   val SHOW_DETAILS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(3) }
   val ACTORS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(3) }

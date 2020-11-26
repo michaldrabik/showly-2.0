@@ -128,6 +128,39 @@ object Migrations {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL("ALTER TABLE settings ADD COLUMN movies_enabled INTEGER NOT NULL DEFAULT 1")
       database.execSQL("ALTER TABLE settings ADD COLUMN movies_active INTEGER NOT NULL DEFAULT 0")
+
+      database.execSQL(
+        "CREATE TABLE IF NOT EXISTS `movies` (" +
+          "`id_trakt` INTEGER PRIMARY KEY NOT NULL, " +
+          "`id_tvdb` INTEGER NOT NULL, " +
+          "`id_tmdb` INTEGER NOT NULL, " +
+          "`id_imdb` TEXT NOT NULL, " +
+          "`id_slug` TEXT NOT NULL, " +
+          "`title` TEXT NOT NULL, " +
+          "`year` INTEGER NOT NULL, " +
+          "`overview` TEXT NOT NULL, " +
+          "`released` TEXT NOT NULL, " +
+          "`runtime` INTEGER NOT NULL, " +
+          "`country` TEXT NOT NULL, " +
+          "`trailer` TEXT NOT NULL, " +
+          "`language` TEXT NOT NULL, " +
+          "`homepage` TEXT NOT NULL, " +
+          "`status` TEXT NOT NULL, " +
+          "`rating` REAL NOT NULL, " +
+          "`votes` INTEGER NOT NULL, " +
+          "`comment_count` INTEGER NOT NULL, " +
+          "`genres` TEXT NOT NULL, " +
+          "`updated_at` INTEGER NOT NULL)"
+      )
+
+      //TODO
+      database.execSQL(
+        "CREATE TABLE IF NOT EXISTS `movies_discover` (" +
+          "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+          "`id_trakt` INTEGER NOT NULL, " +
+          "`created_at` INTEGER NOT NULL, " +
+          "`updated_at` INTEGER NOT NULL)"
+      )
     }
   }
 

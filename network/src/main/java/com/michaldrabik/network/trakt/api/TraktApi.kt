@@ -20,9 +20,15 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun fetchPopularShows(genres: String) = service.fetchPopularShows(genres)
 
+  suspend fun fetchPopularMovies(genres: String) = service.fetchPopularMovies(genres)
+
   suspend fun fetchTrendingShows(genres: String) = service.fetchTrendingShows(genres).map { it.show!! }
 
+  suspend fun fetchTrendingMovies(genres: String) = service.fetchTrendingMovies(genres).map { it.movie!! }
+
   suspend fun fetchAnticipatedShows(genres: String) = service.fetchAnticipatedShows(genres).map { it.show!! }
+
+  suspend fun fetchAnticipatedMovies(genres: String) = service.fetchAnticipatedMovies(genres).map { it.movie!! }
 
   suspend fun fetchRelatedShows(traktId: Long) = service.fetchRelatedShows(traktId)
 

@@ -5,6 +5,8 @@ import com.michaldrabik.network.trakt.model.ActorsResponse
 import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.network.trakt.model.Episode
 import com.michaldrabik.network.trakt.model.HiddenItem
+import com.michaldrabik.network.trakt.model.Movie
+import com.michaldrabik.network.trakt.model.MovieResult
 import com.michaldrabik.network.trakt.model.OAuthResponse
 import com.michaldrabik.network.trakt.model.RatingResultEpisode
 import com.michaldrabik.network.trakt.model.RatingResultShow
@@ -40,15 +42,30 @@ interface TraktService {
     @Query("genres") genres: String
   ): List<Show>
 
+  @GET("movies/popular?extended=full&limit=${Config.TRAKT_POPULAR_MOVIES_LIMIT}")
+  suspend fun fetchPopularMovies(
+    @Query("genres") genres: String
+  ): List<Movie>
+
   @GET("shows/trending?extended=full&limit=${Config.TRAKT_TRENDING_SHOWS_LIMIT}")
   suspend fun fetchTrendingShows(
     @Query("genres") genres: String
   ): List<ShowResult>
 
+  @GET("movies/trending?extended=full&limit=${Config.TRAKT_TRENDING_MOVIES_LIMIT}")
+  suspend fun fetchTrendingMovies(
+    @Query("genres") genres: String
+  ): List<MovieResult>
+
   @GET("shows/anticipated?extended=full&limit=${Config.TRAKT_ANTICIPATED_SHOWS_LIMIT}")
   suspend fun fetchAnticipatedShows(
     @Query("genres") genres: String
   ): List<ShowResult>
+
+  @GET("movies/anticipated?extended=full&limit=${Config.TRAKT_ANTICIPATED_MOVIES_LIMIT}")
+  suspend fun fetchAnticipatedMovies(
+    @Query("genres") genres: String
+  ): List<MovieResult>
 
   @GET("shows/{traktId}/related?extended=full&limit=${Config.TRAKT_RELATED_SHOWS_LIMIT}")
   suspend fun fetchRelatedShows(@Path("traktId") traktId: Long): List<Show>

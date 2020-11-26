@@ -145,10 +145,7 @@ class MainActivity :
 
       val target = when (item.itemId) {
         R.id.menuProgress -> R.id.actionNavigateProgressFragment
-        R.id.menuDiscover -> {
-          if (mode == MOVIES) R.id.actionNavigateDiscoverMoviesFragment
-          else R.id.actionNavigateDiscoverFragment
-        }
+        R.id.menuDiscover -> getMenuDiscoverAction()
         R.id.menuCollection -> R.id.actionNavigateFollowedShowsFragment
         else -> throw IllegalStateException("Invalid menu item.")
       }
@@ -199,6 +196,10 @@ class MainActivity :
 
   override fun isTipShown(tip: Tip) = viewModel.isTipShown(tip)
 
+  private fun getMenuDiscoverAction() =
+    if (mode == MOVIES) R.id.actionNavigateDiscoverMoviesFragment
+    else R.id.actionNavigateDiscoverFragment
+
   override fun hideNavigation(animate: Boolean) {
     bottomNavigationView.run {
       isEnabled = false
@@ -241,9 +242,7 @@ class MainActivity :
       mode?.let {
         this@MainActivity.mode = it
         if (bottomNavigationView.selectedItemId == R.id.menuDiscover) {
-          val target =
-            if (it == MOVIES) R.id.actionNavigateDiscoverMoviesFragment
-            else R.id.actionNavigateDiscoverFragment
+          val target = getMenuDiscoverAction()
           navigationHost.findNavController().navigate(target)
         }
       }
