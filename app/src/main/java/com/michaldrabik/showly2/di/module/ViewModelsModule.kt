@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.michaldrabik.showly2.di.ViewModelKey
 import com.michaldrabik.showly2.ui.main.MainViewModel
 import com.michaldrabik.ui_discover.DiscoverViewModel
+import com.michaldrabik.ui_discover_movies.DiscoverMoviesViewModel
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsViewModel
 import com.michaldrabik.ui_my_shows.archive.ArchiveViewModel
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
@@ -40,6 +41,11 @@ abstract class ViewModelsModule {
   @IntoMap
   @ViewModelKey(DiscoverViewModel::class)
   abstract fun bindDiscoverViewModel(viewModel: DiscoverViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(DiscoverMoviesViewModel::class)
+  abstract fun bindDiscoverMoviesViewModel(viewModel: DiscoverMoviesViewModel): ViewModel
 
   @Binds
   @IntoMap

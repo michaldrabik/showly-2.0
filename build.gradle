@@ -3,6 +3,7 @@ buildscript {
   apply from: './versions.gradle'
   ext {
     kotlin_version = '1.4.10'
+    versions.kotlin = '1.4.20'
   }
   repositories {
     google()

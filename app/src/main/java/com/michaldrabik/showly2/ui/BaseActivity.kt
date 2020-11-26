@@ -11,6 +11,8 @@ import com.michaldrabik.showly2.fcm.FcmExtra
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_discover.di.UiDiscoverComponent
 import com.michaldrabik.ui_discover.di.UiDiscoverComponentProvider
+import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponent
+import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponentProvider
 import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponent
 import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponentProvider
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
@@ -40,6 +42,7 @@ abstract class BaseActivity :
   UiTraktSyncComponentProvider,
   UiStatisticsComponentProvider,
   UiDiscoverComponentProvider,
+  UiDiscoverMoviesComponentProvider,
   UiShowDetailsComponentProvider,
   UiFanartGalleryComponentProvider,
   UiEpisodeDetailsComponentProvider,
@@ -54,6 +57,7 @@ abstract class BaseActivity :
   )
 
   private lateinit var uiDiscoverComponent: UiDiscoverComponent
+  private lateinit var uiDiscoverMoviesComponent: UiDiscoverMoviesComponent
   private lateinit var uiEpisodeDetailsComponent: UiEpisodeDetailsComponent
   private lateinit var uiMyShowsComponent: UiMyShowsComponent
   private lateinit var uiSearchComponent: UiSearchComponent
@@ -65,6 +69,7 @@ abstract class BaseActivity :
   private lateinit var uiProgressComponent: UiProgressComponent
 
   override fun provideDiscoverComponent() = uiDiscoverComponent
+  override fun provideDiscoverMoviesComponent() = uiDiscoverMoviesComponent
   override fun provideEpisodeDetailsComponent() = uiEpisodeDetailsComponent
   override fun provideFanartGalleryComponent() = uiShowGalleryComponent
   override fun provideMyShowsComponent() = uiMyShowsComponent
@@ -77,6 +82,7 @@ abstract class BaseActivity :
 
   protected open fun setupComponents() {
     uiDiscoverComponent = appComponent().uiDiscoverComponent().create()
+    uiDiscoverMoviesComponent = appComponent().uiDiscoverMoviesComponent().create()
     uiEpisodeDetailsComponent = appComponent().uiEpisodeDetailsComponent().create()
     uiMyShowsComponent = appComponent().uiMyShowsComponent().create()
     uiSearchComponent = appComponent().uiSearchComponent().create()

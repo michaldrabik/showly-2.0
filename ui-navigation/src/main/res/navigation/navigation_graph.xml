@@ -23,6 +23,14 @@
     />
 
   <action
+    android:id="@+id/actionNavigateDiscoverMoviesFragment"
+    app:destination="@id/discoverMoviesFragment"
+    app:launchSingleTop="true"
+    app:popUpTo="@id/navigationGraph"
+    app:popUpToInclusive="true"
+    />
+
+  <action
     android:id="@+id/actionNavigateFollowedShowsFragment"
     app:destination="@id/followedShowsFragment"
     app:launchSingleTop="true"
@@ -57,6 +65,23 @@
       />
     <action
       android:id="@+id/actionDiscoverFragmentToSettingsFragment"
+      app:destination="@id/settingsFragment"
+      app:launchSingleTop="true"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/discoverMoviesFragment"
+    android:name="com.michaldrabik.ui_discover_movies.DiscoverMoviesFragment"
+    android:label="fragmentDiscoverMovies"
+    >
+    <action
+      android:id="@+id/actionDiscoverMoviesFragmentToSearchFragment"
+      app:destination="@id/searchFragment"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionDiscoverMoviesFragmentToSettingsFragment"
       app:destination="@id/settingsFragment"
       app:launchSingleTop="true"
       />

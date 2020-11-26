@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.di.module
 import com.michaldrabik.showly2.di.component.ServiceComponent
 import com.michaldrabik.ui_base.di.UiBaseComponent
 import com.michaldrabik.ui_discover.di.UiDiscoverComponent
+import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponent
 import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponent
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
 import com.michaldrabik.ui_progress.di.UiProgressComponent
@@ -19,6 +20,7 @@ import dagger.Module
   subcomponents = [
     UiBaseComponent::class,
     UiDiscoverComponent::class,
+    UiDiscoverMoviesComponent::class,
     UiEpisodeDetailsComponent::class,
     UiFanartGalleryComponent::class,
     UiMyShowsComponent::class,

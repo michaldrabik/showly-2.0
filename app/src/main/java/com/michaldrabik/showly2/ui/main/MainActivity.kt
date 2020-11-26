@@ -142,7 +142,7 @@ class MainActivity :
 
       val target = when (item.itemId) {
         R.id.menuProgress -> R.id.actionNavigateProgressFragment
-        R.id.menuDiscover -> R.id.actionNavigateDiscoverFragment
+        R.id.menuDiscover -> R.id.actionNavigateDiscoverMoviesFragment
         R.id.menuCollection -> R.id.actionNavigateFollowedShowsFragment
         else -> throw IllegalStateException("Invalid menu item.")
       }
