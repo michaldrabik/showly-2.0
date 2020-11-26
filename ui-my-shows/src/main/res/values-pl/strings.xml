@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="menuMyShows">Moje Seriale</string>
-  <string name="menuSeeLater">Na Później</string>
+  <string name="menuWatchlist">Na Później</string>
   <string name="menuArchive">Archiwum</string>
 
-  <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textSearchForMyShows">Szukaj…</string>
   <string name="textMyShowsEmpty">Kolekcja jest obecnie pusta.\n\nWybierz zakładkę <b>Odkrywaj</b> aby dodać swój pierwszy serial.</string>
-  <string name="textSeeLaterEmpty">Kolekcja <b>Na Później</b> jest obecnie pusta.\n\nWybierz zakładkę <b>Odkrywaj</b> aby dodać seriale które chcesz sprawdzić w przyszłości.</string>
+  <string name="textWatchlistEmpty">Kolekcja <b>Na Później</b> jest obecnie pusta.\n\nWybierz zakładkę <b>Odkrywaj</b> aby dodać seriale które chcesz sprawdzić w przyszłości.</string>
   <string name="textArchiveEmpty"><b>Archiwum</b> jest obecnie puste.\n\n<b>Archiwum</b> jest listą porzuconych seriali które już cię nie interesują.\n\nZarchiwizowane seriale nie będą się wyświetlać w sekcjach <b>Progres</b>, <b>Odkrywaj</b> i <b>Moje Seriale</b> oraz będą pominięte podczas importu z Trakt.tv.</string>
 </resources>
