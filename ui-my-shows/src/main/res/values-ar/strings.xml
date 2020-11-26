@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="menuMyShows">مسلسلاتي</string>
-  <string name="menuSeeLater">قائمة المشاهدة</string>
+  <string name="menuWatchlist">قائمة المشاهدة</string>
   <string name="menuArchive">الأرشيف</string>
 
-  <string name="textNetwork">(%2$s) %1$s</string>
   <string name="textSearchForMyShows">بحث…</string>
   <string name="textMyShowsEmpty">مجموعة مسلسلاتك فارغة حالياً.\n\nإذهب إلى صفحة <b>إكتشف</b> وأضف مسلسلك صفح.</string>
-  <string name="textSeeLaterEmpty">مجموعة <b>قائمة المشاهدة</b> فارغة حالياً.\n\nإذهب إلى صفحة <b>إكتشف</b> وأضف ما قد ترغب بمشاهدته في المستقبل.</string>
+  <string name="textWatchlistEmpty">مجموعة <b>قائمة المشاهدة</b> فارغة حالياً.\n\nإذهب إلى صفحة <b>إكتشف</b> وأضف ما قد ترغب بمشاهدته في المستقبل.</string>
   <string name="textArchiveEmpty">قائمة <b>الأرشيف</b> فارغة حالياً.\n\n<b>الأرشيف</b> عبارة عن قائمة بالمسلسلات التي لم تعد ترغب بمتابعتها بعد الآن\n\nالمسلسلات في قائمة الأرشيف لن تظهر في أقسام <b>مستوى التقدم</b>، <b>إكتشف</b> و <b>مسلسلاتي</b> وسيتم تخطيها أثناء المزامنة إلى Trakt.tv.</string>
 </resources>
