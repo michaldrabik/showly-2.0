@@ -26,7 +26,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_gravity="center"
-      android:background="@drawable/bg_show_view_placeholder"
+      android:background="@drawable/bg_media_view_placeholder"
       android:padding="@dimen/spaceBig"
       android:visibility="gone"
       app:srcCompat="@drawable/ic_television"

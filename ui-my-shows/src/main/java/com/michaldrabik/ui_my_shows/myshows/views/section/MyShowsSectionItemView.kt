@@ -48,7 +48,7 @@ class MyShowsSectionItemView : ShowView<MyShowsItem> {
   override fun loadImage(item: MyShowsItem, missingImageListener: ((MyShowsItem, Boolean) -> Unit)?) {
     if (item.image.status == Status.UNAVAILABLE) {
       myShowTitle.visible()
-      myShowRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)
+      myShowRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
     super.loadImage(item, missingImageListener)
   }

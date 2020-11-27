@@ -20,6 +20,9 @@
   <dimen name="showTileCorner">4dp</dimen>
   <dimen name="showTilePlaceholder">40dp</dimen>
 
+  <dimen name="movieTileCorner">4dp</dimen>
+  <dimen name="movieTilePlaceholder">40dp</dimen>
+
   <dimen name="searchViewHeight">48dp</dimen>
   <dimen name="searchViewHeightPadded">64dp</dimen>
   <dimen name="searchViewCorner">4dp</dimen>

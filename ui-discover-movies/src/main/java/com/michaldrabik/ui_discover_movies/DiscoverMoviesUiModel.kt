@@ -1,10 +1,11 @@
 package com.michaldrabik.ui_discover_movies
 
 import com.michaldrabik.ui_base.UiModel
+import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_model.DiscoverFilters
 
 data class DiscoverMoviesUiModel(
-  val movies: List<Int>? = null,
+  val movies: List<DiscoverMovieListItem>? = null,
   val showLoading: Boolean? = null,
   var filters: DiscoverFilters? = null,
   var resetScroll: Boolean? = null

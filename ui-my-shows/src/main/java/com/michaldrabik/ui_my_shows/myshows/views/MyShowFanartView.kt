@@ -44,7 +44,7 @@ class MyShowFanartView : FrameLayout {
   private fun loadImage(image: Image) {
     if (image.status != Image.Status.AVAILABLE) {
       myShowFanartPlaceholder.visible()
-      myShowFanartRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)
+      myShowFanartRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
       return
     }
     Glide.with(this)

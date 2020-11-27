@@ -38,9 +38,7 @@
     <item name="colorBadgeBackground">@color/colorGrayDark</item>
   </style>
 
-  <style name="Show" />
-
-  <style name="Show.Badge" parent="Show">
+  <style name="Badge">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_gravity">top|end</item>
@@ -50,7 +48,7 @@
     <item name="android:tint">@color/colorAccent</item>
   </style>
 
-  <style name="Show.BadgeLater" parent="Show.Badge">
+  <style name="Badge.Watchlist" parent="Badge">
     <item name="android:tint">@color/colorGrayLight</item>
   </style>
 

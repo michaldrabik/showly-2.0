@@ -33,7 +33,7 @@
       android:layout_width="@dimen/myShowAllImageWidth"
       android:layout_height="@dimen/myShowAllImageHeight"
       android:layout_gravity="center"
-      android:background="@drawable/bg_show_view_placeholder"
+      android:background="@drawable/bg_media_view_placeholder"
       android:padding="@dimen/spaceBig"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"

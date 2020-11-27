@@ -33,7 +33,7 @@
       android:layout_width="@dimen/searchSuggestionViewImageWidth"
       android:layout_height="@dimen/searchSuggestionViewImageHeight"
       android:layout_gravity="center"
-      android:background="@drawable/bg_show_view_placeholder"
+      android:background="@drawable/bg_media_view_placeholder"
       android:padding="10dp"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"

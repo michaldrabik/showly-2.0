@@ -48,7 +48,7 @@ class ShowPosterView : ShowView<DiscoverListItem> {
   override fun loadImage(item: DiscoverListItem, missingImageListener: ((DiscoverListItem, Boolean) -> Unit)?) {
     if (item.image.status == UNAVAILABLE) {
       showPosterTitle.visible()
-      showPosterRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)
+      showPosterRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
     super.loadImage(item, missingImageListener)
   }
@@ -62,7 +62,7 @@ class ShowPosterView : ShowView<DiscoverListItem> {
     super.onImageLoadFail(item, missingImageListener)
     if (item.image.status == AVAILABLE) {
       showPosterTitle.visible()
-      showPosterRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)
+      showPosterRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
   }
 

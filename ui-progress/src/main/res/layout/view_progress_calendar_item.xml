@@ -31,7 +31,7 @@
       android:layout_width="@dimen/progressImageWidth"
       android:layout_height="@dimen/progressImageHeight"
       android:layout_marginStart="@dimen/spaceMedium"
-      android:background="@drawable/bg_show_view_placeholder"
+      android:background="@drawable/bg_media_view_placeholder"
       android:padding="@dimen/spaceBig"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
