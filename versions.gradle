@@ -5,7 +5,7 @@ ext.versions = [
     minSdk                 : 21,
     compileSdk             : 29,
 
-    kotlin                 : '1.4.10',
+    kotlin                 : '1.4.20',
     kotlinCoroutines       : '1.4.1',
     gradleBuildTools       : '4.1.1',
 
