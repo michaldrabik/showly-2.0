@@ -14,6 +14,7 @@ import com.michaldrabik.ui_discover.cases.DiscoverShowsCase
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageFamily.MOVIE
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -90,7 +91,7 @@ class DiscoverViewModel @Inject constructor(
         val image = imagesProvider.loadRemoteImage(item.show, item.image.type, force)
         updateShowsItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
-        updateShowsItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
+        updateShowsItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type, MOVIE)))
       }
     }
   }

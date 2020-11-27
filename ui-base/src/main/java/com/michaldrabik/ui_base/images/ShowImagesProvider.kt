@@ -5,6 +5,7 @@ import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.aws.model.AwsImages
 import com.michaldrabik.network.tvdb.model.TvdbImage
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
@@ -48,6 +49,7 @@ class ShowImagesProvider @Inject constructor(
 
   suspend fun loadRemoteImage(show: Show, type: ImageType, force: Boolean = false): Image {
     val tvdbId = show.ids.tvdb
+    val tmdbId = show.ids.tmdb
     val cachedImage = findCachedImage(show, type)
     if (cachedImage.status == AVAILABLE && !force) {
       return cachedImage
@@ -102,6 +104,7 @@ class ShowImagesProvider @Inject constructor(
       else -> Image(
         remoteImage.id ?: -1,
         tvdbId,
+        tmdbId,
         type,
         SHOW,
         remoteImage.fileName ?: "",
@@ -117,8 +120,8 @@ class ShowImagesProvider @Inject constructor(
         database.showImagesDao().deleteByShowId(tvdbId.id, image.type.key)
       }
       else -> {
-        database.showImagesDao().insertShowImage(mappers.image.toDatabase(image))
-        storeExtraImage(tvdbId, images, type)
+        database.showImagesDao().insertShowImage(mappers.image.toDatabaseShow(image))
+        storeExtraImage(tvdbId, tmdbId, images, type)
       }
     }
 
@@ -126,7 +129,8 @@ class ShowImagesProvider @Inject constructor(
   }
 
   private suspend fun storeExtraImage(
-    id: IdTvdb,
+    tvdbId: IdTvdb,
+    tmdbId: IdTmdb,
     images: List<TvdbImage>,
     targetType: ImageType
   ) {
@@ -135,13 +139,14 @@ class ShowImagesProvider @Inject constructor(
       .filter { it.keyType == extraType.key }
       .maxByOrNull { it.rating?.count ?: 0 }
       ?.let {
-        val extraImage = Image(it.id ?: -1, id, extraType, SHOW, it.fileName ?: "", it.thumbnail ?: "", AVAILABLE, TVDB)
-        database.showImagesDao().insertShowImage(mappers.image.toDatabase(extraImage))
+        val extraImage = Image(it.id ?: -1, tvdbId, tmdbId, extraType, SHOW, it.fileName ?: "", it.thumbnail ?: "", AVAILABLE, TVDB)
+        database.showImagesDao().insertShowImage(mappers.image.toDatabaseShow(extraImage))
       }
   }
 
   suspend fun loadRemoteImages(show: Show, type: ImageType): List<Image> {
     val tvdbId = show.ids.tvdb
+    val tmdbId = show.ids.tmdb
 
     userManager.checkAuthorization()
     val remoteImages = cloud.tvdbApi.fetchShowImages(userManager.getToken(), tvdbId.id)
@@ -149,7 +154,7 @@ class ShowImagesProvider @Inject constructor(
     return remoteImages
       .filter { it.keyType == type.key }
       .map {
-        Image(it.id ?: -1, tvdbId, type, SHOW, it.fileName ?: "", it.thumbnail ?: "", AVAILABLE, TVDB)
+        Image(it.id ?: -1, tvdbId, tmdbId, type, SHOW, it.fileName ?: "", it.thumbnail ?: "", AVAILABLE, TVDB)
       }
   }
 

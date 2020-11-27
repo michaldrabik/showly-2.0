@@ -3,9 +3,9 @@ package com.michaldrabik.ui_repository.mappers
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageSource
 import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
-import com.michaldrabik.ui_model.MovieImage
 import java.util.Locale.ROOT
 import javax.inject.Inject
 import com.michaldrabik.storage.database.model.MovieImage as MovieImageDb
@@ -17,6 +17,7 @@ class ImageMapper @Inject constructor() {
     return Image(
       imageDb.id,
       IdTvdb(imageDb.idTvdb),
+      IdTmdb(),
       enumValueOf(imageDb.type.toUpperCase(ROOT)),
       enumValueOf(imageDb.family.toUpperCase(ROOT)),
       imageDb.fileUrl,
@@ -26,18 +27,21 @@ class ImageMapper @Inject constructor() {
     )
   }
 
-  fun fromDatabase(imageDb: MovieImageDb): MovieImage {
-    return MovieImage(
+  fun fromDatabase(imageDb: MovieImageDb): Image {
+    return Image(
       imageDb.id,
+      IdTvdb(),
       IdTmdb(imageDb.idTmdb),
       enumValueOf(imageDb.type.toUpperCase(ROOT)),
+      ImageFamily.MOVIE,
       imageDb.fileUrl,
+      "",
       AVAILABLE,
       ImageSource.fromKey(imageDb.source)
     )
   }
 
-  fun toDatabase(image: Image): ShowImageDb =
+  fun toDatabaseShow(image: Image): ShowImageDb =
     ShowImageDb(
       idTvdb = image.idTvdb.id,
       type = image.type.key,
@@ -47,7 +51,7 @@ class ImageMapper @Inject constructor() {
       source = image.source.key
     )
 
-  fun toDatabase(image: MovieImage): MovieImageDb =
+  fun toDatabaseMovie(image: Image): MovieImageDb =
     MovieImageDb(
       idTmdb = image.idTmdb.id,
       type = image.type.key,

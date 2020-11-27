@@ -6,6 +6,9 @@ import com.michaldrabik.network.tmdb.model.TmdbImages
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.IdTvdb
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageFamily.MOVIE
 import com.michaldrabik.ui_model.ImageSource.TMDB
 import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
@@ -14,7 +17,6 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.MovieImage
 import com.michaldrabik.ui_repository.mappers.Mappers
 import javax.inject.Inject
 
@@ -27,21 +29,22 @@ class MovieImagesProvider @Inject constructor(
 
   private val unavailableCache = mutableListOf<IdTrakt>()
 
-  suspend fun findCachedImage(movie: Movie, type: ImageType): MovieImage {
+  suspend fun findCachedImage(movie: Movie, type: ImageType): Image {
     val image = database.movieImagesDao().getByMovieId(movie.ids.tmdb.id, type.key)
     return when (image) {
       null ->
         if (unavailableCache.contains(movie.ids.trakt)) {
-          MovieImage.createUnavailable(type)
+          Image.createUnavailable(type, MOVIE)
         } else {
-          MovieImage.createUnknown(type)
+          Image.createUnknown(type, MOVIE)
         }
       else -> mappers.image.fromDatabase(image).copy(type = type)
     }
   }
 
-  suspend fun loadRemoteImage(movie: Movie, type: ImageType, force: Boolean = false): MovieImage {
+  suspend fun loadRemoteImage(movie: Movie, type: ImageType, force: Boolean = false): Image {
     val tmdbId = movie.ids.tmdb
+    val tvdbId = movie.ids.tvdb
     val cachedImage = findCachedImage(movie, type)
     if (cachedImage.status == AVAILABLE && !force) {
       return cachedImage
@@ -55,12 +58,15 @@ class MovieImagesProvider @Inject constructor(
 
     val remoteImage = typeImages.firstOrNull()
     val image = when (remoteImage) {
-      null -> MovieImage.createUnavailable(type)
-      else -> MovieImage(
+      null -> Image.createUnavailable(type, MOVIE)
+      else -> Image(
         -1,
+        tvdbId,
         tmdbId,
         type,
+        MOVIE,
         remoteImage.file_path,
+        "",
         AVAILABLE,
         TMDB
       )
@@ -72,8 +78,8 @@ class MovieImagesProvider @Inject constructor(
         database.movieImagesDao().deleteByMovieId(tmdbId.id, image.type.key)
       }
       else -> {
-        database.movieImagesDao().insertMovieImage(mappers.image.toDatabase(image))
-        storeExtraImage(tmdbId, images, type)
+        database.movieImagesDao().insertMovieImage(mappers.image.toDatabaseMovie(image))
+        storeExtraImage(tmdbId, tvdbId, images, type)
       }
     }
 
@@ -81,7 +87,8 @@ class MovieImagesProvider @Inject constructor(
   }
 
   private suspend fun storeExtraImage(
-    id: IdTmdb,
+    tmdbId: IdTmdb,
+    tvdbId: IdTvdb,
     images: TmdbImages,
     targetType: ImageType
   ) {
@@ -93,12 +100,12 @@ class MovieImagesProvider @Inject constructor(
     typeImages
       .firstOrNull()
       ?.let {
-        val extraImage = MovieImage(-1, id, extraType, it.file_path, AVAILABLE, TMDB)
-        database.movieImagesDao().insertMovieImage(mappers.image.toDatabase(extraImage))
+        val extraImage = Image(-1, tvdbId, tmdbId, extraType, MOVIE, it.file_path, "", AVAILABLE, TMDB)
+        database.movieImagesDao().insertMovieImage(mappers.image.toDatabaseMovie(extraImage))
       }
   }
 
-  suspend fun loadRemoteImages(movie: Movie, type: ImageType): List<MovieImage> {
+  suspend fun loadRemoteImages(movie: Movie, type: ImageType): List<Image> {
     val tmdbId = movie.ids.tmdb
     val remoteImages = cloud.tmdbApi.fetchMovieImages(tmdbId.id)
     val typeImages = when (type) {
@@ -108,7 +115,7 @@ class MovieImagesProvider @Inject constructor(
 
     return typeImages
       .map {
-        MovieImage(-1, tmdbId, type, it.file_path, AVAILABLE, TMDB)
+        Image(-1, movie.ids.tvdb, tmdbId, type, MOVIE, it.file_path, "", AVAILABLE, TMDB)
       }
   }
 

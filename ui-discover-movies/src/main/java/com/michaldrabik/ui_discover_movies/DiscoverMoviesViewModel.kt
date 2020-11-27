@@ -13,7 +13,9 @@ import com.michaldrabik.ui_discover_movies.cases.DiscoverFiltersCase
 import com.michaldrabik.ui_discover_movies.cases.DiscoverMoviesCase
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_model.DiscoverFilters
-import com.michaldrabik.ui_model.MovieImage
+import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageFamily.MOVIE
+import com.michaldrabik.ui_model.ImageSource.TMDB
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -90,7 +92,7 @@ class DiscoverMoviesViewModel @Inject constructor(
         val image = imagesProvider.loadRemoteImage(item.movie, item.image.type, force)
         updateMoviesItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
-        updateMoviesItem(item.copy(isLoading = false, image = MovieImage.createUnavailable(item.image.type)))
+        updateMoviesItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type, MOVIE, TMDB)))
       }
     }
   }

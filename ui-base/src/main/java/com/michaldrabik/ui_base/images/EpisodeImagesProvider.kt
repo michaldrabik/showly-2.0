@@ -47,6 +47,7 @@ class EpisodeImagesProvider @Inject constructor(
         else -> Image(
           remoteImage.id ?: -1,
           tvdbId,
+          episode.ids.tmdb,
           FANART,
           EPISODE,
           remoteImage.fileName ?: "",
@@ -59,7 +60,7 @@ class EpisodeImagesProvider @Inject constructor(
 
     when (image.status) {
       UNAVAILABLE -> database.showImagesDao().deleteByEpisodeId(tvdbId.id, image.type.key)
-      else -> database.showImagesDao().insertEpisodeImage(mappers.image.toDatabase(image))
+      else -> database.showImagesDao().insertEpisodeImage(mappers.image.toDatabaseShow(image))
     }
 
     return image
