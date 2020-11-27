@@ -25,14 +25,8 @@ class MainViewModel @Inject constructor(
     viewModelScope.launch {
       initCase.initSettings()
       checkInitialRun()
-      checkIsMovies()
       initCase.initFcm()
     }
-  }
-
-  private suspend fun checkIsMovies() {
-    val mode = miscCase.getMode()
-    uiState = MainUiModel(mode = mode)
   }
 
   private suspend fun checkInitialRun() {
@@ -40,9 +34,10 @@ class MainViewModel @Inject constructor(
     if (isInitialRun) {
       initCase.setInitialRun(false)
     }
+    val mode = miscCase.getMode()
     val showWhatsNew = initCase.showWhatsNew(isInitialRun)
     val showRateApp = rateAppCase.shouldShowRateApp()
-    uiState = MainUiModel(isInitialRun = isInitialRun, showWhatsNew = showWhatsNew, showRateApp = showRateApp)
+    uiState = MainUiModel(isInitialRun = isInitialRun, showWhatsNew = showWhatsNew, showRateApp = showRateApp, mode = mode)
   }
 
   fun refreshAnnouncements(context: Context) {
@@ -63,7 +58,7 @@ class MainViewModel @Inject constructor(
   fun setMode(mode: Mode) {
     viewModelScope.launch {
       miscCase.setMode(mode)
-      uiState = MainUiModel(mode = mode)
+      uiState = MainUiModel(isInitialRun = false, showWhatsNew = false, showRateApp = false, mode = mode)
     }
   }
 

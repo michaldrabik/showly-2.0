@@ -9,7 +9,6 @@ import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.DiscoverMovie
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.mappers.Mappers
 import javax.inject.Inject
 
@@ -25,7 +24,7 @@ class DiscoverMoviesRepository @Inject constructor(
     return nowUtcMillis() - stamp < Config.DISCOVER_MOVIES_CACHE_DURATION
   }
 
-  suspend fun loadAllCached(): List<Show> {
+  suspend fun loadAllCached(): List<Movie> {
     val cachedMovies = database.discoverMoviesDao().getAll().map { it.idTrakt }
     val movies = database.moviesDao().getAll(cachedMovies)
 

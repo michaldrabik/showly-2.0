@@ -238,12 +238,16 @@ class MainActivity :
 
   private fun render(uiModel: MainUiModel) {
     uiModel.run {
-      isInitialRun?.let { if (it) openTab(R.id.menuDiscover) }
+      isInitialRun?.let {
+        if (it) openTab(R.id.menuDiscover)
+      }
       mode?.let {
-        this@MainActivity.mode = it
-        if (bottomNavigationView.selectedItemId == R.id.menuDiscover) {
-          val target = getMenuDiscoverAction()
-          navigationHost.findNavController().navigate(target)
+        if (this@MainActivity.mode != it) {
+          this@MainActivity.mode = it
+          if (bottomNavigationView.selectedItemId == R.id.menuDiscover) {
+            val target = getMenuDiscoverAction()
+            navigationHost.findNavController().navigate(target)
+          }
         }
       }
       showWhatsNew?.let { if (it) showWhatsNew() }

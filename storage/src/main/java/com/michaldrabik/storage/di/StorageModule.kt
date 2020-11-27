@@ -3,8 +3,8 @@ package com.michaldrabik.storage.di
 import android.content.Context
 import androidx.room.Room
 import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.DATABASE_NAME
-import com.michaldrabik.storage.database.Migrations.MIGRATIONS
+import com.michaldrabik.storage.database.migrations.DATABASE_NAME
+import com.michaldrabik.storage.database.migrations.Migrations.MIGRATIONS
 import dagger.Module
 import dagger.Provides
 import timber.log.Timber

@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_repository.mappers
 
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.MovieStatus
 import javax.inject.Inject
 import com.michaldrabik.network.trakt.model.Movie as MovieNetwork

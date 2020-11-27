@@ -22,6 +22,7 @@ import com.michaldrabik.storage.database.dao.TraktSyncQueueDao
 import com.michaldrabik.storage.database.dao.TranslationsSyncLogDao
 import com.michaldrabik.storage.database.dao.UserDao
 import com.michaldrabik.storage.database.dao.WatchlistShowsDao
+import com.michaldrabik.storage.database.migrations.DATABASE_VERSION
 import com.michaldrabik.storage.database.model.Actor
 import com.michaldrabik.storage.database.model.ArchiveShow
 import com.michaldrabik.storage.database.model.DiscoverMovie

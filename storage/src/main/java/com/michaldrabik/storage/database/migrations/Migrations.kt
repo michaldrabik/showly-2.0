@@ -1,4 +1,4 @@
-package com.michaldrabik.storage.database
+package com.michaldrabik.storage.database.migrations
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -6,6 +6,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 const val DATABASE_VERSION = 15
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
+//TODO Split into separate files
 object Migrations {
 
   private val MIGRATION_1_2 = object : Migration(1, 2) {
@@ -153,14 +154,16 @@ object Migrations {
           "`updated_at` INTEGER NOT NULL)"
       )
 
-      //TODO
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `movies_discover` (" +
           "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
           "`id_trakt` INTEGER NOT NULL, " +
           "`created_at` INTEGER NOT NULL, " +
-          "`updated_at` INTEGER NOT NULL)"
+          "`updated_at` INTEGER NOT NULL, " +
+          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE" +
+          ")"
       )
+      database.execSQL("CREATE INDEX index_discover_movies_id_trakt ON movies_discover(id_trakt)")
     }
   }
 
