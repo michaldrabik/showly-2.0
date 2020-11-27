@@ -10,6 +10,7 @@ import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageSource
+import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.ShowStatus
@@ -52,7 +53,7 @@ object TestData {
       family = ImageFamily.SHOW,
       fileUrl = "",
       thumbnailUrl = "",
-      status = Image.Status.UNKNOWN,
+      status = ImageStatus.UNKNOWN,
       source = ImageSource.TVDB
     ),
     isLoading = false, isFollowed = false, isWatchlist = false

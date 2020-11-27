@@ -20,7 +20,7 @@ import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_
 import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_CONTENT
 import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_IMAGE_URL
 import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_TITLE
-import com.michaldrabik.ui_model.Image.Status.AVAILABLE
+import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.NotificationDelay

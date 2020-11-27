@@ -5,6 +5,7 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
@@ -22,7 +23,7 @@ class FanartLoadImagesCase @Inject constructor(
 
   suspend fun loadAllImages(id: IdTrakt, initialImage: Image): List<Image> {
     val images = mutableListOf<Image>()
-    if (initialImage.status == Image.Status.AVAILABLE) {
+    if (initialImage.status == ImageStatus.AVAILABLE) {
       images.add(initialImage)
     }
 

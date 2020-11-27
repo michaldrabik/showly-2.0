@@ -4,6 +4,8 @@ import com.michaldrabik.common.Config.AWS_IMAGE_BASE_URL
 import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.ui_model.ImageSource.AWS
 import com.michaldrabik.ui_model.ImageSource.TVDB
+import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
+import com.michaldrabik.ui_model.ImageStatus.UNKNOWN
 
 data class Image(
   val id: Long,
@@ -12,20 +14,9 @@ data class Image(
   val family: ImageFamily,
   val fileUrl: String,
   val thumbnailUrl: String,
-  val status: Status,
+  val status: ImageStatus,
   val source: ImageSource
 ) {
-
-  /**
-   * AVAILABLE - image's web url is known to be valid when used the last time.
-   * UNKNOWN - image's web url has not been yet checked with remote images service (TVDB).
-   * UNAVAILABLE - remote images service does not contain any valid image url.
-   */
-  enum class Status {
-    AVAILABLE,
-    UNKNOWN,
-    UNAVAILABLE
-  }
 
   val fullFileUrl = when (source) {
     TVDB -> "$TVDB_IMAGE_BASE_BANNERS_URL$fileUrl"
@@ -35,9 +26,9 @@ data class Image(
 
   companion object {
     fun createUnknown(type: ImageType, family: ImageFamily = ImageFamily.SHOW) =
-      Image(0, IdTvdb(0), type, family, "", "", Status.UNKNOWN, TVDB)
+      Image(0, IdTvdb(0), type, family, "", "", UNKNOWN, TVDB)
 
     fun createUnavailable(type: ImageType, family: ImageFamily = ImageFamily.SHOW) =
-      Image(0, IdTvdb(0), type, family, "", "", Status.UNAVAILABLE, TVDB)
+      Image(0, IdTvdb(0), type, family, "", "", UNAVAILABLE, TVDB)
   }
 }

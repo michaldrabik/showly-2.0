@@ -15,6 +15,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import kotlinx.android.synthetic.main.view_my_shows_fanart.view.*
@@ -42,7 +43,7 @@ class MyShowFanartView : FrameLayout {
   }
 
   private fun loadImage(image: Image) {
-    if (image.status != Image.Status.AVAILABLE) {
+    if (image.status != ImageStatus.AVAILABLE) {
       myShowFanartPlaceholder.visible()
       myShowFanartRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
       return

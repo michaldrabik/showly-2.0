@@ -4,6 +4,7 @@ import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageSource
+import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.MovieImage
 import java.util.Locale.ROOT
 import javax.inject.Inject
@@ -20,7 +21,7 @@ class ImageMapper @Inject constructor() {
       enumValueOf(imageDb.family.toUpperCase(ROOT)),
       imageDb.fileUrl,
       imageDb.thumbnailUrl,
-      Image.Status.AVAILABLE,
+      AVAILABLE,
       ImageSource.fromKey(imageDb.source)
     )
   }
@@ -31,7 +32,7 @@ class ImageMapper @Inject constructor() {
       IdTmdb(imageDb.idTmdb),
       enumValueOf(imageDb.type.toUpperCase(ROOT)),
       imageDb.fileUrl,
-      MovieImage.Status.AVAILABLE,
+      AVAILABLE,
       ImageSource.fromKey(imageDb.source)
     )
   }

@@ -19,10 +19,10 @@ import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
+import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
+import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
+import com.michaldrabik.ui_model.ImageStatus.UNKNOWN
 import com.michaldrabik.ui_model.ImageType.POSTER
-import com.michaldrabik.ui_model.MovieImage.Status.AVAILABLE
-import com.michaldrabik.ui_model.MovieImage.Status.UNAVAILABLE
-import com.michaldrabik.ui_model.MovieImage.Status.UNKNOWN
 
 abstract class MovieView<Item : MovieListItem> : FrameLayout {
 

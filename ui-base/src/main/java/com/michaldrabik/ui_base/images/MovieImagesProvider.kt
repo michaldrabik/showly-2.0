@@ -7,14 +7,14 @@ import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageSource.TMDB
+import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
+import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.MovieImage
-import com.michaldrabik.ui_model.MovieImage.Status.AVAILABLE
-import com.michaldrabik.ui_model.MovieImage.Status.UNAVAILABLE
 import com.michaldrabik.ui_repository.mappers.Mappers
 import javax.inject.Inject
 

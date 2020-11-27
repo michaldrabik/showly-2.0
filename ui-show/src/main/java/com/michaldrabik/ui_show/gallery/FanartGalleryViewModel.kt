@@ -3,7 +3,7 @@ package com.michaldrabik.ui_show.gallery
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_model.IdTrakt
-import com.michaldrabik.ui_model.Image.Status
+import com.michaldrabik.ui_model.ImageStatus
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,7 +14,7 @@ class FanartGalleryViewModel @Inject constructor(
   fun loadImage(id: IdTrakt) {
     viewModelScope.launch {
       val image = imagesCase.loadInitialImage(id)
-      if (image.status == Status.AVAILABLE) {
+      if (image.status == ImageStatus.AVAILABLE) {
         uiState = FanartGalleryUiModel(listOf(image))
       }
       try {
