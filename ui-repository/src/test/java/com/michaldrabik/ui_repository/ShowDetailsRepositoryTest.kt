@@ -2,7 +2,7 @@ package com.michaldrabik.ui_repository
 
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.network.trakt.api.TraktApi
+import com.michaldrabik.network.tmdb.api.TraktApi
 import com.michaldrabik.network.trakt.model.TraktUser
 import com.michaldrabik.storage.database.dao.ShowsDao
 import com.michaldrabik.storage.database.model.Show

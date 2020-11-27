@@ -11,8 +11,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
-import com.michaldrabik.ui_model.Image.Status.AVAILABLE
-import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
+import com.michaldrabik.ui_model.MovieImage.Status
 import kotlinx.android.synthetic.main.view_movie_poster.view.*
 
 class MoviePosterView : MovieView<DiscoverMovieListItem> {
@@ -46,7 +45,7 @@ class MoviePosterView : MovieView<DiscoverMovieListItem> {
   }
 
   override fun loadImage(item: DiscoverMovieListItem, missingImageListener: ((DiscoverMovieListItem, Boolean) -> Unit)?) {
-    if (item.image.status == UNAVAILABLE) {
+    if (item.image.status == Status.UNAVAILABLE) {
       moviePosterTitle.visible()
       moviePosterRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
@@ -60,7 +59,7 @@ class MoviePosterView : MovieView<DiscoverMovieListItem> {
 
   override fun onImageLoadFail(item: DiscoverMovieListItem, missingImageListener: ((DiscoverMovieListItem, Boolean) -> Unit)?) {
     super.onImageLoadFail(item, missingImageListener)
-    if (item.image.status == AVAILABLE) {
+    if (item.image.status == Status.AVAILABLE) {
       moviePosterTitle.visible()
       moviePosterRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }

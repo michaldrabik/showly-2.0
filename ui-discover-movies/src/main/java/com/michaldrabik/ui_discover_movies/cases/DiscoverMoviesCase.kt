@@ -2,15 +2,13 @@ package com.michaldrabik.ui_discover_movies.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.DiscoverSortOrder
 import com.michaldrabik.ui_model.DiscoverSortOrder.HOT
 import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
 import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
-import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
@@ -27,7 +25,7 @@ import javax.inject.Inject
 class DiscoverMoviesCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val tvdbUserManager: UserTvdbManager,
-  private val imagesProvider: ShowImagesProvider,
+  private val imagesProvider: MovieImagesProvider,
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository
 ) {
@@ -89,8 +87,7 @@ class DiscoverMoviesCase @Inject constructor(
             in (5..500 step 14), in (9..500 step 14) -> ImageType.FANART
             else -> ImageType.POSTER
           }
-//          val image = imagesProvider.findCachedImage(show, itemType)
-          val image = Image.createUnavailable(itemType, ImageFamily.MOVIE)
+          val image = imagesProvider.findCachedImage(movie, itemType)
 //          val translation = loadTranslation(language, itemType, show)
           DiscoverMovieListItem(
             movie,

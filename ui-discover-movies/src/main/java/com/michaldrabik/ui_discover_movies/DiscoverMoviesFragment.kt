@@ -97,7 +97,7 @@ class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fr
   private fun setupRecycler() {
     layoutManager = GridLayoutManager(context, Config.MAIN_GRID_SPAN)
     adapter = DiscoverMoviesAdapter().apply {
-//      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
 //      itemClickListener = { navigateToDetails(it) }
       listChangeListener = { discoverMoviesRecycler.scrollToPosition(0) }
     }

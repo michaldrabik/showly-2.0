@@ -24,7 +24,7 @@ class EpisodeImagesProvider @Inject constructor(
 ) {
 
   private suspend fun findCachedImage(episode: Episode, type: ImageType): Image {
-    val cachedImage = database.imagesDao().getByEpisodeId(episode.ids.tvdb.id, type.key)
+    val cachedImage = database.showImagesDao().getByEpisodeId(episode.ids.tvdb.id, type.key)
     return when (cachedImage) {
       null -> Image.createUnknown(type, EPISODE)
       else -> mappers.image.fromDatabase(cachedImage).copy(type = type)
@@ -58,8 +58,8 @@ class EpisodeImagesProvider @Inject constructor(
     }
 
     when (image.status) {
-      UNAVAILABLE -> database.imagesDao().deleteByEpisodeId(tvdbId.id, image.type.key)
-      else -> database.imagesDao().insertEpisodeImage(mappers.image.toDatabase(image))
+      UNAVAILABLE -> database.showImagesDao().deleteByEpisodeId(tvdbId.id, image.type.key)
+      else -> database.showImagesDao().insertEpisodeImage(mappers.image.toDatabase(image))
     }
 
     return image

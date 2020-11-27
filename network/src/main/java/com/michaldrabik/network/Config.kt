@@ -20,5 +20,8 @@ object Config {
   const val TVDB_BASE_URL = "https://api.thetvdb.com/"
   const val TVDB_API_KEY = BuildConfig.TVDB_API_KEY
 
+  const val TMDB_BASE_URL = "https://api.themoviedb.org/3/"
+  const val TMDB_API_KEY = BuildConfig.TMDB_API_KEY
+
   const val AWS_BASE_URL = "https://showly2.s3.eu-west-2.amazonaws.com/"
 }

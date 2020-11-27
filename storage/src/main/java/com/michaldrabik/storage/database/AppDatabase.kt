@@ -9,13 +9,14 @@ import com.michaldrabik.storage.database.dao.DiscoverShowsDao
 import com.michaldrabik.storage.database.dao.EpisodeTranslationsDao
 import com.michaldrabik.storage.database.dao.EpisodesDao
 import com.michaldrabik.storage.database.dao.EpisodesSyncLogDao
-import com.michaldrabik.storage.database.dao.ImagesDao
+import com.michaldrabik.storage.database.dao.MovieImagesDao
 import com.michaldrabik.storage.database.dao.MoviesDao
 import com.michaldrabik.storage.database.dao.MyShowsDao
 import com.michaldrabik.storage.database.dao.RecentSearchDao
 import com.michaldrabik.storage.database.dao.RelatedShowsDao
 import com.michaldrabik.storage.database.dao.SeasonsDao
 import com.michaldrabik.storage.database.dao.SettingsDao
+import com.michaldrabik.storage.database.dao.ShowImagesDao
 import com.michaldrabik.storage.database.dao.ShowTranslationsDao
 import com.michaldrabik.storage.database.dao.ShowsDao
 import com.michaldrabik.storage.database.dao.TraktSyncQueueDao
@@ -30,14 +31,15 @@ import com.michaldrabik.storage.database.model.DiscoverShow
 import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.EpisodeTranslation
 import com.michaldrabik.storage.database.model.EpisodesSyncLog
-import com.michaldrabik.storage.database.model.Image
 import com.michaldrabik.storage.database.model.Movie
+import com.michaldrabik.storage.database.model.MovieImage
 import com.michaldrabik.storage.database.model.MyShow
 import com.michaldrabik.storage.database.model.RecentSearch
 import com.michaldrabik.storage.database.model.RelatedShow
 import com.michaldrabik.storage.database.model.Season
 import com.michaldrabik.storage.database.model.Settings
 import com.michaldrabik.storage.database.model.Show
+import com.michaldrabik.storage.database.model.ShowImage
 import com.michaldrabik.storage.database.model.ShowTranslation
 import com.michaldrabik.storage.database.model.TraktSyncQueue
 import com.michaldrabik.storage.database.model.TranslationsSyncLog
@@ -55,7 +57,8 @@ import com.michaldrabik.storage.database.model.WatchlistShow
     WatchlistShow::class,
     ArchiveShow::class,
     RelatedShow::class,
-    Image::class,
+    ShowImage::class,
+    MovieImage::class,
     User::class,
     Season::class,
     Actor::class,
@@ -88,7 +91,9 @@ abstract class AppDatabase : RoomDatabase() {
 
   abstract fun relatedShowsDao(): RelatedShowsDao
 
-  abstract fun imagesDao(): ImagesDao
+  abstract fun showImagesDao(): ShowImagesDao
+
+  abstract fun movieImagesDao(): MovieImagesDao
 
   abstract fun userDao(): UserDao
 

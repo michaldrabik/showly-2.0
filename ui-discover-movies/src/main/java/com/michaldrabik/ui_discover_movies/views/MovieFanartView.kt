@@ -11,7 +11,7 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
-import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.MovieImage.Status
 import kotlinx.android.synthetic.main.view_movie_fanart.view.*
 
 class MovieFanartView : MovieView<DiscoverMovieListItem> {
@@ -48,7 +48,7 @@ class MovieFanartView : MovieView<DiscoverMovieListItem> {
 
   override fun loadImage(item: DiscoverMovieListItem, missingImageListener: ((DiscoverMovieListItem, Boolean) -> Unit)?) {
     super.loadImage(item, missingImageListener)
-    if (item.image.status == Image.Status.UNAVAILABLE) {
+    if (item.image.status == Status.UNAVAILABLE) {
       movieFanartRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
   }

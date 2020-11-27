@@ -34,7 +34,7 @@ class ShowImagesProvider @Inject constructor(
   private var awsImagesCache: AwsImages? = null
 
   suspend fun findCachedImage(show: Show, type: ImageType): Image {
-    val image = database.imagesDao().getByShowId(show.ids.tvdb.id, type.key)
+    val image = database.showImagesDao().getByShowId(show.ids.tvdb.id, type.key)
     return when (image) {
       null ->
         if (unavailableCache.contains(show.ids.trakt)) {
@@ -114,10 +114,10 @@ class ShowImagesProvider @Inject constructor(
     when (image.status) {
       UNAVAILABLE -> {
         unavailableCache.add(show.ids.trakt)
-        database.imagesDao().deleteByShowId(tvdbId.id, image.type.key)
+        database.showImagesDao().deleteByShowId(tvdbId.id, image.type.key)
       }
       else -> {
-        database.imagesDao().insertShowImage(mappers.image.toDatabase(image))
+        database.showImagesDao().insertShowImage(mappers.image.toDatabase(image))
         storeExtraImage(tvdbId, images, type)
       }
     }
@@ -136,7 +136,7 @@ class ShowImagesProvider @Inject constructor(
       .maxByOrNull { it.rating?.count ?: 0 }
       ?.let {
         val extraImage = Image(it.id ?: -1, id, extraType, SHOW, it.fileName ?: "", it.thumbnail ?: "", AVAILABLE, TVDB)
-        database.imagesDao().insertShowImage(mappers.image.toDatabase(extraImage))
+        database.showImagesDao().insertShowImage(mappers.image.toDatabase(extraImage))
       }
   }
 
@@ -160,5 +160,5 @@ class ShowImagesProvider @Inject constructor(
     }
   }
 
-  suspend fun deleteLocalCache() = database.imagesDao().deleteAll()
+  suspend fun deleteLocalCache() = database.showImagesDao().deleteAll()
 }

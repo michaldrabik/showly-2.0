@@ -5,19 +5,19 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
-import com.michaldrabik.storage.database.model.Image
+import com.michaldrabik.storage.database.model.ShowImage
 
 @Dao
-interface ImagesDao {
+interface ShowImagesDao {
 
   @Query("SELECT * FROM shows_images WHERE id_tvdb = :tvdbId AND type = :type AND family = 'show'")
-  suspend fun getByShowId(tvdbId: Long, type: String): Image?
+  suspend fun getByShowId(tvdbId: Long, type: String): ShowImage?
 
   @Query("SELECT * FROM shows_images WHERE id_tvdb = :tvdbId AND type = :type AND family = 'episode'")
-  suspend fun getByEpisodeId(tvdbId: Long, type: String): Image?
+  suspend fun getByEpisodeId(tvdbId: Long, type: String): ShowImage?
 
   @Transaction
-  suspend fun insertShowImage(image: Image) {
+  suspend fun insertShowImage(image: ShowImage) {
     val localImage = getByShowId(image.idTvdb, image.type)
     if (localImage != null) {
       val updated = image.copy(id = localImage.id)
@@ -28,7 +28,7 @@ interface ImagesDao {
   }
 
   @Transaction
-  suspend fun insertEpisodeImage(image: Image) {
+  suspend fun insertEpisodeImage(image: ShowImage) {
     val localImage = getByEpisodeId(image.idTvdb, image.type)
     if (localImage != null) {
       val updated = image.copy(id = localImage.id)
@@ -39,7 +39,7 @@ interface ImagesDao {
   }
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun upsert(image: Image)
+  suspend fun upsert(image: ShowImage)
 
   @Query("DELETE FROM shows_images WHERE id_tvdb = :id AND type = :type AND family = 'show'")
   suspend fun deleteByShowId(id: Long, type: String)

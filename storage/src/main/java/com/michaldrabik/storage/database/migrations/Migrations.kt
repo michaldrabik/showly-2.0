@@ -164,6 +164,15 @@ object Migrations {
           ")"
       )
       database.execSQL("CREATE INDEX index_discover_movies_id_trakt ON movies_discover(id_trakt)")
+
+      database.execSQL(
+        "CREATE TABLE IF NOT EXISTS `movies_images` (" +
+          "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+          "`id_tmdb` INTEGER NOT NULL, " +
+          "`type` TEXT NOT NULL, " +
+          "`file_url` REAL NOT NULL, " +
+          "`source` INTEGER NOT NULL)"
+      )
     }
   }
 

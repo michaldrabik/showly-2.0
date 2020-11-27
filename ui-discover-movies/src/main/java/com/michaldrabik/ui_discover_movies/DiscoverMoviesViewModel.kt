@@ -6,11 +6,14 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.showly2.R
 import com.michaldrabik.ui_base.BaseViewModel
-import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_discover_movies.cases.DiscoverFiltersCase
 import com.michaldrabik.ui_discover_movies.cases.DiscoverMoviesCase
+import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_model.DiscoverFilters
+import com.michaldrabik.ui_model.MovieImage
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -20,7 +23,7 @@ import javax.inject.Inject
 class DiscoverMoviesViewModel @Inject constructor(
   private val moviesCase: DiscoverMoviesCase,
   private val filtersCase: DiscoverFiltersCase,
-  private val imagesProvider: ShowImagesProvider
+  private val imagesProvider: MovieImagesProvider
 ) : BaseViewModel<DiscoverMoviesUiModel>() {
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -69,6 +72,25 @@ class DiscoverMoviesViewModel @Inject constructor(
       } finally {
         uiState = DiscoverMoviesUiModel(showLoading = false)
         progressJob.cancel()
+      }
+    }
+  }
+
+  fun loadMissingImage(item: DiscoverMovieListItem, force: Boolean) {
+
+    fun updateMoviesItem(newItem: DiscoverMovieListItem) {
+      val currentItems = uiState?.movies?.toMutableList()
+      currentItems?.findReplace(newItem) { it.isSameAs(newItem) }
+      uiState = DiscoverMoviesUiModel(movies = currentItems, resetScroll = false)
+    }
+
+    viewModelScope.launch {
+      updateMoviesItem(item.copy(isLoading = true))
+      try {
+        val image = imagesProvider.loadRemoteImage(item.movie, item.image.type, force)
+        updateMoviesItem(item.copy(isLoading = false, image = image))
+      } catch (t: Throwable) {
+        updateMoviesItem(item.copy(isLoading = false, image = MovieImage.createUnavailable(item.image.type)))
       }
     }
   }
