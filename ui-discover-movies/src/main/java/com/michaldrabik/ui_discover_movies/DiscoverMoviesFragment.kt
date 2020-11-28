@@ -2,7 +2,10 @@ package com.michaldrabik.ui_discover_movies
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewAnimationUtils
 import android.view.ViewGroup
+import androidx.core.animation.doOnEnd
+import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
@@ -19,11 +22,14 @@ import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.enableUi
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
+import com.michaldrabik.ui_base.utilities.extensions.invisible
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponentProvider
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMoviesAdapter
 import kotlinx.android.synthetic.main.fragment_discover_movies.*
+import kotlin.math.hypot
 
 class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fragment_discover_movies), OnTabReselectedListener {
 
@@ -35,9 +41,19 @@ class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fr
   private lateinit var adapter: DiscoverMoviesAdapter
   private lateinit var layoutManager: GridLayoutManager
 
+  private var searchViewPosition = 0F
+  private var tabsViewPosition = 0F
+
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiDiscoverMoviesComponentProvider).provideDiscoverMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
+    if (!isInitialized) {
+      isInitialized = true
+      savedInstanceState?.let {
+        searchViewPosition = it.getFloat("ARG_DISCOVER_MOVIES_SEARCH_POS", 0F)
+        tabsViewPosition = it.getFloat("ARG_DISCOVER_MOVIES_TABS_POS", 0F)
+      }
+    }
   }
 
   override fun onPause() {
@@ -65,13 +81,22 @@ class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fr
       settingsIconVisible = false
       isClickable = false
       onClick { navigateToSearch() }
-//      onSortClickListener = { toggleFiltersView() }
-//      translationY = searchViewPosition
+      onSortClickListener = { toggleFiltersView() }
+      translationY = searchViewPosition
     }
     discoverMoviesTabsView.run {
-//      translationY = tabsViewPosition
+      translationY = tabsViewPosition
       onModeSelected = { setMode(it) }
       animateMovies()
+    }
+    discoverMoviesFiltersView.onApplyClickListener = {
+      toggleFiltersView()
+      viewModel.loadMovies(
+        resetScroll = true,
+        skipCache = true,
+        instantProgress = true,
+        newFilters = it
+      )
     }
   }
 
@@ -82,8 +107,8 @@ class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fr
         .updatePadding(top = statusBarSize + dimenToPx(R.dimen.discoverMoviesRecyclerPadding))
       (discoverMoviesSearchView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
-//      (discoverFiltersView.layoutParams as ViewGroup.MarginLayoutParams)
-//        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.searchViewHeight))
+      (discoverMoviesFiltersView.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.searchViewHeight))
       (discoverMoviesTabsView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.showsMoviesTabsMargin))
       discoverMoviesSwipeRefresh.setProgressViewOffset(
@@ -115,8 +140,8 @@ class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fr
       setProgressBackgroundColorSchemeColor(requireContext().colorFromAttr(R.attr.colorSearchViewBackground))
       setColorSchemeColors(color, color, color)
       setOnRefreshListener {
-//        searchViewPosition = 0F
-//        tabsViewPosition = 0F
+        searchViewPosition = 0F
+        tabsViewPosition = 0F
         viewModel.loadMovies(pullToRefresh = true)
       }
     }
@@ -124,12 +149,36 @@ class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fr
 
   private fun navigateToSearch() {
     disableUi()
-//    saveUi()
+    saveUi()
     hideNavigation()
-//    discoverFiltersView.fadeOut()
+    discoverMoviesFiltersView.fadeOut()
     discoverMoviesRecycler.fadeOut(duration = 200) {
       super.navigateTo(R.id.actionDiscoverMoviesFragmentToSearchFragment, null)
     }
+  }
+
+  private fun toggleFiltersView() {
+    val delta = dimenToPx(R.dimen.searchViewHeight)
+    val cx = discoverMoviesFiltersView.width
+    val cy = discoverMoviesFiltersView.height + dimenToPx(R.dimen.searchViewHeight)
+    val radius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
+    if (!discoverMoviesFiltersView.isVisible) {
+      val anim = ViewAnimationUtils.createCircularReveal(discoverMoviesFiltersView, cx, -delta, 0F, radius)
+      discoverMoviesFiltersView.visible()
+      discoverMoviesMask.fadeIn()
+      anim.start()
+    } else {
+      ViewAnimationUtils.createCircularReveal(discoverMoviesFiltersView, cx, -delta, radius, 0F).apply {
+        doOnEnd { discoverMoviesFiltersView.invisible() }
+        start()
+      }
+      discoverMoviesMask.fadeOut()
+    }
+  }
+
+  private fun saveUi() {
+    searchViewPosition = discoverMoviesSearchView.translationY
+    tabsViewPosition = discoverMoviesTabsView.translationY
   }
 
   private fun render(uiModel: DiscoverMoviesUiModel) {
@@ -147,9 +196,9 @@ class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fr
         discoverMoviesTabsView.isEnabled = !it
       }
       filters?.let {
-//        discoverMoviesFiltersView.run {
-//          if (!this.isVisible) bind(it)
-//        }
+        discoverMoviesFiltersView.run {
+          if (!this.isVisible) bind(it)
+        }
         discoverMoviesSearchView.iconBadgeVisible = !it.isDefault()
       }
     }

@@ -129,7 +129,9 @@ object Migrations {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL("ALTER TABLE settings ADD COLUMN movies_enabled INTEGER NOT NULL DEFAULT 1")
       database.execSQL("ALTER TABLE settings ADD COLUMN movies_active INTEGER NOT NULL DEFAULT 0")
-
+      database.execSQL("ALTER TABLE settings ADD COLUMN show_anticipated_movies INTEGER NOT NULL DEFAULT 0")
+      database.execSQL("ALTER TABLE settings ADD COLUMN discover_movies_filter_genres TEXT NOT NULL DEFAULT ''")
+      database.execSQL("ALTER TABLE settings ADD COLUMN discover_movies_filter_feed TEXT NOT NULL DEFAULT 'HOT'")
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `movies` (" +
           "`id_trakt` INTEGER PRIMARY KEY NOT NULL, " +

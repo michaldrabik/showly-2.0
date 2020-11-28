@@ -37,7 +37,10 @@ class SettingsMapper @Inject constructor() {
     archiveShowsIncludeStatistics = settings.archiveShowsIncludeStatistics,
     specialSeasonsEnabled = settings.specialSeasonsEnabled,
     moviesEnabled = settings.moviesEnabled,
-    moviesActive = settings.moviesActive
+    moviesActive = settings.moviesActive,
+    showAnticipatedMovies = settings.showAnticipatedMovies,
+    discoverMoviesFilterGenres = settings.discoverMoviesFilterGenres.split(",").filter { it.isNotBlank() }.map { Genre.valueOf(it) },
+    discoverMoviesFilterFeed = enumValueOf(settings.discoverMoviesFilterFeed)
   )
 
   fun toDatabase(settings: Settings) = SettingsDb(
@@ -69,6 +72,9 @@ class SettingsMapper @Inject constructor() {
     archiveShowsIncludeStatistics = settings.archiveShowsIncludeStatistics,
     specialSeasonsEnabled = settings.specialSeasonsEnabled,
     moviesEnabled = settings.moviesEnabled,
-    moviesActive = settings.moviesActive
+    moviesActive = settings.moviesActive,
+    showAnticipatedMovies = settings.showAnticipatedMovies,
+    discoverMoviesFilterFeed = settings.discoverMoviesFilterFeed.name,
+    discoverMoviesFilterGenres = settings.discoverMoviesFilterGenres.joinToString(",") { it.name }
   )
 }

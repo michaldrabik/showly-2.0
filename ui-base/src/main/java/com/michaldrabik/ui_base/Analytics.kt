@@ -108,6 +108,14 @@ object Analytics {
     }
   }
 
+  fun logDiscoverMoviesFiltersApply(filters: DiscoverFilters) {
+    firebaseAnalytics.logEvent("discover_movies_filters_set") {
+      param("filters_feed_order", filters.feedOrder.name.toLowerCase(ROOT))
+      param("filters_hide_anticipated", filters.hideAnticipated.toString())
+      param("filters_genres", filters.genres.map { it.slug }.toTypedArray().contentToString())
+    }
+  }
+
   fun logSearchQuery(searchQuery: String) {
     firebaseAnalytics.logEvent("search_query") {
       param("search_text", searchQuery)

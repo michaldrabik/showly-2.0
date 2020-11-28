@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-  <dimen name="discoverFilterChipStroke">1dp</dimen>
-  <dimen name="discoverRecyclerPadding">98dp</dimen>
-</resources>

@@ -61,4 +61,16 @@
     android:layout_marginRight="@dimen/spaceMedium"
     />
 
+  <com.michaldrabik.ui_discover_movies.views.DiscoverMoviesFiltersView
+    android:id="@+id/discoverMoviesFiltersView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/searchViewHeight"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:visibility="invisible"
+    tools:visibility="invisible"
+    />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

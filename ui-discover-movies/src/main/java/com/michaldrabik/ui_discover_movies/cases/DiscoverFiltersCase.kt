@@ -15,20 +15,20 @@ class DiscoverFiltersCase @Inject constructor(
     val settings = settingsRepository.load()
     settingsRepository.update(
       settings.copy(
-        discoverFilterFeed = filters.feedOrder,
-        discoverFilterGenres = filters.genres,
-        showAnticipatedShows = !filters.hideAnticipated
+        discoverMoviesFilterFeed = filters.feedOrder,
+        discoverMoviesFilterGenres = filters.genres,
+        showAnticipatedMovies = !filters.hideAnticipated
       )
     )
-    Analytics.logDiscoverFiltersApply(filters)
+    Analytics.logDiscoverMoviesFiltersApply(filters)
   }
 
   suspend fun loadFilters(): DiscoverFilters {
     val settings = settingsRepository.load()
     return DiscoverFilters(
-      feedOrder = settings.discoverFilterFeed,
-      hideAnticipated = !settings.showAnticipatedShows,
-      genres = settings.discoverFilterGenres.toList()
+      feedOrder = settings.discoverMoviesFilterFeed,
+      hideAnticipated = !settings.showAnticipatedMovies,
+      genres = settings.discoverMoviesFilterGenres.toList()
     )
   }
 }

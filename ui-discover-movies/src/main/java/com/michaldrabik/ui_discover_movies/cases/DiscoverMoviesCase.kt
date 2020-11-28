@@ -107,6 +107,6 @@ class DiscoverMoviesCase @Inject constructor(
   private fun List<Movie>.sortedBy(order: DiscoverSortOrder) = when (order) {
     HOT -> this
     RATING -> this.sortedWith(compareByDescending<Movie> { it.votes }.thenBy { it.rating })
-    NEWEST -> this.sortedByDescending { it.year }
+    NEWEST -> this.sortedWith(compareByDescending<Movie> { it.year }.thenByDescending { it.released })
   }
 }

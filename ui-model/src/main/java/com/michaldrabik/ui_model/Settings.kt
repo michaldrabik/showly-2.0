@@ -29,7 +29,10 @@ data class Settings(
   val archiveShowsIncludeStatistics: Boolean,
   val specialSeasonsEnabled: Boolean,
   val moviesEnabled: Boolean,
-  val moviesActive: Boolean
+  val moviesActive: Boolean,
+  val showAnticipatedMovies: Boolean,
+  val discoverMoviesFilterGenres: List<Genre>,
+  val discoverMoviesFilterFeed: DiscoverSortOrder,
 ) {
 
   companion object {
@@ -62,7 +65,10 @@ data class Settings(
       archiveShowsIncludeStatistics = true,
       specialSeasonsEnabled = false,
       moviesEnabled = true,
-      moviesActive = false
+      moviesActive = false,
+      discoverMoviesFilterFeed = DiscoverSortOrder.HOT,
+      discoverMoviesFilterGenres = emptyList(),
+      showAnticipatedMovies = false
     )
   }
 }
