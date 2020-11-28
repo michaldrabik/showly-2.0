@@ -15,6 +15,7 @@ object Config {
   const val TRAKT_ANTICIPATED_SHOWS_LIMIT = 40
   const val TRAKT_ANTICIPATED_MOVIES_LIMIT = 30
   const val TRAKT_RELATED_SHOWS_LIMIT = 15
+  const val TRAKT_RELATED_MOVIES_LIMIT = 15
   const val TRAKT_SEARCH_LIMIT = 50
 
   const val TVDB_BASE_URL = "https://api.thetvdb.com/"

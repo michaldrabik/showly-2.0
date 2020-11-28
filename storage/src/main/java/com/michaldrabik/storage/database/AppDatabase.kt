@@ -14,6 +14,7 @@ import com.michaldrabik.storage.database.dao.MovieTranslationsDao
 import com.michaldrabik.storage.database.dao.MoviesDao
 import com.michaldrabik.storage.database.dao.MyShowsDao
 import com.michaldrabik.storage.database.dao.RecentSearchDao
+import com.michaldrabik.storage.database.dao.RelatedMoviesDao
 import com.michaldrabik.storage.database.dao.RelatedShowsDao
 import com.michaldrabik.storage.database.dao.SeasonsDao
 import com.michaldrabik.storage.database.dao.SettingsDao
@@ -38,6 +39,7 @@ import com.michaldrabik.storage.database.model.MovieImage
 import com.michaldrabik.storage.database.model.MovieTranslation
 import com.michaldrabik.storage.database.model.MyShow
 import com.michaldrabik.storage.database.model.RecentSearch
+import com.michaldrabik.storage.database.model.RelatedMovie
 import com.michaldrabik.storage.database.model.RelatedShow
 import com.michaldrabik.storage.database.model.Season
 import com.michaldrabik.storage.database.model.Settings
@@ -61,6 +63,7 @@ import com.michaldrabik.storage.database.model.WatchlistShow
     WatchlistShow::class,
     ArchiveShow::class,
     RelatedShow::class,
+    RelatedMovie::class,
     ShowImage::class,
     MovieImage::class,
     User::class,
@@ -96,6 +99,8 @@ abstract class AppDatabase : RoomDatabase() {
   abstract fun archiveShowsDao(): ArchiveShowsDao
 
   abstract fun relatedShowsDao(): RelatedShowsDao
+
+  abstract fun relatedMoviesDao(): RelatedMoviesDao
 
   abstract fun showImagesDao(): ShowImagesDao
 

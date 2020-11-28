@@ -34,6 +34,8 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun fetchRelatedShows(traktId: Long) = service.fetchRelatedShows(traktId)
 
+  suspend fun fetchRelatedMovies(traktId: Long) = service.fetchRelatedMovies(traktId)
+
   suspend fun fetchNextEpisode(traktId: Long): Episode? {
     val response = service.fetchNextEpisode(traktId)
     if (response.isSuccessful && response.code() == 204) return null

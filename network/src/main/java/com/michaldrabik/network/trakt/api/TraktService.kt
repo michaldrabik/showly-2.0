@@ -73,6 +73,9 @@ interface TraktService {
   @GET("shows/{traktId}/related?extended=full&limit=${Config.TRAKT_RELATED_SHOWS_LIMIT}")
   suspend fun fetchRelatedShows(@Path("traktId") traktId: Long): List<Show>
 
+  @GET("movies/{traktId}/related?extended=full&limit=${Config.TRAKT_RELATED_MOVIES_LIMIT}")
+  suspend fun fetchRelatedMovies(@Path("traktId") traktId: Long): List<Movie>
+
   @GET("shows/{traktId}/next_episode?extended=full")
   suspend fun fetchNextEpisode(@Path("traktId") traktId: Long): Response<Episode>
 

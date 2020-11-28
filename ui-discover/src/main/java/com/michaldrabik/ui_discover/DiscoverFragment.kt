@@ -166,6 +166,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     saveUi()
     hideNavigation()
     discoverFiltersView.fadeOut()
+    discoverTabsView.fadeOut(duration = 200)
     discoverRecycler.fadeOut(duration = 200) {
       enableUi()
       super.navigateTo(R.id.actionDiscoverFragmentToSearchFragment, null)

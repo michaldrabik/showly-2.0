@@ -8,13 +8,14 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_movie.related.RelatedListItem
 
 data class MovieDetailsUiModel(
   val movie: Movie? = null,
   val movieLoading: Boolean? = null,
   val image: Image? = null,
   val actors: List<Actor>? = null,
-//  val relatedShows: List<RelatedListItem>? = null,
+  val relatedMovies: List<RelatedListItem>? = null,
   val comments: List<Comment>? = null,
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
@@ -31,7 +32,7 @@ data class MovieDetailsUiModel(
       showFromTraktLoading = newModel.showFromTraktLoading ?: showFromTraktLoading,
       image = newModel.image ?: image,
       actors = newModel.actors ?: actors,
-//      relatedShows = newModel.relatedShows ?: relatedShows,
+      relatedMovies = newModel.relatedMovies ?: relatedMovies,
       comments = newModel.comments ?: comments,
       followedState = newModel.followedState ?: followedState,
       removeFromTraktHistory = newModel.removeFromTraktHistory ?: removeFromTraktHistory,

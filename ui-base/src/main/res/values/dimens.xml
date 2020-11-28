@@ -22,6 +22,7 @@
 
   <dimen name="movieTileCorner">4dp</dimen>
   <dimen name="movieTilePlaceholder">40dp</dimen>
+  <dimen name="relatedTilePlaceholder">36dp</dimen>
 
   <dimen name="searchViewHeight">48dp</dimen>
   <dimen name="searchViewHeightPadded">64dp</dimen>

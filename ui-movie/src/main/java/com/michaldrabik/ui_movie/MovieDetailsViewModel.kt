@@ -8,6 +8,7 @@ import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
@@ -15,6 +16,8 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_movie.cases.MovieDetailsMainCase
+import com.michaldrabik.ui_movie.cases.MovieDetailsRelatedCase
+import com.michaldrabik.ui_movie.related.RelatedListItem
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import kotlinx.coroutines.launch
@@ -23,6 +26,7 @@ import kotlin.properties.Delegates.notNull
 
 class MovieDetailsViewModel @Inject constructor(
   private val mainCase: MovieDetailsMainCase,
+  private val relatedCase: MovieDetailsRelatedCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
   private val quickSyncManager: QuickSyncManager,
@@ -62,7 +66,7 @@ class MovieDetailsViewModel @Inject constructor(
 
         launch { loadBackgroundImage(movie) }
 //        launch { loadActors(movie) }
-//        launch { loadRelatedShows(movie) }
+        launch { loadRelatedMovies(movie) }
 //        launch { loadTranslation(movie) }
 //        if (isSignedIn) launch { loadRating(movie) }
       } catch (t: Throwable) {
@@ -80,7 +84,8 @@ class MovieDetailsViewModel @Inject constructor(
       MovieDetailsUiModel(image = Image.createUnavailable(ImageType.FANART))
     }
   }
-//
+
+  //
 //  private suspend fun loadActors(show: Show) {
 //    uiState = try {
 //      val actors = actorsCase.loadActors(show)
@@ -90,18 +95,19 @@ class MovieDetailsViewModel @Inject constructor(
 //    }
 //  }
 //
-//  private suspend fun loadRelatedShows(show: Show) {
-//    uiState = try {
-//      val relatedShows = relatedShowsCase.loadRelatedShows(show).map {
-//        val image = imagesProvider.findCachedImage(it, POSTER)
-//        RelatedListItem(it, image)
-//      }
-//      MovieDetailsUiModel(relatedShows = relatedShows)
-//    } catch (t: Throwable) {
-//      MovieDetailsUiModel(relatedShows = emptyList())
-//    }
-//  }
-//
+  private suspend fun loadRelatedMovies(movie: Movie) {
+    uiState = try {
+      val relatedShows = relatedCase.loadRelatedMovies(movie).map {
+        val image = imagesProvider.findCachedImage(it, ImageType.POSTER)
+        RelatedListItem(it, image)
+      }
+      MovieDetailsUiModel(relatedMovies = relatedShows)
+    } catch (t: Throwable) {
+      MovieDetailsUiModel(relatedMovies = emptyList())
+    }
+  }
+
+  //
 //  private suspend fun loadTranslation(show: Show) {
 //    try {
 //      val translation = translationCase.loadTranslation(show)
@@ -126,24 +132,24 @@ class MovieDetailsViewModel @Inject constructor(
 //    Analytics.logShowCommentsClick(movie)
 //  }
 //
-//  fun loadMissingImage(item: RelatedListItem, force: Boolean) {
-//
-//    fun updateItem(new: RelatedListItem) {
-//      val currentItems = uiState?.relatedShows?.toMutableList()
-//      currentItems?.findReplace(new) { it.isSameAs(new) }
-//      uiState = uiState?.copy(relatedShows = currentItems)
-//    }
-//
-//    viewModelScope.launch {
-//      updateItem(item.copy(isLoading = true))
-//      try {
-//        val image = imagesProvider.loadRemoteImage(item.show, item.image.type, force)
-//        updateItem(item.copy(isLoading = false, image = image))
-//      } catch (t: Throwable) {
-//        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
-//      }
-//    }
-//  }
+  fun loadMissingImage(item: RelatedListItem, force: Boolean) {
+
+    fun updateItem(new: RelatedListItem) {
+      val currentItems = uiState?.relatedMovies?.toMutableList()
+      currentItems?.findReplace(new) { it.isSameAs(new) }
+      uiState = uiState?.copy(relatedMovies = currentItems)
+    }
+
+    viewModelScope.launch {
+      updateItem(item.copy(isLoading = true))
+      try {
+        val image = imagesProvider.loadRemoteImage(item.movie, item.image.type, force)
+        updateItem(item.copy(isLoading = false, image = image))
+      } catch (t: Throwable) {
+        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
+      }
+    }
+  }
 //
 //  private suspend fun loadRating(show: Show) {
 //    try {

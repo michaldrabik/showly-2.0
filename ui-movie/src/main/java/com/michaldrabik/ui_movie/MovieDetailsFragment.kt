@@ -17,6 +17,8 @@ import androidx.core.view.updatePadding
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
@@ -24,6 +26,7 @@ import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -48,6 +51,8 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponentProvider
+import com.michaldrabik.ui_movie.related.RelatedListItem
+import com.michaldrabik.ui_movie.related.RelatedMovieAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import kotlinx.android.synthetic.main.fragment_movie_details.*
@@ -61,8 +66,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private val movieId by lazy { IdTrakt(requireArguments().getLong(ARG_MOVIE_ID, -1)) }
 
-//  private val actorsAdapter by lazy { ActorsAdapter() }
-//  private val relatedAdapter by lazy { RelatedShowAdapter() }
+  //  private val actorsAdapter by lazy { ActorsAdapter() }
+  private val relatedAdapter by lazy { RelatedMovieAdapter() }
 
   private val imageHeight by lazy {
     if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
@@ -154,18 +159,18 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   }
 
   private fun setupRelatedList() {
-//    val context = requireContext()
-//    movieDetailsRelatedRecycler.apply {
-//      setHasFixedSize(true)
-//      adapter = relatedAdapter
-//      layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-//      addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
-//    }
-//    relatedAdapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
-//    relatedAdapter.itemClickListener = {
-//      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, it.show.ids.trakt.id) }
-//      navigateTo(R.id.actionShowDetailsFragmentToSelf, bundle)
-//    }
+    val context = requireContext()
+    movieDetailsRelatedRecycler.apply {
+      setHasFixedSize(true)
+      adapter = relatedAdapter
+      layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
+      addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
+    }
+    relatedAdapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+    relatedAdapter.itemClickListener = {
+      val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, it.movie.ids.trakt.id) }
+      navigateTo(R.id.actionMovieDetailsFragmentToSelf, bundle)
+    }
   }
 
 //  private fun showCommentsView() {
@@ -301,7 +306,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       image?.let { renderImage(it) }
 //      actors?.let { renderActors(it) }
       translation?.let { renderTranslation(it) }
-//      relatedShows?.let { renderRelatedShows(it) }
+      relatedMovies?.let { renderRelatedMovies(it) }
       comments?.let {
 //        movieDetailsCommentsView.bind(it)
       }
@@ -389,12 +394,12 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 //    movieDetailsActorsProgress.gone()
 //  }
 
-//  private fun renderRelatedShows(items: List<RelatedListItem>) {
-//    relatedAdapter.setItems(items)
-//    movieDetailsRelatedRecycler.fadeIf(items.isNotEmpty())
-//    movieDetailsRelatedLabel.fadeIf(items.isNotEmpty())
-//    movieDetailsRelatedProgress.gone()
-//  }
+  private fun renderRelatedMovies(items: List<RelatedListItem>) {
+    relatedAdapter.setItems(items)
+    movieDetailsRelatedRecycler.fadeIf(items.isNotEmpty())
+    movieDetailsRelatedLabel.fadeIf(items.isNotEmpty())
+    movieDetailsRelatedProgress.gone()
+  }
 
   private fun renderTranslation(translation: Translation?) {
     if (translation?.overview?.isNotBlank() == true) {

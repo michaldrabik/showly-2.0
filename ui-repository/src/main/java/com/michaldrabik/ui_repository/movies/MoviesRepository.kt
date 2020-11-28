@@ -6,6 +6,7 @@ import javax.inject.Inject
 @AppScope
 class MoviesRepository @Inject constructor(
   val discoverMovies: DiscoverMoviesRepository,
+  val relatedMovies: RelatedMoviesRepository,
   val movieDetails: MovieDetailsRepository
 ) {
 }

@@ -193,6 +193,16 @@ object Migrations {
           "`id_movie_trakt` INTEGER PRIMARY KEY NOT NULL, " +
           "`synced_at` INTEGER NOT NULL)"
       )
+
+      database.execSQL(
+        "CREATE TABLE IF NOT EXISTS `movies_related` (" +
+          "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+          "`id_trakt` INTEGER NOT NULL, " +
+          "`id_trakt_related_movie` INTEGER NOT NULL, " +
+          "`updated_at` INTEGER NOT NULL" +
+          "FOREIGN KEY(`id_trakt_related_movie`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE))"
+      )
+      database.execSQL("CREATE INDEX index_movies_related_id_trakt ON movies_related(id_trakt_related_movie)")
     }
   }
 

@@ -155,6 +155,7 @@ class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fr
     saveUi()
     hideNavigation()
     discoverMoviesFiltersView.fadeOut()
+    discoverMoviesTabsView.fadeOut(duration = 200)
     discoverMoviesRecycler.fadeOut(duration = 200) {
       super.navigateTo(R.id.actionDiscoverMoviesFragmentToSearchFragment, null)
     }
