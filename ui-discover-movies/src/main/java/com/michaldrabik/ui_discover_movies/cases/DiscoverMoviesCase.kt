@@ -10,8 +10,10 @@ import com.michaldrabik.ui_model.DiscoverSortOrder.HOT
 import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
 import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.ImageType.FANART
+import com.michaldrabik.ui_model.ImageType.FANART_WIDE
+import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.UserTvdbManager
@@ -83,26 +85,26 @@ class DiscoverMoviesCase @Inject constructor(
       .mapIndexed { index, movie ->
         async {
           val itemType = when (index) {
-            in (0..500 step 14) -> ImageType.FANART_WIDE
-            in (5..500 step 14), in (9..500 step 14) -> ImageType.FANART
-            else -> ImageType.POSTER
+            in (0..500 step 14) -> FANART_WIDE
+            in (5..500 step 14), in (9..500 step 14) -> FANART
+            else -> POSTER
           }
           val image = imagesProvider.findCachedImage(movie, itemType)
-//          val translation = loadTranslation(language, itemType, show)
+          val translation = loadTranslation(language, itemType, movie)
           DiscoverMovieListItem(
             movie,
             image,
             isCollected = movie.ids.trakt.id in myMoviesIds,
             isWatchlist = movie.ids.trakt.id in watchlistMoviesIds,
-            translation = null
+            translation = translation
           )
         }
       }.awaitAll()
   }
 
-  private suspend fun loadTranslation(language: String, itemType: ImageType, show: Show) =
-    if (language == Config.DEFAULT_LANGUAGE || itemType == ImageType.POSTER) null
-    else translationsRepository.loadTranslation(show, language, true)
+  private suspend fun loadTranslation(language: String, itemType: ImageType, movie: Movie) =
+    if (language == Config.DEFAULT_LANGUAGE || itemType == POSTER) null
+    else translationsRepository.loadTranslation(movie, language, true)
 
   private fun List<Movie>.sortedBy(order: DiscoverSortOrder) = when (order) {
     HOT -> this

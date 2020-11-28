@@ -175,6 +175,24 @@ object Migrations {
           "`file_url` REAL NOT NULL, " +
           "`source` INTEGER NOT NULL)"
       )
+
+      database.execSQL(
+        "CREATE TABLE IF NOT EXISTS `movies_translations` (" +
+          "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+          "`id_trakt` INTEGER NOT NULL, `title` TEXT NOT NULL, " +
+          "`language` TEXT NOT NULL, " +
+          "`overview` TEXT NOT NULL, " +
+          "`created_at` INTEGER NOT NULL, " +
+          "`updated_at` INTEGER NOT NULL, " +
+          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+      )
+      database.execSQL("CREATE UNIQUE INDEX index_movies_translations_id_trakt ON movies_translations(id_trakt)")
+
+      database.execSQL(
+        "CREATE TABLE IF NOT EXISTS `sync_movies_translations_log` (" +
+          "`id_movie_trakt` INTEGER PRIMARY KEY NOT NULL, " +
+          "`synced_at` INTEGER NOT NULL)"
+      )
     }
   }
 

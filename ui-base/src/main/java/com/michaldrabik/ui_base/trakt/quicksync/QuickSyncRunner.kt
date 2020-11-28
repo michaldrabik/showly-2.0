@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_base.trakt.quicksync
 
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.common.extensions.dateIsoStringFromMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncExportItem
 import com.michaldrabik.network.trakt.model.SyncExportRequest
@@ -57,13 +58,13 @@ class QuickSyncRunner @Inject constructor(
     when (type) {
       EPISODE -> {
         val request = SyncExportRequest(
-          episodes = toExport.map { SyncExportItem.create(it.idTrakt, com.michaldrabik.common.extensions.dateIsoStringFromMillis(it.updatedAt)) }
+          episodes = toExport.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) }
         )
         cloud.traktApi.postSyncWatched(token.token, request)
       }
       SHOW_WATCHLIST -> {
         val request = SyncExportRequest(
-          shows = toExport.map { SyncExportItem.create(it.idTrakt, com.michaldrabik.common.extensions.dateIsoStringFromMillis(it.updatedAt)) }
+          shows = toExport.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) }
         )
         cloud.traktApi.postSyncWatchlist(token.token, request)
       }
