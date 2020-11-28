@@ -22,6 +22,7 @@
   <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textAiredAlready">Veröffentlicht</string>
   <string name="textAirsNow">Jetzt live</string>
+  <string name="textMinutesShort">min</string>
 
   <plurals name="textDaysToAir">
     <item quantity="one">Morgen verfügbar</item>

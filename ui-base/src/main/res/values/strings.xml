@@ -23,6 +23,7 @@
   <string name="textTba" translatable="false">TBA</string>
   <string name="textShows">Shows</string>
   <string name="textMovies">Movies</string>
+  <string name="textMinutesShort">min</string>
 
   <string name="textAiredAlready">Aired</string>
   <string name="textAirsNow">Airs Now</string>

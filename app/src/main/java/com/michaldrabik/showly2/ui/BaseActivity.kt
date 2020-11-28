@@ -15,6 +15,8 @@ import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponent
 import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponentProvider
 import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponent
 import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponentProvider
+import com.michaldrabik.ui_movie.di.UiMovieDetailsComponent
+import com.michaldrabik.ui_movie.di.UiMovieDetailsComponentProvider
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
@@ -44,6 +46,7 @@ abstract class BaseActivity :
   UiDiscoverComponentProvider,
   UiDiscoverMoviesComponentProvider,
   UiShowDetailsComponentProvider,
+  UiMovieDetailsComponentProvider,
   UiFanartGalleryComponentProvider,
   UiEpisodeDetailsComponentProvider,
   UiMyShowsComponentProvider,
@@ -63,6 +66,7 @@ abstract class BaseActivity :
   private lateinit var uiSearchComponent: UiSearchComponent
   private lateinit var uiSettingsComponent: UiSettingsComponent
   private lateinit var uiShowDetailsComponent: UiShowDetailsComponent
+  private lateinit var uiMovieDetailsComponent: UiMovieDetailsComponent
   private lateinit var uiShowGalleryComponent: UiFanartGalleryComponent
   private lateinit var uiStatisticsComponent: UiStatisticsComponent
   private lateinit var uiTraktSyncComponent: UiTraktSyncComponent
@@ -76,6 +80,7 @@ abstract class BaseActivity :
   override fun provideSearchComponent() = uiSearchComponent
   override fun provideSettingsComponent() = uiSettingsComponent
   override fun provideShowDetailsComponent() = uiShowDetailsComponent
+  override fun provideMovieDetailsComponent() = uiMovieDetailsComponent
   override fun provideStatisticsComponent() = uiStatisticsComponent
   override fun provideTraktSyncComponent() = uiTraktSyncComponent
   override fun provideProgressComponent() = uiProgressComponent
@@ -88,6 +93,7 @@ abstract class BaseActivity :
     uiSearchComponent = appComponent().uiSearchComponent().create()
     uiSettingsComponent = appComponent().uiSettingsComponent().create()
     uiShowDetailsComponent = appComponent().uiShowDetailsComponent().create()
+    uiMovieDetailsComponent = appComponent().uiMovieDetailsComponent().create()
     uiShowGalleryComponent = appComponent().uiShowGalleryComponent().create()
     uiStatisticsComponent = appComponent().uiStatisticsComponent().create()
     uiTraktSyncComponent = appComponent().uiTraktSyncComponent().create()

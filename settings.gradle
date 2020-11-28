@@ -1,3 +1,4 @@
+include ':ui-movie'
 include ':ui-discover-movies'
 include ':ui-episodes'
 include ':ui-widgets'

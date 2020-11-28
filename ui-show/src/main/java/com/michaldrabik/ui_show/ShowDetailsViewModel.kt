@@ -14,6 +14,7 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.replace
+import com.michaldrabik.ui_episodes.EpisodesManager
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.IdTrakt
@@ -61,7 +62,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val relatedShowsCase: ShowDetailsRelatedShowsCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
-  private val episodesManager: com.michaldrabik.ui_episodes.EpisodesManager,
+  private val episodesManager: EpisodesManager,
   private val quickSyncManager: QuickSyncManager,
   private val announcementManager: AnnouncementManager,
   private val imagesProvider: ShowImagesProvider

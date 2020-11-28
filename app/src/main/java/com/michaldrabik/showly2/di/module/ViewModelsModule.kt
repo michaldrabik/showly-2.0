@@ -6,6 +6,7 @@ import com.michaldrabik.showly2.ui.main.MainViewModel
 import com.michaldrabik.ui_discover.DiscoverViewModel
 import com.michaldrabik.ui_discover_movies.DiscoverMoviesViewModel
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsViewModel
+import com.michaldrabik.ui_movie.MovieDetailsViewModel
 import com.michaldrabik.ui_my_shows.archive.ArchiveViewModel
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
 import com.michaldrabik.ui_my_shows.myshows.MyShowsViewModel
@@ -76,6 +77,11 @@ abstract class ViewModelsModule {
   @IntoMap
   @ViewModelKey(ArchiveViewModel::class)
   abstract fun bindArchiveViewModel(viewModel: ArchiveViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(MovieDetailsViewModel::class)
+  abstract fun bindMovieDetailsViewModel(viewModel: MovieDetailsViewModel): ViewModel
 
   @Binds
   @IntoMap

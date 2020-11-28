@@ -6,6 +6,7 @@ import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.Show
 import java.util.Locale.ROOT
@@ -18,6 +19,13 @@ object Analytics {
     firebaseAnalytics.logEvent("show_details_display") {
       param("show_id_trakt", show.traktId)
       param("show_title", show.title)
+    }
+  }
+
+  fun logMovieDetailsDisplay(movie: Movie) {
+    firebaseAnalytics.logEvent("movie_details_display") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
     }
   }
 
@@ -49,6 +57,13 @@ object Analytics {
     }
   }
 
+  fun logMovieTrailerClick(movie: Movie) {
+    firebaseAnalytics.logEvent("movie_click_trailer") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
+    }
+  }
+
   fun logShowCommentsClick(show: Show) {
     firebaseAnalytics.logEvent("show_click_comments") {
       param("show_id_trakt", show.traktId)
@@ -63,10 +78,24 @@ object Analytics {
     }
   }
 
+  fun logMovieLinksClick(movie: Movie) {
+    firebaseAnalytics.logEvent("movie_click_links") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
+    }
+  }
+
   fun logShowShareClick(show: Show) {
     firebaseAnalytics.logEvent("show_click_share") {
       param("show_id_trakt", show.traktId)
       param("show_title", show.title)
+    }
+  }
+
+  fun logMovieShareClick(movie: Movie) {
+    firebaseAnalytics.logEvent("movie_click_share") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
     }
   }
 

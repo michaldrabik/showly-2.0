@@ -38,14 +38,6 @@
     app:popUpToInclusive="true"
     />
 
-  <action
-    android:id="@+id/actionNavigateShowDetailsFragment"
-    app:destination="@id/showDetailsFragment"
-    app:launchSingleTop="true"
-    app:popUpTo="@id/navigationGraph"
-    app:popUpToInclusive="true"
-    />
-
   <fragment
     android:id="@+id/discoverFragment"
     android:name="com.michaldrabik.ui_discover.DiscoverFragment"
@@ -75,6 +67,13 @@
     android:name="com.michaldrabik.ui_discover_movies.DiscoverMoviesFragment"
     android:label="fragmentDiscoverMovies"
     >
+    <action
+      android:id="@+id/actionDiscoverMoviesFragmentToMovieDetailsFragment"
+      app:destination="@id/movieDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
     <action
       android:id="@+id/actionDiscoverMoviesFragmentToSearchFragment"
       app:destination="@id/searchFragment"
@@ -136,6 +135,28 @@
       />
     <action
       android:id="@+id/actionShowDetailsFragmentToFanartGallery"
+      app:destination="@id/fanartGalleryFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:exitAnim="@anim/anim_fade_out"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/movieDetailsFragment"
+    android:name="com.michaldrabik.ui_movie.MovieDetailsFragment"
+    android:label="fragmentMovieDetails"
+    >
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToSelf"
+      app:destination="@id/movieDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:exitAnim="@anim/anim_fade_out"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToFanartGallery"
       app:destination="@id/fanartGalleryFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:exitAnim="@anim/anim_fade_out"

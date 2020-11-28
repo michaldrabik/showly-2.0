@@ -20,6 +20,7 @@
   <string name="textSpoilersWarning">Opinia zawiera spoilery.\nKliknij aby przeczytać.</string>
   <string name="textCommentedOn">%s skomentował %s:</string>
   <string name="textNetwork">%1$s (%2$s)</string>
+  <string name="textMinutesShort">min</string>
 
   <string name="textAiredAlready">Po premierze</string>
   <string name="textAirsNow">Premiera teraz</string>

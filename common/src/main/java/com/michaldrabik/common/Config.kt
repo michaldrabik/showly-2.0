@@ -10,7 +10,7 @@ object Config {
 
   private const val TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/"
   const val TMDB_IMAGE_BASE_POSTER_URL = "${TMDB_IMAGE_BASE_URL}w342"
-  const val TMDB_IMAGE_BASE_FANART_URL = "${TMDB_IMAGE_BASE_URL}w780"
+  const val TMDB_IMAGE_BASE_FANART_URL = "${TMDB_IMAGE_BASE_URL}w1280"
 
   const val AWS_IMAGE_BASE_URL = "https://showly2.s3.eu-west-2.amazonaws.com/images/"
 
@@ -31,6 +31,7 @@ object Config {
   val DISCOVER_MOVIES_CACHE_DURATION by lazy { TimeUnit.HOURS.toMillis(12) }
   val RELATED_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(7) }
   val SHOW_DETAILS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(3) }
+  val MOVIE_DETAILS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(3) }
   val ACTORS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(3) }
   val NEW_BADGE_DURATION by lazy { TimeUnit.HOURS.toMillis(30) }
   val SHOW_SYNC_COOLDOWN by lazy {

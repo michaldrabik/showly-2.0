@@ -69,6 +69,7 @@ dependencies {
   implementation project(':ui-discover-movies')
   implementation project(':ui-episodes')
   implementation project(':ui-show')
+  implementation project(':ui-movie')
   implementation project(':ui-my-shows')
   implementation project(':ui-search')
   implementation project(':ui-statistics')

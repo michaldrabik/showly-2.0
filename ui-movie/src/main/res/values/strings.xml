@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textMovieActorsEmpty">Actors are not available</string>
+  <string name="textMovieTrailer">Trailer</string>
+  <string name="textMovieRate">Rate</string>
+  <string name="textMovieLink">Link</string>
+  <string name="textMovieComments2">Comments</string>
+  <string name="textMovieShare">Share</string>
+  <string name="textMovieYouMayAlsoLike">You may also like:</string>
+  <string name="textMovieVotes">%.1f (%d votes)</string>
+
+  <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
+</resources>

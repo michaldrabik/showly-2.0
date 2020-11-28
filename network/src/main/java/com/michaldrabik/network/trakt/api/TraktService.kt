@@ -37,6 +37,9 @@ interface TraktService {
   @GET("shows/{traktId}?extended=full")
   suspend fun fetchShow(@Path("traktId") traktId: Long): Show
 
+  @GET("movies/{traktId}?extended=full")
+  suspend fun fetchMovie(@Path("traktId") traktId: Long): Movie
+
   @GET("shows/popular?extended=full&limit=${Config.TRAKT_POPULAR_SHOWS_LIMIT}")
   suspend fun fetchPopularShows(
     @Query("genres") genres: String
@@ -81,6 +84,12 @@ interface TraktService {
 
   @GET("shows/{traktId}/comments?extended=full")
   suspend fun fetchShowComments(
+    @Path("traktId") traktId: Long,
+    @Query("limit") limit: Int
+  ): List<Comment>
+
+  @GET("movies/{traktId}/comments?extended=full")
+  suspend fun fetchMovieComments(
     @Path("traktId") traktId: Long,
     @Query("limit") limit: Int
   ): List<Comment>
