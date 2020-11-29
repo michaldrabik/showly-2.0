@@ -9,6 +9,7 @@ import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.Color.TRANSPARENT
 import android.net.Uri
 import android.os.Bundle
+import android.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -21,12 +22,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
-import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
-import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
@@ -63,7 +63,6 @@ import com.michaldrabik.ui_movie.di.UiMovieDetailsComponentProvider
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import com.michaldrabik.ui_movie.related.RelatedMovieAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
 import java.util.Locale.ENGLISH
@@ -121,9 +120,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsImageGuideline.setGuidelineBegin((imageHeight * 0.35).toInt())
     movieDetailsBackArrow.onClick { requireActivity().onBackPressed() }
     movieDetailsImage.onClick {
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, movieId.id) }
-      navigateTo(R.id.actionShowDetailsFragmentToFanartGallery, bundle)
-      Analytics.logShowGalleryClick(movieId.id)
+      val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, movieId.id) }
+      navigateTo(R.id.actionMovieDetailsFragmentToFanartGallery, bundle)
+      Analytics.logMovieGalleryClick(movieId.id)
     }
     movieDetailsCommentsButton.onClick {
 //      movieDetailsCommentsView.clear()
@@ -557,7 +556,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           return@addCallback
         }
         movieDetailsActorFullContainer.isVisible -> {
-//          hideFullActorView(movieDetailsActorFullContainer.tag as Actor)
+          hideFullActorView(movieDetailsActorFullContainer.tag as Actor)
           return@addCallback
         }
         else -> {

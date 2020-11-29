@@ -105,6 +105,12 @@ object Analytics {
     }
   }
 
+  fun logMovieGalleryClick(idTrakt: Long) {
+    firebaseAnalytics.logEvent("movie_click_gallery") {
+      param("movie_id_trakt", idTrakt)
+    }
+  }
+
   fun logShowQuickProgress(show: Show) {
     firebaseAnalytics.logEvent("show_quick_progress_set") {
       param("show_id_trakt", show.traktId)

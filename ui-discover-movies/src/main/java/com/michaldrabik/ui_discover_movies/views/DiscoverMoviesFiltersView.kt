@@ -8,10 +8,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import com.google.android.material.chip.Chip
-import com.michaldrabik.showly2.R
 import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_discover_movies.R
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.DiscoverSortOrder.HOT
 import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST

@@ -4,12 +4,12 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.michaldrabik.showly2.R
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_discover_movies.R
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE

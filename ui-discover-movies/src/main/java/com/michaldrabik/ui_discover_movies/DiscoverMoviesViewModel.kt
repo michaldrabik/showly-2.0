@@ -4,7 +4,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.showly2.R
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.MessageEvent
