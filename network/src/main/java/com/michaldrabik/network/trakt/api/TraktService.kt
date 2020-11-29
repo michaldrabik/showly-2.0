@@ -128,6 +128,11 @@ interface TraktService {
     @Path("traktId") traktId: Long
   ): ActorsResponse
 
+  @GET("movies/{traktId}/people")
+  suspend fun fetchMoviePeople(
+    @Path("traktId") traktId: Long
+  ): ActorsResponse
+
   // Auth
 
   @POST("oauth/token")

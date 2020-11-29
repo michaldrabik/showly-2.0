@@ -1,10 +1,12 @@
 package com.michaldrabik.ui_movie
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.res.ColorStateList
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
+import android.graphics.Color.TRANSPARENT
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -19,11 +21,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.google.android.material.transition.MaterialContainerTransform
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
+import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
@@ -43,13 +49,16 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
+import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Genre
+import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_movie.actors.ActorsAdapter
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponentProvider
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import com.michaldrabik.ui_movie.related.RelatedMovieAdapter
@@ -66,7 +75,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private val movieId by lazy { IdTrakt(requireArguments().getLong(ARG_MOVIE_ID, -1)) }
 
-  //  private val actorsAdapter by lazy { ActorsAdapter() }
+  private val actorsAdapter by lazy { ActorsAdapter() }
   private val relatedAdapter by lazy { RelatedMovieAdapter() }
 
   private val imageHeight by lazy {
@@ -148,14 +157,16 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   }
 
   private fun setupActorsList() {
-//    val context = requireContext()
-//    movieDetailsActorsRecycler.apply {
-//      setHasFixedSize(true)
-//      adapter = actorsAdapter
-//      layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-//      addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
-//    }
-//    actorsAdapter.itemClickListener = { showFullActorView(it) }
+    val context = requireContext()
+    movieDetailsActorsRecycler.apply {
+      setHasFixedSize(true)
+      adapter = actorsAdapter
+      layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
+      addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
+    }
+    actorsAdapter.itemClickListener = {
+      showFullActorView(it)
+    }
   }
 
   private fun setupRelatedList() {
@@ -197,58 +208,55 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
   }
 
-//  private fun showFullActorView(actor: Actor) {
-//    Glide.with(this)
-//      .load("$TVDB_IMAGE_BASE_BANNERS_URL${actor.image}")
-//      .onlyRetrieveFromCache(true)
-//      .transform(CenterCrop(), RoundedCorners(actorViewCorner))
-//      .into(movieDetailsActorFullImage)
-//
-//    val actorView = movieDetailsActorsRecycler.findViewWithTag<View>(actor.id)
-//    val transform = MaterialContainerTransform().apply {
-//      startView = actorView
-//      endView = movieDetailsActorFullContainer
-//      scrimColor = TRANSPARENT
-//      addTarget(movieDetailsActorFullContainer)
-//    }
-//    TransitionManager.beginDelayedTransition(movieDetailsRoot, transform)
-//    actorView.gone()
-//    movieDetailsActorFullImdb.apply {
-//      val hasImdbId = actor.imdbId != null
-//      visibleIf(hasImdbId)
-//      if (hasImdbId) {
-//        onClick { openIMDbLink(IdImdb(actor.imdbId!!), "name") }
-//      }
-//    }
-//    movieDetailsActorFullName.apply {
-//      text = getString(R.string.textActorRole, actor.name, actor.role)
-//      fadeIn()
-//    }
-//    movieDetailsActorFullContainer.apply {
-//      tag = actor
-//      onClick { hideFullActorView(actor) }
-//      visible()
-//    }
-//    movieDetailsActorFullMask.apply {
-//      onClick { hideFullActorView(actor) }
-//      fadeIn()
-//    }
-//  }
+  private fun showFullActorView(actor: Actor) {
+    Glide.with(this)
+      .load("$TMDB_IMAGE_BASE_ACTOR_FULL_URL${actor.image}")
+      .transform(CenterCrop(), RoundedCorners(actorViewCorner))
+      .into(movieDetailsActorFullImage)
 
-//  private fun hideFullActorView(actor: Actor) {
-//    val actorView = movieDetailsActorsRecycler.findViewWithTag<View>(actor.id)
-//    val transform = MaterialContainerTransform().apply {
-//      startView = movieDetailsActorFullContainer
-//      endView = actorView
-//      scrimColor = TRANSPARENT
-//      addTarget(actorView)
-//    }
-//    TransitionManager.beginDelayedTransition(movieDetailsRoot, transform)
-//    movieDetailsActorFullContainer.gone()
-//    actorView.visible()
-//    movieDetailsActorFullMask.fadeOut()
-//    movieDetailsActorFullName.fadeOut()
-//  }
+    val actorView = movieDetailsActorsRecycler.findViewWithTag<View>(actor.id)
+    val transform = MaterialContainerTransform().apply {
+      startView = actorView
+      endView = movieDetailsActorFullContainer
+      scrimColor = TRANSPARENT
+      addTarget(movieDetailsActorFullContainer)
+    }
+    TransitionManager.beginDelayedTransition(movieDetailsRoot, transform)
+    actorView.gone()
+    movieDetailsActorFullImdb.apply {
+      val imdbId = actor.imdbId != null
+      visibleIf(imdbId)
+      if (imdbId) onClick { openIMDbLink(IdImdb(actor.imdbId!!), "name") }
+    }
+    movieDetailsActorFullName.apply {
+      text = getString(R.string.textActorRole, actor.name, actor.role)
+      fadeIn()
+    }
+    movieDetailsActorFullContainer.apply {
+      tag = actor
+      onClick { hideFullActorView(actor) }
+      visible()
+    }
+    movieDetailsActorFullMask.apply {
+      onClick { hideFullActorView(actor) }
+      fadeIn()
+    }
+  }
+
+  private fun hideFullActorView(actor: Actor) {
+    val actorView = movieDetailsActorsRecycler.findViewWithTag<View>(actor.id)
+    val transform = MaterialContainerTransform().apply {
+      startView = movieDetailsActorFullContainer
+      endView = actorView
+      scrimColor = TRANSPARENT
+      addTarget(actorView)
+    }
+    TransitionManager.beginDelayedTransition(movieDetailsRoot, transform)
+    movieDetailsActorFullContainer.gone()
+    actorView.visible()
+    movieDetailsActorFullMask.fadeOut()
+    movieDetailsActorFullName.fadeOut()
+  }
 
   private fun render(uiModel: MovieDetailsUiModel) {
     uiModel.run {
@@ -304,7 +312,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 //        }
       }
       image?.let { renderImage(it) }
-//      actors?.let { renderActors(it) }
+      actors?.let { renderActors(it) }
       translation?.let { renderTranslation(it) }
       relatedMovies?.let { renderRelatedMovies(it) }
       comments?.let {
@@ -387,12 +395,12 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       .into(movieDetailsImage)
   }
 
-//  private fun renderActors(actors: List<Actor>) {
-//    actorsAdapter.setItems(actors)
-//    movieDetailsActorsRecycler.fadeIf(actors.isNotEmpty())
-//    movieDetailsActorsEmptyView.fadeIf(actors.isEmpty())
-//    movieDetailsActorsProgress.gone()
-//  }
+  private fun renderActors(actors: List<Actor>) {
+    actorsAdapter.setItems(actors)
+    movieDetailsActorsRecycler.fadeIf(actors.isNotEmpty())
+    movieDetailsActorsEmptyView.fadeIf(actors.isEmpty())
+    movieDetailsActorsProgress.gone()
+  }
 
   private fun renderRelatedMovies(items: List<RelatedListItem>) {
     relatedAdapter.setItems(items)
@@ -417,17 +425,17 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
   }
 
-//  private fun openIMDbLink(id: IdImdb, type: String) {
-//    val i = Intent(Intent.ACTION_VIEW)
-//    i.data = Uri.parse("imdb:///$type/${id.id}")
-//    try {
-//      startActivity(i)
-//    } catch (e: ActivityNotFoundException) {
-//      // IMDb App not installed. Start in web browser
-//      i.data = Uri.parse("http://www.imdb.com/$type/${id.id}")
-//      startActivity(i)
-//    }
-//  }
+  private fun openIMDbLink(id: IdImdb, type: String) {
+    val i = Intent(Intent.ACTION_VIEW)
+    i.data = Uri.parse("imdb:///$type/${id.id}")
+    try {
+      startActivity(i)
+    } catch (e: ActivityNotFoundException) {
+      // IMDb App not installed. Start in web browser
+      i.data = Uri.parse("http://www.imdb.com/$type/${id.id}")
+      startActivity(i)
+    }
+  }
 //
 //  private fun openShowLink(link: ShowLink, id: String) {
 //    if (link == IMDB) {

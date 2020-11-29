@@ -10,6 +10,7 @@ data class Actor(
   @ColumnInfo(name = "id_tvdb") var idTvdb: Long,
   @ColumnInfo(name = "id_imdb") var idImdb: String?,
   @ColumnInfo(name = "id_tvdb_show") var idShowTvdb: Long,
+  @ColumnInfo(name = "id_tmdb_movie") var idMovieTmdb: Long,
   @ColumnInfo(name = "name") var name: String,
   @ColumnInfo(name = "role") var role: String,
   @ColumnInfo(name = "sortOrder") var sortOrder: Int,

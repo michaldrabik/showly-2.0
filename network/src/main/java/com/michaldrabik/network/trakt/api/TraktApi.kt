@@ -80,6 +80,9 @@ class TraktApi(private val service: TraktService) {
   suspend fun fetchShowActors(traktId: Long) =
     service.fetchShowPeople(traktId).cast ?: emptyList()
 
+  suspend fun fetchMovieActors(traktId: Long) =
+    service.fetchMoviePeople(traktId).cast ?: emptyList()
+
   suspend fun fetchAuthTokens(code: String): OAuthResponse {
     val request = OAuthRequest(
       code,

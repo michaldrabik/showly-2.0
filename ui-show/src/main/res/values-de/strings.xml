@@ -20,7 +20,6 @@
   <string name="textShowQuickProgressSubTitle">Wähle deine zuletzt gesehene Episode aus, um deinen Fortschritt schnell auf den neuesten Stand zu bringen.</string>
   <string name="textShowQuickProgressDone">Dein Fortschritt wurde aktualisiert.</string>
 
-  <string name="textActorRole">%s\n(%s)</string>
   <string name="textShowRated">Deine Bewertung wurde gespeichert.</string>
   <string name="textShowRatingDeleted">Deine Bewertung wurde gelöscht.</string>
   <string name="textEpisodeDate">Folge %1$d | %2$s</string>

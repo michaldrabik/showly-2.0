@@ -15,6 +15,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_movie.cases.MovieDetailsActorsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMainCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsRelatedCase
 import com.michaldrabik.ui_movie.related.RelatedListItem
@@ -27,6 +28,7 @@ import kotlin.properties.Delegates.notNull
 class MovieDetailsViewModel @Inject constructor(
   private val mainCase: MovieDetailsMainCase,
   private val relatedCase: MovieDetailsRelatedCase,
+  private val actorsCase: MovieDetailsActorsCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
   private val quickSyncManager: QuickSyncManager,
@@ -65,7 +67,7 @@ class MovieDetailsViewModel @Inject constructor(
         )
 
         launch { loadBackgroundImage(movie) }
-//        launch { loadActors(movie) }
+        launch { loadActors(movie) }
         launch { loadRelatedMovies(movie) }
 //        launch { loadTranslation(movie) }
 //        if (isSignedIn) launch { loadRating(movie) }
@@ -85,16 +87,16 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  //
-//  private suspend fun loadActors(show: Show) {
-//    uiState = try {
-//      val actors = actorsCase.loadActors(show)
-//      MovieDetailsUiModel(actors = actors)
-//    } catch (t: Throwable) {
-//      MovieDetailsUiModel(actors = emptyList())
-//    }
-//  }
-//
+
+  private suspend fun loadActors(movie: Movie) {
+    uiState = try {
+      val actors = actorsCase.loadActors(movie)
+      MovieDetailsUiModel(actors = actors)
+    } catch (t: Throwable) {
+      MovieDetailsUiModel(actors = emptyList())
+    }
+  }
+
   private suspend fun loadRelatedMovies(movie: Movie) {
     uiState = try {
       val relatedShows = relatedCase.loadRelatedMovies(movie).map {

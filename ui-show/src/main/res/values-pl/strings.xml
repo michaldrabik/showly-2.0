@@ -20,7 +20,6 @@
   <string name="textShowQuickProgressSubTitle">Wybierz ostatni obejrzany odcinek aby zaktualizować swój progres.</string>
   <string name="textShowQuickProgressDone">Progres został zaktualizowany.</string>
 
-  <string name="textActorRole">%s\n(%s)</string>
   <string name="textShowRated">Ocena została zapisana.</string>
   <string name="textShowRatingDeleted">Ocena została usunięta.</string>
   <string name="textEpisodeDate">Odcinek %1$d | %2$s</string>

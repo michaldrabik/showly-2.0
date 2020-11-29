@@ -20,7 +20,6 @@
   <string name="textShowQuickProgressSubTitle">إختر آخر حلقة قمت بمتابعتها لتحديث قائمة مستوى التقدم بسرعة.</string>
   <string name="textShowQuickProgressDone">لقد تم تحديث مستوى تقدمك.</string>
 
-  <string name="textActorRole">%s\n(%s)</string>
   <string name="textShowRated">لقد تم حفظ تقييمك.</string>
   <string name="textShowRatingDeleted">لقد تم حذف تقييمك.</string>
   <string name="textEpisodeDate">الحلقة %1$d | %2$s</string>
