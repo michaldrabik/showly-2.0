@@ -2,6 +2,7 @@ package com.michaldrabik.ui_movie
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
@@ -19,10 +20,12 @@ import com.michaldrabik.ui_movie.cases.MovieDetailsActorsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsCommentsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMainCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsRelatedCase
+import com.michaldrabik.ui_movie.cases.MovieDetailsTranslationCase
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
 
@@ -31,6 +34,7 @@ class MovieDetailsViewModel @Inject constructor(
   private val relatedCase: MovieDetailsRelatedCase,
   private val actorsCase: MovieDetailsActorsCase,
   private val commentsCase: MovieDetailsCommentsCase,
+  private val translationCase: MovieDetailsTranslationCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
   private val quickSyncManager: QuickSyncManager,
@@ -71,7 +75,7 @@ class MovieDetailsViewModel @Inject constructor(
         launch { loadBackgroundImage(movie) }
         launch { loadActors(movie) }
         launch { loadRelatedMovies(movie) }
-//        launch { loadTranslation(movie) }
+        launch { loadTranslation(movie) }
 //        if (isSignedIn) launch { loadRating(movie) }
       } catch (t: Throwable) {
         _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadShow)
@@ -110,18 +114,17 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  //
-//  private suspend fun loadTranslation(show: Show) {
-//    try {
-//      val translation = translationCase.loadTranslation(show)
-//      translation?.let {
-//        uiState = MovieDetailsUiModel(translation = it)
-//      }
-//    } catch (error: Throwable) {
-//      Timber.e(error)
-//      FirebaseCrashlytics.getInstance().recordException(error)
-//    }
-//  }
+  private suspend fun loadTranslation(movie: Movie) {
+    try {
+      val translation = translationCase.loadTranslation(movie)
+      translation?.let {
+        uiState = MovieDetailsUiModel(translation = it)
+      }
+    } catch (error: Throwable) {
+      Timber.e(error)
+      FirebaseCrashlytics.getInstance().recordException(error)
+    }
+  }
 
   fun loadComments() {
     viewModelScope.launch {
