@@ -21,12 +21,10 @@ object OkHttpModule {
   @Named("okHttpTrakt")
   fun providesTraktOkHttp(
     httpLoggingInterceptor: HttpLoggingInterceptor,
-    traktInterceptor: TraktInterceptor,
-    tmdbInterceptor: TmdbInterceptor
+    traktInterceptor: TraktInterceptor
   ) = createBaseOkHttpClient()
     .addInterceptor(httpLoggingInterceptor)
     .addInterceptor(traktInterceptor)
-    .addInterceptor(tmdbInterceptor)
     .build()
 
   @Provides
