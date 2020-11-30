@@ -56,7 +56,7 @@ class MovieImagesProvider @Inject constructor(
       FANART, FANART_WIDE -> images.backdrops ?: emptyList()
     }
 
-    val remoteImage = typeImages.firstOrNull()
+    val remoteImage = typeImages.firstOrNull { it.isEnglish() } ?: typeImages.firstOrNull()
     val image = when (remoteImage) {
       null -> Image.createUnavailable(type, MOVIE)
       else -> Image(

@@ -21,7 +21,7 @@ class MainViewModel @Inject constructor(
   private val rateAppCase: MainRateAppCase
 ) : BaseViewModel<MainUiModel>() {
 
-  fun initSettings() {
+  fun initialize() {
     viewModelScope.launch {
       initCase.initSettings()
       checkInitialRun()

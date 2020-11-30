@@ -112,7 +112,7 @@ class MainActivity :
     viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     viewModel.run {
       uiLiveData.observe(this@MainActivity) { render(it!!) }
-      initSettings()
+      initialize()
       refreshTraktSyncSchedule(applicationContext)
     }
   }
