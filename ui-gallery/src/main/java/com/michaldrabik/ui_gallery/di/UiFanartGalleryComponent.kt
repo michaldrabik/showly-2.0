@@ -1,6 +1,6 @@
-package com.michaldrabik.ui_show.gallery.di
+package com.michaldrabik.ui_gallery.di
 
-import com.michaldrabik.ui_show.gallery.FanartGalleryFragment
+import com.michaldrabik.ui_gallery.FanartGalleryFragment
 import dagger.Subcomponent
 
 @Subcomponent

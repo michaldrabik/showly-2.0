@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
@@ -56,6 +57,7 @@ import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageFamily.*
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
@@ -67,6 +69,7 @@ import com.michaldrabik.ui_movie.helpers.MovieLink.IMDB
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import com.michaldrabik.ui_movie.related.RelatedMovieAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
 import kotlinx.android.synthetic.main.view_links_movie_menu.view.*
@@ -125,7 +128,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsImageGuideline.setGuidelineBegin((imageHeight * 0.35).toInt())
     movieDetailsBackArrow.onClick { requireActivity().onBackPressed() }
     movieDetailsImage.onClick {
-      val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, movieId.id) }
+      val bundle = bundleOf(
+        ARG_MOVIE_ID to movieId.id,
+        ARG_TYPE to MOVIE
+      )
       navigateTo(R.id.actionMovieDetailsFragmentToFanartGallery, bundle)
       Analytics.logMovieGalleryClick(movieId.id)
     }

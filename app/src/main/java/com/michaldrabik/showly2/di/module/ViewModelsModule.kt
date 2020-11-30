@@ -17,7 +17,6 @@ import com.michaldrabik.ui_progress.progress.ProgressMainViewModel
 import com.michaldrabik.ui_search.SearchViewModel
 import com.michaldrabik.ui_settings.SettingsViewModel
 import com.michaldrabik.ui_show.ShowDetailsViewModel
-import com.michaldrabik.ui_show.gallery.FanartGalleryViewModel
 import com.michaldrabik.ui_statistics.StatisticsViewModel
 import com.michaldrabik.ui_trakt_sync.TraktSyncViewModel
 import dagger.Binds
@@ -55,8 +54,8 @@ abstract class ViewModelsModule {
 
   @Binds
   @IntoMap
-  @ViewModelKey(FanartGalleryViewModel::class)
-  abstract fun bindFanartGalleryViewModel(viewModel: FanartGalleryViewModel): ViewModel
+  @ViewModelKey(com.michaldrabik.ui_gallery.FanartGalleryViewModel::class)
+  abstract fun bindFanartGalleryViewModel(viewModel: com.michaldrabik.ui_gallery.FanartGalleryViewModel): ViewModel
 
   @Binds
   @IntoMap

@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.gallery
+package com.michaldrabik.ui_gallery
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_FULL_USER
@@ -14,11 +14,13 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_gallery.di.UiFanartGalleryComponentProvider
+import com.michaldrabik.ui_gallery.recycler.FanartGalleryAdapter
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.ImageFamily
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
-import com.michaldrabik.ui_show.R
-import com.michaldrabik.ui_show.gallery.di.UiFanartGalleryComponentProvider
-import com.michaldrabik.ui_show.gallery.recycler.FanartGalleryAdapter
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import kotlinx.android.synthetic.main.fragment_fanart_gallery.*
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
@@ -27,6 +29,8 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>(R.layout.frag
   override val viewModel by viewModels<FanartGalleryViewModel> { viewModelFactory }
 
   private val showId by lazy { IdTrakt(arguments?.getLong(ARG_SHOW_ID, -1) ?: -1) }
+  private val movieId by lazy { IdTrakt(arguments?.getLong(ARG_MOVIE_ID, -1) ?: -1) }
+  private val type by lazy { arguments?.getSerializable(ARG_TYPE) as ImageFamily }
   private val galleryAdapter by lazy { FanartGalleryAdapter() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +46,8 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>(R.layout.frag
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      loadImage(showId)
+      val id = if (showId.id != -1L) showId else movieId
+      loadImage(id, type)
     }
   }
 

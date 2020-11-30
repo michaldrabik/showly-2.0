@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.gallery.recycler
+package com.michaldrabik.ui_gallery.recycler
 
 import android.content.Context
 import android.util.AttributeSet
@@ -10,8 +10,8 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
+import com.michaldrabik.ui_gallery.R
 import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_show.R
 import kotlinx.android.synthetic.main.view_fanart_gallery_image.view.*
 
 class FanartGalleryImageView : FrameLayout {

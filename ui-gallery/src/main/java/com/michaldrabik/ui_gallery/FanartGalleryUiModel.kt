@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.gallery
+package com.michaldrabik.ui_gallery
 
 import com.michaldrabik.ui_base.UiModel
 import com.michaldrabik.ui_model.Image

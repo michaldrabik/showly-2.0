@@ -70,6 +70,7 @@ dependencies {
   implementation project(':ui-episodes')
   implementation project(':ui-show')
   implementation project(':ui-movie')
+  implementation project(':ui-gallery')
   implementation project(':ui-my-shows')
   implementation project(':ui-search')
   implementation project(':ui-statistics')

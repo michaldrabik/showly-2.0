@@ -15,6 +15,8 @@ import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponent
 import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponentProvider
 import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponent
 import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponentProvider
+import com.michaldrabik.ui_gallery.di.UiFanartGalleryComponent
+import com.michaldrabik.ui_gallery.di.UiFanartGalleryComponentProvider
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponent
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponentProvider
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
@@ -27,8 +29,6 @@ import com.michaldrabik.ui_settings.di.UiSettingsComponent
 import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
 import com.michaldrabik.ui_show.di.UiShowDetailsComponent
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
-import com.michaldrabik.ui_show.gallery.di.UiFanartGalleryComponent
-import com.michaldrabik.ui_show.gallery.di.UiFanartGalleryComponentProvider
 import com.michaldrabik.ui_statistics.di.UiSearchComponent
 import com.michaldrabik.ui_statistics.di.UiStatisticsComponent
 import com.michaldrabik.ui_statistics.di.UiStatisticsComponentProvider

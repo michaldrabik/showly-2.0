@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.gallery.recycler
+package com.michaldrabik.ui_gallery.recycler
 
 import android.view.View
 import android.view.ViewGroup

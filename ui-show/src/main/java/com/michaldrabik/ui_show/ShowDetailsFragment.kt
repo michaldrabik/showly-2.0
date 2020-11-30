@@ -17,6 +17,7 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
@@ -68,6 +69,7 @@ import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageFamily.*
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Season
@@ -76,6 +78,7 @@ import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_QUICK_PROGRESS
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
 import com.michaldrabik.ui_show.helpers.ShowLink
@@ -157,7 +160,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
     showDetailsImage.onClick {
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, showId.id) }
+      val bundle = bundleOf(
+        ARG_SHOW_ID to showId.id,
+        ARG_TYPE to SHOW
+      )
       navigateTo(R.id.actionShowDetailsFragmentToFanartGallery, bundle)
       Analytics.logShowGalleryClick(showId.id)
     }
