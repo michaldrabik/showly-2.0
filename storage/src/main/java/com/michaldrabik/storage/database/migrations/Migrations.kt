@@ -205,6 +205,7 @@ object Migrations {
       database.execSQL("CREATE INDEX index_movies_related_id_trakt ON movies_related(id_trakt_related_movie)")
 
       database.execSQL("ALTER TABLE actors ADD COLUMN id_tmdb_movie INTEGER NOT NULL DEFAULT -1")
+      database.execSQL("ALTER TABLE actors ADD COLUMN id_tmdb INTEGER NOT NULL DEFAULT -1")
     }
   }
 

@@ -311,7 +311,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .transform(CenterCrop(), RoundedCorners(actorViewCorner))
       .into(showDetailsActorFullImage)
 
-    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.id)
+    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.tvdbId)
     val transform = MaterialContainerTransform().apply {
       startView = actorView
       endView = showDetailsActorFullContainer
@@ -343,7 +343,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun hideFullActorView(actor: Actor) {
-    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.id)
+    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.tvdbId)
     val transform = MaterialContainerTransform().apply {
       startView = showDetailsActorFullContainer
       endView = actorView

@@ -10,7 +10,8 @@ import com.michaldrabik.storage.database.model.Actor as ActorDb
 class ActorMapper @Inject constructor() {
 
   fun fromNetwork(actor: TvdbActor) = Actor(
-    id = actor.id ?: -1,
+    tvdbId = actor.id ?: -1,
+    tmdbId = -1,
     imdbId = null,
     tvdbShowId = actor.seriesId ?: -1,
     tmdbMovieId = -1,
@@ -21,7 +22,8 @@ class ActorMapper @Inject constructor() {
   )
 
   fun fromNetwork(actor: TmdbActor) = Actor(
-    id = actor.id,
+    tvdbId = -1,
+    tmdbId = actor.id,
     imdbId = null,
     tvdbShowId = -1,
     tmdbMovieId = actor.movieTmdbId,
@@ -32,7 +34,8 @@ class ActorMapper @Inject constructor() {
   )
 
   fun fromDatabase(actor: ActorDb) = Actor(
-    id = actor.idTvdb,
+    tvdbId = actor.idTvdb,
+    tmdbId = actor.idTmdb,
     imdbId = actor.idImdb,
     tvdbShowId = actor.idShowTvdb,
     tmdbMovieId = actor.idMovieTmdb,
@@ -44,7 +47,8 @@ class ActorMapper @Inject constructor() {
 
   fun toDatabase(actor: Actor) = ActorDb(
     0,
-    idTvdb = actor.id,
+    idTvdb = actor.tvdbId,
+    idTmdb = actor.tmdbId,
     idImdb = actor.imdbId,
     idShowTvdb = actor.tvdbShowId,
     idMovieTmdb = actor.tmdbMovieId,

@@ -34,7 +34,7 @@ class ActorView : FrameLayout {
 
   fun bind(item: Actor, clickListener: (Actor) -> Unit) {
     clear()
-    tag = item.id
+    tag = item.tmdbId
     setOnClickListener {
       if (item.image.isNotBlank()) clickListener(item)
     }

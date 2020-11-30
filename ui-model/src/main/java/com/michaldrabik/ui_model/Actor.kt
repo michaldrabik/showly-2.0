@@ -1,7 +1,8 @@
 package com.michaldrabik.ui_model
 
 data class Actor(
-  val id: Long,
+  val tvdbId: Long,
+  val tmdbId: Long,
   val imdbId: String?,
   val tvdbShowId: Long,
   val tmdbMovieId: Long,
