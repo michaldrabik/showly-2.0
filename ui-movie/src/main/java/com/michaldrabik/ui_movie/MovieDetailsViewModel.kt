@@ -16,6 +16,7 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_movie.cases.MovieDetailsActorsCase
+import com.michaldrabik.ui_movie.cases.MovieDetailsCommentsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMainCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsRelatedCase
 import com.michaldrabik.ui_movie.related.RelatedListItem
@@ -29,6 +30,7 @@ class MovieDetailsViewModel @Inject constructor(
   private val mainCase: MovieDetailsMainCase,
   private val relatedCase: MovieDetailsRelatedCase,
   private val actorsCase: MovieDetailsActorsCase,
+  private val commentsCase: MovieDetailsCommentsCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
   private val quickSyncManager: QuickSyncManager,
@@ -120,19 +122,19 @@ class MovieDetailsViewModel @Inject constructor(
 //      FirebaseCrashlytics.getInstance().recordException(error)
 //    }
 //  }
-//
-//  fun loadComments() {
-//    viewModelScope.launch {
-//      uiState = try {
-//        val comments = commentsCase.loadComments(movie)
-//        MovieDetailsUiModel(comments = comments)
-//      } catch (t: Throwable) {
-//        MovieDetailsUiModel(comments = emptyList())
-//      }
-//    }
-//    Analytics.logShowCommentsClick(movie)
-//  }
-//
+
+  fun loadComments() {
+    viewModelScope.launch {
+      uiState = try {
+        val comments = commentsCase.loadComments(movie)
+        MovieDetailsUiModel(comments = comments)
+      } catch (t: Throwable) {
+        MovieDetailsUiModel(comments = emptyList())
+      }
+    }
+    Analytics.logMovieCommentsClick(movie)
+  }
+
   fun loadMissingImage(item: RelatedListItem, force: Boolean) {
 
     fun updateItem(new: RelatedListItem) {

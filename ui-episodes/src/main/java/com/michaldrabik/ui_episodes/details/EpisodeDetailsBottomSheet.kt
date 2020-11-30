@@ -20,7 +20,6 @@ import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.extensions.toDisplayString
 import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
-import com.michaldrabik.ui_base.common.views.CommentView
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.info
@@ -36,6 +35,7 @@ import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
+import com.michaldrabik.ui_comments.CommentView
 import com.michaldrabik.ui_episodes.R
 import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponentProvider
 import com.michaldrabik.ui_model.Episode

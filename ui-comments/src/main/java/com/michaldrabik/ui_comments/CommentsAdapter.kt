@@ -1,10 +1,9 @@
-package com.michaldrabik.ui_show.comments
+package com.michaldrabik.ui_comments
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.michaldrabik.ui_base.common.views.CommentView
 import com.michaldrabik.ui_model.Comment
 
 class CommentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

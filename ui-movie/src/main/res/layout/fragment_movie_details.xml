@@ -376,7 +376,7 @@
 
   </androidx.core.widget.NestedScrollView>
 
-  <FrameLayout
+  <com.michaldrabik.ui_comments.CommentsView
     android:id="@+id/movieDetailsCommentsView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

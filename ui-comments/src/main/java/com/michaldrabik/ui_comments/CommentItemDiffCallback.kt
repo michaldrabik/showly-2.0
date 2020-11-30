@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.comments
+package com.michaldrabik.ui_comments
 
 import androidx.recyclerview.widget.DiffUtil
 import com.michaldrabik.ui_model.Comment

@@ -36,6 +36,7 @@ dependencies {
   implementation project(':ui-model')
   implementation project(':ui-navigation')
   implementation project(':ui-episodes')
+  implementation project(':ui-comments')
   implementation project(':ui-gallery')
   implementation project(':ui-widgets')
 }

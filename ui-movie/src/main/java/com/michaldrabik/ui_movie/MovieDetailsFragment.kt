@@ -136,9 +136,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       Analytics.logMovieGalleryClick(movieId.id)
     }
     movieDetailsCommentsButton.onClick {
-//      movieDetailsCommentsView.clear()
-//      showCommentsView()
-//      viewModel.loadComments()
+      movieDetailsCommentsView.clear()
+      showCommentsView()
+      viewModel.loadComments()
     }
     movieDetailsAddButton.run {
       isEnabled = false
@@ -193,16 +193,16 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
   }
 
-//  private fun showCommentsView() {
-//    movieDetailsCommentsView.run {
-//      fadeIn(275)
-//      startAnimation(animationEnterRight)
-//    }
-//    movieDetailsMainLayout.run {
-//      fadeOut(200)
-//      startAnimation(animationExitRight)
-//    }
-//  }
+  private fun showCommentsView() {
+    movieDetailsCommentsView.run {
+      fadeIn(275)
+      startAnimation(animationEnterRight)
+    }
+    movieDetailsMainLayout.run {
+      fadeOut(200)
+      startAnimation(animationExitRight)
+    }
+  }
 
   private fun hideExtraView(view: View) {
     if (view.animation != null) return
@@ -325,7 +325,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       translation?.let { renderTranslation(it) }
       relatedMovies?.let { renderRelatedMovies(it) }
       comments?.let {
-//        movieDetailsCommentsView.bind(it)
+        movieDetailsCommentsView.bind(it)
       }
       ratingState?.let { renderRating(it) }
       showFromTraktLoading?.let {

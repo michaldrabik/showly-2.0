@@ -518,7 +518,7 @@
     android:visibility="gone"
     />
 
-  <com.michaldrabik.ui_show.comments.CommentsView
+  <com.michaldrabik.ui_comments.CommentsView
     android:id="@+id/showDetailsCommentsView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

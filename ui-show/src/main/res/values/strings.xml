@@ -11,10 +11,6 @@
   <string name="textSignBeforeRate">Please sign in before rating a show.</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
 
-  <string name="textComments">Comments:</string>
-  <string name="textComments2">Comments</string>
-  <string name="textNoComments">No comments.</string>
-
   <string name="textShowQuickProgressTitle">Quick Progress</string>
   <string name="textShowQuickProgressSubTitle">Select last seen episode to quickly bring your progress up to date.</string>
   <string name="textShowQuickProgressDone">Your progress has been updated.</string>

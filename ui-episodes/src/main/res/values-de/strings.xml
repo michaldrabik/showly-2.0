@@ -9,7 +9,4 @@
   <string name="textNoDescription">Übersicht nicht verfügbar.</string>
   <string name="textLoadCommentsCount">Kommentare (%d)</string>
   <string name="textVotes">%.1f (%d Bewertungen)</string>
-
-  <string name="textNoComments">Keine Kommentare.</string>
-  <string name="textComments">Kommentare:</string>
 </resources>

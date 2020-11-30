@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_show.comments
+package com.michaldrabik.ui_comments
 
 import android.content.Context
 import android.util.AttributeSet
@@ -11,7 +11,6 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Comment
-import com.michaldrabik.ui_show.R
 import kotlinx.android.synthetic.main.view_comments.view.*
 
 class CommentsView : ConstraintLayout {

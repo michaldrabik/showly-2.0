@@ -11,10 +11,6 @@
   <string name="textSignBeforeRate">رجاءً قُم بتسجيل الدخول قبل تقييم مسلسل.</string>
   <string name="textShowExtraInfo">%3$s %2$s %1$s | %6$s | %4$s %5$s</string>
 
-  <string name="textComments">التعليقات:</string>
-  <string name="textComments2">التعليقات</string>
-  <string name="textNoComments">لا توجد تعليقات.</string>
-
   <string name="textShowQuickProgressTitle">مستوى التقدم السريع</string>
   <string name="textShowQuickProgressSubTitle">إختر آخر حلقة قمت بمتابعتها لتحديث قائمة مستوى التقدم بسرعة.</string>
   <string name="textShowQuickProgressDone">لقد تم تحديث مستوى تقدمك.</string>

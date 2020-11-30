@@ -11,10 +11,6 @@
   <string name="textSignBeforeRate">Zaloguj się aby móc ocenić.</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
 
-  <string name="textComments">Opinie:</string>
-  <string name="textComments2">Opinie</string>
-  <string name="textNoComments">Brak opinii.</string>
-
   <string name="textShowQuickProgressTitle">Szybki Progres</string>
   <string name="textShowQuickProgressSubTitle">Wybierz ostatni obejrzany odcinek aby zaktualizować swój progres.</string>
   <string name="textShowQuickProgressDone">Progres został zaktualizowany.</string>

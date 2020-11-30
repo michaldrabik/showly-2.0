@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_base.common.views
+package com.michaldrabik.ui_comments
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.michaldrabik.common.extensions.toDayOnlyDisplayString
 import com.michaldrabik.common.extensions.toLocalTimeZone
-import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf

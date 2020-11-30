@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textComments">Comments:</string>
+  <string name="textComments2">Comments</string>
+  <string name="textNoComments">No comments.</string>
+</resources>

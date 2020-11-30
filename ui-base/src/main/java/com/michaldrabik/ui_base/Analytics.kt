@@ -71,6 +71,13 @@ object Analytics {
     }
   }
 
+  fun logMovieCommentsClick(movie: Movie) {
+    firebaseAnalytics.logEvent("movie_click_comments") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
+    }
+  }
+
   fun logShowLinksClick(show: Show) {
     firebaseAnalytics.logEvent("show_click_links") {
       param("show_id_trakt", show.traktId)
