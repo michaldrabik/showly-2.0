@@ -16,9 +16,11 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_movie.cases.MovieDetailsActorsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsCommentsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMainCase
+import com.michaldrabik.ui_movie.cases.MovieDetailsRatingCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsRelatedCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsTranslationCase
 import com.michaldrabik.ui_movie.related.RelatedListItem
@@ -35,6 +37,7 @@ class MovieDetailsViewModel @Inject constructor(
   private val actorsCase: MovieDetailsActorsCase,
   private val commentsCase: MovieDetailsCommentsCase,
   private val translationCase: MovieDetailsTranslationCase,
+  private val ratingsCase: MovieDetailsRatingCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
   private val quickSyncManager: QuickSyncManager,
@@ -76,7 +79,7 @@ class MovieDetailsViewModel @Inject constructor(
         launch { loadActors(movie) }
         launch { loadRelatedMovies(movie) }
         launch { loadTranslation(movie) }
-//        if (isSignedIn) launch { loadRating(movie) }
+        if (isSignedIn) launch { loadRating(movie) }
       } catch (t: Throwable) {
         _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadShow)
         progressJob.cancel()
@@ -156,47 +159,47 @@ class MovieDetailsViewModel @Inject constructor(
       }
     }
   }
-//
-//  private suspend fun loadRating(show: Show) {
-//    try {
-//      uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = true))
-//      val rating = ratingsCase.loadRating(show)
-//      uiState = MovieDetailsUiModel(ratingState = RatingState(userRating = rating ?: TraktRating.EMPTY, rateLoading = false))
-//    } catch (error: Throwable) {
-//      Timber.e(error)
-//      uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = false))
-//    }
-//  }
-//
-//  fun addRating(rating: Int) {
-//    viewModelScope.launch {
-//      try {
-//        uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = true))
-//        ratingsCase.addRating(movie, rating)
-//        val userRating = TraktRating(movie.ids.trakt, rating)
-//        uiState = MovieDetailsUiModel(ratingState = RatingState(userRating = userRating, rateLoading = false))
-//        _messageLiveData.value = MessageEvent.info(R.string.textShowRated)
-//        Analytics.logShowRated(movie, rating)
-//      } catch (error: Throwable) {
-//        uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = false))
-//        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
-//      }
-//    }
-//  }
-//
-//  fun deleteRating() {
-//    viewModelScope.launch {
-//      try {
-//        uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = true))
-//        ratingsCase.deleteRating(movie)
-//        uiState = MovieDetailsUiModel(ratingState = RatingState(userRating = TraktRating.EMPTY, rateLoading = false))
-//        _messageLiveData.value = MessageEvent.info(R.string.textShowRatingDeleted)
-//      } catch (error: Throwable) {
-//        uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = false))
-//        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
-//      }
-//    }
-//  }
+
+  private suspend fun loadRating(movie: Movie) {
+    try {
+      uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = true))
+      val rating = ratingsCase.loadRating(movie)
+      uiState = MovieDetailsUiModel(ratingState = RatingState(userRating = rating ?: TraktRating.EMPTY, rateLoading = false))
+    } catch (error: Throwable) {
+      Timber.e(error)
+      uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = false))
+    }
+  }
+
+  fun addRating(rating: Int) {
+    viewModelScope.launch {
+      try {
+        uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = true))
+        ratingsCase.addRating(movie, rating)
+        val userRating = TraktRating(movie.ids.trakt, rating)
+        uiState = MovieDetailsUiModel(ratingState = RatingState(userRating = userRating, rateLoading = false))
+        _messageLiveData.value = MessageEvent.info(R.string.textShowRated)
+        Analytics.logMovieRated(movie, rating)
+      } catch (error: Throwable) {
+        uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = false))
+        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+      }
+    }
+  }
+
+  fun deleteRating() {
+    viewModelScope.launch {
+      try {
+        uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = true))
+        ratingsCase.deleteRating(movie)
+        uiState = MovieDetailsUiModel(ratingState = RatingState(userRating = TraktRating.EMPTY, rateLoading = false))
+        _messageLiveData.value = MessageEvent.info(R.string.textShowRatingDeleted)
+      } catch (error: Throwable) {
+        uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = false))
+        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+      }
+    }
+  }
 //
 //  fun addFollowedShow(context: Context) {
 //    if (!checkSeasonsLoaded()) return

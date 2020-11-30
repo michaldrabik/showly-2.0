@@ -5,6 +5,7 @@ import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_repository.mappers.Mappers
@@ -18,6 +19,7 @@ class RatingsRepository @Inject constructor(
 ) {
 
   private var showsCache: MutableList<TraktRating>? = null
+  private var moviesCache: MutableList<TraktRating>? = null
   private var episodesCache: MutableList<TraktRating>? = null
 
   suspend fun loadShowsRatings(token: String): List<TraktRating> {
@@ -41,6 +43,17 @@ class RatingsRepository @Inject constructor(
       }.toMutableList()
     }
     return showsCache?.find { it.idTrakt == show.ids.trakt }
+  }
+
+  suspend fun loadRating(token: String, movie: Movie): TraktRating? {
+    if (moviesCache == null) {
+      val ratings = cloud.traktApi.fetchMoviesRatings(token)
+      moviesCache = ratings.map {
+        val id = IdTrakt(it.movie.ids.trakt ?: -1)
+        TraktRating(id, it.rating)
+      }.toMutableList()
+    }
+    return moviesCache?.find { it.idTrakt == movie.ids.trakt }
   }
 
   suspend fun loadRating(token: String, episode: Episode): TraktRating? {
@@ -67,6 +80,19 @@ class RatingsRepository @Inject constructor(
     }
   }
 
+  suspend fun addRating(token: String, movie: Movie, rating: Int) {
+    cloud.traktApi.postRating(
+      token,
+      mappers.movie.toNetwork(movie),
+      rating
+    )
+    moviesCache?.run {
+      val index = indexOfFirst { it.idTrakt == movie.ids.trakt }
+      if (index != -1) removeAt(index)
+      add(TraktRating(movie.ids.trakt, rating))
+    }
+  }
+
   suspend fun addRating(token: String, episode: Episode, rating: Int) {
     cloud.traktApi.postRating(
       token,
@@ -87,6 +113,17 @@ class RatingsRepository @Inject constructor(
     )
     showsCache?.run {
       val index = indexOfFirst { it.idTrakt == show.ids.trakt }
+      if (index != -1) removeAt(index)
+    }
+  }
+
+  suspend fun deleteRating(token: String, movie: Movie) {
+    cloud.traktApi.deleteRating(
+      token,
+      mappers.movie.toNetwork(movie)
+    )
+    moviesCache?.run {
+      val index = indexOfFirst { it.idTrakt == movie.ids.trakt }
       if (index != -1) removeAt(index)
     }
   }

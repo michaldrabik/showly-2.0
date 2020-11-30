@@ -133,6 +133,14 @@ object Analytics {
     }
   }
 
+  fun logMovieRated(movie: Movie, rating: Int) {
+    firebaseAnalytics.logEvent("movie_rate") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
+      param("movie_rating", rating.toLong())
+    }
+  }
+
   fun logEpisodeRated(idTrakt: Long, episode: Episode, rating: Int) {
     firebaseAnalytics.logEvent("episode_rate") {
       param("show_id_trakt", idTrakt)

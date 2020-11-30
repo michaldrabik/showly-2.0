@@ -5,6 +5,7 @@ import com.michaldrabik.network.Config.TRAKT_CLIENT_SECRET
 import com.michaldrabik.network.Config.TRAKT_REDIRECT_URL
 import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.network.trakt.model.Episode
+import com.michaldrabik.network.trakt.model.Movie
 import com.michaldrabik.network.trakt.model.OAuthResponse
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.network.trakt.model.SyncExportRequest
@@ -142,10 +143,22 @@ class TraktApi(private val service: TraktService) {
     service.postRemoveRating("Bearer $token", body)
   }
 
+  suspend fun deleteRating(token: String, movie: Movie) {
+    val requestValue = RatingRequestValue(0, movie.ids)
+    val body = RatingRequest(movies = listOf(requestValue))
+    service.postRemoveRating("Bearer $token", body)
+  }
+
   suspend fun deleteRating(token: String, episode: Episode) {
     val requestValue = RatingRequestValue(0, episode.ids)
     val body = RatingRequest(episodes = listOf(requestValue))
     service.postRemoveRating("Bearer $token", body)
+  }
+
+  suspend fun postRating(token: String, movie: Movie, rating: Int) {
+    val requestValue = RatingRequestValue(rating, movie.ids)
+    val body = RatingRequest(movies = listOf(requestValue))
+    service.postRating("Bearer $token", body)
   }
 
   suspend fun postRating(token: String, show: Show, rating: Int) {
@@ -162,6 +175,9 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun fetchShowsRatings(token: String) =
     service.fetchShowsRatings("Bearer $token")
+
+  suspend fun fetchMoviesRatings(token: String) =
+    service.fetchMoviesRatings("Bearer $token")
 
   suspend fun fetchEpisodesRatings(token: String) =
     service.fetchEpisodesRatings("Bearer $token")

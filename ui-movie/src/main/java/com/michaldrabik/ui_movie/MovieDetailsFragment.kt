@@ -15,8 +15,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.core.widget.TextViewCompat
@@ -28,12 +30,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.views.RateView
+import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
@@ -374,9 +379,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsRateButton.onClick {
       if (rating.rateAllowed == true) {
         val rate = rating.userRating?.rating ?: INITIAL_RATING
-//        openRateDialog(rate, rate != 0)
+        openRateDialog(rate, rate != 0)
       } else {
-//        showSnack(MessageEvent.info(R.string.textSignBeforeRate))
+        showSnack(MessageEvent.info(R.string.textSignBeforeRate))
       }
     }
   }
@@ -498,24 +503,24 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     Analytics.logMovieShareClick(movie)
   }
 
-//  private fun openRateDialog(rating: Int, showRemove: Boolean) {
-//    val context = requireContext()
-//    val rateView = RateView(context).apply {
-//      setPadding(context.dimenToPx(R.dimen.spaceNormal))
-//      setRating(rating)
-//    }
-//    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
-//      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
-//      .setView(rateView)
-//      .setPositiveButton(R.string.textRate) { _, _ -> viewModel.addRating(rateView.getRating()) }
-//      .setNegativeButton(R.string.textCancel) { _, _ -> }
-//      .apply {
-//        if (showRemove) {
-//          setNeutralButton(R.string.textRateDelete) { _, _ -> viewModel.deleteRating() }
-//        }
-//      }
-//      .show()
-//  }
+  private fun openRateDialog(rating: Int, showRemove: Boolean) {
+    val context = requireContext()
+    val rateView = RateView(context).apply {
+      setPadding(context.dimenToPx(R.dimen.spaceNormal))
+      setRating(rating)
+    }
+    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
+      .setView(rateView)
+      .setPositiveButton(R.string.textRate) { _, _ -> viewModel.addRating(rateView.getRating()) }
+      .setNegativeButton(R.string.textCancel) { _, _ -> }
+      .apply {
+        if (showRemove) {
+          setNeutralButton(R.string.textRateDelete) { _, _ -> viewModel.deleteRating() }
+        }
+      }
+      .show()
+  }
 
   private fun handleBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher

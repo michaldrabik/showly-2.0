@@ -3,4 +3,10 @@
   <string name="textComments">Comments:</string>
   <string name="textComments2">Comments</string>
   <string name="textNoComments">No comments.</string>
+
+  <string name="textShowRated">Your rating has been saved.</string>
+  <string name="textShowRatingDeleted">Your rating has been removed.</string>
+  <string name="textSignBeforeRate">Please sign in before rating a show.</string>
+  <string name="textRate">Rate</string>
+  <string name="textRateDelete">Remove</string>
 </resources>

@@ -9,6 +9,7 @@ import com.michaldrabik.network.trakt.model.Movie
 import com.michaldrabik.network.trakt.model.MovieResult
 import com.michaldrabik.network.trakt.model.OAuthResponse
 import com.michaldrabik.network.trakt.model.RatingResultEpisode
+import com.michaldrabik.network.trakt.model.RatingResultMovie
 import com.michaldrabik.network.trakt.model.RatingResultShow
 import com.michaldrabik.network.trakt.model.SearchResult
 import com.michaldrabik.network.trakt.model.Season
@@ -204,6 +205,11 @@ interface TraktService {
   suspend fun fetchShowsRatings(
     @Header("Authorization") authToken: String
   ): List<RatingResultShow>
+
+  @GET("sync/ratings/movies")
+  suspend fun fetchMoviesRatings(
+    @Header("Authorization") authToken: String
+  ): List<RatingResultMovie>
 
   @GET("sync/ratings/episodes")
   suspend fun fetchEpisodesRatings(

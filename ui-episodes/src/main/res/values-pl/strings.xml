@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textShowRated">Ocena została zapisana.</string>
-  <string name="textShowRatingDeleted">Ocena została usunięta.</string>
-  <string name="textSignBeforeRate">Zaloguj się aby móc ocenić.</string>
-  <string name="textRate">Oceń</string>
-  <string name="textRateDelete">Usuń</string>
   <string name="textSeasonEpisodeDate">S.%1$02d E.%2$02d | %3$s</string>
   <string name="textNoDescription">Opis niedostępny.</string>
   <string name="textLoadCommentsCount">Pokaż Opinie (%d)</string>
