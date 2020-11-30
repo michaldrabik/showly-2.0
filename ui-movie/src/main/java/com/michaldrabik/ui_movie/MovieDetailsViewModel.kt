@@ -87,7 +87,6 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-
   private suspend fun loadActors(movie: Movie) {
     uiState = try {
       val actors = actorsCase.loadActors(movie)

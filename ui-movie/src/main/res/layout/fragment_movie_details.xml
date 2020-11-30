@@ -24,7 +24,7 @@
       android:id="@+id/constraintLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingBottom="@dimen/spaceMedium"
+      android:paddingBottom="@dimen/spaceNormal"
       >
 
       <androidx.constraintlayout.widget.Guideline
@@ -154,19 +154,19 @@
         app:layout_constraintTop_toBottomOf="@id/movieDetailsStatus"
         >
 
-        <!--        <com.michaldrabik.ui_show.views.AddToShowsButton-->
-        <!--          android:id="@+id/movieDetailsAddButton"-->
-        <!--          android:layout_width="match_parent"-->
-        <!--          android:layout_height="wrap_content"-->
-        <!--          />-->
+        <com.michaldrabik.ui_movie.views.AddToMoviesButton
+          android:id="@+id/movieDetailsAddButton"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          />
 
-        <!--        <com.michaldrabik.ui_show.views.RemoveFromTraktButton-->
-        <!--          android:id="@+id/movieDetailsRemoveTraktButton"-->
-        <!--          android:layout_width="match_parent"-->
-        <!--          android:layout_height="wrap_content"-->
-        <!--          android:visibility="gone"-->
-        <!--          tools:visibility="visible"-->
-        <!--          />-->
+        <com.michaldrabik.ui_base.common.views.RemoveFromTraktButton
+          android:id="@+id/movieDetailsRemoveTraktButton"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:visibility="gone"
+          tools:visibility="visible"
+          />
 
       </FrameLayout>
 
@@ -223,7 +223,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsDescription"
-        tools:visibility="visible"
         />
 
       <ProgressBar
@@ -330,23 +329,21 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/movieDetailsRelatedRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsCommentsButton"
-        tools:visibility="visible"
         />
 
-      <!--      <com.michaldrabik.ui_show.views.ShowLinksView-->
-      <!--        android:id="@+id/movieDetailsLinksMenu"-->
-      <!--        android:layout_width="wrap_content"-->
-      <!--        android:layout_height="wrap_content"-->
-      <!--        android:visibility="gone"-->
-      <!--        app:layout_constraintBottom_toBottomOf="@id/movieDetailsLinksButton"-->
-      <!--        app:layout_constraintEnd_toEndOf="@id/movieDetailsLinksButton"-->
-      <!--        />-->
+      <com.michaldrabik.ui_movie.views.MovieLinksView
+        android:id="@+id/movieDetailsLinksMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/movieDetailsLinksButton"
+        app:layout_constraintEnd_toEndOf="@id/movieDetailsLinksButton"
+        />
 
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/movieDetailsRelatedRecycler"
@@ -358,11 +355,11 @@
         android:overScrollMode="never"
         android:paddingStart="@dimen/spaceNormal"
         android:paddingEnd="@dimen/spaceNormal"
-        android:visibility="gone"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsRelatedLabel"
-        tools:visibility="gone"
+        tools:visibility="invisible"
         />
 
       <ProgressBar
@@ -370,10 +367,10 @@
         style="@style/ProgressBarGray"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_margin="@dimen/spaceMedium"
+        android:layout_margin="@dimen/spaceNormal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsShareButton"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsRelatedLabel"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

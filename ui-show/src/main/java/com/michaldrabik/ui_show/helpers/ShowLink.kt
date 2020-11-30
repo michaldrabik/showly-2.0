@@ -1,10 +1,10 @@
 package com.michaldrabik.ui_show.helpers
 
-enum class ShowLink(val displayName: String) {
-  IMDB("iMDB"),
-  TRAKT("Trakt"),
-  TVDB("TVDB"),
-  TMDB("TMDB");
+enum class ShowLink {
+  IMDB,
+  TRAKT,
+  TVDB,
+  TMDB;
 
   fun getUri(id: String) = when (this) {
     IMDB -> "https://www.imdb.com/title/$id"

@@ -21,6 +21,7 @@
   <string name="textCommentedOn">المستخدم %1$s علق على %2$s</string>
   <string name="textNetwork">(%2$s) %1$s</string>
   <string name="textMinutesShort">دقائق</string>
+  <string name="textRemoveFromTrakt">حذف من Trakt.tv؟</string>
 
   <string name="textAiredAlready">تم عرضها</string>
   <string name="textAirsNow">تُعرض الآن</string>

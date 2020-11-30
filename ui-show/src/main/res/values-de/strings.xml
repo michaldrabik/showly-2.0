@@ -9,7 +9,6 @@
   <string name="textRate">Bewerten</string>
   <string name="textRateDelete">Löschen</string>
   <string name="textSignBeforeRate">Bitte melde dich an bevor du eine Serie bewertest.</string>
-  <string name="textRemoveFromTrakt">Von Trakt.tv entfernen?</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
 
   <string name="textComments">Kommentare:</string>

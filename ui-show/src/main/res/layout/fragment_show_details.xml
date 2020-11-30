@@ -24,7 +24,7 @@
       android:id="@+id/constraintLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingBottom="@dimen/spaceMedium"
+      android:paddingBottom="@dimen/spaceNormal"
       >
 
       <androidx.constraintlayout.widget.Guideline
@@ -172,7 +172,7 @@
           android:layout_height="wrap_content"
           />
 
-        <com.michaldrabik.ui_show.views.RemoveFromTraktButton
+        <com.michaldrabik.ui_base.common.views.RemoveFromTraktButton
           android:id="@+id/showDetailsRemoveTraktButton"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -263,7 +263,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
-        tools:visibility="visible"
         />
 
       <ProgressBar
@@ -493,7 +492,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedLabel"
-        tools:visibility="gone"
+        tools:visibility="visible"
         />
 
       <ProgressBar

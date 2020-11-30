@@ -1,11 +1,11 @@
-package com.michaldrabik.ui_show.views
+package com.michaldrabik.ui_base.common.views
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_show.R
 import kotlinx.android.synthetic.main.view_remove_trakt_history_button.view.*
 
 class RemoveFromTraktButton : FrameLayout {

@@ -10,6 +10,7 @@ import android.graphics.Color.TRANSPARENT
 import android.net.Uri
 import android.os.Bundle
 import android.transition.TransitionManager
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -53,6 +54,7 @@ import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.Movie
@@ -60,11 +62,14 @@ import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.actors.ActorsAdapter
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponentProvider
+import com.michaldrabik.ui_movie.helpers.MovieLink
+import com.michaldrabik.ui_movie.helpers.MovieLink.IMDB
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import com.michaldrabik.ui_movie.related.RelatedMovieAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
+import kotlinx.android.synthetic.main.view_links_movie_menu.view.*
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
@@ -129,20 +134,19 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 //      showCommentsView()
 //      viewModel.loadComments()
     }
-//    movieDetailsAddButton.run {
-//      isEnabled = false
-//      onAddMyShowsClickListener = {
+    movieDetailsAddButton.run {
+      isEnabled = false
+      onAddMyMoviesClickListener = {
 //        viewModel.addFollowedShow(requireAppContext())
 //        movieDetailsTipQuickProgress.fadeIf(!isTipShown(SHOW_DETAILS_QUICK_PROGRESS))
-//      }
+      }
 //      onAddWatchLaterClickListener = { viewModel.addWatchlistShow(requireAppContext()) }
-//      onArchiveClickListener = { openArchiveConfirmationDialog() }
 //      onRemoveClickListener = { viewModel.removeFromFollowed(requireAppContext()) }
-//    }
-//    movieDetailsRemoveTraktButton.onNoClickListener = {
-//      movieDetailsAddButton.fadeIn()
-//      movieDetailsRemoveTraktButton.fadeOut()
-//    }
+    }
+    movieDetailsRemoveTraktButton.onNoClickListener = {
+      movieDetailsAddButton.fadeIn()
+      movieDetailsRemoveTraktButton.fadeOut()
+    }
   }
 
   private fun setupStatusBar() {
@@ -290,11 +294,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         }
         movieDetailsLinksButton.run {
           onClick {
-//            openLinksMenu(movie.ids)
+            openLinksMenu(movie.ids)
             Analytics.logMovieLinksClick(movie)
           }
         }
-//        movieDetailsAddButton.isEnabled = true
+        movieDetailsAddButton.isEnabled = true
       }
       movieLoading?.let {
         if (!movieDetailsCommentsView.isVisible) {
@@ -319,25 +323,25 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       ratingState?.let { renderRating(it) }
       showFromTraktLoading?.let {
-//        movieDetailsRemoveTraktButton.isLoading = it
-//        movieDetailsAddButton.isEnabled = !it
+        movieDetailsRemoveTraktButton.isLoading = it
+        movieDetailsAddButton.isEnabled = !it
       }
       removeFromTraktHistory?.let { event ->
         event.consume()?.let {
-//          movieDetailsAddButton.fadeIf(!it)
-//          movieDetailsRemoveTraktButton.run {
-//            fadeIf(it)
+          movieDetailsAddButton.fadeIf(!it)
+          movieDetailsRemoveTraktButton.run {
+            fadeIf(it)
 //            onYesClickListener = { viewModel.removeFromTraktHistory() }
-//          }
+          }
         }
       }
       removeFromTraktWatchlist?.let { event ->
         event.consume()?.let {
-//          movieDetailsAddButton.fadeIf(!it)
-//          movieDetailsRemoveTraktButton.run {
-//            fadeIf(it)
+          movieDetailsAddButton.fadeIf(!it)
+          movieDetailsRemoveTraktButton.run {
+            fadeIf(it)
 //            onYesClickListener = { viewModel.removeFromTraktWatchlist() }
-//          }
+          }
         }
       }
     }
@@ -435,50 +439,45 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       startActivity(i)
     }
   }
-//
-//  private fun openShowLink(link: ShowLink, id: String) {
-//    if (link == IMDB) {
-//      openIMDbLink(IdImdb(id), "title")
-//    } else {
-//      val i = Intent(Intent.ACTION_VIEW)
-//      i.data = Uri.parse(link.getUri(id))
-//      startActivity(i)
-//    }
-//  }
 
-//  @SuppressLint("ClickableViewAccessibility")
-//  private fun openLinksMenu(ids: Ids) {
-//    movieDetailsMainLayout.setOnTouchListener { _, event ->
-//      if (event.action == MotionEvent.ACTION_DOWN) {
-//        movieDetailsLinksMenu.fadeOut()
-//        movieDetailsMainLayout.setOnTouchListener(null)
-//      }
-//      false
-//    }
-//    movieDetailsLinksMenu.run {
-//      fadeIn()
-//      viewLinkTrakt.visibleIf(ids.trakt.id != -1L)
-//      viewLinkTrakt.onClick {
-//        openShowLink(TRAKT, ids.trakt.id.toString())
-//        fadeOut(125)
-//      }
-//      viewLinkTmdb.visibleIf(ids.tmdb.id != -1L)
-//      viewLinkTmdb.onClick {
-//        openShowLink(ImageSource.TMDB, ids.tmdb.id.toString())
-//        fadeOut(125)
-//      }
-//      viewLinkImdb.visibleIf(ids.imdb.id.isNotBlank())
-//      viewLinkImdb.onClick {
-//        openShowLink(IMDB, ids.imdb.id)
-//        fadeOut(125)
-//      }
-//      viewLinkTvdb.visibleIf(ids.tvdb.id != -1L)
-//      viewLinkTvdb.onClick {
-//        openShowLink(ImageSource.TVDB, ids.tvdb.id.toString())
-//        fadeOut(125)
-//      }
-//    }
-//  }
+  private fun openMovieLink(link: MovieLink, id: String) {
+    if (link == IMDB) {
+      openIMDbLink(IdImdb(id), "title")
+    } else {
+      val i = Intent(Intent.ACTION_VIEW)
+      i.data = Uri.parse(link.getUri(id))
+      startActivity(i)
+    }
+  }
+
+  @SuppressLint("ClickableViewAccessibility")
+  private fun openLinksMenu(ids: Ids) {
+    movieDetailsMainLayout.setOnTouchListener { _, event ->
+      if (event.action == MotionEvent.ACTION_DOWN) {
+        movieDetailsLinksMenu.fadeOut()
+        movieDetailsMainLayout.setOnTouchListener(null)
+      }
+      false
+    }
+    movieDetailsLinksMenu.run {
+      fadeIn()
+      viewLinkTrakt.visibleIf(ids.trakt.id != -1L)
+      viewLinkTrakt.onClick {
+        openMovieLink(MovieLink.TRAKT, ids.trakt.id.toString())
+        fadeOut(125)
+      }
+      viewLinkTmdb.visibleIf(ids.tmdb.id != -1L)
+      viewLinkTmdb.onClick {
+        openMovieLink(MovieLink.TMDB, ids.tmdb.id.toString())
+        fadeOut(125)
+      }
+      viewLinkImdb.visibleIf(ids.imdb.id.isNotBlank())
+      viewLinkImdb.onClick {
+        openMovieLink(IMDB, ids.imdb.id)
+        fadeOut(125)
+      }
+    }
+  }
 
   private fun openShareSheet(movie: Movie) {
     val intent = Intent().apply {
@@ -509,41 +508,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 //          setNeutralButton(R.string.textRateDelete) { _, _ -> viewModel.deleteRating() }
 //        }
 //      }
-//      .show()
-//  }
-
-//  private fun openQuickSetupDialog(seasons: List<Season>) {
-//    val context = requireContext()
-//    val view = QuickSetupView(context).apply {
-//      bind(seasons)
-//    }
-//    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
-//      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
-//      .setView(view)
-//      .setPositiveButton(R.string.textSelect) { _, _ ->
-//        viewModel.setQuickProgress(requireAppContext(), view.getSelectedItem())
-//      }
-//      .setNegativeButton(R.string.textCancel) { _, _ -> }
-//      .show()
-//  }
-//
-//  private fun openArchiveConfirmationDialog() {
-//    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-//      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-//      .setTitle(R.string.textArchiveConfirmationTitle)
-//      .setMessage(R.string.textArchiveConfirmationMessage)
-//      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.addArchiveShow() }
-//      .setNegativeButton(R.string.textCancel) { _, _ -> }
-//      .setNeutralButton(R.string.textWhatIsArchive) { _, _ -> openArchiveDescriptionDialog() }
-//      .show()
-//  }
-//
-//  private fun openArchiveDescriptionDialog() {
-//    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-//      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-//      .setTitle(R.string.textWhatIsArchiveFull)
-//      .setMessage(R.string.textArchiveDescription)
-//      .setPositiveButton(R.string.textOk) { _, _ -> openArchiveConfirmationDialog() }
 //      .show()
 //  }
 

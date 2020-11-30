@@ -9,7 +9,6 @@
   <string name="textRate">Oceń</string>
   <string name="textRateDelete">Usuń</string>
   <string name="textSignBeforeRate">Zaloguj się aby móc ocenić.</string>
-  <string name="textRemoveFromTrakt">Usunąć z Trakt.tv?</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
 
   <string name="textComments">Opinie:</string>
