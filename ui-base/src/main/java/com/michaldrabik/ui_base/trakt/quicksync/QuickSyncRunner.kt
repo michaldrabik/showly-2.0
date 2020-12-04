@@ -40,12 +40,51 @@ class QuickSyncRunner @Inject constructor(
     val authToken = checkAuthorization()
     val moviesEnabled = settingsRepository.load().moviesEnabled
 
-    val mainCount = exportMainItems(authToken, moviesEnabled)
+    val historyCount = exportHistoryItems(authToken, moviesEnabled)
     val watchlistCount = exportWatchlistItems(authToken, moviesEnabled)
 
     isRunning = false
     Timber.d("Finished with success.")
-    return mainCount + watchlistCount
+    return historyCount + watchlistCount
+  }
+
+  private suspend fun exportHistoryItems(
+    token: TraktAuthToken,
+    moviesEnabled: Boolean,
+    count: Int = 0,
+  ): Int {
+    val types = if (moviesEnabled) listOf(MOVIE, EPISODE) else listOf(EPISODE)
+    val items = database.traktSyncQueueDao().getAll(types.map { it.slug }).take(BATCH_LIMIT)
+    if (items.isEmpty()) {
+      Timber.d("Nothing to export. Cancelling..")
+      return count
+    }
+
+    val exportEpisodes = items.filter { it.type == EPISODE.slug }.distinctBy { it.idTrakt }
+    val exportMovies = items.filter { it.type == MOVIE.slug }.distinctBy { it.idTrakt }
+
+    val request = SyncExportRequest(
+      episodes = exportEpisodes.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) },
+      movies = exportMovies.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) }
+    )
+
+    cloud.traktApi.postSyncWatched(token.token, request)
+    database.withTransaction {
+      val ids = items.map { it.idTrakt }
+      database.traktSyncQueueDao().deleteAll(ids, EPISODE.slug)
+      database.traktSyncQueueDao().deleteAll(ids, MOVIE.slug)
+    }
+
+    val currentCount = count + exportEpisodes.count() + exportMovies.count()
+
+    // Check for more items
+    val newItems = database.traktSyncQueueDao().getAll(types.map { it.slug })
+    if (newItems.isNotEmpty()) {
+      delay(DELAY)
+      return exportHistoryItems(token, moviesEnabled, currentCount)
+    }
+
+    return currentCount
   }
 
   private suspend fun exportWatchlistItems(
@@ -82,45 +121,6 @@ class QuickSyncRunner @Inject constructor(
     if (newItems.isNotEmpty()) {
       delay(DELAY)
       return exportWatchlistItems(token, moviesEnabled, currentCount)
-    }
-
-    return currentCount
-  }
-
-  private suspend fun exportMainItems(
-    token: TraktAuthToken,
-    moviesEnabled: Boolean,
-    count: Int = 0,
-  ): Int {
-    val types = if (moviesEnabled) listOf(MOVIE, EPISODE) else listOf(EPISODE)
-    val items = database.traktSyncQueueDao().getAll(types.map { it.slug }).take(BATCH_LIMIT)
-    if (items.isEmpty()) {
-      Timber.d("Nothing to export. Cancelling..")
-      return count
-    }
-
-    val exportEpisodes = items.filter { it.type == EPISODE.slug }.distinctBy { it.idTrakt }
-    val exportMovies = items.filter { it.type == MOVIE.slug }.distinctBy { it.idTrakt }
-
-    val request = SyncExportRequest(
-      episodes = exportEpisodes.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) },
-      movies = exportMovies.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) }
-    )
-
-    cloud.traktApi.postSyncWatched(token.token, request)
-    database.withTransaction {
-      val ids = items.map { it.idTrakt }
-      database.traktSyncQueueDao().deleteAll(ids, EPISODE.slug)
-      database.traktSyncQueueDao().deleteAll(ids, MOVIE.slug)
-    }
-
-    val currentCount = count + exportEpisodes.count() + exportMovies.count()
-
-    // Check for more items
-    val newItems = database.traktSyncQueueDao().getAll(types.map { it.slug })
-    if (newItems.isNotEmpty()) {
-      delay(DELAY)
-      return exportMainItems(token, moviesEnabled, currentCount)
     }
 
     return currentCount
