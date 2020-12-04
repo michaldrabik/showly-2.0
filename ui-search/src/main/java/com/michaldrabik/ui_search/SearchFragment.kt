@@ -39,7 +39,7 @@ import com.michaldrabik.ui_search.recycler.SearchAdapter
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.utilities.TextWatcherAdapter
 import com.michaldrabik.ui_search.views.RecentSearchView
-import com.michaldrabik.ui_search.views.ShowSuggestionView
+import com.michaldrabik.ui_search.views.SearchSuggestionView
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlin.random.Random
 
@@ -213,7 +213,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
       viewModel.loadMissingImage(item, force)
     }
     suggestions.forEach { item ->
-      val view = ShowSuggestionView(requireContext()).apply {
+      val view = SearchSuggestionView(requireContext()).apply {
         bind(item, missingImageListener)
         itemClickListener = itemClick
       }

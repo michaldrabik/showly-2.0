@@ -6,8 +6,8 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
-import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
@@ -20,12 +20,15 @@ import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_movie.cases.MovieDetailsActorsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsCommentsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMainCase
+import com.michaldrabik.ui_movie.cases.MovieDetailsMyMoviesCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsRatingCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsRelatedCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsTranslationCase
+import com.michaldrabik.ui_movie.cases.MovieDetailsWatchlistCase
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -38,16 +41,17 @@ class MovieDetailsViewModel @Inject constructor(
   private val commentsCase: MovieDetailsCommentsCase,
   private val translationCase: MovieDetailsTranslationCase,
   private val ratingsCase: MovieDetailsRatingCase,
+  private val myMoviesCase: MovieDetailsMyMoviesCase,
+  private val watchlistCase: MovieDetailsWatchlistCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
   private val quickSyncManager: QuickSyncManager,
-  private val announcementManager: AnnouncementManager,
   private val imagesProvider: MovieImagesProvider
 ) : BaseViewModel<MovieDetailsUiModel>() {
 
   private var movie by notNull<Movie>()
 
-  fun loadDetails(id: IdTrakt, context: Context) {
+  fun loadDetails(id: IdTrakt) {
     viewModelScope.launch {
       val progressJob = launchDelayed(500) {
         uiState = MovieDetailsUiModel(movieLoading = true)
@@ -57,12 +61,11 @@ class MovieDetailsViewModel @Inject constructor(
         Analytics.logMovieDetailsDisplay(movie)
 
         val isSignedIn = userManager.isAuthorized()
-//        val isFollowed = async { myShowsCase.isMyShows(movie) }
-//        val isWatchLater = async { watchlistCase.isWatchlist(movie) }
-//        val isArchived = async { archiveCase.isArchived(movie) }
+        val isFollowed = async { myMoviesCase.isMyMovie(movie) }
+        val isWatchlist = async { watchlistCase.isWatchlist(movie) }
         val followedState = FollowedState(
-          isMyMovie = false,
-          isWatchlist = false,
+          isMyMovie = isFollowed.await(),
+          isWatchlist = isWatchlist.await(),
           isArchived = false,
           withAnimation = false
         )
@@ -200,192 +203,79 @@ class MovieDetailsViewModel @Inject constructor(
       }
     }
   }
-//
-//  fun addFollowedShow(context: Context) {
-//    if (!checkSeasonsLoaded()) return
-//    viewModelScope.launch {
-//      val seasons = seasonItems.map { it.season }
-//      val episodes = seasonItems.flatMap { it.episodes.map { e -> e.episode } }
-//      myShowsCase.addToMyShows(movie, seasons, episodes)
-//
-//      uiState = MovieDetailsUiModel(followedState = FollowedState.inMyShows())
-//
-//      announcementManager.refreshEpisodesAnnouncements(context)
-//      Analytics.logShowAddToMyShows(movie)
-//    }
-//  }
-//
-//  fun addWatchlistShow(context: Context) {
-//    if (!checkSeasonsLoaded()) return
-//    viewModelScope.launch {
-//      watchlistCase.addToWatchlist(movie)
-//      quickSyncManager.scheduleShowsWatchlist(context, listOf(movie.traktId))
-//
-//      uiState = MovieDetailsUiModel(followedState = FollowedState.inWatchlist())
-//
-//      Analytics.logShowAddToWatchlistShows(movie)
-//    }
-//  }
-//
-//  fun addArchiveShow() {
-//    if (!checkSeasonsLoaded()) return
-//    viewModelScope.launch {
-//      archiveCase.addToArchive(movie, removeLocalData = !areSeasonsLocal)
-//      uiState = MovieDetailsUiModel(followedState = FollowedState.inArchive())
-//      Analytics.logShowAddToArchive(movie)
-//    }
-//  }
-//
-//  fun removeFromFollowed(context: Context) {
-//    if (!checkSeasonsLoaded()) return
-//    viewModelScope.launch {
-//      val isMyShows = myShowsCase.isMyShows(movie)
-//      val isWatchlist = watchlistCase.isWatchlist(movie)
-//      val isArchived = archiveCase.isArchived(movie)
-//
-//      when {
-//        isMyShows -> {
-//          myShowsCase.removeFromMyShows(movie, removeLocalData = !areSeasonsLocal)
-//        }
-//        isWatchlist -> {
-//          watchlistCase.removeFromWatchlist(movie)
-//          quickSyncManager.clearShowsWatchlist(listOf(movie.traktId))
-//        }
-//        isArchived -> {
-//          archiveCase.removeFromArchive(movie)
-//        }
-//      }
-//
-//      val traktQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
-//      val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal
-//
-//      val state = FollowedState.notFollowed()
-//      val event = ActionEvent(showRemoveTrakt)
-//      uiState = when {
-//        isMyShows || isArchived -> MovieDetailsUiModel(followedState = state, removeFromTraktHistory = event)
-//        isWatchlist -> MovieDetailsUiModel(followedState = state, removeFromTraktWatchlist = event)
-//        else -> error("Unexpected show state")
-//      }
-//
-//      announcementManager.refreshEpisodesAnnouncements(context)
-//    }
-//  }
-//
-//  fun removeFromTraktHistory() {
-//    viewModelScope.launch {
-//      try {
-//        uiState = MovieDetailsUiModel(showFromTraktLoading = true)
-//        myShowsCase.removeTraktHistory(movie)
-//        refreshWatchedEpisodes()
-//        _messageLiveData.value = MessageEvent.info(R.string.textTraktSyncRemovedFromTrakt)
-//        uiState = MovieDetailsUiModel(showFromTraktLoading = false, removeFromTraktHistory = ActionEvent(false))
-//      } catch (error: Throwable) {
-//        _messageLiveData.value = MessageEvent.error(R.string.errorTraktSyncGeneral)
-//        uiState = MovieDetailsUiModel(showFromTraktLoading = false)
-//      }
-//    }
-//  }
-//
-//  fun removeFromTraktWatchlist() {
-//    viewModelScope.launch {
-//      try {
-//        uiState = MovieDetailsUiModel(showFromTraktLoading = true)
-//        watchlistCase.removeTraktWatchlist(movie)
-//        _messageLiveData.value = MessageEvent.info(R.string.textTraktSyncRemovedFromTrakt)
-//        uiState = MovieDetailsUiModel(showFromTraktLoading = false, removeFromTraktWatchlist = ActionEvent(false))
-//      } catch (error: Throwable) {
-//        _messageLiveData.value = MessageEvent.error(R.string.errorTraktSyncGeneral)
-//        uiState = MovieDetailsUiModel(showFromTraktLoading = false)
-//      }
-//    }
-//  }
-//
-//  fun setWatchedEpisode(
-//    context: Context,
-//    episode: Episode,
-//    season: Season,
-//    isChecked: Boolean
-//  ) {
-//    viewModelScope.launch {
-//      val bundle = EpisodeBundle(episode, season, movie)
-//      when {
-//        isChecked -> {
-//          episodesManager.setEpisodeWatched(bundle)
-//          if (myShowsCase.isMyShows(movie) || watchlistCase.isWatchlist(movie) || archiveCase.isArchived(movie)) {
-//            quickSyncManager.scheduleEpisodes(context, listOf(episode.ids.trakt.id))
-//          }
-//        }
-//        else -> episodesManager.setEpisodeUnwatched(bundle)
-//      }
-//      refreshWatchedEpisodes()
-//    }
-//  }
-//
-//  fun setWatchedSeason(context: Context, season: Season, isChecked: Boolean) {
-//    viewModelScope.launch {
-//      val bundle = SeasonBundle(season, movie)
-//      when {
-//        isChecked -> {
-//          val episodesAdded = episodesManager.setSeasonWatched(bundle)
-//          if (myShowsCase.isMyShows(movie) || watchlistCase.isWatchlist(movie) || archiveCase.isArchived(movie)) {
-//            quickSyncManager.scheduleEpisodes(context, episodesAdded.map { it.ids.trakt.id })
-//          }
-//        }
-//        else -> episodesManager.setSeasonUnwatched(bundle)
-//      }
-//      refreshWatchedEpisodes()
-//    }
-//  }
-//
-//  private suspend fun refreshWatchedEpisodes() {
-//    val updatedSeasonItems = markWatchedEpisodes(seasonItems)
-//    uiState = MovieDetailsUiModel(seasons = updatedSeasonItems)
-//  }
-//
-//  private suspend fun markWatchedEpisodes(seasonsList: List<SeasonListItem>): List<SeasonListItem> {
-//    val items = mutableListOf<SeasonListItem>()
-//
-//    val watchedSeasonsIds = episodesManager.getWatchedSeasonsIds(movie)
-//    val watchedEpisodesIds = episodesManager.getWatchedEpisodesIds(movie)
-//
-//    seasonsList.forEach { item ->
-//      val isSeasonWatched = watchedSeasonsIds.any { id -> id == item.id }
-//      val episodes = item.episodes.map { episodeItem ->
-//        val isEpisodeWatched = watchedEpisodesIds.any { id -> id == episodeItem.id }
-//        EpisodeListItem(episodeItem.episode, item.season, isEpisodeWatched, episodeItem.translation)
-//      }
-//      val updated = item.copy(episodes = episodes, isWatched = isSeasonWatched)
-//      items.add(updated)
-//    }
-//
-//    seasonItems.replace(items)
-//    return items
-//  }
-//
-//  fun setQuickProgress(context: Context, item: QuickSetupListItem?) {
-//    if (item == null) return
-//    if (!areSeasonsLoaded) {
-//      _messageLiveData.value = MessageEvent.info(R.string.errorSeasonsNotLoaded)
-//      return
-//    }
-//    viewModelScope.launch {
-//      episodesManager.setAllUnwatched(movie)
-//      val seasons = seasonItems.map { it.season }
-//      seasons
-//        .filter { it.number < item.season.number }
-//        .forEach { season ->
-//          setWatchedSeason(context, season, true)
-//        }
-//
-//      val season = seasons.find { it.number == item.season.number }
-//      season?.episodes
-//        ?.filter { it.number <= item.episode.number }
-//        ?.forEach { episode ->
-//          setWatchedEpisode(context, episode, season, true)
-//        }
-//
-//      _messageLiveData.value = MessageEvent.info(R.string.textShowQuickProgressDone)
-//      Analytics.logShowQuickProgress(movie)
-//    }
-//  }
+
+  fun addFollowedMovie(context: Context) {
+    viewModelScope.launch {
+      myMoviesCase.addToMyMovies(movie)
+      quickSyncManager.scheduleMovies(context, listOf(movie.traktId))
+      uiState = MovieDetailsUiModel(followedState = FollowedState.inMyMovies())
+      Analytics.logMovieAddToMyMovies(movie)
+    }
+  }
+
+  fun addWatchlistMovie(context: Context) {
+    viewModelScope.launch {
+      watchlistCase.addToWatchlist(movie)
+      quickSyncManager.scheduleMoviesWatchlist(context, listOf(movie.traktId))
+      uiState = MovieDetailsUiModel(followedState = FollowedState.inWatchlist())
+      Analytics.logMovieAddToWatchlistMovies(movie)
+    }
+  }
+
+  fun removeFromFollowed(context: Context) {
+    viewModelScope.launch {
+      val isMyMovie = myMoviesCase.isMyMovie(movie)
+      val isWatchlist = watchlistCase.isWatchlist(movie)
+
+      when {
+        isMyMovie -> {
+          myMoviesCase.removeFromMyMovies(movie)
+          quickSyncManager.clearMovies(listOf(movie.traktId))
+        }
+        isWatchlist -> {
+          watchlistCase.removeFromWatchlist(movie)
+          quickSyncManager.clearMoviesWatchlist(listOf(movie.traktId))
+        }
+      }
+
+      val traktQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
+      val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled
+
+      val state = FollowedState.notFollowed()
+      val event = ActionEvent(showRemoveTrakt)
+      uiState = when {
+        isMyMovie -> MovieDetailsUiModel(followedState = state, removeFromTraktHistory = event)
+        isWatchlist -> MovieDetailsUiModel(followedState = state, removeFromTraktWatchlist = event)
+        else -> error("Unexpected movie state")
+      }
+    }
+  }
+
+  fun removeFromTraktHistory() {
+    viewModelScope.launch {
+      try {
+        uiState = MovieDetailsUiModel(showFromTraktLoading = true)
+        myMoviesCase.removeTraktHistory(movie)
+        _messageLiveData.value = MessageEvent.info(R.string.textTraktSyncMovieRemovedFromTrakt)
+        uiState = MovieDetailsUiModel(showFromTraktLoading = false, removeFromTraktHistory = ActionEvent(false))
+      } catch (error: Throwable) {
+        _messageLiveData.value = MessageEvent.error(R.string.errorTraktSyncGeneral)
+        uiState = MovieDetailsUiModel(showFromTraktLoading = false)
+      }
+    }
+  }
+
+  fun removeFromTraktWatchlist() {
+    viewModelScope.launch {
+      try {
+        uiState = MovieDetailsUiModel(showFromTraktLoading = true)
+        watchlistCase.removeTraktWatchlist(movie)
+        _messageLiveData.value = MessageEvent.info(R.string.textTraktSyncMovieRemovedFromTrakt)
+        uiState = MovieDetailsUiModel(showFromTraktLoading = false, removeFromTraktWatchlist = ActionEvent(false))
+      } catch (error: Throwable) {
+        _messageLiveData.value = MessageEvent.error(R.string.errorTraktSyncGeneral)
+        uiState = MovieDetailsUiModel(showFromTraktLoading = false)
+      }
+    }
+  }
 }

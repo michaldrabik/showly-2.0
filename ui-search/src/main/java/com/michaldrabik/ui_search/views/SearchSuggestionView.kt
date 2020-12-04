@@ -17,7 +17,7 @@ import com.michaldrabik.ui_search.recycler.SearchListItem
 import kotlinx.android.synthetic.main.view_suggestion_search.view.*
 
 @SuppressLint("SetTextI18n")
-class ShowSuggestionView : ShowView<SearchListItem> {
+class SearchSuggestionView : ShowView<SearchListItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -52,11 +52,15 @@ class ShowSuggestionView : ShowView<SearchListItem> {
       else translationOverview
 
     suggestionNetwork.text =
-      if (item.year > 0) context.getString(R.string.textNetwork, item.network, item.year.toString())
-      else String.format("%s", item.network)
+      if (item.isShow) {
+        if (item.year > 0) context.getString(R.string.textNetwork, item.network, item.year.toString())
+        else String.format("%s", item.network)
+      } else {
+        String.format("%s", item.year)
+      }
 
     suggestionDescription.visibleIf(item.overview.isNotBlank())
-    suggestionNetwork.visibleIf(item.network.isNotBlank())
+    suggestionNetwork.visibleIf(item.network.isNotBlank() || item.year > 0)
     loadImage(item, missingImageListener)
   }
 

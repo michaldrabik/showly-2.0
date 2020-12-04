@@ -35,17 +35,15 @@ class DiscoverMoviesCase @Inject constructor(
   suspend fun isCacheValid() = moviesRepository.discoverMovies.isCacheValid()
 
   suspend fun loadCachedMovies(filters: DiscoverFilters) = coroutineScope {
-//    val myMoviesIds = async { moviesRepository.myShows.loadAllIds() }
-//    val watchlistShowsIds = async { moviesRepository.watchlistShows.loadAllIds() }
-//    val archiveShowsIds = async { moviesRepository.archiveShows.loadAllIds() }
+    val myIds = async { moviesRepository.myMovies.loadAllIds() }
+    val watchlistIds = async { moviesRepository.watchlistMovies.loadAllIds() }
     val cachedMovies = async { moviesRepository.discoverMovies.loadAllCached() }
     val language = settingsRepository.getLanguage()
 
     prepareItems(
       cachedMovies.await(),
-      emptyList(),
-      emptyList(),
-      emptyList(),
+      myIds.await(),
+      watchlistIds.await(),
       filters,
       language
     )
@@ -61,26 +59,23 @@ class DiscoverMoviesCase @Inject constructor(
       // Ignore at this moment
     }
 
-//    val myShowsIds = showsRepository.myShows.loadAllIds()
-//    val watchlistShowsIds = showsRepository.watchlistShows.loadAllIds()
-//    val archiveShowsIds = showsRepository.archiveShows.loadAllIds()
+    val myIds = moviesRepository.myMovies.loadAllIds()
+    val watchlistIds = moviesRepository.watchlistMovies.loadAllIds()
     val remoteMovies = moviesRepository.discoverMovies.loadAllRemote(showAnticipated, genres)
     val language = settingsRepository.getLanguage()
 
     moviesRepository.discoverMovies.cacheDiscoverMovies(remoteMovies)
-    return prepareItems(remoteMovies, emptyList(), emptyList(), emptyList(), filters, language)
+    return prepareItems(remoteMovies, myIds, watchlistIds, filters, language)
   }
 
   private suspend fun prepareItems(
     movies: List<Movie>,
     myMoviesIds: List<Long>,
     watchlistMoviesIds: List<Long>,
-    archiveMoviesIds: List<Long>,
     filters: DiscoverFilters?,
     language: String
   ) = coroutineScope {
     movies
-      .filter { !archiveMoviesIds.contains(it.traktId) }
       .sortedBy(filters?.feedOrder ?: HOT)
       .mapIndexed { index, movie ->
         async {

@@ -89,7 +89,7 @@ class ShowDetailsMyShowsCase @Inject constructor(
 
   suspend fun removeTraktHistory(show: Show) {
     val token = userManager.checkAuthorization()
-    val request = SyncExportRequest(listOf(SyncExportItem.create(show.traktId)))
+    val request = SyncExportRequest(shows = listOf(SyncExportItem.create(show.traktId)))
     cloud.traktApi.postDeleteProgress(token.token, request)
     episodesManager.setAllUnwatched(show)
   }

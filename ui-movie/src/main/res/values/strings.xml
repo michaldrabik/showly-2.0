@@ -15,4 +15,6 @@
   <string name="textMovieVotes">%.1f (%d votes)</string>
 
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
+
+  <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv synced successfully.</string>
 </resources>

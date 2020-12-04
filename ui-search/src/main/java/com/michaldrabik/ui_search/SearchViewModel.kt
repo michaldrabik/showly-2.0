@@ -104,8 +104,8 @@ class SearchViewModel @Inject constructor(
         val results = searchMainCase.searchByQuery(trimmed)
         val myShowsIds = searchMainCase.loadMyShowsIds()
         val watchlistShowsIds = searchMainCase.loadWatchlistShowsIds()
-        val myMoviesIds = emptyList<Long>()
-        val watchlistMoviesIds = emptyList<Long>()
+        val myMoviesIds = searchMainCase.loadMyMoviesIds()
+        val watchlistMoviesIds = searchMainCase.loadWatchlistMoviesIds()
 
         val items = results.map {
           val translation = searchMainCase.loadTranslation(it)

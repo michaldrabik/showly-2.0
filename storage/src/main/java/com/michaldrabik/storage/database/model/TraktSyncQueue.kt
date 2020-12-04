@@ -25,10 +25,24 @@ data class TraktSyncQueue(
       createdAt: Long,
       updatedAt: Long
     ) = TraktSyncQueue(0, idTrakt, Type.SHOW_WATCHLIST.slug, createdAt, updatedAt)
+
+    fun createMovie(
+      idTrakt: Long,
+      createdAt: Long,
+      updatedAt: Long
+    ) = TraktSyncQueue(0, idTrakt, Type.MOVIE.slug, createdAt, updatedAt)
+
+    fun createMovieWatchlist(
+      idTrakt: Long,
+      createdAt: Long,
+      updatedAt: Long
+    ) = TraktSyncQueue(0, idTrakt, Type.MOVIE_WATCHLIST.slug, createdAt, updatedAt)
   }
 
   enum class Type(val slug: String) {
     EPISODE("episode"),
-    SHOW_WATCHLIST("show_watchlist")
+    SHOW_WATCHLIST("show_watchlist"),
+    MOVIE("movie"),
+    MOVIE_WATCHLIST("movie_watchlist")
   }
 }

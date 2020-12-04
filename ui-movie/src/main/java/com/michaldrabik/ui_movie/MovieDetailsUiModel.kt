@@ -54,9 +54,8 @@ data class FollowedState(
 ) {
 
   companion object {
-    fun inMyMovie() = FollowedState(isMyMovie = true, isWatchlist = false, isArchived = false, withAnimation = true)
+    fun inMyMovies() = FollowedState(isMyMovie = true, isWatchlist = false, isArchived = false, withAnimation = true)
     fun inWatchlist() = FollowedState(isMyMovie = false, isWatchlist = true, isArchived = false, withAnimation = true)
-    fun inArchive() = FollowedState(isMyMovie = false, isWatchlist = false, isArchived = true, withAnimation = true)
     fun notFollowed() = FollowedState(isMyMovie = false, isWatchlist = false, isArchived = false, withAnimation = true)
   }
 }

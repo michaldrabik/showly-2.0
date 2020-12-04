@@ -12,6 +12,7 @@ import com.michaldrabik.storage.database.dao.EpisodesSyncLogDao
 import com.michaldrabik.storage.database.dao.MovieImagesDao
 import com.michaldrabik.storage.database.dao.MovieTranslationsDao
 import com.michaldrabik.storage.database.dao.MoviesDao
+import com.michaldrabik.storage.database.dao.MyMoviesDao
 import com.michaldrabik.storage.database.dao.MyShowsDao
 import com.michaldrabik.storage.database.dao.RecentSearchDao
 import com.michaldrabik.storage.database.dao.RelatedMoviesDao
@@ -25,6 +26,7 @@ import com.michaldrabik.storage.database.dao.TraktSyncQueueDao
 import com.michaldrabik.storage.database.dao.TranslationsMoviesSyncLogDao
 import com.michaldrabik.storage.database.dao.TranslationsSyncLogDao
 import com.michaldrabik.storage.database.dao.UserDao
+import com.michaldrabik.storage.database.dao.WatchlistMoviesDao
 import com.michaldrabik.storage.database.dao.WatchlistShowsDao
 import com.michaldrabik.storage.database.migrations.DATABASE_VERSION
 import com.michaldrabik.storage.database.model.Actor
@@ -37,6 +39,7 @@ import com.michaldrabik.storage.database.model.EpisodesSyncLog
 import com.michaldrabik.storage.database.model.Movie
 import com.michaldrabik.storage.database.model.MovieImage
 import com.michaldrabik.storage.database.model.MovieTranslation
+import com.michaldrabik.storage.database.model.MyMovie
 import com.michaldrabik.storage.database.model.MyShow
 import com.michaldrabik.storage.database.model.RecentSearch
 import com.michaldrabik.storage.database.model.RelatedMovie
@@ -50,6 +53,7 @@ import com.michaldrabik.storage.database.model.TraktSyncQueue
 import com.michaldrabik.storage.database.model.TranslationsMoviesSyncLog
 import com.michaldrabik.storage.database.model.TranslationsSyncLog
 import com.michaldrabik.storage.database.model.User
+import com.michaldrabik.storage.database.model.WatchlistMovie
 import com.michaldrabik.storage.database.model.WatchlistShow
 
 @Database(
@@ -60,7 +64,9 @@ import com.michaldrabik.storage.database.model.WatchlistShow
     DiscoverShow::class,
     DiscoverMovie::class,
     MyShow::class,
+    MyMovie::class,
     WatchlistShow::class,
+    WatchlistMovie::class,
     ArchiveShow::class,
     RelatedShow::class,
     RelatedMovie::class,
@@ -94,7 +100,11 @@ abstract class AppDatabase : RoomDatabase() {
 
   abstract fun myShowsDao(): MyShowsDao
 
+  abstract fun myMoviesDao(): MyMoviesDao
+
   abstract fun watchlistShowsDao(): WatchlistShowsDao
+
+  abstract fun watchlistMoviesDao(): WatchlistMoviesDao
 
   abstract fun archiveShowsDao(): ArchiveShowsDao
 

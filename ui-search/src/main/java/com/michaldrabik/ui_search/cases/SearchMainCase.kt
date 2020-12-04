@@ -11,6 +11,7 @@ import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.mappers.Mappers
+import com.michaldrabik.ui_repository.movies.MoviesRepository
 import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
 
@@ -20,7 +21,8 @@ class SearchMainCase @Inject constructor(
   private val mappers: Mappers,
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
-  private val showsRepository: ShowsRepository
+  private val showsRepository: ShowsRepository,
+  private val moviesRepository: MoviesRepository
 ) {
 
   suspend fun searchByQuery(query: String): List<SearchResult> {
@@ -40,6 +42,10 @@ class SearchMainCase @Inject constructor(
   suspend fun loadMyShowsIds() = showsRepository.myShows.loadAllIds()
 
   suspend fun loadWatchlistShowsIds() = showsRepository.watchlistShows.loadAllIds()
+
+  suspend fun loadMyMoviesIds() = moviesRepository.myMovies.loadAllIds()
+
+  suspend fun loadWatchlistMoviesIds() = moviesRepository.watchlistMovies.loadAllIds()
 
   suspend fun loadTranslation(searchResult: SearchResult): Translation? {
     val language = settingsRepository.getLanguage()

@@ -206,6 +206,28 @@ object Migrations {
 
       database.execSQL("ALTER TABLE actors ADD COLUMN id_tmdb_movie INTEGER NOT NULL DEFAULT -1")
       database.execSQL("ALTER TABLE actors ADD COLUMN id_tmdb INTEGER NOT NULL DEFAULT -1")
+
+      database.execSQL(
+        "CREATE TABLE IF NOT EXISTS `movies_my_movies` (" +
+          "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+          "`id_trakt` INTEGER NOT NULL, " +
+          "`created_at` INTEGER NOT NULL, " +
+          "`updated_at` INTEGER NOT NULL, " +
+          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE" +
+          ")"
+      )
+      database.execSQL("CREATE INDEX index_movies_my_movies_id_trakt ON movies_my_movies(id_trakt)")
+
+      database.execSQL(
+        "CREATE TABLE IF NOT EXISTS `movies_see_later` (" +
+          "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+          "`id_trakt` INTEGER NOT NULL, " +
+          "`created_at` INTEGER NOT NULL, " +
+          "`updated_at` INTEGER NOT NULL, " +
+          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE" +
+          ")"
+      )
+      database.execSQL("CREATE INDEX index_movies_see_later_id_trakt ON movies_see_later(id_trakt)")
     }
   }
 

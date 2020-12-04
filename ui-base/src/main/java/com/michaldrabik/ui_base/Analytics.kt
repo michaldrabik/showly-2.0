@@ -36,10 +36,24 @@ object Analytics {
     }
   }
 
+  fun logMovieAddToMyMovies(movie: Movie) {
+    firebaseAnalytics.logEvent("movie_add_to_my_movies") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
+    }
+  }
+
   fun logShowAddToWatchlistShows(show: Show) {
     firebaseAnalytics.logEvent("show_add_to_see_later") {
       param("show_id_trakt", show.traktId)
       param("show_title", show.title)
+    }
+  }
+
+  fun logMovieAddToWatchlistMovies(movie: Movie) {
+    firebaseAnalytics.logEvent("movie_add_to_see_later") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
     }
   }
 

@@ -73,6 +73,7 @@ import com.michaldrabik.ui_movie.helpers.MovieLink
 import com.michaldrabik.ui_movie.helpers.MovieLink.IMDB
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import com.michaldrabik.ui_movie.related.RelatedMovieAdapter
+import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.*
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import kotlinx.android.synthetic.main.fragment_movie_details.*
@@ -117,7 +118,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
       messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
       if (!isInitialized) {
-        loadDetails(movieId, requireAppContext())
+        loadDetails(movieId)
         isInitialized = true
       }
     }
@@ -148,11 +149,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsAddButton.run {
       isEnabled = false
       onAddMyMoviesClickListener = {
-//        viewModel.addFollowedShow(requireAppContext())
-//        movieDetailsTipQuickProgress.fadeIf(!isTipShown(SHOW_DETAILS_QUICK_PROGRESS))
+        viewModel.addFollowedMovie(requireAppContext())
       }
-//      onAddWatchLaterClickListener = { viewModel.addWatchlistShow(requireAppContext()) }
-//      onRemoveClickListener = { viewModel.removeFromFollowed(requireAppContext()) }
+      onAddWatchLaterClickListener = { viewModel.addWatchlistMovie(requireAppContext()) }
+      onRemoveClickListener = { viewModel.removeFromFollowed(requireAppContext()) }
     }
     movieDetailsRemoveTraktButton.onNoClickListener = {
       movieDetailsAddButton.fadeIn()
@@ -318,12 +318,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         }
       }
       followedState?.let {
-//        when {
-//          it.isMyMovie -> movieDetailsAddButton.setState(IN_MY_SHOWS, it.withAnimation)
-//          it.isWatchlist -> movieDetailsAddButton.setState(IN_WATCHLIST, it.withAnimation)
-//          it.isArchived -> movieDetailsAddButton.setState(IN_ARCHIVE, it.withAnimation)
-//          else -> movieDetailsAddButton.setState(ADD, it.withAnimation)
-//        }
+        when {
+          it.isMyMovie -> movieDetailsAddButton.setState(IN_MY_MOVIES, it.withAnimation)
+          it.isWatchlist -> movieDetailsAddButton.setState(IN_WATCHLIST, it.withAnimation)
+          else -> movieDetailsAddButton.setState(ADD, it.withAnimation)
+        }
       }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
@@ -342,7 +341,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           movieDetailsAddButton.fadeIf(!it)
           movieDetailsRemoveTraktButton.run {
             fadeIf(it)
-//            onYesClickListener = { viewModel.removeFromTraktHistory() }
+            onYesClickListener = { viewModel.removeFromTraktHistory() }
           }
         }
       }
@@ -351,7 +350,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           movieDetailsAddButton.fadeIf(!it)
           movieDetailsRemoveTraktButton.run {
             fadeIf(it)
-//            onYesClickListener = { viewModel.removeFromTraktWatchlist() }
+            onYesClickListener = { viewModel.removeFromTraktWatchlist() }
           }
         }
       }
@@ -404,7 +403,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       .withSuccessListener {
         movieDetailsImageProgress.gone()
-//        movieDetailsTipGallery.fadeIf(!isTipShown(SHOW_DETAILS_GALLERY))
       }
       .into(movieDetailsImage)
   }
