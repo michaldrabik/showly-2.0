@@ -26,17 +26,24 @@ class SearchSuggestionsCase @Inject constructor(
   private var showTranslationsCache: Map<Long, Translation>? = null
   private var movieTranslationsCache: Map<Long, Translation>? = null
 
-  suspend fun loadShows(query: String, limit: Int): List<Show> {
-    if (query.trim().isBlank()) return emptyList()
+  suspend fun preloadCache() {
+    if (showsCache == null) showsCache = database.showsDao().getAll()
+    if (moviesCache == null) moviesCache = database.moviesDao().getAll()
 
     val language = settingsRepository.getLanguage()
-    if (showsCache == null) {
-      showsCache = database.showsDao().getAll()
+    if (settingsRepository.getLanguage() != Config.DEFAULT_LANGUAGE) {
+      if (showTranslationsCache == null) {
+        showTranslationsCache = translationsRepository.loadAllShowsLocal(language)
+      }
+      if (movieTranslationsCache == null) {
+        movieTranslationsCache = translationsRepository.loadAllMoviesLocal(language)
+      }
     }
-    if (showTranslationsCache == null && language != Config.DEFAULT_LANGUAGE) {
-      showTranslationsCache = translationsRepository.loadAllShowsLocal(language)
-    }
+  }
 
+  suspend fun loadShows(query: String, limit: Int): List<Show> {
+    if (query.trim().isBlank()) return emptyList()
+    preloadCache()
     return showsCache
       ?.filter {
         it.title.contains(query, true) ||
@@ -49,14 +56,7 @@ class SearchSuggestionsCase @Inject constructor(
 
   suspend fun loadMovies(query: String, limit: Int): List<Movie> {
     if (query.trim().isBlank()) return emptyList()
-    val language = settingsRepository.getLanguage()
-    if (moviesCache == null) {
-      moviesCache = database.moviesDao().getAll()
-    }
-    if (movieTranslationsCache == null && language != Config.DEFAULT_LANGUAGE) {
-      movieTranslationsCache = translationsRepository.loadAllMoviesLocal(language)
-    }
-
+    preloadCache()
     return moviesCache
       ?.filter {
         it.title.contains(query, true) ||

@@ -32,6 +32,12 @@ class SearchViewModel @Inject constructor(
   private var isSearching = false
   private val lastSearchItems = mutableListOf<SearchListItem>()
 
+  fun preloadCache() {
+    viewModelScope.launch {
+      suggestionsCase.preloadCache()
+    }
+  }
+
   fun loadLastSearch() {
     uiState = SearchUiModel(searchItems = lastSearchItems, searchItemsAnimate = true)
   }
