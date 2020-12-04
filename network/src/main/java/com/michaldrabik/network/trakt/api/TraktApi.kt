@@ -43,11 +43,8 @@ class TraktApi(private val service: TraktService) {
     return response.body()
   }
 
-  suspend fun fetchShowsSearch(query: String) =
+  suspend fun fetchSearch(query: String) =
     service.fetchSearchResults(query)
-      .sortedWith(compareBy({ it.score }, { it.show?.votes ?: 0 }))
-      .reversed()
-      .map { it.show!! }
 
   suspend fun fetchSeasons(traktId: Long) =
     service.fetchSeasons(traktId)

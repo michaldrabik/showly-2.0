@@ -21,4 +21,24 @@ data class Movie(
 
   val traktId = ids.trakt.id
 
+  companion object {
+    val EMPTY = Movie(
+      Ids.EMPTY,
+      "",
+      -1,
+      "",
+      "",
+      -1,
+      "",
+      "",
+      "",
+      "",
+      MovieStatus.UNKNOWN,
+      -1F,
+      -1L,
+      -1L,
+      emptyList(),
+      -1L
+    )
+  }
 }

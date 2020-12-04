@@ -32,6 +32,7 @@ import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.RecentSearch
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_search.di.UiSearchComponentProvider
 import com.michaldrabik.ui_search.recycler.SearchAdapter
@@ -101,7 +102,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
             searchViewLayout.shake()
             return@setOnEditorActionListener true
           }
-          viewModel.searchForShow(query)
+          viewModel.search(query)
           exSearchViewInput.hideKeyboard()
           exSearchViewInput.clearFocus()
         }
@@ -158,15 +159,20 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
       duration = 150, startDelay = 350,
       endAction = {
         enableUi()
-        openShow(item.show.traktId)
+        openDetails(item)
       }
     )
   }
 
-  private fun openShow(idTrakt: Long) {
+  private fun openDetails(item: SearchListItem) {
     exSearchViewInput.setText("")
-    val bundle = Bundle().apply { putLong(ARG_SHOW_ID, idTrakt) }
-    navigateTo(R.id.actionSearchFragmentToShowDetailsFragment, bundle)
+    if (item.isShow) {
+      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
+      navigateTo(R.id.actionSearchFragmentToShowDetailsFragment, bundle)
+    } else if (item.isMovie) {
+      val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, item.movie.traktId) }
+      navigateTo(R.id.actionSearchFragmentToMovieDetailsFragment, bundle)
+    }
   }
 
   private fun render(uiModel: SearchUiModel) {
@@ -192,9 +198,9 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
     val itemClick: (SearchListItem) -> Unit = {
       val query =
         if (it.translation?.title?.isNotBlank() == true) it.translation.title
-        else it.show.title
+        else it.title
       viewModel.saveRecentSearch(query)
-      openShow(it.show.traktId)
+      openDetails(it)
     }
     val missingImageListener: (SearchListItem, Boolean) -> Unit = { item, force ->
       viewModel.loadMissingImage(item, force)
@@ -229,7 +235,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
         setPadding(paddingH, paddingV, paddingH, paddingV)
         bind(item)
         onClick {
-          viewModel.searchForShow(item.text)
+          viewModel.search(item.text)
           exSearchViewInput.setText(item.text)
         }
       }

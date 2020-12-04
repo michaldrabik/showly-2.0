@@ -38,6 +38,18 @@ class TranslationsRepository @Inject constructor(
     }
   }
 
+  suspend fun loadAllMoviesLocal(
+    language: String = Config.DEFAULT_LANGUAGE,
+  ): Map<Long, Translation> {
+    val local = database.movieTranslationsDao().getAll(language)
+    return local.associate {
+      Pair(
+        it.idTrakt,
+        mappers.translation.fromDatabase(it)
+      )
+    }
+  }
+
   suspend fun loadTranslation(
     show: Show,
     language: String = Config.DEFAULT_LANGUAGE,

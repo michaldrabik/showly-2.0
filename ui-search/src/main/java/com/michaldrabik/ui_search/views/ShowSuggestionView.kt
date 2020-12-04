@@ -43,20 +43,20 @@ class ShowSuggestionView : ShowView<SearchListItem> {
 
     val translationTitle = item.translation?.title
     suggestionTitle.text =
-      if (translationTitle.isNullOrBlank()) item.show.title
+      if (translationTitle.isNullOrBlank()) item.title
       else translationTitle.capitalizeWords()
 
     val translationOverview = item.translation?.overview
     suggestionDescription.text =
-      if (translationOverview.isNullOrBlank()) item.show.overview
+      if (translationOverview.isNullOrBlank()) item.overview
       else translationOverview
 
     suggestionNetwork.text =
-      if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
-      else String.format("%s", item.show.network)
+      if (item.year > 0) context.getString(R.string.textNetwork, item.network, item.year.toString())
+      else String.format("%s", item.network)
 
-    suggestionDescription.visibleIf(item.show.overview.isNotBlank())
-    suggestionNetwork.visibleIf(item.show.network.isNotBlank())
+    suggestionDescription.visibleIf(item.overview.isNotBlank())
+    suggestionNetwork.visibleIf(item.network.isNotBlank())
     loadImage(item, missingImageListener)
   }
 

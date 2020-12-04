@@ -3,16 +3,21 @@ package com.michaldrabik.ui_search
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config.SEARCH_RECENTS_AMOUNT
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
+import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.SearchResult
+import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_search.cases.SearchMainCase
 import com.michaldrabik.ui_search.cases.SearchRecentsCase
 import com.michaldrabik.ui_search.cases.SearchSuggestionsCase
 import com.michaldrabik.ui_search.recycler.SearchListItem
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,7 +25,8 @@ class SearchViewModel @Inject constructor(
   private val searchMainCase: SearchMainCase,
   private val recentSearchesCase: SearchRecentsCase,
   private val suggestionsCase: SearchSuggestionsCase,
-  private val imagesProvider: ShowImagesProvider
+  private val showsImagesProvider: ShowImagesProvider,
+  private val moviesImagesProvider: MovieImagesProvider
 ) : BaseViewModel<SearchUiModel>() {
 
   private var isSearching = false
@@ -43,19 +49,34 @@ class SearchViewModel @Inject constructor(
         uiState = SearchUiModel(suggestionsItems = emptyList())
         return@launch
       }
-      val suggestions = suggestionsCase.loadSuggestions(query.trim(), 5)
+
+      val showsDef = async { suggestionsCase.loadShows(query.trim(), 5) }
+      val moviesDef = async { suggestionsCase.loadMovies(query.trim(), 5) }
+      val suggestions = (showsDef.await() + moviesDef.await()).map {
+        when (it) {
+          is Show -> SearchResult(0F, it, Movie.EMPTY)
+          is Movie -> SearchResult(0F, Show.EMPTY, it)
+          else -> throw IllegalStateException()
+        }
+      }
+
       val items = suggestions.map {
-        val image = imagesProvider.findCachedImage(it, POSTER)
+        val image =
+          if (it.isShow) showsImagesProvider.findCachedImage(it.show, POSTER)
+          else moviesImagesProvider.findCachedImage(it.movie, POSTER)
         val translation = searchMainCase.loadTranslation(it)
         SearchListItem(
-          it,
+          it.show,
           image,
+          movie = it.movie,
           isFollowed = false,
           isWatchlist = false,
           translation = translation
         )
       }
-      uiState = SearchUiModel(suggestionsItems = items)
+
+      val results = items.sortedByDescending { it.votes }
+      uiState = SearchUiModel(suggestionsItems = results)
     }
   }
 
@@ -66,7 +87,7 @@ class SearchViewModel @Inject constructor(
     }
   }
 
-  fun searchForShow(query: String) {
+  fun search(query: String) {
     val trimmed = query.trim()
     if (trimmed.isEmpty()) return
     viewModelScope.launch {
@@ -74,18 +95,33 @@ class SearchViewModel @Inject constructor(
         isSearching = true
         uiState = SearchUiModel.createLoading()
 
-        val shows = searchMainCase.searchShows(trimmed)
+        val results = searchMainCase.searchByQuery(trimmed)
         val myShowsIds = searchMainCase.loadMyShowsIds()
         val watchlistShowsIds = searchMainCase.loadWatchlistShowsIds()
+        val myMoviesIds = emptyList<Long>()
+        val watchlistMoviesIds = emptyList<Long>()
 
-        val items = shows.map {
-          val image = imagesProvider.findCachedImage(it, POSTER)
+        val items = results.map {
           val translation = searchMainCase.loadTranslation(it)
+
+          val image =
+            if (it.isShow) showsImagesProvider.findCachedImage(it.show, POSTER)
+            else moviesImagesProvider.findCachedImage(it.movie, POSTER)
+
+          val isFollowed =
+            if (it.isShow) it.traktId in myShowsIds
+            else it.traktId in myMoviesIds
+
+          val isWatchlist =
+            if (it.isShow) it.traktId in watchlistShowsIds
+            else it.traktId in watchlistMoviesIds
+
           SearchListItem(
-            it,
+            it.show,
             image,
-            isFollowed = it.ids.trakt.id in myShowsIds,
-            isWatchlist = it.ids.trakt.id in watchlistShowsIds,
+            movie = it.movie,
+            isFollowed = isFollowed,
+            isWatchlist = isWatchlist,
             translation = translation
           )
         }
@@ -131,7 +167,9 @@ class SearchViewModel @Inject constructor(
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
-        val image = imagesProvider.loadRemoteImage(item.show, item.image.type, force)
+        val image =
+          if (item.isShow) showsImagesProvider.loadRemoteImage(item.show, item.image.type, force)
+          else moviesImagesProvider.loadRemoteImage(item.movie, item.image.type, force)
         updateItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
         updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
