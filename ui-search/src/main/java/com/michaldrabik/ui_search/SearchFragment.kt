@@ -2,12 +2,12 @@ package com.michaldrabik.ui_search
 
 import android.graphics.drawable.Animatable
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
 import androidx.core.view.updatePadding
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,12 +37,13 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_search.di.UiSearchComponentProvider
 import com.michaldrabik.ui_search.recycler.SearchAdapter
 import com.michaldrabik.ui_search.recycler.SearchListItem
+import com.michaldrabik.ui_search.utilities.TextWatcherAdapter
 import com.michaldrabik.ui_search.views.RecentSearchView
 import com.michaldrabik.ui_search.views.ShowSuggestionView
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlin.random.Random
 
-class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
+class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), TextWatcherAdapter {
 
   override val viewModel by viewModels<SearchViewModel> { viewModelFactory }
 
@@ -80,6 +81,12 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
     handleBackPressed()
   }
 
+  override fun onStop() {
+    exSearchViewInput.removeTextChangedListener(this)
+    exSearchViewInput.setText("")
+    super.onStop()
+  }
+
   private fun setupView() {
     hideNavigation()
     exSearchViewInput.visible()
@@ -95,7 +102,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
     }
 
     exSearchViewInput.run {
-      addTextChangedListener { text -> viewModel.loadSuggestions(text.toString()) }
+      addTextChangedListener(this@SearchFragment)
       setOnEditorActionListener { textView, id, _ ->
         if (id == EditorInfo.IME_ACTION_SEARCH) {
           val query = textView.text.toString()
@@ -166,7 +173,6 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
   }
 
   private fun openDetails(item: SearchListItem) {
-    exSearchViewInput.setText("")
     if (item.isShow) {
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
       navigateTo(R.id.actionSearchFragmentToShowDetailsFragment, bundle)
@@ -242,6 +248,10 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
       }
       searchRecentsLayout.addView(view)
     }
+  }
+
+  override fun afterTextChanged(text: Editable?) {
+    viewModel.loadSuggestions(text.toString())
   }
 
   private fun handleBackPressed() {
