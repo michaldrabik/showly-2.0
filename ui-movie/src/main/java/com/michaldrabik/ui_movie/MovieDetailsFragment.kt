@@ -35,6 +35,7 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
+import com.michaldrabik.common.extensions.toDayOnlyDisplayString
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.views.RateView
@@ -278,11 +279,13 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         movieDetailsTitle.text = movie.title
         movieDetailsDescription.setTextIfEmpty(movie.overview)
         movieDetailsStatus.text = getString(movie.status.displayName)
-        val year = if (movie.year > 0) String.format(ENGLISH, "%d", movie.year) else ""
+        val releaseDate =
+          if (movie.released != null) String.format(ENGLISH, "%s", movie.released?.toDayOnlyDisplayString())
+          else movie.year.toString()
         val country = if (movie.country.isNotBlank()) String.format(ENGLISH, "(%s)", movie.country) else ""
         movieDetailsExtraInfo.text = getString(
           R.string.textMovieExtraInfo,
-          year,
+          releaseDate,
           country.toUpperCase(),
           movie.runtime.toString(),
           getString(R.string.textMinutesShort),
@@ -321,6 +324,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         when {
           it.isMyMovie -> movieDetailsAddButton.setState(IN_MY_MOVIES, it.withAnimation)
           it.isWatchlist -> movieDetailsAddButton.setState(IN_WATCHLIST, it.withAnimation)
+          it.isUpcoming -> movieDetailsAddButton.setState(UPCOMING, it.withAnimation)
           else -> movieDetailsAddButton.setState(ADD, it.withAnimation)
         }
       }

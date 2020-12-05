@@ -66,7 +66,7 @@ class MovieDetailsViewModel @Inject constructor(
         val followedState = FollowedState(
           isMyMovie = isFollowed.await(),
           isWatchlist = isWatchlist.await(),
-          isArchived = false,
+          isUpcoming = !movie.hasAired(),
           withAnimation = false
         )
 
@@ -205,6 +205,7 @@ class MovieDetailsViewModel @Inject constructor(
   }
 
   fun addFollowedMovie(context: Context) {
+    if (!movie.hasAired()) return
     viewModelScope.launch {
       myMoviesCase.addToMyMovies(movie)
       quickSyncManager.scheduleMovies(context, listOf(movie.traktId))
@@ -241,7 +242,7 @@ class MovieDetailsViewModel @Inject constructor(
       val traktQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
       val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled
 
-      val state = FollowedState.notFollowed()
+      val state = if (movie.hasAired()) FollowedState.notFollowed() else FollowedState.upcoming()
       val event = ActionEvent(showRemoveTrakt)
       uiState = when {
         isMyMovie -> MovieDetailsUiModel(followedState = state, removeFromTraktHistory = event)

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textAddToMyMovies">Add to my movies</string>
+  <string name="textUpcoming">Upcoming</string>
   <string name="textMovieWatchLater">See Later</string>
   <string name="textInMyMovies">Added to my movies</string>
   <string name="textInMoviesWatchlist">Added to watchlist</string>

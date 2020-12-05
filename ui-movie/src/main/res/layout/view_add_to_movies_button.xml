@@ -49,32 +49,23 @@
 
   </LinearLayout>
 
-  <LinearLayout
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/inMyMoviesButton"
+    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    >
-
-    <com.google.android.material.button.MaterialButton
-      android:id="@+id/inMyMoviesButton"
-      style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_weight="1"
-      android:gravity="center"
-      android:includeFontPadding="false"
-      android:text="@string/textInMyMovies"
-      android:textColor="?attr/colorAccent"
-      android:visibility="gone"
-      app:icon="@drawable/ic_bookmark_full"
-      app:iconGravity="textStart"
-      app:iconPadding="@dimen/spaceTiny"
-      app:iconTint="?attr/colorAccent"
-      app:rippleColor="?attr/colorAccent"
-      app:strokeColor="?attr/colorAccent"
-      tools:visibility="visible"
-      />
-
-  </LinearLayout>
+    android:gravity="center"
+    android:includeFontPadding="false"
+    android:text="@string/textInMyMovies"
+    android:textColor="?attr/colorAccent"
+    android:visibility="gone"
+    app:icon="@drawable/ic_bookmark_full"
+    app:iconGravity="textStart"
+    app:iconPadding="@dimen/spaceTiny"
+    app:iconTint="?attr/colorAccent"
+    app:rippleColor="?attr/colorAccent"
+    app:strokeColor="?attr/colorAccent"
+    tools:visibility="visible"
+    />
 
 </merge>

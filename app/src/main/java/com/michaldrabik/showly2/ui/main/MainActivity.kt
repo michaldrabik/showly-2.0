@@ -171,7 +171,8 @@ class MainActivity :
         when (currentDestination?.id) {
           R.id.discoverFragment,
           R.id.discoverMoviesFragment,
-          R.id.followedShowsFragment -> {
+          R.id.followedShowsFragment,
+          R.id.followedMoviesFragment -> {
             bottomNavigationView.selectedItemId = R.id.menuProgress
           }
         }
