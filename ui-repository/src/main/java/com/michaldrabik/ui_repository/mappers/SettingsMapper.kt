@@ -24,7 +24,7 @@ class SettingsMapper @Inject constructor() {
     myShowsIncomingIsEnabled = settings.myShowsIncomingIsEnabled,
     myShowsEndedIsEnabled = settings.myShowsEndedIsEnabled,
     myShowsRecentIsEnabled = settings.myShowsRecentIsEnabled,
-    myShowsRecentsAmount = settings.myShowsRecentsAmount,
+    myRecentsAmount = settings.myShowsRecentsAmount,
     watchlistShowsSortBy = enumValueOf(settings.seeLaterShowsSortBy),
     archiveShowsSortBy = enumValueOf(settings.archiveShowsSortBy),
     showAnticipatedShows = settings.showAnticipatedShows,
@@ -40,7 +40,9 @@ class SettingsMapper @Inject constructor() {
     moviesActive = settings.moviesActive,
     showAnticipatedMovies = settings.showAnticipatedMovies,
     discoverMoviesFilterGenres = settings.discoverMoviesFilterGenres.split(",").filter { it.isNotBlank() }.map { Genre.valueOf(it) },
-    discoverMoviesFilterFeed = enumValueOf(settings.discoverMoviesFilterFeed)
+    discoverMoviesFilterFeed = enumValueOf(settings.discoverMoviesFilterFeed),
+    myMoviesAllSortBy = enumValueOf(settings.myMoviesAllSortBy),
+    watchlistMoviesSortBy = enumValueOf(settings.seeLaterMoviesSortBy)
   )
 
   fun toDatabase(settings: Settings) = SettingsDb(
@@ -59,7 +61,7 @@ class SettingsMapper @Inject constructor() {
     myShowsIncomingIsEnabled = settings.myShowsIncomingIsEnabled,
     myShowsEndedIsEnabled = settings.myShowsEndedIsEnabled,
     myShowsRecentIsEnabled = settings.myShowsRecentIsEnabled,
-    myShowsRecentsAmount = settings.myShowsRecentsAmount,
+    myShowsRecentsAmount = settings.myRecentsAmount,
     seeLaterShowsSortBy = settings.watchlistShowsSortBy.name,
     archiveShowsSortBy = settings.archiveShowsSortBy.name,
     showAnticipatedShows = settings.showAnticipatedShows,
@@ -75,6 +77,8 @@ class SettingsMapper @Inject constructor() {
     moviesActive = settings.moviesActive,
     showAnticipatedMovies = settings.showAnticipatedMovies,
     discoverMoviesFilterFeed = settings.discoverMoviesFilterFeed.name,
-    discoverMoviesFilterGenres = settings.discoverMoviesFilterGenres.joinToString(",") { it.name }
+    discoverMoviesFilterGenres = settings.discoverMoviesFilterGenres.joinToString(",") { it.name },
+    myMoviesAllSortBy = settings.myMoviesAllSortBy.name,
+    seeLaterMoviesSortBy = settings.watchlistMoviesSortBy.name
   )
 }

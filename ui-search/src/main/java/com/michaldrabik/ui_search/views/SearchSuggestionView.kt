@@ -40,6 +40,7 @@ class SearchSuggestionView : ShowView<SearchListItem> {
   ) {
     clear()
     this.item = item
+    if (item.isMovie) suggestionPlaceholder.setImageResource(R.drawable.ic_film)
 
     val translationTitle = item.translation?.title
     suggestionTitle.text =
@@ -68,6 +69,7 @@ class SearchSuggestionView : ShowView<SearchListItem> {
     suggestionTitle.text = ""
     suggestionDescription.text = ""
     suggestionNetwork.text = ""
+    suggestionPlaceholder.setImageResource(R.drawable.ic_television)
     suggestionPlaceholder.gone()
     Glide.with(this).clear(suggestionImage)
   }

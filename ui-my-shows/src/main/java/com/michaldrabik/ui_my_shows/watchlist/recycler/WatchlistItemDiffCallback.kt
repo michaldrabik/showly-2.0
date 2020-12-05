@@ -2,7 +2,7 @@ package com.michaldrabik.ui_my_shows.watchlist.recycler
 
 import androidx.recyclerview.widget.DiffUtil
 
-class WatchlisItemDiffCallback : DiffUtil.ItemCallback<WatchlistListItem>() {
+class WatchlistItemDiffCallback : DiffUtil.ItemCallback<WatchlistListItem>() {
 
   override fun areItemsTheSame(oldItem: WatchlistListItem, newItem: WatchlistListItem) =
     oldItem.show.ids.trakt == newItem.show.ids.trakt

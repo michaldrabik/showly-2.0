@@ -8,7 +8,7 @@ import com.michaldrabik.ui_my_shows.watchlist.views.WatchlistShowView
 
 class WatchlistAdapter : BaseAdapter<WatchlistListItem>() {
 
-  override val asyncDiffer = AsyncListDiffer(this, WatchlisItemDiffCallback())
+  override val asyncDiffer = AsyncListDiffer(this, WatchlistItemDiffCallback())
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     BaseViewHolder(

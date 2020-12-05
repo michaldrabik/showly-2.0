@@ -27,7 +27,7 @@
       android:layout_height="@dimen/relatedTilePlaceholder"
       android:layout_gravity="center"
       android:visibility="gone"
-      app:srcCompat="@drawable/ic_television"
+      app:srcCompat="@drawable/ic_film"
       tools:visibility="visible"
       />
 

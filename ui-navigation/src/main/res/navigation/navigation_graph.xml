@@ -38,6 +38,14 @@
     app:popUpToInclusive="true"
     />
 
+  <action
+    android:id="@+id/actionNavigateFollowedMoviesFragment"
+    app:destination="@id/followedMoviesFragment"
+    app:launchSingleTop="true"
+    app:popUpTo="@id/navigationGraph"
+    app:popUpToInclusive="true"
+    />
+
   <fragment
     android:id="@+id/discoverFragment"
     android:name="com.michaldrabik.ui_discover.DiscoverFragment"
@@ -89,7 +97,7 @@
   <fragment
     android:id="@+id/progressFragment"
     android:name="com.michaldrabik.ui_progress.main.ProgressFragment"
-    android:label="fragmentWatchlistMain"
+    android:label="fragmentProgressMain"
     >
     <action
       android:id="@+id/actionProgressFragmentToShowDetailsFragment"
@@ -114,12 +122,6 @@
       app:popExitAnim="@anim/anim_fade_out"
       />
   </fragment>
-
-  <fragment
-    android:id="@+id/watchlistMainFragment"
-    android:name="com.michaldrabik.ui_progress.progress.WatchlistMainFragment"
-    android:label="fragmentWatchlist"
-    />
 
   <fragment
     android:id="@+id/showDetailsFragment"
@@ -192,6 +194,34 @@
       />
     <action
       android:id="@+id/actionFollowedShowsFragmentToStatisticsFragment"
+      app:destination="@id/statisticsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/followedMoviesFragment"
+    android:name="com.michaldrabik.ui_my_movies.main.FollowedMoviesFragment"
+    android:label="fragmentFollowedMovies"
+    >
+    <action
+      android:id="@+id/actionFollowedMoviesFragmentToMovieDetailsFragment"
+      app:destination="@id/movieDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionFollowedMoviesFragmentToSettingsFragment"
+      app:destination="@id/settingsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionFollowedMoviesFragmentToStatisticsFragment"
       app:destination="@id/statisticsFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"

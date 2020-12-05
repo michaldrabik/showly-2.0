@@ -76,7 +76,7 @@ class MyShowsLoadShowsCase @Inject constructor(
   }
 
   suspend fun loadRecentShows(): List<Show> {
-    val amount = loadSettings().myShowsRecentsAmount
+    val amount = loadSettings().myRecentsAmount
     return showsRepository.myShows.loadAllRecent(amount)
   }
 

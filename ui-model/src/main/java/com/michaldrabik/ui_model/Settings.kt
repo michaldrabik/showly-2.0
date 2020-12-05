@@ -18,7 +18,7 @@ data class Settings(
   val myShowsIncomingIsEnabled: Boolean,
   val myShowsEndedIsEnabled: Boolean,
   val myShowsRecentIsEnabled: Boolean,
-  val myShowsRecentsAmount: Int,
+  val myRecentsAmount: Int,
   val showAnticipatedShows: Boolean,
   val discoverFilterGenres: List<Genre>,
   val discoverFilterFeed: DiscoverSortOrder,
@@ -33,7 +33,9 @@ data class Settings(
   val showAnticipatedMovies: Boolean,
   val discoverMoviesFilterGenres: List<Genre>,
   val discoverMoviesFilterFeed: DiscoverSortOrder,
-) {
+  val watchlistMoviesSortBy: SortOrder,
+  val myMoviesAllSortBy: SortOrder,
+  ) {
 
   companion object {
     fun createInitial() = Settings(
@@ -52,7 +54,7 @@ data class Settings(
       myShowsIncomingIsEnabled = true,
       myShowsRunningIsEnabled = true,
       myShowsRecentIsEnabled = true,
-      myShowsRecentsAmount = 4,
+      myRecentsAmount = 4,
       watchlistShowsSortBy = SortOrder.NAME,
       archiveShowsSortBy = SortOrder.NAME,
       showAnticipatedShows = false,
@@ -68,7 +70,9 @@ data class Settings(
       moviesActive = false,
       discoverMoviesFilterFeed = DiscoverSortOrder.HOT,
       discoverMoviesFilterGenres = emptyList(),
-      showAnticipatedMovies = false
+      showAnticipatedMovies = false,
+      watchlistMoviesSortBy = SortOrder.NAME,
+      myMoviesAllSortBy = SortOrder.NAME
     )
   }
 }

@@ -7,6 +7,8 @@ import com.michaldrabik.ui_discover.DiscoverViewModel
 import com.michaldrabik.ui_discover_movies.DiscoverMoviesViewModel
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsViewModel
 import com.michaldrabik.ui_movie.MovieDetailsViewModel
+import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
+import com.michaldrabik.ui_my_movies.mymovies.MyMoviesViewModel
 import com.michaldrabik.ui_my_shows.archive.ArchiveViewModel
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
 import com.michaldrabik.ui_my_shows.myshows.MyShowsViewModel
@@ -22,6 +24,7 @@ import com.michaldrabik.ui_trakt_sync.TraktSyncViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import com.michaldrabik.ui_my_movies.watchlist.WatchlistViewModel as WatchlistViewModelMovies
 
 @Suppress("unused")
 @Module
@@ -64,6 +67,12 @@ abstract class ViewModelsModule {
 
   @Binds
   @IntoMap
+  @ViewModelKey(MyMoviesViewModel::class)
+  abstract fun bindMyMoviesViewModel(viewModel: MyMoviesViewModel): ViewModel
+
+
+  @Binds
+  @IntoMap
   @ViewModelKey(SearchViewModel::class)
   abstract fun bindSearchViewModel(viewModel: SearchViewModel): ViewModel
 
@@ -71,6 +80,11 @@ abstract class ViewModelsModule {
   @IntoMap
   @ViewModelKey(WatchlistViewModel::class)
   abstract fun bindWatchlistViewModel(viewModel: WatchlistViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(WatchlistViewModelMovies::class)
+  abstract fun bindWatchlistMoviesViewModel(viewModel: WatchlistViewModelMovies): ViewModel
 
   @Binds
   @IntoMap
@@ -106,6 +120,11 @@ abstract class ViewModelsModule {
   @IntoMap
   @ViewModelKey(FollowedShowsViewModel::class)
   abstract fun bindFollowedShowsViewModel(viewModel: FollowedShowsViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(FollowedMoviesViewModel::class)
+  abstract fun bindFollowedMoviesViewModel(viewModel: FollowedMoviesViewModel): ViewModel
 
   @Binds
   @IntoMap

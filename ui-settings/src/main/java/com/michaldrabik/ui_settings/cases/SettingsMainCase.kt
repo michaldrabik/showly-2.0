@@ -33,7 +33,7 @@ class SettingsMainCase @Inject constructor(
     check(amount in Config.MY_SHOWS_RECENTS_OPTIONS)
     val settings = settingsRepository.load()
     settings.let {
-      val new = it.copy(myShowsRecentsAmount = amount)
+      val new = it.copy(myRecentsAmount = amount)
       settingsRepository.update(new)
     }
   }

@@ -140,6 +140,9 @@ object Migrations {
       database.execSQL("ALTER TABLE settings ADD COLUMN show_anticipated_movies INTEGER NOT NULL DEFAULT 0")
       database.execSQL("ALTER TABLE settings ADD COLUMN discover_movies_filter_genres TEXT NOT NULL DEFAULT ''")
       database.execSQL("ALTER TABLE settings ADD COLUMN discover_movies_filter_feed TEXT NOT NULL DEFAULT 'HOT'")
+      database.execSQL("ALTER TABLE settings ADD COLUMN my_movies_all_sort_by TEXT NOT NULL DEFAULT 'NAME'")
+      database.execSQL("ALTER TABLE settings ADD COLUMN see_later_movies_sort_by TEXT NOT NULL DEFAULT 'NAME'")
+
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `movies` (" +
           "`id_trakt` INTEGER PRIMARY KEY NOT NULL, " +

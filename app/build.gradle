@@ -72,6 +72,7 @@ dependencies {
   implementation project(':ui-movie')
   implementation project(':ui-gallery')
   implementation project(':ui-my-shows')
+  implementation project(':ui-my-movies')
   implementation project(':ui-search')
   implementation project(':ui-statistics')
   implementation project(':ui-settings')

@@ -39,4 +39,6 @@ data class Settings(
   @ColumnInfo(name = "show_anticipated_movies", defaultValue = "0") var showAnticipatedMovies: Boolean,
   @ColumnInfo(name = "discover_movies_filter_genres", defaultValue = "") var discoverMoviesFilterGenres: String,
   @ColumnInfo(name = "discover_movies_filter_feed", defaultValue = "HOT") var discoverMoviesFilterFeed: String,
+  @ColumnInfo(name = "my_movies_all_sort_by", defaultValue = "NAME") var myMoviesAllSortBy: String,
+  @ColumnInfo(name = "see_later_movies_sort_by", defaultValue = "NAME") var seeLaterMoviesSortBy: String,
 )

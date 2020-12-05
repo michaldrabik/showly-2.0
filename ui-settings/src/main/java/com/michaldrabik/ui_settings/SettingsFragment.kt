@@ -184,7 +184,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun showRecentShowsDialog(settings: Settings) {
     val options = MY_SHOWS_RECENTS_OPTIONS.map { it.toString() }.toTypedArray()
-    val default = options.indexOf(settings.myShowsRecentsAmount.toString())
+    val default = options.indexOf(settings.myRecentsAmount.toString())
 
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))

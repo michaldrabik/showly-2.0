@@ -16,7 +16,7 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
-import com.michaldrabik.showly2.ui.BaseActivity
+import com.michaldrabik.showly2.ui.DiActivity
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.ui_base.Analytics
@@ -50,7 +50,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity :
-  BaseActivity(),
+  DiActivity(),
   EventObserver,
   NetworkObserver,
   SnackbarHost,
@@ -146,7 +146,7 @@ class MainActivity :
       val target = when (item.itemId) {
         R.id.menuProgress -> R.id.actionNavigateProgressFragment
         R.id.menuDiscover -> getMenuDiscoverAction()
-        R.id.menuCollection -> R.id.actionNavigateFollowedShowsFragment
+        R.id.menuCollection -> getMenuCollectionAction()
         else -> throw IllegalStateException("Invalid menu item.")
       }
 
@@ -199,6 +199,10 @@ class MainActivity :
   private fun getMenuDiscoverAction() =
     if (mode == MOVIES) R.id.actionNavigateDiscoverMoviesFragment
     else R.id.actionNavigateDiscoverFragment
+
+  private fun getMenuCollectionAction() =
+    if (mode == MOVIES) R.id.actionNavigateFollowedMoviesFragment
+    else R.id.actionNavigateFollowedShowsFragment
 
   override fun hideNavigation(animate: Boolean) {
     bottomNavigationView.run {
