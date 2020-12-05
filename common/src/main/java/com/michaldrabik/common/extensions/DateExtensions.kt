@@ -2,6 +2,7 @@ package com.michaldrabik.common.extensions
 
 import com.michaldrabik.common.Config
 import org.threeten.bp.Instant
+import org.threeten.bp.LocalDate
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZoneOffset
 import org.threeten.bp.ZonedDateTime
@@ -10,6 +11,8 @@ import org.threeten.bp.temporal.Temporal
 import java.util.Locale.ROOT
 
 fun nowUtc(): ZonedDateTime = ZonedDateTime.now(ZoneOffset.UTC)
+
+fun nowUtcDay(): LocalDate = LocalDate.now()
 
 fun nowUtcMillis(): Long = nowUtc().toInstant().toEpochMilli()
 

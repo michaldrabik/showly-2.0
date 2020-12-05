@@ -1,3 +1,4 @@
+include ':ui-progress-movies'
 include ':ui-my-movies'
 include ':ui-comments'
 include ':ui-gallery'

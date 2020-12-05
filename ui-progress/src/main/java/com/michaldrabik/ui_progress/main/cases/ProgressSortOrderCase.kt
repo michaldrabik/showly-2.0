@@ -13,13 +13,13 @@ class ProgressSortOrderCase @Inject constructor(
 
   suspend fun setSortOrder(sortOrder: SortOrder) {
     val settings = settingsRepository.load()
-    settingsRepository.update(settings.copy(watchlistSortOrder = sortOrder))
+    settingsRepository.update(settings.copy(progressSortOrder = sortOrder))
   }
 
   suspend fun loadSortOrder(): SortOrder {
     if (!settingsRepository.isInitialized()) {
-      return Settings.createInitial().watchlistSortOrder
+      return Settings.createInitial().progressSortOrder
     }
-    return settingsRepository.load().watchlistSortOrder
+    return settingsRepository.load().progressSortOrder
   }
 }

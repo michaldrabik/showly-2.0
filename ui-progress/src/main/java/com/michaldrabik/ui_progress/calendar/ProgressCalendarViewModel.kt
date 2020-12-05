@@ -27,11 +27,11 @@ class ProgressCalendarViewModel @Inject constructor(
 ) : BaseViewModel<ProgressCalendarUiModel>() {
 
   enum class Section(@StringRes val headerRes: Int) {
-    TODAY(R.string.textWatchlistToday),
-    TOMORROW(R.string.textWatchlistTomorrow),
-    THIS_WEEK(R.string.textWatchlistThisWeek),
-    NEXT_WEEK(R.string.textWatchlistNextWeek),
-    LATER(R.string.textWatchlistLater)
+    TODAY(R.string.textToday),
+    TOMORROW(R.string.textTomorrow),
+    THIS_WEEK(R.string.textThisWeek),
+    NEXT_WEEK(R.string.textNextWeek),
+    LATER(R.string.textLater)
   }
 
   fun handleParentAction(model: ProgressUiModel) {

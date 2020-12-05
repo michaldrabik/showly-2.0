@@ -17,6 +17,8 @@ import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_progress.di.UiProgressComponent
 import com.michaldrabik.ui_progress.di.UiProgressComponentProvider
+import com.michaldrabik.ui_progress_movies.di.UiProgressMoviesComponent
+import com.michaldrabik.ui_progress_movies.di.UiProgressMoviesComponentProvider
 import com.michaldrabik.ui_search.di.UiSearchComponentProvider
 import com.michaldrabik.ui_settings.di.UiSettingsComponent
 import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
@@ -41,6 +43,7 @@ abstract class DiActivity :
   UiMyShowsComponentProvider,
   UiMyMoviesComponentProvider,
   UiProgressComponentProvider,
+  UiProgressMoviesComponentProvider,
   UiSearchComponentProvider,
   UiSettingsComponentProvider {
 
@@ -57,6 +60,7 @@ abstract class DiActivity :
   private lateinit var uiStatisticsComponent: UiStatisticsComponent
   private lateinit var uiTraktSyncComponent: UiTraktSyncComponent
   private lateinit var uiProgressComponent: UiProgressComponent
+  private lateinit var uiProgressMoviesComponent: UiProgressMoviesComponent
 
   override fun provideDiscoverComponent() = uiDiscoverComponent
   override fun provideDiscoverMoviesComponent() = uiDiscoverMoviesComponent
@@ -71,6 +75,7 @@ abstract class DiActivity :
   override fun provideStatisticsComponent() = uiStatisticsComponent
   override fun provideTraktSyncComponent() = uiTraktSyncComponent
   override fun provideProgressComponent() = uiProgressComponent
+  override fun provideProgressMoviesComponent() = uiProgressMoviesComponent
 
   protected open fun setupComponents() {
     uiDiscoverComponent = appComponent().uiDiscoverComponent().create()
@@ -85,6 +90,7 @@ abstract class DiActivity :
     uiShowGalleryComponent = appComponent().uiShowGalleryComponent().create()
     uiStatisticsComponent = appComponent().uiStatisticsComponent().create()
     uiTraktSyncComponent = appComponent().uiTraktSyncComponent().create()
-    uiProgressComponent = appComponent().uiWatchlistComponent().create()
+    uiProgressComponent = appComponent().uiProgressComponent().create()
+    uiProgressMoviesComponent = appComponent().uiProgressMoviesComponent().create()
   }
 }

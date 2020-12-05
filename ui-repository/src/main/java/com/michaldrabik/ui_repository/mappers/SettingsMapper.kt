@@ -33,7 +33,7 @@ class SettingsMapper @Inject constructor() {
     traktSyncSchedule = enumValueOf(settings.traktSyncSchedule),
     traktQuickSyncEnabled = settings.traktQuickSyncEnabled,
     traktQuickRemoveEnabled = settings.traktQuickRemoveEnabled,
-    watchlistSortOrder = enumValueOf(settings.watchlistSortBy),
+    progressSortOrder = enumValueOf(settings.watchlistSortBy),
     archiveShowsIncludeStatistics = settings.archiveShowsIncludeStatistics,
     specialSeasonsEnabled = settings.specialSeasonsEnabled,
     moviesEnabled = settings.moviesEnabled,
@@ -42,7 +42,8 @@ class SettingsMapper @Inject constructor() {
     discoverMoviesFilterGenres = settings.discoverMoviesFilterGenres.split(",").filter { it.isNotBlank() }.map { Genre.valueOf(it) },
     discoverMoviesFilterFeed = enumValueOf(settings.discoverMoviesFilterFeed),
     myMoviesAllSortBy = enumValueOf(settings.myMoviesAllSortBy),
-    watchlistMoviesSortBy = enumValueOf(settings.seeLaterMoviesSortBy)
+    watchlistMoviesSortBy = enumValueOf(settings.seeLaterMoviesSortBy),
+    progressMoviesSortBy = enumValueOf(settings.progressMoviesSortBy)
   )
 
   fun toDatabase(settings: Settings) = SettingsDb(
@@ -70,7 +71,7 @@ class SettingsMapper @Inject constructor() {
     traktSyncSchedule = settings.traktSyncSchedule.name,
     traktQuickSyncEnabled = settings.traktQuickSyncEnabled,
     traktQuickRemoveEnabled = settings.traktQuickRemoveEnabled,
-    watchlistSortBy = settings.watchlistSortOrder.name,
+    watchlistSortBy = settings.progressSortOrder.name,
     archiveShowsIncludeStatistics = settings.archiveShowsIncludeStatistics,
     specialSeasonsEnabled = settings.specialSeasonsEnabled,
     moviesEnabled = settings.moviesEnabled,
@@ -79,6 +80,7 @@ class SettingsMapper @Inject constructor() {
     discoverMoviesFilterFeed = settings.discoverMoviesFilterFeed.name,
     discoverMoviesFilterGenres = settings.discoverMoviesFilterGenres.joinToString(",") { it.name },
     myMoviesAllSortBy = settings.myMoviesAllSortBy.name,
-    seeLaterMoviesSortBy = settings.watchlistMoviesSortBy.name
+    seeLaterMoviesSortBy = settings.watchlistMoviesSortBy.name,
+    progressMoviesSortBy = settings.progressMoviesSortBy.name
   )
 }

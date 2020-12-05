@@ -34,7 +34,7 @@ class MovieDetailsMyMoviesCase @Inject constructor(
   suspend fun removeFromMyMovies(movie: Movie) {
     database.withTransaction {
       moviesRepository.myMovies.delete(movie.ids.trakt)
-      pinnedItemsRepository.removePinnedItem(movie.traktId)
+      pinnedItemsRepository.removePinnedItem(movie)
     }
   }
 

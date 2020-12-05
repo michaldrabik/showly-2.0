@@ -11,13 +11,4 @@
   <string name="textTraktSynchronize">Import from Trakt.tv</string>
   <string name="textProgressEmpty">Your <b>Progress</b> is currently empty.\n\nVisit <b>Discover</b> tab to add shows or import your Trakt.tv collection.</string>
   <string name="textNewSeason">Season Premiere</string>
-
-  <string name="textWatchlistToday">Today</string>
-  <string name="textWatchlistTomorrow">Tomorrow</string>
-  <string name="textWatchlistThisWeek">This Week</string>
-  <string name="textWatchlistNextWeek">Next Week</string>
-  <string name="textWatchlistLater">Later</string>
-
-  <string name="menuPin">Pin to top</string>
-  <string name="menuUnpin">Unpin from top</string>
 </resources>

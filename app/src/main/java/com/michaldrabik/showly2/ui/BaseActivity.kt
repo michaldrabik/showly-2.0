@@ -8,40 +8,13 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fcm.FcmExtra
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
-import com.michaldrabik.ui_discover.di.UiDiscoverComponentProvider
-import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponentProvider
-import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponentProvider
-import com.michaldrabik.ui_gallery.di.UiFanartGalleryComponentProvider
-import com.michaldrabik.ui_movie.di.UiMovieDetailsComponentProvider
-import com.michaldrabik.ui_my_movies.di.UiMyMoviesComponentProvider
-import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
-import com.michaldrabik.ui_progress.di.UiProgressComponentProvider
-import com.michaldrabik.ui_search.di.UiSearchComponentProvider
-import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
-import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
-import com.michaldrabik.ui_statistics.di.UiStatisticsComponentProvider
-import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponentProvider
 import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider
 import com.michaldrabik.ui_widgets.search.SearchWidgetProvider
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
-abstract class BaseActivity :
-  AppCompatActivity(),
-  UiTraktSyncComponentProvider,
-  UiStatisticsComponentProvider,
-  UiDiscoverComponentProvider,
-  UiDiscoverMoviesComponentProvider,
-  UiShowDetailsComponentProvider,
-  UiMovieDetailsComponentProvider,
-  UiFanartGalleryComponentProvider,
-  UiEpisodeDetailsComponentProvider,
-  UiMyShowsComponentProvider,
-  UiMyMoviesComponentProvider,
-  UiProgressComponentProvider,
-  UiSearchComponentProvider,
-  UiSettingsComponentProvider {
+abstract class BaseActivity : AppCompatActivity() {
 
   private val showActionKeys = arrayOf(
     FcmExtra.SHOW_ID.key,

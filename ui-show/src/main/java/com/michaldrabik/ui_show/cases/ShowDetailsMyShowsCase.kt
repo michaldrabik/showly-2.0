@@ -83,7 +83,7 @@ class ShowDetailsMyShowsCase @Inject constructor(
         database.seasonsDao().delete(toDelete)
       }
 
-      pinnedItemsRepository.removePinnedItem(show.traktId)
+      pinnedItemsRepository.removePinnedItem(show)
     }
   }
 

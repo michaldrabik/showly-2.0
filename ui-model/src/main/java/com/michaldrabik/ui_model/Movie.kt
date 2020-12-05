@@ -1,11 +1,14 @@
 package com.michaldrabik.ui_model
 
+import com.michaldrabik.common.extensions.nowUtcDay
+import org.threeten.bp.LocalDate
+
 data class Movie(
   val ids: Ids,
   val title: String,
   val year: Int,
   val overview: String,
-  val released: String,
+  val released: LocalDate?,
   val runtime: Int,
   val country: String,
   val trailer: String,
@@ -21,13 +24,19 @@ data class Movie(
 
   val traktId = ids.trakt.id
 
+  fun hasAired(): Boolean {
+    if (released == null) return false
+    val now = nowUtcDay()
+    return now.isEqual(released) || now.isAfter(released)
+  }
+
   companion object {
     val EMPTY = Movie(
       Ids.EMPTY,
       "",
       -1,
       "",
-      "",
+      null,
       -1,
       "",
       "",

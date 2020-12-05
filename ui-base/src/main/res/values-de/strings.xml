@@ -40,6 +40,12 @@
     <item quantity="other">Verfügbar in %d Minuten</item>
   </plurals>
 
+  <string name="textToday">Heute</string>
+  <string name="textTomorrow">Morgen</string>
+  <string name="textThisWeek">Diese Woche</string>
+  <string name="textNextWeek">Nächste Woche</string>
+  <string name="textLater">Später</string>
+
   <string name="textNewEpisodeAvailable">Neue Folge jetzt verfügbar!</string>
   <string name="textNewEpisodeAvailableSoon">Neue Folge bald verfügbar!</string>
   <string name="textNewSeasonAvailable">Neue Staffel jetzt verfügbar!</string>
@@ -52,6 +58,9 @@
   <string name="textTraktSyncErrorFull">Trakt.tv Synchronisation fehlgeschlagen. Bitte überprüfe deine Internetverbindung und versuch es erneut oder kontaktiere uns, wenn der Fehler weiterhin besteht.</string>
   <string name="textTraktQuickSyncError">Sofortige Synchronisation fehlgeschlagen.</string>
   <string name="textTraktQuickSyncErrorFull">Sofortige Synchronisation fehlgeschlagen. Wir versuchen es beim nächsten öffnen der App. Bitte überprüfe deine Internetverbindung.</string>
+
+  <string name="menuPin">Oben anpinnen</string>
+  <string name="menuUnpin">Pin von Oben lösen</string>
 
   <string name="errorGeneral">Hoppla… Da ging etwas schief.\nBitte kontaktiere uns, wenn dies weiterhin geschieht.</string>
   <string name="errorAuthorization">Autorisation fehlgeschlagen. Bitte kontaktiere uns, wenn dies weiterhin geschieht.</string>

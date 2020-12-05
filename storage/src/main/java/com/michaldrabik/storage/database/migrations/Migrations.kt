@@ -142,6 +142,7 @@ object Migrations {
       database.execSQL("ALTER TABLE settings ADD COLUMN discover_movies_filter_feed TEXT NOT NULL DEFAULT 'HOT'")
       database.execSQL("ALTER TABLE settings ADD COLUMN my_movies_all_sort_by TEXT NOT NULL DEFAULT 'NAME'")
       database.execSQL("ALTER TABLE settings ADD COLUMN see_later_movies_sort_by TEXT NOT NULL DEFAULT 'NAME'")
+      database.execSQL("ALTER TABLE settings ADD COLUMN progress_movies_sort_by TEXT NOT NULL DEFAULT 'NAME'")
 
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `movies` (" +

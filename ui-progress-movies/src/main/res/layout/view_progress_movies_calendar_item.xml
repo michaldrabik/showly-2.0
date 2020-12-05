@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    >
+
+    <ImageView
+      android:id="@+id/progressMovieCalendarItemImage"
+      android:layout_width="@dimen/progressMoviesImageWidth"
+      android:layout_height="@dimen/progressMoviesImageHeight"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="8dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/progressMovieCalendarItemPlaceholder"
+      android:layout_width="@dimen/progressMoviesImageWidth"
+      android:layout_height="@dimen/progressMoviesImageHeight"
+      android:layout_marginStart="@dimen/spaceMedium"
+      android:background="@drawable/bg_media_view_placeholder"
+      android:padding="@dimen/spaceBig"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_film"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/progressMovieCalendarItemTitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:ellipsize="end"
+      android:gravity="start"
+      android:maxLines="1"
+      android:paddingEnd="@dimen/spaceMedium"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="18sp"
+      android:textStyle="bold"
+      app:layout_constraintBottom_toTopOf="@id/progressMovieCalendarItemSubtitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/progressMovieCalendarItemImage"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed"
+      app:layout_goneMarginEnd="@dimen/spaceMedium"
+      tools:ignore="RtlSymmetry"
+      tools:text="Breaking Bad"
+      />
+
+    <TextView
+      android:id="@+id/progressMovieCalendarItemSubtitle"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:gravity="start|center_vertical"
+      android:maxLines="2"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="14sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/progressMovieCalendarItemImage"
+      app:layout_constraintTop_toBottomOf="@id/progressMovieCalendarItemTitle"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

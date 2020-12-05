@@ -10,6 +10,7 @@ import com.michaldrabik.ui_movie.di.UiMovieDetailsComponent
 import com.michaldrabik.ui_my_movies.di.UiMyMoviesComponent
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
 import com.michaldrabik.ui_progress.di.UiProgressComponent
+import com.michaldrabik.ui_progress_movies.di.UiProgressMoviesComponent
 import com.michaldrabik.ui_settings.di.UiSettingsComponent
 import com.michaldrabik.ui_show.di.UiShowDetailsComponent
 import com.michaldrabik.ui_statistics.di.UiSearchComponent
@@ -34,6 +35,7 @@ import dagger.Module
     UiStatisticsComponent::class,
     UiTraktSyncComponent::class,
     UiProgressComponent::class,
+    UiProgressMoviesComponent::class,
     UiWidgetsComponent::class,
     ServiceComponent::class
   ]

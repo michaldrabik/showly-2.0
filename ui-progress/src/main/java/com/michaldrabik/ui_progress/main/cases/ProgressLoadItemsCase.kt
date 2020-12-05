@@ -54,7 +54,7 @@ class ProgressLoadItemsCase @Inject constructor(
       .sortedBy { it.firstAired }
       .firstOrNull { it.firstAired?.isAfter(nowUtc()) == true }
 
-    val isPinned = pinnedItemsRepository.isItemPinned(show.traktId)
+    val isPinned = pinnedItemsRepository.isItemPinned(show)
     val season = seasons.first { it.idTrakt == nextEpisode.idSeason }
     val episode = database.episodesDao().getById(nextEpisode.idTrakt)
     val episodeUi = mappers.episode.fromDatabase(episode)
@@ -119,6 +119,5 @@ class ProgressLoadItemsCase @Inject constructor(
           it.showTranslation?.title?.contains(searchQuery, true) == true ||
           it.episodeTranslation?.title?.contains(searchQuery, true) == true
       }
-      .toMutableList()
   }
 }

@@ -11,13 +11,4 @@
   <string name="textTraktSynchronize">Von Trakt.tv importieren</string>
   <string name="textProgressEmpty">Dein <b>Fortschritt</b>ist aktuell leer.\n\nTippe auf den <b>Entdecken</b> Tab, um Shows hinzuzufügen oder deine Trakt.tv-Sammlung zu importieren.</string>
   <string name="textNewSeason">Staffel Premiere</string>
-
-  <string name="textWatchlistToday">Heute</string>
-  <string name="textWatchlistTomorrow">Morgen</string>
-  <string name="textWatchlistThisWeek">Diese Woche</string>
-  <string name="textWatchlistNextWeek">Nächste Woche</string>
-  <string name="textWatchlistLater">Später</string>
-
-  <string name="menuPin">Oben anpinnen</string>
-  <string name="menuUnpin">Pin von Oben lösen</string>
 </resources>

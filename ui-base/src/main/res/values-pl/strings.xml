@@ -47,6 +47,12 @@
     <item quantity="many">Premiera za %d minut</item>
   </plurals>
 
+  <string name="textToday">Dzisiaj</string>
+  <string name="textTomorrow">Jutro</string>
+  <string name="textThisWeek">Ten Tydzień</string>
+  <string name="textNextWeek">Następny Tydzień</string>
+  <string name="textLater">Później</string>
+
   <string name="textNewEpisodeAvailable">Nowy odcinek jest już dostępny!</string>
   <string name="textNewEpisodeAvailableSoon">Nowy odcinek będzie wkrótce dostępny!</string>
   <string name="textNewSeasonAvailable">Nowy sezon jest już dostępny!</string>
@@ -59,6 +65,9 @@
   <string name="textTraktSyncErrorFull">Błąd synchronizacji Trakt.tv. Sprawdź połączenie z internetem lub skontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="textTraktQuickSyncError">Błąd szybkiej synchronizacji.</string>
   <string name="textTraktQuickSyncErrorFull">Błąd szybkiej synchronizacji. Spróbujemy ponownie przy następnym uruchomieniu aplikacji.</string>
+
+  <string name="menuPin">Przypnij u góry</string>
+  <string name="menuUnpin">Odepnij z góry</string>
 
   <string name="errorGeneral">Oj… Coś poszło nie tak.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="errorAuthorization">Błąd autoryzacji.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>

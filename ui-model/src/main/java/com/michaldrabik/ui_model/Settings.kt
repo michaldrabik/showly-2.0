@@ -25,7 +25,7 @@ data class Settings(
   val traktSyncSchedule: TraktSyncSchedule,
   val traktQuickSyncEnabled: Boolean,
   val traktQuickRemoveEnabled: Boolean,
-  val watchlistSortOrder: SortOrder,
+  val progressSortOrder: SortOrder,
   val archiveShowsIncludeStatistics: Boolean,
   val specialSeasonsEnabled: Boolean,
   val moviesEnabled: Boolean,
@@ -35,7 +35,8 @@ data class Settings(
   val discoverMoviesFilterFeed: DiscoverSortOrder,
   val watchlistMoviesSortBy: SortOrder,
   val myMoviesAllSortBy: SortOrder,
-  ) {
+  val progressMoviesSortBy: SortOrder,
+) {
 
   companion object {
     fun createInitial() = Settings(
@@ -63,7 +64,7 @@ data class Settings(
       traktSyncSchedule = TraktSyncSchedule.OFF,
       traktQuickSyncEnabled = false,
       traktQuickRemoveEnabled = false,
-      watchlistSortOrder = SortOrder.NAME,
+      progressSortOrder = SortOrder.NAME,
       archiveShowsIncludeStatistics = true,
       specialSeasonsEnabled = false,
       moviesEnabled = true,
@@ -72,7 +73,8 @@ data class Settings(
       discoverMoviesFilterGenres = emptyList(),
       showAnticipatedMovies = false,
       watchlistMoviesSortBy = SortOrder.NAME,
-      myMoviesAllSortBy = SortOrder.NAME
+      myMoviesAllSortBy = SortOrder.NAME,
+      progressMoviesSortBy = SortOrder.NAME
     )
   }
 }

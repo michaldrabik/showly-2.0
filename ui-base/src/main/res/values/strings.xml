@@ -45,6 +45,12 @@
     <item quantity="other">Airs in %d minutes</item>
   </plurals>
 
+  <string name="textToday">Today</string>
+  <string name="textTomorrow">Tomorrow</string>
+  <string name="textThisWeek">This Week</string>
+  <string name="textNextWeek">Next Week</string>
+  <string name="textLater">Later</string>
+
   <string name="textNewEpisodeAvailable">New episode is available now!</string>
   <string name="textNewEpisodeAvailableSoon">New episode will be available soon!</string>
   <string name="textNewSeasonAvailable">New season is available now!</string>
@@ -57,6 +63,9 @@
   <string name="textTraktSyncErrorFull">Trakt.tv sync failed. Please check your internet connection and try again or contact us if this keeps happening.</string>
   <string name="textTraktQuickSyncError">Instant Sync failed.</string>
   <string name="textTraktQuickSyncErrorFull">Instant Sync failed. We will try again next time you open the app. Please check your internet connection.</string>
+
+  <string name="menuPin">Pin to top</string>
+  <string name="menuUnpin">Unpin from top</string>
 
   <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this keeps happening.</string>
   <string name="errorAuthorization">Authorization failed. Please contact us if this keeps happening.</string>
