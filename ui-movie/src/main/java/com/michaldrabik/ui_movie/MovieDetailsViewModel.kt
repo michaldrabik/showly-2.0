@@ -222,7 +222,7 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  fun removeFromFollowed(context: Context) {
+  fun removeFromFollowed() {
     viewModelScope.launch {
       val isMyMovie = myMoviesCase.isMyMovie(movie)
       val isWatchlist = watchlistCase.isWatchlist(movie)

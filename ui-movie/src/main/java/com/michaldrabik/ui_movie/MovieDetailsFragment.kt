@@ -152,7 +152,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         viewModel.addFollowedMovie(requireAppContext())
       }
       onAddWatchLaterClickListener = { viewModel.addWatchlistMovie(requireAppContext()) }
-      onRemoveClickListener = { viewModel.removeFromFollowed(requireAppContext()) }
+      onRemoveClickListener = { viewModel.removeFromFollowed() }
     }
     movieDetailsRemoveTraktButton.onNoClickListener = {
       movieDetailsAddButton.fadeIn()
