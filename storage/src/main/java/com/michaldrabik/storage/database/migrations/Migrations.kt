@@ -50,8 +50,12 @@ object Migrations {
       database.execSQL("ALTER TABLE settings ADD COLUMN trakt_quick_sync_enabled INTEGER NOT NULL DEFAULT 0")
 
       database.execSQL(
-        "CREATE TABLE IF NOT EXISTS `trakt_sync_queue` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-          "`id_trakt` INTEGER NOT NULL, `type` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL)"
+        "CREATE TABLE IF NOT EXISTS `trakt_sync_queue` (" +
+          "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+          "`id_trakt` INTEGER NOT NULL, " +
+          "`type` TEXT NOT NULL, " +
+          "`created_at` INTEGER NOT NULL, " +
+          "`updated_at` INTEGER NOT NULL)"
       )
     }
   }
@@ -71,8 +75,11 @@ object Migrations {
   private val MIGRATION_9_10 = object : Migration(9, 10) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL(
-        "CREATE TABLE IF NOT EXISTS `shows_archive` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-          "`id_trakt` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, " +
+        "CREATE TABLE IF NOT EXISTS `shows_archive` (" +
+          "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+          "`id_trakt` INTEGER NOT NULL, " +
+          "`created_at` INTEGER NOT NULL, " +
+          "`updated_at` INTEGER NOT NULL, " +
           "FOREIGN KEY(`id_trakt`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE)"
       )
       database.execSQL("CREATE UNIQUE INDEX index_shows_archive_id_trakt ON shows_archive(id_trakt)")
@@ -113,7 +120,8 @@ object Migrations {
       database.execSQL("CREATE INDEX index_episodes_translations_id_trakt_show ON episodes_translations(id_trakt_show)")
 
       database.execSQL(
-        "CREATE TABLE IF NOT EXISTS `sync_translations_log` (`id_show_trakt` INTEGER PRIMARY KEY NOT NULL, " +
+        "CREATE TABLE IF NOT EXISTS `sync_translations_log` (" +
+          "`id_show_trakt` INTEGER PRIMARY KEY NOT NULL, " +
           "`synced_at` INTEGER NOT NULL)"
       )
     }
@@ -135,45 +143,43 @@ object Migrations {
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `movies` (" +
           "`id_trakt` INTEGER PRIMARY KEY NOT NULL, " +
-          "`id_tvdb` INTEGER NOT NULL, " +
-          "`id_tmdb` INTEGER NOT NULL, " +
-          "`id_imdb` TEXT NOT NULL, " +
-          "`id_slug` TEXT NOT NULL, " +
-          "`title` TEXT NOT NULL, " +
-          "`year` INTEGER NOT NULL, " +
-          "`overview` TEXT NOT NULL, " +
-          "`released` TEXT NOT NULL, " +
-          "`runtime` INTEGER NOT NULL, " +
-          "`country` TEXT NOT NULL, " +
-          "`trailer` TEXT NOT NULL, " +
-          "`language` TEXT NOT NULL, " +
-          "`homepage` TEXT NOT NULL, " +
-          "`status` TEXT NOT NULL, " +
-          "`rating` REAL NOT NULL, " +
-          "`votes` INTEGER NOT NULL, " +
-          "`comment_count` INTEGER NOT NULL, " +
-          "`genres` TEXT NOT NULL, " +
-          "`updated_at` INTEGER NOT NULL)"
+          "`id_tmdb` INTEGER NOT NULL DEFAULT -1, " +
+          "`id_imdb` TEXT NOT NULL DEFAULT '', " +
+          "`id_slug` TEXT NOT NULL DEFAULT '', " +
+          "`title` TEXT NOT NULL DEFAULT '', " +
+          "`year` INTEGER NOT NULL DEFAULT -1, " +
+          "`overview` TEXT NOT NULL DEFAULT '', " +
+          "`released` TEXT NOT NULL DEFAULT '', " +
+          "`runtime` INTEGER NOT NULL DEFAULT -1, " +
+          "`country` TEXT NOT NULL DEFAULT '', " +
+          "`trailer` TEXT NOT NULL DEFAULT '', " +
+          "`language` TEXT NOT NULL DEFAULT '', " +
+          "`homepage` TEXT NOT NULL DEFAULT '', " +
+          "`status` TEXT NOT NULL DEFAULT '', " +
+          "`rating` REAL NOT NULL DEFAULT -1, " +
+          "`votes` INTEGER NOT NULL DEFAULT -1, " +
+          "`comment_count` INTEGER NOT NULL DEFAULT -1, " +
+          "`genres` TEXT NOT NULL DEFAULT '', " +
+          "`updated_at` INTEGER NOT NULL DEFAULT -1)"
       )
 
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `movies_discover` (" +
           "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-          "`id_trakt` INTEGER NOT NULL, " +
-          "`created_at` INTEGER NOT NULL, " +
-          "`updated_at` INTEGER NOT NULL, " +
-          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE" +
-          ")"
+          "`id_trakt` INTEGER NOT NULL DEFAULT -1, " +
+          "`created_at` INTEGER NOT NULL DEFAULT -1, " +
+          "`updated_at` INTEGER NOT NULL DEFAULT -1, " +
+          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
       )
       database.execSQL("CREATE INDEX index_discover_movies_id_trakt ON movies_discover(id_trakt)")
 
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `movies_images` (" +
           "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-          "`id_tmdb` INTEGER NOT NULL, " +
-          "`type` TEXT NOT NULL, " +
-          "`file_url` REAL NOT NULL, " +
-          "`source` INTEGER NOT NULL)"
+          "`id_tmdb` INTEGER NOT NULL DEFAULT -1, " +
+          "`type` TEXT NOT NULL DEFAULT '', " +
+          "`file_url` TEXT NOT NULL DEFAULT '', " +
+          "`source` TEXT NOT NULL DEFAULT 'tmdb')"
       )
 
       database.execSQL(
@@ -197,10 +203,10 @@ object Migrations {
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `movies_related` (" +
           "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-          "`id_trakt` INTEGER NOT NULL, " +
-          "`id_trakt_related_movie` INTEGER NOT NULL, " +
-          "`updated_at` INTEGER NOT NULL" +
-          "FOREIGN KEY(`id_trakt_related_movie`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE))"
+          "`id_trakt` INTEGER NOT NULL  DEFAULT -1, " +
+          "`id_trakt_related_movie` INTEGER NOT NULL DEFAULT -1, " +
+          "`updated_at` INTEGER NOT NULL DEFAULT -1, " +
+          "FOREIGN KEY(`id_trakt_related_movie`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
       )
       database.execSQL("CREATE INDEX index_movies_related_id_trakt ON movies_related(id_trakt_related_movie)")
 
@@ -210,22 +216,20 @@ object Migrations {
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `movies_my_movies` (" +
           "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-          "`id_trakt` INTEGER NOT NULL, " +
-          "`created_at` INTEGER NOT NULL, " +
-          "`updated_at` INTEGER NOT NULL, " +
-          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE" +
-          ")"
+          "`id_trakt` INTEGER NOT NULL DEFAULT -1, " +
+          "`created_at` INTEGER NOT NULL DEFAULT -1, " +
+          "`updated_at` INTEGER NOT NULL DEFAULT -1, " +
+          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
       )
       database.execSQL("CREATE INDEX index_movies_my_movies_id_trakt ON movies_my_movies(id_trakt)")
 
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `movies_see_later` (" +
           "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-          "`id_trakt` INTEGER NOT NULL, " +
-          "`created_at` INTEGER NOT NULL, " +
-          "`updated_at` INTEGER NOT NULL, " +
-          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE" +
-          ")"
+          "`id_trakt` INTEGER NOT NULL DEFAULT -1, " +
+          "`created_at` INTEGER NOT NULL DEFAULT -1, " +
+          "`updated_at` INTEGER NOT NULL DEFAULT -1, " +
+          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
       )
       database.execSQL("CREATE INDEX index_movies_see_later_id_trakt ON movies_see_later(id_trakt)")
     }
