@@ -316,7 +316,11 @@ class MainActivity :
         bottomNavigationView.selectedItemId = R.id.menuCollection
       intent.extras?.containsKey("extraShortcutSearch") == true -> {
         bottomNavigationView.selectedItemId = R.id.menuDiscover
-        navigationHost.findNavController().navigate(R.id.actionDiscoverFragmentToSearchFragment)
+        val action = when (mode) {
+          SHOWS -> R.id.actionDiscoverFragmentToSearchFragment
+          MOVIES -> R.id.actionDiscoverMoviesFragmentToSearchFragment
+        }
+        navigationHost.findNavController().navigate(action)
       }
     }
   }
