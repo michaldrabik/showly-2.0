@@ -35,12 +35,12 @@
   <dimen name="searchViewItemPaddingHorizontal">20dp</dimen>
 
   <dimen name="discoverFilterChipStroke">1dp</dimen>
-  <dimen name="discoverRecyclerPadding">98dp</dimen>
+  <dimen name="discoverRecyclerPadding">104dp</dimen>
 
   <dimen name="swipeRefreshStartOffset">8dp</dimen>
   <dimen name="swipeRefreshEndOffset">140dp</dimen>
 
-  <dimen name="showsMoviesTabsMargin">63dp</dimen>
+  <dimen name="showsMoviesTabsMargin">64dp</dimen>
 
   <dimen name="tutorialTipSize">28dp</dimen>
   <dimen name="scrollBarWidth">3dp</dimen>

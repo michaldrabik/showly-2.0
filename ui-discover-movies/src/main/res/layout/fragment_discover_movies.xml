@@ -24,7 +24,7 @@
       android:clipToPadding="false"
       android:overScrollMode="never"
       android:paddingLeft="@dimen/gridPadding"
-      android:paddingTop="@dimen/discoverMoviesRecyclerPadding"
+      android:paddingTop="@dimen/discoverRecyclerPadding"
       android:paddingRight="@dimen/gridPadding"
       android:paddingBottom="@dimen/bottomNavigationHeightPadded"
       android:scrollbars="vertical"

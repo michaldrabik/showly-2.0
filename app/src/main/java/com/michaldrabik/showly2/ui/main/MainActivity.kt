@@ -248,9 +248,15 @@ class MainActivity :
       mode?.let {
         if (this@MainActivity.mode != it) {
           this@MainActivity.mode = it
-          if (bottomNavigationView.selectedItemId == R.id.menuDiscover) {
-            val target = getMenuDiscoverAction()
-            navigationHost.findNavController().navigate(target)
+          when (bottomNavigationView.selectedItemId) {
+            R.id.menuDiscover -> {
+              val target = getMenuDiscoverAction()
+              navigationHost.findNavController().navigate(target)
+            }
+            R.id.menuCollection -> {
+              val target = getMenuCollectionAction()
+              navigationHost.findNavController().navigate(target)
+            }
           }
         }
       }

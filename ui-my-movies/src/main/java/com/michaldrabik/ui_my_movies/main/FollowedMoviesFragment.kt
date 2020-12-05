@@ -3,7 +3,10 @@ package com.michaldrabik.ui_my_movies.main
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.inputmethod.EditorInfo
+import android.widget.FrameLayout
+import android.widget.GridLayout
 import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
@@ -38,6 +41,7 @@ import com.michaldrabik.ui_my_movies.mymovies.helpers.ResultType.EMPTY
 import com.michaldrabik.ui_my_movies.mymovies.helpers.ResultType.NO_RESULTS
 import com.michaldrabik.ui_my_movies.mymovies.helpers.ResultType.RESULTS
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
+import com.michaldrabik.ui_my_movies.mymovies.views.MyMovieFanartView
 import com.michaldrabik.ui_my_movies.utilities.OnSortClickListener
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import kotlinx.android.synthetic.main.fragment_followed_movies.*
@@ -86,6 +90,10 @@ class FollowedMoviesFragment :
       onSettingsClickListener = { openSettings() }
       onStatsClickListener = { openStatistics() }
     }
+    followedMoviesModeTabs.run {
+      onModeSelected = { setMode(it) }
+      animateMovies()
+    }
     followedMoviesSortIcon.run {
       visibleIf(currentPage != 0)
       onClick {
@@ -122,6 +130,7 @@ class FollowedMoviesFragment :
       followedMoviesSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
       followedMoviesSearchView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
       followedMoviesTabs.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchViewPadding) + statusBarSize)
+      followedMoviesModeTabs.updateTopMargin(dimenToPx(R.dimen.showsMoviesTabsMargin) + statusBarSize)
       followedMoviesSortIcon.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchViewPadding) + statusBarSize)
       followedMoviesSearchEmptyView.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
       followedMoviesSearchContainer.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
@@ -181,6 +190,7 @@ class FollowedMoviesFragment :
         followedMoviesSearchContainer.visible()
         followedMoviesPager.gone()
         followedMoviesTabs.gone()
+        followedMoviesModeTabs.gone()
         followedMoviesSearchEmptyView.gone()
         renderSearchContainer(result.items)
       }
@@ -188,12 +198,14 @@ class FollowedMoviesFragment :
         followedMoviesSearchContainer.gone()
         followedMoviesPager.gone()
         followedMoviesTabs.gone()
+        followedMoviesModeTabs.gone()
         followedMoviesSearchEmptyView.visible()
       }
       EMPTY -> {
         followedMoviesSearchContainer.gone()
         followedMoviesPager.visible()
         followedMoviesTabs.visible()
+        followedMoviesModeTabs.visible()
         followedMoviesSearchEmptyView.gone()
       }
     }
@@ -201,6 +213,7 @@ class FollowedMoviesFragment :
     if (result.type != EMPTY) {
       followedMoviesSearchView.translationY = 0F
       followedMoviesTabs.translationY = 0F
+      followedMoviesModeTabs.translationY = 0F
       followedMoviesSortIcon.translationY = 0F
       childFragmentManager.fragments.forEach {
         (it as? OnScrollResetListener)?.onScrollReset()
@@ -221,17 +234,17 @@ class FollowedMoviesFragment :
     }
 
     items.forEachIndexed { index, item ->
-//      val view = MyMovieFanartView(context).apply {
-//        layoutParams = FrameLayout.LayoutParams(0, MATCH_PARENT)
-//        bind(item, clickListener)
-//      }
-//      val layoutParams = GridLayout.LayoutParams().apply {
-//        width = 0
-//        height = itemHeight
-//        columnSpec = GridLayout.spec(index % 2, 1F)
-//        setMargins(itemMargin, itemMargin, itemMargin, itemMargin)
-//      }
-//      followedMoviesSearchContainer.addView(view, layoutParams)
+      val view = MyMovieFanartView(context).apply {
+        layoutParams = FrameLayout.LayoutParams(0, MATCH_PARENT)
+        bind(item, clickListener)
+      }
+      val layoutParams = GridLayout.LayoutParams().apply {
+        width = 0
+        height = itemHeight
+        columnSpec = GridLayout.spec(index % 2, 1F)
+        setMargins(itemMargin, itemMargin, itemMargin, itemMargin)
+      }
+      followedMoviesSearchContainer.addView(view, layoutParams)
     }
   }
 
@@ -272,6 +285,7 @@ class FollowedMoviesFragment :
   override fun onTabReselected() {
     followedMoviesSearchView.translationY = 0F
     followedMoviesTabs.translationY = 0F
+    followedMoviesModeTabs.translationY = 0F
     followedMoviesSortIcon.translationY = 0F
     followedMoviesPager.nextPage()
     childFragmentManager.fragments.forEach {
@@ -299,6 +313,7 @@ class FollowedMoviesFragment :
       if (followedMoviesTabs.translationY != 0F) {
         followedMoviesSearchView.animate().translationY(0F).setDuration(225L).start()
         followedMoviesTabs.animate().translationY(0F).setDuration(225L).start()
+        followedMoviesModeTabs.animate().translationY(0F).setDuration(225L).start()
         followedMoviesSortIcon.animate().translationY(0F).setDuration(225L).start()
         requireView().postDelayed(
           {

@@ -21,6 +21,7 @@ class MovieDetailsActorsCase @Inject constructor(
   suspend fun loadActors(movie: Movie): List<Actor> {
     val traktId = movie.ids.trakt.id
     val tmdbId = movie.ids.tmdb.id
+    if (tmdbId == -1L) return emptyList()
 
     val localActors = database.actorsDao().getAllByMovie(tmdbId)
     if (localActors.isNotEmpty() && nowUtcMillis() - localActors[0].updatedAt < ACTORS_CACHE_DURATION) {

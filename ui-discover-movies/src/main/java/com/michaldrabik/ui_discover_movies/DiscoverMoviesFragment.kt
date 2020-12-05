@@ -106,7 +106,7 @@ class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fr
     discoverMoviesRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.systemWindowInsetTop
       discoverMoviesRecycler
-        .updatePadding(top = statusBarSize + dimenToPx(R.dimen.discoverMoviesRecyclerPadding))
+        .updatePadding(top = statusBarSize + dimenToPx(R.dimen.discoverRecyclerPadding))
       (discoverMoviesSearchView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
       (discoverMoviesFiltersView.layoutParams as ViewGroup.MarginLayoutParams)

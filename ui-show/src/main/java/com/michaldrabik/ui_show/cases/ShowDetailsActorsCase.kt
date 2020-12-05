@@ -21,7 +21,10 @@ class ShowDetailsActorsCase @Inject constructor(
 ) {
 
   suspend fun loadActors(show: Show): List<Actor> {
-    val localActors = database.actorsDao().getAllByShow(show.ids.tvdb.id)
+    val tvdbId = show.ids.tvdb.id
+    if (tvdbId == -1L) return emptyList()
+
+    val localActors = database.actorsDao().getAllByShow(tvdbId)
     if (localActors.isNotEmpty() && nowUtcMillis() - localActors[0].updatedAt < ACTORS_CACHE_DURATION) {
       return localActors
         .sortedWith(compareBy({ it.image.isBlank() }, { it.sortOrder }))
@@ -32,7 +35,7 @@ class ShowDetailsActorsCase @Inject constructor(
     val token = userTvdbManager.getToken()
 
     val remoteTraktActors = cloud.traktApi.fetchShowActors(show.ids.trakt.id)
-    val remoteTmdbActors = cloud.tvdbApi.fetchActors(token, show.ids.tvdb.id)
+    val remoteTvdbActors = cloud.tvdbApi.fetchActors(token, tvdbId)
       .asSequence()
       .distinctBy { (it.name + it.role).toLowerCase(ENGLISH) }
       .sortedWith(compareBy({ it.image.isNullOrBlank() }, { it.sortOrder }))
@@ -44,7 +47,7 @@ class ShowDetailsActorsCase @Inject constructor(
       }
       .toList()
 
-    database.actorsDao().replaceForShow(remoteTmdbActors.map { mappers.actor.toDatabase(it) }, show.ids.tvdb.id)
-    return remoteTmdbActors
+    database.actorsDao().replaceForShow(remoteTvdbActors.map { mappers.actor.toDatabase(it) }, tvdbId)
+    return remoteTvdbActors
   }
 }

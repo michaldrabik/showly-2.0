@@ -16,7 +16,7 @@
     android:gravity="center"
     android:text="@string/textShows"
     android:textColor="?android:attr/textColorPrimary"
-    android:textSize="22sp"
+    android:textSize="24sp"
     android:textStyle="bold"
     />
 
@@ -29,7 +29,7 @@
     android:gravity="center"
     android:text="@string/textMovies"
     android:textColor="?android:attr/textColorPrimary"
-    android:textSize="22sp"
+    android:textSize="24sp"
     android:textStyle="bold"
     />
 

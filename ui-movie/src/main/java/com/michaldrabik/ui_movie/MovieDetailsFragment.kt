@@ -359,7 +359,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun renderGenres(genres: List<String>) =
     genres
-      .take(2)
+      .take(3)
       .mapNotNull { Genre.fromSlug(it) }
       .joinToString(", ") { getString(it.displayName) }
 
