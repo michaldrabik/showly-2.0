@@ -40,7 +40,7 @@
     <TextView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="@string/textWatchlistEmpty"
+      android:text="@string/textProgressEmpty"
       android:textColor="@color/colorGrayLight"
       android:textSize="14sp"
       />

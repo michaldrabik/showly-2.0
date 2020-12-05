@@ -9,7 +9,7 @@
   <string name="textDiscoverShows">Odkrywaj Seriale</string>
   <string name="textEpisodeInfo">Szczegóły</string>
   <string name="textTraktSynchronize">Import z Trakt.tv</string>
-  <string name="textWatchlistEmpty">Twój <b>Progres</b> jest obecnie pusty.\n\nDodaj nowe seriale w zakładce <b>Odkrywaj</b> lub zaimportuj swoją kolekcję z Trakt.tv.</string>
+  <string name="textProgressEmpty">Twój <b>Progres</b> jest obecnie pusty.\n\nDodaj nowe seriale w zakładce <b>Odkrywaj</b> lub zaimportuj swoją kolekcję z Trakt.tv.</string>
   <string name="textNewSeason">Premiera Sezonu</string>
 
   <string name="textWatchlistToday">Dzisiaj</string>
