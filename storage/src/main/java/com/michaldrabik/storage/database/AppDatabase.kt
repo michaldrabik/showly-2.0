@@ -12,6 +12,7 @@ import com.michaldrabik.storage.database.dao.EpisodesSyncLogDao
 import com.michaldrabik.storage.database.dao.MovieImagesDao
 import com.michaldrabik.storage.database.dao.MovieTranslationsDao
 import com.michaldrabik.storage.database.dao.MoviesDao
+import com.michaldrabik.storage.database.dao.MoviesSyncLogDao
 import com.michaldrabik.storage.database.dao.MyMoviesDao
 import com.michaldrabik.storage.database.dao.MyShowsDao
 import com.michaldrabik.storage.database.dao.RecentSearchDao
@@ -39,6 +40,7 @@ import com.michaldrabik.storage.database.model.EpisodesSyncLog
 import com.michaldrabik.storage.database.model.Movie
 import com.michaldrabik.storage.database.model.MovieImage
 import com.michaldrabik.storage.database.model.MovieTranslation
+import com.michaldrabik.storage.database.model.MoviesSyncLog
 import com.michaldrabik.storage.database.model.MyMovie
 import com.michaldrabik.storage.database.model.MyShow
 import com.michaldrabik.storage.database.model.RecentSearch
@@ -79,6 +81,7 @@ import com.michaldrabik.storage.database.model.WatchlistShow
     Settings::class,
     RecentSearch::class,
     EpisodesSyncLog::class,
+    MoviesSyncLog::class,
     TranslationsSyncLog::class,
     TranslationsMoviesSyncLog::class,
     TraktSyncQueue::class,
@@ -127,6 +130,8 @@ abstract class AppDatabase : RoomDatabase() {
   abstract fun actorsDao(): ActorsDao
 
   abstract fun settingsDao(): SettingsDao
+
+  abstract fun moviesSyncLogDao(): MoviesSyncLogDao
 
   abstract fun episodesSyncLogDao(): EpisodesSyncLogDao
 

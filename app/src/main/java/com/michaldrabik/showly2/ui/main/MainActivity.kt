@@ -20,13 +20,13 @@ import com.michaldrabik.showly2.ui.DiActivity
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.ui_base.Analytics
-import com.michaldrabik.ui_base.common.OnEpisodesSyncedListener
+import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnTranslationsSyncListener
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventObserver
-import com.michaldrabik.ui_base.events.ShowsSyncComplete
+import com.michaldrabik.ui_base.events.ShowsMoviesSyncComplete
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.events.TraktSyncProgress
 import com.michaldrabik.ui_base.events.TranslationsSyncProgress
@@ -295,8 +295,8 @@ class MainActivity :
   override fun onNewEvent(event: Event) {
     runOnUiThread {
       when (event) {
-        is ShowsSyncComplete -> {
-          doForFragments { (it as? OnEpisodesSyncedListener)?.onEpisodesSyncFinished() }
+        is ShowsMoviesSyncComplete -> {
+          doForFragments { (it as? OnShowsMoviesSyncedListener)?.onShowsMoviesSyncFinished() }
           viewModel.refreshAnnouncements(applicationContext)
         }
         is TranslationsSyncProgress -> {

@@ -12,8 +12,8 @@ import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
-import com.michaldrabik.ui_base.common.OnEpisodesSyncedListener
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnTranslationsSyncListener
@@ -42,7 +42,7 @@ import kotlinx.android.synthetic.main.fragment_progress_movies.*
 
 class ProgressMoviesFragment :
   BaseFragment<ProgressMoviesViewModel>(R.layout.fragment_progress_movies),
-  OnEpisodesSyncedListener,
+  OnShowsMoviesSyncedListener,
   OnTabReselectedListener,
   OnTraktSyncListener,
   OnTranslationsSyncListener {
@@ -209,7 +209,7 @@ class ProgressMoviesFragment :
     if (showNavigation) showNavigation()
   }
 
-  override fun onEpisodesSyncFinished() = viewModel.loadProgress()
+  override fun onShowsMoviesSyncFinished() = viewModel.loadProgress()
 
   override fun onTraktSyncProgress() = viewModel.loadProgress()
 

@@ -5,6 +5,7 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.MoviesSyncLog
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_repository.mappers.Mappers
@@ -23,6 +24,7 @@ class MovieDetailsRepository @Inject constructor(
       val remote = cloud.traktApi.fetchMovie(idTrakt.id)
       val movie = mappers.movie.fromNetwork(remote)
       database.moviesDao().upsert(listOf(mappers.movie.toDatabase(movie)))
+      database.moviesSyncLogDao().upsert(MoviesSyncLog(movie.traktId, nowUtcMillis()))
       return movie
     }
     return mappers.movie.fromDatabase(local)

@@ -4,10 +4,10 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 
-class ShowsSyncActivityCallbacks : Application.ActivityLifecycleCallbacks {
+class ShowsMoviesSyncActivityCallbacks : Application.ActivityLifecycleCallbacks {
 
   override fun onActivityStarted(activity: Activity) {
-    ShowsSyncService.initialize(activity.applicationContext)
+    ShowsMoviesSyncService.initialize(activity.applicationContext)
     TranslationsSyncService.initialize(activity.applicationContext)
   }
 

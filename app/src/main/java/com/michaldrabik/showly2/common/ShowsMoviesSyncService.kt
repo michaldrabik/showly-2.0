@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.michaldrabik.showly2.common.movies.MoviesSyncRunner
+import com.michaldrabik.showly2.common.shows.ShowsSyncRunner
 import com.michaldrabik.showly2.serviceComponent
 import com.michaldrabik.ui_base.events.EventsManager
-import com.michaldrabik.ui_base.events.ShowsSyncComplete
+import com.michaldrabik.ui_base.events.ShowsMoviesSyncComplete
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -15,36 +17,46 @@ import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import javax.inject.Inject
 
-class ShowsSyncService : JobIntentService(), CoroutineScope {
+class ShowsMoviesSyncService : JobIntentService(), CoroutineScope {
 
   companion object {
     private const val JOB_ID = 999
 
     fun initialize(context: Context) {
-      enqueueWork(context, ShowsSyncService::class.java, JOB_ID, Intent())
+      enqueueWork(context, ShowsMoviesSyncService::class.java, JOB_ID, Intent())
     }
   }
 
   override val coroutineContext = Job() + Dispatchers.Main
 
-  @Inject
-  lateinit var showsSyncRunner: ShowsSyncRunner
+  @Inject lateinit var showsSyncRunner: ShowsSyncRunner
+  @Inject lateinit var moviesSyncRunner: MoviesSyncRunner
 
   override fun onHandleWork(intent: Intent) {
     Timber.d("Sync service initialized")
     serviceComponent().inject(this)
-    val syncCount = runBlocking {
+    var syncCount = 0
+    runBlocking {
       try {
-        showsSyncRunner.run()
+        syncCount += showsSyncRunner.run()
       } catch (t: Throwable) {
         Timber.e(t.toString())
-        val exception = Throwable(ShowsSyncService::class.simpleName, t)
+        val exception = Throwable(ShowsMoviesSyncService::class.simpleName, t)
         FirebaseCrashlytics.getInstance().recordException(exception)
-        0
+      }
+
+      try {
+        syncCount += moviesSyncRunner.run()
+      } catch (t: Throwable) {
+        Timber.e(t.toString())
+        val exception = Throwable(ShowsMoviesSyncService::class.simpleName, t)
+        FirebaseCrashlytics.getInstance().recordException(exception)
       }
     }
 
-    if (syncCount > 0) EventsManager.sendEvent(ShowsSyncComplete)
+    if (syncCount > 0) {
+      EventsManager.sendEvent(ShowsMoviesSyncComplete)
+    }
   }
 
   override fun onDestroy() {

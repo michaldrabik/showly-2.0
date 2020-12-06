@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.common
+package com.michaldrabik.showly2.common.shows
 
 import com.michaldrabik.common.Config.SHOW_SYNC_COOLDOWN
 import com.michaldrabik.common.di.AppScope
@@ -32,7 +32,7 @@ class ShowsSyncRunner @Inject constructor(
   }
 
   suspend fun run(): Int {
-    Timber.i("Sync initialized.")
+    Timber.i("Shows sync initialized.")
 
     val watchlistShows = showsRepository.watchlistShows.loadAll()
     val watchlistShowsIds = watchlistShows.map { it.traktId }

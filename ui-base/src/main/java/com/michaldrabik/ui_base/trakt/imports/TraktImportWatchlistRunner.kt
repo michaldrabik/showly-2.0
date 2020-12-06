@@ -97,7 +97,7 @@ class TraktImportWatchlistRunner @Inject constructor(
       val language = settingsRepository.getLanguage()
       if (language != Config.DEFAULT_LANGUAGE) {
         Timber.d("Fetching \'${showUi.title}\' translation...")
-        translationsRepository.updateLocalShowTranslation(showUi, language)
+        translationsRepository.updateLocalTranslation(showUi, language)
       }
     } catch (error: Throwable) {
       Timber.w("Processing \'${showUi.title}\' translation failed. Skipping translation...")

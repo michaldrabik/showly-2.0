@@ -1,7 +1,9 @@
 package com.michaldrabik.common
 
 import org.threeten.bp.format.DateTimeFormatter
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeUnit.DAYS
+import java.util.concurrent.TimeUnit.HOURS
+import java.util.concurrent.TimeUnit.MINUTES
 
 object Config {
   const val TVDB_IMAGE_BASE_BANNERS_URL = "https://artworks.thetvdb.com/banners/"
@@ -29,18 +31,21 @@ object Config {
   const val DEFAULT_LANGUAGE = "en"
 
   val MY_SHOWS_RECENTS_OPTIONS = arrayOf(2, 4, 6, 8)
-  val DISCOVER_SHOWS_CACHE_DURATION by lazy { TimeUnit.HOURS.toMillis(12) }
-  val DISCOVER_MOVIES_CACHE_DURATION by lazy { TimeUnit.HOURS.toMillis(12) }
-  val RELATED_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(7) }
-  val SHOW_DETAILS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(3) }
-  val MOVIE_DETAILS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(3) }
-  val ACTORS_CACHE_DURATION by lazy { TimeUnit.DAYS.toMillis(3) }
-  val NEW_BADGE_DURATION by lazy { TimeUnit.HOURS.toMillis(30) }
+  val DISCOVER_SHOWS_CACHE_DURATION by lazy { HOURS.toMillis(12) }
+  val DISCOVER_MOVIES_CACHE_DURATION by lazy { HOURS.toMillis(12) }
+  val RELATED_CACHE_DURATION by lazy { DAYS.toMillis(7) }
+  val SHOW_DETAILS_CACHE_DURATION by lazy { DAYS.toMillis(3) }
+  val MOVIE_DETAILS_CACHE_DURATION by lazy { DAYS.toMillis(3) }
+  val ACTORS_CACHE_DURATION by lazy { DAYS.toMillis(3) }
+  val NEW_BADGE_DURATION by lazy { HOURS.toMillis(30) }
   val SHOW_SYNC_COOLDOWN by lazy {
-    if (BuildConfig.DEBUG) TimeUnit.MINUTES.toMillis(5) else TimeUnit.HOURS.toMillis(8)
+    if (BuildConfig.DEBUG) MINUTES.toMillis(5) else HOURS.toMillis(8)
+  }
+  val MOVIE_SYNC_COOLDOWN by lazy {
+    if (BuildConfig.DEBUG) MINUTES.toMillis(5) else DAYS.toMillis(3)
   }
   val TRANSLATION_SYNC_COOLDOWN by lazy {
-    if (BuildConfig.DEBUG) TimeUnit.MINUTES.toMillis(5) else TimeUnit.DAYS.toMillis(3)
+    if (BuildConfig.DEBUG) MINUTES.toMillis(5) else DAYS.toMillis(3)
   }
 
   val DISPLAY_DATE_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, HH:mm") }

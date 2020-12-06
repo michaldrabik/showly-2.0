@@ -236,6 +236,12 @@ object Migrations {
           "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
       )
       database.execSQL("CREATE INDEX index_movies_see_later_id_trakt ON movies_see_later(id_trakt)")
+
+      database.execSQL(
+        "CREATE TABLE IF NOT EXISTS `sync_movies_log` (" +
+          "`id_movie_trakt` INTEGER PRIMARY KEY NOT NULL, " +
+          "`synced_at` INTEGER NOT NULL DEFAULT 0)"
+      )
     }
   }
 
