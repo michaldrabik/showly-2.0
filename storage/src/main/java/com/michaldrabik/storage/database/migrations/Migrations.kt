@@ -239,7 +239,7 @@ object Migrations {
 
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `sync_movies_log` (" +
-          "`id_movie_trakt` INTEGER PRIMARY KEY NOT NULL, " +
+          "`id_movie_trakt` INTEGER PRIMARY KEY NOT NULL DEFAULT -1, " +
           "`synced_at` INTEGER NOT NULL DEFAULT 0)"
       )
     }
