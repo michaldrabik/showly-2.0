@@ -29,9 +29,11 @@ class TraktExportWatchlistRunner @Inject constructor(
     val authToken = checkAuthorization()
 
     resetRetries()
+    delay(1500)
     runShows(authToken)
 
     resetRetries()
+    delay(1500)
     runMovies(authToken)
 
     isRunning = false
@@ -41,7 +43,6 @@ class TraktExportWatchlistRunner @Inject constructor(
 
   private suspend fun runShows(authToken: TraktAuthToken) {
     try {
-      delay(1500)
       exportShowsWatchlist(authToken)
     } catch (error: Throwable) {
       if (retryCount < MAX_RETRY_COUNT) {
@@ -61,7 +62,6 @@ class TraktExportWatchlistRunner @Inject constructor(
       Timber.d("Movies are disabled. Exiting...")
     }
     try {
-      delay(1500)
       exportMoviesWatchlist(authToken)
     } catch (error: Throwable) {
       if (retryCount < MAX_RETRY_COUNT) {
