@@ -164,7 +164,9 @@ class MainActivity :
       }
 
       navigationHost.findNavController().run {
-        if (currentDestination?.id == R.id.progressFragment) {
+        if (currentDestination?.id == R.id.progressFragment
+          || currentDestination?.id == R.id.progressMoviesFragment
+        ) {
           remove()
           super.onBackPressed()
         }
@@ -341,17 +343,20 @@ class MainActivity :
       .show()
   }
 
-  private fun getMenuDiscoverAction() =
-    if (mode == MOVIES) R.id.actionNavigateDiscoverMoviesFragment
-    else R.id.actionNavigateDiscoverFragment
+  private fun getMenuDiscoverAction() = when (mode) {
+    SHOWS -> R.id.actionNavigateDiscoverFragment
+    MOVIES -> R.id.actionNavigateDiscoverMoviesFragment
+  }
 
-  private fun getMenuCollectionAction() =
-    if (mode == MOVIES) R.id.actionNavigateFollowedMoviesFragment
-    else R.id.actionNavigateFollowedShowsFragment
+  private fun getMenuCollectionAction() = when (mode) {
+    SHOWS -> R.id.actionNavigateFollowedShowsFragment
+    MOVIES -> R.id.actionNavigateFollowedMoviesFragment
+  }
 
-  private fun getMenuProgressAction() =
-    if (mode == MOVIES) R.id.actionNavigateProgressMoviesFragment
-    else R.id.actionNavigateProgressFragment
+  private fun getMenuProgressAction() = when (mode) {
+    SHOWS -> R.id.actionNavigateProgressFragment
+    MOVIES -> R.id.actionNavigateProgressMoviesFragment
+  }
 
   override fun provideSnackbarLayout(): ViewGroup = snackBarHost
 }
