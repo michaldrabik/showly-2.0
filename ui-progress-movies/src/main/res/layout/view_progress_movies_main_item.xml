@@ -91,7 +91,7 @@
       android:maxLines="2"
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorSecondary"
-      android:textSize="14sp"
+      android:textSize="12sp"
       app:layout_constraintBottom_toTopOf="@id/progressMovieItemButtons"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0"

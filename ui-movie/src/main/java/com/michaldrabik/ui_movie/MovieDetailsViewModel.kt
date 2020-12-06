@@ -70,7 +70,7 @@ class MovieDetailsViewModel @Inject constructor(
           withAnimation = false
         )
 
-        progressJob.cancel()
+          progressJob.cancel()
         uiState = MovieDetailsUiModel(
           movie = movie,
           movieLoading = false,

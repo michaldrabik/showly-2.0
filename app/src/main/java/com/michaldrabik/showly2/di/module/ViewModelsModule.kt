@@ -16,6 +16,9 @@ import com.michaldrabik.ui_my_shows.watchlist.WatchlistViewModel
 import com.michaldrabik.ui_progress.calendar.ProgressCalendarViewModel
 import com.michaldrabik.ui_progress.main.ProgressViewModel
 import com.michaldrabik.ui_progress.progress.ProgressMainViewModel
+import com.michaldrabik.ui_progress_movies.calendar.ProgressMoviesCalendarViewModel
+import com.michaldrabik.ui_progress_movies.main.ProgressMoviesViewModel
+import com.michaldrabik.ui_progress_movies.progress.ProgressMoviesMainViewModel
 import com.michaldrabik.ui_search.SearchViewModel
 import com.michaldrabik.ui_settings.SettingsViewModel
 import com.michaldrabik.ui_show.ShowDetailsViewModel
@@ -115,6 +118,21 @@ abstract class ViewModelsModule {
   @IntoMap
   @ViewModelKey(ProgressCalendarViewModel::class)
   abstract fun bindProgressCalendarViewModel(viewModel: ProgressCalendarViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(ProgressMoviesViewModel::class)
+  abstract fun bindProgressMoviesViewModel(viewModel: ProgressMoviesViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(ProgressMoviesMainViewModel::class)
+  abstract fun bindProgressMoviesMainViewModel(viewModel: ProgressMoviesMainViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(ProgressMoviesCalendarViewModel::class)
+  abstract fun bindProgressMoviesCalendarViewModel(viewModel: ProgressMoviesCalendarViewModel): ViewModel
 
   @Binds
   @IntoMap

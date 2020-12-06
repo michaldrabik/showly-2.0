@@ -32,9 +32,8 @@ import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
+import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
-import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.R
@@ -139,24 +138,24 @@ class ProgressMoviesFragment :
     saveUiTranslations()
     progressMoviesRoot.fadeOut {
       val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, item.movie.ids.trakt.id) }
-      navigateTo(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
+      navigateTo(R.id.actionProgressMoviesFragmentToMovieDetailsFragment, bundle)
     }
   }
 
   private fun openSettings() {
     hideNavigation()
-    navigateTo(R.id.actionProgressFragmentToSettingsFragment)
+    navigateTo(R.id.actionProgressMoviesFragmentToSettingsFragment)
     saveUiTranslations()
   }
 
   fun openTraktSync() {
-    navigateTo(R.id.actionProgressFragmentToTraktSyncFragment)
+    navigateTo(R.id.actionProgressMoviesFragmentToTraktSyncFragment)
     hideNavigation()
     saveUiTranslations()
   }
 
   private fun openSortOrderDialog(order: SortOrder) {
-    val options = listOf(NAME, RECENTLY_WATCHED, EPISODES_LEFT)
+    val options = listOf(NAME, DATE_ADDED)
     val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
 
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)

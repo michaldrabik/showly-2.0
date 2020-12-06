@@ -49,6 +49,9 @@
   <string name="textTomorrow">Tomorrow</string>
   <string name="textThisWeek">This Week</string>
   <string name="textNextWeek">Next Week</string>
+  <string name="textNextMonth">Next Month</string>
+  <string name="textThisYear">This Year</string>
+  <string name="textNextYear">Next Year</string>
   <string name="textLater">Later</string>
 
   <string name="textNewEpisodeAvailable">New episode is available now!</string>

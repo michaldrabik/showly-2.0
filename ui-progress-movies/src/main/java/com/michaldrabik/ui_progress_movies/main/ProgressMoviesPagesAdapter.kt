@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.michaldrabik.ui_progress_movies.R
+import com.michaldrabik.ui_progress_movies.calendar.ProgressMoviesCalendarFragment
+import com.michaldrabik.ui_progress_movies.progress.ProgressMoviesMainFragment
 
 class ProgressMoviesPagesAdapter(
   fragManager: FragmentManager,
@@ -18,8 +20,8 @@ class ProgressMoviesPagesAdapter(
   override fun getCount() = PAGES_COUNT
 
   override fun getItem(position: Int): Fragment = when (position) {
-//    0 -> ProgressMainFragment()
-//    1 -> ProgressCalendarFragment()
+    0 -> ProgressMoviesMainFragment()
+    1 -> ProgressMoviesCalendarFragment()
     else -> throw IllegalStateException("Unknown position")
   }
 

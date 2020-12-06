@@ -6,8 +6,8 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
-import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_repository.PinnedItemsRepository
@@ -54,7 +54,7 @@ class ProgressMoviesLoadItemsCase @Inject constructor(
       .sortedWith(
         when (sortOrder) {
           NAME -> compareBy { it.movie.title.toUpperCase(ROOT) }
-          RECENTLY_WATCHED -> compareByDescending { it.movie.updatedAt }
+          DATE_ADDED -> compareByDescending { it.movie.updatedAt }
           else -> throw IllegalStateException("Invalid sort order")
         }
       )

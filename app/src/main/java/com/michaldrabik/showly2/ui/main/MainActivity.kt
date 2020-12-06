@@ -144,7 +144,7 @@ class MainActivity :
       }
 
       val target = when (item.itemId) {
-        R.id.menuProgress -> R.id.actionNavigateProgressFragment
+        R.id.menuProgress -> getMenuProgressAction()
         R.id.menuDiscover -> getMenuDiscoverAction()
         R.id.menuCollection -> getMenuCollectionAction()
         else -> throw IllegalStateException("Invalid menu item.")
@@ -197,14 +197,6 @@ class MainActivity :
 
   override fun isTipShown(tip: Tip) = viewModel.isTipShown(tip)
 
-  private fun getMenuDiscoverAction() =
-    if (mode == MOVIES) R.id.actionNavigateDiscoverMoviesFragment
-    else R.id.actionNavigateDiscoverFragment
-
-  private fun getMenuCollectionAction() =
-    if (mode == MOVIES) R.id.actionNavigateFollowedMoviesFragment
-    else R.id.actionNavigateFollowedShowsFragment
-
   override fun hideNavigation(animate: Boolean) {
     bottomNavigationView.run {
       isEnabled = false
@@ -256,6 +248,10 @@ class MainActivity :
             }
             R.id.menuCollection -> {
               val target = getMenuCollectionAction()
+              navigationHost.findNavController().navigate(target)
+            }
+            R.id.menuProgress -> {
+              val target = getMenuProgressAction()
               navigationHost.findNavController().navigate(target)
             }
           }
@@ -344,6 +340,18 @@ class MainActivity :
       .setPositiveButton(R.string.textClose) { _, _ -> }
       .show()
   }
+
+  private fun getMenuDiscoverAction() =
+    if (mode == MOVIES) R.id.actionNavigateDiscoverMoviesFragment
+    else R.id.actionNavigateDiscoverFragment
+
+  private fun getMenuCollectionAction() =
+    if (mode == MOVIES) R.id.actionNavigateFollowedMoviesFragment
+    else R.id.actionNavigateFollowedShowsFragment
+
+  private fun getMenuProgressAction() =
+    if (mode == MOVIES) R.id.actionNavigateProgressMoviesFragment
+    else R.id.actionNavigateProgressFragment
 
   override fun provideSnackbarLayout(): ViewGroup = snackBarHost
 }
