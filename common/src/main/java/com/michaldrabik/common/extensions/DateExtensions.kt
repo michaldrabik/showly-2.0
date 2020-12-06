@@ -8,6 +8,7 @@ import org.threeten.bp.ZoneOffset
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.temporal.Temporal
+import java.util.Locale
 import java.util.Locale.ROOT
 
 fun nowUtc(): ZonedDateTime = ZonedDateTime.now(ZoneOffset.UTC)
@@ -24,8 +25,14 @@ fun ZonedDateTime.toMillis() = this.toInstant().toEpochMilli()
 
 fun ZonedDateTime.toLocalTimeZone(): ZonedDateTime = this.withZoneSameInstant(ZoneId.systemDefault())
 
-fun Temporal.toDisplayString(): String = Config.DISPLAY_DATE_FORMAT.format(this).capitalize(ROOT)
+fun Temporal.toDisplayString(): String = Config.DISPLAY_DATE_FORMAT.format(this).capitalize(ROOT).capitalizeWords()
 
-fun Temporal.toDayDisplayString(): String = Config.DISPLAY_DATE_DAY_FORMAT.format(this)
+fun Temporal.toDayDisplayString(): String = Config.DISPLAY_DATE_DAY_FORMAT.format(this).capitalizeWords()
 
-fun Temporal.toFullDayDisplayString(): String = Config.DISPLAY_DATE_FULL_DAY_FORMAT.format(this)
+fun Temporal.toFullDayDisplayString(): String = Config.DISPLAY_DATE_FULL_DAY_FORMAT.format(this).capitalizeWords()
+
+private fun String.capitalizeWords() = this
+  .split(" ")
+  .joinToString(separator = " ") {
+    it.capitalize(Locale.getDefault())
+  }

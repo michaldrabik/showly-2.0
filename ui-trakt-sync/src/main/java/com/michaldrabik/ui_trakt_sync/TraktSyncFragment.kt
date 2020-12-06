@@ -12,6 +12,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.toDisplayString
 import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.network.Config
@@ -141,7 +142,7 @@ class TraktSyncFragment :
       traktSyncSchedule?.let { traktSyncScheduleButton.setText(it.buttonStringRes) }
       lastTraktSyncTimestamp?.let {
         if (it != 0L) {
-          val date = com.michaldrabik.common.extensions.dateFromMillis(it).toLocalTimeZone().toDisplayString()
+          val date = dateFromMillis(it).toLocalTimeZone().toDisplayString()
           traktLastSyncTimestamp.text = getString(R.string.textTraktSyncLastTimestamp, date)
         }
       }
