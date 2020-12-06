@@ -54,7 +54,7 @@ class TraktExportWatchedRunner @Inject constructor(
   private suspend fun exportWatched(token: TraktAuthToken) {
     Timber.d("Exporting watched...")
 
-    val remoteWatched = cloud.traktApi.fetchSyncWatched(token.token)
+    val remoteWatched = cloud.traktApi.fetchSyncWatchedShows(token.token)
       .filter { it.show != null }
     val localMyShows = database.myShowsDao().getAll()
     val localEpisodes = batchEpisodes(localMyShows.map { it.idTrakt })

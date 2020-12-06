@@ -111,6 +111,7 @@ class FollowedMoviesFragment :
     }
 
     followedMoviesTabs.translationY = viewModel.tabsTranslation
+    followedMoviesModeTabs.translationY = viewModel.tabsTranslation
     followedMoviesSearchView.translationY = viewModel.searchViewTranslation
     followedMoviesSortIcon.translationY = viewModel.tabsTranslation
   }

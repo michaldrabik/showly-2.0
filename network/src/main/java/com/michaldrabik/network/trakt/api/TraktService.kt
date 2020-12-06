@@ -156,14 +156,24 @@ interface TraktService {
     @Query("limit") pageLimit: Int
   ): List<HiddenItem>
 
-  @GET("sync/watched/shows")
+  @GET("users/hidden/progress_watched?type=movie")
+  suspend fun fetchHiddenMovies(
+    @Header("Authorization") authToken: String,
+    @Query("limit") pageLimit: Int
+  ): List<HiddenItem>
+
+  @GET("sync/watched/{type}")
   suspend fun fetchSyncWatched(
     @Header("Authorization") authToken: String,
+    @Path("type") type: String,
     @Query("extended") extended: String?
   ): List<SyncItem>
 
-  @GET("sync/watchlist?extended=full")
-  suspend fun fetchSyncWatchlist(@Header("Authorization") authToken: String): List<SyncItem>
+  @GET("sync/watchlist/{type}?extended=full")
+  suspend fun fetchSyncWatchlist(
+    @Header("Authorization") authToken: String,
+    @Path("type") type: String
+  ): List<SyncItem>
 
   @POST("sync/watchlist")
   suspend fun postSyncWatchlist(

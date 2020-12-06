@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_base.trakt
 
-import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.error.TraktAuthError
 import com.michaldrabik.ui_repository.UserTraktManager
 
@@ -15,7 +14,7 @@ abstract class TraktSyncRunner(
 
   var isRunning = false
   var retryCount = 0
-  var progressListener: ((Show, Int, Int) -> Unit)? = null
+  var progressListener: ((String, Int, Int) -> Unit)? = null
 
   abstract suspend fun run(): Int
 

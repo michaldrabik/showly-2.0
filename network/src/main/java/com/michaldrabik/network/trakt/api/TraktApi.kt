@@ -116,11 +116,20 @@ class TraktApi(private val service: TraktService) {
   suspend fun fetchHiddenShows(token: String) =
     service.fetchHiddenShows("Bearer $token", pageLimit = 100)
 
-  suspend fun fetchSyncWatched(token: String, extended: String? = null) =
-    service.fetchSyncWatched("Bearer $token", extended)
+  suspend fun fetchHiddenMovies(token: String) =
+    service.fetchHiddenMovies("Bearer $token", pageLimit = 100)
 
-  suspend fun fetchSyncWatchlist(token: String) =
-    service.fetchSyncWatchlist("Bearer $token")
+  suspend fun fetchSyncWatchedShows(token: String, extended: String? = null) =
+    service.fetchSyncWatched("Bearer $token", "shows", extended)
+
+  suspend fun fetchSyncWatchedMovies(token: String, extended: String? = null) =
+    service.fetchSyncWatched("Bearer $token", "movies", extended)
+
+  suspend fun fetchSyncShowsWatchlist(token: String) =
+    service.fetchSyncWatchlist("Bearer $token", "shows")
+
+  suspend fun fetchSyncMoviesWatchlist(token: String) =
+    service.fetchSyncWatchlist("Bearer $token", "movies")
 
   suspend fun postSyncWatchlist(token: String, request: SyncExportRequest) =
     service.postSyncWatchlist("Bearer $token", request)

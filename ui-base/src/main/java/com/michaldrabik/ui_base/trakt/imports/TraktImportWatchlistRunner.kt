@@ -6,8 +6,10 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.WatchlistMovie
 import com.michaldrabik.storage.database.model.WatchlistShow
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
+import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TraktAuthToken
@@ -35,11 +37,32 @@ class TraktImportWatchlistRunner @Inject constructor(
     Timber.d("Checking authorization...")
     val authToken = checkAuthorization()
 
+    retryCount = 0
     try {
-      importWatchlist(authToken)
+      importShowsWatchlist(authToken)
     } catch (error: Throwable) {
       if (retryCount < MAX_RETRY_COUNT) {
-        Timber.w("importWatchlist HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        Timber.w("ImportShowsWatchlist HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        retryCount += 1
+        delay(RETRY_DELAY_MS)
+        run()
+      } else {
+        retryCount = 0
+        isRunning = false
+        throw error
+      }
+    }
+
+    retryCount = 0
+    try {
+      if (settingsRepository.isInitialized() && settingsRepository.load().moviesEnabled) {
+        importMoviesWatchlist(authToken)
+      } else {
+        Timber.d("Movies are disabled. Exiting...")
+      }
+    } catch (error: Throwable) {
+      if (retryCount < MAX_RETRY_COUNT) {
+        Timber.w("importMoviesWatchlist HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
         retryCount += 1
         delay(RETRY_DELAY_MS)
         run()
@@ -57,9 +80,9 @@ class TraktImportWatchlistRunner @Inject constructor(
     return 0
   }
 
-  private suspend fun importWatchlist(token: TraktAuthToken) {
-    Timber.d("Importing watchlist...")
-    val syncResults = cloud.traktApi.fetchSyncWatchlist(token.token)
+  private suspend fun importShowsWatchlist(token: TraktAuthToken) {
+    Timber.d("Importing shows watchlist...")
+    val syncResults = cloud.traktApi.fetchSyncShowsWatchlist(token.token)
       .filter { it.show != null }
       .distinctBy { it.show!!.ids?.trakt }
 
@@ -74,7 +97,7 @@ class TraktImportWatchlistRunner @Inject constructor(
         delay(200)
         Timber.d("Processing \'${result.show!!.title}\'...")
         val showUi = mappers.show.fromNetwork(result.show!!)
-        progressListener?.invoke(showUi, index, syncResults.size)
+        progressListener?.invoke(showUi.title, index, syncResults.size)
         try {
           val showId = result.show!!.ids?.trakt ?: -1
           database.withTransaction {
@@ -92,6 +115,40 @@ class TraktImportWatchlistRunner @Inject constructor(
       }
   }
 
+  private suspend fun importMoviesWatchlist(token: TraktAuthToken) {
+    Timber.d("Importing movies watchlist...")
+    val syncResults = cloud.traktApi.fetchSyncMoviesWatchlist(token.token)
+      .filter { it.movie != null }
+      .distinctBy { it.movie!!.ids?.trakt }
+
+    val localMoviesIds =
+      database.watchlistMoviesDao().getAllTraktIds()
+        .plus(database.myMoviesDao().getAllTraktIds())
+        .distinct()
+
+    syncResults
+      .forEachIndexed { index, result ->
+        delay(200)
+        Timber.d("Processing \'${result.movie!!.title}\'...")
+        val movieUi = mappers.movie.fromNetwork(result.movie!!)
+        progressListener?.invoke(movieUi.title, index, syncResults.size)
+        try {
+          val movieId = result.movie!!.ids?.trakt ?: -1
+          database.withTransaction {
+            if (movieId !in localMoviesIds) {
+              val movie = mappers.movie.fromNetwork(result.movie!!)
+              val movieDb = mappers.movie.toDatabase(movie)
+              database.moviesDao().upsert(listOf(movieDb))
+              database.watchlistMoviesDao().insert(WatchlistMovie.fromTraktId(movieId, nowUtcMillis()))
+            }
+          }
+          updateTranslation(movieUi)
+        } catch (t: Throwable) {
+          Timber.w("Processing \'${result.movie!!.title}\' failed. Skipping...")
+        }
+      }
+  }
+
   private suspend fun updateTranslation(showUi: Show) {
     try {
       val language = settingsRepository.getLanguage()
@@ -101,6 +158,18 @@ class TraktImportWatchlistRunner @Inject constructor(
       }
     } catch (error: Throwable) {
       Timber.w("Processing \'${showUi.title}\' translation failed. Skipping translation...")
+    }
+  }
+
+  private suspend fun updateTranslation(movie: Movie) {
+    try {
+      val language = settingsRepository.getLanguage()
+      if (language != Config.DEFAULT_LANGUAGE) {
+        Timber.d("Fetching \'${movie.title}\' translation...")
+        translationsRepository.updateLocalTranslation(movie, language)
+      }
+    } catch (error: Throwable) {
+      Timber.w("Processing \'${movie.title}\' translation failed. Skipping translation...")
     }
   }
 }
