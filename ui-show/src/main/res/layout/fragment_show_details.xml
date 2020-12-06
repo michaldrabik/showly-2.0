@@ -43,6 +43,19 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
+      <ImageView
+        android:id="@+id/showDetailsPlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="?attr/colorPlaceholderBackground"
+        android:padding="70dp"
+        android:src="@drawable/ic_television"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsImageGuideline"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible"
+        />
+
       <TextView
         android:id="@+id/showDetailsTitle"
         style="@style/ImageTitle"

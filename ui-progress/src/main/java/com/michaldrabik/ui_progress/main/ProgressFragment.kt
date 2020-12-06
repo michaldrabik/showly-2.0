@@ -96,8 +96,13 @@ class ProgressFragment :
       onClick { enterSearch() }
       onSettingsClickListener = { openSettings() }
     }
+    progressPagerModeTabs.run {
+      onModeSelected = { setMode(it) }
+      animateShows()
+    }
 
     progressTabs.translationY = tabsTranslation
+    progressPagerModeTabs.translationY = tabsTranslation
     progressSearchView.translationY = searchViewTranslation
     progressSortIcon.translationY = sortIconTranslation
   }
@@ -118,6 +123,8 @@ class ProgressFragment :
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
       (progressTabs.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressSearchViewPadding))
+      (progressPagerModeTabs.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.showsMoviesTabsMargin))
       (progressSortIcon.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressSearchViewPadding))
     }
@@ -226,6 +233,7 @@ class ProgressFragment :
   override fun onTabReselected() {
     progressSearchView.translationY = 0F
     progressTabs.translationY = 0F
+    progressPagerModeTabs.translationY = 0F
     progressSortIcon.translationY = 0F
     progressPager.nextPage()
     childFragmentManager.fragments.forEach {
@@ -236,6 +244,7 @@ class ProgressFragment :
   fun resetTranslations() {
     progressSearchView.animate().translationY(0F).start()
     progressTabs.animate().translationY(0F).start()
+    progressPagerModeTabs.animate().translationY(0F).start()
     progressSortIcon.animate().translationY(0F).start()
   }
 
@@ -260,6 +269,7 @@ class ProgressFragment :
         val duration = 225L
         progressSearchView.animate().translationY(0F).setDuration(duration).start()
         progressTabs.animate().translationY(0F).setDuration(duration).start()
+        progressPagerModeTabs.animate().translationY(0F).setDuration(duration).start()
         progressSortIcon.animate().translationY(0F).setDuration(duration).start()
         requireView().postDelayed(
           {

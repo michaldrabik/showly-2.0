@@ -77,11 +77,32 @@
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorSecondary"
       android:textSize="12sp"
-      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintBottom_toTopOf="@id/progressMovieCalendarItemDate"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/progressMovieCalendarItemImage"
       app:layout_constraintTop_toBottomOf="@id/progressMovieCalendarItemTitle"
       tools:text="@tools:sample/lorem/random"
+      />
+
+    <TextView
+      android:id="@+id/progressMovieCalendarItemDate"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:background="@drawable/bg_movie_date_badge"
+      android:gravity="start|center_vertical"
+      android:paddingStart="6dp"
+      android:paddingTop="2dp"
+      android:paddingEnd="6dp"
+      android:paddingBottom="2dp"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="13sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toEndOf="@id/progressMovieCalendarItemImage"
+      app:layout_constraintTop_toBottomOf="@id/progressMovieCalendarItemSubtitle"
+      tools:text="Wednesday, 27 June 2019"
       />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

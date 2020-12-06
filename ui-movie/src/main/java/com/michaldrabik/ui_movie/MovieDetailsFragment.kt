@@ -35,7 +35,7 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
-import com.michaldrabik.common.extensions.toDayOnlyDisplayString
+import com.michaldrabik.common.extensions.toDayDisplayString
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.views.RateView
@@ -277,10 +277,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     uiModel.run {
       movie?.let { movie ->
         movieDetailsTitle.text = movie.title
-        movieDetailsDescription.setTextIfEmpty(movie.overview)
+        movieDetailsDescription.setTextIfEmpty(if (movie.overview.isNotBlank()) movie.overview else getString(R.string.textNoDescription))
         movieDetailsStatus.text = getString(movie.status.displayName)
         val releaseDate =
-          if (movie.released != null) String.format(ENGLISH, "%s", movie.released?.toDayOnlyDisplayString())
+          if (movie.released != null) String.format(ENGLISH, "%s", movie.released?.toDayDisplayString())
           else movie.year.toString()
         val country = if (movie.country.isNotBlank()) String.format(ENGLISH, "(%s)", movie.country) else ""
         movieDetailsExtraInfo.text = getString(
@@ -392,6 +392,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private fun renderImage(image: Image) {
     if (image.status == UNAVAILABLE) {
       movieDetailsImageProgress.gone()
+      movieDetailsPlaceholder.visible()
       movieDetailsImage.isClickable = false
       movieDetailsImage.isEnabled = false
       return
@@ -402,11 +403,13 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
       .withFailListener {
         movieDetailsImageProgress.gone()
+        movieDetailsPlaceholder.visible()
         movieDetailsImage.isClickable = true
         movieDetailsImage.isEnabled = true
       }
       .withSuccessListener {
         movieDetailsImageProgress.gone()
+        movieDetailsPlaceholder.gone()
       }
       .into(movieDetailsImage)
   }

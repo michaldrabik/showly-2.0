@@ -105,7 +105,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceNormal"
-      android:layout_marginTop="@dimen/spaceTiny"
+      android:layout_marginTop="@dimen/spaceSmall"
       android:layout_marginEnd="@dimen/spaceMedium"
       android:clipChildren="false"
       android:gravity="end|center_vertical"

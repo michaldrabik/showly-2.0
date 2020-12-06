@@ -31,6 +31,7 @@
     android:layout_marginStart="@dimen/spaceBig"
     android:layout_marginEnd="@dimen/spaceBig"
     android:visibility="gone"
+    tools:visibility="visible"
     />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

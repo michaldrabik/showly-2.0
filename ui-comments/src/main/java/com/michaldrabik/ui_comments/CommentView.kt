@@ -8,7 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.michaldrabik.common.extensions.toDayOnlyDisplayString
+import com.michaldrabik.common.extensions.toDayDisplayString
 import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -38,7 +38,7 @@ class CommentView : ConstraintLayout {
     commentHeader.text = context.getString(
       R.string.textCommentedOn,
       comment.user.username.capitalize(),
-      comment.createdAt?.toLocalTimeZone()?.toDayOnlyDisplayString()
+      comment.createdAt?.toLocalTimeZone()?.toDayDisplayString()
     )
     commentRating.visibleIf(comment.userRating > 0)
     commentRating.text = String.format(Locale.ENGLISH, "%d", comment.userRating)

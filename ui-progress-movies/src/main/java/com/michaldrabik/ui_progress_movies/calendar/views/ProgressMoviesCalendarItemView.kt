@@ -7,6 +7,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.extensions.toFullDayDisplayString
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
@@ -46,8 +47,16 @@ class ProgressMoviesCalendarItemView : MovieView<ProgressMovieItem> {
       else item.movieTranslation?.title?.capitalizeWords()
 
     progressMovieCalendarItemSubtitle.text =
-      if (item.movieTranslation?.overview.isNullOrBlank()) item.movie.overview
-      else item.movieTranslation?.overview?.capitalizeWords()
+      when {
+        item.movieTranslation?.overview.isNullOrBlank() -> {
+          if (item.movie.overview.isBlank()) context.getString(R.string.textNoDescription)
+          else item.movie.overview
+        }
+        else -> item.movieTranslation?.overview?.capitalizeWords()
+      }
+
+    progressMovieCalendarItemDate.text =
+      item.movie.released?.toFullDayDisplayString() ?: context.getString(R.string.textTba)
 
     loadImage(item, missingImageListener!!)
   }

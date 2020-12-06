@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="progressMoviesTabsViewTranslation">5dp</dimen>
+  <dimen name="progressMoviesTabsViewTranslation">6dp</dimen>
 </resources>

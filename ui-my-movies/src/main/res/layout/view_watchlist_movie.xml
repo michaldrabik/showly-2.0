@@ -71,13 +71,13 @@
       app:layout_constraintBottom_toTopOf="@id/watchlistMoviesDescription"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/watchlistMoviesImage"
-      app:layout_constraintTop_toBottomOf="@+id/watchlistMoviesNetwork"
+      app:layout_constraintTop_toBottomOf="@+id/watchlistMoviesYear"
       app:layout_constraintVertical_chainStyle="packed"
       tools:text="Game of Thrones"
       />
 
     <TextView
-      android:id="@+id/watchlistMoviesNetwork"
+      android:id="@+id/watchlistMoviesYear"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceMedium"
@@ -101,7 +101,7 @@
       android:layout_height="0dp"
       app:layout_constraintBottom_toTopOf="@+id/watchlistMoviesTitle"
       app:layout_constraintEnd_toStartOf="@id/watchlistMoviesRating"
-      app:layout_constraintTop_toTopOf="@id/watchlistMoviesNetwork"
+      app:layout_constraintTop_toTopOf="@id/watchlistMoviesYear"
       app:srcCompat="@drawable/ic_star"
       app:tint="?attr/colorAccent"
       />
@@ -115,7 +115,7 @@
       android:textSize="12sp"
       app:layout_constraintBottom_toTopOf="@+id/watchlistMoviesTitle"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/watchlistMoviesNetwork"
+      app:layout_constraintTop_toTopOf="@id/watchlistMoviesYear"
       tools:text="7.6"
       />
 

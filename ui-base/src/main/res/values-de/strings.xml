@@ -24,6 +24,7 @@
   <string name="textAirsNow">Jetzt live</string>
   <string name="textMinutesShort">min</string>
   <string name="textRemoveFromTrakt">Von Trakt.tv entfernen?</string>
+  <string name="textNoDescription">Übersicht nicht verfügbar.</string>
 
   <plurals name="textDaysToAir">
     <item quantity="one">Morgen verfügbar</item>

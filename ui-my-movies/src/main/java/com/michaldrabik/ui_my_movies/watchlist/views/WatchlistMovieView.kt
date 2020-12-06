@@ -7,6 +7,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.extensions.toDayDisplayString
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -47,13 +48,17 @@ class WatchlistMovieView : MovieView<WatchlistListItem> {
       else item.translation?.title?.capitalizeWords()
 
     watchlistMoviesDescription.text =
-      if (item.translation?.overview.isNullOrBlank()) item.movie.overview
-      else item.translation?.overview
+      when {
+        item.translation?.overview.isNullOrBlank() -> {
+          if (item.movie.overview.isNotBlank()) item.movie.overview
+          else context.getString(R.string.textNoDescription)
+        }
+        else -> item.translation?.overview
+      }
 
-    watchlistMoviesNetwork.text = String.format(ENGLISH, "%d", item.movie.year)
+    watchlistMoviesYear.text = item.movie.released?.toDayDisplayString() ?: String.format(ENGLISH, "%d", item.movie.year)
     watchlistMoviesRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
-    watchlistMoviesDescription.visibleIf(item.movie.overview.isNotBlank())
-    watchlistMoviesNetwork.visibleIf(item.movie.year > 0)
+    watchlistMoviesYear.visibleIf(item.movie.year > 0)
 
     loadImage(item, missingImageListener)
   }
@@ -61,7 +66,7 @@ class WatchlistMovieView : MovieView<WatchlistListItem> {
   private fun clear() {
     watchlistMoviesTitle.text = ""
     watchlistMoviesDescription.text = ""
-    watchlistMoviesNetwork.text = ""
+    watchlistMoviesYear.text = ""
     watchlistMoviesRating.text = ""
     watchlistMoviesPlaceholder.gone()
     Glide.with(this).clear(watchlistMoviesImage)

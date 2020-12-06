@@ -29,7 +29,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_marginStart="@dimen/spaceBig"
-    android:layout_marginTop="@dimen/spaceBig"
+    android:layout_marginTop="@dimen/spaceHuge"
     android:layout_marginEnd="@dimen/spaceBig"
     android:layout_marginBottom="@dimen/bottomNavigationHeight"
     android:visibility="gone"

@@ -5,6 +5,7 @@
   <dimen name="spaceMedium">12dp</dimen>
   <dimen name="spaceNormal">16dp</dimen>
   <dimen name="spaceBig">24dp</dimen>
+  <dimen name="spaceHuge">48dp</dimen>
 
   <dimen name="bottomNavigationHeight">56dp</dimen>
   <dimen name="bottomNavigationHeightPadded">64dp</dimen>

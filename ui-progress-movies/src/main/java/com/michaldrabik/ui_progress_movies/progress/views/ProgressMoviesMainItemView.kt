@@ -60,8 +60,13 @@ class ProgressMoviesMainItemView : MovieView<ProgressMovieItem> {
 
     val translationOverview = item.movieTranslation?.overview
     progressMovieItemSubtitle.text =
-      if (translationOverview.isNullOrBlank()) item.movie.overview
-      else translationOverview.capitalizeWords()
+      when {
+        translationOverview.isNullOrBlank() -> {
+          if (item.movie.overview.isBlank()) context.getString(R.string.textNoDescription)
+          else item.movie.overview
+        }
+        else -> translationOverview.capitalizeWords()
+      }
 
     progressMovieItemPin.visibleIf(item.isPinned)
 

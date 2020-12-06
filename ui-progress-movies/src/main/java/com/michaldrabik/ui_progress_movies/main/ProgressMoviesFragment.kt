@@ -92,8 +92,12 @@ class ProgressMoviesFragment :
       onClick { enterSearch() }
       onSettingsClickListener = { openSettings() }
     }
-
+    progressMoviesModeTabs.run {
+      onModeSelected = { setMode(it) }
+      animateMovies()
+    }
     progressMoviesTabs.translationY = tabsTranslation
+    progressMoviesModeTabs.translationY = tabsTranslation
     progressMoviesSearchView.translationY = searchViewTranslation
     progressMoviesSortIcon.translationY = sortIconTranslation
   }
@@ -114,6 +118,8 @@ class ProgressMoviesFragment :
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
       (progressMoviesTabs.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchViewPadding))
+      (progressMoviesModeTabs.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.showsMoviesTabsMargin))
       (progressMoviesSortIcon.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchViewPadding))
     }
@@ -212,6 +218,7 @@ class ProgressMoviesFragment :
   override fun onTabReselected() {
     progressMoviesSearchView.translationY = 0F
     progressMoviesTabs.translationY = 0F
+    progressMoviesModeTabs.translationY = 0F
     progressMoviesSortIcon.translationY = 0F
     progressMoviesPager.nextPage()
     childFragmentManager.fragments.forEach {
@@ -222,6 +229,7 @@ class ProgressMoviesFragment :
   fun resetTranslations() {
     progressMoviesSearchView.animate().translationY(0F).start()
     progressMoviesTabs.animate().translationY(0F).start()
+    progressMoviesModeTabs.animate().translationY(0F).start()
     progressMoviesSortIcon.animate().translationY(0F).start()
   }
 
@@ -246,6 +254,7 @@ class ProgressMoviesFragment :
         val duration = 225L
         progressMoviesSearchView.animate().translationY(0F).setDuration(duration).start()
         progressMoviesTabs.animate().translationY(0F).setDuration(duration).start()
+        progressMoviesModeTabs.animate().translationY(0F).setDuration(duration).start()
         progressMoviesSortIcon.animate().translationY(0F).setDuration(duration).start()
         requireView().postDelayed(
           {

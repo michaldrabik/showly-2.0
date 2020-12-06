@@ -482,6 +482,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun renderImage(image: Image) {
     if (image.status == UNAVAILABLE) {
       showDetailsImageProgress.gone()
+      showDetailsPlaceholder.visible()
       showDetailsImage.isClickable = false
       showDetailsImage.isEnabled = false
       return
@@ -492,11 +493,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
       .withFailListener {
         showDetailsImageProgress.gone()
+        showDetailsPlaceholder.visible()
         showDetailsImage.isClickable = true
         showDetailsImage.isEnabled = true
       }
       .withSuccessListener {
         showDetailsImageProgress.gone()
+        showDetailsPlaceholder.gone()
         showDetailsTipGallery.fadeIf(!isTipShown(SHOW_DETAILS_GALLERY))
       }
       .into(showDetailsImage)

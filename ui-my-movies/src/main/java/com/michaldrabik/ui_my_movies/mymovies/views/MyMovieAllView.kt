@@ -47,12 +47,16 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
       else item.translation?.title?.capitalizeWords()
 
     myMovieAllDescription.text =
-      if (item.translation?.overview.isNullOrBlank()) item.movie.overview
-      else item.translation?.overview
+      when {
+        item.translation?.overview.isNullOrBlank() -> {
+          if (item.movie.overview.isNotBlank()) item.movie.overview
+          else context.getString(R.string.textNoDescription)
+        }
+        else -> item.translation?.overview
+      }
 
     myMovieAllYear.text = String.format(ENGLISH, "%d", item.movie.year)
     myMovieAllRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
-    myMovieAllDescription.visibleIf(item.movie.overview.isNotBlank())
     myMovieAllYear.visibleIf(item.movie.year > 0)
 
     loadImage(item, missingImageListener)
