@@ -36,7 +36,6 @@ class QuickSyncRunner @Inject constructor(
     Timber.d("Initialized.")
     isRunning = true
 
-    Timber.d("Checking authorization...")
     val authToken = checkAuthorization()
     val moviesEnabled = settingsRepository.load().moviesEnabled
 

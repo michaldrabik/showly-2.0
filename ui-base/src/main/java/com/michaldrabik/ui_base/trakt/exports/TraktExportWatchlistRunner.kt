@@ -25,7 +25,6 @@ class TraktExportWatchlistRunner @Inject constructor(
     Timber.d("Initialized.")
     isRunning = true
 
-    Timber.d("Checking authorization...")
     val authToken = checkAuthorization()
 
     resetRetries()
