@@ -26,7 +26,7 @@ class MoviesSyncRunner @Inject constructor(
   suspend fun run(): Int {
     Timber.i("Movies sync initialized.")
 
-    if (!settingsRepository.isInitialized() || !settingsRepository.load().moviesEnabled) {
+    if (!settingsRepository.isMoviesEnabled()) {
       Timber.i("Movies are disabled. Exiting...")
       return 0
     }

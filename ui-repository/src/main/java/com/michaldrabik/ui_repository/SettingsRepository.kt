@@ -36,6 +36,8 @@ class SettingsRepository @Inject constructor(
     }
   }
 
+  suspend fun isMoviesEnabled() = isInitialized() && load().moviesEnabled
+
   fun getLanguage() = miscPreferences.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
 
   fun setLanguage(language: String) = miscPreferences.edit().putString(KEY_LANGUAGE, language).apply()

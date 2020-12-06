@@ -21,6 +21,7 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_repository.TraktAuthToken
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.UserTvdbManager
@@ -47,51 +48,54 @@ class TraktImportWatchedRunner @Inject constructor(
     Timber.d("Initialized.")
     isRunning = true
 
-    Timber.d("Checking authorization...")
+    var syncedCount = 0
     val authToken = checkAuthorization()
 
-    var syncedCount = 0
-    try {
-      retryCount = 0
-      syncedCount += importWatchedShows(authToken.token)
-    } catch (error: Throwable) {
-      if (retryCount < MAX_RETRY_COUNT) {
-        Timber.w("importWatchedShows failed. Will retry in $RETRY_DELAY_MS ms... $error")
-        retryCount += 1
-        delay(RETRY_DELAY_MS)
-        run()
-      } else {
-        isRunning = false
-        retryCount = 0
-        throw error
-      }
-    }
+    resetRetries()
+    syncedCount += runShows(authToken)
 
-    try {
-      retryCount = 0
-      if (settingsRepository.isInitialized() && settingsRepository.load().moviesEnabled) {
-        syncedCount += importWatchedMovies(authToken.token)
-      } else {
-        Timber.d("Movies are disabled. Exiting...")
-      }
-    } catch (error: Throwable) {
-      if (retryCount < MAX_RETRY_COUNT) {
-        Timber.w("importWatchedMovies failed. Will retry in $RETRY_DELAY_MS ms... $error")
-        retryCount += 1
-        delay(RETRY_DELAY_MS)
-        run()
-      } else {
-        isRunning = false
-        retryCount = 0
-        throw error
-      }
-    }
+    resetRetries()
+    syncedCount += runMovies(authToken)
 
     isRunning = false
-    retryCount = 0
-
     Timber.d("Finished with success.")
+
     return syncedCount
+  }
+
+  private suspend fun runShows(authToken: TraktAuthToken): Int =
+    try {
+      importWatchedShows(authToken.token)
+    } catch (error: Throwable) {
+      if (retryCount < MAX_RETRY_COUNT) {
+        Timber.w("importShowsWatchlist HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        retryCount += 1
+        delay(RETRY_DELAY_MS)
+        runShows(authToken)
+      } else {
+        isRunning = false
+        throw error
+      }
+    }
+
+  private suspend fun runMovies(authToken: TraktAuthToken): Int {
+    if (!settingsRepository.isMoviesEnabled()) {
+      Timber.d("Movies are disabled. Exiting...")
+      return 0
+    }
+    return try {
+      importWatchedMovies(authToken.token)
+    } catch (error: Throwable) {
+      if (retryCount < MAX_RETRY_COUNT) {
+        Timber.w("importMoviesWatchlist HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        retryCount += 1
+        delay(RETRY_DELAY_MS)
+        runMovies(authToken)
+      } else {
+        isRunning = false
+        throw error
+      }
+    }
   }
 
   private suspend fun importWatchedShows(token: String): Int {
