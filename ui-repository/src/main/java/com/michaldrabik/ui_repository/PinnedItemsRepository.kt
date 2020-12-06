@@ -23,11 +23,11 @@ class PinnedItemsRepository @Inject constructor(
     sharedPreferences.edit().remove(show.traktId.toString()).apply()
 
   fun removePinnedItem(movie: Movie) =
-    sharedPreferences.edit().remove(movie.traktId.toString()).apply()
+    sharedPreferencesMovies.edit().remove(movie.traktId.toString()).apply()
 
   fun isItemPinned(show: Show) =
     sharedPreferences.contains(show.traktId.toString())
 
   fun isItemPinned(movie: Movie) =
-    sharedPreferences.contains(movie.traktId.toString())
+    sharedPreferencesMovies.contains(movie.traktId.toString())
 }

@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_progress_movies.main
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
@@ -8,6 +9,7 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesLoadItemsCase
+import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesMainCase
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressPinnedItemsCase
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressSortOrderCase
 import kotlinx.coroutines.async
@@ -16,6 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProgressMoviesViewModel @Inject constructor(
+  private val myMoviesCase: ProgressMoviesMainCase,
   private val loadItemsCase: ProgressMoviesLoadItemsCase,
   private val pinnedItemsCase: ProgressPinnedItemsCase,
   private val sortOrderCase: ProgressSortOrderCase,
@@ -44,6 +47,13 @@ class ProgressMoviesViewModel @Inject constructor(
           sortOrder = sortOrder,
           resetScroll = resetScroll && sortOrder == RECENTLY_WATCHED
         )
+    }
+  }
+
+  fun addWatchedMovie(context: Context, item: ProgressMovieItem) {
+    viewModelScope.launch {
+      myMoviesCase.addToMyMovies(context, item.movie)
+      loadProgress(resetScroll = true)
     }
   }
 

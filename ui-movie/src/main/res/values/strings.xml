@@ -17,5 +17,6 @@
 
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
 
+  <string name="textMovieNotYetReleased">This movie has not been released yet.</string>
   <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv synced successfully.</string>
 </resources>

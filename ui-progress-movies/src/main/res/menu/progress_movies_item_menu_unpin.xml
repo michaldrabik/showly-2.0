@@ -5,7 +5,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   >
   <item
-    android:id="@+id/menuWatchlistItemPin"
+    android:id="@+id/menuProgressItemPin"
     android:enabled="true"
     android:title="@string/menuUnpin"
     app:showAsAction="always"

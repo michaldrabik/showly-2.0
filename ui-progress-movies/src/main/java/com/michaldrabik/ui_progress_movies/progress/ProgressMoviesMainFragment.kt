@@ -20,8 +20,6 @@ import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.onClick
-import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.di.UiProgressMoviesComponentProvider
@@ -76,7 +74,7 @@ class ProgressMoviesMainFragment :
     adapter.run {
       itemClickListener = { (requireParentFragment() as ProgressMoviesFragment).openMovieDetails(it) }
       itemLongClickListener = { item, view -> openPopupMenu(item, view) }
-//      checkClickListener = { parentViewModel.setWatchedEpisode(requireAppContext(), it) } TODO
+      checkClickListener = { parentViewModel.addWatchedMovie(requireAppContext(), it) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
       listChangeListener = {
         (requireParentFragment() as ProgressMoviesFragment).resetTranslations()
@@ -106,7 +104,7 @@ class ProgressMoviesMainFragment :
       menu.inflate(R.menu.progress_movies_item_menu_pin)
     }
     menu.setOnMenuItemClickListener { menuItem ->
-      if (menuItem.itemId == R.id.menuWatchlistItemPin) {
+      if (menuItem.itemId == R.id.menuProgressItemPin) {
         parentViewModel.togglePinItem(item)
       }
       true
@@ -122,7 +120,6 @@ class ProgressMoviesMainFragment :
         adapter.setItems(it, notifyChange = resetScroll == true)
         progressMoviesEmptyView.fadeIf(it.isEmpty() && isSearching == false)
         progressMoviesMainRecycler.fadeIn()
-        progressMoviesMainTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
         (requireAppContext() as WidgetsProvider).requestWidgetsUpdate()
       }
     }

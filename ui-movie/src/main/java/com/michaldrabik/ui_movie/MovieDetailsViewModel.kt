@@ -70,7 +70,7 @@ class MovieDetailsViewModel @Inject constructor(
           withAnimation = false
         )
 
-          progressJob.cancel()
+        progressJob.cancel()
         uiState = MovieDetailsUiModel(
           movie = movie,
           movieLoading = false,
@@ -205,7 +205,10 @@ class MovieDetailsViewModel @Inject constructor(
   }
 
   fun addFollowedMovie(context: Context) {
-    if (!movie.hasAired()) return
+    if (!movie.hasAired()) {
+      _messageLiveData.value = MessageEvent.info(R.string.textMovieNotYetReleased)
+      return
+    }
     viewModelScope.launch {
       myMoviesCase.addToMyMovies(movie)
       quickSyncManager.scheduleMovies(context, listOf(movie.traktId))
