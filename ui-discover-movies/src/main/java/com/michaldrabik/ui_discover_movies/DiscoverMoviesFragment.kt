@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
+import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
@@ -153,11 +154,11 @@ class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fr
     disableUi()
     saveUi()
     hideNavigation()
-    discoverMoviesFiltersView.fadeOut()
-    discoverMoviesTabsView.fadeOut(duration = 200)
+    discoverMoviesFiltersView.fadeOut().add(animations)
+    discoverMoviesTabsView.fadeOut(duration = 200).add(animations)
     discoverMoviesRecycler.fadeOut(duration = 200) {
       super.navigateTo(R.id.actionDiscoverMoviesFragmentToSearchFragment, null)
-    }
+    }.add(animations)
   }
 
   private fun navigateToDetails(item: DiscoverMovieListItem) {
@@ -165,22 +166,24 @@ class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fr
     saveUi()
     hideNavigation()
     animateItemsExit(item)
-    discoverMoviesSearchView.fadeOut()
-    discoverMoviesTabsView.fadeOut()
-    discoverMoviesFiltersView.fadeOut()
   }
 
   private fun animateItemsExit(item: DiscoverMovieListItem) {
+    discoverMoviesSearchView.fadeOut().add(animations)
+    discoverMoviesTabsView.fadeOut().add(animations)
+    discoverMoviesFiltersView.fadeOut().add(animations)
+
     val clickedIndex = adapter.indexOf(item)
     (0..adapter.itemCount).forEach {
       if (it != clickedIndex) {
         val view = discoverMoviesRecycler.findViewHolderForAdapterPosition(it)
         view?.let { v ->
           val randomDelay = Random.nextLong(50, 200)
-          v.itemView.fadeOut(duration = 150, startDelay = randomDelay)
+          v.itemView.fadeOut(duration = 150, startDelay = randomDelay).add(animations)
         }
       }
     }
+
     val clickedView = discoverMoviesRecycler.findViewHolderForAdapterPosition(clickedIndex)
     clickedView?.itemView?.fadeOut(
       duration = 150, startDelay = 350,
@@ -189,7 +192,7 @@ class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fr
         val bundle = Bundle().apply { putLong(NavigationArgs.ARG_MOVIE_ID, item.movie.traktId) }
         navigateTo(R.id.actionDiscoverMoviesFragmentToMovieDetailsFragment, bundle)
       }
-    )
+    ).add(animations)
   }
 
   private fun toggleFiltersView() {

@@ -16,6 +16,7 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
+import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
@@ -84,6 +85,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   override fun onStop() {
     exSearchViewInput.removeTextChangedListener(this)
     exSearchViewInput.setText("")
+    enableUi()
     super.onStop()
   }
 
@@ -158,7 +160,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
         val view = searchRecycler.findViewHolderForAdapterPosition(it)
         view?.let { v ->
           val randomDelay = Random.nextLong(50, 200)
-          v.itemView.fadeOut(duration = 150, startDelay = randomDelay)
+          v.itemView.fadeOut(duration = 150, startDelay = randomDelay).add(animations)
         }
       }
     }
@@ -169,7 +171,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
         enableUi()
         openDetails(item)
       }
-    )
+    ).add(animations)
   }
 
   private fun openDetails(item: SearchListItem) {

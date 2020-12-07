@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config.MAIN_GRID_SPAN
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
+import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
@@ -165,12 +166,11 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     disableUi()
     saveUi()
     hideNavigation()
-    discoverFiltersView.fadeOut()
-    discoverTabsView.fadeOut(duration = 200)
+    discoverFiltersView.fadeOut().add(animations)
+    discoverTabsView.fadeOut(duration = 200).add(animations)
     discoverRecycler.fadeOut(duration = 200) {
-      enableUi()
       super.navigateTo(R.id.actionDiscoverFragmentToSearchFragment, null)
-    }
+    }.add(animations)
   }
 
   private fun navigateToDetails(item: DiscoverListItem) {
@@ -178,22 +178,24 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     saveUi()
     hideNavigation()
     animateItemsExit(item)
-    discoverSearchView.fadeOut()
-    discoverTabsView.fadeOut()
-    discoverFiltersView.fadeOut()
   }
 
   private fun animateItemsExit(item: DiscoverListItem) {
+    discoverSearchView.fadeOut().add(animations)
+    discoverTabsView.fadeOut().add(animations)
+    discoverFiltersView.fadeOut().add(animations)
+
     val clickedIndex = adapter.indexOf(item)
     (0..adapter.itemCount).forEach {
       if (it != clickedIndex) {
         val view = discoverRecycler.findViewHolderForAdapterPosition(it)
         view?.let { v ->
           val randomDelay = Random.nextLong(50, 200)
-          v.itemView.fadeOut(duration = 150, startDelay = randomDelay)
+          v.itemView.fadeOut(duration = 150, startDelay = randomDelay).add(animations)
         }
       }
     }
+
     val clickedView = discoverRecycler.findViewHolderForAdapterPosition(clickedIndex)
     clickedView?.itemView?.fadeOut(
       duration = 150, startDelay = 350,
@@ -202,7 +204,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
         val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
         navigateTo(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
       }
-    )
+    ).add(animations)
   }
 
   private fun toggleFiltersView() {

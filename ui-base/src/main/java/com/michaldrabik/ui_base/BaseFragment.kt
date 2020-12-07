@@ -3,6 +3,7 @@ package com.michaldrabik.ui_base
 import android.content.Context
 import android.os.Bundle
 import android.view.ViewGroup
+import android.view.ViewPropertyAnimator
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
@@ -25,7 +26,11 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
   @Inject
   lateinit var viewModelFactory: DaggerViewModelFactory
   protected abstract val viewModel: T
+
   protected var isInitialized = false
+  protected val animations = mutableListOf<ViewPropertyAnimator?>()
+
+  protected fun setMode(mode: Mode) = (requireActivity() as NavigationHost).setMode(mode)
 
   protected fun hideNavigation(animate: Boolean = true) =
     (requireActivity() as NavigationHost).hideNavigation(animate)
@@ -51,7 +56,11 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
 
   override fun showTip(tip: Tip) = (requireActivity() as TipsHost).showTip(tip)
 
-  protected fun setMode(mode: Mode) = (requireActivity() as NavigationHost).setMode(mode)
+  override fun onDestroyView() {
+    animations.forEach { it?.cancel() }
+    animations.clear()
+    super.onDestroyView()
+  }
 
   fun Fragment.requireAppContext(): Context = requireContext().applicationContext
 }
