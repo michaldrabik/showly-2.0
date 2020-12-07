@@ -23,9 +23,8 @@ class ArchiveViewModel @Inject constructor(
   fun loadShows(scrollToTop: Boolean = false) {
     viewModelScope.launch {
       val items = loadShowsCase.loadShows().map {
-        val image = imagesProvider.findCachedImage(it, POSTER)
-        val translation = loadShowsCase.loadTranslation(it)
-        ArchiveListItem(it, image, false, translation)
+        val image = imagesProvider.findCachedImage(it.first, POSTER)
+        ArchiveListItem(it.first, image, false, it.second)
       }
       uiState = ArchiveUiModel(items = items, scrollToTop = ActionEvent(scrollToTop))
     }

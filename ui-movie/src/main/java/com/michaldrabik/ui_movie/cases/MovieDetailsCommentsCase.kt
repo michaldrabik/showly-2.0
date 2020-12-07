@@ -10,6 +10,6 @@ class MovieDetailsCommentsCase @Inject constructor(
   private val moviesRepository: MoviesRepository
 ) {
 
-  suspend fun loadComments(movie: Movie, limit: Int = 50) =
+  suspend fun loadComments(movie: Movie, limit: Int = 75) =
     moviesRepository.movieDetails.loadComments(movie.ids.trakt, limit)
 }

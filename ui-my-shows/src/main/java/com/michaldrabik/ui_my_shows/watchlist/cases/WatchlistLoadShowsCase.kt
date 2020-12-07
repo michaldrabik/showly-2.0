@@ -20,21 +20,25 @@ class WatchlistLoadShowsCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {
 
-  suspend fun loadShows(): List<Show> {
+  suspend fun loadShows(): List<Pair<Show, Translation?>> {
+    val language = settingsRepository.getLanguage()
+    val translations =
+      if (language == Config.DEFAULT_LANGUAGE) emptyMap()
+      else translationsRepository.loadAllShowsLocal(language)
+
     val sortType = settingsRepository.load().watchlistShowsSortBy
     val shows = showsRepository.watchlistShows.loadAll()
+      .map { it to translations[it.traktId] }
+
     return when (sortType) {
-      NAME -> shows.sortedBy { it.title }
-      DATE_ADDED -> shows.sortedByDescending { it.updatedAt }
-      RATING -> shows.sortedByDescending { it.rating }
-      NEWEST -> shows.sortedByDescending { it.year }
+      NAME -> shows.sortedBy {
+        val translatedTitle = if (it.second?.hasTitle == false) null else it.second?.title
+        translatedTitle ?: it.first.title
+      }
+      DATE_ADDED -> shows.sortedByDescending { it.first.updatedAt }
+      RATING -> shows.sortedByDescending { it.first.rating }
+      NEWEST -> shows.sortedByDescending { it.first.year }
       else -> error("Should not be used here.")
     }
-  }
-
-  suspend fun loadTranslation(show: Show): Translation? {
-    val language = settingsRepository.getLanguage()
-    if (language == Config.DEFAULT_LANGUAGE) return null
-    return translationsRepository.loadTranslation(show, language, onlyLocal = true)
   }
 }

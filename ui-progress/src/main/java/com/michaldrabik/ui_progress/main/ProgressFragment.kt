@@ -79,7 +79,7 @@ class ProgressFragment :
     super.onResume()
     setupBackPressed()
     showNavigation()
-    viewModel.loadWatchlist()
+    viewModel.loadProgress()
   }
 
   override fun onDestroyView() {
@@ -224,11 +224,11 @@ class ProgressFragment :
     if (showNavigation) showNavigation()
   }
 
-  override fun onShowsMoviesSyncFinished() = viewModel.loadWatchlist()
+  override fun onShowsMoviesSyncFinished() = viewModel.loadProgress()
 
-  override fun onTraktSyncProgress() = viewModel.loadWatchlist()
+  override fun onTraktSyncProgress() = viewModel.loadProgress()
 
-  override fun onTranslationsSyncProgress() = viewModel.loadWatchlist()
+  override fun onTranslationsSyncProgress() = viewModel.loadProgress()
 
   override fun onTabReselected() {
     progressSearchView.translationY = 0F

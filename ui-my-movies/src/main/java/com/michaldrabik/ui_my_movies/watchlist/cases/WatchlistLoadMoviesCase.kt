@@ -20,14 +20,28 @@ class WatchlistLoadMoviesCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {
 
-  suspend fun loadMovies(): List<Movie> {
+  suspend fun loadMovies(): List<Pair<Movie, Translation?>> {
+    val language = settingsRepository.getLanguage()
+    val translations =
+      if (language == Config.DEFAULT_LANGUAGE) emptyMap()
+      else translationsRepository.loadAllMoviesLocal(language)
+
     val sortType = settingsRepository.load().watchlistMoviesSortBy
     val movies = moviesRepository.watchlistMovies.loadAll()
+      .map { it to translations[it.traktId] }
+
     return when (sortType) {
-      NAME -> movies.sortedBy { it.title }
-      DATE_ADDED -> movies.sortedByDescending { it.updatedAt }
-      RATING -> movies.sortedByDescending { it.rating }
-      NEWEST -> movies.sortedWith(compareByDescending<Movie> { it.year }.thenByDescending { it.released })
+      NAME -> movies.sortedBy {
+        val translatedTitle = if (it.second?.hasTitle == false) null else it.second?.title
+        translatedTitle ?: it.first.title
+      }
+      DATE_ADDED ->
+        movies.sortedByDescending { it.first.updatedAt }
+      RATING ->
+        movies.sortedByDescending { it.first.rating }
+      NEWEST -> movies
+        .sortedWith(compareByDescending<Pair<Movie, Translation?>> { it.first.year }
+          .thenByDescending { it.first.released })
       else -> error("Should not be used here.")
     }
   }

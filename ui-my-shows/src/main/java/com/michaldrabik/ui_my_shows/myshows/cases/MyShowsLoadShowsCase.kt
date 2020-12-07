@@ -93,7 +93,10 @@ class MyShowsLoadShowsCase @Inject constructor(
 
   private fun sortBy(sortOrder: SortOrder, shows: List<MyShowsItem>) =
     when (sortOrder) {
-      NAME -> shows.sortedBy { it.show.title }
+      NAME -> shows.sortedBy {
+        val translatedTitle = if (it.translation?.hasTitle == false) null else it.translation?.title
+        translatedTitle ?: it.show.title
+      }
       NEWEST -> shows.sortedByDescending { it.show.year }
       RATING -> shows.sortedByDescending { it.show.rating }
       DATE_ADDED -> shows.sortedByDescending { it.show.updatedAt }

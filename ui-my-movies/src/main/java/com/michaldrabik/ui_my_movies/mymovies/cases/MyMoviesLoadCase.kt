@@ -56,7 +56,10 @@ class MyMoviesLoadCase @Inject constructor(
 
   private fun sortBy(sortOrder: SortOrder, movies: List<MyMoviesItem>) =
     when (sortOrder) {
-      NAME -> movies.sortedBy { it.movie.title }
+      NAME -> movies.sortedBy {
+        val translatedTitle = if (it.translation?.hasTitle == false) null else it.translation?.title
+        translatedTitle ?: it.movie.title
+      }
       NEWEST -> movies.sortedWith(compareByDescending<MyMoviesItem> { it.movie.year }.thenByDescending { it.movie.released })
       RATING -> movies.sortedByDescending { it.movie.rating }
       DATE_ADDED -> movies.sortedByDescending { it.movie.updatedAt }

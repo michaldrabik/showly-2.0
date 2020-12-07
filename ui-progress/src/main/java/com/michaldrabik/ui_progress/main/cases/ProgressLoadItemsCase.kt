@@ -101,7 +101,10 @@ class ProgressLoadItemsCase @Inject constructor(
     val aired = (items[true] ?: emptyList())
       .sortedWith(
         when (sortOrder) {
-          NAME -> compareBy { it.show.title.toUpperCase(ROOT) }
+          NAME -> compareBy {
+            val translatedTitle = if (it.showTranslation?.hasTitle == false) null else it.showTranslation?.title
+            (translatedTitle ?: it.show.title).toUpperCase(ROOT)
+          }
           RECENTLY_WATCHED -> compareByDescending { it.show.updatedAt }
           EPISODES_LEFT -> compareBy { it.episodesCount - it.watchedEpisodesCount }
           else -> throw IllegalStateException("Invalid sort order")

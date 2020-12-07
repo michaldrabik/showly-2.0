@@ -53,7 +53,10 @@ class ProgressMoviesLoadItemsCase @Inject constructor(
     return input
       .sortedWith(
         when (sortOrder) {
-          NAME -> compareBy { it.movie.title.toUpperCase(ROOT) }
+          NAME -> compareBy {
+            val translatedTitle = if (it.movieTranslation?.hasTitle == false) null else it.movieTranslation?.title
+            (translatedTitle ?: it.movie.title).toUpperCase(ROOT)
+          }
           DATE_ADDED -> compareByDescending { it.movie.updatedAt }
           else -> throw IllegalStateException("Invalid sort order")
         }

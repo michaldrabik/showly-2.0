@@ -23,9 +23,8 @@ class WatchlistViewModel @Inject constructor(
   fun loadMovies(resetScroll: Boolean = false) {
     viewModelScope.launch {
       val items = loadMoviesCase.loadMovies().map {
-        val image = imagesProvider.findCachedImage(it, POSTER)
-        val translation = loadMoviesCase.loadTranslation(it)
-        WatchlistListItem(it, image, false, translation)
+        val image = imagesProvider.findCachedImage(it.first, POSTER)
+        WatchlistListItem(it.first, image, false, it.second)
       }
       uiState = WatchlistUiModel(items = items, scrollToTop = ActionEvent(resetScroll))
     }

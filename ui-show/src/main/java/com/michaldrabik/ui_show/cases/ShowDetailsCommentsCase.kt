@@ -10,6 +10,6 @@ class ShowDetailsCommentsCase @Inject constructor(
   private val showsRepository: ShowsRepository
 ) {
 
-  suspend fun loadComments(show: Show, limit: Int = 30) =
+  suspend fun loadComments(show: Show, limit: Int = 50) =
     showsRepository.detailsShow.loadComments(show.ids.trakt, limit)
 }
