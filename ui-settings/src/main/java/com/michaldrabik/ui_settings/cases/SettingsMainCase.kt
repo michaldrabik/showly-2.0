@@ -100,10 +100,10 @@ class SettingsMainCase @Inject constructor(
   fun isMoviesEnabled() = settingsRepository.isMoviesEnabled()
 
   fun enableMovies(enable: Boolean) {
-    val moviesActive = if (!enable) Mode.SHOWS else settingsRepository.getMode()
+    val mode = if (!enable) Mode.SHOWS else settingsRepository.getMode()
     settingsRepository.run {
       setMoviesEnabled(enable)
-      setMode(moviesActive)
+      setMode(mode)
     }
   }
 
