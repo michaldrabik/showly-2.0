@@ -94,6 +94,14 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
+  fun enableMovies(enable: Boolean) {
+    viewModelScope.launch {
+      mainCase.enableMovies(enable)
+      refreshSettings()
+      Analytics.logSettingsMoviesEnabled(enable)
+    }
+  }
+
   fun setWhenToNotify(delay: NotificationDelay, context: Context) {
     viewModelScope.launch {
       mainCase.setWhenToNotify(delay, context)

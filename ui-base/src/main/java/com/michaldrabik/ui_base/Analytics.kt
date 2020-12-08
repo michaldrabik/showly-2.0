@@ -261,6 +261,12 @@ object Analytics {
     }
   }
 
+  fun logSettingsMoviesEnabled(enabled: Boolean) {
+    firebaseAnalytics.logEvent("settings_movies") {
+      param("enabled", enabled.toString())
+    }
+  }
+
   fun logSettingsWhenToNotify(value: String) {
     firebaseAnalytics.logEvent("settings_when_to_notify") {
       param("value", value.toLowerCase(ROOT))

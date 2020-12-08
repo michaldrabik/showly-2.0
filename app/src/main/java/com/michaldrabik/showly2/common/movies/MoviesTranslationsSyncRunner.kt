@@ -40,7 +40,7 @@ class MoviesTranslationsSyncRunner @Inject constructor(
       return 0
     }
 
-    if (!settingsRepository.load().moviesEnabled) {
+    if (!settingsRepository.isMoviesEnabled()) {
       Timber.i("Movies are disabled. Exiting...")
       return 0
     }

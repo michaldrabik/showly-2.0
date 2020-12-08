@@ -26,7 +26,7 @@ class SettingsRepository @Inject constructor(
 
   suspend fun load(): Settings {
     val settingsDb = database.settingsDao().getAll()
-    return settingsDb.let { mappers.settings.fromDatabase(it) }
+    return mappers.settings.fromDatabase(settingsDb)
   }
 
   suspend fun update(settings: Settings) {
@@ -42,5 +42,10 @@ class SettingsRepository @Inject constructor(
 
   fun setLanguage(language: String) = miscPreferences.edit().putString(KEY_LANGUAGE, language).apply()
 
-  suspend fun clearLanguageLogs() = database.translationsSyncLogDao().deleteAll()
+  suspend fun clearLanguageLogs() {
+    database.withTransaction {
+      database.translationsSyncLogDao().deleteAll()
+      database.translationsMoviesSyncLogDao().deleteAll()
+    }
+  }
 }

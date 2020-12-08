@@ -180,7 +180,7 @@
     <LinearLayout
       android:id="@+id/settingsLanguage"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsMyShowsSections"
+      app:layout_constraintBottom_toTopOf="@id/settingsMoviesEnabled"
       app:layout_constraintEnd_toStartOf="@id/settingsLanguageValue"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsCategoryGeneral"
@@ -208,6 +208,38 @@
       app:layout_constraintBottom_toBottomOf="@id/settingsLanguage"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/settingsLanguage"
+      />
+
+    <LinearLayout
+      android:id="@+id/settingsMoviesEnabled"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@id/settingsMyShowsSections"
+      app:layout_constraintEnd_toStartOf="@id/settingsMoviesEnabledSwitch"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsLanguage"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsMoviesEnabledTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:text="@string/textSettingsMoviesEnabledSummary"
+        />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+      android:id="@+id/settingsMoviesEnabledSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:checked="true"
+      app:layout_constraintBottom_toBottomOf="@id/settingsMoviesEnabled"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsMoviesEnabled"
       />
 
     <LinearLayout

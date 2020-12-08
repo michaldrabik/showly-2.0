@@ -145,6 +145,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         viewModel.enableSpecialSeasons(isChecked)
       }
 
+    settingsMoviesEnabledSwitch
+      .setCheckedSilent(settings.moviesEnabled) { _, isChecked ->
+        viewModel.enableMovies(isChecked)
+      }
+
     settingsContactDevs.onClick {
       val intent = Intent(ACTION_SENDTO).apply {
         data = Uri.parse("mailto:")

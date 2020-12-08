@@ -64,6 +64,7 @@ class TraktExportWatchedRunner @Inject constructor(
   private suspend fun runMovies(authToken: TraktAuthToken) {
     if (!settingsRepository.isMoviesEnabled()) {
       Timber.d("Movies are disabled. Exiting...")
+      return
     }
     try {
       exportMoviesWatched(authToken)
