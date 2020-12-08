@@ -43,8 +43,9 @@ class TraktApi(private val service: TraktService) {
     return response.body()
   }
 
-  suspend fun fetchSearch(query: String) =
-    service.fetchSearchResults(query)
+  suspend fun fetchSearch(query: String, withMovies: Boolean) =
+    if (withMovies) service.fetchSearchResultsMovies(query)
+    else service.fetchSearchResults(query)
 
   suspend fun fetchSeasons(traktId: Long) =
     service.fetchSeasons(traktId)
