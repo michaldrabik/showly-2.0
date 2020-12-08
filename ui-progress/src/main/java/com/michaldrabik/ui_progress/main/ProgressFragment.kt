@@ -98,7 +98,8 @@ class ProgressFragment :
       onSettingsClickListener = { openSettings() }
     }
     progressPagerModeTabs.run {
-      onModeSelected = { setMode(it) }
+      visibleIf(moviesEnabled)
+      onModeSelected = { mode = it }
       animateShows()
     }
 
@@ -120,14 +121,15 @@ class ProgressFragment :
   private fun setupStatusBar() {
     progressRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.systemWindowInsetTop
+      val progressTabsMargin = if (moviesEnabled) R.dimen.progressSearchViewPadding else R.dimen.progressSearchViewPaddingNoModes
       (progressSearchView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
       (progressTabs.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressSearchViewPadding))
+        .updateMargins(top = statusBarSize + dimenToPx(progressTabsMargin))
       (progressPagerModeTabs.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.showsMoviesTabsMargin))
       (progressSortIcon.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressSearchViewPadding))
+        .updateMargins(top = statusBarSize + dimenToPx(progressTabsMargin))
     }
   }
 

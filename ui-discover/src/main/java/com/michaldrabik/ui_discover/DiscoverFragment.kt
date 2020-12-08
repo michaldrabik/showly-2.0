@@ -27,6 +27,7 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.invisible
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_discover.di.UiDiscoverComponentProvider
 import com.michaldrabik.ui_discover.recycler.DiscoverAdapter
@@ -90,9 +91,10 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       onSortClickListener = { toggleFiltersView() }
       translationY = searchViewPosition
     }
-    discoverTabsView.run {
+    discoverModeTabsView.run {
+      visibleIf(moviesEnabled)
       translationY = tabsViewPosition
-      onModeSelected = { setMode(it) }
+      onModeSelected = { mode = it }
       animateShows()
     }
     discoverMask.onClick { toggleFiltersView() }
@@ -145,13 +147,17 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
   private fun setupStatusBar() {
     discoverRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.systemWindowInsetTop
+      val recyclerPadding =
+        if (moviesEnabled) R.dimen.discoverRecyclerPadding
+        else R.dimen.discoverRecyclerPaddingNoTabs
+
       discoverRecycler
-        .updatePadding(top = statusBarSize + dimenToPx(R.dimen.discoverRecyclerPadding))
+        .updatePadding(top = statusBarSize + dimenToPx(recyclerPadding))
       (discoverSearchView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
       (discoverFiltersView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.searchViewHeight))
-      (discoverTabsView.layoutParams as MarginLayoutParams)
+      (discoverModeTabsView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.showsMoviesTabsMargin))
       discoverTipFilters.translationY = statusBarSize.toFloat()
       discoverSwipeRefresh.setProgressViewOffset(
@@ -167,7 +173,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     saveUi()
     hideNavigation()
     discoverFiltersView.fadeOut().add(animations)
-    discoverTabsView.fadeOut(duration = 200).add(animations)
+    discoverModeTabsView.fadeOut(duration = 200).add(animations)
     discoverRecycler.fadeOut(duration = 200) {
       super.navigateTo(R.id.actionDiscoverFragmentToSearchFragment, null)
     }.add(animations)
@@ -182,7 +188,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
 
   private fun animateItemsExit(item: DiscoverListItem) {
     discoverSearchView.fadeOut().add(animations)
-    discoverTabsView.fadeOut().add(animations)
+    discoverModeTabsView.fadeOut().add(animations)
     discoverFiltersView.fadeOut().add(animations)
 
     val clickedIndex = adapter.indexOf(item)
@@ -228,7 +234,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
 
   private fun saveUi() {
     searchViewPosition = discoverSearchView.translationY
-    tabsViewPosition = discoverTabsView.translationY
+    tabsViewPosition = discoverModeTabsView.translationY
   }
 
   private fun render(uiModel: DiscoverUiModel) {
@@ -243,7 +249,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
         discoverSearchView.sortIconClickable = !it
         discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
-        discoverTabsView.isEnabled = !it
+        discoverModeTabsView.isEnabled = !it
       }
       filters?.let {
         discoverFiltersView.run {

@@ -91,7 +91,7 @@ class FollowedMoviesFragment :
       onStatsClickListener = { openStatistics() }
     }
     followedMoviesModeTabs.run {
-      onModeSelected = { setMode(it) }
+      onModeSelected = { mode = it }
       animateMovies()
     }
     followedMoviesSortIcon.run {

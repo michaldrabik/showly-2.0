@@ -13,6 +13,7 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnTranslationsSyncListener
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_model.Show
@@ -26,6 +27,7 @@ import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.utilities.OnSortClickListener
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistAdapter
+import kotlinx.android.synthetic.main.fragment_my_shows.*
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 
 class WatchlistFragment :
@@ -73,13 +75,16 @@ class WatchlistFragment :
   }
 
   private fun setupStatusBar() {
+    val recyclerPadding = if (moviesEnabled) R.dimen.watchlistTabsViewPadding else R.dimen.watchlistTabsViewPaddingNoModes
     if (statusBarHeight != 0) {
       watchlistContent.updatePadding(top = watchlistContent.paddingTop + statusBarHeight)
+      watchlistRecycler.updatePadding(top = dimenToPx(recyclerPadding))
       return
     }
     watchlistContent.doOnApplyWindowInsets { view, insets, padding, _ ->
       statusBarHeight = insets.systemWindowInsetTop
       view.updatePadding(top = padding.top + statusBarHeight)
+      watchlistRecycler.updatePadding(top = dimenToPx(recyclerPadding))
     }
   }
 

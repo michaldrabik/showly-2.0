@@ -46,7 +46,7 @@
   <string name="textSettingsLogoutMessage">\nAre you sure you want to sign out?\n</string>
   <string name="textSettingsLanguageChangeMessage">Please restart the app for language change to take effect.</string>
   <string name="textSettingsMoviesEnabledTitle">Movies</string>
-  <string name="textSettingsMoviesEnabledSummary">Enable/disable movies support.</string>
+  <string name="textSettingsMoviesEnabledSummary">Enable/disable movies support. App will restart.</string>
 
   <string name="textLanguageEnglish" translatable="false">English</string>
   <string name="textLanguagePolish" translatable="false">Polski</string>

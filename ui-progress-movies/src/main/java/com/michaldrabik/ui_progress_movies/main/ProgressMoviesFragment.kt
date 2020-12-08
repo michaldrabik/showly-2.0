@@ -95,7 +95,8 @@ class ProgressMoviesFragment :
       onSettingsClickListener = { openSettings() }
     }
     progressMoviesModeTabs.run {
-      onModeSelected = { setMode(it) }
+      visibleIf(moviesEnabled)
+      onModeSelected = { mode = it }
       animateMovies()
     }
     progressMoviesTabs.translationY = tabsTranslation

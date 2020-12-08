@@ -13,6 +13,7 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnTranslationsSyncListener
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_model.MyShowsSection
@@ -79,13 +80,16 @@ class MyShowsFragment :
   }
 
   private fun setupStatusBar() {
+    val recyclerPadding = if (moviesEnabled) R.dimen.myShowsTabsViewPadding else R.dimen.myShowsTabsViewPaddingNoModes
     if (statusBarHeight != 0) {
       myShowsRoot.updatePadding(top = statusBarHeight)
+      myShowsRecycler.updatePadding(top = dimenToPx(recyclerPadding))
       return
     }
     myShowsRoot.doOnApplyWindowInsets { view, insets, _, _ ->
       statusBarHeight = insets.systemWindowInsetTop
       view.updatePadding(top = statusBarHeight)
+      myShowsRecycler.updatePadding(top = dimenToPx(recyclerPadding))
     }
   }
 

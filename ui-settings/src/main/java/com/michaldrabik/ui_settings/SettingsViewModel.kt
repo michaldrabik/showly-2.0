@@ -15,6 +15,7 @@ import com.michaldrabik.ui_settings.cases.SettingsMainCase
 import com.michaldrabik.ui_settings.cases.SettingsTraktCase
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -97,7 +98,8 @@ class SettingsViewModel @Inject constructor(
   fun enableMovies(enable: Boolean) {
     viewModelScope.launch {
       mainCase.enableMovies(enable)
-      refreshSettings()
+      delay(500)
+      refreshSettings(restartApp = true)
       Analytics.logSettingsMoviesEnabled(enable)
     }
   }
@@ -160,12 +162,14 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun refreshSettings() {
+  private suspend fun refreshSettings(restartApp: Boolean = false) {
     uiState = SettingsUiModel(
       settings = mainCase.getSettings(),
       language = mainCase.getLanguage(),
+      moviesEnabled = mainCase.isMoviesEnabled(),
       isSignedInTrakt = traktCase.isTraktAuthorized(),
-      traktUsername = traktCase.getTraktUsername()
+      traktUsername = traktCase.getTraktUsername(),
+      restartApp = restartApp
     )
   }
 }

@@ -37,6 +37,7 @@
 
   <dimen name="discoverFilterChipStroke">1dp</dimen>
   <dimen name="discoverRecyclerPadding">104dp</dimen>
+  <dimen name="discoverRecyclerPaddingNoTabs">64dp</dimen>
 
   <dimen name="swipeRefreshStartOffset">8dp</dimen>
   <dimen name="swipeRefreshEndOffset">140dp</dimen>

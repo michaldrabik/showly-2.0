@@ -8,11 +8,11 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.di.DaggerViewModelFactory
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.ERROR
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
-import com.michaldrabik.ui_base.utilities.Mode
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost
@@ -30,7 +30,12 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
   protected var isInitialized = false
   protected val animations = mutableListOf<ViewPropertyAnimator?>()
 
-  protected fun setMode(mode: Mode) = (requireActivity() as NavigationHost).setMode(mode)
+  protected var mode: Mode
+    get() = (requireActivity() as NavigationHost).getMode()
+    set(value) = (requireActivity() as NavigationHost).setMode(value)
+
+  protected val moviesEnabled: Boolean
+    get() = (requireActivity() as NavigationHost).moviesEnabled()
 
   protected fun hideNavigation(animate: Boolean = true) =
     (requireActivity() as NavigationHost).hideNavigation(animate)

@@ -92,13 +92,14 @@ class ProgressMainFragment :
   }
 
   private fun setupStatusBar() {
+    val recyclerPadding = if (moviesEnabled) R.dimen.progressTabsViewPadding else R.dimen.progressTabsViewPaddingNoModes
     if (statusBarHeight != 0) {
-      progressMainRecycler.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressTabsViewPadding))
+      progressMainRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
       return
     }
     progressMainRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
       statusBarHeight = insets.systemWindowInsetTop
-      view.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressTabsViewPadding))
+      view.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
       (progressEmptyView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.spaceBig))
     }

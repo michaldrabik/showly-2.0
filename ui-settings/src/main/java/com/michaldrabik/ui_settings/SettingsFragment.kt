@@ -74,7 +74,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun render(uiModel: SettingsUiModel) {
     uiModel.run {
-      settings?.let { renderSettings(it) }
+      settings?.let { renderSettings(it, moviesEnabled ?: true) }
       language?.let { renderLanguage(it) }
       isSignedInTrakt?.let { isSignedIn ->
         settingsTraktSync.visibleIf(isSignedIn)
@@ -100,10 +100,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         }
         settingsTraktAuthorizeSummary.text = summaryText
       }
+      restartApp?.let { if (it) restartApp() }
     }
   }
 
-  private fun renderSettings(settings: Settings) {
+  private fun renderSettings(settings: Settings, moviesEnabled: Boolean) {
     settingsRecentShowsAmount.onClick { showRecentShowsDialog(settings) }
     settingsMyShowsSections.onClick { showSectionsDialog(settings) }
 
@@ -146,7 +147,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       }
 
     settingsMoviesEnabledSwitch
-      .setCheckedSilent(settings.moviesEnabled) { _, isChecked ->
+      .setCheckedSilent(moviesEnabled) { _, isChecked ->
         viewModel.enableMovies(isChecked)
       }
 

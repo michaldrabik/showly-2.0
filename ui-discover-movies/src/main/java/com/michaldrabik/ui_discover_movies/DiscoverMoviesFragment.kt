@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.Mode.*
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.utilities.extensions.add
@@ -89,7 +90,7 @@ class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fr
     }
     discoverMoviesTabsView.run {
       translationY = tabsViewPosition
-      onModeSelected = { setMode(it) }
+      onModeSelected = { mode = it }
       animateMovies()
     }
     discoverMoviesFiltersView.onApplyClickListener = {

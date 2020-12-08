@@ -1,11 +1,11 @@
 package com.michaldrabik.showly2.ui.main.cases
 
 import android.content.Context
+import com.michaldrabik.common.Mode
+import com.michaldrabik.common.Mode.MOVIES
+import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
-import com.michaldrabik.ui_base.utilities.Mode
-import com.michaldrabik.ui_base.utilities.Mode.MOVIES
-import com.michaldrabik.ui_base.utilities.Mode.SHOWS
 import com.michaldrabik.ui_repository.RatingsRepository
 import com.michaldrabik.ui_repository.SettingsRepository
 import javax.inject.Inject
@@ -21,13 +21,13 @@ class MainMiscCase @Inject constructor(
 
   fun clear() = ratingsRepository.clear()
 
-  suspend fun setMode(mode: Mode) {
-    val settings = settingsRepository.load()
-    settingsRepository.update(settings.copy(moviesActive = mode == MOVIES))
+  fun setMode(mode: Mode) = settingsRepository.setMode(mode)
+
+  fun getMode(): Mode {
+    val isMoviesEnabled = settingsRepository.isMoviesEnabled()
+    val isMovies = settingsRepository.getMode() == MOVIES
+    return if (isMoviesEnabled && isMovies) MOVIES else SHOWS
   }
 
-  suspend fun getMode(): Mode {
-    val isMovies = settingsRepository.load().moviesActive
-    return if (isMovies) MOVIES else SHOWS
-  }
+  fun moviesEnabled() = settingsRepository.isMoviesEnabled()
 }

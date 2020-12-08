@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -96,11 +97,13 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
-  suspend fun enableMovies(enable: Boolean) {
-    val settings = settingsRepository.load()
-    settings.let {
-      val new = it.copy(moviesEnabled = enable)
-      settingsRepository.update(new)
+  fun isMoviesEnabled() = settingsRepository.isMoviesEnabled()
+
+  fun enableMovies(enable: Boolean) {
+    val moviesActive = if (!enable) Mode.SHOWS else settingsRepository.getMode()
+    settingsRepository.run {
+      setMoviesEnabled(enable)
+      setMode(moviesActive)
     }
   }
 

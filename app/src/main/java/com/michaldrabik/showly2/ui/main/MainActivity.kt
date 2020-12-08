@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.michaldrabik.common.Mode
+import com.michaldrabik.common.Mode.*
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
@@ -30,8 +32,6 @@ import com.michaldrabik.ui_base.events.ShowsMoviesSyncComplete
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.events.TraktSyncProgress
 import com.michaldrabik.ui_base.events.TranslationsSyncProgress
-import com.michaldrabik.ui_base.utilities.Mode
-import com.michaldrabik.ui_base.utilities.Mode.*
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost
@@ -62,11 +62,9 @@ class MainActivity :
     private const val ARG_NAVIGATION_VISIBLE = "ARG_NAVIGATION_VISIBLE"
   }
 
-  @Inject
-  lateinit var viewModelFactory: DaggerViewModelFactory
+  @Inject lateinit var viewModelFactory: DaggerViewModelFactory
   private lateinit var viewModel: MainViewModel
 
-  private var mode = SHOWS
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
   private val tips by lazy {
@@ -232,32 +230,33 @@ class MainActivity :
   override fun openDiscoverTab() = openTab(R.id.menuDiscover)
 
   override fun setMode(mode: Mode) {
-    if (this.mode != mode) viewModel.setMode(mode)
+    if (viewModel.getMode() != mode) {
+      viewModel.setMode(mode)
+      when (bottomNavigationView.selectedItemId) {
+        R.id.menuDiscover -> {
+          val target = getMenuDiscoverAction()
+          navigationHost.findNavController().navigate(target)
+        }
+        R.id.menuCollection -> {
+          val target = getMenuCollectionAction()
+          navigationHost.findNavController().navigate(target)
+        }
+        R.id.menuProgress -> {
+          val target = getMenuProgressAction()
+          navigationHost.findNavController().navigate(target)
+        }
+      }
+    }
   }
+
+  override fun getMode() = viewModel.getMode()
+
+  override fun moviesEnabled() = viewModel.moviesEnabled()
 
   private fun render(uiModel: MainUiModel) {
     uiModel.run {
       isInitialRun?.let {
         if (it) openTab(R.id.menuDiscover)
-      }
-      mode?.let {
-        if (this@MainActivity.mode != it) {
-          this@MainActivity.mode = it
-          when (bottomNavigationView.selectedItemId) {
-            R.id.menuDiscover -> {
-              val target = getMenuDiscoverAction()
-              navigationHost.findNavController().navigate(target)
-            }
-            R.id.menuCollection -> {
-              val target = getMenuCollectionAction()
-              navigationHost.findNavController().navigate(target)
-            }
-            R.id.menuProgress -> {
-              val target = getMenuProgressAction()
-              navigationHost.findNavController().navigate(target)
-            }
-          }
-        }
       }
       showWhatsNew?.let { if (it) showWhatsNew() }
       showRateApp?.let {
@@ -325,7 +324,7 @@ class MainActivity :
         bottomNavigationView.selectedItemId = R.id.menuCollection
       intent.extras?.containsKey("extraShortcutSearch") == true -> {
         bottomNavigationView.selectedItemId = R.id.menuDiscover
-        val action = when (mode) {
+        val action = when (viewModel.getMode()) {
           SHOWS -> R.id.actionDiscoverFragmentToSearchFragment
           MOVIES -> R.id.actionDiscoverMoviesFragmentToSearchFragment
         }
@@ -343,17 +342,17 @@ class MainActivity :
       .show()
   }
 
-  private fun getMenuDiscoverAction() = when (mode) {
+  private fun getMenuDiscoverAction() = when (viewModel.getMode()) {
     SHOWS -> R.id.actionNavigateDiscoverFragment
     MOVIES -> R.id.actionNavigateDiscoverMoviesFragment
   }
 
-  private fun getMenuCollectionAction() = when (mode) {
+  private fun getMenuCollectionAction() = when (viewModel.getMode()) {
     SHOWS -> R.id.actionNavigateFollowedShowsFragment
     MOVIES -> R.id.actionNavigateFollowedMoviesFragment
   }
 
-  private fun getMenuProgressAction() = when (mode) {
+  private fun getMenuProgressAction() = when (viewModel.getMode()) {
     SHOWS -> R.id.actionNavigateProgressFragment
     MOVIES -> R.id.actionNavigateProgressMoviesFragment
   }

@@ -34,8 +34,6 @@ data class Settings(
   @ColumnInfo(name = "archive_shows_sort_by", defaultValue = "NAME") var archiveShowsSortBy: String,
   @ColumnInfo(name = "archive_shows_include_statistics", defaultValue = "1") var archiveShowsIncludeStatistics: Boolean,
   @ColumnInfo(name = "special_seasons_enabled", defaultValue = "0") var specialSeasonsEnabled: Boolean,
-  @ColumnInfo(name = "movies_enabled", defaultValue = "1") var moviesEnabled: Boolean,
-  @ColumnInfo(name = "movies_active", defaultValue = "0") var moviesActive: Boolean,
   @ColumnInfo(name = "show_anticipated_movies", defaultValue = "0") var showAnticipatedMovies: Boolean,
   @ColumnInfo(name = "discover_movies_filter_genres", defaultValue = "") var discoverMoviesFilterGenres: String,
   @ColumnInfo(name = "discover_movies_filter_feed", defaultValue = "HOT") var discoverMoviesFilterFeed: String,

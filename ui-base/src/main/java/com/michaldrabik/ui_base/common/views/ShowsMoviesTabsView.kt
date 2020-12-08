@@ -5,11 +5,11 @@ import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.michaldrabik.common.Mode
+import com.michaldrabik.common.Mode.MOVIES
+import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour
-import com.michaldrabik.ui_base.utilities.Mode
-import com.michaldrabik.ui_base.utilities.Mode.MOVIES
-import com.michaldrabik.ui_base.utilities.Mode.SHOWS
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.view_shows_movies_tabs.view.*
 

@@ -91,7 +91,8 @@ class FollowedShowsFragment :
       onStatsClickListener = { openStatistics() }
     }
     followedShowsModeTabs.run {
-      onModeSelected = { setMode(it) }
+      visibleIf(moviesEnabled)
+      onModeSelected = { mode = it }
       animateShows()
     }
     followedShowsSortIcon.run {
@@ -128,11 +129,12 @@ class FollowedShowsFragment :
   private fun setupStatusBar() {
     followedShowsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.systemWindowInsetTop
+      val tabsPadding = if (moviesEnabled) R.dimen.myShowsSearchViewPadding else R.dimen.myShowsSearchViewPaddingNoModes
       followedShowsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
       followedShowsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
       followedShowsModeTabs.updateTopMargin(dimenToPx(R.dimen.showsMoviesTabsMargin) + statusBarSize)
-      followedShowsTabs.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
-      followedShowsSortIcon.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
+      followedShowsTabs.updateTopMargin(dimenToPx(tabsPadding) + statusBarSize)
+      followedShowsSortIcon.updateTopMargin(dimenToPx(tabsPadding) + statusBarSize)
       followedShowsSearchEmptyView.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
       followedShowsSearchContainer.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
     }
