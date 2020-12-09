@@ -23,7 +23,7 @@
   <string name="textSettingsMyShowsSectionsTitle">Moje Seriale - Sekcje</string>
   <string name="textSettingsMyShowsSectionSummary">Włącz/wyłącz sekcje w zakładce \'Moje Seriale\'.</string>
   <string name="textSettingsMyShowsLanguageTitle">Język</string>
-  <string name="textSettingsMyShowsLanguageSummary">Opisy będą tłumaczone na bieżąco w miarę dostępności.</string>
+  <string name="textSettingsMyShowsLanguageSummary">Opisy będą tłumaczone na bieżąco w miarę dostępności.\nAplikacja zostanie ponownie uruchomiona.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Statystyki Archiwum</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Uwzględniaj seriale z Archiwum w statystykach.</string>
   <string name="textSettingsIncludeSpecialsTitle">Sezony Specjalne</string>
@@ -44,5 +44,4 @@
   <string name="textSettingsQuickSyncConfirmationMessage">\nPlanowane synchronizacje są obecnie włączone.\n\nWyłączyć przed włączeniem Szybkiej Synchronizacji (zalecane)?\n</string>
   <string name="textSettingsLogoutTitle">Trakt.tv Wylogowanie</string>
   <string name="textSettingsLogoutMessage">\nCzy na pewno chcesz się wylogować?\n</string>
-  <string name="textSettingsLanguageChangeMessage">Zrestartuj aplikację aby dokończyć zmianę języka.</string>
 </resources>

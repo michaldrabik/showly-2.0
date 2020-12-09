@@ -23,7 +23,7 @@
   <string name="textSettingsMyShowsSectionsTitle">My Shows Sections</string>
   <string name="textSettingsMyShowsSectionSummary">Enable/disable sections in \'My Shows\' tab.</string>
   <string name="textSettingsMyShowsLanguageTitle">Language</string>
-  <string name="textSettingsMyShowsLanguageSummary">Descriptions and titles will be translated when available.</string>
+  <string name="textSettingsMyShowsLanguageSummary">Descriptions and titles will be translated when available.\nApp will restart.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Archived Statistics</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Include archived shows data in the statistics.</string>
   <string name="textSettingsIncludeSpecialsTitle">Special Seasons</string>
@@ -44,7 +44,6 @@
   <string name="textSettingsQuickSyncConfirmationMessage">\nIt seems like Automatic Sync is already turned on.\n\nWould you like to turn it off before enabling instant sync (advised)?\n</string>
   <string name="textSettingsLogoutTitle">Trakt.tv Sign Out</string>
   <string name="textSettingsLogoutMessage">\nAre you sure you want to sign out?\n</string>
-  <string name="textSettingsLanguageChangeMessage">Please restart the app for language change to take effect.</string>
   <string name="textSettingsMoviesEnabledTitle">Movies</string>
   <string name="textSettingsMoviesEnabledSummary">Enable/disable movies support. App will restart.</string>
 

@@ -100,8 +100,8 @@ class SettingsViewModel @Inject constructor(
       mainCase.enableMovies(enable)
       delay(500)
       refreshSettings(restartApp = true)
-      Analytics.logSettingsMoviesEnabled(enable)
     }
+    Analytics.logSettingsMoviesEnabled(enable)
   }
 
   fun setWhenToNotify(delay: NotificationDelay, context: Context) {
@@ -115,9 +115,10 @@ class SettingsViewModel @Inject constructor(
   fun setLanguage(language: AppLanguage) {
     viewModelScope.launch {
       mainCase.setLanguage(language)
-      refreshSettings()
-      Analytics.logSettingsLanguage(language.code)
+      delay(500)
+      refreshSettings(restartApp = true)
     }
+    Analytics.logSettingsLanguage(language.code)
   }
 
   fun setTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {

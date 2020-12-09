@@ -15,7 +15,6 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.MY_SHOWS_RECENTS_OPTIONS
@@ -24,7 +23,6 @@ import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
-import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MyShowsSection.FINISHED
 import com.michaldrabik.ui_model.MyShowsSection.RECENTS
@@ -229,12 +227,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       .setSingleChoiceItems(options.map { getString(it.displayName) }.toTypedArray(), selected) { dialog, index ->
         if (index != selected) {
           viewModel.setLanguage(options[index])
-          settingsRoot.showInfoSnackbar(
-            getString(R.string.textSettingsLanguageChangeMessage),
-            actionText = R.string.textOk,
-            length = LENGTH_INDEFINITE,
-            action = { restartApp() }
-          )
         }
         dialog.dismiss()
       }

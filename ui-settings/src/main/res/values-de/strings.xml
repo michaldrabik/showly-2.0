@@ -44,6 +44,5 @@
   <string name="textSettingsQuickSyncConfirmationMessage">\nEs scheint, als sei die automatische Synchronisation bereits aktiviert.\n\nMöchtest du diese Einstellung deaktivieren bevor du Instant Synchronisation aktivierst (Empfohlen!)?\n</string>
   <string name="textSettingsLogoutTitle">Bei Trakt.tv Ausloggen</string>
   <string name="textSettingsLogoutMessage">\nBist du sicher, dass du dich ausloggen möchtest?\n</string>
-  <string name="textSettingsLanguageChangeMessage">Bitte starte die App neu um die Sprachänderung wirksam zu machen.</string>
 
   </resources>
