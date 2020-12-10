@@ -126,7 +126,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
     settingsShowsNotificationsSwitch
       .setCheckedSilent(settings.episodesNotificationsEnabled) { _, isChecked ->
-        viewModel.enableEpisodesAnnouncements(isChecked, requireAppContext())
+        viewModel.enableAnnouncements(isChecked, requireAppContext())
       }
 
     settingsWhenToNotifyValue.run {
@@ -146,7 +146,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
     settingsMoviesEnabledSwitch
       .setCheckedSilent(moviesEnabled) { _, isChecked ->
-        viewModel.enableMovies(isChecked)
+        viewModel.enableMovies(isChecked, requireAppContext())
       }
 
     settingsContactDevs.onClick {

@@ -59,6 +59,7 @@
   <string name="textNewEpisodeAvailableSoon">New episode will be available soon!</string>
   <string name="textNewSeasonAvailable">New season is available now!</string>
   <string name="textNewSeasonAvailableSoon">New season will be available soon!</string>
+  <string name="textNewMovieAvailable">Movie has been released!</string>
 
   <string name="textTraktSync">Trakt.tv Sync</string>
   <string name="textTraktSyncComplete">Sync completed successfully.</string>

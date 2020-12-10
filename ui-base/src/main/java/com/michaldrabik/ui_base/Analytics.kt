@@ -243,8 +243,8 @@ object Analytics {
     }
   }
 
-  fun logSettingsEpisodesAnnouncements(enabled: Boolean) {
-    firebaseAnalytics.logEvent("settings_episodes_announcements") {
+  fun logSettingsAnnouncements(enabled: Boolean) {
+    firebaseAnalytics.logEvent("settings_announcements") {
       param("enabled", enabled.toString())
     }
   }

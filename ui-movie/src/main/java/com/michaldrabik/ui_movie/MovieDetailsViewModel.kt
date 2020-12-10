@@ -6,6 +6,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
+import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -46,12 +47,13 @@ class MovieDetailsViewModel @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
   private val quickSyncManager: QuickSyncManager,
-  private val imagesProvider: MovieImagesProvider
+  private val imagesProvider: MovieImagesProvider,
+  private val announcementManager: AnnouncementManager,
 ) : BaseViewModel<MovieDetailsUiModel>() {
 
   private var movie by notNull<Movie>()
 
-  fun loadDetails(id: IdTrakt) {
+  fun loadDetails(id: IdTrakt, context: Context) {
     viewModelScope.launch {
       val progressJob = launchDelayed(500) {
         uiState = MovieDetailsUiModel(movieLoading = true)
@@ -82,6 +84,11 @@ class MovieDetailsViewModel @Inject constructor(
         launch { loadActors(movie) }
         launch { loadRelatedMovies(movie) }
         launch { loadTranslation(movie) }
+
+        if (followedState.isWatchlist) {
+          announcementManager.refreshMoviesAnnouncements(context)
+        }
+
         if (isSignedIn) launch { loadRating(movie) }
       } catch (t: Throwable) {
         _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadShow)
@@ -213,6 +220,7 @@ class MovieDetailsViewModel @Inject constructor(
       myMoviesCase.addToMyMovies(movie)
       quickSyncManager.scheduleMovies(context, listOf(movie.traktId))
       uiState = MovieDetailsUiModel(followedState = FollowedState.inMyMovies())
+      announcementManager.refreshMoviesAnnouncements(context)
       Analytics.logMovieAddToMyMovies(movie)
     }
   }
@@ -222,11 +230,12 @@ class MovieDetailsViewModel @Inject constructor(
       watchlistCase.addToWatchlist(movie)
       quickSyncManager.scheduleMoviesWatchlist(context, listOf(movie.traktId))
       uiState = MovieDetailsUiModel(followedState = FollowedState.inWatchlist())
+      announcementManager.refreshMoviesAnnouncements(context)
       Analytics.logMovieAddToWatchlistMovies(movie)
     }
   }
 
-  fun removeFromFollowed() {
+  fun removeFromFollowed(context: Context) {
     viewModelScope.launch {
       val isMyMovie = myMoviesCase.isMyMovie(movie)
       val isWatchlist = watchlistCase.isWatchlist(movie)
@@ -252,6 +261,8 @@ class MovieDetailsViewModel @Inject constructor(
         isWatchlist -> MovieDetailsUiModel(followedState = state, removeFromTraktWatchlist = event)
         else -> error("Unexpected movie state")
       }
+
+      announcementManager.refreshMoviesAnnouncements(context)
     }
   }
 

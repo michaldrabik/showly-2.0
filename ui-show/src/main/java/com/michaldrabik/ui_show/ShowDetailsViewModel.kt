@@ -108,7 +108,7 @@ class ShowDetailsViewModel @Inject constructor(
           areSeasonsLoaded = false
           loadSeasons(show, (context as OnlineStatusProvider).isOnline())
           if (followedState.isMyShows) {
-            announcementManager.refreshEpisodesAnnouncements(context)
+            announcementManager.refreshShowsAnnouncements(context)
           }
           areSeasonsLoaded = true
         }
@@ -308,7 +308,7 @@ class ShowDetailsViewModel @Inject constructor(
 
       uiState = ShowDetailsUiModel(followedState = FollowedState.inMyShows())
 
-      announcementManager.refreshEpisodesAnnouncements(context)
+      announcementManager.refreshShowsAnnouncements(context)
       Analytics.logShowAddToMyShows(show)
     }
   }
@@ -365,7 +365,7 @@ class ShowDetailsViewModel @Inject constructor(
         else -> error("Unexpected show state")
       }
 
-      announcementManager.refreshEpisodesAnnouncements(context)
+      announcementManager.refreshShowsAnnouncements(context)
     }
   }
 

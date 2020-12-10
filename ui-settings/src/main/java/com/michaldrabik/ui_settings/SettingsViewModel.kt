@@ -63,11 +63,11 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  fun enableEpisodesAnnouncements(enable: Boolean, context: Context) {
+  fun enableAnnouncements(enable: Boolean, context: Context) {
     viewModelScope.launch {
-      mainCase.enableEpisodesAnnouncements(enable, context)
+      mainCase.enableAnnouncements(enable, context)
       refreshSettings()
-      Analytics.logSettingsEpisodesAnnouncements(enable)
+      Analytics.logSettingsAnnouncements(enable)
     }
   }
 
@@ -95,9 +95,9 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  fun enableMovies(enable: Boolean) {
+  fun enableMovies(enable: Boolean, context: Context) {
     viewModelScope.launch {
-      mainCase.enableMovies(enable)
+      mainCase.enableMovies(enable, context)
       delay(500)
       refreshSettings(restartApp = true)
     }

@@ -17,7 +17,10 @@ class MainMiscCase @Inject constructor(
   private val announcementManager: AnnouncementManager
 ) {
 
-  suspend fun refreshAnnouncements(context: Context) = announcementManager.refreshEpisodesAnnouncements(context)
+  suspend fun refreshAnnouncements(context: Context) {
+    announcementManager.refreshShowsAnnouncements(context)
+    announcementManager.refreshMoviesAnnouncements(context)
+  }
 
   fun clear() = ratingsRepository.clear()
 
