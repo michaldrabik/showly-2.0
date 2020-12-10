@@ -3,7 +3,7 @@ package com.michaldrabik.showly2.ui
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.findNavController
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fcm.FcmExtra
