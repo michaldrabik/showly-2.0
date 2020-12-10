@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.michaldrabik.common.Mode
@@ -135,6 +134,14 @@ class MainActivity :
   }
 
   private fun setupNavigation() {
+    navigationHost.findNavController().run {
+      val graph = navInflater.inflate(R.navigation.navigation_graph)
+      graph.startDestination = when (viewModel.getMode()) {
+        SHOWS -> R.id.progressFragment
+        MOVIES -> R.id.progressMoviesFragment
+      }
+      setGraph(graph)
+    }
     bottomNavigationView.setOnNavigationItemSelectedListener { item ->
       if (bottomNavigationView.selectedItemId == item.itemId) {
         doForFragments { (it as? OnTabReselectedListener)?.onTabReselected() }
@@ -232,19 +239,14 @@ class MainActivity :
   override fun setMode(mode: Mode) {
     if (viewModel.getMode() != mode) {
       viewModel.setMode(mode)
-      when (bottomNavigationView.selectedItemId) {
-        R.id.menuDiscover -> {
-          val target = getMenuDiscoverAction()
-          navigationHost.findNavController().navigate(target)
-        }
-        R.id.menuCollection -> {
-          val target = getMenuCollectionAction()
-          navigationHost.findNavController().navigate(target)
-        }
-        R.id.menuProgress -> {
-          val target = getMenuProgressAction()
-          navigationHost.findNavController().navigate(target)
-        }
+      val target = when (bottomNavigationView.selectedItemId) {
+        R.id.menuDiscover -> getMenuDiscoverAction()
+        R.id.menuCollection -> getMenuCollectionAction()
+        R.id.menuProgress -> getMenuProgressAction()
+        else -> 0
+      }
+      if (target != 0) {
+        navigationHost.findNavController().navigate(target)
       }
     }
   }
