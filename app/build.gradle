@@ -75,6 +75,7 @@ dependencies {
   implementation project(':ui-my-movies')
   implementation project(':ui-search')
   implementation project(':ui-statistics')
+  implementation project(':ui-statistics-movies')
   implementation project(':ui-settings')
   implementation project(':ui-progress')
   implementation project(':ui-progress-movies')

@@ -34,6 +34,18 @@ class RatingsRepository @Inject constructor(
     return showsCache?.toList() ?: emptyList()
   }
 
+  suspend fun loadMoviesRatings(token: String): List<TraktRating> {
+    if (moviesCache == null) {
+      val ratings = cloud.traktApi.fetchMoviesRatings(token)
+      moviesCache = ratings.map { rate ->
+        val id = IdTrakt(rate.movie.ids.trakt ?: -1)
+        val date = rate.rated_at?.let { ZonedDateTime.parse(it) } ?: nowUtc()
+        TraktRating(id, rate.rating, date)
+      }.toMutableList()
+    }
+    return moviesCache?.toList() ?: emptyList()
+  }
+
   suspend fun loadRating(token: String, show: Show): TraktRating? {
     if (showsCache == null) {
       val ratings = cloud.traktApi.fetchShowsRatings(token)

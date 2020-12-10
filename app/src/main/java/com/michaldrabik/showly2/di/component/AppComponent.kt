@@ -22,6 +22,7 @@ import com.michaldrabik.ui_settings.di.UiSettingsComponent
 import com.michaldrabik.ui_show.di.UiShowDetailsComponent
 import com.michaldrabik.ui_statistics.di.UiSearchComponent
 import com.michaldrabik.ui_statistics.di.UiStatisticsComponent
+import com.michaldrabik.ui_statistics_movies.di.UiStatisticsMoviesComponent
 import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponent
 import com.michaldrabik.ui_widgets.di.UiWidgetsComponent
 import dagger.Component
@@ -59,6 +60,8 @@ interface AppComponent {
   fun uiSearchComponent(): UiSearchComponent.Factory
 
   fun uiStatisticsComponent(): UiStatisticsComponent.Factory
+
+  fun uiStatisticsMoviesComponent(): UiStatisticsMoviesComponent.Factory
 
   fun uiShowGalleryComponent(): UiFanartGalleryComponent.Factory
 

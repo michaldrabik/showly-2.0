@@ -27,6 +27,8 @@ import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
 import com.michaldrabik.ui_statistics.di.UiSearchComponent
 import com.michaldrabik.ui_statistics.di.UiStatisticsComponent
 import com.michaldrabik.ui_statistics.di.UiStatisticsComponentProvider
+import com.michaldrabik.ui_statistics_movies.di.UiStatisticsMoviesComponent
+import com.michaldrabik.ui_statistics_movies.di.UiStatisticsMoviesComponentProvider
 import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponent
 import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponentProvider
 
@@ -34,6 +36,7 @@ abstract class DiActivity :
   BaseActivity(),
   UiTraktSyncComponentProvider,
   UiStatisticsComponentProvider,
+  UiStatisticsMoviesComponentProvider,
   UiDiscoverComponentProvider,
   UiDiscoverMoviesComponentProvider,
   UiShowDetailsComponentProvider,
@@ -58,6 +61,7 @@ abstract class DiActivity :
   private lateinit var uiMovieDetailsComponent: UiMovieDetailsComponent
   private lateinit var uiShowGalleryComponent: UiFanartGalleryComponent
   private lateinit var uiStatisticsComponent: UiStatisticsComponent
+  private lateinit var uiStatisticsMoviesComponent: UiStatisticsMoviesComponent
   private lateinit var uiTraktSyncComponent: UiTraktSyncComponent
   private lateinit var uiProgressComponent: UiProgressComponent
   private lateinit var uiProgressMoviesComponent: UiProgressMoviesComponent
@@ -73,6 +77,7 @@ abstract class DiActivity :
   override fun provideShowDetailsComponent() = uiShowDetailsComponent
   override fun provideMovieDetailsComponent() = uiMovieDetailsComponent
   override fun provideStatisticsComponent() = uiStatisticsComponent
+  override fun provideStatisticsMoviesComponent() = uiStatisticsMoviesComponent
   override fun provideTraktSyncComponent() = uiTraktSyncComponent
   override fun provideProgressComponent() = uiProgressComponent
   override fun provideProgressMoviesComponent() = uiProgressMoviesComponent
@@ -89,6 +94,7 @@ abstract class DiActivity :
     uiMovieDetailsComponent = appComponent().uiMovieDetailsComponent().create()
     uiShowGalleryComponent = appComponent().uiShowGalleryComponent().create()
     uiStatisticsComponent = appComponent().uiStatisticsComponent().create()
+    uiStatisticsMoviesComponent = appComponent().uiStatisticsMoviesComponent().create()
     uiTraktSyncComponent = appComponent().uiTraktSyncComponent().create()
     uiProgressComponent = appComponent().uiProgressComponent().create()
     uiProgressMoviesComponent = appComponent().uiProgressMoviesComponent().create()

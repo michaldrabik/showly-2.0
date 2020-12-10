@@ -96,6 +96,7 @@ class ProgressMoviesFragment :
     }
     progressMoviesModeTabs.run {
       visibleIf(moviesEnabled)
+      isEnabled = false
       onModeSelected = { mode = it }
       animateMovies()
     }
@@ -240,6 +241,7 @@ class ProgressMoviesFragment :
   private fun render(uiModel: ProgressMoviesUiModel) {
     uiModel.run {
       items?.let {
+        progressMoviesModeTabs.isEnabled = true
         progressMoviesSearchView.isClickable = it.isNotEmpty() || isSearching == true
         progressMoviesSortIcon.visibleIf(it.isNotEmpty() && currentPage == 0)
         if (it.isNotEmpty() && sortOrder != null) {

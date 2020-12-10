@@ -23,6 +23,7 @@ import com.michaldrabik.ui_search.SearchViewModel
 import com.michaldrabik.ui_settings.SettingsViewModel
 import com.michaldrabik.ui_show.ShowDetailsViewModel
 import com.michaldrabik.ui_statistics.StatisticsViewModel
+import com.michaldrabik.ui_statistics_movies.StatisticsMoviesViewModel
 import com.michaldrabik.ui_trakt_sync.TraktSyncViewModel
 import dagger.Binds
 import dagger.Module
@@ -153,4 +154,9 @@ abstract class ViewModelsModule {
   @IntoMap
   @ViewModelKey(StatisticsViewModel::class)
   abstract fun bindStatisticsViewModel(viewModel: StatisticsViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(StatisticsMoviesViewModel::class)
+  abstract fun bindStatisticsMoviesViewModel(viewModel: StatisticsMoviesViewModel): ViewModel
 }

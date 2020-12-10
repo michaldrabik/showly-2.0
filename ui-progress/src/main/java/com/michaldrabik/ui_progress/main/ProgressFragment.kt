@@ -99,6 +99,7 @@ class ProgressFragment :
     }
     progressPagerModeTabs.run {
       visibleIf(moviesEnabled)
+      isEnabled = false
       onModeSelected = { mode = it }
       animateShows()
     }
@@ -254,6 +255,7 @@ class ProgressFragment :
   private fun render(uiModel: ProgressUiModel) {
     uiModel.run {
       items?.let {
+        progressPagerModeTabs.isEnabled = true
         progressSearchView.isClickable = it.isNotEmpty() || isSearching == true
         progressSortIcon.visibleIf(it.isNotEmpty() && currentPage == 0)
         if (it.isNotEmpty() && sortOrder != null) {

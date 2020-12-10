@@ -259,7 +259,7 @@
       />
     <action
       android:id="@+id/actionFollowedMoviesFragmentToStatisticsFragment"
-      app:destination="@id/statisticsFragment"
+      app:destination="@id/statisticsMoviesFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
@@ -310,6 +310,20 @@
     <action
       android:id="@+id/actionStatisticsFragmentToShowDetailsFragment"
       app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/statisticsMoviesFragment"
+    android:name="com.michaldrabik.ui_statistics_movies.StatisticsMoviesFragment"
+    android:label="fragmentStatisticsMovies"
+    >
+    <action
+      android:id="@+id/actionStatisticsMoviesFragmentToMovieDetailsFragment"
+      app:destination="@id/movieDetailsFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
