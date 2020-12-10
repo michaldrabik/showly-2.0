@@ -542,7 +542,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         else -> {
           remove()
           showNavigation()
-          findNavController().popBackStack()
+          findNavHost().findNavController().popBackStack()
         }
       }
     }

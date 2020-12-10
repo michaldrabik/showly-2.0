@@ -81,7 +81,7 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
     dispatcher.addCallback(viewLifecycleOwner) {
       remove()
       showNavigation()
-      findNavController().popBackStack()
+      findNavHost().findNavController().popBackStack()
     }
   }
 }

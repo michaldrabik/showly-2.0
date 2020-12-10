@@ -261,7 +261,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     dispatcher.addCallback(viewLifecycleOwner) {
       showNavigation()
       remove()
-      findNavController().popBackStack()
+      findNavHost().findNavController().popBackStack()
     }
   }
 }

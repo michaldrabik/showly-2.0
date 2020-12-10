@@ -280,7 +280,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     dispatcher.addCallback(viewLifecycleOwner) {
       remove()
       showNavigation()
-      findNavController().popBackStack()
+      findNavHost().findNavController().popBackStack()
     }
   }
 

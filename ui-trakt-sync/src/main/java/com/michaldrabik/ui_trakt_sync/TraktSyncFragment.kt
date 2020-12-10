@@ -138,7 +138,7 @@ class TraktSyncFragment :
         traktLastSyncTimestamp.visibleIf(!it)
       }
       progressStatus?.let { traktSyncStatus.text = it }
-      authError?.let { findNavController().popBackStack() }
+      authError?.let { findNavHost().findNavController().popBackStack() }
       traktSyncSchedule?.let { traktSyncScheduleButton.setText(it.buttonStringRes) }
       lastTraktSyncTimestamp?.let {
         if (it != 0L) {
@@ -167,7 +167,7 @@ class TraktSyncFragment :
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
       remove()
-      findNavController().popBackStack()
+      findNavHost().findNavController().popBackStack()
     }
   }
 

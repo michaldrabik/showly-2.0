@@ -90,7 +90,7 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>(R.layout.frag
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
       remove()
-      findNavController().popBackStack()
+      findNavHost().findNavController().popBackStack()
     }
   }
 }

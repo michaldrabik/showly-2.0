@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.michaldrabik.common.Mode
@@ -135,7 +135,7 @@ class MainActivity :
   }
 
   private fun setupNavigation() {
-    navigationHost.findNavController().run {
+    findNavHost().findNavController().run {
       val graph = navInflater.inflate(R.navigation.navigation_graph)
       graph.startDestination = when (viewModel.getMode()) {
         SHOWS -> R.id.progressFragment
@@ -156,7 +156,7 @@ class MainActivity :
         else -> throw IllegalStateException("Invalid menu item.")
       }
 
-      navigationHost.findNavController().navigate(target)
+      findNavHost().findNavController().navigate(target)
       showNavigation(true)
       return@setOnNavigationItemSelectedListener true
     }
@@ -169,7 +169,7 @@ class MainActivity :
         return@addCallback
       }
 
-      navigationHost.findNavController().run {
+      findNavHost().findNavController().run {
         if (currentDestination?.id == R.id.progressFragment
           || currentDestination?.id == R.id.progressMoviesFragment
         ) {
@@ -247,7 +247,7 @@ class MainActivity :
         else -> 0
       }
       if (target != 0) {
-        navigationHost.findNavController().navigate(target)
+        findNavHost().findNavController().navigate(target)
       }
     }
   }
@@ -280,7 +280,7 @@ class MainActivity :
   }
 
   private fun doForFragments(action: (Fragment) -> Unit) {
-    navigationHost?.findNavController()?.currentDestination?.id?.let {
+    findNavHost().findNavController()?.currentDestination?.id?.let {
       val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
       navHost?.childFragmentManager?.primaryNavigationFragment?.let {
         action(it)
@@ -331,7 +331,7 @@ class MainActivity :
           SHOWS -> R.id.actionDiscoverFragmentToSearchFragment
           MOVIES -> R.id.actionDiscoverMoviesFragmentToSearchFragment
         }
-        navigationHost.findNavController().navigate(action)
+        findNavHost().findNavController().navigate(action)
       }
     }
   }
@@ -359,6 +359,8 @@ class MainActivity :
     SHOWS -> R.id.actionNavigateProgressFragment
     MOVIES -> R.id.actionNavigateProgressMoviesFragment
   }
+
+  override fun findNavHost() = findNavHostFragment()
 
   override fun provideSnackbarLayout(): ViewGroup = snackBarHost
 }

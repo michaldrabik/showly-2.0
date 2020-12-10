@@ -3,7 +3,8 @@ package com.michaldrabik.showly2.ui
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fcm.FcmExtra
@@ -21,7 +22,9 @@ abstract class BaseActivity : AppCompatActivity() {
     ProgressWidgetProvider.EXTRA_SHOW_ID
   )
 
-  protected fun handleNotification(extras: Bundle?, action: () -> Unit = {}) {
+  fun findNavHostFragment() = supportFragmentManager.findFragmentById(R.id.navigationHost) as NavHostFragment
+
+  fun handleNotification(extras: Bundle?, action: () -> Unit = {}) {
     if (extras == null) return
     if (extras.containsKey(SearchWidgetProvider.EXTRA_WIDGET_SEARCH_CLICK)) {
       handleSearchWidgetClick(extras)
@@ -35,7 +38,7 @@ abstract class BaseActivity : AppCompatActivity() {
   }
 
   private fun handleSearchWidgetClick(extras: Bundle?) {
-    navigationHost.findNavController().run {
+    findNavHostFragment().findNavController().run {
       try {
         when (currentDestination?.id) {
           R.id.searchFragment -> return@run
@@ -57,7 +60,7 @@ abstract class BaseActivity : AppCompatActivity() {
   private fun handleFcmShowPush(extras: Bundle, key: String, action: () -> Unit) {
     val showId = extras.getString(key)?.toLong() ?: -1
     val bundle = Bundle().apply { putLong(ARG_SHOW_ID, showId) }
-    navigationHost.findNavController().run {
+    findNavHostFragment().findNavController().run {
       try {
         when (currentDestination?.id) {
           R.id.showDetailsFragment -> navigate(R.id.actionShowDetailsFragmentToSelf, bundle)
@@ -76,7 +79,7 @@ abstract class BaseActivity : AppCompatActivity() {
   }
 
   protected fun handleTraktAuthorization(authData: Uri?) {
-    navigationHost.findNavController().currentDestination?.id?.let {
+    findNavHostFragment().findNavController().currentDestination?.id?.let {
       val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
       navHost?.childFragmentManager?.primaryNavigationFragment?.let {
         (it as? OnTraktAuthorizeListener)?.onAuthorizationResult(authData)
