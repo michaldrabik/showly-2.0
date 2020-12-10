@@ -65,9 +65,10 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
       statisticsMoviesTopGenres.bind(topGenres ?: emptyList())
       statisticsMoviesRatings.bind(ratings ?: emptyList())
       ratings?.let { statisticsMoviesRatings.visibleIf(it.isNotEmpty()) }
-
-      statisticsMoviesContent.fadeIf(totalWatchedMovies ?: 0 > 0)
-      statisticsMoviesEmptyView.fadeIf(totalWatchedMovies ?: 0 <= 0)
+      totalWatchedMovies?.let {
+        statisticsMoviesContent.fadeIf(it > 0)
+        statisticsMoviesEmptyView.fadeIf(it <= 0)
+      }
     }
   }
 
