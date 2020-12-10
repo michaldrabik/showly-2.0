@@ -31,8 +31,8 @@
   <string name="textSettingsNotifications">Notifications</string>
   <string name="textSettingsPushNotificationsTitle">Push Notifications</string>
   <string name="textSettingsPushNotificationsSummary">Receive general information push notifications.</string>
-  <string name="textSettingsShowsNotificationsTitle">Episodes Announcements</string>
-  <string name="textSettingsShowsNotificationsSummary">Receive notifications about new episodes, seasons for shows you are following.</string>
+  <string name="textSettingsShowsNotificationsTitle">Announcements</string>
+  <string name="textSettingsShowsNotificationsSummary">Receive notifications about new movies, episodes, seasons for shows you are following.</string>
   <string name="textSettingsMisc">Misc</string>
   <string name="textSettingsContactDevsTitle">Contact Developers</string>
   <string name="textSettingsContactDevsSummary">Got an issue? Click to send us an email.</string>
