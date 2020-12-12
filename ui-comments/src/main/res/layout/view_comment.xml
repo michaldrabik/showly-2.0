@@ -29,7 +29,7 @@
     android:maxLines="1"
     android:textAlignment="viewStart"
     android:textColor="?android:attr/textColorSecondary"
-    android:textSize="10sp"
+    android:textSize="12sp"
     app:layout_constraintBottom_toTopOf="@id/commentText"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toEndOf="@id/commentImage"
