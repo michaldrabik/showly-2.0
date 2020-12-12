@@ -93,6 +93,7 @@ class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fr
       onModeSelected = { mode = it }
       animateMovies()
     }
+    discoverMoviesMask.onClick { toggleFiltersView() }
     discoverMoviesFiltersView.onApplyClickListener = {
       toggleFiltersView()
       viewModel.loadMovies(
