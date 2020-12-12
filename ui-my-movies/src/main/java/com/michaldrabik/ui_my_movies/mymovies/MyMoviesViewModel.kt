@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_my_movies.mymovies
 
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
@@ -12,6 +13,7 @@ import com.michaldrabik.ui_model.MyMoviesSection.ALL
 import com.michaldrabik.ui_model.MyMoviesSection.RECENTS
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesLoadCase
+import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesRatingsCase
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.ALL_MOVIES_ITEM
@@ -23,7 +25,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MyMoviesViewModel @Inject constructor(
-  private val loadMoviesCase: MyMoviesLoadCase
+  private val loadMoviesCase: MyMoviesLoadCase,
+  private val ratingsCase: MyMoviesRatingsCase
 ) : BaseViewModel<MyMoviesUiModel>() {
 
   fun loadMovies(notifyListsUpdate: Boolean = false) {
@@ -46,6 +49,19 @@ class MyMoviesViewModel @Inject constructor(
       }
 
       uiState = MyMoviesUiModel(listItems = listItems, notifyListsUpdate = notifyListsUpdate)
+      loadRatings(listItems)
+    }
+  }
+
+  private fun loadRatings(items: MutableList<MyMoviesItem>) {
+    if (items.isEmpty()) return
+    viewModelScope.launch {
+      try {
+        val listItems = ratingsCase.loadRatings(items)
+        uiState = MyMoviesUiModel(listItems = listItems)
+      } catch (error: Throwable) {
+        FirebaseCrashlytics.getInstance().recordException(error)
+      }
     }
   }
 

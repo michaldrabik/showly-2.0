@@ -17,6 +17,7 @@ data class MyMoviesItem(
   override val image: Image,
   override val isLoading: Boolean,
   val translation: Translation? = null,
+  val userRating: Int? = null
 ) : MovieListItem {
 
   enum class Type {

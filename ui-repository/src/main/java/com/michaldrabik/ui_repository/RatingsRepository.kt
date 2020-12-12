@@ -22,7 +22,7 @@ class RatingsRepository @Inject constructor(
   private var moviesCache: MutableList<TraktRating>? = null
   private var episodesCache: MutableList<TraktRating>? = null
 
-  suspend fun loadShowsRatings(token: String): List<TraktRating> {
+  suspend fun preloadShowsRatings(token: String) {
     if (showsCache == null) {
       val ratings = cloud.traktApi.fetchShowsRatings(token)
       showsCache = ratings.map { rate ->
@@ -31,10 +31,9 @@ class RatingsRepository @Inject constructor(
         TraktRating(id, rate.rating, date)
       }.toMutableList()
     }
-    return showsCache?.toList() ?: emptyList()
   }
 
-  suspend fun loadMoviesRatings(token: String): List<TraktRating> {
+  suspend fun preloadMoviesRatings(token: String) {
     if (moviesCache == null) {
       val ratings = cloud.traktApi.fetchMoviesRatings(token)
       moviesCache = ratings.map { rate ->
@@ -43,28 +42,25 @@ class RatingsRepository @Inject constructor(
         TraktRating(id, rate.rating, date)
       }.toMutableList()
     }
+  }
+
+  suspend fun loadShowsRatings(token: String): List<TraktRating> {
+    preloadShowsRatings(token)
+    return showsCache?.toList() ?: emptyList()
+  }
+
+  suspend fun loadMoviesRatings(token: String): List<TraktRating> {
+    preloadMoviesRatings(token)
     return moviesCache?.toList() ?: emptyList()
   }
 
   suspend fun loadRating(token: String, show: Show): TraktRating? {
-    if (showsCache == null) {
-      val ratings = cloud.traktApi.fetchShowsRatings(token)
-      showsCache = ratings.map {
-        val id = IdTrakt(it.show.ids.trakt ?: -1)
-        TraktRating(id, it.rating)
-      }.toMutableList()
-    }
+    preloadShowsRatings(token)
     return showsCache?.find { it.idTrakt == show.ids.trakt }
   }
 
   suspend fun loadRating(token: String, movie: Movie): TraktRating? {
-    if (moviesCache == null) {
-      val ratings = cloud.traktApi.fetchMoviesRatings(token)
-      moviesCache = ratings.map {
-        val id = IdTrakt(it.movie.ids.trakt ?: -1)
-        TraktRating(id, it.rating)
-      }.toMutableList()
-    }
+    preloadMoviesRatings(token)
     return moviesCache?.find { it.idTrakt == movie.ids.trakt }
   }
 
@@ -153,6 +149,7 @@ class RatingsRepository @Inject constructor(
 
   fun clear() {
     showsCache = null
+    moviesCache = null
     episodesCache = null
   }
 }

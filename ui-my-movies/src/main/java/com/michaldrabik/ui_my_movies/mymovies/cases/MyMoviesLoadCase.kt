@@ -2,7 +2,6 @@ package com.michaldrabik.ui_my_movies.mymovies.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
@@ -15,8 +14,10 @@ import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
+import com.michaldrabik.ui_repository.RatingsRepository
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
+import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.movies.MoviesRepository
 import javax.inject.Inject
 
@@ -25,11 +26,12 @@ class MyMoviesLoadCase @Inject constructor(
   private val imagesProvider: MovieImagesProvider,
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
+  private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
-  private val database: AppDatabase
+  private val userTraktManager: UserTraktManager
 ) {
 
-  suspend fun loadSettings() = settingsRepository.load()
+  private suspend fun loadSettings() = settingsRepository.load()
 
   suspend fun loadAll() = moviesRepository.myMovies.loadAll()
 
@@ -79,6 +81,13 @@ class MyMoviesLoadCase @Inject constructor(
     val language = settingsRepository.getLanguage()
     if (language == Config.DEFAULT_LANGUAGE) return null
     return translationsRepository.loadTranslation(movie, language, onlyLocal = true)
+  }
+
+  suspend fun loadRating(movie: Movie): Int? {
+    if (!userTraktManager.isAuthorized()) return null
+
+    val token = userTraktManager.checkAuthorization().token
+    return ratingsRepository.loadRating(token, movie)?.rating
   }
 
   suspend fun findCachedImage(movie: Movie, type: ImageType) =

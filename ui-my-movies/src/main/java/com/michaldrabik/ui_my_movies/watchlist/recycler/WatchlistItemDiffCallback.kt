@@ -10,5 +10,6 @@ class WatchlistItemDiffCallback : DiffUtil.ItemCallback<WatchlistListItem>() {
   override fun areContentsTheSame(oldItem: WatchlistListItem, newItem: WatchlistListItem) =
     oldItem.image == newItem.image &&
       oldItem.isLoading == newItem.isLoading &&
-      oldItem.translation == newItem.translation
+      oldItem.translation == newItem.translation &&
+      oldItem.userRating == newItem.userRating
 }

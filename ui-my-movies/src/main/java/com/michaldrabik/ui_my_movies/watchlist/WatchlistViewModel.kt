@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_my_movies.watchlist
 
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.ActionEvent
@@ -9,6 +10,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistLoadMoviesCase
+import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistRatingsCase
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistSortOrderCase
 import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistListItem
 import kotlinx.coroutines.launch
@@ -16,6 +18,7 @@ import javax.inject.Inject
 
 class WatchlistViewModel @Inject constructor(
   private val sortOrderCase: WatchlistSortOrderCase,
+  private val ratingsCase: WatchlistRatingsCase,
   private val loadMoviesCase: WatchlistLoadMoviesCase,
   private val imagesProvider: MovieImagesProvider
 ) : BaseViewModel<WatchlistUiModel>() {
@@ -27,6 +30,19 @@ class WatchlistViewModel @Inject constructor(
         WatchlistListItem(it.first, image, false, it.second)
       }
       uiState = WatchlistUiModel(items = items, scrollToTop = ActionEvent(resetScroll))
+      loadRatings(items)
+    }
+  }
+
+  private fun loadRatings(items: List<WatchlistListItem>) {
+    if (items.isEmpty()) return
+    viewModelScope.launch {
+      try {
+        val listItems = ratingsCase.loadRatings(items)
+        uiState = WatchlistUiModel(items = listItems)
+      } catch (error: Throwable) {
+        FirebaseCrashlytics.getInstance().recordException(error)
+      }
     }
   }
 

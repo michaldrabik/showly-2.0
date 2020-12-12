@@ -12,6 +12,7 @@ import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistListItem
@@ -60,6 +61,12 @@ class WatchlistMovieView : MovieView<WatchlistListItem> {
     watchlistMoviesRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
     watchlistMoviesYear.visibleIf(item.movie.year > 0)
 
+    item.userRating?.let {
+      watchlistMovieUserStarIcon.visible()
+      watchlistMovieUserRating.visible()
+      watchlistMovieUserRating.text = String.format(ENGLISH, "%d", it)
+    }
+
     loadImage(item, missingImageListener)
   }
 
@@ -69,6 +76,8 @@ class WatchlistMovieView : MovieView<WatchlistListItem> {
     watchlistMoviesYear.text = ""
     watchlistMoviesRating.text = ""
     watchlistMoviesPlaceholder.gone()
+    watchlistMovieUserStarIcon.gone()
+    watchlistMovieUserRating.gone()
     Glide.with(this).clear(watchlistMoviesImage)
   }
 }

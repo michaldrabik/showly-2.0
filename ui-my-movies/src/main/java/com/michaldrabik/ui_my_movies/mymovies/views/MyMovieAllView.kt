@@ -11,6 +11,7 @@ import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
@@ -59,6 +60,12 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
     myMovieAllRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
     myMovieAllYear.visibleIf(item.movie.year > 0)
 
+    item.userRating?.let {
+      myMovieAllUserStarIcon.visible()
+      myMovieUserRating.visible()
+      myMovieUserRating.text = String.format(ENGLISH, "%d", it)
+    }
+
     loadImage(item, missingImageListener)
   }
 
@@ -67,6 +74,8 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
     myMovieAllDescription.text = ""
     myMovieAllYear.text = ""
     myMovieAllRating.text = ""
+    myMovieUserRating.gone()
+    myMovieAllUserStarIcon.gone()
     myMovieAllPlaceholder.gone()
     Glide.with(this).clear(myMovieAllImage)
   }

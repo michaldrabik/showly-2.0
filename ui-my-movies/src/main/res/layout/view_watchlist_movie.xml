@@ -71,7 +71,7 @@
       app:layout_constraintBottom_toTopOf="@id/watchlistMoviesDescription"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/watchlistMoviesImage"
-      app:layout_constraintTop_toBottomOf="@+id/watchlistMoviesYear"
+      app:layout_constraintTop_toBottomOf="@id/watchlistMoviesYear"
       app:layout_constraintVertical_chainStyle="packed"
       tools:text="Game of Thrones"
       />
@@ -87,7 +87,7 @@
       android:textAlignment="viewStart"
       android:textColor="?attr/colorAccent"
       android:textSize="12sp"
-      app:layout_constraintBottom_toTopOf="@+id/watchlistMoviesTitle"
+      app:layout_constraintBottom_toTopOf="@id/watchlistMoviesTitle"
       app:layout_constraintStart_toEndOf="@id/watchlistMoviesImage"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_chainStyle="packed"
@@ -97,9 +97,9 @@
 
     <ImageView
       android:id="@+id/watchlistMoviesStarIcon"
-      android:layout_width="wrap_content"
+      android:layout_width="20dp"
       android:layout_height="0dp"
-      app:layout_constraintBottom_toTopOf="@+id/watchlistMoviesTitle"
+      app:layout_constraintBottom_toTopOf="@id/watchlistMoviesTitle"
       app:layout_constraintEnd_toStartOf="@id/watchlistMoviesRating"
       app:layout_constraintTop_toTopOf="@id/watchlistMoviesYear"
       app:srcCompat="@drawable/ic_star"
@@ -113,10 +113,38 @@
       android:gravity="end"
       android:textColor="?android:attr/textColorSecondary"
       android:textSize="12sp"
-      app:layout_constraintBottom_toTopOf="@+id/watchlistMoviesTitle"
+      app:layout_constraintBottom_toTopOf="@id/watchlistMoviesTitle"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/watchlistMoviesYear"
       tools:text="7.6"
+      />
+
+    <ImageView
+      android:id="@+id/watchlistMovieUserStarIcon"
+      android:layout_width="20dp"
+      android:layout_height="0dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/watchlistMoviesTitle"
+      app:layout_constraintEnd_toStartOf="@id/watchlistMovieUserRating"
+      app:layout_constraintTop_toTopOf="@id/watchlistMoviesYear"
+      app:srcCompat="@drawable/ic_star"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/watchlistMovieUserRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:gravity="end"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/watchlistMoviesTitle"
+      app:layout_constraintEnd_toStartOf="@id/watchlistMoviesStarIcon"
+      app:layout_constraintTop_toTopOf="@id/watchlistMoviesYear"
+      tools:text="10"
+      tools:visibility="visible"
       />
 
     <TextView

@@ -26,6 +26,7 @@ class MainViewModel @Inject constructor(
       initCase.initSettings()
       checkInitialRun()
       initCase.initFcm()
+      initCase.initRatings()
     }
   }
 

@@ -17,6 +17,7 @@ class MyMoviesItemDiffCallback : DiffUtil.ItemCallback<MyMoviesItem>() {
       else ->
         oldItem.image == newItem.image &&
           oldItem.isLoading == newItem.isLoading &&
-          oldItem.translation == newItem.translation
+          oldItem.translation == newItem.translation &&
+          oldItem.userRating == newItem.userRating
     }
 }

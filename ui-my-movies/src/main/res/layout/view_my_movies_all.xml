@@ -71,7 +71,7 @@
       app:layout_constraintBottom_toTopOf="@id/myMovieAllDescription"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/myMovieAllImage"
-      app:layout_constraintTop_toBottomOf="@+id/myMovieAllYear"
+      app:layout_constraintTop_toBottomOf="@id/myMovieAllYear"
       app:layout_constraintVertical_chainStyle="packed"
       tools:text="Game of Thrones"
       />
@@ -87,7 +87,7 @@
       android:textAlignment="viewStart"
       android:textColor="?attr/colorAccent"
       android:textSize="12sp"
-      app:layout_constraintBottom_toTopOf="@+id/myMovieAllTitle"
+      app:layout_constraintBottom_toTopOf="@id/myMovieAllTitle"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/myMovieAllImage"
       app:layout_constraintTop_toTopOf="parent"
@@ -98,9 +98,9 @@
 
     <ImageView
       android:id="@+id/myMovieAllStarIcon"
-      android:layout_width="wrap_content"
+      android:layout_width="20dp"
       android:layout_height="0dp"
-      app:layout_constraintBottom_toTopOf="@+id/myMovieAllTitle"
+      app:layout_constraintBottom_toTopOf="@id/myMovieAllTitle"
       app:layout_constraintEnd_toStartOf="@id/myMovieAllRating"
       app:layout_constraintTop_toTopOf="@id/myMovieAllYear"
       app:srcCompat="@drawable/ic_star"
@@ -114,10 +114,36 @@
       android:gravity="end"
       android:textColor="?android:attr/textColorSecondary"
       android:textSize="12sp"
-      app:layout_constraintBottom_toTopOf="@+id/myMovieAllTitle"
+      app:layout_constraintBottom_toTopOf="@id/myMovieAllTitle"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/myMovieAllYear"
       tools:text="7.6"
+      />
+
+    <ImageView
+      android:id="@+id/myMovieAllUserStarIcon"
+      android:layout_width="20dp"
+      android:layout_height="0dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/myMovieAllTitle"
+      app:layout_constraintEnd_toStartOf="@id/myMovieUserRating"
+      app:layout_constraintTop_toTopOf="@id/myMovieAllYear"
+      app:srcCompat="@drawable/ic_star"
+      />
+
+    <TextView
+      android:id="@+id/myMovieUserRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:gravity="end"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/myMovieAllTitle"
+      app:layout_constraintEnd_toStartOf="@id/myMovieAllStarIcon"
+      app:layout_constraintTop_toTopOf="@id/myMovieAllYear"
+      tools:text="10"
       />
 
     <TextView
