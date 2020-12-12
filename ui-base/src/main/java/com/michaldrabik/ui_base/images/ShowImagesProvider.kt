@@ -98,7 +98,9 @@ class ShowImagesProvider @Inject constructor(
       }
     }
 
-    val remoteImage = typeImages.maxByOrNull { it.rating?.count ?: 0 }
+    val remoteImage = typeImages
+      .sortedWith(compareBy({ it.ratingsInfo?.count }, { it.ratingsInfo?.average }))
+      .lastOrNull()
     val image = when (remoteImage) {
       null -> Image.createUnavailable(type)
       else -> Image(
@@ -137,7 +139,8 @@ class ShowImagesProvider @Inject constructor(
     val extraType = if (targetType == POSTER) FANART else POSTER
     images
       .filter { it.keyType == extraType.key }
-      .maxByOrNull { it.rating?.count ?: 0 }
+      .sortedWith(compareBy({ it.ratingsInfo?.count }, { it.ratingsInfo?.average }))
+      .lastOrNull()
       ?.let {
         val extraImage = Image(it.id ?: -1, tvdbId, tmdbId, extraType, SHOW, it.fileName ?: "", it.thumbnail ?: "", AVAILABLE, TVDB)
         database.showImagesDao().insertShowImage(mappers.image.toDatabaseShow(extraImage))

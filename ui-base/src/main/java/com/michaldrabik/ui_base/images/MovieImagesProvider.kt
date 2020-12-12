@@ -56,7 +56,10 @@ class MovieImagesProvider @Inject constructor(
       FANART, FANART_WIDE -> images.backdrops ?: emptyList()
     }
 
-    val remoteImage = typeImages.firstOrNull { it.isEnglish() } ?: typeImages.firstOrNull()
+    val remoteImage = typeImages
+      .sortedWith(compareBy({ it.vote_count }, { it.vote_average }))
+      .lastOrNull { it.isEnglish() }
+      ?: typeImages.lastOrNull()
     val image = when (remoteImage) {
       null -> Image.createUnavailable(type, MOVIE)
       else -> Image(
@@ -98,8 +101,9 @@ class MovieImagesProvider @Inject constructor(
       FANART, FANART_WIDE -> images.backdrops ?: emptyList()
     }
     typeImages
-      .firstOrNull()
-      ?.let {
+      .sortedWith(compareBy({ it.vote_count }, { it.vote_average }))
+      .lastOrNull { it.isEnglish() }
+      ?: typeImages.lastOrNull()?.let {
         val extraImage = Image(-1, tvdbId, tmdbId, extraType, MOVIE, it.file_path, "", AVAILABLE, TMDB)
         database.movieImagesDao().insertMovieImage(mappers.image.toDatabaseMovie(extraImage))
       }

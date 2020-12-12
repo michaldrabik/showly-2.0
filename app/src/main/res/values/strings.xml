@@ -12,7 +12,7 @@
 
   <string name="textWhatsNewTitle">What\'s New</string>
   <string name="textWhatsNewSubtitle">Version %s</string>
-  <string name="textWhatsNewMessage" translatable="false">* Added support for <b>Movies</b>! If you are not interested in tracking movies you can switch them off via settings\n\n* Bugfixes</string>
+  <string name="textWhatsNewMessage" translatable="false">* Added <b>Movies</b> support!\n\nIf you\'re not interested in movies you can switch them off via settings\n\n* Bugfixes</string>
 
   <string name="shortcutDiscover">Discover</string>
   <string name="shortcutCollection">Collection</string>

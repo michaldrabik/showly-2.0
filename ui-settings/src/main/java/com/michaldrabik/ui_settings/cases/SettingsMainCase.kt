@@ -7,6 +7,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_base.fcm.NotificationChannel
+import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_model.BuildConfig
@@ -25,7 +26,8 @@ import javax.inject.Inject
 class SettingsMainCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val announcementManager: AnnouncementManager,
-  private val imagesProvider: ShowImagesProvider
+  private val showsImagesProvider: ShowImagesProvider,
+  private val moviesImagesProvider: MovieImagesProvider
 ) {
 
   suspend fun getSettings(): Settings = settingsRepository.load()
@@ -127,5 +129,8 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
-  suspend fun deleteImagesCache() = imagesProvider.deleteLocalCache()
+  suspend fun deleteImagesCache() {
+    showsImagesProvider.deleteLocalCache()
+    moviesImagesProvider.deleteLocalCache()
+  }
 }
