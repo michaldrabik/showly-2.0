@@ -214,7 +214,7 @@ class FollowedShowsFragment :
         followedShowsSearchContainer.gone()
         followedShowsPager.visible()
         followedShowsTabs.visible()
-        followedShowsModeTabs.visible()
+        if (moviesEnabled) followedShowsModeTabs.visible()
         followedShowsSearchEmptyView.gone()
       }
     }
