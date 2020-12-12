@@ -52,5 +52,8 @@ object Config {
   val DISPLAY_DATE_DAY_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("dd MMM yyyy") }
   val DISPLAY_DATE_FULL_DAY_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy") }
 
-  const val HOST_ACTIVITY_NAME = "com.michaldrabik.showly2.ui.main.MainActivity"
+  val HOST_ACTIVITY_NAME by lazy {
+    if (BuildConfig.DEBUG) "com.michaldrabik.showly2.debug.ui.main.MainActivity"
+    else "com.michaldrabik.showly2.ui.main.MainActivity"
+  }
 }

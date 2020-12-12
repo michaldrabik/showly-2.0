@@ -19,6 +19,7 @@ import com.michaldrabik.ui_base.common.OnTranslationsSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
+import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -75,6 +76,11 @@ class FollowedShowsFragment :
   override fun onResume() {
     super.onResume()
     setupBackPress()
+  }
+
+  override fun onPause() {
+    enableUi()
+    super.onPause()
   }
 
   override fun onDestroyView() {
@@ -255,11 +261,10 @@ class FollowedShowsFragment :
     disableUi()
     hideNavigation()
     followedShowsRoot.fadeOut {
-      enableUi()
       exitSearch(false)
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.ids.trakt.id) }
       navigateTo(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
-    }
+    }.add(animations)
     viewModel.tabsTranslation = followedShowsTabs.translationY
     viewModel.searchViewTranslation = followedShowsSearchView.translationY
   }

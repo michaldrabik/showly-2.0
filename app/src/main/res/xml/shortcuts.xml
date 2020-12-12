@@ -26,9 +26,9 @@
   <shortcut
     android:enabled="true"
     android:icon="@drawable/ic_shortcut_bookmark"
-    android:shortcutId="shortcutMyShows"
-    android:shortcutLongLabel="@string/shortcutMyShows"
-    android:shortcutShortLabel="@string/shortcutMyShows"
+    android:shortcutId="shortcutCollection"
+    android:shortcutLongLabel="@string/shortcutCollection"
+    android:shortcutShortLabel="@string/shortcutCollection"
     >
     <intent
       android:action="android.intent.action.VIEW"
@@ -36,8 +36,8 @@
       android:targetPackage="com.michaldrabik.showly2"
       >
       <extra
-        android:name="extraShortcutMyShows"
-        android:value="extraShortcutMyShows"
+        android:name="extraShortcutCollection"
+        android:value="extraShortcutCollection"
         />
     </intent>
   </shortcut>

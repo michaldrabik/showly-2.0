@@ -52,7 +52,7 @@ class TraktImportWatchlistRunner @Inject constructor(
       importShowsWatchlist(authToken)
     } catch (error: Throwable) {
       if (retryCount < MAX_RETRY_COUNT) {
-        Timber.w("importShowsWatchlist HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        Timber.w("runShows HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
         retryCount += 1
         delay(RETRY_DELAY_MS)
         runShows(authToken)
@@ -73,7 +73,7 @@ class TraktImportWatchlistRunner @Inject constructor(
       importMoviesWatchlist(authToken)
     } catch (error: Throwable) {
       if (retryCount < MAX_RETRY_COUNT) {
-        Timber.w("importMoviesWatchlist HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        Timber.w("runMovies HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
         retryCount += 1
         delay(RETRY_DELAY_MS)
         runMovies(authToken)

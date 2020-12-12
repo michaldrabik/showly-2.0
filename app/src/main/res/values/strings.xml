@@ -15,7 +15,7 @@
   <string name="textWhatsNewMessage" translatable="false">* Added support for <b>German</b> and <b>Arabic</b> languages\n\n* Added users ratings and pictures in comments section\n\n* Added quick suggestions when searching for a show\n\n* Added more links to external pages in show details screen\n\n* Bugfixes</string>
 
   <string name="shortcutDiscover">Discover</string>
-  <string name="shortcutMyShows">My Shows</string>
+  <string name="shortcutCollection">Collection</string>
   <string name="shortcutSearch">Search</string>
   <string name="shortcutProgress">Progress</string>
 

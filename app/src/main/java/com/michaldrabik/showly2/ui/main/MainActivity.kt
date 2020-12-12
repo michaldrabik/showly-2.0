@@ -323,7 +323,7 @@ class MainActivity :
         bottomNavigationView.selectedItemId = R.id.menuProgress
       intent.extras?.containsKey("extraShortcutDiscover") == true ->
         bottomNavigationView.selectedItemId = R.id.menuDiscover
-      intent.extras?.containsKey("extraShortcutMyShows") == true ->
+      intent.extras?.containsKey("extraShortcutCollection") == true ->
         bottomNavigationView.selectedItemId = R.id.menuCollection
       intent.extras?.containsKey("extraShortcutSearch") == true -> {
         bottomNavigationView.selectedItemId = R.id.menuDiscover
