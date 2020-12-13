@@ -57,7 +57,6 @@
   <string name="textTraktSyncOptionDaily">Każdego Dnia</string>
   <string name="textTraktSyncOption3Day">Co 3 Dni</string>
   <string name="textTraktSyncOptionWeekly">Każdego Tygodnia</string>
-
   <string name="textTraktSyncOptionOffMessage">Synchronizacja automatyczna wyłączona.</string>
   <string name="textTraktSyncOptionConfirmMessage">Synchronizacja automatyczna włączona.</string>
 
@@ -74,4 +73,4 @@
   <string name="textShowStatusPlanned">Zaplanowany</string>
   <string name="textShowStatusCanceled">Anulowany</string>
   <string name="textShowStatusEnded">Zakończony</string>
-</resources>
+  </resources>
