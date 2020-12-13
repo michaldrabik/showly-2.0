@@ -80,6 +80,6 @@
   <string name="textMovieStatusPostProduction">Post Production</string>
   <string name="textMovieStatusPlanned">Planned</string>
   <string name="textMovieStatusCanceled">Canceled</string>
-  <string name="textMovieStatusRumored">Rumored</string>\
+  <string name="textMovieStatusRumored">Rumored</string>
   <string name="textMovieStatusUnknown" translatable="false" />
 </resources>
