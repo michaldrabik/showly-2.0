@@ -20,6 +20,12 @@
   <string name="textSpoilersWarning">Opinia zawiera spoilery.\nKliknij aby przeczytać.</string>
   <string name="textCommentedOn">%s skomentował %s:</string>
   <string name="textNetwork">%1$s (%2$s)</string>
+  <string name="textShows">Seriale</string>
+  <string name="textMovies">Filmy</string>
+  <string name="textMinutesShort">min</string>
+  <string name="textRemoveFromTrakt">Usunąć z Trakt.tv?</string>
+  <string name="textNoDescription">Opis niedostępny.</string>
+
   <string name="textAiredAlready">Po premierze</string>
   <string name="textAirsNow">Premiera teraz</string>
 
@@ -44,10 +50,20 @@
     <item quantity="other">Premiera za %d minut</item>
   </plurals>
 
+  <string name="textToday">Dzisiaj</string>
+  <string name="textTomorrow">Jutro</string>
+  <string name="textThisWeek">Ten Tydzień</string>
+  <string name="textNextWeek">Następny Tydzień</string>
+  <string name="textNextMonth">Następny Miesiąc</string>
+  <string name="textThisYear">Ten Rok</string>
+  <string name="textNextYear">Następny Rok</string>
+  <string name="textLater">Później</string>
+
   <string name="textNewEpisodeAvailable">Nowy odcinek jest już dostępny!</string>
   <string name="textNewEpisodeAvailableSoon">Nowy odcinek będzie wkrótce dostępny!</string>
   <string name="textNewSeasonAvailable">Nowy sezon jest już dostępny!</string>
   <string name="textNewSeasonAvailableSoon">Nowy sezon będzie wkrótce dostępny!</string>
+  <string name="textNewMovieAvailable">Nowy film jest już dostępny!</string>
 
   <string name="textTraktSync">Synchronizacja Trakt.tv</string>
   <string name="textTraktSyncComplete">Synchronizacja zakończona.</string>
@@ -57,6 +73,9 @@
   <string name="textTraktQuickSyncError">Błąd szybkiej synchronizacji.</string>
   <string name="textTraktQuickSyncErrorFull">Błąd szybkiej synchronizacji. Spróbujemy ponownie przy następnym uruchomieniu aplikacji.</string>
 
+  <string name="menuPin">Przypnij u góry</string>
+  <string name="menuUnpin">Odepnij z góry</string>
+
   <string name="errorGeneral">Oj… Coś poszło nie tak.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="errorAuthorization">Błąd autoryzacji.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="errorTraktAuthorization">Błąd autoryzacji Trakt.tv.\nZaloguj się i spróbuj ponownie.</string>
@@ -64,6 +83,7 @@
   <string name="errorEpisodeNotAired">Ten odcinek nie miał jeszcze premiery.</string>
   <string name="errorCouldNotLoadDiscover">W tej chwili nie można załadować świeżych danych.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="errorCouldNotLoadShow">W tej chwili nie można załadować informacji o serialu.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
+  <string name="errorCouldNotLoadMovie">W tej chwili nie można załadować informacji o filmie.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="errorCouldNotLoadSearchResults">W tej chwili nie można załadować wyników wyszukiwania.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="errorNoInternetConnection">Brak Internetu. Sprawdź swoje połączenie.</string>
   <string name="errorTraktSyncGeneral">Błąd synchronizacji Trakt.tv\nSprawdź połączenie z internetem i spróbuj ponownie.</string>
