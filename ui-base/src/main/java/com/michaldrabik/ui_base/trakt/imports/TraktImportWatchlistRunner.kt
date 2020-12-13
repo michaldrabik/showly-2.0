@@ -98,7 +98,7 @@ class TraktImportWatchlistRunner @Inject constructor(
 
     syncResults
       .forEachIndexed { index, result ->
-        delay(200)
+        delay(50)
         Timber.d("Processing \'${result.show!!.title}\'...")
         val showUi = mappers.show.fromNetwork(result.show!!)
         progressListener?.invoke(showUi.title, index, syncResults.size)
@@ -132,7 +132,7 @@ class TraktImportWatchlistRunner @Inject constructor(
 
     syncResults
       .forEachIndexed { index, result ->
-        delay(200)
+        delay(50)
         Timber.d("Processing \'${result.movie!!.title}\'...")
         val movieUi = mappers.movie.fromNetwork(result.movie!!)
         progressListener?.invoke(movieUi.title, index, syncResults.size)

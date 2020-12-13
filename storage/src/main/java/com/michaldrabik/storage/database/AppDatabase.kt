@@ -23,6 +23,7 @@ import com.michaldrabik.storage.database.dao.SettingsDao
 import com.michaldrabik.storage.database.dao.ShowImagesDao
 import com.michaldrabik.storage.database.dao.ShowTranslationsDao
 import com.michaldrabik.storage.database.dao.ShowsDao
+import com.michaldrabik.storage.database.dao.TraktSyncLogDao
 import com.michaldrabik.storage.database.dao.TraktSyncQueueDao
 import com.michaldrabik.storage.database.dao.TranslationsMoviesSyncLogDao
 import com.michaldrabik.storage.database.dao.TranslationsSyncLogDao
@@ -51,6 +52,7 @@ import com.michaldrabik.storage.database.model.Settings
 import com.michaldrabik.storage.database.model.Show
 import com.michaldrabik.storage.database.model.ShowImage
 import com.michaldrabik.storage.database.model.ShowTranslation
+import com.michaldrabik.storage.database.model.TraktSyncLog
 import com.michaldrabik.storage.database.model.TraktSyncQueue
 import com.michaldrabik.storage.database.model.TranslationsMoviesSyncLog
 import com.michaldrabik.storage.database.model.TranslationsSyncLog
@@ -85,6 +87,7 @@ import com.michaldrabik.storage.database.model.WatchlistShow
     TranslationsSyncLog::class,
     TranslationsMoviesSyncLog::class,
     TraktSyncQueue::class,
+    TraktSyncLog::class,
     ShowTranslation::class,
     MovieTranslation::class,
     EpisodeTranslation::class
@@ -130,6 +133,8 @@ abstract class AppDatabase : RoomDatabase() {
   abstract fun actorsDao(): ActorsDao
 
   abstract fun settingsDao(): SettingsDao
+
+  abstract fun traktSyncLogDao(): TraktSyncLogDao
 
   abstract fun moviesSyncLogDao(): MoviesSyncLogDao
 

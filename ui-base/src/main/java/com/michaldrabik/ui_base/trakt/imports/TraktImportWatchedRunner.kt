@@ -3,9 +3,7 @@ package com.michaldrabik.ui_base.trakt.imports
 import androidx.room.withTransaction
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.storage.database.AppDatabase
@@ -27,7 +25,6 @@ import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.UserTvdbManager
 import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.delay
-import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -114,13 +111,22 @@ class TraktImportWatchedRunner @Inject constructor(
     val myShowsIds = database.myShowsDao().getAllTraktIds()
     val watchlistShowsIds = database.watchlistShowsDao().getAllTraktIds()
     val archiveShowsIds = database.archiveShowsDao().getAllTraktIds()
+    val traktSyncLogs = database.traktSyncLogDao().getAllShows()
 
     syncResults
       .forEachIndexed { index, result ->
-        delay(100)
-        Timber.d("Processing \'${result.show!!.title}\'...")
+        delay(50)
+
         val showUi = mappers.show.fromNetwork(result.show!!)
         progressListener?.invoke(showUi.title, index, syncResults.size)
+
+        Timber.d("Processing \'${showUi.title}\'...")
+
+        val log = traktSyncLogs.firstOrNull { it.idTrakt == result.show?.ids?.trakt }
+        if (result.lastUpdateMillis() == (log?.syncedAt ?: 0)) {
+          Timber.d("Nothing changed in \'${result.show!!.title}\'. Skipping...")
+          return@forEachIndexed
+        }
 
         try {
           val showId = result.show!!.ids!!.trakt!!
@@ -131,8 +137,8 @@ class TraktImportWatchedRunner @Inject constructor(
               val show = mappers.show.fromNetwork(result.show!!)
               val showDb = mappers.show.toDatabase(show)
 
-              val timestamp = result.last_watched_at?.let { ZonedDateTime.parse(result.last_watched_at) } ?: nowUtc()
-              val myShow = MyShow.fromTraktId(showDb.idTrakt, nowUtcMillis(), timestamp.toMillis())
+              val timestamp = result.lastWatchedMillis()
+              val myShow = MyShow.fromTraktId(showDb.idTrakt, nowUtcMillis(), timestamp)
               database.showsDao().upsert(listOf(showDb))
               database.myShowsDao().insert(listOf(myShow))
 
@@ -144,6 +150,8 @@ class TraktImportWatchedRunner @Inject constructor(
             }
             database.seasonsDao().upsert(seasons)
             database.episodesDao().upsert(episodes)
+
+            database.traktSyncLogDao().upsertShow(showId, result.lastUpdateMillis())
           }
 
           updateTranslation(showUi)
@@ -204,7 +212,7 @@ class TraktImportWatchedRunner @Inject constructor(
 
     syncResults
       .forEachIndexed { index, result ->
-        delay(100)
+        delay(50)
         Timber.d("Processing \'${result.movie!!.title}\'...")
         val movieUi = mappers.movie.fromNetwork(result.movie!!)
         progressListener?.invoke(movieUi.title, index, syncResults.size)
@@ -217,8 +225,8 @@ class TraktImportWatchedRunner @Inject constructor(
               val movie = mappers.movie.fromNetwork(result.movie!!)
               val movieDb = mappers.movie.toDatabase(movie)
 
-              val timestamp = result.last_watched_at?.let { ZonedDateTime.parse(result.last_watched_at) } ?: nowUtc()
-              val myMovie = MyMovie.fromTraktId(movieDb.idTrakt, nowUtcMillis(), timestamp.toMillis())
+              val timestamp = result.lastWatchedMillis()
+              val myMovie = MyMovie.fromTraktId(movieDb.idTrakt, nowUtcMillis(), timestamp)
               database.moviesDao().upsert(listOf(movieDb))
               database.myMoviesDao().insert(listOf(myMovie))
 

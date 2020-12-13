@@ -240,6 +240,15 @@ object Migrations {
           "`id_movie_trakt` INTEGER PRIMARY KEY NOT NULL DEFAULT -1, " +
           "`synced_at` INTEGER NOT NULL DEFAULT 0)"
       )
+
+      database.execSQL(
+        "CREATE TABLE IF NOT EXISTS `sync_trakt_log` (" +
+          "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+          "`id_trakt` INTEGER NOT NULL, " +
+          "`type` TEXT NOT NULL, " +
+          "`synced_at` INTEGER NOT NULL)"
+      )
+      database.execSQL("CREATE UNIQUE INDEX index_sync_trakt_log_id_trakt_type ON sync_trakt_log(id_trakt, type)")
     }
   }
 
