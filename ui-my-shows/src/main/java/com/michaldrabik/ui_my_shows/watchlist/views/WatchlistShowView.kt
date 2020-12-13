@@ -11,6 +11,7 @@ import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
@@ -58,6 +59,12 @@ class WatchlistShowView : ShowView<WatchlistListItem> {
     watchlistShowDescription.visibleIf(item.show.overview.isNotBlank())
     watchlistShowNetwork.visibleIf(item.show.network.isNotBlank())
 
+    item.userRating?.let {
+      watchlistShowUserStarIcon.visible()
+      watchlistShowUserRating.visible()
+      watchlistShowUserRating.text = String.format(ENGLISH, "%d", it)
+    }
+
     loadImage(item, missingImageListener)
   }
 
@@ -67,6 +74,8 @@ class WatchlistShowView : ShowView<WatchlistListItem> {
     watchlistShowNetwork.text = ""
     watchlistShowRating.text = ""
     watchlistShowPlaceholder.gone()
+    watchlistShowUserRating.gone()
+    watchlistShowUserStarIcon.gone()
     Glide.with(this).clear(watchlistShowImage)
   }
 }

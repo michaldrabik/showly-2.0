@@ -4,9 +4,9 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-import android.content.res.ColorStateList
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.Color.TRANSPARENT
+import android.graphics.Typeface.*
 import android.net.Uri
 import android.os.Bundle
 import android.transition.TransitionManager
@@ -22,7 +22,6 @@ import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
-import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,7 +45,6 @@ import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
-import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
@@ -465,9 +463,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       if (rating.hasRating()) "${rating.userRating?.rating}/10"
       else getString(R.string.textRate)
 
-    val color = requireContext().colorFromAttr(if (rating.hasRating()) android.R.attr.colorAccent else android.R.attr.textColorPrimary)
-    showDetailsRateButton.setTextColor(color)
-    TextViewCompat.setCompoundDrawableTintList(showDetailsRateButton, ColorStateList.valueOf(color))
+    val typeFace = if (rating.hasRating()) BOLD else NORMAL
+    showDetailsRateButton.setTypeface(null, typeFace)
 
     showDetailsRateButton.onClick {
       if (rating.rateAllowed == true) {

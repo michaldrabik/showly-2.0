@@ -98,7 +98,7 @@
 
     <ImageView
       android:id="@+id/myShowAllStarIcon"
-      android:layout_width="wrap_content"
+      android:layout_width="20dp"
       android:layout_height="0dp"
       app:layout_constraintBottom_toTopOf="@+id/myShowAllTitle"
       app:layout_constraintEnd_toStartOf="@id/myShowAllRating"
@@ -118,6 +118,34 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/myShowAllNetwork"
       tools:text="7.6"
+      />
+
+    <ImageView
+      android:id="@+id/myShowAllUserStarIcon"
+      android:layout_width="20dp"
+      android:layout_height="0dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/myShowAllTitle"
+      app:layout_constraintEnd_toStartOf="@id/myShowAllUserRating"
+      app:layout_constraintTop_toTopOf="@id/myShowAllNetwork"
+      app:srcCompat="@drawable/ic_star"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/myShowAllUserRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:gravity="end"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/myShowAllTitle"
+      app:layout_constraintEnd_toStartOf="@id/myShowAllStarIcon"
+      app:layout_constraintTop_toTopOf="@id/myShowAllNetwork"
+      tools:text="10"
+      tools:visibility="visible"
       />
 
     <TextView

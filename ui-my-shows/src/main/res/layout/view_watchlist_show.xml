@@ -97,7 +97,7 @@
 
     <ImageView
       android:id="@+id/watchlistShowStarIcon"
-      android:layout_width="wrap_content"
+      android:layout_width="20dp"
       android:layout_height="0dp"
       app:layout_constraintBottom_toTopOf="@+id/watchlistShowTitle"
       app:layout_constraintEnd_toStartOf="@id/watchlistShowRating"
@@ -117,6 +117,34 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/watchlistShowNetwork"
       tools:text="7.6"
+      />
+
+    <ImageView
+      android:id="@+id/watchlistShowUserStarIcon"
+      android:layout_width="20dp"
+      android:layout_height="0dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/watchlistShowTitle"
+      app:layout_constraintEnd_toStartOf="@id/watchlistShowUserRating"
+      app:layout_constraintTop_toTopOf="@id/watchlistShowNetwork"
+      app:srcCompat="@drawable/ic_star"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/watchlistShowUserRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:gravity="end"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/watchlistShowTitle"
+      app:layout_constraintEnd_toStartOf="@id/watchlistShowStarIcon"
+      app:layout_constraintTop_toTopOf="@id/watchlistShowNetwork"
+      tools:text="10"
+      tools:visibility="visible"
       />
 
     <TextView

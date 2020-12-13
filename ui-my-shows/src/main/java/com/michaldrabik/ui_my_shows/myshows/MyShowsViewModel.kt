@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_my_shows.myshows
 
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
@@ -15,6 +16,7 @@ import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsLoadShowsCase
+import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsRatingsCase
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +26,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MyShowsViewModel @Inject constructor(
-  private val loadShowsCase: MyShowsLoadShowsCase
+  private val loadShowsCase: MyShowsLoadShowsCase,
+  private val ratingsCase: MyShowsRatingsCase
 ) : BaseViewModel<MyShowsUiModel>() {
 
   fun loadShows(notifyListsUpdate: Boolean = false) {
@@ -78,6 +81,20 @@ class MyShowsViewModel @Inject constructor(
       }
 
       uiState = MyShowsUiModel(listItems = listItems, notifyListsUpdate = notifyListsUpdate)
+
+      loadRatings(listItems)
+    }
+  }
+
+  private fun loadRatings(items: List<MyShowsItem>) {
+    if (items.isEmpty()) return
+    viewModelScope.launch {
+      try {
+        val listItems = ratingsCase.loadRatings(items)
+        uiState = MyShowsUiModel(listItems = listItems)
+      } catch (error: Throwable) {
+        FirebaseCrashlytics.getInstance().recordException(error)
+      }
     }
   }
 

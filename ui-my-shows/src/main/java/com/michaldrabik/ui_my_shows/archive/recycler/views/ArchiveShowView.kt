@@ -11,6 +11,7 @@ import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveListItem
@@ -58,6 +59,12 @@ class ArchiveShowView : ShowView<ArchiveListItem> {
     archiveShowDescription.visibleIf(item.show.overview.isNotBlank())
     archiveShowNetwork.visibleIf(item.show.network.isNotBlank())
 
+    item.userRating?.let {
+      archiveShowUserStarIcon.visible()
+      archiveShowUserRating.visible()
+      archiveShowUserRating.text = String.format(ENGLISH, "%d", it)
+    }
+
     loadImage(item, missingImageListener)
   }
 
@@ -67,6 +74,8 @@ class ArchiveShowView : ShowView<ArchiveListItem> {
     archiveShowNetwork.text = ""
     archiveShowRating.text = ""
     archiveShowPlaceholder.gone()
+    archiveShowUserRating.gone()
+    archiveShowUserStarIcon.gone()
     Glide.with(this).clear(archiveShowImage)
   }
 }

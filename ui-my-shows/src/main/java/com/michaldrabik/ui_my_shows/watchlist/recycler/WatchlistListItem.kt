@@ -10,4 +10,5 @@ data class WatchlistListItem(
   override val image: Image,
   override val isLoading: Boolean = false,
   val translation: Translation? = null,
+  val userRating: Int? = null
 ) : ListItem

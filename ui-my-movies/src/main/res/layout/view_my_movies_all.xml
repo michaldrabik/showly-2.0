@@ -129,6 +129,7 @@
       app:layout_constraintEnd_toStartOf="@id/myMovieUserRating"
       app:layout_constraintTop_toTopOf="@id/myMovieAllYear"
       app:srcCompat="@drawable/ic_star"
+      tools:visibility="visible"
       />
 
     <TextView
@@ -144,6 +145,7 @@
       app:layout_constraintEnd_toStartOf="@id/myMovieAllStarIcon"
       app:layout_constraintTop_toTopOf="@id/myMovieAllYear"
       tools:text="10"
+      tools:visibility="visible"
       />
 
     <TextView
