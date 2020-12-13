@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textOk">OK</string>
+  <string name="textYes">Si</string>
+  <string name="textNo">No</string>
+  <string name="textApply">Aceptar</string>
+  <string name="textCancel">Cancelar</string>
+  <string name="textClose">Cerrar</string>
+  <string name="textNotNow">Ahora no</string>
+  <string name="textNew">Nuevo</string>
+  <string name="textSelect">Selecciona</string>
+  <string name="textHot">Tendencia</string>
+  <string name="textEmptyResults">No hay resultados...</string>
+  <string name="textSearchFor">Buscar...</string>
+  <string name="textTip">Consejo:</string>
+  <string name="textSeason">Temporada %1$d</string>
+  <string name="textSpecials">Especiales</string>
+  <string name="textEpisode">Episodio %1$d</string>
+  <string name="textSortBy">Ordenar por:</string>
+  <string name="textSpoilersWarning">Este comentario contiene spoilers.\nTap para leer.</string>
+  <string name="textCommentedOn">%s comentó el %s:</string>
+  <string name="textNetwork">%1$s (%2$s)</string>
+  <string name="textAiredAlready">Emitido</string>
+  <string name="textAirsNow">Se emite ahora</string>
+
+  <plurals name="textDaysToAir">
+    <item quantity="one">Se emite mañana</item>
+    <item quantity="other">Se emite en %d días</item>
+  </plurals>
+
+  <plurals name="textHoursToAir">
+    <item quantity="one">Se emite en 1 hora</item>
+    <item quantity="other">Se emite en %d horas</item>
+  </plurals>
+
+  <plurals name="textMinutesToAir">
+    <item quantity="one">Se emite ahora</item>
+    <item quantity="other">Se emite en %d minutos</item>
+  </plurals>
+
+  <string name="textNewEpisodeAvailable">Nuevo episodio disponible!</string>
+  <string name="textNewEpisodeAvailableSoon">¡Nuevo episodio disponible próximamente!</string>
+  <string name="textNewSeasonAvailable">Nueva temporada disponible!</string>
+  <string name="textNewSeasonAvailableSoon">¡Nuevo temporada disponible próximamente!</string>
+
+  <string name="textTraktSync">Sincronizar Trakt.tv</string>
+  <string name="textTraktSyncComplete">Sincronizar completado satisfactoriamente.</string>
+  <string name="textTraktSyncRunning">En ejecución</string>
+  <string name="textTraktSyncError">Sincronización Trakt.tv fallida.</string>
+  <string name="textTraktSyncErrorFull">Sincronización Trakt.tv fallida. Por favor compruebe su conexión a Internet y pruebe de nuevo o contáctenos si sigue sucediendo.</string>
+  <string name="textTraktQuickSyncError">Sincronización instantánea fallida.</string>
+  <string name="textTraktQuickSyncErrorFull">Sincronización instantánea fallida. Lo intentaremos de nuevo la próxima vez que abras la aplicación. Por favor revisa tu conexión a internet.</string>
+
+  <string name="errorGeneral">Ups… Algo salió mal.\nPor favor, contáctanos si esto sigue sucediendo.</string>
+  <string name="errorAuthorization">Autorización fallida. Por favor contáctenos si continúa sucediendo.</string>
+  <string name="errorTraktAuthorization">Autorización de cuenta Trakt fallida.\nPor favor ingrese e inténtelo de nuevo.</string>
+  <string name="errorSeasonsNotLoaded">Por favor, espera a que se carguen los datos de las temporadas.</string>
+  <string name="errorEpisodeNotAired">Este episodio aún no se ha emitido.</string>
+  <string name="errorCouldNotLoadDiscover">No pudimos cargar los resultados de la página descubrir en este momento.\nPor favor, contáctanos si esto sigue sucediendo.</string>
+  <string name="errorCouldNotLoadShow">No pudimos cargar los detalles de esta serie en este momento.\nPor favor, contáctanos si esto sigue sucediendo.</string>
+  <string name="errorCouldNotLoadSearchResults">No pudimos cargar los resultados de la búsqueda en este momento.\nPor favor, contáctanos si esto sigue sucediendo.</string>
+  <string name="errorNoInternetConnection">Sin Internet. Por favor compruebe su conexión.</string>
+  <string name="errorTraktSyncGeneral">Error de sincronización de Trakt.tv.\nPor favor comprueba tu conexión a Internet y prueba de nuevo o contáctanos si sigue sucediendo.</string>
+</resources>
