@@ -74,7 +74,7 @@
   <string name="textShowStatusCanceled">Anulowany</string>
   <string name="textShowStatusEnded">Zakończony</string>
 
-  <string name="textMovieStatusReleased">Po Premierze</string>
+  <string name="textMovieStatusReleased">Dostępny</string>
   <string name="textMovieStatusInProduction">W Produkcji</string>
   <string name="textMovieStatusPostProduction">Post Produkcja</string>
   <string name="textMovieStatusPlanned">Planowany</string>
