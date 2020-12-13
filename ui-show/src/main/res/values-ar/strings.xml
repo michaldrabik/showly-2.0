@@ -6,24 +6,12 @@
   <string name="textInMyShows">تمت الإضافة إلى مسلسلاتي</string>
   <string name="textInWatchlist">تمت الإضافة إلى قائمة المشاهدة</string>
   <string name="textInArchive">تمت الإضافة إلى الأرشيف</string>
-  <string name="textRate">قيم</string>
-  <string name="textRateDelete">حذف التقييم</string>
-  <string name="textSignBeforeRate">رجاءً قُم بتسجيل الدخول قبل تقييم مسلسل.</string>
-  <string name="textRemoveFromTrakt">حذف من Trakt.tv؟</string>
   <string name="textShowExtraInfo">%3$s %2$s %1$s | %6$s | %4$s %5$s</string>
-  <string name="textMinutesShort">دقائق</string>
-
-  <string name="textComments">التعليقات:</string>
-  <string name="textComments2">التعليقات</string>
-  <string name="textNoComments">لا توجد تعليقات.</string>
 
   <string name="textShowQuickProgressTitle">مستوى التقدم السريع</string>
   <string name="textShowQuickProgressSubTitle">إختر آخر حلقة قمت بمتابعتها لتحديث قائمة مستوى التقدم بسرعة.</string>
   <string name="textShowQuickProgressDone">لقد تم تحديث مستوى تقدمك.</string>
 
-  <string name="textActorRole">%s\n(%s)</string>
-  <string name="textShowRated">لقد تم حفظ تقييمك.</string>
-  <string name="textShowRatingDeleted">لقد تم حذف تقييمك.</string>
   <string name="textEpisodeDate">الحلقة %1$d | %2$s</string>
   <string name="textEpisodeTitle">الموسم %02d الحلقة %02d - %s</string>
   <string name="textTraktSyncRemovedFromTrakt">إكتملت مزامنة Trakt.tv بنجاح.</string>
