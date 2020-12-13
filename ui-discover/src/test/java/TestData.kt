@@ -49,6 +49,7 @@ object TestData {
     image = Image(
       id = 0,
       idTvdb = IdTvdb(id = 0),
+      idTmdb = IdTmdb(id = 0),
       type = ImageType.POSTER,
       family = ImageFamily.SHOW,
       fileUrl = "",
