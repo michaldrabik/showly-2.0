@@ -10,6 +10,7 @@
 
   <string name="textWhatsNewTitle">Was gibts Neues?</string>
   <string name="textWhatsNewSubtitle">Version %s</string>
+
   <string name="shortcutDiscover">Entdecken</string>
   <string name="shortcutCollection">Sammlung</string>
   <string name="shortcutSearch">Suche</string>

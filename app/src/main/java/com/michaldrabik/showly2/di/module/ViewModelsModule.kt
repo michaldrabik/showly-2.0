@@ -74,7 +74,6 @@ abstract class ViewModelsModule {
   @ViewModelKey(MyMoviesViewModel::class)
   abstract fun bindMyMoviesViewModel(viewModel: MyMoviesViewModel): ViewModel
 
-
   @Binds
   @IntoMap
   @ViewModelKey(SearchViewModel::class)

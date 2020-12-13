@@ -6,7 +6,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 const val DATABASE_VERSION = 15
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
-//TODO Split into separate files
+// TODO Split into separate files
 object Migrations {
 
   private val MIGRATION_1_2 = object : Migration(1, 2) {

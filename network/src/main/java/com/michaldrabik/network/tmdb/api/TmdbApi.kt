@@ -10,5 +10,4 @@ class TmdbApi(private val service: TmdbService) {
     val result = service.fetchActors(tmdbId)
     return result.cast?.map { it.copy(movieTmdbId = result.id) } ?: emptyList()
   }
-
 }

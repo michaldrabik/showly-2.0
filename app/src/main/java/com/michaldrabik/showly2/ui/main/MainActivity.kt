@@ -14,7 +14,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.michaldrabik.common.Mode
-import com.michaldrabik.common.Mode.*
+import com.michaldrabik.common.Mode.MOVIES
+import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
@@ -170,8 +171,8 @@ class MainActivity :
       }
 
       findNavHost().findNavController().run {
-        if (currentDestination?.id == R.id.progressFragment
-          || currentDestination?.id == R.id.progressMoviesFragment
+        if (currentDestination?.id == R.id.progressFragment ||
+          currentDestination?.id == R.id.progressMoviesFragment
         ) {
           remove()
           super.onBackPressed()

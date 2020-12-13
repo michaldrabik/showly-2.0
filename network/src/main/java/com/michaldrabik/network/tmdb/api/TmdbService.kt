@@ -12,5 +12,4 @@ interface TmdbService {
 
   @GET("movie/{tmdbId}/credits")
   suspend fun fetchActors(@Path("tmdbId") tmdbId: Long): TmdbActors
-
 }

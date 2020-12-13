@@ -6,7 +6,8 @@ import android.content.Intent
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.Color.TRANSPARENT
-import android.graphics.Typeface.*
+import android.graphics.Typeface.BOLD
+import android.graphics.Typeface.NORMAL
 import android.net.Uri
 import android.os.Bundle
 import android.transition.TransitionManager
@@ -61,7 +62,7 @@ import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_model.ImageFamily.*
+import com.michaldrabik.ui_model.ImageFamily.MOVIE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
@@ -72,7 +73,10 @@ import com.michaldrabik.ui_movie.helpers.MovieLink
 import com.michaldrabik.ui_movie.helpers.MovieLink.IMDB
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import com.michaldrabik.ui_movie.related.RelatedMovieAdapter
-import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.*
+import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
+import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
+import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_WATCHLIST
+import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.UPCOMING
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import kotlinx.android.synthetic.main.fragment_movie_details.*

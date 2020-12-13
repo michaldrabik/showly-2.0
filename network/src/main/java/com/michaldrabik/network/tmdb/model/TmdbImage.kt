@@ -8,5 +8,4 @@ data class TmdbImage(
 ) {
 
   fun isEnglish() = iso_639_1 == "en"
-
 }

@@ -28,7 +28,6 @@ class PreferencesModule(private val context: Context) {
       Context.MODE_PRIVATE
     )
 
-
   @Provides
   @AppScope
   @Named("progressMoviesPreferences")
