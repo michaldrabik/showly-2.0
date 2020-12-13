@@ -248,6 +248,8 @@ object Migrations {
           "`type` TEXT NOT NULL, " +
           "`synced_at` INTEGER NOT NULL)"
       )
+      database.execSQL("CREATE INDEX index_sync_trakt_log_id_trakt ON sync_trakt_log(id_trakt)")
+      database.execSQL("CREATE INDEX index_sync_trakt_log_type ON sync_trakt_log(type)")
       database.execSQL("CREATE UNIQUE INDEX index_sync_trakt_log_id_trakt_type ON sync_trakt_log(id_trakt, type)")
     }
   }
