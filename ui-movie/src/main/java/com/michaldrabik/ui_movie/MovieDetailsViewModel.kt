@@ -91,7 +91,7 @@ class MovieDetailsViewModel @Inject constructor(
 
         if (isSignedIn) launch { loadRating(movie) }
       } catch (t: Throwable) {
-        _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadShow)
+        _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadMovie)
         progressJob.cancel()
       }
     }
@@ -117,11 +117,11 @@ class MovieDetailsViewModel @Inject constructor(
 
   private suspend fun loadRelatedMovies(movie: Movie) {
     uiState = try {
-      val relatedShows = relatedCase.loadRelatedMovies(movie).map {
+      val related = relatedCase.loadRelatedMovies(movie).map {
         val image = imagesProvider.findCachedImage(it, ImageType.POSTER)
         RelatedListItem(it, image)
       }
-      MovieDetailsUiModel(relatedMovies = relatedShows)
+      MovieDetailsUiModel(relatedMovies = related)
     } catch (t: Throwable) {
       MovieDetailsUiModel(relatedMovies = emptyList())
     }

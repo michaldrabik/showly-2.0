@@ -381,7 +381,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         val rate = rating.userRating?.rating ?: INITIAL_RATING
         openRateDialog(rate, rate != 0)
       } else {
-        showSnack(MessageEvent.info(R.string.textSignBeforeRate))
+        showSnack(MessageEvent.info(R.string.textSignBeforeRateMovie))
       }
     }
   }
