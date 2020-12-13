@@ -1,42 +1,45 @@
 package com.michaldrabik.ui_model
 
 import com.michaldrabik.common.Config.AWS_IMAGE_BASE_URL
+import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_FANART_URL
+import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_POSTER_URL
 import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
+import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageSource.AWS
+import com.michaldrabik.ui_model.ImageSource.TMDB
 import com.michaldrabik.ui_model.ImageSource.TVDB
+import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
+import com.michaldrabik.ui_model.ImageStatus.UNKNOWN
+import com.michaldrabik.ui_model.ImageType.FANART
+import com.michaldrabik.ui_model.ImageType.FANART_WIDE
+import com.michaldrabik.ui_model.ImageType.POSTER
 
 data class Image(
   val id: Long,
   val idTvdb: IdTvdb,
+  val idTmdb: IdTmdb,
   val type: ImageType,
   val family: ImageFamily,
   val fileUrl: String,
   val thumbnailUrl: String,
-  val status: Status,
+  val status: ImageStatus,
   val source: ImageSource
 ) {
 
-  /**
-   * AVAILABLE - image's web url is known to be valid when used the last time.
-   * UNKNOWN - image's web url has not been yet checked with remote images service (TVDB).
-   * UNAVAILABLE - remote images service does not contain any valid image url.
-   */
-  enum class Status {
-    AVAILABLE,
-    UNKNOWN,
-    UNAVAILABLE
-  }
-
   val fullFileUrl = when (source) {
     TVDB -> "$TVDB_IMAGE_BASE_BANNERS_URL$fileUrl"
+    TMDB -> when (type) {
+      POSTER -> "${TMDB_IMAGE_BASE_POSTER_URL}$fileUrl"
+      FANART, FANART_WIDE -> "${TMDB_IMAGE_BASE_FANART_URL}$fileUrl"
+    }
     AWS -> "$AWS_IMAGE_BASE_URL$fileUrl"
   }
 
   companion object {
-    fun createUnknown(type: ImageType, family: ImageFamily = ImageFamily.SHOW) =
-      Image(0, IdTvdb(0), type, family, "", "", Status.UNKNOWN, TVDB)
+    fun createUnknown(type: ImageType, family: ImageFamily = SHOW, source: ImageSource = TVDB) =
+      Image(0, IdTvdb(0), IdTmdb(0), type, family, "", "", UNKNOWN, source)
 
-    fun createUnavailable(type: ImageType, family: ImageFamily = ImageFamily.SHOW) =
-      Image(0, IdTvdb(0), type, family, "", "", Status.UNAVAILABLE, TVDB)
+    fun createUnavailable(type: ImageType, family: ImageFamily = SHOW, source: ImageSource = TVDB) =
+      Image(0, IdTvdb(0), IdTmdb(0), type, family, "", "", UNAVAILABLE, source)
   }
 }

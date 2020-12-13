@@ -20,6 +20,9 @@
   <string name="textSpoilersWarning">هذا التعليق يحتوى على حرق للأحداث.\nإضغط للقراءة.</string>
   <string name="textCommentedOn">المستخدم %1$s علق على %2$s</string>
   <string name="textNetwork">(%2$s) %1$s</string>
+  <string name="textMinutesShort">دقائق</string>
+  <string name="textRemoveFromTrakt">حذف من Trakt.tv؟</string>
+  <string name="textNoDescription">لا يتوفر وصف.</string>
 
   <string name="textAiredAlready">تم عرضها</string>
   <string name="textAirsNow">تُعرض الآن</string>
@@ -51,6 +54,12 @@
     <item quantity="other">تُعرض بعد %d دقائق</item>
   </plurals>
 
+  <string name="textToday">اليوم</string>
+  <string name="textTomorrow">غداً</string>
+  <string name="textThisWeek">هذا الإسبوع</string>
+  <string name="textNextWeek">الإسبوع القادم</string>
+  <string name="textLater">لاحقاً</string>
+
   <string name="textNewEpisodeAvailable">توفرت حلقة جديدة!</string>
   <string name="textNewEpisodeAvailableSoon">ستتوفر حلقة جديدة قريباً!</string>
   <string name="textNewSeasonAvailable">موسم جديد أصبح متاحاً الآن!</string>
@@ -63,6 +72,9 @@
   <string name="textTraktSyncErrorFull">فشلت مزامنة Trakt.tv. رجاءً تأكد من أنك مُتصل بالإنترنت ثم حاول مجدداً، وإذا إستمرت المشكلة بالحدوث، تواصل معنا.</string>
   <string name="textTraktQuickSyncError">فشلت المزامنة الفورية.</string>
   <string name="textTraktQuickSyncErrorFull">فشلت المزامنة الفورية. سيتم محاولة المزامنة الفورية بعد تشغيل التطبيق مرة أخرى، رجاءً تأكد من إتصالك بالإنترنت.</string>
+
+  <string name="menuPin">تثبيت في الأعلى</string>
+  <string name="menuUnpin">إلغاء التثبيت من الأعلى</string>
 
   <string name="errorGeneral">عفواً… حدث خطأ ما.\nإذا استمرت المشكلة بالحدوث، رجاءً تواصل معنا.</string>
   <string name="errorAuthorization">فشلت المصادقة. إذا استمرت المشكلة بالحدوث، رجاءً تواصل معنا.</string>

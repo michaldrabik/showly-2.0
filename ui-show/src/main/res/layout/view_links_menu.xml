@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/viewLinkItemRoot"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  tools:ignore="HardcodedText,UseCompoundDrawables,ContentDescription "
+  tools:parentTag="android.widget.LinearLayout"
+  >
+
+  <LinearLayout
+    android:id="@+id/viewLinkTrakt"
+    style="@style/LinksMenu.Item"
+    >
+
+    <ImageView
+      style="@style/LinksMenu.Icon"
+      android:src="@drawable/ic_trakt"
+      />
+
+    <TextView
+      style="@style/LinksMenu.Title"
+      android:text="Trakt"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/viewLinkImdb"
+    style="@style/LinksMenu.Item"
+    >
+
+    <ImageView
+      style="@style/LinksMenu.Icon"
+      android:src="@drawable/ic_imdb"
+      />
+
+    <TextView
+      style="@style/LinksMenu.Title"
+      android:text="IMDb"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/viewLinkTmdb"
+    style="@style/LinksMenu.Item"
+    >
+
+    <ImageView
+      style="@style/LinksMenu.Icon"
+      android:src="@drawable/ic_tmdb"
+      />
+
+    <TextView
+      style="@style/LinksMenu.Title"
+      android:text="TMDB"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/viewLinkTvdb"
+    style="@style/LinksMenu.Item"
+    >
+
+    <ImageView
+      style="@style/LinksMenu.Icon"
+      android:src="@drawable/ic_tvdb"
+      />
+
+    <TextView
+      style="@style/LinksMenu.Title"
+      android:text="TVDB"
+      />
+
+  </LinearLayout>
+
+</merge>

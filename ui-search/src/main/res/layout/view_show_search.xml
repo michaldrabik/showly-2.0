@@ -33,7 +33,7 @@
       android:layout_width="@dimen/searchViewImageWidth"
       android:layout_height="@dimen/searchViewImageHeight"
       android:layout_gravity="center"
-      android:background="@drawable/bg_show_view_placeholder"
+      android:background="@drawable/bg_media_view_placeholder"
       android:padding="20dp"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
@@ -45,7 +45,7 @@
 
     <ImageView
       android:id="@+id/showSearchBadge"
-      style="@style/Show.Badge"
+      style="@style/Badge"
       android:layout_width="18dp"
       android:layout_height="18dp"
       android:layout_marginTop="2dp"
@@ -57,8 +57,8 @@
       />
 
     <ImageView
-      android:id="@+id/showSearchLaterBadge"
-      style="@style/Show.BadgeLater"
+      android:id="@+id/showSearchWatchlistBadge"
+      style="@style/Badge.Watchlist"
       android:layout_width="18dp"
       android:layout_height="18dp"
       android:layout_marginTop="2dp"

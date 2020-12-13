@@ -5,19 +5,10 @@
   <string name="textCalendarEmpty">لا توجد أي حلقات جديدة قادمة.</string>
 
   <string name="textWatchlistIncoming">المسلسلات القادمة</string>
-  <string name="textSearchWatchlist">بحث...</string>
+  <string name="textSearchWatchlist">بحث…</string>
   <string name="textDiscoverShows">إكتشف مسلسلات</string>
   <string name="textEpisodeInfo">تفاصيل الحلقة</string>
   <string name="textTraktSynchronize">إستيراد البيانات من Trakt.tv</string>
-  <string name="textWatchlistEmpty">قائمة <b>مستوى التقدم</b> فارغة حالياً.\n\nإذهب إلى صفحة <b>إكتشف</b> لإضافة مسلسلات، أو اِستورد البيانات من Trakt.tv.</string>
+  <string name="textProgressEmpty">قائمة <b>مستوى التقدم</b> فارغة حالياً.\n\nإذهب إلى صفحة <b>إكتشف</b> لإضافة مسلسلات، أو اِستورد البيانات من Trakt.tv.</string>
   <string name="textNewSeason">إفتتاحية الموسم</string>
-
-  <string name="textWatchlistToday">اليوم</string>
-  <string name="textWatchlistTomorrow">غداً</string>
-  <string name="textWatchlistThisWeek">هذا الإسبوع</string>
-  <string name="textWatchlistNextWeek">الإسبوع القادم</string>
-  <string name="textWatchlistLater">لاحقاً</string>
-
-  <string name="menuPin">تثبيت في الأعلى</string>
-  <string name="menuUnpin">إلغاء التثبيت من الأعلى</string>
 </resources>

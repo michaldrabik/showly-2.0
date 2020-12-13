@@ -19,6 +19,7 @@ import com.michaldrabik.ui_base.common.OnTranslationsSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
+import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -77,6 +78,11 @@ class FollowedShowsFragment :
     setupBackPress()
   }
 
+  override fun onPause() {
+    enableUi()
+    super.onPause()
+  }
+
   override fun onDestroyView() {
     followedShowsPager.removeOnPageChangeListener(pageChangeListener)
     super.onDestroyView()
@@ -89,6 +95,11 @@ class FollowedShowsFragment :
       onClick { enterSearch() }
       onSettingsClickListener = { openSettings() }
       onStatsClickListener = { openStatistics() }
+    }
+    followedShowsModeTabs.run {
+      visibleIf(moviesEnabled)
+      onModeSelected = { mode = it }
+      animateShows()
     }
     followedShowsSortIcon.run {
       visibleIf(currentPage != 0)
@@ -107,6 +118,7 @@ class FollowedShowsFragment :
     }
 
     followedShowsTabs.translationY = viewModel.tabsTranslation
+    followedShowsModeTabs.translationY = viewModel.tabsTranslation
     followedShowsSearchView.translationY = viewModel.searchViewTranslation
     followedShowsSortIcon.translationY = viewModel.tabsTranslation
   }
@@ -123,10 +135,12 @@ class FollowedShowsFragment :
   private fun setupStatusBar() {
     followedShowsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.systemWindowInsetTop
+      val tabsPadding = if (moviesEnabled) R.dimen.myShowsSearchViewPadding else R.dimen.myShowsSearchViewPaddingNoModes
       followedShowsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
       followedShowsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
-      followedShowsTabs.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
-      followedShowsSortIcon.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
+      followedShowsModeTabs.updateTopMargin(dimenToPx(R.dimen.showsMoviesTabsMargin) + statusBarSize)
+      followedShowsTabs.updateTopMargin(dimenToPx(tabsPadding) + statusBarSize)
+      followedShowsSortIcon.updateTopMargin(dimenToPx(tabsPadding) + statusBarSize)
       followedShowsSearchEmptyView.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
       followedShowsSearchContainer.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
     }
@@ -185,6 +199,7 @@ class FollowedShowsFragment :
         followedShowsSearchContainer.visible()
         followedShowsPager.gone()
         followedShowsTabs.gone()
+        followedShowsModeTabs.gone()
         followedShowsSearchEmptyView.gone()
         renderSearchContainer(result.items)
       }
@@ -192,12 +207,14 @@ class FollowedShowsFragment :
         followedShowsSearchContainer.gone()
         followedShowsPager.gone()
         followedShowsTabs.gone()
+        followedShowsModeTabs.gone()
         followedShowsSearchEmptyView.visible()
       }
       EMPTY -> {
         followedShowsSearchContainer.gone()
         followedShowsPager.visible()
         followedShowsTabs.visible()
+        if (moviesEnabled) followedShowsModeTabs.visible()
         followedShowsSearchEmptyView.gone()
       }
     }
@@ -205,6 +222,7 @@ class FollowedShowsFragment :
     if (result.type != EMPTY) {
       followedShowsSearchView.translationY = 0F
       followedShowsTabs.translationY = 0F
+      followedShowsModeTabs.translationY = 0F
       followedShowsSortIcon.translationY = 0F
       childFragmentManager.fragments.forEach {
         (it as? OnScrollResetListener)?.onScrollReset()
@@ -243,11 +261,10 @@ class FollowedShowsFragment :
     disableUi()
     hideNavigation()
     followedShowsRoot.fadeOut {
-      enableUi()
       exitSearch(false)
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.ids.trakt.id) }
       navigateTo(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
-    }
+    }.add(animations)
     viewModel.tabsTranslation = followedShowsTabs.translationY
     viewModel.searchViewTranslation = followedShowsSearchView.translationY
   }
@@ -276,6 +293,7 @@ class FollowedShowsFragment :
   override fun onTabReselected() {
     followedShowsSearchView.translationY = 0F
     followedShowsTabs.translationY = 0F
+    followedShowsModeTabs.translationY = 0F
     followedShowsSortIcon.translationY = 0F
     followedShowsPager.nextPage()
     childFragmentManager.fragments.forEach {
@@ -303,6 +321,7 @@ class FollowedShowsFragment :
       if (followedShowsTabs.translationY != 0F) {
         followedShowsSearchView.animate().translationY(0F).setDuration(225L).start()
         followedShowsTabs.animate().translationY(0F).setDuration(225L).start()
+        followedShowsModeTabs.animate().translationY(0F).setDuration(225L).start()
         followedShowsSortIcon.animate().translationY(0F).setDuration(225L).start()
         requireView().postDelayed(
           {

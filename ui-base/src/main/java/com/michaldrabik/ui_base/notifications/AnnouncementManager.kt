@@ -7,6 +7,8 @@ import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.common.extensions.dateFromMillis
+import com.michaldrabik.common.extensions.nowUtcDay
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toDisplayString
 import com.michaldrabik.common.extensions.toMillis
@@ -15,14 +17,16 @@ import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.Show
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.fcm.NotificationChannel
+import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_CHANNEL
 import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_CONTENT
 import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_IMAGE_URL
 import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_TITLE
-import com.michaldrabik.ui_model.Image.Status.AVAILABLE
+import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.POSTER
+import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.mappers.Mappers
@@ -34,18 +38,21 @@ import javax.inject.Inject
 class AnnouncementManager @Inject constructor(
   private val database: AppDatabase,
   private val settingsRepository: SettingsRepository,
-  private val imagesProvider: ShowImagesProvider,
+  private val showsImagesProvider: ShowImagesProvider,
+  private val moviesImagesProvider: MovieImagesProvider,
   private val mappers: Mappers
 ) {
 
   companion object {
     private const val ANNOUNCEMENT_WORK_TAG = "ANNOUNCEMENT_WORK_TAG"
+    private const val ANNOUNCEMENT_MOVIE_WORK_TAG = "ANNOUNCEMENT_MOVIE_WORK_TAG"
     private const val ANNOUNCEMENT_STATIC_DELAY = 60000 // 1 min
   }
 
-  suspend fun refreshEpisodesAnnouncements(context: Context) {
-    Timber.i("Refreshing announcements")
+  suspend fun refreshShowsAnnouncements(context: Context) {
+    Timber.i("Refreshing shows announcements")
 
+    val now = nowUtcMillis()
     WorkManager.getInstance(context.applicationContext).cancelAllWorkByTag(ANNOUNCEMENT_WORK_TAG)
 
     val settings = settingsRepository.load()
@@ -60,7 +67,6 @@ class AnnouncementManager @Inject constructor(
       return
     }
 
-    val now = nowUtcMillis()
     val delay = settings.episodesNotificationsDelay
     myShows.forEach { show ->
       Timber.i("Processing ${show.title} (${show.idTrakt})")
@@ -74,6 +80,35 @@ class AnnouncementManager @Inject constructor(
           scheduleAnnouncement(context.applicationContext, show, it, delay)
         }
     }
+  }
+
+  suspend fun refreshMoviesAnnouncements(context: Context) {
+    Timber.i("Refreshing movies announcements")
+
+    WorkManager.getInstance(context.applicationContext).cancelAllWorkByTag(ANNOUNCEMENT_MOVIE_WORK_TAG)
+
+    if (!settingsRepository.isMoviesEnabled()) {
+      Timber.i("Movies disabled. Skipping...")
+      return
+    }
+
+    val movies = database.watchlistMoviesDao().getAll()
+      .map { mappers.movie.fromDatabase(it) }
+
+    if (movies.isEmpty()) {
+      Timber.i("Nothing to process. Exiting...")
+      return
+    }
+
+    movies
+      .filter {
+        Timber.i("Processing ${it.title} (${it.traktId})")
+        it.released != null && !it.hasAired()
+      }
+      .forEach {
+        Timber.i("Upcoming ${it.title} (${it.traktId}) found. Setting notification...")
+        scheduleAnnouncement(context.applicationContext, it)
+      }
   }
 
   @RequiresApi(Build.VERSION_CODES.N)
@@ -95,11 +130,11 @@ class AnnouncementManager @Inject constructor(
       }
       putString(DATA_CONTENT, context.getString(stringResId))
 
-      val posterImage = imagesProvider.findCachedImage(show, POSTER)
+      val posterImage = showsImagesProvider.findCachedImage(show, POSTER)
       if (posterImage.status == AVAILABLE) {
         putString(DATA_IMAGE_URL, posterImage.fullFileUrl)
       } else {
-        val fanartImage = imagesProvider.findCachedImage(show, FANART)
+        val fanartImage = showsImagesProvider.findCachedImage(show, FANART)
         if (fanartImage.status == AVAILABLE) {
           putString(DATA_IMAGE_URL, fanartImage.fullFileUrl)
         }
@@ -115,7 +150,42 @@ class AnnouncementManager @Inject constructor(
 
     WorkManager.getInstance(context.applicationContext).enqueue(request)
 
-    val logTime = com.michaldrabik.common.extensions.dateFromMillis(nowUtcMillis() + delayed)
+    val logTime = dateFromMillis(nowUtcMillis() + delayed)
+    Timber.i("Notification set for: ${logTime.toDisplayString()} UTC")
+  }
+
+  @RequiresApi(Build.VERSION_CODES.N)
+  private suspend fun scheduleAnnouncement(
+    context: Context,
+    movie: Movie
+  ) {
+    val data = Data.Builder().apply {
+      putString(DATA_CHANNEL, NotificationChannel.MOVIES_ANNOUNCEMENTS.name)
+      putString(DATA_TITLE, movie.title)
+      putString(DATA_CONTENT, context.getString(R.string.textNewMovieAvailable))
+
+      val posterImage = moviesImagesProvider.findCachedImage(movie, POSTER)
+      if (posterImage.status == AVAILABLE) {
+        putString(DATA_IMAGE_URL, posterImage.fullFileUrl)
+      } else {
+        val fanartImage = moviesImagesProvider.findCachedImage(movie, FANART)
+        if (fanartImage.status == AVAILABLE) {
+          putString(DATA_IMAGE_URL, fanartImage.fullFileUrl)
+        }
+      }
+    }
+
+    val days = movie.released!!.toEpochDay() - nowUtcDay().toEpochDay()
+    val delayed = days * 86400000L
+    val request = OneTimeWorkRequestBuilder<AnnouncementWorker>()
+      .setInputData(data.build())
+      .setInitialDelay(delayed, MILLISECONDS)
+      .addTag(ANNOUNCEMENT_MOVIE_WORK_TAG)
+      .build()
+
+    WorkManager.getInstance(context.applicationContext).enqueue(request)
+
+    val logTime = dateFromMillis(nowUtcMillis() + delayed)
     Timber.i("Notification set for: ${logTime.toDisplayString()} UTC")
   }
 }

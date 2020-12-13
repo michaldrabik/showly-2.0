@@ -24,7 +24,7 @@
       android:id="@+id/constraintLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingBottom="@dimen/spaceMedium"
+      android:paddingBottom="@dimen/spaceNormal"
       >
 
       <androidx.constraintlayout.widget.Guideline
@@ -41,6 +41,19 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@id/showDetailsImageGuideline"
         app:layout_constraintTop_toTopOf="parent"
+        />
+
+      <ImageView
+        android:id="@+id/showDetailsPlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="?attr/colorPlaceholderBackground"
+        android:padding="70dp"
+        android:src="@drawable/ic_television"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsImageGuideline"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible"
         />
 
       <TextView
@@ -172,7 +185,7 @@
           android:layout_height="wrap_content"
           />
 
-        <com.michaldrabik.ui_show.views.RemoveFromTraktButton
+        <com.michaldrabik.ui_base.common.views.RemoveFromTraktButton
           android:id="@+id/showDetailsRemoveTraktButton"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -263,7 +276,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
-        tools:visibility="gone"
         />
 
       <ProgressBar
@@ -387,19 +399,19 @@
       <TextView
         android:id="@+id/showDetailsTrailerButton"
         style="@style/ShowDetails.ExtraButton"
+        android:layout_marginStart="@dimen/spaceNormal"
         android:text="@string/textTrailer"
         app:drawableTopCompat="@drawable/ic_play"
         app:layout_constraintBottom_toBottomOf="@id/showDetailsCommentsButton"
         app:layout_constraintEnd_toStartOf="@+id/showDetailsRateButton"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/showDetailsCommentsButton"
         />
 
       <TextView
-        android:id="@+id/showDetailsImdbButton"
+        android:id="@+id/showDetailsLinksButton"
         style="@style/ShowDetails.ExtraButton"
-        android:text="@string/textImdb"
+        android:text="@string/textLink"
         app:drawableTopCompat="@drawable/ic_link"
         app:layout_constraintBottom_toBottomOf="@id/showDetailsCommentsButton"
         app:layout_constraintEnd_toStartOf="@id/showDetailsShareButton"
@@ -436,22 +448,21 @@
         android:text="@string/textComments2"
         app:drawableTopCompat="@drawable/ic_comment"
         app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedLabel"
-        app:layout_constraintEnd_toStartOf="@+id/showDetailsImdbButton"
+        app:layout_constraintEnd_toStartOf="@+id/showDetailsLinksButton"
         app:layout_constraintStart_toEndOf="@+id/showDetailsRateButton"
         app:layout_constraintTop_toBottomOf="@id/separator3"
-        app:layout_goneMarginEnd="@dimen/spaceNormal"
         />
 
       <TextView
         android:id="@+id/showDetailsShareButton"
         style="@style/ShowDetails.ExtraButton"
+        android:layout_marginEnd="@dimen/spaceNormal"
         android:text="@string/textShare"
         app:drawableTopCompat="@drawable/ic_share"
         app:layout_constraintBottom_toBottomOf="@id/showDetailsCommentsButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/showDetailsImdbButton"
+        app:layout_constraintStart_toEndOf="@+id/showDetailsLinksButton"
         app:layout_constraintTop_toTopOf="@id/showDetailsCommentsButton"
-        app:layout_goneMarginEnd="@dimen/spaceNormal"
         />
 
       <TextView
@@ -471,6 +482,15 @@
         tools:visibility="visible"
         />
 
+      <com.michaldrabik.ui_show.views.ShowLinksView
+        android:id="@+id/showDetailsLinksMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/showDetailsLinksButton"
+        app:layout_constraintEnd_toEndOf="@id/showDetailsLinksButton"
+        />
+
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/showDetailsRelatedRecycler"
         android:layout_width="match_parent"
@@ -485,7 +505,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedLabel"
-        tools:visibility="gone"
+        tools:visibility="visible"
         />
 
       <ProgressBar
@@ -511,7 +531,7 @@
     android:visibility="gone"
     />
 
-  <com.michaldrabik.ui_show.comments.CommentsView
+  <com.michaldrabik.ui_comments.CommentsView
     android:id="@+id/showDetailsCommentsView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

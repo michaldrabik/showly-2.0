@@ -4,7 +4,7 @@
   <string name="textSortNewest">Najnowsze</string>
   <string name="textSortRated">Docenione</string>
   <string name="textSortDateAdded">Ostatnio Dodane</string>
-  <string name="textSortRecentlyWatched">Ostatnio Widziane</string>
+  <string name="textSortRecentlyWatched">Ostatnio Obejrzane</string>
   <string name="textSortEpisodesLeft">Pozostałe Odcinki</string>
 
   <string name="textHeaderRecentlyAdded">Ostatnio Dodane</string>

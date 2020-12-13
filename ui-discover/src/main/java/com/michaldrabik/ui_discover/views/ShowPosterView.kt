@@ -11,8 +11,8 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_discover.R
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
-import com.michaldrabik.ui_model.Image.Status.AVAILABLE
-import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
+import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
+import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import kotlinx.android.synthetic.main.view_show_poster.view.*
 
 class ShowPosterView : ShowView<DiscoverListItem> {
@@ -33,7 +33,7 @@ class ShowPosterView : ShowView<DiscoverListItem> {
 
   override fun bind(
     item: DiscoverListItem,
-    missingImageListener: (DiscoverListItem, Boolean) -> Unit
+    missingImageListener: ((DiscoverListItem, Boolean) -> Unit)?
   ) {
     super.bind(item, missingImageListener)
     clear()
@@ -41,14 +41,14 @@ class ShowPosterView : ShowView<DiscoverListItem> {
     showPosterTitle.text = item.show.title
     showPosterProgress.visibleIf(item.isLoading)
     showPosterBadge.visibleIf(item.isFollowed)
-    showPosterLaterBadge.visibleIf(item.isSeeLater)
+    showPosterLaterBadge.visibleIf(item.isWatchlist)
     loadImage(item, missingImageListener)
   }
 
-  override fun loadImage(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
+  override fun loadImage(item: DiscoverListItem, missingImageListener: ((DiscoverListItem, Boolean) -> Unit)?) {
     if (item.image.status == UNAVAILABLE) {
       showPosterTitle.visible()
-      showPosterRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)
+      showPosterRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
     super.loadImage(item, missingImageListener)
   }
@@ -58,11 +58,11 @@ class ShowPosterView : ShowView<DiscoverListItem> {
     showPosterRoot.setBackgroundResource(0)
   }
 
-  override fun onImageLoadFail(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
+  override fun onImageLoadFail(item: DiscoverListItem, missingImageListener: ((DiscoverListItem, Boolean) -> Unit)?) {
     super.onImageLoadFail(item, missingImageListener)
     if (item.image.status == AVAILABLE) {
       showPosterTitle.visible()
-      showPosterRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)
+      showPosterRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
   }
 

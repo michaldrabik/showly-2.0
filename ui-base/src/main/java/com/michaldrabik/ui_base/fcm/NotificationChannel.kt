@@ -29,4 +29,10 @@ enum class NotificationChannel(
     NotificationManager.IMPORTANCE_DEFAULT,
     "shows_announcements"
   ),
+  MOVIES_ANNOUNCEMENTS(
+    "Movies Announcements",
+    "Movies announcements",
+    NotificationManager.IMPORTANCE_DEFAULT,
+    "movies_announcements"
+  )
 }

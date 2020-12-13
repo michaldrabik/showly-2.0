@@ -13,7 +13,7 @@ import com.jakewharton.processphoenix.ProcessPhoenix
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.network.di.DaggerCloudComponent
-import com.michaldrabik.showly2.common.ShowsSyncActivityCallbacks
+import com.michaldrabik.showly2.common.ShowsMoviesSyncActivityCallbacks
 import com.michaldrabik.showly2.di.component.AppComponent
 import com.michaldrabik.showly2.di.component.DaggerAppComponent
 import com.michaldrabik.showly2.di.module.PreferencesModule
@@ -44,11 +44,12 @@ class App :
 
   lateinit var appComponent: AppComponent
   var isAppOnline = true
+  var isMoviesEnabled = true
 
   private val activityCallbacks by lazy {
     listOf(
       EventsActivityCallbacks(),
-      ShowsSyncActivityCallbacks(),
+      ShowsMoviesSyncActivityCallbacks(),
       NetworkMonitorCallbacks(connectivityManager())
     )
   }
@@ -115,6 +116,7 @@ class App :
       createNotificationChannel(createChannel(AppNotificationChannel.GENERAL_INFO))
       createNotificationChannel(createChannel(AppNotificationChannel.SHOWS_INFO))
       createNotificationChannel(createChannel(AppNotificationChannel.EPISODES_ANNOUNCEMENTS))
+      createNotificationChannel(createChannel(AppNotificationChannel.MOVIES_ANNOUNCEMENTS))
     }
   }
 

@@ -97,8 +97,10 @@
 -if interface * { @retrofit2.http.* <methods>; }
 -keep,allowobfuscation interface <1>
 
+-keep class com.michaldrabik.network.tmdb.model.** { *; }
 -keep class com.michaldrabik.network.trakt.model.** { *; }
 -keep class com.michaldrabik.network.tvdb.model.** { *; }
+-keep class com.michaldrabik.network.aws.model.** { *; }
 
 ### OkHttp
 

@@ -2,7 +2,8 @@ package com.michaldrabik.ui_repository
 
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.network.trakt.api.TraktApi
+import com.michaldrabik.network.tmdb.api.TraktApi
+import com.michaldrabik.network.trakt.model.TraktUser
 import com.michaldrabik.storage.database.dao.ShowsDao
 import com.michaldrabik.storage.database.model.Show
 import com.michaldrabik.ui_model.Comment
@@ -26,7 +27,6 @@ import org.junit.Test
 import java.util.concurrent.TimeUnit
 import com.michaldrabik.network.trakt.model.Comment as CommentNetwork
 import com.michaldrabik.network.trakt.model.Show as ShowRemote
-import com.michaldrabik.network.trakt.model.User as UserNetwork
 
 class ShowDetailsRepositoryTest : BaseMockTest() {
 
@@ -136,7 +136,7 @@ class ShowDetailsRepositoryTest : BaseMockTest() {
   @Test
   fun `Should load comments with given limit`() {
     runBlocking {
-      val commentNetwork = CommentNetwork(1, 2, "", 1, true, true, null, UserNetwork("", ""))
+      val commentNetwork = CommentNetwork(1, 2, "", 1, true, true, null, TraktUser("", null))
       val comment = Comment(1, 2, "", 1, true, true, null, User("", ""))
       coEvery { traktApi.fetchShowComments(any(), any()) } returns listOf(commentNetwork)
 

@@ -12,10 +12,10 @@
 
   <string name="textWhatsNewTitle">What\'s New</string>
   <string name="textWhatsNewSubtitle">Version %s</string>
-  <string name="textWhatsNewMessage" translatable="false">* Added swipe gesture support in the main sections\n\n* Added <b>Polish</b> language support (can be set via Settings)\n\n<b>Spanish</b> and <b>German</b> languages are being worked on. If you would like to help with the translations send us an email or visit Showly\'s Github page :)</string>
+  <string name="textWhatsNewMessage" translatable="false">* Added <b>Movies</b> support!\n\nIf you\'re not interested in movies you can switch them off via settings\n\n* Display user rating in Collection items\n\n* Bugfixes</string>
 
   <string name="shortcutDiscover">Discover</string>
-  <string name="shortcutMyShows">My Shows</string>
+  <string name="shortcutCollection">Collection</string>
   <string name="shortcutSearch">Search</string>
   <string name="shortcutProgress">Progress</string>
 

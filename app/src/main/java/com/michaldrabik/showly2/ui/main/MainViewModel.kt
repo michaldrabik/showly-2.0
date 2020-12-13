@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.ui.main
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.Mode
 import com.michaldrabik.showly2.ui.main.cases.MainInitialsCase
 import com.michaldrabik.showly2.ui.main.cases.MainMiscCase
 import com.michaldrabik.showly2.ui.main.cases.MainRateAppCase
@@ -20,11 +21,12 @@ class MainViewModel @Inject constructor(
   private val rateAppCase: MainRateAppCase
 ) : BaseViewModel<MainUiModel>() {
 
-  fun initSettings() {
+  fun initialize() {
     viewModelScope.launch {
       initCase.initSettings()
       checkInitialRun()
       initCase.initFcm()
+      initCase.initRatings()
     }
   }
 
@@ -52,6 +54,12 @@ class MainViewModel @Inject constructor(
       }
     }
   }
+
+  fun setMode(mode: Mode) = miscCase.setMode(mode)
+
+  fun getMode(): Mode = miscCase.getMode()
+
+  fun moviesEnabled(): Boolean = miscCase.moviesEnabled()
 
   fun isTipShown(tip: Tip) = tipsCase.isTipShown(tip)
 

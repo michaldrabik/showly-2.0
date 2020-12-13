@@ -1,11 +1,11 @@
 ext.versions = [
-    versionCode            : 141,
-    versionName            : '1.17.0',
+    versionCode            : 200,
+    versionName            : '2.0.0',
 
     minSdk                 : 21,
     compileSdk             : 29,
 
-    kotlin                 : '1.4.10',
+    kotlin                 : '1.4.20',
     kotlinCoroutines       : '1.4.1',
     gradleBuildTools       : '4.1.1',
 
@@ -21,7 +21,7 @@ ext.versions = [
     androidSwipeRefresh    : '1.1.0',
     androidTransition      : '1.3.1',
     androidViewPager       : '1.0.0',
-    androidPlayCore        : '1.8.3',
+    androidPlayCore        : '1.9.0',
     androidWork            : '2.4.0',
     circleIndicator        : '2.1.4',
     dagger                 : '2.27',

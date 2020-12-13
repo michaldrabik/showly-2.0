@@ -5,8 +5,11 @@ import com.michaldrabik.network.trakt.model.ActorsResponse
 import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.network.trakt.model.Episode
 import com.michaldrabik.network.trakt.model.HiddenItem
+import com.michaldrabik.network.trakt.model.Movie
+import com.michaldrabik.network.trakt.model.MovieResult
 import com.michaldrabik.network.trakt.model.OAuthResponse
 import com.michaldrabik.network.trakt.model.RatingResultEpisode
+import com.michaldrabik.network.trakt.model.RatingResultMovie
 import com.michaldrabik.network.trakt.model.RatingResultShow
 import com.michaldrabik.network.trakt.model.SearchResult
 import com.michaldrabik.network.trakt.model.Season
@@ -35,29 +38,53 @@ interface TraktService {
   @GET("shows/{traktId}?extended=full")
   suspend fun fetchShow(@Path("traktId") traktId: Long): Show
 
+  @GET("movies/{traktId}?extended=full")
+  suspend fun fetchMovie(@Path("traktId") traktId: Long): Movie
+
   @GET("shows/popular?extended=full&limit=${Config.TRAKT_POPULAR_SHOWS_LIMIT}")
   suspend fun fetchPopularShows(
     @Query("genres") genres: String
   ): List<Show>
+
+  @GET("movies/popular?extended=full&limit=${Config.TRAKT_POPULAR_MOVIES_LIMIT}")
+  suspend fun fetchPopularMovies(
+    @Query("genres") genres: String
+  ): List<Movie>
 
   @GET("shows/trending?extended=full&limit=${Config.TRAKT_TRENDING_SHOWS_LIMIT}")
   suspend fun fetchTrendingShows(
     @Query("genres") genres: String
   ): List<ShowResult>
 
+  @GET("movies/trending?extended=full&limit=${Config.TRAKT_TRENDING_MOVIES_LIMIT}")
+  suspend fun fetchTrendingMovies(
+    @Query("genres") genres: String
+  ): List<MovieResult>
+
   @GET("shows/anticipated?extended=full&limit=${Config.TRAKT_ANTICIPATED_SHOWS_LIMIT}")
   suspend fun fetchAnticipatedShows(
     @Query("genres") genres: String
   ): List<ShowResult>
 
+  @GET("movies/anticipated?extended=full&limit=${Config.TRAKT_ANTICIPATED_MOVIES_LIMIT}")
+  suspend fun fetchAnticipatedMovies(
+    @Query("genres") genres: String
+  ): List<MovieResult>
+
   @GET("shows/{traktId}/related?extended=full&limit=${Config.TRAKT_RELATED_SHOWS_LIMIT}")
   suspend fun fetchRelatedShows(@Path("traktId") traktId: Long): List<Show>
+
+  @GET("movies/{traktId}/related?extended=full&limit=${Config.TRAKT_RELATED_MOVIES_LIMIT}")
+  suspend fun fetchRelatedMovies(@Path("traktId") traktId: Long): List<Movie>
 
   @GET("shows/{traktId}/next_episode?extended=full")
   suspend fun fetchNextEpisode(@Path("traktId") traktId: Long): Response<Episode>
 
   @GET("search/show?extended=full&limit=${Config.TRAKT_SEARCH_LIMIT}")
   suspend fun fetchSearchResults(@Query("query") queryText: String): List<SearchResult>
+
+  @GET("search/show,movie?extended=full&limit=${Config.TRAKT_SEARCH_LIMIT}")
+  suspend fun fetchSearchResultsMovies(@Query("query") queryText: String): List<SearchResult>
 
   @GET("shows/{traktId}/seasons?extended=full,episodes")
   suspend fun fetchSeasons(@Path("traktId") traktId: Long): List<Season>
@@ -68,8 +95,20 @@ interface TraktService {
     @Query("limit") limit: Int
   ): List<Comment>
 
+  @GET("movies/{traktId}/comments?extended=full")
+  suspend fun fetchMovieComments(
+    @Path("traktId") traktId: Long,
+    @Query("limit") limit: Int
+  ): List<Comment>
+
   @GET("shows/{traktId}/translations/{code}")
   suspend fun fetchShowTranslations(
+    @Path("traktId") traktId: Long,
+    @Path("code") countryCode: String,
+  ): List<Translation>
+
+  @GET("movies/{traktId}/translations/{code}")
+  suspend fun fetchMovieTranslations(
     @Path("traktId") traktId: Long,
     @Path("code") countryCode: String,
   ): List<Translation>
@@ -81,14 +120,6 @@ interface TraktService {
     @Query("translations") countryCode: String,
   ): List<SeasonTranslation>
 
-  @GET("shows/{showId}/seasons/{seasonNumber}/episodes/{episodeNumber}/translations/{code}")
-  suspend fun fetchEpisodeTranslations(
-    @Path("showId") showTraktId: Long,
-    @Path("seasonNumber") seasonNumber: Int,
-    @Path("episodeNumber") episodeNumber: Int,
-    @Path("code") countryCode: String,
-  ): List<Translation>
-
   @GET("shows/{traktId}/seasons/{seasonNumber}/episodes/{episodeNumber}/comments?limit=40&extended=full")
   suspend fun fetchEpisodeComments(
     @Path("traktId") traktId: Long,
@@ -98,6 +129,11 @@ interface TraktService {
 
   @GET("shows/{traktId}/people")
   suspend fun fetchShowPeople(
+    @Path("traktId") traktId: Long
+  ): ActorsResponse
+
+  @GET("movies/{traktId}/people")
+  suspend fun fetchMoviePeople(
     @Path("traktId") traktId: Long
   ): ActorsResponse
 
@@ -123,14 +159,24 @@ interface TraktService {
     @Query("limit") pageLimit: Int
   ): List<HiddenItem>
 
-  @GET("sync/watched/shows")
+  @GET("users/hidden/progress_watched?type=movie")
+  suspend fun fetchHiddenMovies(
+    @Header("Authorization") authToken: String,
+    @Query("limit") pageLimit: Int
+  ): List<HiddenItem>
+
+  @GET("sync/watched/{type}")
   suspend fun fetchSyncWatched(
     @Header("Authorization") authToken: String,
+    @Path("type") type: String,
     @Query("extended") extended: String?
   ): List<SyncItem>
 
-  @GET("sync/watchlist?extended=full")
-  suspend fun fetchSyncWatchlist(@Header("Authorization") authToken: String): List<SyncItem>
+  @GET("sync/watchlist/{type}?extended=full")
+  suspend fun fetchSyncWatchlist(
+    @Header("Authorization") authToken: String,
+    @Path("type") type: String
+  ): List<SyncItem>
 
   @POST("sync/watchlist")
   suspend fun postSyncWatchlist(
@@ -172,6 +218,11 @@ interface TraktService {
   suspend fun fetchShowsRatings(
     @Header("Authorization") authToken: String
   ): List<RatingResultShow>
+
+  @GET("sync/ratings/movies")
+  suspend fun fetchMoviesRatings(
+    @Header("Authorization") authToken: String
+  ): List<RatingResultMovie>
 
   @GET("sync/ratings/episodes")
   suspend fun fetchEpisodesRatings(

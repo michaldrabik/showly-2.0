@@ -10,5 +10,6 @@ class ArchiveDiffCallback : DiffUtil.ItemCallback<ArchiveListItem>() {
   override fun areContentsTheSame(oldItem: ArchiveListItem, newItem: ArchiveListItem) =
     oldItem.image == newItem.image &&
       oldItem.isLoading == newItem.isLoading &&
-      oldItem.translation == newItem.translation
+      oldItem.translation == newItem.translation &&
+      oldItem.userRating == newItem.userRating
 }

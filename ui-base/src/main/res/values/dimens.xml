@@ -5,6 +5,7 @@
   <dimen name="spaceMedium">12dp</dimen>
   <dimen name="spaceNormal">16dp</dimen>
   <dimen name="spaceBig">24dp</dimen>
+  <dimen name="spaceHuge">48dp</dimen>
 
   <dimen name="bottomNavigationHeight">56dp</dimen>
   <dimen name="bottomNavigationHeightPadded">64dp</dimen>
@@ -20,16 +21,28 @@
   <dimen name="showTileCorner">4dp</dimen>
   <dimen name="showTilePlaceholder">40dp</dimen>
 
+  <dimen name="movieTileCorner">4dp</dimen>
+  <dimen name="movieTilePlaceholder">40dp</dimen>
+  <dimen name="relatedTilePlaceholder">36dp</dimen>
+
   <dimen name="searchViewHeight">48dp</dimen>
   <dimen name="searchViewHeightPadded">64dp</dimen>
   <dimen name="searchViewCorner">4dp</dimen>
   <dimen name="searchViewDotTranslation">-10dp</dimen>
   <dimen name="searchViewImageWidth">67dp</dimen>
   <dimen name="searchViewImageHeight">100dp</dimen>
+  <dimen name="searchSuggestionViewImageWidth">40dp</dimen>
+  <dimen name="searchSuggestionViewImageHeight">60dp</dimen>
   <dimen name="searchViewItemPaddingHorizontal">20dp</dimen>
 
+  <dimen name="discoverFilterChipStroke">1dp</dimen>
+  <dimen name="discoverRecyclerPadding">104dp</dimen>
+  <dimen name="discoverRecyclerPaddingNoTabs">64dp</dimen>
+
   <dimen name="swipeRefreshStartOffset">8dp</dimen>
-  <dimen name="swipeRefreshEndOffset">120dp</dimen>
+  <dimen name="swipeRefreshEndOffset">140dp</dimen>
+
+  <dimen name="showsMoviesTabsMargin">64dp</dimen>
 
   <dimen name="tutorialTipSize">28dp</dimen>
   <dimen name="scrollBarWidth">3dp</dimen>

@@ -16,6 +16,14 @@
     android:overScrollMode="never"
     />
 
+  <com.michaldrabik.ui_base.common.views.ShowsMoviesTabsView
+    android:id="@+id/followedShowsModeTabs"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/showsMoviesTabsMargin"
+    />
+
   <com.michaldrabik.ui_base.common.views.ScrollableTabLayout
     android:id="@+id/followedShowsTabs"
     style="@style/ScrollableTabsStyle"
@@ -24,7 +32,6 @@
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/myShowsSearchViewPadding"
     android:translationX="@dimen/myShowsTabsTranslation"
-    app:tabMinWidth="@dimen/myShowsTabsMinWidth"
     app:tabTextAppearance="@style/ScrollableTabTextStyle"
     />
 
