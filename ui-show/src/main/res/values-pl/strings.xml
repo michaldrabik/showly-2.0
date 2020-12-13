@@ -6,24 +6,12 @@
   <string name="textInMyShows">W moich serialach</string>
   <string name="textInWatchlist">Na później</string>
   <string name="textInArchive">W archiwum</string>
-  <string name="textRate">Oceń</string>
-  <string name="textRateDelete">Usuń</string>
-  <string name="textSignBeforeRate">Zaloguj się aby móc ocenić.</string>
-  <string name="textRemoveFromTrakt">Usunąć z Trakt.tv?</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
-  <string name="textMinutesShort">min</string>
-
-  <string name="textComments">Opinie:</string>
-  <string name="textComments2">Opinie</string>
-  <string name="textNoComments">Brak opinii.</string>
 
   <string name="textShowQuickProgressTitle">Szybki Progres</string>
   <string name="textShowQuickProgressSubTitle">Wybierz ostatni obejrzany odcinek aby zaktualizować swój progres.</string>
   <string name="textShowQuickProgressDone">Progres został zaktualizowany.</string>
 
-  <string name="textActorRole">%s\n(%s)</string>
-  <string name="textShowRated">Ocena została zapisana.</string>
-  <string name="textShowRatingDeleted">Ocena została usunięta.</string>
   <string name="textEpisodeDate">Odcinek %1$d | %2$s</string>
   <string name="textEpisodeTitle">S.%02d E.%02d - \'%s\'</string>
   <string name="textTraktSyncRemovedFromTrakt">Trakt.tv zostało zaktualizowane.</string>
