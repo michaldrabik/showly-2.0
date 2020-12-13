@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textShowRated">Tu calificación se ha guardado.</string>
+  <string name="textShowRatingDeleted">Tu calificación ha sido eliminada.</string>
+  <string name="textSignBeforeRate">Por favor inicia sesión antes de calificar una serie.</string>
+  <string name="textRate">Calificar</string>
+  <string name="textRateDelete">Eliminar</string>
+  <string name="textSeasonEpisodeDate">S.%1$02d E.%2$02d | %3$s</string>
+  <string name="textNoDescription">Resumen no disponible.</string>
+  <string name="textLoadCommentsCount">Mostrar Comentarios (%d)</string>
+  <string name="textVotes">%.1f (%d votos)</string>
+
+  <string name="textNoComments">Sin comentarios.</string>
+  <string name="textComments">Comentarios:</string>
+</resources>
