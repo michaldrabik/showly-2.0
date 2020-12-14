@@ -10,6 +10,7 @@ import com.michaldrabik.ui_model.MovieStatus.POST_PRODUCTION
 import com.michaldrabik.ui_model.MovieStatus.RUMORED
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.movies.MoviesRepository
+import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -22,6 +23,10 @@ class MoviesSyncRunner @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val settingsRepository: SettingsRepository
 ) {
+
+  companion object {
+    private const val DELAY_MS = 100L
+  }
 
   suspend fun run(): Int {
     Timber.i("Movies sync initialized.")
@@ -56,6 +61,8 @@ class MoviesSyncRunner @Inject constructor(
         Timber.i("${movie.title}(${movie.ids.trakt}) movie synced.")
       } catch (t: Throwable) {
         Timber.e("${movie.title}(${movie.ids.trakt}) movie sync error. Skipping... \n$t")
+      } finally {
+        delay(DELAY_MS)
       }
     }
 
