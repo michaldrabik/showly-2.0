@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textAdd">Añadir a Mis Series</string>
+  <string name="textWatchLater">Ver Después</string>
+  <string name="textNextEpisode">Siguiente Episodio:</string>
+  <string name="textInMyShows">Añadido a mis series</string>
+  <string name="textInWatchlist">Añadido a pendientes por ver</string>
+  <string name="textInArchive">Archivado</string>
+  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
+
+  <string name="textShowQuickProgressTitle">Progreso Rápido</string>
+  <string name="textShowQuickProgressSubTitle">Selecciona el último episodio visto para actualizar rápidamente tu progreso.</string>
+  <string name="textShowQuickProgressDone">Tu progreso se ha actualizado.</string>
+
+  <string name="textEpisodeDate">Episodio %1$d | %2$s</string>
+  <string name="textEpisodeTitle">T.%02d E.%02d - \'%s\'</string>
+  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv se sincronizó correctamente.</string>
+  <string name="textActorsEmpty">El elenco no está disponible</string>
+  <string name="textSeasons">Temporadas:</string>
+  <string name="textSeasonsEmpty">Temporadas no disponibles.</string>
+  <string name="textTrailer">Tráiler</string>
+  <string name="textLink">Enlace</string>
+  <string name="textShare">Compartir</string>
+  <string name="textYouMayAlsoLike">También te puede interesar:</string>
+  <string name="textRuntimeLeftHours">~%sh %sm restantes</string>
+  <string name="textRuntimeLeftMinutes">~%sm restantes</string>
+
+  <string name="textWhatIsArchive">¿Archivar?</string>
+  <string name="textWhatIsArchiveFull">¿Qué es Archivar?</string>
+  <string name="textArchiveDescription"><b>Archivo</b> es una lista de series que se han descartado, abandonado o que ya no te interesan.\n\nLas series archivadas ya o aparecerán en las secciones <b>Progreso</b>, <b>Descubrir</b> y <b>Mis Series</b> y también se omitirán durante la importación de Trakt.tv</string>
+  <string name="textArchiveConfirmationTitle">Archivar Serie</string>
+  <string name="textArchiveConfirmationMessage">\n¿Estás seguro/a de que quieres archivar esta serie?\n</string>
+</resources>
