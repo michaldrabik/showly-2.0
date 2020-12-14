@@ -18,8 +18,10 @@
   <string name="textEpisode">الحلقة %1$d</string>
   <string name="textSortBy">ترتيب حسب:</string>
   <string name="textSpoilersWarning">هذا التعليق يحتوى على حرق للأحداث.\nإضغط للقراءة.</string>
-  <string name="textCommentedOn">المستخدم %1$s علق على %2$s</string>
+  <string name="textCommentedOn">المستخدم %s علق على %s</string>
   <string name="textNetwork">(%2$s) %1$s</string>
+  <string name="textShows">مسلسلات</string>
+  <string name="textMovies">أفلام</string>
   <string name="textMinutesShort">دقائق</string>
   <string name="textRemoveFromTrakt">حذف من Trakt.tv؟</string>
   <string name="textNoDescription">لا يتوفر وصف.</string>
@@ -58,12 +60,16 @@
   <string name="textTomorrow">غداً</string>
   <string name="textThisWeek">هذا الإسبوع</string>
   <string name="textNextWeek">الإسبوع القادم</string>
+  <string name="textNextMonth">الشهر القادم</string>
+  <string name="textThisYear">هذه السنة</string>
+  <string name="textNextYear">السنة القادمة</string>
   <string name="textLater">لاحقاً</string>
 
   <string name="textNewEpisodeAvailable">توفرت حلقة جديدة!</string>
   <string name="textNewEpisodeAvailableSoon">ستتوفر حلقة جديدة قريباً!</string>
   <string name="textNewSeasonAvailable">موسم جديد أصبح متاحاً الآن!</string>
   <string name="textNewSeasonAvailableSoon">موسم جديد قادم قريباً!</string>
+  <string name="textNewMovieAvailable">تم إصدار الفيلم!</string>
 
   <string name="textTraktSync">مزامنة Trakt.tv</string>
   <string name="textTraktSyncComplete">إكتملت المزامنة بنجاح.</string>
@@ -83,6 +89,7 @@
   <string name="errorEpisodeNotAired">لم تُعرض الحلقة حتى الآن.</string>
   <string name="errorCouldNotLoadDiscover">لم نستطع تحميل صفحة إكتشف.\nرجاءً تواصل معنا إذا استمرت هذه المشكلة بالحدوث.</string>
   <string name="errorCouldNotLoadShow">لم نستطع تحميل معلومات هذا المسلسل.\nرجاءً تواصل معنا إذا إستمرت هذه المشكلة بالحدوث</string>
+  <string name="errorCouldNotLoadMovie">لم نستطع تحميل معلومات هذا الفيلم.\nرجاءً تواصل معنا إذا إستمرت هذه المشكلة بالحدوث.</string>
   <string name="errorCouldNotLoadSearchResults">لم نستطع تحميل نتائج البحث.\nرجاءً تواصل معنا إذا استمرت هذه المشكلة بالحدوث.</string>
   <string name="errorNoInternetConnection">لا يوجد إتصال بالإنترنت. رجاءً تحقق من إتصالك بالإنترنت.</string>
   <string name="errorTraktSyncGeneral">فشلت مزامنة Trakt.tv.\nرجاءً تحقق من إتصالك بالإنترنت ثم حاول مرة أخرى.</string>
