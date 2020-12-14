@@ -32,11 +32,12 @@ keyAlias=github
 keyPassword=github
 storePassword=github
 ```
-4. Add your [Trakt.tv](https://trakt.tv/oauth/applications) and [TVDB](https://thetvdb.com/dashboard/account/apikey) api keys as following properties into your `local.properties` file located in the root directory of the project:
+4. Add your [Trakt.tv](https://trakt.tv/oauth/applications), [TVDB](https://thetvdb.com/dashboard/account/apikey) and [TMDB](https://developers.themoviedb.org/3/) API keys as following properties into your `local.properties` file located in the root directory of the project:
 ```
 traktClientId="your trakt client id"
 traktClientSecret="your trakt client secret"
 tvdbApiKey="your tvdb api key"
+tmdbApiKey="your tmdb api key"
 ```
 5. Generate your own Firebase `google-services.json` file and put it in the `/app` directory.
 6. Rebuild and start the app.
@@ -49,8 +50,8 @@ Pull requests are welcome. Remember about leaving a comment in the relevant issu
 
 ### Language Translations
 
-I am currently looking for help with translating app's resources into Spanish and German.
-If you are interested in helping, please visit relevant Issues ([#98](https://github.com/michaldrabik/showly-2.0/issues/98), [#99](https://github.com/michaldrabik/showly-2.0/issues/99)) for more info.
+I am currently looking for help with translating app's resources into more languages.
+If you are interested in helping, please visit relevant Issues for more info.
 
 ## Contact
 

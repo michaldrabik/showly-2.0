@@ -86,7 +86,7 @@ class ActorsDaoTest : BaseDaoTest() {
       val actor4 = actor.copy(id = 44, idShowTvdb = 111)
       val actor5 = actor.copy(id = 55, idShowTvdb = 111)
 
-      database.actorsDao().replace(listOf(actor4, actor5), 111)
+      database.actorsDao().replaceForShow(listOf(actor4, actor5), 111)
       assertThat(database.actorsDao().getAllByShow(111)).containsExactly(actor4, actor5)
       assertThat(database.actorsDao().getAllByShow(333)).containsExactly(actor3)
     }

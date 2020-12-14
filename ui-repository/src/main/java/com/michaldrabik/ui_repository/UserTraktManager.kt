@@ -121,6 +121,10 @@ class UserTraktManager @Inject constructor(
     traktTokenTimestamp = timestamp
     traktUsername = userModel.username
   }
+
+  suspend fun clearTraktLogs() {
+    database.traktSyncLogDao().deleteAll()
+  }
 }
 
 inline class TraktAuthToken(val token: String = "")

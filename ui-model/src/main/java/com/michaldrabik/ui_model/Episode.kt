@@ -28,6 +28,4 @@ data class Episode(
       null -> season.episodes.any { it.number > number && it.firstAired != null }
       else -> nowUtcMillis() >= firstAired.toInstant().toEpochMilli()
     }
-
-  fun toDisplayString() = String.format("S.%02d E.%02d - \'%s\'", season, number, title)
 }

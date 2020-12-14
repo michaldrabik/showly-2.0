@@ -9,5 +9,6 @@ data class ArchiveListItem(
   override val show: Show,
   override val image: Image,
   override val isLoading: Boolean = false,
-  val translation: Translation? = null
+  val translation: Translation? = null,
+  val userRating: Int? = null
 ) : ListItem

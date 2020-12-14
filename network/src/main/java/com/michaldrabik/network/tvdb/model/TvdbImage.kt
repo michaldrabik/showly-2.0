@@ -5,5 +5,5 @@ data class TvdbImage(
   val fileName: String?,
   val thumbnail: String?,
   val keyType: String?,
-  val rating: TvdbImageRating?
+  val ratingsInfo: TvdbImageRating?
 )

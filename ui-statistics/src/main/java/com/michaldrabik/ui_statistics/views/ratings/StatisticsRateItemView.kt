@@ -35,7 +35,7 @@ class StatisticsRateItemView : ShowView<StatisticsRatingItem> {
     this.item = item
     clear()
     viewRateItemTitle.text = item.show.title
-    viewRateItemRating.text = item.rating.rating.toString()
+    viewRateItemRating.text = "${item.rating.rating}"
     loadImage(item) { _, _ -> }
   }
 

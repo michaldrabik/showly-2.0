@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textComments">Kommentare:</string>
+  <string name="textComments2">Kommentare</string>
+  <string name="textNoComments">Keine Kommentare.</string>
+
+  <string name="textShowRated">Deine Bewertung wurde gespeichert.</string>
+  <string name="textShowRatingDeleted">Deine Bewertung wurde gelöscht.</string>
+  <string name="textSignBeforeRate">Bitte melde dich an bevor du eine Serie bewertest.</string>
+  <string name="textRate">Bewerten</string>
+  <string name="textRateDelete">Löschen</string>
+</resources>

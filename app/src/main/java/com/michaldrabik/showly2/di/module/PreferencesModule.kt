@@ -22,9 +22,18 @@ class PreferencesModule(private val context: Context) {
   @Provides
   @AppScope
   @Named("watchlistPreferences")
-  fun providesWatchlistPreferences(): SharedPreferences =
+  fun providesProgressShowsPreferences(): SharedPreferences =
     context.applicationContext.getSharedPreferences(
       "PREFERENCES_WATCHLIST",
+      Context.MODE_PRIVATE
+    )
+
+  @Provides
+  @AppScope
+  @Named("progressMoviesPreferences")
+  fun providesProgressMoviesPreferences(): SharedPreferences =
+    context.applicationContext.getSharedPreferences(
+      "PREFERENCES_PROGRESS_MOVIES",
       Context.MODE_PRIVATE
     )
 

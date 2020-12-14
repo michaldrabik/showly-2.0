@@ -5,10 +5,10 @@ import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_model.Image.Status.AVAILABLE
-import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageFamily.EPISODE
 import com.michaldrabik.ui_model.ImageSource
+import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
+import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_repository.UserTvdbManager
@@ -24,7 +24,7 @@ class EpisodeImagesProvider @Inject constructor(
 ) {
 
   private suspend fun findCachedImage(episode: Episode, type: ImageType): Image {
-    val cachedImage = database.imagesDao().getByEpisodeId(episode.ids.tvdb.id, type.key)
+    val cachedImage = database.showImagesDao().getByEpisodeId(episode.ids.tvdb.id, type.key)
     return when (cachedImage) {
       null -> Image.createUnknown(type, EPISODE)
       else -> mappers.image.fromDatabase(cachedImage).copy(type = type)
@@ -47,6 +47,7 @@ class EpisodeImagesProvider @Inject constructor(
         else -> Image(
           remoteImage.id ?: -1,
           tvdbId,
+          episode.ids.tmdb,
           FANART,
           EPISODE,
           remoteImage.fileName ?: "",
@@ -58,8 +59,8 @@ class EpisodeImagesProvider @Inject constructor(
     }
 
     when (image.status) {
-      UNAVAILABLE -> database.imagesDao().deleteByEpisodeId(tvdbId.id, image.type.key)
-      else -> database.imagesDao().insertEpisodeImage(mappers.image.toDatabase(image))
+      UNAVAILABLE -> database.showImagesDao().deleteByEpisodeId(tvdbId.id, image.type.key)
+      else -> database.showImagesDao().insertEpisodeImage(mappers.image.toDatabaseShow(image))
     }
 
     return image

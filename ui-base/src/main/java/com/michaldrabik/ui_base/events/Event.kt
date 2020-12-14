@@ -2,9 +2,9 @@ package com.michaldrabik.ui_base.events
 
 sealed class Event
 
-object ShowsSyncComplete : Event()
+object ShowsMoviesSyncComplete : Event()
 
-object TranslationsSyncComplete : Event()
+object TranslationsSyncProgress : Event()
 
 object TraktSyncStart : Event()
 

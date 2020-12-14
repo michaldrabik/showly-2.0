@@ -1,0 +1,23 @@
+<resources>
+  <string name="menuProgress">Fortschritt</string>
+  <string name="menuDiscover">Entdecken</string>
+  <string name="menuCollection">Sammlung</string>
+
+  <string name="textRateAppTitle">Gefallt dir Showly 2.0?</string>
+  <string name="textRateAppMessage">Möchten Sie die App bewerten?\nEs dauert nur wenige Sekunden. Danke!\n\n<i>Die App wird nicht geschlossen.</i></string>
+  <string name="textRateAppYesButton">Sicher, wieso nicht?</string>
+  <string name="textRateAppNoButton">Nicht jetzt</string>
+
+  <string name="textWhatsNewTitle">Was gibts Neues?</string>
+  <string name="textWhatsNewSubtitle">Version %s</string>
+
+  <string name="shortcutDiscover">Entdecken</string>
+  <string name="shortcutCollection">Sammlung</string>
+  <string name="shortcutSearch">Suche</string>
+  <string name="shortcutProgress">Fortschritt</string>
+
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="one">1 Item erfolgreich synchronisiert. </item>
+    <item quantity="other">%d Items erfolgreich synchronisiert.  </item>
+  </plurals>
+</resources>

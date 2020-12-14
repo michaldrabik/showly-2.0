@@ -34,14 +34,14 @@
 
     <ImageView
       android:id="@+id/showFanartBadge"
-      style="@style/Show.Badge"
+      style="@style/Badge"
       app:srcCompat="@drawable/ic_bookmark_full"
       tools:visibility="visible"
       />
 
     <ImageView
       android:id="@+id/showFanartBadgeLater"
-      style="@style/Show.BadgeLater"
+      style="@style/Badge.Watchlist"
       app:srcCompat="@drawable/ic_bookmark_full"
       tools:visibility="visible"
       />
@@ -49,11 +49,13 @@
     <TextView
       android:id="@+id/showFanartTitle"
       style="@style/ImageTitle"
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|start"
       android:layout_margin="@dimen/spaceSmall"
+      android:gravity="start"
       android:maxLines="2"
+      android:textAlignment="viewStart"
       android:textSize="14sp"
       tools:text="Game Of Thrones"
       />

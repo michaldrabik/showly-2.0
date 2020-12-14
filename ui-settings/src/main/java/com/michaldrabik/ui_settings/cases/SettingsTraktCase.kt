@@ -52,6 +52,7 @@ class SettingsTraktCase @Inject constructor(
 
   suspend fun logoutTrakt(context: Context) {
     userManager.revokeToken()
+    userManager.clearTraktLogs()
     ratingsRepository.clear()
     TraktSyncWorker.cancelAll(context)
   }

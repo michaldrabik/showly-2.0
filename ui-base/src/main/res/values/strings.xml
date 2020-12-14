@@ -19,6 +19,14 @@
   <string name="textSortBy">Sort by:</string>
   <string name="textSpoilersWarning">This comment contains spoilers.\nTap to read.</string>
   <string name="textCommentedOn">%s commented on %s:</string>
+  <string name="textNetwork">%1$s (%2$s)</string>
+  <string name="textTba" translatable="false">TBA</string>
+  <string name="textShows">Shows</string>
+  <string name="textMovies">Movies</string>
+  <string name="textMinutesShort">min</string>
+  <string name="textActorRole" translatable="false">%s\n(%s)</string>
+  <string name="textRemoveFromTrakt">Remove from Trakt.tv?</string>
+  <string name="textNoDescription">Overview not available.</string>
 
   <string name="textAiredAlready">Aired</string>
   <string name="textAirsNow">Airs Now</string>
@@ -38,10 +46,20 @@
     <item quantity="other">Airs in %d minutes</item>
   </plurals>
 
+  <string name="textToday">Today</string>
+  <string name="textTomorrow">Tomorrow</string>
+  <string name="textThisWeek">This Week</string>
+  <string name="textNextWeek">Next Week</string>
+  <string name="textNextMonth">Next Month</string>
+  <string name="textThisYear">This Year</string>
+  <string name="textNextYear">Next Year</string>
+  <string name="textLater">Later</string>
+
   <string name="textNewEpisodeAvailable">New episode is available now!</string>
   <string name="textNewEpisodeAvailableSoon">New episode will be available soon!</string>
   <string name="textNewSeasonAvailable">New season is available now!</string>
   <string name="textNewSeasonAvailableSoon">New season will be available soon!</string>
+  <string name="textNewMovieAvailable">Movie has been released!</string>
 
   <string name="textTraktSync">Trakt.tv Sync</string>
   <string name="textTraktSyncComplete">Sync completed successfully.</string>
@@ -51,6 +69,9 @@
   <string name="textTraktQuickSyncError">Instant Sync failed.</string>
   <string name="textTraktQuickSyncErrorFull">Instant Sync failed. We will try again next time you open the app. Please check your internet connection.</string>
 
+  <string name="menuPin">Pin to top</string>
+  <string name="menuUnpin">Unpin from top</string>
+
   <string name="errorGeneral">Oops… Something went wrong.\nPlease contact us if this keeps happening.</string>
   <string name="errorAuthorization">Authorization failed. Please contact us if this keeps happening.</string>
   <string name="errorTraktAuthorization">Trakt account authorization failed.\nPlease login and try again.</string>
@@ -58,6 +79,7 @@
   <string name="errorEpisodeNotAired">This episode hasn\'t been aired yet.</string>
   <string name="errorCouldNotLoadDiscover">We could not load discover page at this moment.\nPlease contact us if this keeps happening.</string>
   <string name="errorCouldNotLoadShow">We could not load this show\'s details at this moment.\nPlease contact us if this keeps happening.</string>
+  <string name="errorCouldNotLoadMovie">We could not load this movie\'s details at this moment.\nPlease contact us if this keeps happening.</string>
   <string name="errorCouldNotLoadSearchResults">We could not load search results at this moment.\nPlease contact us if this keeps happening.</string>
   <string name="errorNoInternetConnection">No Internet. Please check your connection.</string>
   <string name="errorTraktSyncGeneral">Trakt.tv sync error.\nPlease check your internet connection and try again.</string>

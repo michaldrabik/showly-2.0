@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textOk">حسناً</string>
+  <string name="textYes">نعم</string>
+  <string name="textNo">لا</string>
+  <string name="textApply">تطبيق</string>
+  <string name="textCancel">إلغاء</string>
+  <string name="textClose">إغلاق</string>
+  <string name="textNotNow">ليس الآن</string>
+  <string name="textNew">جديد</string>
+  <string name="textSelect">إختر</string>
+  <string name="textHot">شائع</string>
+  <string name="textEmptyResults">لا توجد نتائج…</string>
+  <string name="textSearchFor">بحث…</string>
+  <string name="textTip">نصيحة:</string>
+  <string name="textSeason">الموسم %1$d</string>
+  <string name="textSpecials">الحلقات الخاصة</string>
+  <string name="textEpisode">الحلقة %1$d</string>
+  <string name="textSortBy">ترتيب حسب:</string>
+  <string name="textSpoilersWarning">هذا التعليق يحتوى على حرق للأحداث.\nإضغط للقراءة.</string>
+  <string name="textCommentedOn">المستخدم %s علق على %s</string>
+  <string name="textNetwork">(%2$s) %1$s</string>
+  <string name="textShows">مسلسلات</string>
+  <string name="textMovies">أفلام</string>
+  <string name="textMinutesShort">دقائق</string>
+  <string name="textRemoveFromTrakt">حذف من Trakt.tv؟</string>
+  <string name="textNoDescription">لا يتوفر وصف.</string>
+
+  <string name="textAiredAlready">تم عرضها</string>
+  <string name="textAirsNow">تُعرض الآن</string>
+
+  <plurals name="textDaysToAir">
+    <item quantity="zero">يُعرض بعد 0 أيام</item>
+    <item quantity="one">تُعرض غداً</item>
+    <item quantity="two">تُعرض بعد يومين</item>
+    <item quantity="few">تُعرض بعد %d أيام</item>
+    <item quantity="many">تُعرض بعد %d أيام</item>
+    <item quantity="other">تُعرض بعد %d أيام</item>
+  </plurals>
+
+  <plurals name="textHoursToAir">
+    <item quantity="zero">تُعرض بعد 0 ساعة</item>
+    <item quantity="one">تُعرض بعد ساعة</item>
+    <item quantity="two">تُعرض بعد ساعتين</item>
+    <item quantity="few">تُعرض بعد %d ساعات</item>
+    <item quantity="many">تُعرض بعد %d ساعات</item>
+    <item quantity="other">تُعرض بعد %d ساعات</item>
+  </plurals>
+
+  <plurals name="textMinutesToAir">
+    <item quantity="zero">تُعرض بعد 0 دقيقة</item>
+    <item quantity="one">تُعرض الآن</item>
+    <item quantity="two">تُعرص بعد دقيقتين</item>
+    <item quantity="few">تُعرض بعد %d دقائق</item>
+    <item quantity="many">تُعرض بعد %d دقائق</item>
+    <item quantity="other">تُعرض بعد %d دقائق</item>
+  </plurals>
+
+  <string name="textToday">اليوم</string>
+  <string name="textTomorrow">غداً</string>
+  <string name="textThisWeek">هذا الإسبوع</string>
+  <string name="textNextWeek">الإسبوع القادم</string>
+  <string name="textNextMonth">الشهر القادم</string>
+  <string name="textThisYear">هذه السنة</string>
+  <string name="textNextYear">السنة القادمة</string>
+  <string name="textLater">لاحقاً</string>
+
+  <string name="textNewEpisodeAvailable">توفرت حلقة جديدة!</string>
+  <string name="textNewEpisodeAvailableSoon">ستتوفر حلقة جديدة قريباً!</string>
+  <string name="textNewSeasonAvailable">موسم جديد أصبح متاحاً الآن!</string>
+  <string name="textNewSeasonAvailableSoon">موسم جديد قادم قريباً!</string>
+  <string name="textNewMovieAvailable">تم إصدار الفيلم!</string>
+
+  <string name="textTraktSync">مزامنة Trakt.tv</string>
+  <string name="textTraktSyncComplete">إكتملت المزامنة بنجاح.</string>
+  <string name="textTraktSyncRunning">بدء المزامنة…</string>
+  <string name="textTraktSyncError">فشلت مزامنة Trakt.tv.</string>
+  <string name="textTraktSyncErrorFull">فشلت مزامنة Trakt.tv. رجاءً تأكد من أنك مُتصل بالإنترنت ثم حاول مجدداً، وإذا إستمرت المشكلة بالحدوث، تواصل معنا.</string>
+  <string name="textTraktQuickSyncError">فشلت المزامنة الفورية.</string>
+  <string name="textTraktQuickSyncErrorFull">فشلت المزامنة الفورية. سيتم محاولة المزامنة الفورية بعد تشغيل التطبيق مرة أخرى، رجاءً تأكد من إتصالك بالإنترنت.</string>
+
+  <string name="menuPin">تثبيت في الأعلى</string>
+  <string name="menuUnpin">إلغاء التثبيت من الأعلى</string>
+
+  <string name="errorGeneral">عفواً… حدث خطأ ما.\nإذا استمرت المشكلة بالحدوث، رجاءً تواصل معنا.</string>
+  <string name="errorAuthorization">فشلت المصادقة. إذا استمرت المشكلة بالحدوث، رجاءً تواصل معنا.</string>
+  <string name="errorTraktAuthorization">فشلت مصادقة Trakt.\nقُم بتسجيل الدخول وحاول مرة أخرى.</string>
+  <string name="errorSeasonsNotLoaded">رجاءً إنتظر قليلاً حتى يكتمل تحميل بيانات المواسم.</string>
+  <string name="errorEpisodeNotAired">لم تُعرض الحلقة حتى الآن.</string>
+  <string name="errorCouldNotLoadDiscover">لم نستطع تحميل صفحة إكتشف.\nرجاءً تواصل معنا إذا استمرت هذه المشكلة بالحدوث.</string>
+  <string name="errorCouldNotLoadShow">لم نستطع تحميل معلومات هذا المسلسل.\nرجاءً تواصل معنا إذا إستمرت هذه المشكلة بالحدوث</string>
+  <string name="errorCouldNotLoadMovie">لم نستطع تحميل معلومات هذا الفيلم.\nرجاءً تواصل معنا إذا إستمرت هذه المشكلة بالحدوث.</string>
+  <string name="errorCouldNotLoadSearchResults">لم نستطع تحميل نتائج البحث.\nرجاءً تواصل معنا إذا استمرت هذه المشكلة بالحدوث.</string>
+  <string name="errorNoInternetConnection">لا يوجد إتصال بالإنترنت. رجاءً تحقق من إتصالك بالإنترنت.</string>
+  <string name="errorTraktSyncGeneral">فشلت مزامنة Trakt.tv.\nرجاءً تحقق من إتصالك بالإنترنت ثم حاول مرة أخرى.</string>
+</resources>

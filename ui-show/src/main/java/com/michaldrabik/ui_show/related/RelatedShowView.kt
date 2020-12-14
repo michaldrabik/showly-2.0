@@ -9,7 +9,8 @@ import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
-import com.michaldrabik.ui_model.Image.Status.AVAILABLE
+import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
+import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_show.R
 import kotlinx.android.synthetic.main.view_related_show.view.*
 
@@ -32,7 +33,7 @@ class RelatedShowView : ShowView<RelatedListItem> {
 
   override fun bind(
     item: RelatedListItem,
-    missingImageListener: (RelatedListItem, Boolean) -> Unit
+    missingImageListener: ((RelatedListItem, Boolean) -> Unit)?
   ) {
     clear()
     this.item = item
@@ -40,7 +41,15 @@ class RelatedShowView : ShowView<RelatedListItem> {
     loadImage(item, missingImageListener)
   }
 
-  override fun onImageLoadFail(item: RelatedListItem, missingImageListener: (RelatedListItem, Boolean) -> Unit) {
+  override fun loadImage(item: RelatedListItem, missingImageListener: ((RelatedListItem, Boolean) -> Unit)?) {
+    if (item.image.status == UNAVAILABLE) {
+      relatedTitle.visible()
+      relatedRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
+    }
+    super.loadImage(item, missingImageListener)
+  }
+
+  override fun onImageLoadFail(item: RelatedListItem, missingImageListener: ((RelatedListItem, Boolean) -> Unit)?) {
     super.onImageLoadFail(item, missingImageListener)
     if (item.image.status == AVAILABLE) relatedTitle.visible()
   }

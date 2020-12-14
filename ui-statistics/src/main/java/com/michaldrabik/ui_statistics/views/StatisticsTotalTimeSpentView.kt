@@ -9,6 +9,7 @@ import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_statistics.R
 import kotlinx.android.synthetic.main.view_statistics_card_total_time.view.*
 import java.text.NumberFormat
+import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
 class StatisticsTotalTimeSpentView : MaterialCardView {
@@ -24,7 +25,7 @@ class StatisticsTotalTimeSpentView : MaterialCardView {
   }
 
   fun bind(timeMinutes: Long) {
-    val formatter = NumberFormat.getNumberInstance()
+    val formatter = NumberFormat.getNumberInstance(ENGLISH)
 
     val hours = timeMinutes / 60
     val days = hours / 24
@@ -36,13 +37,13 @@ class StatisticsTotalTimeSpentView : MaterialCardView {
     if (months > 0L) {
       viewTotalTimeSpentSubValue.text = context.getString(
         R.string.textStatisticsTotalTimeSpentMonthsDays,
-        months,
-        days
+        formatter.format(months),
+        formatter.format(days)
       )
     } else {
       viewTotalTimeSpentSubValue.text = context.getString(
         R.string.textStatisticsTotalTimeSpentDays,
-        days
+        formatter.format(days)
       )
     }
   }

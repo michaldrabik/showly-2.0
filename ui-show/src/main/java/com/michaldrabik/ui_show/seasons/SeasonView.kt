@@ -13,6 +13,7 @@ import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.setAnimatedProgress
 import com.michaldrabik.ui_show.R
 import kotlinx.android.synthetic.main.view_season.view.*
+import java.util.Locale.ENGLISH
 import kotlin.math.roundToInt
 
 class SeasonView : FrameLayout {
@@ -39,7 +40,7 @@ class SeasonView : FrameLayout {
     setOnClickListener { clickListener(item) }
     seasonViewTitle.text =
       if (item.season.isSpecial()) context.getString(R.string.textSpecials)
-      else context.getString(R.string.textSeason, item.season.number)
+      else String.format(ENGLISH, context.getString(R.string.textSeason), item.season.number)
 
     val progressCount = item.episodes.count { it.isWatched }
     val episodesCount = item.episodes.size
@@ -50,7 +51,7 @@ class SeasonView : FrameLayout {
 
     seasonViewProgress.max = item.season.episodeCount
     seasonViewProgress.setAnimatedProgress(item.episodes.count { it.isWatched })
-    seasonViewProgressText.text = "$progressCount/${item.episodes.size} ($percent%)"
+    seasonViewProgressText.text = String.format(ENGLISH, "%d/%d (%d%%)", progressCount, item.episodes.size, percent)
 
     seasonViewCheckbox.isChecked = item.isWatched
     seasonViewCheckbox.isEnabled = item.episodes.all { it.episode.hasAired(item.season) }

@@ -8,12 +8,14 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import kotlinx.android.synthetic.main.view_my_shows_fanart.view.*
@@ -32,16 +34,18 @@ class MyShowFanartView : FrameLayout {
 
   fun bind(showItem: MyShowsItem, clickListener: (MyShowsItem) -> Unit) {
     clear()
-    myShowFanartTitle.text = showItem.show.title
     myShowFanartTitle.visible()
+    myShowFanartTitle.text =
+      if (showItem.translation?.title.isNullOrBlank()) showItem.show.title
+      else showItem.translation?.title?.capitalizeWords()
     onClick { clickListener(showItem) }
     loadImage(showItem.image)
   }
 
   private fun loadImage(image: Image) {
-    if (image.status != Image.Status.AVAILABLE) {
+    if (image.status != ImageStatus.AVAILABLE) {
       myShowFanartPlaceholder.visible()
-      myShowFanartRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)
+      myShowFanartRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
       return
     }
     Glide.with(this)

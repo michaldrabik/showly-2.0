@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -40,10 +41,12 @@ class StatisticsMostWatchedItemView : ShowView<StatisticsMostWatchedItem> {
     this.item = item
     clear()
 
-    viewMostWatchedItemTitle.text = item.show.title
-    viewMostWatchedItemHoursValue.text = (item.episodes.sumBy { it.runtime } / 60).toString()
-    viewMostWatchedItemEpisodesValue.text = item.episodes.count().toString()
-    viewMostWatchedItemSeasonsValue.text = item.seasonsCount.toString()
+    viewMostWatchedItemTitle.text =
+      if (item.translation?.title.isNullOrBlank()) item.show.title
+      else item.translation?.title?.capitalizeWords()
+    viewMostWatchedItemHoursValue.text = "${item.episodes.sumBy { it.runtime } / 60}"
+    viewMostWatchedItemEpisodesValue.text = "${item.episodes.size}"
+    viewMostWatchedItemSeasonsValue.text = "${item.seasonsCount}"
     viewMostWatchedItemArchivedIcon.visibleIf(item.isArchived)
     loadImage(item) { _, _ -> }
   }

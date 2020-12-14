@@ -23,7 +23,8 @@ data class ProgressItem(
   override val isLoading: Boolean = false,
   val headerTextResId: Int? = null,
   val isPinned: Boolean = false,
-  val translation: Translation? = null,
+  val showTranslation: Translation? = null,
+  val episodeTranslation: Translation? = null,
   val upcomingEpisodeTranslation: Translation? = null
 ) : ListItem {
 

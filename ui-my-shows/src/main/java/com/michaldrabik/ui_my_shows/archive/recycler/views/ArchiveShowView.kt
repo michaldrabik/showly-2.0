@@ -8,13 +8,15 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveListItem
 import kotlinx.android.synthetic.main.view_archive_show.view.*
-import java.util.Locale.ROOT
+import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
 class ArchiveShowView : ShowView<ArchiveListItem> {
@@ -36,21 +38,32 @@ class ArchiveShowView : ShowView<ArchiveListItem> {
 
   override fun bind(
     item: ArchiveListItem,
-    missingImageListener: (ArchiveListItem, Boolean) -> Unit
+    missingImageListener: ((ArchiveListItem, Boolean) -> Unit)?
   ) {
     clear()
     this.item = item
     archiveShowProgress.visibleIf(item.isLoading)
-    archiveShowTitle.text = item.show.title
+    archiveShowTitle.text =
+      if (item.translation?.title.isNullOrBlank()) item.show.title
+      else item.translation?.title?.capitalizeWords()
+
     archiveShowDescription.text =
       if (item.translation?.overview.isNullOrBlank()) item.show.overview
       else item.translation?.overview
 
-    val year = if (item.show.year > 0) " (${item.show.year})" else ""
-    archiveShowNetwork.text = "${item.show.network}$year"
-    archiveShowRating.text = String.format(ROOT, "%.1f", item.show.rating)
+    archiveShowNetwork.text =
+      if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
+      else String.format("%s", item.show.network)
+
+    archiveShowRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
     archiveShowDescription.visibleIf(item.show.overview.isNotBlank())
     archiveShowNetwork.visibleIf(item.show.network.isNotBlank())
+
+    item.userRating?.let {
+      archiveShowUserStarIcon.visible()
+      archiveShowUserRating.visible()
+      archiveShowUserRating.text = String.format(ENGLISH, "%d", it)
+    }
 
     loadImage(item, missingImageListener)
   }
@@ -61,6 +74,8 @@ class ArchiveShowView : ShowView<ArchiveListItem> {
     archiveShowNetwork.text = ""
     archiveShowRating.text = ""
     archiveShowPlaceholder.gone()
+    archiveShowUserRating.gone()
+    archiveShowUserStarIcon.gone()
     Glide.with(this).clear(archiveShowImage)
   }
 }

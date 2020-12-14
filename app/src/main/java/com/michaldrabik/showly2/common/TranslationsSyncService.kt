@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.michaldrabik.showly2.common.movies.MoviesTranslationsSyncRunner
+import com.michaldrabik.showly2.common.shows.ShowsTranslationsSyncRunner
 import com.michaldrabik.showly2.serviceComponent
-import com.michaldrabik.ui_base.events.EventsManager
-import com.michaldrabik.ui_base.events.TranslationsSyncComplete
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -27,24 +27,29 @@ class TranslationsSyncService : JobIntentService(), CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.Main
 
-  @Inject
-  lateinit var syncRunner: TranslationsSyncRunner
+  @Inject lateinit var showsSyncRunner: ShowsTranslationsSyncRunner
+  @Inject lateinit var moviesSyncRunner: MoviesTranslationsSyncRunner
 
   override fun onHandleWork(intent: Intent) {
     Timber.d("Sync service initialized")
     serviceComponent().inject(this)
-    val syncCount = runBlocking {
+    runBlocking {
       try {
-        syncRunner.run()
+        showsSyncRunner.run()
       } catch (t: Throwable) {
         Timber.e(t.toString())
         val exception = Throwable(TranslationsSyncService::class.simpleName, t)
         FirebaseCrashlytics.getInstance().recordException(exception)
-        0
+      }
+
+      try {
+        moviesSyncRunner.run()
+      } catch (t: Throwable) {
+        Timber.e(t.toString())
+        val exception = Throwable(TranslationsSyncService::class.simpleName, t)
+        FirebaseCrashlytics.getInstance().recordException(exception)
       }
     }
-
-    if (syncCount > 0) EventsManager.sendEvent(TranslationsSyncComplete)
   }
 
   override fun onDestroy() {

@@ -39,7 +39,7 @@ class ShowDetailsMyShowsCase @Inject constructor(
   ) {
     database.withTransaction {
       showsRepository.myShows.insert(show.ids.trakt)
-      showsRepository.seeLaterShows.delete(show.ids.trakt)
+      showsRepository.watchlistShows.delete(show.ids.trakt)
       showsRepository.archiveShows.delete(show.ids.trakt)
 
       val localSeasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
@@ -83,13 +83,13 @@ class ShowDetailsMyShowsCase @Inject constructor(
         database.seasonsDao().delete(toDelete)
       }
 
-      pinnedItemsRepository.removePinnedItem(show.traktId)
+      pinnedItemsRepository.removePinnedItem(show)
     }
   }
 
   suspend fun removeTraktHistory(show: Show) {
     val token = userManager.checkAuthorization()
-    val request = SyncExportRequest(listOf(SyncExportItem.create(show.traktId)))
+    val request = SyncExportRequest(shows = listOf(SyncExportItem.create(show.traktId)))
     cloud.traktApi.postDeleteProgress(token.token, request)
     episodesManager.setAllUnwatched(show)
   }

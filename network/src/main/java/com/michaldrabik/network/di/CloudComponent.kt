@@ -1,7 +1,9 @@
 package com.michaldrabik.network.di
 
 import com.michaldrabik.network.di.module.AwsModule
+import com.michaldrabik.network.di.module.OkHttpModule
 import com.michaldrabik.network.di.module.RetrofitModule
+import com.michaldrabik.network.di.module.TmdbModule
 import com.michaldrabik.network.di.module.TraktModule
 import com.michaldrabik.network.di.module.TvdbModule
 import dagger.Component
@@ -10,8 +12,10 @@ import dagger.Component
 @Component(
   modules = [
     RetrofitModule::class,
+    OkHttpModule::class,
     TraktModule::class,
     TvdbModule::class,
+    TmdbModule::class,
     AwsModule::class
   ]
 )
