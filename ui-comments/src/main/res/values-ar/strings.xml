@@ -7,6 +7,7 @@
   <string name="textShowRated">لقد تم حفظ تقييمك.</string>
   <string name="textShowRatingDeleted">لقد تم حذف تقييمك.</string>
   <string name="textSignBeforeRate">رجاءً قُم بتسجيل الدخول قبل تقييم مسلسل.</string>
+  <string name="textSignBeforeRateMovie">الرجاء تسجيل الدخول قبل تصنيف الفيلم.</string>
   <string name="textRate">تقييم</string>
   <string name="textRateDelete">حذف</string>
 </resources>
