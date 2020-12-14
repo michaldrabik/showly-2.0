@@ -44,5 +44,7 @@
   <string name="textSettingsQuickSyncConfirmationMessage">\nيبدو أنك مفعل المزامنة التلقائية.\n\nهل ترغب في إطفاء المزامنة التلقائية قبل تفعيل المزامنة الفورية(يُنصح به)؟\n</string>
   <string name="textSettingsLogoutTitle">تسجيل الخروج من Trakt.tv</string>
   <string name="textSettingsLogoutMessage">\nهل فعلاً ترغب في تسجيل الخروج؟\n</string>
+  <string name="textSettingsMoviesEnabledTitle">أفلام</string>
+  <string name="textSettingsMoviesEnabledSummary">تفعيل/إلغاء تفعيل عرض الأفلام في التطبيق. التطبيق سيتم إعادة تشغيله.</string>
 
   </resources>
