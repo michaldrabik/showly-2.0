@@ -21,6 +21,7 @@ import com.michaldrabik.common.Config.MY_SHOWS_RECENTS_OPTIONS
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -103,6 +104,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   }
 
   private fun renderSettings(settings: Settings, moviesEnabled: Boolean) {
+    settingsContent.fadeIn(200)
     settingsRecentShowsAmount.onClick { showRecentShowsDialog(settings) }
     settingsMyShowsSections.onClick { showSectionsDialog(settings) }
 
