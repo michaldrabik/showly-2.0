@@ -23,7 +23,7 @@
   <string name="textSettingsMyShowsSectionsTitle">Meine Serien Abschnitt</string>
   <string name="textSettingsMyShowsSectionSummary">Aktiviere/Deaktiviere die Abschnitte im \'Meine Serien\' Tab.</string>
   <string name="textSettingsMyShowsLanguageTitle">Sprache</string>
-  <string name="textSettingsMyShowsLanguageSummary">Beschreibungen & Titel werden übersetzt, sofern eine Übersetzung vorhanden ist.</string>
+  <string name="textSettingsMyShowsLanguageSummary">Beschreibungen &amp; Titel werden übersetzt, sofern eine Übersetzung vorhanden ist.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Archivierte Statistik</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Berücksichtige archivierte Serien in der Statistik mit.</string>
   <string name="textSettingsIncludeSpecialsTitle">Spezial Staffel</string>
@@ -32,7 +32,7 @@
   <string name="textSettingsPushNotificationsTitle">Pushbenachrichtigungen</string>
   <string name="textSettingsPushNotificationsSummary">Erhalte allgemeine Push-Benachrichtigungen.</string>
   <string name="textSettingsShowsNotificationsTitle">Episodenankündigungen</string>
-  <string name="textSettingsShowsNotificationsSummary">Erhalte Benachrichtigungen über neue Folgen & Staffeln von Serien denen die du gespeichert hast.</string>
+  <string name="textSettingsShowsNotificationsSummary">Erhalte Benachrichtigungen über neue Folgen &amp; Staffeln von Serien denen die du gespeichert hast.</string>
   <string name="textSettingsMisc">Gemischt</string>
   <string name="textSettingsContactDevsTitle">Entwickler kontaktieren</string>
   <string name="textSettingsContactDevsSummary">Du hast einen Fehler entdeckt oder ein Problem? Schreib uns gerne eine E-Mail.</string>
@@ -44,6 +44,7 @@
   <string name="textSettingsQuickSyncConfirmationMessage">\nEs scheint, als sei die automatische Synchronisation bereits aktiviert.\n\nMöchtest du diese Einstellung deaktivieren bevor du Instant Synchronisation aktivierst (Empfohlen!)?\n</string>
   <string name="textSettingsLogoutTitle">Bei Trakt.tv Ausloggen</string>
   <string name="textSettingsLogoutMessage">\nBist du sicher, dass du dich ausloggen möchtest?\n</string>
-  <string name="textSettingsLanguageChangeMessage">Bitte starte die App neu um die Sprachänderung wirksam zu machen.</string>
+  <string name="textSettingsMoviesEnabledTitle">Filme</string>
+  <string name="textSettingsMoviesEnabledSummary">Aktiviere/Deaktiviere die Unterstützung fur Filme. Die App wird neu gestartet.</string>
 
   </resources>
