@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textTraktLoginSuccess">Has sido autorizado/a con éxito.</string>
+  <string name="textTraktLogoutSuccess">Se ha cerrado la sesión.</string>
+  <string name="textImagesCacheCleared">Se ha borrado la caché de imágenes.</string>
+  <string name="textTurnOff">Apagar</string>
+
+  <string name="textSettings">Ajustes</string>
+  <string name="textSettingsTrakt">Trakt.tv</string>
+  <string name="textSettingsTraktAuthorizeTitle">Autorización de Trakt.tv</string>
+  <string name="textSettingsTraktAuthorizeSummarySignIn">Haz clic para iniciar sesión en tu cuenta de Trakt.tv.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOut">Has iniciado sesión. Haz clic para cerrarla.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOutUser">Registrado/a como %1$s. Haz clic para cerrar sesión.</string>
+  <string name="textSettingsTraktSyncTitle">Sincronizar Trakt.tv</string>
+  <string name="textSettingsTraktSyncSummary">Sincronizar datos entre Trakt.tv y Showly.</string>
+  <string name="textSettingsTraktQuickSyncTitle">Subida Instantánea Trakt.tv</string>
+  <string name="textSettingsTraktQuickSyncSummary">Sube datos instantáneamente a Trakt.tv después de añadirlos en la aplicación.</string>
+  <string name="textSettingsTraktQuickRemoveTitle">Eliminación Instantánea Trakt.tv</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Añade la opción para eliminar datos de Trakt.tv después de eliminarlos en la aplicación.</string>
+  <string name="textSettingsGeneral">General &amp; UX</string>
+  <string name="textSettingsRecentShowsTitle">Cantidad Añadidos Recientemente </string>
+  <string name="textSettingsRecentShowsSummary">Número de elementos recientes que se mostrarán en \'Colección\'.</string>
+  <string name="textSettingsMyShowsSectionsTitle">Secciones de Mis Series</string>
+  <string name="textSettingsMyShowsSectionSummary">Habilitar/deshabilitar secciones en la pestaña \'Mis Series\'.</string>
+  <string name="textSettingsMyShowsLanguageTitle">Idioma</string>
+  <string name="textSettingsMyShowsLanguageSummary">Las descripciones y los títulos se traducirán cuando estén disponibles.\nLa aplicación se reiniciará.</string>
+  <string name="textSettingsIncludeArchiveStatsTitle">Estadísticas Archivados</string>
+  <string name="textSettingsIncludeArchiveStatsSummary">Incluir datos de series archivadas en las estadísticas.</string>
+  <string name="textSettingsIncludeSpecialsTitle">Temporadas Especiales</string>
+  <string name="textSettingsIncludeSpecialsSummary">Muestra temporadas \'Especiales\' en la pantalla de detalles de la serie.</string>
+  <string name="textSettingsNotifications">Notificaciones</string>
+  <string name="textSettingsPushNotificationsTitle">Notificaciones Push</string>
+  <string name="textSettingsPushNotificationsSummary">Recibir notificaciones push con información general.</string>
+  <string name="textSettingsShowsNotificationsTitle">Avisos</string>
+  <string name="textSettingsShowsNotificationsSummary">Recibir notificaciones sobre nuevas películas, episodios y temporadas de las series que estás siguiendo.</string>
+  <string name="textSettingsMisc">Misceláneo</string>
+  <string name="textSettingsContactDevsTitle">Contactar Desarrolladores</string>
+  <string name="textSettingsContactDevsSummary">¿Tienes algún problema? Haz clic aquí para enviar un correo electrónico.</string>
+  <string name="textSettingsRateAppTitle">Dar Opinion</string>
+  <string name="textSettingsRateAppSummary">¿Disfrutando de Showly? Escribe una reseña en PlayStore. ¡Gracias!</string>
+  <string name="textSettingsDeleteCacheTitle">Borrar caché de imágenes</string>
+  <string name="textSettingsDeleteCacheSummary">Haz clic para borrar la caché de imágenes locales. Esto puede ayudar si las imágenes de las series no se cargan correctamente.</string>
+  <string name="textSettingsQuickSyncConfirmationTitle">Deshabilitar la Sincronización Automática</string>
+  <string name="textSettingsQuickSyncConfirmationMessage">\nIt parece que la sincronización automática ya está activada.\n\n¿Te gustaría apagarla antes de habilitar la sincronización instantánea (recomendado)?\n</string>
+  <string name="textSettingsLogoutTitle">Cerrar Sesión Trakt.tv</string>
+  <string name="textSettingsLogoutMessage">\n¿Estás seguro/a de que quieres cerrar sesión?\n</string>
+  <string name="textSettingsMoviesEnabledTitle">Películas</string>
+  <string name="textSettingsMoviesEnabledSummary">Habilitar/deshabilitar soporte de películas. La aplicación se reiniciará.</string>
+
+  </resources>
