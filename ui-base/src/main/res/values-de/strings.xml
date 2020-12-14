@@ -22,9 +22,6 @@
   <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textShows">Serien</string>
   <string name="textMovies">Filme</string>
-  <string name="textMinutesShort">min</string>
-  <string name="textRemoveFromTrakt">Von Trakt.tv entfernen?</string>
-  <string name="textNoDescription">Übersicht nicht verfügbar.</string>
 
   <string name="textAiredAlready">Veröffentlicht</string>
   <string name="textAirsNow">Jetzt live</string>
