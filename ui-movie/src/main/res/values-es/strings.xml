@@ -4,7 +4,7 @@
   <string name="textUpcoming">Próximamente</string>
   <string name="textMovieWatchLater">Ver Después</string>
   <string name="textInMyMovies">Añadido a mis películas</string>
-  <string name="textInMoviesWatchlist">Añadido a pendientes por ver</string>
+  <string name="textInMoviesWatchlist">Añadido a pendientes</string>
 
   <string name="textMovieActorsEmpty">El elenco no está disponible</string>
   <string name="textMovieTrailer">Tráiler</string>
