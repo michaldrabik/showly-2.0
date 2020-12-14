@@ -15,13 +15,14 @@
     android:clipChildren="false"
     android:clipToPadding="false"
     android:paddingTop="@dimen/spaceNormal"
-    android:paddingBottom="@dimen/spaceSmall"
+    android:paddingBottom="@dimen/spaceMicro"
     >
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/myShowsHeaderLabel"
       style="@style/MyShows.Label"
       app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/myShowsHeaderSortButton"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       tools:text="Section Label"
@@ -37,6 +38,7 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/myShowsHeaderLabel"
       app:srcCompat="@drawable/ic_sort"
+      tools:visibility="visible"
       />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

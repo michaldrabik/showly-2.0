@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="progressTabsViewTranslation">-14dp</dimen>
+  <dimen name="progressTabsViewTranslation">-9dp</dimen>
 </resources>

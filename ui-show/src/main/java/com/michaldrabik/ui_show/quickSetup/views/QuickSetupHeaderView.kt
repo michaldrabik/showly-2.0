@@ -8,7 +8,7 @@ import android.widget.FrameLayout
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_show.R
 import kotlinx.android.synthetic.main.view_quick_setup_header.view.*
-import java.util.*
+import java.util.Locale
 
 class QuickSetupHeaderView : FrameLayout {
 

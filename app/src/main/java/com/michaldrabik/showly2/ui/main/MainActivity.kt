@@ -13,20 +13,23 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.michaldrabik.common.Mode
+import com.michaldrabik.common.Mode.MOVIES
+import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
-import com.michaldrabik.showly2.ui.BaseActivity
+import com.michaldrabik.showly2.ui.DiActivity
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.ui_base.Analytics
-import com.michaldrabik.ui_base.common.OnEpisodesSyncedListener
+import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnTranslationsSyncListener
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventObserver
-import com.michaldrabik.ui_base.events.ShowsSyncComplete
+import com.michaldrabik.ui_base.events.ShowsMoviesSyncComplete
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.events.TraktSyncProgress
 import com.michaldrabik.ui_base.events.TranslationsSyncProgress
@@ -48,7 +51,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity :
-  BaseActivity(),
+  DiActivity(),
   EventObserver,
   NetworkObserver,
   SnackbarHost,
@@ -60,8 +63,7 @@ class MainActivity :
     private const val ARG_NAVIGATION_VISIBLE = "ARG_NAVIGATION_VISIBLE"
   }
 
-  @Inject
-  lateinit var viewModelFactory: DaggerViewModelFactory
+  @Inject lateinit var viewModelFactory: DaggerViewModelFactory
   private lateinit var viewModel: MainViewModel
 
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
@@ -109,7 +111,7 @@ class MainActivity :
     viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     viewModel.run {
       uiLiveData.observe(this@MainActivity) { render(it!!) }
-      initSettings()
+      initialize()
       refreshTraktSyncSchedule(applicationContext)
     }
   }
@@ -134,6 +136,14 @@ class MainActivity :
   }
 
   private fun setupNavigation() {
+    findNavHost().findNavController().run {
+      val graph = navInflater.inflate(R.navigation.navigation_graph)
+      graph.startDestination = when (viewModel.getMode()) {
+        SHOWS -> R.id.progressFragment
+        MOVIES -> R.id.progressMoviesFragment
+      }
+      setGraph(graph)
+    }
     bottomNavigationView.setOnNavigationItemSelectedListener { item ->
       if (bottomNavigationView.selectedItemId == item.itemId) {
         doForFragments { (it as? OnTabReselectedListener)?.onTabReselected() }
@@ -141,13 +151,13 @@ class MainActivity :
       }
 
       val target = when (item.itemId) {
-        R.id.menuProgress -> R.id.actionNavigateProgressFragment
-        R.id.menuDiscover -> R.id.actionNavigateDiscoverFragment
-        R.id.menuCollection -> R.id.actionNavigateFollowedShowsFragment
+        R.id.menuProgress -> getMenuProgressAction()
+        R.id.menuDiscover -> getMenuDiscoverAction()
+        R.id.menuCollection -> getMenuCollectionAction()
         else -> throw IllegalStateException("Invalid menu item.")
       }
 
-      navigationHost.findNavController().navigate(target)
+      findNavHost().findNavController().navigate(target)
       showNavigation(true)
       return@setOnNavigationItemSelectedListener true
     }
@@ -160,13 +170,18 @@ class MainActivity :
         return@addCallback
       }
 
-      navigationHost.findNavController().run {
-        if (currentDestination?.id == R.id.progressFragment) {
+      findNavHost().findNavController().run {
+        if (currentDestination?.id == R.id.progressFragment ||
+          currentDestination?.id == R.id.progressMoviesFragment
+        ) {
           remove()
           super.onBackPressed()
         }
         when (currentDestination?.id) {
-          R.id.discoverFragment, R.id.followedShowsFragment -> {
+          R.id.discoverFragment,
+          R.id.discoverMoviesFragment,
+          R.id.followedShowsFragment,
+          R.id.followedMoviesFragment -> {
             bottomNavigationView.selectedItemId = R.id.menuProgress
           }
         }
@@ -223,9 +238,30 @@ class MainActivity :
 
   override fun openDiscoverTab() = openTab(R.id.menuDiscover)
 
+  override fun setMode(mode: Mode) {
+    if (viewModel.getMode() != mode) {
+      viewModel.setMode(mode)
+      val target = when (bottomNavigationView.selectedItemId) {
+        R.id.menuDiscover -> getMenuDiscoverAction()
+        R.id.menuCollection -> getMenuCollectionAction()
+        R.id.menuProgress -> getMenuProgressAction()
+        else -> 0
+      }
+      if (target != 0) {
+        findNavHost().findNavController().navigate(target)
+      }
+    }
+  }
+
+  override fun getMode() = viewModel.getMode()
+
+  override fun moviesEnabled() = viewModel.moviesEnabled()
+
   private fun render(uiModel: MainUiModel) {
     uiModel.run {
-      isInitialRun?.let { if (it) openTab(R.id.menuDiscover) }
+      isInitialRun?.let {
+        if (it) openTab(R.id.menuDiscover)
+      }
       showWhatsNew?.let { if (it) showWhatsNew() }
       showRateApp?.let {
         rateAppView.fadeIf(it, startDelay = 1500)
@@ -245,7 +281,7 @@ class MainActivity :
   }
 
   private fun doForFragments(action: (Fragment) -> Unit) {
-    navigationHost?.findNavController()?.currentDestination?.id?.let {
+    findNavHost().findNavController()?.currentDestination?.id?.let {
       val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
       navHost?.childFragmentManager?.primaryNavigationFragment?.let {
         action(it)
@@ -262,8 +298,8 @@ class MainActivity :
   override fun onNewEvent(event: Event) {
     runOnUiThread {
       when (event) {
-        is ShowsSyncComplete -> {
-          doForFragments { (it as? OnEpisodesSyncedListener)?.onEpisodesSyncFinished() }
+        is ShowsMoviesSyncComplete -> {
+          doForFragments { (it as? OnShowsMoviesSyncedListener)?.onShowsMoviesSyncFinished() }
           viewModel.refreshAnnouncements(applicationContext)
         }
         is TranslationsSyncProgress -> {
@@ -288,11 +324,15 @@ class MainActivity :
         bottomNavigationView.selectedItemId = R.id.menuProgress
       intent.extras?.containsKey("extraShortcutDiscover") == true ->
         bottomNavigationView.selectedItemId = R.id.menuDiscover
-      intent.extras?.containsKey("extraShortcutMyShows") == true ->
+      intent.extras?.containsKey("extraShortcutCollection") == true ->
         bottomNavigationView.selectedItemId = R.id.menuCollection
       intent.extras?.containsKey("extraShortcutSearch") == true -> {
         bottomNavigationView.selectedItemId = R.id.menuDiscover
-        navigationHost.findNavController().navigate(R.id.actionDiscoverFragmentToSearchFragment)
+        val action = when (viewModel.getMode()) {
+          SHOWS -> R.id.actionDiscoverFragmentToSearchFragment
+          MOVIES -> R.id.actionDiscoverMoviesFragmentToSearchFragment
+        }
+        findNavHost().findNavController().navigate(action)
       }
     }
   }
@@ -305,6 +345,23 @@ class MainActivity :
       .setPositiveButton(R.string.textClose) { _, _ -> }
       .show()
   }
+
+  private fun getMenuDiscoverAction() = when (viewModel.getMode()) {
+    SHOWS -> R.id.actionNavigateDiscoverFragment
+    MOVIES -> R.id.actionNavigateDiscoverMoviesFragment
+  }
+
+  private fun getMenuCollectionAction() = when (viewModel.getMode()) {
+    SHOWS -> R.id.actionNavigateFollowedShowsFragment
+    MOVIES -> R.id.actionNavigateFollowedMoviesFragment
+  }
+
+  private fun getMenuProgressAction() = when (viewModel.getMode()) {
+    SHOWS -> R.id.actionNavigateProgressFragment
+    MOVIES -> R.id.actionNavigateProgressMoviesFragment
+  }
+
+  override fun findNavHost() = findNavHostFragment()
 
   override fun provideSnackbarLayout(): ViewGroup = snackBarHost
 }

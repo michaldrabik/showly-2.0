@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="myShowsTabsTranslation">12dp</dimen>
+  <dimen name="myShowsTabsTranslation">6dp</dimen>
 </resources>

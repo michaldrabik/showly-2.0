@@ -11,6 +11,7 @@ import com.michaldrabik.common.extensions.toDisplayString
 import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -49,7 +50,10 @@ class ProgressCalendarItemView : ShowView<ProgressItem> {
     this.item = item
     clear()
 
-    progressCalendarItemTitle.text = item.show.title
+    progressCalendarItemTitle.text =
+      if (item.showTranslation?.title.isNullOrBlank()) item.show.title
+      else item.showTranslation?.title?.capitalizeWords()
+
     progressCalendarItemDateText.text = item.upcomingEpisode.firstAired?.toLocalTimeZone()?.toDisplayString()
 
     val isNewSeason = item.upcomingEpisode.number == 1

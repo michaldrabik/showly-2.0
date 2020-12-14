@@ -7,6 +7,7 @@ class Mappers @Inject constructor(
   val ids: IdsMapper,
   val image: ImageMapper,
   val show: ShowMapper,
+  val movie: MovieMapper,
   val episode: EpisodeMapper,
   val season: SeasonMapper,
   val actor: ActorMapper,

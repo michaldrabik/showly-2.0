@@ -2,6 +2,7 @@ package com.michaldrabik.ui_search
 
 import android.graphics.drawable.Animatable
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
@@ -15,6 +16,7 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
+import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
@@ -29,16 +31,20 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.shake
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.RecentSearch
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_search.di.UiSearchComponentProvider
 import com.michaldrabik.ui_search.recycler.SearchAdapter
 import com.michaldrabik.ui_search.recycler.SearchListItem
+import com.michaldrabik.ui_search.utilities.TextWatcherAdapter
 import com.michaldrabik.ui_search.views.RecentSearchView
+import com.michaldrabik.ui_search.views.SearchSuggestionView
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlin.random.Random
 
-class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
+class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), TextWatcherAdapter {
 
   override val viewModel by viewModels<SearchViewModel> { viewModelFactory }
 
@@ -76,6 +82,13 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
     handleBackPressed()
   }
 
+  override fun onStop() {
+    exSearchViewInput.removeTextChangedListener(this)
+    exSearchViewInput.setText("")
+    enableUi()
+    super.onStop()
+  }
+
   private fun setupView() {
     hideNavigation()
     exSearchViewInput.visible()
@@ -83,26 +96,29 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
     (exSearchViewIcon.drawable as Animatable).start()
     searchViewLayout.settingsIconVisible = false
     viewModel.loadLastSearch()
+    viewModel.preloadCache()
     if (!isInitialized) {
       exSearchViewInput.showKeyboard()
       exSearchViewInput.requestFocus()
       viewModel.loadRecentSearches()
     }
 
-    exSearchViewInput.setOnEditorActionListener { textView, id, _ ->
-      if (id == EditorInfo.IME_ACTION_SEARCH) {
-        val query = textView.text.toString()
-        if (query.trim().isBlank()) {
-          searchViewLayout.shake()
-          return@setOnEditorActionListener true
+    exSearchViewInput.run {
+      addTextChangedListener(this@SearchFragment)
+      setOnEditorActionListener { textView, id, _ ->
+        if (id == EditorInfo.IME_ACTION_SEARCH) {
+          val query = textView.text.toString()
+          if (query.trim().isBlank()) {
+            searchViewLayout.shake()
+            return@setOnEditorActionListener true
+          }
+          viewModel.search(query)
+          exSearchViewInput.hideKeyboard()
+          exSearchViewInput.clearFocus()
         }
-        viewModel.searchForShow(query)
-        exSearchViewInput.hideKeyboard()
-        exSearchViewInput.clearFocus()
+        true
       }
-      true
     }
-
     exSearchViewIcon.onClick {
       exSearchViewInput.hideKeyboard()
       requireActivity().onBackPressed()
@@ -144,7 +160,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
         val view = searchRecycler.findViewHolderForAdapterPosition(it)
         view?.let { v ->
           val randomDelay = Random.nextLong(50, 200)
-          v.itemView.fadeOut(duration = 150, startDelay = randomDelay)
+          v.itemView.fadeOut(duration = 150, startDelay = randomDelay).add(animations)
         }
       }
     }
@@ -153,10 +169,19 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
       duration = 150, startDelay = 350,
       endAction = {
         enableUi()
-        val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
-        navigateTo(R.id.actionSearchFragmentToShowDetailsFragment, bundle)
+        openDetails(item)
       }
-    )
+    ).add(animations)
+  }
+
+  private fun openDetails(item: SearchListItem) {
+    if (item.isShow) {
+      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
+      navigateTo(R.id.actionSearchFragmentToShowDetailsFragment, bundle)
+    } else if (item.isMovie) {
+      val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, item.movie.traktId) }
+      navigateTo(R.id.actionSearchFragmentToMovieDetailsFragment, bundle)
+    }
   }
 
   private fun render(uiModel: SearchUiModel) {
@@ -166,12 +191,35 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
         if (searchItemsAnimate == true) searchRecycler.scheduleLayoutAnimation()
       }
       recentSearchItems?.let { renderRecentSearches(it) }
+      suggestionsItems?.let { renderSuggestions(it) }
       isSearching?.let {
         searchSwipeRefresh.isRefreshing = it
         searchViewLayout.isEnabled = !it
       }
       isEmpty?.let { searchEmptyView.fadeIf(it) }
       isInitial?.let { searchInitialView.fadeIf(it) }
+    }
+  }
+
+  private fun renderSuggestions(suggestions: List<SearchListItem>) {
+    searchSuggestionsWrapper.visibleIf(suggestions.isNotEmpty())
+    searchSuggestionsLayout.removeAllViews()
+    val itemClick: (SearchListItem) -> Unit = {
+      val query =
+        if (it.translation?.title?.isNotBlank() == true) it.translation.title
+        else it.title
+      viewModel.saveRecentSearch(query)
+      openDetails(it)
+    }
+    val missingImageListener: (SearchListItem, Boolean) -> Unit = { item, force ->
+      viewModel.loadMissingImage(item, force)
+    }
+    suggestions.forEach { item ->
+      val view = SearchSuggestionView(requireContext()).apply {
+        bind(item, missingImageListener)
+        itemClickListener = itemClick
+      }
+      searchSuggestionsLayout.addView(view)
     }
   }
 
@@ -196,12 +244,16 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
         setPadding(paddingH, paddingV, paddingH, paddingV)
         bind(item)
         onClick {
+          viewModel.search(item.text)
           exSearchViewInput.setText(item.text)
-          viewModel.searchForShow(item.text)
         }
       }
       searchRecentsLayout.addView(view)
     }
+  }
+
+  override fun afterTextChanged(text: Editable?) {
+    viewModel.loadSuggestions(text.toString())
   }
 
   private fun handleBackPressed() {
@@ -209,7 +261,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search) {
     dispatcher.addCallback(viewLifecycleOwner) {
       showNavigation()
       remove()
-      findNavController().popBackStack()
+      findNavHost().findNavController().popBackStack()
     }
   }
 }

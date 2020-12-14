@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="myMoviesTabsTranslation">-7dp</dimen>
+
+  <dimen name="myMoviesSearchViewPadding">96dp</dimen>
+  <dimen name="myMoviesTabsViewPadding">124dp</dimen>
+  <dimen name="myMoviesBottomPadding">68dp</dimen>
+  <dimen name="myMoviesFanartCorner">4dp</dimen>
+  <dimen name="myMoviesFanartHeight">126dp</dimen>
+  <dimen name="myMoviesPosterHeight">120dp</dimen>
+  <dimen name="myMoviesPosterWidth">80dp</dimen>
+
+  <dimen name="myMovieAllImageHeight">120dp</dimen>
+  <dimen name="myMovieAllImageWidth">80dp</dimen>
+  <dimen name="myMovieAllMarginHorizontal">12dp</dimen>
+
+  <dimen name="watchlistMoviesTabsViewPadding">144dp</dimen>
+  <dimen name="watchlistMoviesImageHeight">120dp</dimen>
+  <dimen name="watchlistMoviesImageWidth">80dp</dimen>
+  <dimen name="watchlistMoviesMarginHorizontal">12dp</dimen>
+</resources>

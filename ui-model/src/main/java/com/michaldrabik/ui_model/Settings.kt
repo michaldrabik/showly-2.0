@@ -5,7 +5,7 @@ data class Settings(
   val pushNotificationsEnabled: Boolean,
   val episodesNotificationsEnabled: Boolean,
   val episodesNotificationsDelay: NotificationDelay,
-  val seeLaterShowsSortBy: SortOrder,
+  val watchlistShowsSortBy: SortOrder,
   val archiveShowsSortBy: SortOrder,
   val myShowsWatchingSortBy: SortOrder,
   val myShowsUpcomingSortBy: SortOrder,
@@ -18,16 +18,22 @@ data class Settings(
   val myShowsIncomingIsEnabled: Boolean,
   val myShowsEndedIsEnabled: Boolean,
   val myShowsRecentIsEnabled: Boolean,
-  val myShowsRecentsAmount: Int,
+  val myRecentsAmount: Int,
   val showAnticipatedShows: Boolean,
   val discoverFilterGenres: List<Genre>,
   val discoverFilterFeed: DiscoverSortOrder,
   val traktSyncSchedule: TraktSyncSchedule,
   val traktQuickSyncEnabled: Boolean,
   val traktQuickRemoveEnabled: Boolean,
-  val watchlistSortOrder: SortOrder,
+  val progressSortOrder: SortOrder,
   val archiveShowsIncludeStatistics: Boolean,
-  val specialSeasonsEnabled: Boolean
+  val specialSeasonsEnabled: Boolean,
+  val showAnticipatedMovies: Boolean,
+  val discoverMoviesFilterGenres: List<Genre>,
+  val discoverMoviesFilterFeed: DiscoverSortOrder,
+  val watchlistMoviesSortBy: SortOrder,
+  val myMoviesAllSortBy: SortOrder,
+  val progressMoviesSortBy: SortOrder,
 ) {
 
   companion object {
@@ -47,8 +53,8 @@ data class Settings(
       myShowsIncomingIsEnabled = true,
       myShowsRunningIsEnabled = true,
       myShowsRecentIsEnabled = true,
-      myShowsRecentsAmount = 4,
-      seeLaterShowsSortBy = SortOrder.NAME,
+      myRecentsAmount = 4,
+      watchlistShowsSortBy = SortOrder.NAME,
       archiveShowsSortBy = SortOrder.NAME,
       showAnticipatedShows = false,
       discoverFilterFeed = DiscoverSortOrder.HOT,
@@ -56,9 +62,15 @@ data class Settings(
       traktSyncSchedule = TraktSyncSchedule.OFF,
       traktQuickSyncEnabled = false,
       traktQuickRemoveEnabled = false,
-      watchlistSortOrder = SortOrder.NAME,
+      progressSortOrder = SortOrder.NAME,
       archiveShowsIncludeStatistics = true,
-      specialSeasonsEnabled = false
+      specialSeasonsEnabled = false,
+      discoverMoviesFilterFeed = DiscoverSortOrder.HOT,
+      discoverMoviesFilterGenres = emptyList(),
+      showAnticipatedMovies = false,
+      watchlistMoviesSortBy = SortOrder.NAME,
+      myMoviesAllSortBy = SortOrder.NAME,
+      progressMoviesSortBy = SortOrder.NAME
     )
   }
 }

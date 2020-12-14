@@ -19,9 +19,9 @@ import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
-import com.michaldrabik.ui_model.Image.Status.AVAILABLE
-import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
-import com.michaldrabik.ui_model.Image.Status.UNKNOWN
+import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
+import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
+import com.michaldrabik.ui_model.ImageStatus.UNKNOWN
 import com.michaldrabik.ui_model.ImageType.POSTER
 
 abstract class ShowView<Item : ListItem> : FrameLayout {
@@ -47,12 +47,12 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
 
   open fun bind(
     item: Item,
-    missingImageListener: (Item, Boolean) -> Unit
+    missingImageListener: ((Item, Boolean) -> Unit)? = null
   ) {
     layoutParams = LayoutParams((width * item.image.type.spanSize.toFloat()).toInt(), height.toInt())
   }
 
-  protected open fun loadImage(item: Item, missingImageListener: (Item, Boolean) -> Unit) {
+  protected open fun loadImage(item: Item, missingImageListener: ((Item, Boolean) -> Unit)?) {
     if (item.isLoading) return
 
     if (item.image.status == UNAVAILABLE) {
@@ -81,12 +81,12 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
 
   protected open fun onImageLoadSuccess() = Unit
 
-  protected open fun onImageLoadFail(item: Item, missingImageListener: (Item, Boolean) -> Unit) {
+  protected open fun onImageLoadFail(item: Item, missingImageListener: ((Item, Boolean) -> Unit)?) {
     if (item.image.status == AVAILABLE) {
       placeholderView.visible()
       return
     }
     val force = (item.image.status == UNKNOWN)
-    missingImageListener(item, force)
+    missingImageListener?.invoke(item, force)
   }
 }

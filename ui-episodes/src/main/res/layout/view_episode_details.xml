@@ -160,6 +160,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spaceNormal"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         >
 
@@ -169,7 +170,7 @@
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:layout_marginEnd="@dimen/spaceTiny"
-          android:layout_weight="4"
+          android:layout_weight="@integer/buttonCommentsWeight"
           android:backgroundTint="?attr/colorAccent"
           android:gravity="center"
           android:text="@string/textLoadCommentsCount"

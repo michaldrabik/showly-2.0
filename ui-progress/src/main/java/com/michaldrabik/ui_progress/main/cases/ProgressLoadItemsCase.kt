@@ -54,7 +54,7 @@ class ProgressLoadItemsCase @Inject constructor(
       .sortedBy { it.firstAired }
       .firstOrNull { it.firstAired?.isAfter(nowUtc()) == true }
 
-    val isPinned = pinnedItemsRepository.isItemPinned(show.traktId)
+    val isPinned = pinnedItemsRepository.isItemPinned(show)
     val season = seasons.first { it.idTrakt == nextEpisode.idSeason }
     val episode = database.episodesDao().getById(nextEpisode.idTrakt)
     val episodeUi = mappers.episode.fromDatabase(episode)
@@ -68,7 +68,7 @@ class ProgressLoadItemsCase @Inject constructor(
     var upcomingTranslation: Translation? = null
 
     val language = settingsRepository.getLanguage()
-    if (language !== Config.DEFAULT_LANGUAGE) {
+    if (language != Config.DEFAULT_LANGUAGE) {
       showTranslation = translationsRepository.loadTranslation(show, language, true)
       episodeTranslation = translationsRepository.loadTranslation(episodeUi, show.ids.trakt, language, true)
       upcomingTranslation = translationsRepository.loadTranslation(upEpisode, show.ids.trakt, language, true)
@@ -101,7 +101,10 @@ class ProgressLoadItemsCase @Inject constructor(
     val aired = (items[true] ?: emptyList())
       .sortedWith(
         when (sortOrder) {
-          NAME -> compareBy { it.show.title.toUpperCase(ROOT) }
+          NAME -> compareBy {
+            val translatedTitle = if (it.showTranslation?.hasTitle == false) null else it.showTranslation?.title
+            (translatedTitle ?: it.show.title).toUpperCase(ROOT)
+          }
           RECENTLY_WATCHED -> compareByDescending { it.show.updatedAt }
           EPISODES_LEFT -> compareBy { it.episodesCount - it.watchedEpisodesCount }
           else -> throw IllegalStateException("Invalid sort order")
@@ -114,11 +117,10 @@ class ProgressLoadItemsCase @Inject constructor(
     return (aired + notAired)
       .filter {
         if (searchQuery.isBlank()) true
-        else it.show.title.contains(searchQuery, true)
-          || it.episode.title.contains(searchQuery, true)
-          || it.showTranslation?.title?.contains(searchQuery, true) == true
-          || it.episodeTranslation?.title?.contains(searchQuery, true) == true
+        else it.show.title.contains(searchQuery, true) ||
+          it.episode.title.contains(searchQuery, true) ||
+          it.showTranslation?.title?.contains(searchQuery, true) == true ||
+          it.episodeTranslation?.title?.contains(searchQuery, true) == true
       }
-      .toMutableList()
   }
 }

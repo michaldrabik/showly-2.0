@@ -4,7 +4,7 @@
   <string name="textSortNewest">Najnowsze</string>
   <string name="textSortRated">Docenione</string>
   <string name="textSortDateAdded">Ostatnio Dodane</string>
-  <string name="textSortRecentlyWatched">Ostatnio Widziane</string>
+  <string name="textSortRecentlyWatched">Ostatnio Obejrzane</string>
   <string name="textSortEpisodesLeft">Pozostałe Odcinki</string>
 
   <string name="textHeaderRecentlyAdded">Ostatnio Dodane</string>
@@ -57,7 +57,6 @@
   <string name="textTraktSyncOptionDaily">Każdego Dnia</string>
   <string name="textTraktSyncOption3Day">Co 3 Dni</string>
   <string name="textTraktSyncOptionWeekly">Każdego Tygodnia</string>
-
   <string name="textTraktSyncOptionOffMessage">Synchronizacja automatyczna wyłączona.</string>
   <string name="textTraktSyncOptionConfirmMessage">Synchronizacja automatyczna włączona.</string>
 
@@ -74,4 +73,11 @@
   <string name="textShowStatusPlanned">Zaplanowany</string>
   <string name="textShowStatusCanceled">Anulowany</string>
   <string name="textShowStatusEnded">Zakończony</string>
-</resources>
+
+  <string name="textMovieStatusReleased">Dostępny</string>
+  <string name="textMovieStatusInProduction">W Produkcji</string>
+  <string name="textMovieStatusPostProduction">Post Produkcja</string>
+  <string name="textMovieStatusPlanned">Planowany</string>
+  <string name="textMovieStatusCanceled">Anulowany</string>
+  <string name="textMovieStatusRumored">Spodziewany</string>
+  </resources>

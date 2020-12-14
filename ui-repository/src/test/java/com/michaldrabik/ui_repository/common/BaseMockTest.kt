@@ -10,6 +10,7 @@ import com.michaldrabik.ui_repository.mappers.EpisodeMapper
 import com.michaldrabik.ui_repository.mappers.IdsMapper
 import com.michaldrabik.ui_repository.mappers.ImageMapper
 import com.michaldrabik.ui_repository.mappers.Mappers
+import com.michaldrabik.ui_repository.mappers.MovieMapper
 import com.michaldrabik.ui_repository.mappers.SeasonMapper
 import com.michaldrabik.ui_repository.mappers.SettingsMapper
 import com.michaldrabik.ui_repository.mappers.ShowMapper
@@ -38,6 +39,7 @@ abstract class BaseMockTest {
     idsMapper,
     ImageMapper(),
     ShowMapper(idsMapper),
+    MovieMapper(idsMapper),
     episodeMappers,
     SeasonMapper(idsMapper, episodeMappers),
     ActorMapper(),

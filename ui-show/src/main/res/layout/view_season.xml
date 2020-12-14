@@ -42,7 +42,7 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toEndOf="@id/seasonViewCheckbox"
       app:layout_constraintTop_toTopOf="parent"
-      tools:text="Season 00"
+      tools:text="Temporada 00"
       />
 
     <ImageView
@@ -79,6 +79,7 @@
       style="@style/Widget.AppCompat.ProgressBar.Horizontal"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/seasonViewProgressMargin"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toStartOf="@id/seasonViewProgressText"
       app:layout_constraintStart_toEndOf="@id/seasonViewTitle"

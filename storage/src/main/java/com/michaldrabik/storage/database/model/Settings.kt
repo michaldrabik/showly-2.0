@@ -33,5 +33,11 @@ data class Settings(
   @ColumnInfo(name = "watchlist_sort_by", defaultValue = "NAME") var watchlistSortBy: String,
   @ColumnInfo(name = "archive_shows_sort_by", defaultValue = "NAME") var archiveShowsSortBy: String,
   @ColumnInfo(name = "archive_shows_include_statistics", defaultValue = "1") var archiveShowsIncludeStatistics: Boolean,
-  @ColumnInfo(name = "special_seasons_enabled", defaultValue = "0") var specialSeasonsEnabled: Boolean
+  @ColumnInfo(name = "special_seasons_enabled", defaultValue = "0") var specialSeasonsEnabled: Boolean,
+  @ColumnInfo(name = "show_anticipated_movies", defaultValue = "0") var showAnticipatedMovies: Boolean,
+  @ColumnInfo(name = "discover_movies_filter_genres", defaultValue = "") var discoverMoviesFilterGenres: String,
+  @ColumnInfo(name = "discover_movies_filter_feed", defaultValue = "HOT") var discoverMoviesFilterFeed: String,
+  @ColumnInfo(name = "my_movies_all_sort_by", defaultValue = "NAME") var myMoviesAllSortBy: String,
+  @ColumnInfo(name = "see_later_movies_sort_by", defaultValue = "NAME") var seeLaterMoviesSortBy: String,
+  @ColumnInfo(name = "progress_movies_sort_by", defaultValue = "NAME") var progressMoviesSortBy: String
 )

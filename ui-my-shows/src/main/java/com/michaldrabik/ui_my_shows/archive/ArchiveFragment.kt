@@ -13,6 +13,7 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnTranslationsSyncListener
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_model.Show
@@ -27,6 +28,7 @@ import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.utilities.OnSortClickListener
 import kotlinx.android.synthetic.main.fragment_archive.*
+import kotlinx.android.synthetic.main.fragment_watchlist.*
 
 class ArchiveFragment :
   BaseFragment<ArchiveViewModel>(R.layout.fragment_archive),
@@ -73,13 +75,16 @@ class ArchiveFragment :
   }
 
   private fun setupStatusBar() {
+    val recyclerPadding = if (moviesEnabled) R.dimen.archiveTabsViewPadding else R.dimen.archiveTabsViewPaddingNoModes
     if (statusBarHeight != 0) {
       archiveContent.updatePadding(top = archiveContent.paddingTop + statusBarHeight)
+      archiveRecycler.updatePadding(top = dimenToPx(recyclerPadding))
       return
     }
     archiveContent.doOnApplyWindowInsets { view, insets, padding, _ ->
       statusBarHeight = insets.systemWindowInsetTop
       view.updatePadding(top = padding.top + statusBarHeight)
+      archiveRecycler.updatePadding(top = dimenToPx(recyclerPadding))
     }
   }
 

@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_base.trakt
 
-import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.error.TraktAuthError
 import com.michaldrabik.ui_repository.UserTraktManager
+import timber.log.Timber
 
 abstract class TraktSyncRunner(
   private val userTraktManager: UserTraktManager
@@ -15,14 +15,19 @@ abstract class TraktSyncRunner(
 
   var isRunning = false
   var retryCount = 0
-  var progressListener: ((Show, Int, Int) -> Unit)? = null
+  var progressListener: ((String, Int, Int) -> Unit)? = null
 
   abstract suspend fun run(): Int
 
   protected suspend fun checkAuthorization() = try {
+    Timber.d("Checking authorization...")
     userTraktManager.checkAuthorization()
   } catch (t: Throwable) {
     isRunning = false
     throw TraktAuthError(t.message)
+  }
+
+  protected fun resetRetries() {
+    retryCount = 0
   }
 }

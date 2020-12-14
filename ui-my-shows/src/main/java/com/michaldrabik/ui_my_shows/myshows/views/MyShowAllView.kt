@@ -11,6 +11,7 @@ import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
@@ -37,7 +38,7 @@ class MyShowAllView : ShowView<MyShowsItem> {
 
   override fun bind(
     item: MyShowsItem,
-    missingImageListener: (MyShowsItem, Boolean) -> Unit
+    missingImageListener: ((MyShowsItem, Boolean) -> Unit)?
   ) {
     clear()
     this.item = item
@@ -58,6 +59,12 @@ class MyShowAllView : ShowView<MyShowsItem> {
     myShowAllDescription.visibleIf(item.show.overview.isNotBlank())
     myShowAllNetwork.visibleIf(item.show.network.isNotBlank())
 
+    item.userRating?.let {
+      myShowAllUserStarIcon.visible()
+      myShowAllUserRating.visible()
+      myShowAllUserRating.text = String.format(ENGLISH, "%d", it)
+    }
+
     loadImage(item, missingImageListener)
   }
 
@@ -67,6 +74,8 @@ class MyShowAllView : ShowView<MyShowsItem> {
     myShowAllNetwork.text = ""
     myShowAllRating.text = ""
     myShowAllPlaceholder.gone()
+    myShowAllUserStarIcon.gone()
+    myShowAllUserRating.gone()
     Glide.with(this).clear(myShowAllImage)
   }
 }

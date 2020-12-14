@@ -74,4 +74,12 @@
   <string name="textShowStatusCanceled">Canceled</string>
   <string name="textShowStatusEnded">Ended</string>
   <string name="textShowStatusUnknown" translatable="false" />
+
+  <string name="textMovieStatusReleased">Released</string>
+  <string name="textMovieStatusInProduction">In Production</string>
+  <string name="textMovieStatusPostProduction">Post Production</string>
+  <string name="textMovieStatusPlanned">Planned</string>
+  <string name="textMovieStatusCanceled">Canceled</string>
+  <string name="textMovieStatusRumored">Rumored</string>
+  <string name="textMovieStatusUnknown" translatable="false" />
 </resources>

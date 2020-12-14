@@ -5,12 +5,13 @@ import android.animation.ObjectAnimator
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewPropertyAnimator
 import android.view.WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
 import android.widget.TextView
 import androidx.core.animation.doOnEnd
 import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
-import java.util.*
+import java.util.Locale
 
 fun View.visible() {
   if (visibility != View.VISIBLE) visibility = View.VISIBLE
@@ -38,25 +39,31 @@ fun View.fadeIf(condition: Boolean, duration: Long = 250, startDelay: Long = 0) 
     fadeOut(duration, startDelay)
   }
 
-fun View.fadeIn(duration: Long = 250, startDelay: Long = 0, endAction: () -> Unit = {}) {
+fun View.fadeIn(duration: Long = 250, startDelay: Long = 0, endAction: () -> Unit = {}): ViewPropertyAnimator? {
   if (visibility == View.VISIBLE) {
     endAction()
-    return
+    return null
   }
   visibility = View.VISIBLE
   alpha = 0F
-  animate().alpha(1F).setDuration(duration).setStartDelay(startDelay).withEndAction(endAction).start()
+  val animation = animate().alpha(1F).setDuration(duration).setStartDelay(startDelay).withEndAction(endAction)
+  return animation.also { it.start() }
 }
 
-fun View.fadeOut(duration: Long = 250, startDelay: Long = 0, endAction: () -> Unit = {}) {
+fun View.fadeOut(duration: Long = 250, startDelay: Long = 0, endAction: () -> Unit = {}): ViewPropertyAnimator? {
   if (visibility == View.GONE) {
     endAction()
-    return
+    return null
   }
-  animate().alpha(0F).setDuration(duration).setStartDelay(startDelay).withEndAction {
+  val animation = animate().alpha(0F).setDuration(duration).setStartDelay(startDelay).withEndAction {
     gone()
     endAction()
-  }.start()
+  }
+  return animation.also { it.start() }
+}
+
+fun ViewPropertyAnimator?.add(animations: MutableList<ViewPropertyAnimator?>) {
+  animations.add(this)
 }
 
 fun View.shake() = ObjectAnimator.ofFloat(this, "translationX", 0F, -15F, 15F, -10F, 10F, -5F, 5F, 0F)

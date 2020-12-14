@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_repository.mappers
 
+import com.michaldrabik.storage.database.model.Movie
 import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdSlug
 import com.michaldrabik.ui_model.IdTmdb
@@ -40,5 +41,14 @@ class IdsMapper @Inject constructor() {
     IdImdb(show?.idImdb ?: ""),
     IdTmdb(show?.idTmdb ?: -1),
     IdTvRage(show?.idTvrage ?: -1)
+  )
+
+  fun fromDatabase(movie: Movie?) = Ids(
+    IdTrakt(movie?.idTrakt ?: -1),
+    IdSlug(movie?.idSlug ?: ""),
+    IdTvdb(-1),
+    IdImdb(movie?.idImdb ?: ""),
+    IdTmdb(movie?.idTmdb ?: -1),
+    IdTvRage(-1)
   )
 }

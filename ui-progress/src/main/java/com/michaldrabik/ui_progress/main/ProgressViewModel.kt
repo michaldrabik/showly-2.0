@@ -28,7 +28,7 @@ class ProgressViewModel @Inject constructor(
 
   private var searchQuery = ""
 
-  fun loadWatchlist(resetScroll: Boolean = false) {
+  fun loadProgress(resetScroll: Boolean = false) {
     viewModelScope.launch {
       val shows = loadItemsCase.loadMyShows()
       val items = shows.map { show ->
@@ -53,7 +53,7 @@ class ProgressViewModel @Inject constructor(
 
   fun searchWatchlist(searchQuery: String) {
     this.searchQuery = searchQuery.trim()
-    loadWatchlist()
+    loadProgress()
   }
 
   fun setWatchedEpisode(context: Context, item: ProgressItem) {
@@ -63,14 +63,14 @@ class ProgressViewModel @Inject constructor(
         return@launch
       }
       episodesCase.setEpisodeWatched(context, item)
-      loadWatchlist(resetScroll = true)
+      loadProgress(resetScroll = true)
     }
   }
 
   fun setSortOrder(sortOrder: SortOrder) {
     viewModelScope.launch {
       sortOrderCase.setSortOrder(sortOrder)
-      loadWatchlist(resetScroll = true)
+      loadProgress(resetScroll = true)
     }
   }
 
@@ -80,7 +80,7 @@ class ProgressViewModel @Inject constructor(
     } else {
       pinnedItemsCase.addPinnedItem(item)
     }
-    loadWatchlist()
+    loadProgress()
   }
 
   fun onOpenShowDetails() {

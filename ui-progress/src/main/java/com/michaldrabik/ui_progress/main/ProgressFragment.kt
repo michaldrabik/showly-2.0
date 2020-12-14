@@ -12,14 +12,15 @@ import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
-import com.michaldrabik.ui_base.common.OnEpisodesSyncedListener
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnTranslationsSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
+import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
@@ -46,7 +47,7 @@ import kotlinx.android.synthetic.main.fragment_progress.*
 
 class ProgressFragment :
   BaseFragment<ProgressViewModel>(R.layout.fragment_progress),
-  OnEpisodesSyncedListener,
+  OnShowsMoviesSyncedListener,
   OnTabReselectedListener,
   OnTraktSyncListener,
   OnTranslationsSyncListener {
@@ -79,7 +80,7 @@ class ProgressFragment :
     super.onResume()
     setupBackPressed()
     showNavigation()
-    viewModel.loadWatchlist()
+    viewModel.loadProgress()
   }
 
   override fun onDestroyView() {
@@ -96,8 +97,15 @@ class ProgressFragment :
       onClick { enterSearch() }
       onSettingsClickListener = { openSettings() }
     }
+    progressPagerModeTabs.run {
+      visibleIf(moviesEnabled)
+      isEnabled = false
+      onModeSelected = { mode = it }
+      animateShows()
+    }
 
     progressTabs.translationY = tabsTranslation
+    progressPagerModeTabs.translationY = tabsTranslation
     progressSearchView.translationY = searchViewTranslation
     progressSortIcon.translationY = sortIconTranslation
   }
@@ -114,12 +122,15 @@ class ProgressFragment :
   private fun setupStatusBar() {
     progressRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.systemWindowInsetTop
+      val progressTabsMargin = if (moviesEnabled) R.dimen.progressSearchViewPadding else R.dimen.progressSearchViewPaddingNoModes
       (progressSearchView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
       (progressTabs.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressSearchViewPadding))
+        .updateMargins(top = statusBarSize + dimenToPx(progressTabsMargin))
+      (progressPagerModeTabs.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.showsMoviesTabsMargin))
       (progressSortIcon.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressSearchViewPadding))
+        .updateMargins(top = statusBarSize + dimenToPx(progressTabsMargin))
     }
   }
 
@@ -143,7 +154,7 @@ class ProgressFragment :
     progressRoot.fadeOut {
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
       navigateTo(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
-    }
+    }.add(animations)
   }
 
   private fun openSettings() {
@@ -217,15 +228,16 @@ class ProgressFragment :
     if (showNavigation) showNavigation()
   }
 
-  override fun onEpisodesSyncFinished() = viewModel.loadWatchlist()
+  override fun onShowsMoviesSyncFinished() = viewModel.loadProgress()
 
-  override fun onTraktSyncProgress() = viewModel.loadWatchlist()
+  override fun onTraktSyncProgress() = viewModel.loadProgress()
 
-  override fun onTranslationsSyncProgress() = viewModel.loadWatchlist()
+  override fun onTranslationsSyncProgress() = viewModel.loadProgress()
 
   override fun onTabReselected() {
     progressSearchView.translationY = 0F
     progressTabs.translationY = 0F
+    progressPagerModeTabs.translationY = 0F
     progressSortIcon.translationY = 0F
     progressPager.nextPage()
     childFragmentManager.fragments.forEach {
@@ -236,12 +248,14 @@ class ProgressFragment :
   fun resetTranslations() {
     progressSearchView.animate().translationY(0F).start()
     progressTabs.animate().translationY(0F).start()
+    progressPagerModeTabs.animate().translationY(0F).start()
     progressSortIcon.animate().translationY(0F).start()
   }
 
   private fun render(uiModel: ProgressUiModel) {
     uiModel.run {
       items?.let {
+        progressPagerModeTabs.isEnabled = true
         progressSearchView.isClickable = it.isNotEmpty() || isSearching == true
         progressSortIcon.visibleIf(it.isNotEmpty() && currentPage == 0)
         if (it.isNotEmpty() && sortOrder != null) {
@@ -260,6 +274,7 @@ class ProgressFragment :
         val duration = 225L
         progressSearchView.animate().translationY(0F).setDuration(duration).start()
         progressTabs.animate().translationY(0F).setDuration(duration).start()
+        progressPagerModeTabs.animate().translationY(0F).setDuration(duration).start()
         progressSortIcon.animate().translationY(0F).setDuration(duration).start()
         requireView().postDelayed(
           {

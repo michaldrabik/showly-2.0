@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="tabMoviesCalendar">Kalendarz</string>
+  <string name="tabMoviesProgress">Progres</string>
+  <string name="textMoviesCalendarEmpty">Brak nowych nadchodzących filmów.</string>
+
+  <string name="textMoviesSearchWatchlist">Szukaj…</string>
+  <string name="textDiscoverMovies">Odkrywaj Filmy</string>
+  <string name="textMoviesTraktSynchronize">Import z Trakt.tv</string>
+  <string name="textMoviesProgressEmpty">Twój <b>Progres</b> jest obecnie pusty.\n\nDodaj nowe filmy w zakładce <b>Odkrywaj</b> lub zaimportuj swoją kolekcję z Trakt.tv.</string>
+
+  <string name="textMoviesWatchlistToday">Dzisiaj</string>
+  <string name="textMoviesWatchlistTomorrow">Jutro</string>
+  <string name="textMoviesWatchlistThisWeek">Ten Tydzień</string>
+  <string name="textMoviesWatchlistNextWeek">Następny Tydzień</string>
+  <string name="textMoviesWatchlistLater">Później</string>
+</resources>

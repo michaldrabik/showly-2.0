@@ -15,7 +15,6 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.MY_SHOWS_RECENTS_OPTIONS
@@ -24,7 +23,6 @@ import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
-import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MyShowsSection.FINISHED
 import com.michaldrabik.ui_model.MyShowsSection.RECENTS
@@ -74,7 +72,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun render(uiModel: SettingsUiModel) {
     uiModel.run {
-      settings?.let { renderSettings(it) }
+      settings?.let { renderSettings(it, moviesEnabled ?: true) }
       language?.let { renderLanguage(it) }
       isSignedInTrakt?.let { isSignedIn ->
         settingsTraktSync.visibleIf(isSignedIn)
@@ -100,10 +98,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         }
         settingsTraktAuthorizeSummary.text = summaryText
       }
+      restartApp?.let { if (it) restartApp() }
     }
   }
 
-  private fun renderSettings(settings: Settings) {
+  private fun renderSettings(settings: Settings, moviesEnabled: Boolean) {
     settingsRecentShowsAmount.onClick { showRecentShowsDialog(settings) }
     settingsMyShowsSections.onClick { showSectionsDialog(settings) }
 
@@ -127,7 +126,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
     settingsShowsNotificationsSwitch
       .setCheckedSilent(settings.episodesNotificationsEnabled) { _, isChecked ->
-        viewModel.enableEpisodesAnnouncements(isChecked, requireAppContext())
+        viewModel.enableAnnouncements(isChecked, requireAppContext())
       }
 
     settingsWhenToNotifyValue.run {
@@ -143,6 +142,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsIncludeSpecialsSwitch
       .setCheckedSilent(settings.specialSeasonsEnabled) { _, isChecked ->
         viewModel.enableSpecialSeasons(isChecked)
+      }
+
+    settingsMoviesEnabledSwitch
+      .setCheckedSilent(moviesEnabled) { _, isChecked ->
+        viewModel.enableMovies(isChecked, requireAppContext())
       }
 
     settingsContactDevs.onClick {
@@ -184,7 +188,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun showRecentShowsDialog(settings: Settings) {
     val options = MY_SHOWS_RECENTS_OPTIONS.map { it.toString() }.toTypedArray()
-    val default = options.indexOf(settings.myShowsRecentsAmount.toString())
+    val default = options.indexOf(settings.myRecentsAmount.toString())
 
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
@@ -223,12 +227,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       .setSingleChoiceItems(options.map { getString(it.displayName) }.toTypedArray(), selected) { dialog, index ->
         if (index != selected) {
           viewModel.setLanguage(options[index])
-          settingsRoot.showInfoSnackbar(
-            getString(R.string.textSettingsLanguageChangeMessage),
-            actionText = R.string.textOk,
-            length = LENGTH_INDEFINITE,
-            action = { restartApp() }
-          )
         }
         dialog.dismiss()
       }
@@ -282,7 +280,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     dispatcher.addCallback(viewLifecycleOwner) {
       remove()
       showNavigation()
-      findNavController().popBackStack()
+      findNavHost().findNavController().popBackStack()
     }
   }
 
