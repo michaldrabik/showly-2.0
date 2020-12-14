@@ -7,6 +7,7 @@
   <string name="textShowRated">Ocena została zapisana.</string>
   <string name="textShowRatingDeleted">Ocena została usunięta.</string>
   <string name="textSignBeforeRate">Zaloguj się aby móc ocenić.</string>
+  <string name="textSignBeforeRateMovie">Zaloguj się aby móc ocenić.</string>
   <string name="textRate">Oceń</string>
   <string name="textRateDelete">Usuń</string>
 </resources>

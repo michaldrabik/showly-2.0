@@ -7,6 +7,7 @@
   <string name="textShowRated">Deine Bewertung wurde gespeichert.</string>
   <string name="textShowRatingDeleted">Deine Bewertung wurde gelöscht.</string>
   <string name="textSignBeforeRate">Bitte melde dich an bevor du eine Serie bewertest.</string>
+  <string name="textSignBeforeRateMovie">Bitte melde dich an bevor du einen Film bewertest.</string>
   <string name="textRate">Bewerten</string>
   <string name="textRateDelete">Löschen</string>
 </resources>
