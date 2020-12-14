@@ -14,12 +14,12 @@
   <string name="textSettingsTraktSyncTitle">Trakt.tv Sync</string>
   <string name="textSettingsTraktSyncSummary">Sync deine Daten zwischen Trakt.tv und Showly.</string>
   <string name="textSettingsTraktQuickSyncTitle">Sofortupload Zu Trakt.tv</string>
-  <string name="textSettingsTraktQuickSyncSummary">Lade deine Episoden und deine Watchlist sofort auf Trakt.tv hoch, nachdem du sie in der App hinzugefügt hast.</string>
+  <string name="textSettingsTraktQuickSyncSummary">Lade deine Daten sofort auf Trakt.tv hoch, nachdem du sie in der App hinzugefügt hast.</string>
   <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv Sofort Entfernen</string>
-  <string name="textSettingsTraktQuickRemoveSummary">Option zum Entfernen von Serien aus Trakt.tv hinzufügen, nachdem du diese in der App entfernt hast.</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Option um deine Daten von Trakt.tv zu entfernen, nachdem du diese innerhalb der App gelöscht hast.</string>
   <string name="textSettingsGeneral">Allgemein &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Kürzlich hinzugefügte Menge</string>
-  <string name="textSettingsRecentShowsSummary">Anzahl der letzten Shows, die auf dem Bildschirm \'Meine Shows\' angezeigt werden sollen.</string>
+  <string name="textSettingsRecentShowsSummary">Anzahl an Einträgen, die unter \'Sammlung\' zu sehen sind.</string>
   <string name="textSettingsMyShowsSectionsTitle">Meine Serien Abschnitt</string>
   <string name="textSettingsMyShowsSectionSummary">Aktiviere/Deaktiviere die Abschnitte im \'Meine Serien\' Tab.</string>
   <string name="textSettingsMyShowsLanguageTitle">Sprache</string>
@@ -31,8 +31,8 @@
   <string name="textSettingsNotifications">Benachrichtigungen </string>
   <string name="textSettingsPushNotificationsTitle">Pushbenachrichtigungen</string>
   <string name="textSettingsPushNotificationsSummary">Erhalte allgemeine Push-Benachrichtigungen.</string>
-  <string name="textSettingsShowsNotificationsTitle">Episodenankündigungen</string>
-  <string name="textSettingsShowsNotificationsSummary">Erhalte Benachrichtigungen über neue Folgen &amp; Staffeln von Serien denen die du gespeichert hast.</string>
+  <string name="textSettingsShowsNotificationsTitle">Ankündigungen</string>
+  <string name="textSettingsShowsNotificationsSummary">Erhalte Benachrichtigungen über neue Filme, Folgen & Staffeln von Serien die du gespeichert hast.</string>
   <string name="textSettingsMisc">Gemischt</string>
   <string name="textSettingsContactDevsTitle">Entwickler kontaktieren</string>
   <string name="textSettingsContactDevsSummary">Du hast einen Fehler entdeckt oder ein Problem? Schreib uns gerne eine E-Mail.</string>
@@ -44,5 +44,7 @@
   <string name="textSettingsQuickSyncConfirmationMessage">\nEs scheint, als sei die automatische Synchronisation bereits aktiviert.\n\nMöchtest du diese Einstellung deaktivieren bevor du Instant Synchronisation aktivierst (Empfohlen!)?\n</string>
   <string name="textSettingsLogoutTitle">Bei Trakt.tv Ausloggen</string>
   <string name="textSettingsLogoutMessage">\nBist du sicher, dass du dich ausloggen möchtest?\n</string>
+  <string name="textSettingsMoviesEnabledTitle">Filme</string>
+  <string name="textSettingsMoviesEnabledSummary">Aktiviere/Deaktiviere die Unterstützung fur Filme. Die App wird neu gestartet.</string>
 
   </resources>
