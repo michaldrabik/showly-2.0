@@ -2,4 +2,5 @@
 <resources>
   <string name="textGenresMovies">التصنيفات:</string>
   <string name="textSortOrderMovies">ترتيب حسب:</string>
+  <string name="textDiscoverFilterAnticipatedMovies">إخفاء الأفلام التي لم تصدر بعد</string>
 </resources>
