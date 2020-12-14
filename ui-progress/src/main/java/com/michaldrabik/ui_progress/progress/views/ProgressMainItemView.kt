@@ -13,6 +13,7 @@ import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.DurationPrinter
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
 import com.michaldrabik.ui_base.utilities.extensions.bump
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -24,6 +25,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
 import kotlinx.android.synthetic.main.view_progress_main_item.view.*
+import java.util.Locale.ENGLISH
 import kotlin.math.roundToInt
 
 @SuppressLint("SetTextI18n")
@@ -65,16 +67,21 @@ class ProgressMainItemView : ShowView<ProgressItem> {
     this.item = item
     clear()
 
-    progressItemTitle.text = item.show.title
+    val translationTitle = item.showTranslation?.title
+    progressItemTitle.text =
+      if (translationTitle.isNullOrBlank()) item.show.title
+      else translationTitle.capitalizeWords()
+
     progressItemSubtitle.text = String.format(
+      ENGLISH,
       "S.%02d E.%02d",
       item.episode.season,
       item.episode.number
     )
 
     val episodeTitle = when {
-      item.episode.title.isBlank() -> "TBA"
-      item.translation?.title?.isBlank() == false -> item.translation.title
+      item.episode.title.isBlank() -> context.getString(R.string.textTba)
+      item.episodeTranslation?.title?.isBlank() == false -> item.episodeTranslation.title
       else -> item.episode.title
     }
     progressItemSubtitle2.text = episodeTitle
@@ -91,7 +98,7 @@ class ProgressMainItemView : ShowView<ProgressItem> {
     val percent = ((item.watchedEpisodesCount.toFloat() / item.episodesCount.toFloat()) * 100).roundToInt()
     progressItemProgress.max = item.episodesCount
     progressItemProgress.progress = item.watchedEpisodesCount
-    progressItemProgressText.text = "${item.watchedEpisodesCount}/${item.episodesCount} ($percent%)"
+    progressItemProgressText.text = String.format(ENGLISH, "%d/%d (%d%%)", item.watchedEpisodesCount, item.episodesCount, percent)
   }
 
   private fun bindCheckButton(

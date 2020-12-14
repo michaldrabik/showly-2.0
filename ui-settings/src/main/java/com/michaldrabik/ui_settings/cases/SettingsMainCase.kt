@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_base.fcm.NotificationChannel
+import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_model.BuildConfig
@@ -24,7 +26,8 @@ import javax.inject.Inject
 class SettingsMainCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val announcementManager: AnnouncementManager,
-  private val imagesProvider: ShowImagesProvider
+  private val showsImagesProvider: ShowImagesProvider,
+  private val moviesImagesProvider: MovieImagesProvider
 ) {
 
   suspend fun getSettings(): Settings = settingsRepository.load()
@@ -33,7 +36,7 @@ class SettingsMainCase @Inject constructor(
     check(amount in Config.MY_SHOWS_RECENTS_OPTIONS)
     val settings = settingsRepository.load()
     settings.let {
-      val new = it.copy(myShowsRecentsAmount = amount)
+      val new = it.copy(myRecentsAmount = amount)
       settingsRepository.update(new)
     }
   }
@@ -57,12 +60,13 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
-  suspend fun enableEpisodesAnnouncements(enable: Boolean, context: Context) {
+  suspend fun enableAnnouncements(enable: Boolean, context: Context) {
     val settings = settingsRepository.load()
     settings.let {
       val new = it.copy(episodesNotificationsEnabled = enable)
       settingsRepository.update(new)
-      announcementManager.refreshEpisodesAnnouncements(context.applicationContext)
+      announcementManager.refreshShowsAnnouncements(context.applicationContext)
+      announcementManager.refreshMoviesAnnouncements(context.applicationContext)
     }
   }
 
@@ -96,12 +100,23 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
+  fun isMoviesEnabled() = settingsRepository.isMoviesEnabled()
+
+  suspend fun enableMovies(enable: Boolean, context: Context) {
+    val mode = if (!enable) Mode.SHOWS else settingsRepository.getMode()
+    settingsRepository.run {
+      setMoviesEnabled(enable)
+      setMode(mode)
+    }
+    announcementManager.refreshMoviesAnnouncements(context.applicationContext)
+  }
+
   suspend fun setWhenToNotify(delay: NotificationDelay, context: Context) {
     val settings = settingsRepository.load()
     settings.let {
       val new = it.copy(episodesNotificationsDelay = delay)
       settingsRepository.update(new)
-      announcementManager.refreshEpisodesAnnouncements(context.applicationContext)
+      announcementManager.refreshShowsAnnouncements(context.applicationContext)
     }
   }
 
@@ -114,5 +129,8 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
-  suspend fun deleteImagesCache() = imagesProvider.deleteLocalCache()
+  suspend fun deleteImagesCache() {
+    showsImagesProvider.deleteLocalCache()
+    moviesImagesProvider.deleteLocalCache()
+  }
 }

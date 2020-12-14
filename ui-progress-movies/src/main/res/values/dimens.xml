@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="progressMoviesTabsViewTranslation">-7dp</dimen>
+
+  <dimen name="progressMoviesHeaderTextSize">22sp</dimen>
+  <dimen name="progressMoviesSearchViewPadding">96dp</dimen>
+  <dimen name="progressMoviesTabsViewPadding">144dp</dimen>
+  <dimen name="progressMoviesCalendarTabsViewPadding">128dp</dimen>
+
+  <dimen name="progressMoviesImageHeight">120dp</dimen>
+  <dimen name="progressMoviesImageWidth">80dp</dimen>
+
+  <dimen name="progressMoviesWidgetImageHeight">100dp</dimen>
+  <dimen name="progressMoviesWidgetImageWidth">67dp</dimen>
+
+  <dimen name="progressMoviesItemCheckButtonWidth">72dp</dimen>
+  <dimen name="progressMoviesItemButtonHeight">40dp</dimen>
+</resources>

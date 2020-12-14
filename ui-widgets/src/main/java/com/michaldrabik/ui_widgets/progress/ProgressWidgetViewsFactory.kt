@@ -12,6 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.DurationPrinter
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.ImageType
@@ -30,6 +31,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
+import java.util.Locale.ENGLISH
+import kotlin.math.roundToInt
 
 class ProgressWidgetViewsFactory(
   private val context: Context,
@@ -82,18 +85,27 @@ class ProgressWidgetViewsFactory(
   }
 
   private fun createItemRemoteView(item: ProgressItem): RemoteViews {
-    val subtitle = String.format("S.%02d E.%02d", item.episode.season, item.episode.number)
-    val progressText = "${item.watchedEpisodesCount}/${item.episodesCount}"
+    val title =
+      if (item.showTranslation?.title?.isBlank() == false) item.showTranslation?.title?.capitalizeWords()
+      else item.show.title
+    val subtitle = String.format(ENGLISH, "S.%02d E.%02d", item.episode.season, item.episode.number)
+
+    var percent = 0
+    if (item.episodesCount != 0) {
+      percent = ((item.watchedEpisodesCount.toFloat() / item.episodesCount.toFloat()) * 100F).roundToInt()
+    }
+    val progressText =
+      String.format(ENGLISH, "%d/%d (%d%%)", item.watchedEpisodesCount, item.episodesCount, percent)
     val imageUrl = item.image.fullFileUrl
     val hasAired = item.episode.hasAired(item.season)
     val subtitle2 = when {
-      item.episode.title.isBlank() -> "TBA"
-      item.translation?.title?.isBlank() == false -> item.translation?.title ?: "TBA"
+      item.episode.title.isBlank() -> context.getString(R.string.textTba)
+      item.episodeTranslation?.title?.isBlank() == false -> item.episodeTranslation?.title ?: context.getString(R.string.textTba)
       else -> item.episode.title
     }
 
     val remoteView = RemoteViews(context.packageName, R.layout.widget_progress_item).apply {
-      setTextViewText(R.id.progressWidgetItemTitle, item.show.title)
+      setTextViewText(R.id.progressWidgetItemTitle, title)
       setTextViewText(R.id.progressWidgetItemSubtitle, subtitle)
       setTextViewText(R.id.progressWidgetItemSubtitle2, subtitle2)
       setTextViewText(R.id.progressWidgetItemProgressText, progressText)

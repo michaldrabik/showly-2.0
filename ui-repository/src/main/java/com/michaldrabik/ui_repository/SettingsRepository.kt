@@ -3,6 +3,7 @@ package com.michaldrabik.ui_repository
 import android.content.SharedPreferences
 import androidx.room.withTransaction
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
+import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.Settings
@@ -19,6 +20,8 @@ class SettingsRepository @Inject constructor(
 
   companion object {
     private const val KEY_LANGUAGE = "KEY_LANGUAGE"
+    private const val KEY_MOVIES_ENABLED = "KEY_MOVIES_ENABLED"
+    private const val KEY_MODE = "KEY_MOVIES_MODE"
   }
 
   suspend fun isInitialized() =
@@ -26,7 +29,7 @@ class SettingsRepository @Inject constructor(
 
   suspend fun load(): Settings {
     val settingsDb = database.settingsDao().getAll()
-    return settingsDb.let { mappers.settings.fromDatabase(it) }
+    return mappers.settings.fromDatabase(settingsDb)
   }
 
   suspend fun update(settings: Settings) {
@@ -36,9 +39,27 @@ class SettingsRepository @Inject constructor(
     }
   }
 
+  fun isMoviesEnabled() =
+    miscPreferences.getBoolean(KEY_MOVIES_ENABLED, true)
+
+  fun setMoviesEnabled(enabled: Boolean) =
+    miscPreferences.edit().putBoolean(KEY_MOVIES_ENABLED, enabled).apply()
+
+  fun getMode(): Mode {
+    val default = Mode.SHOWS.name
+    return Mode.valueOf(miscPreferences.getString(KEY_MODE, default) ?: default)
+  }
+
+  fun setMode(mode: Mode) = miscPreferences.edit().putString(KEY_MODE, mode.name).apply()
+
   fun getLanguage() = miscPreferences.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
 
   fun setLanguage(language: String) = miscPreferences.edit().putString(KEY_LANGUAGE, language).apply()
 
-  suspend fun clearLanguageLogs() = database.translationsSyncLogDao().deleteAll()
+  suspend fun clearLanguageLogs() {
+    database.withTransaction {
+      database.translationsSyncLogDao().deleteAll()
+      database.translationsMoviesSyncLogDao().deleteAll()
+    }
+  }
 }

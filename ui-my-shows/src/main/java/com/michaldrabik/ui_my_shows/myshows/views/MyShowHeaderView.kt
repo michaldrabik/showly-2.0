@@ -13,6 +13,7 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import kotlinx.android.synthetic.main.view_my_shows_header.view.*
+import java.util.Locale.ENGLISH
 
 class MyShowHeaderView : FrameLayout {
 
@@ -42,7 +43,7 @@ class MyShowHeaderView : FrameLayout {
     val headerLabel = context.getString(item.section.displayString)
     myShowsHeaderLabel.text = when (item.section) {
       RECENTS -> headerLabel
-      else -> "$headerLabel (${item.itemCount})"
+      else -> String.format(ENGLISH, "%s (%d)", headerLabel, item.itemCount)
     }
   }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -35,22 +36,29 @@ class ShowSearchView : ShowView<SearchListItem> {
 
   override fun bind(
     item: SearchListItem,
-    missingImageListener: (SearchListItem, Boolean) -> Unit
+    missingImageListener: ((SearchListItem, Boolean) -> Unit)?
   ) {
     clear()
     this.item = item
-    showSearchTitle.text = item.show.title
+
+    val translationTitle = item.translation?.title
+    showSearchTitle.text =
+      if (translationTitle.isNullOrBlank()) item.title
+      else translationTitle.capitalizeWords()
+
+    val translationOverview = item.translation?.overview
     showSearchDescription.text =
-      if (item.translation?.overview.isNullOrBlank()) item.show.overview
-      else item.translation?.overview
+      if (translationOverview.isNullOrBlank()) item.overview
+      else translationOverview
 
-    val year = if (item.show.year > 0) " (${item.show.year})" else ""
-    showSearchNetwork.text = "${item.show.network}$year"
+    showSearchNetwork.text =
+      if (item.year > 0) context.getString(R.string.textNetwork, item.network, item.year.toString())
+      else String.format("%s", item.network)
 
-    showSearchDescription.visibleIf(item.show.overview.isNotBlank())
-    showSearchNetwork.visibleIf(item.show.network.isNotBlank())
+    showSearchDescription.visibleIf(item.overview.isNotBlank())
+    showSearchNetwork.visibleIf(item.network.isNotBlank())
     showSearchBadge.visibleIf(item.isFollowed)
-    showSearchLaterBadge.visibleIf(item.isSeeLater)
+    showSearchWatchlistBadge.visibleIf(item.isWatchlist)
     loadImage(item, missingImageListener)
   }
 

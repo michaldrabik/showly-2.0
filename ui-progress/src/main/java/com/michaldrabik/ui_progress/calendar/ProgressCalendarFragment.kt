@@ -62,13 +62,14 @@ class ProgressCalendarFragment :
   }
 
   private fun setupStatusBar() {
+    val recyclerPadding = if (moviesEnabled) R.dimen.progressCalendarTabsViewPadding else R.dimen.progressCalendarTabsViewPaddingNoModes
     if (statusBarHeight != 0) {
-      progressCalendarRecycler.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressCalendarTabsViewPadding))
+      progressCalendarRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
       return
     }
     progressCalendarRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
       statusBarHeight = insets.systemWindowInsetTop
-      view.updatePadding(top = statusBarHeight + dimenToPx(R.dimen.progressCalendarTabsViewPadding))
+      view.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
     }
   }
 

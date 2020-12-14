@@ -30,7 +30,7 @@ class AddToShowsButton : FrameLayout {
     inflate(context, R.layout.view_add_to_shows_button, this)
 
     addToMyShowsButton.onClick { onAddMyShowsClickListener?.invoke() }
-    seeLaterButton.onClick { onAddWatchLaterClickListener?.invoke() }
+    watchlistButton.onClick { onAddWatchLaterClickListener?.invoke() }
     inMyShowsButton.onClick { onRemoveClickListener?.invoke() }
     quickSetupButton.onClick { onQuickSetupClickListener?.invoke() }
     archiveButton.onClick { onArchiveClickListener?.invoke() }
@@ -43,7 +43,7 @@ class AddToShowsButton : FrameLayout {
     when (state) {
       State.ADD -> {
         addToMyShowsButton.fadeIn(duration)
-        seeLaterButton.fadeIn(duration)
+        watchlistButton.fadeIn(duration)
         inMyShowsButton.fadeOut(duration) { isEnabled = true }
         quickSetupButton.fadeOut(duration) { isEnabled = true }
         archiveButton.fadeOut(duration) { isEnabled = true }
@@ -53,7 +53,7 @@ class AddToShowsButton : FrameLayout {
         val colorState = context.colorStateListFromAttr(R.attr.colorAccent)
 
         addToMyShowsButton.fadeOut(duration)
-        seeLaterButton.fadeOut(duration)
+        watchlistButton.fadeOut(duration)
         inMyShowsButton.run {
           setIconResource(R.drawable.ic_bookmark_full)
           setText(R.string.textInMyShows)
@@ -69,15 +69,15 @@ class AddToShowsButton : FrameLayout {
         }
         quickSetupButton.fadeIn(duration) { isEnabled = true }
       }
-      State.IN_SEE_LATER -> {
+      State.IN_WATCHLIST -> {
         val color = context.colorFromAttr(android.R.attr.textColorSecondary)
         val colorState = context.colorStateListFromAttr(android.R.attr.textColorSecondary)
 
         addToMyShowsButton.fadeOut(duration)
-        seeLaterButton.fadeOut(duration)
+        watchlistButton.fadeOut(duration)
         inMyShowsButton.run {
           setIconResource(R.drawable.ic_bookmark_full)
-          setText(R.string.textInSeeLater)
+          setText(R.string.textInWatchlist)
           setTextColor(color)
           iconTint = colorState
           strokeColor = colorState
@@ -92,7 +92,7 @@ class AddToShowsButton : FrameLayout {
       }
       State.IN_ARCHIVE -> {
         addToMyShowsButton.fadeOut(duration)
-        seeLaterButton.fadeOut(duration)
+        watchlistButton.fadeOut(duration)
         inMyShowsButton.run {
           val color = context.colorFromAttr(android.R.attr.textColorSecondary)
           val colorState = context.colorStateListFromAttr(android.R.attr.textColorSecondary)
@@ -112,7 +112,7 @@ class AddToShowsButton : FrameLayout {
 
   override fun setEnabled(enabled: Boolean) {
     addToMyShowsButton.isEnabled = enabled
-    seeLaterButton.isEnabled = enabled
+    watchlistButton.isEnabled = enabled
     inMyShowsButton.isEnabled = enabled
     quickSetupButton.isEnabled = enabled
     archiveButton.isEnabled = enabled
@@ -121,7 +121,7 @@ class AddToShowsButton : FrameLayout {
   enum class State {
     ADD,
     IN_MY_SHOWS,
-    IN_SEE_LATER,
+    IN_WATCHLIST,
     IN_ARCHIVE
   }
 }

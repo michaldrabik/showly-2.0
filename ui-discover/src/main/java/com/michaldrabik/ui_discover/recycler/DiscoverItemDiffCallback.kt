@@ -11,5 +11,6 @@ class DiscoverItemDiffCallback : DiffUtil.ItemCallback<DiscoverListItem>() {
     oldItem.image == newItem.image &&
       oldItem.isLoading == newItem.isLoading &&
       oldItem.isFollowed == newItem.isFollowed &&
-      oldItem.isSeeLater == newItem.isSeeLater
+      oldItem.isWatchlist == newItem.isWatchlist &&
+      oldItem.translation == newItem.translation
 }

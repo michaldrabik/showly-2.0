@@ -26,12 +26,12 @@ class ProgressCalendarViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider
 ) : BaseViewModel<ProgressCalendarUiModel>() {
 
-  enum class Section(@StringRes val headerRes: Int) {
-    TODAY(R.string.textWatchlistToday),
-    TOMORROW(R.string.textWatchlistTomorrow),
-    THIS_WEEK(R.string.textWatchlistThisWeek),
-    NEXT_WEEK(R.string.textWatchlistNextWeek),
-    LATER(R.string.textWatchlistLater)
+  enum class Section(@StringRes val headerRes: Int, val order: Int) {
+    TODAY(R.string.textToday, 0),
+    TOMORROW(R.string.textTomorrow, 1),
+    THIS_WEEK(R.string.textThisWeek, 2),
+    NEXT_WEEK(R.string.textNextWeek, 3),
+    LATER(R.string.textLater, 4)
   }
 
   fun handleParentAction(model: ProgressUiModel) {
@@ -70,12 +70,14 @@ class ProgressCalendarViewModel @Inject constructor(
       }
     }
 
-    timeMap.entries.forEach { (section, items) ->
-      sectionsList.run {
-        add(ProgressItem.EMPTY.copy(headerTextResId = section.headerRes))
-        addAll(items.toList())
+    timeMap.entries
+      .sortedBy { it.key.order }
+      .forEach { (section, items) ->
+        sectionsList.run {
+          add(ProgressItem.EMPTY.copy(headerTextResId = section.headerRes))
+          addAll(items.toList())
+        }
       }
-    }
 
     return sectionsList
   }

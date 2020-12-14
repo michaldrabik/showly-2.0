@@ -4,23 +4,25 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-import android.content.res.ColorStateList
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.Color.TRANSPARENT
+import android.graphics.Typeface.BOLD
+import android.graphics.Typeface.NORMAL
 import android.net.Uri
 import android.os.Bundle
 import android.transition.TransitionManager
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
-import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,7 +45,7 @@ import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
-import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
@@ -64,8 +66,10 @@ import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_model.Image.Status.UNAVAILABLE
+import com.michaldrabik.ui_model.ImageFamily.SHOW
+import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
@@ -73,8 +77,14 @@ import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_QUICK_PROGRESS
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
+import com.michaldrabik.ui_show.helpers.ShowLink
+import com.michaldrabik.ui_show.helpers.ShowLink.IMDB
+import com.michaldrabik.ui_show.helpers.ShowLink.TMDB
+import com.michaldrabik.ui_show.helpers.ShowLink.TRAKT
+import com.michaldrabik.ui_show.helpers.ShowLink.TVDB
 import com.michaldrabik.ui_show.quickSetup.QuickSetupView
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.related.RelatedShowAdapter
@@ -83,12 +93,13 @@ import com.michaldrabik.ui_show.seasons.SeasonsAdapter
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.ADD
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_ARCHIVE
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_MY_SHOWS
-import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_SEE_LATER
+import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_WATCHLIST
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
+import kotlinx.android.synthetic.main.view_links_menu.view.*
 import org.threeten.bp.Duration
-import java.util.Locale.ROOT
+import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
 class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment_show_details) {
@@ -108,6 +119,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private val actorViewCorner by lazy { requireContext().dimenToPx(R.dimen.actorFullTileCorner) }
   private val animationEnterRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_right) }
   private val animationExitRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right) }
+  private val animationEnterLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_left) }
+  private val animationExitLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_left) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiShowDetailsComponentProvider).provideShowDetailsComponent().inject(this)
@@ -146,7 +159,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
     showDetailsImage.onClick {
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, showId.id) }
+      val bundle = bundleOf(
+        ARG_SHOW_ID to showId.id,
+        ARG_TYPE to SHOW
+      )
       navigateTo(R.id.actionShowDetailsFragmentToFanartGallery, bundle)
       Analytics.logShowGalleryClick(showId.id)
     }
@@ -169,7 +185,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         viewModel.addFollowedShow(requireAppContext())
         showDetailsTipQuickProgress.fadeIf(!isTipShown(SHOW_DETAILS_QUICK_PROGRESS))
       }
-      onAddWatchLaterClickListener = { viewModel.addSeeLaterShow(requireAppContext()) }
+      onAddWatchLaterClickListener = { viewModel.addWatchlistShow(requireAppContext()) }
       onArchiveClickListener = { openArchiveConfirmationDialog() }
       onRemoveClickListener = { viewModel.removeFromFollowed(requireAppContext()) }
     }
@@ -264,16 +280,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun hideExtraView(view: View) {
     if (view.animation != null) return
 
-    val animationEnter = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_left)
-    val animationExit = AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_left)
-
     view.run {
       fadeOut(300)
-      startAnimation(animationExit)
+      startAnimation(animationExitLeft)
     }
     showDetailsMainLayout.run {
       fadeIn()
-      startAnimation(animationEnter)
+      startAnimation(animationEnterLeft)
     }
   }
 
@@ -297,7 +310,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .transform(CenterCrop(), RoundedCorners(actorViewCorner))
       .into(showDetailsActorFullImage)
 
-    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.id)
+    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.tvdbId)
     val transform = MaterialContainerTransform().apply {
       startView = actorView
       endView = showDetailsActorFullContainer
@@ -329,7 +342,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun hideFullActorView(actor: Actor) {
-    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.id)
+    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.tvdbId)
     val transform = MaterialContainerTransform().apply {
       startView = showDetailsActorFullContainer
       endView = actorView
@@ -349,34 +362,38 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         showDetailsTitle.text = show.title
         showDetailsDescription.setTextIfEmpty(show.overview)
         showDetailsStatus.text = getString(show.status.displayName)
-        val year = if (show.year > 0) show.year.toString() else ""
-        val country = if (show.country.isEmpty()) "" else " (${show.country.toUpperCase(ROOT)})"
-        showDetailsExtraInfo.text =
-          "${show.network} $year$country | ${show.runtime} min | ${renderGenres(show.genres)}"
-        showDetailsRating.text = String.format(ROOT, getString(R.string.textVotes), show.rating, show.votes)
+        val year = if (show.year > 0) String.format(ENGLISH, "%d", show.year) else ""
+        val country = if (show.country.isNotBlank()) String.format(ENGLISH, "(%s)", show.country) else ""
+        showDetailsExtraInfo.text = getString(
+          R.string.textShowExtraInfo,
+          show.network,
+          year,
+          country.toUpperCase(),
+          show.runtime.toString(),
+          getString(R.string.textMinutesShort),
+          renderGenres(show.genres)
+        )
+        showDetailsRating.text = String.format(ENGLISH, getString(R.string.textVotes), show.rating, show.votes)
         showDetailsCommentsButton.visible()
-
         showDetailsShareButton.run {
-          visibleIf(show.ids.imdb.id.isNotBlank())
+          isEnabled = show.ids.imdb.id.isNotBlank()
+          alpha = if (isEnabled) 1.0F else 0.35F
           onClick { openShareSheet(show) }
         }
-
         showDetailsTrailerButton.run {
-          visibleIf(show.trailer.isNotBlank())
+          isEnabled = show.trailer.isNotBlank()
+          alpha = if (isEnabled) 1.0F else 0.35F
           onClick {
             openTrailerLink(show.trailer)
             Analytics.logShowTrailerClick(show)
           }
         }
-
-        showDetailsImdbButton.run {
-          visibleIf(show.ids.imdb.id.isNotBlank())
+        showDetailsLinksButton.run {
           onClick {
-            openIMDbLink(show.ids.imdb, "title")
-            Analytics.logShowImdbClick(show)
+            openLinksMenu(show.ids)
+            Analytics.logShowLinksClick(show)
           }
         }
-
         showDetailsAddButton.isEnabled = true
       }
       showLoading?.let {
@@ -388,7 +405,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       followedState?.let {
         when {
           it.isMyShows -> showDetailsAddButton.setState(IN_MY_SHOWS, it.withAnimation)
-          it.isSeeLater -> showDetailsAddButton.setState(IN_SEE_LATER, it.withAnimation)
+          it.isWatchlist -> showDetailsAddButton.setState(IN_WATCHLIST, it.withAnimation)
           it.isArchived -> showDetailsAddButton.setState(IN_ARCHIVE, it.withAnimation)
           else -> showDetailsAddButton.setState(ADD, it.withAnimation)
         }
@@ -421,12 +438,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           }
         }
       }
-      removeFromTraktSeeLater?.let { event ->
+      removeFromTraktWatchlist?.let { event ->
         event.consume()?.let {
           showDetailsAddButton.fadeIf(!it)
           showDetailsRemoveTraktButton.run {
             fadeIf(it)
-            onYesClickListener = { viewModel.removeFromTraktSeeLater() }
+            onYesClickListener = { viewModel.removeFromTraktWatchlist() }
           }
         }
       }
@@ -447,9 +464,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       if (rating.hasRating()) "${rating.userRating?.rating}/10"
       else getString(R.string.textRate)
 
-    val color = requireContext().colorFromAttr(if (rating.hasRating()) android.R.attr.colorAccent else android.R.attr.textColorPrimary)
-    showDetailsRateButton.setTextColor(color)
-    TextViewCompat.setCompoundDrawableTintList(showDetailsRateButton, ColorStateList.valueOf(color))
+    val typeFace = if (rating.hasRating()) BOLD else NORMAL
+    showDetailsRateButton.setTypeface(null, typeFace)
 
     showDetailsRateButton.onClick {
       if (rating.rateAllowed == true) {
@@ -464,6 +480,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun renderImage(image: Image) {
     if (image.status == UNAVAILABLE) {
       showDetailsImageProgress.gone()
+      showDetailsPlaceholder.visible()
       showDetailsImage.isClickable = false
       showDetailsImage.isEnabled = false
       return
@@ -474,11 +491,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
       .withFailListener {
         showDetailsImageProgress.gone()
+        showDetailsPlaceholder.visible()
         showDetailsImage.isClickable = true
         showDetailsImage.isEnabled = true
       }
       .withSuccessListener {
         showDetailsImageProgress.gone()
+        showDetailsPlaceholder.gone()
         showDetailsTipGallery.fadeIf(!isTipShown(SHOW_DETAILS_GALLERY))
       }
       .into(showDetailsImage)
@@ -486,7 +505,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun renderNextEpisode(nextEpisode: Episode) {
     nextEpisode.run {
-      showDetailsEpisodeText.text = toDisplayString()
+      showDetailsEpisodeText.text = String.format(ENGLISH, getString(R.string.textEpisodeTitle), season, number, title)
       showDetailsEpisodeCard.visible()
       showDetailsEpisodeCard.onClick {
         showEpisodeDetails(nextEpisode, null, isWatched = false, showButton = false)
@@ -532,8 +551,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     val minutes = duration.minusHours(hours).toMinutes()
 
     val runtimeText = when {
-      hours <= 0 -> getString(R.string.textRuntimeLeftMinutes, minutes)
-      else -> getString(R.string.textRuntimeLeftHours, hours, minutes)
+      hours <= 0 -> getString(R.string.textRuntimeLeftMinutes, minutes.toString())
+      else -> getString(R.string.textRuntimeLeftHours, hours.toString(), minutes.toString())
     }
     showDetailsRuntimeLeft.text = runtimeText
     showDetailsRuntimeLeft.fadeIf(seasonsItems.isNotEmpty() && runtimeLeft > 0)
@@ -549,6 +568,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun renderTranslation(translation: Translation?) {
     if (translation?.overview?.isNotBlank() == true) {
       showDetailsDescription.text = translation.overview
+    }
+    if (translation?.title?.isNotBlank() == true) {
+      showDetailsTitle.text = translation.title.capitalizeWords()
     }
   }
 
@@ -568,6 +590,50 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       // IMDb App not installed. Start in web browser
       i.data = Uri.parse("http://www.imdb.com/$type/${id.id}")
       startActivity(i)
+    }
+  }
+
+  private fun openShowLink(link: ShowLink, id: String) {
+    if (link == IMDB) {
+      openIMDbLink(IdImdb(id), "title")
+    } else {
+      val i = Intent(Intent.ACTION_VIEW)
+      i.data = Uri.parse(link.getUri(id))
+      startActivity(i)
+    }
+  }
+
+  @SuppressLint("ClickableViewAccessibility")
+  private fun openLinksMenu(ids: Ids) {
+    showDetailsMainLayout.setOnTouchListener { _, event ->
+      if (event.action == MotionEvent.ACTION_DOWN) {
+        showDetailsLinksMenu.fadeOut()
+        showDetailsMainLayout.setOnTouchListener(null)
+      }
+      false
+    }
+    showDetailsLinksMenu.run {
+      fadeIn()
+      viewLinkTrakt.visibleIf(ids.trakt.id != -1L)
+      viewLinkTrakt.onClick {
+        openShowLink(TRAKT, ids.trakt.id.toString())
+        fadeOut(125)
+      }
+      viewLinkTmdb.visibleIf(ids.tmdb.id != -1L)
+      viewLinkTmdb.onClick {
+        openShowLink(TMDB, ids.tmdb.id.toString())
+        fadeOut(125)
+      }
+      viewLinkImdb.visibleIf(ids.imdb.id.isNotBlank())
+      viewLinkImdb.onClick {
+        openShowLink(IMDB, ids.imdb.id)
+        fadeOut(125)
+      }
+      viewLinkTvdb.visibleIf(ids.tvdb.id != -1L)
+      viewLinkTvdb.onClick {
+        openShowLink(TVDB, ids.tvdb.id.toString())
+        fadeOut(125)
+      }
     }
   }
 
@@ -657,7 +723,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         else -> {
           remove()
           showNavigation()
-          findNavController().popBackStack()
+          findNavHost().findNavController().popBackStack()
         }
       }
     }

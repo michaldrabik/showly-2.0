@@ -5,6 +5,7 @@ import com.michaldrabik.network.Config.TRAKT_CLIENT_SECRET
 import com.michaldrabik.network.Config.TRAKT_REDIRECT_URL
 import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.network.trakt.model.Episode
+import com.michaldrabik.network.trakt.model.Movie
 import com.michaldrabik.network.trakt.model.OAuthResponse
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.network.trakt.model.SyncExportRequest
@@ -18,13 +19,23 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun fetchShow(traktId: Long) = service.fetchShow(traktId)
 
+  suspend fun fetchMovie(traktId: Long) = service.fetchMovie(traktId)
+
   suspend fun fetchPopularShows(genres: String) = service.fetchPopularShows(genres)
+
+  suspend fun fetchPopularMovies(genres: String) = service.fetchPopularMovies(genres)
 
   suspend fun fetchTrendingShows(genres: String) = service.fetchTrendingShows(genres).map { it.show!! }
 
+  suspend fun fetchTrendingMovies(genres: String) = service.fetchTrendingMovies(genres).map { it.movie!! }
+
   suspend fun fetchAnticipatedShows(genres: String) = service.fetchAnticipatedShows(genres).map { it.show!! }
 
+  suspend fun fetchAnticipatedMovies(genres: String) = service.fetchAnticipatedMovies(genres).map { it.movie!! }
+
   suspend fun fetchRelatedShows(traktId: Long) = service.fetchRelatedShows(traktId)
+
+  suspend fun fetchRelatedMovies(traktId: Long) = service.fetchRelatedMovies(traktId)
 
   suspend fun fetchNextEpisode(traktId: Long): Episode? {
     val response = service.fetchNextEpisode(traktId)
@@ -32,11 +43,9 @@ class TraktApi(private val service: TraktService) {
     return response.body()
   }
 
-  suspend fun fetchShowsSearch(query: String) =
-    service.fetchSearchResults(query)
-      .sortedWith(compareBy({ it.score }, { it.show?.votes ?: 0 }))
-      .reversed()
-      .map { it.show!! }
+  suspend fun fetchSearch(query: String, withMovies: Boolean) =
+    if (withMovies) service.fetchSearchResultsMovies(query)
+    else service.fetchSearchResults(query)
 
   suspend fun fetchSeasons(traktId: Long) =
     service.fetchSeasons(traktId)
@@ -45,14 +54,17 @@ class TraktApi(private val service: TraktService) {
   suspend fun fetchShowComments(traktId: Long, limit: Int) =
     service.fetchShowComments(traktId, limit)
 
+  suspend fun fetchMovieComments(traktId: Long, limit: Int) =
+    service.fetchMovieComments(traktId, limit)
+
   suspend fun fetchShowTranslations(traktId: Long, code: String) =
     service.fetchShowTranslations(traktId, code)
 
+  suspend fun fetchMovieTranslations(traktId: Long, code: String) =
+    service.fetchMovieTranslations(traktId, code)
+
   suspend fun fetchSeasonTranslations(showTraktId: Long, seasonNumber: Int, code: String) =
     service.fetchSeasonTranslations(showTraktId, seasonNumber, code)
-
-  suspend fun fetchEpisodeTranslations(showTraktId: Long, seasonNumber: Int, episodeNumber: Int, code: String) =
-    service.fetchEpisodeTranslations(showTraktId, seasonNumber, episodeNumber, code)
 
   suspend fun fetchEpisodeComments(
     traktId: Long,
@@ -66,6 +78,9 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun fetchShowActors(traktId: Long) =
     service.fetchShowPeople(traktId).cast ?: emptyList()
+
+  suspend fun fetchMovieActors(traktId: Long) =
+    service.fetchMoviePeople(traktId).cast ?: emptyList()
 
   suspend fun fetchAuthTokens(code: String): OAuthResponse {
     val request = OAuthRequest(
@@ -102,11 +117,20 @@ class TraktApi(private val service: TraktService) {
   suspend fun fetchHiddenShows(token: String) =
     service.fetchHiddenShows("Bearer $token", pageLimit = 100)
 
-  suspend fun fetchSyncWatched(token: String, extended: String? = null) =
-    service.fetchSyncWatched("Bearer $token", extended)
+  suspend fun fetchHiddenMovies(token: String) =
+    service.fetchHiddenMovies("Bearer $token", pageLimit = 100)
 
-  suspend fun fetchSyncWatchlist(token: String) =
-    service.fetchSyncWatchlist("Bearer $token")
+  suspend fun fetchSyncWatchedShows(token: String, extended: String? = null) =
+    service.fetchSyncWatched("Bearer $token", "shows", extended)
+
+  suspend fun fetchSyncWatchedMovies(token: String, extended: String? = null) =
+    service.fetchSyncWatched("Bearer $token", "movies", extended)
+
+  suspend fun fetchSyncShowsWatchlist(token: String) =
+    service.fetchSyncWatchlist("Bearer $token", "shows")
+
+  suspend fun fetchSyncMoviesWatchlist(token: String) =
+    service.fetchSyncWatchlist("Bearer $token", "movies")
 
   suspend fun postSyncWatchlist(token: String, request: SyncExportRequest) =
     service.postSyncWatchlist("Bearer $token", request)
@@ -126,10 +150,22 @@ class TraktApi(private val service: TraktService) {
     service.postRemoveRating("Bearer $token", body)
   }
 
+  suspend fun deleteRating(token: String, movie: Movie) {
+    val requestValue = RatingRequestValue(0, movie.ids)
+    val body = RatingRequest(movies = listOf(requestValue))
+    service.postRemoveRating("Bearer $token", body)
+  }
+
   suspend fun deleteRating(token: String, episode: Episode) {
     val requestValue = RatingRequestValue(0, episode.ids)
     val body = RatingRequest(episodes = listOf(requestValue))
     service.postRemoveRating("Bearer $token", body)
+  }
+
+  suspend fun postRating(token: String, movie: Movie, rating: Int) {
+    val requestValue = RatingRequestValue(rating, movie.ids)
+    val body = RatingRequest(movies = listOf(requestValue))
+    service.postRating("Bearer $token", body)
   }
 
   suspend fun postRating(token: String, show: Show, rating: Int) {
@@ -146,6 +182,9 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun fetchShowsRatings(token: String) =
     service.fetchShowsRatings("Bearer $token")
+
+  suspend fun fetchMoviesRatings(token: String) =
+    service.fetchMoviesRatings("Bearer $token")
 
   suspend fun fetchEpisodesRatings(token: String) =
     service.fetchEpisodesRatings("Bearer $token")

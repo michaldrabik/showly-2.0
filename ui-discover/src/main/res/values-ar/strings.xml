@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textGenres">التصنيفات:</string>
+  <string name="textSortOrder">ترتيب حسب:</string>
+  <string name="textDiscoverFilterAnticipated">إخفاء المسلسلات التي لم تصدر بعد</string>
+</resources>

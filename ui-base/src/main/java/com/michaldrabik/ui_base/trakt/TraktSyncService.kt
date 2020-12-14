@@ -20,7 +20,6 @@ import com.michaldrabik.ui_base.trakt.exports.TraktExportWatchlistRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchlistRunner
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
-import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.error.TraktAuthError
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -59,17 +58,10 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
   override val coroutineContext = Job() + Dispatchers.IO
   private val runners = mutableListOf<TraktSyncRunner>()
 
-  @Inject
-  lateinit var importWatchedRunner: TraktImportWatchedRunner
-
-  @Inject
-  lateinit var importWatchlistRunner: TraktImportWatchlistRunner
-
-  @Inject
-  lateinit var exportWatchedRunner: TraktExportWatchedRunner
-
-  @Inject
-  lateinit var exportWatchlistRunner: TraktExportWatchlistRunner
+  @Inject lateinit var importWatchedRunner: TraktImportWatchedRunner
+  @Inject lateinit var importWatchlistRunner: TraktImportWatchlistRunner
+  @Inject lateinit var exportWatchedRunner: TraktExportWatchedRunner
+  @Inject lateinit var exportWatchlistRunner: TraktExportWatchlistRunner
 
   @Inject
   @Named("miscPreferences")
@@ -79,7 +71,12 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
     super.onCreate()
     (applicationContext as UiBaseComponentProvider).provideBaseComponent().inject(this)
     runners.addAll(
-      arrayOf(importWatchedRunner, importWatchlistRunner, exportWatchedRunner, exportWatchlistRunner)
+      arrayOf(
+        importWatchedRunner,
+        importWatchlistRunner,
+        exportWatchedRunner,
+        exportWatchlistRunner
+      )
     )
   }
 
@@ -140,8 +137,8 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
   }
 
   private suspend fun runImportWatched(): Int {
-    importWatchedRunner.progressListener = { show: Show, progress: Int, total: Int ->
-      val status = "Importing \'${show.title}\'..."
+    importWatchedRunner.progressListener = { title: String, progress: Int, total: Int ->
+      val status = "Importing \'$title\'..."
       val notification = createProgressNotification().run {
         setContentText(status)
         setProgress(total, progress, false)
@@ -153,8 +150,8 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
   }
 
   private suspend fun runImportWatchlist(totalProgress: Int) {
-    importWatchlistRunner.progressListener = { show: Show, progress: Int, total: Int ->
-      val status = "Importing \'${show.title}\'..."
+    importWatchlistRunner.progressListener = { title: String, progress: Int, total: Int ->
+      val status = "Importing \'$title\'..."
       val notification = createProgressNotification().run {
         setContentText(status)
         setProgress(totalProgress + total, totalProgress + progress, false)

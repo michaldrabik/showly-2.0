@@ -1,6 +1,6 @@
 package com.michaldrabik.showly2.di.component
 
-import com.michaldrabik.showly2.common.ShowsSyncService
+import com.michaldrabik.showly2.common.ShowsMoviesSyncService
 import com.michaldrabik.showly2.common.TranslationsSyncService
 import dagger.Subcomponent
 
@@ -12,7 +12,7 @@ interface ServiceComponent {
     fun create(): ServiceComponent
   }
 
-  fun inject(service: ShowsSyncService)
+  fun inject(service: ShowsMoviesSyncService)
 
   fun inject(service: TranslationsSyncService)
 }

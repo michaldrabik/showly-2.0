@@ -3,27 +3,28 @@ package com.michaldrabik.ui_base.trakt.imports
 import androidx.room.withTransaction
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Episode
+import com.michaldrabik.storage.database.model.MyMovie
 import com.michaldrabik.storage.database.model.MyShow
 import com.michaldrabik.storage.database.model.Season
+import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageType.FANART
+import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_repository.TraktAuthToken
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.UserTvdbManager
 import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.delay
-import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -32,7 +33,8 @@ class TraktImportWatchedRunner @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
   private val mappers: Mappers,
-  private val imagesProvider: ShowImagesProvider,
+  private val showImagesProvider: ShowImagesProvider,
+  private val movieImagesProvider: MovieImagesProvider,
   private val userTvdbManager: UserTvdbManager,
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
@@ -43,52 +45,88 @@ class TraktImportWatchedRunner @Inject constructor(
     Timber.d("Initialized.")
     isRunning = true
 
-    Timber.d("Checking authorization...")
+    var syncedCount = 0
     val authToken = checkAuthorization()
 
-    var syncedCount = 0
+    resetRetries()
+    syncedCount += runShows(authToken)
+
+    resetRetries()
+    syncedCount += runMovies(authToken)
+
+    isRunning = false
+    Timber.d("Finished with success.")
+
+    return syncedCount
+  }
+
+  private suspend fun runShows(authToken: TraktAuthToken): Int =
     try {
-      syncedCount = importWatchedShows(authToken.token)
+      importWatchedShows(authToken.token)
     } catch (error: Throwable) {
       if (retryCount < MAX_RETRY_COUNT) {
-        Timber.w("importWatchedShows failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        Timber.w("runShows HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
         retryCount += 1
         delay(RETRY_DELAY_MS)
-        run()
+        runShows(authToken)
       } else {
         isRunning = false
-        retryCount = 0
         throw error
       }
     }
 
-    isRunning = false
-    retryCount = 0
-
-    Timber.d("Finished with success.")
-    return syncedCount
+  private suspend fun runMovies(authToken: TraktAuthToken): Int {
+    if (!settingsRepository.isMoviesEnabled()) {
+      Timber.d("Movies are disabled. Exiting...")
+      return 0
+    }
+    return try {
+      importWatchedMovies(authToken.token)
+    } catch (error: Throwable) {
+      if (retryCount < MAX_RETRY_COUNT) {
+        Timber.w("runMovies HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        retryCount += 1
+        delay(RETRY_DELAY_MS)
+        runMovies(authToken)
+      } else {
+        isRunning = false
+        throw error
+      }
+    }
   }
 
   private suspend fun importWatchedShows(token: String): Int {
     Timber.d("Importing watched shows...")
 
     checkTvdbAuth()
-    val hiddenShowsIds = cloud.traktApi.fetchHiddenShows(token).map { it.show.ids?.trakt }
-    val syncResults = cloud.traktApi.fetchSyncWatched(token, "full")
+    val hiddenShowsIds = cloud.traktApi.fetchHiddenShows(token)
+      .filter { it.show != null }
+      .map { it.show!!.ids?.trakt }
+
+    val syncResults = cloud.traktApi.fetchSyncWatchedShows(token, "full")
       .filter { it.show != null }
       .filter { it.show?.ids?.trakt !in hiddenShowsIds }
       .distinctBy { it.show?.ids?.trakt }
 
     val myShowsIds = database.myShowsDao().getAllTraktIds()
-    val seeLaterShowsIds = database.seeLaterShowsDao().getAllTraktIds()
+    val watchlistShowsIds = database.watchlistShowsDao().getAllTraktIds()
     val archiveShowsIds = database.archiveShowsDao().getAllTraktIds()
+    val traktSyncLogs = database.traktSyncLogDao().getAllShows()
 
     syncResults
       .forEachIndexed { index, result ->
-        delay(200)
-        Timber.d("Processing \'${result.show!!.title}\'...")
+        delay(50)
+
         val showUi = mappers.show.fromNetwork(result.show!!)
-        progressListener?.invoke(showUi, index, syncResults.size)
+        progressListener?.invoke(showUi.title, index, syncResults.size)
+
+        Timber.d("Processing \'${showUi.title}\'...")
+
+        val log = traktSyncLogs.firstOrNull { it.idTrakt == result.show?.ids?.trakt }
+        if (result.lastUpdateMillis() == (log?.syncedAt ?: 0)) {
+          Timber.d("Nothing changed in \'${result.show!!.title}\'. Skipping...")
+          return@forEachIndexed
+        }
 
         try {
           val showId = result.show!!.ids!!.trakt!!
@@ -99,19 +137,21 @@ class TraktImportWatchedRunner @Inject constructor(
               val show = mappers.show.fromNetwork(result.show!!)
               val showDb = mappers.show.toDatabase(show)
 
-              val timestamp = result.last_watched_at?.let { ZonedDateTime.parse(result.last_watched_at) } ?: nowUtc()
-              val myShow = MyShow.fromTraktId(showDb.idTrakt, nowUtcMillis(), timestamp.toMillis())
+              val timestamp = result.lastWatchedMillis()
+              val myShow = MyShow.fromTraktId(showDb.idTrakt, nowUtcMillis(), timestamp)
               database.showsDao().upsert(listOf(showDb))
               database.myShowsDao().insert(listOf(myShow))
 
               loadImage(show)
 
-              if (showId in seeLaterShowsIds) {
-                database.seeLaterShowsDao().deleteById(showId)
+              if (showId in watchlistShowsIds) {
+                database.watchlistShowsDao().deleteById(showId)
               }
             }
             database.seasonsDao().upsert(seasons)
             database.episodesDao().upsert(episodes)
+
+            database.traktSyncLogDao().upsertShow(showId, result.lastUpdateMillis())
           }
 
           updateTranslation(showUi)
@@ -155,10 +195,70 @@ class TraktImportWatchedRunner @Inject constructor(
     return Pair(seasons, episodes)
   }
 
+  private suspend fun importWatchedMovies(token: String): Int {
+    Timber.d("Importing watched movies...")
+
+    val hiddenIds = cloud.traktApi.fetchHiddenMovies(token)
+      .filter { it.movie != null }
+      .map { it.movie!!.ids?.trakt }
+
+    val syncResults = cloud.traktApi.fetchSyncWatchedMovies(token, "full")
+      .filter { it.movie != null }
+      .filter { it.movie?.ids?.trakt !in hiddenIds }
+      .distinctBy { it.movie?.ids?.trakt }
+
+    val myMoviesIds = database.myMoviesDao().getAllTraktIds()
+    val watchlistMoviesIds = database.watchlistMoviesDao().getAllTraktIds()
+
+    syncResults
+      .forEachIndexed { index, result ->
+        delay(50)
+        Timber.d("Processing \'${result.movie!!.title}\'...")
+        val movieUi = mappers.movie.fromNetwork(result.movie!!)
+        progressListener?.invoke(movieUi.title, index, syncResults.size)
+
+        try {
+          val movieId = result.movie!!.ids!!.trakt!!
+
+          database.withTransaction {
+            if (movieId !in myMoviesIds) {
+              val movie = mappers.movie.fromNetwork(result.movie!!)
+              val movieDb = mappers.movie.toDatabase(movie)
+
+              val timestamp = result.lastWatchedMillis()
+              val myMovie = MyMovie.fromTraktId(movieDb.idTrakt, nowUtcMillis(), timestamp)
+              database.moviesDao().upsert(listOf(movieDb))
+              database.myMoviesDao().insert(listOf(myMovie))
+
+              loadImage(movie)
+
+              if (movieId in watchlistMoviesIds) {
+                database.watchlistMoviesDao().deleteById(movieId)
+              }
+            }
+          }
+
+          updateTranslation(movieUi)
+        } catch (t: Throwable) {
+          Timber.w("Processing \'${result.movie!!.title}\' failed. Skipping...")
+        }
+      }
+
+    return syncResults.size
+  }
+
   private suspend fun loadImage(show: Show) {
     try {
       if (!userTvdbManager.isAuthorized()) return
-      imagesProvider.loadRemoteImage(show, FANART)
+      showImagesProvider.loadRemoteImage(show, FANART)
+    } catch (t: Throwable) {
+      // NOOP Ignore image for now. It will be fetched later if needed.
+    }
+  }
+
+  private suspend fun loadImage(movie: Movie) {
+    try {
+      movieImagesProvider.loadRemoteImage(movie, FANART)
     } catch (t: Throwable) {
       // NOOP Ignore image for now. It will be fetched later if needed.
     }
@@ -175,12 +275,24 @@ class TraktImportWatchedRunner @Inject constructor(
   private suspend fun updateTranslation(showUi: Show) {
     try {
       val language = settingsRepository.getLanguage()
-      if (language !== Config.DEFAULT_LANGUAGE) {
+      if (language != Config.DEFAULT_LANGUAGE) {
         Timber.d("Fetching \'${showUi.title}\' translation...")
-        translationsRepository.updateLocalShowTranslation(showUi, language)
+        translationsRepository.updateLocalTranslation(showUi, language)
       }
     } catch (error: Throwable) {
       Timber.w("Processing \'${showUi.title}\' translation failed. Skipping translation...")
+    }
+  }
+
+  private suspend fun updateTranslation(movieUi: Movie) {
+    try {
+      val language = settingsRepository.getLanguage()
+      if (language != Config.DEFAULT_LANGUAGE) {
+        Timber.d("Fetching \'${movieUi.title}\' translation...")
+        translationsRepository.updateLocalTranslation(movieUi, language)
+      }
+    } catch (error: Throwable) {
+      Timber.w("Processing \'${movieUi.title}\' translation failed. Skipping translation...")
     }
   }
 }

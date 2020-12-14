@@ -9,7 +9,7 @@ import org.threeten.bp.ZonedDateTime
 class DurationPrinter(private val context: Context) {
 
   fun print(date: ZonedDateTime?): String {
-    if (date == null) return "TBA"
+    if (date == null) return context.getString(R.string.textTba)
 
     val duration = Duration.between(nowUtc(), date)
     if (duration.isNegative) return context.getString(R.string.textAiredAlready)

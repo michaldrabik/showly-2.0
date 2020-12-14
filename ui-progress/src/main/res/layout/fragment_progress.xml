@@ -16,6 +16,14 @@
     android:overScrollMode="never"
     />
 
+  <com.michaldrabik.ui_base.common.views.ShowsMoviesTabsView
+    android:id="@+id/progressPagerModeTabs"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/showsMoviesTabsMargin"
+    />
+
   <com.michaldrabik.ui_base.common.views.ScrollableTabLayout
     android:id="@+id/progressTabs"
     style="@style/ScrollableTabsStyle"
@@ -23,8 +31,7 @@
     android:layout_height="36dp"
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/progressSearchViewPadding"
-    android:translationX="-10dp"
-    app:tabMinWidth="84dp"
+    android:translationX="@dimen/progressTabsViewTranslation"
     app:tabTextAppearance="@style/ScrollableTabTextStyle"
     />
 

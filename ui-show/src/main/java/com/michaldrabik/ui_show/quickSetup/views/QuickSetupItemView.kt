@@ -10,6 +10,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_show.R
 import kotlinx.android.synthetic.main.view_quick_setup_item.view.*
+import java.util.Locale.ENGLISH
 
 class QuickSetupItemView : FrameLayout {
 
@@ -32,7 +33,7 @@ class QuickSetupItemView : FrameLayout {
 
     viewQuickSetupItemRadio.isChecked = isChecked
     viewQuickSetupItemTitle.run {
-      text = context.getString(R.string.textEpisode, item.number)
+      text = String.format(ENGLISH, context.getString(R.string.textEpisode), item.number)
       setTextColor(context.colorFromAttr(titleColor))
     }
     viewQuickSetupItemSubtitle.run {

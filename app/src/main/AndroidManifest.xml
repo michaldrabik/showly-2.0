@@ -31,6 +31,7 @@
       >
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
+
         <category android:name="android.intent.category.LAUNCHER" />
         <category android:name="android.intent.category.DEFAULT" />
       </intent-filter>
@@ -66,7 +67,7 @@
     </service>
 
     <service
-      android:name=".common.ShowsSyncService"
+      android:name=".common.ShowsMoviesSyncService"
       android:exported="true"
       android:permission="android.permission.BIND_JOB_SERVICE"
       />
