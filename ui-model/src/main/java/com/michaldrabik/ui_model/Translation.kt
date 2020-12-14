@@ -5,4 +5,7 @@ data class Translation(
   val overview: String,
   val language: String,
   val isLocal: Boolean = false
-)
+) {
+
+  val hasTitle = title.isNotBlank()
+}

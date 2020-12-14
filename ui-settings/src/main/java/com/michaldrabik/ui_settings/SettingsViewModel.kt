@@ -15,6 +15,7 @@ import com.michaldrabik.ui_settings.cases.SettingsMainCase
 import com.michaldrabik.ui_settings.cases.SettingsTraktCase
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -62,11 +63,11 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  fun enableEpisodesAnnouncements(enable: Boolean, context: Context) {
+  fun enableAnnouncements(enable: Boolean, context: Context) {
     viewModelScope.launch {
-      mainCase.enableEpisodesAnnouncements(enable, context)
+      mainCase.enableAnnouncements(enable, context)
       refreshSettings()
-      Analytics.logSettingsEpisodesAnnouncements(enable)
+      Analytics.logSettingsAnnouncements(enable)
     }
   }
 
@@ -94,6 +95,15 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
+  fun enableMovies(enable: Boolean, context: Context) {
+    viewModelScope.launch {
+      mainCase.enableMovies(enable, context)
+      delay(500)
+      refreshSettings(restartApp = true)
+    }
+    Analytics.logSettingsMoviesEnabled(enable)
+  }
+
   fun setWhenToNotify(delay: NotificationDelay, context: Context) {
     viewModelScope.launch {
       mainCase.setWhenToNotify(delay, context)
@@ -105,9 +115,10 @@ class SettingsViewModel @Inject constructor(
   fun setLanguage(language: AppLanguage) {
     viewModelScope.launch {
       mainCase.setLanguage(language)
-      refreshSettings()
-      Analytics.logSettingsLanguage(language.code)
+      delay(500)
+      refreshSettings(restartApp = true)
     }
+    Analytics.logSettingsLanguage(language.code)
   }
 
   fun setTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {
@@ -152,12 +163,14 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun refreshSettings() {
+  private suspend fun refreshSettings(restartApp: Boolean = false) {
     uiState = SettingsUiModel(
       settings = mainCase.getSettings(),
       language = mainCase.getLanguage(),
+      moviesEnabled = mainCase.isMoviesEnabled(),
       isSignedInTrakt = traktCase.isTraktAuthorized(),
-      traktUsername = traktCase.getTraktUsername()
+      traktUsername = traktCase.getTraktUsername(),
+      restartApp = restartApp
     )
   }
 }

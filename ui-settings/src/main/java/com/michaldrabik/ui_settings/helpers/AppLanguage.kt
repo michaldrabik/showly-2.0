@@ -8,8 +8,10 @@ enum class AppLanguage(
   @StringRes val displayName: Int
 ) {
   ENGLISH("en", R.string.textLanguageEnglish),
-  ARABIC("ar", R.string.textLanguageArabic),
-  POLISH("pl", R.string.textLanguagePolish);
+  POLISH("pl", R.string.textLanguagePolish),
+  GERMAN("de", R.string.textLanguageGerman),
+  SPANISH("es", R.string.textLanguageSpanish),
+  ARABIC("ar", R.string.textLanguageArabic);
 
   companion object {
     fun fromCode(code: String) = values().first { it.code == code }

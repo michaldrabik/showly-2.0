@@ -18,6 +18,8 @@
     android:id="@+id/settingsContent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:visibility="gone"
+    tools:visibility="visible"
     >
 
     <androidx.appcompat.widget.Toolbar
@@ -180,7 +182,7 @@
     <LinearLayout
       android:id="@+id/settingsLanguage"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsMyShowsSections"
+      app:layout_constraintBottom_toTopOf="@id/settingsMoviesEnabled"
       app:layout_constraintEnd_toStartOf="@id/settingsLanguageValue"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsCategoryGeneral"
@@ -208,6 +210,38 @@
       app:layout_constraintBottom_toBottomOf="@id/settingsLanguage"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/settingsLanguage"
+      />
+
+    <LinearLayout
+      android:id="@+id/settingsMoviesEnabled"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@id/settingsMyShowsSections"
+      app:layout_constraintEnd_toStartOf="@id/settingsMoviesEnabledSwitch"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsLanguage"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsMoviesEnabledTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:text="@string/textSettingsMoviesEnabledSummary"
+        />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+      android:id="@+id/settingsMoviesEnabledSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:checked="true"
+      app:layout_constraintBottom_toBottomOf="@id/settingsMoviesEnabled"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsMoviesEnabled"
       />
 
     <LinearLayout
@@ -494,16 +528,52 @@
 
     </LinearLayout>
 
+    <ImageView
+      android:id="@+id/settingsTmdbIcon"
+      android:layout_width="wrap_content"
+      android:layout_height="30dp"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:adjustViewBounds="true"
+      app:layout_constraintBottom_toBottomOf="@id/settingsTraktIcon"
+      app:layout_constraintStart_toEndOf="@id/settingsTraktIcon"
+      app:layout_constraintTop_toTopOf="@id/settingsTraktIcon"
+      app:srcCompat="@drawable/ic_tmdb"
+      />
+
+    <ImageView
+      android:id="@+id/settingsTraktIcon"
+      android:layout_width="60dp"
+      android:layout_height="40dp"
+      android:layout_margin="@dimen/spaceNormal"
+      android:adjustViewBounds="true"
+      app:layout_constraintBottom_toTopOf="@id/settingsVersion"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsDeleteCache"
+      app:srcCompat="@drawable/ic_trakt"
+      />
+
+    <ImageView
+      android:id="@+id/settingsTvdbIcon"
+      android:layout_width="60dp"
+      android:layout_height="0dp"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:adjustViewBounds="true"
+      app:layout_constraintBottom_toBottomOf="@id/settingsTraktIcon"
+      app:layout_constraintEnd_toStartOf="@id/settingsTraktIcon"
+      app:layout_constraintTop_toTopOf="@id/settingsTraktIcon"
+      app:srcCompat="@drawable/ic_tvdb"
+      />
+
     <TextView
       android:id="@+id/settingsVersion"
       style="@style/Settings.Summary"
-      android:layout_marginTop="@dimen/spaceNormal"
       android:layout_marginBottom="@dimen/spaceBig"
       android:textColor="?android:attr/textColorPrimary"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsDeleteCache"
+      app:layout_constraintTop_toBottomOf="@id/settingsTraktIcon"
       tools:text="Version: 1.1.3"
       />
 

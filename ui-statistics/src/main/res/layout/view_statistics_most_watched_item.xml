@@ -31,7 +31,7 @@
       android:layout_width="@dimen/statisticsMostWatchedItemImageWidth"
       android:layout_height="0dp"
       android:layout_gravity="center"
-      android:background="@drawable/bg_show_view_placeholder"
+      android:background="@drawable/bg_media_view_placeholder"
       android:padding="20dp"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"

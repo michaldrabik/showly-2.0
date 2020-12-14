@@ -12,18 +12,18 @@
   <string name="textSettingsTraktAuthorizeSummarySignOut">Zalogowano. Kliknij aby wylogować.</string>
   <string name="textSettingsTraktAuthorizeSummarySignOutUser">Zalogowano jako %1$s.\nKliknij aby wylogować.</string>
   <string name="textSettingsTraktSyncTitle">Synchronizacja Trakt.tv</string>
-  <string name="textSettingsTraktSyncSummary">Synchronizuj dane między Trakt.tv i Showly.</string>
+  <string name="textSettingsTraktSyncSummary">Synchronizuj dane między Trakt.tv i Showly</string>
   <string name="textSettingsTraktQuickSyncTitle">Trakt.tv Szybki Upload</string>
   <string name="textSettingsTraktQuickSyncSummary">Natychmiast wyślij odcinki i seriale \'Na Później\' do Trakt.tv po dodaniu w aplikacji.</string>
   <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv Szybkie Usunięcie</string>
   <string name="textSettingsTraktQuickRemoveSummary">Uruchom opcję natychmiastowego usunięcia danych z Trakt.tv po usunięciu z aplikacji.</string>
   <string name="textSettingsGeneral">Ogólne</string>
   <string name="textSettingsRecentShowsTitle">Ilość Ostatnio Dodanych</string>
-  <string name="textSettingsRecentShowsSummary">Liczba ostatnio dodanych seriali w zakładce \'Moje Seriale\'.</string>
+  <string name="textSettingsRecentShowsSummary">Liczba ostatnio dodanych elementów w zakładce \'Kolekcja\'.</string>
   <string name="textSettingsMyShowsSectionsTitle">Moje Seriale - Sekcje</string>
   <string name="textSettingsMyShowsSectionSummary">Włącz/wyłącz sekcje w zakładce \'Moje Seriale\'.</string>
   <string name="textSettingsMyShowsLanguageTitle">Język</string>
-  <string name="textSettingsMyShowsLanguageSummary">Opisy będą tłumaczone na bieżąco w miarę dostępności.</string>
+  <string name="textSettingsMyShowsLanguageSummary">Opisy będą tłumaczone na bieżąco w miarę dostępności.\nAplikacja zostanie ponownie uruchomiona.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Statystyki Archiwum</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Uwzględniaj seriale z Archiwum w statystykach.</string>
   <string name="textSettingsIncludeSpecialsTitle">Sezony Specjalne</string>
@@ -31,8 +31,8 @@
   <string name="textSettingsNotifications">Notyfikacje</string>
   <string name="textSettingsPushNotificationsTitle">Push Notyfikacje</string>
   <string name="textSettingsPushNotificationsSummary">Otrzymuj notyfikacje na ogólne tematy.</string>
-  <string name="textSettingsShowsNotificationsTitle">Notyfikacje Odcinków</string>
-  <string name="textSettingsShowsNotificationsSummary">Otrzymuj notyfikacje o nowych odcinkach i sezonach twoich seriali.</string>
+  <string name="textSettingsShowsNotificationsTitle">Notyfikacje</string>
+  <string name="textSettingsShowsNotificationsSummary">Otrzymuj notyfikacje o nowych filmach, odcinkach, sezonach.</string>
   <string name="textSettingsMisc">Różne</string>
   <string name="textSettingsContactDevsTitle">Kontakt</string>
   <string name="textSettingsContactDevsSummary">Masz problem/pytanie? Kliknij aby wysłać wiadomość email.</string>
@@ -44,5 +44,7 @@
   <string name="textSettingsQuickSyncConfirmationMessage">\nPlanowane synchronizacje są obecnie włączone.\n\nWyłączyć przed włączeniem Szybkiej Synchronizacji (zalecane)?\n</string>
   <string name="textSettingsLogoutTitle">Trakt.tv Wylogowanie</string>
   <string name="textSettingsLogoutMessage">\nCzy na pewno chcesz się wylogować?\n</string>
-  <string name="textSettingsLanguageChangeMessage">Zrestartuj aplikację aby dokończyć zmianę języka.</string>
-</resources>
+  <string name="textSettingsMoviesEnabledTitle">Filmy</string>
+  <string name="textSettingsMoviesEnabledSummary">Włącz/wyłącz filmy. Aplikacja zostanie ponownie uruchomiona.</string>
+
+  </resources>

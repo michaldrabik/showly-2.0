@@ -6,10 +6,13 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.EpisodeTranslation
+import com.michaldrabik.storage.database.model.MovieTranslation
 import com.michaldrabik.storage.database.model.ShowTranslation
+import com.michaldrabik.storage.database.model.TranslationsMoviesSyncLog
 import com.michaldrabik.storage.database.model.TranslationsSyncLog
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.SeasonTranslation
 import com.michaldrabik.ui_model.Show
@@ -28,6 +31,18 @@ class TranslationsRepository @Inject constructor(
     language: String = Config.DEFAULT_LANGUAGE,
   ): Map<Long, Translation> {
     val local = database.showTranslationsDao().getAll(language)
+    return local.associate {
+      Pair(
+        it.idTrakt,
+        mappers.translation.fromDatabase(it)
+      )
+    }
+  }
+
+  suspend fun loadAllMoviesLocal(
+    language: String = Config.DEFAULT_LANGUAGE,
+  ): Map<Long, Translation> {
+    val local = database.movieTranslationsDao().getAll(language)
     return local.associate {
       Pair(
         it.idTrakt,
@@ -59,6 +74,34 @@ class TranslationsRepository @Inject constructor(
 
     if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
       database.showTranslationsDao().insert(translationDb)
+    }
+
+    return translation
+  }
+
+  suspend fun loadTranslation(
+    movie: Movie,
+    language: String = Config.DEFAULT_LANGUAGE,
+    onlyLocal: Boolean = false
+  ): Translation? {
+    val local = database.movieTranslationsDao().getById(movie.traktId, language)
+    local?.let {
+      return mappers.translation.fromDatabase(it).copy(isLocal = true)
+    }
+    if (onlyLocal) return null
+
+    val remoteTranslation = cloud.traktApi.fetchMovieTranslations(movie.traktId, language).firstOrNull()
+    val translation = mappers.translation.fromNetwork(remoteTranslation)
+    val translationDb = MovieTranslation.fromTraktId(
+      movie.traktId,
+      translation.title,
+      translation.language,
+      translation.overview,
+      nowUtcMillis()
+    )
+
+    if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
+      database.movieTranslationsDao().insert(translationDb)
     }
 
     return translation
@@ -163,7 +206,7 @@ class TranslationsRepository @Inject constructor(
     }
   }
 
-  suspend fun updateLocalShowTranslation(show: Show, language: String = Config.DEFAULT_LANGUAGE) {
+  suspend fun updateLocalTranslation(show: Show, language: String = Config.DEFAULT_LANGUAGE) {
     val localTranslation = database.showTranslationsDao().getById(show.traktId, language)
     val remoteTranslation = cloud.traktApi.fetchShowTranslations(show.traktId, language).firstOrNull()
 
@@ -180,5 +223,24 @@ class TranslationsRepository @Inject constructor(
     }
 
     database.translationsSyncLogDao().upsert(TranslationsSyncLog(show.ids.trakt.id, nowUtcMillis()))
+  }
+
+  suspend fun updateLocalTranslation(movie: Movie, language: String = Config.DEFAULT_LANGUAGE) {
+    val localTranslation = database.movieTranslationsDao().getById(movie.traktId, language)
+    val remoteTranslation = cloud.traktApi.fetchMovieTranslations(movie.traktId, language).firstOrNull()
+
+    val translationDb = MovieTranslation.fromTraktId(
+      movie.traktId,
+      remoteTranslation?.title ?: "",
+      remoteTranslation?.language ?: "",
+      remoteTranslation?.overview ?: "",
+      nowUtcMillis()
+    ).copy(id = localTranslation?.id ?: 0)
+
+    if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
+      database.movieTranslationsDao().insert(translationDb)
+    }
+
+    database.translationsMoviesSyncLogDao().upsert(TranslationsMoviesSyncLog(movie.traktId, nowUtcMillis()))
   }
 }

@@ -11,7 +11,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_discover.R
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
-import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageStatus
 import kotlinx.android.synthetic.main.view_show_fanart.view.*
 
 class ShowFanartView : ShowView<DiscoverListItem> {
@@ -32,7 +32,7 @@ class ShowFanartView : ShowView<DiscoverListItem> {
 
   override fun bind(
     item: DiscoverListItem,
-    missingImageListener: (DiscoverListItem, Boolean) -> Unit
+    missingImageListener: ((DiscoverListItem, Boolean) -> Unit)?
   ) {
     super.bind(item, missingImageListener)
     clear()
@@ -42,14 +42,14 @@ class ShowFanartView : ShowView<DiscoverListItem> {
       else item.translation?.title?.capitalizeWords()
     showFanartProgress.visibleIf(item.isLoading)
     showFanartBadge.visibleIf(item.isFollowed)
-    showFanartBadgeLater.visibleIf(item.isSeeLater)
+    showFanartBadgeLater.visibleIf(item.isWatchlist)
     loadImage(item, missingImageListener)
   }
 
-  override fun loadImage(item: DiscoverListItem, missingImageListener: (DiscoverListItem, Boolean) -> Unit) {
+  override fun loadImage(item: DiscoverListItem, missingImageListener: ((DiscoverListItem, Boolean) -> Unit)?) {
     super.loadImage(item, missingImageListener)
-    if (item.image.status == Image.Status.UNAVAILABLE) {
-      showFanartRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)
+    if (item.image.status == ImageStatus.UNAVAILABLE) {
+      showFanartRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
   }
 

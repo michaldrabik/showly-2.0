@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_repository.mappers
 
 import com.michaldrabik.storage.database.model.EpisodeTranslation
+import com.michaldrabik.storage.database.model.MovieTranslation
 import com.michaldrabik.storage.database.model.ShowTranslation
 import com.michaldrabik.ui_model.SeasonTranslation
 import com.michaldrabik.ui_model.Translation
@@ -30,6 +31,13 @@ class TranslationMapper @Inject constructor(
     )
 
   fun fromDatabase(value: ShowTranslation?) =
+    Translation(
+      title = value?.title ?: "",
+      overview = value?.overview ?: "",
+      language = value?.language ?: ""
+    )
+
+  fun fromDatabase(value: MovieTranslation?) =
     Translation(
       title = value?.title ?: "",
       overview = value?.overview ?: "",

@@ -11,7 +11,7 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_model.Image.Status
+import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import kotlinx.android.synthetic.main.view_my_shows_section_item.view.*
@@ -36,7 +36,7 @@ class MyShowsSectionItemView : ShowView<MyShowsItem> {
 
   override fun bind(
     item: MyShowsItem,
-    missingImageListener: (MyShowsItem, Boolean) -> Unit
+    missingImageListener: ((MyShowsItem, Boolean) -> Unit)?
   ) {
     clear()
     this.item = item
@@ -45,10 +45,10 @@ class MyShowsSectionItemView : ShowView<MyShowsItem> {
     loadImage(item, missingImageListener)
   }
 
-  override fun loadImage(item: MyShowsItem, missingImageListener: (MyShowsItem, Boolean) -> Unit) {
-    if (item.image.status == Status.UNAVAILABLE) {
+  override fun loadImage(item: MyShowsItem, missingImageListener: ((MyShowsItem, Boolean) -> Unit)?) {
+    if (item.image.status == ImageStatus.UNAVAILABLE) {
       myShowTitle.visible()
-      myShowRoot.setBackgroundResource(R.drawable.bg_show_view_placeholder)
+      myShowRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
     super.loadImage(item, missingImageListener)
   }

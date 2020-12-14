@@ -8,7 +8,7 @@ import javax.inject.Inject
 class ShowsRepository @Inject constructor(
   val discoverShows: DiscoverShowsRepository,
   val myShows: MyShowsRepository,
-  val seeLaterShows: SeeLaterShowsRepository,
+  val watchlistShows: WatchlistShowsRepository,
   val archiveShows: ArchiveShowsRepository,
   val relatedShows: RelatedShowsRepository,
   val detailsShow: ShowDetailsRepository
@@ -16,8 +16,8 @@ class ShowsRepository @Inject constructor(
 
   suspend fun loadCollection(): List<Show> {
     val myShows = myShows.loadAll()
-    val seeLaterShows = seeLaterShows.loadAll()
+    val watchlistShows = watchlistShows.loadAll()
     val archivedShows = archiveShows.loadAll()
-    return (myShows + seeLaterShows + archivedShows).distinctBy { it.traktId }
+    return (myShows + watchlistShows + archivedShows).distinctBy { it.traktId }
   }
 }

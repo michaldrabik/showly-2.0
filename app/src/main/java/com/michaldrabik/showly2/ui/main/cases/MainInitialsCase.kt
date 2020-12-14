@@ -1,18 +1,23 @@
 package com.michaldrabik.showly2.ui.main.cases
 
 import android.content.SharedPreferences
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_model.Settings
+import com.michaldrabik.ui_repository.RatingsRepository
 import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_repository.UserTraktManager
 import javax.inject.Inject
 import javax.inject.Named
 
 @AppScope
 class MainInitialsCase @Inject constructor(
+  private val userTraktManager: UserTraktManager,
+  private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
   @Named("miscPreferences") private var miscPreferences: SharedPreferences
 ) {
@@ -46,6 +51,20 @@ class MainInitialsCase @Inject constructor(
         unsubscribeFromTopic(NotificationChannel.GENERAL_INFO.topicName + suffix)
         unsubscribeFromTopic(NotificationChannel.SHOWS_INFO.topicName + suffix)
       }
+    }
+  }
+
+  suspend fun initRatings() {
+    try {
+      if (!userTraktManager.isAuthorized()) return
+      val token = userTraktManager.checkAuthorization().token
+
+      ratingsRepository.preloadShowsRatings(token)
+      if (settingsRepository.isMoviesEnabled()) {
+        ratingsRepository.preloadMoviesRatings(token)
+      }
+    } catch (error: Throwable) {
+      FirebaseCrashlytics.getInstance().recordException(error)
     }
   }
 

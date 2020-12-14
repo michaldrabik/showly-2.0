@@ -8,6 +8,7 @@ data class SearchUiModel(
   val searchItems: List<SearchListItem>? = null,
   val searchItemsAnimate: Boolean? = null,
   val recentSearchItems: List<RecentSearch>? = null,
+  val suggestionsItems: List<SearchListItem>? = null,
   val isSearching: Boolean? = null,
   val isEmpty: Boolean? = null,
   val isInitial: Boolean? = null
@@ -16,6 +17,7 @@ data class SearchUiModel(
   override fun update(newModel: UiModel) =
     (newModel as SearchUiModel).copy(
       searchItems = newModel.searchItems ?: searchItems,
+      suggestionsItems = newModel.suggestionsItems ?: suggestionsItems,
       searchItemsAnimate = newModel.searchItemsAnimate ?: searchItemsAnimate,
       recentSearchItems = newModel.recentSearchItems ?: recentSearchItems,
       isSearching = newModel.isSearching ?: isSearching,
@@ -30,7 +32,8 @@ data class SearchUiModel(
       emptyList(),
       isSearching = true,
       isEmpty = false,
-      isInitial = false
+      isInitial = false,
+      suggestionsItems = emptyList()
     )
 
     fun createResults(items: List<SearchListItem>) = SearchUiModel(
@@ -38,7 +41,8 @@ data class SearchUiModel(
       searchItemsAnimate = true,
       isSearching = false,
       isEmpty = items.isEmpty(),
-      isInitial = false
+      isInitial = false,
+      suggestionsItems = emptyList()
     )
   }
 }

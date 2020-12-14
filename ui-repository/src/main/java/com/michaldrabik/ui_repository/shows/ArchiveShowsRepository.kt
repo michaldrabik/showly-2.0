@@ -36,7 +36,7 @@ class ArchiveShowsRepository @Inject constructor(
       withTransaction {
         archiveShowsDao().insert(dbShow)
         myShowsDao().deleteById(id.id)
-        seeLaterShowsDao().deleteById(id.id)
+        watchlistShowsDao().deleteById(id.id)
       }
     }
   }

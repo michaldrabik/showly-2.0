@@ -6,6 +6,7 @@ import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.Show
 import java.util.Locale.ROOT
@@ -21,6 +22,13 @@ object Analytics {
     }
   }
 
+  fun logMovieDetailsDisplay(movie: Movie) {
+    firebaseAnalytics.logEvent("movie_details_display") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
+    }
+  }
+
   fun logShowAddToMyShows(show: Show) {
     firebaseAnalytics.logEvent("show_add_to_my_shows") {
       param("show_id_trakt", show.traktId)
@@ -28,10 +36,24 @@ object Analytics {
     }
   }
 
-  fun logShowAddToSeeLater(show: Show) {
+  fun logMovieAddToMyMovies(movie: Movie) {
+    firebaseAnalytics.logEvent("movie_add_to_my_movies") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
+    }
+  }
+
+  fun logShowAddToWatchlistShows(show: Show) {
     firebaseAnalytics.logEvent("show_add_to_see_later") {
       param("show_id_trakt", show.traktId)
       param("show_title", show.title)
+    }
+  }
+
+  fun logMovieAddToWatchlistMovies(movie: Movie) {
+    firebaseAnalytics.logEvent("movie_add_to_see_later") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
     }
   }
 
@@ -49,6 +71,13 @@ object Analytics {
     }
   }
 
+  fun logMovieTrailerClick(movie: Movie) {
+    firebaseAnalytics.logEvent("movie_click_trailer") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
+    }
+  }
+
   fun logShowCommentsClick(show: Show) {
     firebaseAnalytics.logEvent("show_click_comments") {
       param("show_id_trakt", show.traktId)
@@ -56,10 +85,24 @@ object Analytics {
     }
   }
 
-  fun logShowImdbClick(show: Show) {
-    firebaseAnalytics.logEvent("show_click_imdb") {
+  fun logMovieCommentsClick(movie: Movie) {
+    firebaseAnalytics.logEvent("movie_click_comments") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
+    }
+  }
+
+  fun logShowLinksClick(show: Show) {
+    firebaseAnalytics.logEvent("show_click_links") {
       param("show_id_trakt", show.traktId)
       param("show_title", show.title)
+    }
+  }
+
+  fun logMovieLinksClick(movie: Movie) {
+    firebaseAnalytics.logEvent("movie_click_links") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
     }
   }
 
@@ -70,9 +113,22 @@ object Analytics {
     }
   }
 
+  fun logMovieShareClick(movie: Movie) {
+    firebaseAnalytics.logEvent("movie_click_share") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
+    }
+  }
+
   fun logShowGalleryClick(idTrakt: Long) {
     firebaseAnalytics.logEvent("show_click_gallery") {
       param("show_id_trakt", idTrakt)
+    }
+  }
+
+  fun logMovieGalleryClick(idTrakt: Long) {
+    firebaseAnalytics.logEvent("movie_click_gallery") {
+      param("movie_id_trakt", idTrakt)
     }
   }
 
@@ -91,6 +147,14 @@ object Analytics {
     }
   }
 
+  fun logMovieRated(movie: Movie, rating: Int) {
+    firebaseAnalytics.logEvent("movie_rate") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
+      param("movie_rating", rating.toLong())
+    }
+  }
+
   fun logEpisodeRated(idTrakt: Long, episode: Episode, rating: Int) {
     firebaseAnalytics.logEvent("episode_rate") {
       param("show_id_trakt", idTrakt)
@@ -102,6 +166,14 @@ object Analytics {
 
   fun logDiscoverFiltersApply(filters: DiscoverFilters) {
     firebaseAnalytics.logEvent("discover_filters_set") {
+      param("filters_feed_order", filters.feedOrder.name.toLowerCase(ROOT))
+      param("filters_hide_anticipated", filters.hideAnticipated.toString())
+      param("filters_genres", filters.genres.map { it.slug }.toTypedArray().contentToString())
+    }
+  }
+
+  fun logDiscoverMoviesFiltersApply(filters: DiscoverFilters) {
+    firebaseAnalytics.logEvent("discover_movies_filters_set") {
       param("filters_feed_order", filters.feedOrder.name.toLowerCase(ROOT))
       param("filters_hide_anticipated", filters.hideAnticipated.toString())
       param("filters_genres", filters.genres.map { it.slug }.toTypedArray().contentToString())
@@ -171,8 +243,8 @@ object Analytics {
     }
   }
 
-  fun logSettingsEpisodesAnnouncements(enabled: Boolean) {
-    firebaseAnalytics.logEvent("settings_episodes_announcements") {
+  fun logSettingsAnnouncements(enabled: Boolean) {
+    firebaseAnalytics.logEvent("settings_announcements") {
       param("enabled", enabled.toString())
     }
   }
@@ -185,6 +257,12 @@ object Analytics {
 
   fun logSettingsSpecialSeasons(enabled: Boolean) {
     firebaseAnalytics.logEvent("settings_special_seasons") {
+      param("enabled", enabled.toString())
+    }
+  }
+
+  fun logSettingsMoviesEnabled(enabled: Boolean) {
+    firebaseAnalytics.logEvent("settings_movies") {
       param("enabled", enabled.toString())
     }
   }

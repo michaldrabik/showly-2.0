@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config.MAIN_GRID_SPAN
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
+import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
@@ -26,6 +27,7 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.invisible
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_discover.di.UiDiscoverComponentProvider
 import com.michaldrabik.ui_discover.recycler.DiscoverAdapter
@@ -47,6 +49,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
   private lateinit var layoutManager: GridLayoutManager
 
   private var searchViewPosition = 0F
+  private var tabsViewPosition = 0F
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiDiscoverComponentProvider).provideDiscoverComponent().inject(this)
@@ -55,8 +58,14 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       isInitialized = true
       savedInstanceState?.let {
         searchViewPosition = it.getFloat("ARG_DISCOVER_SEARCH_POS", 0F)
+        tabsViewPosition = it.getFloat("ARG_DISCOVER_TABS_POS", 0F)
       }
     }
+  }
+
+  override fun onPause() {
+    enableUi()
+    super.onPause()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,6 +90,12 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       onClick { navigateToSearch() }
       onSortClickListener = { toggleFiltersView() }
       translationY = searchViewPosition
+    }
+    discoverModeTabsView.run {
+      visibleIf(moviesEnabled)
+      translationY = tabsViewPosition
+      onModeSelected = { mode = it }
+      animateShows()
     }
     discoverMask.onClick { toggleFiltersView() }
     discoverFiltersView.onApplyClickListener = {
@@ -123,6 +138,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       setColorSchemeColors(color, color, color)
       setOnRefreshListener {
         searchViewPosition = 0F
+        tabsViewPosition = 0F
         viewModel.loadDiscoverShows(pullToRefresh = true)
       }
     }
@@ -131,12 +147,18 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
   private fun setupStatusBar() {
     discoverRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.systemWindowInsetTop
+      val recyclerPadding =
+        if (moviesEnabled) R.dimen.discoverRecyclerPadding
+        else R.dimen.discoverRecyclerPaddingNoTabs
+
       discoverRecycler
-        .updatePadding(top = statusBarSize + dimenToPx(R.dimen.discoverRecyclerPadding))
+        .updatePadding(top = statusBarSize + dimenToPx(recyclerPadding))
       (discoverSearchView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
       (discoverFiltersView.layoutParams as MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.searchViewHeight))
+      (discoverModeTabsView.layoutParams as MarginLayoutParams)
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.showsMoviesTabsMargin))
       discoverTipFilters.translationY = statusBarSize.toFloat()
       discoverSwipeRefresh.setProgressViewOffset(
         true,
@@ -150,11 +172,11 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     disableUi()
     saveUi()
     hideNavigation()
-    discoverFiltersView.fadeOut()
+    discoverFiltersView.fadeOut().add(animations)
+    discoverModeTabsView.fadeOut(duration = 200).add(animations)
     discoverRecycler.fadeOut(duration = 200) {
-      enableUi()
       super.navigateTo(R.id.actionDiscoverFragmentToSearchFragment, null)
-    }
+    }.add(animations)
   }
 
   private fun navigateToDetails(item: DiscoverListItem) {
@@ -162,30 +184,33 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
     saveUi()
     hideNavigation()
     animateItemsExit(item)
-    discoverSearchView.fadeOut()
-    discoverFiltersView.fadeOut()
   }
 
   private fun animateItemsExit(item: DiscoverListItem) {
+    discoverSearchView.fadeOut().add(animations)
+    discoverModeTabsView.fadeOut().add(animations)
+    discoverFiltersView.fadeOut().add(animations)
+
     val clickedIndex = adapter.indexOf(item)
     (0..adapter.itemCount).forEach {
       if (it != clickedIndex) {
         val view = discoverRecycler.findViewHolderForAdapterPosition(it)
         view?.let { v ->
           val randomDelay = Random.nextLong(50, 200)
-          v.itemView.fadeOut(duration = 150, startDelay = randomDelay)
+          v.itemView.fadeOut(duration = 150, startDelay = randomDelay).add(animations)
         }
       }
     }
+
     val clickedView = discoverRecycler.findViewHolderForAdapterPosition(clickedIndex)
     clickedView?.itemView?.fadeOut(
       duration = 150, startDelay = 350,
       endAction = {
-        enableUi()
+        if (!isResumed) return@fadeOut
         val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
         navigateTo(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
       }
-    )
+    ).add(animations)
   }
 
   private fun toggleFiltersView() {
@@ -209,6 +234,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
 
   private fun saveUi() {
     searchViewPosition = discoverSearchView.translationY
+    tabsViewPosition = discoverModeTabsView.translationY
   }
 
   private fun render(uiModel: DiscoverUiModel) {
@@ -223,6 +249,7 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
         discoverSearchView.sortIconClickable = !it
         discoverSearchView.isEnabled = !it
         discoverSwipeRefresh.isRefreshing = it
+        discoverModeTabsView.isEnabled = !it
       }
       filters?.let {
         discoverFiltersView.run {
@@ -238,5 +265,6 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
     outState.putFloat("ARG_DISCOVER_SEARCH_POS", searchViewPosition)
+    outState.putFloat("ARG_DISCOVER_TABS_POS", tabsViewPosition)
   }
 }

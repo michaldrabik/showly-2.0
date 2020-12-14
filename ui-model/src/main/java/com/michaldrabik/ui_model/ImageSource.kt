@@ -4,6 +4,7 @@ enum class ImageSource(
   val key: String
 ) {
   TVDB("tvdb"),
+  TMDB("tmdb"),
   AWS("aws");
 
   companion object {

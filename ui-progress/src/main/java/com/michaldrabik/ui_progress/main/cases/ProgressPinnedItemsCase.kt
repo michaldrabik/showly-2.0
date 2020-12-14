@@ -10,13 +10,7 @@ class ProgressPinnedItemsCase @Inject constructor(
   private val pinnedItemsRepository: PinnedItemsRepository
 ) {
 
-  fun addPinnedItem(item: ProgressItem) {
-    val itemId = item.show.traktId
-    pinnedItemsRepository.addPinnedItem(itemId)
-  }
+  fun addPinnedItem(item: ProgressItem) = pinnedItemsRepository.addPinnedItem(item.show)
 
-  fun removePinnedItem(item: ProgressItem) {
-    val itemId = item.show.traktId
-    pinnedItemsRepository.removePinnedItem(itemId)
-  }
+  fun removePinnedItem(item: ProgressItem) = pinnedItemsRepository.removePinnedItem(item.show)
 }

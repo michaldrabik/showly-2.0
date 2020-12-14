@@ -14,16 +14,16 @@
   <string name="textSettingsTraktSyncTitle">Trakt.tv Sync</string>
   <string name="textSettingsTraktSyncSummary">Sync data between Trakt.tv and Showly.</string>
   <string name="textSettingsTraktQuickSyncTitle">Trakt.tv Instant Upload</string>
-  <string name="textSettingsTraktQuickSyncSummary">Instantly upload episodes and Watchlist shows to Trakt.tv after you add them in the app.</string>
+  <string name="textSettingsTraktQuickSyncSummary">Instantly upload data to Trakt.tv after you add it in the app.</string>
   <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv Instant Remove</string>
-  <string name="textSettingsTraktQuickRemoveSummary">Add option to remove show\'s data from Trakt.tv after you remove it in the app.</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Add option to remove data from Trakt.tv after you remove it in the app.</string>
   <string name="textSettingsGeneral">General &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Recently Added Amount</string>
-  <string name="textSettingsRecentShowsSummary">Number of recent shows to display in \'My Shows\' screen.</string>
+  <string name="textSettingsRecentShowsSummary">Number of recent items to display in \'Collection\'.</string>
   <string name="textSettingsMyShowsSectionsTitle">My Shows Sections</string>
-  <string name="textSettingsMyShowsSectionSummary">Enable/disable sections in My Shows tab.</string>
+  <string name="textSettingsMyShowsSectionSummary">Enable/disable sections in \'My Shows\' tab.</string>
   <string name="textSettingsMyShowsLanguageTitle">Language</string>
-  <string name="textSettingsMyShowsLanguageSummary">Descriptions and titles will be translated when available.</string>
+  <string name="textSettingsMyShowsLanguageSummary">Descriptions and titles will be translated when available.\nApp will restart.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Archived Statistics</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Include archived shows data in the statistics.</string>
   <string name="textSettingsIncludeSpecialsTitle">Special Seasons</string>
@@ -31,8 +31,8 @@
   <string name="textSettingsNotifications">Notifications</string>
   <string name="textSettingsPushNotificationsTitle">Push Notifications</string>
   <string name="textSettingsPushNotificationsSummary">Receive general information push notifications.</string>
-  <string name="textSettingsShowsNotificationsTitle">Episodes Announcements</string>
-  <string name="textSettingsShowsNotificationsSummary">Receive notifications about new episodes, seasons for shows you are following.</string>
+  <string name="textSettingsShowsNotificationsTitle">Announcements</string>
+  <string name="textSettingsShowsNotificationsSummary">Receive notifications about new movies, episodes, seasons for shows you are following.</string>
   <string name="textSettingsMisc">Misc</string>
   <string name="textSettingsContactDevsTitle">Contact Developers</string>
   <string name="textSettingsContactDevsSummary">Got an issue? Click to send us an email.</string>
@@ -44,10 +44,12 @@
   <string name="textSettingsQuickSyncConfirmationMessage">\nIt seems like Automatic Sync is already turned on.\n\nWould you like to turn it off before enabling instant sync (advised)?\n</string>
   <string name="textSettingsLogoutTitle">Trakt.tv Sign Out</string>
   <string name="textSettingsLogoutMessage">\nAre you sure you want to sign out?\n</string>
-  <string name="textSettingsLanguageChangeMessage">Please restart the app for language change to take effect.</string>
+  <string name="textSettingsMoviesEnabledTitle">Movies</string>
+  <string name="textSettingsMoviesEnabledSummary">Enable/disable movies support. App will restart.</string>
 
   <string name="textLanguageEnglish" translatable="false">English</string>
   <string name="textLanguagePolish" translatable="false">Polski</string>
   <string name="textLanguageArabic" translatable="false">العربية</string>
   <string name="textLanguageSpanish" translatable="false">Español</string>
+  <string name="textLanguageGerman" translatable="false">Deutsche</string>
 </resources>

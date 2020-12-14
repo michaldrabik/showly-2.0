@@ -36,29 +36,29 @@ class ShowSearchView : ShowView<SearchListItem> {
 
   override fun bind(
     item: SearchListItem,
-    missingImageListener: (SearchListItem, Boolean) -> Unit
+    missingImageListener: ((SearchListItem, Boolean) -> Unit)?
   ) {
     clear()
     this.item = item
 
     val translationTitle = item.translation?.title
     showSearchTitle.text =
-      if (translationTitle.isNullOrBlank()) item.show.title
+      if (translationTitle.isNullOrBlank()) item.title
       else translationTitle.capitalizeWords()
 
     val translationOverview = item.translation?.overview
     showSearchDescription.text =
-      if (translationOverview.isNullOrBlank()) item.show.overview
+      if (translationOverview.isNullOrBlank()) item.overview
       else translationOverview
 
     showSearchNetwork.text =
-      if (item.show.year > 0) context.getString(R.string.textNetwork, item.show.network, item.show.year.toString())
-      else String.format("%s", item.show.network)
+      if (item.year > 0) context.getString(R.string.textNetwork, item.network, item.year.toString())
+      else String.format("%s", item.network)
 
-    showSearchDescription.visibleIf(item.show.overview.isNotBlank())
-    showSearchNetwork.visibleIf(item.show.network.isNotBlank())
+    showSearchDescription.visibleIf(item.overview.isNotBlank())
+    showSearchNetwork.visibleIf(item.network.isNotBlank())
     showSearchBadge.visibleIf(item.isFollowed)
-    showSearchLaterBadge.visibleIf(item.isSeeLater)
+    showSearchWatchlistBadge.visibleIf(item.isWatchlist)
     loadImage(item, missingImageListener)
   }
 

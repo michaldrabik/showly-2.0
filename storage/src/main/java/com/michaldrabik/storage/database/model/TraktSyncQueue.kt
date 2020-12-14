@@ -20,15 +20,29 @@ data class TraktSyncQueue(
       updatedAt: Long
     ) = TraktSyncQueue(0, idTrakt, Type.EPISODE.slug, createdAt, updatedAt)
 
-    fun createShowSeeLater(
+    fun createShowWatchlist(
       idTrakt: Long,
       createdAt: Long,
       updatedAt: Long
-    ) = TraktSyncQueue(0, idTrakt, Type.SHOW_SEE_LATER.slug, createdAt, updatedAt)
+    ) = TraktSyncQueue(0, idTrakt, Type.SHOW_WATCHLIST.slug, createdAt, updatedAt)
+
+    fun createMovie(
+      idTrakt: Long,
+      createdAt: Long,
+      updatedAt: Long
+    ) = TraktSyncQueue(0, idTrakt, Type.MOVIE.slug, createdAt, updatedAt)
+
+    fun createMovieWatchlist(
+      idTrakt: Long,
+      createdAt: Long,
+      updatedAt: Long
+    ) = TraktSyncQueue(0, idTrakt, Type.MOVIE_WATCHLIST.slug, createdAt, updatedAt)
   }
 
   enum class Type(val slug: String) {
     EPISODE("episode"),
-    SHOW_SEE_LATER("show_see_later")
+    SHOW_WATCHLIST("show_watchlist"),
+    MOVIE("movie"),
+    MOVIE_WATCHLIST("movie_watchlist")
   }
 }

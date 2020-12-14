@@ -67,7 +67,7 @@
     </service>
 
     <service
-      android:name=".common.ShowsSyncService"
+      android:name=".common.ShowsMoviesSyncService"
       android:exported="true"
       android:permission="android.permission.BIND_JOB_SERVICE"
       />
