@@ -11,7 +11,7 @@
   <string name="textWhatsNewTitle">Novedades</string>
   <string name="textWhatsNewSubtitle">Versión %s</string>
   <string name="shortcutDiscover">Descubrir</string>
-  <string name="shortcutMyShows">Mis Programas</string>
+  <string name="shortcutCollection">Colección</string>
   <string name="shortcutSearch">Buscar</string>
   <string name="shortcutProgress">Progreso</string>
 
