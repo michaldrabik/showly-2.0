@@ -23,7 +23,7 @@
   <string name="textSettingsMyShowsSectionsTitle">Secciones de Mis Series</string>
   <string name="textSettingsMyShowsSectionSummary">Habilitar/deshabilitar secciones en la pestaña \'Mis Series\'.</string>
   <string name="textSettingsMyShowsLanguageTitle">Idioma</string>
-  <string name="textSettingsMyShowsLanguageSummary">Las descripciones y los títulos se traducirán cuando estén disponibles.\nLa aplicación se reiniciará.</string>
+  <string name="textSettingsMyShowsLanguageSummary">Las descripciones y los títulos se traducirán cuando estén disponibles. La aplicación se reiniciará.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Estadísticas Archivados</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Incluir datos de series archivadas en las estadísticas.</string>
   <string name="textSettingsIncludeSpecialsTitle">Temporadas Especiales</string>
