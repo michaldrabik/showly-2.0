@@ -57,27 +57,29 @@ class ProgressMoviesCalendarViewModel @Inject constructor(
     val timeMap = mutableMapOf<Section, MutableList<ProgressMovieItem>>()
     val sectionsList = mutableListOf<ProgressMovieItem>()
 
-    items.forEach { item ->
-      val dateTime = item.movie.released!!
-      when {
-        dateTime.dayOfYear == today.dayOfYear ->
-          timeMap.getOrPut(TODAY, { mutableListOf() }).add(item)
-        dateTime.dayOfYear == today.plusDays(1).dayOfYear ->
-          timeMap.getOrPut(TOMORROW, { mutableListOf() }).add(item)
-        dateTime.isBefore(nextWeekStart) ->
-          timeMap.getOrPut(THIS_WEEK, { mutableListOf() }).add(item)
-        dateTime.isBefore(nextWeekStart.plusWeeks(1)) ->
-          timeMap.getOrPut(NEXT_WEEK, { mutableListOf() }).add(item)
-        dateTime.month == today.plusMonths(1).month ->
-          timeMap.getOrPut(NEXT_MONTH, { mutableListOf() }).add(item)
-        dateTime.year == today.year ->
-          timeMap.getOrPut(THIS_YEAR, { mutableListOf() }).add(item)
-        dateTime.year == today.plusYears(1).year ->
-          timeMap.getOrPut(NEXT_YEAR, { mutableListOf() }).add(item)
-        else ->
-          timeMap.getOrPut(LATER, { mutableListOf() }).add(item)
+    items
+      .filter { it.movie.released != null }
+      .forEach { item ->
+        val dateTime = item.movie.released!!
+        when {
+          dateTime.dayOfYear == today.dayOfYear ->
+            timeMap.getOrPut(TODAY, { mutableListOf() }).add(item)
+          dateTime.dayOfYear == today.plusDays(1).dayOfYear ->
+            timeMap.getOrPut(TOMORROW, { mutableListOf() }).add(item)
+          dateTime.isBefore(nextWeekStart) ->
+            timeMap.getOrPut(THIS_WEEK, { mutableListOf() }).add(item)
+          dateTime.isBefore(nextWeekStart.plusWeeks(1)) ->
+            timeMap.getOrPut(NEXT_WEEK, { mutableListOf() }).add(item)
+          dateTime.month == today.plusMonths(1).month ->
+            timeMap.getOrPut(NEXT_MONTH, { mutableListOf() }).add(item)
+          dateTime.year == today.year ->
+            timeMap.getOrPut(THIS_YEAR, { mutableListOf() }).add(item)
+          dateTime.year == today.plusYears(1).year ->
+            timeMap.getOrPut(NEXT_YEAR, { mutableListOf() }).add(item)
+          else ->
+            timeMap.getOrPut(LATER, { mutableListOf() }).add(item)
+        }
       }
-    }
 
     timeMap.entries
       .sortedBy { it.key.order }
