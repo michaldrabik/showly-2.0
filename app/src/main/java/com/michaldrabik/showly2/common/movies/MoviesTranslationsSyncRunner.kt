@@ -8,6 +8,7 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TranslationsSyncProgress
+import com.michaldrabik.ui_model.MovieStatus.UNKNOWN
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.movies.MoviesRepository
@@ -50,6 +51,7 @@ class MoviesTranslationsSyncRunner @Inject constructor(
     val translationsIds = translations.map { it.idTrakt }
 
     val moviesToSync = moviesRepository.loadCollection()
+      .filter { it.status != UNKNOWN && it.overview.isNotBlank() && it.released != null }
       .filter { it.traktId !in translationsIds }
 
     if (moviesToSync.isEmpty()) {
