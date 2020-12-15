@@ -3,12 +3,14 @@ package com.michaldrabik.network.trakt.api
 import com.michaldrabik.network.Config.TRAKT_CLIENT_ID
 import com.michaldrabik.network.Config.TRAKT_CLIENT_SECRET
 import com.michaldrabik.network.Config.TRAKT_REDIRECT_URL
+import com.michaldrabik.network.Config.TRAKT_SYNC_PAGE_LIMIT
 import com.michaldrabik.network.trakt.model.Comment
 import com.michaldrabik.network.trakt.model.Episode
 import com.michaldrabik.network.trakt.model.Movie
 import com.michaldrabik.network.trakt.model.OAuthResponse
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.network.trakt.model.SyncExportRequest
+import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRevokeRequest
@@ -126,11 +128,22 @@ class TraktApi(private val service: TraktService) {
   suspend fun fetchSyncWatchedMovies(token: String, extended: String? = null) =
     service.fetchSyncWatched("Bearer $token", "movies", extended)
 
-  suspend fun fetchSyncShowsWatchlist(token: String) =
-    service.fetchSyncWatchlist("Bearer $token", "shows")
+  suspend fun fetchSyncShowsWatchlist(token: String) = fetchSyncWatchlist(token, "shows")
 
-  suspend fun fetchSyncMoviesWatchlist(token: String) =
-    service.fetchSyncWatchlist("Bearer $token", "movies")
+  suspend fun fetchSyncMoviesWatchlist(token: String) = fetchSyncWatchlist(token, "movies")
+
+  private suspend fun fetchSyncWatchlist(token: String, type: String): List<SyncItem> {
+    var page = 1
+    val results = mutableListOf<SyncItem>()
+
+    do {
+      val items = service.fetchSyncWatchlist("Bearer $token", type, page, TRAKT_SYNC_PAGE_LIMIT)
+      results.addAll(items)
+      page += 1
+    } while (items.size >= TRAKT_SYNC_PAGE_LIMIT)
+
+    return results
+  }
 
   suspend fun postSyncWatchlist(token: String, request: SyncExportRequest) =
     service.postSyncWatchlist("Bearer $token", request)

@@ -175,7 +175,9 @@ interface TraktService {
   @GET("sync/watchlist/{type}?extended=full")
   suspend fun fetchSyncWatchlist(
     @Header("Authorization") authToken: String,
-    @Path("type") type: String
+    @Path("type") type: String,
+    @Query("page") page: Int? = null,
+    @Query("limit") limit: Int? = null
   ): List<SyncItem>
 
   @POST("sync/watchlist")

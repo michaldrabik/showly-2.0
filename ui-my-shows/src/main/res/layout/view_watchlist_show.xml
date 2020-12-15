@@ -88,6 +88,7 @@
       android:textColor="?attr/colorAccent"
       android:textSize="12sp"
       app:layout_constraintBottom_toTopOf="@+id/watchlistShowTitle"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/watchlistShowImage"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_chainStyle="packed"
