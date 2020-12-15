@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="tabMoviesCalendar">تقويم المسلسلات</string>
+  <string name="tabMoviesCalendar">تقويم الأفلام</string>
   <string name="tabMoviesProgress">مستوى التقدم</string>
   <string name="textMoviesCalendarEmpty">لا توجد أي أفلام جديدة قادمة.</string>
 
