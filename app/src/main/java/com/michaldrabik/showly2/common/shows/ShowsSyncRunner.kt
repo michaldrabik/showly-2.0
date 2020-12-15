@@ -28,7 +28,7 @@ class ShowsSyncRunner @Inject constructor(
 ) {
 
   companion object {
-    private const val DELAY_MS = 100L
+    private const val DELAY_MS = 50L
   }
 
   suspend fun run(): Int {

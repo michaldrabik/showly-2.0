@@ -39,7 +39,7 @@ object Config {
   val ACTORS_CACHE_DURATION by lazy { DAYS.toMillis(3) }
   val NEW_BADGE_DURATION by lazy { HOURS.toMillis(30) }
   val SHOW_SYNC_COOLDOWN by lazy {
-    if (BuildConfig.DEBUG) MINUTES.toMillis(5) else HOURS.toMillis(8)
+    if (BuildConfig.DEBUG) MINUTES.toMillis(5) else HOURS.toMillis(12)
   }
   val MOVIE_SYNC_COOLDOWN by lazy {
     if (BuildConfig.DEBUG) MINUTES.toMillis(5) else DAYS.toMillis(3)
