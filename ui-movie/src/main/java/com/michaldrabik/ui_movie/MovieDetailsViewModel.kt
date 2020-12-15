@@ -68,7 +68,7 @@ class MovieDetailsViewModel @Inject constructor(
         val followedState = FollowedState(
           isMyMovie = isFollowed.await(),
           isWatchlist = isWatchlist.await(),
-          isUpcoming = !movie.hasAired(),
+          isUpcoming = movie.released != null && !movie.hasAired(),
           withAnimation = false
         )
 
@@ -212,7 +212,7 @@ class MovieDetailsViewModel @Inject constructor(
   }
 
   fun addFollowedMovie(context: Context) {
-    if (!movie.hasAired()) {
+    if (movie.released != null && !movie.hasAired()) {
       _messageLiveData.value = MessageEvent.info(R.string.textMovieNotYetReleased)
       return
     }

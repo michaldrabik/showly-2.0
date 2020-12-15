@@ -59,6 +59,8 @@ class ShowSearchView : ShowView<SearchListItem> {
     showSearchNetwork.visibleIf(item.network.isNotBlank())
     showSearchBadge.visibleIf(item.isFollowed)
     showSearchWatchlistBadge.visibleIf(item.isWatchlist)
+
+    if (item.isMovie) showSearchPlaceholder.setImageResource(R.drawable.ic_film)
     loadImage(item, missingImageListener)
   }
 
@@ -68,6 +70,7 @@ class ShowSearchView : ShowView<SearchListItem> {
     showSearchNetwork.text = ""
     showSearchPlaceholder.gone()
     showSearchBadge.gone()
+    showSearchPlaceholder.setImageResource(R.drawable.ic_television)
     Glide.with(this).clear(showSearchImage)
   }
 }

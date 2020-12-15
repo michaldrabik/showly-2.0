@@ -17,7 +17,7 @@ class ProgressMoviesMainViewModel @Inject constructor(
   fun handleParentAction(model: ProgressMoviesUiModel) {
     val allItems = model.items
       ?.toMutableList()
-      ?.filter { it.movie.hasAired() }
+      ?.filter { it.movie.released == null || it.movie.hasAired() }
       ?.sortedByDescending { !it.isHeader() && it.isPinned }
       ?: mutableListOf()
 
