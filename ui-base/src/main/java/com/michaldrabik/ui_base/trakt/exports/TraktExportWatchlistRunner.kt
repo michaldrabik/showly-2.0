@@ -28,11 +28,10 @@ class TraktExportWatchlistRunner @Inject constructor(
     val authToken = checkAuthorization()
 
     resetRetries()
-    delay(1500)
     runShows(authToken)
 
     resetRetries()
-    delay(1500)
+    delay(1000)
     runMovies(authToken)
 
     isRunning = false
