@@ -9,6 +9,7 @@ import com.michaldrabik.storage.database.model.EpisodesSyncLog
 import com.michaldrabik.ui_episodes.EpisodesManager
 import com.michaldrabik.ui_model.ShowStatus.CANCELED
 import com.michaldrabik.ui_model.ShowStatus.ENDED
+import com.michaldrabik.ui_model.ShowStatus.UNKNOWN
 import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.shows.ShowsRepository
 import kotlinx.coroutines.delay
@@ -34,12 +35,12 @@ class ShowsSyncRunner @Inject constructor(
   suspend fun run(): Int {
     Timber.i("Shows sync initialized.")
 
+    val myShows = showsRepository.myShows.loadAll()
     val watchlistShows = showsRepository.watchlistShows.loadAll()
     val watchlistShowsIds = watchlistShows.map { it.traktId }
 
-    val showsToSync = showsRepository.myShows.loadAll()
-      .plus(watchlistShows)
-      .filter { it.status !in arrayOf(ENDED, CANCELED) }
+    val showsToSync = (myShows + watchlistShows)
+      .filter { it.status !in arrayOf(ENDED, CANCELED, UNKNOWN) }
 
     if (showsToSync.isEmpty()) {
       Timber.i("Nothing to process. Exiting...")
