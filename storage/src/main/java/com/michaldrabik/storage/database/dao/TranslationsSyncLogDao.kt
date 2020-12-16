@@ -12,6 +12,9 @@ interface TranslationsSyncLogDao {
   @Query("SELECT * from sync_translations_log")
   suspend fun getAll(): List<TranslationsSyncLog>
 
+  @Query("SELECT * from sync_translations_log WHERE id_show_trakt == :idTrakt")
+  suspend fun getById(idTrakt: Long): TranslationsSyncLog?
+
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun upsert(log: TranslationsSyncLog)
 

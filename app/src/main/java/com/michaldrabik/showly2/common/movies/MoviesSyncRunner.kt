@@ -25,7 +25,7 @@ class MoviesSyncRunner @Inject constructor(
 ) {
 
   companion object {
-    private const val DELAY_MS = 50L
+    private const val DELAY_MS = 10L
   }
 
   suspend fun run(): Int {

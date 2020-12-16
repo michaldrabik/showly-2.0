@@ -115,7 +115,7 @@ class TraktImportWatchedRunner @Inject constructor(
 
     syncResults
       .forEachIndexed { index, result ->
-        delay(50)
+        delay(10)
 
         val showUi = mappers.show.fromNetwork(result.show!!)
         progressListener?.invoke(showUi.title, index, syncResults.size)
@@ -212,7 +212,7 @@ class TraktImportWatchedRunner @Inject constructor(
 
     syncResults
       .forEachIndexed { index, result ->
-        delay(50)
+        delay(10)
         Timber.d("Processing \'${result.movie!!.title}\'...")
         val movieUi = mappers.movie.fromNetwork(result.movie!!)
         progressListener?.invoke(movieUi.title, index, syncResults.size)
@@ -272,27 +272,39 @@ class TraktImportWatchedRunner @Inject constructor(
     }
   }
 
-  private suspend fun updateTranslation(showUi: Show) {
+  private suspend fun updateTranslation(show: Show) {
     try {
       val language = settingsRepository.getLanguage()
       if (language != Config.DEFAULT_LANGUAGE) {
-        Timber.d("Fetching \'${showUi.title}\' translation...")
-        translationsRepository.updateLocalTranslation(showUi, language)
+        val local = translationsRepository.loadTranslation(show, language, true)
+        val timestamp = database.translationsSyncLogDao().getById(show.traktId)?.syncedAt ?: 0
+        if (local == null && nowUtcMillis() - timestamp > Config.TRANSLATION_SYNC_COOLDOWN) {
+          Timber.d("Fetching \'${show.title}\' translation...")
+          translationsRepository.updateLocalTranslation(show, language)
+        } else {
+          Timber.d("Translation \'${show.title}\' not needed. Skipping...")
+        }
       }
     } catch (error: Throwable) {
-      Timber.w("Processing \'${showUi.title}\' translation failed. Skipping translation...")
+      Timber.w("Processing \'${show.title}\' translation failed. Skipping translation...")
     }
   }
 
-  private suspend fun updateTranslation(movieUi: Movie) {
+  private suspend fun updateTranslation(movie: Movie) {
     try {
       val language = settingsRepository.getLanguage()
       if (language != Config.DEFAULT_LANGUAGE) {
-        Timber.d("Fetching \'${movieUi.title}\' translation...")
-        translationsRepository.updateLocalTranslation(movieUi, language)
+        val local = translationsRepository.loadTranslation(movie, language, true)
+        val timestamp = database.translationsMoviesSyncLogDao().getById(movie.traktId)?.syncedAt ?: 0
+        if (local == null && nowUtcMillis() - timestamp > Config.TRANSLATION_SYNC_COOLDOWN) {
+          Timber.d("Fetching \'${movie.title}\' translation...")
+          translationsRepository.updateLocalTranslation(movie, language)
+        } else {
+          Timber.d("Translation \'${movie.title}\' not needed. Skipping...")
+        }
       }
     } catch (error: Throwable) {
-      Timber.w("Processing \'${movieUi.title}\' translation failed. Skipping translation...")
+      Timber.w("Processing \'${movie.title}\' translation failed. Skipping...")
     }
   }
 }

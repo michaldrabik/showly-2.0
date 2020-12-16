@@ -29,7 +29,7 @@ class ShowsTranslationsSyncRunner @Inject constructor(
 ) {
 
   companion object {
-    private const val DELAY_MS = 100L
+    private const val DELAY_MS = 10L
   }
 
   suspend fun run(): Int {
