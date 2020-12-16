@@ -7,6 +7,7 @@ import okhttp3.Response
 import timber.log.Timber
 
 class TraktInterceptor : Interceptor {
+
   override fun intercept(chain: Interceptor.Chain): Response {
     val request = chain.request().newBuilder()
       .header("Content-Type", "application/json")
@@ -14,11 +15,22 @@ class TraktInterceptor : Interceptor {
       .header("trakt-api-version", Config.TRAKT_VERSION)
       .build()
 
-    val response = chain.proceed(request)
+    var tryCount = 0
+    var response = chain.proceed(request)
+
+    while (response.code == 429 && tryCount < 3) {
+      Timber.w("429 Too Many Requests. Retrying...")
+      tryCount += 1
+      Thread.sleep(3000)
+      response.close()
+      response = chain.proceed(request)
+    }
+
     if (response.code == 429) {
-      // Log Firebase error in case of rate limit hits start appearing.
-      Timber.e("429 Too Many Requests")
-      FirebaseCrashlytics.getInstance().recordException(Throwable("429 Too Many Requests"))
+      val url = response.request.url.toUrl().toString()
+      val error = Throwable("429 Too Many Requests: $url")
+      Timber.e(error)
+      FirebaseCrashlytics.getInstance().recordException(error)
     }
 
     return response
