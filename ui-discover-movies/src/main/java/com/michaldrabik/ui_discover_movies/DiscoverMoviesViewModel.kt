@@ -61,8 +61,8 @@ class DiscoverMoviesViewModel @Inject constructor(
         }
 
         if (pullToRefresh || skipCache || !moviesCase.isCacheValid()) {
-          val shows = moviesCase.loadRemoteMovies(filters)
-          uiState = DiscoverMoviesUiModel(movies = shows, filters = filters, resetScroll = resetScroll)
+          val movies = moviesCase.loadRemoteMovies(filters)
+          uiState = DiscoverMoviesUiModel(movies = movies, filters = filters, resetScroll = resetScroll)
         }
 
         if (pullToRefresh) {
