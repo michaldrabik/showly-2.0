@@ -31,28 +31,22 @@ class TraktExportWatchedRunner @Inject constructor(
     isRunning = true
 
     val authToken = checkAuthorization()
-
-    resetRetries()
-    runShows(authToken)
-
-    resetRetries()
-    delay(1000)
-    runMovies(authToken)
+    runExport(authToken)
 
     isRunning = false
     Timber.d("Finished with success.")
     return 0
   }
 
-  private suspend fun runShows(authToken: TraktAuthToken) {
+  private suspend fun runExport(authToken: TraktAuthToken) {
     try {
-      exportShowsWatched(authToken)
+      exportWatched(authToken)
     } catch (error: Throwable) {
       if (retryCount < MAX_RETRY_COUNT) {
-        Timber.w("exportShowsWatched failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        Timber.w("exportWatched failed. Will retry in $RETRY_DELAY_MS ms... $error")
         retryCount += 1
         delay(RETRY_DELAY_MS)
-        runShows(authToken)
+        runExport(authToken)
       } else {
         isRunning = false
         throw error
@@ -60,61 +54,38 @@ class TraktExportWatchedRunner @Inject constructor(
     }
   }
 
-  private suspend fun runMovies(authToken: TraktAuthToken) {
-    if (!settingsRepository.isMoviesEnabled()) {
-      Timber.d("Movies are disabled. Exiting...")
-      return
-    }
-    try {
-      exportMoviesWatched(authToken)
-    } catch (error: Throwable) {
-      if (retryCount < MAX_RETRY_COUNT) {
-        Timber.w("exportMoviesWatched failed. Will retry in $RETRY_DELAY_MS ms... $error")
-        retryCount += 1
-        delay(RETRY_DELAY_MS)
-        runMovies(authToken)
-      } else {
-        isRunning = false
-        throw error
-      }
-    }
-  }
+  private suspend fun exportWatched(token: TraktAuthToken) {
+    Timber.d("Exporting watched...")
 
-  private suspend fun exportShowsWatched(token: TraktAuthToken) {
-    Timber.d("Exporting watched shows...")
-
-    val remoteWatched = cloud.traktApi.fetchSyncWatchedShows(token.token)
+    val remoteShows = cloud.traktApi.fetchSyncWatchedShows(token.token)
       .filter { it.show != null }
     val localMyShows = database.myShowsDao().getAll()
     val localEpisodes = batchEpisodes(localMyShows.map { it.idTrakt })
-      .filter { !hasEpisodeBeenWatched(remoteWatched, it) }
+      .filter { !hasEpisodeBeenWatched(remoteShows, it) }
+
+    val movies = mutableListOf<SyncExportItem>()
+    if (settingsRepository.isMoviesEnabled()) {
+      val remoteMovies = cloud.traktApi.fetchSyncWatchedMovies(token.token)
+        .filter { it.movie != null }
+      val localMyMoviesIds = database.myMoviesDao().getAllTraktIds()
+      val localMyMovies = batchMovies(localMyMoviesIds)
+        .filter { movie -> remoteMovies.none { it.movie?.ids?.trakt == movie.idTrakt } }
+
+      localMyMovies.mapTo(movies) {
+        val timestamp = it.updatedAt
+        SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(timestamp))
+      }
+    }
 
     val request = SyncExportRequest(
       episodes = localEpisodes.map { ep ->
         val timestamp = localMyShows.find { it.idTrakt == ep.idShowTrakt }?.updatedAt ?: nowUtcMillis()
         SyncExportItem.create(ep.idTrakt, dateIsoStringFromMillis(timestamp))
-      }
+      },
+      movies = movies
     )
 
-    cloud.traktApi.postSyncWatched(token.token, request)
-  }
-
-  private suspend fun exportMoviesWatched(token: TraktAuthToken) {
-    Timber.d("Exporting watched movies...")
-
-    val remoteWatched = cloud.traktApi.fetchSyncWatchedMovies(token.token)
-      .filter { it.movie != null }
-    val localMyMoviesIds = database.myMoviesDao().getAllTraktIds()
-    val localMyMovies = batchMovies(localMyMoviesIds)
-      .filter { movie -> remoteWatched.none { it.movie?.ids?.trakt == movie.idTrakt } }
-
-    val request = SyncExportRequest(
-      movies = localMyMovies.map { movie ->
-        val timestamp = movie.updatedAt
-        SyncExportItem.create(movie.idTrakt, dateIsoStringFromMillis(timestamp))
-      }
-    )
-
+    Timber.d("Exporting ${localEpisodes.size} episodes & ${movies.size} movies...")
     cloud.traktApi.postSyncWatched(token.token, request)
   }
 

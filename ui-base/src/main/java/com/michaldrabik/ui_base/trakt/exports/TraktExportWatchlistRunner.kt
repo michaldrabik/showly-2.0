@@ -26,28 +26,22 @@ class TraktExportWatchlistRunner @Inject constructor(
     isRunning = true
 
     val authToken = checkAuthorization()
-
-    resetRetries()
-    runShows(authToken)
-
-    resetRetries()
-    delay(1000)
-    runMovies(authToken)
+    runExport(authToken)
 
     isRunning = false
     Timber.d("Finished with success.")
     return 0
   }
 
-  private suspend fun runShows(authToken: TraktAuthToken) {
+  private suspend fun runExport(authToken: TraktAuthToken) {
     try {
-      exportShowsWatchlist(authToken)
+      exportWatchlist(authToken)
     } catch (error: Throwable) {
       if (retryCount < MAX_RETRY_COUNT) {
-        Timber.w("exportShowsWatchlist failed. Will retry in $RETRY_DELAY_MS ms... $error")
+        Timber.w("exportWatchlist failed. Will retry in $RETRY_DELAY_MS ms... $error")
         retryCount += 1
         delay(RETRY_DELAY_MS)
-        runShows(authToken)
+        runExport(authToken)
       } else {
         isRunning = false
         throw error
@@ -55,43 +49,21 @@ class TraktExportWatchlistRunner @Inject constructor(
     }
   }
 
-  private suspend fun runMovies(authToken: TraktAuthToken) {
-    if (!settingsRepository.isMoviesEnabled()) {
-      Timber.d("Movies are disabled. Exiting...")
-      return
-    }
-    try {
-      exportMoviesWatchlist(authToken)
-    } catch (error: Throwable) {
-      if (retryCount < MAX_RETRY_COUNT) {
-        Timber.w("exportMoviesWatchlist failed. Will retry in $RETRY_DELAY_MS ms... $error")
-        retryCount += 1
-        delay(RETRY_DELAY_MS)
-        runMovies(authToken)
-      } else {
-        isRunning = false
-        throw error
-      }
-    }
-  }
+  private suspend fun exportWatchlist(token: TraktAuthToken) {
+    Timber.d("Exporting watchlist...")
 
-  private suspend fun exportShowsWatchlist(token: TraktAuthToken) {
-    Timber.d("Exporting shows watchlist...")
-
-    val localShows = database.watchlistShowsDao().getAll()
+    val shows = database.watchlistShowsDao().getAll()
       .map { SyncExportItem.create(it.idTrakt) }
 
-    val request = SyncExportRequest(shows = localShows)
-    cloud.traktApi.postSyncWatchlist(token.token, request)
-  }
+    val movies = mutableListOf<SyncExportItem>()
+    if (settingsRepository.isMoviesEnabled()) {
+      database.watchlistMoviesDao().getAll()
+        .mapTo(movies) { SyncExportItem.create(it.idTrakt) }
+    }
 
-  private suspend fun exportMoviesWatchlist(token: TraktAuthToken) {
-    Timber.d("Exporting movies watchlist...")
+    Timber.d("Exporting ${shows.size} shows & ${movies.size} movies...")
 
-    val movies = database.watchlistMoviesDao().getAll()
-      .map { SyncExportItem.create(it.idTrakt) }
-
-    val request = SyncExportRequest(movies = movies)
+    val request = SyncExportRequest(shows = shows, movies = movies)
     cloud.traktApi.postSyncWatchlist(token.token, request)
   }
 }
