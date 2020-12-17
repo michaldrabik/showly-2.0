@@ -25,6 +25,7 @@ class ProgressMainAdapter : BaseMovieAdapter<ProgressMovieItem>() {
         }
         checkClickListener = { this@ProgressMainAdapter.checkClickListener?.invoke(it) }
         missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
+        missingTranslationListener = { item -> super.missingTranslationListener.invoke(item) }
       }
     )
 

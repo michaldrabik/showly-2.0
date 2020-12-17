@@ -57,6 +57,7 @@ class ProgressMoviesCalendarFragment :
     adapter.run {
       itemClickListener = { (requireParentFragment() as ProgressMoviesFragment).openMovieDetails(it) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
+      missingTranslationListener = { item -> viewModel.findTranslation(item) }
     }
   }
 

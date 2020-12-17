@@ -24,6 +24,7 @@ class ProgressMoviesCalendarAdapter : BaseMovieAdapter<ProgressMovieItem>() {
         ProgressMoviesCalendarItemView(parent.context).apply {
           itemClickListener = { super.itemClickListener.invoke(it) }
           missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
+          missingTranslationListener = { item -> super.missingTranslationListener.invoke(item) }
         }
       )
       VIEW_TYPE_HEADER -> BaseViewHolder(ProgressMoviesCalendarHeaderView(parent.context))

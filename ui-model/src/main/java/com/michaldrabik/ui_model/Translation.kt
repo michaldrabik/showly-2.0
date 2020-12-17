@@ -7,5 +7,9 @@ data class Translation(
   val isLocal: Boolean = false
 ) {
 
+  companion object {
+    val EMPTY = Translation("", "", "")
+  }
+
   val hasTitle = title.isNotBlank()
 }

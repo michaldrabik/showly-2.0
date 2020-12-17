@@ -25,6 +25,7 @@ class ProgressMoviesCalendarItemView : MovieView<ProgressMovieItem> {
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   var missingImageListener: ((ProgressMovieItem, Boolean) -> Unit)? = null
+  var missingTranslationListener: ((ProgressMovieItem) -> Unit)? = null
 
   init {
     inflate(context, R.layout.view_progress_movies_calendar_item, this)
@@ -58,6 +59,7 @@ class ProgressMoviesCalendarItemView : MovieView<ProgressMovieItem> {
     progressMovieCalendarItemDate.text =
       item.movie.released?.toFullDayDisplayString() ?: context.getString(R.string.textTba)
 
+    if (item.movieTranslation == null) missingTranslationListener?.invoke(item)
     loadImage(item, missingImageListener!!)
   }
 

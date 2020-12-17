@@ -30,6 +30,7 @@ class ProgressMoviesMainItemView : MovieView<ProgressMovieItem> {
   var itemLongClickListener: ((ProgressMovieItem, View) -> Unit)? = null
   var checkClickListener: ((ProgressMovieItem) -> Unit)? = null
   var missingImageListener: ((ProgressMovieItem, Boolean) -> Unit)? = null
+  var missingTranslationListener: ((ProgressMovieItem) -> Unit)? = null
 
   init {
     inflate(context, R.layout.view_progress_movies_main_item, this)
@@ -74,6 +75,7 @@ class ProgressMoviesMainItemView : MovieView<ProgressMovieItem> {
       it.bump { checkClickListener?.invoke(item) }
     }
 
+    if (item.movieTranslation == null) missingTranslationListener?.invoke(item)
     loadImage(item, missingImageListener!!)
   }
 

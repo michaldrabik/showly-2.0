@@ -45,7 +45,7 @@ object Config {
     if (BuildConfig.DEBUG) MINUTES.toMillis(5) else DAYS.toMillis(3)
   }
   val TRANSLATION_SYNC_COOLDOWN by lazy {
-    if (BuildConfig.DEBUG) MINUTES.toMillis(5) else DAYS.toMillis(3)
+    if (BuildConfig.DEBUG) MINUTES.toMillis(5) else DAYS.toMillis(7)
   }
 
   val DISPLAY_DATE_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, HH:mm") }

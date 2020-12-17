@@ -10,6 +10,7 @@ abstract class BaseMovieAdapter<Item : MovieListItem> : RecyclerView.Adapter<Rec
   abstract val asyncDiffer: AsyncListDiffer<Item>
 
   var missingImageListener: (Item, Boolean) -> Unit = { _, _ -> }
+  var missingTranslationListener: (Item) -> Unit = { _ -> }
   var itemClickListener: (Item) -> Unit = { }
   var listChangeListener: () -> Unit = { }
   private var notifyChange = false

@@ -2,6 +2,8 @@ package com.michaldrabik.ui_progress_movies.calendar
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcDay
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
@@ -18,13 +20,19 @@ import com.michaldrabik.ui_progress_movies.calendar.ProgressMoviesCalendarViewMo
 import com.michaldrabik.ui_progress_movies.calendar.ProgressMoviesCalendarViewModel.Section.TODAY
 import com.michaldrabik.ui_progress_movies.calendar.ProgressMoviesCalendarViewModel.Section.TOMORROW
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesUiModel
+import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_repository.TranslationsRepository
 import kotlinx.coroutines.launch
 import org.threeten.bp.DayOfWeek.SUNDAY
 import javax.inject.Inject
 
 class ProgressMoviesCalendarViewModel @Inject constructor(
-  private val imagesProvider: MovieImagesProvider
+  private val imagesProvider: MovieImagesProvider,
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository
 ) : BaseViewModel<ProgressMoviesCalendarUiModel>() {
+
+  private val language by lazy { settingsRepository.getLanguage() }
 
   enum class Section(@StringRes val headerRes: Int, val order: Int) {
     TODAY(R.string.textToday, 0),
@@ -94,14 +102,19 @@ class ProgressMoviesCalendarViewModel @Inject constructor(
     return sectionsList
   }
 
-  fun findMissingImage(item: ProgressMovieItem, force: Boolean) {
-
-    fun updateItem(new: ProgressMovieItem) {
-      val currentItems = uiState?.items?.toMutableList()
-      currentItems?.findReplace(new) { it.isSameAs(new) }
-      uiState = ProgressMoviesCalendarUiModel(items = currentItems)
+  fun findTranslation(item: ProgressMovieItem) {
+    if (language == Config.DEFAULT_LANGUAGE) return
+    viewModelScope.launch {
+      try {
+        val translation = translationsRepository.loadTranslation(item.movie, language)
+        updateItem(item.copy(movieTranslation = translation))
+      } catch (error: Throwable) {
+        FirebaseCrashlytics.getInstance().recordException(error)
+      }
     }
+  }
 
+  fun findMissingImage(item: ProgressMovieItem, force: Boolean) {
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -112,5 +125,11 @@ class ProgressMoviesCalendarViewModel @Inject constructor(
         updateItem(item.copy(image = unavailable, isLoading = false))
       }
     }
+  }
+
+  private fun updateItem(new: ProgressMovieItem) {
+    val currentItems = uiState?.items?.toMutableList()
+    currentItems?.findReplace(new) { it.isSameAs(new) }
+    uiState = ProgressMoviesCalendarUiModel(items = currentItems)
   }
 }

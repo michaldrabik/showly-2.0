@@ -76,6 +76,7 @@ class ProgressMoviesMainFragment :
       itemLongClickListener = { item, view -> openPopupMenu(item, view) }
       checkClickListener = { parentViewModel.addWatchedMovie(requireAppContext(), it) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
+      missingTranslationListener = { item -> viewModel.findTranslation(item) }
       listChangeListener = {
         (requireParentFragment() as ProgressMoviesFragment).resetTranslations()
         layoutManager.scrollToPosition(0)

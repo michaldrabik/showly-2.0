@@ -30,8 +30,7 @@ class ProgressMoviesLoadItemsCase @Inject constructor(
   suspend fun loadProgressItem(movie: Movie): ProgressMovieItem {
     val isPinned = pinnedItemsRepository.isItemPinned(movie)
 
-    var movieTranslation: Translation? = null
-
+    var movieTranslation: Translation? = Translation.EMPTY
     val language = settingsRepository.getLanguage()
     if (language != Config.DEFAULT_LANGUAGE) {
       movieTranslation = translationsRepository.loadTranslation(movie, language, true)

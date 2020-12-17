@@ -91,6 +91,11 @@ class TranslationsRepository @Inject constructor(
     }
     if (onlyLocal) return null
 
+    val timestamp = database.translationsMoviesSyncLogDao().getById(movie.traktId)?.syncedAt ?: 0
+    if (nowUtcMillis() - timestamp < Config.TRANSLATION_SYNC_COOLDOWN) {
+      return Translation.EMPTY
+    }
+
     val remoteTranslation = cloud.traktApi.fetchMovieTranslations(movie.traktId, language).firstOrNull()
     val translation = mappers.translation.fromNetwork(remoteTranslation)
     val translationDb = MovieTranslation.fromTraktId(
