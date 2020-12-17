@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_base.trakt.imports
 
 import androidx.room.withTransaction
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
@@ -20,7 +19,6 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TraktAuthToken
-import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.UserTvdbManager
 import com.michaldrabik.ui_repository.mappers.Mappers
@@ -36,7 +34,6 @@ class TraktImportWatchedRunner @Inject constructor(
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
   private val userTvdbManager: UserTvdbManager,
-  private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
   userTraktManager: UserTraktManager
 ) : TraktSyncRunner(userTraktManager) {
@@ -153,8 +150,6 @@ class TraktImportWatchedRunner @Inject constructor(
 
             database.traktSyncLogDao().upsertShow(showId, result.lastUpdateMillis())
           }
-
-          updateTranslation(showUi)
         } catch (t: Throwable) {
           Timber.w("Processing \'${result.show!!.title}\' failed. Skipping...")
         }
@@ -237,8 +232,6 @@ class TraktImportWatchedRunner @Inject constructor(
               }
             }
           }
-
-          updateTranslation(movieUi)
         } catch (t: Throwable) {
           Timber.w("Processing \'${result.movie!!.title}\' failed. Skipping...")
         }
@@ -269,42 +262,6 @@ class TraktImportWatchedRunner @Inject constructor(
       userTvdbManager.checkAuthorization()
     } catch (t: Throwable) {
       // Ignore for now
-    }
-  }
-
-  private suspend fun updateTranslation(show: Show) {
-    try {
-      val language = settingsRepository.getLanguage()
-      if (language != Config.DEFAULT_LANGUAGE) {
-        val local = translationsRepository.loadTranslation(show, language, true)
-        val timestamp = database.translationsSyncLogDao().getById(show.traktId)?.syncedAt ?: 0
-        if (local == null && nowUtcMillis() - timestamp > Config.TRANSLATION_SYNC_COOLDOWN) {
-          Timber.d("Fetching \'${show.title}\' translation...")
-          translationsRepository.updateLocalTranslation(show, language)
-        } else {
-          Timber.d("Translation \'${show.title}\' not needed. Skipping...")
-        }
-      }
-    } catch (error: Throwable) {
-      Timber.w("Processing \'${show.title}\' translation failed. Skipping translation...")
-    }
-  }
-
-  private suspend fun updateTranslation(movie: Movie) {
-    try {
-      val language = settingsRepository.getLanguage()
-      if (language != Config.DEFAULT_LANGUAGE) {
-        val local = translationsRepository.loadTranslation(movie, language, true)
-        val timestamp = database.translationsMoviesSyncLogDao().getById(movie.traktId)?.syncedAt ?: 0
-        if (local == null && nowUtcMillis() - timestamp > Config.TRANSLATION_SYNC_COOLDOWN) {
-          Timber.d("Fetching \'${movie.title}\' translation...")
-          translationsRepository.updateLocalTranslation(movie, language)
-        } else {
-          Timber.d("Translation \'${movie.title}\' not needed. Skipping...")
-        }
-      }
-    } catch (error: Throwable) {
-      Timber.w("Processing \'${movie.title}\' translation failed. Skipping...")
     }
   }
 }

@@ -210,11 +210,10 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       }
       translation?.let { t ->
         t.consume()?.let {
-          val duration = if (it.isLocal) 0L else 125L
           if (it.overview.isNotBlank()) {
-            episodeDetailsOverview.setTextFade(it.overview, duration)
+            episodeDetailsOverview.setTextFade(it.overview, 0)
             if (it.title.isNotBlank()) {
-              episodeDetailsTitle.setTextFade(it.title, duration)
+              episodeDetailsTitle.setTextFade(it.title, 0)
             }
           }
         }

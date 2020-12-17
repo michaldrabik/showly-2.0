@@ -27,27 +27,17 @@ class TranslationsRepository @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  suspend fun loadAllShowsLocal(
-    language: String = Config.DEFAULT_LANGUAGE,
-  ): Map<Long, Translation> {
+  suspend fun loadAllShowsLocal(language: String = Config.DEFAULT_LANGUAGE): Map<Long, Translation> {
     val local = database.showTranslationsDao().getAll(language)
     return local.associate {
-      Pair(
-        it.idTrakt,
-        mappers.translation.fromDatabase(it)
-      )
+      Pair(it.idTrakt, mappers.translation.fromDatabase(it))
     }
   }
 
-  suspend fun loadAllMoviesLocal(
-    language: String = Config.DEFAULT_LANGUAGE,
-  ): Map<Long, Translation> {
+  suspend fun loadAllMoviesLocal(language: String = Config.DEFAULT_LANGUAGE): Map<Long, Translation> {
     val local = database.movieTranslationsDao().getAll(language)
     return local.associate {
-      Pair(
-        it.idTrakt,
-        mappers.translation.fromDatabase(it)
-      )
+      Pair(it.idTrakt, mappers.translation.fromDatabase(it))
     }
   }
 
@@ -58,7 +48,7 @@ class TranslationsRepository @Inject constructor(
   ): Translation? {
     val local = database.showTranslationsDao().getById(show.traktId, language)
     local?.let {
-      return mappers.translation.fromDatabase(it).copy(isLocal = true)
+      return mappers.translation.fromDatabase(it)
     }
     if (onlyLocal) return null
 
@@ -87,7 +77,7 @@ class TranslationsRepository @Inject constructor(
   ): Translation? {
     val local = database.movieTranslationsDao().getById(movie.traktId, language)
     local?.let {
-      return mappers.translation.fromDatabase(it).copy(isLocal = true)
+      return mappers.translation.fromDatabase(it)
     }
     if (onlyLocal) return null
 
@@ -122,9 +112,8 @@ class TranslationsRepository @Inject constructor(
   ): Translation? {
     val local = database.episodeTranslationsDao().getById(episode.ids.trakt.id, showId.id, language)
     local?.let {
-      return mappers.translation.fromDatabase(it).copy(isLocal = true)
+      return mappers.translation.fromDatabase(it)
     }
-
     if (onlyLocal) return null
 
     val remoteTranslation = cloud.traktApi.fetchSeasonTranslations(showId.id, episode.season, language)
@@ -211,43 +200,5 @@ class TranslationsRepository @Inject constructor(
         isLocal = true
       )
     }
-  }
-
-  suspend fun updateLocalTranslation(show: Show, language: String = Config.DEFAULT_LANGUAGE) {
-    val localTranslation = database.showTranslationsDao().getById(show.traktId, language)
-    val remoteTranslation = cloud.traktApi.fetchShowTranslations(show.traktId, language).firstOrNull()
-
-    val translationDb = ShowTranslation.fromTraktId(
-      show.traktId,
-      remoteTranslation?.title ?: "",
-      remoteTranslation?.language ?: "",
-      remoteTranslation?.overview ?: "",
-      nowUtcMillis()
-    ).copy(id = localTranslation?.id ?: 0)
-
-    if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
-      database.showTranslationsDao().insert(translationDb)
-    }
-
-    database.translationsSyncLogDao().upsert(TranslationsSyncLog(show.ids.trakt.id, nowUtcMillis()))
-  }
-
-  suspend fun updateLocalTranslation(movie: Movie, language: String = Config.DEFAULT_LANGUAGE) {
-    val localTranslation = database.movieTranslationsDao().getById(movie.traktId, language)
-    val remoteTranslation = cloud.traktApi.fetchMovieTranslations(movie.traktId, language).firstOrNull()
-
-    val translationDb = MovieTranslation.fromTraktId(
-      movie.traktId,
-      remoteTranslation?.title ?: "",
-      remoteTranslation?.language ?: "",
-      remoteTranslation?.overview ?: "",
-      nowUtcMillis()
-    ).copy(id = localTranslation?.id ?: 0)
-
-    if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
-      database.movieTranslationsDao().insert(translationDb)
-    }
-
-    database.translationsMoviesSyncLogDao().upsert(TranslationsMoviesSyncLog(movie.traktId, nowUtcMillis()))
   }
 }
