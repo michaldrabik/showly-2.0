@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_repository
 
-import androidx.room.withTransaction
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
@@ -74,11 +73,9 @@ class TranslationsRepository @Inject constructor(
     )
 
     if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
-      database.withTransaction {
-        database.showTranslationsDao().insert(translationDb)
-        database.translationsSyncLogDao().upsert(TranslationsSyncLog(show.traktId, nowUtcMillis()))
-      }
+      database.showTranslationsDao().insert(translationDb)
     }
+    database.translationsSyncLogDao().upsert(TranslationsSyncLog(show.traktId, nowUtcMillis()))
 
     return translation
   }
@@ -105,11 +102,9 @@ class TranslationsRepository @Inject constructor(
     )
 
     if (translationDb.overview.isNotBlank() || translationDb.title.isNotBlank()) {
-      database.withTransaction {
-        database.movieTranslationsDao().insert(translationDb)
-        database.translationsMoviesSyncLogDao().upsert(TranslationsMoviesSyncLog(movie.traktId, nowUtcMillis()))
-      }
+      database.movieTranslationsDao().insert(translationDb)
     }
+    database.translationsMoviesSyncLogDao().upsert(TranslationsMoviesSyncLog(movie.traktId, nowUtcMillis()))
 
     return translation
   }
