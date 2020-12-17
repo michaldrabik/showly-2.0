@@ -55,15 +55,15 @@ class ProgressCalendarViewModel @Inject constructor(
     val sectionsList = mutableListOf<ProgressItem>()
 
     items.forEach { item ->
-      val dateTime = item.upcomingEpisode.firstAired!!.toLocalTimeZone()
+      val time = item.upcomingEpisode.firstAired!!.toLocalTimeZone()
       when {
-        dateTime.dayOfYear == today.dayOfYear ->
+        time.year == today.year && time.dayOfYear == today.dayOfYear ->
           timeMap.getOrPut(TODAY, { mutableListOf() }).add(item)
-        dateTime.dayOfYear == today.plusDays(1).dayOfYear ->
+        time.dayOfYear == today.plusDays(1).dayOfYear ->
           timeMap.getOrPut(TOMORROW, { mutableListOf() }).add(item)
-        dateTime.with(NOON).isBefore(nextWeekStart.with(NOON)) ->
+        time.with(NOON).isBefore(nextWeekStart.with(NOON)) ->
           timeMap.getOrPut(THIS_WEEK, { mutableListOf() }).add(item)
-        dateTime.with(NOON).isBefore(nextWeekStart.plusWeeks(1).with(NOON)) ->
+        time.with(NOON).isBefore(nextWeekStart.plusWeeks(1).with(NOON)) ->
           timeMap.getOrPut(NEXT_WEEK, { mutableListOf() }).add(item)
         else ->
           timeMap.getOrPut(LATER, { mutableListOf() }).add(item)
