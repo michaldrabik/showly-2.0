@@ -63,6 +63,7 @@ class ArchiveFragment :
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
     adapter = ArchiveAdapter().apply {
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+      missingTranslationListener = { viewModel.loadMissingTranslation(it) }
       itemClickListener = { openShowDetails(it.show) }
       listChangeListener = { archiveRecycler.scrollToPosition(0) }
     }

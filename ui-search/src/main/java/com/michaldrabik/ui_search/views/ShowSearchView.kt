@@ -30,8 +30,8 @@ class ShowSearchView : ShowView<SearchListItem> {
   }
 
   override val imageView: ImageView = showSearchImage
-  override val placeholderView: ImageView = showSearchPlaceholder
 
+  override val placeholderView: ImageView = showSearchPlaceholder
   private lateinit var item: SearchListItem
 
   override fun bind(item: SearchListItem) {

@@ -52,7 +52,17 @@ class TranslationsRepository @Inject constructor(
     }
     if (onlyLocal) return null
 
-    val remoteTranslation = cloud.traktApi.fetchShowTranslations(show.traktId, language).firstOrNull()
+    val timestamp = database.translationsSyncLogDao().getById(show.traktId)?.syncedAt ?: 0
+    if (nowUtcMillis() - timestamp < Config.TRANSLATION_SYNC_COOLDOWN) {
+      return Translation.EMPTY
+    }
+
+    val remoteTranslation = try {
+      cloud.traktApi.fetchShowTranslations(show.traktId, language).firstOrNull()
+    } catch (error: Throwable) {
+      null
+    }
+
     val translation = mappers.translation.fromNetwork(remoteTranslation)
     val translationDb = ShowTranslation.fromTraktId(
       show.traktId,
@@ -86,7 +96,12 @@ class TranslationsRepository @Inject constructor(
       return Translation.EMPTY
     }
 
-    val remoteTranslation = cloud.traktApi.fetchMovieTranslations(movie.traktId, language).firstOrNull()
+    val remoteTranslation = try {
+      cloud.traktApi.fetchMovieTranslations(movie.traktId, language).firstOrNull()
+    } catch (error: Throwable) {
+      null
+    }
+
     val translation = mappers.translation.fromNetwork(remoteTranslation)
     val translationDb = MovieTranslation.fromTraktId(
       movie.traktId,

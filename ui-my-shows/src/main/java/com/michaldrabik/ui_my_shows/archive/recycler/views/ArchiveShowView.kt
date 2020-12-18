@@ -29,6 +29,7 @@ class ArchiveShowView : ShowView<ArchiveListItem> {
     inflate(context, R.layout.view_archive_show, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     archiveShowRoot.onClick { itemClickListener?.invoke(item) }
+    imageLoadCompleteListener = { loadTranslation() }
   }
 
   override val imageView: ImageView = archiveShowImage
@@ -63,6 +64,12 @@ class ArchiveShowView : ShowView<ArchiveListItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun loadTranslation() {
+    if (item.translation == null) {
+      missingTranslationListener?.invoke(item)
+    }
   }
 
   private fun clear() {

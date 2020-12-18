@@ -1,6 +1,8 @@
 package com.michaldrabik.ui_progress.progress
 
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -8,12 +10,18 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.main.ProgressUiModel
+import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_repository.TranslationsRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProgressMainViewModel @Inject constructor(
-  private val imagesProvider: ShowImagesProvider
+  private val imagesProvider: ShowImagesProvider,
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository
 ) : BaseViewModel<ProgressMainUiModel>() {
+
+  private val language by lazy { settingsRepository.getLanguage() }
 
   fun handleParentAction(model: ProgressUiModel) {
     val allItems = model.items?.toMutableList() ?: mutableListOf()
@@ -38,13 +46,6 @@ class ProgressMainViewModel @Inject constructor(
   }
 
   fun findMissingImage(item: ProgressItem, force: Boolean) {
-
-    fun updateItem(new: ProgressItem) {
-      val currentItems = uiState?.items?.toMutableList()
-      currentItems?.findReplace(new) { it.isSameAs(new) }
-      uiState = ProgressMainUiModel(items = currentItems)
-    }
-
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -55,5 +56,23 @@ class ProgressMainViewModel @Inject constructor(
         updateItem(item.copy(image = unavailable, isLoading = false))
       }
     }
+  }
+
+  fun findMissingTranslation(item: ProgressItem) {
+    if (item.showTranslation != null || language == Config.DEFAULT_LANGUAGE) return
+    viewModelScope.launch {
+      try {
+        val translation = translationsRepository.loadTranslation(item.show, language)
+        updateItem(item.copy(showTranslation = translation))
+      } catch (error: Throwable) {
+        FirebaseCrashlytics.getInstance().recordException(error)
+      }
+    }
+  }
+
+  private fun updateItem(new: ProgressItem) {
+    val currentItems = uiState?.items?.toMutableList()
+    currentItems?.findReplace(new) { it.isSameAs(new) }
+    uiState = ProgressMainUiModel(items = currentItems)
   }
 }

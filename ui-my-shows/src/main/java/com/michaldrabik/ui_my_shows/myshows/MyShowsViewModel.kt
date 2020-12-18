@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_shows.myshows
 
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
@@ -106,13 +107,6 @@ class MyShowsViewModel @Inject constructor(
   }
 
   fun loadMissingImage(item: MyShowsItem, force: Boolean) {
-
-    fun updateItem(new: MyShowsItem) {
-      val items = uiState?.listItems?.toMutableList() ?: mutableListOf()
-      items.findReplace(new) { it.isSameAs(new) }
-      uiState = uiState?.copy(listItems = items)
-    }
-
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -150,13 +144,31 @@ class MyShowsViewModel @Inject constructor(
     }
   }
 
+  fun loadMissingTranslation(item: MyShowsItem) {
+    if (item.translation != null || loadShowsCase.language == Config.DEFAULT_LANGUAGE) return
+    viewModelScope.launch {
+      try {
+        val translation = loadShowsCase.loadTranslation(item.show, false)
+        updateItem(item.copy(translation = translation))
+      } catch (error: Throwable) {
+        FirebaseCrashlytics.getInstance().recordException(error)
+      }
+    }
+  }
+
+  private fun updateItem(new: MyShowsItem) {
+    val items = uiState?.listItems?.toMutableList() ?: mutableListOf()
+    items.findReplace(new) { it.isSameAs(new) }
+    uiState = uiState?.copy(listItems = items)
+  }
+
   private fun CoroutineScope.toListItemAsync(
     itemType: Type,
     show: Show,
     type: ImageType = POSTER
   ) = async {
     val image = loadShowsCase.findCachedImage(show, type)
-    val translation = loadShowsCase.loadTranslation(show)
+    val translation = loadShowsCase.loadTranslation(show, true)
     MyShowsItem(itemType, null, null, null, show, image, false, translation)
   }
 }

@@ -38,6 +38,7 @@ class ProgressCalendarItemView : ShowView<ProgressItem> {
 
     progressCalendarItemInfoButton.expandTouch(100)
     progressCalendarItemInfoButton.onClick { detailsClickListener?.invoke(item) }
+    imageLoadCompleteListener = { loadTranslation() }
   }
 
   private lateinit var item: ProgressItem
@@ -75,6 +76,12 @@ class ProgressCalendarItemView : ShowView<ProgressItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun loadTranslation() {
+    if (item.showTranslation == null) {
+      missingTranslationListener?.invoke(item)
+    }
   }
 
   private fun clear() {

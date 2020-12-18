@@ -128,8 +128,10 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
     adapter = SearchAdapter()
-    adapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
-    adapter.itemClickListener = { openShowDetails(it) }
+    adapter.run {
+      itemClickListener = { openShowDetails(it) }
+      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+    }
     searchRecycler.apply {
       setHasFixedSize(true)
       adapter = this@SearchFragment.adapter
@@ -214,11 +216,15 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     val missingImage: (SearchListItem, Boolean) -> Unit = { item, force ->
       viewModel.loadMissingImage(item, force)
     }
+    val missingTranslation: (SearchListItem) -> Unit = {
+      viewModel.loadMissingTranslation(it)
+    }
     suggestions.forEach { item ->
       val view = SearchSuggestionView(requireContext()).apply {
         bind(item)
         itemClickListener = itemClick
         missingImageListener = missingImage
+        missingTranslationListener = missingTranslation
       }
       searchSuggestionsLayout.addView(view)
     }

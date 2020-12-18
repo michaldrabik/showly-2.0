@@ -98,7 +98,7 @@ class SettingsViewModel @Inject constructor(
   fun enableMovies(enable: Boolean, context: Context) {
     viewModelScope.launch {
       mainCase.enableMovies(enable, context)
-      delay(500)
+      delay(250)
       refreshSettings(restartApp = true)
     }
     Analytics.logSettingsMoviesEnabled(enable)
@@ -115,7 +115,7 @@ class SettingsViewModel @Inject constructor(
   fun setLanguage(language: AppLanguage) {
     viewModelScope.launch {
       mainCase.setLanguage(language)
-      delay(500)
+      delay(250)
       refreshSettings(restartApp = true)
     }
     Analytics.logSettingsLanguage(language.code)

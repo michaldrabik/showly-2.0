@@ -20,8 +20,9 @@ class ArchiveLoadShowsCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {
 
+  val language by lazy { settingsRepository.getLanguage() }
+
   suspend fun loadShows(): List<Pair<Show, Translation?>> {
-    val language = settingsRepository.getLanguage()
     val translations =
       if (language == Config.DEFAULT_LANGUAGE) emptyMap()
       else translationsRepository.loadAllShowsLocal(language)
@@ -40,5 +41,10 @@ class ArchiveLoadShowsCase @Inject constructor(
       NEWEST -> shows.sortedByDescending { it.first.year }
       else -> error("Should not be used here.")
     }
+  }
+
+  suspend fun loadTranslation(show: Show, onlyLocal: Boolean): Translation? {
+    if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
+    return translationsRepository.loadTranslation(show, language, onlyLocal)
   }
 }

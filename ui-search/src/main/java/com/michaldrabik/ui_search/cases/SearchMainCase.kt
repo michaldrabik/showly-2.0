@@ -25,6 +25,8 @@ class SearchMainCase @Inject constructor(
   private val moviesRepository: MoviesRepository
 ) {
 
+  val language by lazy { settingsRepository.getLanguage() }
+
   suspend fun searchByQuery(query: String): List<SearchResult> {
     Analytics.logSearchQuery(query)
     val withMovies = settingsRepository.isMoviesEnabled()
@@ -49,11 +51,20 @@ class SearchMainCase @Inject constructor(
   suspend fun loadWatchlistMoviesIds() = moviesRepository.watchlistMovies.loadAllIds()
 
   suspend fun loadTranslation(searchResult: SearchResult): Translation? {
-    val language = settingsRepository.getLanguage()
-    if (language == Config.DEFAULT_LANGUAGE) return null
+    if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
     return when {
       searchResult.isShow -> translationsRepository.loadTranslation(searchResult.show, language, onlyLocal = true)
       else -> translationsRepository.loadTranslation(searchResult.movie, language, onlyLocal = true)
     }
+  }
+
+  suspend fun loadTranslation(show: Show): Translation? {
+    if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
+    return translationsRepository.loadTranslation(show, language)
+  }
+
+  suspend fun loadTranslation(movie: Movie): Translation? {
+    if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
+    return translationsRepository.loadTranslation(movie, language)
   }
 }

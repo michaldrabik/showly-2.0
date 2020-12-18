@@ -84,6 +84,7 @@ class ProgressMainFragment :
       detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show.ids.trakt, it.episode) }
       checkClickListener = { parentViewModel.setWatchedEpisode(requireAppContext(), it) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
+      missingTranslationListener = { viewModel.findMissingTranslation(it) }
       listChangeListener = {
         (requireParentFragment() as ProgressFragment).resetTranslations()
         layoutManager.scrollToPosition(0)

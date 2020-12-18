@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_shows.archive
 
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.ActionEvent
@@ -56,13 +57,6 @@ class ArchiveViewModel @Inject constructor(
   }
 
   fun loadMissingImage(item: ArchiveListItem, force: Boolean) {
-
-    fun updateItem(new: ArchiveListItem) {
-      val currentItems = uiState?.items?.toMutableList()
-      currentItems?.findReplace(new) { it.isSameAs(new) }
-      uiState = uiState?.copy(items = currentItems)
-    }
-
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -72,6 +66,24 @@ class ArchiveViewModel @Inject constructor(
         updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }
+  }
+
+  fun loadMissingTranslation(item: ArchiveListItem) {
+    if (item.translation != null || loadShowsCase.language == Config.DEFAULT_LANGUAGE) return
+    viewModelScope.launch {
+      try {
+        val translation = loadShowsCase.loadTranslation(item.show, false)
+        updateItem(item.copy(translation = translation))
+      } catch (error: Throwable) {
+        FirebaseCrashlytics.getInstance().recordException(error)
+      }
+    }
+  }
+
+  private fun updateItem(new: ArchiveListItem) {
+    val currentItems = uiState?.items?.toMutableList()
+    currentItems?.findReplace(new) { it.isSameAs(new) }
+    uiState = uiState?.copy(items = currentItems)
   }
 
   fun setSortOrder(sortOrder: SortOrder) {

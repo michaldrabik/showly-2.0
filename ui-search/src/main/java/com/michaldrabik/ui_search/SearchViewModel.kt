@@ -1,6 +1,8 @@
 package com.michaldrabik.ui_search
 
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.SEARCH_RECENTS_AMOUNT
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
@@ -151,25 +153,6 @@ class SearchViewModel @Inject constructor(
   }
 
   fun loadMissingImage(item: SearchListItem, force: Boolean) {
-
-    fun updateItem(new: SearchListItem) {
-      val currentModel = uiState
-      val currentItems = currentModel?.searchItems?.toMutableList()
-      val currentSuggestions = currentModel?.suggestionsItems?.toMutableList()
-      currentItems?.run {
-        findReplace(new) { it.isSameAs(new) }
-        lastSearchItems.replace(this)
-      }
-      currentSuggestions?.run {
-        findReplace(new) { it.isSameAs(new) }
-      }
-      uiState = currentModel?.copy(
-        searchItems = currentItems,
-        suggestionsItems = currentSuggestions,
-        searchItemsAnimate = false
-      )
-    }
-
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -181,6 +164,38 @@ class SearchViewModel @Inject constructor(
         updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
       }
     }
+  }
+
+  fun loadMissingTranslation(item: SearchListItem) {
+    if (item.translation != null || searchMainCase.language == Config.DEFAULT_LANGUAGE) return
+    viewModelScope.launch {
+      try {
+        val translation =
+          if (item.isShow) searchMainCase.loadTranslation(item.show)
+          else searchMainCase.loadTranslation(item.movie)
+        updateItem(item.copy(translation = translation))
+      } catch (error: Throwable) {
+        FirebaseCrashlytics.getInstance().recordException(error)
+      }
+    }
+  }
+
+  private fun updateItem(new: SearchListItem) {
+    val currentState = uiState
+    val currentItems = currentState?.searchItems?.toMutableList()
+    val currentSuggestions = currentState?.suggestionsItems?.toMutableList()
+    currentItems?.run {
+      findReplace(new) { it.isSameAs(new) }
+      lastSearchItems.replace(this)
+    }
+    currentSuggestions?.run {
+      findReplace(new) { it.isSameAs(new) }
+    }
+    uiState = currentState?.copy(
+      searchItems = currentItems,
+      suggestionsItems = currentSuggestions,
+      searchItemsAnimate = false
+    )
   }
 
   private fun onError() {

@@ -2,6 +2,8 @@ package com.michaldrabik.ui_progress.calendar
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.ui_base.BaseViewModel
@@ -17,14 +19,20 @@ import com.michaldrabik.ui_progress.calendar.ProgressCalendarViewModel.Section.T
 import com.michaldrabik.ui_progress.calendar.ProgressCalendarViewModel.Section.TODAY
 import com.michaldrabik.ui_progress.calendar.ProgressCalendarViewModel.Section.TOMORROW
 import com.michaldrabik.ui_progress.main.ProgressUiModel
+import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_repository.TranslationsRepository
 import kotlinx.coroutines.launch
 import org.threeten.bp.DayOfWeek.SUNDAY
 import org.threeten.bp.LocalTime.NOON
 import javax.inject.Inject
 
 class ProgressCalendarViewModel @Inject constructor(
-  private val imagesProvider: ShowImagesProvider
+  private val imagesProvider: ShowImagesProvider,
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository
 ) : BaseViewModel<ProgressCalendarUiModel>() {
+
+  private val language by lazy { settingsRepository.getLanguage() }
 
   enum class Section(@StringRes val headerRes: Int, val order: Int) {
     TODAY(R.string.textToday, 0),
@@ -83,13 +91,6 @@ class ProgressCalendarViewModel @Inject constructor(
   }
 
   fun findMissingImage(item: ProgressItem, force: Boolean) {
-
-    fun updateItem(new: ProgressItem) {
-      val currentItems = uiState?.items?.toMutableList()
-      currentItems?.findReplace(new) { it.isSameAs(new) }
-      uiState = ProgressCalendarUiModel(items = currentItems)
-    }
-
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -100,5 +101,23 @@ class ProgressCalendarViewModel @Inject constructor(
         updateItem(item.copy(image = unavailable, isLoading = false))
       }
     }
+  }
+
+  fun findMissingTranslation(item: ProgressItem) {
+    if (item.showTranslation != null || language == Config.DEFAULT_LANGUAGE) return
+    viewModelScope.launch {
+      try {
+        val translation = translationsRepository.loadTranslation(item.show, language)
+        updateItem(item.copy(showTranslation = translation))
+      } catch (error: Throwable) {
+        FirebaseCrashlytics.getInstance().recordException(error)
+      }
+    }
+  }
+
+  private fun updateItem(new: ProgressItem) {
+    val currentItems = uiState?.items?.toMutableList()
+    currentItems?.findReplace(new) { it.isSameAs(new) }
+    uiState = ProgressCalendarUiModel(items = currentItems)
   }
 }

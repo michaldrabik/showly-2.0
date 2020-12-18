@@ -35,6 +35,8 @@ class MyShowsLoadShowsCase @Inject constructor(
   private val database: AppDatabase
 ) {
 
+  val language by lazy { settingsRepository.getLanguage() }
+
   suspend fun loadSettings() = settingsRepository.load()
 
   suspend fun loadAllShows() = showsRepository.myShows.loadAll()
@@ -115,10 +117,9 @@ class MyShowsLoadShowsCase @Inject constructor(
     settingsRepository.update(newSettings)
   }
 
-  suspend fun loadTranslation(show: Show): Translation? {
-    val language = settingsRepository.getLanguage()
-    if (language == Config.DEFAULT_LANGUAGE) return null
-    return translationsRepository.loadTranslation(show, language, onlyLocal = true)
+  suspend fun loadTranslation(show: Show, onlyLocal: Boolean): Translation? {
+    if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
+    return translationsRepository.loadTranslation(show, language, onlyLocal)
   }
 
   suspend fun findCachedImage(show: Show, type: ImageType) =

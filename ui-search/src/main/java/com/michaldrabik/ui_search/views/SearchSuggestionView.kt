@@ -27,6 +27,7 @@ class SearchSuggestionView : ShowView<SearchListItem> {
     inflate(context, R.layout.view_suggestion_search, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     suggestionRoot.onClick { itemClickListener?.invoke(item) }
+    imageLoadCompleteListener = { loadTranslation() }
   }
 
   override val imageView: ImageView = suggestionImage
@@ -60,6 +61,12 @@ class SearchSuggestionView : ShowView<SearchListItem> {
     suggestionDescription.visibleIf(item.overview.isNotBlank())
     suggestionNetwork.visibleIf(item.network.isNotBlank() || item.year > 0)
     loadImage(item)
+  }
+
+  private fun loadTranslation() {
+    if (item.translation == null) {
+      missingTranslationListener?.invoke(item)
+    }
   }
 
   private fun clear() {

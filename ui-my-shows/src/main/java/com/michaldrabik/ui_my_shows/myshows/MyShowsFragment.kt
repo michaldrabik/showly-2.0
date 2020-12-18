@@ -70,6 +70,9 @@ class MyShowsFragment :
       missingImageListener = { item, force ->
         viewModel.loadMissingImage(item, force)
       }
+      missingTranslationListener = {
+        viewModel.loadMissingTranslation(it)
+      }
       sectionMissingImageListener = { item, section, force ->
         viewModel.loadSectionMissingItem(item, section, force)
       }

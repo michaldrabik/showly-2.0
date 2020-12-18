@@ -58,6 +58,7 @@ class ProgressCalendarFragment :
       itemClickListener = { (requireParentFragment() as ProgressFragment).openShowDetails(it) }
       detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show.ids.trakt, it.upcomingEpisode) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
+      missingTranslationListener = { viewModel.findMissingTranslation(it) }
     }
   }
 

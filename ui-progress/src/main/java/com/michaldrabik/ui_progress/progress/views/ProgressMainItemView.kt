@@ -51,6 +51,7 @@ class ProgressMainItemView : ShowView<ProgressItem> {
       true
     }
     progressItemInfoButton.onClick { detailsClickListener?.invoke(item) }
+    imageLoadCompleteListener = { loadTranslation() }
   }
 
   private lateinit var item: ProgressItem
@@ -127,6 +128,12 @@ class ProgressMainItemView : ShowView<ProgressItem> {
     progressItemCheckButton.setTextColor(context.colorFromAttr(color))
     progressItemCheckButton.strokeColor = context.colorStateListFromAttr(color)
     progressItemCheckButton.iconTint = context.colorStateListFromAttr(color)
+  }
+
+  private fun loadTranslation() {
+    if (item.showTranslation == null) {
+      missingTranslationListener?.invoke(item)
+    }
   }
 
   private fun clear() {

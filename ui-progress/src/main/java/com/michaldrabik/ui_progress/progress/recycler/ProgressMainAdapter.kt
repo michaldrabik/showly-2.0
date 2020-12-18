@@ -34,6 +34,7 @@ class ProgressMainAdapter : BaseAdapter<ProgressItem>() {
           detailsClickListener = { this@ProgressMainAdapter.detailsClickListener?.invoke(it) }
           checkClickListener = { this@ProgressMainAdapter.checkClickListener?.invoke(it) }
           missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
+          missingTranslationListener = { super.missingTranslationListener.invoke(it) }
         }
       )
       VIEW_TYPE_HEADER -> BaseViewHolder(ProgressMainHeaderView(parent.context))

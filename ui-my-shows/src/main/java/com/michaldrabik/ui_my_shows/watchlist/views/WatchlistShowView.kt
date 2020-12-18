@@ -29,6 +29,7 @@ class WatchlistShowView : ShowView<WatchlistListItem> {
     inflate(context, R.layout.view_watchlist_show, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     watchlistShowRoot.onClick { itemClickListener?.invoke(item) }
+    imageLoadCompleteListener = { loadTranslation() }
   }
 
   override val imageView: ImageView = watchlistShowImage
@@ -63,6 +64,12 @@ class WatchlistShowView : ShowView<WatchlistListItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun loadTranslation() {
+    if (item.translation == null) {
+      missingTranslationListener?.invoke(item)
+    }
   }
 
   private fun clear() {

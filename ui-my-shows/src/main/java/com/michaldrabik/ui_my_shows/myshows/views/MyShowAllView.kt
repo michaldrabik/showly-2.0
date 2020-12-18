@@ -29,6 +29,7 @@ class MyShowAllView : ShowView<MyShowsItem> {
     inflate(context, R.layout.view_my_show_all, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     myShowAllRoot.onClick { itemClickListener?.invoke(item) }
+    imageLoadCompleteListener = { loadTranslation() }
   }
 
   override val imageView: ImageView = myShowAllImage
@@ -63,6 +64,12 @@ class MyShowAllView : ShowView<MyShowsItem> {
     }
 
     loadImage(item)
+  }
+
+  private fun loadTranslation() {
+    if (item.translation == null) {
+      missingTranslationListener?.invoke(item)
+    }
   }
 
   private fun clear() {

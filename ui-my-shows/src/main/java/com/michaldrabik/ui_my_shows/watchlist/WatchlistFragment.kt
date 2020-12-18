@@ -63,6 +63,7 @@ class WatchlistFragment :
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
     adapter = WatchlistAdapter().apply {
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+      missingTranslationListener = { viewModel.loadMissingTranslation(it) }
       itemClickListener = { openShowDetails(it.show) }
       listChangeListener = { watchlistRecycler.scrollToPosition(0) }
     }

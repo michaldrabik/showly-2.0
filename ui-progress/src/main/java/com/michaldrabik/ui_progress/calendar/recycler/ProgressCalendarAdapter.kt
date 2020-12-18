@@ -27,6 +27,7 @@ class ProgressCalendarAdapter : BaseAdapter<ProgressItem>() {
           itemClickListener = { super.itemClickListener.invoke(it) }
           detailsClickListener = { this@ProgressCalendarAdapter.detailsClickListener?.invoke(it) }
           missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
+          missingTranslationListener = { super.missingTranslationListener.invoke(it) }
         }
       )
       VIEW_TYPE_HEADER -> BaseViewHolder(ProgressCalendarHeaderView(parent.context))

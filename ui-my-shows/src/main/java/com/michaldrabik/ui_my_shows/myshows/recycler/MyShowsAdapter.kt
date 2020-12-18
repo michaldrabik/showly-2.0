@@ -41,6 +41,7 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
         MyShowAllView(parent.context).apply {
           itemClickListener = { super.itemClickListener.invoke(it) }
           missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
+          missingTranslationListener = { super.missingTranslationListener.invoke(it) }
         }
       )
       VIEW_TYPE_HORIZONTAL_SECTION -> BaseViewHolder(
