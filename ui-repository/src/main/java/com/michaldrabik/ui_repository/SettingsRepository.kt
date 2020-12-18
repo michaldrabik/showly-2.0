@@ -62,4 +62,12 @@ class SettingsRepository @Inject constructor(
       database.translationsMoviesSyncLogDao().deleteAll()
     }
   }
+
+  suspend fun clearUnusedTranslations(input: List<String>) {
+    database.withTransaction {
+      database.showTranslationsDao().deleteByLanguage(input)
+      database.movieTranslationsDao().deleteByLanguage(input)
+      database.episodeTranslationsDao().deleteByLanguage(input)
+    }
+  }
 }

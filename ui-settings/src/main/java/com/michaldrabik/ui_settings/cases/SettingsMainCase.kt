@@ -125,6 +125,10 @@ class SettingsMainCase @Inject constructor(
   suspend fun setLanguage(language: AppLanguage) {
     settingsRepository.run {
       setLanguage(language.code)
+      val unused = AppLanguage.values()
+        .filter { it.code != Config.DEFAULT_LANGUAGE && it != language }
+        .map { it.code }
+      clearUnusedTranslations(unused)
       clearLanguageLogs()
     }
   }

@@ -8,7 +8,6 @@ class ShowsMoviesSyncActivityCallbacks : Application.ActivityLifecycleCallbacks 
 
   override fun onActivityStarted(activity: Activity) {
     ShowsMoviesSyncService.initialize(activity.applicationContext)
-    TranslationsSyncService.initialize(activity.applicationContext)
   }
 
   override fun onActivityCreated(activity: Activity, p1: Bundle?) = Unit
