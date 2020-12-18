@@ -46,18 +46,29 @@
     app:srcCompat="@drawable/ic_sort"
     />
 
-  <GridLayout
-    android:id="@+id/followedMoviesSearchContainer"
+  <ScrollView
+    android:id="@+id/followedMoviesSearchWrapper"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/searchViewHeightPadded"
-    android:columnCount="2"
-    android:divider="@drawable/divider_my_movies_fanart"
-    android:paddingStart="@dimen/spaceSmall"
-    android:paddingEnd="@dimen/spaceSmall"
-    android:showDividers="middle"
-    android:visibility="gone"
-    />
+    android:fillViewport="true"
+    android:overScrollMode="never"
+    android:scrollbars="none"
+    >
+
+    <GridLayout
+      android:id="@+id/followedMoviesSearchContainer"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:columnCount="2"
+      android:divider="@drawable/divider_my_movies_fanart"
+      android:paddingStart="@dimen/spaceSmall"
+      android:paddingEnd="@dimen/spaceSmall"
+      android:paddingBottom="@dimen/spaceSmall"
+      android:showDividers="middle"
+      />
+
+  </ScrollView>
 
   <com.michaldrabik.ui_base.common.views.EmptySearchView
     android:id="@+id/followedMoviesSearchEmptyView"

@@ -140,7 +140,7 @@ class FollowedMoviesFragment :
       followedMoviesModeTabs.updateTopMargin(dimenToPx(R.dimen.showsMoviesTabsMargin) + statusBarSize)
       followedMoviesSortIcon.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchViewPadding) + statusBarSize)
       followedMoviesSearchEmptyView.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
-      followedMoviesSearchContainer.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
+      followedMoviesSearchWrapper.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
     }
   }
 
@@ -194,7 +194,7 @@ class FollowedMoviesFragment :
   private fun renderSearchResults(result: MyMoviesSearchResult) {
     when (result.type) {
       RESULTS -> {
-        followedMoviesSearchContainer.visible()
+        followedMoviesSearchWrapper.visible()
         followedMoviesPager.gone()
         followedMoviesTabs.gone()
         followedMoviesModeTabs.gone()
@@ -202,14 +202,14 @@ class FollowedMoviesFragment :
         renderSearchContainer(result.items)
       }
       NO_RESULTS -> {
-        followedMoviesSearchContainer.gone()
+        followedMoviesSearchWrapper.gone()
         followedMoviesPager.gone()
         followedMoviesTabs.gone()
         followedMoviesModeTabs.gone()
         followedMoviesSearchEmptyView.visible()
       }
       EMPTY -> {
-        followedMoviesSearchContainer.gone()
+        followedMoviesSearchWrapper.gone()
         followedMoviesPager.visible()
         followedMoviesTabs.visible()
         followedMoviesModeTabs.visible()

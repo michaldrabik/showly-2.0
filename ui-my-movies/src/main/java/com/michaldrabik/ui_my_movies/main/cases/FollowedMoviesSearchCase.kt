@@ -45,6 +45,7 @@ class FollowedMoviesSearchCase @Inject constructor(
           searchTranslationsCache[it.traktId]?.title?.contains(query, true) == true
       }
       .sortedBy { it.title }
+      .take(30)
       .map {
         val image = imagesProvider.findCachedImage(it, ImageType.FANART)
         MyMoviesItem.createSearchItem(it, image, searchTranslationsCache[it.traktId])

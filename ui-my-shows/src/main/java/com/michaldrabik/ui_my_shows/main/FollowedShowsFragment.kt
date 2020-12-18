@@ -142,7 +142,7 @@ class FollowedShowsFragment :
       followedShowsTabs.updateTopMargin(dimenToPx(tabsPadding) + statusBarSize)
       followedShowsSortIcon.updateTopMargin(dimenToPx(tabsPadding) + statusBarSize)
       followedShowsSearchEmptyView.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
-      followedShowsSearchContainer.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
+      followedShowsSearchWrapper.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
     }
   }
 
@@ -196,7 +196,7 @@ class FollowedShowsFragment :
   private fun renderSearchResults(result: MyShowsSearchResult) {
     when (result.type) {
       RESULTS -> {
-        followedShowsSearchContainer.visible()
+        followedShowsSearchWrapper.visible()
         followedShowsPager.gone()
         followedShowsTabs.gone()
         followedShowsModeTabs.gone()
@@ -204,14 +204,14 @@ class FollowedShowsFragment :
         renderSearchContainer(result.items)
       }
       NO_RESULTS -> {
-        followedShowsSearchContainer.gone()
+        followedShowsSearchWrapper.gone()
         followedShowsPager.gone()
         followedShowsTabs.gone()
         followedShowsModeTabs.gone()
         followedShowsSearchEmptyView.visible()
       }
       EMPTY -> {
-        followedShowsSearchContainer.gone()
+        followedShowsSearchWrapper.gone()
         followedShowsPager.visible()
         followedShowsTabs.visible()
         if (moviesEnabled) followedShowsModeTabs.visible()
