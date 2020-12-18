@@ -147,7 +147,6 @@ class ProgressFragment :
   }
 
   fun openShowDetails(item: ProgressItem) {
-    viewModel.onOpenShowDetails()
     exitSearch()
     hideNavigation()
     saveUiTranslations()

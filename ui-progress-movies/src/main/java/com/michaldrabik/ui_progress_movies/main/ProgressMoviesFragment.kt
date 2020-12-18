@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.updateMargins
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
@@ -142,8 +141,6 @@ class ProgressMoviesFragment :
   }
 
   fun openMovieDetails(item: ProgressMovieItem) {
-    viewModel.onOpenMovieDetails()
-    lifecycleScope
     exitSearch()
     hideNavigation()
     saveUiTranslations()

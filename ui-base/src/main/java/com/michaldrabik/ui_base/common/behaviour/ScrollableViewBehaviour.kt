@@ -3,6 +3,7 @@ package com.michaldrabik.ui_base.common.behaviour
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -53,6 +54,17 @@ class ScrollableViewBehaviour : CoordinatorLayout.Behavior<View>() {
   ) {
     super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed)
     child.translationY = (child.translationY - dyConsumed.toFloat()).coerceAtMost(0F)
+    resetAtTop(target, child)
+  }
+
+  private fun resetAtTop(target: View, child: View) {
+    val lm = (target as? RecyclerView)?.layoutManager as? LinearLayoutManager
+    lm?.let {
+      val isScrolled = lm.findFirstCompletelyVisibleItemPosition() != 0
+      if (!isScrolled) {
+        child.animate().translationY(0F).setDuration(50).start()
+      }
+    }
   }
 
   private fun stopNestedScrollIfNeeded(dy: Int, target: View, type: Int) {

@@ -77,8 +77,4 @@ class ProgressMoviesViewModel @Inject constructor(
     }
     loadProgress()
   }
-
-  fun onOpenMovieDetails() {
-    uiState = ProgressMoviesUiModel(resetScroll = false)
-  }
 }

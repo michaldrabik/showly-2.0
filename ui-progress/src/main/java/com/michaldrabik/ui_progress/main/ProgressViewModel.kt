@@ -82,8 +82,4 @@ class ProgressViewModel @Inject constructor(
     }
     loadProgress()
   }
-
-  fun onOpenShowDetails() {
-    uiState = ProgressUiModel(resetScroll = false)
-  }
 }
