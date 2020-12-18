@@ -34,7 +34,7 @@ class FollowedMoviesSearchCase @Inject constructor(
 
     val language = settingsRepository.getLanguage()
     if (searchTranslationsCache.isEmpty() && language != DEFAULT_LANGUAGE) {
-      val collection = translationsRepository.loadAllShowsLocal(language)
+      val collection = translationsRepository.loadAllMoviesLocal(language)
       searchTranslationsCache.clear()
       searchTranslationsCache.putAll(collection)
     }
