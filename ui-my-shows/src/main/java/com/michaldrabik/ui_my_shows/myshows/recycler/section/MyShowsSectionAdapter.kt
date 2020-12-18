@@ -16,12 +16,13 @@ open class MyShowsSectionAdapter : BaseAdapter<MyShowsItem>() {
     ViewHolderShow(
       MyShowsSectionItemView(parent.context).apply {
         itemClickListener = { super.itemClickListener.invoke(it) }
+        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
       }
     )
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]
-    (holder.itemView as MyShowsSectionItemView).bind(item, missingImageListener)
+    (holder.itemView as MyShowsSectionItemView).bind(item)
   }
 
   class ViewHolderShow(itemView: View) : RecyclerView.ViewHolder(itemView)

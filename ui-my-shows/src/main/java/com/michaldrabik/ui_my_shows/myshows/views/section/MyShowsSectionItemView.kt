@@ -34,23 +34,20 @@ class MyShowsSectionItemView : ShowView<MyShowsItem> {
 
   private lateinit var item: MyShowsItem
 
-  override fun bind(
-    item: MyShowsItem,
-    missingImageListener: ((MyShowsItem, Boolean) -> Unit)?
-  ) {
+  override fun bind(item: MyShowsItem) {
     clear()
     this.item = item
     myShowTitle.text = item.show.title
     myShowProgress.visibleIf(item.isLoading)
-    loadImage(item, missingImageListener)
+    loadImage(item)
   }
 
-  override fun loadImage(item: MyShowsItem, missingImageListener: ((MyShowsItem, Boolean) -> Unit)?) {
+  override fun loadImage(item: MyShowsItem) {
     if (item.image.status == ImageStatus.UNAVAILABLE) {
       myShowTitle.visible()
       myShowRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
-    super.loadImage(item, missingImageListener)
+    super.loadImage(item)
   }
 
   private fun clear() {

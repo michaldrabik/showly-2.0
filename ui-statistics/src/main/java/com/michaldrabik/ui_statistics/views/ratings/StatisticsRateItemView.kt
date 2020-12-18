@@ -31,12 +31,12 @@ class StatisticsRateItemView : ShowView<StatisticsRatingItem> {
 
   private lateinit var item: StatisticsRatingItem
 
-  fun bind(item: StatisticsRatingItem) {
+  override fun bind(item: StatisticsRatingItem) {
     this.item = item
     clear()
     viewRateItemTitle.text = item.show.title
     viewRateItemRating.text = "${item.rating.rating}"
-    loadImage(item) { _, _ -> }
+    loadImage(item)
   }
 
   private fun clear() {

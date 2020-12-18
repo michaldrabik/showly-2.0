@@ -14,11 +14,12 @@ class WatchlistAdapter : BaseAdapter<WatchlistListItem>() {
     BaseViewHolder(
       WatchlistShowView(parent.context).apply {
         itemClickListener = { super.itemClickListener.invoke(it) }
+        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
       }
     )
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]
-    (holder.itemView as WatchlistShowView).bind(item, missingImageListener)
+    (holder.itemView as WatchlistShowView).bind(item)
   }
 }

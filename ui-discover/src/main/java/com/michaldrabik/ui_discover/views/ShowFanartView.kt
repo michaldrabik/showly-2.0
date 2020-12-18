@@ -30,11 +30,8 @@ class ShowFanartView : ShowView<DiscoverListItem> {
 
   private lateinit var item: DiscoverListItem
 
-  override fun bind(
-    item: DiscoverListItem,
-    missingImageListener: ((DiscoverListItem, Boolean) -> Unit)?
-  ) {
-    super.bind(item, missingImageListener)
+  override fun bind(item: DiscoverListItem) {
+    super.bind(item)
     clear()
     this.item = item
     showFanartTitle.text =
@@ -43,11 +40,11 @@ class ShowFanartView : ShowView<DiscoverListItem> {
     showFanartProgress.visibleIf(item.isLoading)
     showFanartBadge.visibleIf(item.isFollowed)
     showFanartBadgeLater.visibleIf(item.isWatchlist)
-    loadImage(item, missingImageListener)
+    loadImage(item)
   }
 
-  override fun loadImage(item: DiscoverListItem, missingImageListener: ((DiscoverListItem, Boolean) -> Unit)?) {
-    super.loadImage(item, missingImageListener)
+  override fun loadImage(item: DiscoverListItem) {
+    super.loadImage(item)
     if (item.image.status == ImageStatus.UNAVAILABLE) {
       showFanartRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }

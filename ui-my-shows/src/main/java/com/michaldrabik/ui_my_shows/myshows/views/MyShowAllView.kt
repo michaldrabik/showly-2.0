@@ -36,10 +36,7 @@ class MyShowAllView : ShowView<MyShowsItem> {
 
   private lateinit var item: MyShowsItem
 
-  override fun bind(
-    item: MyShowsItem,
-    missingImageListener: ((MyShowsItem, Boolean) -> Unit)?
-  ) {
+  override fun bind(item: MyShowsItem) {
     clear()
     this.item = item
     myShowAllProgress.visibleIf(item.isLoading)
@@ -65,7 +62,7 @@ class MyShowAllView : ShowView<MyShowsItem> {
       myShowAllUserRating.text = String.format(ENGLISH, "%d", it)
     }
 
-    loadImage(item, missingImageListener)
+    loadImage(item)
   }
 
   private fun clear() {

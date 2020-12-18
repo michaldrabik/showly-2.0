@@ -31,26 +31,23 @@ class ShowPosterView : ShowView<DiscoverListItem> {
 
   private lateinit var item: DiscoverListItem
 
-  override fun bind(
-    item: DiscoverListItem,
-    missingImageListener: ((DiscoverListItem, Boolean) -> Unit)?
-  ) {
-    super.bind(item, missingImageListener)
+  override fun bind(item: DiscoverListItem) {
+    super.bind(item)
     clear()
     this.item = item
     showPosterTitle.text = item.show.title
     showPosterProgress.visibleIf(item.isLoading)
     showPosterBadge.visibleIf(item.isFollowed)
     showPosterLaterBadge.visibleIf(item.isWatchlist)
-    loadImage(item, missingImageListener)
+    loadImage(item)
   }
 
-  override fun loadImage(item: DiscoverListItem, missingImageListener: ((DiscoverListItem, Boolean) -> Unit)?) {
+  override fun loadImage(item: DiscoverListItem) {
     if (item.image.status == UNAVAILABLE) {
       showPosterTitle.visible()
       showPosterRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
-    super.loadImage(item, missingImageListener)
+    super.loadImage(item)
   }
 
   override fun onImageLoadSuccess() {
@@ -58,8 +55,8 @@ class ShowPosterView : ShowView<DiscoverListItem> {
     showPosterRoot.setBackgroundResource(0)
   }
 
-  override fun onImageLoadFail(item: DiscoverListItem, missingImageListener: ((DiscoverListItem, Boolean) -> Unit)?) {
-    super.onImageLoadFail(item, missingImageListener)
+  override fun onImageLoadFail(item: DiscoverListItem) {
+    super.onImageLoadFail(item)
     if (item.image.status == AVAILABLE) {
       showPosterTitle.visible()
       showPosterRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)

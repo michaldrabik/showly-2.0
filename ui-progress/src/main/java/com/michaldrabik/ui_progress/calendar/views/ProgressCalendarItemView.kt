@@ -28,7 +28,6 @@ class ProgressCalendarItemView : ShowView<ProgressItem> {
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   var detailsClickListener: ((ProgressItem) -> Unit)? = null
-  var missingImageListener: ((ProgressItem, Boolean) -> Unit)? = null
 
   init {
     inflate(context, R.layout.view_progress_calendar_item, this)
@@ -46,7 +45,7 @@ class ProgressCalendarItemView : ShowView<ProgressItem> {
   override val imageView: ImageView = progressCalendarItemImage
   override val placeholderView: ImageView = progressCalendarItemPlaceholder
 
-  fun bind(item: ProgressItem) {
+  override fun bind(item: ProgressItem) {
     this.item = item
     clear()
 
@@ -75,7 +74,7 @@ class ProgressCalendarItemView : ShowView<ProgressItem> {
       )
     }
 
-    loadImage(item, missingImageListener!!)
+    loadImage(item)
   }
 
   private fun clear() {

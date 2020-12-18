@@ -36,10 +36,7 @@ class WatchlistShowView : ShowView<WatchlistListItem> {
 
   private lateinit var item: WatchlistListItem
 
-  override fun bind(
-    item: WatchlistListItem,
-    missingImageListener: ((WatchlistListItem, Boolean) -> Unit)?
-  ) {
+  override fun bind(item: WatchlistListItem) {
     clear()
     this.item = item
     watchlistShowProgress.visibleIf(item.isLoading)
@@ -65,7 +62,7 @@ class WatchlistShowView : ShowView<WatchlistListItem> {
       watchlistShowUserRating.text = String.format(ENGLISH, "%d", it)
     }
 
-    loadImage(item, missingImageListener)
+    loadImage(item)
   }
 
   private fun clear() {

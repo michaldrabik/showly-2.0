@@ -34,10 +34,7 @@ class ShowSearchView : ShowView<SearchListItem> {
 
   private lateinit var item: SearchListItem
 
-  override fun bind(
-    item: SearchListItem,
-    missingImageListener: ((SearchListItem, Boolean) -> Unit)?
-  ) {
+  override fun bind(item: SearchListItem) {
     clear()
     this.item = item
 
@@ -61,7 +58,7 @@ class ShowSearchView : ShowView<SearchListItem> {
     showSearchWatchlistBadge.visibleIf(item.isWatchlist)
 
     if (item.isMovie) showSearchPlaceholder.setImageResource(R.drawable.ic_film)
-    loadImage(item, missingImageListener)
+    loadImage(item)
   }
 
   private fun clear() {

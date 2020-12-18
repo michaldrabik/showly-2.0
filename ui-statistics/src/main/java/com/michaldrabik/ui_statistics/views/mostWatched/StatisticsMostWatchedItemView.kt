@@ -37,7 +37,7 @@ class StatisticsMostWatchedItemView : ShowView<StatisticsMostWatchedItem> {
 
   private lateinit var item: StatisticsMostWatchedItem
 
-  fun bind(item: StatisticsMostWatchedItem) {
+  override fun bind(item: StatisticsMostWatchedItem) {
     this.item = item
     clear()
 
@@ -48,7 +48,7 @@ class StatisticsMostWatchedItemView : ShowView<StatisticsMostWatchedItem> {
     viewMostWatchedItemEpisodesValue.text = "${item.episodes.size}"
     viewMostWatchedItemSeasonsValue.text = "${item.seasonsCount}"
     viewMostWatchedItemArchivedIcon.visibleIf(item.isArchived)
-    loadImage(item) { _, _ -> }
+    loadImage(item)
   }
 
   private fun clear() {

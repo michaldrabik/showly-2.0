@@ -34,10 +34,7 @@ class SearchSuggestionView : ShowView<SearchListItem> {
 
   private lateinit var item: SearchListItem
 
-  override fun bind(
-    item: SearchListItem,
-    missingImageListener: ((SearchListItem, Boolean) -> Unit)?
-  ) {
+  override fun bind(item: SearchListItem) {
     clear()
     this.item = item
     if (item.isMovie) suggestionPlaceholder.setImageResource(R.drawable.ic_film)
@@ -62,7 +59,7 @@ class SearchSuggestionView : ShowView<SearchListItem> {
 
     suggestionDescription.visibleIf(item.overview.isNotBlank())
     suggestionNetwork.visibleIf(item.network.isNotBlank() || item.year > 0)
-    loadImage(item, missingImageListener)
+    loadImage(item)
   }
 
   private fun clear() {

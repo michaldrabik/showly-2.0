@@ -36,10 +36,7 @@ class ArchiveShowView : ShowView<ArchiveListItem> {
 
   private lateinit var item: ArchiveListItem
 
-  override fun bind(
-    item: ArchiveListItem,
-    missingImageListener: ((ArchiveListItem, Boolean) -> Unit)?
-  ) {
+  override fun bind(item: ArchiveListItem) {
     clear()
     this.item = item
     archiveShowProgress.visibleIf(item.isLoading)
@@ -65,7 +62,7 @@ class ArchiveShowView : ShowView<ArchiveListItem> {
       archiveShowUserRating.text = String.format(ENGLISH, "%d", it)
     }
 
-    loadImage(item, missingImageListener)
+    loadImage(item)
   }
 
   private fun clear() {

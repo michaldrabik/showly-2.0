@@ -38,7 +38,6 @@ class ProgressMainItemView : ShowView<ProgressItem> {
   var itemLongClickListener: ((ProgressItem, View) -> Unit)? = null
   var detailsClickListener: ((ProgressItem) -> Unit)? = null
   var checkClickListener: ((ProgressItem) -> Unit)? = null
-  var missingImageListener: ((ProgressItem, Boolean) -> Unit)? = null
 
   init {
     inflate(context, R.layout.view_progress_main_item, this)
@@ -63,7 +62,7 @@ class ProgressMainItemView : ShowView<ProgressItem> {
   private val checkButtonWidth by lazy { context.dimenToPx(R.dimen.progressItemCheckButtonWidth) }
   private val checkButtonHeight by lazy { context.dimenToPx(R.dimen.progressItemButtonHeight) }
 
-  fun bind(item: ProgressItem) {
+  override fun bind(item: ProgressItem) {
     this.item = item
     clear()
 
@@ -91,7 +90,7 @@ class ProgressMainItemView : ShowView<ProgressItem> {
     bindProgress(item)
     bindCheckButton(item, checkClickListener, detailsClickListener)
 
-    loadImage(item, missingImageListener!!)
+    loadImage(item)
   }
 
   private fun bindProgress(item: ProgressItem) {

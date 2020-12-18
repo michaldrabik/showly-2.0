@@ -40,6 +40,7 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
       VIEW_TYPE_SHOW_ITEM -> BaseViewHolder(
         MyShowAllView(parent.context).apply {
           itemClickListener = { super.itemClickListener.invoke(it) }
+          missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
         }
       )
       VIEW_TYPE_HORIZONTAL_SECTION -> BaseViewHolder(
@@ -61,10 +62,7 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
         item.recentsSection!!,
         itemClickListener
       )
-      VIEW_TYPE_SHOW_ITEM -> (holder.itemView as MyShowAllView).bind(
-        item,
-        missingImageListener
-      )
+      VIEW_TYPE_SHOW_ITEM -> (holder.itemView as MyShowAllView).bind(item)
       VIEW_TYPE_HORIZONTAL_SECTION -> (holder.itemView as MyShowsSectionView).bind(
         item.horizontalSection!!,
         horizontalPositions[item.horizontalSection.section] ?: Pair(0, 0),

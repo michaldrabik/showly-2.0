@@ -211,13 +211,14 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
       viewModel.saveRecentSearch(query)
       openDetails(it)
     }
-    val missingImageListener: (SearchListItem, Boolean) -> Unit = { item, force ->
+    val missingImage: (SearchListItem, Boolean) -> Unit = { item, force ->
       viewModel.loadMissingImage(item, force)
     }
     suggestions.forEach { item ->
       val view = SearchSuggestionView(requireContext()).apply {
-        bind(item, missingImageListener)
+        bind(item)
         itemClickListener = itemClick
+        missingImageListener = missingImage
       }
       searchSuggestionsLayout.addView(view)
     }
