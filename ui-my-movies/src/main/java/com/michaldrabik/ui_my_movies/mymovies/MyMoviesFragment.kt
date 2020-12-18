@@ -66,15 +66,9 @@ class MyMoviesFragment :
     }
     adapter.run {
       itemClickListener = { openMovieDetails(it.movie) }
-      missingImageListener = { item, force ->
-        viewModel.loadMissingImage(item, force)
-      }
-      sectionMissingImageListener = { item, section, force ->
-        viewModel.loadSectionMissingItem(item, section, force)
-      }
-      onSortOrderClickListener = { section, order ->
-        showSortOrderDialog(section, order)
-      }
+      missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) }
+      missingTranslationListener = { viewModel.loadMissingTranslation(it) }
+      onSortOrderClickListener = { section, order -> showSortOrderDialog(section, order) }
     }
   }
 

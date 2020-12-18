@@ -14,12 +14,13 @@ class RelatedMovieAdapter : BaseMovieAdapter<RelatedListItem>() {
     ViewHolderShow(
       RelatedMovieView(parent.context).apply {
         itemClickListener = { super.itemClickListener.invoke(it) }
+        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
       }
     )
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]
-    (holder.itemView as RelatedMovieView).bind(item, missingImageListener)
+    (holder.itemView as RelatedMovieView).bind(item)
   }
 
   class ViewHolderShow(itemView: View) : RecyclerView.ViewHolder(itemView)

@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_movies.watchlist
 
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.ActionEvent
@@ -54,13 +55,6 @@ class WatchlistViewModel @Inject constructor(
   }
 
   fun loadMissingImage(item: WatchlistListItem, force: Boolean) {
-
-    fun updateItem(new: WatchlistListItem) {
-      val currentItems = uiState?.items?.toMutableList()
-      currentItems?.findReplace(new) { it.isSameAs(new) }
-      uiState = uiState?.copy(items = currentItems)
-    }
-
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -72,10 +66,28 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
+  fun loadMissingTranslation(item: WatchlistListItem) {
+    if (item.translation != null || loadMoviesCase.language == DEFAULT_LANGUAGE) return
+    viewModelScope.launch {
+      try {
+        val translation = loadMoviesCase.loadTranslation(item.movie, false)
+        updateItem(item.copy(translation = translation))
+      } catch (error: Throwable) {
+        FirebaseCrashlytics.getInstance().recordException(error)
+      }
+    }
+  }
+
   fun setSortOrder(sortOrder: SortOrder) {
     viewModelScope.launch {
       sortOrderCase.setSortOrder(sortOrder)
       loadMovies(resetScroll = true)
     }
+  }
+
+  private fun updateItem(new: WatchlistListItem) {
+    val currentItems = uiState?.items?.toMutableList()
+    currentItems?.findReplace(new) { it.isSameAs(new) }
+    uiState = uiState?.copy(items = currentItems)
   }
 }

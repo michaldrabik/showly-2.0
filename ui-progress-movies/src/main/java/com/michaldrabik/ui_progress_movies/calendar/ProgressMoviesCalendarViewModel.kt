@@ -102,8 +102,8 @@ class ProgressMoviesCalendarViewModel @Inject constructor(
     return sectionsList
   }
 
-  fun findTranslation(item: ProgressMovieItem) {
-    if (language == Config.DEFAULT_LANGUAGE) return
+  fun findMissingTranslation(item: ProgressMovieItem) {
+    if (item.movieTranslation != null || language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {
         val translation = translationsRepository.loadTranslation(item.movie, language)

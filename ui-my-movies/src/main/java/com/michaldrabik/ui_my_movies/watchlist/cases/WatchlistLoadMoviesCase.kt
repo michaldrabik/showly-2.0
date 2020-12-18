@@ -20,8 +20,9 @@ class WatchlistLoadMoviesCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {
 
+  val language by lazy { settingsRepository.getLanguage() }
+
   suspend fun loadMovies(): List<Pair<Movie, Translation?>> {
-    val language = settingsRepository.getLanguage()
     val translations =
       if (language == Config.DEFAULT_LANGUAGE) emptyMap()
       else translationsRepository.loadAllMoviesLocal(language)
@@ -40,18 +41,16 @@ class WatchlistLoadMoviesCase @Inject constructor(
       RATING ->
         movies.sortedByDescending { it.first.rating }
       NEWEST ->
-        movies
-          .sortedWith(
-            compareByDescending<Pair<Movie, Translation?>> { it.first.year }
-              .thenByDescending { it.first.released }
-          )
+        movies.sortedWith(
+          compareByDescending<Pair<Movie, Translation?>> { it.first.year }
+            .thenByDescending { it.first.released }
+        )
       else -> error("Should not be used here.")
     }
   }
 
-  suspend fun loadTranslation(movie: Movie): Translation? {
-    val language = settingsRepository.getLanguage()
-    if (language == Config.DEFAULT_LANGUAGE) return null
-    return translationsRepository.loadTranslation(movie, language, onlyLocal = true)
+  suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? {
+    if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
+    return translationsRepository.loadTranslation(movie, language, onlyLocal)
   }
 }

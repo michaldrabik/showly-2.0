@@ -29,20 +29,18 @@ class ProgressMoviesMainItemView : MovieView<ProgressMovieItem> {
 
   var itemLongClickListener: ((ProgressMovieItem, View) -> Unit)? = null
   var checkClickListener: ((ProgressMovieItem) -> Unit)? = null
-  var missingImageListener: ((ProgressMovieItem, Boolean) -> Unit)? = null
-  var missingTranslationListener: ((ProgressMovieItem) -> Unit)? = null
 
   init {
     inflate(context, R.layout.view_progress_movies_main_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     addRipple()
     progressMovieItemCheckButton.expandTouch(100)
-
     onClick { itemClickListener?.invoke(item) }
     setOnLongClickListener {
       itemLongClickListener?.invoke(item, progressMovieItemTitle)
       true
     }
+    imageLoadCompleteListener = { loadTranslation() }
   }
 
   private lateinit var item: ProgressMovieItem
@@ -50,7 +48,7 @@ class ProgressMoviesMainItemView : MovieView<ProgressMovieItem> {
   override val imageView: ImageView = progressMovieItemImage
   override val placeholderView: ImageView = progressMovieItemPlaceholder
 
-  fun bind(item: ProgressMovieItem) {
+  override fun bind(item: ProgressMovieItem) {
     this.item = item
     clear()
 
@@ -75,8 +73,13 @@ class ProgressMoviesMainItemView : MovieView<ProgressMovieItem> {
       it.bump { checkClickListener?.invoke(item) }
     }
 
-    if (item.movieTranslation == null) missingTranslationListener?.invoke(item)
-    loadImage(item, missingImageListener!!)
+    loadImage(item)
+  }
+
+  private fun loadTranslation() {
+    if (item.movieTranslation == null) {
+      missingTranslationListener?.invoke(item)
+    }
   }
 
   private fun clear() {

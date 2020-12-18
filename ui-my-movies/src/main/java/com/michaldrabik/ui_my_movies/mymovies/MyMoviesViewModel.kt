@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_movies.mymovies
 
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
@@ -73,13 +74,6 @@ class MyMoviesViewModel @Inject constructor(
   }
 
   fun loadMissingImage(item: MyMoviesItem, force: Boolean) {
-
-    fun updateItem(new: MyMoviesItem) {
-      val items = uiState?.listItems?.toMutableList() ?: mutableListOf()
-      items.findReplace(new) { it.isSameAs(new) }
-      uiState = uiState?.copy(listItems = items)
-    }
-
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -91,30 +85,22 @@ class MyMoviesViewModel @Inject constructor(
     }
   }
 
-  fun loadSectionMissingItem(item: MyMoviesItem, itemSection: MyMoviesItem.HorizontalSection, force: Boolean) {
-
-    fun updateItem(newItem: MyMoviesItem, newSection: MyMoviesItem.HorizontalSection) {
-      val items = uiState?.listItems?.toMutableList() ?: mutableListOf()
-      val section = items.find { it.horizontalSection?.section == newSection.section }?.horizontalSection
-
-      val sectionItems = section?.items?.toMutableList() ?: mutableListOf()
-      sectionItems.findReplace(newItem) { it.isSameAs(newItem) }
-
-      val newSecWithItems = section?.copy(items = sectionItems)
-      items.findReplace(newItem.copy(horizontalSection = newSecWithItems)) { it.horizontalSection?.section == newSection.section }
-
-      uiState = uiState?.copy(listItems = items)
-    }
-
+  fun loadMissingTranslation(item: MyMoviesItem) {
+    if (item.translation != null || loadMoviesCase.language == DEFAULT_LANGUAGE) return
     viewModelScope.launch {
-      updateItem(item.copy(isLoading = true), itemSection)
       try {
-        val image = loadMoviesCase.loadMissingImage(item.movie, item.image.type, force)
-        updateItem(item.copy(isLoading = false, image = image), itemSection)
-      } catch (t: Throwable) {
-        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)), itemSection)
+        val translation = loadMoviesCase.loadTranslation(item.movie, false)
+        updateItem(item.copy(translation = translation))
+      } catch (error: Throwable) {
+        FirebaseCrashlytics.getInstance().recordException(error)
       }
     }
+  }
+
+  private fun updateItem(new: MyMoviesItem) {
+    val items = uiState?.listItems?.toMutableList() ?: mutableListOf()
+    items.findReplace(new) { it.isSameAs(new) }
+    uiState = uiState?.copy(listItems = items)
   }
 
   private fun CoroutineScope.toListItemAsync(
@@ -123,7 +109,7 @@ class MyMoviesViewModel @Inject constructor(
     type: ImageType = POSTER
   ) = async {
     val image = loadMoviesCase.findCachedImage(movie, type)
-    val translation = loadMoviesCase.loadTranslation(movie)
+    val translation = loadMoviesCase.loadTranslation(movie, true)
     MyMoviesItem(itemType, null, null, null, movie, image, false, translation)
   }
 }

@@ -31,26 +31,23 @@ class MoviePosterView : MovieView<DiscoverMovieListItem> {
 
   private lateinit var item: DiscoverMovieListItem
 
-  override fun bind(
-    item: DiscoverMovieListItem,
-    missingImageListener: ((DiscoverMovieListItem, Boolean) -> Unit)?
-  ) {
-    super.bind(item, missingImageListener)
+  override fun bind(item: DiscoverMovieListItem) {
+    super.bind(item)
     clear()
     this.item = item
     moviePosterTitle.text = item.movie.title
     moviePosterProgress.visibleIf(item.isLoading)
     moviePosterBadge.visibleIf(item.isCollected)
     moviePosterLaterBadge.visibleIf(item.isWatchlist)
-    loadImage(item, missingImageListener)
+    loadImage(item)
   }
 
-  override fun loadImage(item: DiscoverMovieListItem, missingImageListener: ((DiscoverMovieListItem, Boolean) -> Unit)?) {
+  override fun loadImage(item: DiscoverMovieListItem) {
     if (item.image.status == UNAVAILABLE) {
       moviePosterTitle.visible()
       moviePosterRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
-    super.loadImage(item, missingImageListener)
+    super.loadImage(item)
   }
 
   override fun onImageLoadSuccess() {
@@ -58,8 +55,8 @@ class MoviePosterView : MovieView<DiscoverMovieListItem> {
     moviePosterRoot.setBackgroundResource(0)
   }
 
-  override fun onImageLoadFail(item: DiscoverMovieListItem, missingImageListener: ((DiscoverMovieListItem, Boolean) -> Unit)?) {
-    super.onImageLoadFail(item, missingImageListener)
+  override fun onImageLoadFail(item: DiscoverMovieListItem) {
+    super.onImageLoadFail(item)
     if (item.image.status == AVAILABLE) {
       moviePosterTitle.visible()
       moviePosterRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)

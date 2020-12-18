@@ -44,15 +44,15 @@ abstract class MovieView<Item : MovieListItem> : FrameLayout {
   protected abstract val placeholderView: ImageView
 
   var itemClickListener: ((Item) -> Unit)? = null
+  var imageLoadCompleteListener: (() -> Unit)? = null
+  var missingImageListener: ((Item, Boolean) -> Unit)? = null
+  var missingTranslationListener: ((Item) -> Unit)? = null
 
-  open fun bind(
-    item: Item,
-    missingImageListener: ((Item, Boolean) -> Unit)? = null
-  ) {
+  open fun bind(item: Item) {
     layoutParams = LayoutParams((width * item.image.type.spanSize.toFloat()).toInt(), height.toInt())
   }
 
-  protected open fun loadImage(item: Item, missingImageListener: ((Item, Boolean) -> Unit)?) {
+  protected open fun loadImage(item: Item) {
     if (item.isLoading) return
 
     if (item.image.status == UNAVAILABLE) {
@@ -75,15 +75,16 @@ abstract class MovieView<Item : MovieListItem> : FrameLayout {
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
       .withSuccessListener { onImageLoadSuccess() }
-      .withFailListener { onImageLoadFail(item, missingImageListener) }
+      .withFailListener { onImageLoadFail(item) }
       .into(imageView)
   }
 
-  protected open fun onImageLoadSuccess() = Unit
+  protected open fun onImageLoadSuccess() = imageLoadCompleteListener?.invoke()
 
-  protected open fun onImageLoadFail(item: Item, missingImageListener: ((Item, Boolean) -> Unit)?) {
+  protected open fun onImageLoadFail(item: Item) {
     if (item.image.status == AVAILABLE) {
       placeholderView.visible()
+      imageLoadCompleteListener?.invoke()
       return
     }
     val force = (item.image.status == UNKNOWN)

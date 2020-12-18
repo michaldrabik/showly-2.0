@@ -31,26 +31,23 @@ class RelatedMovieView : MovieView<RelatedListItem> {
 
   private lateinit var item: RelatedListItem
 
-  override fun bind(
-    item: RelatedListItem,
-    missingImageListener: ((RelatedListItem, Boolean) -> Unit)?
-  ) {
+  override fun bind(item: RelatedListItem) {
     clear()
     this.item = item
     relatedMovieTitle.text = item.movie.title
-    loadImage(item, missingImageListener)
+    loadImage(item)
   }
 
-  override fun loadImage(item: RelatedListItem, missingImageListener: ((RelatedListItem, Boolean) -> Unit)?) {
+  override fun loadImage(item: RelatedListItem) {
     if (item.image.status == UNAVAILABLE) {
       relatedMovieTitle.visible()
       relatedMovieRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
-    super.loadImage(item, missingImageListener)
+    super.loadImage(item)
   }
 
-  override fun onImageLoadFail(item: RelatedListItem, missingImageListener: ((RelatedListItem, Boolean) -> Unit)?) {
-    super.onImageLoadFail(item, missingImageListener)
+  override fun onImageLoadFail(item: RelatedListItem) {
+    super.onImageLoadFail(item)
     if (item.image.status == AVAILABLE) {
       relatedMovieTitle.visible()
     }

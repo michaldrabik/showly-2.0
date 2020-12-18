@@ -15,6 +15,7 @@ class StatisticsMoviesRatingsAdapter : BaseMovieAdapter<StatisticsMoviesRatingIt
     ViewHolderShow(
       StatisticsMoviesRateItemView(parent.context).apply {
         itemClickListener = { super.itemClickListener.invoke(it) }
+        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
       }
     )
 

@@ -21,9 +21,6 @@ class MyMoviesAdapter : BaseMovieAdapter<MyMoviesItem>() {
   override val asyncDiffer = AsyncListDiffer(this, MyMoviesItemDiffCallback())
 
   var onSortOrderClickListener: ((MyMoviesSection, SortOrder) -> Unit)? = null
-  var sectionMissingImageListener: ((MyMoviesItem, MyMoviesItem.HorizontalSection, Boolean) -> Unit)? = null
-
-  private val horizontalPositions = mutableMapOf<MyMoviesSection, Pair<Int, Int>>()
   var notifyListsUpdate = false
 
   override fun setItems(newItems: List<MyMoviesItem>, notifyChange: Boolean) {
@@ -37,6 +34,8 @@ class MyMoviesAdapter : BaseMovieAdapter<MyMoviesItem>() {
       VIEW_TYPE_MOVIE_ITEM -> BaseViewHolder(
         MyMovieAllView(parent.context).apply {
           itemClickListener = { super.itemClickListener.invoke(it) }
+          missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
+          missingTranslationListener = { super.missingTranslationListener.invoke(it) }
         }
       )
       else -> throw IllegalStateException()
@@ -53,10 +52,7 @@ class MyMoviesAdapter : BaseMovieAdapter<MyMoviesItem>() {
         item.recentsSection!!,
         itemClickListener
       )
-      VIEW_TYPE_MOVIE_ITEM -> (holder.itemView as MyMovieAllView).bind(
-        item,
-        missingImageListener
-      )
+      VIEW_TYPE_MOVIE_ITEM -> (holder.itemView as MyMovieAllView).bind(item)
     }
   }
 

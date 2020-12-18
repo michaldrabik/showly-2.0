@@ -30,11 +30,8 @@ class MovieFanartView : MovieView<DiscoverMovieListItem> {
 
   private lateinit var item: DiscoverMovieListItem
 
-  override fun bind(
-    item: DiscoverMovieListItem,
-    missingImageListener: ((DiscoverMovieListItem, Boolean) -> Unit)?
-  ) {
-    super.bind(item, missingImageListener)
+  override fun bind(item: DiscoverMovieListItem) {
+    super.bind(item)
     clear()
     this.item = item
     movieFanartTitle.text =
@@ -43,11 +40,11 @@ class MovieFanartView : MovieView<DiscoverMovieListItem> {
     movieFanartProgress.visibleIf(item.isLoading)
     movieFanartBadge.visibleIf(item.isCollected)
     movieFanartBadgeLater.visibleIf(item.isWatchlist)
-    loadImage(item, missingImageListener)
+    loadImage(item)
   }
 
-  override fun loadImage(item: DiscoverMovieListItem, missingImageListener: ((DiscoverMovieListItem, Boolean) -> Unit)?) {
-    super.loadImage(item, missingImageListener)
+  override fun loadImage(item: DiscoverMovieListItem) {
+    super.loadImage(item)
     if (item.image.status == UNAVAILABLE) {
       movieFanartRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }

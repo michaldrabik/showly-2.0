@@ -28,6 +28,7 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
   init {
     inflate(context, R.layout.view_my_movies_all, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    imageLoadCompleteListener = { loadTranslation() }
     myMovieAllRoot.onClick { itemClickListener?.invoke(item) }
   }
 
@@ -36,10 +37,7 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
 
   private lateinit var item: MyMoviesItem
 
-  override fun bind(
-    item: MyMoviesItem,
-    missingImageListener: ((MyMoviesItem, Boolean) -> Unit)?
-  ) {
+  override fun bind(item: MyMoviesItem) {
     clear()
     this.item = item
     myMovieAllProgress.visibleIf(item.isLoading)
@@ -66,7 +64,13 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
       myMovieUserRating.text = String.format(ENGLISH, "%d", it)
     }
 
-    loadImage(item, missingImageListener)
+    loadImage(item)
+  }
+
+  private fun loadTranslation() {
+    if (item.translation == null) {
+      missingTranslationListener?.invoke(item)
+    }
   }
 
   private fun clear() {

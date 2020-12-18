@@ -12,7 +12,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
-import com.michaldrabik.ui_base.common.OnTranslationsSyncListener
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_model.Movie
@@ -32,7 +31,6 @@ class WatchlistFragment :
   BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist_movies),
   OnScrollResetListener,
   OnTraktSyncListener,
-  OnTranslationsSyncListener,
   OnSortClickListener {
 
   override val viewModel by viewModels<WatchlistViewModel> { viewModelFactory }
@@ -55,12 +53,14 @@ class WatchlistFragment :
       uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
       loadMovies()
     }
+    isInitialized = true
   }
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
     adapter = WatchlistAdapter().apply {
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+      missingTranslationListener = { viewModel.loadMissingTranslation(it) }
       itemClickListener = { openMovieDetails(it.movie) }
       listChangeListener = { watchlistMoviesRecycler.scrollToPosition(0) }
     }
@@ -121,6 +121,4 @@ class WatchlistFragment :
   }
 
   override fun onTraktSyncProgress() = viewModel.loadMovies()
-
-  override fun onTranslationsSyncProgress() = viewModel.loadMovies()
 }

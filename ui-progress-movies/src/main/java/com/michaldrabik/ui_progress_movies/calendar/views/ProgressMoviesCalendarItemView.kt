@@ -24,14 +24,12 @@ class ProgressMoviesCalendarItemView : MovieView<ProgressMovieItem> {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  var missingImageListener: ((ProgressMovieItem, Boolean) -> Unit)? = null
-  var missingTranslationListener: ((ProgressMovieItem) -> Unit)? = null
-
   init {
     inflate(context, R.layout.view_progress_movies_calendar_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     addRipple()
     onClick { itemClickListener?.invoke(item) }
+    imageLoadCompleteListener = { loadTranslation() }
   }
 
   private lateinit var item: ProgressMovieItem
@@ -39,7 +37,7 @@ class ProgressMoviesCalendarItemView : MovieView<ProgressMovieItem> {
   override val imageView: ImageView = progressMovieCalendarItemImage
   override val placeholderView: ImageView = progressMovieCalendarItemPlaceholder
 
-  fun bind(item: ProgressMovieItem) {
+  override fun bind(item: ProgressMovieItem) {
     this.item = item
     clear()
 
@@ -59,8 +57,13 @@ class ProgressMoviesCalendarItemView : MovieView<ProgressMovieItem> {
     progressMovieCalendarItemDate.text =
       item.movie.released?.toFullDayDisplayString() ?: context.getString(R.string.textTba)
 
-    if (item.movieTranslation == null) missingTranslationListener?.invoke(item)
-    loadImage(item, missingImageListener!!)
+    loadImage(item)
+  }
+
+  private fun loadTranslation() {
+    if (item.movieTranslation == null) {
+      missingTranslationListener?.invoke(item)
+    }
   }
 
   private fun clear() {

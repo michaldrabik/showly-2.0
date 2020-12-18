@@ -31,12 +31,12 @@ class StatisticsMoviesRateItemView : MovieView<StatisticsMoviesRatingItem> {
 
   private lateinit var item: StatisticsMoviesRatingItem
 
-  fun bind(item: StatisticsMoviesRatingItem) {
+  override fun bind(item: StatisticsMoviesRatingItem) {
     this.item = item
     clear()
     viewMovieRateItemTitle.text = item.movie.title
     viewMovieRateItemRating.text = "${item.rating.rating}"
-    loadImage(item) { _, _ -> }
+    loadImage(item)
   }
 
   private fun clear() {

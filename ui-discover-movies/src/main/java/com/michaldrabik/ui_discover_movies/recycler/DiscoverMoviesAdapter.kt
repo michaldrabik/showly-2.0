@@ -18,11 +18,13 @@ class DiscoverMoviesAdapter : BaseMovieAdapter<DiscoverMovieListItem>() {
     POSTER.id -> BaseViewHolder(
       MoviePosterView(parent.context).apply {
         itemClickListener = { super.itemClickListener.invoke(it) }
+        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
       }
     )
     FANART.id, FANART_WIDE.id -> BaseViewHolder(
       MovieFanartView(parent.context).apply {
         itemClickListener = { super.itemClickListener.invoke(it) }
+        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
       }
     )
     else -> throw IllegalStateException("Unknown view type.")
@@ -32,9 +34,9 @@ class DiscoverMoviesAdapter : BaseMovieAdapter<DiscoverMovieListItem>() {
     val item = asyncDiffer.currentList[position]
     when (holder.itemViewType) {
       POSTER.id ->
-        (holder.itemView as MoviePosterView).bind(item, missingImageListener)
+        (holder.itemView as MoviePosterView).bind(item)
       FANART.id, FANART_WIDE.id ->
-        (holder.itemView as MovieFanartView).bind(item, missingImageListener)
+        (holder.itemView as MovieFanartView).bind(item)
     }
   }
 

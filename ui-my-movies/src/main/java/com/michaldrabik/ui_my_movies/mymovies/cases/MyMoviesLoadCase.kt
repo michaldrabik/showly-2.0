@@ -14,10 +14,8 @@ import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
-import com.michaldrabik.ui_repository.RatingsRepository
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
-import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.movies.MoviesRepository
 import javax.inject.Inject
 
@@ -26,10 +24,10 @@ class MyMoviesLoadCase @Inject constructor(
   private val imagesProvider: MovieImagesProvider,
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
-  private val ratingsRepository: RatingsRepository,
-  private val settingsRepository: SettingsRepository,
-  private val userTraktManager: UserTraktManager
+  private val settingsRepository: SettingsRepository
 ) {
+
+  val language by lazy { settingsRepository.getLanguage() }
 
   private suspend fun loadSettings() = settingsRepository.load()
 
@@ -77,17 +75,9 @@ class MyMoviesLoadCase @Inject constructor(
     settingsRepository.update(newSettings)
   }
 
-  suspend fun loadTranslation(movie: Movie): Translation? {
-    val language = settingsRepository.getLanguage()
-    if (language == Config.DEFAULT_LANGUAGE) return null
-    return translationsRepository.loadTranslation(movie, language, onlyLocal = true)
-  }
-
-  suspend fun loadRating(movie: Movie): Int? {
-    if (!userTraktManager.isAuthorized()) return null
-
-    val token = userTraktManager.checkAuthorization().token
-    return ratingsRepository.loadRating(token, movie)?.rating
+  suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? {
+    if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
+    return translationsRepository.loadTranslation(movie, language, onlyLocal)
   }
 
   suspend fun findCachedImage(movie: Movie, type: ImageType) =

@@ -29,6 +29,7 @@ class WatchlistMovieView : MovieView<WatchlistListItem> {
   init {
     inflate(context, R.layout.view_watchlist_movie, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    imageLoadCompleteListener = { loadTranslation() }
     watchlistMoviesRoot.onClick { itemClickListener?.invoke(item) }
   }
 
@@ -37,10 +38,7 @@ class WatchlistMovieView : MovieView<WatchlistListItem> {
 
   private lateinit var item: WatchlistListItem
 
-  override fun bind(
-    item: WatchlistListItem,
-    missingImageListener: ((WatchlistListItem, Boolean) -> Unit)?
-  ) {
+  override fun bind(item: WatchlistListItem) {
     clear()
     this.item = item
     watchlistMoviesProgress.visibleIf(item.isLoading)
@@ -67,7 +65,13 @@ class WatchlistMovieView : MovieView<WatchlistListItem> {
       watchlistMovieUserRating.text = String.format(ENGLISH, "%d", it)
     }
 
-    loadImage(item, missingImageListener)
+    loadImage(item)
+  }
+
+  private fun loadTranslation() {
+    if (item.translation == null) {
+      missingTranslationListener?.invoke(item)
+    }
   }
 
   private fun clear() {
