@@ -49,7 +49,7 @@ class ProgressMoviesCalendarViewModel @Inject constructor(
     val allItems = model.items?.toMutableList() ?: mutableListOf()
 
     val items = allItems
-      .filter { !it.movie.hasAired() }
+      .filter { !it.movie.hasAired() || it.movie.isToday() }
       .sortedBy { it.movie.released?.toEpochDay() }
       .toMutableList()
 

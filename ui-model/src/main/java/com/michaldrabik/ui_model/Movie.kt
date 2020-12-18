@@ -30,6 +30,12 @@ data class Movie(
     return now.isEqual(released) || now.isAfter(released)
   }
 
+  fun isToday(): Boolean {
+    if (released == null) return false
+    val now = nowUtcDay()
+    return now.isEqual(released)
+  }
+
   companion object {
     val EMPTY = Movie(
       Ids.EMPTY,

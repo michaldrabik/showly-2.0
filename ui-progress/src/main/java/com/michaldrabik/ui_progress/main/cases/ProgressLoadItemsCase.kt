@@ -52,7 +52,7 @@ class ProgressLoadItemsCase @Inject constructor(
     val upcomingEpisode = unwatchedEpisodes
       .filter { it.firstAired != null }
       .sortedBy { it.firstAired }
-      .firstOrNull { it.firstAired?.isAfter(nowUtc()) == true }
+      .firstOrNull { it.firstAired!!.isAfter(nowUtc()) || it.firstAired!!.dayOfYear == nowUtc().dayOfYear }
 
     val isPinned = pinnedItemsRepository.isItemPinned(show)
     val season = seasons.first { it.idTrakt == nextEpisode.idSeason }
