@@ -46,7 +46,8 @@ class AnnouncementManager @Inject constructor(
   companion object {
     private const val ANNOUNCEMENT_WORK_TAG = "ANNOUNCEMENT_WORK_TAG"
     private const val ANNOUNCEMENT_MOVIE_WORK_TAG = "ANNOUNCEMENT_MOVIE_WORK_TAG"
-    private const val ANNOUNCEMENT_STATIC_DELAY = 60000 // 1 min
+    private const val ANNOUNCEMENT_STATIC_DELAY_MS = 60000 // 1 min
+    private const val MOVIE_MIN_THRESHOLD_DAYS = 30
   }
 
   suspend fun refreshShowsAnnouncements(context: Context) {
@@ -76,7 +77,6 @@ class AnnouncementManager @Inject constructor(
         .filter { it.firstAired != null && (it.firstAired!!.toMillis() + delay.delayMs) > now }
         .minBy { it.firstAired!!.toMillis() }
         ?.let {
-          Timber.i("Next episode for ${show.title} (${show.idTrakt}) found. Setting notification...")
           scheduleAnnouncement(context.applicationContext, show, it, delay)
         }
     }
@@ -103,10 +103,9 @@ class AnnouncementManager @Inject constructor(
     movies
       .filter {
         Timber.i("Processing ${it.title} (${it.traktId})")
-        it.released != null && !it.hasAired()
+        it.released != null && !it.hasAired() && it.released!!.toEpochDay() - nowUtcDay().toEpochDay() < MOVIE_MIN_THRESHOLD_DAYS
       }
       .forEach {
-        Timber.i("Upcoming ${it.title} (${it.traktId}) found. Setting notification...")
         scheduleAnnouncement(context.applicationContext, it)
       }
   }
@@ -141,7 +140,7 @@ class AnnouncementManager @Inject constructor(
       }
     }
 
-    val delayed = (episodeDb.firstAired!!.toMillis() - nowUtcMillis()) + delay.delayMs + ANNOUNCEMENT_STATIC_DELAY
+    val delayed = (episodeDb.firstAired!!.toMillis() - nowUtcMillis()) + delay.delayMs + ANNOUNCEMENT_STATIC_DELAY_MS
     val request = OneTimeWorkRequestBuilder<AnnouncementWorker>()
       .setInputData(data.build())
       .setInitialDelay(delayed, MILLISECONDS)
