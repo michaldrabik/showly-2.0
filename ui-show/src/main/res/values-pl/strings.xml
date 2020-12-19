@@ -8,9 +8,9 @@
   <string name="textInArchive">W archiwum</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
 
-  <string name="textShowQuickProgressTitle">Szybki Progres</string>
-  <string name="textShowQuickProgressSubTitle">Wybierz ostatni obejrzany odcinek aby zaktualizować swój progres.</string>
-  <string name="textShowQuickProgressDone">Progres został zaktualizowany.</string>
+  <string name="textShowQuickProgressTitle">Szybki Postęp</string>
+  <string name="textShowQuickProgressSubTitle">Wybierz ostatni obejrzany odcinek aby zaktualizować swój postęp.</string>
+  <string name="textShowQuickProgressDone">Postęp został zaktualizowany.</string>
 
   <string name="textEpisodeDate">Odcinek %1$d | %2$s</string>
   <string name="textEpisodeTitle">S.%02d E.%02d - \'%s\'</string>
@@ -27,7 +27,7 @@
 
   <string name="textWhatIsArchive">Archiwum?</string>
   <string name="textWhatIsArchiveFull">Czym jest Archiwum?</string>
-  <string name="textArchiveDescription"><b>Archiwum</b> jest listą porzuconych seriali które już cię nie interesują.\n\nZarchiwizowane seriale nie będą się wyświetlać w sekcjach <b>Progres</b>, <b>Odkrywaj</b> i <b>Moje Seriale</b> oraz będą pominięte podczas importu z Trakt.tv.</string>
+  <string name="textArchiveDescription"><b>Archiwum</b> jest listą porzuconych seriali które już cię nie interesują.\n\nZarchiwizowane seriale nie będą się wyświetlać w sekcjach <b>Postęp</b>, <b>Odkrywaj</b> i <b>Moje Seriale</b> oraz będą pominięte podczas importu z Trakt.tv.</string>
   <string name="textArchiveConfirmationTitle">Dodaj do Archiwum</string>
   <string name="textArchiveConfirmationMessage">\nCzy na pewno chcesz przenieść serial do Archiwum?\n</string>
 </resources>
