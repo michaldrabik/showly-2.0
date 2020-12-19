@@ -13,7 +13,7 @@
   <string name="textHeaderReturning">Powracające</string>
   <string name="textHeaderAll">Wszystkie</string>
 
-  <string name="textSettingsShowsNotificationsWhenTitle">Czas Notyfikacji</string>
+  <string name="textSettingsShowsNotificationsWhenTitle">Czas Powiadomień</string>
   <string name="textSettingsShowsNotificationsWhenSummary">Kiedy chciałbyś otrzymać powiadomienie o odcinku?</string>
   <string name="textSettingsShowsNotificationsWhenAvailable">Jak Najszybciej</string>
   <string name="textSettingsShowsNotificationsWhen1Hour">1 Godzinę Po</string>
@@ -73,7 +73,6 @@
   <string name="textShowStatusPlanned">Zaplanowany</string>
   <string name="textShowStatusCanceled">Anulowany</string>
   <string name="textShowStatusEnded">Zakończony</string>
-
   <string name="textMovieStatusReleased">Dostępny</string>
   <string name="textMovieStatusInProduction">W Produkcji</string>
   <string name="textMovieStatusPostProduction">Post Produkcja</string>
