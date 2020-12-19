@@ -1,5 +1,5 @@
 <resources>
-  <string name="menuProgress">Progres</string>
+  <string name="menuProgress">Postęp</string>
   <string name="menuDiscover">Odkrywaj</string>
   <string name="menuCollection">Kolekcja</string>
 
@@ -10,11 +10,10 @@
 
   <string name="textWhatsNewTitle">Co Nowego?</string>
   <string name="textWhatsNewSubtitle">Wersja %s</string>
-
   <string name="shortcutDiscover">Odkrywaj</string>
   <string name="shortcutCollection">Kolekcja</string>
   <string name="shortcutSearch">Szukaj</string>
-  <string name="shortcutProgress">Progres</string>
+  <string name="shortcutProgress">Postęp</string>
 
   <plurals name="textTraktQuickSyncComplete">
     <item quantity="one">1 element zsynchronizowany.</item>
