@@ -136,7 +136,7 @@ class MainActivity :
   }
 
   private fun setupNavigation() {
-    findNavHost().findNavController().run {
+    findNavControl().run {
       val graph = navInflater.inflate(R.navigation.navigation_graph)
       graph.startDestination = when (viewModel.getMode()) {
         SHOWS -> R.id.progressFragment
@@ -157,7 +157,7 @@ class MainActivity :
         else -> throw IllegalStateException("Invalid menu item.")
       }
 
-      findNavHost().findNavController().navigate(target)
+      findNavControl().navigate(target)
       showNavigation(true)
       return@setOnNavigationItemSelectedListener true
     }
@@ -170,7 +170,7 @@ class MainActivity :
         return@addCallback
       }
 
-      findNavHost().findNavController().run {
+      findNavControl().run {
         if (currentDestination?.id == R.id.progressFragment ||
           currentDestination?.id == R.id.progressMoviesFragment
         ) {
@@ -248,7 +248,7 @@ class MainActivity :
         else -> 0
       }
       if (target != 0) {
-        findNavHost().findNavController().navigate(target)
+        findNavControl().navigate(target)
       }
     }
   }
@@ -281,7 +281,7 @@ class MainActivity :
   }
 
   private fun doForFragments(action: (Fragment) -> Unit) {
-    findNavHost().findNavController()?.currentDestination?.id?.let {
+    findNavControl().currentDestination?.id?.let {
       val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
       navHost?.childFragmentManager?.primaryNavigationFragment?.let {
         action(it)
@@ -335,7 +335,7 @@ class MainActivity :
           SHOWS -> R.id.actionDiscoverFragmentToSearchFragment
           MOVIES -> R.id.actionDiscoverMoviesFragmentToSearchFragment
         }
-        findNavHost().findNavController().navigate(action)
+        findNavControl().navigate(action)
       }
     }
   }
@@ -364,7 +364,7 @@ class MainActivity :
     MOVIES -> R.id.actionNavigateProgressMoviesFragment
   }
 
-  override fun findNavHost() = findNavHostFragment()
+  override fun findNavControl() = findNavHostFragment().findNavController()
 
   override fun provideSnackbarLayout(): ViewGroup = snackBarHost
 }

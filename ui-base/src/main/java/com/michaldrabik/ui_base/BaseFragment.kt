@@ -7,7 +7,6 @@ import android.view.ViewPropertyAnimator
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.di.DaggerViewModelFactory
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -37,8 +36,8 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
   protected val moviesEnabled: Boolean
     get() = (requireActivity() as NavigationHost).moviesEnabled()
 
-  protected fun findNavHost() =
-    (requireActivity() as NavigationHost).findNavHost()
+  protected fun findNavControl() =
+    (requireActivity() as NavigationHost).findNavControl()
 
   protected fun hideNavigation(animate: Boolean = true) =
     (requireActivity() as NavigationHost).hideNavigation(animate)
@@ -56,7 +55,7 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
   }
 
   protected fun navigateTo(@IdRes destination: Int, bundle: Bundle? = null) =
-    findNavHost().findNavController().navigate(destination, bundle)
+    findNavControl().navigate(destination, bundle)
 
   protected open fun getSnackbarHost(): ViewGroup = (requireActivity() as SnackbarHost).provideSnackbarLayout()
 

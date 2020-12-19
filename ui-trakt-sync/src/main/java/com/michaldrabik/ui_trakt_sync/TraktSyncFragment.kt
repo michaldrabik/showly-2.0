@@ -10,7 +10,6 @@ import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.toDisplayString
@@ -138,7 +137,7 @@ class TraktSyncFragment :
         traktLastSyncTimestamp.visibleIf(!it)
       }
       progressStatus?.let { traktSyncStatus.text = it }
-      authError?.let { findNavHost().findNavController().popBackStack() }
+      authError?.let { findNavControl().popBackStack() }
       traktSyncSchedule?.let { traktSyncScheduleButton.setText(it.buttonStringRes) }
       lastTraktSyncTimestamp?.let {
         if (it != 0L) {
@@ -167,7 +166,7 @@ class TraktSyncFragment :
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
       remove()
-      findNavHost().findNavController().popBackStack()
+      findNavControl().popBackStack()
     }
   }
 

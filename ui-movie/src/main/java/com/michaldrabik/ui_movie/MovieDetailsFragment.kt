@@ -23,7 +23,6 @@ import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.bumptech.glide.Glide
@@ -543,7 +542,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         else -> {
           remove()
           showNavigation()
-          findNavHost().findNavController().popBackStack()
+          findNavControl().popBackStack()
         }
       }
     }

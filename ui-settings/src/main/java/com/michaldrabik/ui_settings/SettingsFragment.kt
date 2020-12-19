@@ -13,7 +13,6 @@ import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.michaldrabik.common.Config
@@ -282,7 +281,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     dispatcher.addCallback(viewLifecycleOwner) {
       remove()
       showNavigation()
-      findNavHost().findNavController().popBackStack()
+      findNavControl().popBackStack()
     }
   }
 

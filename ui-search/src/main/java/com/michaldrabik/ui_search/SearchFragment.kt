@@ -9,7 +9,6 @@ import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.michaldrabik.ui_base.BaseFragment
@@ -268,7 +267,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     dispatcher.addCallback(viewLifecycleOwner) {
       showNavigation()
       remove()
-      findNavHost().findNavController().popBackStack()
+      findNavControl().popBackStack()
     }
   }
 }

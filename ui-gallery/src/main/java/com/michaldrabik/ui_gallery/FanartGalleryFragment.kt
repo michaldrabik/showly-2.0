@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.view.updateMargins
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
@@ -90,7 +89,7 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>(R.layout.frag
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
       remove()
-      findNavHost().findNavController().popBackStack()
+      findNavControl().popBackStack()
     }
   }
 }

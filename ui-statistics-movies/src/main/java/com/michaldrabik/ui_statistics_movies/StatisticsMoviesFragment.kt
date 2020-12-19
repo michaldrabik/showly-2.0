@@ -6,7 +6,6 @@ import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
@@ -82,7 +81,7 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
     dispatcher.addCallback(viewLifecycleOwner) {
       remove()
       showNavigation()
-      findNavHost().findNavController().popBackStack()
+      findNavControl().popBackStack()
     }
   }
 }

@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_base.utilities
 
 import androidx.annotation.IdRes
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.NavController
 import com.michaldrabik.common.Mode
 
 interface NavigationHost {
@@ -9,7 +9,7 @@ interface NavigationHost {
   fun setMode(mode: Mode)
   fun getMode(): Mode
 
-  fun findNavHost(): NavHostFragment
+  fun findNavControl(): NavController
   fun hideNavigation(animate: Boolean)
   fun showNavigation(animate: Boolean)
 
