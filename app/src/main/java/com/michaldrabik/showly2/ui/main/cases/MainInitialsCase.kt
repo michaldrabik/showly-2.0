@@ -1,6 +1,7 @@
 package com.michaldrabik.showly2.ui.main.cases
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
@@ -41,8 +42,8 @@ class MainInitialsCase @Inject constructor(
   }
 
   suspend fun initFcm() {
-    val isEnabled = settingsRepository.load().pushNotificationsEnabled
     FirebaseMessaging.getInstance().run {
+      val isEnabled = settingsRepository.load().pushNotificationsEnabled
       val suffix = if (BuildConfig.DEBUG) "-debug" else ""
       if (isEnabled) {
         subscribeToTopic(NotificationChannel.GENERAL_INFO.topicName + suffix)
@@ -70,9 +71,18 @@ class MainInitialsCase @Inject constructor(
 
   fun showWhatsNew(isInitialRun: Boolean): Boolean {
     val version = miscPreferences.getInt("APP_VERSION", 0)
-    miscPreferences.edit().putInt("APP_VERSION", BuildConfig.VERSION_CODE).apply()
+    val name = miscPreferences.getString("APP_VERSION_NAME", "")
 
-    if (Config.SHOW_WHATS_NEW && BuildConfig.VERSION_CODE > version && !isInitialRun) {
+    miscPreferences.edit {
+      putInt("APP_VERSION", BuildConfig.VERSION_CODE).apply()
+      putString("APP_VERSION_NAME", BuildConfig.VERSION_NAME).apply()
+    }
+
+    if (Config.SHOW_WHATS_NEW &&
+      BuildConfig.VERSION_CODE > version &&
+      BuildConfig.VERSION_NAME != name &&
+      !isInitialRun
+    ) {
       return true
     }
     return false
