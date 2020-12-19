@@ -39,7 +39,8 @@ import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.math.hypot
 import kotlin.random.Random
 
-class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_discover),
+class DiscoverFragment :
+  BaseFragment<DiscoverViewModel>(R.layout.fragment_discover),
   OnTabReselectedListener,
   OnTraktSyncListener {
 

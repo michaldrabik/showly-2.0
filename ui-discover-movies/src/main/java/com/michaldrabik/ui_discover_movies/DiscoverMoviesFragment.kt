@@ -35,7 +35,8 @@ import kotlinx.android.synthetic.main.fragment_discover_movies.*
 import kotlin.math.hypot
 import kotlin.random.Random
 
-class DiscoverMoviesFragment : BaseFragment<DiscoverMoviesViewModel>(R.layout.fragment_discover_movies),
+class DiscoverMoviesFragment :
+  BaseFragment<DiscoverMoviesViewModel>(R.layout.fragment_discover_movies),
   OnTabReselectedListener,
   OnTraktSyncListener {
 
