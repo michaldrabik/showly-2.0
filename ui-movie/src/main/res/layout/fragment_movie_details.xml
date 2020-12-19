@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="?attr/colorPlaceholderBackground"
-        android:padding="70dp"
+        android:padding="74dp"
         android:src="@drawable/ic_film"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/movieDetailsImageGuideline"
