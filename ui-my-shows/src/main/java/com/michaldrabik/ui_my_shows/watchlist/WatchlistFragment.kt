@@ -12,7 +12,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
-import com.michaldrabik.ui_base.common.OnTranslationsSyncListener
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
@@ -34,7 +33,6 @@ class WatchlistFragment :
   BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
   OnScrollResetListener,
   OnTraktSyncListener,
-  OnTranslationsSyncListener,
   OnSortClickListener {
 
   override val viewModel by viewModels<WatchlistViewModel> { viewModelFactory }
@@ -127,6 +125,4 @@ class WatchlistFragment :
   }
 
   override fun onTraktSyncProgress() = viewModel.loadShows()
-
-  override fun onTranslationsSyncProgress() = viewModel.loadShows()
 }

@@ -15,7 +15,6 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
-import com.michaldrabik.ui_base.common.OnTranslationsSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
@@ -50,8 +49,7 @@ import kotlinx.android.synthetic.main.fragment_followed_movies.*
 class FollowedMoviesFragment :
   BaseFragment<FollowedMoviesViewModel>(R.layout.fragment_followed_movies),
   OnTabReselectedListener,
-  OnTraktSyncListener,
-  OnTranslationsSyncListener {
+  OnTraktSyncListener {
 
   override val viewModel by viewModels<FollowedMoviesViewModel> { viewModelFactory }
   private var currentPage = 0
@@ -302,12 +300,6 @@ class FollowedMoviesFragment :
   override fun onTraktSyncProgress() {
     childFragmentManager.fragments.forEach {
       (it as? OnTraktSyncListener)?.onTraktSyncProgress()
-    }
-  }
-
-  override fun onTranslationsSyncProgress() {
-    childFragmentManager.fragments.forEach {
-      (it as? OnTranslationsSyncListener)?.onTranslationsSyncProgress()
     }
   }
 

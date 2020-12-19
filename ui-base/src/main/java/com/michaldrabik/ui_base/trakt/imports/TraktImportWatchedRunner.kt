@@ -112,8 +112,6 @@ class TraktImportWatchedRunner @Inject constructor(
 
     syncResults
       .forEachIndexed { index, result ->
-        delay(10)
-
         val showUi = mappers.show.fromNetwork(result.show!!)
         progressListener?.invoke(showUi.title, index, syncResults.size)
 
@@ -207,7 +205,6 @@ class TraktImportWatchedRunner @Inject constructor(
 
     syncResults
       .forEachIndexed { index, result ->
-        delay(10)
         Timber.d("Processing \'${result.movie!!.title}\'...")
         val movieUi = mappers.movie.fromNetwork(result.movie!!)
         progressListener?.invoke(movieUi.title, index, syncResults.size)
@@ -245,6 +242,7 @@ class TraktImportWatchedRunner @Inject constructor(
       if (!userTvdbManager.isAuthorized()) return
       showImagesProvider.loadRemoteImage(show, FANART)
     } catch (t: Throwable) {
+      Timber.w(t)
       // NOOP Ignore image for now. It will be fetched later if needed.
     }
   }
@@ -253,6 +251,7 @@ class TraktImportWatchedRunner @Inject constructor(
     try {
       movieImagesProvider.loadRemoteImage(movie, FANART)
     } catch (t: Throwable) {
+      Timber.w(t)
       // NOOP Ignore image for now. It will be fetched later if needed.
     }
   }
@@ -261,6 +260,7 @@ class TraktImportWatchedRunner @Inject constructor(
     try {
       userTvdbManager.checkAuthorization()
     } catch (t: Throwable) {
+      Timber.w(t)
       // Ignore for now
     }
   }

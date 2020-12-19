@@ -4,8 +4,6 @@ sealed class Event
 
 object ShowsMoviesSyncComplete : Event()
 
-object TranslationsSyncProgress : Event()
-
 object TraktSyncStart : Event()
 
 object TraktSyncSuccess : Event()
