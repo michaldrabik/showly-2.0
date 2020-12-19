@@ -28,11 +28,11 @@
   <string name="textSettingsIncludeArchiveStatsSummary">Uwzględniaj seriale z Archiwum w statystykach.</string>
   <string name="textSettingsIncludeSpecialsTitle">Sezony Specjalne</string>
   <string name="textSettingsIncludeSpecialsSummary">Pokaż \'Specjalne\' sezony na ekranie informacji o serialu.</string>
-  <string name="textSettingsNotifications">Notyfikacje</string>
-  <string name="textSettingsPushNotificationsTitle">Push Notyfikacje</string>
-  <string name="textSettingsPushNotificationsSummary">Otrzymuj notyfikacje na ogólne tematy.</string>
-  <string name="textSettingsShowsNotificationsTitle">Notyfikacje</string>
-  <string name="textSettingsShowsNotificationsSummary">Otrzymuj notyfikacje o nowych filmach, odcinkach, sezonach.</string>
+  <string name="textSettingsNotifications">Powiadomienia</string>
+  <string name="textSettingsPushNotificationsTitle">Powiadomienia Push</string>
+  <string name="textSettingsPushNotificationsSummary">Otrzymuj powiadomienia na ogólne tematy.</string>
+  <string name="textSettingsShowsNotificationsTitle">Powiadomienia</string>
+  <string name="textSettingsShowsNotificationsSummary">Otrzymuj powiadomienia o nowych filmach, odcinkach, sezonach.</string>
   <string name="textSettingsMisc">Różne</string>
   <string name="textSettingsContactDevsTitle">Kontakt</string>
   <string name="textSettingsContactDevsSummary">Masz problem/pytanie? Kliknij aby wysłać wiadomość email.</string>
