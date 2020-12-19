@@ -122,5 +122,5 @@ class ArchiveFragment :
 
   override fun onScrollReset() = archiveRecycler.scrollToPosition(0)
 
-  override fun onTraktSyncProgress() = viewModel.loadShows()
+  override fun onTraktSyncComplete() = viewModel.loadShows()
 }

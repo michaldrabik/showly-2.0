@@ -124,5 +124,5 @@ class WatchlistFragment :
     watchlistRecycler.scrollToPosition(0)
   }
 
-  override fun onTraktSyncProgress() = viewModel.loadShows()
+  override fun onTraktSyncComplete() = viewModel.loadShows()
 }

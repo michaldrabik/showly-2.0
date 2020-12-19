@@ -297,9 +297,13 @@ class FollowedMoviesFragment :
     }
   }
 
-  override fun onTraktSyncProgress() {
+  override fun onTraktSyncProgress() =
+    followedMoviesSearchView.setTraktProgress(true)
+
+  override fun onTraktSyncComplete() {
+    followedMoviesSearchView.setTraktProgress(false)
     childFragmentManager.fragments.forEach {
-      (it as? OnTraktSyncListener)?.onTraktSyncProgress()
+      (it as? OnTraktSyncListener)?.onTraktSyncComplete()
     }
   }
 

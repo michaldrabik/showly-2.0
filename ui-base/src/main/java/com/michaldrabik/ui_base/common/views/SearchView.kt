@@ -92,11 +92,19 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
     }
   }
 
-  override fun getBehavior() =
-    SearchViewBehaviour(context.dimenToPx(R.dimen.spaceNormal))
+  override fun getBehavior() = SearchViewBehaviour(context.dimenToPx(R.dimen.spaceNormal))
 
   override fun setEnabled(enabled: Boolean) {
     searchViewInput.isEnabled = enabled
+  }
+
+  fun setTraktProgress(isProgress: Boolean) {
+    isEnabled = !isProgress
+    isClickable = !isProgress
+    searchViewIcon.visibleIf(!isProgress)
+    searchViewText.visibleIf(!isProgress)
+    searchViewInput.visibleIf(!isProgress)
+    searchViewTraktSync.visibleIf(isProgress)
   }
 }
 

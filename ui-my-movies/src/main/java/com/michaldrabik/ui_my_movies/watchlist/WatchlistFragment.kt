@@ -120,5 +120,5 @@ class WatchlistFragment :
     watchlistMoviesRecycler.scrollToPosition(0)
   }
 
-  override fun onTraktSyncProgress() = viewModel.loadMovies()
+  override fun onTraktSyncComplete() = viewModel.loadMovies()
 }

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config.MAIN_GRID_SPAN
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
+import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -38,7 +39,9 @@ import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.math.hypot
 import kotlin.random.Random
 
-class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_discover), OnTabReselectedListener {
+class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_discover),
+  OnTabReselectedListener,
+  OnTraktSyncListener {
 
   override val viewModel by viewModels<DiscoverViewModel> { viewModelFactory }
 
@@ -259,6 +262,10 @@ class DiscoverFragment : BaseFragment<DiscoverViewModel>(R.layout.fragment_disco
       }
     }
   }
+
+  override fun onTraktSyncProgress() = discoverSearchView.setTraktProgress(true)
+
+  override fun onTraktSyncComplete() = discoverSearchView.setTraktProgress(false)
 
   override fun onTabReselected() = navigateToSearch()
 

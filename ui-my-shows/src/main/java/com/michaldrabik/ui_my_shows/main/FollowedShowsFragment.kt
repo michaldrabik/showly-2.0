@@ -299,9 +299,13 @@ class FollowedShowsFragment :
     }
   }
 
-  override fun onTraktSyncProgress() {
+  override fun onTraktSyncProgress() =
+    followedShowsSearchView.setTraktProgress(true)
+
+  override fun onTraktSyncComplete() {
+    followedShowsSearchView.setTraktProgress(false)
     childFragmentManager.fragments.forEach {
-      (it as? OnTraktSyncListener)?.onTraktSyncProgress()
+      (it as? OnTraktSyncListener)?.onTraktSyncComplete()
     }
   }
 

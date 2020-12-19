@@ -112,5 +112,5 @@ class MyMoviesFragment :
 
   override fun onScrollReset() = myMoviesRecycler.scrollToPosition(0)
 
-  override fun onTraktSyncProgress() = viewModel.loadMovies()
+  override fun onTraktSyncComplete() = viewModel.loadMovies()
 }

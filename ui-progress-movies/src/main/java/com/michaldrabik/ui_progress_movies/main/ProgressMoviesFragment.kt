@@ -211,7 +211,13 @@ class ProgressMoviesFragment :
 
   override fun onShowsMoviesSyncFinished() = viewModel.loadProgress()
 
-  override fun onTraktSyncProgress() = viewModel.loadProgress()
+  override fun onTraktSyncProgress() =
+    progressMoviesSearchView.setTraktProgress(true)
+
+  override fun onTraktSyncComplete() {
+    progressMoviesSearchView.setTraktProgress(false)
+    viewModel.loadProgress()
+  }
 
   override fun onTabReselected() {
     progressMoviesSearchView.translationY = 0F

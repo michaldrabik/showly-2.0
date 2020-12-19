@@ -44,7 +44,6 @@ class App :
 
   lateinit var appComponent: AppComponent
   var isAppOnline = true
-  var isMoviesEnabled = true
 
   private val activityCallbacks by lazy {
     listOf(
