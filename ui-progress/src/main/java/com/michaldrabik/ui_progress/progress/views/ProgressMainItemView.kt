@@ -74,7 +74,7 @@ class ProgressMainItemView : ShowView<ProgressItem> {
 
     progressItemSubtitle.text = String.format(
       ENGLISH,
-      "S.%02d E.%02d",
+      context.getString(R.string.textSeasonEpisode),
       item.episode.season,
       item.episode.number
     )

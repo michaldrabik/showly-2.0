@@ -69,7 +69,7 @@ class ProgressCalendarItemView : ShowView<ProgressItem> {
       progressCalendarItemSubtitle2.text = episodeTitle
       progressCalendarItemSubtitle.text = String.format(
         ENGLISH,
-        "S.%02d E.%02d",
+        context.getString(R.string.textSeasonEpisode),
         item.upcomingEpisode.season,
         item.upcomingEpisode.number
       )

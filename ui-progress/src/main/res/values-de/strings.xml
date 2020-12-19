@@ -11,4 +11,5 @@
   <string name="textTraktSynchronize">Von Trakt.tv importieren</string>
   <string name="textProgressEmpty">Dein <b>Fortschritt</b>ist aktuell leer.\n\nTippe auf den <b>Entdecken</b> Tab, um Shows hinzuzufügen oder deine Trakt.tv-Sammlung zu importieren.</string>
   <string name="textNewSeason">Staffel Premiere</string>
+  <string name="textSeasonEpisode">S.%02d E.%02d</string>
 </resources>
