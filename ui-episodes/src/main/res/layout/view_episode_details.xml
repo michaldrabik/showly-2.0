@@ -197,8 +197,10 @@
           android:layout_width="0dp"
           android:layout_height="28dp"
           android:layout_gravity="center"
+          android:layout_marginStart="@dimen/spaceTiny"
           android:layout_weight="1"
           android:visibility="gone"
+          tools:visibility="visible"
           />
 
       </LinearLayout>
