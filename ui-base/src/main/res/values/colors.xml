@@ -3,12 +3,16 @@
   <color name="colorPrimary">#222327</color>
   <color name="colorPrimaryDark">#121212</color>
   <color name="colorAccent">#F44336</color>
+  <color name="colorAccentDark">#D32F2F</color>
 
   <color name="colorBackground">#121212</color>
+  <color name="colorBackgroundLight">#FAFAFA</color>
 
+  <color name="colorTransparent">#00000000</color>
   <color name="colorBlack">#000000</color>
   <color name="colorBlackTranslucent">#B2000000</color>
   <color name="colorWhite">#FFFFFF</color>
   <color name="colorGrayLight">#AAAAAA</color>
+  <color name="colorGray">#636363</color>
   <color name="colorGrayDark">#303030</color>
 </resources>
