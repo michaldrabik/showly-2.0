@@ -18,7 +18,6 @@
   <attr name="colorSeparator" format="color" />
   <attr name="colorCardBackground" format="color" />
   <attr name="colorBadgeBackground" format="color" />
-  <attr name="colorNotification" format="color" />
 
   <attr name="colorPlaceholderBackground" format="color" />
   <attr name="colorPlaceholderStroke" format="color" />

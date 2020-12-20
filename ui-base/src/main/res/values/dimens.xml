@@ -7,6 +7,9 @@
   <dimen name="spaceBig">24dp</dimen>
   <dimen name="spaceHuge">48dp</dimen>
 
+  <dimen name="elevationSmall">3dp</dimen>
+  <dimen name="elevationNormal">6dp</dimen>
+
   <dimen name="bottomNavigationHeight">56dp</dimen>
   <dimen name="bottomNavigationHeightPadded">64dp</dimen>
   <dimen name="bottomNoInternetViewHeight">30dp</dimen>

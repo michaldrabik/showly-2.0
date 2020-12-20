@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_repository
 
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.room.withTransaction
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.Mode
@@ -22,6 +23,7 @@ class SettingsRepository @Inject constructor(
     private const val KEY_LANGUAGE = "KEY_LANGUAGE"
     private const val KEY_MOVIES_ENABLED = "KEY_MOVIES_ENABLED"
     private const val KEY_MODE = "KEY_MOVIES_MODE"
+    private const val KEY_THEME = "KEY_THEME"
   }
 
   suspend fun isInitialized() =
@@ -55,6 +57,10 @@ class SettingsRepository @Inject constructor(
   fun getLanguage() = miscPreferences.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
 
   fun setLanguage(language: String) = miscPreferences.edit().putString(KEY_LANGUAGE, language).apply()
+
+  fun setTheme(theme: Int) = miscPreferences.edit { putInt(KEY_THEME, theme) }
+
+  fun getTheme() = miscPreferences.getInt(KEY_THEME, 2)
 
   suspend fun clearLanguageLogs() {
     database.withTransaction {

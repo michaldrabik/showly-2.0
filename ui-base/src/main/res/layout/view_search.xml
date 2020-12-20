@@ -8,6 +8,7 @@
   android:layout_height="match_parent"
   app:cardBackgroundColor="?attr/colorSearchViewBackground"
   app:cardCornerRadius="@dimen/searchViewCorner"
+  app:cardElevation="@dimen/elevationSmall"
   >
 
   <LinearLayout

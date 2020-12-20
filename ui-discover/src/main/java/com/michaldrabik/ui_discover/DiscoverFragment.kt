@@ -137,7 +137,7 @@ class DiscoverFragment :
 
   private fun setupSwipeRefresh() {
     discoverSwipeRefresh.apply {
-      val color = requireContext().colorFromAttr(R.attr.colorNotification)
+      val color = requireContext().colorFromAttr(R.attr.colorAccent)
       setProgressBackgroundColorSchemeColor(requireContext().colorFromAttr(R.attr.colorSearchViewBackground))
       setColorSchemeColors(color, color, color)
       setOnRefreshListener {

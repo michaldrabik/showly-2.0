@@ -1,0 +1,40 @@
+<resources>
+
+  <!-- Base app theme -->
+  <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <item name="android:windowBackground">@color/colorBackgroundLight</item>
+    <item name="android:navigationBarColor">@color/colorBlack</item>
+    <item name="android:windowTranslucentStatus">true</item>
+
+    <item name="colorPrimary">@color/colorWhite</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryLight</item>
+    <item name="colorAccent">@color/colorAccentDark</item>
+    <item name="colorError">@color/colorAccentDark</item>
+    <item name="colorMask">@color/colorBlackTranslucent</item>
+
+    <item name="android:textColorPrimary">@color/colorBlack</item>
+    <item name="android:textColorSecondary">@color/colorGray</item>
+    <item name="android:textColorPrimaryInverse">@color/colorWhite</item>
+
+    <item name="colorInfoSnackbar">@color/colorWhite</item>
+    <item name="colorErrorSnackbar">@color/colorAccentDark</item>
+    <item name="colorRateAppSnackbar">@color/colorWhite</item>
+    <item name="colorRateAppSnackbarTextPrimary">@color/colorBlack</item>
+    <item name="colorRateAppSnackbarTextSecondary">@color/colorGrayLight</item>
+
+    <item name="colorBottomMenuBackground">@color/colorBackgroundLight</item>
+    <item name="colorBottomMenuItem">@color/colorGray</item>
+    <item name="colorBottomMenuItemChecked">@color/colorAccentDark</item>
+    <item name="colorBottomMenuSeparator">@color/colorGrayLight</item>
+
+    <item name="colorSearchViewBackground">@color/colorWhite</item>
+    <item name="colorSearchViewControl">@color/colorGray</item>
+
+    <item name="colorPlaceholderBackground">#1C1C1C</item>
+    <item name="colorPlaceholderStroke">#3A3A3A</item>
+
+    <item name="colorSeparator">@color/colorGrayDark</item>
+    <item name="colorCardBackground">#282828</item>
+    <item name="colorBadgeBackground">@color/colorGrayDark</item>
+  </style>
+</resources>
