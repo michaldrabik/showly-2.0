@@ -54,17 +54,22 @@
 
   <!--  Bottom Sheet Dialogs -->
 
-  <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
-    <item name="android:background">@drawable/bg_bottom_sheet</item>
+  <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+    <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
   </style>
 
-  <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.BottomSheetDialog">
-    <item name="android:windowIsFloating">false</item>
-    <item name="android:statusBarColor">@android:color/transparent</item>
-    <item name="bottomSheetStyle">@style/BottomSheet</item>
+  <style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+    <item name="backgroundTint">#00000000</item>
+    <item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>
   </style>
 
-  <style name="BottomSheetDialogTheme" parent="BaseBottomSheetDialog" />
+  <style name="CustomShapeAppearanceBottomSheetDialog" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSizeTopRight">16dp</item>
+    <item name="cornerSizeTopLeft">16dp</item>
+    <item name="cornerSizeBottomRight">0dp</item>
+    <item name="cornerSizeBottomLeft">0dp</item>
+  </style>
 
   <!-- Progress Bars -->
 

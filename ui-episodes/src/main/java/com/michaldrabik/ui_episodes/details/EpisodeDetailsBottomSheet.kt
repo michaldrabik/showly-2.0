@@ -79,7 +79,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   override val layoutResId = R.layout.view_episode_details
 
-  override fun getTheme(): Int = R.style.BottomSheetDialogTheme
+  override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiEpisodeDetailsComponentProvider).provideEpisodeDetailsComponent().inject(this)
