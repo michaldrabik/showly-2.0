@@ -1,10 +1,10 @@
 package com.michaldrabik.ui_search
 
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.SEARCH_RECENTS_AMOUNT
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -175,7 +175,7 @@ class SearchViewModel @Inject constructor(
           else searchMainCase.loadTranslation(item.movie)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
-        FirebaseCrashlytics.getInstance().recordException(error)
+        Logger.record(error, "Source" to "${SearchViewModel::class.simpleName}::loadMissingTranslation()")
       }
     }
   }

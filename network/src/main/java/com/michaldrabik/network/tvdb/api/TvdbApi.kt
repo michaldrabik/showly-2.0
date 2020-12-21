@@ -1,5 +1,6 @@
 package com.michaldrabik.network.tvdb.api
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.network.Config
 import com.michaldrabik.network.tvdb.model.AuthorizationRequest
 import com.michaldrabik.network.tvdb.model.TvdbActor
@@ -22,6 +23,10 @@ class TvdbApi(private val service: TvdbService) {
           )
         }
     } catch (t: Throwable) {
+      FirebaseCrashlytics.getInstance().run {
+        setCustomKey("Source", "${TvdbApi::class.simpleName}::fetchShowImages()")
+        recordException(t)
+      }
       emptyList()
     }
   }

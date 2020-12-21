@@ -2,9 +2,9 @@ package com.michaldrabik.ui_show
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
@@ -133,8 +133,7 @@ class ShowDetailsViewModel @Inject constructor(
         }
       }
     } catch (t: Throwable) {
-      Timber.e(t)
-      FirebaseCrashlytics.getInstance().recordException(t)
+      Logger.record(t, "Source" to "${ShowDetailsViewModel::class.simpleName}::loadNextEpisode()")
     }
   }
 
@@ -196,8 +195,7 @@ class ShowDetailsViewModel @Inject constructor(
         uiState = ShowDetailsUiModel(translation = it)
       }
     } catch (error: Throwable) {
-      Timber.e(error)
-      FirebaseCrashlytics.getInstance().recordException(error)
+      Logger.record(error, "Source" to "${ShowDetailsViewModel::class.simpleName}::loadTranslation()")
     }
   }
 
@@ -221,8 +219,7 @@ class ShowDetailsViewModel @Inject constructor(
 
         uiState = ShowDetailsUiModel(seasonTranslation = ActionEvent(seasonItem.copy(episodes = episodes)))
       } catch (error: Throwable) {
-        Timber.e(error)
-        FirebaseCrashlytics.getInstance().recordException(error)
+        Logger.record(error, "Source" to "${ShowDetailsViewModel::class.simpleName}::loadSeasonTranslation()")
       }
     }
   }

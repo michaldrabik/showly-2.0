@@ -2,11 +2,11 @@ package com.michaldrabik.ui_progress.calendar
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Episode
@@ -110,7 +110,7 @@ class ProgressCalendarViewModel @Inject constructor(
         val translation = translationsRepository.loadTranslation(item.show, language)
         updateItem(item.copy(showTranslation = translation))
       } catch (error: Throwable) {
-        FirebaseCrashlytics.getInstance().recordException(error)
+        Logger.record(error, "Source" to "${ProgressCalendarViewModel::class.simpleName}::findMissingTranslation()")
       }
     }
   }

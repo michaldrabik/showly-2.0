@@ -5,15 +5,14 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fcm.FcmExtra
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider
 import com.michaldrabik.ui_widgets.search.SearchWidgetProvider
 import kotlinx.android.synthetic.main.activity_main.*
-import timber.log.Timber
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -50,9 +49,7 @@ abstract class BaseActivity : AppCompatActivity() {
         navigate(R.id.actionDiscoverFragmentToSearchFragment)
         extras?.clear()
       } catch (error: Throwable) {
-        val exception = Throwable(BaseActivity::class.simpleName, error)
-        Timber.e(error)
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        Logger.record(error, "Source" to "${BaseActivity::class.simpleName}::handleSearchWidgetClick()")
       }
     }
   }
@@ -72,8 +69,7 @@ abstract class BaseActivity : AppCompatActivity() {
         extras.clear()
         action()
       } catch (e: Exception) {
-        val exception = Throwable(BaseActivity::class.simpleName, e)
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        Logger.record(e, "Source" to "${BaseActivity::class.simpleName}::handleFcmShowPush()")
       }
     }
   }

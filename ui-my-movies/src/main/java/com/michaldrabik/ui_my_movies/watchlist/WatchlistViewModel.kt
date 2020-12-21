@@ -1,9 +1,9 @@
 package com.michaldrabik.ui_my_movies.watchlist
 
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -42,7 +42,7 @@ class WatchlistViewModel @Inject constructor(
         val listItems = ratingsCase.loadRatings(items)
         uiState = WatchlistUiModel(items = listItems)
       } catch (error: Throwable) {
-        FirebaseCrashlytics.getInstance().recordException(error)
+        Logger.record(error, "Source" to "WatchlistViewModel::loadRatings()")
       }
     }
   }
@@ -73,7 +73,7 @@ class WatchlistViewModel @Inject constructor(
         val translation = loadMoviesCase.loadTranslation(item.movie, false)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
-        FirebaseCrashlytics.getInstance().recordException(error)
+        Logger.record(error, "Source" to "WatchlistViewModel::loadMissingTranslation()")
       }
     }
   }

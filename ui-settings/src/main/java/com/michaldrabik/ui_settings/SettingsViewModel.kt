@@ -4,9 +4,9 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.NotificationDelay
@@ -138,8 +138,7 @@ class SettingsViewModel @Inject constructor(
         Analytics.logTraktLogin()
       } catch (t: Throwable) {
         _messageLiveData.value = MessageEvent.error(R.string.errorAuthorization)
-        val exception = Throwable(SettingsViewModel::class.simpleName, t)
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        Logger.record(t, "Source" to "${SettingsViewModel::class.simpleName}::authorizeTrakt()")
       }
     }
   }

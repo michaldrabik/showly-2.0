@@ -1,9 +1,9 @@
 package com.michaldrabik.ui_progress_movies.progress
 
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
@@ -44,7 +44,7 @@ class ProgressMoviesMainViewModel @Inject constructor(
         val translation = translationsRepository.loadTranslation(item.movie, language)
         updateItem(item.copy(movieTranslation = translation))
       } catch (error: Throwable) {
-        FirebaseCrashlytics.getInstance().recordException(error)
+        Logger.record(error, "Source" to "${ProgressMoviesMainViewModel::class.simpleName}::findMissingTranslation()")
       }
     }
   }

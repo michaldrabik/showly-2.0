@@ -2,10 +2,10 @@ package com.michaldrabik.ui_progress_movies.calendar
 
 import androidx.annotation.StringRes
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcDay
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
@@ -109,7 +109,7 @@ class ProgressMoviesCalendarViewModel @Inject constructor(
         val translation = translationsRepository.loadTranslation(item.movie, language)
         updateItem(item.copy(movieTranslation = translation))
       } catch (error: Throwable) {
-        FirebaseCrashlytics.getInstance().recordException(error)
+        Logger.record(error, "Source" to "${ProgressMoviesCalendarViewModel::class.simpleName}::findMissingTranslation()")
       }
     }
   }

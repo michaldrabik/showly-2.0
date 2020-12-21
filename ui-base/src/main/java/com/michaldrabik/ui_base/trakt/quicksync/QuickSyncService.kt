@@ -3,8 +3,8 @@ package com.michaldrabik.ui_base.trakt.quicksync
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.Analytics
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsManager
@@ -60,8 +60,7 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
           SYNC_NOTIFICATION_ERROR_ID,
           createErrorNotification(R.string.textTraktQuickSyncError, R.string.textTraktQuickSyncErrorFull)
         )
-        val exception = Throwable(QuickSyncService::class.simpleName, t)
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        Logger.record(t, "Source" to "${QuickSyncService::class.simpleName}")
       } finally {
         Timber.d("Quick Sync completed.")
         clear()
