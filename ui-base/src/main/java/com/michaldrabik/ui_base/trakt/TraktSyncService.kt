@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.IBinder
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.ui_base.Analytics
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsManager
@@ -124,8 +124,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
             createErrorNotification(R.string.textTraktSyncError, R.string.textTraktSyncErrorFull)
           )
         }
-        val exception = Throwable(TraktSyncService::class.simpleName, t)
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        Logger.record(t, "Source" to "${TraktSyncService::class.simpleName}")
       } finally {
         Timber.d("Sync completed.")
         notificationManager().cancel(SYNC_NOTIFICATION_PROGRESS_ID)

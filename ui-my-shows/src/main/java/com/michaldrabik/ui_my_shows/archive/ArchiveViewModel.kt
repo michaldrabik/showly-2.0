@@ -1,9 +1,9 @@
 package com.michaldrabik.ui_my_shows.archive
 
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -44,7 +44,7 @@ class ArchiveViewModel @Inject constructor(
         val listItems = ratingsCase.loadRatings(items)
         uiState = ArchiveUiModel(items = listItems)
       } catch (error: Throwable) {
-        FirebaseCrashlytics.getInstance().recordException(error)
+        Logger.record(error, "Source" to "${ArchiveViewModel::class.simpleName}::loadRatings()")
       }
     }
   }
@@ -75,7 +75,7 @@ class ArchiveViewModel @Inject constructor(
         val translation = loadShowsCase.loadTranslation(item.show, false)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
-        FirebaseCrashlytics.getInstance().recordException(error)
+        Logger.record(error, "Source" to "${ArchiveViewModel::class.simpleName}::loadMissingTranslation()")
       }
     }
   }

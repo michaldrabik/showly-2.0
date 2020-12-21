@@ -3,7 +3,7 @@ package com.michaldrabik.ui_widgets.progress
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
-import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_episodes.EpisodesManager
@@ -58,9 +58,8 @@ class ProgressWidgetEpisodeCheckService : JobIntentService(), CoroutineScope {
     val showId = intent.getLongExtra(EXTRA_SHOW_ID, -1)
 
     if (episodeId == -1L || seasonId == -1L || showId == -1L) {
-      FirebaseCrashlytics
-        .getInstance()
-        .recordException(Throwable("WatchlistWidgetEpisodeCheckService error. One of the IDs is invalid."))
+      val error = Throwable("${ProgressWidgetEpisodeCheckService::class.simpleName} error. Invalid ID.")
+      Logger.record(error)
       return
     }
 

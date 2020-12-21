@@ -28,9 +28,12 @@ class TraktInterceptor : Interceptor {
 
     if (response.code == 429) {
       val url = response.request.url.toUrl().toString()
-      val error = Throwable("429 Too Many Requests: $url")
+      val error = Throwable("429 Too Many Requests")
       Timber.e(error)
-      FirebaseCrashlytics.getInstance().recordException(error)
+      FirebaseCrashlytics.getInstance().run {
+        setCustomKey("URL", url)
+        recordException(error)
+      }
     }
 
     return response

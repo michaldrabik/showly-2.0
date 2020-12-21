@@ -1,9 +1,9 @@
 package com.michaldrabik.ui_my_shows.myshows
 
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
@@ -94,7 +94,7 @@ class MyShowsViewModel @Inject constructor(
         val listItems = ratingsCase.loadRatings(items)
         uiState = MyShowsUiModel(listItems = listItems)
       } catch (error: Throwable) {
-        FirebaseCrashlytics.getInstance().recordException(error)
+        Logger.record(error, "Source" to "${MyShowsViewModel::class.simpleName}::loadRatings()")
       }
     }
   }
@@ -151,7 +151,7 @@ class MyShowsViewModel @Inject constructor(
         val translation = loadShowsCase.loadTranslation(item.show, false)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
-        FirebaseCrashlytics.getInstance().recordException(error)
+        Logger.record(error, "Source" to "${MyShowsViewModel::class.simpleName}::loadMissingTranslation()")
       }
     }
   }

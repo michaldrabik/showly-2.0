@@ -10,7 +10,10 @@ class TmdbApi(private val service: TmdbService) {
     try {
       service.fetchImages(tmdbId)
     } catch (error: Throwable) {
-      FirebaseCrashlytics.getInstance().recordException(error)
+      FirebaseCrashlytics.getInstance().run {
+        setCustomKey("Source", "${TmdbApi::class.simpleName}::fetchMovieImages()")
+        recordException(error)
+      }
       TmdbImages(emptyList(), emptyList())
     }
 

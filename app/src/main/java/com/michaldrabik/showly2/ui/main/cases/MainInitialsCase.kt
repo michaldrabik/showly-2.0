@@ -2,11 +2,11 @@ package com.michaldrabik.showly2.ui.main.cases
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.showly2.BuildConfig
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_repository.RatingsRepository
@@ -65,7 +65,7 @@ class MainInitialsCase @Inject constructor(
         ratingsRepository.preloadMoviesRatings(token)
       }
     } catch (error: Throwable) {
-      FirebaseCrashlytics.getInstance().recordException(error)
+      Logger.record(error, "Source" to "${MainInitialsCase::class.simpleName}::initRatings()")
     }
   }
 

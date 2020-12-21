@@ -3,10 +3,10 @@ package com.michaldrabik.showly2.common
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.showly2.common.movies.MoviesSyncRunner
 import com.michaldrabik.showly2.common.shows.ShowsSyncRunner
 import com.michaldrabik.showly2.serviceComponent
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ShowsMoviesSyncComplete
 import kotlinx.coroutines.CoroutineScope
@@ -40,17 +40,13 @@ class ShowsMoviesSyncService : JobIntentService(), CoroutineScope {
       try {
         syncCount += showsSyncRunner.run()
       } catch (t: Throwable) {
-        Timber.e(t.toString())
-        val exception = Throwable(ShowsMoviesSyncService::class.simpleName, t)
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        Logger.record(t, "Source" to "ShowsSyncRunner")
       }
 
       try {
         syncCount += moviesSyncRunner.run()
       } catch (t: Throwable) {
-        Timber.e(t.toString())
-        val exception = Throwable(ShowsMoviesSyncService::class.simpleName, t)
-        FirebaseCrashlytics.getInstance().recordException(exception)
+        Logger.record(t, "Source" to "MoviesSyncRunner")
       }
     }
 

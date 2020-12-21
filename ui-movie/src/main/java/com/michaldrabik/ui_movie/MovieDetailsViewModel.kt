@@ -2,9 +2,9 @@ package com.michaldrabik.ui_movie
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
@@ -134,8 +134,7 @@ class MovieDetailsViewModel @Inject constructor(
         uiState = MovieDetailsUiModel(translation = it)
       }
     } catch (error: Throwable) {
-      Timber.e(error)
-      FirebaseCrashlytics.getInstance().recordException(error)
+      Logger.record(error, "Source" to "${MovieDetailsViewModel::class.simpleName}::loadTranslation()")
     }
   }
 
