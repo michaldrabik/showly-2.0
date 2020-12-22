@@ -3,6 +3,7 @@ package com.michaldrabik.network.tmdb.api
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.network.tmdb.model.TmdbActor
 import com.michaldrabik.network.tmdb.model.TmdbImages
+import kotlin.coroutines.cancellation.CancellationException
 
 class TmdbApi(private val service: TmdbService) {
 
@@ -10,9 +11,11 @@ class TmdbApi(private val service: TmdbService) {
     try {
       service.fetchImages(tmdbId)
     } catch (error: Throwable) {
-      FirebaseCrashlytics.getInstance().run {
-        setCustomKey("Source", "${TmdbApi::class.simpleName}::fetchMovieImages()")
-        recordException(error)
+      if (error !is CancellationException) {
+        FirebaseCrashlytics.getInstance().run {
+          setCustomKey("Source", "${TmdbApi::class.simpleName}::fetchMovieImages()")
+          recordException(error)
+        }
       }
       TmdbImages(emptyList(), emptyList())
     }
