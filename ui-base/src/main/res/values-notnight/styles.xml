@@ -41,8 +41,26 @@
     <item name="colorBadgeBackground">@color/colorPrimaryDark</item>
   </style>
 
+  <!-- Progress Bar -->
+
   <style name="ProgressBar.Dark" parent="ProgressBar">
     <item name="android:indeterminateTint">@color/colorAccent</item>
+  </style>
+
+
+  <!-- Dialogs -->
+
+  <style name="AlertDialog" parent="@style/Theme.MaterialComponents.Dialog">
+    <item name="android:textColor">@color/colorBlue</item>
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="colorPrimary">@color/colorAccent</item>
+    <item name="android:textColorSecondary">@color/colorBlueLight</item>
+    <item name="textColorAlertDialogListItem">@color/colorBlue</item>
+    <item name="buttonBarNegativeButtonStyle">@style/AlertDialog.NegativeButton</item>
+  </style>
+
+  <style name="AlertDialog.NegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <item name="android:textColor">@color/colorGrayLight</item>
   </style>
 
 </resources>
