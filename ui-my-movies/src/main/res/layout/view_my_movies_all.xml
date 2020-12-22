@@ -134,6 +134,7 @@
       app:layout_constraintEnd_toStartOf="@id/myMovieUserRating"
       app:layout_constraintTop_toTopOf="@id/myMovieAllYear"
       app:srcCompat="@drawable/ic_star"
+      app:tint="?android:attr/textColorPrimary"
       tools:visibility="visible"
       />
 

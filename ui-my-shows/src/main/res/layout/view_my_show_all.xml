@@ -134,6 +134,7 @@
       app:layout_constraintEnd_toStartOf="@id/myShowAllUserRating"
       app:layout_constraintTop_toTopOf="@id/myShowAllNetwork"
       app:srcCompat="@drawable/ic_star"
+      app:tint="?android:attr/textColorPrimary"
       tools:visibility="visible"
       />
 

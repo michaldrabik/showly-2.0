@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <color name="colorBackground">#121212</color>
+
   <color name="colorPrimary">#222327</color>
   <color name="colorPrimaryDark">#121212</color>
   <color name="colorAccent">#F44336</color>
   <color name="colorError">#F44336</color>
-
-  <color name="colorBackground">#121212</color>
 
   <color name="colorTransparent">#00000000</color>
   <color name="colorBlack">#000000</color>
@@ -17,5 +17,5 @@
 
   <color name="colorBlue">#17283A</color>
   <color name="colorBlueLight">#70767C</color>
-  <color name="colorBlueLight2x">#969EA6</color>
+  <color name="colorBlueLight2x">#91989F</color>
 </resources>

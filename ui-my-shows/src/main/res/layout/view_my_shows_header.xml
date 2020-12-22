@@ -38,6 +38,7 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/myShowsHeaderLabel"
       app:srcCompat="@drawable/ic_sort"
+      app:tint="?android:attr/textColorPrimary"
       tools:visibility="visible"
       />
 
