@@ -2,39 +2,42 @@
 
   <!-- Base app theme -->
   <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-    <item name="android:windowBackground">@color/colorBackgroundLight</item>
+    <item name="android:windowBackground">@color/colorBackground</item>
     <item name="android:navigationBarColor">@color/colorBlack</item>
     <item name="android:windowTranslucentStatus">true</item>
 
     <item name="colorPrimary">@color/colorWhite</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryLight</item>
-    <item name="colorAccent">@color/colorAccentDark</item>
-    <item name="colorError">@color/colorAccentDark</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="colorError">@color/colorError</item>
     <item name="colorMask">@color/colorBlackTranslucent</item>
 
-    <item name="android:textColorPrimary">@color/colorBlack</item>
-    <item name="android:textColorSecondary">@color/colorGray</item>
-    <item name="android:textColorPrimaryInverse">@color/colorWhite</item>
+    <item name="android:textColorPrimary">@color/colorBlue</item>
+    <item name="android:textColorSecondary">@color/colorBlueLight</item>
+    <item name="textColorOnSurface">@color/colorWhite</item>
+    <item name="textColorTab">@color/colorBlueLight2x</item>
+    <item name="textColorTabSelected">@color/colorBlue</item>
 
     <item name="colorInfoSnackbar">@color/colorWhite</item>
-    <item name="colorErrorSnackbar">@color/colorAccentDark</item>
+    <item name="colorErrorSnackbar">@color/colorAccent</item>
     <item name="colorRateAppSnackbar">@color/colorWhite</item>
     <item name="colorRateAppSnackbarTextPrimary">@color/colorBlack</item>
     <item name="colorRateAppSnackbarTextSecondary">@color/colorGrayLight</item>
 
-    <item name="colorBottomMenuBackground">@color/colorBackgroundLight</item>
-    <item name="colorBottomMenuItem">@color/colorGray</item>
-    <item name="colorBottomMenuItemChecked">@color/colorAccentDark</item>
-    <item name="colorBottomMenuSeparator">@color/colorGrayLight</item>
+    <item name="colorBottomMenuBackground">@color/colorPrimary</item>
+    <item name="colorBottomMenuItem">@color/colorBlueLight2x</item>
+    <item name="colorBottomMenuItemChecked">@color/colorAccent</item>
+    <item name="colorBottomMenuSeparator">@color/colorPrimaryDark</item>
 
     <item name="colorSearchViewBackground">@color/colorWhite</item>
     <item name="colorSearchViewControl">@color/colorGray</item>
 
-    <item name="colorPlaceholderBackground">#1C1C1C</item>
-    <item name="colorPlaceholderStroke">#3A3A3A</item>
+    <item name="colorPlaceholderBackground">@color/colorPrimaryDark</item>
+    <item name="colorPlaceholderStroke">@color/colorAccent</item>
+    <item name="colorPlaceholderIcon">@color/colorAccent</item>
 
     <item name="colorSeparator">@color/colorGrayDark</item>
     <item name="colorCardBackground">#282828</item>
-    <item name="colorBadgeBackground">@color/colorGrayDark</item>
+    <item name="colorBadgeBackground">@color/colorPrimaryDark</item>
   </style>
 </resources>

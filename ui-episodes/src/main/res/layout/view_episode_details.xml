@@ -66,7 +66,7 @@
     android:id="@+id/episodeDetailsRootScroll"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:clipToPadding="false"
+    android:clipChildren="false"
     android:fillViewport="true"
     android:overScrollMode="never"
     android:paddingTop="@dimen/spaceNormal"
@@ -81,6 +81,8 @@
       android:layout_height="match_parent"
       android:layout_marginStart="@dimen/spaceNormal"
       android:layout_marginEnd="@dimen/spaceNormal"
+      android:clipChildren="false"
+      android:clipToPadding="false"
       android:orientation="vertical"
       android:paddingBottom="@dimen/spaceNormal"
       >
@@ -161,6 +163,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spaceNormal"
+        android:clipChildren="false"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         >
@@ -175,7 +178,7 @@
           android:backgroundTint="?attr/colorAccent"
           android:gravity="center"
           android:text="@string/textLoadCommentsCount"
-          android:textColor="?android:attr/textColorPrimary"
+          android:textColor="?attr/textColorOnSurface"
           app:rippleColor="?android:attr/textColorPrimary"
           />
 

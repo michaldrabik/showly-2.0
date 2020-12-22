@@ -21,4 +21,10 @@
 
   <attr name="colorPlaceholderBackground" format="color" />
   <attr name="colorPlaceholderStroke" format="color" />
+  <attr name="colorPlaceholderIcon" format="color" />
+
+  <attr name="textColorOnSurface" format="color" />
+
+  <attr name="textColorTab" format="color" />
+  <attr name="textColorTabSelected" format="color" />
 </resources>

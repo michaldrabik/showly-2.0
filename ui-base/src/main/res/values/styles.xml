@@ -9,12 +9,14 @@
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
-    <item name="colorError">@color/colorAccent</item>
+    <item name="colorError">@color/colorError</item>
     <item name="colorMask">@color/colorBlackTranslucent</item>
 
     <item name="android:textColorPrimary">@color/colorWhite</item>
     <item name="android:textColorSecondary">@color/colorGrayLight</item>
-    <item name="android:textColorPrimaryInverse">@color/colorWhite</item>
+    <item name="textColorOnSurface">@color/colorWhite</item>
+    <item name="textColorTab">@color/colorGrayLight</item>
+    <item name="textColorTabSelected">@color/colorWhite</item>
 
     <item name="colorInfoSnackbar">@color/colorWhite</item>
     <item name="colorErrorSnackbar">@color/colorAccent</item>
@@ -32,6 +34,7 @@
 
     <item name="colorPlaceholderBackground">#1C1C1C</item>
     <item name="colorPlaceholderStroke">#3A3A3A</item>
+    <item name="colorPlaceholderIcon">@color/colorWhite</item>
 
     <item name="colorSeparator">@color/colorGrayDark</item>
     <item name="colorCardBackground">#282828</item>
@@ -112,7 +115,7 @@
     <item name="android:shadowDx">3</item>
     <item name="android:shadowDy">3</item>
     <item name="android:shadowRadius">1</item>
-    <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+    <item name="android:textColor">?attr/textColorOnSurface</item>
     <item name="android:ellipsize">end</item>
   </style>
 
@@ -122,7 +125,7 @@
     <item name="tabPaddingStart">8dp</item>
     <item name="tabPaddingEnd">8dp</item>
     <item name="tabTextAppearance">@style/ScrollableTabTextStyle</item>
-    <item name="tabSelectedTextColor">?android:attr/textColorPrimary</item>
+    <item name="tabSelectedTextColor">?attr/textColorTabSelected</item>
     <item name="tabIndicatorFullWidth">false</item>
     <item name="tabRippleColor">@android:color/transparent</item>
     <item name="tabIndicatorAnimationDuration">200</item>
@@ -130,7 +133,7 @@
 
   <style name="ScrollableTabTextStyle" parent="TextAppearance.Design.Tab">
     <item name="android:textSize">15sp</item>
-    <item name="android:textColor">?android:attr/textColorSecondary</item>
+    <item name="android:textColor">?attr/textColorTab</item>
     <item name="android:layout_gravity">start</item>
     <item name="textAllCaps">false</item>
   </style>
