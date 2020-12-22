@@ -146,6 +146,7 @@ class TraktImportWatchedRunner @Inject constructor(
             database.seasonsDao().upsert(seasons)
             database.episodesDao().upsert(episodes)
 
+            database.myShowsDao().updateTimestamp(showId, result.lastWatchedMillis())
             database.traktSyncLogDao().upsertShow(showId, result.lastUpdateMillis())
           }
         } catch (t: Throwable) {
