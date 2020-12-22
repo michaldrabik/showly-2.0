@@ -28,6 +28,7 @@ class TvdbApi(private val service: TvdbService) {
       if (t !is CancellationException) {
         FirebaseCrashlytics.getInstance().run {
           setCustomKey("Source", "${TvdbApi::class.simpleName}::fetchShowImages()")
+          setCustomKey("Show Tvdb ID", tvdbId)
           recordException(t)
         }
       }

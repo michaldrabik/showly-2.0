@@ -55,15 +55,20 @@ abstract class BaseActivity : AppCompatActivity() {
   }
 
   private fun handleFcmShowPush(extras: Bundle, key: String, action: () -> Unit) {
-    val showId = extras.getString(key)?.toLong() ?: -1
-    val bundle = Bundle().apply { putLong(ARG_SHOW_ID, showId) }
+    val itemId = extras.getString(key)?.toLong() ?: -1
+    val bundle = Bundle().apply { putLong(ARG_SHOW_ID, itemId) }
     findNavHostFragment().findNavController().run {
       try {
         when (currentDestination?.id) {
           R.id.showDetailsFragment -> navigate(R.id.actionShowDetailsFragmentToSelf, bundle)
           else -> {
             bottomNavigationView.selectedItemId = R.id.menuProgress
-            navigate(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
+            val actionId = when (currentDestination?.id) {
+              R.id.progressFragment -> R.id.actionProgressFragmentToShowDetailsFragment
+              R.id.progressMoviesFragment -> R.id.actionProgressMoviesFragmentToShowDetailsFragment
+              else -> error("Unknown actionId")
+            }
+            navigate(actionId, bundle)
           }
         }
         extras.clear()

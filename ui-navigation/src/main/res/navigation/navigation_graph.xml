@@ -143,6 +143,13 @@
       app:popExitAnim="@anim/anim_fade_out"
       />
     <action
+      android:id="@+id/actionProgressMoviesFragmentToShowDetailsFragment"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
       android:id="@+id/actionProgressMoviesFragmentToSettingsFragment"
       app:destination="@id/settingsFragment"
       app:enterAnim="@anim/anim_fade_in"
