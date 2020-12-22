@@ -21,6 +21,7 @@ class MyMoviesRecentsView : FrameLayout {
   init {
     inflate(context, R.layout.view_my_movies_recents, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    clipChildren = false
   }
 
   private val itemMargin by lazy { context.dimenToPx(R.dimen.spaceTiny) }

@@ -34,6 +34,7 @@ class MyShowsSectionView : FrameLayout {
     inflate(context, R.layout.view_my_shows_section, this)
     id = View.generateViewId()
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    clipChildren = false
     setupRecycler()
   }
 

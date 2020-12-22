@@ -30,6 +30,7 @@
       android:padding="@dimen/spaceBig"
       android:visibility="gone"
       app:srcCompat="@drawable/ic_television"
+      app:tint="?attr/colorPlaceholderIcon"
       tools:visibility="visible"
       />
 

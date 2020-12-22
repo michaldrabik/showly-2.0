@@ -30,6 +30,7 @@
       android:padding="42dp"
       android:visibility="gone"
       app:srcCompat="@drawable/ic_film"
+      app:tint="?attr/colorPlaceholderIcon"
       tools:visibility="visible"
       />
 

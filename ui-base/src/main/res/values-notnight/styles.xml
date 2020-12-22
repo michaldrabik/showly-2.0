@@ -30,7 +30,7 @@
     <item name="colorBottomMenuSeparator">@color/colorPrimaryDark</item>
 
     <item name="colorSearchViewBackground">@color/colorWhite</item>
-    <item name="colorSearchViewControl">@color/colorGray</item>
+    <item name="colorSearchViewControl">@color/colorBlue</item>
 
     <item name="colorPlaceholderBackground">@color/colorPrimaryDark</item>
     <item name="colorPlaceholderStroke">@color/colorAccent</item>

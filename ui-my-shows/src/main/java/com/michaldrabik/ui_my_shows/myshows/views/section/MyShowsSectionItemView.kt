@@ -26,6 +26,8 @@ class MyShowsSectionItemView : ShowView<MyShowsItem> {
     inflate(context, R.layout.view_my_shows_section_item, this)
     val width = context.dimenToPx(R.dimen.myShowsPosterWidth)
     layoutParams = LayoutParams(width, MATCH_PARENT)
+    setBackgroundResource(R.drawable.bg_media_view_elevation)
+    elevation = context.dimenToPx(R.dimen.elevationSmall).toFloat()
     onClick { itemClickListener?.invoke(item) }
   }
 
