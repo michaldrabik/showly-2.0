@@ -9,6 +9,7 @@ class TmdbApi(private val service: TmdbService) {
 
   suspend fun fetchMovieImages(tmdbId: Long) =
     try {
+      if (tmdbId <= 0) TmdbImages(emptyList(), emptyList())
       service.fetchImages(tmdbId)
     } catch (error: Throwable) {
       if (error !is CancellationException) {

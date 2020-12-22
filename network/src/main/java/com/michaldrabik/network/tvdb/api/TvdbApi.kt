@@ -15,6 +15,7 @@ class TvdbApi(private val service: TvdbService) {
   )
 
   suspend fun fetchShowImages(token: String, tvdbId: Long): List<TvdbImage> {
+    if (tvdbId <= 0) return emptyList()
     return try {
       service.fetchShowImages("Bearer $token", tvdbId).data
         .map {
