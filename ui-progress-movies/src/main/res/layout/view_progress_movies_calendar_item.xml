@@ -93,6 +93,7 @@
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceNormal"
       android:layout_marginTop="@dimen/spaceSmall"
+      android:elevation="@dimen/elevationTiny"
       android:background="@drawable/bg_movie_date_badge"
       android:gravity="start|center_vertical"
       android:paddingStart="6dp"
