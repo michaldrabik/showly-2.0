@@ -42,7 +42,7 @@
 
   <ProgressBar
     android:id="@+id/episodeDetailsProgress"
-    style="@style/ProgressBarGray"
+    style="@style/ProgressBar.Dark"
     android:layout_width="30dp"
     android:layout_height="30dp"
     app:layout_constraintBottom_toBottomOf="@id/episodeDetailsImage"
@@ -197,7 +197,7 @@
 
         <ProgressBar
           android:id="@+id/episodeDetailsRateProgress"
-          style="@style/ProgressBarGray"
+          style="@style/ProgressBar.Dark"
           android:layout_width="0dp"
           android:layout_height="28dp"
           android:layout_gravity="center"
@@ -211,7 +211,7 @@
 
       <ProgressBar
         android:id="@+id/episodeDetailsCommentsProgress"
-        style="@style/ProgressBarAccent"
+        style="@style/ProgressBar.Accent"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

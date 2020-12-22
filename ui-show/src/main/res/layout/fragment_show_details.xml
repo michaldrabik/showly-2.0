@@ -86,7 +86,7 @@
 
       <ProgressBar
         android:id="@+id/showDetailsImageProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/showDetailsImage"
@@ -280,7 +280,7 @@
 
       <ProgressBar
         android:id="@+id/showDetailsActorsProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
         android:layout_height="@dimen/actorTileImageHeight"
         android:layout_margin="@dimen/spaceMedium"
@@ -356,7 +356,7 @@
 
       <ProgressBar
         android:id="@+id/showDetailsSeasonsProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="@dimen/spaceMedium"
@@ -432,7 +432,7 @@
 
       <ProgressBar
         android:id="@+id/showDetailsRateProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:visibility="gone"
@@ -510,7 +510,7 @@
 
       <ProgressBar
         android:id="@+id/showDetailsRelatedProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="@dimen/spaceMedium"
@@ -541,7 +541,7 @@
 
   <ProgressBar
     android:id="@+id/showDetailsMainProgress"
-    style="@style/ProgressBarAccent"
+    style="@style/ProgressBar.Accent"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"

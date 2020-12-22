@@ -85,7 +85,7 @@
 
       <ProgressBar
         android:id="@+id/movieDetailsImageProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/movieDetailsImage"
@@ -239,7 +239,7 @@
 
       <ProgressBar
         android:id="@+id/movieDetailsActorsProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
         android:layout_height="@dimen/actorMovieTileImageHeight"
         android:layout_margin="@dimen/spaceMedium"
@@ -298,7 +298,7 @@
 
       <ProgressBar
         android:id="@+id/movieDetailsRateProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:visibility="gone"
@@ -376,7 +376,7 @@
 
       <ProgressBar
         android:id="@+id/movieDetailsRelatedProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="@dimen/spaceNormal"
@@ -399,7 +399,7 @@
 
   <ProgressBar
     android:id="@+id/movieDetailsMainProgress"
-    style="@style/ProgressBarAccent"
+    style="@style/ProgressBar.Accent"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"

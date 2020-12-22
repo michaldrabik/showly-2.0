@@ -76,14 +76,16 @@
 
   <!-- Progress Bars -->
 
-  <style name="ProgressBarGray">
-    <item name="android:indeterminateTint">@color/colorGrayDark</item>
+  <style name="ProgressBar">
     <item name="android:indeterminateTintMode">src_in</item>
   </style>
 
-  <style name="ProgressBarAccent">
+  <style name="ProgressBar.Dark" parent="ProgressBar">
+    <item name="android:indeterminateTint">@color/colorGrayDark</item>
+  </style>
+
+  <style name="ProgressBar.Accent" parent="ProgressBar">
     <item name="android:indeterminateTint">@color/colorAccent</item>
-    <item name="android:indeterminateTintMode">src_in</item>
   </style>
 
   <!-- Scrollbars -->

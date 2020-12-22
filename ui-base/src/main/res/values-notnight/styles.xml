@@ -40,4 +40,9 @@
     <item name="colorCardBackground">#282828</item>
     <item name="colorBadgeBackground">@color/colorPrimaryDark</item>
   </style>
+
+  <style name="ProgressBar.Dark" parent="ProgressBar">
+    <item name="android:indeterminateTint">@color/colorAccent</item>
+  </style>
+
 </resources>

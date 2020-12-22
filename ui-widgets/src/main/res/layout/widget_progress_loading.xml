@@ -6,7 +6,7 @@
   >
 
   <ProgressBar
-    style="@style/ProgressBarAccent"
+    style="@style/ProgressBar.Accent"
     android:layout_width="28dp"
     android:layout_height="@dimen/progressWidgetImageHeight"
     android:layout_gravity="center"

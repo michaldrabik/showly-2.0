@@ -50,7 +50,7 @@
 
     <ProgressBar
       android:id="@+id/watchlistShowProgress"
-      style="@style/ProgressBarGray"
+      style="@style/ProgressBar.Dark"
       android:layout_width="28dp"
       android:layout_height="28dp"
       android:layout_gravity="center"
