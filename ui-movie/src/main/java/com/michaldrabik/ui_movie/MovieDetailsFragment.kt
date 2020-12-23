@@ -37,6 +37,7 @@ import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
 import com.michaldrabik.common.extensions.toDayDisplayString
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
@@ -328,6 +329,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           it.isUpcoming -> movieDetailsAddButton.setState(UPCOMING, it.withAnimation)
           else -> movieDetailsAddButton.setState(ADD, it.withAnimation)
         }
+        (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
       }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }

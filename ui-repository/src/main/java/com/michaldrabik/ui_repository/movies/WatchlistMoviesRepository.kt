@@ -31,8 +31,6 @@ class WatchlistMoviesRepository @Inject constructor(
     database.run {
       withTransaction {
         watchlistMoviesDao().insert(movie)
-        myShowsDao().deleteById(id.id)
-        archiveShowsDao().deleteById(id.id)
       }
     }
   }

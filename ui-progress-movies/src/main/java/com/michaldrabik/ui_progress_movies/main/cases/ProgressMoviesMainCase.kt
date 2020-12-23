@@ -5,6 +5,8 @@ import androidx.room.withTransaction
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_repository.PinnedItemsRepository
 import com.michaldrabik.ui_repository.movies.MoviesRepository
@@ -25,5 +27,10 @@ class ProgressMoviesMainCase @Inject constructor(
     }
     pinnedItemsRepository.removePinnedItem(movie)
     quickSyncManager.scheduleMovies(context, listOf(movie.ids.trakt.id))
+  }
+
+  suspend fun addToMyMovies(context: Context, movieId: IdTrakt) {
+    val movie = Movie.EMPTY.copy(Ids.EMPTY.copy(trakt = movieId))
+    addToMyMovies(context, movie)
   }
 }

@@ -15,6 +15,7 @@ class TmdbApi(private val service: TmdbService) {
       if (error !is CancellationException) {
         FirebaseCrashlytics.getInstance().run {
           setCustomKey("Source", "${TmdbApi::class.simpleName}::fetchMovieImages()")
+          setCustomKey("Movie Tmdb ID", tmdbId)
           recordException(error)
         }
       }

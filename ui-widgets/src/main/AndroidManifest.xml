@@ -1,23 +1,35 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+  xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.michaldrabik.ui_widgets"
   >
 
   <application>
 
     <service
-      android:name=".progress.ProgressWidgetEpisodeCheckService"
+      android:name="com.michaldrabik.ui_widgets.progress.ProgressWidgetService"
+      android:permission="android.permission.BIND_REMOTEVIEWS"
+      />
+
+    <service
+      android:name="com.michaldrabik.ui_widgets.progress.ProgressWidgetEpisodeCheckService"
       android:exported="true"
       android:permission="android.permission.BIND_JOB_SERVICE"
       />
 
     <service
-      android:name=".progress.ProgressWidgetService"
+      android:name="com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetService"
       android:permission="android.permission.BIND_REMOTEVIEWS"
+      />
+
+    <service
+      android:name="com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetCheckService"
+      android:exported="true"
+      android:permission="android.permission.BIND_JOB_SERVICE"
       />
 
     <receiver
       android:name="com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider"
-      android:label="Progress Widget"
+      android:label="Progress Shows"
       >
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -30,8 +42,22 @@
     </receiver>
 
     <receiver
+      android:name="com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider"
+      android:label="Progress Movies"
+      >
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/progress_movies_widgets_provider"
+        />
+    </receiver>
+
+    <receiver
       android:name="com.michaldrabik.ui_widgets.search.SearchWidgetProvider"
-      android:label="Search Widget"
+      android:label="Search"
       >
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

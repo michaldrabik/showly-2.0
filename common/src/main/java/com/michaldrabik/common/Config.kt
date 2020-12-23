@@ -29,6 +29,7 @@ object Config {
   const val PULL_TO_REFRESH_COOLDOWN_MS = 10_000
   const val INITIAL_RATING = 0
   const val DEFAULT_LANGUAGE = "en"
+  const val HOST_ACTIVITY_NAME = "com.michaldrabik.showly2.ui.main.MainActivity"
 
   val MY_SHOWS_RECENTS_OPTIONS = arrayOf(2, 4, 6, 8)
   val DISCOVER_SHOWS_CACHE_DURATION by lazy { HOURS.toMillis(12) }
@@ -51,9 +52,4 @@ object Config {
   val DISPLAY_DATE_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, HH:mm") }
   val DISPLAY_DATE_DAY_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("dd MMM yyyy") }
   val DISPLAY_DATE_FULL_DAY_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy") }
-
-  val HOST_ACTIVITY_NAME by lazy {
-    if (BuildConfig.DEBUG) "com.michaldrabik.showly2.debug.ui.main.MainActivity"
-    else "com.michaldrabik.showly2.ui.main.MainActivity"
-  }
 }

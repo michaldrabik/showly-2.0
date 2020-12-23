@@ -10,6 +10,7 @@ import com.michaldrabik.storage.database.model.Episode
 import com.michaldrabik.storage.database.model.MyMovie
 import com.michaldrabik.storage.database.model.MyShow
 import com.michaldrabik.storage.database.model.Season
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
@@ -149,8 +150,9 @@ class TraktImportWatchedRunner @Inject constructor(
             database.myShowsDao().updateTimestamp(showId, result.lastWatchedMillis())
             database.traktSyncLogDao().upsertShow(showId, result.lastUpdateMillis())
           }
-        } catch (t: Throwable) {
+        } catch (error: Throwable) {
           Timber.w("Processing \'${result.show!!.title}\' failed. Skipping...")
+          Logger.record(error, "Source" to "Import Shows Watched")
         }
       }
 
@@ -230,8 +232,9 @@ class TraktImportWatchedRunner @Inject constructor(
               }
             }
           }
-        } catch (t: Throwable) {
+        } catch (error: Throwable) {
           Timber.w("Processing \'${result.movie!!.title}\' failed. Skipping...")
+          Logger.record(error, "Source" to "Import Movies Watched")
         }
       }
 

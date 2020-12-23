@@ -20,7 +20,7 @@ interface WatchlistMoviesDao {
   suspend fun getById(traktId: Long): Movie?
 
   @Insert(onConflict = OnConflictStrategy.REPLACE)
-  suspend fun insert(show: WatchlistMovie)
+  suspend fun insert(movie: WatchlistMovie)
 
   @Query("DELETE FROM movies_see_later WHERE id_trakt == :traktId")
   suspend fun deleteById(traktId: Long)

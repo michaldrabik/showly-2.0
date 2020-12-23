@@ -9,6 +9,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.R
 import kotlin.random.Random
 
@@ -51,7 +52,7 @@ class AnnouncementWorker(context: Context, workerParams: WorkerParameters) : Wor
   }
 
   private fun createIntent(): PendingIntent {
-    val targetClass = Class.forName("com.michaldrabik.showly2.ui.main.MainActivity")
+    val targetClass = Class.forName(Config.HOST_ACTIVITY_NAME)
     val notifyIntent = Intent(applicationContext, targetClass).apply {
       flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
     }

@@ -7,6 +7,7 @@ import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.WatchlistMovie
 import com.michaldrabik.storage.database.model.WatchlistShow
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TraktAuthToken
@@ -106,8 +107,9 @@ class TraktImportWatchlistRunner @Inject constructor(
               database.watchlistShowsDao().insert(WatchlistShow.fromTraktId(showId, nowUtcMillis()))
             }
           }
-        } catch (t: Throwable) {
+        } catch (error: Throwable) {
           Timber.w("Processing \'${result.show!!.title}\' failed. Skipping...")
+          Logger.record(error, "Source" to "Import Shows Watchlist")
         }
       }
   }
@@ -138,8 +140,9 @@ class TraktImportWatchlistRunner @Inject constructor(
               database.watchlistMoviesDao().insert(WatchlistMovie.fromTraktId(movieId, nowUtcMillis()))
             }
           }
-        } catch (t: Throwable) {
+        } catch (error: Throwable) {
           Timber.w("Processing \'${result.movie!!.title}\' failed. Skipping...")
+          Logger.record(error, "Source" to "Import Movies Watchlist")
         }
       }
   }

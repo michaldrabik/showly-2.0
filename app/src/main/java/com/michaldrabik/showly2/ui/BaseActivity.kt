@@ -9,8 +9,10 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fcm.FcmExtra
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
-import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider
+import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider.Companion.EXTRA_SHOW_ID
+import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider.Companion.EXTRA_MOVIE_ID
 import com.michaldrabik.ui_widgets.search.SearchWidgetProvider
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -18,7 +20,8 @@ abstract class BaseActivity : AppCompatActivity() {
 
   private val showActionKeys = arrayOf(
     FcmExtra.SHOW_ID.key,
-    ProgressWidgetProvider.EXTRA_SHOW_ID
+    EXTRA_SHOW_ID,
+    EXTRA_MOVIE_ID
   )
 
   fun findNavHostFragment() = supportFragmentManager.findFragmentById(R.id.navigationHost) as NavHostFragment
@@ -49,27 +52,45 @@ abstract class BaseActivity : AppCompatActivity() {
         navigate(R.id.actionDiscoverFragmentToSearchFragment)
         extras?.clear()
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "${BaseActivity::class.simpleName}::handleSearchWidgetClick()")
+        Logger.record(error, "Source" to "BaseActivity::handleSearchWidgetClick()")
       }
     }
   }
 
   private fun handleFcmShowPush(extras: Bundle, key: String, action: () -> Unit) {
-    val showId = extras.getString(key)?.toLong() ?: -1
-    val bundle = Bundle().apply { putLong(ARG_SHOW_ID, showId) }
+    val itemId = extras.getString(key)?.toLong() ?: -1
+    val isShow = key in arrayOf(EXTRA_SHOW_ID, FcmExtra.SHOW_ID.key)
+
+    val bundle = Bundle().apply {
+      putLong(ARG_SHOW_ID, itemId)
+      putLong(ARG_MOVIE_ID, itemId)
+    }
+
     findNavHostFragment().findNavController().run {
       try {
         when (currentDestination?.id) {
           R.id.showDetailsFragment -> navigate(R.id.actionShowDetailsFragmentToSelf, bundle)
+          R.id.movieDetailsFragment -> navigate(R.id.actionMovieDetailsFragmentToSelf, bundle)
           else -> {
             bottomNavigationView.selectedItemId = R.id.menuProgress
-            navigate(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
+            val actionId = when (currentDestination?.id) {
+              R.id.progressFragment -> {
+                if (isShow) R.id.actionProgressFragmentToShowDetailsFragment
+                else R.id.actionProgressFragmentToMovieDetailsFragment
+              }
+              R.id.progressMoviesFragment -> {
+                if (isShow) R.id.actionProgressMoviesFragmentToShowDetailsFragment
+                else R.id.actionProgressMoviesFragmentToMovieDetailsFragment
+              }
+              else -> error("Unknown actionId")
+            }
+            navigate(actionId, bundle)
           }
         }
         extras.clear()
         action()
       } catch (e: Exception) {
-        Logger.record(e, "Source" to "${BaseActivity::class.simpleName}::handleFcmShowPush()")
+        Logger.record(e, "Source" to "BaseActivity::handleFcmShowPush()")
       }
     }
   }

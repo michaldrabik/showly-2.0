@@ -415,7 +415,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       seasons?.let {
         renderSeasons(it)
         renderRuntimeLeft(it)
-        (requireAppContext() as WidgetsProvider).requestWidgetsUpdate()
+        (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
       translation?.let { renderTranslation(it) }
       seasonTranslation?.let { item ->

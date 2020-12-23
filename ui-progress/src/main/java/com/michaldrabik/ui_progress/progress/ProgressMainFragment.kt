@@ -131,7 +131,7 @@ class ProgressMainFragment :
         progressEmptyView.fadeIf(it.isEmpty() && isSearching == false)
         progressMainRecycler.fadeIn()
         progressMainTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
-        (requireAppContext() as WidgetsProvider).requestWidgetsUpdate()
+        (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
     }
   }

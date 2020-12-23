@@ -34,4 +34,5 @@ dependencies {
   implementation project(':ui-model')
   implementation project(':ui-episodes')
   implementation project(':ui-progress')
+  implementation project(':ui-progress-movies')
 }

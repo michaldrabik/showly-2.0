@@ -35,7 +35,7 @@
   <string name="textSettingsShowsNotificationsSummary">Erhalte Benachrichtigungen über neue Filme, Folgen &amp; Staffeln von Serien die du gespeichert hast.</string>
   <string name="textSettingsMisc">Gemischt</string>
   <string name="textSettingsContactDevsTitle">Entwickler kontaktieren</string>
-  <string name="textSettingsContactDevsSummary">Du hast einen Fehler entdeckt oder ein Problem? Schreib uns gerne eine E-Mail.</string>
+  <string name="textSettingsContactDevsSummary">Du hast einen Fehler entdeckt oder ein Problem? Schreib uns gerne eine E-Mail (showlyapp@gmail.com).</string>
   <string name="textSettingsRateAppTitle">Gib uns dein Feedback </string>
   <string name="textSettingsRateAppSummary">Gefällt dir Showly? Hinterlass uns gerne ein Review im PlayStore. Danke!</string>
   <string name="textSettingsDeleteCacheTitle">Lösche Bildcache</string>
