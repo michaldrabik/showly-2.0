@@ -70,18 +70,35 @@ class MainInitialsCase @Inject constructor(
   }
 
   fun showWhatsNew(isInitialRun: Boolean): Boolean {
-    val version = miscPreferences.getInt("APP_VERSION", 0)
-    val name = miscPreferences.getString("APP_VERSION_NAME", "")
+    val keyAppVersion = "APP_VERSION"
+    val keyAppVersionName = "APP_VERSION_NAME"
+
+    val version = miscPreferences.getInt(keyAppVersion, 0)
+    val name = miscPreferences.getString(keyAppVersionName, "")
+
+    fun isPatchUpdate(): Boolean {
+      if (name.isNullOrBlank()) return false
+
+      val major = name.split(".").getOrNull(0)?.toIntOrNull()
+      val minor = name.split(".").getOrNull(1)?.toIntOrNull()
+
+      val currentMajor = BuildConfig.VERSION_NAME.split(".").getOrNull(0)?.toIntOrNull()
+      val currentMinor = BuildConfig.VERSION_NAME.split(".").getOrNull(1)?.toIntOrNull()
+
+      if (major == currentMajor && minor == currentMinor) return true
+      return false
+    }
 
     miscPreferences.edit {
-      putInt("APP_VERSION", BuildConfig.VERSION_CODE).apply()
-      putString("APP_VERSION_NAME", BuildConfig.VERSION_NAME).apply()
+      putInt(keyAppVersion, BuildConfig.VERSION_CODE).apply()
+      putString(keyAppVersionName, BuildConfig.VERSION_NAME).apply()
     }
 
     if (Config.SHOW_WHATS_NEW &&
       BuildConfig.VERSION_CODE > version &&
       BuildConfig.VERSION_NAME != name &&
-      !isInitialRun
+      !isInitialRun &&
+      !isPatchUpdate()
     ) {
       return true
     }
