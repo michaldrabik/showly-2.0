@@ -20,7 +20,7 @@ object Config {
 
   const val DEVELOPER_MAIL = "showlyapp@gmail.com"
   const val PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=com.michaldrabik.showly2"
-  const val SHOW_WHATS_NEW = true
+  const val SHOW_WHATS_NEW = false
 
   const val MAIN_GRID_SPAN = 3
   const val IMAGE_FADE_DURATION_MS = 200
