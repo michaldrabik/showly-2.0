@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+  xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   package="com.michaldrabik.showly2"
   >
@@ -68,12 +69,6 @@
 
     <service
       android:name=".common.ShowsMoviesSyncService"
-      android:exported="true"
-      android:permission="android.permission.BIND_JOB_SERVICE"
-      />
-
-    <service
-      android:name=".common.TranslationsSyncService"
       android:exported="true"
       android:permission="android.permission.BIND_JOB_SERVICE"
       />

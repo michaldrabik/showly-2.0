@@ -15,9 +15,6 @@
   <dimen name="progressImageHeight">120dp</dimen>
   <dimen name="progressImageWidth">80dp</dimen>
 
-  <dimen name="progressWidgetImageHeight">100dp</dimen>
-  <dimen name="progressWidgetImageWidth">67dp</dimen>
-
   <dimen name="progressItemCheckButtonWidth">72dp</dimen>
   <dimen name="progressItemButtonHeight">40dp</dimen>
 </resources>

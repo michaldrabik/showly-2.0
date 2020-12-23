@@ -44,11 +44,8 @@ class ProgressWidgetEpisodeCheckService : JobIntentService(), CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.Main
 
-  @Inject
-  lateinit var episodesManager: EpisodesManager
-
-  @Inject
-  lateinit var quickSyncManager: QuickSyncManager
+  @Inject lateinit var episodesManager: EpisodesManager
+  @Inject lateinit var quickSyncManager: QuickSyncManager
 
   override fun onHandleWork(intent: Intent) {
     (application as UiWidgetsComponentProvider).provideWidgetsComponent().inject(this)
@@ -66,7 +63,7 @@ class ProgressWidgetEpisodeCheckService : JobIntentService(), CoroutineScope {
     runBlocking {
       episodesManager.setEpisodeWatched(episodeId, seasonId, IdTrakt(showId))
       quickSyncManager.scheduleEpisodes(applicationContext, listOf(episodeId))
-      (applicationContext as WidgetsProvider).requestWidgetsUpdate()
+      (applicationContext as WidgetsProvider).requestShowsWidgetsUpdate()
     }
   }
 

@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.common
 
 interface WidgetsProvider {
-  fun requestWidgetsUpdate()
+  fun requestShowsWidgetsUpdate()
+  fun requestMoviesWidgetsUpdate()
 }

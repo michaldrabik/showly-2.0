@@ -10,8 +10,8 @@ import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesLoadItemsCase
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesMainCase
-import com.michaldrabik.ui_progress_movies.main.cases.ProgressPinnedItemsCase
-import com.michaldrabik.ui_progress_movies.main.cases.ProgressSortOrderCase
+import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesPinnedItemsCase
+import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesSortOrderCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
@@ -20,8 +20,8 @@ import javax.inject.Inject
 class ProgressMoviesViewModel @Inject constructor(
   private val myMoviesCase: ProgressMoviesMainCase,
   private val loadItemsCase: ProgressMoviesLoadItemsCase,
-  private val pinnedItemsCase: ProgressPinnedItemsCase,
-  private val sortOrderCase: ProgressSortOrderCase,
+  private val pinnedItemsCase: ProgressMoviesPinnedItemsCase,
+  private val sortOrderCase: ProgressMoviesSortOrderCase,
   private val imagesProvider: MovieImagesProvider
 ) : BaseViewModel<ProgressMoviesUiModel>() {
 

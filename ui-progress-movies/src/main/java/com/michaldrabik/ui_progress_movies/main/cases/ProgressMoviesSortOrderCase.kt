@@ -7,7 +7,7 @@ import com.michaldrabik.ui_repository.SettingsRepository
 import javax.inject.Inject
 
 @AppScope
-class ProgressSortOrderCase @Inject constructor(
+class ProgressMoviesSortOrderCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {
 

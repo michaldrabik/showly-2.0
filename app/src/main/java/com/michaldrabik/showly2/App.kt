@@ -28,6 +28,7 @@ import com.michaldrabik.ui_base.utilities.extensions.notificationManager
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
 import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider
+import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider
 import com.yariksoffice.lingver.Lingver
 import timber.log.Timber
 import javax.inject.Inject
@@ -120,7 +121,8 @@ class App :
   }
 
   override fun isOnline() = isAppOnline
-  override fun requestWidgetsUpdate() = ProgressWidgetProvider.requestUpdate(applicationContext)
+  override fun requestShowsWidgetsUpdate() = ProgressWidgetProvider.requestUpdate(applicationContext)
+  override fun requestMoviesWidgetsUpdate() = ProgressMoviesWidgetProvider.requestUpdate(applicationContext)
 
   override fun provideBaseComponent() = appComponent.uiBaseComponent().create()
   override fun provideWidgetsComponent() = appComponent.uiWidgetsComponent().create()

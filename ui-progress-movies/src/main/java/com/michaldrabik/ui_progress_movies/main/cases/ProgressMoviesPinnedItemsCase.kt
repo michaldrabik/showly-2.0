@@ -6,7 +6,7 @@ import com.michaldrabik.ui_repository.PinnedItemsRepository
 import javax.inject.Inject
 
 @AppScope
-class ProgressPinnedItemsCase @Inject constructor(
+class ProgressMoviesPinnedItemsCase @Inject constructor(
   private val pinnedItemsRepository: PinnedItemsRepository
 ) {
 

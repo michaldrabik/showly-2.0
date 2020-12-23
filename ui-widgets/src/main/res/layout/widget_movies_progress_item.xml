@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/progressMoviesWidgetItem"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:clipChildren="false"
+  android:descendantFocusability="blocksDescendants"
+  android:orientation="horizontal"
+  >
+
+  <FrameLayout
+    android:layout_width="@dimen/progressWidgetImageWidth"
+    android:layout_height="@dimen/progressWidgetImageHeight"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:layout_marginBottom="@dimen/spaceSmall"
+    >
+
+    <ImageView
+      android:id="@+id/progressMoviesWidgetItemImage"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      />
+
+    <ImageView
+      android:id="@+id/progressMoviesWidgetItemPlaceholder"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:padding="@dimen/spaceNormal"
+      android:src="@drawable/ic_film"
+      android:visibility="gone"
+      tools:visibility="visible"
+      />
+
+  </FrameLayout>
+
+  <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:gravity="center_vertical"
+    >
+
+    <TextView
+      android:id="@+id/progressMoviesWidgetItemTitle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="@dimen/spaceTiny"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textColor="@color/colorWhite"
+      android:textSize="16sp"
+      android:textStyle="bold"
+      tools:ignore="RtlSymmetry"
+      tools:text="Breaking Bad"
+      />
+
+    <TextView
+      android:id="@+id/progressMoviesWidgetItemSubtitle2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/progressMoviesWidgetItemTitle"
+      android:layout_marginBottom="@dimen/spaceTiny"
+      android:ellipsize="end"
+      android:includeFontPadding="false"
+      android:maxLines="2"
+      android:textColor="@color/colorGrayLight"
+      android:textSize="12sp"
+      tools:text="@tools:sample/lorem/random"
+      />
+
+    <ImageButton
+      android:id="@+id/progressMoviesWidgetItemCheckButton"
+      android:layout_width="70dp"
+      android:layout_height="26dp"
+      android:layout_below="@id/progressMoviesWidgetItemSubtitle2"
+      android:layout_alignParentEnd="true"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:background="@drawable/bg_widget_check_button"
+      android:src="@drawable/ic_check"
+      />
+
+  </RelativeLayout>
+
+</LinearLayout>
