@@ -46,6 +46,7 @@ class ProgressLoadItemsCase @Inject constructor(
     val unwatchedEpisodesCount = unwatchedEpisodes.count()
 
     val nextEpisode = unwatchedEpisodes
+      .filter { it.firstAired != null }
       .sortedWith(compareBy<EpisodeWatchlist> { it.seasonNumber }.thenBy { it.episodeNumber })
       .firstOrNull() ?: return ProgressItem.EMPTY
 
