@@ -3,4 +3,5 @@
   <string name="textGenres">Genres:</string>
   <string name="textSortOrder">Feed:</string>
   <string name="textDiscoverFilterAnticipated">Bald erscheinende Serien ausblenden</string>
+  <string name="textDiscoverFilterCollection">Sammlung ausblenden</string>
 </resources>
