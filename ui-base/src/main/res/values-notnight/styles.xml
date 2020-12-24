@@ -5,6 +5,7 @@
     <item name="android:windowBackground">@color/colorBackground</item>
     <item name="android:navigationBarColor">@color/colorBlack</item>
     <item name="android:windowTranslucentStatus">true</item>
+    <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
 
     <item name="colorPrimary">@color/colorWhite</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -21,10 +22,13 @@
     <item name="textColorChipSelected">@color/colorBlue</item>
     <item name="colorBackgroundChipSelected">@color/colorPrimaryDark</item>
 
-    <item name="colorInfoSnackbar">@color/colorWhite</item>
-    <item name="colorErrorSnackbar">@color/colorAccent</item>
-    <item name="colorRateAppSnackbar">@color/colorWhite</item>
-    <item name="colorRateAppSnackbarTextPrimary">@color/colorBlack</item>
+    <item name="colorInfoSnackbar">@color/colorAccent</item>
+    <item name="textColorInfoSnackbar">@color/colorWhite</item>
+    <item name="colorErrorSnackbar">@color/colorError</item>
+    <item name="textColorErrorSnackbar">@color/colorWhite</item>
+
+    <item name="colorRateAppSnackbar">@color/colorPrimaryDark</item>
+    <item name="colorRateAppSnackbarTextPrimary">@color/colorBlue</item>
     <item name="colorRateAppSnackbarTextSecondary">@color/colorGrayLight</item>
 
     <item name="colorBottomMenuBackground">@color/colorPrimary</item>

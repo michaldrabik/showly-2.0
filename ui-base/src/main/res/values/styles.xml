@@ -5,6 +5,7 @@
     <item name="android:windowBackground">@color/colorBackground</item>
     <item name="android:navigationBarColor">@color/colorPrimary</item>
     <item name="android:windowTranslucentStatus">true</item>
+    <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
 
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -22,7 +23,10 @@
     <item name="colorBackgroundChipSelected">?attr/colorSearchViewBackground</item>
 
     <item name="colorInfoSnackbar">@color/colorWhite</item>
-    <item name="colorErrorSnackbar">@color/colorAccent</item>
+    <item name="textColorInfoSnackbar">@color/colorBlack</item>
+    <item name="colorErrorSnackbar">@color/colorError</item>
+    <item name="textColorErrorSnackbar">@color/colorWhite</item>
+
     <item name="colorRateAppSnackbar">@color/colorWhite</item>
     <item name="colorRateAppSnackbarTextPrimary">@color/colorBlack</item>
     <item name="colorRateAppSnackbarTextSecondary">@color/colorGrayLight</item>
@@ -112,6 +116,12 @@
 
   <style name="AlertDialog.NegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
     <item name="android:textColor">@color/colorGrayLight</item>
+  </style>
+
+  <!-- Toolbar -->
+
+  <style name="Toolbar.Button.Navigation.Tinted" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+    <item name="tint">?android:attr/textColorPrimary</item>
   </style>
 
   <!-- Other  -->

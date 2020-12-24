@@ -12,6 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_rate_app"
+    android:elevation="@dimen/elevationNormal"
     android:paddingStart="@dimen/spaceNormal"
     android:paddingTop="@dimen/spaceNormal"
     android:paddingEnd="@dimen/spaceNormal"
