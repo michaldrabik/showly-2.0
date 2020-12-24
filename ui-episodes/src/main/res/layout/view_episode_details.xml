@@ -276,7 +276,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toBottomOf="@id/episodeDetailsSeparator"
     app:srcCompat="@drawable/ic_eye"
-    app:tint="?android:attr/textColorPrimary"
+    app:tint="?attr/textColorOnSurface"
     />
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout
