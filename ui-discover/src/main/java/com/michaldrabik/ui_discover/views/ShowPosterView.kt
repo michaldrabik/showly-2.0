@@ -50,11 +50,6 @@ class ShowPosterView : ShowView<DiscoverListItem> {
     super.loadImage(item)
   }
 
-  override fun onImageLoadSuccess() {
-    showPosterTitle.gone()
-    showPosterRoot.setBackgroundResource(0)
-  }
-
   override fun onImageLoadFail(item: DiscoverListItem) {
     super.onImageLoadFail(item)
     if (item.image.status == AVAILABLE) {
@@ -66,7 +61,7 @@ class ShowPosterView : ShowView<DiscoverListItem> {
   private fun clear() {
     showPosterTitle.text = ""
     showPosterTitle.gone()
-    showPosterRoot.setBackgroundResource(0)
+    showPosterRoot.setBackgroundResource(R.drawable.bg_media_view_elevation)
     showPosterPlaceholder.gone()
     showPosterProgress.gone()
     showPosterBadge.gone()

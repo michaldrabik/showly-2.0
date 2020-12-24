@@ -46,8 +46,9 @@
     <item name="android:layout_height">wrap_content</item>
     <item name="android:layout_gravity">top|end</item>
     <item name="android:layout_marginEnd">@dimen/spaceTiny</item>
-    <item name="android:layout_marginTop">-5dp</item>
+    <item name="android:layout_marginTop">-2dp</item>
     <item name="android:visibility">gone</item>
+    <item name="android:elevation">@dimen/elevationSmall</item>
     <item name="android:tint">@color/colorAccent</item>
   </style>
 

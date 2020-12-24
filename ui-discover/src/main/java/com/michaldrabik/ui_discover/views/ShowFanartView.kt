@@ -11,7 +11,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_discover.R
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
-import com.michaldrabik.ui_model.ImageStatus
+import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import kotlinx.android.synthetic.main.view_show_fanart.view.*
 
 class ShowFanartView : ShowView<DiscoverListItem> {
@@ -45,7 +45,7 @@ class ShowFanartView : ShowView<DiscoverListItem> {
 
   override fun loadImage(item: DiscoverListItem) {
     super.loadImage(item)
-    if (item.image.status == ImageStatus.UNAVAILABLE) {
+    if (item.image.status == UNAVAILABLE) {
       showFanartRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
   }
@@ -54,7 +54,7 @@ class ShowFanartView : ShowView<DiscoverListItem> {
     showFanartTitle.text = ""
     showFanartProgress.gone()
     showFanartPlaceholder.gone()
-    showFanartRoot.setBackgroundResource(0)
+    showFanartRoot.setBackgroundResource(R.drawable.bg_media_view_elevation)
     showFanartBadge.gone()
     Glide.with(this).clear(showFanartImage)
   }
