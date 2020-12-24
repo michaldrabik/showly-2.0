@@ -18,7 +18,6 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesLoadItemsCase
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesSortOrderCase
-import com.michaldrabik.ui_repository.movies.MoviesRepository
 import com.michaldrabik.ui_widgets.R
 import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider.Companion.EXTRA_CHECK_MOVIE_ID
 import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider.Companion.EXTRA_MOVIE_ID
@@ -34,7 +33,6 @@ class ProgressMoviesWidgetViewsFactory(
   private val context: Context,
   private val loadItemsCase: ProgressMoviesLoadItemsCase,
   private val sortOrderCase: ProgressMoviesSortOrderCase,
-  private val moviesRepository: MoviesRepository,
   private val imagesProvider: MovieImagesProvider
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
@@ -47,8 +45,9 @@ class ProgressMoviesWidgetViewsFactory(
 
   private fun loadData() {
     runBlocking {
-      val movie = moviesRepository.watchlistMovies.loadAll()
-      val items = movie.map { m ->
+      val movies = loadItemsCase.loadMyMovies()
+        .filter { it.released == null || it.hasAired() }
+      val items = movies.map { m ->
         async {
           val item = loadItemsCase.loadProgressItem(m)
           val image = imagesProvider.findCachedImage(m, ImageType.POSTER)
