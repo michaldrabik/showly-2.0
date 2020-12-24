@@ -17,6 +17,9 @@
     <item name="textColorOnSurface">@color/colorWhite</item>
     <item name="textColorTab">@color/colorBlueLight2x</item>
     <item name="textColorTabSelected">@color/colorBlue</item>
+    <item name="textColorChip">@color/colorBlueLight</item>
+    <item name="textColorChipSelected">@color/colorBlue</item>
+    <item name="colorBackgroundChipSelected">@color/colorPrimaryDark</item>
 
     <item name="colorInfoSnackbar">@color/colorWhite</item>
     <item name="colorErrorSnackbar">@color/colorAccent</item>

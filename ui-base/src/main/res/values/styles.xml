@@ -17,6 +17,9 @@
     <item name="textColorOnSurface">@color/colorWhite</item>
     <item name="textColorTab">@color/colorGrayLight</item>
     <item name="textColorTabSelected">@color/colorWhite</item>
+    <item name="textColorChip">@color/colorWhite</item>
+    <item name="textColorChipSelected">@color/colorAccent</item>
+    <item name="colorBackgroundChipSelected">?attr/colorSearchViewBackground</item>
 
     <item name="colorInfoSnackbar">@color/colorWhite</item>
     <item name="colorErrorSnackbar">@color/colorAccent</item>

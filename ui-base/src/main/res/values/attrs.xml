@@ -25,6 +25,10 @@
 
   <attr name="textColorOnSurface" format="color" />
 
+  <attr name="textColorChip" format="color" />
+  <attr name="textColorChipSelected" format="color" />
+  <attr name="colorBackgroundChipSelected" format="color" />
+
   <attr name="textColorTab" format="color" />
   <attr name="textColorTabSelected" format="color" />
 </resources>

@@ -8,7 +8,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import com.google.android.material.chip.Chip
-import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_discover.R
@@ -63,7 +62,7 @@ class DiscoverFiltersView : ConstraintLayout {
           isCheckable = true
           isCheckedIconVisible = false
           setEnsureMinTouchTargetSize(false)
-          chipBackgroundColor = context.colorStateListFromAttr(R.attr.colorSearchViewBackground)
+          chipBackgroundColor = ContextCompat.getColorStateList(context, R.color.selector_discover_chip_background)
           setChipStrokeColorResource(R.color.selector_discover_chip_text)
           setChipStrokeWidthResource(R.dimen.discoverFilterChipStroke)
           setTextColor(ContextCompat.getColorStateList(context, R.color.selector_discover_chip_text))
