@@ -50,6 +50,7 @@ class DiscoverShowsCase @Inject constructor(
 
   suspend fun loadRemoteShows(filters: DiscoverFilters): List<DiscoverListItem> {
     val showAnticipated = !filters.hideAnticipated
+    val showCollection = !filters.hideCollection
     val genres = filters.genres.toList()
 
     try {
@@ -61,7 +62,9 @@ class DiscoverShowsCase @Inject constructor(
     val myShowsIds = showsRepository.myShows.loadAllIds()
     val watchlistShowsIds = showsRepository.watchlistShows.loadAllIds()
     val archiveShowsIds = showsRepository.archiveShows.loadAllIds()
-    val remoteShows = showsRepository.discoverShows.loadAllRemote(showAnticipated, genres)
+    val collectionSize = myShowsIds.size + watchlistShowsIds.size + archiveShowsIds.size
+
+    val remoteShows = showsRepository.discoverShows.loadAllRemote(showAnticipated, showCollection, collectionSize, genres)
     val language = settingsRepository.getLanguage()
 
     showsRepository.discoverShows.cacheDiscoverShows(remoteShows)
@@ -76,8 +79,13 @@ class DiscoverShowsCase @Inject constructor(
     filters: DiscoverFilters?,
     language: String
   ) = coroutineScope {
+    val collectionIds = myShowsIds + watchlistShowsIds + archiveShowsIds
     shows
       .filter { !archiveShowsIds.contains(it.traktId) }
+      .filter {
+        if (filters?.hideCollection == false) true
+        else !collectionIds.contains(it.traktId)
+      }
       .sortedBy(filters?.feedOrder ?: HOT)
       .mapIndexed { index, show ->
         async {

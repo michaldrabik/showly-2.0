@@ -41,7 +41,9 @@ class SettingsMapper @Inject constructor() {
     discoverMoviesFilterFeed = enumValueOf(settings.discoverMoviesFilterFeed),
     myMoviesAllSortBy = enumValueOf(settings.myMoviesAllSortBy),
     watchlistMoviesSortBy = enumValueOf(settings.seeLaterMoviesSortBy),
-    progressMoviesSortBy = enumValueOf(settings.progressMoviesSortBy)
+    progressMoviesSortBy = enumValueOf(settings.progressMoviesSortBy),
+    showCollectionShows = settings.showCollectionShows,
+    showCollectionMovies = settings.showCollectionMovies
   )
 
   fun toDatabase(settings: Settings) = SettingsDb(
@@ -77,6 +79,8 @@ class SettingsMapper @Inject constructor() {
     discoverMoviesFilterGenres = settings.discoverMoviesFilterGenres.joinToString(",") { it.name },
     myMoviesAllSortBy = settings.myMoviesAllSortBy.name,
     seeLaterMoviesSortBy = settings.watchlistMoviesSortBy.name,
-    progressMoviesSortBy = settings.progressMoviesSortBy.name
+    progressMoviesSortBy = settings.progressMoviesSortBy.name,
+    showCollectionShows = settings.showCollectionShows,
+    showCollectionMovies = settings.showCollectionMovies
   )
 }

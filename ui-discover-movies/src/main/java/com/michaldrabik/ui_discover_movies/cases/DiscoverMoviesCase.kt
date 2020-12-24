@@ -51,6 +51,7 @@ class DiscoverMoviesCase @Inject constructor(
 
   suspend fun loadRemoteMovies(filters: DiscoverFilters): List<DiscoverMovieListItem> {
     val showAnticipated = !filters.hideAnticipated
+    val showCollection = !filters.hideCollection
     val genres = filters.genres.toList()
 
     try {
@@ -61,7 +62,9 @@ class DiscoverMoviesCase @Inject constructor(
 
     val myIds = moviesRepository.myMovies.loadAllIds()
     val watchlistIds = moviesRepository.watchlistMovies.loadAllIds()
-    val remoteMovies = moviesRepository.discoverMovies.loadAllRemote(showAnticipated, genres)
+    val collectionSize = myIds.size + watchlistIds.size
+
+    val remoteMovies = moviesRepository.discoverMovies.loadAllRemote(showAnticipated, showCollection, collectionSize, genres)
     val language = settingsRepository.getLanguage()
 
     moviesRepository.discoverMovies.cacheDiscoverMovies(remoteMovies)
@@ -75,7 +78,12 @@ class DiscoverMoviesCase @Inject constructor(
     filters: DiscoverFilters?,
     language: String
   ) = coroutineScope {
+    val collectionIds = myMoviesIds + watchlistMoviesIds
     movies
+      .filter {
+        if (filters?.hideCollection == false) true
+        else !collectionIds.contains(it.traktId)
+      }
       .sortedBy(filters?.feedOrder ?: HOT)
       .mapIndexed { index, movie ->
         async {

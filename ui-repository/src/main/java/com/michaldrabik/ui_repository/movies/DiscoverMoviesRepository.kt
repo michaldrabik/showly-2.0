@@ -5,6 +5,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
+import com.michaldrabik.network.Config.TRAKT_TRENDING_MOVIES_LIMIT
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.DiscoverMovie
 import com.michaldrabik.ui_model.Genre
@@ -36,6 +37,8 @@ class DiscoverMoviesRepository @Inject constructor(
   // TODO This logic should probably sit in a case and not repository.
   suspend fun loadAllRemote(
     showAnticipated: Boolean,
+    showCollection: Boolean,
+    collectionSize: Int,
     genres: List<Genre>
   ): List<Movie> {
     val remoteMovies = mutableListOf<Movie>()
@@ -43,7 +46,11 @@ class DiscoverMoviesRepository @Inject constructor(
     val popularMovies = mutableListOf<Movie>()
     val genresQuery = genres.joinToString(",") { it.slug }
 
-    val trendingMovies = cloud.traktApi.fetchTrendingMovies(genresQuery).map { mappers.movie.fromNetwork(it) }
+    val limit =
+      if (showCollection) TRAKT_TRENDING_MOVIES_LIMIT
+      else TRAKT_TRENDING_MOVIES_LIMIT + (collectionSize / 2)
+    val trendingMovies = cloud.traktApi.fetchTrendingMovies(genresQuery, limit)
+      .map { mappers.movie.fromNetwork(it) }
 
     if (genres.isNotEmpty()) {
       // Wa are adding popular results for genres filtered content to add more results.

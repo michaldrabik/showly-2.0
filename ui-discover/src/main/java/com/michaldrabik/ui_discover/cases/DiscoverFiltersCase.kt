@@ -17,7 +17,8 @@ class DiscoverFiltersCase @Inject constructor(
       settings.copy(
         discoverFilterFeed = filters.feedOrder,
         discoverFilterGenres = filters.genres,
-        showAnticipatedShows = !filters.hideAnticipated
+        showAnticipatedShows = !filters.hideAnticipated,
+        showCollectionShows = !filters.hideCollection
       )
     )
     Analytics.logDiscoverFiltersApply(filters)
@@ -28,6 +29,7 @@ class DiscoverFiltersCase @Inject constructor(
     return DiscoverFilters(
       feedOrder = settings.discoverFilterFeed,
       hideAnticipated = !settings.showAnticipatedShows,
+      hideCollection = !settings.showCollectionShows,
       genres = settings.discoverFilterGenres.toList()
     )
   }

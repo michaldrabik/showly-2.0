@@ -51,14 +51,16 @@ interface TraktService {
     @Query("genres") genres: String
   ): List<Movie>
 
-  @GET("shows/trending?extended=full&limit=${Config.TRAKT_TRENDING_SHOWS_LIMIT}")
+  @GET("shows/trending?extended=full")
   suspend fun fetchTrendingShows(
-    @Query("genres") genres: String
+    @Query("genres") genres: String,
+    @Query("limit") limit: Int
   ): List<ShowResult>
 
-  @GET("movies/trending?extended=full&limit=${Config.TRAKT_TRENDING_MOVIES_LIMIT}")
+  @GET("movies/trending?extended=full")
   suspend fun fetchTrendingMovies(
-    @Query("genres") genres: String
+    @Query("genres") genres: String,
+    @Query("limit") limit: Int
   ): List<MovieResult>
 
   @GET("shows/anticipated?extended=full&limit=${Config.TRAKT_ANTICIPATED_SHOWS_LIMIT}")
