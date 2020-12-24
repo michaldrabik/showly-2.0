@@ -36,7 +36,7 @@ class MainViewModel @Inject constructor(
       initCase.setInitialRun(false)
     }
     val showWhatsNew = initCase.showWhatsNew(isInitialRun)
-    val showRateApp = true
+    val showRateApp = rateAppCase.shouldShowRateApp()
     uiState = MainUiModel(isInitialRun = isInitialRun, showWhatsNew = showWhatsNew, showRateApp = showRateApp)
   }
 
