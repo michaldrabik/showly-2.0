@@ -3,4 +3,5 @@
   <string name="textGenres">Gatunki:</string>
   <string name="textSortOrder">Strumień:</string>
   <string name="textDiscoverFilterAnticipated">Ukryj nadchodzące</string>
+  <string name="textDiscoverFilterCollection">Ukryj kolekcję</string>
 </resources>
