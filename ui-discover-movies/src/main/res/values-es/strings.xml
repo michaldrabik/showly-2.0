@@ -3,4 +3,5 @@
   <string name="textGenresMovies">Géneros:</string>
   <string name="textSortOrderMovies">Feed:</string>
   <string name="textDiscoverFilterAnticipatedMovies">Ocultar Películas Anticipadas</string>
+  <string name="textDiscoverFilterCollectionMovies">Ocultar Colección</string>
 </resources>
