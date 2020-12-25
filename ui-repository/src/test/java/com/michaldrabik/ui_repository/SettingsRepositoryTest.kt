@@ -28,7 +28,7 @@ class SettingsRepositoryTest : BaseMockTest() {
   override fun setUp() {
     super.setUp()
     every { database.settingsDao() } returns settingsDao
-    SUT = SettingsRepository(database, mappers, sharedPreferences)
+    SUT = SettingsRepository(sharedPreferences, database, mappers)
   }
 
   @Test
