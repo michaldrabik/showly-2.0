@@ -7,7 +7,6 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
-import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.movies.MoviesRepository
 import javax.inject.Inject
@@ -16,7 +15,6 @@ import javax.inject.Inject
 class FollowedMoviesSearchCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository,
   private val imagesProvider: MovieImagesProvider
 ) {
 
@@ -32,7 +30,7 @@ class FollowedMoviesSearchCase @Inject constructor(
       searchCache.addAll(collection)
     }
 
-    val language = settingsRepository.getLanguage()
+    val language = translationsRepository.getLanguage()
     if (searchTranslationsCache.isEmpty() && language != DEFAULT_LANGUAGE) {
       val collection = translationsRepository.loadAllMoviesLocal(language)
       searchTranslationsCache.clear()

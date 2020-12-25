@@ -9,18 +9,16 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesUiModel
-import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProgressMoviesMainViewModel @Inject constructor(
   private val imagesProvider: MovieImagesProvider,
-  private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository
+  private val translationsRepository: TranslationsRepository
 ) : BaseViewModel<ProgressMoviesMainUiModel>() {
 
-  private val language by lazy { settingsRepository.getLanguage() }
+  private val language by lazy { translationsRepository.getLanguage() }
 
   fun handleParentAction(model: ProgressMoviesUiModel) {
     val allItems = model.items

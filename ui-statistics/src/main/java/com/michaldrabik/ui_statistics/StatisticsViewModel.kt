@@ -39,7 +39,7 @@ class StatisticsViewModel @Inject constructor(
       val includeArchive = settingsRepository.load().archiveShowsIncludeStatistics
       uiState = StatisticsUiModel(archivedShowsIncluded = includeArchive)
 
-      val language = settingsRepository.getLanguage()
+      val language = translationsRepository.getLanguage()
       val myShows = showsRepository.myShows.loadAll()
       val archiveShows = if (includeArchive) showsRepository.archiveShows.loadAll() else emptyList()
 

@@ -20,7 +20,7 @@ class WatchlistLoadShowsCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {
 
-  val language by lazy { settingsRepository.getLanguage() }
+  val language by lazy { translationsRepository.getLanguage() }
 
   suspend fun loadShows(): List<Pair<Show, Translation?>> {
     val translations =

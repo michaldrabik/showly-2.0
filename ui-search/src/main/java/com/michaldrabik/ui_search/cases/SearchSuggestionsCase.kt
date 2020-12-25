@@ -27,13 +27,13 @@ class SearchSuggestionsCase @Inject constructor(
   private var movieTranslationsCache: Map<Long, Translation>? = null
 
   suspend fun preloadCache() {
-    val language = settingsRepository.getLanguage()
+    val language = translationsRepository.getLanguage()
     val moviesEnabled = settingsRepository.isMoviesEnabled()
 
     if (showsCache == null) showsCache = database.showsDao().getAll()
     if (moviesEnabled && moviesCache == null) moviesCache = database.moviesDao().getAll()
 
-    if (settingsRepository.getLanguage() != Config.DEFAULT_LANGUAGE) {
+    if (translationsRepository.getLanguage() != Config.DEFAULT_LANGUAGE) {
       if (showTranslationsCache == null) {
         showTranslationsCache = translationsRepository.loadAllShowsLocal(language)
       }

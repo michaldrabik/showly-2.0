@@ -7,7 +7,6 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
-import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
@@ -16,7 +15,6 @@ import javax.inject.Inject
 class FollowedShowsSearchCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository,
   private val imagesProvider: ShowImagesProvider
 ) {
 
@@ -32,7 +30,7 @@ class FollowedShowsSearchCase @Inject constructor(
       searchCache.addAll(collection)
     }
 
-    val language = settingsRepository.getLanguage()
+    val language = translationsRepository.getLanguage()
     if (searchTranslationsCache.isEmpty() && language != DEFAULT_LANGUAGE) {
       val collection = translationsRepository.loadAllShowsLocal(language)
       searchTranslationsCache.clear()

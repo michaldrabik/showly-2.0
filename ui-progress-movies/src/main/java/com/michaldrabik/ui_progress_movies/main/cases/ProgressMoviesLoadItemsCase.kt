@@ -11,7 +11,6 @@ import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_repository.PinnedItemsRepository
-import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.movies.MoviesRepository
 import java.util.Locale.ROOT
@@ -21,8 +20,7 @@ import javax.inject.Inject
 class ProgressMoviesLoadItemsCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
-  private val pinnedItemsRepository: PinnedItemsRepository,
-  private val settingsRepository: SettingsRepository
+  private val pinnedItemsRepository: PinnedItemsRepository
 ) {
 
   suspend fun loadMyMovies() = moviesRepository.watchlistMovies.loadAll()
@@ -31,7 +29,7 @@ class ProgressMoviesLoadItemsCase @Inject constructor(
     val isPinned = pinnedItemsRepository.isItemPinned(movie)
 
     var movieTranslation: Translation? = Translation.EMPTY
-    val language = settingsRepository.getLanguage()
+    val language = translationsRepository.getLanguage()
     if (language != Config.DEFAULT_LANGUAGE) {
       movieTranslation = translationsRepository.loadTranslation(movie, language, true)
     }

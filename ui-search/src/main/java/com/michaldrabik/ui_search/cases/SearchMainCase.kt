@@ -25,7 +25,7 @@ class SearchMainCase @Inject constructor(
   private val moviesRepository: MoviesRepository
 ) {
 
-  val language by lazy { settingsRepository.getLanguage() }
+  val language by lazy { translationsRepository.getLanguage() }
 
   suspend fun searchByQuery(query: String): List<SearchResult> {
     Analytics.logSearchQuery(query)

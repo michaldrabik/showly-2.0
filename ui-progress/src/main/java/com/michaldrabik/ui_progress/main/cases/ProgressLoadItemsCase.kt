@@ -16,7 +16,6 @@ import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_repository.PinnedItemsRepository
-import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.shows.ShowsRepository
@@ -29,8 +28,7 @@ class ProgressLoadItemsCase @Inject constructor(
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,
-  private val pinnedItemsRepository: PinnedItemsRepository,
-  private val settingsRepository: SettingsRepository
+  private val pinnedItemsRepository: PinnedItemsRepository
 ) {
 
   suspend fun loadMyShows() = showsRepository.myShows.loadAll()
@@ -68,7 +66,7 @@ class ProgressLoadItemsCase @Inject constructor(
     var episodeTranslation: Translation? = null
     var upcomingTranslation: Translation? = null
 
-    val language = settingsRepository.getLanguage()
+    val language = translationsRepository.getLanguage()
     if (language != Config.DEFAULT_LANGUAGE) {
       showTranslation = translationsRepository.loadTranslation(show, language, true)
       episodeTranslation = translationsRepository.loadTranslation(episodeUi, show.ids.trakt, language, true)

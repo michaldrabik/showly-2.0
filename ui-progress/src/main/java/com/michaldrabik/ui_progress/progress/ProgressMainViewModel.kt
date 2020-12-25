@@ -10,18 +10,16 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.main.ProgressUiModel
-import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProgressMainViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
-  private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository
+  private val translationsRepository: TranslationsRepository
 ) : BaseViewModel<ProgressMainUiModel>() {
 
-  private val language by lazy { settingsRepository.getLanguage() }
+  private val language by lazy { translationsRepository.getLanguage() }
 
   fun handleParentAction(model: ProgressUiModel) {
     val allItems = model.items?.toMutableList() ?: mutableListOf()

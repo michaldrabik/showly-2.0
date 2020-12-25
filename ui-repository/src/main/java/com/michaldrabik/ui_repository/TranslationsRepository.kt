@@ -19,6 +19,7 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.SeasonTranslation
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_repository.SettingsRepository.Companion.KEY_LANGUAGE
 import com.michaldrabik.ui_repository.mappers.Mappers
 import javax.inject.Inject
 import javax.inject.Named
@@ -30,10 +31,6 @@ class TranslationsRepository @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers
 ) {
-
-  companion object {
-    private const val KEY_LANGUAGE = "KEY_LANGUAGE"
-  }
 
   fun getLanguage() = miscPreferences.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
 
