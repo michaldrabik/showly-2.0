@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat.PRIORITY_HIGH
 import androidx.core.content.ContextCompat
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
+import java.util.concurrent.TimeUnit
 
 abstract class TraktNotificationsService : Service() {
 
@@ -31,6 +32,7 @@ abstract class TraktNotificationsService : Service() {
     .setProgress(0, 0, true)
 
   protected fun createSuccessNotification() = createBaseNotification()
+    .setTimeoutAfter(TimeUnit.SECONDS.toMillis(5))
     .setContentText(getString(R.string.textTraktSyncComplete))
     .setPriority(PRIORITY_HIGH)
     .build()
