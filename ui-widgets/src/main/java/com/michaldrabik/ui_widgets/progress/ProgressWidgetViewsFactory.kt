@@ -142,11 +142,16 @@ class ProgressWidgetViewsFactory(
     }
 
     try {
-      val bitmap = Glide.with(context).asBitmap()
+      remoteView.setViewVisibility(R.id.progressWidgetItemImage, GONE)
+      remoteView.setViewVisibility(R.id.progressWidgetItemPlaceholder, GONE)
+
+      val bitmap = Glide.with(context)
+        .asBitmap()
         .load(imageUrl)
         .transform(CenterCrop(), RoundedCorners(imageCorner))
         .submit(imageWidth, imageHeight)
         .get()
+
       remoteView.setImageViewBitmap(R.id.progressWidgetItemImage, bitmap)
       remoteView.setViewVisibility(R.id.progressWidgetItemImage, VISIBLE)
     } catch (t: Throwable) {
@@ -175,8 +180,5 @@ class ProgressWidgetViewsFactory(
 
   override fun getViewTypeCount() = 2
 
-  override fun onDestroy() {
-    coroutineContext.cancelChildren()
-    adapterItems.clear()
-  }
+  override fun onDestroy() = coroutineContext.cancelChildren()
 }
