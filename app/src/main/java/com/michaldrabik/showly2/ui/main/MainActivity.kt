@@ -313,7 +313,7 @@ class MainActivity :
         }
         is TraktQuickSyncSuccess -> {
           val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)
-          snackBarHost.showInfoSnackbar(text)
+          provideSnackbarLayout().showInfoSnackbar(text)
         }
         else -> Timber.d("Event ignored. Noop.")
       }
@@ -366,5 +366,6 @@ class MainActivity :
 
   override fun findNavControl() = findNavHostFragment().findNavController()
 
-  override fun provideSnackbarLayout(): ViewGroup = snackBarHost
+  override fun provideSnackbarLayout(): ViewGroup =
+    if (bottomNavigationWrapper.translationY == 0F) snackbarHost else rootLayout
 }

@@ -13,7 +13,6 @@ import android.os.Bundle
 import android.transition.TransitionManager
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
@@ -727,6 +726,4 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
     }
   }
-
-  override fun getSnackbarHost(): ViewGroup = showDetailsRoot
 }

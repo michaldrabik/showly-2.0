@@ -549,6 +549,4 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
     }
   }
-
-  override fun getSnackbarHost(): ViewGroup = movieDetailsRoot
 }
