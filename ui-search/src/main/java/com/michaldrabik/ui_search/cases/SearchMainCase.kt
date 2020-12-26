@@ -37,7 +37,7 @@ class SearchMainCase @Inject constructor(
       SearchResult(
         it.score ?: 0F,
         it.show?.let { s -> mappers.show.fromNetwork(s) } ?: Show.EMPTY,
-        it.movie?.let { m -> mappers.movie.fromNetwork(m) } ?: Movie.EMPTY,
+        it.movie?.let { m -> mappers.movie.fromNetwork(m) } ?: Movie.EMPTY
       )
     }
   }

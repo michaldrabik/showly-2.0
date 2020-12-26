@@ -48,7 +48,7 @@ class MovieDetailsViewModel @Inject constructor(
   private val userManager: UserTraktManager,
   private val quickSyncManager: QuickSyncManager,
   private val imagesProvider: MovieImagesProvider,
-  private val announcementManager: AnnouncementManager,
+  private val announcementManager: AnnouncementManager
 ) : BaseViewModel<MovieDetailsUiModel>() {
 
   private var movie by notNull<Movie>()
