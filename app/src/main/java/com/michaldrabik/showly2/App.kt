@@ -106,7 +106,7 @@ class App :
 
     fun setupTheme() {
       val theme = settingsRepository.getTheme()
-      setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) // TODO Set to theme
+      setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) // TODO Set to theme
     }
 
     super.onCreate()

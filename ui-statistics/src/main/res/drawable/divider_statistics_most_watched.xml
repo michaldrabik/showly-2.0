@@ -5,7 +5,7 @@
   android:insetBottom="@dimen/spaceSmall"
   >
   <shape>
-    <size android:height="1dp"/>
-    <solid android:color="#333333" />
+    <size android:height="1dp" />
+    <solid android:color="?attr/colorSeparator" />
   </shape>
 </inset>

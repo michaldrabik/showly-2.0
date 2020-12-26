@@ -44,7 +44,7 @@
     <item name="colorPlaceholderIcon">@color/colorAccent</item>
 
     <item name="colorSeparator">#DCE1E6</item>
-    <item name="colorCardBackground">#282828</item>
+    <item name="colorCardBackground">@color/colorPrimaryDark</item>
     <item name="colorBadgeBackground">@color/colorPrimaryDark</item>
   </style>
 

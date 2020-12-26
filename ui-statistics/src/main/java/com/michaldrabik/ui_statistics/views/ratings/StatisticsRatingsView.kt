@@ -11,6 +11,7 @@ import com.google.android.material.card.MaterialCardView
 import com.michaldrabik.ui_base.common.ListItem
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_statistics.R
 import com.michaldrabik.ui_statistics.views.ratings.recycler.StatisticsRatingItem
 import com.michaldrabik.ui_statistics.views.ratings.recycler.StatisticsRatingsAdapter
@@ -33,6 +34,7 @@ class StatisticsRatingsView : MaterialCardView {
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
     clipToPadding = false
     clipChildren = false
+    cardElevation = context.dimenToPx(R.dimen.elevationSmall).toFloat()
     setCardBackgroundColor(context.colorFromAttr(R.attr.colorCardBackground))
     setupRecycler()
   }

@@ -6,7 +6,6 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   app:cardBackgroundColor="?attr/colorCardBackground"
-  tools:background="@color/colorBackground"
   tools:parentTag="com.google.android.material.card.MaterialCardView"
   tools:theme="@style/AppTheme"
   >
@@ -32,6 +31,7 @@
       android:textSize="@dimen/statisticsHeaderSize"
       android:textStyle="bold"
       app:drawableStartCompat="@drawable/ic_stars_round"
+      app:drawableTint="?android:attr/textColorPrimary"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       tools:drawableStart="@drawable/ic_stars_round"

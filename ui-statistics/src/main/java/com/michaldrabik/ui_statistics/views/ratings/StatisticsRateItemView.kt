@@ -23,6 +23,7 @@ class StatisticsRateItemView : ShowView<StatisticsRatingItem> {
     inflate(context, R.layout.view_statistics_rate_item, this)
     val width = context.dimenToPx(R.dimen.statisticsRatingItemWidth)
     layoutParams = LayoutParams(width, WRAP_CONTENT)
+    clipChildren = false
     viewRateItemImageLayout.onClick { itemClickListener?.invoke(item) }
   }
 

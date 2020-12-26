@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import com.google.android.material.card.MaterialCardView
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_statistics_movies.R
@@ -24,6 +25,7 @@ class StatisticsMoviesTopGenresView : MaterialCardView {
     inflate(context, R.layout.view_statistics_movies_card_top_genre, this)
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
     setCardBackgroundColor(context.colorFromAttr(R.attr.colorCardBackground))
+    cardElevation = context.dimenToPx(R.dimen.elevationSmall).toFloat()
     onClick {
       showGenres(10)
       isClickable = false
