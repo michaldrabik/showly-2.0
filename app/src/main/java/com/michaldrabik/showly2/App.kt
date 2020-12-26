@@ -8,7 +8,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.StrictMode
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import com.google.firebase.messaging.FirebaseMessaging
 import com.jakewharton.processphoenix.ProcessPhoenix
@@ -106,7 +105,7 @@ class App :
 
     fun setupTheme() {
       val theme = settingsRepository.getTheme()
-      setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) // TODO Set to theme
+      setDefaultNightMode(theme)
     }
 
     super.onCreate()

@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_repository
 
 import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.core.content.edit
 import androidx.room.withTransaction
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
@@ -60,7 +61,7 @@ class SettingsRepository @Inject constructor(
 
   fun setTheme(theme: Int) = miscPreferences.edit { putInt(KEY_THEME, theme) }
 
-  fun getTheme() = miscPreferences.getInt(KEY_THEME, 2)
+  fun getTheme() = miscPreferences.getInt(KEY_THEME, MODE_NIGHT_YES)
 
   suspend fun clearLanguageLogs() {
     database.withTransaction {
