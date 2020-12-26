@@ -16,7 +16,7 @@
     <item name="android:textColorPrimary">@color/colorWhite</item>
     <item name="android:textColorSecondary">@color/colorGrayLight</item>
     <item name="textColorOnSurface">@color/colorWhite</item>
-    <item name="textColorTab">@color/colorGrayLight</item>
+    <item name="textColorTab">#A1A1A1</item>
     <item name="textColorTabSelected">@color/colorWhite</item>
     <item name="textColorChip">@color/colorWhite</item>
     <item name="textColorChipSelected">@color/colorAccent</item>
@@ -39,9 +39,9 @@
     <item name="colorSearchViewBackground">@color/colorPrimary</item>
     <item name="colorSearchViewControl">@color/colorGrayLight</item>
 
-    <item name="colorPlaceholderBackground">#1C1C1C</item>
-    <item name="colorPlaceholderStroke">#3A3A3A</item>
-    <item name="colorPlaceholderIcon">@color/colorWhite</item>
+    <item name="colorPlaceholderBackground">#222222</item>
+    <item name="colorPlaceholderStroke">#6A6A6A</item>
+    <item name="colorPlaceholderIcon">#6A6A6A</item>
 
     <item name="colorSeparator">@color/colorGrayDark</item>
     <item name="colorCardBackground">#282828</item>

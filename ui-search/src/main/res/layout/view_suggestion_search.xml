@@ -13,6 +13,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:paddingStart="@dimen/spaceMedium"
     android:paddingTop="@dimen/spaceSmall"
     android:paddingEnd="@dimen/spaceMedium"
@@ -23,6 +25,8 @@
       android:id="@+id/suggestionImage"
       android:layout_width="@dimen/searchSuggestionViewImageWidth"
       android:layout_height="@dimen/searchSuggestionViewImageHeight"
+      android:background="@drawable/bg_media_view_elevation"
+      android:elevation="@dimen/elevationTiny"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
@@ -34,12 +38,14 @@
       android:layout_height="@dimen/searchSuggestionViewImageHeight"
       android:layout_gravity="center"
       android:background="@drawable/bg_media_view_placeholder"
+      android:elevation="@dimen/elevationTiny"
       android:padding="10dp"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:srcCompat="@drawable/ic_television"
+      app:tint="?attr/colorPlaceholderIcon"
       tools:visibility="visible"
       />
 
@@ -97,6 +103,7 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/suggestionImage"
       app:layout_constraintTop_toBottomOf="@id/suggestionTitle"
+      tools:ignore="SmallSp"
       tools:text="Lorem Ipsum"
       />
 
