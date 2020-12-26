@@ -39,5 +39,7 @@ data class Settings(
   @ColumnInfo(name = "discover_movies_filter_feed", defaultValue = "HOT") var discoverMoviesFilterFeed: String,
   @ColumnInfo(name = "my_movies_all_sort_by", defaultValue = "NAME") var myMoviesAllSortBy: String,
   @ColumnInfo(name = "see_later_movies_sort_by", defaultValue = "NAME") var seeLaterMoviesSortBy: String,
-  @ColumnInfo(name = "progress_movies_sort_by", defaultValue = "NAME") var progressMoviesSortBy: String
+  @ColumnInfo(name = "progress_movies_sort_by", defaultValue = "NAME") var progressMoviesSortBy: String,
+  @ColumnInfo(name = "show_collection_shows", defaultValue = "1") var showCollectionShows: Boolean,
+  @ColumnInfo(name = "show_collection_movies", defaultValue = "1") var showCollectionMovies: Boolean
 )

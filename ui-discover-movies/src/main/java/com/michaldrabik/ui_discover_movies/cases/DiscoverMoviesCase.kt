@@ -14,7 +14,6 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.UserTvdbManager
 import com.michaldrabik.ui_repository.movies.MoviesRepository
@@ -28,8 +27,7 @@ class DiscoverMoviesCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val tvdbUserManager: UserTvdbManager,
   private val imagesProvider: MovieImagesProvider,
-  private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository
+  private val translationsRepository: TranslationsRepository
 ) {
 
   suspend fun isCacheValid() = moviesRepository.discoverMovies.isCacheValid()
@@ -38,7 +36,7 @@ class DiscoverMoviesCase @Inject constructor(
     val myIds = async { moviesRepository.myMovies.loadAllIds() }
     val watchlistIds = async { moviesRepository.watchlistMovies.loadAllIds() }
     val cachedMovies = async { moviesRepository.discoverMovies.loadAllCached() }
-    val language = settingsRepository.getLanguage()
+    val language = translationsRepository.getLanguage()
 
     prepareItems(
       cachedMovies.await(),
@@ -51,6 +49,7 @@ class DiscoverMoviesCase @Inject constructor(
 
   suspend fun loadRemoteMovies(filters: DiscoverFilters): List<DiscoverMovieListItem> {
     val showAnticipated = !filters.hideAnticipated
+    val showCollection = !filters.hideCollection
     val genres = filters.genres.toList()
 
     try {
@@ -61,8 +60,10 @@ class DiscoverMoviesCase @Inject constructor(
 
     val myIds = moviesRepository.myMovies.loadAllIds()
     val watchlistIds = moviesRepository.watchlistMovies.loadAllIds()
-    val remoteMovies = moviesRepository.discoverMovies.loadAllRemote(showAnticipated, genres)
-    val language = settingsRepository.getLanguage()
+    val collectionSize = myIds.size + watchlistIds.size
+
+    val remoteMovies = moviesRepository.discoverMovies.loadAllRemote(showAnticipated, showCollection, collectionSize, genres)
+    val language = translationsRepository.getLanguage()
 
     moviesRepository.discoverMovies.cacheDiscoverMovies(remoteMovies)
     return prepareItems(remoteMovies, myIds, watchlistIds, filters, language)
@@ -75,7 +76,12 @@ class DiscoverMoviesCase @Inject constructor(
     filters: DiscoverFilters?,
     language: String
   ) = coroutineScope {
+    val collectionIds = myMoviesIds + watchlistMoviesIds
     movies
+      .filter {
+        if (filters?.hideCollection == false) true
+        else !collectionIds.contains(it.traktId)
+      }
       .sortedBy(filters?.feedOrder ?: HOT)
       .mapIndexed { index, movie ->
         async {

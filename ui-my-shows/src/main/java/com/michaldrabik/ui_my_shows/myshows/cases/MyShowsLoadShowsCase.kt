@@ -35,7 +35,7 @@ class MyShowsLoadShowsCase @Inject constructor(
   private val database: AppDatabase
 ) {
 
-  val language by lazy { settingsRepository.getLanguage() }
+  val language by lazy { translationsRepository.getLanguage() }
 
   suspend fun loadSettings() = settingsRepository.load()
 

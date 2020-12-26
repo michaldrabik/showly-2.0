@@ -11,7 +11,6 @@ import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
 import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.UserTvdbManager
 import com.michaldrabik.ui_repository.shows.ShowsRepository
@@ -25,8 +24,7 @@ class DiscoverShowsCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val tvdbUserManager: UserTvdbManager,
   private val imagesProvider: ShowImagesProvider,
-  private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository
+  private val translationsRepository: TranslationsRepository
 ) {
 
   suspend fun isCacheValid() = showsRepository.discoverShows.isCacheValid()
@@ -36,7 +34,7 @@ class DiscoverShowsCase @Inject constructor(
     val watchlistShowsIds = async { showsRepository.watchlistShows.loadAllIds() }
     val archiveShowsIds = async { showsRepository.archiveShows.loadAllIds() }
     val cachedShows = async { showsRepository.discoverShows.loadAllCached() }
-    val language = settingsRepository.getLanguage()
+    val language = translationsRepository.getLanguage()
 
     prepareItems(
       cachedShows.await(),
@@ -50,6 +48,7 @@ class DiscoverShowsCase @Inject constructor(
 
   suspend fun loadRemoteShows(filters: DiscoverFilters): List<DiscoverListItem> {
     val showAnticipated = !filters.hideAnticipated
+    val showCollection = !filters.hideCollection
     val genres = filters.genres.toList()
 
     try {
@@ -61,8 +60,10 @@ class DiscoverShowsCase @Inject constructor(
     val myShowsIds = showsRepository.myShows.loadAllIds()
     val watchlistShowsIds = showsRepository.watchlistShows.loadAllIds()
     val archiveShowsIds = showsRepository.archiveShows.loadAllIds()
-    val remoteShows = showsRepository.discoverShows.loadAllRemote(showAnticipated, genres)
-    val language = settingsRepository.getLanguage()
+    val collectionSize = myShowsIds.size + watchlistShowsIds.size + archiveShowsIds.size
+
+    val remoteShows = showsRepository.discoverShows.loadAllRemote(showAnticipated, showCollection, collectionSize, genres)
+    val language = translationsRepository.getLanguage()
 
     showsRepository.discoverShows.cacheDiscoverShows(remoteShows)
     return prepareItems(remoteShows, myShowsIds, watchlistShowsIds, archiveShowsIds, filters, language)
@@ -76,8 +77,13 @@ class DiscoverShowsCase @Inject constructor(
     filters: DiscoverFilters?,
     language: String
   ) = coroutineScope {
+    val collectionIds = myShowsIds + watchlistShowsIds + archiveShowsIds
     shows
       .filter { !archiveShowsIds.contains(it.traktId) }
+      .filter {
+        if (filters?.hideCollection == false) true
+        else !collectionIds.contains(it.traktId)
+      }
       .sortedBy(filters?.feedOrder ?: HOT)
       .mapIndexed { index, show ->
         async {

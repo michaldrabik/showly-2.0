@@ -14,13 +14,13 @@ import javax.inject.Named
 
 @AppScope
 class SettingsRepository @Inject constructor(
+  @Named("miscPreferences") private var miscPreferences: SharedPreferences,
   private val database: AppDatabase,
-  private val mappers: Mappers,
-  @Named("miscPreferences") private var miscPreferences: SharedPreferences
+  private val mappers: Mappers
 ) {
 
   companion object {
-    private const val KEY_LANGUAGE = "KEY_LANGUAGE"
+    const val KEY_LANGUAGE = "KEY_LANGUAGE"
     private const val KEY_MOVIES_ENABLED = "KEY_MOVIES_ENABLED"
     private const val KEY_MODE = "KEY_MOVIES_MODE"
     private const val KEY_THEME = "KEY_THEME"

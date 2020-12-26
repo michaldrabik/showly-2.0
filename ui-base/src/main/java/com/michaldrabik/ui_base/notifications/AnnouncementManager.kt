@@ -30,7 +30,9 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.mappers.Mappers
+import org.threeten.bp.ZonedDateTime
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import javax.inject.Inject
 
@@ -48,6 +50,7 @@ class AnnouncementManager @Inject constructor(
     private const val ANNOUNCEMENT_MOVIE_WORK_TAG = "ANNOUNCEMENT_MOVIE_WORK_TAG"
     private const val ANNOUNCEMENT_STATIC_DELAY_MS = 60000 // 1 min
     private const val MOVIE_MIN_THRESHOLD_DAYS = 30
+    private const val MOVIE_THRESHOLD_HOUR = 12
   }
 
   suspend fun refreshShowsAnnouncements(context: Context) {
@@ -103,7 +106,10 @@ class AnnouncementManager @Inject constructor(
     movies
       .filter {
         Timber.i("Processing ${it.title} (${it.traktId})")
-        it.released != null && !it.hasAired() && it.released!!.toEpochDay() - nowUtcDay().toEpochDay() < MOVIE_MIN_THRESHOLD_DAYS
+        it.released != null &&
+          (!it.hasAired() || it.isToday()) &&
+          it.released!!.toEpochDay() - nowUtcDay().toEpochDay() < MOVIE_MIN_THRESHOLD_DAYS &&
+          ZonedDateTime.now().hour < MOVIE_THRESHOLD_HOUR // We want movies notifications to come out the release day at 12:00 local time
       }
       .forEach {
         scheduleAnnouncement(context.applicationContext, it)
@@ -150,7 +156,7 @@ class AnnouncementManager @Inject constructor(
     WorkManager.getInstance(context.applicationContext).enqueue(request)
 
     val logTime = dateFromMillis(nowUtcMillis() + delayed)
-    Timber.i("Notification set for: ${logTime.toDisplayString()} UTC")
+    Timber.i("Notification set for ${show.title}: ${logTime.toDisplayString()} UTC")
   }
 
   @RequiresApi(Build.VERSION_CODES.N)
@@ -174,8 +180,10 @@ class AnnouncementManager @Inject constructor(
       }
     }
 
+    val now = ZonedDateTime.now()
     val days = movie.released!!.toEpochDay() - nowUtcDay().toEpochDay()
-    val delayed = days * 86400000L
+    val offset = now.withHour(MOVIE_THRESHOLD_HOUR).withMinute(0).toMillis() - now.toMillis()
+    val delayed = (days * TimeUnit.DAYS.toMillis(1)) + offset
     val request = OneTimeWorkRequestBuilder<AnnouncementWorker>()
       .setInputData(data.build())
       .setInitialDelay(delayed, MILLISECONDS)
@@ -185,6 +193,6 @@ class AnnouncementManager @Inject constructor(
     WorkManager.getInstance(context.applicationContext).enqueue(request)
 
     val logTime = dateFromMillis(nowUtcMillis() + delayed)
-    Timber.i("Notification set for: ${logTime.toDisplayString()} UTC")
+    Timber.i("Notification set for ${movie.title}: ${logTime.toDisplayString()} UTC")
   }
 }

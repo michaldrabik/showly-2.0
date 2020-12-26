@@ -40,6 +40,7 @@ class DiscoverMoviesFiltersView : ConstraintLayout {
 
     discoverFiltersMoviesApplyButton.onClick { onApplyFilters() }
     discoverFiltersMoviesAnticipatedText.onClick { discoverFiltersMoviesAnticipatedSwitch.toggle() }
+    discoverFiltersMoviesCollectionText.onClick { discoverFiltersMoviesCollectionSwitch.toggle() }
   }
 
   fun bind(filters: DiscoverFilters) {
@@ -47,6 +48,7 @@ class DiscoverMoviesFiltersView : ConstraintLayout {
     discoverFiltersMoviesChipTopRated.isChecked = filters.feedOrder == RATING
     discoverFiltersMoviesChipMostRecent.isChecked = filters.feedOrder == NEWEST
     discoverFiltersMoviesAnticipatedSwitch.isChecked = filters.hideAnticipated
+    discoverFiltersMoviesCollectionSwitch.isChecked = filters.hideCollection
     bindGenres(filters.genres)
   }
 
@@ -73,7 +75,8 @@ class DiscoverMoviesFiltersView : ConstraintLayout {
   }
 
   private fun onApplyFilters() {
-    val showAnticipated = discoverFiltersMoviesAnticipatedSwitch.isChecked
+    val hideAnticipated = discoverFiltersMoviesAnticipatedSwitch.isChecked
+    val hideCollection = discoverFiltersMoviesCollectionSwitch.isChecked
 
     val feedOrder = when {
       discoverFiltersMoviesChipHot.isChecked -> HOT
@@ -89,7 +92,7 @@ class DiscoverMoviesFiltersView : ConstraintLayout {
       }
     }
 
-    val filters = DiscoverFilters(feedOrder, showAnticipated, genres.toList())
+    val filters = DiscoverFilters(feedOrder, hideAnticipated, hideCollection, genres.toList())
     onApplyClickListener?.invoke(filters)
   }
 }

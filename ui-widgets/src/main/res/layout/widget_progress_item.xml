@@ -23,6 +23,8 @@
       android:id="@+id/progressWidgetItemImage"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:visibility="gone"
+      tools:visibility="visible"
       />
 
     <ImageView
@@ -32,6 +34,7 @@
       android:padding="@dimen/spaceNormal"
       android:src="@drawable/ic_television"
       android:visibility="gone"
+      tools:visibility="visible"
       />
 
   </FrameLayout>

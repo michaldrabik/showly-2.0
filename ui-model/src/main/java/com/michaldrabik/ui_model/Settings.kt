@@ -34,6 +34,8 @@ data class Settings(
   val watchlistMoviesSortBy: SortOrder,
   val myMoviesAllSortBy: SortOrder,
   val progressMoviesSortBy: SortOrder,
+  val showCollectionShows: Boolean,
+  val showCollectionMovies: Boolean
 ) {
 
   companion object {
@@ -70,7 +72,9 @@ data class Settings(
       showAnticipatedMovies = false,
       watchlistMoviesSortBy = SortOrder.NAME,
       myMoviesAllSortBy = SortOrder.NAME,
-      progressMoviesSortBy = SortOrder.NAME
+      progressMoviesSortBy = SortOrder.NAME,
+      showCollectionMovies = true,
+      showCollectionShows = true
     )
   }
 }

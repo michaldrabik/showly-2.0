@@ -16,7 +16,6 @@ import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_repository.RatingsRepository
-import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.mappers.Mappers
@@ -28,7 +27,6 @@ class EpisodeDetailsViewModel @Inject constructor(
   private val imagesProvider: EpisodeImagesProvider,
   private val ratingsRepository: RatingsRepository,
   private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository,
   private val userTraktManager: UserTraktManager,
   private val mappers: Mappers,
   private val cloud: Cloud
@@ -51,7 +49,7 @@ class EpisodeDetailsViewModel @Inject constructor(
   fun loadTranslation(showTraktId: IdTrakt, episode: Episode) {
     viewModelScope.launch {
       try {
-        val language = settingsRepository.getLanguage()
+        val language = translationsRepository.getLanguage()
         if (language == Config.DEFAULT_LANGUAGE) return@launch
         val translation = translationsRepository.loadTranslation(episode, showTraktId, language)
         translation?.let {

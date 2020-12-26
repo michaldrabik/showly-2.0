@@ -8,7 +8,6 @@ import android.content.Intent.EXTRA_SUBJECT
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
@@ -284,6 +283,4 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       findNavControl().popBackStack()
     }
   }
-
-  override fun getSnackbarHost(): ViewGroup = settingsContent
 }

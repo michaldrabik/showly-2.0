@@ -4,7 +4,6 @@ import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.text.Editable
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
 import androidx.core.view.updatePadding
@@ -52,8 +51,6 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
-
-  override fun getSnackbarHost(): ViewGroup = searchRoot
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiSearchComponentProvider).provideSearchComponent().inject(this)

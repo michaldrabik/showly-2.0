@@ -90,7 +90,7 @@
     android:layout_height="34dp"
     android:layout_marginBottom="@dimen/spaceSmall"
     android:translationX="-4dp"
-    app:layout_constraintBottom_toTopOf="@id/discoverFiltersMoviesGenresTitle"
+    app:layout_constraintBottom_toTopOf="@id/discoverFiltersMoviesCollectionSwitch"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/discoverFiltersMoviesSortChipGroup"
     />
@@ -109,6 +109,31 @@
     app:layout_constraintTop_toTopOf="@id/discoverFiltersMoviesAnticipatedSwitch"
     />
 
+  <androidx.appcompat.widget.SwitchCompat
+    android:id="@+id/discoverFiltersMoviesCollectionSwitch"
+    android:layout_width="wrap_content"
+    android:layout_height="34dp"
+    android:layout_marginBottom="@dimen/spaceSmall"
+    android:translationX="-4dp"
+    app:layout_constraintBottom_toTopOf="@id/discoverFiltersMoviesGenresTitle"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/discoverFiltersMoviesAnticipatedSwitch"
+    />
+
+  <TextView
+    android:id="@+id/discoverFiltersMoviesCollectionText"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginStart="@dimen/spaceTiny"
+    android:gravity="center_vertical"
+    android:text="@string/textDiscoverFilterCollectionMovies"
+    android:textColor="?android:attr/textColorPrimary"
+    app:layout_constraintBottom_toBottomOf="@id/discoverFiltersMoviesCollectionSwitch"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/discoverFiltersMoviesCollectionSwitch"
+    app:layout_constraintTop_toTopOf="@id/discoverFiltersMoviesCollectionSwitch"
+    />
+
   <TextView
     android:id="@+id/discoverFiltersMoviesGenresTitle"
     android:layout_width="0dp"
@@ -121,7 +146,7 @@
     app:layout_constraintBottom_toTopOf="@id/discoverFiltersMoviesGenresChipGroup"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/discoverFiltersMoviesAnticipatedSwitch"
+    app:layout_constraintTop_toBottomOf="@id/discoverFiltersMoviesCollectionSwitch"
     />
 
   <com.google.android.material.chip.ChipGroup

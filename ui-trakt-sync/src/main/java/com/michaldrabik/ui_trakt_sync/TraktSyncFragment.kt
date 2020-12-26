@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
@@ -169,8 +168,6 @@ class TraktSyncFragment :
       findNavControl().popBackStack()
     }
   }
-
-  override fun getSnackbarHost(): ViewGroup = traktSyncRoot
 
   override fun onNewEvent(event: Event) = viewModel.handleEvent(event)
 }

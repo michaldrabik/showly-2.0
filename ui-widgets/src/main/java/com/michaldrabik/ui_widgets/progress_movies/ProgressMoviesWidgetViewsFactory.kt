@@ -18,7 +18,6 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesLoadItemsCase
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesSortOrderCase
-import com.michaldrabik.ui_repository.movies.MoviesRepository
 import com.michaldrabik.ui_widgets.R
 import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider.Companion.EXTRA_CHECK_MOVIE_ID
 import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider.Companion.EXTRA_MOVIE_ID
@@ -34,7 +33,6 @@ class ProgressMoviesWidgetViewsFactory(
   private val context: Context,
   private val loadItemsCase: ProgressMoviesLoadItemsCase,
   private val sortOrderCase: ProgressMoviesSortOrderCase,
-  private val moviesRepository: MoviesRepository,
   private val imagesProvider: MovieImagesProvider
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
@@ -47,8 +45,9 @@ class ProgressMoviesWidgetViewsFactory(
 
   private fun loadData() {
     runBlocking {
-      val movie = moviesRepository.watchlistMovies.loadAll()
-      val items = movie.map { m ->
+      val movies = loadItemsCase.loadMyMovies()
+        .filter { it.released == null || it.hasAired() }
+      val items = movies.map { m ->
         async {
           val item = loadItemsCase.loadProgressItem(m)
           val image = imagesProvider.findCachedImage(m, ImageType.POSTER)
@@ -94,11 +93,16 @@ class ProgressMoviesWidgetViewsFactory(
     }
 
     try {
-      val bitmap = Glide.with(context).asBitmap()
+      remoteView.setViewVisibility(R.id.progressMoviesWidgetItemImage, GONE)
+      remoteView.setViewVisibility(R.id.progressMoviesWidgetItemPlaceholder, GONE)
+
+      val bitmap = Glide.with(context)
+        .asBitmap()
         .load(item.image.fullFileUrl)
         .transform(CenterCrop(), RoundedCorners(imageCorner))
         .submit(imageWidth, imageHeight)
         .get()
+
       remoteView.setImageViewBitmap(R.id.progressMoviesWidgetItemImage, bitmap)
       remoteView.setViewVisibility(R.id.progressMoviesWidgetItemImage, VISIBLE)
     } catch (t: Throwable) {
@@ -122,8 +126,5 @@ class ProgressMoviesWidgetViewsFactory(
 
   override fun getViewTypeCount() = 1
 
-  override fun onDestroy() {
-    coroutineContext.cancelChildren()
-    adapterItems.clear()
-  }
+  override fun onDestroy() = coroutineContext.cancelChildren()
 }

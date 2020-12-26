@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@drawable/bg_widget_watchlist"
+  android:background="@drawable/bg_widget"
+  tools:ignore="HardcodedText,SmallSp"
   >
 
   <ListView
@@ -12,7 +14,7 @@
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:divider="@android:color/transparent"
-    android:paddingTop="@dimen/spaceTiny"
+    android:paddingTop="@dimen/progressWidgetPaddingTop"
     android:paddingBottom="@dimen/spaceTiny"
     android:scrollbars="none"
     />
@@ -43,6 +45,36 @@
       android:text="@string/textProgressEmpty"
       android:textColor="@color/colorGrayLight"
       android:textSize="14sp"
+      />
+
+  </LinearLayout>
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_widget_toolbar"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/spaceTiny"
+    android:paddingBottom="@dimen/spaceTiny"
+    >
+
+    <ImageView
+      android:layout_width="14dp"
+      android:layout_height="14dp"
+      android:layout_marginStart="@dimen/spaceTiny"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:src="@drawable/ic_showly_round"
+      />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:gravity="start"
+      android:text="Shows Progress"
+      android:textAlignment="viewStart"
+      android:textColor="@color/colorWhite"
+      android:textSize="10sp"
       />
 
   </LinearLayout>

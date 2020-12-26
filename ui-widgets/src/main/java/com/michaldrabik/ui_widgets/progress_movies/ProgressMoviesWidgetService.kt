@@ -26,7 +26,6 @@ class ProgressMoviesWidgetService : RemoteViewsService() {
       applicationContext,
       progressLoadItemsCase,
       progressSortOrderCase,
-      moviesRepository,
       imagesProvider
     )
 }

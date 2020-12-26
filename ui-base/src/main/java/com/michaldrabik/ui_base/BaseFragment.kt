@@ -2,7 +2,6 @@ package com.michaldrabik.ui_base
 
 import android.content.Context
 import android.os.Bundle
-import android.view.ViewGroup
 import android.view.ViewPropertyAnimator
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
@@ -47,17 +46,16 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
 
   protected fun showSnack(message: MessageEvent) {
     message.consume()?.let {
+      val host = (requireActivity() as SnackbarHost).provideSnackbarLayout()
       when (message.type) {
-        INFO -> getSnackbarHost().showInfoSnackbar(getString(it))
-        ERROR -> getSnackbarHost().showErrorSnackbar(getString(it))
+        INFO -> host.showInfoSnackbar(getString(it))
+        ERROR -> host.showErrorSnackbar(getString(it))
       }
     }
   }
 
   protected fun navigateTo(@IdRes destination: Int, bundle: Bundle? = null) =
     findNavControl().navigate(destination, bundle)
-
-  protected open fun getSnackbarHost(): ViewGroup = (requireActivity() as SnackbarHost).provideSnackbarLayout()
 
   override fun isTipShown(tip: Tip) = (requireActivity() as TipsHost).isTipShown(tip)
 

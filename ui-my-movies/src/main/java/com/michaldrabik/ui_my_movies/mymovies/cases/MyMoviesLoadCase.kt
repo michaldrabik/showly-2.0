@@ -27,7 +27,7 @@ class MyMoviesLoadCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {
 
-  val language by lazy { settingsRepository.getLanguage() }
+  val language by lazy { translationsRepository.getLanguage() }
 
   private suspend fun loadSettings() = settingsRepository.load()
 
