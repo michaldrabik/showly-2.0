@@ -44,12 +44,15 @@ abstract class BaseActivity : AppCompatActivity() {
       try {
         when (currentDestination?.id) {
           R.id.searchFragment -> return@run
-          R.id.showDetailsFragment -> navigateUp()
+          R.id.showDetailsFragment, R.id.movieDetailsFragment -> navigateUp()
         }
         if (currentDestination?.id != R.id.discoverFragment) {
           bottomNavigationView.selectedItemId = R.id.menuDiscover
         }
-        navigate(R.id.actionDiscoverFragmentToSearchFragment)
+        when (currentDestination?.id) {
+          R.id.discoverFragment -> navigate(R.id.actionDiscoverFragmentToSearchFragment)
+          R.id.discoverMoviesFragment -> navigate(R.id.actionDiscoverMoviesFragmentToSearchFragment)
+        }
         extras?.clear()
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "BaseActivity::handleSearchWidgetClick()")
