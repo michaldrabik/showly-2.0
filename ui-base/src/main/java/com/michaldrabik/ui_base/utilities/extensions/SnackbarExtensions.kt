@@ -35,11 +35,10 @@ fun ViewGroup.showSnackbar(
 fun ViewGroup.showInfoSnackbar(
   message: String,
   actionText: Int = R.string.textOk,
-  action: (() -> Unit)? = null,
-  length: Int = LENGTH_SHORT
+  action: (() -> Unit)? = null
 ) {
   val textColor = context.colorFromAttr(R.attr.textColorInfoSnackbar)
-  showSnackbar(message, actionText, textColor, R.drawable.bg_snackbar_info, length, action)
+  showSnackbar(message, actionText, textColor, R.drawable.bg_snackbar_info, LENGTH_SHORT, action)
 }
 
 fun ViewGroup.showErrorSnackbar(

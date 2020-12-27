@@ -42,6 +42,7 @@ import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
+import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
@@ -135,7 +136,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private fun setupView() {
     hideNavigation()
     movieDetailsImageGuideline.setGuidelineBegin((imageHeight * 0.35).toInt())
-    movieDetailsBackArrow.onClick { requireActivity().onBackPressed() }
+    listOf(movieDetailsBackArrow, movieDetailsBackArrow2).onClick { requireActivity().onBackPressed() }
     movieDetailsImage.onClick {
       val bundle = bundleOf(
         ARG_MOVIE_ID to movieId.id,
@@ -166,7 +167,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private fun setupStatusBar() {
     movieDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
       movieDetailsMainLayout.updatePadding(top = insets.systemWindowInsetTop)
-      arrayOf<View>(view, movieDetailsCommentsView)
+      arrayOf<View>(view, movieDetailsBackArrow2, movieDetailsCommentsView)
         .forEach { v ->
           (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = insets.systemWindowInsetTop)
         }
@@ -210,6 +211,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       fadeOut(200)
       startAnimation(animationExitRight)
     }
+    movieDetailsBackArrow.crossfadeTo(movieDetailsBackArrow2)
   }
 
   private fun hideExtraView(view: View) {
@@ -223,6 +225,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       fadeIn()
       startAnimation(animationEnterLeft)
     }
+    movieDetailsBackArrow2.crossfadeTo(movieDetailsBackArrow)
   }
 
   private fun showFullActorView(actor: Actor) {

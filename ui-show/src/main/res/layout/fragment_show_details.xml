@@ -561,6 +561,17 @@
     app:srcCompat="@drawable/ic_arrow_back"
     />
 
+  <ImageView
+    android:id="@+id/showDetailsBackArrow2"
+    android:layout_width="@dimen/backArrowSize"
+    android:layout_height="@dimen/backArrowSize"
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="@dimen/backArrowPadding"
+    android:visibility="gone"
+    app:srcCompat="@drawable/ic_arrow_back"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
   <include layout="@layout/fragment_show_details_actor_full_view" />
 
 </FrameLayout>
