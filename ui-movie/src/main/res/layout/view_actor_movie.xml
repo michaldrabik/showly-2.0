@@ -19,15 +19,21 @@
       android:id="@+id/actorMovieImage"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:background="@drawable/bg_media_view_elevation"
+      android:elevation="@dimen/elevationSmall"
       />
 
     <ImageView
       android:id="@+id/actorMoviePlaceholder"
-      android:layout_width="@dimen/actorMovieTilePlaceholder"
-      android:layout_height="@dimen/actorMovieTilePlaceholder"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
       android:layout_gravity="center"
+      android:background="@drawable/bg_media_view_placeholder"
+      android:elevation="@dimen/elevationSmall"
+      android:padding="@dimen/actorMovieTilePlaceholder"
       android:visibility="gone"
       app:srcCompat="@drawable/ic_person_outline"
+      app:tint="?attr/colorPlaceholderIcon"
       tools:visibility="visible"
       />
 
@@ -44,6 +50,8 @@
       android:maxLines="2"
       android:textAlignment="viewStart"
       android:textSize="11sp"
+      android:translationZ="10dp"
+      tools:ignore="SmallSp"
       tools:text="Erin Moriarty"
       />
 

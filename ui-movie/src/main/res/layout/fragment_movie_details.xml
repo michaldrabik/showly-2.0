@@ -23,6 +23,8 @@
       android:id="@+id/constraintLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:clipChildren="false"
+      android:clipToPadding="false"
       android:paddingBottom="@dimen/spaceNormal"
       >
 
@@ -226,6 +228,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/actorMovieTileImageHeight"
         android:layout_marginTop="@dimen/spaceMedium"
+        android:clipChildren="false"
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingStart="@dimen/spaceNormal"

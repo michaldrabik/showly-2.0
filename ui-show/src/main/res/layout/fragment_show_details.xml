@@ -6,6 +6,7 @@
   android:id="@+id/showDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  tools:theme="@style/AppTheme"
   >
 
   <androidx.core.widget.NestedScrollView
@@ -24,6 +25,8 @@
       android:id="@+id/constraintLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:clipChildren="false"
+      android:clipToPadding="false"
       android:paddingBottom="@dimen/spaceNormal"
       >
 
@@ -267,6 +270,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/actorTileImageHeight"
         android:layout_marginTop="@dimen/spaceMedium"
+        android:clipChildren="false"
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingStart="@dimen/spaceNormal"

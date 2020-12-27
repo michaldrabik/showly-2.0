@@ -23,6 +23,7 @@ class RelatedMovieView : MovieView<RelatedListItem> {
   init {
     inflate(context, R.layout.view_related_movie, this)
     layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+    clipChildren = false
     onClick { itemClickListener?.invoke(item) }
   }
 
@@ -41,7 +42,6 @@ class RelatedMovieView : MovieView<RelatedListItem> {
   override fun loadImage(item: RelatedListItem) {
     if (item.image.status == UNAVAILABLE) {
       relatedMovieTitle.visible()
-      relatedMovieRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
     super.loadImage(item)
   }

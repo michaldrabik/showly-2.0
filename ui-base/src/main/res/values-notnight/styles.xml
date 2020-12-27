@@ -33,7 +33,7 @@
 
     <item name="colorBottomMenuBackground">@color/colorPrimary</item>
     <item name="colorBottomMenuItem">@color/colorBlueLight2x</item>
-    <item name="colorBottomMenuItemChecked">@color/colorAccent</item>
+    <item name="colorBottomMenuItemChecked">@color/colorBlue</item>
     <item name="colorBottomMenuSeparator">@color/colorPrimaryDark</item>
 
     <item name="colorSearchViewBackground">@color/colorWhite</item>

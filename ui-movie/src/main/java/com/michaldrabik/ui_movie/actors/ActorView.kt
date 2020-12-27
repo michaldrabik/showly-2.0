@@ -30,6 +30,7 @@ class ActorView : FrameLayout {
   init {
     inflate(context, R.layout.view_actor_movie, this)
     layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+    clipChildren = false
   }
 
   fun bind(item: Actor, clickListener: (Actor) -> Unit) {
@@ -45,7 +46,7 @@ class ActorView : FrameLayout {
   private fun loadImage(actor: Actor) {
     if (actor.image.isBlank()) {
       actorMoviePlaceholder.visible()
-      actorMovieRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
+      actorMovieImage.gone()
       return
     }
 
@@ -56,14 +57,14 @@ class ActorView : FrameLayout {
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
       .withFailListener {
         actorMoviePlaceholder.visible()
-        actorMovieRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
+        actorMovieImage.gone()
       }
       .into(actorMovieImage)
   }
 
   private fun clear() {
+    actorMovieImage.visible()
     actorMoviePlaceholder.gone()
-    actorMovieRoot.setBackgroundResource(0)
     Glide.with(this).clear(actorMovieImage)
   }
 }
