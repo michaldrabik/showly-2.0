@@ -14,14 +14,20 @@ import com.michaldrabik.ui_progress.calendar.cases.ProgressCalendarCase.Section.
 import com.michaldrabik.ui_progress.calendar.cases.ProgressCalendarCase.Section.TOMORROW
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalTime
+import org.threeten.bp.temporal.ChronoUnit.DAYS
 import javax.inject.Inject
 
 @AppScope
 class ProgressCalendarCase @Inject constructor() {
 
   fun prepareItems(items: List<ProgressItem>): List<ProgressItem> {
+    val today = nowUtc().toLocalTimeZone()
     val calendarItems = items
       .filter { it.upcomingEpisode != Episode.EMPTY }
+      .filter {
+        val airTime = it.upcomingEpisode.firstAired?.toLocalTimeZone()
+        airTime != null && (airTime.truncatedTo(DAYS) == today.truncatedTo(DAYS) || airTime.isAfter(today))
+      }
       .sortedBy { it.upcomingEpisode.firstAired }
       .toMutableList()
 
@@ -38,7 +44,7 @@ class ProgressCalendarCase @Inject constructor() {
     items.forEach { item ->
       val time = item.upcomingEpisode.firstAired!!.toLocalTimeZone()
       when {
-        time.year == today.year && time.dayOfYear == today.dayOfYear ->
+        time.dayOfYear == today.dayOfYear ->
           timeMap.getOrPut(TODAY, { mutableListOf() }).add(item)
         time.dayOfYear == today.plusDays(1).dayOfYear ->
           timeMap.getOrPut(TOMORROW, { mutableListOf() }).add(item)
