@@ -61,7 +61,7 @@ class SettingsRepository @Inject constructor(
 
   fun setTheme(theme: Int) = miscPreferences.edit { putInt(KEY_THEME, theme) }
 
-  fun getTheme() = miscPreferences.getInt(KEY_THEME, MODE_NIGHT_NO) //TODO
+  fun getTheme() = miscPreferences.getInt(KEY_THEME, MODE_NIGHT_NO)
 
   suspend fun clearLanguageLogs() {
     database.withTransaction {
