@@ -21,6 +21,8 @@ object Config {
   const val DEVELOPER_MAIL = "showlyapp@gmail.com"
   const val PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=com.michaldrabik.showly2"
   const val SHOW_WHATS_NEW = true
+  const val WHATS_NEW_TEXT =
+    "* Added 2 new widgets for shows and movies calendars\n\n* Added option to hide widgets titles\n\n* Bugfixes"
 
   const val MAIN_GRID_SPAN = 3
   const val IMAGE_FADE_DURATION_MS = 200
