@@ -23,7 +23,7 @@ class ProgressMoviesLoadItemsCase @Inject constructor(
   private val pinnedItemsRepository: PinnedItemsRepository
 ) {
 
-  suspend fun loadMyMovies() = moviesRepository.watchlistMovies.loadAll()
+  suspend fun loadWatchlistMovies() = moviesRepository.watchlistMovies.loadAll()
 
   suspend fun loadProgressItem(movie: Movie): ProgressMovieItem {
     val isPinned = pinnedItemsRepository.isItemPinned(movie)

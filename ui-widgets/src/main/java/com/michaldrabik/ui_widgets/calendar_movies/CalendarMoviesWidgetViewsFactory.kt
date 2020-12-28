@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_widgets.progress_movies
+package com.michaldrabik.ui_widgets.calendar_movies
 
 import android.content.Context
 import android.content.Intent
@@ -10,16 +10,16 @@ import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.michaldrabik.common.extensions.toFullDayDisplayString
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
+import com.michaldrabik.ui_progress_movies.calendar.cases.ProgressMoviesCalendarCase
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesLoadItemsCase
-import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesSortOrderCase
 import com.michaldrabik.ui_widgets.R
-import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider.Companion.EXTRA_CHECK_MOVIE_ID
 import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider.Companion.EXTRA_MOVIE_ID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,10 +29,10 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 
-class ProgressMoviesWidgetViewsFactory(
+class CalendarMoviesWidgetViewsFactory(
   private val context: Context,
   private val loadItemsCase: ProgressMoviesLoadItemsCase,
-  private val sortOrderCase: ProgressMoviesSortOrderCase,
+  private val calendarCase: ProgressMoviesCalendarCase,
   private val imagesProvider: MovieImagesProvider
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
@@ -46,25 +46,33 @@ class ProgressMoviesWidgetViewsFactory(
   private fun loadData() {
     runBlocking {
       val movies = loadItemsCase.loadWatchlistMovies()
-        .filter { it.released == null || it.hasAired() }
-      val items = movies.map { m ->
+      val items = movies.map { movie ->
         async {
-          val item = loadItemsCase.loadProgressItem(m)
-          val image = imagesProvider.findCachedImage(m, ImageType.POSTER)
+          val item = loadItemsCase.loadProgressItem(movie)
+          val image = imagesProvider.findCachedImage(movie, ImageType.POSTER)
           item.copy(image = image)
         }
       }.awaitAll()
 
-      val sortOrder = sortOrderCase.loadSortOrder()
-      val allItems = loadItemsCase.prepareItems(items, "", sortOrder).toMutableList()
-
-      adapterItems.replace(allItems)
+      val groupedItems = calendarCase.prepareItems(items)
+      adapterItems.replace(groupedItems)
     }
   }
 
   override fun onCreate() = loadData()
 
-  override fun getViewAt(position: Int) = createItemRemoteView(adapterItems[position])
+  override fun getViewAt(position: Int): RemoteViews {
+    val item = adapterItems[position]
+    return when {
+      item.isHeader() -> createHeaderRemoteView(item)
+      else -> createItemRemoteView(item)
+    }
+  }
+
+  private fun createHeaderRemoteView(item: ProgressMovieItem) =
+    RemoteViews(context.packageName, R.layout.widget_header).apply {
+      setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.headerTextResId!!))
+    }
 
   private fun createItemRemoteView(item: ProgressMovieItem): RemoteViews {
     val translatedTitle = item.movieTranslation?.title
@@ -73,28 +81,27 @@ class ProgressMoviesWidgetViewsFactory(
       else item.movie.title
 
     val translatedDescription = item.movieTranslation?.overview
-    val description =
+    val overview =
       if (translatedDescription?.isBlank() == false) translatedDescription.capitalizeWords()
       else item.movie.overview
 
-    val remoteView = RemoteViews(context.packageName, R.layout.widget_movies_progress_item).apply {
-      setTextViewText(R.id.progressMoviesWidgetItemTitle, title)
-      setTextViewText(R.id.progressMoviesWidgetItemSubtitle2, description)
+    val date = item.movie.released?.toFullDayDisplayString()
+      ?: context.getString(com.michaldrabik.ui_progress_movies.R.string.textTba)
+
+    val remoteView = RemoteViews(context.packageName, R.layout.widget_movies_calendar_item).apply {
+      setTextViewText(R.id.calendarMoviesWidgetItemTitle, title)
+      setTextViewText(R.id.calendarMoviesWidgetItemOverview, overview)
+      setTextViewText(R.id.calendarMoviesWidgetItemDate, date)
 
       val fillIntent = Intent().apply {
         putExtras(bundleOf(EXTRA_MOVIE_ID to item.movie.traktId))
       }
-      setOnClickFillInIntent(R.id.progressMoviesWidgetItem, fillIntent)
-
-      val checkFillIntent = Intent().apply {
-        putExtras(bundleOf(EXTRA_CHECK_MOVIE_ID to item.movie.traktId))
-      }
-      setOnClickFillInIntent(R.id.progressMoviesWidgetItemCheckButton, checkFillIntent)
+      setOnClickFillInIntent(R.id.calendarMoviesWidgetItem, fillIntent)
     }
 
     try {
-      remoteView.setViewVisibility(R.id.progressMoviesWidgetItemImage, GONE)
-      remoteView.setViewVisibility(R.id.progressMoviesWidgetItemPlaceholder, GONE)
+      remoteView.setViewVisibility(R.id.calendarMoviesWidgetItemImage, GONE)
+      remoteView.setViewVisibility(R.id.calendarMoviesWidgetItemPlaceholder, GONE)
 
       val bitmap = Glide.with(context)
         .asBitmap()
@@ -103,11 +110,11 @@ class ProgressMoviesWidgetViewsFactory(
         .submit(imageWidth, imageHeight)
         .get()
 
-      remoteView.setImageViewBitmap(R.id.progressMoviesWidgetItemImage, bitmap)
-      remoteView.setViewVisibility(R.id.progressMoviesWidgetItemImage, VISIBLE)
+      remoteView.setImageViewBitmap(R.id.calendarMoviesWidgetItemImage, bitmap)
+      remoteView.setViewVisibility(R.id.calendarMoviesWidgetItemImage, VISIBLE)
     } catch (t: Throwable) {
-      remoteView.setViewVisibility(R.id.progressMoviesWidgetItemImage, GONE)
-      remoteView.setViewVisibility(R.id.progressMoviesWidgetItemPlaceholder, VISIBLE)
+      remoteView.setViewVisibility(R.id.calendarMoviesWidgetItemImage, GONE)
+      remoteView.setViewVisibility(R.id.calendarMoviesWidgetItemPlaceholder, VISIBLE)
     }
 
     return remoteView
@@ -124,7 +131,7 @@ class ProgressMoviesWidgetViewsFactory(
 
   override fun hasStableIds() = true
 
-  override fun getViewTypeCount() = 1
+  override fun getViewTypeCount() = 2
 
   override fun onDestroy() = coroutineContext.cancelChildren()
 }

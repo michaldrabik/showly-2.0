@@ -27,9 +27,14 @@
       android:permission="android.permission.BIND_JOB_SERVICE"
       />
 
+    <service
+      android:name="com.michaldrabik.ui_widgets.calendar_movies.CalendarMoviesWidgetService"
+      android:permission="android.permission.BIND_REMOTEVIEWS"
+      />
+
     <receiver
       android:name="com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider"
-      android:label="Progress Shows"
+      android:label="Shows Progress"
       >
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -43,7 +48,7 @@
 
     <receiver
       android:name="com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider"
-      android:label="Progress Movies"
+      android:label="Movies Progress"
       >
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -52,6 +57,20 @@
       <meta-data
         android:name="android.appwidget.provider"
         android:resource="@xml/progress_movies_widgets_provider"
+        />
+    </receiver>
+
+    <receiver
+      android:name="com.michaldrabik.ui_widgets.calendar_movies.CalendarMoviesWidgetProvider"
+      android:label="Movies Calendar"
+      >
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/calendar_movies_widgets_provider"
         />
     </receiver>
 

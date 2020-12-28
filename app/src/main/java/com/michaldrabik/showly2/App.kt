@@ -26,6 +26,7 @@ import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsActivityCallbacks
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
 import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_widgets.calendar_movies.CalendarMoviesWidgetProvider
 import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
 import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider
 import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider
@@ -121,8 +122,14 @@ class App :
   }
 
   override fun isOnline() = isAppOnline
-  override fun requestShowsWidgetsUpdate() = ProgressWidgetProvider.requestUpdate(applicationContext)
-  override fun requestMoviesWidgetsUpdate() = ProgressMoviesWidgetProvider.requestUpdate(applicationContext)
+  override fun requestShowsWidgetsUpdate() {
+    ProgressWidgetProvider.requestUpdate(applicationContext)
+  }
+
+  override fun requestMoviesWidgetsUpdate() {
+    ProgressMoviesWidgetProvider.requestUpdate(applicationContext)
+    CalendarMoviesWidgetProvider.requestUpdate(applicationContext)
+  }
 
   override fun provideBaseComponent() = appComponent.uiBaseComponent().create()
   override fun provideWidgetsComponent() = appComponent.uiWidgetsComponent().create()

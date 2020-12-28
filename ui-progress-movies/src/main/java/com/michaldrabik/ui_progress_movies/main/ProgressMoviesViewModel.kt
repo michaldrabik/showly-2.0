@@ -29,7 +29,7 @@ class ProgressMoviesViewModel @Inject constructor(
 
   fun loadProgress(resetScroll: Boolean = false) {
     viewModelScope.launch {
-      val movies = loadItemsCase.loadMyMovies()
+      val movies = loadItemsCase.loadWatchlistMovies()
       val items = movies.map { movie ->
         async {
           val item = loadItemsCase.loadProgressItem(movie)
