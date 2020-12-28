@@ -11,8 +11,8 @@ import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
-import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider.Companion.EXTRA_SHOW_ID
-import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider.Companion.EXTRA_MOVIE_ID
+import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_MOVIE_ID
+import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_SHOW_ID
 import com.michaldrabik.ui_widgets.search.SearchWidgetProvider
 import kotlinx.android.synthetic.main.activity_main.*
 

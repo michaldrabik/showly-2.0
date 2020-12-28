@@ -26,12 +26,15 @@ import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsActivityCallbacks
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
 import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_widgets.WidgetSettings
 import com.michaldrabik.ui_widgets.calendar.CalendarWidgetProvider
 import com.michaldrabik.ui_widgets.calendar_movies.CalendarMoviesWidgetProvider
 import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
 import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider
 import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider
 import com.yariksoffice.lingver.Lingver
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import com.michaldrabik.ui_base.fcm.NotificationChannel as AppNotificationChannel
@@ -55,6 +58,8 @@ class App :
       NetworkMonitorCallbacks(connectivityManager())
     )
   }
+
+  private val appScope = MainScope()
 
   override fun onCreate() {
     super.onCreate()
@@ -125,13 +130,27 @@ class App :
   override fun isOnline() = isAppOnline
 
   override fun requestShowsWidgetsUpdate() {
-    ProgressWidgetProvider.requestUpdate(applicationContext)
-    CalendarWidgetProvider.requestUpdate(applicationContext)
+    appScope.launch {
+      val settings = if (settingsRepository.isInitialized()) settingsRepository.load() else null
+      val widgetSettings = settings?.let {
+        WidgetSettings(showLabel = it.widgetsShowLabel)
+      } ?: WidgetSettings.createInitial()
+
+      ProgressWidgetProvider.requestUpdate(applicationContext, widgetSettings)
+      CalendarWidgetProvider.requestUpdate(applicationContext, widgetSettings)
+    }
   }
 
   override fun requestMoviesWidgetsUpdate() {
-    ProgressMoviesWidgetProvider.requestUpdate(applicationContext)
-    CalendarMoviesWidgetProvider.requestUpdate(applicationContext)
+    appScope.launch {
+      val settings = if (settingsRepository.isInitialized()) settingsRepository.load() else null
+      val widgetSettings = settings?.let {
+        WidgetSettings(showLabel = it.widgetsShowLabel)
+      } ?: WidgetSettings.createInitial()
+
+      ProgressMoviesWidgetProvider.requestUpdate(applicationContext, widgetSettings)
+      CalendarMoviesWidgetProvider.requestUpdate(applicationContext, widgetSettings)
+    }
   }
 
   override fun provideBaseComponent() = appComponent.uiBaseComponent().create()

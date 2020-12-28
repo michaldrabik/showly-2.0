@@ -20,8 +20,8 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.calendar.cases.ProgressCalendarCase
 import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
+import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_SHOW_ID
 import com.michaldrabik.ui_widgets.R
-import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider.Companion.EXTRA_SHOW_ID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -41,8 +41,8 @@ class CalendarWidgetViewsFactory(
   override val coroutineContext = Job() + Dispatchers.Main
 
   private val imageCorner by lazy { context.dimenToPx(R.dimen.showTileCorner) }
-  private val imageWidth by lazy { context.dimenToPx(R.dimen.progressWidgetImageWidth) }
-  private val imageHeight by lazy { context.dimenToPx(R.dimen.progressWidgetImageHeight) }
+  private val imageWidth by lazy { context.dimenToPx(R.dimen.widgetImageWidth) }
+  private val imageHeight by lazy { context.dimenToPx(R.dimen.widgetImageHeight) }
   private val adapterItems by lazy { mutableListOf<ProgressItem>() }
 
   private fun loadData() {

@@ -3,31 +3,34 @@ package com.michaldrabik.ui_widgets.progress_movies
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
-import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.RemoteViews
 import com.michaldrabik.common.Config
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_widgets.BaseWidgetProvider
 import com.michaldrabik.ui_widgets.R
+import com.michaldrabik.ui_widgets.WidgetSettings
 import timber.log.Timber
 
-class ProgressMoviesWidgetProvider : AppWidgetProvider() {
+class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
 
   companion object {
-    const val ACTION_LIST_CLICK = "ACTION_LIST_CLICK"
-    const val EXTRA_MOVIE_ID = "EXTRA_MOVIE_ID"
     const val EXTRA_CHECK_MOVIE_ID = "EXTRA_CHECK_MOVIE_ID"
 
-    fun requestUpdate(context: Context) {
+    fun requestUpdate(context: Context, widgetSettings: WidgetSettings) {
       val applicationContext = context.applicationContext
       val intent = Intent(applicationContext, ProgressMoviesWidgetProvider::class.java).apply {
         val ids: IntArray = AppWidgetManager.getInstance(applicationContext)
           .getAppWidgetIds(ComponentName(applicationContext, ProgressMoviesWidgetProvider::class.java))
         action = ACTION_APPWIDGET_UPDATE
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+        putExtra(EXTRA_SETTINGS, widgetSettings)
       }
       applicationContext.sendBroadcast(intent)
       Timber.d("Widget update requested.")
@@ -52,6 +55,12 @@ class ProgressMoviesWidgetProvider : AppWidgetProvider() {
     val remoteViews = RemoteViews(context.packageName, R.layout.widget_movies_progress).apply {
       setRemoteAdapter(R.id.progressWidgetMoviesList, intent)
       setEmptyView(R.id.progressWidgetMoviesList, R.id.progressWidgetMoviesEmptyView)
+
+      val spaceTiny = context.dimenToPx(R.dimen.spaceTiny)
+      val paddingTop = if (settings?.showLabel == false) spaceTiny else context.dimenToPx(R.dimen.widgetPaddingTop)
+      val labelVisibility = if (settings?.showLabel == false) GONE else VISIBLE
+      setViewPadding(R.id.progressWidgetMoviesList, 0, paddingTop, 0, spaceTiny)
+      setViewVisibility(R.id.progressWidgetMoviesLabel, labelVisibility)
     }
 
     val listClickIntent = Intent(context, ProgressMoviesWidgetProvider::class.java).apply {

@@ -11,8 +11,8 @@
   >
 
   <FrameLayout
-    android:layout_width="@dimen/progressWidgetImageWidth"
-    android:layout_height="@dimen/progressWidgetImageHeight"
+    android:layout_width="@dimen/widgetImageWidth"
+    android:layout_height="@dimen/widgetImageHeight"
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginEnd="@dimen/spaceMedium"

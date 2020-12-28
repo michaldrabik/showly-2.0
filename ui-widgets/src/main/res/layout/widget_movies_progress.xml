@@ -14,7 +14,7 @@
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:divider="@android:color/transparent"
-    android:paddingTop="@dimen/progressWidgetPaddingTop"
+    android:paddingTop="@dimen/widgetPaddingTop"
     android:paddingBottom="@dimen/spaceTiny"
     android:scrollbars="none"
     />
@@ -50,6 +50,7 @@
   </LinearLayout>
 
   <LinearLayout
+    android:id="@+id/progressWidgetMoviesLabel"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_widget_toolbar"

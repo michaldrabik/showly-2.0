@@ -6,33 +6,36 @@ import android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
 import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID
 import android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_IDS
 import android.appwidget.AppWidgetManager.getInstance
-import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.URI_INTENT_SCHEME
 import android.net.Uri
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.RemoteViews
 import com.michaldrabik.common.Config.HOST_ACTIVITY_NAME
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_widgets.BaseWidgetProvider
 import com.michaldrabik.ui_widgets.R
+import com.michaldrabik.ui_widgets.WidgetSettings
 import timber.log.Timber
 
-class ProgressWidgetProvider : AppWidgetProvider() {
+class ProgressWidgetProvider : BaseWidgetProvider() {
 
   companion object {
-    const val ACTION_LIST_CLICK = "ACTION_LIST_CLICK"
-    const val EXTRA_SHOW_ID = "EXTRA_SHOW_ID"
     const val EXTRA_SEASON_ID = "EXTRA_SEASON_ID"
     const val EXTRA_EPISODE_ID = "EXTRA_EPISODE_ID"
 
-    fun requestUpdate(context: Context) {
+    fun requestUpdate(context: Context, settings: WidgetSettings) {
       val applicationContext = context.applicationContext
       val intent = Intent(applicationContext, ProgressWidgetProvider::class.java).apply {
         val ids: IntArray = getInstance(applicationContext)
           .getAppWidgetIds(ComponentName(applicationContext, ProgressWidgetProvider::class.java))
         action = ACTION_APPWIDGET_UPDATE
         putExtra(EXTRA_APPWIDGET_IDS, ids)
+        putExtra(EXTRA_SETTINGS, settings)
       }
       applicationContext.sendBroadcast(intent)
       Timber.d("Widget update requested.")
@@ -57,6 +60,12 @@ class ProgressWidgetProvider : AppWidgetProvider() {
     val remoteViews = RemoteViews(context.packageName, R.layout.widget_progress).apply {
       setRemoteAdapter(R.id.progressWidgetList, intent)
       setEmptyView(R.id.progressWidgetList, R.id.progressWidgetEmptyView)
+
+      val spaceTiny = context.dimenToPx(R.dimen.spaceTiny)
+      val paddingTop = if (settings?.showLabel == false) spaceTiny else context.dimenToPx(R.dimen.widgetPaddingTop)
+      val labelVisibility = if (settings?.showLabel == false) GONE else VISIBLE
+      setViewPadding(R.id.progressWidgetList, 0, paddingTop, 0, spaceTiny)
+      setViewVisibility(R.id.progressWidgetLabel, labelVisibility)
     }
 
     val listClickIntent = Intent(context, ProgressWidgetProvider::class.java).apply {

@@ -3,29 +3,31 @@ package com.michaldrabik.ui_widgets.calendar
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
-import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.RemoteViews
 import com.michaldrabik.common.Config
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_widgets.BaseWidgetProvider
 import com.michaldrabik.ui_widgets.R
+import com.michaldrabik.ui_widgets.WidgetSettings
 import timber.log.Timber
 
-class CalendarWidgetProvider : AppWidgetProvider() {
+class CalendarWidgetProvider : BaseWidgetProvider() {
 
   companion object {
-    const val ACTION_LIST_CLICK = "ACTION_LIST_CLICK"
-    const val EXTRA_SHOW_ID = "EXTRA_SHOW_ID"
-
-    fun requestUpdate(context: Context) {
+    fun requestUpdate(context: Context, settings: WidgetSettings) {
       val applicationContext = context.applicationContext
+      val appWidgetManager = AppWidgetManager.getInstance(applicationContext)
       val intent = Intent(applicationContext, CalendarWidgetProvider::class.java).apply {
-        val ids: IntArray = AppWidgetManager.getInstance(applicationContext)
-          .getAppWidgetIds(ComponentName(applicationContext, CalendarWidgetProvider::class.java))
+        val ids = appWidgetManager.getAppWidgetIds(ComponentName(applicationContext, CalendarWidgetProvider::class.java))
         action = ACTION_APPWIDGET_UPDATE
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+        putExtra(EXTRA_SETTINGS, settings)
       }
       applicationContext.sendBroadcast(intent)
       Timber.d("Widget update requested.")
@@ -50,6 +52,12 @@ class CalendarWidgetProvider : AppWidgetProvider() {
     val remoteViews = RemoteViews(context.packageName, R.layout.widget_calendar).apply {
       setRemoteAdapter(R.id.calendarWidgetList, intent)
       setEmptyView(R.id.calendarWidgetList, R.id.calendarWidgetEmptyView)
+
+      val spaceTiny = context.dimenToPx(R.dimen.spaceTiny)
+      val paddingTop = if (settings?.showLabel == false) spaceTiny else context.dimenToPx(R.dimen.widgetPaddingTop)
+      val labelVisibility = if (settings?.showLabel == false) GONE else VISIBLE
+      setViewPadding(R.id.calendarWidgetList, 0, paddingTop, 0, spaceTiny)
+      setViewVisibility(R.id.calendarWidgetLabel, labelVisibility)
     }
 
     val listClickIntent = Intent(context, CalendarWidgetProvider::class.java).apply {

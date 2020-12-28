@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="progressWidgetImageHeight">100dp</dimen>
-  <dimen name="progressWidgetImageWidth">67dp</dimen>
-  <dimen name="progressWidgetPaddingTop">26dp</dimen>
-  <dimen name="progressWidgetCorner">6dp</dimen>
+  <dimen name="widgetImageHeight">100dp</dimen>
+  <dimen name="widgetImageWidth">67dp</dimen>
+  <dimen name="widgetPaddingTop">26dp</dimen>
+  <dimen name="widgetCorner">6dp</dimen>
 </resources>
