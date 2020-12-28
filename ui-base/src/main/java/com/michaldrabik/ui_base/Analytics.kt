@@ -267,6 +267,12 @@ object Analytics {
     }
   }
 
+  fun logSettingsWidgetsTitlesEnabled(enabled: Boolean) {
+    firebaseAnalytics.logEvent("settings_widgets_titles") {
+      param("enabled", enabled.toString())
+    }
+  }
+
   fun logSettingsWhenToNotify(value: String) {
     firebaseAnalytics.logEvent("settings_when_to_notify") {
       param("value", value.toLowerCase(ROOT))

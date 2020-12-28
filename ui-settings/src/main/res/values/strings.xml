@@ -46,6 +46,10 @@
   <string name="textSettingsLogoutMessage">\nAre you sure you want to sign out?\n</string>
   <string name="textSettingsMoviesEnabledTitle">Movies</string>
   <string name="textSettingsMoviesEnabledSummary">Enable/disable movies support. App will restart.</string>
+  <string name="textSettingsWidgets">Widgets</string>
+  <string name="textSettingsWidgetsLabelsTitle">Show Titles</string>
+  <string name="textSettingsWidgetsLabelsSummary">Display translucent widgets titles.</string>
+
 
   <string name="textLanguageEnglish" translatable="false">English</string>
   <string name="textLanguagePolish" translatable="false">Polski</string>

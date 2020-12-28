@@ -149,6 +149,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         viewModel.enableMovies(isChecked, requireAppContext())
       }
 
+    settingsWidgetsLabelsSwitch
+      .setCheckedSilent(settings.widgetsShowLabel) { _, isChecked ->
+        viewModel.enableWidgetsTitles(isChecked, requireAppContext())
+      }
+
     settingsContactDevs.onClick {
       val intent = Intent(ACTION_SENDTO).apply {
         data = Uri.parse("mailto:")
