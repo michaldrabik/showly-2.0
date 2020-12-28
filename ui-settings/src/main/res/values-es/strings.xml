@@ -46,5 +46,9 @@
   <string name="textSettingsLogoutMessage">\n¿Estás seguro/a de que quieres cerrar sesión?\n</string>
   <string name="textSettingsMoviesEnabledTitle">Películas</string>
   <string name="textSettingsMoviesEnabledSummary">Habilitar/deshabilitar soporte de películas. La aplicación se reiniciará.</string>
+  <string name="textSettingsWidgets">Widgets</string>
+  <string name="textSettingsWidgetsLabelsTitle">Mostrar Títulos</string>
+  <string name="textSettingsWidgetsLabelsSummary">Muestra títulos de widgets translúcidos.</string>
+
 
   </resources>
