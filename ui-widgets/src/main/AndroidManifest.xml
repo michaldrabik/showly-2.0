@@ -28,6 +28,11 @@
       />
 
     <service
+      android:name="com.michaldrabik.ui_widgets.calendar.CalendarWidgetService"
+      android:permission="android.permission.BIND_REMOTEVIEWS"
+      />
+
+    <service
       android:name="com.michaldrabik.ui_widgets.calendar_movies.CalendarMoviesWidgetService"
       android:permission="android.permission.BIND_REMOTEVIEWS"
       />
@@ -57,6 +62,20 @@
       <meta-data
         android:name="android.appwidget.provider"
         android:resource="@xml/progress_movies_widgets_provider"
+        />
+    </receiver>
+
+    <receiver
+      android:name="com.michaldrabik.ui_widgets.calendar.CalendarWidgetProvider"
+      android:label="Shows Calendar"
+      >
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+      </intent-filter>
+
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/calendar_widgets_provider"
         />
     </receiver>
 

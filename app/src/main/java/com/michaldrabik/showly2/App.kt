@@ -26,6 +26,7 @@ import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsActivityCallbacks
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
 import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_widgets.calendar.CalendarWidgetProvider
 import com.michaldrabik.ui_widgets.calendar_movies.CalendarMoviesWidgetProvider
 import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
 import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider
@@ -122,8 +123,10 @@ class App :
   }
 
   override fun isOnline() = isAppOnline
+
   override fun requestShowsWidgetsUpdate() {
     ProgressWidgetProvider.requestUpdate(applicationContext)
+    CalendarWidgetProvider.requestUpdate(applicationContext)
   }
 
   override fun requestMoviesWidgetsUpdate() {

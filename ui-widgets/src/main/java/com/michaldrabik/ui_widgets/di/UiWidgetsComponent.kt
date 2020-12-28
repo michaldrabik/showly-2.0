@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_widgets.di
 
+import com.michaldrabik.ui_widgets.calendar.CalendarWidgetService
 import com.michaldrabik.ui_widgets.calendar_movies.CalendarMoviesWidgetService
 import com.michaldrabik.ui_widgets.progress.ProgressWidgetEpisodeCheckService
 import com.michaldrabik.ui_widgets.progress.ProgressWidgetService
@@ -21,5 +22,6 @@ interface UiWidgetsComponent {
   fun inject(service: ProgressMoviesWidgetCheckService)
   fun inject(service: ProgressMoviesWidgetService)
 
+  fun inject(service: CalendarWidgetService)
   fun inject(service: CalendarMoviesWidgetService)
 }
