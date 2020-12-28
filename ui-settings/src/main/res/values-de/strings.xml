@@ -32,7 +32,7 @@
   <string name="textSettingsPushNotificationsTitle">Pushbenachrichtigungen</string>
   <string name="textSettingsPushNotificationsSummary">Erhalte allgemeine Push-Benachrichtigungen.</string>
   <string name="textSettingsShowsNotificationsTitle">Ankündigungen</string>
-  <string name="textSettingsShowsNotificationsSummary">Erhalte Benachrichtigungen über neue Filme, Folgen &amp; Staffeln von Serien die du gespeichert hast.</string>
+  <string name="textSettingsShowsNotificationsSummary">Erhalte Benachrichtigungen über neue Filme, Folgen & Staffeln von Serien die du gespeichert hast.</string>
   <string name="textSettingsMisc">Gemischt</string>
   <string name="textSettingsContactDevsTitle">Entwickler kontaktieren</string>
   <string name="textSettingsContactDevsSummary">Du hast einen Fehler entdeckt oder ein Problem? Schreib uns gerne eine E-Mail (showlyapp@gmail.com).</string>
@@ -46,5 +46,9 @@
   <string name="textSettingsLogoutMessage">\nBist du sicher, dass du dich ausloggen möchtest?\n</string>
   <string name="textSettingsMoviesEnabledTitle">Filme</string>
   <string name="textSettingsMoviesEnabledSummary">Aktiviere/Deaktiviere die Unterstützung fur Filme. Die App wird neu gestartet.</string>
+  <string name="textSettingsWidgets">Widgets</string>
+  <string name="textSettingsWidgetsLabelsTitle">Titel Anzeigen</string>
+  <string name="textSettingsWidgetsLabelsSummary">Zeigen Sie durchscheinende Widgets-Titel an.</string>
 
-</resources>
+
+  </resources>
