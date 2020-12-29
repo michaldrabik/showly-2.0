@@ -24,14 +24,14 @@ class WatchlistViewModel @Inject constructor(
   private val imagesProvider: MovieImagesProvider
 ) : BaseViewModel<WatchlistUiModel>() {
 
-  fun loadMovies(resetScroll: Boolean = false) {
+  fun loadMovies(resetScroll: Boolean = false, loadRatings: Boolean = true) {
     viewModelScope.launch {
       val items = loadMoviesCase.loadMovies().map {
         val image = imagesProvider.findCachedImage(it.first, POSTER)
         WatchlistListItem(it.first, image, false, it.second)
       }
-      uiState = WatchlistUiModel(items = items, scrollToTop = ActionEvent(resetScroll))
-      loadRatings(items)
+      uiState = WatchlistUiModel(items = items, resetScroll = ActionEvent(resetScroll))
+      if (loadRatings) loadRatings(items)
     }
   }
 
@@ -81,7 +81,7 @@ class WatchlistViewModel @Inject constructor(
   fun setSortOrder(sortOrder: SortOrder) {
     viewModelScope.launch {
       sortOrderCase.setSortOrder(sortOrder)
-      loadMovies(resetScroll = true)
+      loadMovies(resetScroll = true, loadRatings = false)
     }
   }
 
