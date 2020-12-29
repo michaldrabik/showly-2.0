@@ -5,12 +5,12 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:background="@drawable/bg_widget"
-  android:theme="@style/AppTheme"
+  android:theme="@style/AppTheme.Widget.Dark"
   tools:ignore="HardcodedText,SmallSp"
   >
 
   <ListView
-    android:id="@+id/progressWidgetMoviesList"
+    android:id="@+id/calendarWidgetMoviesList"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
@@ -21,7 +21,7 @@
     />
 
   <LinearLayout
-    android:id="@+id/progressWidgetMoviesEmptyView"
+    android:id="@+id/calendarWidgetMoviesEmptyView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/spaceBig"
@@ -33,7 +33,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginBottom="@dimen/spaceTiny"
-      android:text="@string/menuProgress"
+      android:text="@string/menuCalendar"
       android:textAllCaps="true"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="20sp"
@@ -43,7 +43,7 @@
     <TextView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="@string/textMoviesProgressEmpty"
+      android:text="@string/textMoviesCalendarEmpty"
       android:textColor="?android:attr/textColorSecondary"
       android:textSize="14sp"
       />
@@ -51,7 +51,7 @@
   </LinearLayout>
 
   <LinearLayout
-    android:id="@+id/progressWidgetMoviesLabel"
+    android:id="@+id/calendarWidgetMoviesLabel"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_widget_toolbar"
@@ -73,7 +73,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="start"
-      android:text="Movies Progress"
+      android:text="Movies Calendar"
       android:textAlignment="viewStart"
       android:textColor="@color/colorWhite"
       android:textSize="10sp"

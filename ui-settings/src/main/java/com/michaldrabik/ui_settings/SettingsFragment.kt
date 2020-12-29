@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
+import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
@@ -32,6 +33,7 @@ import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.TraktSyncSchedule.OFF
 import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
 import com.michaldrabik.ui_settings.helpers.AppLanguage
+import com.michaldrabik.ui_settings.helpers.AppTheme
 import com.michaldrabik.ui_settings.helpers.PlayStoreHelper
 import kotlinx.android.synthetic.main.fragment_settings.*
 import com.michaldrabik.network.Config as ConfigNetwork
@@ -73,6 +75,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     uiModel.run {
       settings?.let { renderSettings(it, moviesEnabled ?: true) }
       language?.let { renderLanguage(it) }
+      theme?.let { renderTheme(it) }
       isSignedInTrakt?.let { isSignedIn ->
         settingsTraktSync.visibleIf(isSignedIn)
         settingsTraktQuickSync.visibleIf(isSignedIn)
@@ -158,7 +161,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       val intent = Intent(ACTION_SENDTO).apply {
         data = Uri.parse("mailto:")
         putExtra(EXTRA_EMAIL, arrayOf(Config.DEVELOPER_MAIL))
-        putExtra(EXTRA_SUBJECT, "Showly 2.0 Issue")
+        putExtra(EXTRA_SUBJECT, "Showly 2.0 Message")
       }
       if (intent.resolveActivity(requireActivity().packageManager) != null) {
         startActivity(intent)
@@ -176,6 +179,13 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsLanguageValue.run {
       setText(language.displayName)
       onClick { showLanguageDialog(language) }
+    }
+  }
+
+  private fun renderTheme(theme: AppTheme) {
+    settingsThemeValue.run {
+      setText(theme.displayName)
+      onClick { showThemeDialog(theme) }
     }
   }
 
@@ -232,6 +242,21 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       .setSingleChoiceItems(options.map { getString(it.displayName) }.toTypedArray(), selected) { dialog, index ->
         if (index != selected) {
           viewModel.setLanguage(options[index])
+        }
+        dialog.dismiss()
+      }
+      .show()
+  }
+
+  private fun showThemeDialog(theme: AppTheme) {
+    val options = AppTheme.values()
+    val selected = options.indexOf(theme)
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setSingleChoiceItems(options.map { getString(it.displayName) }.toTypedArray(), selected) { dialog, index ->
+        if (index != selected) {
+          viewModel.setTheme(options[index])
+          setDefaultNightMode(options[index].code)
         }
         dialog.dismiss()
       }

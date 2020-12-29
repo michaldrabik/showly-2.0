@@ -49,21 +49,6 @@
     <item name="colorWidgetStatusBackground">@color/colorBlackTranslucent</item>
   </style>
 
-  <style name="Badge">
-    <item name="android:layout_width">wrap_content</item>
-    <item name="android:layout_height">wrap_content</item>
-    <item name="android:layout_gravity">top|end</item>
-    <item name="android:layout_marginEnd">@dimen/spaceTiny</item>
-    <item name="android:layout_marginTop">-2dp</item>
-    <item name="android:visibility">gone</item>
-    <item name="android:elevation">@dimen/elevationSmall</item>
-    <item name="android:tint">@color/colorAccent</item>
-  </style>
-
-  <style name="Badge.Watchlist" parent="Badge">
-    <item name="android:tint">@color/colorGrayLight</item>
-  </style>
-
   <!--  Bottom Sheet Dialogs -->
 
   <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
@@ -153,6 +138,21 @@
     <item name="android:textColor">?attr/textColorTab</item>
     <item name="android:layout_gravity">start</item>
     <item name="textAllCaps">false</item>
+  </style>
+
+  <style name="Badge">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_gravity">top|end</item>
+    <item name="android:layout_marginEnd">@dimen/spaceTiny</item>
+    <item name="android:layout_marginTop">-2dp</item>
+    <item name="android:visibility">gone</item>
+    <item name="android:elevation">@dimen/elevationSmall</item>
+    <item name="android:tint">@color/colorAccent</item>
+  </style>
+
+  <style name="Badge.Watchlist" parent="Badge">
+    <item name="android:tint">@color/colorGrayLight</item>
   </style>
 
 </resources>

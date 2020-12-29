@@ -285,6 +285,12 @@ object Analytics {
     }
   }
 
+  fun logSettingsTheme(value: Int) {
+    firebaseAnalytics.logEvent("settings_theme") {
+      param("value", value.toString())
+    }
+  }
+
   fun logSettingsMyShowsSection(section: MyShowsSection, enabled: Boolean) {
     firebaseAnalytics.logEvent("settings_my_shows_section") {
       param("section", section.name.toLowerCase(ROOT))

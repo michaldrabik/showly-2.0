@@ -14,6 +14,7 @@ import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_settings.cases.SettingsMainCase
 import com.michaldrabik.ui_settings.cases.SettingsTraktCase
 import com.michaldrabik.ui_settings.helpers.AppLanguage
+import com.michaldrabik.ui_settings.helpers.AppTheme
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -129,6 +130,14 @@ class SettingsViewModel @Inject constructor(
     Analytics.logSettingsLanguage(language.code)
   }
 
+  fun setTheme(theme: AppTheme) {
+    viewModelScope.launch {
+      mainCase.setTheme(theme)
+      refreshSettings()
+    }
+    Analytics.logSettingsTheme(theme.code)
+  }
+
   fun setTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {
     viewModelScope.launch {
       traktCase.setTraktSyncSchedule(schedule, context)
@@ -174,6 +183,7 @@ class SettingsViewModel @Inject constructor(
     uiState = SettingsUiModel(
       settings = mainCase.getSettings(),
       language = mainCase.getLanguage(),
+      theme = mainCase.getTheme(),
       moviesEnabled = mainCase.isMoviesEnabled(),
       isSignedInTrakt = traktCase.isTraktAuthorized(),
       traktUsername = traktCase.getTraktUsername(),

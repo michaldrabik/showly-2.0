@@ -16,6 +16,8 @@ abstract class BaseWidgetProvider : AppWidgetProvider() {
 
   protected var settings: WidgetSettings? = null
 
+  abstract fun getLayoutResId(): Int
+
   override fun onReceive(context: Context, intent: Intent) {
     if (intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE) {
       settings = intent.getParcelableExtra(EXTRA_SETTINGS) as? WidgetSettings

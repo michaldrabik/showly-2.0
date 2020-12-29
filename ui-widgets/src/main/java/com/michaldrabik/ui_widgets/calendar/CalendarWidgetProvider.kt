@@ -72,6 +72,10 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
     appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.calendarWidgetList)
   }
 
+  override fun getLayoutResId(): Int {
+    TODO("Not yet implemented")
+  }
+
   override fun onReceive(context: Context, intent: Intent) {
     if (intent.action == ACTION_LIST_CLICK) {
       when {

@@ -79,6 +79,10 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
     appWidgetManager.notifyAppWidgetViewDataChanged(widgetId, R.id.progressWidgetList)
   }
 
+  override fun getLayoutResId(): Int {
+    TODO("Not yet implemented")
+  }
+
   override fun onReceive(context: Context, intent: Intent) {
     if (intent.action.equals(ACTION_LIST_CLICK)) {
       when {

@@ -55,7 +55,6 @@
     <item name="android:indeterminateTint">@color/colorAccent</item>
   </style>
 
-
   <!-- Dialogs -->
 
   <style name="AlertDialog" parent="@style/Theme.MaterialComponents.Dialog">

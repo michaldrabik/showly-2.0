@@ -141,7 +141,10 @@ class App :
     appScope.launch {
       val settings = if (settingsRepository.isInitialized()) settingsRepository.load() else null
       val widgetSettings = settings?.let {
-        WidgetSettings(showLabel = it.widgetsShowLabel)
+        WidgetSettings(
+          showLabel = it.widgetsShowLabel,
+          theme = settingsRepository.getWidgetsTheme()
+        )
       } ?: WidgetSettings.createInitial()
 
       ProgressWidgetProvider.requestUpdate(applicationContext, widgetSettings)
@@ -153,7 +156,10 @@ class App :
     appScope.launch {
       val settings = if (settingsRepository.isInitialized()) settingsRepository.load() else null
       val widgetSettings = settings?.let {
-        WidgetSettings(showLabel = it.widgetsShowLabel)
+        WidgetSettings(
+          showLabel = it.widgetsShowLabel,
+          theme = settingsRepository.getWidgetsTheme()
+        )
       } ?: WidgetSettings.createInitial()
 
       ProgressMoviesWidgetProvider.requestUpdate(applicationContext, widgetSettings)

@@ -72,7 +72,7 @@ class CalendarWidgetViewsFactory(
   }
 
   private fun createHeaderRemoteView(item: ProgressItem) =
-    RemoteViews(context.packageName, R.layout.widget_header).apply {
+    RemoteViews(context.packageName, R.layout.widget_header_night).apply {
       setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.headerTextResId!!))
     }
 

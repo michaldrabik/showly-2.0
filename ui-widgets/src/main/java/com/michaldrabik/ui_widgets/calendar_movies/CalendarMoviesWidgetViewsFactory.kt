@@ -6,6 +6,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -19,6 +20,7 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.calendar.cases.ProgressMoviesCalendarCase
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesLoadItemsCase
+import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_MOVIE_ID
 import com.michaldrabik.ui_widgets.R
 import kotlinx.coroutines.CoroutineScope
@@ -33,7 +35,8 @@ class CalendarMoviesWidgetViewsFactory(
   private val context: Context,
   private val loadItemsCase: ProgressMoviesLoadItemsCase,
   private val calendarCase: ProgressMoviesCalendarCase,
-  private val imagesProvider: MovieImagesProvider
+  private val imagesProvider: MovieImagesProvider,
+  private val settingsRepository: SettingsRepository
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.Main
@@ -70,7 +73,7 @@ class CalendarMoviesWidgetViewsFactory(
   }
 
   private fun createHeaderRemoteView(item: ProgressMovieItem) =
-    RemoteViews(context.packageName, R.layout.widget_header).apply {
+    RemoteViews(context.packageName, getHeaderLayout()).apply {
       setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.headerTextResId!!))
     }
 
@@ -88,7 +91,7 @@ class CalendarMoviesWidgetViewsFactory(
     val date = item.movie.released?.toFullDayDisplayString()
       ?: context.getString(com.michaldrabik.ui_progress_movies.R.string.textTba)
 
-    val remoteView = RemoteViews(context.packageName, R.layout.widget_movies_calendar_item).apply {
+    val remoteView = RemoteViews(context.packageName, getItemLayout()).apply {
       setTextViewText(R.id.calendarMoviesWidgetItemTitle, title)
       setTextViewText(R.id.calendarMoviesWidgetItemOverview, overview)
       setTextViewText(R.id.calendarMoviesWidgetItemDate, date)
@@ -118,6 +121,22 @@ class CalendarMoviesWidgetViewsFactory(
     }
 
     return remoteView
+  }
+
+  private fun getItemLayout(): Int {
+    val isLight = settingsRepository.getWidgetsTheme() == MODE_NIGHT_NO
+    return when {
+      isLight -> R.layout.widget_movies_calendar_item_day
+      else -> R.layout.widget_movies_calendar_item_night
+    }
+  }
+
+  private fun getHeaderLayout(): Int {
+    val isLight = settingsRepository.getWidgetsTheme() == MODE_NIGHT_NO
+    return when {
+      isLight -> R.layout.widget_header_day
+      else -> R.layout.widget_header_night
+    }
   }
 
   override fun getItemId(position: Int) = adapterItems[position].movie.traktId

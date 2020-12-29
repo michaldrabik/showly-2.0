@@ -21,6 +21,7 @@ import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_settings.helpers.AppLanguage
+import com.michaldrabik.ui_settings.helpers.AppTheme
 import javax.inject.Inject
 
 @AppScope
@@ -118,10 +119,7 @@ class SettingsMainCase @Inject constructor(
       val new = it.copy(widgetsShowLabel = enable)
       settingsRepository.update(new)
     }
-    (context.applicationContext as WidgetsProvider).run {
-      requestShowsWidgetsUpdate()
-      requestMoviesWidgetsUpdate()
-    }
+    refreshWidgets(context)
   }
 
   suspend fun setWhenToNotify(delay: NotificationDelay, context: Context) {
@@ -146,8 +144,19 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
+  fun setTheme(theme: AppTheme) = settingsRepository.setTheme(theme.code)
+
+  fun getTheme() = AppTheme.fromCode(settingsRepository.getTheme())
+
   suspend fun deleteImagesCache() {
     showsImagesProvider.deleteLocalCache()
     moviesImagesProvider.deleteLocalCache()
+  }
+
+  private fun refreshWidgets(context: Context) {
+    (context.applicationContext as WidgetsProvider).run {
+      requestShowsWidgetsUpdate()
+      requestMoviesWidgetsUpdate()
+    }
   }
 }

@@ -4,5 +4,5 @@
   android:shape="rectangle"
   >
   <corners android:radius="@dimen/widgetCorner" />
-  <solid android:color="@color/colorBackground" />
+  <solid android:color="?android:attr/windowBackground" />
 </shape>
