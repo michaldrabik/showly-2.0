@@ -42,8 +42,8 @@ class WatchlistLoadMoviesCase @Inject constructor(
         movies.sortedByDescending { it.first.rating }
       NEWEST ->
         movies.sortedWith(
-          compareByDescending<Pair<Movie, Translation?>> { it.first.year }
-            .thenByDescending { it.first.released }
+          compareByDescending<Pair<Movie, Translation?>> { it.first.released }
+            .thenByDescending { it.first.year }
         )
       else -> error("Should not be used here.")
     }
