@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
@@ -35,6 +36,7 @@
       android:adjustViewBounds="true"
       android:src="@drawable/ic_star_empty"
       android:tag="1"
+      app:tint="?android:attr/textColorPrimary"
       />
 
     <ImageView
@@ -46,6 +48,7 @@
       android:adjustViewBounds="true"
       android:src="@drawable/ic_star_empty"
       android:tag="2"
+      app:tint="?android:attr/textColorPrimary"
       />
 
     <ImageView
@@ -57,6 +60,7 @@
       android:adjustViewBounds="true"
       android:src="@drawable/ic_star_empty"
       android:tag="3"
+      app:tint="?android:attr/textColorPrimary"
       />
 
     <ImageView
@@ -68,6 +72,7 @@
       android:adjustViewBounds="true"
       android:src="@drawable/ic_star_empty"
       android:tag="4"
+      app:tint="?android:attr/textColorPrimary"
       />
 
     <ImageView
@@ -79,6 +84,7 @@
       android:adjustViewBounds="true"
       android:src="@drawable/ic_star_empty"
       android:tag="5"
+      app:tint="?android:attr/textColorPrimary"
       />
 
     <ImageView
@@ -90,6 +96,7 @@
       android:adjustViewBounds="true"
       android:src="@drawable/ic_star_empty"
       android:tag="6"
+      app:tint="?android:attr/textColorPrimary"
       />
 
     <ImageView
@@ -101,6 +108,7 @@
       android:adjustViewBounds="true"
       android:src="@drawable/ic_star_empty"
       android:tag="7"
+      app:tint="?android:attr/textColorPrimary"
       />
 
     <ImageView
@@ -112,6 +120,7 @@
       android:adjustViewBounds="true"
       android:src="@drawable/ic_star_empty"
       android:tag="8"
+      app:tint="?android:attr/textColorPrimary"
       />
 
     <ImageView
@@ -123,6 +132,7 @@
       android:adjustViewBounds="true"
       android:src="@drawable/ic_star_empty"
       android:tag="9"
+      app:tint="?android:attr/textColorPrimary"
       />
 
     <ImageView
@@ -133,6 +143,7 @@
       android:adjustViewBounds="true"
       android:src="@drawable/ic_star_empty"
       android:tag="10"
+      app:tint="?android:attr/textColorPrimary"
       />
 
   </LinearLayout>
