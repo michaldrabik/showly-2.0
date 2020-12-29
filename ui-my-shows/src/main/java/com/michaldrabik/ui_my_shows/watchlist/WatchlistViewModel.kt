@@ -24,27 +24,25 @@ class WatchlistViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider
 ) : BaseViewModel<WatchlistUiModel>() {
 
-  fun loadShows(scrollToTop: Boolean = false) {
+  fun loadShows(resetScroll: Boolean = false) {
     viewModelScope.launch {
       val items = loadShowsCase.loadShows().map {
         val image = imagesProvider.findCachedImage(it.first, POSTER)
         WatchlistListItem(it.first, image, false, it.second)
       }
-
-      uiState = WatchlistUiModel(items = items, scrollToTop = ActionEvent(scrollToTop))
-
-      loadRatings(items)
+      uiState = WatchlistUiModel(items = items, resetScroll = ActionEvent(resetScroll))
+      loadRatings(items, resetScroll)
     }
   }
 
-  private fun loadRatings(items: List<WatchlistListItem>) {
+  private fun loadRatings(items: List<WatchlistListItem>, resetScroll: Boolean) {
     if (items.isEmpty()) return
     viewModelScope.launch {
       try {
         val listItems = ratingsCase.loadRatings(items)
-        uiState = WatchlistUiModel(items = listItems)
+        uiState = WatchlistUiModel(items = listItems, resetScroll = ActionEvent(resetScroll))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "${WatchlistViewModel::class.simpleName}::loadRatings()")
+        Logger.record(error, "Source" to "WatchlistViewModel::loadRatings()")
       }
     }
   }
@@ -75,8 +73,15 @@ class WatchlistViewModel @Inject constructor(
         val translation = loadShowsCase.loadTranslation(item.show, false)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "${WatchlistViewModel::class.simpleName}::loadMissingTranslation()")
+        Logger.record(error, "Source" to "WatchlistViewModel::loadMissingTranslation()")
       }
+    }
+  }
+
+  fun setSortOrder(sortOrder: SortOrder) {
+    viewModelScope.launch {
+      sortOrderCase.setSortOrder(sortOrder)
+      loadShows(resetScroll = true)
     }
   }
 
@@ -84,12 +89,5 @@ class WatchlistViewModel @Inject constructor(
     val currentItems = uiState?.items?.toMutableList()
     currentItems?.findReplace(new) { it.isSameAs(new) }
     uiState = uiState?.copy(items = currentItems)
-  }
-
-  fun setSortOrder(sortOrder: SortOrder) {
-    viewModelScope.launch {
-      sortOrderCase.setSortOrder(sortOrder)
-      loadShows(scrollToTop = true)
-    }
   }
 }

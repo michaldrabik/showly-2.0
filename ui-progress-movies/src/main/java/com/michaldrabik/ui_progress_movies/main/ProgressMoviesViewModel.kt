@@ -53,7 +53,7 @@ class ProgressMoviesViewModel @Inject constructor(
   fun addWatchedMovie(context: Context, item: ProgressMovieItem) {
     viewModelScope.launch {
       myMoviesCase.addToMyMovies(context, item.movie)
-      loadProgress(resetScroll = false)
+      loadProgress()
     }
   }
 

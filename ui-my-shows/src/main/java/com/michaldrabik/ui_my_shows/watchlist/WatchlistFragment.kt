@@ -104,7 +104,7 @@ class WatchlistFragment :
   private fun render(uiModel: WatchlistUiModel) {
     uiModel.run {
       items?.let {
-        val notifyChange = scrollToTop?.consume() == true
+        val notifyChange = resetScroll?.consume() == true
         adapter.setItems(it, notifyChange = notifyChange)
         watchlistEmptyView.fadeIf(it.isEmpty())
       }

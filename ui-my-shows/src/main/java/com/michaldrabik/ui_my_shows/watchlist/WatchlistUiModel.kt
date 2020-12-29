@@ -7,14 +7,14 @@ import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
 
 data class WatchlistUiModel(
   val items: List<WatchlistListItem>? = null,
-  val scrollToTop: ActionEvent<Boolean>? = null,
+  val resetScroll: ActionEvent<Boolean>? = null,
   val sortOrder: ActionEvent<SortOrder>? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
     (newModel as WatchlistUiModel).copy(
       items = newModel.items ?: items,
-      scrollToTop = newModel.scrollToTop ?: scrollToTop,
+      resetScroll = newModel.resetScroll ?: resetScroll,
       sortOrder = newModel.sortOrder ?: sortOrder
     )
 }
