@@ -4,6 +4,8 @@
   android:initialLayout="@layout/widget_progress"
   android:minWidth="300dp"
   android:minHeight="200dp"
+  android:minResizeWidth="30dp"
+  android:minResizeHeight="20dp"
   android:previewImage="@drawable/ic_showly_round"
   android:resizeMode="horizontal|vertical"
   android:updatePeriodMillis="3600000"

@@ -4,8 +4,8 @@
   android:shape="rectangle"
   >
   <corners
-    android:topLeftRadius="@dimen/progressWidgetCorner"
-    android:topRightRadius="@dimen/progressWidgetCorner"
+    android:topLeftRadius="@dimen/widgetCorner"
+    android:topRightRadius="@dimen/widgetCorner"
     />
   <solid android:color="@color/colorBlackTranslucent" />
 </shape>

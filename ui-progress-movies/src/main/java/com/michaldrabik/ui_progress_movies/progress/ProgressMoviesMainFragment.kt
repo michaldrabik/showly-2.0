@@ -118,10 +118,14 @@ class ProgressMoviesMainFragment :
   private fun render(uiModel: ProgressMoviesMainUiModel) {
     uiModel.run {
       items?.let {
-        adapter.setItems(it, notifyChange = resetScroll == true)
+        val notifyChange = resetScroll?.consume() == true
+        adapter.setItems(it, notifyChange = notifyChange)
         progressMoviesEmptyView.fadeIf(it.isEmpty() && isSearching == false)
         progressMoviesMainRecycler.fadeIn()
-        (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
+        (requireAppContext() as WidgetsProvider).run {
+          requestShowsWidgetsUpdate()
+          requestMoviesWidgetsUpdate()
+        }
       }
     }
   }

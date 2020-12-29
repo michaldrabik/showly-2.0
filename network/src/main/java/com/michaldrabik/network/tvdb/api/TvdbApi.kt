@@ -1,12 +1,10 @@
 package com.michaldrabik.network.tvdb.api
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.network.Config
 import com.michaldrabik.network.tvdb.model.AuthorizationRequest
 import com.michaldrabik.network.tvdb.model.TvdbActor
 import com.michaldrabik.network.tvdb.model.TvdbImage
 import com.michaldrabik.network.tvdb.model.TvdbImageRating
-import kotlin.coroutines.cancellation.CancellationException
 
 class TvdbApi(private val service: TvdbService) {
 
@@ -25,13 +23,6 @@ class TvdbApi(private val service: TvdbService) {
           )
         }
     } catch (t: Throwable) {
-      if (t !is CancellationException) {
-        FirebaseCrashlytics.getInstance().run {
-          setCustomKey("Source", "${TvdbApi::class.simpleName}::fetchShowImages()")
-          setCustomKey("Show Tvdb ID", tvdbId)
-          recordException(t)
-        }
-      }
       emptyList()
     }
   }

@@ -46,5 +46,7 @@
   <string name="textSettingsLogoutMessage">\nBist du sicher, dass du dich ausloggen möchtest?\n</string>
   <string name="textSettingsMoviesEnabledTitle">Filme</string>
   <string name="textSettingsMoviesEnabledSummary">Aktiviere/Deaktiviere die Unterstützung fur Filme. Die App wird neu gestartet.</string>
-
+  <string name="textSettingsWidgets">Widgets</string>
+  <string name="textSettingsWidgetsLabelsTitle">Titel Anzeigen</string>
+  <string name="textSettingsWidgetsLabelsSummary">Zeigen Sie durchscheinende Widgets-Titel an.</string>
 </resources>

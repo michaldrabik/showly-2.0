@@ -104,7 +104,7 @@ class ArchiveFragment :
   private fun render(uiModel: ArchiveUiModel) {
     uiModel.run {
       items?.let {
-        val notifyChange = scrollToTop?.consume() == true
+        val notifyChange = resetScroll?.consume() == true
         adapter.setItems(it, notifyChange = notifyChange)
         archiveEmptyView.fadeIf(it.isEmpty())
       }

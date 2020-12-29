@@ -48,11 +48,11 @@
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/spaceNormal"
       android:lineSpacingExtra="1dp"
-      android:text="@string/textWhatsNewMessage"
       android:textColor="?android:attr/textColorPrimary"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/viewWhatsNewSubtitle"
+      tools:text="@tools:sample/lorem/random"
       />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,9 +18,9 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesLoadItemsCase
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesSortOrderCase
+import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_MOVIE_ID
 import com.michaldrabik.ui_widgets.R
 import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider.Companion.EXTRA_CHECK_MOVIE_ID
-import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider.Companion.EXTRA_MOVIE_ID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -39,13 +39,13 @@ class ProgressMoviesWidgetViewsFactory(
   override val coroutineContext = Job() + Dispatchers.Main
 
   private val imageCorner by lazy { context.dimenToPx(R.dimen.showTileCorner) }
-  private val imageWidth by lazy { context.dimenToPx(R.dimen.progressWidgetImageWidth) }
-  private val imageHeight by lazy { context.dimenToPx(R.dimen.progressWidgetImageHeight) }
+  private val imageWidth by lazy { context.dimenToPx(R.dimen.widgetImageWidth) }
+  private val imageHeight by lazy { context.dimenToPx(R.dimen.widgetImageHeight) }
   private val adapterItems by lazy { mutableListOf<ProgressMovieItem>() }
 
   private fun loadData() {
     runBlocking {
-      val movies = loadItemsCase.loadMyMovies()
+      val movies = loadItemsCase.loadWatchlistMovies()
         .filter { it.released == null || it.hasAired() }
       val items = movies.map { m ->
         async {

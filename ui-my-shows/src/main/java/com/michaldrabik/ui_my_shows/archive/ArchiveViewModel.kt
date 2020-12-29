@@ -24,27 +24,25 @@ class ArchiveViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider
 ) : BaseViewModel<ArchiveUiModel>() {
 
-  fun loadShows(scrollToTop: Boolean = false) {
+  fun loadShows(resetScroll: Boolean = false) {
     viewModelScope.launch {
       val items = loadShowsCase.loadShows().map {
         val image = imagesProvider.findCachedImage(it.first, POSTER)
         ArchiveListItem(it.first, image, false, it.second)
       }
-
-      uiState = ArchiveUiModel(items = items, scrollToTop = ActionEvent(scrollToTop))
-
-      loadRatings(items)
+      uiState = ArchiveUiModel(items = items, resetScroll = ActionEvent(resetScroll))
+      loadRatings(items, resetScroll)
     }
   }
 
-  private fun loadRatings(items: List<ArchiveListItem>) {
+  private fun loadRatings(items: List<ArchiveListItem>, resetScroll: Boolean) {
     if (items.isEmpty()) return
     viewModelScope.launch {
       try {
         val listItems = ratingsCase.loadRatings(items)
-        uiState = ArchiveUiModel(items = listItems)
+        uiState = ArchiveUiModel(items = listItems, resetScroll = ActionEvent(resetScroll))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "${ArchiveViewModel::class.simpleName}::loadRatings()")
+        Logger.record(error, "Source" to "ArchiveViewModel::loadRatings()")
       }
     }
   }
@@ -75,8 +73,15 @@ class ArchiveViewModel @Inject constructor(
         val translation = loadShowsCase.loadTranslation(item.show, false)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "${ArchiveViewModel::class.simpleName}::loadMissingTranslation()")
+        Logger.record(error, "Source" to "ArchiveViewModel::loadMissingTranslation()")
       }
+    }
+  }
+
+  fun setSortOrder(sortOrder: SortOrder) {
+    viewModelScope.launch {
+      sortOrderCase.setSortOrder(sortOrder)
+      loadShows(resetScroll = true)
     }
   }
 
@@ -84,12 +89,5 @@ class ArchiveViewModel @Inject constructor(
     val currentItems = uiState?.items?.toMutableList()
     currentItems?.findReplace(new) { it.isSameAs(new) }
     uiState = uiState?.copy(items = currentItems)
-  }
-
-  fun setSortOrder(sortOrder: SortOrder) {
-    viewModelScope.launch {
-      sortOrderCase.setSortOrder(sortOrder)
-      loadShows(scrollToTop = true)
-    }
   }
 }

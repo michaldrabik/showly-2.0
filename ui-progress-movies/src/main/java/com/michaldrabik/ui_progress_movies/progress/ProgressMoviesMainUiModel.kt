@@ -1,13 +1,14 @@
 package com.michaldrabik.ui_progress_movies.progress
 
 import com.michaldrabik.ui_base.UiModel
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 
 data class ProgressMoviesMainUiModel(
   val items: List<ProgressMovieItem>? = null,
   val isSearching: Boolean? = null,
-  val resetScroll: Boolean? = null,
+  val resetScroll: ActionEvent<Boolean>? = null,
   val sortOrder: SortOrder? = null
 ) : UiModel() {
 

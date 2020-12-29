@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.SortOrder
@@ -46,7 +47,7 @@ class ProgressViewModel @Inject constructor(
           items = allItems,
           isSearching = searchQuery.isNotBlank(),
           sortOrder = sortOrder,
-          resetScroll = resetScroll && sortOrder == SortOrder.RECENTLY_WATCHED
+          resetScroll = ActionEvent(resetScroll)
         )
     }
   }
@@ -63,7 +64,7 @@ class ProgressViewModel @Inject constructor(
         return@launch
       }
       episodesCase.setEpisodeWatched(context, item)
-      loadProgress(resetScroll = true)
+      loadProgress()
     }
   }
 

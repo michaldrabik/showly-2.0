@@ -7,6 +7,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.michaldrabik.common.extensions.toDayDisplayString
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -54,9 +55,9 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
         else -> item.translation?.overview
       }
 
-    myMovieAllYear.text = String.format(ENGLISH, "%d", item.movie.year)
+    myMovieAllYear.text = item.movie.released?.toDayDisplayString() ?: String.format(ENGLISH, "%d", item.movie.year)
     myMovieAllRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
-    myMovieAllYear.visibleIf(item.movie.year > 0)
+    myMovieAllYear.visibleIf(item.movie.released != null || item.movie.year > 0)
 
     item.userRating?.let {
       myMovieAllUserStarIcon.visible()

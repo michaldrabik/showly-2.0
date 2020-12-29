@@ -104,6 +104,14 @@ class SettingsViewModel @Inject constructor(
     Analytics.logSettingsMoviesEnabled(enable)
   }
 
+  fun enableWidgetsTitles(enable: Boolean, context: Context) {
+    viewModelScope.launch {
+      mainCase.enableWidgetsTitles(enable, context)
+      refreshSettings()
+    }
+    Analytics.logSettingsWidgetsTitlesEnabled(enable)
+  }
+
   fun setWhenToNotify(delay: NotificationDelay, context: Context) {
     viewModelScope.launch {
       mainCase.setWhenToNotify(delay, context)

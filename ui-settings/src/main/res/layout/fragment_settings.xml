@@ -428,7 +428,7 @@
     <LinearLayout
       android:id="@+id/settingsWhenToNotify"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toBottomOf="@id/settingsCategoryMisc"
+      app:layout_constraintBottom_toBottomOf="@id/settingsCategoryWidgets"
       app:layout_constraintEnd_toStartOf="@id/settingsWhenToNotifyValue"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsShowsNotifications"
@@ -459,11 +459,51 @@
       />
 
     <TextView
+      android:id="@+id/settingsCategoryWidgets"
+      style="@style/Settings.Category"
+      android:text="@string/textSettingsWidgets"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsWhenToNotify"
+      />
+
+    <LinearLayout
+      android:id="@+id/settingsWidgetsLabels"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryMisc"
+      app:layout_constraintEnd_toStartOf="@id/settingsWidgetsLabelsSwitch"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsCategoryWidgets"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsWidgetsLabelsTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:text="@string/textSettingsWidgetsLabelsSummary"
+        />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+      android:id="@+id/settingsWidgetsLabelsSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:checked="true"
+      app:layout_constraintBottom_toBottomOf="@id/settingsWidgetsLabels"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsWidgetsLabels"
+      />
+
+    <TextView
       android:id="@+id/settingsCategoryMisc"
       style="@style/Settings.Category"
       android:text="@string/textSettingsMisc"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsWhenToNotify"
+      app:layout_constraintTop_toBottomOf="@id/settingsWidgetsLabels"
       />
 
     <LinearLayout

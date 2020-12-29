@@ -19,6 +19,7 @@ import com.michaldrabik.ui_repository.PinnedItemsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.shows.ShowsRepository
+import org.threeten.bp.temporal.ChronoUnit.DAYS
 import java.util.Locale.ROOT
 import javax.inject.Inject
 
@@ -51,7 +52,10 @@ class ProgressLoadItemsCase @Inject constructor(
     val upcomingEpisode = unwatchedEpisodes
       .filter { it.firstAired != null }
       .sortedBy { it.firstAired }
-      .firstOrNull { it.firstAired!!.isAfter(nowUtc()) || it.firstAired!!.dayOfYear == nowUtc().dayOfYear }
+      .firstOrNull {
+        it.firstAired!!.isAfter(nowUtc()) ||
+          it.firstAired!!.truncatedTo(DAYS) == nowUtc().truncatedTo(DAYS)
+      }
 
     val isPinned = pinnedItemsRepository.isItemPinned(show)
     val season = seasons.first { it.idTrakt == nextEpisode.idSeason }

@@ -57,7 +57,7 @@ class WatchlistMovieView : MovieView<WatchlistListItem> {
 
     watchlistMoviesYear.text = item.movie.released?.toDayDisplayString() ?: String.format(ENGLISH, "%d", item.movie.year)
     watchlistMoviesRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
-    watchlistMoviesYear.visibleIf(item.movie.year > 0)
+    watchlistMoviesYear.visibleIf(item.movie.released != null || item.movie.year > 0)
 
     item.userRating?.let {
       watchlistMovieUserStarIcon.visible()
