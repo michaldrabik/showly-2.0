@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesLoadItemsCase
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesMainCase
@@ -45,7 +45,7 @@ class ProgressMoviesViewModel @Inject constructor(
           items = allItems,
           isSearching = searchQuery.isNotBlank(),
           sortOrder = sortOrder,
-          resetScroll = resetScroll && sortOrder == RECENTLY_WATCHED
+          resetScroll = ActionEvent(resetScroll)
         )
     }
   }
@@ -53,7 +53,7 @@ class ProgressMoviesViewModel @Inject constructor(
   fun addWatchedMovie(context: Context, item: ProgressMovieItem) {
     viewModelScope.launch {
       myMoviesCase.addToMyMovies(context, item.movie)
-      loadProgress(resetScroll = true)
+      loadProgress(resetScroll = false)
     }
   }
 
