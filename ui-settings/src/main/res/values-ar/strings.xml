@@ -46,5 +46,9 @@
   <string name="textSettingsLogoutMessage">\nهل فعلاً ترغب في تسجيل الخروج؟\n</string>
   <string name="textSettingsMoviesEnabledTitle">أفلام</string>
   <string name="textSettingsMoviesEnabledSummary">تفعيل/إلغاء تفعيل عرض الأفلام في التطبيق. التطبيق سيتم إعادة تشغيله.</string>
+  <string name="textSettingsWidgets">الويدجيت</string>
+  <string name="textSettingsWidgetsLabelsTitle">إظهار العناوين</string>
+  <string name="textSettingsWidgetsLabelsSummary">إظهار العناوين في الويدجيت.</string>
+
 
   </resources>
