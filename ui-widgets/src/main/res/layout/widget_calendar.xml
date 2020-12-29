@@ -34,7 +34,7 @@
       android:layout_marginBottom="@dimen/spaceTiny"
       android:text="@string/menuCalendar"
       android:textAllCaps="true"
-      android:textColor="@color/colorWhite"
+      android:textColor="?android:attr/textColorPrimary"
       android:textSize="20sp"
       android:textStyle="bold"
       />
@@ -43,7 +43,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="@string/textCalendarEmpty"
-      android:textColor="@color/colorGrayLight"
+      android:textColor="?android:attr/textColorSecondary"
       android:textSize="14sp"
       />
 

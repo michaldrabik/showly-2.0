@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/progressWidgetItem"
   android:layout_width="match_parent"
@@ -8,6 +9,7 @@
   android:clipChildren="false"
   android:descendantFocusability="blocksDescendants"
   android:orientation="horizontal"
+  android:theme="@style/AppTheme"
   >
 
   <FrameLayout
@@ -17,6 +19,8 @@
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginEnd="@dimen/spaceMedium"
     android:layout_marginBottom="@dimen/spaceSmall"
+    android:background="@drawable/bg_media_view_elevation"
+    android:elevation="@dimen/elevationTiny"
     >
 
     <ImageView
@@ -34,6 +38,7 @@
       android:padding="@dimen/spaceNormal"
       android:src="@drawable/ic_television"
       android:visibility="gone"
+      app:tint="?attr/colorPlaceholderIcon"
       tools:visibility="visible"
       />
 
@@ -53,7 +58,7 @@
       android:layout_marginBottom="@dimen/spaceTiny"
       android:ellipsize="end"
       android:maxLines="1"
-      android:textColor="@color/colorWhite"
+      android:textColor="?android:attr/textColorPrimary"
       android:textSize="16sp"
       android:textStyle="bold"
       tools:ignore="RtlSymmetry"
@@ -69,7 +74,7 @@
       android:gravity="center"
       android:text="@string/textNew"
       android:textAllCaps="true"
-      android:textColor="@color/colorAccent"
+      android:textColor="?attr/colorAccent"
       android:textSize="12sp"
       android:textStyle="bold"
       android:visibility="gone"
@@ -82,6 +87,7 @@
       android:layout_height="wrap_content"
       android:layout_below="@id/progressWidgetItemTitle"
       android:background="@drawable/bg_widget_episode_badge"
+      android:elevation="@dimen/elevationTiny"
       android:ellipsize="end"
       android:includeFontPadding="false"
       android:maxLines="1"
@@ -89,7 +95,7 @@
       android:paddingTop="2dp"
       android:paddingEnd="6dp"
       android:paddingBottom="2dp"
-      android:textColor="@color/colorWhite"
+      android:textColor="?android:attr/textColorPrimary"
       android:textSize="12sp"
       tools:text="S.01 E.01"
       />
@@ -106,7 +112,7 @@
       android:ellipsize="end"
       android:includeFontPadding="false"
       android:maxLines="1"
-      android:textColor="@color/colorWhite"
+      android:textColor="?android:attr/textColorPrimary"
       android:textSize="12sp"
       tools:text="Some Title of an Episode"
       />
@@ -118,7 +124,7 @@
       android:layout_below="@id/progressWidgetItemSubtitle"
       android:layout_marginTop="@dimen/spaceTiny"
       android:gravity="start|center_vertical"
-      android:textColor="@color/colorGrayLight"
+      android:textColor="?android:attr/textColorSecondary"
       android:textSize="10sp"
       tools:text="999/999"
       />
@@ -131,8 +137,8 @@
       android:layout_below="@id/progressWidgetItemSubtitle"
       android:layout_marginStart="@dimen/spaceSmall"
       android:layout_toEndOf="@id/progressWidgetItemProgressText"
-      android:progressBackgroundTint="@color/colorGrayLight"
-      android:progressTint="@color/colorAccent"
+      android:progressBackgroundTint="?android:attr/textColorSecondary"
+      android:progressTint="?attr/colorAccent"
       />
 
     <ImageButton
@@ -143,6 +149,7 @@
       android:layout_alignParentEnd="true"
       android:background="@drawable/bg_widget_check_button"
       android:src="@drawable/ic_check"
+      android:tint="?android:attr/textColorPrimary"
       />
 
     <TextView
@@ -152,10 +159,11 @@
       android:layout_below="@id/progressWidgetItemProgress"
       android:layout_alignParentEnd="true"
       android:textAllCaps="true"
-      android:textColor="@color/colorGrayLight"
+      android:textColor="?android:attr/textColorSecondary"
       android:textSize="12sp"
       android:visibility="gone"
       tools:text="Airs in 99 days"
+      tools:visibility="visible"
       />
 
   </RelativeLayout>

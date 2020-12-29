@@ -34,4 +34,6 @@
 
   <attr name="textColorTab" format="color" />
   <attr name="textColorTabSelected" format="color" />
+
+  <attr name="colorWidgetStatusBackground" format="color" />
 </resources>

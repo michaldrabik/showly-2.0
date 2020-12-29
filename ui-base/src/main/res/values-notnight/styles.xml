@@ -46,6 +46,7 @@
     <item name="colorSeparator">#DCE1E6</item>
     <item name="colorCardBackground">@color/colorPrimaryDark</item>
     <item name="colorBadgeBackground">@color/colorPrimaryDark</item>
+    <item name="colorWidgetStatusBackground">@color/colorBlackTranslucentLight</item>
   </style>
 
   <!-- Progress Bar -->

@@ -46,6 +46,7 @@
     <item name="colorSeparator">@color/colorGrayDark</item>
     <item name="colorCardBackground">#282828</item>
     <item name="colorBadgeBackground">@color/colorGrayDark</item>
+    <item name="colorWidgetStatusBackground">@color/colorBlackTranslucent</item>
   </style>
 
   <style name="Badge">

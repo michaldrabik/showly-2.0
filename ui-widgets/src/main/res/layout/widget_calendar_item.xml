@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/calendarWidgetItem"
   android:layout_width="match_parent"
@@ -18,6 +19,8 @@
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginEnd="@dimen/spaceMedium"
     android:layout_marginBottom="@dimen/spaceSmall"
+    android:background="@drawable/bg_media_view_elevation"
+    android:elevation="@dimen/elevationSmall"
     >
 
     <ImageView
@@ -35,6 +38,7 @@
       android:padding="@dimen/spaceNormal"
       android:src="@drawable/ic_television"
       android:visibility="gone"
+      app:tint="?attr/colorPlaceholderIcon"
       tools:visibility="visible"
       />
 
@@ -87,6 +91,7 @@
       android:layout_marginEnd="6dp"
       android:layout_marginBottom="@dimen/spaceTiny"
       android:background="@drawable/bg_episode_badge"
+      android:elevation="@dimen/elevationTiny"
       android:ellipsize="end"
       android:includeFontPadding="false"
       android:maxLines="1"

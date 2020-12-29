@@ -4,6 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
+  android:theme="@style/AppTheme"
   >
 
   <TextView
@@ -13,7 +14,7 @@
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/spaceTiny"
     android:layout_marginBottom="@dimen/spaceTiny"
-    android:textColor="@color/colorWhite"
+    android:textColor="?android:attr/textColorPrimary"
     android:textSize="18sp"
     android:textStyle="bold"
     tools:text="Coming Soon"
