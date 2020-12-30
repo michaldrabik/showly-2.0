@@ -5,9 +5,6 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:clipChildren="false"
-  android:descendantFocusability="blocksDescendants"
-  android:orientation="horizontal"
   tools:parentTag="android.widget.LinearLayout"
   >
 

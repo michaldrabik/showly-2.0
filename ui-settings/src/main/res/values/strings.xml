@@ -24,6 +24,8 @@
   <string name="textSettingsMyShowsSectionSummary">Enable/disable sections in \'My Shows\' tab.</string>
   <string name="textSettingsThemeTitle">Theme</string>
   <string name="textSettingsThemeSummary">Select application\'s theme.</string>
+  <string name="textSettingsThemeWidgetsTitle">Theme</string>
+  <string name="textSettingsThemeWidgetsSummary">Select widgets\'s theme.</string>
   <string name="textSettingsMyShowsLanguageTitle">Language</string>
   <string name="textSettingsMyShowsLanguageSummary">Descriptions and titles will be translated when available. App will restart.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Archived Statistics</string>

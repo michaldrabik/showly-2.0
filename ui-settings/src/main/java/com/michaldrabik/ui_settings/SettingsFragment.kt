@@ -20,6 +20,7 @@ import com.michaldrabik.common.Config.MY_SHOWS_RECENTS_OPTIONS
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
@@ -76,6 +77,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       settings?.let { renderSettings(it, moviesEnabled ?: true) }
       language?.let { renderLanguage(it) }
       theme?.let { renderTheme(it) }
+      themeWidgets?.let { renderWidgetsTheme(it) }
       isSignedInTrakt?.let { isSignedIn ->
         settingsTraktSync.visibleIf(isSignedIn)
         settingsTraktQuickSync.visibleIf(isSignedIn)
@@ -184,8 +186,17 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun renderTheme(theme: AppTheme) {
     settingsThemeValue.run {
+      expandTouch()
       setText(theme.displayName)
       onClick { showThemeDialog(theme) }
+    }
+  }
+
+  private fun renderWidgetsTheme(theme: AppTheme) {
+    settingsWidgetsThemeValue.run {
+      expandTouch()
+      setText(theme.displayName)
+      onClick { showWidgetsThemeDialog(theme) }
     }
   }
 
@@ -257,6 +268,20 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         if (index != selected) {
           viewModel.setTheme(options[index])
           setDefaultNightMode(options[index].code)
+        }
+        dialog.dismiss()
+      }
+      .show()
+  }
+
+  private fun showWidgetsThemeDialog(theme: AppTheme) {
+    val options = AppTheme.values().filter { it != AppTheme.SYSTEM }
+    val selected = options.indexOf(theme)
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setSingleChoiceItems(options.map { getString(it.displayName) }.toTypedArray(), selected) { dialog, index ->
+        if (index != selected) {
+          viewModel.setWidgetsTheme(options[index], requireAppContext())
         }
         dialog.dismiss()
       }

@@ -508,7 +508,7 @@
       app:layout_constraintBottom_toTopOf="@id/settingsCategoryMisc"
       app:layout_constraintEnd_toStartOf="@id/settingsWidgetsLabelsSwitch"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsCategoryWidgets"
+      app:layout_constraintTop_toBottomOf="@id/settingsWidgetsTheme"
       >
 
       <TextView
@@ -532,6 +532,42 @@
       app:layout_constraintBottom_toBottomOf="@id/settingsWidgetsLabels"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/settingsWidgetsLabels"
+      />
+
+    <LinearLayout
+      android:id="@+id/settingsWidgetsTheme"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@id/settingsWidgetsLabels"
+      app:layout_constraintEnd_toStartOf="@id/settingsWidgetsThemeValue"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsCategoryWidgets"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsThemeWidgetsTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:layout_width="wrap_content"
+        android:text="@string/textSettingsThemeWidgetsSummary"
+        />
+
+    </LinearLayout>
+
+    <TextView
+      android:id="@+id/settingsWidgetsThemeValue"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:gravity="end"
+      android:minWidth="50dp"
+      android:text="@string/textThemeDark"
+      android:textColor="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="@id/settingsWidgetsTheme"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsWidgetsTheme"
       />
 
     <TextView

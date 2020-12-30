@@ -8,6 +8,7 @@ import com.michaldrabik.ui_settings.helpers.AppTheme
 data class SettingsUiModel(
   val language: AppLanguage? = null,
   val theme: AppTheme? = null,
+  val themeWidgets: AppTheme? = null,
   val settings: Settings? = null,
   val isSignedInTrakt: Boolean? = null,
   val traktUsername: String? = null,
@@ -19,6 +20,7 @@ data class SettingsUiModel(
     (newModel as SettingsUiModel).copy(
       language = newModel.language ?: language,
       theme = newModel.theme ?: theme,
+      themeWidgets = newModel.themeWidgets ?: themeWidgets,
       settings = newModel.settings ?: settings,
       isSignedInTrakt = newModel.isSignedInTrakt ?: isSignedInTrakt,
       traktUsername = newModel.traktUsername ?: traktUsername,
