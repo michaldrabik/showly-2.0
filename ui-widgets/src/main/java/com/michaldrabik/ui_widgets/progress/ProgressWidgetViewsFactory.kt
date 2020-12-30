@@ -172,7 +172,7 @@ class ProgressWidgetViewsFactory(
   override fun onDataSetChanged() = loadData()
 
   override fun getLoadingView() =
-    RemoteViews(context.packageName, R.layout.widget_progress_loading)
+    RemoteViews(context.packageName, R.layout.widget_loading_item)
 
   override fun getCount() = adapterItems.size
 
