@@ -15,6 +15,7 @@ import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
+import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.calendar.cases.ProgressMoviesCalendarCase
@@ -49,7 +50,7 @@ class CalendarMoviesWidgetViewsFactory(
       val items = movies.map { movie ->
         async {
           val item = loadItemsCase.loadProgressItem(movie)
-          val image = imagesProvider.findCachedImage(movie, ImageType.POSTER)
+          val image = imagesProvider.loadRemoteImage(movie, ImageType.POSTER)
           item.copy(image = image)
         }
       }.awaitAll()
@@ -97,6 +98,12 @@ class CalendarMoviesWidgetViewsFactory(
         putExtras(bundleOf(EXTRA_MOVIE_ID to item.movie.traktId))
       }
       setOnClickFillInIntent(R.id.calendarMoviesWidgetItem, fillIntent)
+    }
+
+    if (item.image.status != ImageStatus.AVAILABLE) {
+      remoteView.setViewVisibility(R.id.calendarMoviesWidgetItemImage, GONE)
+      remoteView.setViewVisibility(R.id.calendarMoviesWidgetItemPlaceholder, VISIBLE)
+      return remoteView
     }
 
     try {
