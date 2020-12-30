@@ -11,7 +11,7 @@
     android:layout_gravity="center"
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginBottom="@dimen/spaceSmall"
-    android:indeterminateTint="@color/colorGrayLight"
+    android:indeterminateTint="@color/colorGrayDark"
     />
 
 </FrameLayout>

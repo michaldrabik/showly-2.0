@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<merge
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
@@ -10,6 +10,7 @@
   android:descendantFocusability="blocksDescendants"
   android:orientation="horizontal"
   android:theme="@style/AppTheme"
+  tools:parentTag="android.widget.LinearLayout"
   >
 
   <FrameLayout
@@ -168,4 +169,4 @@
 
   </RelativeLayout>
 
-</LinearLayout>
+</merge>

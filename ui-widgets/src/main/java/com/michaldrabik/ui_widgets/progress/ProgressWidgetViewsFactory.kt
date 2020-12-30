@@ -7,6 +7,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -19,6 +20,7 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
 import com.michaldrabik.ui_progress.main.cases.ProgressSortOrderCase
+import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.shows.ShowsRepository
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_SHOW_ID
 import com.michaldrabik.ui_widgets.R
@@ -39,7 +41,8 @@ class ProgressWidgetViewsFactory(
   private val loadItemsCase: ProgressLoadItemsCase,
   private val sortOrderCase: ProgressSortOrderCase,
   private val showsRepository: ShowsRepository,
-  private val imagesProvider: ShowImagesProvider
+  private val imagesProvider: ShowImagesProvider,
+  private val settingsRepository: SettingsRepository
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.Main
@@ -104,7 +107,7 @@ class ProgressWidgetViewsFactory(
       else -> item.episode.title
     }
 
-    val remoteView = RemoteViews(context.packageName, R.layout.widget_progress_item).apply {
+    val remoteView = RemoteViews(context.packageName, getItemLayout()).apply {
       setTextViewText(R.id.progressWidgetItemTitle, title)
       setTextViewText(R.id.progressWidgetItemSubtitle, subtitle)
       setTextViewText(R.id.progressWidgetItemSubtitle2, subtitle2)
@@ -163,9 +166,25 @@ class ProgressWidgetViewsFactory(
   }
 
   private fun createHeaderRemoteView(item: ProgressItem) =
-    RemoteViews(context.packageName, R.layout.widget_header_night).apply {
+    RemoteViews(context.packageName, getHeaderLayout()).apply {
       setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.headerTextResId!!))
     }
+
+  private fun getItemLayout(): Int {
+    val isLight = settingsRepository.getWidgetsTheme() == MODE_NIGHT_NO
+    return when {
+      isLight -> R.layout.widget_progress_item_day
+      else -> R.layout.widget_progress_item_night
+    }
+  }
+
+  private fun getHeaderLayout(): Int {
+    val isLight = settingsRepository.getWidgetsTheme() == MODE_NIGHT_NO
+    return when {
+      isLight -> R.layout.widget_header_day
+      else -> R.layout.widget_header_night
+    }
+  }
 
   override fun getItemId(position: Int) = adapterItems[position].show.ids.trakt.id
 
