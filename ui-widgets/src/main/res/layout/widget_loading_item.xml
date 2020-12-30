@@ -6,12 +6,12 @@
   >
 
   <ProgressBar
-    style="@style/ProgressBarAccent"
     android:layout_width="28dp"
     android:layout_height="@dimen/widgetImageHeight"
     android:layout_gravity="center"
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginBottom="@dimen/spaceSmall"
+    android:indeterminateTint="@color/colorGrayDark"
     />
 
 </FrameLayout>

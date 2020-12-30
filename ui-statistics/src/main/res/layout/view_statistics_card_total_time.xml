@@ -6,7 +6,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   app:cardBackgroundColor="?attr/colorCardBackground"
-  tools:background="@color/colorBackground"
+  app:cardElevation="@dimen/elevationSmall"
   tools:parentTag="com.google.android.material.card.MaterialCardView"
   tools:theme="@style/AppTheme"
   >
@@ -34,6 +34,7 @@
       android:textSize="@dimen/statisticsHeaderSize"
       android:textStyle="bold"
       app:drawableStartCompat="@drawable/ic_clock"
+      app:drawableTint="?android:attr/textColorPrimary"
       tools:drawableStart="@drawable/ic_clock"
       />
 

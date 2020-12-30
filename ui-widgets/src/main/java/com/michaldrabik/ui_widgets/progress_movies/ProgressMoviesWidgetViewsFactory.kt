@@ -6,6 +6,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -19,6 +20,7 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesLoadItemsCase
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesSortOrderCase
+import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_MOVIE_ID
 import com.michaldrabik.ui_widgets.R
 import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider.Companion.EXTRA_CHECK_MOVIE_ID
@@ -34,7 +36,8 @@ class ProgressMoviesWidgetViewsFactory(
   private val context: Context,
   private val loadItemsCase: ProgressMoviesLoadItemsCase,
   private val sortOrderCase: ProgressMoviesSortOrderCase,
-  private val imagesProvider: MovieImagesProvider
+  private val imagesProvider: MovieImagesProvider,
+  private val settingsRepository: SettingsRepository
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.Main
@@ -78,7 +81,7 @@ class ProgressMoviesWidgetViewsFactory(
       if (translatedDescription?.isBlank() == false) translatedDescription.capitalizeWords()
       else item.movie.overview
 
-    val remoteView = RemoteViews(context.packageName, R.layout.widget_movies_progress_item).apply {
+    val remoteView = RemoteViews(context.packageName, getItemLayout()).apply {
       setTextViewText(R.id.progressMoviesWidgetItemTitle, title)
       setTextViewText(R.id.progressMoviesWidgetItemSubtitle2, description)
 
@@ -120,12 +123,20 @@ class ProgressMoviesWidgetViewsFactory(
     return remoteView
   }
 
+  private fun getItemLayout(): Int {
+    val isLight = settingsRepository.getWidgetsTheme() == MODE_NIGHT_NO
+    return when {
+      isLight -> R.layout.widget_movies_progress_item_day
+      else -> R.layout.widget_movies_progress_item_night
+    }
+  }
+
   override fun getItemId(position: Int) = adapterItems[position].movie.traktId
 
   override fun onDataSetChanged() = loadData()
 
   override fun getLoadingView() =
-    RemoteViews(context.packageName, R.layout.widget_progress_loading)
+    RemoteViews(context.packageName, R.layout.widget_loading_item)
 
   override fun getCount() = adapterItems.size
 

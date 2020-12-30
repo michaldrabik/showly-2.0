@@ -64,7 +64,7 @@
     android:background="@drawable/bg_comment_rating"
     android:gravity="center"
     android:includeFontPadding="false"
-    android:textColor="?android:attr/textColorPrimary"
+    android:textColor="?attr/textColorOnSurface"
     android:textSize="10sp"
     android:textStyle="bold"
     android:translationY="-10dp"

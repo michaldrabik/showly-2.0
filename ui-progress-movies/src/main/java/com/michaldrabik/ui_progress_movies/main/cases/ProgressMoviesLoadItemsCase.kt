@@ -38,7 +38,7 @@ class ProgressMoviesLoadItemsCase @Inject constructor(
       movie,
       Image.createUnavailable(ImageType.POSTER),
       isPinned = isPinned,
-      movieTranslation = movieTranslation,
+      movieTranslation = movieTranslation
     )
   }
 

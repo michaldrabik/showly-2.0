@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_base.utilities.extensions
 
-import android.graphics.Color
 import android.view.ViewGroup
 import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
@@ -11,7 +10,7 @@ import com.michaldrabik.ui_base.R
 fun ViewGroup.showSnackbar(
   message: String,
   actionText: Int,
-  actionTextColor: Int,
+  textColor: Int,
   backgroundRes: Int,
   length: Int,
   action: (() -> Unit)? = null
@@ -21,8 +20,8 @@ fun ViewGroup.showSnackbar(
       it.maxLines = 5
     }
     view.setBackgroundResource(backgroundRes)
-    setTextColor(actionTextColor)
-    setActionTextColor(actionTextColor)
+    setTextColor(textColor)
+    setActionTextColor(textColor)
     if (action != null) {
       setAction(actionText) {
         dismiss()
@@ -33,10 +32,20 @@ fun ViewGroup.showSnackbar(
   }
 }
 
-fun ViewGroup.showErrorSnackbar(message: String, actionText: Int = R.string.textOk, action: () -> Unit = {}) {
-  showSnackbar(message, actionText, Color.WHITE, R.drawable.bg_snackbar_error, LENGTH_INDEFINITE, action)
+fun ViewGroup.showInfoSnackbar(
+  message: String,
+  actionText: Int = R.string.textOk,
+  action: (() -> Unit)? = null
+) {
+  val textColor = context.colorFromAttr(R.attr.textColorInfoSnackbar)
+  showSnackbar(message, actionText, textColor, R.drawable.bg_snackbar_info, LENGTH_SHORT, action)
 }
 
-fun ViewGroup.showInfoSnackbar(message: String, actionText: Int = R.string.textOk, action: (() -> Unit)? = null, length: Int = LENGTH_SHORT) {
-  showSnackbar(message, actionText, Color.BLACK, R.drawable.bg_snackbar_info, length, action)
+fun ViewGroup.showErrorSnackbar(
+  message: String,
+  actionText: Int = R.string.textOk,
+  action: () -> Unit = {}
+) {
+  val textColor = context.colorFromAttr(R.attr.textColorErrorSnackbar)
+  showSnackbar(message, actionText, textColor, R.drawable.bg_snackbar_error, LENGTH_INDEFINITE, action)
 }

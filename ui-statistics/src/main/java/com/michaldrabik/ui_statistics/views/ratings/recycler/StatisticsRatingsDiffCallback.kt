@@ -8,5 +8,6 @@ class StatisticsRatingsDiffCallback : DiffUtil.ItemCallback<StatisticsRatingItem
     oldItem.show.ids.trakt == newItem.show.ids.trakt
 
   override fun areContentsTheSame(oldItem: StatisticsRatingItem, newItem: StatisticsRatingItem) =
-    oldItem.rating.rating == newItem.rating.rating
+    oldItem.rating.rating == newItem.rating.rating &&
+      oldItem.image == newItem.image
 }

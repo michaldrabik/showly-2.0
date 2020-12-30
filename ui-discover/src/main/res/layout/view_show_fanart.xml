@@ -13,6 +13,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/gridSpacing"
+    android:background="@drawable/bg_media_view_elevation"
+    android:elevation="@dimen/elevationSmall"
     android:foreground="?android:attr/selectableItemBackground"
     >
 
@@ -29,20 +31,7 @@
       android:layout_gravity="center"
       android:visibility="gone"
       app:srcCompat="@drawable/ic_television"
-      tools:visibility="visible"
-      />
-
-    <ImageView
-      android:id="@+id/showFanartBadge"
-      style="@style/Badge"
-      app:srcCompat="@drawable/ic_bookmark_full"
-      tools:visibility="visible"
-      />
-
-    <ImageView
-      android:id="@+id/showFanartBadgeLater"
-      style="@style/Badge.Watchlist"
-      app:srcCompat="@drawable/ic_bookmark_full"
+      app:tint="?attr/colorPlaceholderIcon"
       tools:visibility="visible"
       />
 
@@ -62,7 +51,7 @@
 
     <ProgressBar
       android:id="@+id/showFanartProgress"
-      style="@style/ProgressBarGray"
+      style="@style/ProgressBar.Dark"
       android:layout_width="28dp"
       android:layout_height="28dp"
       android:layout_gravity="center"
@@ -70,4 +59,19 @@
       />
 
   </FrameLayout>
+
+  <ImageView
+    android:id="@+id/showFanartBadge"
+    style="@style/Badge"
+    app:srcCompat="@drawable/ic_bookmark_full"
+    tools:visibility="visible"
+    />
+
+  <ImageView
+    android:id="@+id/showFanartBadgeLater"
+    style="@style/Badge.Watchlist"
+    app:srcCompat="@drawable/ic_bookmark_full"
+    tools:visibility="visible"
+    />
+
 </merge>

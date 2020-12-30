@@ -6,6 +6,7 @@
   android:id="@+id/searchRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:clipChildren="false"
   android:clipToPadding="false"
   >
 
@@ -42,12 +43,46 @@
     app:layout_constraintTop_toTopOf="parent"
     />
 
+  <ScrollView
+    android:id="@+id/searchSuggestionsWrapper"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_suggestions"
+    android:clipChildren="true"
+    android:elevation="@dimen/elevationSmall"
+    android:overScrollMode="never"
+    android:paddingBottom="1px"
+    android:translationY="-4dp"
+    android:translationZ="0dp"
+    android:visibility="gone"
+    app:layout_constrainedHeight="true"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="@id/searchViewLayout"
+    app:layout_constraintHeight_max="@dimen/suggestionsMaxHeight"
+    app:layout_constraintStart_toStartOf="@id/searchViewLayout"
+    app:layout_constraintTop_toBottomOf="@id/searchViewLayout"
+    app:layout_constraintVertical_bias="0"
+    tools:visibility="visible"
+    >
+
+    <LinearLayout
+      android:id="@+id/searchSuggestionsLayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:clipToPadding="false"
+      android:orientation="vertical"
+      android:paddingTop="@dimen/spaceSmall"
+      />
+
+  </ScrollView>
+
   <com.michaldrabik.ui_base.common.views.SearchView
     android:id="@+id/searchViewLayout"
     android:layout_width="0dp"
     android:layout_height="@dimen/searchViewHeight"
     android:layout_marginLeft="@dimen/spaceMedium"
     android:layout_marginRight="@dimen/spaceMedium"
+    android:translationZ="3dp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/separator"
@@ -100,32 +135,5 @@
     app:layout_constraintTop_toBottomOf="@+id/searchViewLayout"
     tools:visibility="visible"
     />
-
-  <ScrollView
-    android:id="@+id/searchSuggestionsWrapper"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_suggestions"
-    android:overScrollMode="never"
-    android:translationY="-4dp"
-    android:visibility="gone"
-    app:layout_constrainedHeight="true"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="@id/searchViewLayout"
-    app:layout_constraintHeight_max="@dimen/suggestionsMaxHeight"
-    app:layout_constraintStart_toStartOf="@id/searchViewLayout"
-    app:layout_constraintTop_toBottomOf="@id/searchViewLayout"
-    app:layout_constraintVertical_bias="0"
-    tools:visibility="visible"
-    >
-
-    <LinearLayout
-      android:id="@+id/searchSuggestionsLayout"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      />
-
-  </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

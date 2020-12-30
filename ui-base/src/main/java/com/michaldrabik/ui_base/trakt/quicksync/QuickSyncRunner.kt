@@ -50,7 +50,7 @@ class QuickSyncRunner @Inject constructor(
   private suspend fun exportHistoryItems(
     token: TraktAuthToken,
     moviesEnabled: Boolean,
-    count: Int = 0,
+    count: Int = 0
   ): Int {
     val types = if (moviesEnabled) listOf(MOVIE, EPISODE) else listOf(EPISODE)
     val items = database.traktSyncQueueDao().getAll(types.map { it.slug }).take(BATCH_LIMIT)
@@ -89,7 +89,7 @@ class QuickSyncRunner @Inject constructor(
   private suspend fun exportWatchlistItems(
     token: TraktAuthToken,
     moviesEnabled: Boolean,
-    count: Int = 0,
+    count: Int = 0
   ): Int {
     val types = if (moviesEnabled) listOf(MOVIE_WATCHLIST, SHOW_WATCHLIST) else listOf(SHOW_WATCHLIST)
     val items = database.traktSyncQueueDao().getAll(types.map { it.slug }).take(BATCH_LIMIT)

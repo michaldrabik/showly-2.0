@@ -6,6 +6,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -21,6 +22,7 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.calendar.cases.ProgressCalendarCase
 import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
+import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_SHOW_ID
 import com.michaldrabik.ui_widgets.R
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +38,8 @@ class CalendarWidgetViewsFactory(
   private val context: Context,
   private val loadItemsCase: ProgressLoadItemsCase,
   private val calendarCase: ProgressCalendarCase,
-  private val imagesProvider: ShowImagesProvider
+  private val imagesProvider: ShowImagesProvider,
+  private val settingsRepository: SettingsRepository
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.Main
@@ -73,7 +76,7 @@ class CalendarWidgetViewsFactory(
   }
 
   private fun createHeaderRemoteView(item: ProgressItem) =
-    RemoteViews(context.packageName, R.layout.widget_header).apply {
+    RemoteViews(context.packageName, getHeaderLayout()).apply {
       setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.headerTextResId!!))
     }
 
@@ -98,7 +101,7 @@ class CalendarWidgetViewsFactory(
 
     val date = item.upcomingEpisode.firstAired?.toLocalTimeZone()?.toDisplayString()
 
-    val remoteView = RemoteViews(context.packageName, R.layout.widget_calendar_item).apply {
+    val remoteView = RemoteViews(context.packageName, getItemLayout()).apply {
       setTextViewText(R.id.calendarWidgetItemTitle, title)
       setTextViewText(R.id.calendarWidgetItemOverview, episodeTitle)
       setTextViewText(R.id.calendarWidgetItemBadge, episodeBadgeText)
@@ -137,11 +140,27 @@ class CalendarWidgetViewsFactory(
     return remoteView
   }
 
+  private fun getItemLayout(): Int {
+    val isLight = settingsRepository.getWidgetsTheme() == MODE_NIGHT_NO
+    return when {
+      isLight -> R.layout.widget_calendar_item_day
+      else -> R.layout.widget_calendar_item_night
+    }
+  }
+
+  private fun getHeaderLayout(): Int {
+    val isLight = settingsRepository.getWidgetsTheme() == MODE_NIGHT_NO
+    return when {
+      isLight -> R.layout.widget_header_day
+      else -> R.layout.widget_header_night
+    }
+  }
+
   override fun getItemId(position: Int) = adapterItems[position].show.traktId
 
   override fun onDataSetChanged() = loadData()
 
-  override fun getLoadingView() = RemoteViews(context.packageName, R.layout.widget_progress_loading)
+  override fun getLoadingView() = RemoteViews(context.packageName, R.layout.widget_loading_item)
 
   override fun getCount() = adapterItems.size
 

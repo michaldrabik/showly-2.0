@@ -5,6 +5,7 @@ import android.widget.RemoteViewsService
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_progress_movies.calendar.cases.ProgressMoviesCalendarCase
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesLoadItemsCase
+import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
 import javax.inject.Inject
 
@@ -13,6 +14,7 @@ class CalendarMoviesWidgetService : RemoteViewsService() {
   @Inject lateinit var progressLoadItemsCase: ProgressMoviesLoadItemsCase
   @Inject lateinit var calendarCase: ProgressMoviesCalendarCase
   @Inject lateinit var imagesProvider: MovieImagesProvider
+  @Inject lateinit var settingsRepository: SettingsRepository
 
   override fun onCreate() {
     super.onCreate()
@@ -24,6 +26,7 @@ class CalendarMoviesWidgetService : RemoteViewsService() {
       applicationContext,
       progressLoadItemsCase,
       calendarCase,
-      imagesProvider
+      imagesProvider,
+      settingsRepository
     )
 }

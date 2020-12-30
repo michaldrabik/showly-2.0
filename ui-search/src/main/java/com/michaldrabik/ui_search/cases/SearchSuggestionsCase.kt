@@ -18,7 +18,7 @@ class SearchSuggestionsCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository,
+  private val settingsRepository: SettingsRepository
 ) {
 
   private var showsCache: List<ShowDb>? = null

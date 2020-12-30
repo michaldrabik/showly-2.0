@@ -28,6 +28,8 @@ class MyShowFanartView : FrameLayout {
 
   init {
     inflate(context, R.layout.view_my_shows_fanart, this)
+    setBackgroundResource(R.drawable.bg_media_view_elevation)
+    elevation = context.dimenToPx(R.dimen.elevationSmall).toFloat()
   }
 
   private val cornerRadius by lazy { context.dimenToPx(R.dimen.myShowsFanartCorner) }

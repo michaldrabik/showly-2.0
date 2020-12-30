@@ -8,6 +8,7 @@
   android:layout_height="match_parent"
   app:cardBackgroundColor="?attr/colorSearchViewBackground"
   app:cardCornerRadius="@dimen/searchViewCorner"
+  app:cardElevation="@dimen/elevationSmall"
   >
 
   <LinearLayout
@@ -129,7 +130,7 @@
     >
 
     <ProgressBar
-      style="@style/ProgressBarAccent"
+      style="@style/ProgressBar.Accent"
       android:layout_width="20dp"
       android:layout_height="match_parent"
       android:layout_marginEnd="@dimen/spaceSmall"

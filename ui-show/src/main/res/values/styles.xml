@@ -11,7 +11,8 @@
     <item name="android:gravity">center</item>
     <item name="android:textAllCaps">true</item>
     <item name="android:maxLines">1</item>
-    <item name="android:textColor">@color/colorWhite</item>
+    <item name="drawableTint">?android:attr/textColorPrimary</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
     <item name="android:textSize">12sp</item>
     <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
     <item name="layout_constraintHorizontal_chainStyle">spread_inside</item>

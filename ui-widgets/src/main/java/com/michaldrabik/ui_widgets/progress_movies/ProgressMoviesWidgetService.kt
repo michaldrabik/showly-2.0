@@ -5,6 +5,7 @@ import android.widget.RemoteViewsService
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesLoadItemsCase
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesSortOrderCase
+import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.movies.MoviesRepository
 import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
 import javax.inject.Inject
@@ -15,6 +16,7 @@ class ProgressMoviesWidgetService : RemoteViewsService() {
   @Inject lateinit var progressSortOrderCase: ProgressMoviesSortOrderCase
   @Inject lateinit var moviesRepository: MoviesRepository
   @Inject lateinit var imagesProvider: MovieImagesProvider
+  @Inject lateinit var settingsRepository: SettingsRepository
 
   override fun onCreate() {
     super.onCreate()
@@ -26,6 +28,7 @@ class ProgressMoviesWidgetService : RemoteViewsService() {
       applicationContext,
       progressLoadItemsCase,
       progressSortOrderCase,
-      imagesProvider
+      imagesProvider,
+      settingsRepository
     )
 }

@@ -77,7 +77,7 @@ class StatisticsViewModel @Inject constructor(
         totalTimeSpentMinutes = episodes.sumBy { it.runtime }.toLong(),
         totalWatchedEpisodes = episodes.count().toLong(),
         totalWatchedEpisodesShows = episodes.distinctBy { it.idShowTrakt }.count().toLong(),
-        topGenres = genres,
+        topGenres = genres
       )
     }
   }

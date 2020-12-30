@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<merge
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:background="@drawable/bg_widget"
   tools:ignore="HardcodedText,SmallSp"
   >
 
   <ListView
-    android:id="@+id/progressWidgetList"
+    android:id="@+id/calendarWidgetList"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
@@ -20,7 +19,7 @@
     />
 
   <LinearLayout
-    android:id="@+id/progressWidgetEmptyView"
+    android:id="@+id/calendarWidgetEmptyView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/spaceBig"
@@ -32,9 +31,9 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginBottom="@dimen/spaceTiny"
-      android:text="@string/menuProgress"
+      android:text="@string/menuCalendar"
       android:textAllCaps="true"
-      android:textColor="@color/colorWhite"
+      android:textColor="?android:attr/textColorPrimary"
       android:textSize="20sp"
       android:textStyle="bold"
       />
@@ -42,15 +41,15 @@
     <TextView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="@string/textProgressEmpty"
-      android:textColor="@color/colorGrayLight"
+      android:text="@string/textCalendarEmpty"
+      android:textColor="?android:attr/textColorSecondary"
       android:textSize="14sp"
       />
 
   </LinearLayout>
 
   <LinearLayout
-    android:id="@+id/progressWidgetLabel"
+    android:id="@+id/calendarWidgetLabel"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_widget_toolbar"
@@ -72,7 +71,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:gravity="start"
-      android:text="Shows Progress"
+      android:text="Shows Calendar"
       android:textAlignment="viewStart"
       android:textColor="@color/colorWhite"
       android:textSize="10sp"
@@ -80,4 +79,4 @@
 
   </LinearLayout>
 
-</FrameLayout>
+</merge>

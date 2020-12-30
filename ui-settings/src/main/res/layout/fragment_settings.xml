@@ -26,6 +26,8 @@
       android:id="@+id/settingsToolbar"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
+      android:background="?android:attr/windowBackground"
+      android:elevation="@dimen/elevationNormal"
       app:contentInsetStartWithNavigation="0dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
@@ -182,7 +184,7 @@
     <LinearLayout
       android:id="@+id/settingsLanguage"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsMoviesEnabled"
+      app:layout_constraintBottom_toTopOf="@id/settingsTheme"
       app:layout_constraintEnd_toStartOf="@id/settingsLanguageValue"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsCategoryGeneral"
@@ -213,12 +215,48 @@
       />
 
     <LinearLayout
+      android:id="@+id/settingsTheme"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@id/settingsMoviesEnabled"
+      app:layout_constraintEnd_toStartOf="@id/settingsThemeValue"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsLanguage"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsThemeTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:layout_width="wrap_content"
+        android:text="@string/textSettingsThemeSummary"
+        />
+
+    </LinearLayout>
+
+    <TextView
+      android:id="@+id/settingsThemeValue"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:gravity="end"
+      android:minWidth="50dp"
+      android:text="@string/textThemeDark"
+      android:textColor="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="@id/settingsTheme"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsTheme"
+      />
+
+    <LinearLayout
       android:id="@+id/settingsMoviesEnabled"
       style="@style/Settings.ItemLayout"
       app:layout_constraintBottom_toTopOf="@id/settingsMyShowsSections"
       app:layout_constraintEnd_toStartOf="@id/settingsMoviesEnabledSwitch"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsLanguage"
+      app:layout_constraintTop_toBottomOf="@id/settingsTheme"
       >
 
       <TextView
@@ -470,7 +508,7 @@
       app:layout_constraintBottom_toTopOf="@id/settingsCategoryMisc"
       app:layout_constraintEnd_toStartOf="@id/settingsWidgetsLabelsSwitch"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsCategoryWidgets"
+      app:layout_constraintTop_toBottomOf="@id/settingsWidgetsTheme"
       >
 
       <TextView
@@ -494,6 +532,42 @@
       app:layout_constraintBottom_toBottomOf="@id/settingsWidgetsLabels"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/settingsWidgetsLabels"
+      />
+
+    <LinearLayout
+      android:id="@+id/settingsWidgetsTheme"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@id/settingsWidgetsLabels"
+      app:layout_constraintEnd_toStartOf="@id/settingsWidgetsThemeValue"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsCategoryWidgets"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsThemeWidgetsTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:layout_width="wrap_content"
+        android:text="@string/textSettingsThemeWidgetsSummary"
+        />
+
+    </LinearLayout>
+
+    <TextView
+      android:id="@+id/settingsWidgetsThemeValue"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:gravity="end"
+      android:minWidth="50dp"
+      android:text="@string/textThemeDark"
+      android:textColor="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="@id/settingsWidgetsTheme"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsWidgetsTheme"
       />
 
     <TextView

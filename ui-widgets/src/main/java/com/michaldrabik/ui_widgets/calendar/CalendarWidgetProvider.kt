@@ -10,6 +10,7 @@ import android.net.Uri
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.RemoteViews
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_widgets.BaseWidgetProvider
@@ -34,6 +35,14 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
     }
   }
 
+  override fun getLayoutResId(): Int {
+    val isLight = settings?.theme == MODE_NIGHT_NO
+    return when {
+      isLight -> R.layout.widget_calendar_day
+      else -> R.layout.widget_calendar_night
+    }
+  }
+
   override fun onUpdate(
     context: Context,
     appWidgetManager: AppWidgetManager,
@@ -49,7 +58,7 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
       data = Uri.parse(toUri(Intent.URI_INTENT_SCHEME))
     }
 
-    val remoteViews = RemoteViews(context.packageName, R.layout.widget_calendar).apply {
+    val remoteViews = RemoteViews(context.packageName, getLayoutResId()).apply {
       setRemoteAdapter(R.id.calendarWidgetList, intent)
       setEmptyView(R.id.calendarWidgetList, R.id.calendarWidgetEmptyView)
 

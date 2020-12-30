@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<merge
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/calendarMoviesWidgetItem"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:clipChildren="false"
-  android:descendantFocusability="blocksDescendants"
-  android:orientation="horizontal"
-  android:theme="@style/AppTheme"
+  tools:parentTag="android.widget.LinearLayout"
   >
 
   <FrameLayout
@@ -18,10 +15,12 @@
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginEnd="@dimen/spaceMedium"
     android:layout_marginBottom="@dimen/spaceSmall"
+    android:background="@drawable/bg_media_view_elevation"
+    android:elevation="@dimen/elevationSmall"
     >
 
     <ImageView
-      android:id="@+id/calendarMoviesWidgetItemImage"
+      android:id="@+id/calendarWidgetItemImage"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:visibility="gone"
@@ -29,12 +28,15 @@
       />
 
     <ImageView
-      android:id="@+id/calendarMoviesWidgetItemPlaceholder"
+      android:id="@+id/calendarWidgetItemPlaceholder"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:padding="@dimen/spaceNormal"
-      android:src="@drawable/ic_film"
+      android:src="@drawable/ic_television"
+      android:tint="?attr/colorPlaceholderIcon"
       android:visibility="gone"
+      app:tint="?attr/colorPlaceholderIcon"
+      tools:ignore="UseAppTint"
       tools:visibility="visible"
       />
 
@@ -48,7 +50,7 @@
     >
 
     <TextView
-      android:id="@+id/calendarMoviesWidgetItemTitle"
+      android:id="@+id/calendarWidgetItemTitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginBottom="@dimen/spaceTiny"
@@ -62,37 +64,57 @@
       />
 
     <TextView
-      android:id="@+id/calendarMoviesWidgetItemOverview"
+      android:id="@+id/calendarWidgetItemOverview"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_below="@id/calendarMoviesWidgetItemTitle"
+      android:layout_below="@id/calendarWidgetItemTitle"
+      android:layout_alignBaseline="@id/calendarWidgetItemBadge"
+      android:layout_marginTop="@dimen/spaceMicro"
       android:layout_marginBottom="@dimen/spaceTiny"
+      android:layout_toEndOf="@id/calendarWidgetItemBadge"
       android:ellipsize="end"
       android:includeFontPadding="false"
-      android:maxLines="2"
-      android:textColor="?android:attr/textColorSecondary"
+      android:maxLines="1"
+      android:textColor="?android:attr/textColorPrimary"
       android:textSize="12sp"
       tools:text="@tools:sample/lorem/random"
       />
 
     <TextView
-      android:id="@+id/calendarMoviesWidgetItemDate"
+      android:id="@+id/calendarWidgetItemBadge"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_below="@id/calendarMoviesWidgetItemOverview"
-      android:layout_marginTop="@dimen/spaceTiny"
-      android:background="@drawable/bg_movie_date_badge"
-      android:gravity="start|center_vertical"
+      android:layout_below="@id/calendarWidgetItemTitle"
+      android:layout_marginTop="@dimen/spaceMicro"
+      android:layout_marginEnd="6dp"
+      android:layout_marginBottom="@dimen/spaceTiny"
+      android:background="@drawable/bg_episode_badge"
+      android:elevation="@dimen/elevationTiny"
+      android:ellipsize="end"
+      android:includeFontPadding="false"
+      android:maxLines="1"
       android:paddingStart="6dp"
       android:paddingTop="2dp"
       android:paddingEnd="6dp"
       android:paddingBottom="2dp"
-      android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorPrimary"
+      android:textSize="12sp"
+      tools:text="S.01 E.01"
+      />
+
+    <TextView
+      android:id="@+id/calendarWidgetItemDate"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/calendarWidgetItemBadge"
+      android:layout_marginTop="@dimen/spaceMicro"
+      android:gravity="start|center_vertical"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorSecondary"
       android:textSize="12sp"
       tools:text="Wednesday, 27 June 2019"
       />
 
   </RelativeLayout>
 
-</LinearLayout>
+</merge>

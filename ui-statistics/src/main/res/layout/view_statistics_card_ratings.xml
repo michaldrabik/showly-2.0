@@ -35,6 +35,7 @@
       android:textSize="@dimen/statisticsHeaderSize"
       android:textStyle="bold"
       app:drawableStartCompat="@drawable/ic_star"
+      app:drawableTint="?android:attr/textColorPrimary"
       />
 
     <androidx.recyclerview.widget.RecyclerView

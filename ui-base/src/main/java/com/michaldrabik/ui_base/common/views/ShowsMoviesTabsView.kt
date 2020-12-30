@@ -10,6 +10,7 @@ import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour
+import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import kotlinx.android.synthetic.main.view_shows_movies_tabs.view.*
 
@@ -31,13 +32,13 @@ class ShowsMoviesTabsView : LinearLayout, CoordinatorLayout.AttachedBehavior {
   var onModeSelected: ((Mode) -> Unit)? = null
 
   fun animateMovies() {
-    viewShows.alpha = 0.5F
-    viewMovies.alpha = 1F
+    viewShows.setTextColor(context.colorFromAttr(R.attr.textColorTab))
+    viewMovies.setTextColor(context.colorFromAttr(R.attr.textColorTabSelected))
   }
 
   fun animateShows() {
-    viewShows.alpha = 1F
-    viewMovies.alpha = 0.5F
+    viewShows.setTextColor(context.colorFromAttr(R.attr.textColorTabSelected))
+    viewMovies.setTextColor(context.colorFromAttr(R.attr.textColorTab))
   }
 
   override fun setEnabled(enabled: Boolean) {

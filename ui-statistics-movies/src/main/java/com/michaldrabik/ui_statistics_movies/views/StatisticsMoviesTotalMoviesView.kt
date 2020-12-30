@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import com.google.android.material.card.MaterialCardView
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_statistics_movies.R
 import kotlinx.android.synthetic.main.view_statistics_movies_card_total_movies.view.*
 import java.text.NumberFormat
@@ -22,6 +23,7 @@ class StatisticsMoviesTotalMoviesView : MaterialCardView {
     inflate(context, R.layout.view_statistics_movies_card_total_movies, this)
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
     setCardBackgroundColor(context.colorFromAttr(R.attr.colorCardBackground))
+    cardElevation = context.dimenToPx(R.dimen.elevationSmall).toFloat()
   }
 
   fun bind(moviesCount: Int) {

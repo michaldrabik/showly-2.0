@@ -19,15 +19,21 @@
       android:id="@+id/relatedImage"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:background="@drawable/bg_media_view_elevation"
+      android:elevation="@dimen/elevationSmall"
       />
 
     <ImageView
       android:id="@+id/relatedPlaceholder"
-      android:layout_width="@dimen/actorTilePlaceholder"
-      android:layout_height="@dimen/actorTilePlaceholder"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
       android:layout_gravity="center"
+      android:background="@drawable/bg_media_view_placeholder"
+      android:elevation="@dimen/elevationSmall"
+      android:padding="@dimen/relatedTileShowPlaceholder"
       android:visibility="gone"
       app:srcCompat="@drawable/ic_television"
+      app:tint="?attr/colorPlaceholderIcon"
       tools:visibility="visible"
       />
 
@@ -42,7 +48,9 @@
       android:layout_marginBottom="@dimen/spaceMicro"
       android:maxLines="1"
       android:textSize="11sp"
+      android:translationZ="10dp"
       android:visibility="gone"
+      tools:ignore="SmallSp"
       tools:text="Erin Moriarty"
       tools:visibility="visible"
       />

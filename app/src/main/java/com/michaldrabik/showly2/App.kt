@@ -8,6 +8,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.StrictMode
+import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import com.google.firebase.messaging.FirebaseMessaging
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -47,8 +48,8 @@ class App :
   WidgetsProvider {
 
   @Inject lateinit var settingsRepository: SettingsRepository
-
   lateinit var appComponent: AppComponent
+
   var isAppOnline = true
 
   private val activityCallbacks by lazy {
@@ -62,6 +63,58 @@ class App :
   private val appScope = MainScope()
 
   override fun onCreate() {
+
+    fun setupComponents() {
+      appComponent = DaggerAppComponent.builder()
+        .cloudMarker(DaggerCloudComponent.create())
+        .storageMarker(
+          DaggerStorageComponent.builder()
+            .storageModule(StorageModule(applicationContext))
+            .build()
+        )
+        .preferencesModule(PreferencesModule(applicationContext))
+        .build()
+      appComponent.inject(this)
+    }
+
+    fun setupLanguage() {
+      Lingver.init(this, DEFAULT_LANGUAGE)
+      val language = settingsRepository.getLanguage()
+      Lingver.getInstance().setLocale(this, language)
+    }
+
+    fun setupStrictMode() {
+      if (BuildConfig.DEBUG) {
+        StrictMode.setThreadPolicy(
+          StrictMode.ThreadPolicy.Builder()
+            .detectAll()
+            .penaltyLog()
+            .build()
+        )
+      }
+    }
+
+    fun setupNotificationChannels() {
+      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
+
+      fun createChannel(channel: AppNotificationChannel) =
+        NotificationChannel(channel.name, channel.displayName, channel.importance).apply {
+          description = channel.description
+        }
+
+      notificationManager().run {
+        createNotificationChannel(createChannel(AppNotificationChannel.GENERAL_INFO))
+        createNotificationChannel(createChannel(AppNotificationChannel.SHOWS_INFO))
+        createNotificationChannel(createChannel(AppNotificationChannel.EPISODES_ANNOUNCEMENTS))
+        createNotificationChannel(createChannel(AppNotificationChannel.MOVIES_ANNOUNCEMENTS))
+      }
+    }
+
+    fun setupTheme() {
+      val theme = settingsRepository.getTheme()
+      setDefaultNightMode(theme)
+    }
+
     super.onCreate()
     if (ProcessPhoenix.isPhoenixProcess(this)) return
 
@@ -79,52 +132,7 @@ class App :
     setupStrictMode()
     setupNotificationChannels()
     setupLanguage()
-  }
-
-  private fun setupLanguage() {
-    Lingver.init(this, DEFAULT_LANGUAGE)
-    val language = settingsRepository.getLanguage()
-    Lingver.getInstance().setLocale(this, language)
-  }
-
-  private fun setupComponents() {
-    appComponent = DaggerAppComponent.builder()
-      .cloudMarker(DaggerCloudComponent.create())
-      .storageMarker(
-        DaggerStorageComponent.builder()
-          .storageModule(StorageModule(applicationContext))
-          .build()
-      )
-      .preferencesModule(PreferencesModule(applicationContext))
-      .build()
-    appComponent.inject(this)
-  }
-
-  private fun setupStrictMode() {
-    if (BuildConfig.DEBUG) {
-      StrictMode.setThreadPolicy(
-        StrictMode.ThreadPolicy.Builder()
-          .detectAll()
-          .penaltyLog()
-          .build()
-      )
-    }
-  }
-
-  private fun setupNotificationChannels() {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
-
-    fun createChannel(channel: AppNotificationChannel) =
-      NotificationChannel(channel.name, channel.displayName, channel.importance).apply {
-        description = channel.description
-      }
-
-    notificationManager().run {
-      createNotificationChannel(createChannel(AppNotificationChannel.GENERAL_INFO))
-      createNotificationChannel(createChannel(AppNotificationChannel.SHOWS_INFO))
-      createNotificationChannel(createChannel(AppNotificationChannel.EPISODES_ANNOUNCEMENTS))
-      createNotificationChannel(createChannel(AppNotificationChannel.MOVIES_ANNOUNCEMENTS))
-    }
+    setupTheme()
   }
 
   override fun isOnline() = isAppOnline
@@ -133,7 +141,10 @@ class App :
     appScope.launch {
       val settings = if (settingsRepository.isInitialized()) settingsRepository.load() else null
       val widgetSettings = settings?.let {
-        WidgetSettings(showLabel = it.widgetsShowLabel)
+        WidgetSettings(
+          showLabel = it.widgetsShowLabel,
+          theme = settingsRepository.getWidgetsTheme()
+        )
       } ?: WidgetSettings.createInitial()
 
       ProgressWidgetProvider.requestUpdate(applicationContext, widgetSettings)
@@ -145,7 +156,10 @@ class App :
     appScope.launch {
       val settings = if (settingsRepository.isInitialized()) settingsRepository.load() else null
       val widgetSettings = settings?.let {
-        WidgetSettings(showLabel = it.widgetsShowLabel)
+        WidgetSettings(
+          showLabel = it.widgetsShowLabel,
+          theme = settingsRepository.getWidgetsTheme()
+        )
       } ?: WidgetSettings.createInitial()
 
       ProgressMoviesWidgetProvider.requestUpdate(applicationContext, widgetSettings)

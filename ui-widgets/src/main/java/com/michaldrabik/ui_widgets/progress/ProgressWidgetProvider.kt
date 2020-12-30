@@ -14,6 +14,7 @@ import android.net.Uri
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.RemoteViews
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import com.michaldrabik.common.Config.HOST_ACTIVITY_NAME
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_model.IdTrakt
@@ -42,6 +43,14 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
     }
   }
 
+  override fun getLayoutResId(): Int {
+    val isLight = settings?.theme == MODE_NIGHT_NO
+    return when {
+      isLight -> R.layout.widget_progress_day
+      else -> R.layout.widget_progress_night
+    }
+  }
+
   override fun onUpdate(
     context: Context,
     appWidgetManager: AppWidgetManager,
@@ -57,7 +66,7 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
       data = Uri.parse(toUri(URI_INTENT_SCHEME))
     }
 
-    val remoteViews = RemoteViews(context.packageName, R.layout.widget_progress).apply {
+    val remoteViews = RemoteViews(context.packageName, getLayoutResId()).apply {
       setRemoteAdapter(R.id.progressWidgetList, intent)
       setEmptyView(R.id.progressWidgetList, R.id.progressWidgetEmptyView)
 

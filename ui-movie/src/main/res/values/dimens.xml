@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="actorMovieTileCorner">4dp</dimen>
-  <dimen name="actorMovieTilePlaceholder">36dp</dimen>
+  <dimen name="actorMovieTilePlaceholder">20dp</dimen>
   <dimen name="actorMovieTileImageHeight">120dp</dimen>
   <dimen name="actorMovieTileImageWidth">80dp</dimen>
 

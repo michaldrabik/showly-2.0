@@ -7,6 +7,10 @@
   <dimen name="spaceBig">24dp</dimen>
   <dimen name="spaceHuge">48dp</dimen>
 
+  <dimen name="elevationTiny">2dp</dimen>
+  <dimen name="elevationSmall">3dp</dimen>
+  <dimen name="elevationNormal">6dp</dimen>
+
   <dimen name="bottomNavigationHeight">56dp</dimen>
   <dimen name="bottomNavigationHeightPadded">64dp</dimen>
   <dimen name="bottomNoInternetViewHeight">30dp</dimen>
@@ -17,13 +21,14 @@
   <dimen name="gridSpacing">3dp</dimen>
   <dimen name="gridPadding">6dp</dimen>
 
-  <dimen name="bottomSheetCorner">16dp</dimen>
   <dimen name="showTileCorner">4dp</dimen>
   <dimen name="showTilePlaceholder">40dp</dimen>
-
   <dimen name="movieTileCorner">4dp</dimen>
   <dimen name="movieTilePlaceholder">40dp</dimen>
-  <dimen name="relatedTilePlaceholder">36dp</dimen>
+
+  <dimen name="bottomSheetCorner">16dp</dimen>
+  <dimen name="relatedTileMoviePlaceholder">22dp</dimen>
+  <dimen name="relatedTileShowPlaceholder">24dp</dimen>
 
   <dimen name="searchViewHeight">48dp</dimen>
   <dimen name="searchViewHeightPadded">64dp</dimen>

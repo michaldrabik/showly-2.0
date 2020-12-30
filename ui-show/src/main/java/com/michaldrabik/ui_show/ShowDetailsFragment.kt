@@ -44,6 +44,7 @@ import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
+import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
@@ -155,7 +156,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsEpisodesView.itemClickListener = { episode, season, isWatched ->
       showEpisodeDetails(episode, season, isWatched, episode.hasAired(season))
     }
-    showDetailsBackArrow.onClick { requireActivity().onBackPressed() }
+    listOf(showDetailsBackArrow, showDetailsBackArrow2).onClick { requireActivity().onBackPressed() }
     showDetailsImage.onClick {
       val bundle = bundleOf(
         ARG_SHOW_ID to showId.id,
@@ -196,7 +197,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun setupStatusBar() {
     showDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
       showDetailsMainLayout.updatePadding(top = insets.systemWindowInsetTop)
-      arrayOf<View>(view, showDetailsEpisodesView, showDetailsCommentsView)
+      arrayOf<View>(view, showDetailsBackArrow2, showDetailsEpisodesView, showDetailsCommentsView)
         .forEach { v ->
           (v.layoutParams as MarginLayoutParams).updateMargins(top = insets.systemWindowInsetTop)
         }
@@ -262,6 +263,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       fadeOut(200)
       startAnimation(animationExitRight)
     }
+    showDetailsBackArrow.crossfadeTo(showDetailsBackArrow2)
   }
 
   private fun showCommentsView() {
@@ -273,6 +275,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       fadeOut(200)
       startAnimation(animationExitRight)
     }
+    showDetailsBackArrow.crossfadeTo(showDetailsBackArrow2)
   }
 
   private fun hideExtraView(view: View) {
@@ -286,6 +289,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       fadeIn()
       startAnimation(animationEnterLeft)
     }
+    showDetailsBackArrow2.crossfadeTo(showDetailsBackArrow)
   }
 
   private fun showEpisodeDetails(

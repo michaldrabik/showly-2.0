@@ -1,0 +1,74 @@
+<resources>
+
+  <!-- Base app theme -->
+  <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <item name="android:windowBackground">@color/colorBackground</item>
+    <item name="android:navigationBarColor">@color/colorBlack</item>
+    <item name="android:windowTranslucentStatus">true</item>
+    <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
+
+    <item name="colorPrimary">@color/colorWhite</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="colorError">@color/colorError</item>
+    <item name="colorMask">@color/colorBlackTranslucent</item>
+
+    <item name="android:textColorPrimary">@color/colorBlue</item>
+    <item name="android:textColorSecondary">@color/colorBlueLight</item>
+    <item name="textColorOnSurface">@color/colorWhite</item>
+    <item name="textColorTab">@color/colorBlueLight2x</item>
+    <item name="textColorTabSelected">@color/colorBlue</item>
+    <item name="textColorChip">@color/colorBlueLight</item>
+    <item name="textColorChipSelected">@color/colorBlue</item>
+    <item name="colorBackgroundChipSelected">@color/colorPrimaryDark</item>
+
+    <item name="colorInfoSnackbar">@color/colorAccent</item>
+    <item name="textColorInfoSnackbar">@color/colorWhite</item>
+    <item name="colorErrorSnackbar">@color/colorError</item>
+    <item name="textColorErrorSnackbar">@color/colorWhite</item>
+
+    <item name="colorRateAppSnackbar">@color/colorPrimaryDark</item>
+    <item name="colorRateAppSnackbarTextPrimary">@color/colorBlue</item>
+    <item name="colorRateAppSnackbarTextSecondary">@color/colorGrayLight</item>
+
+    <item name="colorBottomMenuBackground">@color/colorPrimary</item>
+    <item name="colorBottomMenuItem">@color/colorBlueLight2x</item>
+    <item name="colorBottomMenuItemChecked">@color/colorBlue</item>
+    <item name="colorBottomMenuSeparator">@color/colorPrimaryDark</item>
+
+    <item name="colorSearchViewBackground">@color/colorWhite</item>
+    <item name="colorSearchViewControl">@color/colorBlue</item>
+
+    <item name="colorPlaceholderBackground">@color/colorPrimaryDark</item>
+    <item name="colorPlaceholderStroke">@color/colorAccent</item>
+    <item name="colorPlaceholderIcon">@color/colorAccent</item>
+
+    <item name="colorSeparator">#DCE1E6</item>
+    <item name="colorCardBackground">@color/colorPrimaryDark</item>
+    <item name="colorBadgeBackground">@color/colorPrimaryDark</item>
+    <item name="colorWidgetStatusBackground">@color/colorBlackTranslucentLight</item>
+  </style>
+
+  <!-- Progress Bar -->
+
+  <style name="ProgressBar.Dark" parent="ProgressBar">
+    <item name="android:indeterminateTint">@color/colorAccent</item>
+  </style>
+
+  <!-- Dialogs -->
+
+  <style name="AlertDialog" parent="@style/Theme.MaterialComponents.Dialog">
+    <item name="android:textColor">@color/colorBlue</item>
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="colorPrimary">@color/colorAccent</item>
+    <item name="android:textColorSecondary">@color/colorBlueLight</item>
+    <item name="textColorAlertDialogListItem">@color/colorBlue</item>
+    <item name="android:textColorPrimary">@color/colorBlue</item>
+    <item name="buttonBarNegativeButtonStyle">@style/AlertDialog.NegativeButton</item>
+  </style>
+
+  <style name="AlertDialog.NegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <item name="android:textColor">@color/colorGrayLight</item>
+  </style>
+
+</resources>

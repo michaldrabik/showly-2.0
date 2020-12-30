@@ -12,8 +12,10 @@ import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_settings.cases.SettingsMainCase
+import com.michaldrabik.ui_settings.cases.SettingsThemesCase
 import com.michaldrabik.ui_settings.cases.SettingsTraktCase
 import com.michaldrabik.ui_settings.helpers.AppLanguage
+import com.michaldrabik.ui_settings.helpers.AppTheme
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -22,7 +24,8 @@ import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
   private val mainCase: SettingsMainCase,
-  private val traktCase: SettingsTraktCase
+  private val traktCase: SettingsTraktCase,
+  private val themesCase: SettingsThemesCase
 ) : BaseViewModel<SettingsUiModel>() {
 
   fun loadSettings() {
@@ -129,6 +132,22 @@ class SettingsViewModel @Inject constructor(
     Analytics.logSettingsLanguage(language.code)
   }
 
+  fun setTheme(theme: AppTheme) {
+    viewModelScope.launch {
+      themesCase.setTheme(theme)
+      refreshSettings()
+    }
+    Analytics.logSettingsTheme(theme.code)
+  }
+
+  fun setWidgetsTheme(theme: AppTheme, context: Context) {
+    viewModelScope.launch {
+      themesCase.setWidgetsTheme(theme, context)
+      refreshSettings()
+    }
+    Analytics.logSettingsWidgetsTheme(theme.code)
+  }
+
   fun setTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {
     viewModelScope.launch {
       traktCase.setTraktSyncSchedule(schedule, context)
@@ -174,6 +193,8 @@ class SettingsViewModel @Inject constructor(
     uiState = SettingsUiModel(
       settings = mainCase.getSettings(),
       language = mainCase.getLanguage(),
+      theme = themesCase.getTheme(),
+      themeWidgets = themesCase.getWidgetsTheme(),
       moviesEnabled = mainCase.isMoviesEnabled(),
       isSignedInTrakt = traktCase.isTraktAuthorized(),
       traktUsername = traktCase.getTraktUsername(),

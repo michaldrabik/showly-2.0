@@ -20,6 +20,8 @@
       android:id="@+id/viewRateItemImageLayout"
       android:layout_width="match_parent"
       android:layout_height="@dimen/statisticsRatingItemHeight"
+      android:background="@drawable/bg_media_view_elevation_card"
+      android:elevation="@dimen/elevationSmall"
       android:foreground="?attr/selectableItemBackground"
       >
 
@@ -36,6 +38,7 @@
         android:layout_gravity="center"
         android:visibility="gone"
         app:srcCompat="@drawable/ic_television"
+        app:tint="?attr/colorPlaceholderIcon"
         tools:visibility="visible"
         />
 
@@ -64,10 +67,11 @@
       android:drawablePadding="@dimen/spaceMicro"
       android:gravity="center"
       android:maxLines="1"
-      android:textColor="@color/colorWhite"
+      android:textColor="?android:attr/textColorPrimary"
       android:textSize="18sp"
       android:textStyle="bold"
-      app:drawableStartCompat="@drawable/ic_star_accent"
+      app:drawableStartCompat="@drawable/ic_star"
+      app:drawableTint="?attr/colorAccent"
       tools:text="8"
       />
 

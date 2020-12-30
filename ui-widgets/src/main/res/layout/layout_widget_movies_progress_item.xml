@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<merge
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/progressMoviesWidgetItem"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:clipChildren="false"
-  android:descendantFocusability="blocksDescendants"
-  android:orientation="horizontal"
+  tools:parentTag="android.widget.LinearLayout"
   >
 
   <FrameLayout
@@ -17,6 +15,8 @@
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginEnd="@dimen/spaceMedium"
     android:layout_marginBottom="@dimen/spaceSmall"
+    android:background="@drawable/bg_media_view_elevation"
+    android:elevation="@dimen/elevationSmall"
     >
 
     <ImageView
@@ -33,7 +33,10 @@
       android:layout_height="match_parent"
       android:padding="@dimen/spaceNormal"
       android:src="@drawable/ic_film"
+      android:tint="?attr/colorPlaceholderIcon"
       android:visibility="gone"
+      app:tint="?android:attr/textColorPrimary"
+      tools:ignore="UseAppTint"
       tools:visibility="visible"
       />
 
@@ -53,7 +56,7 @@
       android:layout_marginBottom="@dimen/spaceTiny"
       android:ellipsize="end"
       android:maxLines="1"
-      android:textColor="@color/colorWhite"
+      android:textColor="?android:attr/textColorPrimary"
       android:textSize="16sp"
       android:textStyle="bold"
       tools:ignore="RtlSymmetry"
@@ -69,7 +72,7 @@
       android:ellipsize="end"
       android:includeFontPadding="false"
       android:maxLines="2"
-      android:textColor="@color/colorGrayLight"
+      android:textColor="?android:attr/textColorSecondary"
       android:textSize="12sp"
       tools:text="@tools:sample/lorem/random"
       />
@@ -83,8 +86,9 @@
       android:layout_marginTop="@dimen/spaceSmall"
       android:background="@drawable/bg_widget_check_button"
       android:src="@drawable/ic_check"
+      android:tint="?android:attr/textColorPrimary"
       />
 
   </RelativeLayout>
 
-</LinearLayout>
+</merge>

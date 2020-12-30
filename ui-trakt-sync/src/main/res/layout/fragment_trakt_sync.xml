@@ -15,6 +15,7 @@
     android:id="@+id/traktSyncRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clipChildren="false"
     android:clipToPadding="false"
     >
 
@@ -22,6 +23,8 @@
       android:id="@+id/traktSyncToolbar"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
+      android:background="?android:attr/windowBackground"
+      android:elevation="@dimen/elevationNormal"
       app:contentInsetStartWithNavigation="0dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +58,7 @@
       app:layout_constraintVertical_bias="0.1"
       app:layout_constraintVertical_chainStyle="packed"
       app:srcCompat="@drawable/ic_sync"
+      app:tint="?android:attr/textColorPrimary"
       />
 
     <ImageView
@@ -142,7 +146,7 @@
       android:layout_marginTop="@dimen/spaceNormal"
       android:minWidth="200dp"
       android:text="@string/textTraktSyncStart"
-      android:textColor="?android:attr/textColorPrimary"
+      android:textColor="?attr/textColorOnSurface"
       app:backgroundTint="?attr/colorAccent"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"

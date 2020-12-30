@@ -34,6 +34,7 @@
       android:textSize="@dimen/statisticsHeaderSize"
       android:textStyle="bold"
       app:drawableStartCompat="@drawable/ic_eye"
+      app:drawableTint="?android:attr/textColorPrimary"
       tools:drawableStart="@drawable/ic_eye"
       />
 

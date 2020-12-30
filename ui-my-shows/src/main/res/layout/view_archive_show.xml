@@ -13,6 +13,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
+    android:clipToPadding="false"
     android:paddingLeft="@dimen/archiveMarginHorizontal"
     android:paddingTop="@dimen/spaceSmall"
     android:paddingRight="@dimen/archiveMarginHorizontal"
@@ -23,6 +24,8 @@
       android:id="@+id/archiveShowImage"
       android:layout_width="@dimen/archiveImageWidth"
       android:layout_height="@dimen/archiveImageHeight"
+      android:background="@drawable/bg_media_view_elevation"
+      android:elevation="@dimen/elevationSmall"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
@@ -34,18 +37,20 @@
       android:layout_height="@dimen/archiveImageHeight"
       android:layout_gravity="center"
       android:background="@drawable/bg_media_view_placeholder"
+      android:elevation="@dimen/elevationSmall"
       android:padding="@dimen/spaceBig"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:srcCompat="@drawable/ic_television"
+      app:tint="?attr/colorPlaceholderIcon"
       tools:visibility="visible"
       />
 
     <ProgressBar
       android:id="@+id/archiveShowProgress"
-      style="@style/ProgressBarGray"
+      style="@style/ProgressBar.Dark"
       android:layout_width="28dp"
       android:layout_height="28dp"
       android:layout_gravity="center"
@@ -129,6 +134,7 @@
       app:layout_constraintEnd_toStartOf="@id/archiveShowUserRating"
       app:layout_constraintTop_toTopOf="@id/archiveShowNetwork"
       app:srcCompat="@drawable/ic_star"
+      app:tint="?android:attr/textColorPrimary"
       tools:visibility="visible"
       />
 

@@ -106,20 +106,20 @@ interface TraktService {
   @GET("shows/{traktId}/translations/{code}")
   suspend fun fetchShowTranslations(
     @Path("traktId") traktId: Long,
-    @Path("code") countryCode: String,
+    @Path("code") countryCode: String
   ): List<Translation>
 
   @GET("movies/{traktId}/translations/{code}")
   suspend fun fetchMovieTranslations(
     @Path("traktId") traktId: Long,
-    @Path("code") countryCode: String,
+    @Path("code") countryCode: String
   ): List<Translation>
 
   @GET("shows/{showId}/seasons/{seasonNumber}")
   suspend fun fetchSeasonTranslations(
     @Path("showId") showTraktId: Long,
     @Path("seasonNumber") seasonNumber: Int,
-    @Query("translations") countryCode: String,
+    @Query("translations") countryCode: String
   ): List<SeasonTranslation>
 
   @GET("shows/{traktId}/seasons/{seasonNumber}/episodes/{episodeNumber}/comments?limit=40&extended=full")

@@ -5,8 +5,6 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  app:cardBackgroundColor="?attr/colorCardBackground"
-  tools:background="@color/colorBackground"
   tools:parentTag="com.google.android.material.card.MaterialCardView"
   tools:theme="@style/AppTheme"
   >
@@ -34,6 +32,7 @@
       android:textSize="@dimen/statisticsMoviesHeaderSize"
       android:textStyle="bold"
       app:drawableStartCompat="@drawable/ic_clock"
+      app:drawableTint="?android:attr/textColorPrimary"
       tools:drawableStart="@drawable/ic_clock"
       />
 

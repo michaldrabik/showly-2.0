@@ -30,6 +30,8 @@ fun Context.notificationManager() = (applicationContext.getSystemService(Context
 
 fun View.onClick(safe: Boolean = true, action: (View) -> Unit) = setOnClickListener(SafeOnClickListener(safe, action))
 
+fun List<View>.onClick(safe: Boolean = true, action: (View) -> Unit) = forEach { it.onClick(safe, action) }
+
 fun Context.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSize(dimenResId)
 
 fun Fragment.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelSize(dimenResId)

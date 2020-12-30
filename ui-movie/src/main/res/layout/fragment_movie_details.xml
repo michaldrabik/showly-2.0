@@ -23,6 +23,8 @@
       android:id="@+id/constraintLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:clipChildren="false"
+      android:clipToPadding="false"
       android:paddingBottom="@dimen/spaceNormal"
       >
 
@@ -85,7 +87,7 @@
 
       <ProgressBar
         android:id="@+id/movieDetailsImageProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/movieDetailsImage"
@@ -226,6 +228,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/actorMovieTileImageHeight"
         android:layout_marginTop="@dimen/spaceMedium"
+        android:clipChildren="false"
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingStart="@dimen/spaceNormal"
@@ -239,7 +242,7 @@
 
       <ProgressBar
         android:id="@+id/movieDetailsActorsProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
         android:layout_height="@dimen/actorMovieTileImageHeight"
         android:layout_margin="@dimen/spaceMedium"
@@ -298,7 +301,7 @@
 
       <ProgressBar
         android:id="@+id/movieDetailsRateProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:visibility="gone"
@@ -376,7 +379,7 @@
 
       <ProgressBar
         android:id="@+id/movieDetailsRelatedProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="@dimen/spaceNormal"
@@ -399,7 +402,7 @@
 
   <ProgressBar
     android:id="@+id/movieDetailsMainProgress"
-    style="@style/ProgressBarAccent"
+    style="@style/ProgressBar.Accent"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -413,6 +416,17 @@
     android:background="?android:attr/selectableItemBackground"
     android:padding="@dimen/backArrowPadding"
     app:srcCompat="@drawable/ic_arrow_back"
+    />
+
+  <ImageView
+    android:id="@+id/movieDetailsBackArrow2"
+    android:layout_width="@dimen/backArrowSize"
+    android:layout_height="@dimen/backArrowSize"
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="@dimen/backArrowPadding"
+    android:visibility="gone"
+    app:srcCompat="@drawable/ic_arrow_back"
+    app:tint="?android:attr/textColorPrimary"
     />
 
   <include layout="@layout/fragment_movie_details_actor_full_view" />

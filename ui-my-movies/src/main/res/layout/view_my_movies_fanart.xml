@@ -30,6 +30,7 @@
       android:padding="42dp"
       android:visibility="gone"
       app:srcCompat="@drawable/ic_film"
+      app:tint="?attr/colorPlaceholderIcon"
       tools:visibility="visible"
       />
 
@@ -53,7 +54,7 @@
 
     <ProgressBar
       android:id="@+id/myMovieFanartProgress"
-      style="@style/ProgressBarGray"
+      style="@style/ProgressBar.Dark"
       android:layout_width="28dp"
       android:layout_height="28dp"
       android:layout_gravity="center"

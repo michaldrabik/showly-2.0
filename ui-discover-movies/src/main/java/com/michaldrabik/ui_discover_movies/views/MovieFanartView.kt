@@ -54,7 +54,7 @@ class MovieFanartView : MovieView<DiscoverMovieListItem> {
     movieFanartTitle.text = ""
     movieFanartProgress.gone()
     movieFanartPlaceholder.gone()
-    movieFanartRoot.setBackgroundResource(0)
+    movieFanartRoot.setBackgroundResource(R.drawable.bg_media_view_elevation)
     movieFanartBadge.gone()
     Glide.with(this).clear(movieFanartImage)
   }

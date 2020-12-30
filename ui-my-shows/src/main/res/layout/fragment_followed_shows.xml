@@ -44,6 +44,7 @@
     android:layout_marginEnd="@dimen/spaceMedium"
     android:visibility="gone"
     app:srcCompat="@drawable/ic_sort"
+    app:tint="?android:attr/textColorPrimary"
     />
 
   <ScrollView
@@ -51,6 +52,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/searchViewHeightPadded"
+    android:clipChildren="false"
     android:fillViewport="true"
     android:overScrollMode="never"
     android:scrollbars="none"
@@ -60,6 +62,8 @@
       android:id="@+id/followedShowsSearchContainer"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:clipChildren="false"
+      android:clipToPadding="false"
       android:columnCount="2"
       android:divider="@drawable/divider_my_shows_fanart"
       android:paddingStart="@dimen/spaceSmall"

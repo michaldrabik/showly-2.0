@@ -37,12 +37,13 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:srcCompat="@drawable/ic_television"
+    app:tint="?attr/colorPlaceholderIcon"
     tools:visibility="visible"
     />
 
   <ProgressBar
     android:id="@+id/episodeDetailsProgress"
-    style="@style/ProgressBarGray"
+    style="@style/ProgressBar.Dark"
     android:layout_width="30dp"
     android:layout_height="30dp"
     app:layout_constraintBottom_toBottomOf="@id/episodeDetailsImage"
@@ -66,7 +67,7 @@
     android:id="@+id/episodeDetailsRootScroll"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:clipToPadding="false"
+    android:clipChildren="false"
     android:fillViewport="true"
     android:overScrollMode="never"
     android:paddingTop="@dimen/spaceNormal"
@@ -81,6 +82,8 @@
       android:layout_height="match_parent"
       android:layout_marginStart="@dimen/spaceNormal"
       android:layout_marginEnd="@dimen/spaceNormal"
+      android:clipChildren="false"
+      android:clipToPadding="false"
       android:orientation="vertical"
       android:paddingBottom="@dimen/spaceNormal"
       >
@@ -161,6 +164,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spaceNormal"
+        android:clipChildren="false"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         >
@@ -175,7 +179,7 @@
           android:backgroundTint="?attr/colorAccent"
           android:gravity="center"
           android:text="@string/textLoadCommentsCount"
-          android:textColor="?android:attr/textColorPrimary"
+          android:textColor="?attr/textColorOnSurface"
           app:rippleColor="?android:attr/textColorPrimary"
           />
 
@@ -194,7 +198,7 @@
 
         <ProgressBar
           android:id="@+id/episodeDetailsRateProgress"
-          style="@style/ProgressBarGray"
+          style="@style/ProgressBar.Dark"
           android:layout_width="0dp"
           android:layout_height="28dp"
           android:layout_gravity="center"
@@ -208,7 +212,7 @@
 
       <ProgressBar
         android:id="@+id/episodeDetailsCommentsProgress"
-        style="@style/ProgressBarAccent"
+        style="@style/ProgressBar.Accent"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -272,7 +276,7 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toBottomOf="@id/episodeDetailsSeparator"
     app:srcCompat="@drawable/ic_eye"
-    app:tint="?android:attr/textColorPrimary"
+    app:tint="?attr/textColorOnSurface"
     />
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout

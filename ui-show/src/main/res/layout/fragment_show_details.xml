@@ -6,6 +6,7 @@
   android:id="@+id/showDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  tools:theme="@style/AppTheme"
   >
 
   <androidx.core.widget.NestedScrollView
@@ -24,6 +25,8 @@
       android:id="@+id/constraintLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:clipChildren="false"
+      android:clipToPadding="false"
       android:paddingBottom="@dimen/spaceNormal"
       >
 
@@ -86,7 +89,7 @@
 
       <ProgressBar
         android:id="@+id/showDetailsImageProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/showDetailsImage"
@@ -267,6 +270,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/actorTileImageHeight"
         android:layout_marginTop="@dimen/spaceMedium"
+        android:clipChildren="false"
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingStart="@dimen/spaceNormal"
@@ -280,7 +284,7 @@
 
       <ProgressBar
         android:id="@+id/showDetailsActorsProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
         android:layout_height="@dimen/actorTileImageHeight"
         android:layout_margin="@dimen/spaceMedium"
@@ -356,7 +360,7 @@
 
       <ProgressBar
         android:id="@+id/showDetailsSeasonsProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="@dimen/spaceMedium"
@@ -432,7 +436,7 @@
 
       <ProgressBar
         android:id="@+id/showDetailsRateProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:visibility="gone"
@@ -510,7 +514,7 @@
 
       <ProgressBar
         android:id="@+id/showDetailsRelatedProgress"
-        style="@style/ProgressBarGray"
+        style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_margin="@dimen/spaceMedium"
@@ -541,7 +545,7 @@
 
   <ProgressBar
     android:id="@+id/showDetailsMainProgress"
-    style="@style/ProgressBarAccent"
+    style="@style/ProgressBar.Accent"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -555,6 +559,17 @@
     android:background="?android:attr/selectableItemBackground"
     android:padding="@dimen/backArrowPadding"
     app:srcCompat="@drawable/ic_arrow_back"
+    />
+
+  <ImageView
+    android:id="@+id/showDetailsBackArrow2"
+    android:layout_width="@dimen/backArrowSize"
+    android:layout_height="@dimen/backArrowSize"
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="@dimen/backArrowPadding"
+    android:visibility="gone"
+    app:srcCompat="@drawable/ic_arrow_back"
+    app:tint="?android:attr/textColorPrimary"
     />
 
   <include layout="@layout/fragment_show_details_actor_full_view" />

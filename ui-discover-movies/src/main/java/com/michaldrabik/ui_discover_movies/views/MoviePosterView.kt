@@ -50,11 +50,6 @@ class MoviePosterView : MovieView<DiscoverMovieListItem> {
     super.loadImage(item)
   }
 
-  override fun onImageLoadSuccess() {
-    moviePosterTitle.gone()
-    moviePosterRoot.setBackgroundResource(0)
-  }
-
   override fun onImageLoadFail(item: DiscoverMovieListItem) {
     super.onImageLoadFail(item)
     if (item.image.status == AVAILABLE) {
@@ -66,7 +61,7 @@ class MoviePosterView : MovieView<DiscoverMovieListItem> {
   private fun clear() {
     moviePosterTitle.text = ""
     moviePosterTitle.gone()
-    moviePosterRoot.setBackgroundResource(0)
+    moviePosterRoot.setBackgroundResource(R.drawable.bg_media_view_elevation)
     moviePosterPlaceholder.gone()
     moviePosterProgress.gone()
     moviePosterBadge.gone()

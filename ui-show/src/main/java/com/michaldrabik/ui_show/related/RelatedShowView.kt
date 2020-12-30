@@ -23,6 +23,7 @@ class RelatedShowView : ShowView<RelatedListItem> {
   init {
     inflate(context, R.layout.view_related_show, this)
     layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+    clipChildren = false
     onClick { itemClickListener?.invoke(item) }
   }
 
@@ -41,14 +42,15 @@ class RelatedShowView : ShowView<RelatedListItem> {
   override fun loadImage(item: RelatedListItem) {
     if (item.image.status == UNAVAILABLE) {
       relatedTitle.visible()
-      relatedRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
     super.loadImage(item)
   }
 
   override fun onImageLoadFail(item: RelatedListItem) {
     super.onImageLoadFail(item)
-    if (item.image.status == AVAILABLE) relatedTitle.visible()
+    if (item.image.status == AVAILABLE) {
+      relatedTitle.visible()
+    }
   }
 
   private fun clear() {
