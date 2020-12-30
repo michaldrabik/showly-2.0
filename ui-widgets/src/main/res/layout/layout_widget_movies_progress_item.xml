@@ -33,8 +33,10 @@
       android:layout_height="match_parent"
       android:padding="@dimen/spaceNormal"
       android:src="@drawable/ic_film"
+      android:tint="?attr/colorPlaceholderIcon"
       android:visibility="gone"
       app:tint="?android:attr/textColorPrimary"
+      tools:ignore="UseAppTint"
       tools:visibility="visible"
       />
 

@@ -33,8 +33,10 @@
       android:layout_height="match_parent"
       android:padding="@dimen/spaceNormal"
       android:src="@drawable/ic_television"
+      android:tint="?attr/colorPlaceholderIcon"
       android:visibility="gone"
       app:tint="?attr/colorPlaceholderIcon"
+      tools:ignore="UseAppTint"
       tools:visibility="visible"
       />
 
