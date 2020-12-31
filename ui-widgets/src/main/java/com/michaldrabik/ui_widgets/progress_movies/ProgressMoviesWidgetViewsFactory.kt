@@ -142,7 +142,7 @@ class ProgressMoviesWidgetViewsFactory(
 
   override fun hasStableIds() = true
 
-  override fun getViewTypeCount() = 1
+  override fun getViewTypeCount() = 2
 
   override fun onDestroy() = coroutineContext.cancelChildren()
 }
