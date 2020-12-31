@@ -15,6 +15,7 @@ import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
+import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesLoadItemsCase
@@ -53,7 +54,7 @@ class ProgressMoviesWidgetViewsFactory(
       val items = movies.map { m ->
         async {
           val item = loadItemsCase.loadProgressItem(m)
-          val image = imagesProvider.findCachedImage(m, ImageType.POSTER)
+          val image = imagesProvider.loadRemoteImage(m, ImageType.POSTER)
           item.copy(image = image)
         }
       }.awaitAll()
@@ -93,6 +94,12 @@ class ProgressMoviesWidgetViewsFactory(
         putExtras(bundleOf(EXTRA_CHECK_MOVIE_ID to item.movie.traktId))
       }
       setOnClickFillInIntent(R.id.progressMoviesWidgetItemCheckButton, checkFillIntent)
+    }
+
+    if (item.image.status != ImageStatus.AVAILABLE) {
+      remoteView.setViewVisibility(R.id.progressMoviesWidgetItemImage, GONE)
+      remoteView.setViewVisibility(R.id.progressMoviesWidgetItemPlaceholder, VISIBLE)
+      return remoteView
     }
 
     try {

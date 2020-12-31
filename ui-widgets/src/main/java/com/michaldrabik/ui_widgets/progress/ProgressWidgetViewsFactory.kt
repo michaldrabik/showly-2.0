@@ -16,7 +16,8 @@ import com.michaldrabik.ui_base.utilities.DurationPrinter
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
-import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.ImageStatus
+import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
 import com.michaldrabik.ui_progress.main.cases.ProgressSortOrderCase
@@ -59,7 +60,7 @@ class ProgressWidgetViewsFactory(
       val items = shows.map { show ->
         async {
           val item = loadItemsCase.loadProgressItem(show)
-          val image = imagesProvider.findCachedImage(show, ImageType.POSTER)
+          val image = imagesProvider.loadRemoteImage(show, POSTER)
           item.copy(image = image)
         }
       }.awaitAll()
@@ -142,6 +143,12 @@ class ProgressWidgetViewsFactory(
         )
       }
       setOnClickFillInIntent(R.id.progressWidgetItemCheckButton, checkFillIntent)
+    }
+
+    if (item.image.status != ImageStatus.AVAILABLE) {
+      remoteView.setViewVisibility(R.id.progressWidgetItemImage, GONE)
+      remoteView.setViewVisibility(R.id.progressWidgetItemPlaceholder, VISIBLE)
+      return remoteView
     }
 
     try {
