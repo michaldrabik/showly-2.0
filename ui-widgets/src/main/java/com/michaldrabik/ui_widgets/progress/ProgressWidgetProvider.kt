@@ -20,7 +20,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_widgets.BaseWidgetProvider
 import com.michaldrabik.ui_widgets.R
-import com.michaldrabik.ui_widgets.WidgetSettings
+import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
 import timber.log.Timber
 
 class ProgressWidgetProvider : BaseWidgetProvider() {
@@ -29,14 +29,13 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
     const val EXTRA_SEASON_ID = "EXTRA_SEASON_ID"
     const val EXTRA_EPISODE_ID = "EXTRA_EPISODE_ID"
 
-    fun requestUpdate(context: Context, settings: WidgetSettings) {
+    fun requestUpdate(context: Context) {
       val applicationContext = context.applicationContext
       val intent = Intent(applicationContext, ProgressWidgetProvider::class.java).apply {
         val ids: IntArray = getInstance(applicationContext)
           .getAppWidgetIds(ComponentName(applicationContext, ProgressWidgetProvider::class.java))
         action = ACTION_APPWIDGET_UPDATE
         putExtra(EXTRA_APPWIDGET_IDS, ids)
-        putExtra(EXTRA_SETTINGS, settings)
       }
       applicationContext.sendBroadcast(intent)
       Timber.d("Widget update requested.")
@@ -44,7 +43,7 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
   }
 
   override fun getLayoutResId(): Int {
-    val isLight = settings?.theme == MODE_NIGHT_NO
+    val isLight = settingsRepository.getWidgetsTheme() == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_progress_day
       else -> R.layout.widget_progress_night
@@ -56,8 +55,9 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
     appWidgetManager: AppWidgetManager,
     appWidgetIds: IntArray?
   ) {
-    appWidgetIds?.forEach { updateWidget(context, appWidgetManager, it) }
+    requireDependencies(context)
     super.onUpdate(context, appWidgetManager, appWidgetIds)
+    appWidgetIds?.forEach { updateWidget(context, appWidgetManager, it) }
   }
 
   private fun updateWidget(context: Context, appWidgetManager: AppWidgetManager, widgetId: Int) {
@@ -71,8 +71,8 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
       setEmptyView(R.id.progressWidgetList, R.id.progressWidgetEmptyView)
 
       val spaceTiny = context.dimenToPx(R.dimen.spaceTiny)
-      val paddingTop = if (settings?.showLabel == false) spaceTiny else context.dimenToPx(R.dimen.widgetPaddingTop)
-      val labelVisibility = if (settings?.showLabel == false) GONE else VISIBLE
+      val paddingTop = if (settings.widgetsShowLabel) context.dimenToPx(R.dimen.widgetPaddingTop) else spaceTiny
+      val labelVisibility = if (settings.widgetsShowLabel) VISIBLE else GONE
       setViewPadding(R.id.progressWidgetList, 0, paddingTop, 0, spaceTiny)
       setViewVisibility(R.id.progressWidgetLabel, labelVisibility)
     }
@@ -115,5 +115,9 @@ class ProgressWidgetProvider : BaseWidgetProvider() {
       }
     }
     super.onReceive(context, intent)
+  }
+
+  private fun requireDependencies(context: Context) {
+    (context.applicationContext as UiWidgetsComponentProvider).provideWidgetsComponent().inject(this)
   }
 }

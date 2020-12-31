@@ -10,13 +10,13 @@ import android.net.Uri
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.RemoteViews
-import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_widgets.BaseWidgetProvider
 import com.michaldrabik.ui_widgets.R
-import com.michaldrabik.ui_widgets.WidgetSettings
+import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
 import timber.log.Timber
 
 class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
@@ -24,14 +24,13 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
   companion object {
     const val EXTRA_CHECK_MOVIE_ID = "EXTRA_CHECK_MOVIE_ID"
 
-    fun requestUpdate(context: Context, widgetSettings: WidgetSettings) {
+    fun requestUpdate(context: Context) {
       val applicationContext = context.applicationContext
       val intent = Intent(applicationContext, ProgressMoviesWidgetProvider::class.java).apply {
         val ids: IntArray = AppWidgetManager.getInstance(applicationContext)
           .getAppWidgetIds(ComponentName(applicationContext, ProgressMoviesWidgetProvider::class.java))
         action = ACTION_APPWIDGET_UPDATE
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
-        putExtra(EXTRA_SETTINGS, widgetSettings)
       }
       applicationContext.sendBroadcast(intent)
       Timber.d("Widget update requested.")
@@ -39,7 +38,7 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
   }
 
   override fun getLayoutResId(): Int {
-    val isLight = settings?.theme == AppCompatDelegate.MODE_NIGHT_NO
+    val isLight = settingsRepository.getWidgetsTheme() == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_movies_progress_day
       else -> R.layout.widget_movies_progress_night
@@ -51,8 +50,9 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
     appWidgetManager: AppWidgetManager,
     appWidgetIds: IntArray?
   ) {
-    appWidgetIds?.forEach { updateWidget(context, appWidgetManager, it) }
+    requireDependencies(context)
     super.onUpdate(context, appWidgetManager, appWidgetIds)
+    appWidgetIds?.forEach { updateWidget(context, appWidgetManager, it) }
   }
 
   private fun updateWidget(context: Context, appWidgetManager: AppWidgetManager, widgetId: Int) {
@@ -66,8 +66,8 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
       setEmptyView(R.id.progressWidgetMoviesList, R.id.progressWidgetMoviesEmptyView)
 
       val spaceTiny = context.dimenToPx(R.dimen.spaceTiny)
-      val paddingTop = if (settings?.showLabel == false) spaceTiny else context.dimenToPx(R.dimen.widgetPaddingTop)
-      val labelVisibility = if (settings?.showLabel == false) GONE else VISIBLE
+      val paddingTop = if (settings.widgetsShowLabel) context.dimenToPx(R.dimen.widgetPaddingTop) else spaceTiny
+      val labelVisibility = if (settings.widgetsShowLabel) VISIBLE else GONE
       setViewPadding(R.id.progressWidgetMoviesList, 0, paddingTop, 0, spaceTiny)
       setViewVisibility(R.id.progressWidgetMoviesLabel, labelVisibility)
     }
@@ -107,5 +107,9 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
       }
     }
     super.onReceive(context, intent)
+  }
+
+  private fun requireDependencies(context: Context) {
+    (context.applicationContext as UiWidgetsComponentProvider).provideWidgetsComponent().inject(this)
   }
 }

@@ -27,7 +27,6 @@ import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsActivityCallbacks
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
 import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_widgets.WidgetSettings
 import com.michaldrabik.ui_widgets.calendar.CalendarWidgetProvider
 import com.michaldrabik.ui_widgets.calendar_movies.CalendarMoviesWidgetProvider
 import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
@@ -139,31 +138,15 @@ class App :
 
   override fun requestShowsWidgetsUpdate() {
     appScope.launch {
-      val settings = if (settingsRepository.isInitialized()) settingsRepository.load() else null
-      val widgetSettings = settings?.let {
-        WidgetSettings(
-          showLabel = it.widgetsShowLabel,
-          theme = settingsRepository.getWidgetsTheme()
-        )
-      } ?: WidgetSettings.createInitial()
-
-      ProgressWidgetProvider.requestUpdate(applicationContext, widgetSettings)
-      CalendarWidgetProvider.requestUpdate(applicationContext, widgetSettings)
+      ProgressWidgetProvider.requestUpdate(applicationContext)
+      CalendarWidgetProvider.requestUpdate(applicationContext)
     }
   }
 
   override fun requestMoviesWidgetsUpdate() {
     appScope.launch {
-      val settings = if (settingsRepository.isInitialized()) settingsRepository.load() else null
-      val widgetSettings = settings?.let {
-        WidgetSettings(
-          showLabel = it.widgetsShowLabel,
-          theme = settingsRepository.getWidgetsTheme()
-        )
-      } ?: WidgetSettings.createInitial()
-
-      ProgressMoviesWidgetProvider.requestUpdate(applicationContext, widgetSettings)
-      CalendarMoviesWidgetProvider.requestUpdate(applicationContext, widgetSettings)
+      ProgressMoviesWidgetProvider.requestUpdate(applicationContext)
+      CalendarMoviesWidgetProvider.requestUpdate(applicationContext)
     }
   }
 

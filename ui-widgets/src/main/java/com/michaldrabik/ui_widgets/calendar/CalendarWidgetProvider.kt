@@ -15,20 +15,19 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_widgets.BaseWidgetProvider
 import com.michaldrabik.ui_widgets.R
-import com.michaldrabik.ui_widgets.WidgetSettings
+import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
 import timber.log.Timber
 
 class CalendarWidgetProvider : BaseWidgetProvider() {
 
   companion object {
-    fun requestUpdate(context: Context, settings: WidgetSettings) {
+    fun requestUpdate(context: Context) {
       val applicationContext = context.applicationContext
       val appWidgetManager = AppWidgetManager.getInstance(applicationContext)
       val intent = Intent(applicationContext, CalendarWidgetProvider::class.java).apply {
         val ids = appWidgetManager.getAppWidgetIds(ComponentName(applicationContext, CalendarWidgetProvider::class.java))
         action = ACTION_APPWIDGET_UPDATE
         putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
-        putExtra(EXTRA_SETTINGS, settings)
       }
       applicationContext.sendBroadcast(intent)
       Timber.d("Widget update requested.")
@@ -36,7 +35,7 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
   }
 
   override fun getLayoutResId(): Int {
-    val isLight = settings?.theme == MODE_NIGHT_NO
+    val isLight = settingsRepository.getWidgetsTheme() == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_calendar_day
       else -> R.layout.widget_calendar_night
@@ -48,8 +47,9 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
     appWidgetManager: AppWidgetManager,
     appWidgetIds: IntArray?
   ) {
-    appWidgetIds?.forEach { updateWidget(context, appWidgetManager, it) }
+    requireDependencies(context)
     super.onUpdate(context, appWidgetManager, appWidgetIds)
+    appWidgetIds?.forEach { updateWidget(context, appWidgetManager, it) }
   }
 
   private fun updateWidget(context: Context, appWidgetManager: AppWidgetManager, widgetId: Int) {
@@ -63,8 +63,8 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
       setEmptyView(R.id.calendarWidgetList, R.id.calendarWidgetEmptyView)
 
       val spaceTiny = context.dimenToPx(R.dimen.spaceTiny)
-      val paddingTop = if (settings?.showLabel == false) spaceTiny else context.dimenToPx(R.dimen.widgetPaddingTop)
-      val labelVisibility = if (settings?.showLabel == false) GONE else VISIBLE
+      val paddingTop = if (settings.widgetsShowLabel) context.dimenToPx(R.dimen.widgetPaddingTop) else spaceTiny
+      val labelVisibility = if (settings.widgetsShowLabel) VISIBLE else GONE
       setViewPadding(R.id.calendarWidgetList, 0, paddingTop, 0, spaceTiny)
       setViewVisibility(R.id.calendarWidgetLabel, labelVisibility)
     }
@@ -97,5 +97,9 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
       }
     }
     super.onReceive(context, intent)
+  }
+
+  private fun requireDependencies(context: Context) {
+    (context.applicationContext as UiWidgetsComponentProvider).provideWidgetsComponent().inject(this)
   }
 }

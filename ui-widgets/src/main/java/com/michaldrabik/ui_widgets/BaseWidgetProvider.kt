@@ -3,7 +3,10 @@ package com.michaldrabik.ui_widgets
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
-import android.content.Intent
+import com.michaldrabik.ui_model.Settings
+import com.michaldrabik.ui_repository.SettingsRepository
+import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
 abstract class BaseWidgetProvider : AppWidgetProvider() {
 
@@ -11,17 +14,25 @@ abstract class BaseWidgetProvider : AppWidgetProvider() {
     const val ACTION_LIST_CLICK = "ACTION_LIST_CLICK"
     const val EXTRA_SHOW_ID = "EXTRA_SHOW_ID"
     const val EXTRA_MOVIE_ID = "EXTRA_MOVIE_ID"
-    const val EXTRA_SETTINGS = "EXTRA_SETTINGS"
   }
 
-  protected var settings: WidgetSettings? = null
+  @Inject lateinit var settingsRepository: SettingsRepository
+  protected lateinit var settings: Settings
 
   abstract fun getLayoutResId(): Int
 
-  override fun onReceive(context: Context, intent: Intent) {
-    if (intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE) {
-      settings = intent.getParcelableExtra(EXTRA_SETTINGS) as? WidgetSettings
+  override fun onUpdate(
+    context: Context,
+    appWidgetManager: AppWidgetManager,
+    appWidgetIds: IntArray?
+  ) {
+    requireSettings()
+    super.onUpdate(context, appWidgetManager, appWidgetIds)
+  }
+
+  private fun requireSettings() {
+    if (!this::settings.isInitialized) {
+      settings = runBlocking { settingsRepository.load() }
     }
-    super.onReceive(context, intent)
   }
 }

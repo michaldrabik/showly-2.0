@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_repository
 
+import android.app.UiModeManager.MODE_NIGHT_YES
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.core.content.edit
 import androidx.room.withTransaction
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
@@ -60,11 +60,11 @@ class SettingsRepository @Inject constructor(
 
   fun setLanguage(language: String) = miscPreferences.edit().putString(KEY_LANGUAGE, language).apply()
 
-  fun setTheme(theme: Int) = miscPreferences.edit { putInt(KEY_THEME, theme) }
+  fun setTheme(theme: Int) = miscPreferences.edit(true) { putInt(KEY_THEME, theme) }
 
   fun getTheme() = miscPreferences.getInt(KEY_THEME, MODE_NIGHT_YES)
 
-  fun setWidgetsTheme(theme: Int) = miscPreferences.edit { putInt(KEY_THEME_WIDGET, theme) }
+  fun setWidgetsTheme(theme: Int) = miscPreferences.edit(true) { putInt(KEY_THEME_WIDGET, theme) }
 
   fun getWidgetsTheme() = miscPreferences.getInt(KEY_THEME_WIDGET, MODE_NIGHT_YES)
 

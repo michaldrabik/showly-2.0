@@ -19,10 +19,11 @@ import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_model.Tip
 import javax.inject.Inject
 
-abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId), TipsHost {
+abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLayoutId: Int) :
+  Fragment(contentLayoutId),
+  TipsHost {
 
-  @Inject
-  lateinit var viewModelFactory: DaggerViewModelFactory
+  @Inject lateinit var viewModelFactory: DaggerViewModelFactory
   protected abstract val viewModel: T
 
   protected var isInitialized = false
