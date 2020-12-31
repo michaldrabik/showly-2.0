@@ -204,7 +204,7 @@ class ProgressWidgetViewsFactory(
 
   override fun hasStableIds() = true
 
-  override fun getViewTypeCount() = 2
+  override fun getViewTypeCount() = 4
 
   override fun onDestroy() = coroutineContext.cancelChildren()
 }
