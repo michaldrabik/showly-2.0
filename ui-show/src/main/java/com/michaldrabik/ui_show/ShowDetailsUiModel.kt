@@ -16,7 +16,7 @@ data class ShowDetailsUiModel(
   val show: Show? = null,
   val showLoading: Boolean? = null,
   val image: Image? = null,
-  val nextEpisode: Episode? = null,
+  val nextEpisode: Pair<Show, Episode>? = null,
   val actors: List<Actor>? = null,
   val relatedShows: List<RelatedListItem>? = null,
   val seasons: List<SeasonListItem>? = null,

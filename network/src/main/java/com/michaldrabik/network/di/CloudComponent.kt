@@ -5,7 +5,6 @@ import com.michaldrabik.network.di.module.OkHttpModule
 import com.michaldrabik.network.di.module.RetrofitModule
 import com.michaldrabik.network.di.module.TmdbModule
 import com.michaldrabik.network.di.module.TraktModule
-import com.michaldrabik.network.di.module.TvdbModule
 import dagger.Component
 
 @CloudScope
@@ -14,7 +13,6 @@ import dagger.Component
     RetrofitModule::class,
     OkHttpModule::class,
     TraktModule::class,
-    TvdbModule::class,
     TmdbModule::class,
     AwsModule::class
   ]

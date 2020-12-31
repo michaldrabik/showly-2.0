@@ -10,7 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
-import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
+import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_URL
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.visible
@@ -34,7 +34,7 @@ class ActorView : FrameLayout {
 
   fun bind(item: Actor, clickListener: (Actor) -> Unit) {
     clear()
-    tag = item.tvdbId
+    tag = item.tmdbId
     setOnClickListener {
       if (item.image.isNotBlank()) clickListener(item)
     }
@@ -50,7 +50,7 @@ class ActorView : FrameLayout {
     }
 
     Glide.with(this)
-      .load("$TVDB_IMAGE_BASE_BANNERS_URL${actor.image}")
+      .load("$TMDB_IMAGE_BASE_ACTOR_URL${actor.image}")
       .diskCacheStrategy(DATA)
       .transform(CenterCrop(), RoundedCorners(cornerRadius))
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))

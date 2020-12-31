@@ -21,7 +21,6 @@ android {
 
     buildConfigField("String", "TRAKT_CLIENT_ID", properties.getProperty("traktClientId"))
     buildConfigField("String", "TRAKT_CLIENT_SECRET", properties.getProperty("traktClientSecret"))
-    buildConfigField("String", "TVDB_API_KEY", properties.getProperty("tvdbApiKey"))
     buildConfigField("String", "TMDB_API_KEY", properties.getProperty("tmdbApiKey"))
   }
 

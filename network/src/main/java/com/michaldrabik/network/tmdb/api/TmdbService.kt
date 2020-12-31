@@ -7,9 +7,22 @@ import retrofit2.http.Path
 
 interface TmdbService {
 
+  @GET("tv/{tmdbId}/images")
+  suspend fun fetchShowImages(@Path("tmdbId") tmdbId: Long): TmdbImages
+
+  @GET("tv/{tmdbId}/season/{season}/episode/{episode}/images")
+  suspend fun fetchEpisodeImages(
+    @Path("tmdbId") tmdbId: Long?,
+    @Path("season") seasonNumber: Int?,
+    @Path("episode") episodeNumber: Int?
+  ): TmdbImages
+
   @GET("movie/{tmdbId}/images")
-  suspend fun fetchImages(@Path("tmdbId") tmdbId: Long): TmdbImages
+  suspend fun fetchMovieImages(@Path("tmdbId") tmdbId: Long): TmdbImages
 
   @GET("movie/{tmdbId}/credits")
-  suspend fun fetchActors(@Path("tmdbId") tmdbId: Long): TmdbActors
+  suspend fun fetchMovieActors(@Path("tmdbId") tmdbId: Long): TmdbActors
+
+  @GET("tv/{tmdbId}/credits")
+  suspend fun fetchShowActors(@Path("tmdbId") tmdbId: Long): TmdbActors
 }

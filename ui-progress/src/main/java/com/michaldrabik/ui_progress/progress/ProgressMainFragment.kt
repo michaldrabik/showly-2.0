@@ -81,7 +81,7 @@ class ProgressMainFragment :
     adapter.run {
       itemClickListener = { (requireParentFragment() as ProgressFragment).openShowDetails(it) }
       itemLongClickListener = { item, view -> openPopupMenu(item, view) }
-      detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show.ids.trakt, it.episode) }
+      detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show, it.episode) }
       checkClickListener = { parentViewModel.setWatchedEpisode(requireAppContext(), it) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
       missingTranslationListener = { viewModel.findMissingTranslation(it) }

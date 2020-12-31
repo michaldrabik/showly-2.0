@@ -39,7 +39,9 @@ import com.michaldrabik.ui_comments.CommentView
 import com.michaldrabik.ui_episodes.R
 import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponentProvider
 import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Show
 import kotlinx.android.synthetic.main.view_episode_details.*
 import kotlinx.android.synthetic.main.view_episode_details.view.*
 import java.util.Locale.ENGLISH
@@ -48,18 +50,20 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   companion object {
     private const val ARG_ID_TRAKT = "ARG_ID_TRAKT"
+    private const val ARG_ID_TMDB = "ARG_ID_TMDB"
     private const val ARG_EPISODE = "ARG_EPISODE"
     private const val ARG_IS_WATCHED = "ARG_IS_WATCHED"
     private const val ARG_SHOW_BUTTON = "ARG_SHOW_BUTTON"
 
     fun create(
-      showId: IdTrakt,
+      show: Show,
       episode: Episode,
       isWatched: Boolean,
       showButton: Boolean = true
     ): EpisodeDetailsBottomSheet {
       val bundle = Bundle().apply {
-        putLong(ARG_ID_TRAKT, showId.id)
+        putLong(ARG_ID_TRAKT, show.ids.trakt.id)
+        putLong(ARG_ID_TMDB, show.ids.tmdb.id)
         putParcelable(ARG_EPISODE, episode)
         putBoolean(ARG_IS_WATCHED, isWatched)
         putBoolean(ARG_SHOW_BUTTON, showButton)
@@ -71,6 +75,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   var onEpisodeWatchedClick: ((Boolean) -> Unit)? = null
 
   private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_ID_TRAKT)) }
+  private val showTmdbId by lazy { IdTmdb(requireArguments().getLong(ARG_ID_TMDB)) }
   private val episode by lazy { requireArguments().getParcelable<Episode>(ARG_EPISODE)!! }
   private val isWatched by lazy { requireArguments().getBoolean(ARG_IS_WATCHED) }
   private val showButton by lazy { requireArguments().getBoolean(ARG_SHOW_BUTTON) }
@@ -100,7 +105,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       uiLiveData.observe(viewLifecycleOwner, { render(it) })
       messageLiveData.observe(viewLifecycleOwner, { renderSnackbar(it) })
       loadTranslation(showTraktId, episode)
-      loadImage(episode.ids.tvdb)
+      loadImage(showTmdbId, episode)
       loadRatings(episode)
     }
     setupView(view)
@@ -167,7 +172,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       imageLoading?.let { episodeDetailsProgress.visibleIf(it) }
       image?.let {
         Glide.with(this@EpisodeDetailsBottomSheet)
-          .load(it.fullFileUrl)
+          .load(it.fullFileUrlEpisode)
           .transform(CenterCrop(), GranularRoundedCorners(cornerRadius, cornerRadius, 0F, 0F))
           .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
           .withFailListener { episodeDetailsImagePlaceholder.visible() }

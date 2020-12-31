@@ -10,15 +10,15 @@ import com.michaldrabik.storage.database.model.ShowImage
 @Dao
 interface ShowImagesDao {
 
-  @Query("SELECT * FROM shows_images WHERE id_tvdb = :tvdbId AND type = :type AND family = 'show'")
-  suspend fun getByShowId(tvdbId: Long, type: String): ShowImage?
+  @Query("SELECT * FROM shows_images WHERE id_tmdb = :tmdbId AND type = :type AND family = 'show'")
+  suspend fun getByShowId(tmdbId: Long, type: String): ShowImage?
 
-  @Query("SELECT * FROM shows_images WHERE id_tvdb = :tvdbId AND type = :type AND family = 'episode'")
-  suspend fun getByEpisodeId(tvdbId: Long, type: String): ShowImage?
+  @Query("SELECT * FROM shows_images WHERE id_tmdb = :tmdbId AND type = :type AND family = 'episode'")
+  suspend fun getByEpisodeId(tmdbId: Long, type: String): ShowImage?
 
   @Transaction
   suspend fun insertShowImage(image: ShowImage) {
-    val localImage = getByShowId(image.idTvdb, image.type)
+    val localImage = getByShowId(image.idTmdb, image.type)
     if (localImage != null) {
       val updated = image.copy(id = localImage.id)
       upsert(updated)
@@ -29,7 +29,7 @@ interface ShowImagesDao {
 
   @Transaction
   suspend fun insertEpisodeImage(image: ShowImage) {
-    val localImage = getByEpisodeId(image.idTvdb, image.type)
+    val localImage = getByEpisodeId(image.idTmdb, image.type)
     if (localImage != null) {
       val updated = image.copy(id = localImage.id)
       upsert(updated)
@@ -41,10 +41,10 @@ interface ShowImagesDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun upsert(image: ShowImage)
 
-  @Query("DELETE FROM shows_images WHERE id_tvdb = :id AND type = :type AND family = 'show'")
+  @Query("DELETE FROM shows_images WHERE id_tmdb = :id AND type = :type AND family = 'show'")
   suspend fun deleteByShowId(id: Long, type: String)
 
-  @Query("DELETE FROM shows_images WHERE id_tvdb = :id AND type = :type AND family = 'episode'")
+  @Query("DELETE FROM shows_images WHERE id_tmdb = :id AND type = :type AND family = 'episode'")
   suspend fun deleteByEpisodeId(id: Long, type: String)
 
   @Query("DELETE FROM shows_images WHERE type = 'poster'")

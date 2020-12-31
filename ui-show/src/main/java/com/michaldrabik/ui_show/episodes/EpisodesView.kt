@@ -11,6 +11,7 @@ import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
+import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_show.R
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import kotlinx.android.synthetic.main.view_episodes.view.*
@@ -22,11 +23,12 @@ class EpisodesView : ConstraintLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  var itemClickListener: (Episode, Season, Boolean) -> Unit = { _, _, _ -> }
+  var itemClickListener: (Show, Episode, Season, Boolean) -> Unit = { _, _, _, _ -> }
   var itemCheckedListener: (Episode, Season, Boolean) -> Unit = { _, _, _ -> }
   var seasonCheckedListener: (Season, Boolean) -> Unit = { _, _ -> }
 
   private val episodesAdapter by lazy { EpisodesAdapter() }
+  private lateinit var show: Show
   private lateinit var season: Season
 
   init {
@@ -37,6 +39,7 @@ class EpisodesView : ConstraintLayout {
 
   fun bind(seasonItem: SeasonListItem) {
     clear()
+    this.show = seasonItem.show.copy()
     this.season = seasonItem.season.copy()
     episodesTitle.text =
       if (seasonItem.season.isSpecial()) context.getString(R.string.textSpecials)
@@ -76,7 +79,7 @@ class EpisodesView : ConstraintLayout {
       layoutManager = LinearLayoutManager(context, VERTICAL, false)
       itemAnimator = null
     }
-    episodesAdapter.itemClickListener = { episode, isWatched -> itemClickListener(episode, season, isWatched) }
+    episodesAdapter.itemClickListener = { episode, isWatched -> itemClickListener(show, episode, season, isWatched) }
     episodesAdapter.itemCheckedListener = { episode, isChecked -> itemCheckedListener(episode, season, isChecked) }
   }
 

@@ -12,8 +12,8 @@ class SeasonListItemDiffCallback(
   }
 
   override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-    val (_, episodes, isWatched) = oldList[oldItemPosition]
-    val (_, episodes2, isWatched2) = newList[newItemPosition]
+    val (_, _, episodes, isWatched) = oldList[oldItemPosition]
+    val (_, _, episodes2, isWatched2) = newList[newItemPosition]
 
     if (episodes.size != episodes2.size) return isWatched == isWatched2
 

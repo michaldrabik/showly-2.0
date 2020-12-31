@@ -20,7 +20,6 @@ object Config {
   const val TRAKT_SYNC_PAGE_LIMIT = 150
 
   const val TVDB_BASE_URL = "https://api.thetvdb.com/"
-  const val TVDB_API_KEY = BuildConfig.TVDB_API_KEY
 
   const val TMDB_BASE_URL = "https://api.themoviedb.org/3/"
   const val TMDB_API_KEY = BuildConfig.TMDB_API_KEY

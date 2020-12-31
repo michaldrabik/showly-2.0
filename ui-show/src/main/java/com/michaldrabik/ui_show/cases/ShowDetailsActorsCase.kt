@@ -7,7 +7,6 @@ import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_repository.UserTvdbManager
 import com.michaldrabik.ui_repository.mappers.Mappers
 import java.util.Locale.ENGLISH
 import javax.inject.Inject
@@ -16,29 +15,25 @@ import javax.inject.Inject
 class ShowDetailsActorsCase @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
-  private val userTvdbManager: UserTvdbManager,
   private val mappers: Mappers
 ) {
 
   suspend fun loadActors(show: Show): List<Actor> {
-    val tvdbId = show.ids.tvdb.id
-    if (tvdbId == -1L) return emptyList()
+    val tmdbId = show.ids.tmdb.id
+    if (tmdbId == -1L) return emptyList()
 
-    val localActors = database.actorsDao().getAllByShow(tvdbId)
+    val localActors = database.actorsDao().getAllByShow(tmdbId)
     if (localActors.isNotEmpty() && nowUtcMillis() - localActors[0].updatedAt < ACTORS_CACHE_DURATION) {
       return localActors
         .sortedWith(compareBy({ it.image.isBlank() }, { it.sortOrder }))
         .map { mappers.actor.fromDatabase(it) }
     }
 
-    userTvdbManager.checkAuthorization()
-    val token = userTvdbManager.getToken()
-
     val remoteTraktActors = cloud.traktApi.fetchShowActors(show.ids.trakt.id)
-    val remoteTvdbActors = cloud.tvdbApi.fetchActors(token, tvdbId)
+    val remoteTmdbActors = cloud.tmdbApi.fetchShowActors(tmdbId)
       .asSequence()
-      .distinctBy { (it.name + it.role).toLowerCase(ENGLISH) }
-      .sortedWith(compareBy({ it.image.isNullOrBlank() }, { it.sortOrder }))
+      .distinctBy { (it.name + it.character).toLowerCase(ENGLISH) }
+      .sortedWith(compareBy({ it.profile_path.isNullOrBlank() }, { it.order }))
       .take(30)
       .map { mappers.actor.fromNetwork(it) }
       .map {
@@ -47,7 +42,7 @@ class ShowDetailsActorsCase @Inject constructor(
       }
       .toList()
 
-    database.actorsDao().replaceForShow(remoteTvdbActors.map { mappers.actor.toDatabase(it) }, tvdbId)
-    return remoteTvdbActors
+    database.actorsDao().replaceForShow(remoteTmdbActors.map { mappers.actor.toDatabase(it) }, tmdbId)
+    return remoteTmdbActors
   }
 }

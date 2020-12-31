@@ -33,7 +33,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_model.Episode
-import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
 import com.michaldrabik.ui_model.SortOrder.NAME
@@ -166,9 +166,9 @@ class ProgressFragment :
     saveUiTranslations()
   }
 
-  fun openEpisodeDetails(showId: IdTrakt, episode: Episode) {
+  fun openEpisodeDetails(show: Show, episode: Episode) {
     val modal = EpisodeDetailsBottomSheet.create(
-      showId,
+      show,
       episode,
       isWatched = false,
       showButton = false

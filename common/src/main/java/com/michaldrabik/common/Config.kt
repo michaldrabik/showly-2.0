@@ -13,6 +13,7 @@ object Config {
   private const val TMDB_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/"
   const val TMDB_IMAGE_BASE_POSTER_URL = "${TMDB_IMAGE_BASE_URL}w342"
   const val TMDB_IMAGE_BASE_FANART_URL = "${TMDB_IMAGE_BASE_URL}w1280"
+  const val TMDB_IMAGE_BASE_STILL_URL = "${TMDB_IMAGE_BASE_URL}original"
   const val TMDB_IMAGE_BASE_ACTOR_URL = "${TMDB_IMAGE_BASE_URL}h632"
   const val TMDB_IMAGE_BASE_ACTOR_FULL_URL = "${TMDB_IMAGE_BASE_URL}original"
 

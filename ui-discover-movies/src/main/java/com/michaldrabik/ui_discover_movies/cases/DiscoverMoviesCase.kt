@@ -15,7 +15,6 @@ import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_repository.TranslationsRepository
-import com.michaldrabik.ui_repository.UserTvdbManager
 import com.michaldrabik.ui_repository.movies.MoviesRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -25,7 +24,6 @@ import javax.inject.Inject
 @AppScope
 class DiscoverMoviesCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
-  private val tvdbUserManager: UserTvdbManager,
   private val imagesProvider: MovieImagesProvider,
   private val translationsRepository: TranslationsRepository
 ) {
@@ -51,12 +49,6 @@ class DiscoverMoviesCase @Inject constructor(
     val showAnticipated = !filters.hideAnticipated
     val showCollection = !filters.hideCollection
     val genres = filters.genres.toList()
-
-    try {
-      tvdbUserManager.checkAuthorization()
-    } catch (t: Throwable) {
-      // Ignore at this moment
-    }
 
     val myIds = moviesRepository.myMovies.loadAllIds()
     val watchlistIds = moviesRepository.watchlistMovies.loadAllIds()
