@@ -99,6 +99,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
     else screenWidth()
   }
+  private val imageRatio by lazy { resources.getString(R.string.detailsImageRatio).toFloat() }
+  private val imagePadded by lazy { resources.getBoolean(R.bool.detailsImagePadded) }
+
   private val actorViewCorner by lazy { requireContext().dimenToPx(R.dimen.actorMovieFullTileCorner) }
   private val animationEnterRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_right) }
   private val animationExitRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right) }
@@ -135,7 +138,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun setupView() {
     hideNavigation()
-    movieDetailsImageGuideline.setGuidelineBegin((imageHeight * 0.35).toInt())
+    movieDetailsImageGuideline.setGuidelineBegin((imageHeight * imageRatio).toInt())
     listOf(movieDetailsBackArrow, movieDetailsBackArrow2).onClick { requireActivity().onBackPressed() }
     movieDetailsImage.onClick {
       val bundle = bundleOf(
@@ -166,7 +169,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun setupStatusBar() {
     movieDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
-      movieDetailsMainLayout.updatePadding(top = insets.systemWindowInsetTop)
+      if (imagePadded) movieDetailsMainLayout.updatePadding(top = insets.systemWindowInsetTop)
       arrayOf<View>(view, movieDetailsBackArrow2, movieDetailsCommentsView)
         .forEach { v ->
           (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = insets.systemWindowInsetTop)

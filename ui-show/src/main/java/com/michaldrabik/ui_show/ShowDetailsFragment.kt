@@ -115,6 +115,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
     else screenWidth()
   }
+  private val imageRatio by lazy { resources.getString(R.string.detailsImageRatio).toFloat() }
+  private val imagePadded by lazy { resources.getBoolean(R.bool.detailsImagePadded) }
+
   private val actorViewCorner by lazy { requireContext().dimenToPx(R.dimen.actorFullTileCorner) }
   private val animationEnterRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_right) }
   private val animationExitRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right) }
@@ -152,7 +155,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun setupView() {
     hideNavigation()
-    showDetailsImageGuideline.setGuidelineBegin((imageHeight * 0.35).toInt())
+    showDetailsImageGuideline.setGuidelineBegin((imageHeight * imageRatio).toInt())
     showDetailsEpisodesView.itemClickListener = { episode, season, isWatched ->
       showEpisodeDetails(episode, season, isWatched, episode.hasAired(season))
     }
@@ -196,7 +199,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun setupStatusBar() {
     showDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
-      showDetailsMainLayout.updatePadding(top = insets.systemWindowInsetTop)
+      if (imagePadded) showDetailsMainLayout.updatePadding(top = insets.systemWindowInsetTop)
       arrayOf<View>(view, showDetailsBackArrow2, showDetailsEpisodesView, showDetailsCommentsView)
         .forEach { v ->
           (v.layoutParams as MarginLayoutParams).updateMargins(top = insets.systemWindowInsetTop)
