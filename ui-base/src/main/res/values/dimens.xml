@@ -10,6 +10,7 @@
   <dimen name="elevationTiny">0dp</dimen>
   <dimen name="elevationSmall">0dp</dimen>
   <dimen name="elevationNormal">0dp</dimen>
+  <dimen name="elevationSuggestions">1dp</dimen>
 
   <dimen name="bottomNavigationHeight">56dp</dimen>
   <dimen name="bottomNavigationHeightPadded">64dp</dimen>

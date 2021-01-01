@@ -49,7 +49,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_suggestions"
     android:clipChildren="true"
-    android:elevation="@dimen/elevationSmall"
+    android:elevation="@dimen/elevationSuggestions"
     android:overScrollMode="never"
     android:paddingBottom="1px"
     android:translationY="-4dp"

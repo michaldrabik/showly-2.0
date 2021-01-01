@@ -2,4 +2,5 @@
   <dimen name="elevationTiny">2dp</dimen>
   <dimen name="elevationSmall">3dp</dimen>
   <dimen name="elevationNormal">6dp</dimen>
+  <dimen name="elevationSuggestions">3dp</dimen>
 </resources>
