@@ -15,16 +15,16 @@ class ShowDetailsRatingCase @Inject constructor(
 
   suspend fun addRating(show: Show, rating: Int) {
     val token = userTraktManager.checkAuthorization().token
-    ratingsRepository.addRating(token, show, rating)
+    ratingsRepository.shows.addRating(token, show, rating)
   }
 
   suspend fun deleteRating(show: Show) {
     val token = userTraktManager.checkAuthorization().token
-    ratingsRepository.deleteRating(token, show)
+    ratingsRepository.shows.deleteRating(token, show)
   }
 
   suspend fun loadRating(show: Show): TraktRating? {
     val token = userTraktManager.checkAuthorization().token
-    return ratingsRepository.loadRating(token, show)
+    return ratingsRepository.shows.loadRating(token, show)
   }
 }

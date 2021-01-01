@@ -29,7 +29,7 @@ class StatisticsLoadRatingsCase @Inject constructor(
     }
 
     val token = userTraktManager.checkAuthorization()
-    val ratings = ratingsRepository.loadShowsRatings(token.token)
+    val ratings = ratingsRepository.shows.loadShowsRatings(token.token)
     val includeArchived = settingsRepository.load().archiveShowsIncludeStatistics
 
     val ratingsIds = ratings.map { it.idTrakt }

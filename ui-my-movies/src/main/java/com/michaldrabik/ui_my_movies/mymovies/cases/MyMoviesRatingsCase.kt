@@ -16,10 +16,10 @@ class MyMoviesRatingsCase @Inject constructor(
     if (!userTraktManager.isAuthorized()) return items
 
     val token = userTraktManager.checkAuthorization().token
-    ratingsRepository.preloadMoviesRatings(token)
+    ratingsRepository.movies.preloadMoviesRatings(token)
 
     return items.map {
-      val rating = ratingsRepository.loadRating(token, it.movie)
+      val rating = ratingsRepository.movies.loadRating(token, it.movie)
       it.copy(userRating = rating?.rating)
     }
   }
