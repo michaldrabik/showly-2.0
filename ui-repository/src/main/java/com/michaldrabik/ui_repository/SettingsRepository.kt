@@ -2,6 +2,7 @@ package com.michaldrabik.ui_repository
 
 import android.content.SharedPreferences
 import androidx.room.withTransaction
+import com.michaldrabik.common.Config.DEFAULT_COUNTRY
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
@@ -20,6 +21,7 @@ class SettingsRepository @Inject constructor(
 
   companion object {
     const val KEY_LANGUAGE = "KEY_LANGUAGE"
+    private const val KEY_COUNTRY = "KEY_COUNTRY"
     private const val KEY_MOVIES_ENABLED = "KEY_MOVIES_ENABLED"
     private const val KEY_MODE = "KEY_MOVIES_MODE"
   }
@@ -55,6 +57,10 @@ class SettingsRepository @Inject constructor(
   fun getLanguage() = miscPreferences.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
 
   fun setLanguage(language: String) = miscPreferences.edit().putString(KEY_LANGUAGE, language).apply()
+
+  fun getCountry() = miscPreferences.getString(KEY_COUNTRY, DEFAULT_COUNTRY) ?: DEFAULT_COUNTRY
+
+  fun setCountry(countryCode: String) = miscPreferences.edit().putString(KEY_COUNTRY, countryCode).apply()
 
   suspend fun clearLanguageLogs() {
     database.withTransaction {

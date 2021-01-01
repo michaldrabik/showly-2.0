@@ -77,7 +77,8 @@ class MovieDetailsViewModel @Inject constructor(
           movie = movie,
           movieLoading = false,
           followedState = followedState,
-          ratingState = RatingState(rateAllowed = isSignedIn, rateLoading = false)
+          ratingState = RatingState(rateAllowed = isSignedIn, rateLoading = false),
+          country = settingsRepository.getCountry()
         )
 
         launch { loadBackgroundImage(movie) }

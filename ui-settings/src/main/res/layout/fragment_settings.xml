@@ -310,7 +310,7 @@
     <LinearLayout
       android:id="@+id/settingsIncludeSpecials"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsCategoryNotifications"
+      app:layout_constraintBottom_toTopOf="@id/settingsCountry"
       app:layout_constraintEnd_toStartOf="@id/settingsIncludeSpecialsSwitch"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsIncludeArchivedStats"
@@ -350,13 +350,47 @@
       app:layout_constraintTop_toTopOf="@id/settingsIncludeArchivedStats"
       />
 
+    <LinearLayout
+      android:id="@+id/settingsCountry"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryNotifications"
+      app:layout_constraintEnd_toStartOf="@id/settingsCountryValue"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsIncludeSpecials"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsMyShowsCountryTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:text="@string/textSettingsMyShowsCountrySummary"
+        />
+
+    </LinearLayout>
+
+    <TextView
+      android:id="@+id/settingsCountryValue"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:gravity="end"
+      android:textColor="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="@id/settingsCountry"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsCountry"
+      tools:text="United States"
+      />
+
     <TextView
       android:id="@+id/settingsCategoryNotifications"
       style="@style/Settings.Category"
       android:text="@string/textSettingsNotifications"
       app:layout_constraintBottom_toTopOf="@id/settingsPushNotifications"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsIncludeSpecials"
+      app:layout_constraintTop_toBottomOf="@id/settingsCountry"
       />
 
     <LinearLayout

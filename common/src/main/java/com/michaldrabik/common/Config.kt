@@ -28,6 +28,7 @@ object Config {
   const val PULL_TO_REFRESH_COOLDOWN_MS = 10_000
   const val INITIAL_RATING = 0
   const val DEFAULT_LANGUAGE = "en"
+  const val DEFAULT_COUNTRY = "us"
   const val HOST_ACTIVITY_NAME = "com.michaldrabik.showly2.ui.main.MainActivity"
 
   val MY_SHOWS_RECENTS_OPTIONS = arrayOf(2, 4, 6, 8)

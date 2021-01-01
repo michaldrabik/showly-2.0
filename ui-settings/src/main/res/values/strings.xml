@@ -22,6 +22,8 @@
   <string name="textSettingsRecentShowsSummary">Number of recent items to display in \'Collection\'.</string>
   <string name="textSettingsMyShowsSectionsTitle">My Shows Sections</string>
   <string name="textSettingsMyShowsSectionSummary">Enable/disable sections in \'My Shows\' tab.</string>
+  <string name="textSettingsMyShowsCountryTitle">JustWatch Region</string>
+  <string name="textSettingsMyShowsCountrySummary">Select region to use with JustWatch links.</string>
   <string name="textSettingsMyShowsLanguageTitle">Language</string>
   <string name="textSettingsMyShowsLanguageSummary">Descriptions and titles will be translated when available. App will restart.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Archived Statistics</string>
