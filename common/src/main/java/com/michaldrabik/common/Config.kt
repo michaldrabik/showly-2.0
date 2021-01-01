@@ -55,7 +55,6 @@ object Config {
 
   const val SHOW_WHATS_NEW = true
   const val WHATS_NEW_TEXT =
-    "* Added 2 new widgets for shows and movies calendars\n\n" +
-      "* Added option to hide widgets titles\n\n" +
+    "* Added JustWatch search links for shows and movies\n\n" +
       "* Bugfixes"
 }
