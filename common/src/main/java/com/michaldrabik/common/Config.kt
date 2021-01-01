@@ -55,6 +55,6 @@ object Config {
 
   const val SHOW_WHATS_NEW = true
   const val WHATS_NEW_TEXT =
-    "* Added JustWatch search links for shows and movies\n\n" +
+    "* Added JustWatch search links for shows and movies. Region can be changes via Settings.\n\n" +
       "* Bugfixes"
 }
