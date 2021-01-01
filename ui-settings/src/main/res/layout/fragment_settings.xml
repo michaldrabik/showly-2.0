@@ -67,6 +67,18 @@
 
     </LinearLayout>
 
+    <ProgressBar
+      android:id="@+id/settingsTraktAuthorizeProgress"
+      style="@style/ProgressBarAccent"
+      android:layout_width="24dp"
+      android:layout_height="24dp"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@id/settingsTraktAuthorize"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsTraktAuthorize"
+      />
+
     <ImageView
       android:id="@+id/settingsTraktAuthorizeIcon"
       android:layout_width="wrap_content"

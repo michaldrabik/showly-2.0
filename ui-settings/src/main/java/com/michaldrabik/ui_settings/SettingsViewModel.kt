@@ -149,13 +149,16 @@ class SettingsViewModel @Inject constructor(
     if (authData == null) return
     viewModelScope.launch {
       try {
+        uiState = SettingsUiModel(isSigningIn = true)
         traktCase.authorizeTrakt(authData)
         _messageLiveData.value = MessageEvent.info(R.string.textTraktLoginSuccess)
         refreshSettings()
         Analytics.logTraktLogin()
       } catch (t: Throwable) {
         _messageLiveData.value = MessageEvent.error(R.string.errorAuthorization)
-        Logger.record(t, "Source" to "${SettingsViewModel::class.simpleName}::authorizeTrakt()")
+        Logger.record(t, "Source" to "SettingsViewModel::authorizeTrakt()")
+      } finally {
+        uiState = SettingsUiModel(isSigningIn = false)
       }
     }
   }

@@ -75,6 +75,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       settings?.let { renderSettings(it, moviesEnabled ?: true) }
       language?.let { renderLanguage(it) }
       country?.let { renderCountry(it) }
+      isSigningIn?.let { settingsTraktAuthorizeProgress.visibleIf(it) }
       isSignedInTrakt?.let { isSignedIn ->
         settingsTraktSync.visibleIf(isSignedIn)
         settingsTraktQuickSync.visibleIf(isSignedIn)
