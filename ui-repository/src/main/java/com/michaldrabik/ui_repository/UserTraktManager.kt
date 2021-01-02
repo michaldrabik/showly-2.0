@@ -39,12 +39,8 @@ class UserTraktManager @Inject constructor(
 
   suspend fun authorize(authCode: String) {
     val tokens = cloud.traktApi.fetchAuthTokens(authCode)
-    try {
-      val user = cloud.traktApi.fetchMyProfile(tokens.access_token)
-      saveToken(tokens.access_token, tokens.refresh_token, user)
-    } catch (t: Throwable) {
-      saveToken(tokens.access_token, tokens.refresh_token, UserModel("", ""))
-    }
+    val user = cloud.traktApi.fetchMyProfile(tokens.access_token)
+    saveToken(tokens.access_token, tokens.refresh_token, user)
   }
 
   suspend fun isAuthorized(): Boolean {

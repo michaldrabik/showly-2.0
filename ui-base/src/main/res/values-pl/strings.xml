@@ -20,10 +20,8 @@
   <string name="textSpoilersWarning">Opinia zawiera spoilery.\nKliknij aby przeczytać.</string>
   <string name="textCommentedOn">%s skomentował %s:</string>
   <string name="textNetwork">%1$s (%2$s)</string>
-
   <string name="textShows">Seriale</string>
   <string name="textMovies">Filmy</string>
-
   <string name="textMinutesShort">min</string>
   <string name="textRemoveFromTrakt">Usunąć z Trakt.tv?</string>
   <string name="textNoDescription">Opis niedostępny.</string>
@@ -89,4 +87,5 @@
   <string name="errorCouldNotLoadSearchResults">W tej chwili nie można załadować wyników wyszukiwania.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="errorNoInternetConnection">Brak Internetu. Sprawdź swoje połączenie.</string>
   <string name="errorTraktSyncGeneral">Błąd synchronizacji Trakt.tv\nSprawdź połączenie z internetem i spróbuj ponownie.</string>
+  <string name="errorTraktLocked">Twoje konto Trakt.tv jest obecnie zablokowane.\nSkontaktuj się z obsługą Trakt.tv aby je odblokować: https://support.trakt.tv/</string>
 </resources>

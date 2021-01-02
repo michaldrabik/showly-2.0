@@ -22,6 +22,8 @@
   <string name="textSettingsRecentShowsSummary">Anzahl an Einträgen, die unter \'Sammlung\' zu sehen sind.</string>
   <string name="textSettingsMyShowsSectionsTitle">Meine Serien Abschnitt</string>
   <string name="textSettingsMyShowsSectionSummary">Aktiviere/Deaktiviere die Abschnitte im \'Meine Serien\' Tab.</string>
+  <string name="textSettingsMyShowsCountryTitle">JustWatch Region</string>
+  <string name="textSettingsMyShowsCountrySummary">Wählen Sie die Region aus, die mit JustWatch-Links verwendet werden soll.</string>
   <string name="textSettingsMyShowsLanguageTitle">Sprache</string>
   <string name="textSettingsMyShowsLanguageSummary">Beschreibungen &amp; Titel werden übersetzt, sofern eine Übersetzung vorhanden ist.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Archivierte Statistik</string>

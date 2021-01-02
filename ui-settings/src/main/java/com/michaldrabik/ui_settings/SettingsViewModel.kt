@@ -14,12 +14,14 @@ import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_settings.cases.SettingsMainCase
 import com.michaldrabik.ui_settings.cases.SettingsThemesCase
 import com.michaldrabik.ui_settings.cases.SettingsTraktCase
+import com.michaldrabik.ui_settings.helpers.AppCountry
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import com.michaldrabik.ui_settings.helpers.AppTheme
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
@@ -148,6 +150,14 @@ class SettingsViewModel @Inject constructor(
     Analytics.logSettingsWidgetsTheme(theme.code)
   }
 
+  fun setCountry(country: AppCountry) {
+    viewModelScope.launch {
+      mainCase.setCountry(country)
+      refreshSettings()
+    }
+    Analytics.logSettingsCountry(country.code)
+  }
+
   fun setTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {
     viewModelScope.launch {
       traktCase.setTraktSyncSchedule(schedule, context)
@@ -159,13 +169,20 @@ class SettingsViewModel @Inject constructor(
     if (authData == null) return
     viewModelScope.launch {
       try {
+        uiState = SettingsUiModel(isSigningIn = true)
         traktCase.authorizeTrakt(authData)
         _messageLiveData.value = MessageEvent.info(R.string.textTraktLoginSuccess)
         refreshSettings()
         Analytics.logTraktLogin()
-      } catch (t: Throwable) {
-        _messageLiveData.value = MessageEvent.error(R.string.errorAuthorization)
-        Logger.record(t, "Source" to "${SettingsViewModel::class.simpleName}::authorizeTrakt()")
+      } catch (error: Throwable) {
+        val message = when {
+          error is HttpException && error.code() == 423 -> R.string.errorTraktLocked
+          else -> R.string.errorAuthorization
+        }
+        _messageLiveData.value = MessageEvent.error(message)
+        Logger.record(error, "Source" to "SettingsViewModel::authorizeTrakt()")
+      } finally {
+        uiState = SettingsUiModel(isSigningIn = false)
       }
     }
   }
@@ -195,6 +212,7 @@ class SettingsViewModel @Inject constructor(
       language = mainCase.getLanguage(),
       theme = themesCase.getTheme(),
       themeWidgets = themesCase.getWidgetsTheme(),
+      country = mainCase.getCountry(),
       moviesEnabled = mainCase.isMoviesEnabled(),
       isSignedInTrakt = traktCase.isTraktAuthorized(),
       traktUsername = traktCase.getTraktUsername(),
