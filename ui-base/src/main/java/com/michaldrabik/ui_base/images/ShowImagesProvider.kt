@@ -10,7 +10,6 @@ import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_model.ImageFamily.MOVIE
 import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageSource.AWS
 import com.michaldrabik.ui_model.ImageSource.TMDB
@@ -102,20 +101,10 @@ class ShowImagesProvider @Inject constructor(
       }
     }
 
-    val remoteImage = typeImages.firstOrNull { it.isEnglish() } ?: typeImages.firstOrNull()
+    val remoteImage = findBestImage(typeImages, type)
     val image = when (remoteImage) {
       null -> Image.createUnavailable(type)
-      else -> Image(
-        -1,
-        tvdbId,
-        tmdbId,
-        type,
-        SHOW,
-        remoteImage.file_path,
-        "",
-        AVAILABLE,
-        source
-      )
+      else -> Image.createAvailable(show.ids, type, SHOW, remoteImage.file_path, source)
     }
 
     when (image.status) {
@@ -143,13 +132,10 @@ class ShowImagesProvider @Inject constructor(
       POSTER -> images.posters ?: emptyList()
       FANART, FANART_WIDE -> images.backdrops ?: emptyList()
     }
-    typeImages
-      .sortedWith(compareBy({ it.vote_count }, { it.vote_average }))
-      .lastOrNull { it.isEnglish() }
-      ?: typeImages.lastOrNull()?.let {
-        val extraImage = Image(-1, tvdbId, tmdbId, extraType, SHOW, it.file_path, "", AVAILABLE, TMDB)
-        database.showImagesDao().insertShowImage(mappers.image.toDatabaseShow(extraImage))
-      }
+    findBestImage(typeImages, extraType)?.let {
+      val extraImage = Image(-1, tvdbId, tmdbId, extraType, SHOW, it.file_path, "", AVAILABLE, TMDB)
+      database.showImagesDao().insertShowImage(mappers.image.toDatabaseShow(extraImage))
+    }
   }
 
   suspend fun loadRemoteImages(show: Show, type: ImageType): List<Image> {
@@ -162,7 +148,7 @@ class ShowImagesProvider @Inject constructor(
 
     return typeImages
       .map {
-        Image(-1, show.ids.tvdb, tmdbId, type, MOVIE, it.file_path, "", AVAILABLE, TMDB)
+        Image.createAvailable(show.ids, type, SHOW, it.file_path, TMDB)
       }
   }
 
@@ -172,6 +158,14 @@ class ShowImagesProvider @Inject constructor(
       awsImagesCache = awsImages.copy()
     }
   }
+
+  private fun findBestImage(images: List<TmdbImage>, type: ImageType) =
+    images
+      .filter { if (type == POSTER) it.isEnglish() else it.isPlain() }
+      .sortedWith(compareBy({ it.vote_count }, { it.vote_average }))
+      .lastOrNull()
+      ?: images.firstOrNull { if (type == POSTER) it.isEnglish() else it.isPlain() }
+      ?: images.firstOrNull()
 
   suspend fun deleteLocalCache() = database.showImagesDao().deleteAll()
 }
