@@ -98,7 +98,8 @@ class ShowDetailsViewModel @Inject constructor(
           show = show,
           showLoading = false,
           followedState = followedState,
-          ratingState = RatingState(rateAllowed = isSignedIn, rateLoading = false)
+          ratingState = RatingState(rateAllowed = isSignedIn, rateLoading = false),
+          country = settingsRepository.getCountry()
         )
 
         launch { loadNextEpisode(show) }

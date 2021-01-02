@@ -20,6 +20,7 @@ import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_settings.helpers.AppCountry
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import javax.inject.Inject
 
@@ -145,6 +146,10 @@ class SettingsMainCase @Inject constructor(
       clearLanguageLogs()
     }
   }
+
+  fun getCountry() = AppCountry.fromCode(settingsRepository.getCountry())
+
+  fun setCountry(country: AppCountry) = settingsRepository.setCountry(country.code)
 
   suspend fun deleteImagesCache() {
     showsImagesProvider.deleteLocalCache()

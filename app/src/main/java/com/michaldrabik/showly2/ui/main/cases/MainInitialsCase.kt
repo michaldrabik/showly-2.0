@@ -60,9 +60,9 @@ class MainInitialsCase @Inject constructor(
       if (!userTraktManager.isAuthorized()) return
       val token = userTraktManager.checkAuthorization().token
 
-      ratingsRepository.preloadShowsRatings(token)
+      ratingsRepository.shows.preloadShowsRatings(token)
       if (settingsRepository.isMoviesEnabled()) {
-        ratingsRepository.preloadMoviesRatings(token)
+        ratingsRepository.movies.preloadMoviesRatings(token)
       }
     } catch (error: Throwable) {
       Logger.record(error, "Source" to "${MainInitialsCase::class.simpleName}::initRatings()")

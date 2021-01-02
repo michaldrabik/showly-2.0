@@ -29,6 +29,7 @@ object Config {
   const val PULL_TO_REFRESH_COOLDOWN_MS = 10_000
   const val INITIAL_RATING = 0
   const val DEFAULT_LANGUAGE = "en"
+  const val DEFAULT_COUNTRY = "us"
   const val HOST_ACTIVITY_NAME = "com.michaldrabik.showly2.ui.main.MainActivity"
 
   val MY_SHOWS_RECENTS_OPTIONS = arrayOf(2, 4, 6, 8)
@@ -55,7 +56,6 @@ object Config {
 
   const val SHOW_WHATS_NEW = true
   const val WHATS_NEW_TEXT =
-    "* Added 2 new widgets for shows and movies calendars\n\n" +
-      "* Added option to hide widgets titles\n\n" +
+    "* Added JustWatch search links for shows and movies. Region can be changes via Settings.\n\n" +
       "* Bugfixes"
 }

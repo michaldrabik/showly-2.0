@@ -9,6 +9,7 @@ import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageSource.AWS
 import com.michaldrabik.ui_model.ImageSource.TMDB
 import com.michaldrabik.ui_model.ImageSource.TVDB
+import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNKNOWN
 import com.michaldrabik.ui_model.ImageType.FANART
@@ -39,10 +40,24 @@ data class Image(
   val fullFileUrlEpisode = "${TMDB_IMAGE_BASE_STILL_URL}$fileUrl"
 
   companion object {
-    fun createUnknown(type: ImageType, family: ImageFamily = SHOW, source: ImageSource = TVDB) =
-      Image(0, IdTvdb(0), IdTmdb(0), type, family, "", "", UNKNOWN, source)
+    fun createUnknown(
+      type: ImageType,
+      family: ImageFamily = SHOW,
+      source: ImageSource = TVDB
+    ) = Image(0, IdTvdb(0), IdTmdb(0), type, family, "", "", UNKNOWN, source)
 
-    fun createUnavailable(type: ImageType, family: ImageFamily = SHOW, source: ImageSource = TVDB) =
-      Image(0, IdTvdb(0), IdTmdb(0), type, family, "", "", UNAVAILABLE, source)
+    fun createUnavailable(
+      type: ImageType,
+      family: ImageFamily = SHOW,
+      source: ImageSource = TVDB
+    ) = Image(0, IdTvdb(0), IdTmdb(0), type, family, "", "", UNAVAILABLE, source)
+
+    fun createAvailable(
+      ids: Ids,
+      type: ImageType,
+      family: ImageFamily,
+      path: String,
+      source: ImageSource
+    ) = Image(0, ids.tvdb, ids.tmdb, type, family, path, "", AVAILABLE, source)
   }
 }

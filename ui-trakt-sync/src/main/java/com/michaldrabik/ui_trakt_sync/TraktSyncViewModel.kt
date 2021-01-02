@@ -22,6 +22,7 @@ import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -73,8 +74,12 @@ class TraktSyncViewModel @Inject constructor(
         userManager.authorize(code)
         _messageLiveData.value = info(R.string.textTraktLoginSuccess)
         invalidate()
-      } catch (t: Throwable) {
-        _messageLiveData.value = error(R.string.errorAuthorization)
+      } catch (error: Throwable) {
+        val message = when {
+          error is HttpException && error.code() == 423 -> R.string.errorTraktLocked
+          else -> R.string.errorAuthorization
+        }
+        _messageLiveData.value = error(message)
       }
     }
   }

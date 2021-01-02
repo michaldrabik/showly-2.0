@@ -64,7 +64,6 @@ import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdTrakt
-import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
@@ -80,6 +79,7 @@ import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
 import com.michaldrabik.ui_show.helpers.ShowLink
 import com.michaldrabik.ui_show.helpers.ShowLink.IMDB
+import com.michaldrabik.ui_show.helpers.ShowLink.JUST_WATCH
 import com.michaldrabik.ui_show.helpers.ShowLink.TMDB
 import com.michaldrabik.ui_show.helpers.ShowLink.TRAKT
 import com.michaldrabik.ui_show.helpers.ShowLink.TVDB
@@ -388,7 +388,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
         showDetailsLinksButton.run {
           onClick {
-            openLinksMenu(show.ids)
+            openLinksMenu(show, uiModel.country)
             Analytics.logShowLinksClick(show)
           }
         }
@@ -593,18 +593,19 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun openShowLink(link: ShowLink, id: String) {
+  private fun openShowLink(link: ShowLink, id: String, country: String? = null) {
     if (link == IMDB) {
       openIMDbLink(IdImdb(id), "title")
     } else {
       val i = Intent(Intent.ACTION_VIEW)
-      i.data = Uri.parse(link.getUri(id))
+      i.data = Uri.parse(link.getUri(id, country))
       startActivity(i)
     }
   }
 
   @SuppressLint("ClickableViewAccessibility")
-  private fun openLinksMenu(ids: Ids) {
+  private fun openLinksMenu(show: Show, country: String?) {
+    val ids = show.ids
     showDetailsMainLayout.setOnTouchListener { _, event ->
       if (event.action == MotionEvent.ACTION_DOWN) {
         showDetailsLinksMenu.fadeOut()
@@ -613,7 +614,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       false
     }
     showDetailsLinksMenu.run {
-      fadeIn()
+      fadeIn(125)
       viewLinkTrakt.visibleIf(ids.trakt.id != -1L)
       viewLinkTrakt.onClick {
         openShowLink(TRAKT, ids.trakt.id.toString())
@@ -632,6 +633,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       viewLinkTvdb.visibleIf(ids.tvdb.id != -1L)
       viewLinkTvdb.onClick {
         openShowLink(TVDB, ids.tvdb.id.toString())
+        fadeOut(125)
+      }
+      viewLinkJustWatch.onClick {
+        openShowLink(JUST_WATCH, show.title, country)
         fadeOut(125)
       }
     }

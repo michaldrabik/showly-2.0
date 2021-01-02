@@ -83,7 +83,7 @@ class EpisodeDetailsViewModel @Inject constructor(
         }
         uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateAllowed = true, rateLoading = true))
         val token = userTraktManager.checkAuthorization()
-        val rating = ratingsRepository.loadRating(token.token, episode)
+        val rating = ratingsRepository.shows.loadRating(token.token, episode)
         uiState = EpisodeDetailsUiModel(ratingState = RatingState(userRating = rating, rateLoading = false))
       } catch (error: Throwable) {
         uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateLoading = false))
@@ -96,7 +96,7 @@ class EpisodeDetailsViewModel @Inject constructor(
       try {
         val token = userTraktManager.checkAuthorization().token
         uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateLoading = true))
-        ratingsRepository.addRating(token, episode, rating)
+        ratingsRepository.shows.addRating(token, episode, rating)
         _messageLiveData.value = MessageEvent.info(R.string.textShowRated)
         uiState = EpisodeDetailsUiModel(ratingState = RatingState(userRating = TraktRating(episode.ids.trakt, rating)))
         Analytics.logEpisodeRated(showTraktId.id, episode, rating)
@@ -113,7 +113,7 @@ class EpisodeDetailsViewModel @Inject constructor(
       try {
         uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateLoading = true))
         val token = userTraktManager.checkAuthorization().token
-        ratingsRepository.deleteRating(token, episode)
+        ratingsRepository.shows.deleteRating(token, episode)
         uiState = EpisodeDetailsUiModel(ratingState = RatingState(userRating = TraktRating.EMPTY, rateLoading = false))
         _messageLiveData.value = MessageEvent.info(R.string.textShowRatingDeleted)
       } catch (error: Throwable) {

@@ -78,4 +78,21 @@
 
   </LinearLayout>
 
+  <LinearLayout
+    android:id="@+id/viewLinkJustWatch"
+    style="@style/LinksMenu.Item"
+    >
+
+    <ImageView
+      style="@style/LinksMenu.Icon"
+      android:src="@drawable/ic_justwatch"
+      />
+
+    <TextView
+      style="@style/LinksMenu.Title"
+      android:text="JustWatch"
+      />
+
+  </LinearLayout>
+
 </merge>
