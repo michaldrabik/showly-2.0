@@ -2,6 +2,7 @@ package com.michaldrabik.ui_base.images
 
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
+import com.michaldrabik.network.tmdb.model.TmdbImage
 import com.michaldrabik.network.tmdb.model.TmdbImages
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.IdTmdb
@@ -34,9 +35,9 @@ class MovieImagesProvider @Inject constructor(
     return when (image) {
       null ->
         if (unavailableCache.contains(movie.ids.trakt)) {
-          Image.createUnavailable(type, MOVIE)
+          Image.createUnavailable(type, MOVIE, TMDB)
         } else {
-          Image.createUnknown(type, MOVIE)
+          Image.createUnknown(type, MOVIE, TMDB)
         }
       else -> mappers.image.fromDatabase(image).copy(type = type)
     }
@@ -56,23 +57,10 @@ class MovieImagesProvider @Inject constructor(
       FANART, FANART_WIDE -> images.backdrops ?: emptyList()
     }
 
-    val remoteImage = typeImages
-      .sortedWith(compareBy({ it.vote_count }, { it.vote_average }))
-      .lastOrNull { it.isEnglish() }
-      ?: typeImages.lastOrNull()
+    val remoteImage = findBestImage(typeImages, type)
     val image = when (remoteImage) {
-      null -> Image.createUnavailable(type, MOVIE)
-      else -> Image(
-        -1,
-        tvdbId,
-        tmdbId,
-        type,
-        MOVIE,
-        remoteImage.file_path,
-        "",
-        AVAILABLE,
-        TMDB
-      )
+      null -> Image.createUnavailable(type, MOVIE, TMDB)
+      else -> Image.createAvailable(movie.ids, type, MOVIE, remoteImage.file_path, TMDB)
     }
 
     when (image.status) {
@@ -100,13 +88,10 @@ class MovieImagesProvider @Inject constructor(
       POSTER -> images.posters ?: emptyList()
       FANART, FANART_WIDE -> images.backdrops ?: emptyList()
     }
-    typeImages
-      .sortedWith(compareBy({ it.vote_count }, { it.vote_average }))
-      .lastOrNull { it.isEnglish() }
-      ?: typeImages.lastOrNull()?.let {
-        val extraImage = Image(-1, tvdbId, tmdbId, extraType, MOVIE, it.file_path, "", AVAILABLE, TMDB)
-        database.movieImagesDao().insertMovieImage(mappers.image.toDatabaseMovie(extraImage))
-      }
+    findBestImage(typeImages, extraType)?.let {
+      val extraImage = Image(-1, tvdbId, tmdbId, extraType, MOVIE, it.file_path, "", AVAILABLE, TMDB)
+      database.movieImagesDao().insertMovieImage(mappers.image.toDatabaseMovie(extraImage))
+    }
   }
 
   suspend fun loadRemoteImages(movie: Movie, type: ImageType): List<Image> {
@@ -116,12 +101,18 @@ class MovieImagesProvider @Inject constructor(
       POSTER -> remoteImages.posters ?: emptyList()
       FANART, FANART_WIDE -> remoteImages.backdrops ?: emptyList()
     }
-
-    return typeImages
-      .map {
-        Image(-1, movie.ids.tvdb, tmdbId, type, MOVIE, it.file_path, "", AVAILABLE, TMDB)
-      }
+    return typeImages.map {
+      Image.createAvailable(movie.ids, type, MOVIE, it.file_path, TMDB)
+    }
   }
+
+  private fun findBestImage(images: List<TmdbImage>, type: ImageType) =
+    images
+      .filter { if (type == POSTER) it.isEnglish() else it.isPlain() }
+      .sortedWith(compareBy({ it.vote_count }, { it.vote_average }))
+      .lastOrNull()
+      ?: images.firstOrNull { if (type == POSTER) it.isEnglish() else it.isPlain() }
+      ?: images.firstOrNull()
 
   suspend fun deleteLocalCache() = database.movieImagesDao().deleteAll()
 }
