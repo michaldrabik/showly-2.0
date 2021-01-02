@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <item name="detailsImageRatio" format="float" type="string">0.38</item>
+  <bool name="detailsImagePadded">false</bool>
+</resources>
