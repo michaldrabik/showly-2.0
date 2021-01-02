@@ -2,9 +2,16 @@ package com.michaldrabik.storage.database.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "shows_images")
+@Entity(
+  tableName = "shows_images",
+  indices = [
+    Index(value = ["id_tmdb", "type", "family"])
+  ]
+)
+
 data class ShowImage(
   @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") var id: Long = 0,
   @ColumnInfo(name = "id_tvdb", defaultValue = "-1") var idTvdb: Long,

@@ -270,11 +270,14 @@ object Migrations {
   private val MIGRATION_17_18 = object : Migration(17, 18) {
     override fun migrate(database: SupportSQLiteDatabase) {
       with(database) {
-        execSQL("ALTER TABLE actors ADD COLUMN id_tmdb_movie INTEGER NOT NULL DEFAULT -1")
+        execSQL("ALTER TABLE actors ADD COLUMN id_tmdb_show INTEGER NOT NULL DEFAULT -1")
         execSQL("DELETE FROM actors")
 
         execSQL("ALTER TABLE shows_images ADD COLUMN id_tmdb INTEGER NOT NULL DEFAULT -1")
         execSQL("DELETE FROM shows_images WHERE source = 'tvdb' OR family = 'movie'")
+
+        execSQL("CREATE INDEX index_shows_images_tmdb_id_type_family ON shows_images(id_tmdb, type, family)")
+        execSQL("CREATE INDEX index_movies_images_tmdb_id_type ON movies_images(id_tmdb, type)")
       }
     }
   }
