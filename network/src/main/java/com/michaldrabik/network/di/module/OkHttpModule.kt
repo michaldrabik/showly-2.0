@@ -29,15 +29,6 @@ object OkHttpModule {
 
   @Provides
   @CloudScope
-  @Named("okHttpTvdb")
-  fun providesTvdbOkHttp(
-    httpLoggingInterceptor: HttpLoggingInterceptor
-  ) = createBaseOkHttpClient()
-    .addInterceptor(httpLoggingInterceptor)
-    .build()
-
-  @Provides
-  @CloudScope
   @Named("okHttpTmdb")
   fun providesTmdbOkHttp(
     httpLoggingInterceptor: HttpLoggingInterceptor,
