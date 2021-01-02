@@ -7,5 +7,7 @@ data class TmdbImage(
   val iso_639_1: String?
 ) {
 
-  fun isEnglish() = iso_639_1 == "en"
+  fun isPlain() = iso_639_1 == null
+
+  fun isEnglish() = iso_639_1 in arrayOf("en", "uk", "us")
 }
