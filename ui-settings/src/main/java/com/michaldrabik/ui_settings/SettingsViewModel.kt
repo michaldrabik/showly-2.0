@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor(
@@ -154,9 +155,13 @@ class SettingsViewModel @Inject constructor(
         _messageLiveData.value = MessageEvent.info(R.string.textTraktLoginSuccess)
         refreshSettings()
         Analytics.logTraktLogin()
-      } catch (t: Throwable) {
-        _messageLiveData.value = MessageEvent.error(R.string.errorAuthorization)
-        Logger.record(t, "Source" to "SettingsViewModel::authorizeTrakt()")
+      } catch (error: Throwable) {
+        val message = when {
+          error is HttpException && error.code() == 423 -> R.string.errorTraktLocked
+          else -> R.string.errorAuthorization
+        }
+        _messageLiveData.value = MessageEvent.error(message)
+        Logger.record(error, "Source" to "SettingsViewModel::authorizeTrakt()")
       } finally {
         uiState = SettingsUiModel(isSigningIn = false)
       }
