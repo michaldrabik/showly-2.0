@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
+import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
@@ -99,7 +100,7 @@ class ShowDetailsViewModel @Inject constructor(
           showLoading = false,
           followedState = followedState,
           ratingState = RatingState(rateAllowed = isSignedIn, rateLoading = false),
-          country = settingsRepository.getCountry()
+          country = AppCountry.fromCode(settingsRepository.getCountry())
         )
 
         launch { loadNextEpisode(show) }
@@ -127,10 +128,11 @@ class ShowDetailsViewModel @Inject constructor(
     try {
       val episode = episodesCase.loadNextEpisode(show.ids.trakt)
       episode?.let {
-        uiState = ShowDetailsUiModel(nextEpisode = it)
+        uiState = ShowDetailsUiModel(nextEpisode = Pair(show, it))
         val translation = translationCase.loadTranslation(episode, show)
         if (translation?.title?.isNotBlank() == true) {
-          uiState = ShowDetailsUiModel(nextEpisode = it.copy(title = translation.title))
+          val translated = it.copy(title = translation.title)
+          uiState = ShowDetailsUiModel(nextEpisode = Pair(show, translated))
         }
       }
     } catch (t: Throwable) {
@@ -165,7 +167,7 @@ class ShowDetailsViewModel @Inject constructor(
           val translation = translationCase.loadTranslation(episode, show, onlyLocal = true)
           EpisodeListItem(episode, it, false, translation)
         }
-        SeasonListItem(it, episodes, isWatched = false)
+        SeasonListItem(show, it, episodes, isWatched = false)
       }
       .sortedByDescending { it.season.number }
 

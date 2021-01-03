@@ -11,6 +11,7 @@ data class Actor(
   @ColumnInfo(name = "id_tmdb") var idTmdb: Long,
   @ColumnInfo(name = "id_imdb") var idImdb: String?,
   @ColumnInfo(name = "id_tvdb_show") var idShowTvdb: Long,
+  @ColumnInfo(name = "id_tmdb_show") var idShowTmdb: Long,
   @ColumnInfo(name = "id_tmdb_movie") var idMovieTmdb: Long,
   @ColumnInfo(name = "name") var name: String,
   @ColumnInfo(name = "role") var role: String,

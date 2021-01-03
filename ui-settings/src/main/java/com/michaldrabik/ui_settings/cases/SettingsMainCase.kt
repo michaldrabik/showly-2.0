@@ -6,6 +6,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
@@ -20,7 +21,6 @@ import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_settings.helpers.AppCountry
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import javax.inject.Inject
 

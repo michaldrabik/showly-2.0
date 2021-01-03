@@ -692,11 +692,12 @@
       android:id="@+id/settingsTmdbIcon"
       android:layout_width="wrap_content"
       android:layout_height="30dp"
-      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginStart="@dimen/spaceTiny"
       android:adjustViewBounds="true"
-      app:layout_constraintBottom_toBottomOf="@id/settingsTraktIcon"
+      app:layout_constraintBottom_toTopOf="@id/settingsVersion"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/settingsTraktIcon"
-      app:layout_constraintTop_toTopOf="@id/settingsTraktIcon"
+      app:layout_constraintTop_toBottomOf="@id/settingsDeleteCache"
       app:srcCompat="@drawable/ic_tmdb"
       />
 
@@ -704,25 +705,16 @@
       android:id="@+id/settingsTraktIcon"
       android:layout_width="60dp"
       android:layout_height="40dp"
-      android:layout_margin="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceNormal"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:layout_marginBottom="@dimen/spaceNormal"
       android:adjustViewBounds="true"
       app:layout_constraintBottom_toTopOf="@id/settingsVersion"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsTmdbIcon"
+      app:layout_constraintHorizontal_chainStyle="packed"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsDeleteCache"
       app:srcCompat="@drawable/ic_trakt"
-      />
-
-    <ImageView
-      android:id="@+id/settingsTvdbIcon"
-      android:layout_width="60dp"
-      android:layout_height="0dp"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:adjustViewBounds="true"
-      app:layout_constraintBottom_toBottomOf="@id/settingsTraktIcon"
-      app:layout_constraintEnd_toStartOf="@id/settingsTraktIcon"
-      app:layout_constraintTop_toTopOf="@id/settingsTraktIcon"
-      app:srcCompat="@drawable/ic_tvdb"
       />
 
     <TextView

@@ -34,11 +34,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
-import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
+import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
 import com.michaldrabik.common.extensions.toDisplayString
 import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.AppCountry
+import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -156,8 +158,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun setupView() {
     hideNavigation()
     showDetailsImageGuideline.setGuidelineBegin((imageHeight * imageRatio).toInt())
-    showDetailsEpisodesView.itemClickListener = { episode, season, isWatched ->
-      showEpisodeDetails(episode, season, isWatched, episode.hasAired(season))
+    showDetailsEpisodesView.itemClickListener = { show, episode, season, isWatched ->
+      showEpisodeDetails(show, episode, season, isWatched, episode.hasAired(season))
     }
     listOf(showDetailsBackArrow, showDetailsBackArrow2).onClick { requireActivity().onBackPressed() }
     showDetailsImage.onClick {
@@ -296,12 +298,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun showEpisodeDetails(
+    show: Show,
     episode: Episode,
     season: Season?,
     isWatched: Boolean,
     showButton: Boolean = true
   ) {
-    val modal = EpisodeDetailsBottomSheet.create(showId, episode, isWatched, showButton)
+    val modal = EpisodeDetailsBottomSheet.create(show, episode, isWatched, showButton)
     if (season != null) {
       modal.onEpisodeWatchedClick = { viewModel.setWatchedEpisode(requireAppContext(), episode, season, it) }
     }
@@ -310,12 +313,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun showFullActorView(actor: Actor) {
     Glide.with(this)
-      .load("$TVDB_IMAGE_BASE_BANNERS_URL${actor.image}")
-      .onlyRetrieveFromCache(true)
+      .load("$TMDB_IMAGE_BASE_ACTOR_FULL_URL${actor.image}")
       .transform(CenterCrop(), RoundedCorners(actorViewCorner))
       .into(showDetailsActorFullImage)
 
-    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.tvdbId)
+    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.tmdbId)
     val transform = MaterialContainerTransform().apply {
       startView = actorView
       endView = showDetailsActorFullContainer
@@ -347,7 +349,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun hideFullActorView(actor: Actor) {
-    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.tvdbId)
+    val actorView = showDetailsActorsRecycler.findViewWithTag<View>(actor.tmdbId)
     val transform = MaterialContainerTransform().apply {
       startView = showDetailsActorFullContainer
       endView = actorView
@@ -395,7 +397,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
         showDetailsLinksButton.run {
           onClick {
-            openLinksMenu(show, uiModel.country)
+            openLinksMenu(show, uiModel.country ?: UNITED_STATES)
             Analytics.logShowLinksClick(show)
           }
         }
@@ -508,15 +510,17 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .into(showDetailsImage)
   }
 
-  private fun renderNextEpisode(nextEpisode: Episode) {
-    nextEpisode.run {
-      showDetailsEpisodeText.text = String.format(ENGLISH, getString(R.string.textEpisodeTitle), season, number, title)
+  private fun renderNextEpisode(episodeBundle: Pair<Show, Episode>) {
+    episodeBundle.run {
+      val (show, episode) = episodeBundle
+      showDetailsEpisodeText.text =
+        String.format(ENGLISH, getString(R.string.textEpisodeTitle), episode.season, episode.number, episode.title)
       showDetailsEpisodeCard.visible()
       showDetailsEpisodeCard.onClick {
-        showEpisodeDetails(nextEpisode, null, isWatched = false, showButton = false)
+        showEpisodeDetails(show, episode, null, isWatched = false, showButton = false)
       }
 
-      nextEpisode.firstAired?.let {
+      episode.firstAired?.let {
         val displayDate = it.toLocalTimeZone().toDisplayString()
         showDetailsEpisodeAirtime.visible()
         showDetailsEpisodeAirtime.text = displayDate
@@ -598,7 +602,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun openShowLink(link: ShowLink, id: String, country: String? = null) {
+  private fun openShowLink(
+    link: ShowLink,
+    id: String,
+    country: AppCountry = UNITED_STATES
+  ) {
     if (link == IMDB) {
       openIMDbLink(IdImdb(id), "title")
     } else {
@@ -609,7 +617,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   @SuppressLint("ClickableViewAccessibility")
-  private fun openLinksMenu(show: Show, country: String?) {
+  private fun openLinksMenu(show: Show, country: AppCountry) {
     val ids = show.ids
     showDetailsMainLayout.setOnTouchListener { _, event ->
       if (event.action == MotionEvent.ACTION_DOWN) {

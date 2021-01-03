@@ -6,6 +6,7 @@ data class Actor(
   val imdbId: String?,
   val tvdbShowId: Long,
   val tmdbMovieId: Long,
+  val tmdbShowId: Long,
   val name: String,
   val role: String,
   val sortOrder: Int,

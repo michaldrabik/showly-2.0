@@ -37,6 +37,8 @@ import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
 import com.michaldrabik.common.extensions.toDayDisplayString
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.AppCountry
+import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -316,7 +318,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         }
         movieDetailsLinksButton.run {
           onClick {
-            openLinksMenu(movie, uiModel.country)
+            openLinksMenu(movie, uiModel.country ?: UNITED_STATES)
             Analytics.logMovieLinksClick(movie)
           }
         }
@@ -464,7 +466,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
   }
 
-  private fun openMovieLink(link: MovieLink, id: String, country: String? = null) {
+  private fun openMovieLink(link: MovieLink, id: String, country: AppCountry = UNITED_STATES) {
     if (link == IMDB) {
       openIMDbLink(IdImdb(id), "title")
     } else {
@@ -475,7 +477,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   }
 
   @SuppressLint("ClickableViewAccessibility")
-  private fun openLinksMenu(movie: Movie, country: String?) {
+  private fun openLinksMenu(movie: Movie, country: AppCountry) {
     val ids = movie.ids
     movieDetailsMainLayout.setOnTouchListener { _, event ->
       if (event.action == MotionEvent.ACTION_DOWN) {

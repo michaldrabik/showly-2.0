@@ -10,9 +10,8 @@ import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_episodes.R
 import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
-import com.michaldrabik.ui_model.IdTvdb
-import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_repository.RatingsRepository
@@ -32,13 +31,11 @@ class EpisodeDetailsViewModel @Inject constructor(
   private val cloud: Cloud
 ) : BaseViewModel<EpisodeDetailsUiModel>() {
 
-  fun loadImage(tvdb: IdTvdb) {
+  fun loadImage(showId: IdTmdb, episode: Episode) {
     viewModelScope.launch {
       try {
         uiState = EpisodeDetailsUiModel(imageLoading = true)
-        val ids = Ids.EMPTY.copy(tvdb = tvdb)
-        val episode = Episode.EMPTY.copy(ids = ids)
-        val episodeImage = imagesProvider.loadRemoteImage(episode)
+        val episodeImage = imagesProvider.loadRemoteImage(showId, episode)
         uiState = EpisodeDetailsUiModel(image = episodeImage, imageLoading = false)
       } catch (t: Throwable) {
         uiState = EpisodeDetailsUiModel(imageLoading = false)

@@ -32,11 +32,10 @@ keyAlias=github
 keyPassword=github
 storePassword=github
 ```
-4. Add your [Trakt.tv](https://trakt.tv/oauth/applications), [TVDB](https://thetvdb.com/dashboard/account/apikey) and [TMDB](https://developers.themoviedb.org/3/) API keys as following properties into your `local.properties` file located in the root directory of the project:
+4. Add your [Trakt.tv](https://trakt.tv/oauth/applications) and [TMDB](https://developers.themoviedb.org/3/) API keys as following properties into your `local.properties` file located in the root directory of the project:
 ```
 traktClientId="your trakt client id"
 traktClientSecret="your trakt client secret"
-tvdbApiKey="your tvdb api key"
 tmdbApiKey="your tmdb api key"
 ```
 5. Generate your own Firebase `google-services.json` file and put it in the `/app` directory.

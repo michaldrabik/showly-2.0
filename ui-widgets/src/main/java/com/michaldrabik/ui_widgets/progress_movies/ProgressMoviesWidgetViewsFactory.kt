@@ -54,8 +54,12 @@ class ProgressMoviesWidgetViewsFactory(
       val items = movies.map { m ->
         async {
           val item = loadItemsCase.loadProgressItem(m)
-          val image = imagesProvider.loadRemoteImage(m, ImageType.POSTER)
-          item.copy(image = image)
+          try {
+            val image = imagesProvider.loadRemoteImage(m, ImageType.POSTER)
+            item.copy(image = image)
+          } catch (error: Throwable) {
+            item
+          }
         }
       }.awaitAll()
 

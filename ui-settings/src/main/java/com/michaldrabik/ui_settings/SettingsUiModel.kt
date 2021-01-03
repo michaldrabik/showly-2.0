@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_settings
 
 import com.michaldrabik.ui_base.UiModel
+import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_model.Settings
-import com.michaldrabik.ui_settings.helpers.AppCountry
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import com.michaldrabik.ui_settings.helpers.AppTheme
 

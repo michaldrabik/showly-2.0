@@ -81,4 +81,5 @@
   <string name="errorCouldNotLoadSearchResults">No pudimos cargar los resultados de la búsqueda en este momento.\nPor favor, contáctanos si esto sigue sucediendo.</string>
   <string name="errorNoInternetConnection">Sin Internet. Por favor compruebe su conexión.</string>
   <string name="errorTraktSyncGeneral">Error de sincronización de Trakt.tv.\nPor favor comprueba tu conexión a Internet y prueba de nuevo o contáctanos si sigue sucediendo.</string>
+  <string name="errorTraktLocked">Su cuenta de Trakt.tv está bloqueada actualmente. Póngase en contacto con el soporte de Trakt.tv en https://support.trakt.tv/ para desbloquear su cuenta.</string>
 </resources>

@@ -6,8 +6,8 @@
   <dimen name="actorMovieTileImageWidth">80dp</dimen>
 
   <dimen name="actorMovieFullTileCorner">8dp</dimen>
-  <dimen name="actorMovieFullTileImageHeight">400dp</dimen>
-  <dimen name="actorMovieFullTileImageWidth">267dp</dimen>
+  <dimen name="actorMovieFullTileImageHeight">420dp</dimen>
+  <dimen name="actorMovieFullTileImageWidth">280dp</dimen>
 
   <dimen name="relatedMovieHeight">120dp</dimen>
   <dimen name="relatedMovieWidth">80dp</dimen>

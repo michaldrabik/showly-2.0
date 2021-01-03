@@ -3,6 +3,7 @@ package com.michaldrabik.ui_model
 import com.michaldrabik.common.Config.AWS_IMAGE_BASE_URL
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_FANART_URL
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_POSTER_URL
+import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_STILL_URL
 import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageSource.AWS
@@ -35,6 +36,8 @@ data class Image(
     }
     AWS -> "$AWS_IMAGE_BASE_URL$fileUrl"
   }
+
+  val fullFileUrlEpisode = "${TMDB_IMAGE_BASE_STILL_URL}$fileUrl"
 
   companion object {
     fun createUnknown(

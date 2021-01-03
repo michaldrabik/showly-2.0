@@ -3,7 +3,6 @@ package com.michaldrabik.network.di.module
 import com.michaldrabik.network.Config.AWS_BASE_URL
 import com.michaldrabik.network.Config.TMDB_BASE_URL
 import com.michaldrabik.network.Config.TRAKT_BASE_URL
-import com.michaldrabik.network.Config.TVDB_BASE_URL
 import com.michaldrabik.network.di.CloudScope
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -24,16 +23,6 @@ object RetrofitModule {
       .client(okHttpClient)
       .addConverterFactory(MoshiConverterFactory.create(moshi))
       .baseUrl(TRAKT_BASE_URL)
-      .build()
-
-  @Provides
-  @CloudScope
-  @Named("retrofitTvdb")
-  fun providesTvdbRetrofit(@Named("okHttpTvdb") okHttpClient: OkHttpClient, moshi: Moshi): Retrofit =
-    Retrofit.Builder()
-      .client(okHttpClient)
-      .addConverterFactory(MoshiConverterFactory.create(moshi))
-      .baseUrl(TVDB_BASE_URL)
       .build()
 
   @Provides

@@ -4,6 +4,7 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily.EPISODE
 import com.michaldrabik.ui_model.ImageSource
@@ -11,7 +12,6 @@ import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.FANART
-import com.michaldrabik.ui_repository.UserTvdbManager
 import com.michaldrabik.ui_repository.mappers.Mappers
 import javax.inject.Inject
 
@@ -19,47 +19,46 @@ import javax.inject.Inject
 class EpisodeImagesProvider @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
-  private val userManager: UserTvdbManager,
   private val mappers: Mappers
 ) {
 
   private suspend fun findCachedImage(episode: Episode, type: ImageType): Image {
-    val cachedImage = database.showImagesDao().getByEpisodeId(episode.ids.tvdb.id, type.key)
+    val cachedImage = database.showImagesDao().getByEpisodeId(episode.ids.tmdb.id, type.key)
     return when (cachedImage) {
       null -> Image.createUnknown(type, EPISODE)
       else -> mappers.image.fromDatabase(cachedImage).copy(type = type)
     }
   }
 
-  suspend fun loadRemoteImage(episode: Episode, force: Boolean = false): Image {
+  suspend fun loadRemoteImage(showId: IdTmdb, episode: Episode): Image {
     val tvdbId = episode.ids.tvdb
+    val tmdbId = episode.ids.tmdb
     val cachedImage = findCachedImage(episode, FANART)
-    if (cachedImage.status == AVAILABLE && !force) {
+    if (cachedImage.status == AVAILABLE) {
       return cachedImage
     }
 
-    userManager.checkAuthorization()
     var image = Image.createUnavailable(FANART)
     runCatching {
-      val remoteImage = cloud.tvdbApi.fetchEpisodeImage(userManager.getToken(), tvdbId.id)
+      val remoteImage = cloud.tmdbApi.fetchEpisodeImage(showId.id, episode.season, episode.number)
       image = when (remoteImage) {
         null -> Image.createUnavailable(FANART)
         else -> Image(
-          remoteImage.id ?: -1,
+          -1,
           tvdbId,
-          episode.ids.tmdb,
+          tmdbId,
           FANART,
           EPISODE,
-          remoteImage.fileName ?: "",
-          remoteImage.thumbnail ?: "",
+          remoteImage.file_path,
+          "",
           AVAILABLE,
-          ImageSource.TVDB
+          ImageSource.TMDB
         )
       }
     }
 
     when (image.status) {
-      UNAVAILABLE -> database.showImagesDao().deleteByEpisodeId(tvdbId.id, image.type.key)
+      UNAVAILABLE -> database.showImagesDao().deleteByEpisodeId(tmdbId.id, image.type.key)
       else -> database.showImagesDao().insertEpisodeImage(mappers.image.toDatabaseShow(image))
     }
 

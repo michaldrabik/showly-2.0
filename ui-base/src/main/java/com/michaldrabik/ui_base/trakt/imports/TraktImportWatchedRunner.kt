@@ -21,7 +21,6 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TraktAuthToken
 import com.michaldrabik.ui_repository.UserTraktManager
-import com.michaldrabik.ui_repository.UserTvdbManager
 import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.delay
 import timber.log.Timber
@@ -34,7 +33,6 @@ class TraktImportWatchedRunner @Inject constructor(
   private val mappers: Mappers,
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
-  private val userTvdbManager: UserTvdbManager,
   private val settingsRepository: SettingsRepository,
   userTraktManager: UserTraktManager
 ) : TraktSyncRunner(userTraktManager) {
@@ -96,7 +94,6 @@ class TraktImportWatchedRunner @Inject constructor(
   private suspend fun importWatchedShows(token: String): Int {
     Timber.d("Importing watched shows...")
 
-    checkTvdbAuth()
     val hiddenShowsIds = cloud.traktApi.fetchHiddenShows(token)
       .filter { it.show != null }
       .map { it.show!!.ids?.trakt }
@@ -243,7 +240,6 @@ class TraktImportWatchedRunner @Inject constructor(
 
   private suspend fun loadImage(show: Show) {
     try {
-      if (!userTvdbManager.isAuthorized()) return
       showImagesProvider.loadRemoteImage(show, FANART)
     } catch (t: Throwable) {
       Timber.w(t)
@@ -257,15 +253,6 @@ class TraktImportWatchedRunner @Inject constructor(
     } catch (t: Throwable) {
       Timber.w(t)
       // NOOP Ignore image for now. It will be fetched later if needed.
-    }
-  }
-
-  private suspend fun checkTvdbAuth() {
-    try {
-      userTvdbManager.checkAuthorization()
-    } catch (t: Throwable) {
-      Timber.w(t)
-      // Ignore for now
     }
   }
 }

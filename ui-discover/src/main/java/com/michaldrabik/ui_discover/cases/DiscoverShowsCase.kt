@@ -12,7 +12,6 @@ import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.TranslationsRepository
-import com.michaldrabik.ui_repository.UserTvdbManager
 import com.michaldrabik.ui_repository.shows.ShowsRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -22,7 +21,6 @@ import javax.inject.Inject
 @AppScope
 class DiscoverShowsCase @Inject constructor(
   private val showsRepository: ShowsRepository,
-  private val tvdbUserManager: UserTvdbManager,
   private val imagesProvider: ShowImagesProvider,
   private val translationsRepository: TranslationsRepository
 ) {
@@ -50,12 +48,6 @@ class DiscoverShowsCase @Inject constructor(
     val showAnticipated = !filters.hideAnticipated
     val showCollection = !filters.hideCollection
     val genres = filters.genres.toList()
-
-    try {
-      tvdbUserManager.checkAuthorization()
-    } catch (t: Throwable) {
-      // Ignore at this moment
-    }
 
     val myShowsIds = showsRepository.myShows.loadAllIds()
     val watchlistShowsIds = showsRepository.watchlistShows.loadAllIds()
