@@ -17,6 +17,7 @@ import com.jakewharton.processphoenix.ProcessPhoenix
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.MY_SHOWS_RECENTS_OPTIONS
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
@@ -31,7 +32,6 @@ import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.TraktSyncSchedule.OFF
 import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
-import com.michaldrabik.ui_settings.helpers.AppCountry
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import com.michaldrabik.ui_settings.helpers.PlayStoreHelper
 import kotlinx.android.synthetic.main.fragment_settings.*

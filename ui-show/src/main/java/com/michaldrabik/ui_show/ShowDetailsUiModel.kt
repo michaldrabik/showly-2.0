@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_show
 
 import com.michaldrabik.ui_base.UiModel
+import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Comment
@@ -28,7 +29,7 @@ data class ShowDetailsUiModel(
   val showFromTraktLoading: Boolean? = null,
   val translation: Translation? = null,
   val seasonTranslation: ActionEvent<SeasonListItem>? = null,
-  val country: String? = null
+  val country: AppCountry? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =

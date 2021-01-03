@@ -39,6 +39,8 @@ import com.michaldrabik.common.extensions.toDisplayString
 import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.AppCountry
+import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -388,7 +390,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
         showDetailsLinksButton.run {
           onClick {
-            openLinksMenu(show, uiModel.country)
+            openLinksMenu(show, uiModel.country ?: UNITED_STATES)
             Analytics.logShowLinksClick(show)
           }
         }
@@ -593,7 +595,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun openShowLink(link: ShowLink, id: String, country: String? = null) {
+  private fun openShowLink(
+    link: ShowLink,
+    id: String,
+    country: AppCountry = UNITED_STATES
+  ) {
     if (link == IMDB) {
       openIMDbLink(IdImdb(id), "title")
     } else {
@@ -604,7 +610,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   @SuppressLint("ClickableViewAccessibility")
-  private fun openLinksMenu(show: Show, country: String?) {
+  private fun openLinksMenu(show: Show, country: AppCountry) {
     val ids = show.ids
     showDetailsMainLayout.setOnTouchListener { _, event ->
       if (event.action == MotionEvent.ACTION_DOWN) {

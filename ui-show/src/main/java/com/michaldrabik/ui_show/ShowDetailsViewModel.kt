@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
+import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
@@ -99,7 +100,7 @@ class ShowDetailsViewModel @Inject constructor(
           showLoading = false,
           followedState = followedState,
           ratingState = RatingState(rateAllowed = isSignedIn, rateLoading = false),
-          country = settingsRepository.getCountry()
+          country = AppCountry.fromCode(settingsRepository.getCountry())
         )
 
         launch { loadNextEpisode(show) }

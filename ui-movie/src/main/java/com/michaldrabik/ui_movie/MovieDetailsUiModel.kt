@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_movie
 
 import com.michaldrabik.ui_base.UiModel
+import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Comment
@@ -23,7 +24,7 @@ data class MovieDetailsUiModel(
   val removeFromTraktWatchlist: ActionEvent<Boolean>? = null,
   val showFromTraktLoading: Boolean? = null,
   val translation: Translation? = null,
-  val country: String? = null
+  val country: AppCountry? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =

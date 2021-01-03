@@ -7,13 +7,13 @@ import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
+import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_settings.cases.SettingsMainCase
 import com.michaldrabik.ui_settings.cases.SettingsTraktCase
-import com.michaldrabik.ui_settings.helpers.AppCountry
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
