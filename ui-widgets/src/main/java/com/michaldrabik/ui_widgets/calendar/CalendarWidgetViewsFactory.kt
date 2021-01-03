@@ -52,8 +52,12 @@ class CalendarWidgetViewsFactory(
       val items = shows.map { show ->
         async {
           val item = loadItemsCase.loadProgressItem(show)
-          val image = imagesProvider.loadRemoteImage(show, ImageType.POSTER)
-          item.copy(image = image)
+          try {
+            val image = imagesProvider.loadRemoteImage(show, ImageType.POSTER)
+            item.copy(image = image)
+          } catch (error: Throwable) {
+            item
+          }
         }
       }.awaitAll()
 
