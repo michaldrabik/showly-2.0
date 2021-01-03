@@ -22,12 +22,12 @@
   <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textShows">Serien</string>
   <string name="textMovies">Filme</string>
-
-  <string name="textAiredAlready">Veröffentlicht</string>
-  <string name="textAirsNow">Jetzt live</string>
   <string name="textMinutesShort">min</string>
   <string name="textRemoveFromTrakt">Von Trakt.tv entfernen?</string>
   <string name="textNoDescription">Übersicht nicht verfügbar.</string>
+
+  <string name="textAiredAlready">Veröffentlicht</string>
+  <string name="textAirsNow">Jetzt live</string>
 
   <plurals name="textDaysToAir">
     <item quantity="one">Morgen verfügbar</item>
@@ -81,4 +81,5 @@
   <string name="errorCouldNotLoadSearchResults">Wir können die Suchergebnisse aktuell nicht laden.\nBitte schreib uns, wenn dieser Fehler weiterhin passiert.</string>
   <string name="errorNoInternetConnection">Kein Internet. Bitte überprüfe deine Verbindung.</string>
   <string name="errorTraktSyncGeneral">Synchronisationserror mit Trakt.tv.\nBitte check deine Internetverbindung und versuch es erneut. </string>
+  <string name="errorTraktLocked">Ihr Trakt.tv-Konto ist derzeit gesperrt. Wenden Sie sich unter https://support.trakt.tv/ an den Trakt.tv-Support, um Ihr Konto zu entsperren.</string>
 </resources>
