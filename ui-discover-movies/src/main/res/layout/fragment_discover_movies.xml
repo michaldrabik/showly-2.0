@@ -69,6 +69,7 @@
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/searchViewHeight"
     android:layout_marginEnd="@dimen/spaceMedium"
+    android:layout_marginBottom="@dimen/bottomNavigationHeight"
     android:visibility="invisible"
     tools:visibility="invisible"
     />
