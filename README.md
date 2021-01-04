@@ -54,6 +54,8 @@ If you are interested in helping, please visit relevant Issues for more info.
 
 ## Contact
 
+Twitter: https://twitter.com/AppShowly
+
 Landing Page: www.showlyapp.com
 
 Email: showlyapp@gmail.com

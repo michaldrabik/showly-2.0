@@ -4,11 +4,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.ScrollView
 import androidx.core.content.ContextCompat
 import androidx.core.view.forEach
 import com.google.android.material.chip.Chip
-import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_discover_movies.R
 import com.michaldrabik.ui_model.DiscoverFilters
@@ -18,7 +18,7 @@ import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import com.michaldrabik.ui_model.Genre
 import kotlinx.android.synthetic.main.view_discover_movies_filters.view.*
 
-class DiscoverMoviesFiltersView : ConstraintLayout {
+class DiscoverMoviesFiltersView : ScrollView {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -27,16 +27,12 @@ class DiscoverMoviesFiltersView : ConstraintLayout {
   var onApplyClickListener: ((DiscoverFilters) -> Unit)? = null
 
   init {
-    val spaceNormal = context.dimenToPx(R.dimen.spaceNormal)
-    val spaceSmall = context.dimenToPx(R.dimen.spaceSmall)
-
     inflate(context, R.layout.view_discover_movies_filters, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     isClickable = true
-    clipChildren = false
-    clipToPadding = false
+    overScrollMode = OVER_SCROLL_NEVER
+    isVerticalScrollBarEnabled = false
     setBackgroundResource(R.drawable.bg_discover_filters)
-    setPadding(spaceNormal, spaceNormal, spaceNormal, spaceSmall)
 
     discoverFiltersMoviesApplyButton.onClick { onApplyFilters() }
     discoverFiltersMoviesAnticipatedText.onClick { discoverFiltersMoviesAnticipatedSwitch.toggle() }
