@@ -137,8 +137,8 @@
 
     <ImageButton
       android:id="@+id/progressWidgetItemCheckButton"
-      android:layout_width="70dp"
-      android:layout_height="26dp"
+      android:layout_width="60dp"
+      android:layout_height="24dp"
       android:layout_below="@id/progressWidgetItemProgress"
       android:layout_alignParentEnd="true"
       android:background="@drawable/bg_widget_check_button"
