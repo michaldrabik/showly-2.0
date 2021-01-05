@@ -3,6 +3,7 @@ package com.michaldrabik.ui_progress.main.cases
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
+import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.EpisodeWatchlist
 import com.michaldrabik.ui_model.Episode
@@ -53,8 +54,9 @@ class ProgressLoadItemsCase @Inject constructor(
       .filter { it.firstAired != null }
       .sortedBy { it.firstAired }
       .firstOrNull {
-        it.firstAired!!.isAfter(nowUtc()) ||
-          it.firstAired!!.truncatedTo(DAYS) == nowUtc().truncatedTo(DAYS)
+        val now = nowUtc().toLocalTimeZone()
+        val airtime = it.firstAired!!.toLocalTimeZone()
+        airtime.isAfter(now) || airtime.truncatedTo(DAYS) == now.truncatedTo(DAYS)
       }
 
     val isPinned = pinnedItemsRepository.isItemPinned(show)
