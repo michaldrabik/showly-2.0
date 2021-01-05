@@ -23,16 +23,18 @@ class FanartLoadImagesCase @Inject constructor(
   private val movieImagesProvider: MovieImagesProvider
 ) {
 
-  suspend fun loadInitialImage(id: IdTrakt, type: ImageFamily): Image {
-    if (type == SHOW) {
-      val show = showsRepository.detailsShow.load(id)
-      return showImagesProvider.findCachedImage(show, FANART)
-    } else if (type == MOVIE) {
-      val movie = moviesRepository.movieDetails.load(id)
-      return movieImagesProvider.findCachedImage(movie, FANART)
+  suspend fun loadInitialImage(id: IdTrakt, type: ImageFamily) =
+    when (type) {
+      SHOW -> {
+        val show = showsRepository.detailsShow.load(id)
+        showImagesProvider.findCachedImage(show, FANART)
+      }
+      MOVIE -> {
+        val movie = moviesRepository.movieDetails.load(id)
+        movieImagesProvider.findCachedImage(movie, FANART)
+      }
+      else -> throw IllegalStateException()
     }
-    throw IllegalStateException()
-  }
 
   suspend fun loadAllImages(id: IdTrakt, type: ImageFamily, initialImage: Image): List<Image> {
     val images = mutableListOf<Image>()
