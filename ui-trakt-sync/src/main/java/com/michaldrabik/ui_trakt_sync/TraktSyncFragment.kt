@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_trakt_sync
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -23,6 +22,7 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponentProvider
@@ -116,13 +116,6 @@ class TraktSyncFragment :
       .show()
   }
 
-  private fun startAuthorization() {
-    Intent(Intent.ACTION_VIEW).run {
-      data = Uri.parse(Config.TRAKT_AUTHORIZE_URL)
-      startActivity(this)
-    }
-  }
-
   override fun onAuthorizationResult(authData: Uri?) = viewModel.authorizeTrakt(authData)
 
   private fun render(uiModel: TraktSyncUiModel) {
@@ -153,7 +146,7 @@ class TraktSyncFragment :
           }
           else -> {
             traktSyncButton.text = getString(R.string.textSettingsTraktAuthorizeTitle)
-            traktSyncButton.onClick { startAuthorization() }
+            traktSyncButton.onClick { openWebUrl(Config.TRAKT_AUTHORIZE_URL) }
             traktSyncScheduleButton.gone()
           }
         }

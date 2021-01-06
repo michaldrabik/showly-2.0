@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textAddToMyMovies">Ai miei film</string>
+  <string name="textUpcoming">In Arrivo</string>
+  <string name="textMovieWatchLater">Da Vedere</string>
+  <string name="textInMyMovies">Aggiunto ai miei film</string>
+  <string name="textInMoviesWatchlist">Aggiunto alla lista da vedere</string>
+
+  <string name="textMovieActorsEmpty">Attori non disponibili</string>
+  <string name="textMovieTrailer">Trailer</string>
+  <string name="textMovieRate">Valuta</string>
+  <string name="textMovieLink">Link</string>
+  <string name="textMovieComments2">Commenti</string>
+  <string name="textMovieShare">Condividi</string>
+  <string name="textMovieYouMayAlsoLike">Potrebbe piacerti anche:</string>
+  <string name="textMovieVotes">%.1f (%d voti)</string>
+
+  <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
+
+  <string name="textMovieNotYetReleased">Questo film non è ancora uscito.</string>
+  <string name="textTraktSyncMovieRemovedFromTrakt">Trak.tv sincronizzato correttamente.</string>
+</resources>

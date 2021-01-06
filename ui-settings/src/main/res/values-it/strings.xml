@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textTraktLoginSuccess">Sei stato autorizzato correttamente.</string>
+  <string name="textTraktLogoutSuccess">Sei uscito.</string>
+  <string name="textImagesCacheCleared">La cache delle immagini è stata pulita.</string>
+  <string name="textTurnOff">Disattiva</string>
+
+  <string name="textSettings">Impostazioni</string>
+  <string name="textSettingsTrakt">Trakt.tv</string>
+  <string name="textSettingsTraktAuthorizeTitle">Autorizzazione Trakt.tv</string>
+  <string name="textSettingsTraktAuthorizeSummarySignIn">Clicca qui per effettuare l\'accesso al tuo account Trakt.tv.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOut">Accesso effettuato. Clicca qui per uscire.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOutUser">Accesso effettuato come %1$s. Clicca qui per uscire.</string>
+  <string name="textSettingsTraktSyncTitle">Sincronizzazione Trakt.tv</string>
+  <string name="textSettingsTraktSyncSummary">Sincronizza dati fra Trakt.tv e Showly.</string>
+  <string name="textSettingsTraktQuickSyncTitle">Caricamento Istantaneo Trakt.tv</string>
+  <string name="textSettingsTraktQuickSyncSummary">Carica istantaneamente i dati su Trakt.tv dopo averlo collegato all\'app.</string>
+  <string name="textSettingsTraktQuickRemoveTitle">Rimozione Istantanea Trakt.tv</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Aggiungi l\'opzione per rimuovere i dati da Trakt.tv dopo averlo rimosso dall\'app.</string>
+  <string name="textSettingsGeneral">Generale &amp; UX</string>
+  <string name="textSettingsRecentShowsTitle">Aggiunti di recente</string>
+  <string name="textSettingsRecentShowsSummary">Numero di elementi recenti da mostrare in \'Raccolta\'.</string>
+  <string name="textSettingsMyShowsSectionsTitle">Mie Serie TV</string>
+  <string name="textSettingsMyShowsSectionSummary">Attiva/Disattiva le sezioni nella schermata \'Mie Serie TV\'.</string>
+  <string name="textSettingsMyShowsCountryTitle">Regione JustWatch</string>
+  <string name="textSettingsMyShowsCountrySummary">Selezione la regione per i risultati di JustWatch.</string>
+  <string name="textSettingsMyShowsLanguageTitle">Lingua</string>
+  <string name="textSettingsMyShowsLanguageSummary">Le descrizioni e i titoli verranno tradotti quando possibile. L\'app verrà riavviata.</string>
+  <string name="textSettingsIncludeArchiveStatsTitle">Statistiche Archiviate</string>
+  <string name="textSettingsIncludeArchiveStatsSummary">Includi le serie TV archiviate nelle statistiche.</string>
+  <string name="textSettingsIncludeSpecialsTitle">Stagioni Speciali</string>
+  <string name="textSettingsIncludeSpecialsSummary">Mostra le stagioni \'Speciali\' nei dettagli della serie TV.</string>
+  <string name="textSettingsNotifications">Notifiche</string>
+  <string name="textSettingsPushNotificationsTitle">Notifiche Istantanee</string>
+  <string name="textSettingsPushNotificationsSummary">Ricevi notifiche di carattere generale istantaneamente.</string>
+  <string name="textSettingsShowsNotificationsTitle">Annunci</string>
+  <string name="textSettingsShowsNotificationsSummary">Ricevi notifiche riguardo nuovi film, episodi e stagioni per le serie TV che segui.</string>
+  <string name="textSettingsMisc">Varie</string>
+  <string name="textSettingsContactDevsTitle">Contatta gli sviluppatori</string>
+  <string name="textSettingsContactDevsSummary">Hai un problema? Clicca qui per inviarci un\'email (showlyapp@gmail.com).</string>
+  <string name="textSettingsRateAppTitle">Dacci la tua opinione</string>
+  <string name="textSettingsRateAppSummary">Ti piace Showly? Scrivi la tua recensione sul PlayStore. Grazie!</string>
+  <string name="textSettingsDeleteCacheTitle">Pulisci Cache Immagini</string>
+  <string name="textSettingsDeleteCacheSummary">Clicca per pulire la cache delle immagini. Questo potrebbe aiutare nel caso le immagini delle serie TV non venissero scaricate correttamente.</string>
+  <string name="textSettingsQuickSyncConfirmationTitle">Disattiva la sincronizzazione automatica</string>
+  <string name="textSettingsQuickSyncConfirmationMessage">\nSembra che la sincronizzazione automatica sia attiva.\n\nVuoi disattivarla prima di attivare la sincronizzazione istantanea (consigliato)?\n</string>
+  <string name="textSettingsLogoutTitle">Esci da Trakt.tv</string>
+  <string name="textSettingsLogoutMessage">\nSei sicuro di voler uscire?\n</string>
+  <string name="textSettingsMoviesEnabledTitle">Film</string>
+  <string name="textSettingsMoviesEnabledSummary">Attiva/Disattiva il supporto ai film. L\'app verrà riavviata.</string>
+  <string name="textSettingsWidgets">Widget</string>
+  <string name="textSettingsWidgetsLabelsTitle">Mostra Titoli</string>
+  <string name="textSettingsWidgetsLabelsSummary">Mostra i titoli semitrasparenti per le sezioni dei widget.</string>
+
+
+  </resources>

@@ -52,6 +52,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
@@ -312,7 +313,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           isEnabled = movie.trailer.isNotBlank()
           alpha = if (isEnabled) 1.0F else 0.35F
           onClick {
-            openTrailerLink(movie.trailer)
+            openWebUrl(movie.trailer)
             Analytics.logMovieTrailerClick(movie)
           }
         }
@@ -447,13 +448,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
   }
 
-  private fun openTrailerLink(url: String) {
-    Intent(Intent.ACTION_VIEW).apply {
-      data = Uri.parse(url)
-      startActivity(this)
-    }
-  }
-
   private fun openIMDbLink(id: IdImdb, type: String) {
     val i = Intent(Intent.ACTION_VIEW)
     i.data = Uri.parse("imdb:///$type/${id.id}")
@@ -461,8 +455,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       startActivity(i)
     } catch (e: ActivityNotFoundException) {
       // IMDb App not installed. Start in web browser
-      i.data = Uri.parse("http://www.imdb.com/$type/${id.id}")
-      startActivity(i)
+      openWebUrl("http://www.imdb.com/$type/${id.id}")
     }
   }
 
@@ -470,9 +463,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     if (link == IMDB) {
       openIMDbLink(IdImdb(id), "title")
     } else {
-      val i = Intent(Intent.ACTION_VIEW)
-      i.data = Uri.parse(link.getUri(id, country))
-      startActivity(i)
+      openWebUrl(link.getUri(id, country))
     }
   }
 

@@ -54,6 +54,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
@@ -391,7 +392,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           isEnabled = show.trailer.isNotBlank()
           alpha = if (isEnabled) 1.0F else 0.35F
           onClick {
-            openTrailerLink(show.trailer)
+            openWebUrl(show.trailer)
             Analytics.logShowTrailerClick(show)
           }
         }
@@ -583,13 +584,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun openTrailerLink(url: String) {
-    Intent(Intent.ACTION_VIEW).apply {
-      data = Uri.parse(url)
-      startActivity(this)
-    }
-  }
-
   private fun openIMDbLink(id: IdImdb, type: String) {
     val i = Intent(Intent.ACTION_VIEW)
     i.data = Uri.parse("imdb:///$type/${id.id}")
@@ -597,8 +591,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       startActivity(i)
     } catch (e: ActivityNotFoundException) {
       // IMDb App not installed. Start in web browser
-      i.data = Uri.parse("http://www.imdb.com/$type/${id.id}")
-      startActivity(i)
+      openWebUrl("http://www.imdb.com/$type/${id.id}")
     }
   }
 
@@ -610,9 +603,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     if (link == IMDB) {
       openIMDbLink(IdImdb(id), "title")
     } else {
-      val i = Intent(Intent.ACTION_VIEW)
-      i.data = Uri.parse(link.getUri(id, country))
-      startActivity(i)
+      openWebUrl(link.getUri(id, country))
     }
   }
 

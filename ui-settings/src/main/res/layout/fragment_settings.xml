@@ -693,9 +693,10 @@
       android:layout_width="wrap_content"
       android:layout_height="30dp"
       android:layout_marginStart="@dimen/spaceTiny"
+      android:layout_marginEnd="@dimen/spaceSmall"
       android:adjustViewBounds="true"
       app:layout_constraintBottom_toTopOf="@id/settingsVersion"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/settingsTwitterIcon"
       app:layout_constraintStart_toEndOf="@id/settingsTraktIcon"
       app:layout_constraintTop_toBottomOf="@id/settingsDeleteCache"
       app:srcCompat="@drawable/ic_tmdb"
@@ -715,6 +716,19 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsDeleteCache"
       app:srcCompat="@drawable/ic_trakt"
+      />
+
+    <ImageView
+      android:id="@+id/settingsTwitterIcon"
+      android:layout_width="60dp"
+      android:layout_height="40dp"
+      android:layout_marginStart="@dimen/spaceTiny"
+      android:adjustViewBounds="true"
+      app:layout_constraintBottom_toTopOf="@id/settingsVersion"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/settingsTmdbIcon"
+      app:layout_constraintTop_toBottomOf="@id/settingsDeleteCache"
+      app:srcCompat="@drawable/ic_twitter"
       />
 
     <TextView

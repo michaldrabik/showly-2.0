@@ -79,11 +79,11 @@
 
     <ImageButton
       android:id="@+id/progressMoviesWidgetItemCheckButton"
-      android:layout_width="70dp"
-      android:layout_height="26dp"
+      android:layout_width="60dp"
+      android:layout_height="24dp"
       android:layout_below="@id/progressMoviesWidgetItemSubtitle2"
       android:layout_alignParentEnd="true"
-      android:layout_marginTop="@dimen/spaceSmall"
+      android:layout_marginTop="@dimen/spaceTiny"
       android:background="@drawable/bg_widget_check_button"
       android:src="@drawable/ic_check"
       android:tint="?android:attr/textColorPrimary"
