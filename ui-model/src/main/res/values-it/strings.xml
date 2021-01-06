@@ -29,7 +29,7 @@
   <string name="textTipDiscover">Doppio tocco sul tasto \'Scopri\' per iniziare la ricerca.</string>
   <string name="textTipMyShows">Doppio tocco sul tasto \'Raccolta\' per navigare velocemente fra le pagine.</string>
   <string name="textTipShowDetailsGallery">Tocca l\'immagine della serie TV per aprire la galleria.</string>
-  <string name="textTipShowDetailsQuickProgress">Tocca l\'icona \'Progressi Rapidi\' per aggiornare velocemente i tuoi progressi per la serie TV.\n\nTocca l\'icona \'Archivia\' per archiviarla.</string>
+  <string name="textTipShowDetailsQuickProgress">Tocca l\'icona \'Progresso Rapido\' per aggiornare velocemente i tuoi progressi per la serie TV.\n\nTocca l\'icona \'Archivia\' per archiviarla.</string>
   <string name="textTipDiscoverFilters">Usa i filtri per migliorare la tua pagina Scopri.</string>
   <string name="textTipWatchlistPinItem">Tocca e mantieni un elemento della lista per fissarlo in cima.</string>
 
