@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textAdd">Aggiungi alle mie serie TV</string>
-  <string name="textWatchLater">Guarda Dopo</string>
+  <string name="textWatchLater">Da Vedere</string>
   <string name="textNextEpisode">Prossimo Episodio:</string>
   <string name="textInMyShows">Aggiunta alle mie serie TV</string>
   <string name="textInWatchlist">Aggiunta alla mia lista da vedere</string>
