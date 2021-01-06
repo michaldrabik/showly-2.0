@@ -60,6 +60,9 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     settingsTraktSync.onClick { navigateTo(R.id.actionSettingsFragmentToTraktSync) }
     settingsDeleteCache.onClick { viewModel.deleteImagesCache(requireAppContext()) }
+    settingsTwitterIcon.onClick { openWebUrl(Config.TWITTER_URL) }
+    settingsTraktIcon.onClick { openWebUrl(Config.TRAKT_URL) }
+    settingsTmdbIcon.onClick { openWebUrl(Config.TMDB_URL) }
     settingsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
       view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
     }

@@ -21,6 +21,9 @@ object Config {
 
   const val DEVELOPER_MAIL = "showlyapp@gmail.com"
   const val PLAYSTORE_URL = "https://play.google.com/store/apps/details?id=com.michaldrabik.showly2"
+  const val TWITTER_URL = "https://twitter.com/AppShowly/"
+  const val TRAKT_URL = "https://trakt.tv/"
+  const val TMDB_URL = "https://www.themoviedb.org/"
 
   const val MAIN_GRID_SPAN = 3
   const val IMAGE_FADE_DURATION_MS = 200
@@ -56,7 +59,7 @@ object Config {
 
   const val SHOW_WHATS_NEW = true
   const val WHATS_NEW_TEXT =
-    "* Added <b>Italian</b> language support.\n\n" +
+    "* Added Italian language support.\n\n" +
       "* Bugfixes\n\n" +
-      "Showly is now on Twitter! Follow <b>@AppShowly</b> for news, current app status and other important information."
+      "Showly is now on Twitter! Follow  @AppShowly  for news, current app status and other important information."
 }
