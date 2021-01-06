@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textGenresMovies">Generi:</string>
+  <string name="textSortOrderMovies">Riepilogo:</string>
+  <string name="textDiscoverFilterAnticipatedMovies">Nascondi Film Attesi</string>
+  <string name="textDiscoverFilterCollectionMovies">Nascondi Raccolta</string>
+</resources>
