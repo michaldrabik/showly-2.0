@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuMyMovies">Miei Film</string>
+  <string name="menuMyMovies">I Miei Film</string>
   <string name="menuWatchlistMovies">Da Vedere</string>
 
   <string name="textSearchForMyMovies">Cerca...</string>
