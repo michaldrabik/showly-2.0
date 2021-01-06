@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textOk">OK</string>
+  <string name="textYes">Si</string>
+  <string name="textNo">No</string>
+  <string name="textApply">Applica</string>
+  <string name="textCancel">Annulla</string>
+  <string name="textClose">Chiudi</string>
+  <string name="textNotNow">Non Ora</string>
+  <string name="textNew">Nuovo</string>
+  <string name="textSelect">Seleziona</string>
+  <string name="textHot">Famosi</string>
+  <string name="textEmptyResults">Non ci sono risultati...</string>
+  <string name="textSearchFor">Cerca...</string>
+  <string name="textTip">Consiglio:</string>
+  <string name="textSeason">Stagione %1$d</string>
+  <string name="textSpecials">Speciali</string>
+  <string name="textEpisode">Episodio %1$d</string>
+  <string name="textSortBy">Ordina:</string>
+  <string name="textSpoilersWarning">Questo commento contiene spoiler.\nTocca per leggerlo.</string>
+  <string name="textCommentedOn">%s hanno commentato %s:</string>
+  <string name="textNetwork">%1$s (%2$s)</string>
+  <string name="textShows">Serie TV</string>
+  <string name="textMovies">Film</string>
+  <string name="textMinutesShort">min</string>
+  <string name="textRemoveFromTrakt">Rimuovere da Trakt.tv?</string>
+  <string name="textNoDescription">Panoramica non disponibile.</string>
+
+  <string name="textAiredAlready">Trasmesso</string>
+  <string name="textAirsNow">Trasmesso ora</string>
+
+  <plurals name="textDaysToAir">
+    <item quantity="one">Trasmesso domani</item>
+    <item quantity="other">Trasmesso tra %d giorni</item>
+  </plurals>
+
+  <plurals name="textHoursToAir">
+    <item quantity="one">Trasmesso tra 1 ora</item>
+    <item quantity="other">Trasmesso tra %d ore</item>
+  </plurals>
+
+  <plurals name="textMinutesToAir">
+    <item quantity="one">Trasmesso ora</item>
+    <item quantity="other">Trasmesso tra %d minuti</item>
+  </plurals>
+
+  <string name="textToday">Oggi</string>
+  <string name="textTomorrow">Domani</string>
+  <string name="textThisWeek">Questa Settimana</string>
+  <string name="textNextWeek">Settimana Prossima</string>
+  <string name="textNextMonth">Mese Prossimo</string>
+  <string name="textThisYear">Quest\'anno</string>
+  <string name="textNextYear">L\'anno Prossimo</string>
+  <string name="textLater">Più Avanti</string>
+
+  <string name="textNewEpisodeAvailable">Nuovi episodi disponibili ora!</string>
+  <string name="textNewEpisodeAvailableSoon">Il nuovo episodio sarà disponibile a breve!</string>
+  <string name="textNewSeasonAvailable">Nuova stagione disponibile ora!</string>
+  <string name="textNewSeasonAvailableSoon">La nuova stagione sarà disponibile a breve!</string>
+  <string name="textNewMovieAvailable">Il film è uscito!</string>
+
+  <string name="textTraktSync">Sincronizzazione Trakt.tv</string>
+  <string name="textTraktSyncComplete">Sincronizzazione completata correttamente.</string>
+  <string name="textTraktSyncRunning">Eseguo...</string>
+  <string name="textTraktSyncError">Sincronizzazione Trakt.tv fallita.</string>
+  <string name="textTraktSyncErrorFull">Sincronizzazione Trakt.tv fallita. Per favore controlla la tua connessione internet e riprova oppure contattaci se il problema persiste.</string>
+  <string name="textTraktQuickSyncError">Sincronizzazione istantanea fallita.</string>
+  <string name="textTraktQuickSyncErrorFull">Sincronizzazione istantanea fallita. Per favore controlla la tua connessione internet e riprova oppure contattaci se il problema persiste.</string>
+
+  <string name="menuPin">Fissa in cima</string>
+  <string name="menuUnpin">Rimuovi</string>
+
+  <string name="errorGeneral">Oops... Qualcosa è andato storto.\nPer favore contattaci se il problema persiste.</string>
+  <string name="errorAuthorization">Autorizzazione fallita. Per favore contattaci se il problema persiste.</string>
+  <string name="errorTraktAuthorization">Autorizzazione account Trakt fallita.\nPer favore accedi e prova di nuovo.</string>
+  <string name="errorSeasonsNotLoaded">Per favore attendi che i dati delle stagione siano scaricati.</string>
+  <string name="errorEpisodeNotAired">Questo episodio non è ancora stato trasmesso.</string>
+  <string name="errorCouldNotLoadDiscover">Non siamo riusciti a caricare la pagina scopri.\nPer favore contattaci se il problema persiste.</string>
+  <string name="errorCouldNotLoadShow">Non siamo riusciti a scaricare i dettagli della serie TV.\nPer favore contattaci se il problema persiste.</string>
+  <string name="errorCouldNotLoadMovie">Non siamo riusciti a scaricare i dettagli del film.\nPer favore contattaci se il problema persiste.</string>
+  <string name="errorCouldNotLoadSearchResults">Non siamo riusciti a caricare i risultati di ricerca.\nPer favore contattaci se il problema persiste.</string>
+  <string name="errorNoInternetConnection">Nessuna connessione. Per favore controlla la tua connessione internet.</string>
+  <string name="errorTraktSyncGeneral">Errore sincronizzazione Trakt.tv .\nPer favore controlla la tua connessione internet e prova di nuovo.</string>
+  <string name="errorTraktLocked">Il tuo account Trakt.tv è bloccato.\nPer favore contatta il supporto di Trakt.tv al link https://support.trakt.tv/ per sbloccare il tuo account.</string>
+</resources>
