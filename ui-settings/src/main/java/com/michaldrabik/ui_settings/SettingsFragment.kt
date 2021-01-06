@@ -2,7 +2,6 @@ package com.michaldrabik.ui_settings
 
 import android.content.Intent
 import android.content.Intent.ACTION_SENDTO
-import android.content.Intent.ACTION_VIEW
 import android.content.Intent.EXTRA_EMAIL
 import android.content.Intent.EXTRA_SUBJECT
 import android.net.Uri
@@ -22,6 +21,7 @@ import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MyShowsSection.FINISHED
@@ -85,7 +85,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         settingsTraktAuthorizeIcon.visibleIf(isSignedIn)
         settingsTraktAuthorize.onClick {
           if (isSignedIn) showLogoutDialog()
-          else openTraktWebAuthorization()
+          else openWebUrl(ConfigNetwork.TRAKT_AUTHORIZE_URL)
         }
         val summaryText = when {
           isSignedIn -> {
@@ -286,13 +286,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
       .show()
-  }
-
-  private fun openTraktWebAuthorization() {
-    Intent(ACTION_VIEW).run {
-      data = Uri.parse(ConfigNetwork.TRAKT_AUTHORIZE_URL)
-      startActivity(this)
-    }
   }
 
   private fun restartApp() {
