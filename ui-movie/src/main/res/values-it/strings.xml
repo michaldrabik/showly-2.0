@@ -2,7 +2,7 @@
 <resources>
   <string name="textAddToMyMovies">Aggiungi ai miei film</string>
   <string name="textUpcoming">In Arrivo</string>
-  <string name="textMovieWatchLater">Guarda Dopo</string>
+  <string name="textMovieWatchLater">Da Vedere</string>
   <string name="textInMyMovies">Aggiunto ai miei film</string>
   <string name="textInMoviesWatchlist">Aggiunto alla lista da vedere</string>
 
