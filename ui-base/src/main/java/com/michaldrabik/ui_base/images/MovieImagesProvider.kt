@@ -10,6 +10,7 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily.MOVIE
+import com.michaldrabik.ui_model.ImageSource.CUSTOM
 import com.michaldrabik.ui_model.ImageSource.TMDB
 import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
@@ -31,6 +32,11 @@ class MovieImagesProvider @Inject constructor(
   private val unavailableCache = mutableListOf<IdTrakt>()
 
   suspend fun findCachedImage(movie: Movie, type: ImageType): Image {
+    val custom = database.customImagesDao().getById(movie.traktId, "movie", type.key)
+    if (custom != null) {
+      return mappers.image.fromDatabase(custom)
+    }
+
     val image = database.movieImagesDao().getByMovieId(movie.ids.tmdb.id, type.key)
     return when (image) {
       null ->
@@ -46,9 +52,11 @@ class MovieImagesProvider @Inject constructor(
   suspend fun loadRemoteImage(movie: Movie, type: ImageType, force: Boolean = false): Image {
     val tmdbId = movie.ids.tmdb
     val tvdbId = movie.ids.tvdb
+
     val cachedImage = findCachedImage(movie, type)
-    if (cachedImage.status == AVAILABLE && !force) {
-      return cachedImage
+    if (cachedImage.status == AVAILABLE) {
+      if (!force) return cachedImage
+      if (force && cachedImage.source == CUSTOM) return cachedImage
     }
 
     val images = cloud.tmdbApi.fetchMovieImages(tmdbId.id)

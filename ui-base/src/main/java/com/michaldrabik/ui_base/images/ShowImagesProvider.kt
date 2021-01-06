@@ -12,6 +12,7 @@ import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageSource.AWS
+import com.michaldrabik.ui_model.ImageSource.CUSTOM
 import com.michaldrabik.ui_model.ImageSource.TMDB
 import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
@@ -34,6 +35,11 @@ class ShowImagesProvider @Inject constructor(
   private var awsImagesCache: AwsImages? = null
 
   suspend fun findCachedImage(show: Show, type: ImageType): Image {
+    val custom = database.customImagesDao().getById(show.traktId, "show", type.key)
+    if (custom != null) {
+      return mappers.image.fromDatabase(custom)
+    }
+
     val image = database.showImagesDao().getByShowId(show.ids.tmdb.id, type.key)
     return when (image) {
       null ->
@@ -51,8 +57,9 @@ class ShowImagesProvider @Inject constructor(
     val tmdbId = show.ids.tmdb
 
     val cachedImage = findCachedImage(show, type)
-    if (cachedImage.status == AVAILABLE && !force) {
-      return cachedImage
+    if (cachedImage.status == AVAILABLE) {
+      if (!force) return cachedImage
+      if (force && cachedImage.source == CUSTOM) return cachedImage
     }
 
     var source = TMDB

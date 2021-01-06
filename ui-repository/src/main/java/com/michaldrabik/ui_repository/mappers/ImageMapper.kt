@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_repository.mappers
 
+import com.michaldrabik.storage.database.model.CustomImage
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
@@ -38,6 +39,20 @@ class ImageMapper @Inject constructor() {
       "",
       AVAILABLE,
       ImageSource.fromKey(imageDb.source)
+    )
+  }
+
+  fun fromDatabase(imageDb: CustomImage): Image {
+    return Image(
+      imageDb.id,
+      IdTvdb(),
+      IdTmdb(),
+      enumValueOf(imageDb.type.toUpperCase(ROOT)),
+      enumValueOf(imageDb.family.toUpperCase(ROOT)),
+      imageDb.fileUrl,
+      imageDb.fileUrl,
+      AVAILABLE,
+      ImageSource.CUSTOM
     )
   }
 

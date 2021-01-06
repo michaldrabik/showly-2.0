@@ -5,6 +5,7 @@ enum class ImageSource(
 ) {
   TVDB("tvdb"),
   TMDB("tmdb"),
+  CUSTOM("custom"),
   AWS("aws");
 
   companion object {
