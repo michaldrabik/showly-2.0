@@ -20,8 +20,8 @@
   <string name="textSettingsGeneral">Generale &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Aggiunti di recente</string>
   <string name="textSettingsRecentShowsSummary">Numero di elementi recenti da mostrare in \'Raccolta\'.</string>
-  <string name="textSettingsMyShowsSectionsTitle">Mie Serie TV</string>
-  <string name="textSettingsMyShowsSectionSummary">Attiva/Disattiva le sezioni nella schermata \'Mie Serie TV\'.</string>
+  <string name="textSettingsMyShowsSectionsTitle">Le Mie Serie TV</string>
+  <string name="textSettingsMyShowsSectionSummary">Attiva/Disattiva le sezioni nella pagina \'Le Mie Serie TV\'.</string>
   <string name="textSettingsMyShowsCountryTitle">Regione JustWatch</string>
   <string name="textSettingsMyShowsCountrySummary">Selezione la regione per i risultati di JustWatch.</string>
   <string name="textSettingsMyShowsLanguageTitle">Lingua</string>
