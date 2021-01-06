@@ -15,8 +15,8 @@
   <string name="textStatisticsTotalEpisodesCount">%s episodi</string>
   <string name="textStatisticsTotalEpisodesShowsCount">suddivisi fra %s serie TV.</string>
   <string name="textStatisticsTopGenre">Generi di Punta</string>
-  <string name="textStatisticsTopGenreSubValue">sembrano essere fatti apposta per te. Tocca per vederne altri.</string>
-  <string name="textStatisticsTopGenreSubValue2">sembrano essere fatti apposta per te.</string>
+  <string name="textStatisticsTopGenreSubValue">sembrano fatti apposta per te. Tocca per vederne altri.</string>
+  <string name="textStatisticsTopGenreSubValue2">sembrano fatti apposta per te.</string>
   <string name="textStatisticsShowMore">Mostra di più</string>
   <string name="textStatisticsRatings">Valutati di Recente</string>
   <string name="textStatisticsHours">Ore</string>
