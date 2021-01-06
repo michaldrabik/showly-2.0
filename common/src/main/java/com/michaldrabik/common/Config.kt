@@ -56,6 +56,7 @@ object Config {
 
   const val SHOW_WHATS_NEW = true
   const val WHATS_NEW_TEXT =
-    "* Added JustWatch search links for shows and movies. Region can be changes via Settings.\n\n" +
-      "* Bugfixes"
+    "* Added <b>Italian</b> language support.\n\n" +
+      "* Bugfixes\n\n" +
+      "Showly is now on Twitter! Follow <b>@AppShowly</b> for news, current app status and other important information."
 }
