@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textAdd">Alle mie serie TV</string>
+  <string name="textAdd">Aggiungi serie TV</string>
   <string name="textWatchLater">Da Vedere</string>
   <string name="textNextEpisode">Prossimo Episodio:</string>
-  <string name="textInMyShows">Aggiunta alle mie serie TV</string>
-  <string name="textInWatchlist">Aggiunta alla mia lista da vedere</string>
+  <string name="textInMyShows">Serie TV aggiunta</string>
+  <string name="textInWatchlist">Aggiunta alla lista da vedere</string>
   <string name="textInArchive">Archiviata</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
 
@@ -27,7 +27,7 @@
 
   <string name="textWhatIsArchive">Archiviare?</string>
   <string name="textWhatIsArchiveFull">Cos\'è l\'Archivio?</string>
-  <string name="textArchiveDescription">La pagina <b>Archivio</b> è una lista delle serie TV che hai mollato, abbandonato o in cui non sei più interessato.\n\nLe serie TV archiviate non appariranno più nelle sezioni <b>Progressi</b>, <b>Scopri</b> and <b>Mie Serie TV</b> e non verranno considerate durante l\'importazione da Trakt.tv.</string>
+  <string name="textArchiveDescription">La pagina <b>Archivio</b> è una lista delle serie TV che hai mollato, abbandonato o in cui non sei più interessato.\n\nLe serie TV archiviate non appariranno più nelle sezioni <b>Progressi</b>, <b>Scopri</b> and <b>Le Mie Serie TV</b> e non verranno considerate durante l\'importazione da Trakt.tv.</string>
   <string name="textArchiveConfirmationTitle">Archivia Serie TV</string>
   <string name="textArchiveConfirmationMessage">\nSei sicuro di voler archiviare questa serie tv?\n</string>
 </resources>
