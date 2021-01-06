@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textThisShowIsArchived">Questa serie TV è archiviata.</string>
+
+  <string name="textStatistics">Statistiche</string>
+  <string name="textStatisticsEmpty">Deve essere presente almeno una serie TV nella pagina <b>Mie Serie TV</b>\nper visualizzare le statistiche.</string>
+  <string name="textStatisticsMostWatchedShows">Serie TV Più Viste</string>
+  <string name="textStatisticsTotalTimeSpent">Tempo Totale Serie TV</string>
+  <string name="textStatisticsTotalTimeItIs">ovvero</string>
+  <string name="textStatisticsTotalTimeSpentHours">%s ore</string>
+  <string name="textStatisticsTotalTimeSpentMinutes">%s minuti</string>
+  <string name="textStatisticsTotalTimeSpentMonthsDays">che sono approssimativamente %s mesi e %s giorni</string>
+  <string name="textStatisticsTotalTimeSpentDays">che sono approssimativamente %s giorni.</string>
+  <string name="textStatisticsTotalEpisodes">Episodi Visti</string>
+  <string name="textStatisticsTotalEpisodesCount">%s episodi</string>
+  <string name="textStatisticsTotalEpisodesShowsCount">suddivisi fra %s serie TV.</string>
+  <string name="textStatisticsTopGenre">Generi di Punta</string>
+  <string name="textStatisticsTopGenreSubValue">sembrano essere fatti apposta per te. Tocca per vederne altri.</string>
+  <string name="textStatisticsTopGenreSubValue2">sembrano essere fatti apposta per te.</string>
+  <string name="textStatisticsShowMore">Mostra di più</string>
+  <string name="textStatisticsRatings">Valutati di Recente</string>
+  <string name="textStatisticsHours">Ore</string>
+  <string name="textStatisticsEpisodes">Episodi</string>
+  <string name="textStatisticsSeasons">Stagioni</string>
+  
+  <string name="textArchivedShowsExcluded">Escluse le serie TV archiviate</string>
+</resources>
