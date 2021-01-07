@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuMyShows">Moje Seriale</string>
-  <string name="menuWatchlist">Na Później</string>
-  <string name="menuArchive">Archiwum</string>
-
-  <string name="textSearchForMyShows">Szukaj…</string>
-  <string name="textMyShowsEmpty">Kolekcja jest obecnie pusta.\n\nWybierz zakładkę <b>Odkrywaj</b> aby dodać swój pierwszy serial.</string>
-  <string name="textWatchlistEmpty">Kolekcja <b>Na Później</b> jest obecnie pusta.\n\nWybierz zakładkę <b>Odkrywaj</b> aby dodać seriale które chcesz sprawdzić w przyszłości.</string>
-  <string name="textArchiveEmpty"><b>Archiwum</b> jest obecnie puste.\n\n<b>Archiwum</b> jest listą porzuconych seriali które już cię nie interesują.\n\nZarchiwizowane seriale nie będą się wyświetlać w sekcjach <b>Postęp</b>, <b>Odkrywaj</b> i <b>Moje Seriale</b> oraz będą pominięte podczas importu z Trakt.tv.</string>
+  <string name="menuMyShows">My Shows</string>
+  <string name="menuWatchlist">Watchlist</string>
+  <string name="menuArchive">Archive</string>
+  <string name="textSearchForMyShows">Search…</string>
+  <string name="textMyShowsEmpty">Your shows collection is currently empty.\n\nVisit <b>Discover</b> tab to add your first show.</string>
+  <string name="textWatchlistEmpty">Your <b>Watchlist</b> is currently empty.\n\nVisit <b>Discover</b> tab to add shows you might want to watch in the future.</string>
+  <string name="textArchiveEmpty">Your <b>Archive</b> is currently empty.\n\n<b>Archive</b> is a list of shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Progress</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
 </resources>
