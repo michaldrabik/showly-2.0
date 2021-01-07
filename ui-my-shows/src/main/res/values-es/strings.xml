@@ -3,7 +3,6 @@
   <string name="menuMyShows">Mis Series</string>
   <string name="menuWatchlist">Pendientes</string>
   <string name="menuArchive">Archivo</string>
-
   <string name="textSearchForMyShows">Buscar...</string>
   <string name="textMyShowsEmpty">Tu colección de programas está actualmente vacía.\n\nVisita la pestaña <b>Descubrir</b> para agregar tu primera serie.</string>
   <string name="textWatchlistEmpty">Tu lista <b>Pendientes</b> actualmente está vacía.\n\nVisita la pestaña<b>Descubrir</b> para añadir series que quizá desees ver en el futuro.</string>
