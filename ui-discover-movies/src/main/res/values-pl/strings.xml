@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textGenresMovies">Genres:</string>
-  <string name="textSortOrderMovies">Feed:</string>
-  <string name="textDiscoverFilterAnticipatedMovies">Hide Anticipated Movies</string>
-  <string name="textDiscoverFilterCollectionMovies">Hide Collection</string>
+  <string name="textGenresMovies">Gatunki:</string>
+  <string name="textSortOrderMovies">Strumień:</string>
+  <string name="textDiscoverFilterAnticipatedMovies">Ukryj nadchodzące</string>
+  <string name="textDiscoverFilterCollectionMovies">Ukryj kolekcję</string>
 </resources>
