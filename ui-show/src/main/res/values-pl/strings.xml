@@ -1,33 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textAdd">Dodaj do moich</string>
-  <string name="textWatchLater">Na później</string>
-  <string name="textNextEpisode">Następny Odcinek:</string>
-  <string name="textInMyShows">W moich serialach</string>
-  <string name="textInWatchlist">Na później</string>
-  <string name="textInArchive">W archiwum</string>
+  <string name="textAdd">Add to my shows</string>
+  <string name="textWatchLater">See Later</string>
+  <string name="textNextEpisode">Next Episode:</string>
+  <string name="textInMyShows">Added to my shows</string>
+  <string name="textInWatchlist">Added to watchlist</string>
+  <string name="textInArchive">Archived</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
-
-  <string name="textShowQuickProgressTitle">Szybki Postęp</string>
-  <string name="textShowQuickProgressSubTitle">Wybierz ostatni obejrzany odcinek aby zaktualizować swój postęp.</string>
-  <string name="textShowQuickProgressDone">Postęp został zaktualizowany.</string>
-
-  <string name="textEpisodeDate">Odcinek %1$d | %2$s</string>
+  <string name="textShowQuickProgressTitle">Quick Progress</string>
+  <string name="textShowQuickProgressSubTitle">Select last seen episode to quickly bring your progress up to date.</string>
+  <string name="textShowQuickProgressDone">Your progress has been updated.</string>
+  <string name="textEpisodeDate">Episode %1$d | %2$s</string>
   <string name="textEpisodeTitle">S.%02d E.%02d - \'%s\'</string>
-  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv zostało zaktualizowane.</string>
-  <string name="textActorsEmpty">Obsada niedostępna</string>
-  <string name="textSeasons">Sezony:</string>
-  <string name="textSeasonsEmpty">Sezony niedostępne</string>
+  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv synced successfully.</string>
+  <string name="textActorsEmpty">Actors are not available</string>
+  <string name="textSeasons">Seasons:</string>
+  <string name="textSeasonsEmpty">Seasons not available.</string>
   <string name="textTrailer">Trailer</string>
   <string name="textLink">Link</string>
-  <string name="textShare">Prześlij</string>
-  <string name="textYouMayAlsoLike">Zobacz również:</string>
-  <string name="textRuntimeLeftHours">~%sg %sm do obejrzenia</string>
-  <string name="textRuntimeLeftMinutes">~%sm do obejrzenia</string>
-
-  <string name="textWhatIsArchive">Archiwum?</string>
-  <string name="textWhatIsArchiveFull">Czym jest Archiwum?</string>
-  <string name="textArchiveDescription"><b>Archiwum</b> jest listą porzuconych seriali które już cię nie interesują.\n\nZarchiwizowane seriale nie będą się wyświetlać w sekcjach <b>Postęp</b>, <b>Odkrywaj</b> i <b>Moje Seriale</b> oraz będą pominięte podczas importu z Trakt.tv.</string>
-  <string name="textArchiveConfirmationTitle">Dodaj do Archiwum</string>
-  <string name="textArchiveConfirmationMessage">\nCzy na pewno chcesz przenieść serial do Archiwum?\n</string>
+  <string name="textShare">Share</string>
+  <string name="textYouMayAlsoLike">You may also like:</string>
+  <string name="textRuntimeLeftHours">~%sh %sm remaining</string>
+  <string name="textRuntimeLeftMinutes">~%sm remaining</string>
+  <string name="textWhatIsArchive">Archive?</string>
+  <string name="textWhatIsArchiveFull">What\'s Archive?</string>
+  <string name="textArchiveDescription"><b>Archive</b> is a list of shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Progress</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
+  <string name="textArchiveConfirmationTitle">Archive Show</string>
+  <string name="textArchiveConfirmationMessage">\nAre you sure you want to archive this show?\n</string>
 </resources>
