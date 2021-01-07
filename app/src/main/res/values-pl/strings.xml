@@ -1,24 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuProgress">Postęp</string>
-  <string name="menuDiscover">Odkrywaj</string>
-  <string name="menuCollection">Kolekcja</string>
-
-  <string name="textRateAppTitle">Podoba Ci się Showly 2.0?</string>
-  <string name="textRateAppMessage">Czy chciałbyś ocenić aplikację?\nZajmie to tylko kilka sekund. Dziękuję!\n\n<i>Aplikacja pozostanie otwarta.</i></string>
-  <string name="textRateAppYesButton">Jasne, czemu nie?</string>
-  <string name="textRateAppNoButton">Nie teraz</string>
-
-  <string name="textWhatsNewTitle">Co Nowego?</string>
-  <string name="textWhatsNewSubtitle">Wersja %s</string>
-  <string name="shortcutDiscover">Odkrywaj</string>
-  <string name="shortcutCollection">Kolekcja</string>
-  <string name="shortcutSearch">Szukaj</string>
-  <string name="shortcutProgress">Postęp</string>
-
+  <string name="menuProgress">Progress</string>
+  <string name="menuDiscover">Discover</string>
+  <string name="menuCollection">Collection</string>
+  <string name="textRateAppTitle">Enjoying Showly 2.0?</string>
+  <string name="textRateAppMessage">Would you like to rate the app?\nIt only takes a few seconds. Thanks!\n\n<i>The app will not be closed.</i></string>
+  <string name="textRateAppYesButton">Sure, why not?</string>
+  <string name="textRateAppNoButton">Not now</string>
+  <string name="textWhatsNewTitle">What\'s New</string>
+  <string name="textWhatsNewSubtitle">Version %s</string>
+  <string name="shortcutDiscover">Discover</string>
+  <string name="shortcutCollection">Collection</string>
+  <string name="shortcutSearch">Search</string>
+  <string name="shortcutProgress">Progress</string>
   <plurals name="textTraktQuickSyncComplete">
-    <item quantity="one">1 element zsynchronizowany.</item>
-    <item quantity="few">%d elementów zsynchronizowanych.</item>
-    <item quantity="many">%d elementów zsynchronizowanych.</item>
-    <item quantity="other">%d elementów zsynchronizowanych.</item>
+    <item quantity="one">1 item synced successfully.</item>
+    <item quantity="few">%d items synced successfully.</item>
+    <item quantity="many">%d items synced successfully.</item>
+    <item quantity="other">%d items synced successfully.</item>
   </plurals>
 </resources>
