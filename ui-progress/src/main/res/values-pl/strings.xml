@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="tabCalendar">Kalendarz</string>
-  <string name="tabProgress">Postęp</string>
-  <string name="textCalendarEmpty">Brak nowych nadchodzących odcinków.</string>
-
-  <string name="textWatchlistIncoming">Nadchodzące</string>
-  <string name="textSearchWatchlist">Szukaj…</string>
-  <string name="textDiscoverShows">Odkrywaj Seriale</string>
-  <string name="textEpisodeInfo">Szczegóły</string>
-  <string name="textTraktSynchronize">Import z Trakt.tv</string>
-  <string name="textProgressEmpty">Twój <b>Postęp</b> jest obecnie pusty.\n\nDodaj nowe seriale w zakładce <b>Odkrywaj</b> lub zaimportuj swoją kolekcję z Trakt.tv.</string>
-  <string name="textNewSeason">Premiera Sezonu</string>
+  <string name="tabCalendar">Calendar</string>
+  <string name="tabProgress">Progress</string>
+  <string name="textCalendarEmpty">There are no new episodes on the way.</string>
+  <string name="textWatchlistIncoming">Upcoming</string>
+  <string name="textSearchWatchlist">Search…</string>
+  <string name="textDiscoverShows">Discover Shows</string>
+  <string name="textEpisodeInfo">Details</string>
+  <string name="textTraktSynchronize">Import from Trakt.tv</string>
+  <string name="textProgressEmpty">Your <b>Progress</b> is currently empty.\n\nVisit <b>Discover</b> tab to add shows or import your Trakt.tv collection.</string>
+  <string name="textNewSeason">Season Premiere</string>
   <string name="textSeasonEpisode">S.%02d E.%02d</string>
 </resources>
