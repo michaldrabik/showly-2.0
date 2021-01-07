@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textStatisticsMovies">Statystyki</string>
-  <string name="textStatisticsMoviesEmpty">Dodaj przynajmniej jeden film do <b>Kolekcji</b> aby zobaczyć statystyki.</string>
-  <string name="textStatisticsMoviesTotalTimeSpent">Całkowity Czas</string>
-  <string name="textStatisticsMoviesTotalTimeItIs">czyli</string>
-  <string name="textStatisticsMoviesTotalTimeSpentHours">%s godzin</string>
-  <string name="textStatisticsMoviesTotalTimeSpentMinutes">%s minut</string>
-  <string name="textStatisticsMoviesTotalTimeSpentMonthsDays">co daje około %s miesięcy i %s dni.</string>
-  <string name="textStatisticsMoviesTotalTimeSpentDays">co daje około %s dni.</string>
-  <string name="textStatisticsMoviesTotalMovies">Całkowita Ilość Filmów</string>
-  <string name="textStatisticsMoviesTotalMoviesCount">%s Filmów</string>
-  <string name="textStatisticsMoviesTopGenre">Ulubione Gatunki</string>
-  <string name="textStatisticsMoviesTopGenreSubValue">zdają się być ulubionymi. Kliknij po więcej.</string>
-  <string name="textStatisticsMoviesTopGenreSubValue2">zdają się być ulubionymi.</string>
-  <string name="textStatisticsMoviesRatings">Niedawno Ocenione</string>
+  <string name="textStatisticsMovies">Statistics</string>
+  <string name="textStatisticsMoviesEmpty">At least one movie must be present in <b>My Movies</b>\nbefore statistics can be displayed.</string>
+  <string name="textStatisticsMoviesTotalTimeSpent">Total Time Spent Watching</string>
+  <string name="textStatisticsMoviesTotalTimeItIs">and it is</string>
+  <string name="textStatisticsMoviesTotalTimeSpentHours">%s hours</string>
+  <string name="textStatisticsMoviesTotalTimeSpentMinutes">%s minutes</string>
+  <string name="textStatisticsMoviesTotalTimeSpentMonthsDays">which is about %s months and %s days.</string>
+  <string name="textStatisticsMoviesTotalTimeSpentDays">which is about %s days.</string>
+  <string name="textStatisticsMoviesTotalMovies">Total Movies Watched</string>
+  <string name="textStatisticsMoviesTotalMoviesCount">%s Movies</string>
+  <string name="textStatisticsMoviesTopGenre">Top Genres</string>
+  <string name="textStatisticsMoviesTopGenreSubValue">seem to be your cup of tea. Tap to see more.</string>
+  <string name="textStatisticsMoviesTopGenreSubValue2">seem to be your cup of tea.</string>
+  <string name="textStatisticsMoviesRatings">Recently Rated</string>
 </resources>
