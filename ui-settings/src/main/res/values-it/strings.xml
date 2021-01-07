@@ -18,7 +18,7 @@
   <string name="textSettingsTraktQuickRemoveTitle">Rimozione Istantanea Trakt.tv</string>
   <string name="textSettingsTraktQuickRemoveSummary">Aggiungi l\'opzione per rimuovere i dati da Trakt.tv dopo averlo rimosso dall\'app.</string>
   <string name="textSettingsGeneral">Generale &amp; UX</string>
-  <string name="textSettingsRecentShowsTitle">Aggiunti di recente</string>
+  <string name="textSettingsRecentShowsTitle">Aggiunti di Recente</string>
   <string name="textSettingsRecentShowsSummary">Numero di elementi recenti da mostrare in \'Raccolta\'.</string>
   <string name="textSettingsMyShowsSectionsTitle">Le Mie Serie TV</string>
   <string name="textSettingsMyShowsSectionSummary">Attiva/Disattiva le sezioni nella pagina \'Le Mie Serie TV\'.</string>
