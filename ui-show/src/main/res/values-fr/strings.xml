@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textAdd">Add to my shows</string>
+  <string name="textWatchLater">See Later</string>
+  <string name="textNextEpisode">Next Episode:</string>
+  <string name="textInMyShows">Added to my shows</string>
+  <string name="textInWatchlist">Added to watchlist</string>
+  <string name="textInArchive">Archived</string>
+  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
+  <string name="textShowQuickProgressTitle">Quick Progress</string>
+  <string name="textShowQuickProgressSubTitle">Select last seen episode to quickly bring your progress up to date.</string>
+  <string name="textShowQuickProgressDone">Your progress has been updated.</string>
+  <string name="textEpisodeDate">Episode %1$d | %2$s</string>
+  <string name="textEpisodeTitle">S.%02d E.%02d - \'%s\'</string>
+  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv synced successfully.</string>
+  <string name="textActorsEmpty">Actors are not available</string>
+  <string name="textSeasons">Seasons:</string>
+  <string name="textSeasonsEmpty">Seasons not available.</string>
+  <string name="textTrailer">Trailer</string>
+  <string name="textLink">Link</string>
+  <string name="textShare">Share</string>
+  <string name="textYouMayAlsoLike">You may also like:</string>
+  <string name="textRuntimeLeftHours">~%sh %sm remaining</string>
+  <string name="textRuntimeLeftMinutes">~%sm remaining</string>
+  <string name="textWhatIsArchive">Archive?</string>
+  <string name="textWhatIsArchiveFull">What\'s Archive?</string>
+  <string name="textArchiveDescription"><b>Archive</b> is a list of shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Progress</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
+  <string name="textArchiveConfirmationTitle">Archive Show</string>
+  <string name="textArchiveConfirmationMessage">\nAre you sure you want to archive this show?\n</string>
+</resources>
