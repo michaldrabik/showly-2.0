@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textStatisticsMovies">Statistiche</string>
-  <string name="textStatisticsMoviesEmpty">Deve essere presente almeno un film nella pagina <b>Miei Film</b> per visualizzare le statistiche.</string>
+  <string name="textStatisticsMoviesEmpty">Deve essere presente almeno un film nella pagina <b>I Miei Film</b> per visualizzare le statistiche.</string>
   <string name="textStatisticsMoviesTotalTimeSpent">Tempo Totale Film</string>
   <string name="textStatisticsMoviesTotalTimeItIs">ovvero</string>
   <string name="textStatisticsMoviesTotalTimeSpentHours">%s ore</string>
@@ -11,7 +11,7 @@
   <string name="textStatisticsMoviesTotalMovies">Film Visti</string>
   <string name="textStatisticsMoviesTotalMoviesCount">%s Film</string>
   <string name="textStatisticsMoviesTopGenre">Generi di Punta</string>
-  <string name="textStatisticsMoviesTopGenreSubValue">sembrano essere fatti apposta per te. Tocca per vederne altri.</string>
-  <string name="textStatisticsMoviesTopGenreSubValue2">sembrano essere fatti apposta per te.</string>
+  <string name="textStatisticsMoviesTopGenreSubValue">sembrano fatti apposta per te. Tocca per vederne altri.</string>
+  <string name="textStatisticsMoviesTopGenreSubValue2">sembrano fatti apposta per te.</string>
   <string name="textStatisticsMoviesRatings">Valutati di Recente</string>
 </resources>

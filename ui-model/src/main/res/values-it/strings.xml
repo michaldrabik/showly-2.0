@@ -3,12 +3,12 @@
   <string name="textSortName">Titolo</string>
   <string name="textSortNewest">Più Recenti</string>
   <string name="textSortRated">Più Valutati</string>
-  <string name="textSortDateAdded">Aggiunti di recente</string>
-  <string name="textSortRecentlyWatched">Visti di recente</string>
+  <string name="textSortDateAdded">Aggiunti di Recente</string>
+  <string name="textSortRecentlyWatched">Visti di Recente</string>
   <string name="textSortEpisodesLeft">Episodi Rimasti</string>
 
-  <string name="textHeaderRecentlyAdded">Aggiunti di recente</string>
-  <string name="textHeaderWatching">Stai guardando</string>
+  <string name="textHeaderRecentlyAdded">Aggiunti di Recente</string>
+  <string name="textHeaderWatching">Stai Guardando</string>
   <string name="textHeaderFinished">Finito</string>
   <string name="textHeaderReturning">Rinnovate &amp; In Arrivo</string>
   <string name="textHeaderAll">Tutto</string>
@@ -29,7 +29,7 @@
   <string name="textTipDiscover">Doppio tocco sul tasto \'Scopri\' per iniziare la ricerca.</string>
   <string name="textTipMyShows">Doppio tocco sul tasto \'Raccolta\' per navigare velocemente fra le pagine.</string>
   <string name="textTipShowDetailsGallery">Tocca l\'immagine della serie TV per aprire la galleria.</string>
-  <string name="textTipShowDetailsQuickProgress">Tocca l\'icona \'Progressi Rapidi\' per aggiornare velocemente i tuoi progressi per la serie TV.\n\nTocca l\'icona \'Archivia\' per archiviarla.</string>
+  <string name="textTipShowDetailsQuickProgress">Tocca l\'icona \'Progresso Rapido\' per aggiornare velocemente i tuoi progressi per la serie TV.\n\nTocca l\'icona \'Archivia\' per archiviarla.</string>
   <string name="textTipDiscoverFilters">Usa i filtri per migliorare la tua pagina Scopri.</string>
   <string name="textTipWatchlistPinItem">Tocca e mantieni un elemento della lista per fissarlo in cima.</string>
 
