@@ -34,11 +34,14 @@ class ShowImagesProvider @Inject constructor(
   private val unavailableCache = mutableListOf<IdTrakt>()
   private var awsImagesCache: AwsImages? = null
 
+  suspend fun findCustomImage(traktId: Long, type: ImageType): Image? {
+    val custom = database.customImagesDao().getById(traktId, "show", type.key)
+    return custom?.let { mappers.image.fromDatabase(it) }
+  }
+
   suspend fun findCachedImage(show: Show, type: ImageType): Image {
-    val custom = database.customImagesDao().getById(show.traktId, "show", type.key)
-    if (custom != null) {
-      return mappers.image.fromDatabase(custom)
-    }
+    val custom = findCustomImage(show.traktId, type)
+    if (custom != null) return custom
 
     val image = database.showImagesDao().getByShowId(show.ids.tmdb.id, type.key)
     return when (image) {

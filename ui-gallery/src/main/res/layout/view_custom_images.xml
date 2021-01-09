@@ -55,12 +55,13 @@
     android:elevation="@dimen/elevationTiny"
     app:layout_constraintEnd_toStartOf="@id/viewCustomImagesFanartLayout"
     app:layout_constraintHorizontal_bias="0"
-    app:layout_constraintHorizontal_chainStyle="packed"
+    app:layout_constraintHorizontal_chainStyle="spread"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/viewCustomImagesSubTitle"
     >
 
     <TextView
+      android:id="@+id/viewCustomImagesPosterAddButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
@@ -72,6 +73,21 @@
       android:textSize="16sp"
       app:drawableTint="?attr/colorPlaceholderIcon"
       app:drawableTopCompat="@drawable/ic_custom_image2x"
+      />
+
+    <ImageView
+      android:id="@+id/viewCustomImagesPosterImage"
+      android:layout_width="@dimen/customImagesPosterWidth"
+      android:layout_height="@dimen/customImagesPosterHeight"
+      />
+
+    <ProgressBar
+      android:id="@+id/viewCustomImagesPosterProgress"
+      style="@style/ProgressBar.Dark"
+      android:layout_width="36dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:visibility="gone"
       />
 
   </FrameLayout>
@@ -90,6 +106,7 @@
     >
 
     <TextView
+      android:id="@+id/viewCustomImagesFanartAddButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
@@ -101,6 +118,21 @@
       android:textSize="16sp"
       app:drawableTint="?attr/colorPlaceholderIcon"
       app:drawableTopCompat="@drawable/ic_custom_image2x"
+      />
+
+    <ImageView
+      android:id="@+id/viewCustomImagesFanartImage"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      />
+
+    <ProgressBar
+      android:id="@+id/viewCustomImagesFanartProgress"
+      style="@style/ProgressBar.Dark"
+      android:layout_width="36dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:visibility="gone"
       />
 
   </FrameLayout>

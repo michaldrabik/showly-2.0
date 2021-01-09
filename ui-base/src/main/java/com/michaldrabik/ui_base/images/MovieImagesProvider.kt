@@ -31,11 +31,14 @@ class MovieImagesProvider @Inject constructor(
 
   private val unavailableCache = mutableListOf<IdTrakt>()
 
+  suspend fun findCustomImage(traktId: Long, type: ImageType): Image? {
+    val custom = database.customImagesDao().getById(traktId, "movie", type.key)
+    return custom?.let { mappers.image.fromDatabase(it) }
+  }
+
   suspend fun findCachedImage(movie: Movie, type: ImageType): Image {
-    val custom = database.customImagesDao().getById(movie.traktId, "movie", type.key)
-    if (custom != null) {
-      return mappers.image.fromDatabase(custom)
-    }
+    val custom = findCustomImage(movie.traktId, type)
+    if (custom != null) return custom
 
     val image = database.movieImagesDao().getByMovieId(movie.ids.tmdb.id, type.key)
     return when (image) {

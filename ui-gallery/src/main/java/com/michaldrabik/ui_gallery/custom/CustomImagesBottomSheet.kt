@@ -1,31 +1,45 @@
 package com.michaldrabik.ui_gallery.custom
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.withFailListener
+import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_gallery.R
 import com.michaldrabik.ui_gallery.custom.di.UiCustomImagesComponentProvider
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageFamily
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FANART_URL
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_POSTER_URL
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
+import kotlinx.android.synthetic.main.view_custom_images.*
 import kotlinx.android.synthetic.main.view_custom_images.view.*
 
 class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>() {
 
+  private val family by lazy { arguments?.getSerializable(ARG_TYPE) as ImageFamily }
   private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_SHOW_ID)) }
   private val movieTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_MOVIE_ID)) }
-  private val type by lazy { arguments?.getSerializable(ARG_TYPE) as ImageFamily }
+  private val posterUrl by lazy { requireArguments().getString(ARG_POSTER_URL) }
+  private val fanartUrl by lazy { requireArguments().getString(ARG_FANART_URL) }
 
-  private val cornerRadius by lazy { requireContext().dimenToPx(R.dimen.customImagesCorner).toFloat() }
+  private val cornerRadius by lazy { requireContext().dimenToPx(R.dimen.customImagesCorner) }
 
   override val layoutResId = R.layout.view_custom_images
 
@@ -46,13 +60,11 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-//    viewModel.run {
-//      uiLiveData.observe(viewLifecycleOwner, { render(it) })
-//      messageLiveData.observe(viewLifecycleOwner, { renderSnackbar(it) })
-//      loadTranslation(showTraktId, episode)
-//      loadImage(showTmdbId, episode)
-//      loadRatings(episode)
-//    }
+    viewModel.run {
+      uiLiveData.observe(viewLifecycleOwner, { render(it) })
+      loadPoster(showTraktId, movieTraktId, posterUrl, family)
+      loadFanart(showTraktId, movieTraktId, fanartUrl, family)
+    }
     setupView(view)
   }
 
@@ -68,11 +80,12 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
     val bundle = bundleOf(
       ARG_SHOW_ID to showTraktId.id,
       ARG_MOVIE_ID to movieTraktId.id,
-      ARG_TYPE to type
+      ARG_TYPE to family
     )
     navigateTo(R.id.actionCustomImagesDialogToFanartGallery, bundle)
   }
-//
+
+  //
 //  private fun getDateString(): String {
 //    val millis = episode.firstAired?.toInstant()?.toEpochMilli() ?: -1
 //    return if (millis == -1L) {
@@ -83,8 +96,8 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
 //        .toDisplayString()
 //    }
 //  }
-//
-//  private fun openRateDialog(rating: Int, showRemove: Boolean) {
+
+  //  private fun openRateDialog(rating: Int, showRemove: Boolean) {
 //    val context = requireContext()
 //    val rateView = RateView(context).apply {
 //      setPadding(context.dimenToPx(R.dimen.spaceNormal))
@@ -103,65 +116,38 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
 //      .show()
 //  }
 //
-//  @SuppressLint("SetTextI18n")
-//  private fun render(uiModel: EpisodeDetailsUiModel) {
-//    uiModel.run {
-//      imageLoading?.let { episodeDetailsProgress.visibleIf(it) }
-//      image?.let {
-//        Glide.with(this@CustomImagesBottomSheet)
-//          .load(it.fullFileUrlEpisode)
-//          .transform(CenterCrop(), GranularRoundedCorners(cornerRadius, cornerRadius, 0F, 0F))
-//          .transition(DrawableTransitionOptions.withCrossFade(IMAGE_FADE_DURATION_MS))
-//          .withFailListener { episodeDetailsImagePlaceholder.visible() }
-//          .into(episodeDetailsImage)
-//      }
-//      commentsLoading?.let {
-//        episodeDetailsButtons.visibleIf(!it && comments?.isEmpty() == true)
-//        episodeDetailsCommentsProgress.visibleIf(it)
-//      }
-//      comments?.let { comments ->
-//        episodeDetailsComments.removeAllViews()
-//        comments.forEach {
-//          val view = CommentView(requireContext()).apply {
-//            bind(it)
-//          }
-//          episodeDetailsComments.addView(view)
-//        }
-//        episodeDetailsCommentsLabel.fadeIf(comments.isNotEmpty())
-//        episodeDetailsComments.fadeIf(comments.isNotEmpty())
-//        episodeDetailsCommentsEmpty.fadeIf(comments.isEmpty())
-//      }
-//      ratingState?.let { state ->
-//        episodeDetailsRateProgress.visibleIf(state.rateLoading == true)
-//        episodeDetailsRateButton.visibleIf(state.rateLoading == false)
-//        episodeDetailsRateButton.onClick {
-//          if (state.rateAllowed == true) {
-//            val rate = state.userRating?.rating ?: INITIAL_RATING
-//            openRateDialog(rate, rate != 0)
-//          } else {
-//            renderSnackbar(info(R.string.textSignBeforeRate))
-//          }
-//        }
-//        if (state.hasRating()) {
-//          episodeDetailsRateButton.text = "${state.userRating?.rating}/10"
-//          episodeDetailsRateButton.setTextColor(requireContext().colorFromAttr(android.R.attr.colorAccent))
-//        } else {
-//          episodeDetailsRateButton.setText(R.string.textRate)
-//          episodeDetailsRateButton.setTextColor(requireContext().colorFromAttr(android.R.attr.textColorPrimary))
-//        }
-//      }
-//      translation?.let { t ->
-//        t.consume()?.let {
-//          if (it.overview.isNotBlank()) {
-//            episodeDetailsOverview.setTextFade(it.overview, 0)
-//            if (it.title.isNotBlank()) {
-//              episodeDetailsTitle.setTextFade(it.title, 0)
-//            }
-//          }
-//        }
-//      }
-//    }
-//  }
+  @SuppressLint("SetTextI18n")
+  private fun render(uiModel: CustomImagesUiModel) {
+
+    fun loadImage(url: String, imageView: ImageView, progressView: View) {
+      progressView.visible()
+      Glide.with(requireContext())
+        .load(url)
+        .transform(CenterCrop(), RoundedCorners(cornerRadius))
+        .withSuccessListener { progressView.gone() }
+        .withFailListener { progressView.gone() }
+        .into(imageView)
+    }
+
+    uiModel.run {
+      posterImage?.let {
+        viewCustomImagesPosterAddButton.gone()
+        loadImage(
+          it.fullFileUrl,
+          viewCustomImagesPosterImage,
+          viewCustomImagesPosterProgress
+        )
+      }
+      fanartImage?.let {
+        viewCustomImagesFanartAddButton.gone()
+        loadImage(
+          it.fullFileUrl,
+          viewCustomImagesFanartImage,
+          viewCustomImagesFanartProgress
+        )
+      }
+    }
+  }
 //
 //  private fun renderSnackbar(message: MessageEvent) {
 //    message.consume()?.let {

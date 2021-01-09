@@ -4,11 +4,13 @@ import com.michaldrabik.ui_base.UiModel
 import com.michaldrabik.ui_model.Image
 
 data class CustomImagesUiModel(
-  val image: Image? = null
+  val posterImage: Image? = null,
+  val fanartImage: Image? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
     (newModel as CustomImagesUiModel).copy(
-      image = newModel.image ?: image,
+      posterImage = newModel.posterImage ?: posterImage,
+      fanartImage = newModel.fanartImage ?: fanartImage
     )
 }
