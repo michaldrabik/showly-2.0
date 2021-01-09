@@ -63,7 +63,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
-import com.michaldrabik.ui_gallery.custom.CustomImagesBottomSheet
 import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Genre
@@ -314,8 +313,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun showCustomImages(show: Show) {
-    val modal = CustomImagesBottomSheet.create(show)
-    modal.show(requireActivity().supportFragmentManager, "MODAL_CUSTOM_IMAGES")
+    val bundle = bundleOf(
+      ARG_SHOW_ID to show.ids.trakt.id,
+      ARG_TYPE to SHOW
+    )
+    navigateTo(R.id.actionShowDetailsFragmentToCustomImages, bundle)
   }
 
   private fun showFullActorView(actor: Actor) {
@@ -410,9 +412,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
         showDetailsSeparator4.visible()
         showDetailsCustomImagesLabel.visible()
-        showDetailsCustomImagesLabel.onClick {
-          showCustomImages(show)
-        }
+        showDetailsCustomImagesLabel.onClick { showCustomImages(show) }
         showDetailsAddButton.isEnabled = true
       }
       showLoading?.let {

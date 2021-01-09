@@ -60,7 +60,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
-import com.michaldrabik.ui_gallery.custom.CustomImagesBottomSheet
 import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.IdImdb
@@ -286,8 +285,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   }
 
   private fun showCustomImages(movie: Movie) {
-    val modal = CustomImagesBottomSheet.create(movie)
-    modal.show(requireActivity().supportFragmentManager, "MODAL_CUSTOM_IMAGES")
+    val bundle = bundleOf(
+      ARG_MOVIE_ID to movie.ids.trakt.id,
+      ARG_TYPE to MOVIE
+    )
+    navigateTo(R.id.actionMovieDetailsFragmentToCustomImages, bundle)
   }
 
   private fun render(uiModel: MovieDetailsUiModel) {

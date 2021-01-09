@@ -12,25 +12,18 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_gallery.R
 import com.michaldrabik.ui_gallery.custom.di.UiCustomImagesComponentProvider
-import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.ImageFamily
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import kotlinx.android.synthetic.main.view_custom_images.view.*
 
 class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>() {
 
-  companion object {
-    private const val ARG_ID_TRAKT = "ARG_ID_TRAKT"
-
-    fun create(show: Show) =
-      CustomImagesBottomSheet().apply {
-        arguments = bundleOf(ARG_ID_TRAKT to show.ids.trakt.id)
-      }
-
-    fun create(movie: Movie) =
-      CustomImagesBottomSheet().apply {
-        arguments = bundleOf(ARG_ID_TRAKT to movie.ids.trakt.id)
-      }
-  }
+  private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_SHOW_ID)) }
+  private val movieTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_MOVIE_ID)) }
+  private val type by lazy { arguments?.getSerializable(ARG_TYPE) as ImageFamily }
 
   private val cornerRadius by lazy { requireContext().dimenToPx(R.dimen.customImagesCorner).toFloat() }
 
@@ -65,8 +58,19 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
 
   private fun setupView(view: View) {
     view.run {
+      viewCustomImagesPosterLayout.onClick { showGallery() }
+      viewCustomImagesFanartLayout.onClick { showGallery() }
       viewCustomImagesApplyButton.onClick { dismiss() }
     }
+  }
+
+  private fun showGallery() {
+    val bundle = bundleOf(
+      ARG_SHOW_ID to showTraktId.id,
+      ARG_MOVIE_ID to movieTraktId.id,
+      ARG_TYPE to type
+    )
+    navigateTo(R.id.actionCustomImagesDialogToFanartGallery, bundle)
   }
 //
 //  private fun getDateString(): String {

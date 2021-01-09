@@ -193,6 +193,11 @@
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToCustomImages"
+      app:destination="@id/customImagesDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -214,6 +219,11 @@
       app:exitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToCustomImages"
+      app:destination="@id/customImagesDialog"
+      app:launchSingleTop="true"
       />
   </fragment>
 
@@ -348,5 +358,19 @@
     android:name="com.michaldrabik.ui_trakt_sync.TraktSyncFragment"
     android:label="fragmentTraktSync"
     />
+
+  <dialog
+    android:id="@+id/customImagesDialog"
+    android:name="com.michaldrabik.ui_gallery.custom.CustomImagesBottomSheet"
+    android:label="dialogCustomImages"
+    >
+    <action
+      android:id="@+id/actionCustomImagesDialogToFanartGallery"
+      app:destination="@id/fanartGalleryFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </dialog>
 
 </navigation>

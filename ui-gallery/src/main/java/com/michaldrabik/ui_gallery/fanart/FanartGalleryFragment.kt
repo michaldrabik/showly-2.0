@@ -24,6 +24,7 @@ import com.michaldrabik.ui_gallery.fanart.di.UiFanartGalleryComponentProvider
 import com.michaldrabik.ui_gallery.fanart.recycler.FanartGalleryAdapter
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageFamily
+import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
@@ -37,6 +38,7 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>(R.layout.frag
   private val showId by lazy { IdTrakt(arguments?.getLong(ARG_SHOW_ID, -1) ?: -1) }
   private val movieId by lazy { IdTrakt(arguments?.getLong(ARG_MOVIE_ID, -1) ?: -1) }
   private val type by lazy { arguments?.getSerializable(ARG_TYPE) as ImageFamily }
+
   private val galleryAdapter by lazy { FanartGalleryAdapter() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +54,7 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>(R.layout.frag
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      val id = if (showId.id != -1L) showId else movieId
+      val id = if (type == SHOW) showId else movieId
       loadImage(id, type)
     }
   }
