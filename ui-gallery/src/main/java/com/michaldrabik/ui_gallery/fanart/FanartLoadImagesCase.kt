@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_gallery
+package com.michaldrabik.ui_gallery.fanart
 
 import com.michaldrabik.common.Config.FANART_GALLERY_IMAGES_LIMIT
 import com.michaldrabik.common.di.AppScope

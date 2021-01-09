@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_gallery
+package com.michaldrabik.ui_gallery.fanart
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel

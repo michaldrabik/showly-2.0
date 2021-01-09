@@ -6,6 +6,8 @@ import com.michaldrabik.showly2.ui.main.MainViewModel
 import com.michaldrabik.ui_discover.DiscoverViewModel
 import com.michaldrabik.ui_discover_movies.DiscoverMoviesViewModel
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsViewModel
+import com.michaldrabik.ui_gallery.custom.CustomImagesViewModel
+import com.michaldrabik.ui_gallery.fanart.FanartGalleryViewModel
 import com.michaldrabik.ui_movie.MovieDetailsViewModel
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
 import com.michaldrabik.ui_my_movies.mymovies.MyMoviesViewModel
@@ -61,8 +63,13 @@ abstract class ViewModelsModule {
 
   @Binds
   @IntoMap
-  @ViewModelKey(com.michaldrabik.ui_gallery.FanartGalleryViewModel::class)
-  abstract fun bindFanartGalleryViewModel(viewModel: com.michaldrabik.ui_gallery.FanartGalleryViewModel): ViewModel
+  @ViewModelKey(CustomImagesViewModel::class)
+  abstract fun bindCustomImagesViewModel(viewModel: CustomImagesViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(FanartGalleryViewModel::class)
+  abstract fun bindFanartGalleryViewModel(viewModel: FanartGalleryViewModel): ViewModel
 
   @Binds
   @IntoMap

@@ -219,7 +219,7 @@
 
   <fragment
     android:id="@+id/fanartGalleryFragment"
-    android:name="com.michaldrabik.ui_gallery.FanartGalleryFragment"
+    android:name="com.michaldrabik.ui_gallery.fanart.FanartGalleryFragment"
     android:label="fragmentFanartGallery"
     />
 

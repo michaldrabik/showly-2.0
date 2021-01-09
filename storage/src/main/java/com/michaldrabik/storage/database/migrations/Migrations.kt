@@ -288,8 +288,8 @@ object Migrations {
         execSQL(
           "CREATE TABLE IF NOT EXISTS `custom_images` (" +
             "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-            "`id_trakt` INTEGER PRIMARY KEY NOT NULL, " +
-            "`family` TEST NOT NULL, " +
+            "`id_trakt` INTEGER NOT NULL, " +
+            "`family` TEXT NOT NULL, " +
             "`type` TEXT NOT NULL, " +
             "`file_url` TEXT NOT NULL)"
         )

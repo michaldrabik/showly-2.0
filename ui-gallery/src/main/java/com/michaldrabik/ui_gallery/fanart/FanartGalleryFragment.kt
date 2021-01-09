@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_gallery
+package com.michaldrabik.ui_gallery.fanart
 
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_FULL_USER
@@ -19,8 +19,9 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
-import com.michaldrabik.ui_gallery.di.UiFanartGalleryComponentProvider
-import com.michaldrabik.ui_gallery.recycler.FanartGalleryAdapter
+import com.michaldrabik.ui_gallery.R
+import com.michaldrabik.ui_gallery.fanart.di.UiFanartGalleryComponentProvider
+import com.michaldrabik.ui_gallery.fanart.recycler.FanartGalleryAdapter
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID

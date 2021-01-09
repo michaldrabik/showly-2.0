@@ -483,7 +483,6 @@
         app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedRecycler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsCommentsButton"
-        tools:visibility="visible"
         />
 
       <com.michaldrabik.ui_show.views.ShowLinksView
@@ -509,7 +508,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedLabel"
-        tools:visibility="visible"
         />
 
       <ProgressBar
@@ -521,6 +519,46 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsShareButton"
+        />
+
+      <View
+        android:id="@+id/showDetailsSeparator4"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:layout_marginBottom="@dimen/spaceMedium"
+        android:background="?attr/colorSeparator"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsCustomImagesLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedRecycler"
+        app:layout_goneMarginBottom="@dimen/spaceBig"
+        app:layout_goneMarginTop="54dp"
+        tools:visibility="visible"
+        />
+
+      <TextView
+        android:id="@+id/showDetailsCustomImagesLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceNormal"
+        android:drawablePadding="@dimen/spaceTiny"
+        android:gravity="center_vertical"
+        android:text="@string/textSetCustomImages"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:drawableStartCompat="@drawable/ic_custom_image"
+        app:drawableTint="?android:attr/textColorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsSeparator4"
+        tools:visibility="visible"
         />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

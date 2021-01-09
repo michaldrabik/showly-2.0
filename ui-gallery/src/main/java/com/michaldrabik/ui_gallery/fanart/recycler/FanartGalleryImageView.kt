@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_gallery.recycler
+package com.michaldrabik.ui_gallery.fanart.recycler
 
 import android.content.Context
 import android.util.AttributeSet

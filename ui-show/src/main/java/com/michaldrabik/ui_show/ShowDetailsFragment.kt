@@ -63,6 +63,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
+import com.michaldrabik.ui_gallery.custom.CustomImagesBottomSheet
 import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Genre
@@ -312,6 +313,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     modal.show(requireActivity().supportFragmentManager, "MODAL")
   }
 
+  private fun showCustomImages(show: Show) {
+    val modal = CustomImagesBottomSheet.create(show)
+    modal.show(requireActivity().supportFragmentManager, "MODAL_CUSTOM_IMAGES")
+  }
+
   private fun showFullActorView(actor: Actor) {
     Glide.with(this)
       .load("$TMDB_IMAGE_BASE_ACTOR_FULL_URL${actor.image}")
@@ -401,6 +407,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
             openLinksMenu(show, uiModel.country ?: UNITED_STATES)
             Analytics.logShowLinksClick(show)
           }
+        }
+        showDetailsSeparator4.visible()
+        showDetailsCustomImagesLabel.visible()
+        showDetailsCustomImagesLabel.onClick {
+          showCustomImages(show)
         }
         showDetailsAddButton.isEnabled = true
       }
