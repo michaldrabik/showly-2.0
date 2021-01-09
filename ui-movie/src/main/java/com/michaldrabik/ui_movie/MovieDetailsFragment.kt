@@ -67,6 +67,7 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily.MOVIE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
+import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Translation
@@ -81,6 +82,7 @@ import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_WATCHLIST
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.UPCOMING
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import kotlinx.android.synthetic.main.fragment_movie_details.*
@@ -146,9 +148,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsImage.onClick {
       val bundle = bundleOf(
         ARG_MOVIE_ID to movieId.id,
-        ARG_TYPE to MOVIE
+        ARG_FAMILY to MOVIE,
+        ARG_TYPE to FANART
       )
-      navigateTo(R.id.actionMovieDetailsFragmentToFanartGallery, bundle)
+      navigateTo(R.id.actionMovieDetailsFragmentToArtGallery, bundle)
       Analytics.logMovieGalleryClick(movieId.id)
     }
     movieDetailsCommentsButton.onClick {
@@ -287,7 +290,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private fun showCustomImages(movie: Movie) {
     val bundle = bundleOf(
       ARG_MOVIE_ID to movie.ids.trakt.id,
-      ARG_TYPE to MOVIE
+      ARG_FAMILY to MOVIE
     )
     navigateTo(R.id.actionMovieDetailsFragmentToCustomImages, bundle)
   }

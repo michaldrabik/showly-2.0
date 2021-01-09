@@ -7,7 +7,7 @@ import com.michaldrabik.ui_discover.DiscoverViewModel
 import com.michaldrabik.ui_discover_movies.DiscoverMoviesViewModel
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsViewModel
 import com.michaldrabik.ui_gallery.custom.CustomImagesViewModel
-import com.michaldrabik.ui_gallery.fanart.FanartGalleryViewModel
+import com.michaldrabik.ui_gallery.fanart.ArtGalleryViewModel
 import com.michaldrabik.ui_movie.MovieDetailsViewModel
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
 import com.michaldrabik.ui_my_movies.mymovies.MyMoviesViewModel
@@ -68,8 +68,8 @@ abstract class ViewModelsModule {
 
   @Binds
   @IntoMap
-  @ViewModelKey(FanartGalleryViewModel::class)
-  abstract fun bindFanartGalleryViewModel(viewModel: FanartGalleryViewModel): ViewModel
+  @ViewModelKey(ArtGalleryViewModel::class)
+  abstract fun bindFanartGalleryViewModel(viewModel: ArtGalleryViewModel): ViewModel
 
   @Binds
   @IntoMap

@@ -23,6 +23,10 @@ import com.michaldrabik.ui_gallery.R
 import com.michaldrabik.ui_gallery.custom.di.UiCustomImagesComponentProvider
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageFamily
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.ImageType.FANART
+import com.michaldrabik.ui_model.ImageType.POSTER
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FANART_URL
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_POSTER_URL
@@ -33,7 +37,7 @@ import kotlinx.android.synthetic.main.view_custom_images.view.*
 
 class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>() {
 
-  private val family by lazy { arguments?.getSerializable(ARG_TYPE) as ImageFamily }
+  private val family by lazy { arguments?.getSerializable(ARG_FAMILY) as ImageFamily }
   private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_SHOW_ID)) }
   private val movieTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_MOVIE_ID)) }
   private val posterUrl by lazy { requireArguments().getString(ARG_POSTER_URL) }
@@ -70,19 +74,20 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
 
   private fun setupView(view: View) {
     view.run {
-      viewCustomImagesPosterLayout.onClick { showGallery() }
-      viewCustomImagesFanartLayout.onClick { showGallery() }
+      viewCustomImagesPosterLayout.onClick { showGallery(POSTER) }
+      viewCustomImagesFanartLayout.onClick { showGallery(FANART) }
       viewCustomImagesApplyButton.onClick { dismiss() }
     }
   }
 
-  private fun showGallery() {
+  private fun showGallery(type: ImageType) {
     val bundle = bundleOf(
       ARG_SHOW_ID to showTraktId.id,
       ARG_MOVIE_ID to movieTraktId.id,
-      ARG_TYPE to family
+      ARG_FAMILY to family,
+      ARG_TYPE to type
     )
-    navigateTo(R.id.actionCustomImagesDialogToFanartGallery, bundle)
+    navigateTo(R.id.actionCustomImagesDialogToArtGallery, bundle)
   }
 
   //

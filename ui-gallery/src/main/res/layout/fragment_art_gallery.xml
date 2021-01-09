@@ -8,13 +8,13 @@
   >
 
   <androidx.viewpager2.widget.ViewPager2
-    android:id="@+id/fanartGalleryPager"
+    android:id="@+id/artGalleryPager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     />
 
   <ImageView
-    android:id="@+id/fanartGalleryBackArrow"
+    android:id="@+id/artGalleryBackArrow"
     android:layout_width="@dimen/backArrowSize"
     android:layout_height="@dimen/backArrowSize"
     android:background="?android:attr/selectableItemBackground"
@@ -24,7 +24,7 @@
     />
 
   <me.relex.circleindicator.CircleIndicator3
-    android:id="@+id/fanartGalleryPagerIndicator"
+    android:id="@+id/artGalleryPagerIndicator"
     android:layout_width="match_parent"
     android:layout_height="12dp"
     android:layout_gravity="center_horizontal|bottom"
@@ -34,7 +34,7 @@
     />
 
   <me.relex.circleindicator.CircleIndicator3
-    android:id="@+id/fanartGalleryPagerIndicatorWhite"
+    android:id="@+id/artGalleryPagerIndicatorWhite"
     android:layout_width="match_parent"
     android:layout_height="12dp"
     android:layout_gravity="center_horizontal|bottom"

@@ -20,42 +20,48 @@ import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_gallery.R
-import com.michaldrabik.ui_gallery.fanart.di.UiFanartGalleryComponentProvider
-import com.michaldrabik.ui_gallery.fanart.recycler.FanartGalleryAdapter
+import com.michaldrabik.ui_gallery.fanart.di.UiArtGalleryComponentProvider
+import com.michaldrabik.ui_gallery.fanart.recycler.ArtGalleryAdapter
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageFamily.SHOW
+import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.ImageType.POSTER
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
-import kotlinx.android.synthetic.main.fragment_fanart_gallery.*
+import kotlinx.android.synthetic.main.fragment_art_gallery.*
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
-class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>(R.layout.fragment_fanart_gallery) {
+class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_art_gallery) {
 
-  override val viewModel by viewModels<FanartGalleryViewModel> { viewModelFactory }
+  override val viewModel by viewModels<ArtGalleryViewModel> { viewModelFactory }
 
   private val showId by lazy { IdTrakt(arguments?.getLong(ARG_SHOW_ID, -1) ?: -1) }
   private val movieId by lazy { IdTrakt(arguments?.getLong(ARG_MOVIE_ID, -1) ?: -1) }
-  private val type by lazy { arguments?.getSerializable(ARG_TYPE) as ImageFamily }
+  private val family by lazy { arguments?.getSerializable(ARG_FAMILY) as ImageFamily }
+  private val type by lazy { arguments?.getSerializable(ARG_TYPE) as ImageType }
 
-  private val galleryAdapter by lazy { FanartGalleryAdapter() }
+  private val galleryAdapter by lazy { ArtGalleryAdapter() }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiFanartGalleryComponentProvider).provideFanartGalleryComponent().inject(this)
+    (requireActivity() as UiArtGalleryComponentProvider).provideArtGalleryComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    requireActivity().requestedOrientation = SCREEN_ORIENTATION_FULL_USER
+    if (type != POSTER) {
+      requireActivity().requestedOrientation = SCREEN_ORIENTATION_FULL_USER
+    }
     setupView()
     setupStatusBar()
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      val id = if (type == SHOW) showId else movieId
-      loadImage(id, type)
+      val id = if (family == SHOW) showId else movieId
+      loadImages(id, family, type)
     }
   }
 
@@ -73,41 +79,41 @@ class FanartGalleryFragment : BaseFragment<FanartGalleryViewModel>(R.layout.frag
     super.onConfigurationChanged(newConfig)
     when (newConfig.orientation) {
       ORIENTATION_LANDSCAPE -> {
-        fanartGalleryBackArrow.imageTintList = requireContext().colorStateListFromAttr(R.attr.textColorOnSurface)
-        fanartGalleryPagerIndicatorWhite.visible()
-        fanartGalleryPagerIndicator.gone()
-        fanartGalleryPagerIndicatorWhite.setViewPager(fanartGalleryPager)
+        artGalleryBackArrow.imageTintList = requireContext().colorStateListFromAttr(R.attr.textColorOnSurface)
+        artGalleryPagerIndicatorWhite.visible()
+        artGalleryPagerIndicator.gone()
+        artGalleryPagerIndicatorWhite.setViewPager(artGalleryPager)
       }
       ORIENTATION_PORTRAIT -> {
-        fanartGalleryBackArrow.imageTintList = requireContext().colorStateListFromAttr(android.R.attr.textColorPrimary)
-        fanartGalleryPagerIndicatorWhite.gone()
-        fanartGalleryPagerIndicator.visible()
-        fanartGalleryPagerIndicator.setViewPager(fanartGalleryPager)
+        artGalleryBackArrow.imageTintList = requireContext().colorStateListFromAttr(android.R.attr.textColorPrimary)
+        artGalleryPagerIndicatorWhite.gone()
+        artGalleryPagerIndicator.visible()
+        artGalleryPagerIndicator.setViewPager(artGalleryPager)
       }
     }
   }
 
   private fun setupView() {
-    fanartGalleryBackArrow.onClick { requireActivity().onBackPressed() }
-    fanartGalleryPager.run {
+    artGalleryBackArrow.onClick { requireActivity().onBackPressed() }
+    artGalleryPager.run {
       galleryAdapter.onItemClickListener = { nextPage() }
       adapter = galleryAdapter
       offscreenPageLimit = 2
-      fanartGalleryPagerIndicator.setViewPager(this)
-      adapter?.registerAdapterDataObserver(fanartGalleryPagerIndicator.adapterDataObserver)
+      artGalleryPagerIndicator.setViewPager(this)
+      adapter?.registerAdapterDataObserver(artGalleryPagerIndicator.adapterDataObserver)
     }
   }
 
   private fun setupStatusBar() {
-    fanartGalleryBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
+    artGalleryBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
       (view.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = insets.systemWindowInsetTop)
     }
   }
 
-  private fun render(uiModel: FanartGalleryUiModel) {
+  private fun render(uiModel: ArtGalleryUiModel) {
     uiModel.run {
       images?.let {
-        galleryAdapter.setItems(it)
+        galleryAdapter.setItems(it, type!!)
       }
     }
   }

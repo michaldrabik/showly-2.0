@@ -71,12 +71,14 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
+import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_QUICK_PROGRESS
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_show.actors.ActorsAdapter
@@ -166,9 +168,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsImage.onClick {
       val bundle = bundleOf(
         ARG_SHOW_ID to showId.id,
-        ARG_TYPE to SHOW
+        ARG_FAMILY to SHOW,
+        ARG_TYPE to FANART
       )
-      navigateTo(R.id.actionShowDetailsFragmentToFanartGallery, bundle)
+      navigateTo(R.id.actionShowDetailsFragmentToArtGallery, bundle)
       Analytics.logShowGalleryClick(showId.id)
     }
     showDetailsCommentsButton.onClick {
@@ -315,7 +318,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun showCustomImages(show: Show) {
     val bundle = bundleOf(
       ARG_SHOW_ID to show.ids.trakt.id,
-      ARG_TYPE to SHOW
+      ARG_FAMILY to SHOW
     )
     navigateTo(R.id.actionShowDetailsFragmentToCustomImages, bundle)
   }

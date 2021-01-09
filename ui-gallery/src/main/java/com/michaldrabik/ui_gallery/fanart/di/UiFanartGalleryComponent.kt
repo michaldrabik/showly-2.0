@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_gallery.fanart.di
 
-import com.michaldrabik.ui_gallery.fanart.FanartGalleryFragment
+import com.michaldrabik.ui_gallery.fanart.ArtGalleryFragment
 import dagger.Subcomponent
 
 @Subcomponent
@@ -11,5 +11,5 @@ interface UiFanartGalleryComponent {
     fun create(): UiFanartGalleryComponent
   }
 
-  fun inject(fragment: FanartGalleryFragment)
+  fun inject(fragment: ArtGalleryFragment)
 }

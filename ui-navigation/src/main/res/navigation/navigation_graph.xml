@@ -186,8 +186,8 @@
       app:popExitAnim="@anim/anim_fade_out"
       />
     <action
-      android:id="@+id/actionShowDetailsFragmentToFanartGallery"
-      app:destination="@id/fanartGalleryFragment"
+      android:id="@+id/actionShowDetailsFragmentToArtGallery"
+      app:destination="@id/artGalleryFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:exitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
@@ -213,8 +213,8 @@
       app:popExitAnim="@anim/anim_fade_out"
       />
     <action
-      android:id="@+id/actionMovieDetailsFragmentToFanartGallery"
-      app:destination="@id/fanartGalleryFragment"
+      android:id="@+id/actionMovieDetailsFragmentToArtGallery"
+      app:destination="@id/artGalleryFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:exitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
@@ -228,9 +228,9 @@
   </fragment>
 
   <fragment
-    android:id="@+id/fanartGalleryFragment"
-    android:name="com.michaldrabik.ui_gallery.fanart.FanartGalleryFragment"
-    android:label="fragmentFanartGallery"
+    android:id="@+id/artGalleryFragment"
+    android:name="com.michaldrabik.ui_gallery.fanart.ArtGalleryFragment"
+    android:label="fragmentArtGallery"
     />
 
   <fragment
@@ -365,8 +365,8 @@
     android:label="dialogCustomImages"
     >
     <action
-      android:id="@+id/actionCustomImagesDialogToFanartGallery"
-      app:destination="@id/fanartGalleryFragment"
+      android:id="@+id/actionCustomImagesDialogToArtGallery"
+      app:destination="@id/artGalleryFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
