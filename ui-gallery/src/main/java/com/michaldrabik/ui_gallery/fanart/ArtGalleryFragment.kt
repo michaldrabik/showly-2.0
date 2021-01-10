@@ -115,7 +115,6 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
       adapter?.registerAdapterDataObserver(artGalleryPagerIndicator.adapterDataObserver)
     }
     artGallerySelectButton.run {
-      visibleIf(isPickMode == true)
       onClick {
         val id = if (family == SHOW) showId else movieId
         val currentImage = galleryAdapter.getItem(artGalleryPager.currentItem)
@@ -135,6 +134,8 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
     uiModel.run {
       images?.let {
         galleryAdapter.setItems(it, type!!)
+        artGalleryEmptyView.visibleIf(it.isEmpty())
+        artGallerySelectButton.visibleIf(it.isNotEmpty() && isPickMode == true)
       }
       pickedImage?.let {
         it.consume()?.let {

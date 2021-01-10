@@ -58,4 +58,15 @@
     android:visibility="gone"
     />
 
+  <TextView
+    android:id="@+id/artGalleryEmptyView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:text="@string/textGalleryEmpty"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="16sp"
+    android:visibility="gone"
+    />
+
 </FrameLayout>
