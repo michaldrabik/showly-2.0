@@ -5,10 +5,12 @@ import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.tmdb.model.TmdbImage
 import com.michaldrabik.network.tmdb.model.TmdbImages
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.CustomImage
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageFamily.MOVIE
 import com.michaldrabik.ui_model.ImageSource.CUSTOM
 import com.michaldrabik.ui_model.ImageSource.TMDB
@@ -33,7 +35,7 @@ class MovieImagesProvider @Inject constructor(
 
   suspend fun findCustomImage(traktId: Long, type: ImageType): Image? {
     val custom = database.customImagesDao().getById(traktId, "movie", type.key)
-    return custom?.let { mappers.image.fromDatabase(it) }
+    return custom?.let { mappers.image.fromDatabase(it, type) }
   }
 
   suspend fun findCachedImage(movie: Movie, type: ImageType): Image {
@@ -124,6 +126,11 @@ class MovieImagesProvider @Inject constructor(
       .lastOrNull()
       ?: images.firstOrNull { if (type == POSTER) it.isEnglish() else it.isPlain() }
       ?: images.firstOrNull()
+
+  suspend fun saveCustomImage(showTraktId: IdTrakt, image: Image, imageFamily: ImageFamily, imageType: ImageType) {
+    val imageDb = CustomImage(0, showTraktId.id, imageFamily.key, imageType.key, image.fullFileUrl)
+    database.customImagesDao().insertImage(imageDb)
+  }
 
   suspend fun deleteLocalCache() = database.movieImagesDao().deleteAll()
 }

@@ -6,10 +6,12 @@ import com.michaldrabik.network.aws.model.AwsImages
 import com.michaldrabik.network.tmdb.model.TmdbImage
 import com.michaldrabik.network.tmdb.model.TmdbImages
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.CustomImage
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageSource.AWS
 import com.michaldrabik.ui_model.ImageSource.CUSTOM
@@ -36,7 +38,7 @@ class ShowImagesProvider @Inject constructor(
 
   suspend fun findCustomImage(traktId: Long, type: ImageType): Image? {
     val custom = database.customImagesDao().getById(traktId, "show", type.key)
-    return custom?.let { mappers.image.fromDatabase(it) }
+    return custom?.let { mappers.image.fromDatabase(it, type) }
   }
 
   suspend fun findCachedImage(show: Show, type: ImageType): Image {
@@ -124,14 +126,14 @@ class ShowImagesProvider @Inject constructor(
       }
       else -> {
         database.showImagesDao().insertShowImage(mappers.image.toDatabaseShow(image))
-        storeExtraImage(tmdbId, tvdbId, images, type)
+        saveExtraImage(tmdbId, tvdbId, images, type)
       }
     }
 
     return image
   }
 
-  private suspend fun storeExtraImage(
+  private suspend fun saveExtraImage(
     tmdbId: IdTmdb,
     tvdbId: IdTvdb,
     images: TmdbImages,
@@ -176,6 +178,11 @@ class ShowImagesProvider @Inject constructor(
       .lastOrNull()
       ?: images.firstOrNull { if (type == POSTER) it.isEnglish() else it.isPlain() }
       ?: images.firstOrNull()
+
+  suspend fun saveCustomImage(showTraktId: IdTrakt, image: Image, imageFamily: ImageFamily, imageType: ImageType) {
+    val imageDb = CustomImage(0, showTraktId.id, imageFamily.key, imageType.key, image.fullFileUrl)
+    database.customImagesDao().insertImage(imageDb)
+  }
 
   suspend fun deleteLocalCache() = database.showImagesDao().deleteAll()
 }

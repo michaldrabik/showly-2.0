@@ -30,10 +30,8 @@ import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FANART_URL
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PICK_MODE
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_POSTER_URL
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
@@ -105,7 +103,10 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
   }
 
   private fun setupView() {
-    artGalleryBackArrow.onClick { requireActivity().onBackPressed() }
+    artGalleryBackArrow.onClick {
+      if (isPickMode == true) setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf())
+      requireActivity().onBackPressed()
+    }
     artGalleryPager.run {
       galleryAdapter.onItemClickListener = { nextPage() }
       adapter = galleryAdapter
@@ -116,13 +117,9 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
     artGallerySelectButton.run {
       visibleIf(isPickMode == true)
       onClick {
-        val key = if (type == POSTER) ARG_POSTER_URL else ARG_FANART_URL
+        val id = if (family == SHOW) showId else movieId
         val currentImage = galleryAdapter.getItem(artGalleryPager.currentItem)
-        setFragmentResult(
-          REQUEST_CUSTOM_IMAGE,
-          bundleOf(key to currentImage.fullFileUrl)
-        )
-        requireActivity().onBackPressed()
+        viewModel.saveCustomImage(id, currentImage, family, type)
       }
     }
   }
@@ -138,6 +135,12 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
     uiModel.run {
       images?.let {
         galleryAdapter.setItems(it, type!!)
+      }
+      pickedImage?.let {
+        it.consume()?.let {
+          setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf())
+          requireActivity().onBackPressed()
+        }
       }
     }
   }

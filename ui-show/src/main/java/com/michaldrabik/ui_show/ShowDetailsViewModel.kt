@@ -103,8 +103,8 @@ class ShowDetailsViewModel @Inject constructor(
           country = AppCountry.fromCode(settingsRepository.getCountry())
         )
 
+        loadBackgroundImage(show)
         launch { loadNextEpisode(show) }
-        launch { loadBackgroundImage(show) }
         launch { loadActors(show) }
         launch {
           areSeasonsLoaded = false
@@ -140,12 +140,14 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun loadBackgroundImage(show: Show) {
-    uiState = try {
-      val backgroundImage = imagesProvider.loadRemoteImage(show, FANART)
-      ShowDetailsUiModel(image = backgroundImage)
-    } catch (t: Throwable) {
-      ShowDetailsUiModel(image = Image.createUnavailable(FANART))
+  fun loadBackgroundImage(show: Show? = null) {
+    viewModelScope.launch {
+      uiState = try {
+        val backgroundImage = imagesProvider.loadRemoteImage(show ?: this@ShowDetailsViewModel.show, FANART)
+        ShowDetailsUiModel(image = backgroundImage)
+      } catch (t: Throwable) {
+        ShowDetailsUiModel(image = Image.createUnavailable(FANART))
+      }
     }
   }
 

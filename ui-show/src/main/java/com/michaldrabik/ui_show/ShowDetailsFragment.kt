@@ -80,8 +80,6 @@ import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_QUICK_PROGRESS
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FANART_URL
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_POSTER_URL
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
@@ -136,7 +134,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiShowDetailsComponentProvider).provideShowDetailsComponent().inject(this)
     super.onCreate(savedInstanceState)
-    setupCustomImageListener()
+    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, _ ->
+      viewModel.loadBackgroundImage()
+      showCustomImages(showId.id)
+    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -258,15 +259,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun setupCustomImageListener() {
-    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
-      with(bundle) {
-        getString(ARG_POSTER_URL)?.let { showCustomImages(showId.id, posterUrl = it) }
-        getString(ARG_FANART_URL)?.let { showCustomImages(showId.id, fanartUrl = it) }
-      }
-    }
-  }
-
   private fun showEpisodesView(item: SeasonListItem) {
     showDetailsEpisodesView.run {
       bind(item)
@@ -329,16 +321,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     modal.show(requireActivity().supportFragmentManager, "MODAL")
   }
 
-  private fun showCustomImages(
-    showId: Long,
-    posterUrl: String? = null,
-    fanartUrl: String? = null
-  ) {
+  private fun showCustomImages(showId: Long) {
     val bundle = bundleOf(
       ARG_SHOW_ID to showId,
-      ARG_FAMILY to SHOW,
-      ARG_POSTER_URL to posterUrl,
-      ARG_FANART_URL to fanartUrl
+      ARG_FAMILY to SHOW
     )
     navigateTo(R.id.actionShowDetailsFragmentToCustomImages, bundle)
   }

@@ -7,6 +7,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageSource
 import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
+import com.michaldrabik.ui_model.ImageType
 import java.util.Locale.ROOT
 import javax.inject.Inject
 import com.michaldrabik.storage.database.model.MovieImage as MovieImageDb
@@ -42,12 +43,12 @@ class ImageMapper @Inject constructor() {
     )
   }
 
-  fun fromDatabase(imageDb: CustomImage): Image {
+  fun fromDatabase(imageDb: CustomImage, type: ImageType?): Image {
     return Image(
       imageDb.id,
       IdTvdb(),
       IdTmdb(),
-      enumValueOf(imageDb.type.toUpperCase(ROOT)),
+      type ?: enumValueOf(imageDb.type.toUpperCase(ROOT)),
       enumValueOf(imageDb.family.toUpperCase(ROOT)),
       imageDb.fileUrl,
       imageDb.fileUrl,

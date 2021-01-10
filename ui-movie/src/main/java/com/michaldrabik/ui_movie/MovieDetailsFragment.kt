@@ -22,6 +22,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
@@ -82,6 +83,7 @@ import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_WATCHLIST
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.UPCOMING
+import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
@@ -116,6 +118,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiMovieDetailsComponentProvider).provideMovieDetailsComponent().inject(this)
     super.onCreate(savedInstanceState)
+    setFragmentResultListener(NavigationArgs.REQUEST_CUSTOM_IMAGE) { _, _ ->
+      viewModel.loadBackgroundImage()
+      showCustomImages(movieId.id)
+    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -287,9 +293,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsActorFullName.fadeOut()
   }
 
-  private fun showCustomImages(movie: Movie) {
+  private fun showCustomImages(movieId: Long) {
     val bundle = bundleOf(
-      ARG_MOVIE_ID to movie.ids.trakt.id,
+      ARG_MOVIE_ID to movieId,
       ARG_FAMILY to MOVIE
     )
     navigateTo(R.id.actionMovieDetailsFragmentToCustomImages, bundle)
@@ -336,9 +342,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         }
         movieDetailsSeparator4.visible()
         movieDetailsCustomImagesLabel.visible()
-        movieDetailsCustomImagesLabel.onClick {
-          showCustomImages(movie)
-        }
+        movieDetailsCustomImagesLabel.onClick { showCustomImages(movie.traktId) }
         movieDetailsAddButton.isEnabled = true
       }
       movieLoading?.let {

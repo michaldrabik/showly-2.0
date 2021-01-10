@@ -27,10 +27,8 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FANART_URL
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PICK_MODE
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_POSTER_URL
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import kotlinx.android.synthetic.main.view_custom_images.*
@@ -41,8 +39,6 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
   private val family by lazy { arguments?.getSerializable(ARG_FAMILY) as ImageFamily }
   private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_SHOW_ID)) }
   private val movieTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_MOVIE_ID)) }
-  private val posterUrl by lazy { requireArguments().getString(ARG_POSTER_URL) }
-  private val fanartUrl by lazy { requireArguments().getString(ARG_FANART_URL) }
 
   private val cornerRadius by lazy { requireContext().dimenToPx(R.dimen.customImagesCorner) }
 
@@ -67,8 +63,8 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
     super.onViewCreated(view, savedInstanceState)
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it) })
-      loadPoster(showTraktId, movieTraktId, posterUrl, family)
-      loadFanart(showTraktId, movieTraktId, fanartUrl, family)
+      loadPoster(showTraktId, movieTraktId, family)
+      loadFanart(showTraktId, movieTraktId, family)
     }
     setupView(view)
   }
@@ -91,37 +87,6 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
     navigateTo(R.id.actionCustomImagesDialogToArtGallery, bundle)
   }
 
-  //
-//  private fun getDateString(): String {
-//    val millis = episode.firstAired?.toInstant()?.toEpochMilli() ?: -1
-//    return if (millis == -1L) {
-//      getString(R.string.textTba)
-//    } else {
-//      com.michaldrabik.common.extensions.dateFromMillis(millis)
-//        .toLocalTimeZone()
-//        .toDisplayString()
-//    }
-//  }
-
-  //  private fun openRateDialog(rating: Int, showRemove: Boolean) {
-//    val context = requireContext()
-//    val rateView = RateView(context).apply {
-//      setPadding(context.dimenToPx(R.dimen.spaceNormal))
-//      setRating(rating)
-//    }
-//    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
-//      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
-//      .setView(rateView)
-//      .setPositiveButton(R.string.textRate) { _, _ -> viewModel.addRating(rateView.getRating(), episode, showTraktId) }
-//      .setNegativeButton(R.string.textCancel) { _, _ -> }
-//      .apply {
-//        if (showRemove) {
-//          setNeutralButton(R.string.textRateDelete) { _, _ -> viewModel.deleteRating(episode) }
-//        }
-//      }
-//      .show()
-//  }
-//
   @SuppressLint("SetTextI18n")
   private fun render(uiModel: CustomImagesUiModel) {
 
@@ -154,18 +119,4 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
       }
     }
   }
-//
-//  private fun renderSnackbar(message: MessageEvent) {
-//    message.consume()?.let {
-//      when (message.type) {
-//        INFO -> episodeDetailsSnackbarHost.showInfoSnackbar(getString(it))
-//        ERROR -> episodeDetailsSnackbarHost.showErrorSnackbar(getString(it))
-//      }
-//    }
-//  }
-//
-//  override fun onDismiss(dialog: DialogInterface) {
-//    onEpisodeWatchedClick = null
-//    super.onDismiss(dialog)
-//  }
 }

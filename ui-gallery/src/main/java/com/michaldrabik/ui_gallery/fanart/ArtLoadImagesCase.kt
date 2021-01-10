@@ -58,4 +58,12 @@ class ArtLoadImagesCase @Inject constructor(
     images.addAll(remoteImages.filter { it.fileUrl != initialImage.fileUrl })
     return images.take(FANART_GALLERY_IMAGES_LIMIT)
   }
+
+  suspend fun saveCustomImage(id: IdTrakt, image: Image, family: ImageFamily, type: ImageType) {
+    when (family) {
+      SHOW -> showImagesProvider.saveCustomImage(id, image, family, type)
+      MOVIE -> movieImagesProvider.saveCustomImage(id, image, family, type)
+      else -> error("Invalid image family")
+    }
+  }
 }

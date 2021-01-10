@@ -2,7 +2,9 @@ package com.michaldrabik.ui_gallery.fanart
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType
@@ -25,6 +27,13 @@ class ArtGalleryViewModel @Inject constructor(
       } catch (t: Throwable) {
         // NOOP Don't show rest of the gallery
       }
+    }
+  }
+
+  fun saveCustomImage(id: IdTrakt, image: Image, family: ImageFamily, type: ImageType) {
+    viewModelScope.launch {
+      imagesCase.saveCustomImage(id, image, family, type)
+      uiState = ArtGalleryUiModel(pickedImage = ActionEvent(image))
     }
   }
 }
