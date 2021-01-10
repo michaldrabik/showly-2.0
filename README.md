@@ -49,8 +49,8 @@ Pull requests are welcome. Remember about leaving a comment in the relevant issu
 
 ### Language Translations
 
-We currently looking for help with translating app's resources into more languages.<br>
-If you are interested in helping, please visit our CrowdIn project and request an invite:<br>
+I'm always looking for help with translating app into more languages.<br>
+If you are interested in helping now or in the future, please visit our CrowdIn project and join:<br>
 https://crwd.in/showly-android-app
 
 ## Contact
