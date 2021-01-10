@@ -54,6 +54,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/movieDetailsImageGuideline"
         app:layout_constraintTop_toTopOf="parent"
+        app:tint="?attr/colorPlaceholderIcon"
         tools:visibility="visible"
         />
 
