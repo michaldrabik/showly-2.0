@@ -28,6 +28,8 @@ class ArtGalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     notifyDataSetChanged()
   }
 
+  fun getItem(position: Int) = items[position]
+
   override fun getItemViewType(position: Int) = when (type) {
     POSTER -> VIEW_TYPE_POSTER
     FANART, FANART_WIDE -> VIEW_TYPE_FANART

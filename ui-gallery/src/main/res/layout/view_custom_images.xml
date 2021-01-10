@@ -11,7 +11,7 @@
   android:paddingStart="@dimen/spaceNormal"
   android:paddingTop="@dimen/spaceMedium"
   android:paddingEnd="@dimen/spaceNormal"
-  android:paddingBottom="@dimen/spaceMedium"
+  android:paddingBottom="@dimen/spaceNormal"
   tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
   >
 
@@ -49,7 +49,7 @@
     android:id="@+id/viewCustomImagesPosterLayout"
     android:layout_width="@dimen/customImagesPosterWidth"
     android:layout_height="@dimen/customImagesPosterHeight"
-    android:layout_marginTop="@dimen/spaceBig"
+    android:layout_marginTop="@dimen/spaceNormal"
     android:layout_marginEnd="@dimen/spaceNormal"
     android:background="@drawable/bg_custom_image_frame"
     android:elevation="@dimen/elevationTiny"
@@ -96,7 +96,7 @@
     android:id="@+id/viewCustomImagesFanartLayout"
     android:layout_width="0dp"
     android:layout_height="@dimen/customImagesFanartHeight"
-    android:layout_marginTop="@dimen/spaceBig"
+    android:layout_marginTop="@dimen/spaceNormal"
     android:background="@drawable/bg_custom_image_frame"
     android:elevation="@dimen/elevationTiny"
     app:layout_constraintEnd_toEndOf="parent"
@@ -136,22 +136,5 @@
       />
 
   </FrameLayout>
-
-  <com.google.android.material.button.MaterialButton
-    android:id="@+id/viewCustomImagesApplyButton"
-    style="@style/Widget.MaterialComponents.Button"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/spaceBig"
-    android:backgroundTint="?attr/colorAccent"
-    android:gravity="center"
-    android:text="@string/textApply"
-    android:textColor="?attr/textColorOnSurface"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/viewCustomImagesPosterLayout"
-    app:rippleColor="?android:attr/textColorPrimary"
-    />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

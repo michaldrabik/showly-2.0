@@ -29,6 +29,7 @@ import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FANART_URL
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PICK_MODE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_POSTER_URL
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
@@ -76,7 +77,6 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
     view.run {
       viewCustomImagesPosterLayout.onClick { showGallery(POSTER) }
       viewCustomImagesFanartLayout.onClick { showGallery(FANART) }
-      viewCustomImagesApplyButton.onClick { dismiss() }
     }
   }
 
@@ -85,7 +85,8 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
       ARG_SHOW_ID to showTraktId.id,
       ARG_MOVIE_ID to movieTraktId.id,
       ARG_FAMILY to family,
-      ARG_TYPE to type
+      ARG_TYPE to type,
+      ARG_PICK_MODE to true
     )
     navigateTo(R.id.actionCustomImagesDialogToArtGallery, bundle)
   }

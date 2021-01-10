@@ -8,4 +8,7 @@ object NavigationArgs {
 
   const val ARG_POSTER_URL = "ARG_POSTER_URL"
   const val ARG_FANART_URL = "ARG_FANART_URL"
+  const val ARG_PICK_MODE = "ARG_PICK_MODE"
+
+  const val REQUEST_CUSTOM_IMAGE = "REQUEST_CUSTOM_IMAGE"
 }

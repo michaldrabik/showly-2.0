@@ -8,9 +8,9 @@ import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.core.view.updateMargins
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
@@ -18,7 +18,9 @@ import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_gallery.R
 import com.michaldrabik.ui_gallery.fanart.di.UiArtGalleryComponentProvider
 import com.michaldrabik.ui_gallery.fanart.recycler.ArtGalleryAdapter
@@ -28,9 +30,13 @@ import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FANART_URL
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PICK_MODE
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_POSTER_URL
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import kotlinx.android.synthetic.main.fragment_art_gallery.*
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
@@ -42,6 +48,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
   private val movieId by lazy { IdTrakt(arguments?.getLong(ARG_MOVIE_ID, -1) ?: -1) }
   private val family by lazy { arguments?.getSerializable(ARG_FAMILY) as ImageFamily }
   private val type by lazy { arguments?.getSerializable(ARG_TYPE) as ImageType }
+  private val isPickMode by lazy { arguments?.getBoolean(ARG_PICK_MODE, false) }
 
   private val galleryAdapter by lazy { ArtGalleryAdapter() }
 
@@ -79,13 +86,17 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
     super.onConfigurationChanged(newConfig)
     when (newConfig.orientation) {
       ORIENTATION_LANDSCAPE -> {
-        artGalleryBackArrow.imageTintList = requireContext().colorStateListFromAttr(R.attr.textColorOnSurface)
+        val color = requireContext().colorStateListFromAttr(R.attr.textColorOnSurface)
+        artGallerySelectButton.setTextColor(color)
+        artGalleryBackArrow.imageTintList = color
         artGalleryPagerIndicatorWhite.visible()
         artGalleryPagerIndicator.gone()
         artGalleryPagerIndicatorWhite.setViewPager(artGalleryPager)
       }
       ORIENTATION_PORTRAIT -> {
-        artGalleryBackArrow.imageTintList = requireContext().colorStateListFromAttr(android.R.attr.textColorPrimary)
+        val color = requireContext().colorStateListFromAttr(android.R.attr.textColorPrimary)
+        artGallerySelectButton.setTextColor(color)
+        artGalleryBackArrow.imageTintList = color
         artGalleryPagerIndicatorWhite.gone()
         artGalleryPagerIndicator.visible()
         artGalleryPagerIndicator.setViewPager(artGalleryPager)
@@ -102,11 +113,24 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
       artGalleryPagerIndicator.setViewPager(this)
       adapter?.registerAdapterDataObserver(artGalleryPagerIndicator.adapterDataObserver)
     }
+    artGallerySelectButton.run {
+      visibleIf(isPickMode == true)
+      onClick {
+        val key = if (type == POSTER) ARG_POSTER_URL else ARG_FANART_URL
+        val currentImage = galleryAdapter.getItem(artGalleryPager.currentItem)
+        setFragmentResult(
+          REQUEST_CUSTOM_IMAGE,
+          bundleOf(key to currentImage.fullFileUrl)
+        )
+        requireActivity().onBackPressed()
+      }
+    }
   }
 
   private fun setupStatusBar() {
     artGalleryBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
-      (view.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = insets.systemWindowInsetTop)
+      view.updateTopMargin(insets.systemWindowInsetTop)
+      artGallerySelectButton.updateTopMargin(insets.systemWindowInsetTop)
     }
   }
 
