@@ -5,11 +5,14 @@ import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.tmdb.model.TmdbImage
 import com.michaldrabik.network.tmdb.model.TmdbImages
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.CustomImage
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageFamily.MOVIE
+import com.michaldrabik.ui_model.ImageSource.CUSTOM
 import com.michaldrabik.ui_model.ImageSource.TMDB
 import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
@@ -30,7 +33,15 @@ class MovieImagesProvider @Inject constructor(
 
   private val unavailableCache = mutableSetOf<IdTrakt>()
 
+  suspend fun findCustomImage(traktId: Long, type: ImageType): Image? {
+    val custom = database.customImagesDao().getById(traktId, "movie", type.key)
+    return custom?.let { mappers.image.fromDatabase(it, type) }
+  }
+
   suspend fun findCachedImage(movie: Movie, type: ImageType): Image {
+    val custom = findCustomImage(movie.traktId, type)
+    if (custom != null) return custom
+
     val image = database.movieImagesDao().getByMovieId(movie.ids.tmdb.id, type.key)
     return when (image) {
       null ->
@@ -48,8 +59,9 @@ class MovieImagesProvider @Inject constructor(
     val tvdbId = movie.ids.tvdb
 
     val cachedImage = findCachedImage(movie, type)
-    if (cachedImage.status in arrayOf(AVAILABLE, UNAVAILABLE) && !force) {
-      return cachedImage
+    if (cachedImage.status in arrayOf(AVAILABLE, UNAVAILABLE)) {
+      if (!force) return cachedImage
+      if (force && cachedImage.source == CUSTOM) return cachedImage
     }
 
     val images = cloud.tmdbApi.fetchMovieImages(tmdbId.id)
@@ -114,6 +126,15 @@ class MovieImagesProvider @Inject constructor(
       .lastOrNull()
       ?: images.firstOrNull { if (type == POSTER) it.isEnglish() else it.isPlain() }
       ?: images.firstOrNull()
+
+  suspend fun saveCustomImage(traktId: IdTrakt, image: Image, imageFamily: ImageFamily, imageType: ImageType) {
+    val imageDb = CustomImage(0, traktId.id, imageFamily.key, imageType.key, image.fullFileUrl)
+    database.customImagesDao().insertImage(imageDb)
+  }
+
+  suspend fun deleteCustomImage(traktId: IdTrakt, imageFamily: ImageFamily, imageType: ImageType) {
+    database.customImagesDao().deleteById(traktId.id, imageFamily.key, imageType.key)
+  }
 
   suspend fun deleteLocalCache() = database.movieImagesDao().deleteAll()
 

@@ -186,12 +186,17 @@
       app:popExitAnim="@anim/anim_fade_out"
       />
     <action
-      android:id="@+id/actionShowDetailsFragmentToFanartGallery"
-      app:destination="@id/fanartGalleryFragment"
+      android:id="@+id/actionShowDetailsFragmentToArtGallery"
+      app:destination="@id/artGalleryFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:exitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToCustomImages"
+      app:destination="@id/customImagesDialog"
+      app:launchSingleTop="true"
       />
   </fragment>
 
@@ -208,19 +213,24 @@
       app:popExitAnim="@anim/anim_fade_out"
       />
     <action
-      android:id="@+id/actionMovieDetailsFragmentToFanartGallery"
-      app:destination="@id/fanartGalleryFragment"
+      android:id="@+id/actionMovieDetailsFragmentToArtGallery"
+      app:destination="@id/artGalleryFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:exitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToCustomImages"
+      app:destination="@id/customImagesDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
-    android:id="@+id/fanartGalleryFragment"
-    android:name="com.michaldrabik.ui_gallery.FanartGalleryFragment"
-    android:label="fragmentFanartGallery"
+    android:id="@+id/artGalleryFragment"
+    android:name="com.michaldrabik.ui_gallery.fanart.ArtGalleryFragment"
+    android:label="fragmentArtGallery"
     />
 
   <fragment
@@ -348,5 +358,19 @@
     android:name="com.michaldrabik.ui_trakt_sync.TraktSyncFragment"
     android:label="fragmentTraktSync"
     />
+
+  <dialog
+    android:id="@+id/customImagesDialog"
+    android:name="com.michaldrabik.ui_gallery.custom.CustomImagesBottomSheet"
+    android:label="dialogCustomImages"
+    >
+    <action
+      android:id="@+id/actionCustomImagesDialogToArtGallery"
+      app:destination="@id/artGalleryFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </dialog>
 
 </navigation>

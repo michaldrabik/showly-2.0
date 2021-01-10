@@ -6,12 +6,15 @@ import com.michaldrabik.network.aws.model.AwsImages
 import com.michaldrabik.network.tmdb.model.TmdbImage
 import com.michaldrabik.network.tmdb.model.TmdbImages
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.CustomImage
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageSource.AWS
+import com.michaldrabik.ui_model.ImageSource.CUSTOM
 import com.michaldrabik.ui_model.ImageSource.TMDB
 import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
@@ -33,7 +36,15 @@ class ShowImagesProvider @Inject constructor(
   private val unavailableCache = mutableSetOf<IdTrakt>()
   private var awsImagesCache: AwsImages? = null
 
+  suspend fun findCustomImage(traktId: Long, type: ImageType): Image? {
+    val custom = database.customImagesDao().getById(traktId, "show", type.key)
+    return custom?.let { mappers.image.fromDatabase(it, type) }
+  }
+
   suspend fun findCachedImage(show: Show, type: ImageType): Image {
+    val custom = findCustomImage(show.traktId, type)
+    if (custom != null) return custom
+
     val image = database.showImagesDao().getByShowId(show.ids.tmdb.id, type.key)
     return when (image) {
       null ->
@@ -51,8 +62,9 @@ class ShowImagesProvider @Inject constructor(
     val tmdbId = show.ids.tmdb
 
     val cachedImage = findCachedImage(show, type)
-    if (cachedImage.status in arrayOf(AVAILABLE, UNAVAILABLE) && !force) {
-      return cachedImage
+    if (cachedImage.status in arrayOf(AVAILABLE, UNAVAILABLE)) {
+      if (!force) return cachedImage
+      if (force && cachedImage.source == CUSTOM) return cachedImage
     }
 
     var source = TMDB
@@ -166,6 +178,15 @@ class ShowImagesProvider @Inject constructor(
       .lastOrNull()
       ?: images.firstOrNull { if (type == POSTER) it.isEnglish() else it.isPlain() }
       ?: images.firstOrNull()
+
+  suspend fun saveCustomImage(traktId: IdTrakt, image: Image, imageFamily: ImageFamily, imageType: ImageType) {
+    val imageDb = CustomImage(0, traktId.id, imageFamily.key, imageType.key, image.fullFileUrl)
+    database.customImagesDao().insertImage(imageDb)
+  }
+
+  suspend fun deleteCustomImage(traktId: IdTrakt, imageFamily: ImageFamily, imageType: ImageType) {
+    database.customImagesDao().deleteById(traktId.id, imageFamily.key, imageType.key)
+  }
 
   suspend fun deleteLocalCache() = database.showImagesDao().deleteAll()
 

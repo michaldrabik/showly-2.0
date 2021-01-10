@@ -1,11 +1,13 @@
 package com.michaldrabik.ui_repository.mappers
 
+import com.michaldrabik.storage.database.model.CustomImage
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageSource
 import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
+import com.michaldrabik.ui_model.ImageType
 import java.util.Locale.ROOT
 import javax.inject.Inject
 import com.michaldrabik.storage.database.model.MovieImage as MovieImageDb
@@ -38,6 +40,20 @@ class ImageMapper @Inject constructor() {
       "",
       AVAILABLE,
       ImageSource.fromKey(imageDb.source)
+    )
+  }
+
+  fun fromDatabase(imageDb: CustomImage, type: ImageType?): Image {
+    return Image(
+      imageDb.id,
+      IdTvdb(),
+      IdTmdb(),
+      type ?: enumValueOf(imageDb.type.toUpperCase(ROOT)),
+      enumValueOf(imageDb.family.toUpperCase(ROOT)),
+      imageDb.fileUrl,
+      imageDb.fileUrl,
+      AVAILABLE,
+      ImageSource.CUSTOM
     )
   }
 

@@ -7,6 +7,7 @@ import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_STILL_URL
 import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_BANNERS_URL
 import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageSource.AWS
+import com.michaldrabik.ui_model.ImageSource.CUSTOM
 import com.michaldrabik.ui_model.ImageSource.TMDB
 import com.michaldrabik.ui_model.ImageSource.TVDB
 import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
@@ -35,6 +36,7 @@ data class Image(
       FANART, FANART_WIDE -> "${TMDB_IMAGE_BASE_FANART_URL}$fileUrl"
     }
     AWS -> "$AWS_IMAGE_BASE_URL$fileUrl"
+    CUSTOM -> fileUrl
   }
 
   val fullFileUrlEpisode = "${TMDB_IMAGE_BASE_STILL_URL}$fileUrl"

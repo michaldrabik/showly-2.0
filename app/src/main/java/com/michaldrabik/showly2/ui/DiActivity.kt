@@ -7,8 +7,10 @@ import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponent
 import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponentProvider
 import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponent
 import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponentProvider
-import com.michaldrabik.ui_gallery.di.UiFanartGalleryComponent
-import com.michaldrabik.ui_gallery.di.UiFanartGalleryComponentProvider
+import com.michaldrabik.ui_gallery.custom.di.UiCustomImagesComponent
+import com.michaldrabik.ui_gallery.custom.di.UiCustomImagesComponentProvider
+import com.michaldrabik.ui_gallery.fanart.di.UiArtGalleryComponentProvider
+import com.michaldrabik.ui_gallery.fanart.di.UiFanartGalleryComponent
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponent
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponentProvider
 import com.michaldrabik.ui_my_movies.di.UiMyMoviesComponent
@@ -41,8 +43,9 @@ abstract class DiActivity :
   UiDiscoverMoviesComponentProvider,
   UiShowDetailsComponentProvider,
   UiMovieDetailsComponentProvider,
-  UiFanartGalleryComponentProvider,
+  UiArtGalleryComponentProvider,
   UiEpisodeDetailsComponentProvider,
+  UiCustomImagesComponentProvider,
   UiMyShowsComponentProvider,
   UiMyMoviesComponentProvider,
   UiProgressComponentProvider,
@@ -53,6 +56,7 @@ abstract class DiActivity :
   private lateinit var uiDiscoverComponent: UiDiscoverComponent
   private lateinit var uiDiscoverMoviesComponent: UiDiscoverMoviesComponent
   private lateinit var uiEpisodeDetailsComponent: UiEpisodeDetailsComponent
+  private lateinit var uiCustomImagesComponent: UiCustomImagesComponent
   private lateinit var uiMyShowsComponent: UiMyShowsComponent
   private lateinit var uiMyMoviesComponent: UiMyMoviesComponent
   private lateinit var uiSearchComponent: UiSearchComponent
@@ -69,7 +73,8 @@ abstract class DiActivity :
   override fun provideDiscoverComponent() = uiDiscoverComponent
   override fun provideDiscoverMoviesComponent() = uiDiscoverMoviesComponent
   override fun provideEpisodeDetailsComponent() = uiEpisodeDetailsComponent
-  override fun provideFanartGalleryComponent() = uiShowGalleryComponent
+  override fun provideCustomImagesComponent() = uiCustomImagesComponent
+  override fun provideArtGalleryComponent() = uiShowGalleryComponent
   override fun provideMyShowsComponent() = uiMyShowsComponent
   override fun provideMyMoviesComponent() = uiMyMoviesComponent
   override fun provideSearchComponent() = uiSearchComponent
@@ -86,6 +91,7 @@ abstract class DiActivity :
     uiDiscoverComponent = appComponent().uiDiscoverComponent().create()
     uiDiscoverMoviesComponent = appComponent().uiDiscoverMoviesComponent().create()
     uiEpisodeDetailsComponent = appComponent().uiEpisodeDetailsComponent().create()
+    uiCustomImagesComponent = appComponent().uiCustomImagesComponent().create()
     uiMyShowsComponent = appComponent().uiMyShowsComponent().create()
     uiMyMoviesComponent = appComponent().uiMyMoviesComponent().create()
     uiSearchComponent = appComponent().uiSearchComponent().create()

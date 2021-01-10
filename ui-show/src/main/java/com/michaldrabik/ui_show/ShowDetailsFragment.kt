@@ -22,6 +22,7 @@ import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
@@ -71,14 +72,18 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
+import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_QUICK_PROGRESS
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEARED
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
 import com.michaldrabik.ui_show.helpers.ShowLink
@@ -130,6 +135,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiShowDetailsComponentProvider).provideShowDetailsComponent().inject(this)
     super.onCreate(savedInstanceState)
+    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
+      viewModel.loadBackgroundImage()
+      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) showCustomImages(showId.id)
+    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -166,9 +175,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsImage.onClick {
       val bundle = bundleOf(
         ARG_SHOW_ID to showId.id,
-        ARG_TYPE to SHOW
+        ARG_FAMILY to SHOW,
+        ARG_TYPE to FANART
       )
-      navigateTo(R.id.actionShowDetailsFragmentToFanartGallery, bundle)
+      navigateTo(R.id.actionShowDetailsFragmentToArtGallery, bundle)
       Analytics.logShowGalleryClick(showId.id)
     }
     showDetailsCommentsButton.onClick {
@@ -312,6 +322,14 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     modal.show(requireActivity().supportFragmentManager, "MODAL")
   }
 
+  private fun showCustomImages(showId: Long) {
+    val bundle = bundleOf(
+      ARG_SHOW_ID to showId,
+      ARG_FAMILY to SHOW
+    )
+    navigateTo(R.id.actionShowDetailsFragmentToCustomImages, bundle)
+  }
+
   private fun showFullActorView(actor: Actor) {
     Glide.with(this)
       .load("$TMDB_IMAGE_BASE_ACTOR_FULL_URL${actor.image}")
@@ -402,6 +420,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
             Analytics.logShowLinksClick(show)
           }
         }
+        showDetailsSeparator4.visible()
+        showDetailsCustomImagesLabel.visible()
+        showDetailsCustomImagesLabel.onClick { showCustomImages(show.traktId) }
         showDetailsAddButton.isEnabled = true
       }
       showLoading?.let {
@@ -571,7 +592,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun renderRelatedShows(items: List<RelatedListItem>) {
     relatedAdapter.setItems(items)
     showDetailsRelatedRecycler.fadeIf(items.isNotEmpty())
-    showDetailsRelatedLabel.fadeIf(items.isNotEmpty())
     showDetailsRelatedProgress.gone()
   }
 

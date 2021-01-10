@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSetCustomImages">Custom Images</string>
+  <string name="textSetCustomImagesDescription">Pick your own poster and fanart that are going to be used across the app.</string>
+  <string name="textPoster">Poster</string>
+  <string name="textFanart">Fanart</string>
+</resources>

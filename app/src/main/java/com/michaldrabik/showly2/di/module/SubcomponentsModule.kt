@@ -4,8 +4,8 @@ import com.michaldrabik.showly2.di.component.ServiceComponent
 import com.michaldrabik.ui_base.di.UiBaseComponent
 import com.michaldrabik.ui_discover.di.UiDiscoverComponent
 import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponent
-import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponent
-import com.michaldrabik.ui_gallery.di.UiFanartGalleryComponent
+import com.michaldrabik.ui_gallery.custom.di.UiCustomImagesComponent
+import com.michaldrabik.ui_gallery.fanart.di.UiFanartGalleryComponent
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponent
 import com.michaldrabik.ui_my_movies.di.UiMyMoviesComponent
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
@@ -25,7 +25,7 @@ import dagger.Module
     UiBaseComponent::class,
     UiDiscoverComponent::class,
     UiDiscoverMoviesComponent::class,
-    UiEpisodeDetailsComponent::class,
+    UiCustomImagesComponent::class,
     UiFanartGalleryComponent::class,
     UiMyShowsComponent::class,
     UiMyMoviesComponent::class,

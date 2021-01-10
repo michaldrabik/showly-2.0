@@ -2,19 +2,20 @@
 <FrameLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/fanartGalleryRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   >
 
   <androidx.viewpager2.widget.ViewPager2
-    android:id="@+id/fanartGalleryPager"
+    android:id="@+id/artGalleryPager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     />
 
   <ImageView
-    android:id="@+id/fanartGalleryBackArrow"
+    android:id="@+id/artGalleryBackArrow"
     android:layout_width="@dimen/backArrowSize"
     android:layout_height="@dimen/backArrowSize"
     android:background="?android:attr/selectableItemBackground"
@@ -23,8 +24,23 @@
     app:tint="?android:attr/textColorPrimary"
     />
 
+  <TextView
+    android:id="@+id/artGallerySelectButton"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/backArrowSize"
+    android:layout_gravity="end"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:gravity="center_vertical"
+    android:text="@string/textSelect"
+    android:textAllCaps="true"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="18sp"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
   <me.relex.circleindicator.CircleIndicator3
-    android:id="@+id/fanartGalleryPagerIndicator"
+    android:id="@+id/artGalleryPagerIndicator"
     android:layout_width="match_parent"
     android:layout_height="12dp"
     android:layout_gravity="center_horizontal|bottom"
@@ -34,7 +50,7 @@
     />
 
   <me.relex.circleindicator.CircleIndicator3
-    android:id="@+id/fanartGalleryPagerIndicatorWhite"
+    android:id="@+id/artGalleryPagerIndicatorWhite"
     android:layout_width="match_parent"
     android:layout_height="12dp"
     android:layout_gravity="center_horizontal|bottom"

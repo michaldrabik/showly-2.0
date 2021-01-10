@@ -40,6 +40,7 @@ dependencies {
   api "androidx.core:core-ktx:$versions.androidKtx"
   api "androidx.lifecycle:lifecycle-extensions:$versions.androidLifecycle"
   api "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.androidLifecycle"
+  api "androidx.fragment:fragment-ktx:$versions.androidFragment"
   api "androidx.navigation:navigation-fragment-ktx:$versions.androidNavigation"
   api "androidx.navigation:navigation-ui-ktx:$versions.androidNavigation"
   api "androidx.constraintlayout:constraintlayout:$versions.androidConstraintLayout"

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="customImagesPosterHeight">150dp</dimen>
+  <dimen name="customImagesPosterWidth">100dp</dimen>
+
+  <dimen name="customImagesFanartHeight">150dp</dimen>
+  <dimen name="customImagesFanartWidth">225dp</dimen>
+
+  <dimen name="galleryPosterHeight">200dp</dimen>
+  <dimen name="galleryPosterWidth">133dp</dimen>
+
+  <dimen name="customImagesCorner">6dp</dimen>
+</resources>

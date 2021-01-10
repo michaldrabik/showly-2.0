@@ -82,7 +82,7 @@ class MovieDetailsViewModel @Inject constructor(
           country = AppCountry.fromCode(settingsRepository.getCountry())
         )
 
-        launch { loadBackgroundImage(movie) }
+        loadBackgroundImage(movie)
         launch { loadActors(movie) }
         launch { loadRelatedMovies(movie) }
         launch { loadTranslation(movie) }
@@ -99,12 +99,14 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  private suspend fun loadBackgroundImage(movie: Movie) {
-    uiState = try {
-      val backgroundImage = imagesProvider.loadRemoteImage(movie, ImageType.FANART)
-      MovieDetailsUiModel(image = backgroundImage)
-    } catch (t: Throwable) {
-      MovieDetailsUiModel(image = Image.createUnavailable(ImageType.FANART))
+  fun loadBackgroundImage(movie: Movie? = null) {
+    viewModelScope.launch {
+      uiState = try {
+        val backgroundImage = imagesProvider.loadRemoteImage(movie ?: this@MovieDetailsViewModel.movie, ImageType.FANART)
+        MovieDetailsUiModel(image = backgroundImage)
+      } catch (t: Throwable) {
+        MovieDetailsUiModel(image = Image.createUnavailable(ImageType.FANART))
+      }
     }
   }
 

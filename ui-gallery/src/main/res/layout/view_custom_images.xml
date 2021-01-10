@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/viewCustomImagesRoot"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:background="@drawable/bg_bottom_sheet"
+  android:clipToPadding="false"
+  android:paddingStart="@dimen/spaceNormal"
+  android:paddingTop="@dimen/spaceMedium"
+  android:paddingEnd="@dimen/spaceNormal"
+  android:paddingBottom="@dimen/spaceNormal"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
+  >
+
+  <TextView
+    android:id="@+id/viewCustomImagesTitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:gravity="start"
+    android:text="@string/textSetCustomImages"
+    android:textAlignment="viewStart"
+    android:textAllCaps="true"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="20sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <TextView
+    android:id="@+id/viewCustomImagesSubTitle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:gravity="start"
+    android:text="@string/textSetCustomImagesDescription"
+    android:textAlignment="viewStart"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="12sp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewCustomImagesTitle"
+    />
+
+  <FrameLayout
+    android:id="@+id/viewCustomImagesPosterLayout"
+    android:layout_width="@dimen/customImagesPosterWidth"
+    android:layout_height="@dimen/customImagesPosterHeight"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:background="@drawable/bg_custom_image_frame"
+    android:elevation="@dimen/elevationTiny"
+    app:layout_constraintEnd_toStartOf="@id/viewCustomImagesFanartLayout"
+    app:layout_constraintHorizontal_bias="0"
+    app:layout_constraintHorizontal_chainStyle="spread"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewCustomImagesSubTitle"
+    >
+
+    <TextView
+      android:id="@+id/viewCustomImagesPosterAddButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:drawablePadding="@dimen/spaceTiny"
+      android:gravity="center"
+      android:text="@string/textPoster"
+      android:textAlignment="viewStart"
+      android:textColor="?attr/colorPlaceholderIcon"
+      android:textSize="16sp"
+      app:drawableTint="?attr/colorPlaceholderIcon"
+      app:drawableTopCompat="@drawable/ic_custom_image2x"
+      />
+
+    <ImageView
+      android:id="@+id/viewCustomImagesPosterImage"
+      android:layout_width="@dimen/customImagesPosterWidth"
+      android:layout_height="@dimen/customImagesPosterHeight"
+      />
+
+    <ProgressBar
+      android:id="@+id/viewCustomImagesPosterProgress"
+      style="@style/ProgressBar.Dark"
+      android:layout_width="36dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:visibility="gone"
+      />
+
+    <ImageView
+      android:id="@+id/viewCustomImagesPosterDelete"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_gravity="end"
+      android:layout_margin="6dp"
+      android:background="@drawable/bg_delete_circle"
+      android:padding="5dp"
+      android:visibility="gone"
+      app:srcCompat="@drawable/ic_delete"
+      app:tint="?attr/colorOnSurface"
+      tools:visibility="visible"
+      />
+
+  </FrameLayout>
+
+  <FrameLayout
+    android:id="@+id/viewCustomImagesFanartLayout"
+    android:layout_width="0dp"
+    android:layout_height="@dimen/customImagesFanartHeight"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:background="@drawable/bg_custom_image_frame"
+    android:elevation="@dimen/elevationTiny"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/viewCustomImagesPosterLayout"
+    app:layout_constraintTop_toBottomOf="@id/viewCustomImagesSubTitle"
+    app:layout_constraintWidth_max="@dimen/customImagesFanartWidth"
+    >
+
+    <TextView
+      android:id="@+id/viewCustomImagesFanartAddButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:drawablePadding="@dimen/spaceTiny"
+      android:gravity="center"
+      android:text="@string/textFanart"
+      android:textAlignment="viewStart"
+      android:textColor="?attr/colorPlaceholderIcon"
+      android:textSize="16sp"
+      app:drawableTint="?attr/colorPlaceholderIcon"
+      app:drawableTopCompat="@drawable/ic_custom_image2x"
+      />
+
+    <ImageView
+      android:id="@+id/viewCustomImagesFanartImage"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      />
+
+    <ProgressBar
+      android:id="@+id/viewCustomImagesFanartProgress"
+      style="@style/ProgressBar.Dark"
+      android:layout_width="36dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:visibility="gone"
+      />
+
+    <ImageView
+      android:id="@+id/viewCustomImagesFanartDelete"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_gravity="end"
+      android:layout_margin="6dp"
+      android:background="@drawable/bg_delete_circle"
+      android:padding="5dp"
+      android:visibility="gone"
+      app:srcCompat="@drawable/ic_delete"
+      app:tint="?attr/colorOnSurface"
+      tools:visibility="visible"
+      />
+
+  </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
