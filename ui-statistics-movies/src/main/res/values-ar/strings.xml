@@ -6,7 +6,6 @@
   <string name="textStatisticsMoviesTotalTimeItIs">يساوي</string>
   <string name="textStatisticsMoviesTotalTimeSpentHours">%s ساعات</string>
   <string name="textStatisticsMoviesTotalTimeSpentMinutes">%s دقائق</string>
-  <string name="textStatisticsMoviesTotalTimeSpentMonthsDays">وهو حوالي %s أشهر و %s أيام.</string>
   <string name="textStatisticsMoviesTotalTimeSpentDays">وهو حوالي %s أيام.</string>
   <string name="textStatisticsMoviesTotalMovies">إجمالي الأفلام التي تمت مشاهدتها</string>
   <string name="textStatisticsMoviesTotalMoviesCount">%s أفلام</string>
