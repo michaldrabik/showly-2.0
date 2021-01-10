@@ -38,14 +38,14 @@
       />
 
     <TextView
-      android:id="@+id/viewMoviesTotalTimeSpentHoursValue"
+      android:id="@+id/viewMoviesTotalTimeSpentMinutesValue"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginBottom="@dimen/spaceTiny"
       android:textColor="?attr/colorAccent"
       android:textSize="24sp"
       android:textStyle="bold"
-      tools:text="1 000 000 hours"
+      tools:text="1000000 minutes"
       />
 
     <TextView
@@ -58,14 +58,14 @@
       />
 
     <TextView
-      android:id="@+id/viewMoviesTotalTimeSpentMinutesValue"
+      android:id="@+id/viewMoviesTotalTimeSpentHoursValue"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginBottom="@dimen/spaceTiny"
       android:textColor="?attr/colorAccent"
       android:textSize="24sp"
       android:textStyle="bold"
-      tools:text="1000000 minutes"
+      tools:text="1 000 000 hours"
       />
 
     <TextView
