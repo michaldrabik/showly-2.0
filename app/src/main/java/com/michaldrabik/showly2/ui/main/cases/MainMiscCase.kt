@@ -5,6 +5,8 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.ui_base.images.MovieImagesProvider
+import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_repository.RatingsRepository
 import com.michaldrabik.ui_repository.SettingsRepository
@@ -14,6 +16,8 @@ import javax.inject.Inject
 class MainMiscCase @Inject constructor(
   private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
+  private val showImagesProvider: ShowImagesProvider,
+  private val movieImagesProvider: MovieImagesProvider,
   private val announcementManager: AnnouncementManager
 ) {
 
@@ -22,7 +26,11 @@ class MainMiscCase @Inject constructor(
     announcementManager.refreshMoviesAnnouncements(context)
   }
 
-  fun clear() = ratingsRepository.clear()
+  fun clear() {
+    ratingsRepository.clear()
+    showImagesProvider.clear()
+    movieImagesProvider.clear()
+  }
 
   fun setMode(mode: Mode) = settingsRepository.setMode(mode)
 

@@ -92,6 +92,7 @@ class DiscoverMoviesViewModel @Inject constructor(
         updateMoviesItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
         updateMoviesItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type, MOVIE, TMDB)))
+        rethrowCancellation(t)
       }
     }
   }
@@ -101,5 +102,6 @@ class DiscoverMoviesViewModel @Inject constructor(
       _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadDiscover)
       Timber.e(error)
     }
+    rethrowCancellation(error)
   }
 }

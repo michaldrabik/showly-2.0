@@ -28,7 +28,7 @@ class MovieImagesProvider @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  private val unavailableCache = mutableListOf<IdTrakt>()
+  private val unavailableCache = mutableSetOf<IdTrakt>()
 
   suspend fun findCachedImage(movie: Movie, type: ImageType): Image {
     val image = database.movieImagesDao().getByMovieId(movie.ids.tmdb.id, type.key)
@@ -46,8 +46,9 @@ class MovieImagesProvider @Inject constructor(
   suspend fun loadRemoteImage(movie: Movie, type: ImageType, force: Boolean = false): Image {
     val tmdbId = movie.ids.tmdb
     val tvdbId = movie.ids.tvdb
+
     val cachedImage = findCachedImage(movie, type)
-    if (cachedImage.status == AVAILABLE && !force) {
+    if (cachedImage.status in arrayOf(AVAILABLE, UNAVAILABLE) && !force) {
       return cachedImage
     }
 
@@ -115,4 +116,6 @@ class MovieImagesProvider @Inject constructor(
       ?: images.firstOrNull()
 
   suspend fun deleteLocalCache() = database.movieImagesDao().deleteAll()
+
+  fun clear() = unavailableCache.clear()
 }
