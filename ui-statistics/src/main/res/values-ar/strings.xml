@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textThisShowIsArchived">هذا مسلسل مؤرشف</string>
-
   <string name="textStatistics">الإحصائيات</string>
   <string name="textStatisticsEmpty">أضف مسلسل واحد على الأقل في قائمة <b>مسلسلاتي</b>\nلعرض قائمة الإحصائيات.</string>
   <string name="textStatisticsMostWatchedShows">المسلسلات الأكثر مشاهدة</string>
@@ -9,7 +8,6 @@
   <string name="textStatisticsTotalTimeItIs">يساوي</string>
   <string name="textStatisticsTotalTimeSpentHours">%s ساعات</string>
   <string name="textStatisticsTotalTimeSpentMinutes">%s دقائق</string>
-  <string name="textStatisticsTotalTimeSpentMonthsDays">وهو حوالي %s أشهر و %s أيام.</string>
   <string name="textStatisticsTotalTimeSpentDays">وهو حوالي %s أيام.</string>
   <string name="textStatisticsTotalEpisodes">إجمالي الحلقات التي تمت مشاهدتها</string>
   <string name="textStatisticsTotalEpisodesCount">%s حلقة</string>
@@ -22,6 +20,5 @@
   <string name="textStatisticsHours">ساعات</string>
   <string name="textStatisticsEpisodes">حلقات</string>
   <string name="textStatisticsSeasons">مواسم</string>
-  
   <string name="textArchivedShowsExcluded">المسلسلات المؤرشفة مستبعدة</string>
 </resources>
