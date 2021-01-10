@@ -122,10 +122,7 @@ class ProgressMoviesMainFragment :
         adapter.setItems(it, notifyChange = notifyChange)
         progressMoviesEmptyView.fadeIf(it.isEmpty() && isSearching == false)
         progressMoviesMainRecycler.fadeIn()
-        (requireAppContext() as WidgetsProvider).run {
-          requestShowsWidgetsUpdate()
-          requestMoviesWidgetsUpdate()
-        }
+        (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
       }
     }
   }
