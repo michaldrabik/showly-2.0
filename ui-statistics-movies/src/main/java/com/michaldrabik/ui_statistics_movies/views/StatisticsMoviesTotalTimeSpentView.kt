@@ -10,6 +10,7 @@ import com.michaldrabik.ui_statistics_movies.R
 import kotlinx.android.synthetic.main.view_statistics_movies_card_total_time.view.*
 import java.text.NumberFormat
 import java.util.Locale.ENGLISH
+import java.util.concurrent.TimeUnit
 
 @SuppressLint("SetTextI18n")
 class StatisticsMoviesTotalTimeSpentView : MaterialCardView {
@@ -27,9 +28,8 @@ class StatisticsMoviesTotalTimeSpentView : MaterialCardView {
   fun bind(timeMinutes: Long) {
     val formatter = NumberFormat.getNumberInstance(ENGLISH)
 
-    val hours = timeMinutes / 60
-    val days = hours / 24
-    val months = days / 30
+    val hours = TimeUnit.MINUTES.toHours(timeMinutes)
+    val days = TimeUnit.HOURS.toDays(hours)
 
     viewMoviesTotalTimeSpentHoursValue.text =
       context.getString(R.string.textStatisticsMoviesTotalTimeSpentHours, formatter.format(hours))
@@ -37,17 +37,7 @@ class StatisticsMoviesTotalTimeSpentView : MaterialCardView {
     viewMoviesTotalTimeSpentMinutesValue.text =
       context.getString(R.string.textStatisticsMoviesTotalTimeSpentMinutes, formatter.format(timeMinutes))
 
-    if (months > 0L) {
-      viewMoviesTotalTimeSpentSubValue.text = context.getString(
-        R.string.textStatisticsMoviesTotalTimeSpentMonthsDays,
-        formatter.format(months),
-        formatter.format(days)
-      )
-    } else {
-      viewMoviesTotalTimeSpentSubValue.text = context.getString(
-        R.string.textStatisticsMoviesTotalTimeSpentDays,
-        formatter.format(days)
-      )
-    }
+    viewMoviesTotalTimeSpentSubValue.text =
+      context.getString(R.string.textStatisticsMoviesTotalTimeSpentDays, formatter.format(days))
   }
 }

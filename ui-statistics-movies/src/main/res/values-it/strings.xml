@@ -6,7 +6,6 @@
   <string name="textStatisticsMoviesTotalTimeItIs">ovvero</string>
   <string name="textStatisticsMoviesTotalTimeSpentHours">%s ore</string>
   <string name="textStatisticsMoviesTotalTimeSpentMinutes">%s minuti</string>
-  <string name="textStatisticsMoviesTotalTimeSpentMonthsDays">che sono approssimativamente %s mesi e %s giorni.</string>
   <string name="textStatisticsMoviesTotalTimeSpentDays">che sono approssimativamente %s giorni.</string>
   <string name="textStatisticsMoviesTotalMovies">Film Visti</string>
   <string name="textStatisticsMoviesTotalMoviesCount">%s Film</string>
