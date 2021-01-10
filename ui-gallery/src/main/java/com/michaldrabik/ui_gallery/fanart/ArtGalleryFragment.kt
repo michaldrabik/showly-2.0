@@ -148,6 +148,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
   private fun handleBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
+      if (isPickMode == true) setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf())
       remove()
       findNavControl().popBackStack()
     }

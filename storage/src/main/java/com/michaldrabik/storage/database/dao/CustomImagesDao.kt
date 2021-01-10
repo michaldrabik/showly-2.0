@@ -13,6 +13,9 @@ interface CustomImagesDao {
   @Query("SELECT * FROM custom_images WHERE id_trakt = :traktId AND type = :type AND family = :family")
   suspend fun getById(traktId: Long, family: String, type: String): CustomImage?
 
+  @Query("DELETE FROM custom_images WHERE id_trakt = :traktId AND type = :type AND family = :family")
+  suspend fun deleteById(traktId: Long, family: String, type: String)
+
   @Transaction
   suspend fun insertImage(image: CustomImage) {
     val localImage = getById(image.idTrakt, image.family, image.type)

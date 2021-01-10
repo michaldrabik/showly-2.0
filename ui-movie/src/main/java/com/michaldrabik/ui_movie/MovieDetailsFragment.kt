@@ -83,10 +83,11 @@ import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_WATCHLIST
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.UPCOMING
-import com.michaldrabik.ui_navigation.java.NavigationArgs
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEARED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
 import kotlinx.android.synthetic.main.view_links_movie_menu.view.*
@@ -118,9 +119,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiMovieDetailsComponentProvider).provideMovieDetailsComponent().inject(this)
     super.onCreate(savedInstanceState)
-    setFragmentResultListener(NavigationArgs.REQUEST_CUSTOM_IMAGE) { _, _ ->
+    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
       viewModel.loadBackgroundImage()
-      showCustomImages(movieId.id)
+      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) showCustomImages(movieId.id)
     }
   }
 

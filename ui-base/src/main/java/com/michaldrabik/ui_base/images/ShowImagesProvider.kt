@@ -179,9 +179,13 @@ class ShowImagesProvider @Inject constructor(
       ?: images.firstOrNull { if (type == POSTER) it.isEnglish() else it.isPlain() }
       ?: images.firstOrNull()
 
-  suspend fun saveCustomImage(showTraktId: IdTrakt, image: Image, imageFamily: ImageFamily, imageType: ImageType) {
-    val imageDb = CustomImage(0, showTraktId.id, imageFamily.key, imageType.key, image.fullFileUrl)
+  suspend fun saveCustomImage(traktId: IdTrakt, image: Image, imageFamily: ImageFamily, imageType: ImageType) {
+    val imageDb = CustomImage(0, traktId.id, imageFamily.key, imageType.key, image.fullFileUrl)
     database.customImagesDao().insertImage(imageDb)
+  }
+
+  suspend fun deleteCustomImage(traktId: IdTrakt, imageFamily: ImageFamily, imageType: ImageType) {
+    database.customImagesDao().deleteById(traktId.id, imageFamily.key, imageType.key)
   }
 
   suspend fun deleteLocalCache() = database.showImagesDao().deleteAll()

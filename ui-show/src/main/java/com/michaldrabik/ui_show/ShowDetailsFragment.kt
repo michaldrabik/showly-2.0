@@ -79,6 +79,7 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_QUICK_PROGRESS
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEARED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
@@ -134,9 +135,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiShowDetailsComponentProvider).provideShowDetailsComponent().inject(this)
     super.onCreate(savedInstanceState)
-    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, _ ->
+    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
       viewModel.loadBackgroundImage()
-      showCustomImages(showId.id)
+      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) showCustomImages(showId.id)
     }
   }
 

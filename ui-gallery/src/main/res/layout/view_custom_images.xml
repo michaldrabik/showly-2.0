@@ -90,6 +90,20 @@
       android:visibility="gone"
       />
 
+    <ImageView
+      android:id="@+id/viewCustomImagesPosterDelete"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_gravity="end"
+      android:layout_margin="6dp"
+      android:background="@drawable/bg_delete_circle"
+      android:padding="5dp"
+      android:visibility="gone"
+      app:srcCompat="@drawable/ic_delete"
+      app:tint="?attr/colorOnSurface"
+      tools:visibility="visible"
+      />
+
   </FrameLayout>
 
   <FrameLayout
@@ -133,6 +147,20 @@
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       android:visibility="gone"
+      />
+
+    <ImageView
+      android:id="@+id/viewCustomImagesFanartDelete"
+      android:layout_width="30dp"
+      android:layout_height="30dp"
+      android:layout_gravity="end"
+      android:layout_margin="6dp"
+      android:background="@drawable/bg_delete_circle"
+      android:padding="5dp"
+      android:visibility="gone"
+      app:srcCompat="@drawable/ic_delete"
+      app:tint="?attr/colorOnSurface"
+      tools:visibility="visible"
       />
 
   </FrameLayout>

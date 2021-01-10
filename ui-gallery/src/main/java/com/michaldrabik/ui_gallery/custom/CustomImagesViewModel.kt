@@ -5,6 +5,7 @@ import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageFamily.MOVIE
 import com.michaldrabik.ui_model.ImageFamily.SHOW
@@ -49,6 +50,36 @@ class CustomImagesViewModel @Inject constructor(
       image?.let {
         uiState = CustomImagesUiModel(fanartImage = it)
       }
+    }
+  }
+
+  fun deletePoster(
+    showTraktId: IdTrakt,
+    movieTraktId: IdTrakt,
+    family: ImageFamily
+  ) {
+    viewModelScope.launch {
+      when (family) {
+        SHOW -> showImagesProvider.deleteCustomImage(showTraktId, family, POSTER)
+        MOVIE -> movieImagesProvider.deleteCustomImage(movieTraktId, family, POSTER)
+        else -> error("Invalid type")
+      }
+      uiState = CustomImagesUiModel(posterImage = Image.createUnavailable(POSTER, family))
+    }
+  }
+
+  fun deleteFanart(
+    showTraktId: IdTrakt,
+    movieTraktId: IdTrakt,
+    family: ImageFamily
+  ) {
+    viewModelScope.launch {
+      when (family) {
+        SHOW -> showImagesProvider.deleteCustomImage(showTraktId, family, FANART)
+        MOVIE -> movieImagesProvider.deleteCustomImage(movieTraktId, family, FANART)
+        else -> error("Invalid type")
+      }
+      uiState = CustomImagesUiModel(fanartImage = Image.createUnavailable(FANART, family))
     }
   }
 }

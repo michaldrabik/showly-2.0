@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -23,14 +24,17 @@ import com.michaldrabik.ui_gallery.R
 import com.michaldrabik.ui_gallery.custom.di.UiCustomImagesComponentProvider
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageFamily
+import com.michaldrabik.ui_model.ImageStatus.*
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.POSTER
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEARED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PICK_MODE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import kotlinx.android.synthetic.main.view_custom_images.*
 import kotlinx.android.synthetic.main.view_custom_images.view.*
 
@@ -73,6 +77,8 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
     view.run {
       viewCustomImagesPosterLayout.onClick { showGallery(POSTER) }
       viewCustomImagesFanartLayout.onClick { showGallery(FANART) }
+      viewCustomImagesPosterDelete.onClick { viewModel.deletePoster(showTraktId, movieTraktId, family) }
+      viewCustomImagesFanartDelete.onClick { viewModel.deleteFanart(showTraktId, movieTraktId, family) }
     }
   }
 
@@ -90,31 +96,53 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
   @SuppressLint("SetTextI18n")
   private fun render(uiModel: CustomImagesUiModel) {
 
-    fun loadImage(url: String, imageView: ImageView, progressView: View) {
+    fun loadImage(url: String, imageView: ImageView, progressView: View, deleteView: View) {
       progressView.visible()
+      deleteView.gone()
       Glide.with(requireContext())
         .load(url)
         .transform(CenterCrop(), RoundedCorners(cornerRadius))
-        .withSuccessListener { progressView.gone() }
-        .withFailListener { progressView.gone() }
+        .withSuccessListener {
+          progressView.gone()
+          deleteView.visible()
+        }
+        .withFailListener {
+          progressView.gone()
+          deleteView.gone()
+        }
         .into(imageView)
     }
 
     uiModel.run {
       posterImage?.let {
+        if (it.status == UNAVAILABLE) {
+          Glide.with(requireContext()).clear(viewCustomImagesPosterImage)
+          viewCustomImagesPosterAddButton.visible()
+          viewCustomImagesPosterDelete.gone()
+          return@let
+        }
         viewCustomImagesPosterAddButton.gone()
         loadImage(
           it.fullFileUrl,
           viewCustomImagesPosterImage,
-          viewCustomImagesPosterProgress
+          viewCustomImagesPosterProgress,
+          viewCustomImagesPosterDelete
         )
       }
       fanartImage?.let {
+        if (it.status == UNAVAILABLE) {
+          Glide.with(requireContext()).clear(viewCustomImagesFanartImage)
+          viewCustomImagesFanartAddButton.visible()
+          viewCustomImagesFanartDelete.gone()
+          setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf(ARG_CUSTOM_IMAGE_CLEARED to true))
+          return@let
+        }
         viewCustomImagesFanartAddButton.gone()
         loadImage(
           it.fullFileUrl,
           viewCustomImagesFanartImage,
-          viewCustomImagesFanartProgress
+          viewCustomImagesFanartProgress,
+          viewCustomImagesFanartDelete
         )
       }
     }

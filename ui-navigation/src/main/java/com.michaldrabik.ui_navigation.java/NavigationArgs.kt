@@ -7,5 +7,6 @@ object NavigationArgs {
   const val ARG_TYPE = "ARG_TYPE"
   const val ARG_PICK_MODE = "ARG_PICK_MODE"
 
+  const val ARG_CUSTOM_IMAGE_CLEARED = "ARG_CUSTOM_IMAGE_CLEARED"
   const val REQUEST_CUSTOM_IMAGE = "REQUEST_CUSTOM_IMAGE"
 }
