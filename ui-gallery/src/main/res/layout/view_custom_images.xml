@@ -100,7 +100,7 @@
       android:padding="5dp"
       android:visibility="gone"
       app:srcCompat="@drawable/ic_delete"
-      app:tint="?attr/colorOnSurface"
+      app:tint="?attr/textColorOnSurface"
       tools:visibility="visible"
       />
 
@@ -159,7 +159,7 @@
       android:padding="5dp"
       android:visibility="gone"
       app:srcCompat="@drawable/ic_delete"
-      app:tint="?attr/colorOnSurface"
+      app:tint="?attr/textColorOnSurface"
       tools:visibility="visible"
       />
 

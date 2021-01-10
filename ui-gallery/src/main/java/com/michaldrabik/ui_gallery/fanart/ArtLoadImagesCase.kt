@@ -55,7 +55,7 @@ class ArtLoadImagesCase @Inject constructor(
       val movie = moviesRepository.movieDetails.load(id)
       remoteImages = movieImagesProvider.loadRemoteImages(movie, type)
     }
-    images.addAll(remoteImages.filter { it.fileUrl != initialImage.fileUrl })
+    images.addAll(remoteImages.filter { it.fullFileUrl != initialImage.fullFileUrl })
     return images.take(FANART_GALLERY_IMAGES_LIMIT)
   }
 
