@@ -6,7 +6,6 @@
   <string name="textStatisticsMoviesTotalTimeItIs">czyli</string>
   <string name="textStatisticsMoviesTotalTimeSpentHours">%s godzin</string>
   <string name="textStatisticsMoviesTotalTimeSpentMinutes">%s minut</string>
-  <string name="textStatisticsMoviesTotalTimeSpentMonthsDays">co daje około %s miesięcy i %s dni.</string>
   <string name="textStatisticsMoviesTotalTimeSpentDays">co daje około %s dni.</string>
   <string name="textStatisticsMoviesTotalMovies">Całkowita Ilość Filmów</string>
   <string name="textStatisticsMoviesTotalMoviesCount">%s Filmów</string>

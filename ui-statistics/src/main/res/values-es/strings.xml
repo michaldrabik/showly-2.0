@@ -9,7 +9,6 @@
   <string name="textStatisticsTotalTimeItIs">y es</string>
   <string name="textStatisticsTotalTimeSpentHours">%s horas</string>
   <string name="textStatisticsTotalTimeSpentMinutes">%s minutos</string>
-  <string name="textStatisticsTotalTimeSpentMonthsDays">que es alrededor de %s meses y %s días.</string>
   <string name="textStatisticsTotalTimeSpentDays">que es alrededor de %s días.</string>
   <string name="textStatisticsTotalEpisodes">Episodios Totales Vistos</string>
   <string name="textStatisticsTotalEpisodesCount">%s episodios</string>
