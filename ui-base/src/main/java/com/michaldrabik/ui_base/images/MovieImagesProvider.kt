@@ -31,7 +31,7 @@ class MovieImagesProvider @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  private val unavailableCache = mutableListOf<IdTrakt>()
+  private val unavailableCache = mutableSetOf<IdTrakt>()
 
   suspend fun findCustomImage(traktId: Long, type: ImageType): Image? {
     val custom = database.customImagesDao().getById(traktId, "movie", type.key)
@@ -59,7 +59,7 @@ class MovieImagesProvider @Inject constructor(
     val tvdbId = movie.ids.tvdb
 
     val cachedImage = findCachedImage(movie, type)
-    if (cachedImage.status == AVAILABLE) {
+    if (cachedImage.status in arrayOf(AVAILABLE, UNAVAILABLE)) {
       if (!force) return cachedImage
       if (force && cachedImage.source == CUSTOM) return cachedImage
     }
@@ -137,4 +137,6 @@ class MovieImagesProvider @Inject constructor(
   }
 
   suspend fun deleteLocalCache() = database.movieImagesDao().deleteAll()
+
+  fun clear() = unavailableCache.clear()
 }

@@ -33,7 +33,7 @@ class ShowImagesProvider @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  private val unavailableCache = mutableListOf<IdTrakt>()
+  private val unavailableCache = mutableSetOf<IdTrakt>()
   private var awsImagesCache: AwsImages? = null
 
   suspend fun findCustomImage(traktId: Long, type: ImageType): Image? {
@@ -62,7 +62,7 @@ class ShowImagesProvider @Inject constructor(
     val tmdbId = show.ids.tmdb
 
     val cachedImage = findCachedImage(show, type)
-    if (cachedImage.status == AVAILABLE) {
+    if (cachedImage.status in arrayOf(AVAILABLE, UNAVAILABLE)) {
       if (!force) return cachedImage
       if (force && cachedImage.source == CUSTOM) return cachedImage
     }
@@ -189,4 +189,6 @@ class ShowImagesProvider @Inject constructor(
   }
 
   suspend fun deleteLocalCache() = database.showImagesDao().deleteAll()
+
+  fun clear() = unavailableCache.clear()
 }
