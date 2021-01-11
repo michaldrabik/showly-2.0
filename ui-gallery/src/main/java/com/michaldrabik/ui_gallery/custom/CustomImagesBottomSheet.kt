@@ -79,6 +79,7 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
       viewCustomImagesFanartLayout.onClick { showGallery(FANART) }
       viewCustomImagesPosterDelete.onClick { viewModel.deletePoster(showTraktId, movieTraktId, family) }
       viewCustomImagesFanartDelete.onClick { viewModel.deleteFanart(showTraktId, movieTraktId, family) }
+      viewCustomImagesCloseButton.onClick { dismiss() }
     }
   }
 

@@ -2,7 +2,6 @@
 <FrameLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/fanartGalleryRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
@@ -22,21 +21,6 @@
     android:padding="@dimen/backArrowPadding"
     app:srcCompat="@drawable/ic_arrow_back"
     app:tint="?android:attr/textColorPrimary"
-    />
-
-  <TextView
-    android:id="@+id/artGallerySelectButton"
-    android:layout_width="wrap_content"
-    android:layout_height="@dimen/backArrowSize"
-    android:layout_gravity="end"
-    android:layout_marginEnd="@dimen/spaceNormal"
-    android:gravity="center_vertical"
-    android:text="@string/textSelect"
-    android:textAllCaps="true"
-    android:textColor="?android:attr/textColorPrimary"
-    android:textSize="18sp"
-    android:visibility="gone"
-    tools:visibility="visible"
     />
 
   <me.relex.circleindicator.CircleIndicator3
@@ -67,6 +51,26 @@
     android:textColor="?android:attr/textColorPrimary"
     android:textSize="16sp"
     android:visibility="gone"
+    />
+
+  <com.google.android.material.button.MaterialButton
+    android:id="@+id/artGallerySelectButton"
+    style="@style/Widget.MaterialComponents.Button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal|bottom"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginBottom="40dp"
+    android:backgroundTint="?attr/colorAccent"
+    android:gravity="center"
+    android:minWidth="120dp"
+    android:text="@string/textSelect"
+    android:textColor="?attr/textColorOnSurface"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/viewCustomImagesPosterLayout"
+    app:rippleColor="?android:attr/textColorPrimary"
     />
 
 </FrameLayout>

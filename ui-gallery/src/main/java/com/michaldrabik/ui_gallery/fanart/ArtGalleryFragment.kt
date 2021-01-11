@@ -85,7 +85,6 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
     when (newConfig.orientation) {
       ORIENTATION_LANDSCAPE -> {
         val color = requireContext().colorStateListFromAttr(R.attr.textColorOnSurface)
-        artGallerySelectButton.setTextColor(color)
         artGalleryBackArrow.imageTintList = color
         artGalleryPagerIndicatorWhite.visible()
         artGalleryPagerIndicator.gone()
@@ -93,7 +92,6 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
       }
       ORIENTATION_PORTRAIT -> {
         val color = requireContext().colorStateListFromAttr(android.R.attr.textColorPrimary)
-        artGallerySelectButton.setTextColor(color)
         artGalleryBackArrow.imageTintList = color
         artGalleryPagerIndicatorWhite.gone()
         artGalleryPagerIndicator.visible()
