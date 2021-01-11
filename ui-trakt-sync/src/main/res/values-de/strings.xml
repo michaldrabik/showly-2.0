@@ -8,7 +8,6 @@
   <string name="textTraktSyncFromShowlyToTrakt">Exportiere von Showly nach Trakt.tv</string>
   <string name="textTraktSyncDescription">Synchronisiere den Fortschritt deines Trakt.tv-Kontos und die Daten der Watchlist mit Showly.\n\nKeines der Elemente aus deiner aktuellen Sammlung wird gelöscht. Bei der Synchronisierung werden nur fehlende Elemente in deiner Sammlungen verarbeitet.</string>
   <string name="textTraktSyncLastTimestamp">Letzte Synchronisation: %s</string>
-
   <string name="textSettingsTraktAuthorizeTitle">Trakt.tv Autorisierung</string>
   <string name="textSettingsScheduleImportConfirmationTitle">Sofortige Synchronisierung aktiviert</string>
   <string name="textSettingsScheduleImportConfirmationMessage">\nEs scheint, dass Instant Sync bereits aktiviert ist.\n\nMöchtest du weiterhin eine automatische Synchronisierung planen?\n</string>
