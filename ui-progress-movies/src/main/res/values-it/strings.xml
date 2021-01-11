@@ -3,12 +3,10 @@
   <string name="tabMoviesCalendar">Calendario</string>
   <string name="tabMoviesProgress">Progressi</string>
   <string name="textMoviesCalendarEmpty">Non ci sono nuovi film in arrivo a breve.</string>
-
   <string name="textMoviesSearchWatchlist">Cerca...</string>
   <string name="textDiscoverMovies">Scopri Film</string>
   <string name="textMoviesTraktSynchronize">Importa da Trakt.tv</string>
   <string name="textMoviesProgressEmpty">La tua pagina <b>Progressi</b> è vuota.\n\nVisita la pagina <b>Scopri</b> per aggiungere film o importa la tua raccolta Trak.tv.</string>
-
   <string name="textMoviesWatchlistToday">Oggi</string>
   <string name="textMoviesWatchlistTomorrow">Domani</string>
   <string name="textMoviesWatchlistThisWeek">Questa settimana</string>
