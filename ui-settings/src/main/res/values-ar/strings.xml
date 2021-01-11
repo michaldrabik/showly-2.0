@@ -4,7 +4,6 @@
   <string name="textTraktLogoutSuccess">لقد تم تسجيل خروجك.</string>
   <string name="textImagesCacheCleared">تم مسح ذاكرة التخزين المؤقت للصور.</string>
   <string name="textTurnOff">إيقاف التشغيل</string>
-
   <string name="textSettings">الإعدادات</string>
   <string name="textSettingsTrakt">Trakt.tv</string>
   <string name="textSettingsTraktAuthorizeTitle">مصادقة Trakt.tv</string>
@@ -51,6 +50,4 @@
   <string name="textSettingsWidgets">الويدجيت</string>
   <string name="textSettingsWidgetsLabelsTitle">إظهار العناوين</string>
   <string name="textSettingsWidgetsLabelsSummary">إظهار العناوين في الويدجيت.</string>
-
-
-  </resources>
+</resources>
