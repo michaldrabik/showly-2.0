@@ -118,8 +118,9 @@ class ShowDetailsViewModel @Inject constructor(
         launch { loadTranslation(show) }
         if (isSignedIn) launch { loadRating(show) }
       } catch (t: Throwable) {
-        _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadShow)
         progressJob.cancel()
+        _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadShow)
+        Logger.record(t, "Source" to "ShowDetailsViewModel")
       }
     }
   }
