@@ -25,31 +25,26 @@
   <string name="textMinutesShort">min</string>
   <string name="textRemoveFromTrakt">Usunąć z Trakt.tv?</string>
   <string name="textNoDescription">Opis niedostępny.</string>
-
   <string name="textAiredAlready">Po premierze</string>
   <string name="textAirsNow">Premiera teraz</string>
-
   <plurals name="textDaysToAir">
     <item quantity="one">Premiera jutro</item>
     <item quantity="few">Premiera za %d dni</item>
     <item quantity="many">Premiera za %d dni</item>
     <item quantity="other">Premiera za %d dni</item>
   </plurals>
-
   <plurals name="textHoursToAir">
     <item quantity="one">Premiera za godzinę</item>
     <item quantity="few">Premiera za %d godzin</item>
     <item quantity="many">Premiera za %d godzin</item>
     <item quantity="other">Premiera za %d godzin</item>
   </plurals>
-
   <plurals name="textMinutesToAir">
     <item quantity="one">Premiera teraz</item>
     <item quantity="few">Premiera za %d minut</item>
     <item quantity="many">Premiera za %d minut</item>
     <item quantity="other">Premiera za %d minut</item>
   </plurals>
-
   <string name="textToday">Dzisiaj</string>
   <string name="textTomorrow">Jutro</string>
   <string name="textThisWeek">Ten Tydzień</string>
@@ -58,13 +53,11 @@
   <string name="textThisYear">Ten Rok</string>
   <string name="textNextYear">Następny Rok</string>
   <string name="textLater">Później</string>
-
   <string name="textNewEpisodeAvailable">Nowy odcinek jest już dostępny!</string>
   <string name="textNewEpisodeAvailableSoon">Nowy odcinek będzie wkrótce dostępny!</string>
   <string name="textNewSeasonAvailable">Nowy sezon jest już dostępny!</string>
   <string name="textNewSeasonAvailableSoon">Nowy sezon będzie wkrótce dostępny!</string>
   <string name="textNewMovieAvailable">Nowy film jest już dostępny!</string>
-
   <string name="textTraktSync">Synchronizacja Trakt.tv</string>
   <string name="textTraktSyncComplete">Synchronizacja zakończona.</string>
   <string name="textTraktSyncRunning">Przetwarzanie…</string>
@@ -72,10 +65,8 @@
   <string name="textTraktSyncErrorFull">Błąd synchronizacji Trakt.tv. Sprawdź połączenie z internetem lub skontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="textTraktQuickSyncError">Błąd szybkiej synchronizacji.</string>
   <string name="textTraktQuickSyncErrorFull">Błąd szybkiej synchronizacji. Spróbujemy ponownie przy następnym uruchomieniu aplikacji.</string>
-
   <string name="menuPin">Przypnij u góry</string>
   <string name="menuUnpin">Odepnij z góry</string>
-
   <string name="errorGeneral">Oj… Coś poszło nie tak.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="errorAuthorization">Błąd autoryzacji.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="errorTraktAuthorization">Błąd autoryzacji Trakt.tv.\nZaloguj się i spróbuj ponownie.</string>
