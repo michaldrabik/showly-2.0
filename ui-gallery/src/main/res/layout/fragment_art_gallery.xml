@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.constraintlayout.widget.ConstraintLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/fanartGalleryRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  android:clipChildren="false"
   >
 
   <androidx.viewpager2.widget.ViewPager2
@@ -19,6 +20,8 @@
     android:layout_height="@dimen/backArrowSize"
     android:background="?android:attr/selectableItemBackground"
     android:padding="@dimen/backArrowPadding"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
     app:srcCompat="@drawable/ic_arrow_back"
     app:tint="?android:attr/textColorPrimary"
     />
@@ -31,6 +34,9 @@
     android:layout_margin="@dimen/spaceNormal"
     app:ci_drawable="@drawable/bg_indicator_circle"
     app:ci_drawable_unselected="@drawable/bg_indicator_circle"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
     />
 
   <me.relex.circleindicator.CircleIndicator3
@@ -40,6 +46,9 @@
     android:layout_gravity="center_horizontal|bottom"
     android:layout_margin="@dimen/spaceNormal"
     android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
     />
 
   <TextView
@@ -51,6 +60,10 @@
     android:textColor="?android:attr/textColorPrimary"
     android:textSize="16sp"
     android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
     />
 
   <com.google.android.material.button.MaterialButton
@@ -58,19 +71,29 @@
     style="@style/Widget.MaterialComponents.Button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal|bottom"
-    android:layout_marginTop="@dimen/spaceNormal"
     android:layout_marginBottom="40dp"
     android:backgroundTint="?attr/colorAccent"
-    android:gravity="center"
     android:minWidth="120dp"
     android:text="@string/textSelect"
     android:textColor="?attr/textColorOnSurface"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/artGalleryUrlButton"
+    app:layout_constraintHorizontal_chainStyle="packed"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/viewCustomImagesPosterLayout"
     app:rippleColor="?android:attr/textColorPrimary"
     />
 
-</FrameLayout>
+  <ImageView
+    android:id="@+id/artGalleryUrlButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    app:layout_constraintBottom_toBottomOf="@id/artGallerySelectButton"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@id/artGallerySelectButton"
+    app:layout_constraintTop_toTopOf="@id/artGallerySelectButton"
+    app:srcCompat="@drawable/ic_download"
+    app:tint="?attr/colorAccent"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,12 +7,15 @@ import android.content.res.Configuration
 import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import androidx.activity.addCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.gone
@@ -36,9 +39,14 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import kotlinx.android.synthetic.main.fragment_art_gallery.*
+import kotlinx.android.synthetic.main.view_gallery_url_dialog.view.*
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
 class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_art_gallery) {
+
+  companion object {
+    private const val IMAGE_URL_PATTERN = "(http)?s?:?(//[^\"']*\\.(?:jpg|jpeg|png))"
+  }
 
   override val viewModel by viewModels<ArtGalleryViewModel> { viewModelFactory }
 
@@ -119,6 +127,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
         viewModel.saveCustomImage(id, currentImage, family, type)
       }
     }
+    artGalleryUrlButton.onClick { showUrlInput() }
   }
 
   private fun setupStatusBar() {
@@ -126,6 +135,28 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
       view.updateTopMargin(insets.systemWindowInsetTop)
       artGallerySelectButton.updateTopMargin(insets.systemWindowInsetTop)
     }
+  }
+
+  private fun showUrlInput() {
+    val dialog = AlertDialog.Builder(requireContext(), R.style.UrlInputDialog).apply {
+      val view = LayoutInflater.from(requireContext())
+        .inflate(R.layout.view_gallery_url_dialog, fanartGalleryRoot, false)
+
+      setView(view)
+      setTitle(R.string.textUrlDialogTitle)
+      setPositiveButton(R.string.textOk) { _, _ ->
+        val input = view.urlDialogInput.text.toString()
+        if (input.matches(IMAGE_URL_PATTERN.toRegex())) {
+          viewModel.addImageFromUrl(input, family, type)
+        } else {
+          showSnack(MessageEvent.error(R.string.textUrlDialogInvalidUrl))
+        }
+      }
+      setNegativeButton(R.string.textCancel) { dialog, _ ->
+        dialog.dismiss()
+      }
+    }
+    dialog.show()
   }
 
   private fun render(uiModel: ArtGalleryUiModel) {

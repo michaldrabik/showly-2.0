@@ -4,8 +4,10 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageFamily
+import com.michaldrabik.ui_model.ImageSource.CUSTOM
 import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType
 import kotlinx.coroutines.launch
@@ -35,5 +37,15 @@ class ArtGalleryViewModel @Inject constructor(
       imagesCase.saveCustomImage(id, image, family, type)
       uiState = ArtGalleryUiModel(pickedImage = ActionEvent(image))
     }
+  }
+
+  fun addImageFromUrl(imageUrl: String, family: ImageFamily, type: ImageType) {
+    if (imageUrl.isBlank()) return
+
+    val currentImages = uiState?.images?.toMutableList() ?: mutableListOf()
+    val image = Image.createAvailable(Ids.EMPTY, type, family, imageUrl.trim(), CUSTOM)
+    currentImages.add(0, image)
+
+    uiState = ArtGalleryUiModel(images = currentImages)
   }
 }

@@ -1,0 +1,16 @@
+<resources>
+
+  <style name="UrlInputDialog" parent="@style/Theme.MaterialComponents.Dialog">
+    <item name="android:windowBackground">@color/colorPrimary</item>
+    <item name="android:textColor">@color/colorBlue</item>
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="colorPrimary">@color/colorAccent</item>
+    <item name="android:textColorSecondary">@color/colorBlueLight</item>
+    <item name="android:textColorPrimary">@color/colorBlue</item>
+    <item name="buttonBarNegativeButtonStyle">@style/AlertDialog.NegativeButton</item>
+  </style>
+
+  <style name="UrlInputDialog.NegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <item name="android:textColor">@color/colorGrayLight</item>
+  </style>
+</resources>
