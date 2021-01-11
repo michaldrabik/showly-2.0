@@ -6,13 +6,11 @@
   <string name="textSortDateAdded">Ostatnio Dodane</string>
   <string name="textSortRecentlyWatched">Ostatnio Obejrzane</string>
   <string name="textSortEpisodesLeft">Pozostałe Odcinki</string>
-
   <string name="textHeaderRecentlyAdded">Ostatnio Dodane</string>
   <string name="textHeaderWatching">Oglądane</string>
   <string name="textHeaderFinished">Skończone</string>
   <string name="textHeaderReturning">Powracające</string>
   <string name="textHeaderAll">Wszystkie</string>
-
   <string name="textSettingsShowsNotificationsWhenTitle">Czas Powiadomień</string>
   <string name="textSettingsShowsNotificationsWhenSummary">Kiedy chciałbyś otrzymać powiadomienie o odcinku?</string>
   <string name="textSettingsShowsNotificationsWhenAvailable">Jak Najszybciej</string>
@@ -25,14 +23,12 @@
   <string name="textSettingsShowsNotificationsWhen12HoursBefore">12 Godzin Przed</string>
   <string name="textSettingsShowsNotificationsWhen12Hours">12 Godzin Po</string>
   <string name="textSettingsShowsNotificationsWhenNextDay">1 Dzień Po</string>
-
   <string name="textTipDiscover">Kliknij \'Odkrywaj\' dwa razy aby szybko przejść do wyszukiwania.</string>
   <string name="textTipMyShows">Kliknij \'Kolekcja\' dwa razy aby szybko przełączyć się między sekcjami.</string>
   <string name="textTipShowDetailsGallery">Kliknij obrazek aby otworzyć galerię.</string>
   <string name="textTipShowDetailsQuickProgress">Kliknij ikonkę \'Szybki Postęp\' aby szybko ustawić obejrzane odcinki.\n\nKliknij ikonkę \'Archiwum\' aby przenieść serial do Archiwum.</string>
   <string name="textTipDiscoverFilters">Użyj filtrów aby dostosować zakładkę \'Odkrywaj\' pod swoje upodobania.</string>
   <string name="textTipWatchlistPinItem">Kliknij i przytrzymaj element aby przypiąć go u góry listy.</string>
-
   <string name="textGenreAction">Akcja</string>
   <string name="textGenreAdventure">Przygoda</string>
   <string name="textGenreAnimation">Animacja</string>
@@ -48,7 +44,6 @@
   <string name="textGenreThriller">Thriller</string>
   <string name="textGenreWar">Wojna</string>
   <string name="textGenreWestern">Western</string>
-
   <string name="textTraktSyncSchedule">Zaplanuj</string>
   <string name="textTraktSyncOptionOff">Wyłączone</string>
   <string name="textTraktSyncOption1Hour">Co Godzinę</string>
@@ -59,14 +54,12 @@
   <string name="textTraktSyncOptionWeekly">Każdego Tygodnia</string>
   <string name="textTraktSyncOptionOffMessage">Synchronizacja automatyczna wyłączona.</string>
   <string name="textTraktSyncOptionConfirmMessage">Synchronizacja automatyczna włączona.</string>
-
   <string name="textTraktSyncOptionHourButton">Zaplanowano co godzinę</string>
   <string name="textTraktSyncOption3HoursButton">Zaplanowano co 3 godziny</string>
   <string name="textTraktSyncOption6HoursButton">Zaplanowano co 6 godzin</string>
   <string name="textTraktSyncOptionDailyButton">Zaplanowano raz każdego dnia</string>
   <string name="textTraktSyncOption3DayButton">Zaplanowano co 3 dni</string>
   <string name="textTraktSyncOptionWeeklyButton">Zaplanowano raz każdego tygodnia</string>
-
   <string name="textShowStatusReturning">Powracająca Seria</string>
   <string name="textShowStatusUpcoming">W Produkcji</string>
   <string name="textShowStatusInProduction">W Produkcji</string>
@@ -79,4 +72,4 @@
   <string name="textMovieStatusPlanned">Planowany</string>
   <string name="textMovieStatusCanceled">Anulowany</string>
   <string name="textMovieStatusRumored">Spodziewany</string>
-  </resources>
+</resources>
