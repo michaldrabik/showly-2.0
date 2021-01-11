@@ -78,7 +78,7 @@ class App :
 
     fun setupLanguage() {
       Lingver.init(this, DEFAULT_LANGUAGE)
-      val language = settingsRepository.getLanguage()
+      val language = settingsRepository.language
       Lingver.getInstance().setLocale(this, language)
     }
 
@@ -110,7 +110,7 @@ class App :
     }
 
     fun setupTheme() {
-      val theme = settingsRepository.getTheme()
+      val theme = settingsRepository.theme
       setDefaultNightMode(theme)
     }
 

@@ -128,7 +128,7 @@ class ProgressMoviesWidgetViewsFactory(
   }
 
   private fun getItemLayout(): Int {
-    val isLight = settingsRepository.getWidgetsTheme() == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_movies_progress_item_day
       else -> R.layout.widget_movies_progress_item_night

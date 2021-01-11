@@ -60,7 +60,7 @@ class TraktImportWatchlistRunner @Inject constructor(
   }
 
   private suspend fun runMovies(authToken: TraktAuthToken) {
-    if (!settingsRepository.isMoviesEnabled()) {
+    if (!settingsRepository.isMoviesEnabled) {
       Timber.d("Movies are disabled. Exiting...")
       return
     }

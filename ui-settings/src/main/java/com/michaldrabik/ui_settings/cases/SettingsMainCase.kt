@@ -102,13 +102,13 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
-  fun isMoviesEnabled() = settingsRepository.isMoviesEnabled()
+  fun isMoviesEnabled() = settingsRepository.isMoviesEnabled
 
   suspend fun enableMovies(enable: Boolean, context: Context) {
-    val mode = if (!enable) Mode.SHOWS else settingsRepository.getMode()
+    val newMode = if (!enable) Mode.SHOWS else settingsRepository.mode
     settingsRepository.run {
-      setMoviesEnabled(enable)
-      setMode(mode)
+      isMoviesEnabled = enable
+      mode = newMode
     }
     announcementManager.refreshMoviesAnnouncements(context.applicationContext)
   }
@@ -134,11 +134,11 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
-  fun getLanguage() = AppLanguage.fromCode(settingsRepository.getLanguage())
+  fun getLanguage() = AppLanguage.fromCode(settingsRepository.language)
 
   suspend fun setLanguage(language: AppLanguage) {
     settingsRepository.run {
-      setLanguage(language.code)
+      this.language = language.code
       val unused = AppLanguage.values()
         .filter { it.code != Config.DEFAULT_LANGUAGE && it != language }
         .map { it.code }
@@ -147,9 +147,11 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
-  fun getCountry() = AppCountry.fromCode(settingsRepository.getCountry())
+  fun getCountry() = AppCountry.fromCode(settingsRepository.country)
 
-  fun setCountry(country: AppCountry) = settingsRepository.setCountry(country.code)
+  fun setCountry(country: AppCountry) {
+    settingsRepository.country = country.code
+  }
 
   suspend fun deleteImagesCache() {
     showsImagesProvider.deleteLocalCache()

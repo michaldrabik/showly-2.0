@@ -182,7 +182,7 @@ class ProgressWidgetViewsFactory(
     }
 
   private fun getItemLayout(): Int {
-    val isLight = settingsRepository.getWidgetsTheme() == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_progress_item_day
       else -> R.layout.widget_progress_item_night
@@ -190,7 +190,7 @@ class ProgressWidgetViewsFactory(
   }
 
   private fun getHeaderLayout(): Int {
-    val isLight = settingsRepository.getWidgetsTheme() == MODE_NIGHT_NO
+    val isLight = settingsRepository.widgetsTheme == MODE_NIGHT_NO
     return when {
       isLight -> R.layout.widget_header_day
       else -> R.layout.widget_header_night

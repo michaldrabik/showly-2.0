@@ -32,13 +32,15 @@ class MainMiscCase @Inject constructor(
     movieImagesProvider.clear()
   }
 
-  fun setMode(mode: Mode) = settingsRepository.setMode(mode)
+  fun setMode(mode: Mode) {
+    settingsRepository.mode = mode
+  }
 
   fun getMode(): Mode {
-    val isMoviesEnabled = settingsRepository.isMoviesEnabled()
-    val isMovies = settingsRepository.getMode() == MOVIES
+    val isMoviesEnabled = settingsRepository.isMoviesEnabled
+    val isMovies = settingsRepository.mode == MOVIES
     return if (isMoviesEnabled && isMovies) MOVIES else SHOWS
   }
 
-  fun moviesEnabled() = settingsRepository.isMoviesEnabled()
+  fun moviesEnabled() = settingsRepository.isMoviesEnabled
 }

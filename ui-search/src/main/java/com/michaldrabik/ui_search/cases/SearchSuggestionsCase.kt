@@ -28,7 +28,7 @@ class SearchSuggestionsCase @Inject constructor(
 
   suspend fun preloadCache() {
     val language = translationsRepository.getLanguage()
-    val moviesEnabled = settingsRepository.isMoviesEnabled()
+    val moviesEnabled = settingsRepository.isMoviesEnabled
 
     if (showsCache == null) showsCache = database.showsDao().getAll()
     if (moviesEnabled && moviesCache == null) moviesCache = database.moviesDao().getAll()

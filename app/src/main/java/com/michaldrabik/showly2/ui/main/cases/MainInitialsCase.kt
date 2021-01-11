@@ -61,7 +61,7 @@ class MainInitialsCase @Inject constructor(
       val token = userTraktManager.checkAuthorization().token
 
       ratingsRepository.shows.preloadShowsRatings(token)
-      if (settingsRepository.isMoviesEnabled()) {
+      if (settingsRepository.isMoviesEnabled) {
         ratingsRepository.movies.preloadMoviesRatings(token)
       }
     } catch (error: Throwable) {

@@ -45,34 +45,32 @@ class SettingsRepository @Inject constructor(
     }
   }
 
-  fun isMoviesEnabled() =
-    miscPreferences.getBoolean(KEY_MOVIES_ENABLED, true)
+  var mode: Mode
+    get() {
+      val default = Mode.SHOWS.name
+      return Mode.valueOf(miscPreferences.getString(KEY_MODE, default) ?: default)
+    }
+    set(value) = miscPreferences.edit(true) { putString(KEY_MODE, value.name) }
 
-  fun setMoviesEnabled(enabled: Boolean) =
-    miscPreferences.edit().putBoolean(KEY_MOVIES_ENABLED, enabled).apply()
+  var isMoviesEnabled: Boolean
+    get() = miscPreferences.getBoolean(KEY_MOVIES_ENABLED, true)
+    set(value) = miscPreferences.edit(true) { putBoolean(KEY_MOVIES_ENABLED, value) }
 
-  fun getMode(): Mode {
-    val default = Mode.SHOWS.name
-    return Mode.valueOf(miscPreferences.getString(KEY_MODE, default) ?: default)
-  }
+  var language: String
+    get() = miscPreferences.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
+    set(value) = miscPreferences.edit(true) { putString(KEY_LANGUAGE, value) }
 
-  fun setMode(mode: Mode) = miscPreferences.edit().putString(KEY_MODE, mode.name).apply()
+  var country: String
+    get() = miscPreferences.getString(KEY_COUNTRY, DEFAULT_COUNTRY) ?: DEFAULT_COUNTRY
+    set(value) = miscPreferences.edit(true) { putString(KEY_COUNTRY, value) }
 
-  fun getLanguage() = miscPreferences.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
+  var theme: Int
+    get() = miscPreferences.getInt(KEY_THEME, MODE_NIGHT_YES)
+    set(value) = miscPreferences.edit(true) { putInt(KEY_THEME, value) }
 
-  fun setLanguage(language: String) = miscPreferences.edit().putString(KEY_LANGUAGE, language).apply()
-
-  fun setTheme(theme: Int) = miscPreferences.edit(true) { putInt(KEY_THEME, theme) }
-
-  fun getTheme() = miscPreferences.getInt(KEY_THEME, MODE_NIGHT_YES)
-
-  fun setWidgetsTheme(theme: Int) = miscPreferences.edit(true) { putInt(KEY_THEME_WIDGET, theme) }
-
-  fun getWidgetsTheme() = miscPreferences.getInt(KEY_THEME_WIDGET, MODE_NIGHT_YES)
-
-  fun getCountry() = miscPreferences.getString(KEY_COUNTRY, DEFAULT_COUNTRY) ?: DEFAULT_COUNTRY
-
-  fun setCountry(countryCode: String) = miscPreferences.edit().putString(KEY_COUNTRY, countryCode).apply()
+  var widgetsTheme: Int
+    get() = miscPreferences.getInt(KEY_THEME_WIDGET, MODE_NIGHT_YES)
+    set(value) = miscPreferences.edit(true) { putInt(KEY_THEME_WIDGET, value) }
 
   suspend fun clearLanguageLogs() {
     database.withTransaction {

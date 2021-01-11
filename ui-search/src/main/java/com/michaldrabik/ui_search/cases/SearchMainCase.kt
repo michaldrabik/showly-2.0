@@ -29,7 +29,7 @@ class SearchMainCase @Inject constructor(
 
   suspend fun searchByQuery(query: String): List<SearchResult> {
     Analytics.logSearchQuery(query)
-    val withMovies = settingsRepository.isMoviesEnabled()
+    val withMovies = settingsRepository.isMoviesEnabled
     val results = cloud.traktApi.fetchSearch(query, withMovies)
       .sortedWith(compareBy({ it.score }, { it.votes ?: 0 }))
       .reversed()

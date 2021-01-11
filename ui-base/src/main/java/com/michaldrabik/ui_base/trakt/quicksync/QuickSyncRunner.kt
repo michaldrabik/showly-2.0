@@ -37,7 +37,7 @@ class QuickSyncRunner @Inject constructor(
     isRunning = true
 
     val authToken = checkAuthorization()
-    val moviesEnabled = settingsRepository.isMoviesEnabled()
+    val moviesEnabled = settingsRepository.isMoviesEnabled
 
     val historyCount = exportHistoryItems(authToken, moviesEnabled)
     val watchlistCount = exportWatchlistItems(authToken, moviesEnabled)

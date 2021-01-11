@@ -12,17 +12,19 @@ class SettingsThemesCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {
 
-  fun setTheme(theme: AppTheme) = settingsRepository.setTheme(theme.code)
+  fun setTheme(theme: AppTheme) {
+    settingsRepository.theme = theme.code
+  }
 
-  fun getTheme() = AppTheme.fromCode(settingsRepository.getTheme())
+  fun getTheme() = AppTheme.fromCode(settingsRepository.theme)
 
   fun setWidgetsTheme(theme: AppTheme, context: Context) {
-    settingsRepository.setWidgetsTheme(theme.code)
+    settingsRepository.widgetsTheme = theme.code
     (context.applicationContext as WidgetsProvider).run {
       requestShowsWidgetsUpdate()
       requestMoviesWidgetsUpdate()
     }
   }
 
-  fun getWidgetsTheme() = AppTheme.fromCode(settingsRepository.getWidgetsTheme())
+  fun getWidgetsTheme() = AppTheme.fromCode(settingsRepository.widgetsTheme)
 }

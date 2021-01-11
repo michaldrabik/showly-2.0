@@ -64,7 +64,7 @@ class TraktExportWatchedRunner @Inject constructor(
       .filter { !hasEpisodeBeenWatched(remoteShows, it) }
 
     val movies = mutableListOf<SyncExportItem>()
-    if (settingsRepository.isMoviesEnabled()) {
+    if (settingsRepository.isMoviesEnabled) {
       val remoteMovies = cloud.traktApi.fetchSyncWatchedMovies(token.token)
         .filter { it.movie != null }
       val localMyMoviesIds = database.myMoviesDao().getAllTraktIds()

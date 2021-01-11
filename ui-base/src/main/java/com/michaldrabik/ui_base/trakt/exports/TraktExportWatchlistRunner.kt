@@ -56,7 +56,7 @@ class TraktExportWatchlistRunner @Inject constructor(
       .map { SyncExportItem.create(it.idTrakt) }
 
     val movies = mutableListOf<SyncExportItem>()
-    if (settingsRepository.isMoviesEnabled()) {
+    if (settingsRepository.isMoviesEnabled) {
       database.watchlistMoviesDao().getAll()
         .mapTo(movies) { SyncExportItem.create(it.idTrakt) }
     }

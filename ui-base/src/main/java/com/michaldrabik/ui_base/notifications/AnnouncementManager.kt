@@ -90,7 +90,7 @@ class AnnouncementManager @Inject constructor(
 
     WorkManager.getInstance(context.applicationContext).cancelAllWorkByTag(ANNOUNCEMENT_MOVIE_WORK_TAG)
 
-    if (!settingsRepository.isMoviesEnabled()) {
+    if (!settingsRepository.isMoviesEnabled) {
       Timber.i("Movies disabled. Skipping...")
       return
     }

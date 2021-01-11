@@ -100,7 +100,7 @@ class ShowDetailsViewModel @Inject constructor(
           showLoading = false,
           followedState = followedState,
           ratingState = RatingState(rateAllowed = isSignedIn, rateLoading = false),
-          country = AppCountry.fromCode(settingsRepository.getCountry())
+          country = AppCountry.fromCode(settingsRepository.country)
         )
 
         loadBackgroundImage(show)
