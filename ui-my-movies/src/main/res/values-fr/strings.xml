@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyMovies">Mes Films</string>
+  <string name="menuWatchlistMovies">Watchlist</string>
+  <string name="textSearchForMyMovies">Search…</string>
+  <string name="textMyMoviesEmpty">Votre collection de films est présentement vide.\n\nVisitez l\'onglet <b>Découvrir</b> pour ajouter votre premier film.</string>
+  <string name="textWatchlistMoviesEmpty">Votre liste <b>À voir</b> est présentement vide.\n\nVisitez l\'onglet <b>Découvrir</b> pour ajouter des films que vous souhaitez visionner plus tard.</string>
+</resources>
