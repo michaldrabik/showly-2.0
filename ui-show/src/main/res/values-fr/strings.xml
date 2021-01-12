@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textAdd">Ajouter à mes séries</string>
+  <string name="textWatchLater">Watchlist</string>
+  <string name="textNextEpisode">Prochain Épisode:</string>
+  <string name="textInMyShows">Ajouté à mes séries</string>
+  <string name="textInWatchlist">Ajouté à la Watchlist</string>
+  <string name="textInArchive">Archivé</string>
+  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
+  <string name="textShowQuickProgressTitle">Progression Rapide</string>
+  <string name="textShowQuickProgressSubTitle">Sélectionnez le dernier épisode vu pour mettre à jour rapidement votre progression.</string>
+  <string name="textShowQuickProgressDone">Votre progression a été mise à jour.</string>
+  <string name="textEpisodeDate">Épisode %1$d | %2$s</string>
+  <string name="textEpisodeTitle">S.%02d E.%02d - \'%s\'</string>
+  <string name="textTraktSyncRemovedFromTrakt">Succès de la synchronisation avec Track.tv.</string>
+  <string name="textActorsEmpty">Acteurs non disponibles</string>
+  <string name="textSeasons">Saisons:</string>
+  <string name="textSeasonsEmpty">Saisons non disponibles.</string>
+  <string name="textTrailer">Bande-annonce</string>
+  <string name="textLink">Lien</string>
+  <string name="textShare">Partager</string>
+  <string name="textYouMayAlsoLike">Vous pourriez aussi aimer:</string>
+  <string name="textRuntimeLeftHours">~%sh %sm restantes</string>
+  <string name="textRuntimeLeftMinutes">~%sm restantes</string>
+  <string name="textWhatIsArchive">Archiver?</string>
+  <string name="textWhatIsArchiveFull">Qu\'est-ce que les Archives ?</string>
+  <string name="textArchiveDescription">Les<b>Archives</b> correspondent à une liste de séries que vous avez abandonnées ou qui ne vous intéressent plus.\n\nLes séries archivées n\'apparaissent pas dans les sections <b>Progression</b>, <b>Explorer</b> ainsi que <b>Mes Séries</b> et sont ignorées lors de l\'importation à partir de Trakt.tv.</string>
+  <string name="textArchiveConfirmationTitle">Archiver la série</string>
+  <string name="textArchiveConfirmationMessage">\nÊtes-vous certain de vouloir archiver cette série ?\n</string>
+</resources>
