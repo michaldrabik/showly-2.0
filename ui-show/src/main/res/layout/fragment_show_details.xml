@@ -508,7 +508,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedLabel"
-        tools:visibility="gone"
+        tools:visibility="visible"
         />
 
       <ProgressBar
@@ -546,7 +546,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginTop="140dp"
         android:drawablePadding="@dimen/spaceTiny"
         android:gravity="center_vertical"
         android:text="@string/textSetCustomImages"
@@ -557,8 +557,8 @@
         app:drawableStartCompat="@drawable/ic_custom_image"
         app:drawableTint="?android:attr/textColorPrimary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedRecycler"
-        app:layout_goneMarginTop="144dp"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedLabel"
+        app:layout_goneMarginTop="0dp"
         tools:visibility="visible"
         />
 

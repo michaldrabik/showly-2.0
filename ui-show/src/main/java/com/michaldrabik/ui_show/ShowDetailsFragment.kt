@@ -592,6 +592,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun renderRelatedShows(items: List<RelatedListItem>) {
     relatedAdapter.setItems(items)
     showDetailsRelatedRecycler.fadeIf(items.isNotEmpty())
+    showDetailsRelatedLabel.fadeIf(items.isNotEmpty())
     showDetailsRelatedProgress.gone()
   }
 
