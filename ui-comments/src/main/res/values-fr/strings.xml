@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textComments">Commentaires:</string>
+  <string name="textComments2">Commentaires</string>
+  <string name="textNoComments">Aucun commentaire.</string>
+  <string name="textShowRated">Votre évaluation a été enregistrée.</string>
+  <string name="textShowRatingDeleted">Votre évaluation a été supprimée.</string>
+  <string name="textSignBeforeRate">Veuillez vous connecter avant d\'évaluer une série.</string>
+  <string name="textSignBeforeRateMovie">Veuillez vous connecter avant d\'évaluer un film.</string>
+  <string name="textRate">Noter</string>
+  <string name="textRateDelete">Supprimer</string>
+</resources>
