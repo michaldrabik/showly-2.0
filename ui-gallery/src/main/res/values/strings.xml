@@ -9,5 +9,6 @@
   <string name="textUrlDialogTitle">Download Image</string>
   <string name="textUrlDialogHint">Image\'s URL</string>
   <string name="textUrlDialogInvalidUrl">Invalid image URL format.\nExample: https://test.com/image.jpg</string>
+  <string name="textUrlDialogInvalidImage">Sorry. This image could not be loaded.</string>
 
 </resources>

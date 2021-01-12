@@ -71,6 +71,7 @@
     style="@style/Widget.MaterialComponents.Button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceNormal"
     android:layout_marginBottom="40dp"
     android:backgroundTint="?attr/colorAccent"
     android:minWidth="120dp"
@@ -87,13 +88,25 @@
     android:id="@+id/artGalleryUrlButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/spaceNormal"
     app:layout_constraintBottom_toBottomOf="@id/artGallerySelectButton"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toEndOf="@id/artGallerySelectButton"
     app:layout_constraintTop_toTopOf="@id/artGallerySelectButton"
+    app:layout_goneMarginBottom="120dp"
     app:srcCompat="@drawable/ic_download"
     app:tint="?attr/colorAccent"
+    />
+
+  <ProgressBar
+    android:id="@+id/artGalleryUrlProgress"
+    style="@style/ProgressBar.Accent"
+    android:layout_width="30dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="40dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

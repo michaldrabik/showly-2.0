@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
@@ -24,6 +25,8 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_base.utilities.extensions.withFailListener
+import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_gallery.R
 import com.michaldrabik.ui_gallery.fanart.di.UiArtGalleryComponentProvider
 import com.michaldrabik.ui_gallery.fanart.recycler.ArtGalleryAdapter
@@ -138,33 +141,53 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
   }
 
   private fun showUrlInput() {
-    val dialog = AlertDialog.Builder(requireContext(), R.style.UrlInputDialog).apply {
-      val view = LayoutInflater.from(requireContext())
-        .inflate(R.layout.view_gallery_url_dialog, fanartGalleryRoot, false)
 
-      setView(view)
-      setTitle(R.string.textUrlDialogTitle)
-      setPositiveButton(R.string.textOk) { _, _ ->
-        val input = view.urlDialogInput.text.toString()
-        if (input.matches(IMAGE_URL_PATTERN.toRegex())) {
-          viewModel.addImageFromUrl(input, family, type)
-        } else {
-          showSnack(MessageEvent.error(R.string.textUrlDialogInvalidUrl))
-        }
-      }
-      setNegativeButton(R.string.textCancel) { dialog, _ ->
-        dialog.dismiss()
+    fun onUrlInput(view: View) {
+      val input = view.urlDialogInput.text.toString()
+      if (input.matches(IMAGE_URL_PATTERN.toRegex())) {
+        artGalleryUrlProgress.visible()
+        artGalleryUrlButton.gone()
+        artGallerySelectButton.gone()
+        Glide.with(requireContext())
+          .load(input)
+          .withSuccessListener {
+            viewModel.addImageFromUrl(input, family, type)
+            artGalleryUrlProgress.gone()
+            artGalleryUrlButton.visible()
+            artGallerySelectButton.visible()
+          }
+          .withFailListener {
+            showSnack(MessageEvent.error(R.string.textUrlDialogInvalidImage))
+            artGalleryUrlProgress.gone()
+            artGalleryUrlButton.visible()
+            artGallerySelectButton.visible()
+          }
+          .preload(100, 100)
+      } else {
+        showSnack(MessageEvent.error(R.string.textUrlDialogInvalidUrl))
       }
     }
-    dialog.show()
+
+    AlertDialog.Builder(requireContext(), R.style.UrlInputDialog).apply {
+      val view = LayoutInflater.from(requireContext()).inflate(R.layout.view_gallery_url_dialog, fanartGalleryRoot, false)
+      setView(view)
+      setTitle(R.string.textUrlDialogTitle)
+      setPositiveButton(R.string.textOk) { _, _ -> onUrlInput(view) }
+      setNegativeButton(R.string.textCancel) { dialog, _ -> dialog.dismiss() }
+      show()
+    }
   }
 
   private fun render(uiModel: ArtGalleryUiModel) {
     uiModel.run {
       images?.let {
+        val size = galleryAdapter.itemCount
+
         galleryAdapter.setItems(it, type!!)
         artGalleryEmptyView.visibleIf(it.isEmpty())
         artGallerySelectButton.visibleIf(it.isNotEmpty() && isPickMode == true)
+
+        if (size != it.size) artGalleryPager.currentItem = 0
       }
       pickedImage?.let {
         it.consume()?.let {
