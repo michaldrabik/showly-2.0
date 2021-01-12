@@ -63,6 +63,11 @@ class DiscoverMoviesFragment :
     }
   }
 
+  override fun onResume() {
+    super.onResume()
+    showNavigation()
+  }
+
   override fun onPause() {
     enableUi()
     super.onPause()

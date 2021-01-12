@@ -752,7 +752,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
         else -> {
           remove()
-          showNavigation()
           findNavControl().popBackStack()
         }
       }

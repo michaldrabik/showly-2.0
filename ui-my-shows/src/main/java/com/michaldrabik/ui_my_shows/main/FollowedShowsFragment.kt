@@ -73,6 +73,7 @@ class FollowedShowsFragment :
 
   override fun onResume() {
     super.onResume()
+    showNavigation()
     setupBackPress()
   }
 
