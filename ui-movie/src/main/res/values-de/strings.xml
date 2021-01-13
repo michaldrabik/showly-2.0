@@ -5,7 +5,6 @@
   <string name="textMovieWatchLater">Für Später</string>
   <string name="textInMyMovies">In Meinen Filmen</string>
   <string name="textInMoviesWatchlist">Im Watchlist</string>
-
   <string name="textMovieActorsEmpty">Schauspieler sind nicht verfügbar.</string>
   <string name="textMovieTrailer">Trailer</string>
   <string name="textMovieRate">Bewerten</string>
@@ -14,9 +13,7 @@
   <string name="textMovieShare">Teilen</string>
   <string name="textMovieYouMayAlsoLike">Vielleicht magst du auch:</string>
   <string name="textMovieVotes">%.1f (%d Bewertungen)</string>
-
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
-
   <string name="textMovieNotYetReleased">Dieser Film wurde bisher noch nicht veröffentlicht.</string>
   <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv Synchronisation erfolgreich.</string>
 </resources>

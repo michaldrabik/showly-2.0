@@ -25,25 +25,20 @@
   <string name="textMinutesShort">min</string>
   <string name="textRemoveFromTrakt">Rimuovere da Trakt.tv?</string>
   <string name="textNoDescription">Panoramica non disponibile.</string>
-
   <string name="textAiredAlready">Trasmesso</string>
   <string name="textAirsNow">Trasmesso ora</string>
-
   <plurals name="textDaysToAir">
     <item quantity="one">Trasmesso domani</item>
     <item quantity="other">Trasmesso tra %d giorni</item>
   </plurals>
-
   <plurals name="textHoursToAir">
     <item quantity="one">Trasmesso tra 1 ora</item>
     <item quantity="other">Trasmesso tra %d ore</item>
   </plurals>
-
   <plurals name="textMinutesToAir">
     <item quantity="one">Trasmesso ora</item>
     <item quantity="other">Trasmesso tra %d minuti</item>
   </plurals>
-
   <string name="textToday">Oggi</string>
   <string name="textTomorrow">Domani</string>
   <string name="textThisWeek">Questa Settimana</string>
@@ -52,13 +47,11 @@
   <string name="textThisYear">Quest\'anno</string>
   <string name="textNextYear">L\'anno Prossimo</string>
   <string name="textLater">Più Avanti</string>
-
   <string name="textNewEpisodeAvailable">Nuovi episodi disponibili ora!</string>
   <string name="textNewEpisodeAvailableSoon">Il nuovo episodio sarà disponibile a breve!</string>
   <string name="textNewSeasonAvailable">Nuova stagione disponibile ora!</string>
   <string name="textNewSeasonAvailableSoon">La nuova stagione sarà disponibile a breve!</string>
   <string name="textNewMovieAvailable">Il film è uscito!</string>
-
   <string name="textTraktSync">Sincronizzazione Trakt.tv</string>
   <string name="textTraktSyncComplete">Sincronizzazione completata correttamente.</string>
   <string name="textTraktSyncRunning">Eseguo...</string>
@@ -66,10 +59,8 @@
   <string name="textTraktSyncErrorFull">Sincronizzazione Trakt.tv fallita. Per favore controlla la tua connessione internet e riprova oppure contattaci se il problema persiste.</string>
   <string name="textTraktQuickSyncError">Sincronizzazione istantanea fallita.</string>
   <string name="textTraktQuickSyncErrorFull">Sincronizzazione istantanea fallita. Per favore controlla la tua connessione internet e riprova oppure contattaci se il problema persiste.</string>
-
   <string name="menuPin">Fissa in cima</string>
   <string name="menuUnpin">Rimuovi</string>
-
   <string name="errorGeneral">Oops... Qualcosa è andato storto.\nPer favore contattaci se il problema persiste.</string>
   <string name="errorAuthorization">Autorizzazione fallita. Per favore contattaci se il problema persiste.</string>
   <string name="errorTraktAuthorization">Autorizzazione account Trakt fallita.\nPer favore accedi e prova di nuovo.</string>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuProgress">Avancement</string>
+  <string name="menuDiscover">Découvrir</string>
+  <string name="menuCollection">Collection</string>
+  <string name="textRateAppTitle">Aimez-vous Showly 2.0 ?</string>
+  <string name="textRateAppMessage">Voulez-vous noter l\'application ?\nIt Cela ne prend que quelques secondes. Merci !\n\n<i>L\'application ne se fermera pas.</i></string>
+  <string name="textRateAppYesButton">Vraiment, pourquoi pas ?</string>
+  <string name="textRateAppNoButton">Pas maintenant</string>
+  <string name="textWhatsNewTitle">Quoi de neuf</string>
+  <string name="textWhatsNewSubtitle">Version %s</string>
+  <string name="shortcutDiscover">Découvrir</string>
+  <string name="shortcutCollection">Collection</string>
+  <string name="shortcutSearch">Recherche</string>
+  <string name="shortcutProgress">Avancement</string>
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="one">1 élément synchronisé avec succès.</item>
+    <item quantity="other">%d éléments synchronisés avec succès.</item>
+  </plurals>
+</resources>

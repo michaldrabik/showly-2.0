@@ -4,7 +4,6 @@
   <string name="textTraktLogoutSuccess">Du hast dich erfolgreich ausgeloggt.</string>
   <string name="textImagesCacheCleared">Bildcache wurde gelöscht.</string>
   <string name="textTurnOff">Ausschalten</string>
-
   <string name="textSettings">Einstellungen</string>
   <string name="textSettingsTrakt">Trakt.tv</string>
   <string name="textSettingsTraktAuthorizeTitle">Trakt.tv Autorisierung</string>

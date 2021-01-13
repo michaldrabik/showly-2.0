@@ -25,25 +25,20 @@
   <string name="textMinutesShort">min</string>
   <string name="textRemoveFromTrakt">Von Trakt.tv entfernen?</string>
   <string name="textNoDescription">Übersicht nicht verfügbar.</string>
-
   <string name="textAiredAlready">Veröffentlicht</string>
   <string name="textAirsNow">Jetzt live</string>
-
   <plurals name="textDaysToAir">
     <item quantity="one">Morgen verfügbar</item>
     <item quantity="other">Verfügbar in %d Tagen</item>
   </plurals>
-
   <plurals name="textHoursToAir">
     <item quantity="one">Veröffentlichung in 1 Stunde</item>
     <item quantity="other">Veröffentlichung in %d Stunden</item>
   </plurals>
-
   <plurals name="textMinutesToAir">
     <item quantity="one">Jetzt verfügbar</item>
     <item quantity="other">Verfügbar in %d Minuten</item>
   </plurals>
-
   <string name="textToday">Heute</string>
   <string name="textTomorrow">Morgen</string>
   <string name="textThisWeek">Diese Woche</string>
@@ -52,13 +47,11 @@
   <string name="textThisYear">Dieses Jahr</string>
   <string name="textNextYear">Nächstes Jahr</string>
   <string name="textLater">Später</string>
-
   <string name="textNewEpisodeAvailable">Neue Folge jetzt verfügbar!</string>
   <string name="textNewEpisodeAvailableSoon">Neue Folge bald verfügbar!</string>
   <string name="textNewSeasonAvailable">Neue Staffel jetzt verfügbar!</string>
   <string name="textNewSeasonAvailableSoon">Neue Staffel bald verfügbar!</string>
   <string name="textNewMovieAvailable">Film wurde veroffentlicht!</string>
-
   <string name="textTraktSync">Trakt.tv Sync</string>
   <string name="textTraktSyncComplete">Synchronisation komplett erfolgreich!</string>
   <string name="textTraktSyncRunning">Im Gang…</string>
@@ -66,10 +59,8 @@
   <string name="textTraktSyncErrorFull">Trakt.tv Synchronisation fehlgeschlagen. Bitte überprüfe deine Internetverbindung und versuch es erneut oder kontaktiere uns, wenn der Fehler weiterhin besteht.</string>
   <string name="textTraktQuickSyncError">Sofortige Synchronisation fehlgeschlagen.</string>
   <string name="textTraktQuickSyncErrorFull">Sofortige Synchronisation fehlgeschlagen. Wir versuchen es beim nächsten öffnen der App. Bitte überprüfe deine Internetverbindung.</string>
-
   <string name="menuPin">Oben anpinnen</string>
   <string name="menuUnpin">Pin von Oben lösen</string>
-
   <string name="errorGeneral">Hoppla… Da ging etwas schief.\nBitte kontaktiere uns, wenn dies weiterhin geschieht.</string>
   <string name="errorAuthorization">Autorisation fehlgeschlagen. Bitte kontaktiere uns, wenn dies weiterhin geschieht.</string>
   <string name="errorTraktAuthorization">Trakt.tv Authentifizierung fehlgeschlagen.\nBitte einloggen und erneut versuchen.</string>
