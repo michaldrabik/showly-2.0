@@ -58,5 +58,6 @@
   <string name="textLanguageArabic" translatable="false">العربية</string>
   <string name="textLanguageSpanish" translatable="false">Español</string>
   <string name="textLanguageItalian" translatable="false">Italiano</string>
+  <string name="textLanguageFrench" translatable="false">Français</string>
   <string name="textLanguageGerman" translatable="false">Deutsche</string>
 </resources>
