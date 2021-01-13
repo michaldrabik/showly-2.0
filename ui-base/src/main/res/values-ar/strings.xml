@@ -18,7 +18,7 @@
   <string name="textEpisode">الحلقة %1$d</string>
   <string name="textSortBy">ترتيب حسب:</string>
   <string name="textSpoilersWarning">هذا التعليق يحتوى على حرق للأحداث.\nإضغط للقراءة.</string>
-  <string name="textCommentedOn">المستخدم %s علق على %s</string>
+  <string name="textCommentedOn" comment="textCommentedOn&#10;&#10;Example: &#10;John commented on 21 Jul 2020:">المستخدم %s علق على %s</string>
   <string name="textNetwork">(%2$s) %1$s</string>
   <string name="textShows">مسلسلات</string>
   <string name="textMovies">أفلام</string>
