@@ -3,7 +3,7 @@
   <string name="menuMyShows">Mes Séries</string>
   <string name="menuWatchlist">Watchlist</string>
   <string name="menuArchive">Archive</string>
-  <string name="textSearchForMyShows">Search…</string>
+  <string name="textSearchForMyShows">Recherche…</string>
   <string name="textMyShowsEmpty">Votre collection de séries est actuellement vide.\n\nVisitez l\'onglet <b>Découvrir</b> pour ajouter votre première série.</string>
   <string name="textWatchlistEmpty">Votre liste <b>Watchlist</b> est présentement vide.\n\nVisitez l\'onglet <b>Découvrir</b> pour ajouter des émissions que vous souhaitez visionner plus tard.</string>
   <string name="textArchiveEmpty">Vos <b>Archives</b> sont actuellement vides.\n\nLes<b>Archives</b> correspondent à une liste de séries que vous avez abandonnées ou qui ne vous intéressent plus.\n\nLes séries archivées n\'apparaissent pas dans les sections <b>Avancement</b>, <b>Découvrir</b> ainsi que <b>Mes séries</b> et sont ignorées lors de l\'importation à partir de Trakt.tv.</string>
