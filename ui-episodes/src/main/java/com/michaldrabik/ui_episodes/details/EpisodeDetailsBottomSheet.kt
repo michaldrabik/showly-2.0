@@ -2,6 +2,8 @@ package com.michaldrabik.ui_episodes.details
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
+import android.graphics.Typeface.BOLD
+import android.graphics.Typeface.NORMAL
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +27,6 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.info
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.ERROR
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
-import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -206,11 +207,11 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
           }
         }
         if (state.hasRating()) {
+          episodeDetailsRateButton.setTypeface(null, BOLD)
           episodeDetailsRateButton.text = "${state.userRating?.rating}/10"
-          episodeDetailsRateButton.setTextColor(requireContext().colorFromAttr(android.R.attr.colorAccent))
         } else {
+          episodeDetailsRateButton.setTypeface(null, NORMAL)
           episodeDetailsRateButton.setText(R.string.textRate)
-          episodeDetailsRateButton.setTextColor(requireContext().colorFromAttr(android.R.attr.textColorPrimary))
         }
       }
       translation?.let { t ->
