@@ -18,7 +18,7 @@
   <string name="textEpisode">Odcinek %1$d</string>
   <string name="textSortBy">Sortuj:</string>
   <string name="textSpoilersWarning">Opinia zawiera spoilery.\nKliknij aby przeczytać.</string>
-  <string name="textCommentedOn" comment="textCommentedOn&#10;&#10;Example: &#10;John commented on 21 Jul 2020:">%s skomentował %s:</string>
+  <string name="textCommentedOn" comment="textCommentedOn">%s skomentował %s:</string>
   <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textShows">Seriale</string>
   <string name="textMovies">Filmy</string>
