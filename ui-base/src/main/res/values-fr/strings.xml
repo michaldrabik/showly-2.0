@@ -46,7 +46,7 @@
   <string name="textNextMonth">Le Mois Prochain</string>
   <string name="textThisYear">Cette Année</string>
   <string name="textNextYear">L\'Année Prochaine</string>
-  <string name="textLater">Plus tard</string>
+  <string name="textLater">Plus Tard</string>
   <string name="textNewEpisodeAvailable">Un nouvel épisode est disponible dès maintenant !</string>
   <string name="textNewEpisodeAvailableSoon">Un nouvel épisode sera bientôt disponible!</string>
   <string name="textNewSeasonAvailable">Une nouvelle saison est disponible dès maintenant !</string>
@@ -66,7 +66,7 @@
   <string name="errorTraktAuthorization">L\'autorisation du compte Trakt a échoué.\nVeuillez vous connecter et réessayer.</string>
   <string name="errorSeasonsNotLoaded">Veuillez attendre que les données des saisons soient chargées.</string>
   <string name="errorEpisodeNotAired">Cet épisode n\'a pas encore été diffusé.</string>
-  <string name="errorCouldNotLoadDiscover">Impossible de charger la page Explorer pour le moment.\nVeuillez nous contacter si cela persiste.</string>
+  <string name="errorCouldNotLoadDiscover">Impossible de charger la page Découvrir pour le moment.\nVeuillez nous contacter si cela persiste.</string>
   <string name="errorCouldNotLoadShow">Nous n\'avons pas pu charger les détails de cette série pour le moment.\nVeuillez nous contacter si cela se produit à nouveau.</string>
   <string name="errorCouldNotLoadMovie">Nous n\'avons pas pu charger les détails de ce film pour le moment.\nVeuillez nous contacter si cela se produit à nouveau.</string>
   <string name="errorCouldNotLoadSearchResults">Nous n\'avons pas pu charger les résultats de recherche pour le moment.\nVeuillez nous contacter si cela se produit à nouveau.</string>
