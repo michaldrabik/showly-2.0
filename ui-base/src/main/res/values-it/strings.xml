@@ -18,7 +18,7 @@
   <string name="textEpisode">Episodio %1$d</string>
   <string name="textSortBy">Ordina:</string>
   <string name="textSpoilersWarning">Questo commento contiene spoiler.\nTocca per leggerlo.</string>
-  <string name="textCommentedOn" comment="textCommentedOn">%s hanno commentato %s:</string>
+  <string name="textCommentedOn">%s hanno commentato %s:</string>
   <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textShows">Serie TV</string>
   <string name="textMovies">Film</string>
