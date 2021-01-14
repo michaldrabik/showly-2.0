@@ -21,7 +21,7 @@ class SeasonListItemDiffCallback(
     episodes.forEach { e1 ->
       val e2 = episodes2.firstOrNull { it.id == e1.id }
       e2?.let {
-        if (e1.isWatched != e2.isWatched) {
+        if (e1.isWatched != e2.isWatched || e1.myRating != e2.myRating) {
           areEpisodesTheSame = false
           return@forEach
         }

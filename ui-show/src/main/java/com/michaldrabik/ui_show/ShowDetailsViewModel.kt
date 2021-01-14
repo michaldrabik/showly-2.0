@@ -165,8 +165,9 @@ class ShowDetailsViewModel @Inject constructor(
     val seasonsItems = seasons
       .map {
         val episodes = it.episodes.map { episode ->
+          val rating = ratingsCase.loadRating(episode)
           val translation = translationCase.loadTranslation(episode, show, onlyLocal = true)
-          EpisodeListItem(episode, it, false, translation)
+          EpisodeListItem(episode, it, false, translation, rating)
         }
         SeasonListItem(show, it, episodes, isWatched = false)
       }
@@ -446,6 +447,20 @@ class ShowDetailsViewModel @Inject constructor(
     return true
   }
 
+  fun refreshEpisodesRatings() {
+    viewModelScope.launch {
+      val items = seasonItems.map { seasonItem ->
+        val episodes = seasonItem.episodes.map { episodeItem ->
+          val rating = ratingsCase.loadRating(episodeItem.episode)
+          episodeItem.copy(myRating = rating)
+        }
+        seasonItem.copy(episodes = episodes)
+      }
+      seasonItems.replace(items)
+      uiState = ShowDetailsUiModel(seasons = items)
+    }
+  }
+
   private suspend fun refreshWatchedEpisodes() {
     val updatedSeasonItems = markWatchedEpisodes(seasonItems)
     uiState = ShowDetailsUiModel(seasons = updatedSeasonItems)
@@ -461,7 +476,7 @@ class ShowDetailsViewModel @Inject constructor(
       val isSeasonWatched = watchedSeasonsIds.any { id -> id == item.id }
       val episodes = item.episodes.map { episodeItem ->
         val isEpisodeWatched = watchedEpisodesIds.any { id -> id == episodeItem.id }
-        EpisodeListItem(episodeItem.episode, item.season, isEpisodeWatched, episodeItem.translation)
+        episodeItem.copy(season = item.season, isWatched = isEpisodeWatched)
       }
       val updated = item.copy(episodes = episodes, isWatched = isSeasonWatched)
       items.add(updated)

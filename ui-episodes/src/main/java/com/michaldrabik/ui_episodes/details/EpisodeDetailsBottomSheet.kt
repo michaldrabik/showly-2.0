@@ -74,6 +74,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   }
 
   var onEpisodeWatchedClick: ((Boolean) -> Unit)? = null
+  var onRatingChanged: (() -> Unit)? = null
 
   private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_ID_TRAKT)) }
   private val showTmdbId by lazy { IdTmdb(requireArguments().getLong(ARG_ID_TMDB)) }
@@ -214,6 +215,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
           episodeDetailsRateButton.setText(R.string.textRate)
         }
       }
+      ratingChanged?.let { it.consume()?.let { onRatingChanged?.invoke() } }
       translation?.let { t ->
         t.consume()?.let {
           if (it.overview.isNotBlank()) {

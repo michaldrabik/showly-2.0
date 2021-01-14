@@ -51,10 +51,12 @@ class ShowsRatingsRepository @Inject constructor(
     return showsCache?.find { it.idTrakt == show.ids.trakt }
   }
 
-  suspend fun loadRating(token: String, episode: Episode): TraktRating? {
-    preloadEpisodesRatings(token)
+  suspend fun loadRating(token: String, episode: Episode, onlyCache: Boolean = false): TraktRating? {
+    if (!onlyCache) preloadEpisodesRatings(token)
     return episodesCache?.find { it.idTrakt == episode.ids.trakt }
   }
+
+  fun loadRating(episode: Episode) = episodesCache?.find { it.idTrakt == episode.ids.trakt }
 
   suspend fun addRating(token: String, show: Show, rating: Int) {
     cloud.traktApi.postRating(
