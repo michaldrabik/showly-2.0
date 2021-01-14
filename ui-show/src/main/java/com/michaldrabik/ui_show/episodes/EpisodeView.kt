@@ -10,6 +10,7 @@ import com.michaldrabik.common.extensions.toLocalTimeZone
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_show.R
 import kotlinx.android.synthetic.main.view_episode.view.*
@@ -43,6 +44,9 @@ class EpisodeView : ConstraintLayout {
     }
     episodeCheckbox.isChecked = item.isWatched
     episodeCheckbox.isEnabled = hasAired
+
+    episodeRating.text = String.format(ENGLISH, "%.1f", item.episode.rating)
+    episodeRating.visibleIf(item.episode.rating != 0F)
 
     if (hasAired) {
       episodeCheckbox.setOnCheckedChangeListener { _, isChecked ->

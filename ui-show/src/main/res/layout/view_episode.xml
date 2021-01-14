@@ -22,7 +22,7 @@
     android:textAlignment="viewStart"
     android:textColor="?android:attr/textColorSecondary"
     android:textSize="12sp"
-    app:layout_constraintEnd_toStartOf="@id/episodeCheckbox"
+    app:layout_constraintEnd_toStartOf="@id/episodeStarIcon"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     tools:text="Episode 1"
@@ -43,10 +43,63 @@
     android:textSize="16sp"
     android:textStyle="bold"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toStartOf="@id/episodeCheckbox"
+    app:layout_constraintEnd_toStartOf="@id/episodeStarIcon"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/episodeTitle"
     tools:text="@tools:sample/lorem/random"
+    />
+
+  <ImageView
+    android:id="@+id/episodeStarIcon"
+    android:layout_width="20dp"
+    android:layout_height="0dp"
+    app:layout_constraintBottom_toBottomOf="@id/episodeRating"
+    app:layout_constraintEnd_toStartOf="@id/episodeRating"
+    app:layout_constraintTop_toTopOf="@id/episodeRating"
+    app:srcCompat="@drawable/ic_star"
+    app:tint="?attr/colorAccent"
+    />
+
+  <TextView
+    android:id="@+id/episodeRating"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:gravity="end"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="12sp"
+    app:layout_constraintBottom_toTopOf="@id/episodeMyRating"
+    app:layout_constraintEnd_toStartOf="@id/episodeCheckbox"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_chainStyle="packed"
+    tools:text="7.6"
+    />
+
+  <ImageView
+    android:id="@+id/episodeMyStarIcon"
+    android:layout_width="20dp"
+    android:layout_height="0dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/episodeMyRating"
+    app:layout_constraintEnd_toStartOf="@id/episodeMyRating"
+    app:layout_constraintTop_toTopOf="@id/episodeMyRating"
+    app:srcCompat="@drawable/ic_star"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
+  <TextView
+    android:id="@+id/episodeMyRating"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:gravity="end"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="12sp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/episodeCheckbox"
+    app:layout_constraintTop_toBottomOf="@id/episodeRating"
+    tools:text="7.6"
     />
 
   <androidx.appcompat.widget.AppCompatCheckBox

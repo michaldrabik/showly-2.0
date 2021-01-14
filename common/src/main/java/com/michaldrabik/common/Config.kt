@@ -59,7 +59,7 @@ object Config {
 
   const val SHOW_WHATS_NEW = true
   const val WHATS_NEW_TEXT =
-    "* Added Italian language support.\n\n" +
+    "* Added French language support.\n\n" +
       "* Bugfixes\n\n" +
       "Showly is now on Twitter! Follow  @AppShowly  for news, current app status and other important information."
 }

@@ -221,7 +221,9 @@ class ShowDetailsViewModel @Inject constructor(
           }
         }
 
-        uiState = ShowDetailsUiModel(seasonTranslation = ActionEvent(seasonItem.copy(episodes = episodes)))
+        val updatedItem = seasonItem.copy(episodes = episodes)
+        seasonItems.findReplace(updatedItem) { it.id == updatedItem.id }
+        uiState = ShowDetailsUiModel(seasonTranslation = ActionEvent(updatedItem))
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "${ShowDetailsViewModel::class.simpleName}::loadSeasonTranslation()")
       }

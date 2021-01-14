@@ -31,6 +31,16 @@ class ShowsRatingsRepository @Inject constructor(
     }
   }
 
+  suspend fun preloadEpisodesRatings(token: String) {
+    if (episodesCache == null) {
+      val ratings = cloud.traktApi.fetchEpisodesRatings(token)
+      episodesCache = ratings.map {
+        val id = IdTrakt(it.episode.ids.trakt ?: -1)
+        TraktRating(id, it.rating)
+      }.toMutableList()
+    }
+  }
+
   suspend fun loadShowsRatings(token: String): List<TraktRating> {
     preloadShowsRatings(token)
     return showsCache?.toList() ?: emptyList()
@@ -42,13 +52,7 @@ class ShowsRatingsRepository @Inject constructor(
   }
 
   suspend fun loadRating(token: String, episode: Episode): TraktRating? {
-    if (episodesCache == null) {
-      val ratings = cloud.traktApi.fetchEpisodesRatings(token)
-      episodesCache = ratings.map {
-        val id = IdTrakt(it.episode.ids.trakt ?: -1)
-        TraktRating(id, it.rating)
-      }.toMutableList()
-    }
+    preloadEpisodesRatings(token)
     return episodesCache?.find { it.idTrakt == episode.ids.trakt }
   }
 
