@@ -13,6 +13,7 @@ import com.michaldrabik.ui_model.SeasonBundle
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.shows.ShowsRepository
+import timber.log.Timber
 import javax.inject.Inject
 import com.michaldrabik.storage.database.model.Episode as EpisodeDb
 import com.michaldrabik.storage.database.model.Season as SeasonDb
@@ -139,7 +140,7 @@ class EpisodesManager @Inject constructor(
     }
   }
 
-  suspend fun invalidateEpisodes(show: Show, newSeasons: List<Season>) {
+  suspend fun invalidateSeasons(show: Show, newSeasons: List<Season>) {
     if (newSeasons.isEmpty()) return
 
     val localSeasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
@@ -169,8 +170,30 @@ class EpisodesManager @Inject constructor(
       }
     }
 
-    if (seasonsToAdd.isNotEmpty()) database.seasonsDao().upsert(seasonsToAdd)
-    if (episodesToAdd.isNotEmpty()) database.episodesDao().upsert(episodesToAdd)
+    database.withTransaction {
+      if (seasonsToAdd.isNotEmpty()) database.seasonsDao().upsert(seasonsToAdd)
+      if (episodesToAdd.isNotEmpty()) database.episodesDao().upsert(episodesToAdd)
+      Timber.d("Episodes updated: ${episodesToAdd.size} Seasons updated: ${seasonsToAdd.size}")
+    }
+
+    val seasonsToDelete = mutableListOf<Long>()
+    val episodesToDelete = mutableListOf<Long>()
+
+    val newEpisodes = newSeasons.flatMap { it.episodes }
+    localEpisodes.forEach { localEpisode ->
+      val ep = newEpisodes.find { it.ids.trakt.id == localEpisode.idTrakt }
+      if (ep == null) episodesToDelete.add(localEpisode.idTrakt)
+    }
+    localSeasons.forEach { localSeason ->
+      val season = newSeasons.find { it.ids.trakt.id == localSeason.idTrakt }
+      if (season == null) seasonsToDelete.add(localSeason.idTrakt)
+    }
+
+    database.withTransaction {
+      if (episodesToDelete.isNotEmpty()) database.episodesDao().deleteForShow(episodesToDelete, show.traktId)
+      if (seasonsToDelete.isNotEmpty()) database.seasonsDao().deleteForShow(seasonsToDelete, show.traktId)
+      Timber.d("Episodes deleted: ${episodesToDelete.size} Seasons deleted: ${seasonsToDelete.size}")
+    }
 
     database.episodesSyncLogDao().upsert(EpisodesSyncLog(show.ids.trakt.id, nowUtcMillis()))
   }

@@ -36,4 +36,7 @@ interface EpisodesDao : BaseDao<Episode> {
 
   @Query("DELETE FROM episodes WHERE id_show_trakt = :showTraktId AND is_watched = 0")
   suspend fun deleteAllUnwatchedForShow(showTraktId: Long)
+
+  @Query("DELETE FROM episodes WHERE id_show_trakt = :showTraktId AND id_trakt IN(:episodesIds)")
+  suspend fun deleteForShow(episodesIds: List<Long>, showTraktId: Long)
 }

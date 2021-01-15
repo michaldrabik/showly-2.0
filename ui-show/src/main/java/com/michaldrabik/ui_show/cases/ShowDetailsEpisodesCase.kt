@@ -39,7 +39,7 @@ class ShowDetailsEpisodesCase @Inject constructor(
 
       val isFollowed = showsRepository.myShows.load(show.ids.trakt) != null
       if (isFollowed) {
-        episodesManager.invalidateEpisodes(show, remoteSeasons)
+        episodesManager.invalidateSeasons(show, remoteSeasons)
       }
 
       return SeasonsBundle(remoteSeasons, isLocal = false)
