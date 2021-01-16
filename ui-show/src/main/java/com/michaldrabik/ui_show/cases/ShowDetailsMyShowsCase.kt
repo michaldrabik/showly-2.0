@@ -42,8 +42,8 @@ class ShowDetailsMyShowsCase @Inject constructor(
       showsRepository.watchlistShows.delete(show.ids.trakt)
       showsRepository.archiveShows.delete(show.ids.trakt)
 
-      val localSeasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
-      val localEpisodes = database.episodesDao().getAllByShowId(show.ids.trakt.id)
+      val localSeasons = database.seasonsDao().getAllByShowId(show.traktId)
+      val localEpisodes = database.episodesDao().getAllByShowId(show.traktId)
 
       val seasonsToAdd = mutableListOf<SeasonDb>()
       val episodesToAdd = mutableListOf<EpisodeDb>()
@@ -70,9 +70,9 @@ class ShowDetailsMyShowsCase @Inject constructor(
       showsRepository.myShows.delete(show.ids.trakt)
 
       if (removeLocalData) {
-        database.episodesDao().deleteAllUnwatchedForShow(show.ids.trakt.id)
-        val seasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
-        val episodes = database.episodesDao().getAllByShowId(show.ids.trakt.id)
+        database.episodesDao().deleteAllUnwatchedForShow(show.traktId)
+        val seasons = database.seasonsDao().getAllByShowId(show.traktId)
+        val episodes = database.episodesDao().getAllByShowId(show.traktId)
         val toDelete = mutableListOf<SeasonDb>()
         seasons.forEach { season ->
           if (episodes.none { it.idSeason == season.idTrakt }) {

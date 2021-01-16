@@ -63,7 +63,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       showButton: Boolean = true
     ): EpisodeDetailsBottomSheet {
       val bundle = Bundle().apply {
-        putLong(ARG_ID_TRAKT, show.ids.trakt.id)
+        putLong(ARG_ID_TRAKT, show.traktId)
         putLong(ARG_ID_TMDB, show.ids.tmdb.id)
         putParcelable(ARG_EPISODE, episode)
         putBoolean(ARG_IS_WATCHED, isWatched)

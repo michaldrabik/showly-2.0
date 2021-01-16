@@ -87,7 +87,7 @@ class ShowMapper @Inject constructor(
   )
 
   fun toDatabase(show: Show) = ShowDb(
-    show.ids.trakt.id,
+    show.traktId,
     show.ids.tvdb.id,
     show.ids.tmdb.id,
     show.ids.imdb.id,

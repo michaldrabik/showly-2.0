@@ -149,7 +149,7 @@ class ProgressFragment :
     hideNavigation()
     saveUiTranslations()
     progressRoot.fadeOut {
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
+      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
       navigateTo(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
     }.add(animations)
   }

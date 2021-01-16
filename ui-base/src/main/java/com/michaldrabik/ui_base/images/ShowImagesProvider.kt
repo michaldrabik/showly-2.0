@@ -86,7 +86,7 @@ class ShowImagesProvider @Inject constructor(
         source = AWS
       } else {
         // If requested fanart is unavailable try backing up to an episode image
-        val seasons = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
+        val seasons = cloud.traktApi.fetchSeasons(show.traktId)
         if (seasons.isNotEmpty()) {
           val episode = seasons[0].episodes?.firstOrNull()
           episode?.let { ep ->

@@ -33,7 +33,7 @@ class ShowDetailsEpisodesCase @Inject constructor(
     try {
       if (!isOnline) throw Error("App is not online. Should fall back to local data.")
 
-      val remoteSeasons = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
+      val remoteSeasons = cloud.traktApi.fetchSeasons(show.traktId)
         .map { mappers.season.fromNetwork(it) }
         .filter { if (!showSpecials()) !it.isSpecial() else true }
 

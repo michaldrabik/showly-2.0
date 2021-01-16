@@ -26,10 +26,10 @@ class EpisodesManager @Inject constructor(
 ) {
 
   suspend fun getWatchedSeasonsIds(show: Show) =
-    database.seasonsDao().getAllWatchedIdsForShows(listOf(show.ids.trakt.id))
+    database.seasonsDao().getAllWatchedIdsForShows(listOf(show.traktId))
 
   suspend fun getWatchedEpisodesIds(show: Show) =
-    database.episodesDao().getAllWatchedIdsForShows(listOf(show.ids.trakt.id))
+    database.episodesDao().getAllWatchedIdsForShows(listOf(show.traktId))
 
   suspend fun setSeasonWatched(seasonBundle: SeasonBundle): List<Episode> {
     val toAdd = mutableListOf<EpisodeDb>()
@@ -129,8 +129,8 @@ class EpisodesManager @Inject constructor(
 
   suspend fun setAllUnwatched(show: Show) {
     database.withTransaction {
-      val watchedEpisodes = database.episodesDao().getAllByShowId(show.ids.trakt.id)
-      val watchedSeasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
+      val watchedEpisodes = database.episodesDao().getAllByShowId(show.traktId)
+      val watchedSeasons = database.seasonsDao().getAllByShowId(show.traktId)
 
       val updateEpisodes = watchedEpisodes.map { it.copy(isWatched = false) }
       val updateSeasons = watchedSeasons.map { it.copy(isWatched = false) }
@@ -143,8 +143,8 @@ class EpisodesManager @Inject constructor(
   suspend fun invalidateSeasons(show: Show, newSeasons: List<Season>) {
     if (newSeasons.isEmpty()) return
 
-    val localSeasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
-    val localEpisodes = database.episodesDao().getAllByShowId(show.ids.trakt.id)
+    val localSeasons = database.seasonsDao().getAllByShowId(show.traktId)
+    val localEpisodes = database.episodesDao().getAllByShowId(show.traktId)
 
     val seasonsToAdd = mutableListOf<SeasonDb>()
     val episodesToAdd = mutableListOf<EpisodeDb>()
@@ -180,7 +180,7 @@ class EpisodesManager @Inject constructor(
       Timber.d("Episodes updated: ${episodesToAdd.size} Seasons updated: ${seasonsToAdd.size}")
     }
 
-    database.episodesSyncLogDao().upsert(EpisodesSyncLog(show.ids.trakt.id, nowUtcMillis()))
+    database.episodesSyncLogDao().upsert(EpisodesSyncLog(show.traktId, nowUtcMillis()))
   }
 
   private suspend fun onEpisodeSet(season: Season, show: Show) {

@@ -53,7 +53,7 @@ class ShowsSyncRunner @Inject constructor(
     showsToSync.forEach { show ->
       val isInWatchlist = show.traktId in watchlistShowsIds
 
-      val lastSync = syncLog.find { it.idTrakt == show.ids.trakt.id }?.syncedAt ?: 0
+      val lastSync = syncLog.find { it.idTrakt == show.traktId }?.syncedAt ?: 0
       if (nowUtcMillis() - lastSync < SHOW_SYNC_COOLDOWN) {
         Timber.i("${show.title} is on cooldown. No need to sync.")
         return@forEach
@@ -69,12 +69,12 @@ class ShowsSyncRunner @Inject constructor(
       }
 
       if (isInWatchlist) {
-        database.episodesSyncLogDao().upsert(EpisodesSyncLog(show.ids.trakt.id, nowUtcMillis()))
+        database.episodesSyncLogDao().upsert(EpisodesSyncLog(show.traktId, nowUtcMillis()))
       } else {
         try {
           Timber.i("Syncing ${show.title}(${show.ids.trakt}) episodes...")
 
-          val remoteSeasons = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
+          val remoteSeasons = cloud.traktApi.fetchSeasons(show.traktId)
             .map { mappers.season.fromNetwork(it) }
           episodesManager.invalidateSeasons(show, remoteSeasons)
           syncCount++

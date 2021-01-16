@@ -211,7 +211,7 @@ class DiscoverFragment :
       duration = 150, startDelay = 350,
       endAction = {
         if (!isResumed) return@fadeOut
-        val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.ids.trakt.id) }
+        val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
         navigateTo(R.id.actionDiscoverFragmentToShowDetailsFragment, bundle)
       }
     ).add(animations)
