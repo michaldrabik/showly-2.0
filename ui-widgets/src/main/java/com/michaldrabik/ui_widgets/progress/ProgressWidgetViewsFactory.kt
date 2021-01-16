@@ -131,7 +131,7 @@ class ProgressWidgetViewsFactory(
       val fillIntent = Intent().apply {
         putExtras(
           Bundle().apply {
-            putExtra(EXTRA_SHOW_ID, item.show.ids.trakt.id)
+            putExtra(EXTRA_SHOW_ID, item.show.traktId)
           }
         )
       }
@@ -142,7 +142,7 @@ class ProgressWidgetViewsFactory(
           Bundle().apply {
             putExtra(EXTRA_EPISODE_ID, item.episode.ids.trakt.id)
             putExtra(EXTRA_SEASON_ID, item.season.ids.trakt.id)
-            putExtra(EXTRA_SHOW_ID, item.show.ids.trakt.id)
+            putExtra(EXTRA_SHOW_ID, item.show.traktId)
           }
         )
       }
@@ -197,7 +197,7 @@ class ProgressWidgetViewsFactory(
     }
   }
 
-  override fun getItemId(position: Int) = adapterItems[position].show.ids.trakt.id
+  override fun getItemId(position: Int) = adapterItems[position].show.traktId
 
   override fun onDataSetChanged() = loadData()
 

@@ -33,21 +33,20 @@ class ShowDetailsEpisodesCase @Inject constructor(
     try {
       if (!isOnline) throw Error("App is not online. Should fall back to local data.")
 
-      val remoteSeasons = cloud.traktApi.fetchSeasons(show.ids.trakt.id)
+      val remoteSeasons = cloud.traktApi.fetchSeasons(show.traktId)
         .map { mappers.season.fromNetwork(it) }
         .filter { if (!showSpecials()) !it.isSpecial() else true }
 
       val isFollowed = showsRepository.myShows.load(show.ids.trakt) != null
       if (isFollowed) {
-        episodesManager.invalidateEpisodes(show, remoteSeasons)
+        episodesManager.invalidateSeasons(show, remoteSeasons)
       }
 
       return SeasonsBundle(remoteSeasons, isLocal = false)
     } catch (error: Throwable) {
-      // Fall back to local data if remote call fails for any reason
       Timber.d("Falling back to local data. Error: ${error.message}")
 
-      val localEpisodes = database.episodesDao().getAllForShows(listOf(show.traktId))
+      val localEpisodes = database.episodesDao().getAllByShowId(show.traktId)
       val localSeasons = database.seasonsDao().getAllByShowId(show.traktId).map { season ->
         val seasonEpisodes = localEpisodes.filter { ep -> ep.idSeason == season.idTrakt }
         mappers.season.fromDatabase(season, seasonEpisodes)

@@ -6,13 +6,11 @@
   <string name="textSortDateAdded">Aggiunti di Recente</string>
   <string name="textSortRecentlyWatched">Visti di Recente</string>
   <string name="textSortEpisodesLeft">Episodi Rimasti</string>
-
   <string name="textHeaderRecentlyAdded">Aggiunti di Recente</string>
   <string name="textHeaderWatching">Stai Guardando</string>
   <string name="textHeaderFinished">Finito</string>
   <string name="textHeaderReturning">Rinnovate &amp; In Arrivo</string>
   <string name="textHeaderAll">Tutto</string>
-
   <string name="textSettingsShowsNotificationsWhenTitle">Quando ricevere notifiche</string>
   <string name="textSettingsShowsNotificationsWhenSummary">Quando ti piacerebbe ricevere notifiche sui nuovi episodi.</string>
   <string name="textSettingsShowsNotificationsWhenAvailable">Quando Disponibile</string>
@@ -25,14 +23,12 @@
   <string name="textSettingsShowsNotificationsWhen12HoursBefore">12 Ore Prima</string>
   <string name="textSettingsShowsNotificationsWhen12Hours">12 Ore Dopo</string>
   <string name="textSettingsShowsNotificationsWhenNextDay">1 Giorno Dopo</string>
-
   <string name="textTipDiscover">Doppio tocco sul tasto \'Scopri\' per iniziare la ricerca.</string>
   <string name="textTipMyShows">Doppio tocco sul tasto \'Raccolta\' per navigare velocemente fra le pagine.</string>
   <string name="textTipShowDetailsGallery">Tocca l\'immagine della serie TV per aprire la galleria.</string>
   <string name="textTipShowDetailsQuickProgress">Tocca l\'icona \'Progresso Rapido\' per aggiornare velocemente i tuoi progressi per la serie TV.\n\nTocca l\'icona \'Archivia\' per archiviarla.</string>
   <string name="textTipDiscoverFilters">Usa i filtri per migliorare la tua pagina Scopri.</string>
   <string name="textTipWatchlistPinItem">Tocca e mantieni un elemento della lista per fissarlo in cima.</string>
-
   <string name="textGenreAction">Azione</string>
   <string name="textGenreAdventure">Avventura</string>
   <string name="textGenreAnimation">Animazione</string>
@@ -48,7 +44,6 @@
   <string name="textGenreThriller">Thriller</string>
   <string name="textGenreWar">Guerra</string>
   <string name="textGenreWestern">Western</string>
-
   <string name="textTraktSyncSchedule">Programma</string>
   <string name="textTraktSyncOptionOff">Disattivo</string>
   <string name="textTraktSyncOption1Hour">Ogni Ora</string>
@@ -59,14 +54,12 @@
   <string name="textTraktSyncOptionWeekly">Ogni Settimana</string>
   <string name="textTraktSyncOptionOffMessage">La sincronizzazione non verrà eseguita in automatico.</string>
   <string name="textTraktSyncOptionConfirmMessage">La sincronizzazione automatica è stata programmata.</string>
-
   <string name="textTraktSyncOptionHourButton">Programmata per ogni ora</string>
   <string name="textTraktSyncOption3HoursButton">Programmata per ogni 3 ore</string>
   <string name="textTraktSyncOption6HoursButton">Programmata per ogni 6 ore</string>
   <string name="textTraktSyncOptionDailyButton">Programmata per ogni giorno</string>
   <string name="textTraktSyncOption3DayButton">Programmata per ogni 3 giorni</string>
   <string name="textTraktSyncOptionWeeklyButton">Programmata per ogni settimana</string>
-
   <string name="textShowStatusReturning">Serie TV Rinnovata</string>
   <string name="textShowStatusUpcoming">In arrivo</string>
   <string name="textShowStatusInProduction">In produzione</string>
@@ -79,4 +72,4 @@
   <string name="textMovieStatusPlanned">Pianificata</string>
   <string name="textMovieStatusCanceled">Cancellata</string>
   <string name="textMovieStatusRumored">Si Vocifera</string>
-  </resources>
+</resources>

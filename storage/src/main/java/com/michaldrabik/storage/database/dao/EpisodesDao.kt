@@ -19,8 +19,8 @@ interface EpisodesDao : BaseDao<Episode> {
   @Query("SELECT * FROM episodes WHERE id_season = :seasonTraktId")
   suspend fun getAllForSeason(seasonTraktId: Long): List<Episode>
 
-  @Query("SELECT * FROM episodes WHERE id_show_trakt IN (:showsIds)")
-  suspend fun getAllForShows(showsIds: List<Long>): List<Episode>
+  @Query("SELECT * FROM episodes WHERE id_show_trakt = :showTraktId")
+  suspend fun getAllByShowId(showTraktId: Long): List<Episode>
 
   @Query(
     "SELECT id_trakt, id_show_trakt, id_season, season_number, episode_number, is_watched, first_aired" +
@@ -36,4 +36,7 @@ interface EpisodesDao : BaseDao<Episode> {
 
   @Query("DELETE FROM episodes WHERE id_show_trakt = :showTraktId AND is_watched = 0")
   suspend fun deleteAllUnwatchedForShow(showTraktId: Long)
+
+  @Query("DELETE FROM episodes WHERE id_show_trakt = :showTraktId")
+  suspend fun deleteAllForShow(showTraktId: Long)
 }

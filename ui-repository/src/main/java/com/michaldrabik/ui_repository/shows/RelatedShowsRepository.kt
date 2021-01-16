@@ -20,7 +20,7 @@ class RelatedShowsRepository @Inject constructor(
 ) {
 
   suspend fun loadAll(show: Show): List<Show> {
-    val relatedShows = database.relatedShowsDao().getAllById(show.ids.trakt.id)
+    val relatedShows = database.relatedShowsDao().getAllById(show.traktId)
     val latest = relatedShows.maxByOrNull { it.updatedAt }
 
     if (latest != null && nowUtcMillis() - latest.updatedAt < Config.RELATED_CACHE_DURATION) {
@@ -29,7 +29,7 @@ class RelatedShowsRepository @Inject constructor(
         .map { mappers.show.fromDatabase(it) }
     }
 
-    val remoteShows = cloud.traktApi.fetchRelatedShows(show.ids.trakt.id)
+    val remoteShows = cloud.traktApi.fetchRelatedShows(show.traktId)
       .map { mappers.show.fromNetwork(it) }
 
     cacheRelatedShows(remoteShows, show.ids.trakt)

@@ -2,6 +2,8 @@ package com.michaldrabik.ui_episodes.details
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface
+import android.graphics.Typeface.BOLD
+import android.graphics.Typeface.NORMAL
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +27,6 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.info
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.ERROR
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
-import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -62,7 +63,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       showButton: Boolean = true
     ): EpisodeDetailsBottomSheet {
       val bundle = Bundle().apply {
-        putLong(ARG_ID_TRAKT, show.ids.trakt.id)
+        putLong(ARG_ID_TRAKT, show.traktId)
         putLong(ARG_ID_TMDB, show.ids.tmdb.id)
         putParcelable(ARG_EPISODE, episode)
         putBoolean(ARG_IS_WATCHED, isWatched)
@@ -73,6 +74,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   }
 
   var onEpisodeWatchedClick: ((Boolean) -> Unit)? = null
+  var onRatingChanged: (() -> Unit)? = null
 
   private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_ID_TRAKT)) }
   private val showTmdbId by lazy { IdTmdb(requireArguments().getLong(ARG_ID_TMDB)) }
@@ -206,13 +208,14 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
           }
         }
         if (state.hasRating()) {
+          episodeDetailsRateButton.setTypeface(null, BOLD)
           episodeDetailsRateButton.text = "${state.userRating?.rating}/10"
-          episodeDetailsRateButton.setTextColor(requireContext().colorFromAttr(android.R.attr.colorAccent))
         } else {
+          episodeDetailsRateButton.setTypeface(null, NORMAL)
           episodeDetailsRateButton.setText(R.string.textRate)
-          episodeDetailsRateButton.setTextColor(requireContext().colorFromAttr(android.R.attr.textColorPrimary))
         }
       }
+      ratingChanged?.let { it.consume()?.let { onRatingChanged?.invoke() } }
       translation?.let { t ->
         t.consume()?.let {
           if (it.overview.isNotBlank()) {

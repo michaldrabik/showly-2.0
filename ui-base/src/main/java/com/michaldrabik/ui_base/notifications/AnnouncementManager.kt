@@ -74,7 +74,7 @@ class AnnouncementManager @Inject constructor(
     val delay = settings.episodesNotificationsDelay
     myShows.forEach { show ->
       Timber.i("Processing ${show.title} (${show.idTrakt})")
-      val episodes = database.episodesDao().getAllForShows(listOf(show.idTrakt))
+      val episodes = database.episodesDao().getAllByShowId(show.idTrakt)
       episodes
         .filter { it.seasonNumber != 0 }
         .filter { it.firstAired != null && (it.firstAired!!.toMillis() + delay.delayMs) > now }

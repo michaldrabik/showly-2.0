@@ -241,7 +241,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     relatedAdapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
     relatedAdapter.itemClickListener = {
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, it.show.ids.trakt.id) }
+      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, it.show.traktId) }
       navigateTo(R.id.actionShowDetailsFragmentToSelf, bundle)
     }
   }
@@ -318,6 +318,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     val modal = EpisodeDetailsBottomSheet.create(show, episode, isWatched, showButton)
     if (season != null) {
       modal.onEpisodeWatchedClick = { viewModel.setWatchedEpisode(requireAppContext(), episode, season, it) }
+      modal.onRatingChanged = { viewModel.refreshEpisodesRatings() }
     }
     modal.show(requireActivity().supportFragmentManager, "MODAL")
   }

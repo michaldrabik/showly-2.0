@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_show.cases
 
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_repository.RatingsRepository
@@ -27,4 +28,6 @@ class ShowDetailsRatingCase @Inject constructor(
     val token = userTraktManager.checkAuthorization().token
     return ratingsRepository.shows.loadRating(token, show)
   }
+
+  fun loadRating(episode: Episode) = ratingsRepository.shows.loadRating(episode)
 }

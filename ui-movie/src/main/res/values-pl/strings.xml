@@ -5,7 +5,6 @@
   <string name="textMovieWatchLater">Na później</string>
   <string name="textInMyMovies">W moich filmach</string>
   <string name="textInMoviesWatchlist">Na później</string>
-
   <string name="textMovieActorsEmpty">Obsada niedostępna</string>
   <string name="textMovieTrailer">Trailer</string>
   <string name="textMovieRate">Oceń</string>
@@ -14,9 +13,7 @@
   <string name="textMovieShare">Prześlij</string>
   <string name="textMovieYouMayAlsoLike">Zobacz również:</string>
   <string name="textMovieVotes">%.1f (%d ocen)</string>
-
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
-
   <string name="textMovieNotYetReleased">Film nie miał jeszcze premiery.</string>
   <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv zostało zaktualizowane.</string>
 </resources>

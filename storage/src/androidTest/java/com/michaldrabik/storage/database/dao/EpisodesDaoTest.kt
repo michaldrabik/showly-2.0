@@ -72,10 +72,7 @@ class EpisodesDaoTest : BaseDaoTest() {
       database.seasonsDao().upsert(listOf(season1, season2))
       database.episodesDao().upsert(listOf(episode1, episode2))
 
-      val result = database.episodesDao().getAllForShows(listOf(1, 2))
-      assertThat(result).containsExactlyElementsIn(listOf(episode1, episode2))
-
-      val result2 = database.episodesDao().getAllForShows(listOf(2))
+      val result2 = database.episodesDao().getAllByShowId(2)
       assertThat(result2).containsExactlyElementsIn(listOf(episode2))
     }
   }
@@ -135,12 +132,12 @@ class EpisodesDaoTest : BaseDaoTest() {
       database.seasonsDao().upsert(listOf(season1, season2))
       database.episodesDao().upsert(listOf(episode1, episode2))
 
-      val result = database.episodesDao().getAllForShows(listOf(show.idTrakt))
+      val result = database.episodesDao().getAllByShowId(show.idTrakt)
       assertThat(result).containsExactlyElementsIn(listOf(episode1, episode2))
 
       database.episodesDao().deleteAllUnwatchedForShow(show.idTrakt)
 
-      val result2 = database.episodesDao().getAllForShows(listOf(show.idTrakt))
+      val result2 = database.episodesDao().getAllByShowId(show.idTrakt)
       assertThat(result2).containsExactlyElementsIn(listOf(episode1))
     }
   }

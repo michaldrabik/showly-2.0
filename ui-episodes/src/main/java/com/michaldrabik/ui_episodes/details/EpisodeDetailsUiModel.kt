@@ -13,6 +13,7 @@ data class EpisodeDetailsUiModel(
   val comments: List<Comment>? = null,
   val commentsLoading: Boolean? = null,
   val ratingState: RatingState? = null,
+  val ratingChanged: ActionEvent<Boolean>? = null,
   val translation: ActionEvent<Translation>? = null
 ) : UiModel() {
 
@@ -23,6 +24,7 @@ data class EpisodeDetailsUiModel(
       comments = newModel.comments?.toList() ?: comments,
       commentsLoading = newModel.commentsLoading ?: commentsLoading,
       translation = newModel.translation ?: translation,
+      ratingChanged = newModel.ratingChanged ?: ratingChanged,
       ratingState = newModel.ratingState?.copy(
         rateLoading = newModel.ratingState.rateLoading ?: ratingState?.rateLoading,
         rateAllowed = newModel.ratingState.rateAllowed ?: ratingState?.rateAllowed,

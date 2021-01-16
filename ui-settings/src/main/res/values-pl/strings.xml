@@ -4,7 +4,6 @@
   <string name="textTraktLogoutSuccess">Wylogowano.</string>
   <string name="textImagesCacheCleared">Pamięć podręczna obrazków została wyczyszczona.</string>
   <string name="textTurnOff">Wyłącz</string>
-
   <string name="textSettings">Ustawienia</string>
   <string name="textSettingsTrakt">Trakt.tv</string>
   <string name="textSettingsTraktAuthorizeTitle">Autoryzacja Trakt.tv</string>
@@ -51,6 +50,4 @@
   <string name="textSettingsWidgets">Widgety</string>
   <string name="textSettingsWidgetsLabelsTitle">Pokaż Tytuły</string>
   <string name="textSettingsWidgetsLabelsSummary">Pokazuj przeźroczyste tytuły widgetów.</string>
-
-
-  </resources>
+</resources>

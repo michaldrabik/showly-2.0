@@ -29,7 +29,7 @@ class ShowDetailsActorsCase @Inject constructor(
         .map { mappers.actor.fromDatabase(it) }
     }
 
-    val remoteTraktActors = cloud.traktApi.fetchShowActors(show.ids.trakt.id)
+    val remoteTraktActors = cloud.traktApi.fetchShowActors(show.traktId)
     val remoteTmdbActors = cloud.tmdbApi.fetchShowActors(tmdbId)
       .asSequence()
       .distinctBy { (it.name + it.character).toLowerCase(ENGLISH) }

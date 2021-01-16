@@ -25,10 +25,8 @@
   <string name="textMinutesShort">دقائق</string>
   <string name="textRemoveFromTrakt">حذف من Trakt.tv؟</string>
   <string name="textNoDescription">لا يتوفر وصف.</string>
-
   <string name="textAiredAlready">تم عرضها</string>
   <string name="textAirsNow">تُعرض الآن</string>
-
   <plurals name="textDaysToAir">
     <item quantity="zero">يُعرض بعد 0 أيام</item>
     <item quantity="one">تُعرض غداً</item>
@@ -37,7 +35,6 @@
     <item quantity="many">تُعرض بعد %d أيام</item>
     <item quantity="other">تُعرض بعد %d أيام</item>
   </plurals>
-
   <plurals name="textHoursToAir">
     <item quantity="zero">تُعرض بعد 0 ساعة</item>
     <item quantity="one">تُعرض بعد ساعة</item>
@@ -46,7 +43,6 @@
     <item quantity="many">تُعرض بعد %d ساعات</item>
     <item quantity="other">تُعرض بعد %d ساعات</item>
   </plurals>
-
   <plurals name="textMinutesToAir">
     <item quantity="zero">تُعرض بعد 0 دقيقة</item>
     <item quantity="one">تُعرض الآن</item>
@@ -55,7 +51,6 @@
     <item quantity="many">تُعرض بعد %d دقائق</item>
     <item quantity="other">تُعرض بعد %d دقائق</item>
   </plurals>
-
   <string name="textToday">اليوم</string>
   <string name="textTomorrow">غداً</string>
   <string name="textThisWeek">هذا الإسبوع</string>
@@ -64,13 +59,11 @@
   <string name="textThisYear">هذه السنة</string>
   <string name="textNextYear">السنة القادمة</string>
   <string name="textLater">لاحقاً</string>
-
   <string name="textNewEpisodeAvailable">توفرت حلقة جديدة!</string>
   <string name="textNewEpisodeAvailableSoon">ستتوفر حلقة جديدة قريباً!</string>
   <string name="textNewSeasonAvailable">موسم جديد أصبح متاحاً الآن!</string>
   <string name="textNewSeasonAvailableSoon">موسم جديد قادم قريباً!</string>
   <string name="textNewMovieAvailable">تم إصدار الفيلم!</string>
-
   <string name="textTraktSync">مزامنة Trakt.tv</string>
   <string name="textTraktSyncComplete">إكتملت المزامنة بنجاح.</string>
   <string name="textTraktSyncRunning">بدء المزامنة…</string>
@@ -78,10 +71,8 @@
   <string name="textTraktSyncErrorFull">فشلت مزامنة Trakt.tv. رجاءً تأكد من أنك مُتصل بالإنترنت ثم حاول مجدداً، وإذا إستمرت المشكلة بالحدوث، تواصل معنا.</string>
   <string name="textTraktQuickSyncError">فشلت المزامنة الفورية.</string>
   <string name="textTraktQuickSyncErrorFull">فشلت المزامنة الفورية. سيتم محاولة المزامنة الفورية بعد تشغيل التطبيق مرة أخرى، رجاءً تأكد من إتصالك بالإنترنت.</string>
-
   <string name="menuPin">تثبيت في الأعلى</string>
   <string name="menuUnpin">إلغاء التثبيت من الأعلى</string>
-
   <string name="errorGeneral">عفواً… حدث خطأ ما.\nإذا استمرت المشكلة بالحدوث، رجاءً تواصل معنا.</string>
   <string name="errorAuthorization">فشلت المصادقة. إذا استمرت المشكلة بالحدوث، رجاءً تواصل معنا.</string>
   <string name="errorTraktAuthorization">فشلت مصادقة Trakt.\nقُم بتسجيل الدخول وحاول مرة أخرى.</string>

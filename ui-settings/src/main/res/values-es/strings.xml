@@ -4,7 +4,6 @@
   <string name="textTraktLogoutSuccess">Se ha cerrado la sesión.</string>
   <string name="textImagesCacheCleared">Se ha borrado la caché de imágenes.</string>
   <string name="textTurnOff">Apagar</string>
-
   <string name="textSettings">Ajustes</string>
   <string name="textSettingsTrakt">Trakt.tv</string>
   <string name="textSettingsTraktAuthorizeTitle">Autorización de Trakt.tv</string>
@@ -51,6 +50,4 @@
   <string name="textSettingsWidgets">Widgets</string>
   <string name="textSettingsWidgetsLabelsTitle">Mostrar Títulos</string>
   <string name="textSettingsWidgetsLabelsSummary">Muestra títulos de widgets translúcidos.</string>
-
-
-  </resources>
+</resources>

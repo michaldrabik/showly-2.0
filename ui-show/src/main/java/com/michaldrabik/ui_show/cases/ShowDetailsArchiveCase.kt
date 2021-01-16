@@ -23,9 +23,9 @@ class ShowDetailsArchiveCase @Inject constructor(
     database.withTransaction {
       showsRepository.archiveShows.insert(show.ids.trakt)
       if (removeLocalData) {
-        database.episodesDao().deleteAllUnwatchedForShow(show.ids.trakt.id)
-        val seasons = database.seasonsDao().getAllByShowId(show.ids.trakt.id)
-        val episodes = database.episodesDao().getAllForShows(listOf(show.ids.trakt.id))
+        database.episodesDao().deleteAllUnwatchedForShow(show.traktId)
+        val seasons = database.seasonsDao().getAllByShowId(show.traktId)
+        val episodes = database.episodesDao().getAllByShowId(show.traktId)
         val toDelete = mutableListOf<Season>()
         seasons.forEach { season ->
           if (episodes.none { it.idSeason == season.idTrakt }) {

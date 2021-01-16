@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui.main.cases
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.google.firebase.messaging.FirebaseMessaging
@@ -12,6 +13,9 @@ import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_repository.RatingsRepository
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -41,6 +45,7 @@ class MainInitialsCase @Inject constructor(
     return settings.isInitialRun
   }
 
+  @SuppressLint("NewApi")
   suspend fun initFcm() {
     FirebaseMessaging.getInstance().run {
       val isEnabled = settingsRepository.load().pushNotificationsEnabled
@@ -55,15 +60,20 @@ class MainInitialsCase @Inject constructor(
     }
   }
 
-  suspend fun initRatings() {
+  suspend fun initRatings() = supervisorScope {
     try {
-      if (!userTraktManager.isAuthorized()) return
+      if (!userTraktManager.isAuthorized()) return@supervisorScope
       val token = userTraktManager.checkAuthorization().token
 
-      ratingsRepository.shows.preloadShowsRatings(token)
-      if (settingsRepository.isMoviesEnabled) {
-        ratingsRepository.movies.preloadMoviesRatings(token)
-      }
+      awaitAll(
+        async { ratingsRepository.shows.preloadShowsRatings(token) },
+        async { ratingsRepository.shows.preloadEpisodesRatings(token) },
+        async {
+          if (settingsRepository.isMoviesEnabled) {
+            ratingsRepository.movies.preloadMoviesRatings(token)
+          }
+        }
+      )
     } catch (error: Throwable) {
       Logger.record(error, "Source" to "${MainInitialsCase::class.simpleName}::initRatings()")
     }

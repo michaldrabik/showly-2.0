@@ -1,11 +1,11 @@
 ext.versions = [
-    versionCode            : 254,
-    versionName            : '2.4.0',
+    versionCode            : 258,
+    versionName            : '2.5.0',
 
     minSdk                 : 21,
     compileSdk             : 29,
 
-    kotlin                 : '1.4.20',
+    kotlin                 : '1.4.21',
     kotlinCoroutines       : '1.4.1',
     gradleBuildTools       : '4.1.1',
 

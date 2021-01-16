@@ -89,8 +89,8 @@ class DiscoverShowsCase @Inject constructor(
           DiscoverListItem(
             show,
             image,
-            isFollowed = show.ids.trakt.id in myShowsIds,
-            isWatchlist = show.ids.trakt.id in watchlistShowsIds,
+            isFollowed = show.traktId in myShowsIds,
+            isWatchlist = show.traktId in watchlistShowsIds,
             translation = translation
           )
         }

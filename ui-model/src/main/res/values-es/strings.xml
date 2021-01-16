@@ -6,13 +6,11 @@
   <string name="textSortDateAdded">Añadidos Recientemente</string>
   <string name="textSortRecentlyWatched">Visto Recientemente</string>
   <string name="textSortEpisodesLeft">Episodios Restantes</string>
-
   <string name="textHeaderRecentlyAdded">Añadidos Recientemente</string>
   <string name="textHeaderWatching">Viendo</string>
   <string name="textHeaderFinished">Terminados</string>
   <string name="textHeaderReturning">Regresan &amp; Próximamente</string>
   <string name="textHeaderAll">Todos</string>
-
   <string name="textSettingsShowsNotificationsWhenTitle">Cuándo Notificar</string>
   <string name="textSettingsShowsNotificationsWhenSummary">¿Cuándo te gustaría recibir anuncios sobre episodios?</string>
   <string name="textSettingsShowsNotificationsWhenAvailable">Cuando Estén Disponibles</string>
@@ -25,14 +23,12 @@
   <string name="textSettingsShowsNotificationsWhen12HoursBefore">12 Horas Antes</string>
   <string name="textSettingsShowsNotificationsWhen12Hours">12 Horas Después</string>
   <string name="textSettingsShowsNotificationsWhenNextDay">1 Día Después</string>
-
   <string name="textTipDiscover">Toca dos veces el botón de menú \'Descubrir\' para abrir rápidamente la pantalla de búsqueda.</string>
   <string name="textTipMyShows">Toca dos veces el botón de menú \'Colección\' para cambiar rápidamente entre pestañas.</string>
   <string name="textTipShowDetailsGallery">Toca la imagen de la serie para abrir la galería.</string>
   <string name="textTipShowDetailsQuickProgress">Toca el ícono \'Progreso Rápido\' para configurar rápidamente tu progreso de la serie.\n\nToca el ícono \'Archivar\' para mover la serie al archivo.</string>
   <string name="textTipDiscoverFilters">Usa la vista de filtros para mejorar tu feed de Descubrir.</string>
   <string name="textTipWatchlistPinItem">Mantén pulsado el elemento de la lista para fijarlo en la parte superior.</string>
-
   <string name="textGenreAction">Acción</string>
   <string name="textGenreAdventure">Aventura</string>
   <string name="textGenreAnimation">Animación</string>
@@ -48,7 +44,6 @@
   <string name="textGenreThriller">Thriller</string>
   <string name="textGenreWar">Guerra</string>
   <string name="textGenreWestern">Western</string>
-
   <string name="textTraktSyncSchedule">Programar</string>
   <string name="textTraktSyncOptionOff">Apagado</string>
   <string name="textTraktSyncOption1Hour">Cada Hora</string>
@@ -59,14 +54,12 @@
   <string name="textTraktSyncOptionWeekly">Cada Semana</string>
   <string name="textTraktSyncOptionOffMessage">La sincronización no se ejecutará automáticamente.</string>
   <string name="textTraktSyncOptionConfirmMessage">Se ha programado la sincronización automática.</string>
-
   <string name="textTraktSyncOptionHourButton">Programada para ejecutarse cada hora</string>
   <string name="textTraktSyncOption3HoursButton">Programada para ejecutarse cada 3 horas</string>
   <string name="textTraktSyncOption6HoursButton">Programada para ejecutarse cada 6 horas</string>
   <string name="textTraktSyncOptionDailyButton">Programada para ejecutarse cada día</string>
   <string name="textTraktSyncOption3DayButton">Programada para ejecutarse cada 3 días</string>
   <string name="textTraktSyncOptionWeeklyButton">Programada para ejecutarse cada semana</string>
-
   <string name="textShowStatusReturning">Serie que Regresa</string>
   <string name="textShowStatusUpcoming">Próximamente</string>
   <string name="textShowStatusInProduction">En Producción</string>
@@ -79,4 +72,4 @@
   <string name="textMovieStatusPlanned">Planificada</string>
   <string name="textMovieStatusCanceled">Cancelada</string>
   <string name="textMovieStatusRumored">Rumoreada</string>
-  </resources>
+</resources>

@@ -261,7 +261,7 @@ class FollowedShowsFragment :
     hideNavigation()
     followedShowsRoot.fadeOut {
       exitSearch(false)
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.ids.trakt.id) }
+      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.traktId) }
       navigateTo(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
     }.add(animations)
     viewModel.tabsTranslation = followedShowsTabs.translationY

@@ -93,8 +93,9 @@ class MovieDetailsViewModel @Inject constructor(
 
         if (isSignedIn) launch { loadRating(movie) }
       } catch (t: Throwable) {
-        _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadMovie)
         progressJob.cancel()
+        _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadMovie)
+        Logger.record(t, "Source" to "MovieDetailsViewModel")
       }
     }
   }
