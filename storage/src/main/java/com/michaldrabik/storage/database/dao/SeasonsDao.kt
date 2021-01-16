@@ -38,6 +38,6 @@ interface SeasonsDao : BaseDao<Season> {
     if (updateList.isNotEmpty()) update(updateList)
   }
 
-  @Query("DELETE FROM seasons WHERE id_show_trakt = :showTraktId AND id_trakt IN(:seasonsIds)")
-  suspend fun deleteForShow(seasonsIds: List<Long>, showTraktId: Long)
+  @Query("DELETE FROM seasons WHERE id_show_trakt = :showTraktId")
+  suspend fun deleteAllForShow(showTraktId: Long)
 }

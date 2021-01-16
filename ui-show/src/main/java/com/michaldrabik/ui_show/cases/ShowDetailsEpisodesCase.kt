@@ -44,10 +44,9 @@ class ShowDetailsEpisodesCase @Inject constructor(
 
       return SeasonsBundle(remoteSeasons, isLocal = false)
     } catch (error: Throwable) {
-      // Fall back to local data if remote call fails for any reason
       Timber.d("Falling back to local data. Error: ${error.message}")
 
-      val localEpisodes = database.episodesDao().getAllForShows(listOf(show.traktId))
+      val localEpisodes = database.episodesDao().getAllByShowId(show.traktId)
       val localSeasons = database.seasonsDao().getAllByShowId(show.traktId).map { season ->
         val seasonEpisodes = localEpisodes.filter { ep -> ep.idSeason == season.idTrakt }
         mappers.season.fromDatabase(season, seasonEpisodes)
