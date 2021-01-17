@@ -11,7 +11,7 @@
   <string name="textHeaderFinished">Terminé</string>
   <string name="textHeaderReturning">De retour et à venir</string>
   <string name="textHeaderAll">Tous</string>
-  <string name="textSettingsShowsNotificationsWhenTitle">Quand Notifier</string>
+  <string name="textSettingsShowsNotificationsWhenTitle">Quand notifier</string>
   <string name="textSettingsShowsNotificationsWhenSummary">Quand souhaitez-vous recevoir des annonces d\'épisodes.</string>
   <string name="textSettingsShowsNotificationsWhenAvailable">Lorsque disponible</string>
   <string name="textSettingsShowsNotificationsWhen1Hour">1 heure après</string>
@@ -27,7 +27,7 @@
   <string name="textTipMyShows">Appuyez deux fois sur le bouton « Collection » pour basculer rapidement entre les onglets.</string>
   <string name="textTipShowDetailsGallery">Appuyez sur l\'image de la série pour ouvrir la galerie.</string>
   <string name="textTipShowDetailsQuickProgress">Appuyez sur l\'icône « Progression rapide » pour configurer rapidement la progression de votre série.\n\nAppuyez sur l\'icône « Archiver » pour déplacer la série dans les archives.</string>
-  <string name="textTipDiscoverFilters">Utilisez les filtres pour affiner vos découverts.</string>
+  <string name="textTipDiscoverFilters">Utilisez les filtres pour affiner vos découvertes.</string>
   <string name="textTipWatchlistPinItem">Appuyez et maintenez la liste enfoncée pour l\'épingler en haut.</string>
   <string name="textGenreAction">Action</string>
   <string name="textGenreAdventure">Aventure</string>
