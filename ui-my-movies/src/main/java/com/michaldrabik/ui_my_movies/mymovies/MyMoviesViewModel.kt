@@ -32,10 +32,15 @@ class MyMoviesViewModel @Inject constructor(
 
   fun loadMovies(notifyListsUpdate: Boolean = false) {
     viewModelScope.launch {
+      val settings = loadMoviesCase.loadSettings()
       val movies = loadMoviesCase.loadAll().map { toListItemAsync(ALL_MOVIES_ITEM, it) }.awaitAll()
 
       val allMovies = loadMoviesCase.filterSectionMovies(movies, ALL)
-      val recentMovies = loadMoviesCase.loadRecentMovies().map { toListItemAsync(RECENT_MOVIE, it, ImageType.FANART) }.awaitAll()
+      val recentMovies = if (settings.myMoviesRecentIsEnabled) {
+        loadMoviesCase.loadRecentMovies().map { toListItemAsync(RECENT_MOVIE, it, ImageType.FANART) }.awaitAll()
+      } else {
+        emptyList()
+      }
 
       val listItems = mutableListOf<MyMoviesItem>()
       listItems.run {

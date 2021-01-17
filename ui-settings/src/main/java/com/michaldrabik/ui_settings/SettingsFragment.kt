@@ -24,6 +24,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection.FINISHED
 import com.michaldrabik.ui_model.MyShowsSection.RECENTS
 import com.michaldrabik.ui_model.MyShowsSection.UPCOMING
@@ -111,6 +112,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsContent.fadeIn(200)
     settingsRecentShowsAmount.onClick { showRecentShowsDialog(settings) }
     settingsMyShowsSections.onClick { showSectionsDialog(settings) }
+    settingsMyMoviesSections.onClick { showMoviesSectionsDialog(settings) }
 
     settingsTraktQuickSyncSwitch
       .setCheckedSilent(settings.traktQuickSyncEnabled) { _, isChecked ->
@@ -232,6 +234,22 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         selected
       ) { _, index, isChecked ->
         viewModel.enableMyShowsSection(options[index], isChecked)
+      }
+      .show()
+  }
+
+  private fun showMoviesSectionsDialog(settings: Settings) {
+    val options = listOf(MyMoviesSection.RECENTS)
+    val selected = booleanArrayOf(
+      settings.myMoviesRecentIsEnabled
+    )
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setMultiChoiceItems(
+        options.map { getString(it.displayString) }.toTypedArray(),
+        selected
+      ) { _, index, isChecked ->
+        viewModel.enableMyMoviesSection(options[index], isChecked)
       }
       .show()
   }
