@@ -5,15 +5,19 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
+import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -56,6 +60,7 @@ class ProgressMainFragment :
 
     parentViewModel.uiLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
     viewModel.uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
+    viewModel.messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
   }
 
   private fun setupView() {
@@ -82,7 +87,14 @@ class ProgressMainFragment :
       itemClickListener = { (requireParentFragment() as ProgressFragment).openShowDetails(it) }
       itemLongClickListener = { item, view -> openPopupMenu(item, view) }
       detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show, it.episode) }
-      checkClickListener = { parentViewModel.setWatchedEpisode(requireAppContext(), it) }
+      checkClickListener = {
+        //TODO
+//        if (parentViewModel.isSignedId) {
+//          openRateDialog(it)
+//        } else {
+        parentViewModel.setWatchedEpisode(requireAppContext(), it)
+//        }
+      }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
       missingTranslationListener = { viewModel.findMissingTranslation(it) }
       listChangeListener = {
@@ -120,6 +132,23 @@ class ProgressMainFragment :
       true
     }
     menu.show()
+  }
+
+  private fun openRateDialog(item: ProgressItem) {
+    val context = requireContext()
+    val rateView = RateView(context).apply {
+      setPadding(context.dimenToPx(R.dimen.spaceNormal))
+      setRating(5)
+    }
+    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
+      .setView(rateView)
+      .setPositiveButton(R.string.textRate) { _, _ ->
+        parentViewModel.setWatchedEpisode(requireAppContext(), item)
+        viewModel.addRating(rateView.getRating(), item.episode, item.show.ids.trakt)
+      }
+      .setNegativeButton(R.string.textCancel) { _, _ -> }
+      .show()
   }
 
   override fun onScrollReset() = progressMainRecycler.smoothScrollToPosition(0)
