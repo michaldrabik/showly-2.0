@@ -61,6 +61,7 @@ object Config {
   const val WHATS_NEW_TEXT =
     "* Added French language support.\n\n" +
       "* Added episodes ratings in seasons lists.\n\n" +
+      "* Added option to remove recents section for movies.\n\n" +
       "* Bugfixes\n\n" +
       "Showly is now on Twitter! Follow  @AppShowly  for news, current app status and other important information."
 }
