@@ -9,6 +9,7 @@ import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.TraktSyncSchedule
@@ -81,6 +82,14 @@ class SettingsViewModel @Inject constructor(
       mainCase.enableMyShowsSection(section, isEnabled)
       refreshSettings()
       Analytics.logSettingsMyShowsSection(section, isEnabled)
+    }
+  }
+
+  fun enableMyMoviesSection(section: MyMoviesSection, isEnabled: Boolean) {
+    viewModelScope.launch {
+      mainCase.enableMyMoviesSection(section, isEnabled)
+      refreshSettings()
+      Analytics.logSettingsMyMoviesSection(section, isEnabled)
     }
   }
 

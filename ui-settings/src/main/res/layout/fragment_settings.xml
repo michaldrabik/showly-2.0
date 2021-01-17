@@ -79,6 +79,7 @@
       app:layout_constraintBottom_toBottomOf="@id/settingsTraktAuthorize"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/settingsTraktAuthorize"
+      tools:visibility="visible"
       />
 
     <ImageView
@@ -92,6 +93,7 @@
       app:layout_constraintTop_toTopOf="@id/settingsTraktAuthorize"
       app:srcCompat="@drawable/ic_check"
       app:tint="?attr/colorAccent"
+      tools:visibility="visible"
       />
 
     <LinearLayout
@@ -196,7 +198,7 @@
     <LinearLayout
       android:id="@+id/settingsLanguage"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsTheme"
+      app:layout_constraintBottom_toTopOf="@+id/settingsCountry"
       app:layout_constraintEnd_toStartOf="@id/settingsLanguageValue"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsCategoryGeneral"
@@ -265,7 +267,7 @@
     <LinearLayout
       android:id="@+id/settingsMoviesEnabled"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsMyShowsSections"
+      app:layout_constraintBottom_toTopOf="@+id/settingsIncludeSpecials"
       app:layout_constraintEnd_toStartOf="@id/settingsMoviesEnabledSwitch"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsTheme"
@@ -294,13 +296,22 @@
       app:layout_constraintTop_toTopOf="@id/settingsMoviesEnabled"
       />
 
+    <View
+      android:id="@+id/settingsSeparator1"
+      style="@style/Settings.Separator"
+      app:layout_constraintBottom_toTopOf="@id/settingsMyShowsSections"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsIncludeArchivedStats"
+      />
+
     <LinearLayout
       android:id="@+id/settingsMyShowsSections"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsRecentShowsAmount"
+      app:layout_constraintBottom_toTopOf="@id/settingsMyMoviesSections"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsLanguage"
+      app:layout_constraintTop_toBottomOf="@+id/settingsSeparator1"
       >
 
       <TextView
@@ -316,12 +327,33 @@
     </LinearLayout>
 
     <LinearLayout
-      android:id="@+id/settingsRecentShowsAmount"
+      android:id="@+id/settingsMyMoviesSections"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsIncludeArchivedStats"
+      app:layout_constraintBottom_toTopOf="@id/settingsRecentShowsAmount"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsMyShowsSections"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsMyMoviesSectionsTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:text="@string/textSettingsMyMoviesSectionSummary"
+        />
+
+    </LinearLayout>
+
+    <LinearLayout
+      android:id="@+id/settingsRecentShowsAmount"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryNotifications"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsMyMoviesSections"
       >
 
       <TextView
@@ -339,10 +371,10 @@
     <LinearLayout
       android:id="@+id/settingsIncludeArchivedStats"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsIncludeSpecials"
+      app:layout_constraintBottom_toTopOf="@id/settingsSeparator1"
       app:layout_constraintEnd_toStartOf="@id/settingsIncludeArchivedStatsSwitch"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsRecentShowsAmount"
+      app:layout_constraintTop_toBottomOf="@+id/settingsIncludeSpecials"
       >
 
       <TextView
@@ -360,10 +392,10 @@
     <LinearLayout
       android:id="@+id/settingsIncludeSpecials"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsCountry"
+      app:layout_constraintBottom_toTopOf="@+id/settingsIncludeArchivedStats"
       app:layout_constraintEnd_toStartOf="@id/settingsIncludeSpecialsSwitch"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsIncludeArchivedStats"
+      app:layout_constraintTop_toBottomOf="@id/settingsMoviesEnabled"
       >
 
       <TextView
@@ -403,10 +435,10 @@
     <LinearLayout
       android:id="@+id/settingsCountry"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsCategoryNotifications"
+      app:layout_constraintBottom_toTopOf="@id/settingsMoviesEnabled"
       app:layout_constraintEnd_toStartOf="@id/settingsCountryValue"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsIncludeSpecials"
+      app:layout_constraintTop_toBottomOf="@id/settingsLanguage"
       >
 
       <TextView
@@ -440,7 +472,7 @@
       android:text="@string/textSettingsNotifications"
       app:layout_constraintBottom_toTopOf="@id/settingsPushNotifications"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsCountry"
+      app:layout_constraintTop_toBottomOf="@id/settingsRecentShowsAmount"
       />
 
     <LinearLayout
@@ -510,7 +542,7 @@
     <LinearLayout
       android:id="@+id/settingsWhenToNotify"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toBottomOf="@id/settingsCategoryWidgets"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryWidgets"
       app:layout_constraintEnd_toStartOf="@id/settingsWhenToNotifyValue"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsShowsNotifications"
@@ -620,6 +652,7 @@
       android:id="@+id/settingsCategoryMisc"
       style="@style/Settings.Category"
       android:text="@string/textSettingsMisc"
+      app:layout_constraintBottom_toTopOf="@id/settingsRateApp"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsWidgetsLabels"
       />

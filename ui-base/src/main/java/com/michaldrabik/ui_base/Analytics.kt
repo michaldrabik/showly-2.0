@@ -7,6 +7,7 @@ import com.google.firebase.ktx.Firebase
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.Show
 import java.util.Locale.ROOT
@@ -305,6 +306,13 @@ object Analytics {
 
   fun logSettingsMyShowsSection(section: MyShowsSection, enabled: Boolean) {
     firebaseAnalytics.logEvent("settings_my_shows_section") {
+      param("section", section.name.toLowerCase(ROOT))
+      param("enabled", enabled.toString())
+    }
+  }
+
+  fun logSettingsMyMoviesSection(section: MyMoviesSection, enabled: Boolean) {
+    firebaseAnalytics.logEvent("settings_my_movies_section") {
       param("section", section.name.toLowerCase(ROOT))
       param("enabled", enabled.toString())
     }

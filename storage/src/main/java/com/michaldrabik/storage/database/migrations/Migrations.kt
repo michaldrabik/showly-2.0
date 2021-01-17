@@ -3,7 +3,7 @@ package com.michaldrabik.storage.database.migrations
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 19
+const val DATABASE_VERSION = 20
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 // TODO Split into separate files
@@ -285,6 +285,14 @@ object Migrations {
   private val MIGRATION_18_19 = object : Migration(18, 19) {
     override fun migrate(database: SupportSQLiteDatabase) {
       with(database) {
+        execSQL("ALTER TABLE settings ADD COLUMN my_movies_recent_is_enabled INTEGER NOT NULL DEFAULT 1")
+      }
+    }
+  }
+
+  private val MIGRATION_19_20 = object : Migration(19, 20) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
         execSQL(
           "CREATE TABLE IF NOT EXISTS `custom_images` (" +
             "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
@@ -316,6 +324,7 @@ object Migrations {
     MIGRATION_15_16,
     MIGRATION_16_17,
     MIGRATION_17_18,
-    MIGRATION_18_19
+    MIGRATION_18_19,
+    MIGRATION_19_20
   )
 }

@@ -21,6 +21,8 @@
   <string name="textSettingsRecentShowsSummary">Liczba ostatnio dodanych elementów w zakładce \'Kolekcja\'.</string>
   <string name="textSettingsMyShowsSectionsTitle">Moje Seriale - Sekcje</string>
   <string name="textSettingsMyShowsSectionSummary">Włącz/wyłącz sekcje w zakładce \'Moje Seriale\'.</string>
+  <string name="textSettingsMyMoviesSectionsTitle">Moje Filmy - Sekcje</string>
+  <string name="textSettingsMyMoviesSectionSummary">Włącz/wyłącz sekcje w zakładce \'Moje Filmy\'.</string>
   <string name="textSettingsMyShowsCountryTitle">Region JustWatch</string>
   <string name="textSettingsMyShowsCountrySummary">Wybierz region do użycia z linkami JustWatch.</string>
   <string name="textSettingsMyShowsLanguageTitle">Język</string>

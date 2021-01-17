@@ -13,6 +13,7 @@ import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_model.BuildConfig
+import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.MyShowsSection.FINISHED
 import com.michaldrabik.ui_model.MyShowsSection.RECENTS
@@ -80,6 +81,17 @@ class SettingsMainCase @Inject constructor(
         WATCHING -> it.copy(myShowsRunningIsEnabled = isEnabled)
         FINISHED -> it.copy(myShowsEndedIsEnabled = isEnabled)
         UPCOMING -> it.copy(myShowsIncomingIsEnabled = isEnabled)
+        else -> error("Should not be used here.")
+      }
+      settingsRepository.update(new)
+    }
+  }
+
+  suspend fun enableMyMoviesSection(section: MyMoviesSection, isEnabled: Boolean) {
+    val settings = settingsRepository.load()
+    settings.let {
+      val new = when (section) {
+        MyMoviesSection.RECENTS -> it.copy(myMoviesRecentIsEnabled = isEnabled)
         else -> error("Should not be used here.")
       }
       settingsRepository.update(new)
