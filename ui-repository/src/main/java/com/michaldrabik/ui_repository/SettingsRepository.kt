@@ -28,6 +28,7 @@ class SettingsRepository @Inject constructor(
     private const val KEY_MODE = "KEY_MOVIES_MODE"
     private const val KEY_THEME = "KEY_THEME"
     private const val KEY_THEME_WIDGET = "KEY_THEME_WIDGET"
+    private const val KEY_PREMIUM = "KEY_THEME_WIDGET"
   }
 
   suspend fun isInitialized() =
@@ -51,6 +52,10 @@ class SettingsRepository @Inject constructor(
       return Mode.valueOf(miscPreferences.getString(KEY_MODE, default) ?: default)
     }
     set(value) = miscPreferences.edit(true) { putString(KEY_MODE, value.name) }
+
+  var isPremium: Boolean
+    get() = miscPreferences.getBoolean(KEY_PREMIUM, false)
+    set(value) = miscPreferences.edit(true) { putBoolean(KEY_PREMIUM, value) }
 
   var isMoviesEnabled: Boolean
     get() = miscPreferences.getBoolean(KEY_MOVIES_ENABLED, true)

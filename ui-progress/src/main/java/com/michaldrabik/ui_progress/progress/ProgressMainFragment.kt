@@ -88,12 +88,11 @@ class ProgressMainFragment :
       itemLongClickListener = { item, view -> openPopupMenu(item, view) }
       detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show, it.episode) }
       checkClickListener = {
-        //TODO
-//        if (parentViewModel.isSignedId) {
-//          openRateDialog(it)
-//        } else {
-        parentViewModel.setWatchedEpisode(requireAppContext(), it)
-//        }
+        if (viewModel.isQuickRateEnabled()) {
+          openRateDialog(it)
+        } else {
+          parentViewModel.setWatchedEpisode(requireAppContext(), it)
+        }
       }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
       missingTranslationListener = { viewModel.findMissingTranslation(it) }

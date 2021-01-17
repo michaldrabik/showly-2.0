@@ -14,7 +14,6 @@ import com.michaldrabik.ui_progress.main.cases.ProgressEpisodesCase
 import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
 import com.michaldrabik.ui_progress.main.cases.ProgressPinnedItemsCase
 import com.michaldrabik.ui_progress.main.cases.ProgressSortOrderCase
-import com.michaldrabik.ui_repository.UserTraktManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
@@ -25,17 +24,13 @@ class ProgressViewModel @Inject constructor(
   private val pinnedItemsCase: ProgressPinnedItemsCase,
   private val sortOrderCase: ProgressSortOrderCase,
   private val episodesCase: ProgressEpisodesCase,
-  private val userTraktManager: UserTraktManager,
   private val imagesProvider: ShowImagesProvider
 ) : BaseViewModel<ProgressUiModel>() {
 
-  var isSignedId = false
   private var searchQuery = ""
 
   fun loadProgress(resetScroll: Boolean = false) {
     viewModelScope.launch {
-      isSignedId = userTraktManager.isAuthorized()
-
       val shows = loadItemsCase.loadMyShows()
       val items = shows.map { show ->
         async {
