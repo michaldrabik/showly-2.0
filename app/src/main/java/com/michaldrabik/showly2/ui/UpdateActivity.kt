@@ -30,9 +30,9 @@ abstract class UpdateActivity : DiActivity() {
         return@addOnSuccessListener
       }
 
-      if (updateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-        && (updateInfo.clientVersionStalenessDays() ?: 0) >= DAYS_FOR_UPDATE
-        && updateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+      if (updateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+        (updateInfo.clientVersionStalenessDays() ?: 0) >= DAYS_FOR_UPDATE &&
+        updateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
       ) {
         startUpdate(appUpdateManager, updateInfo)
       }
