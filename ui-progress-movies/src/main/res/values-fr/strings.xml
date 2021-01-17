@@ -9,7 +9,7 @@
   <string name="textMoviesProgressEmpty">Votre <b>Avancement</b> est présentement vide.\n\nVisitez l\'onglet <b>Découvrir</b> pour ajouter des films ou importer votre collection Trakt.tv.</string>
   <string name="textMoviesWatchlistToday">Aujourd\'hui</string>
   <string name="textMoviesWatchlistTomorrow">Demain</string>
-  <string name="textMoviesWatchlistThisWeek">Cette Semaine</string>
-  <string name="textMoviesWatchlistNextWeek">La Semaine Prochaine</string>
+  <string name="textMoviesWatchlistThisWeek">Cette semaine</string>
+  <string name="textMoviesWatchlistNextWeek">La semaine prochaine</string>
   <string name="textMoviesWatchlistLater">Plus tard</string>
 </resources>
