@@ -2,20 +2,30 @@ package com.michaldrabik.ui_progress.progress
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
+import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
+import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.main.ProgressUiModel
+import com.michaldrabik.ui_repository.RatingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
+import com.michaldrabik.ui_repository.UserTraktManager
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ProgressMainViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
+  private val userTraktManager: UserTraktManager,
+  private val ratingsRepository: RatingsRepository,
   private val translationsRepository: TranslationsRepository
 ) : BaseViewModel<ProgressMainUiModel>() {
 
@@ -64,6 +74,23 @@ class ProgressMainViewModel @Inject constructor(
         updateItem(item.copy(showTranslation = translation))
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "${ProgressMainViewModel::class.simpleName}::findMissingTranslation()")
+      }
+    }
+  }
+
+  fun addRating(rating: Int, episode: Episode, showTraktId: IdTrakt) {
+    viewModelScope.launch {
+      try {
+        val token = userTraktManager.checkAuthorization().token
+        uiState = ProgressMainUiModel(ratingState = RatingState(rateLoading = true))
+        ratingsRepository.shows.addRating(token, episode, rating)
+        _messageLiveData.value = MessageEvent.info(R.string.textShowRated)
+        uiState = ProgressMainUiModel(ratingState = RatingState(userRating = TraktRating(episode.ids.trakt, rating)))
+        Analytics.logEpisodeRated(showTraktId.id, episode, rating)
+      } catch (error: Throwable) {
+        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+      } finally {
+        uiState = ProgressMainUiModel(ratingState = RatingState(rateLoading = false))
       }
     }
   }
