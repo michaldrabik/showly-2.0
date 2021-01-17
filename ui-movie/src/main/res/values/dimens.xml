@@ -11,4 +11,6 @@
 
   <dimen name="relatedMovieHeight">120dp</dimen>
   <dimen name="relatedMovieWidth">80dp</dimen>
+
+  <dimen name="customImagesLabelMargin">144dp</dimen>
 </resources>

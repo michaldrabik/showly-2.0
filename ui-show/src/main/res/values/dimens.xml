@@ -14,4 +14,6 @@
   <dimen name="seasonViewHeight">44dp</dimen>
   <dimen name="seasonViewProgressMargin">0dp</dimen>
   <dimen name="episodeViewHeight">42dp</dimen>
+
+  <dimen name="customImagesLabelMargin">144dp</dimen>
 </resources>
