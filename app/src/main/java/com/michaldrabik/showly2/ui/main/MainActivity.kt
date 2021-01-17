@@ -12,14 +12,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar.*
+import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
+import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
-import com.michaldrabik.showly2.ui.DiActivity
+import com.michaldrabik.showly2.ui.UpdateActivity
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.ui_base.Analytics
@@ -51,7 +54,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity :
-  DiActivity(),
+  UpdateActivity(),
   EventObserver,
   NetworkObserver,
   SnackbarHost,
@@ -362,6 +365,16 @@ class MainActivity :
   private fun getMenuProgressAction() = when (viewModel.getMode()) {
     SHOWS -> R.id.actionNavigateProgressFragment
     MOVIES -> R.id.actionNavigateProgressMoviesFragment
+  }
+
+  override fun onUpdateDownloaded(appUpdateManager: AppUpdateManager) {
+    provideSnackbarLayout().showInfoSnackbar(getString(R.string.textUpdateDownloaded), R.string.textUpdateInstall, LENGTH_INDEFINITE) {
+      Analytics.logInAppUpdate(
+        BuildConfig.VERSION_NAME,
+        BuildConfig.VERSION_CODE.toLong()
+      )
+      appUpdateManager.completeUpdate()
+    }
   }
 
   override fun findNavControl() = findNavHostFragment().findNavController()
