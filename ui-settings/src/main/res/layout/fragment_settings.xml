@@ -234,7 +234,7 @@
       app:layout_constraintBottom_toTopOf="@id/settingsMoviesEnabled"
       app:layout_constraintEnd_toStartOf="@id/settingsThemeValue"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsLanguage"
+      app:layout_constraintTop_toBottomOf="@id/settingsCountry"
       >
 
       <TextView
@@ -435,7 +435,7 @@
     <LinearLayout
       android:id="@+id/settingsCountry"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsMoviesEnabled"
+      app:layout_constraintBottom_toTopOf="@id/settingsTheme"
       app:layout_constraintEnd_toStartOf="@id/settingsCountryValue"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsLanguage"
@@ -578,6 +578,7 @@
       android:text="@string/textSettingsWidgets"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsWhenToNotify"
+      app:layout_constraintBottom_toTopOf="@id/settingsWidgetsTheme"
       />
 
     <LinearLayout
