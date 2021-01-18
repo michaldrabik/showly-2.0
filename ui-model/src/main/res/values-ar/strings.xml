@@ -29,6 +29,7 @@
   <string name="textTipShowDetailsQuickProgress">انقر على أيقونة \'مستوى التقدم السريع\' لتعيين مستوى تقدمك في المسلسل بسرعة.\n\nانقر على أيقونة \'الأرشيف\' لنقل المسلسل إلى الأرشيف.</string>
   <string name="textTipDiscoverFilters">إستخدم الفلاتر لفلترة محتويات صفحة إكتشف.</string>
   <string name="textTipWatchlistPinItem">إضغط مطولاً على أي مسلسل لتثبيته في الأعلى.</string>
+  <string name="textTipBottomModeMenu">مرر أسفل القائمة لليسار أو لليمين لتغيير الوضع بسرعة.</string>
   <string name="textGenreAction">أكشن</string>
   <string name="textGenreAdventure">مغامرة</string>
   <string name="textGenreAnimation">أنميشن</string>
