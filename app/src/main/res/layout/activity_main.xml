@@ -50,15 +50,11 @@
       android:background="?attr/colorBottomMenuSeparator"
       />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-      android:id="@+id/bottomNavigationView"
+    <com.michaldrabik.showly2.ui.views.BottomMenuView
+      android:id="@+id/bottomMenuView"
       android:layout_width="match_parent"
       android:layout_height="@dimen/bottomNavigationHeight"
       android:background="?attr/colorBottomMenuBackground"
-      app:itemIconTint="@drawable/selector_bottom_menu"
-      app:itemTextColor="@drawable/selector_bottom_menu"
-      app:labelVisibilityMode="labeled"
-      app:menu="@menu/bottom_navigation_menu"
       />
 
   </LinearLayout>
@@ -71,6 +67,17 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
+    />
+
+  <com.michaldrabik.ui_base.common.views.tips.TipView
+    android:id="@+id/tutorialTipModeMenu"
+    android:layout_width="@dimen/tutorialTipSize"
+    android:layout_height="@dimen/tutorialTipSize"
+    android:layout_marginBottom="44dp"
+    app:layout_constraintBottom_toBottomOf="@id/bottomNavigationWrapper"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.2"
+    app:layout_constraintStart_toStartOf="parent"
     />
 
   <com.michaldrabik.ui_base.common.views.tips.TipView

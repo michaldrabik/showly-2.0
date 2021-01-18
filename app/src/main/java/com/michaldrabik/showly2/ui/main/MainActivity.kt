@@ -47,9 +47,9 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Tip
-import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
-import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
+import com.michaldrabik.ui_model.Tip.*
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.view_bottom_menu.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -74,7 +74,8 @@ class MainActivity :
   private val tips by lazy {
     mapOf(
       MENU_DISCOVER to tutorialTipDiscover,
-      MENU_MY_SHOWS to tutorialTipMyShows
+      MENU_MY_SHOWS to tutorialTipMyShows,
+      MENU_MODES to tutorialTipModeMenu
     )
   }
 
@@ -120,21 +121,27 @@ class MainActivity :
   }
 
   private fun setupView() {
-    rateAppView.onYesClickListener = {
-      rateAppView.fadeOut()
-      val manager = ReviewManagerFactory.create(applicationContext)
-      val request = manager.requestReviewFlow()
-      request.addOnCompleteListener {
-        if (it.isSuccessful) {
-          val flow = manager.launchReviewFlow(this, it.result)
-          flow.addOnCompleteListener { viewModel.finishRateApp() }
+    with(rateAppView) {
+      onYesClickListener = {
+        rateAppView.fadeOut()
+        val manager = ReviewManagerFactory.create(applicationContext)
+        val request = manager.requestReviewFlow()
+        request.addOnCompleteListener {
+          if (it.isSuccessful) {
+            val flow = manager.launchReviewFlow(this@MainActivity, it.result)
+            flow.addOnCompleteListener { viewModel.finishRateApp() }
+          }
         }
+        Analytics.logInAppRateDecision(true)
       }
-      Analytics.logInAppRateDecision(true)
+      onNoClickListener = {
+        rateAppView.fadeOut()
+        Analytics.logInAppRateDecision(false)
+      }
     }
-    rateAppView.onNoClickListener = {
-      rateAppView.fadeOut()
-      Analytics.logInAppRateDecision(false)
+    with(bottomMenuView) {
+      isModeMenuEnabled = moviesEnabled()
+      onModeSelected = { setMode(it) }
     }
   }
 

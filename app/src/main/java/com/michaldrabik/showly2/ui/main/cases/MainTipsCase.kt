@@ -1,6 +1,7 @@
 package com.michaldrabik.showly2.ui.main.cases
 
 import android.content.SharedPreferences
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.ui_model.Tip
@@ -13,7 +14,7 @@ class MainTipsCase @Inject constructor(
 ) {
 
   fun isTipShown(tip: Tip) = when {
-    BuildConfig.DEBUG -> true
+    BuildConfig.DEBUG -> Config.SHOW_TIPS
     else -> sharedPreferences.getBoolean(tip.name, false)
   }
 
