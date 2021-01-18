@@ -21,6 +21,8 @@
   <string name="textSettingsRecentShowsSummary">عدد المسلسلات والأفلام الأخيرة التي تابعتها التي سيتم عرضها في صفحة \'المجموعة\'.</string>
   <string name="textSettingsMyShowsSectionsTitle">أقسام صفحة مسلسلاتي</string>
   <string name="textSettingsMyShowsSectionSummary">تفعيل/إلغاء تفعيل أقسام في صفحة مسلسلاتي</string>
+  <string name="textSettingsMyMoviesSectionsTitle">أقسام صفحة أفلامي</string>
+  <string name="textSettingsMyMoviesSectionSummary">تفعيل/إلغاء تفعيل أقسام في صفحة \"أفلامي\".</string>
   <string name="textSettingsMyShowsCountryTitle">منطقة JustWatch</string>
   <string name="textSettingsMyShowsCountrySummary">حدد المنطقة المراد استخدامها مع روابط JustWatch.</string>
   <string name="textSettingsMyShowsLanguageTitle">اللغة</string>
