@@ -47,7 +47,9 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Tip
-import com.michaldrabik.ui_model.Tip.*
+import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
+import com.michaldrabik.ui_model.Tip.MENU_MODES
+import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_bottom_menu.*
 import timber.log.Timber
