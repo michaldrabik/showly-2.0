@@ -9,8 +9,11 @@ import android.view.MotionEvent.ACTION_CANCEL
 import android.view.MotionEvent.ACTION_DOWN
 import android.view.MotionEvent.ACTION_MOVE
 import android.view.MotionEvent.ACTION_UP
+import android.view.ViewGroup
 import android.view.ViewPropertyAnimator
 import android.widget.FrameLayout
+import androidx.core.view.forEach
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.michaldrabik.common.Mode
 import com.michaldrabik.showly2.R
 import com.michaldrabik.ui_base.utilities.extensions.add
@@ -55,6 +58,7 @@ class BottomMenuView : FrameLayout {
       ACTION_DOWN -> {
         touchX = ev.x
         isModeMenu = false
+//        disableTooltips()
       }
       ACTION_MOVE -> {
         val delta = ev.x - touchX
@@ -110,5 +114,16 @@ class BottomMenuView : FrameLayout {
     }
     bottomNavigationView.fadeIn(FADE_DELAY).add(animations)
     bottomMenuModeLayout.fadeOut(FADE_DELAY).add(animations)
+  }
+
+  private fun disableTooltips() {
+    val content = bottomNavigationView.getChildAt(0)
+    if (content is ViewGroup) {
+      content.forEach {
+        if (it is BottomNavigationItemView) {
+          it.setOnLongClickListener { true }
+        }
+      }
+    }
   }
 }
