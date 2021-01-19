@@ -28,6 +28,7 @@ class SettingsRepository @Inject constructor(
     private const val KEY_MODE = "KEY_MOVIES_MODE"
     private const val KEY_THEME = "KEY_THEME"
     private const val KEY_THEME_WIDGET = "KEY_THEME_WIDGET"
+    private const val KEY_THEME_WIDGET_TRANSPARENT = "KEY_THEME_WIDGET_TRANSPARENT"
   }
 
   suspend fun isInitialized() =
@@ -71,6 +72,10 @@ class SettingsRepository @Inject constructor(
   var widgetsTheme: Int
     get() = miscPreferences.getInt(KEY_THEME_WIDGET, MODE_NIGHT_YES)
     set(value) = miscPreferences.edit(true) { putInt(KEY_THEME_WIDGET, value) }
+
+  var widgetsTransparency: Int
+    get() = miscPreferences.getInt(KEY_THEME_WIDGET_TRANSPARENT, 100)
+    set(value) = miscPreferences.edit(true) { putInt(KEY_THEME_WIDGET_TRANSPARENT, value) }
 
   suspend fun clearLanguageLogs() {
     database.withTransaction {
