@@ -12,14 +12,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
+import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.review.ReviewManagerFactory
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
+import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
-import com.michaldrabik.showly2.ui.DiActivity
+import com.michaldrabik.showly2.ui.UpdateActivity
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.ui_base.Analytics
@@ -45,13 +48,15 @@ import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
+import com.michaldrabik.ui_model.Tip.MENU_MODES
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.view_bottom_menu.*
 import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity :
-  DiActivity(),
+  UpdateActivity(),
   EventObserver,
   NetworkObserver,
   SnackbarHost,
@@ -71,7 +76,8 @@ class MainActivity :
   private val tips by lazy {
     mapOf(
       MENU_DISCOVER to tutorialTipDiscover,
-      MENU_MY_SHOWS to tutorialTipMyShows
+      MENU_MY_SHOWS to tutorialTipMyShows,
+      MENU_MODES to tutorialTipModeMenu
     )
   }
 
@@ -117,21 +123,27 @@ class MainActivity :
   }
 
   private fun setupView() {
-    rateAppView.onYesClickListener = {
-      rateAppView.fadeOut()
-      val manager = ReviewManagerFactory.create(applicationContext)
-      val request = manager.requestReviewFlow()
-      request.addOnCompleteListener {
-        if (it.isSuccessful) {
-          val flow = manager.launchReviewFlow(this, it.result)
-          flow.addOnCompleteListener { viewModel.finishRateApp() }
+    with(rateAppView) {
+      onYesClickListener = {
+        rateAppView.fadeOut()
+        val manager = ReviewManagerFactory.create(applicationContext)
+        val request = manager.requestReviewFlow()
+        request.addOnCompleteListener {
+          if (it.isSuccessful) {
+            val flow = manager.launchReviewFlow(this@MainActivity, it.result)
+            flow.addOnCompleteListener { viewModel.finishRateApp() }
+          }
         }
+        Analytics.logInAppRateDecision(true)
       }
-      Analytics.logInAppRateDecision(true)
+      onNoClickListener = {
+        rateAppView.fadeOut()
+        Analytics.logInAppRateDecision(false)
+      }
     }
-    rateAppView.onNoClickListener = {
-      rateAppView.fadeOut()
-      Analytics.logInAppRateDecision(false)
+    with(bottomMenuView) {
+      isModeMenuEnabled = moviesEnabled()
+      onModeSelected = { setMode(it) }
     }
   }
 
@@ -362,6 +374,16 @@ class MainActivity :
   private fun getMenuProgressAction() = when (viewModel.getMode()) {
     SHOWS -> R.id.actionNavigateProgressFragment
     MOVIES -> R.id.actionNavigateProgressMoviesFragment
+  }
+
+  override fun onUpdateDownloaded(appUpdateManager: AppUpdateManager) {
+    provideSnackbarLayout().showInfoSnackbar(getString(R.string.textUpdateDownloaded), R.string.textUpdateInstall, LENGTH_INDEFINITE) {
+      Analytics.logInAppUpdate(
+        BuildConfig.VERSION_NAME,
+        BuildConfig.VERSION_CODE.toLong()
+      )
+      appUpdateManager.completeUpdate()
+    }
   }
 
   override fun findNavControl() = findNavHostFragment().findNavController()

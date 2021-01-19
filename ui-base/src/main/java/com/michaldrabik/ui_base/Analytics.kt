@@ -317,4 +317,11 @@ object Analytics {
       param("enabled", enabled.toString())
     }
   }
+
+  fun logInAppUpdate(versionName: String, versionCode: Long) {
+    firebaseAnalytics.logEvent("in_app_update") {
+      param("version_name", versionName)
+      param("version_code", versionCode)
+    }
+  }
 }
