@@ -584,7 +584,7 @@
     <LinearLayout
       android:id="@+id/settingsWidgetsLabels"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsCategoryMisc"
+      app:layout_constraintBottom_toTopOf="@id/settingsWidgetsTransparency"
       app:layout_constraintEnd_toStartOf="@id/settingsWidgetsLabelsSwitch"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsWidgetsTheme"
@@ -649,13 +649,49 @@
       app:layout_constraintTop_toTopOf="@id/settingsWidgetsTheme"
       />
 
+    <LinearLayout
+      android:id="@+id/settingsWidgetsTransparency"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryMisc"
+      app:layout_constraintEnd_toStartOf="@id/settingsWidgetsThemeValue"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsWidgetsLabels"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsWidgetsTransparencyTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:layout_width="wrap_content"
+        android:text="@string/textSettingsWidgetsTransparencySummary"
+        />
+
+    </LinearLayout>
+
+    <TextView
+      android:id="@+id/settingsWidgetsTransparencyValue"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:gravity="end"
+      android:minWidth="50dp"
+      android:text="@string/textNo"
+      android:textColor="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="@id/settingsWidgetsTransparency"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsWidgetsTransparency"
+      />
+
     <TextView
       android:id="@+id/settingsCategoryMisc"
       style="@style/Settings.Category"
       android:text="@string/textSettingsMisc"
       app:layout_constraintBottom_toTopOf="@id/settingsRateApp"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsWidgetsLabels"
+      app:layout_constraintTop_toBottomOf="@id/settingsWidgetsTransparency"
       />
 
     <LinearLayout

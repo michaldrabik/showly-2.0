@@ -38,6 +38,7 @@ import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import com.michaldrabik.ui_settings.helpers.AppTheme
 import com.michaldrabik.ui_settings.helpers.PlayStoreHelper
+import com.michaldrabik.ui_settings.helpers.WidgetTransparency
 import kotlinx.android.synthetic.main.fragment_settings.*
 import com.michaldrabik.network.Config as ConfigNetwork
 
@@ -83,6 +84,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       language?.let { renderLanguage(it) }
       theme?.let { renderTheme(it) }
       themeWidgets?.let { renderWidgetsTheme(it) }
+      widgetsTransparency?.let { renderWidgetsTransparency(it) }
       country?.let { renderCountry(it) }
       isSigningIn?.let { settingsTraktAuthorizeProgress.visibleIf(it) }
       isSignedInTrakt?.let { isSignedIn ->
@@ -208,6 +210,14 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     }
   }
 
+  private fun renderWidgetsTransparency(value: WidgetTransparency) {
+    settingsWidgetsTransparencyValue.run {
+      expandTouch()
+      setText(value.displayName)
+      onClick { showWidgetsTransparencyDialog(value) }
+    }
+  }
+
   private fun renderCountry(country: AppCountry) {
     settingsCountryValue.run {
       text = country.displayName
@@ -328,6 +338,20 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       .setSingleChoiceItems(options.map { getString(it.displayName) }.toTypedArray(), selected) { dialog, index ->
         if (index != selected) {
           viewModel.setWidgetsTheme(options[index], requireAppContext())
+        }
+        dialog.dismiss()
+      }
+      .show()
+  }
+
+  private fun showWidgetsTransparencyDialog(transparency: WidgetTransparency) {
+    val options = WidgetTransparency.values()
+    val selected = options.indexOf(transparency)
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setSingleChoiceItems(options.map { getString(it.displayName) }.toTypedArray(), selected) { dialog, index ->
+        if (index != selected) {
+          viewModel.setWidgetsTransparency(options[index], requireAppContext())
         }
         dialog.dismiss()
       }

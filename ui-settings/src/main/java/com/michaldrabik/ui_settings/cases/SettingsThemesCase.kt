@@ -5,6 +5,7 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_settings.helpers.AppTheme
+import com.michaldrabik.ui_settings.helpers.WidgetTransparency
 import javax.inject.Inject
 
 @AppScope
@@ -20,6 +21,15 @@ class SettingsThemesCase @Inject constructor(
 
   fun setWidgetsTheme(theme: AppTheme, context: Context) {
     settingsRepository.widgetsTheme = theme.code
+    reloadWidgets(context)
+  }
+
+  fun setWidgetsTransparency(transparency: WidgetTransparency, context: Context) {
+    settingsRepository.widgetsTransparency = transparency.value
+    reloadWidgets(context)
+  }
+
+  private fun reloadWidgets(context: Context) {
     (context.applicationContext as WidgetsProvider).run {
       requestShowsWidgetsUpdate()
       requestMoviesWidgetsUpdate()
@@ -27,4 +37,6 @@ class SettingsThemesCase @Inject constructor(
   }
 
   fun getWidgetsTheme() = AppTheme.fromCode(settingsRepository.widgetsTheme)
+
+  fun getWidgetsTransparency() = WidgetTransparency.fromValue(settingsRepository.widgetsTransparency)
 }
