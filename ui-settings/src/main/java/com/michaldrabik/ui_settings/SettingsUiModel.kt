@@ -5,11 +5,13 @@ import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import com.michaldrabik.ui_settings.helpers.AppTheme
+import com.michaldrabik.ui_settings.helpers.WidgetTransparency
 
 data class SettingsUiModel(
   val language: AppLanguage? = null,
   val theme: AppTheme? = null,
   val themeWidgets: AppTheme? = null,
+  val widgetsTransparency: WidgetTransparency? = null,
   val country: AppCountry? = null,
   val settings: Settings? = null,
   val isSignedInTrakt: Boolean? = null,
@@ -25,6 +27,7 @@ data class SettingsUiModel(
       country = newModel.country ?: country,
       theme = newModel.theme ?: theme,
       themeWidgets = newModel.themeWidgets ?: themeWidgets,
+      widgetsTransparency = newModel.widgetsTransparency ?: widgetsTransparency,
       settings = newModel.settings ?: settings,
       isSignedInTrakt = newModel.isSignedInTrakt ?: isSignedInTrakt,
       isSigningIn = newModel.isSigningIn ?: isSigningIn,

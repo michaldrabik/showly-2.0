@@ -28,6 +28,8 @@
   <string name="textSettingsThemeSummary">Select application\'s theme.</string>
   <string name="textSettingsThemeWidgetsTitle">Theme</string>
   <string name="textSettingsThemeWidgetsSummary">Select widgets theme.</string>
+  <string name="textSettingsWidgetsTransparencyTitle">Background</string>
+  <string name="textSettingsWidgetsTransparencySummary">Set level of widgets background transparency.</string>
   <string name="textSettingsMyShowsCountryTitle">JustWatch Region</string>
   <string name="textSettingsMyShowsCountrySummary">Select region to use with JustWatch links.</string>
   <string name="textSettingsMyShowsLanguageTitle">Language</string>
@@ -55,7 +57,7 @@
   <string name="textSettingsMoviesEnabledTitle">Movies</string>
   <string name="textSettingsMoviesEnabledSummary">Enable/disable movies support. App will restart.</string>
   <string name="textSettingsWidgets">Widgets</string>
-  <string name="textSettingsWidgetsLabelsTitle">Show Titles</string>
+  <string name="textSettingsWidgetsLabelsTitle">Titles</string>
   <string name="textSettingsWidgetsLabelsSummary">Display translucent widgets titles.</string>
 
   <string name="textLanguageEnglish" translatable="false">English</string>
@@ -69,4 +71,8 @@
   <string name="textThemeDark">Dark</string>
   <string name="textThemeLight">Light</string>
   <string name="textThemeSystem">System</string>
+  <string name="textTransparency25" translatable="false">25%</string>
+  <string name="textTransparency50" translatable="false">50%</string>
+  <string name="textTransparency75" translatable="false">75%</string>
+  <string name="textTransparency100">Opaque</string>
 </resources>

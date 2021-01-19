@@ -18,6 +18,7 @@ import com.michaldrabik.ui_settings.cases.SettingsThemesCase
 import com.michaldrabik.ui_settings.cases.SettingsTraktCase
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import com.michaldrabik.ui_settings.helpers.AppTheme
+import com.michaldrabik.ui_settings.helpers.WidgetTransparency
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -159,6 +160,13 @@ class SettingsViewModel @Inject constructor(
     Analytics.logSettingsWidgetsTheme(theme.code)
   }
 
+  fun setWidgetsTransparency(transparency: WidgetTransparency, context: Context) {
+    viewModelScope.launch {
+      themesCase.setWidgetsTransparency(transparency, context)
+      refreshSettings()
+    }
+  }
+
   fun setCountry(country: AppCountry) {
     viewModelScope.launch {
       mainCase.setCountry(country)
@@ -221,6 +229,7 @@ class SettingsViewModel @Inject constructor(
       language = mainCase.getLanguage(),
       theme = themesCase.getTheme(),
       themeWidgets = themesCase.getWidgetsTheme(),
+      widgetsTransparency = themesCase.getWidgetsTransparency(),
       country = mainCase.getCountry(),
       moviesEnabled = mainCase.isMoviesEnabled(),
       isSignedInTrakt = traktCase.isTraktAuthorized(),

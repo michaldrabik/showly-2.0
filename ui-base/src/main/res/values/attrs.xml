@@ -35,5 +35,9 @@
   <attr name="textColorTab" format="color" />
   <attr name="textColorTabSelected" format="color" />
 
+  <attr name="colorWidgetBackground" format="color" />
+  <attr name="colorWidgetBackground75" format="color" />
+  <attr name="colorWidgetBackground50" format="color" />
+  <attr name="colorWidgetBackground25" format="color" />
   <attr name="colorWidgetStatusBackground" format="color" />
 </resources>

@@ -67,6 +67,9 @@ class CalendarWidgetProvider : BaseWidgetProvider() {
       val labelVisibility = if (settings.widgetsShowLabel) VISIBLE else GONE
       setViewPadding(R.id.calendarWidgetList, 0, paddingTop, 0, spaceTiny)
       setViewVisibility(R.id.calendarWidgetLabel, labelVisibility)
+
+      setInt(R.id.calendarWidgetNightRoot, "setBackgroundResource", getBackgroundResId())
+      setInt(R.id.calendarWidgetDayRoot, "setBackgroundResource", getBackgroundResId())
     }
 
     val listClickIntent = Intent(context, CalendarWidgetProvider::class.java).apply {

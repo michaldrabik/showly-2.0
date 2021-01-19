@@ -70,6 +70,9 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
       val labelVisibility = if (settings.widgetsShowLabel) VISIBLE else GONE
       setViewPadding(R.id.progressWidgetMoviesList, 0, paddingTop, 0, spaceTiny)
       setViewVisibility(R.id.progressWidgetMoviesLabel, labelVisibility)
+
+      setInt(R.id.progressWidgetMoviesNightRoot, "setBackgroundResource", getBackgroundResId())
+      setInt(R.id.progressWidgetMoviesDayRoot, "setBackgroundResource", getBackgroundResId())
     }
 
     val listClickIntent = Intent(context, ProgressMoviesWidgetProvider::class.java).apply {
