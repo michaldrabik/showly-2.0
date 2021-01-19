@@ -88,7 +88,7 @@ class ProgressMainFragment :
       itemLongClickListener = { item, view -> openPopupMenu(item, view) }
       detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show, it.episode) }
       checkClickListener = {
-        if (viewModel.isQuickRateEnabled()) {
+        if (viewModel.isQuickRateEnabled) {
           openRateDialog(it)
         } else {
           parentViewModel.setWatchedEpisode(requireAppContext(), it)

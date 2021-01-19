@@ -80,7 +80,9 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun render(uiModel: SettingsUiModel) {
     uiModel.run {
-      settings?.let { renderSettings(it, moviesEnabled ?: true) }
+      settings?.let {
+        renderSettings(it, moviesEnabled ?: true)
+      }
       language?.let { renderLanguage(it) }
       theme?.let { renderTheme(it) }
       themeWidgets?.let { renderWidgetsTheme(it) }
@@ -93,6 +95,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         settingsTraktQuickSyncSwitch.visibleIf(isSignedIn)
         settingsTraktQuickRemove.visibleIf(isSignedIn)
         settingsTraktQuickRemoveSwitch.visibleIf(isSignedIn)
+        settingsTraktQuickRate.visibleIf(isSignedIn)
+        settingsTraktQuickRateSwitch.visibleIf(isSignedIn)
         settingsTraktAuthorizeIcon.visibleIf(isSignedIn)
         settingsTraktAuthorize.onClick {
           if (isSignedIn) showLogoutDialog()
@@ -110,6 +114,24 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
           else -> getString(R.string.textSettingsTraktAuthorizeSummarySignIn)
         }
         settingsTraktAuthorizeSummary.text = summaryText
+      }
+      isPremium?.let {
+        val alpha = if (it) 1F else 0.5F
+
+        settingsTraktQuickRate.alpha = alpha
+        settingsTraktQuickRateSwitch.alpha = alpha
+        settingsTheme.alpha = alpha
+        settingsThemeValue.alpha = alpha
+        settingsWidgetsTheme.alpha = alpha
+        settingsWidgetsThemeValue.alpha = alpha
+        settingsWidgetsTransparency.alpha = alpha
+        settingsWidgetsTransparencyValue.alpha = alpha
+
+        settingsTraktQuickRateSwitch.isEnabled = it
+        settingsThemeValue.isEnabled = it
+        settingsThemeValue.isEnabled = it
+        settingsWidgetsThemeValue.isEnabled = it
+        settingsWidgetsTransparencyValue.isEnabled = it
       }
       restartApp?.let { if (it) restartApp() }
     }
@@ -132,6 +154,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsTraktQuickRemoveSwitch
       .setCheckedSilent(settings.traktQuickRemoveEnabled) { _, isChecked ->
         viewModel.enableQuickRemove(isChecked)
+      }
+
+    settingsTraktQuickRateSwitch
+      .setCheckedSilent(settings.traktQuickRateEnabled) { _, isChecked ->
+        viewModel.enableQuickRate(isChecked)
       }
 
     settingsPushNotificationsSwitch

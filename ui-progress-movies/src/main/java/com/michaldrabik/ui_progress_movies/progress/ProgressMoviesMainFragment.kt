@@ -5,15 +5,19 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
+import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -53,6 +57,7 @@ class ProgressMoviesMainFragment :
 
     parentViewModel.uiLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
     viewModel.uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
+    viewModel.messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
   }
 
   private fun setupView() {
@@ -74,7 +79,13 @@ class ProgressMoviesMainFragment :
     adapter.run {
       itemClickListener = { (requireParentFragment() as ProgressMoviesFragment).openMovieDetails(it) }
       itemLongClickListener = { item, view -> openPopupMenu(item, view) }
-      checkClickListener = { parentViewModel.addWatchedMovie(requireAppContext(), it) }
+      checkClickListener = {
+        if (viewModel.isQuickRateEnabled) {
+          openRateDialog(it)
+        } else {
+          parentViewModel.addWatchedMovie(requireAppContext(), it)
+        }
+      }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
       missingTranslationListener = { item -> viewModel.findMissingTranslation(item) }
       listChangeListener = {
@@ -111,6 +122,23 @@ class ProgressMoviesMainFragment :
       true
     }
     menu.show()
+  }
+
+  private fun openRateDialog(item: ProgressMovieItem) {
+    val context = requireContext()
+    val rateView = RateView(context).apply {
+      setPadding(context.dimenToPx(R.dimen.spaceNormal))
+      setRating(5)
+    }
+    MaterialAlertDialogBuilder(context, R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
+      .setView(rateView)
+      .setPositiveButton(R.string.textRate) { _, _ ->
+        parentViewModel.addWatchedMovie(requireAppContext(), item)
+        viewModel.addRating(rateView.getRating(), item.movie)
+      }
+      .setNegativeButton(R.string.textCancel) { _, _ -> }
+      .show()
   }
 
   override fun onScrollReset() = progressMoviesMainRecycler.smoothScrollToPosition(0)

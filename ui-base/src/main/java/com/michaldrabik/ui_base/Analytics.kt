@@ -232,6 +232,12 @@ object Analytics {
     }
   }
 
+  fun logSettingsTraktQuickRate(enabled: Boolean) {
+    firebaseAnalytics.logEvent("settings_trakt_quick_rate") {
+      param("enabled", enabled.toString())
+    }
+  }
+
   fun logSettingsRecentlyAddedAmount(amount: Long) {
     firebaseAnalytics.logEvent("settings_recently_added_amount") {
       param("amount", amount)

@@ -165,6 +165,8 @@ class SettingsMainCase @Inject constructor(
     settingsRepository.country = country.code
   }
 
+  fun isPremium() = settingsRepository.isPremium
+
   suspend fun deleteImagesCache() {
     showsImagesProvider.deleteLocalCache()
     moviesImagesProvider.deleteLocalCache()

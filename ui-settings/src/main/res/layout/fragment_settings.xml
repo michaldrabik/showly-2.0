@@ -11,6 +11,7 @@
   android:overScrollMode="never"
   android:scrollbars="none"
   tools:background="@color/colorBackground"
+  tools:layout_marginTop="0dp"
   tools:theme="@style/AppTheme"
   >
 
@@ -154,7 +155,7 @@
     <LinearLayout
       android:id="@+id/settingsTraktQuickRemove"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsCategoryGeneral"
+      app:layout_constraintBottom_toTopOf="@id/settingsTraktQuickRate"
       app:layout_constraintEnd_toStartOf="@id/settingsTraktQuickRemoveSwitch"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsTraktQuickSync"
@@ -183,13 +184,45 @@
       app:layout_constraintTop_toTopOf="@id/settingsTraktQuickRemove"
       />
 
+    <LinearLayout
+      android:id="@+id/settingsTraktQuickRate"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryGeneral"
+      app:layout_constraintEnd_toStartOf="@id/settingsTraktQuickRateSwitch"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsTraktQuickRemove"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsTraktQuickRateTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:text="@string/textSettingsTraktQuickRateSummary"
+        />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+      android:id="@+id/settingsTraktQuickRateSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:checked="false"
+      app:layout_constraintBottom_toBottomOf="@id/settingsTraktQuickRate"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsTraktQuickRate"
+      />
+
     <TextView
       android:id="@+id/settingsCategoryGeneral"
       style="@style/Settings.Category"
       android:text="@string/textSettingsGeneral"
       app:layout_constraintBottom_toTopOf="@id/settingsLanguage"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsTraktQuickRemove"
+      app:layout_constraintTop_toBottomOf="@id/settingsTraktQuickRate"
       app:layout_constraintVertical_bias="0"
       app:layout_constraintVertical_chainStyle="packed"
       app:layout_goneMarginTop="@dimen/spaceBig"
@@ -576,18 +609,18 @@
       android:id="@+id/settingsCategoryWidgets"
       style="@style/Settings.Category"
       android:text="@string/textSettingsWidgets"
+      app:layout_constraintBottom_toTopOf="@id/settingsWidgetsTheme"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsWhenToNotify"
-      app:layout_constraintBottom_toTopOf="@id/settingsWidgetsTheme"
       />
 
     <LinearLayout
       android:id="@+id/settingsWidgetsLabels"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsWidgetsTransparency"
+      app:layout_constraintBottom_toTopOf="@id/settingsCategoryMisc"
       app:layout_constraintEnd_toStartOf="@id/settingsWidgetsLabelsSwitch"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsWidgetsTheme"
+      app:layout_constraintTop_toBottomOf="@+id/settingsWidgetsTransparency"
       >
 
       <TextView
@@ -616,7 +649,7 @@
     <LinearLayout
       android:id="@+id/settingsWidgetsTheme"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsWidgetsLabels"
+      app:layout_constraintBottom_toTopOf="@+id/settingsWidgetsTransparency"
       app:layout_constraintEnd_toStartOf="@id/settingsWidgetsThemeValue"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsCategoryWidgets"
@@ -652,10 +685,10 @@
     <LinearLayout
       android:id="@+id/settingsWidgetsTransparency"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsCategoryMisc"
-      app:layout_constraintEnd_toStartOf="@id/settingsWidgetsThemeValue"
+      app:layout_constraintBottom_toTopOf="@id/settingsWidgetsLabels"
+      app:layout_constraintEnd_toStartOf="@id/settingsWidgetsTransparencyValue"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsWidgetsLabels"
+      app:layout_constraintTop_toBottomOf="@id/settingsWidgetsTheme"
       >
 
       <TextView
@@ -691,7 +724,7 @@
       android:text="@string/textSettingsMisc"
       app:layout_constraintBottom_toTopOf="@id/settingsRateApp"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsWidgetsTransparency"
+      app:layout_constraintTop_toBottomOf="@id/settingsWidgetsLabels"
       />
 
     <LinearLayout

@@ -17,6 +17,8 @@
   <string name="textSettingsTraktQuickSyncSummary">Instantly upload data to Trakt.tv after you add it in the app.</string>
   <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv Instant Remove</string>
   <string name="textSettingsTraktQuickRemoveSummary">Add option to remove data from Trakt.tv after you remove it in the app.</string>
+  <string name="textSettingsTraktQuickRateTitle">Trakt.tv Quick Rate</string>
+  <string name="textSettingsTraktQuickRateSummary">Rate episodes and movies whenever you mark them as watched in \'Progress\' screen.</string>
   <string name="textSettingsGeneral">General &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Recently Added Amount</string>
   <string name="textSettingsRecentShowsSummary">Number of recent items to display in \'Collection\'.</string>
@@ -25,7 +27,7 @@
   <string name="textSettingsMyMoviesSectionsTitle">My Movies Sections</string>
   <string name="textSettingsMyMoviesSectionSummary">Enable/disable sections in \'My Movies\' tab.</string>
   <string name="textSettingsThemeTitle">Theme</string>
-  <string name="textSettingsThemeSummary">Select application\'s theme.</string>
+  <string name="textSettingsThemeSummary">Select main theme.</string>
   <string name="textSettingsThemeWidgetsTitle">Theme</string>
   <string name="textSettingsThemeWidgetsSummary">Select widgets theme.</string>
   <string name="textSettingsWidgetsTransparencyTitle">Background</string>

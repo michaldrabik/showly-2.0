@@ -37,7 +37,8 @@ data class Settings(
   val progressMoviesSortBy: SortOrder,
   val showCollectionShows: Boolean,
   val showCollectionMovies: Boolean,
-  val widgetsShowLabel: Boolean
+  val widgetsShowLabel: Boolean,
+  val traktQuickRateEnabled: Boolean
 ) {
 
   companion object {
@@ -78,7 +79,8 @@ data class Settings(
       progressMoviesSortBy = SortOrder.NAME,
       showCollectionMovies = true,
       showCollectionShows = true,
-      widgetsShowLabel = true
+      widgetsShowLabel = true,
+      traktQuickRateEnabled = false
     )
   }
 }

@@ -21,7 +21,6 @@ import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 class ProgressMainViewModel @Inject constructor(
@@ -33,16 +32,15 @@ class ProgressMainViewModel @Inject constructor(
 ) : BaseViewModel<ProgressMainUiModel>() {
 
   private val language by lazy { translationsRepository.getLanguage() }
-
-  private var isSignedIn = false
-  private var isPremium = false
+  var isQuickRateEnabled = false
 
   init {
     viewModelScope.launch {
-      isSignedIn = userTraktManager.isAuthorized()
-      isPremium = settingsRepository.isPremium
+      val isSignedIn = userTraktManager.isAuthorized()
+      val isPremium = settingsRepository.isPremium
+      val isQuickRate = settingsRepository.load().traktQuickRateEnabled
+      isQuickRateEnabled = isPremium && isSignedIn && isQuickRate
     }
-    Timber.d("Initialized")
   }
 
   fun handleParentAction(model: ProgressUiModel) {
@@ -108,8 +106,6 @@ class ProgressMainViewModel @Inject constructor(
       }
     }
   }
-
-  fun isQuickRateEnabled() = isSignedIn && isPremium
 
   private fun updateItem(new: ProgressItem) {
     val currentItems = uiState?.items?.toMutableList()

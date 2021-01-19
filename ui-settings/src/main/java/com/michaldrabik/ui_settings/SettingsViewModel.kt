@@ -62,6 +62,14 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
+  fun enableQuickRate(enable: Boolean) {
+    viewModelScope.launch {
+      traktCase.enableTraktQuickRate(enable)
+      refreshSettings()
+      Analytics.logSettingsTraktQuickRate(enable)
+    }
+  }
+
   fun enablePushNotifications(enable: Boolean) {
     viewModelScope.launch {
       mainCase.enablePushNotifications(enable)
@@ -207,7 +215,6 @@ class SettingsViewModel @Inject constructor(
   fun logoutTrakt(context: Context) {
     viewModelScope.launch {
       traktCase.logoutTrakt(context)
-      traktCase.enableTraktQuickSync(false)
       _messageLiveData.value = MessageEvent.info(R.string.textTraktLogoutSuccess)
       refreshSettings()
       Analytics.logTraktLogout()
@@ -233,6 +240,7 @@ class SettingsViewModel @Inject constructor(
       country = mainCase.getCountry(),
       moviesEnabled = mainCase.isMoviesEnabled(),
       isSignedInTrakt = traktCase.isTraktAuthorized(),
+      isPremium = mainCase.isPremium(),
       traktUsername = traktCase.getTraktUsername(),
       restartApp = restartApp
     )

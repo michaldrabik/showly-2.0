@@ -3,31 +3,31 @@ package com.michaldrabik.storage.database.migrations
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 20
+const val DATABASE_VERSION = 21
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 // TODO Split into separate files
 object Migrations {
 
-  private val MIGRATION_1_2 = object : Migration(1, 2) {
+  private val MIGRATION_2 = object : Migration(1, 2) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL("ALTER TABLE settings ADD COLUMN show_anticipated_shows INTEGER NOT NULL DEFAULT 1")
     }
   }
 
-  private val MIGRATION_2_3 = object : Migration(2, 3) {
+  private val MIGRATION_3 = object : Migration(2, 3) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL("ALTER TABLE actors ADD COLUMN id_imdb TEXT")
     }
   }
 
-  private val MIGRATION_3_4 = object : Migration(3, 4) {
+  private val MIGRATION_4 = object : Migration(3, 4) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL("ALTER TABLE settings ADD COLUMN trakt_sync_schedule TEXT NOT NULL DEFAULT 'OFF'")
     }
   }
 
-  private val MIGRATION_4_5 = object : Migration(4, 5) {
+  private val MIGRATION_5 = object : Migration(4, 5) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL("ALTER TABLE settings ADD COLUMN my_shows_running_is_enabled INTEGER NOT NULL DEFAULT 1")
       database.execSQL("ALTER TABLE settings ADD COLUMN my_shows_incoming_is_enabled INTEGER NOT NULL DEFAULT 1")
@@ -36,14 +36,14 @@ object Migrations {
     }
   }
 
-  private val MIGRATION_5_6 = object : Migration(5, 6) {
+  private val MIGRATION_6 = object : Migration(5, 6) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL("CREATE INDEX index_episodes_id_show_trakt ON episodes(id_show_trakt)")
       database.execSQL("CREATE INDEX index_seasons_id_show_trakt ON seasons(id_show_trakt)")
     }
   }
 
-  private val MIGRATION_6_7 = object : Migration(6, 7) {
+  private val MIGRATION_7 = object : Migration(6, 7) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL("ALTER TABLE settings ADD COLUMN discover_filter_genres TEXT NOT NULL DEFAULT ''")
       database.execSQL("ALTER TABLE settings ADD COLUMN discover_filter_feed TEXT NOT NULL DEFAULT 'HOT'")
@@ -60,19 +60,19 @@ object Migrations {
     }
   }
 
-  private val MIGRATION_7_8 = object : Migration(7, 8) {
+  private val MIGRATION_8 = object : Migration(7, 8) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL("ALTER TABLE settings ADD COLUMN watchlist_sort_by TEXT NOT NULL DEFAULT 'NAME'")
     }
   }
 
-  private val MIGRATION_8_9 = object : Migration(8, 9) {
+  private val MIGRATION_9 = object : Migration(8, 9) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL("ALTER TABLE settings ADD COLUMN trakt_quick_remove_enabled INTEGER NOT NULL DEFAULT 0")
     }
   }
 
-  private val MIGRATION_9_10 = object : Migration(9, 10) {
+  private val MIGRATION_10 = object : Migration(9, 10) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `shows_archive` (" +
@@ -87,19 +87,19 @@ object Migrations {
     }
   }
 
-  private val MIGRATION_10_11 = object : Migration(10, 11) {
+  private val MIGRATION_11 = object : Migration(10, 11) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL("ALTER TABLE settings ADD COLUMN archive_shows_include_statistics INTEGER NOT NULL DEFAULT 1")
     }
   }
 
-  private val MIGRATION_11_12 = object : Migration(11, 12) {
+  private val MIGRATION_12 = object : Migration(11, 12) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL("ALTER TABLE settings ADD COLUMN special_seasons_enabled INTEGER NOT NULL DEFAULT 0")
     }
   }
 
-  private val MIGRATION_12_13 = object : Migration(12, 13) {
+  private val MIGRATION_13 = object : Migration(12, 13) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL(
         "CREATE TABLE IF NOT EXISTS `shows_translations` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
@@ -127,13 +127,13 @@ object Migrations {
     }
   }
 
-  private val MIGRATION_13_14 = object : Migration(13, 14) {
+  private val MIGRATION_14 = object : Migration(13, 14) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL("ALTER TABLE shows_images ADD COLUMN source TEXT NOT NULL DEFAULT 'tvdb'")
     }
   }
 
-  private val MIGRATION_14_15 = object : Migration(14, 15) {
+  private val MIGRATION_15 = object : Migration(14, 15) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL("ALTER TABLE settings ADD COLUMN show_anticipated_movies INTEGER NOT NULL DEFAULT 0")
       database.execSQL("ALTER TABLE settings ADD COLUMN discover_movies_filter_genres TEXT NOT NULL DEFAULT ''")
@@ -254,20 +254,20 @@ object Migrations {
     }
   }
 
-  private val MIGRATION_15_16 = object : Migration(15, 16) {
+  private val MIGRATION_16 = object : Migration(15, 16) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL("ALTER TABLE settings ADD COLUMN show_collection_shows INTEGER NOT NULL DEFAULT 1")
       database.execSQL("ALTER TABLE settings ADD COLUMN show_collection_movies INTEGER NOT NULL DEFAULT 1")
     }
   }
 
-  private val MIGRATION_16_17 = object : Migration(16, 17) {
+  private val MIGRATION_17 = object : Migration(16, 17) {
     override fun migrate(database: SupportSQLiteDatabase) {
       database.execSQL("ALTER TABLE settings ADD COLUMN widgets_show_label INTEGER NOT NULL DEFAULT 1")
     }
   }
 
-  private val MIGRATION_17_18 = object : Migration(17, 18) {
+  private val MIGRATION_18 = object : Migration(17, 18) {
     override fun migrate(database: SupportSQLiteDatabase) {
       with(database) {
         execSQL("ALTER TABLE actors ADD COLUMN id_tmdb_show INTEGER NOT NULL DEFAULT -1")
@@ -282,7 +282,7 @@ object Migrations {
     }
   }
 
-  private val MIGRATION_18_19 = object : Migration(18, 19) {
+  private val MIGRATION_19 = object : Migration(18, 19) {
     override fun migrate(database: SupportSQLiteDatabase) {
       with(database) {
         execSQL("ALTER TABLE settings ADD COLUMN my_movies_recent_is_enabled INTEGER NOT NULL DEFAULT 1")
@@ -290,7 +290,7 @@ object Migrations {
     }
   }
 
-  private val MIGRATION_19_20 = object : Migration(19, 20) {
+  private val MIGRATION_20 = object : Migration(19, 20) {
     override fun migrate(database: SupportSQLiteDatabase) {
       with(database) {
         execSQL(
@@ -306,25 +306,34 @@ object Migrations {
     }
   }
 
+  private val MIGRATION_21 = object : Migration(20, 21) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
+        execSQL("ALTER TABLE settings ADD COLUMN quick_rate_enabled INTEGER NOT NULL DEFAULT 0")
+      }
+    }
+  }
+
   val MIGRATIONS = listOf(
-    MIGRATION_1_2,
-    MIGRATION_2_3,
-    MIGRATION_3_4,
-    MIGRATION_4_5,
-    MIGRATION_5_6,
-    MIGRATION_6_7,
-    MIGRATION_7_8,
-    MIGRATION_8_9,
-    MIGRATION_9_10,
-    MIGRATION_10_11,
-    MIGRATION_11_12,
-    MIGRATION_12_13,
-    MIGRATION_13_14,
-    MIGRATION_14_15,
-    MIGRATION_15_16,
-    MIGRATION_16_17,
-    MIGRATION_17_18,
-    MIGRATION_18_19,
-    MIGRATION_19_20
+    MIGRATION_2,
+    MIGRATION_3,
+    MIGRATION_4,
+    MIGRATION_5,
+    MIGRATION_6,
+    MIGRATION_7,
+    MIGRATION_8,
+    MIGRATION_9,
+    MIGRATION_10,
+    MIGRATION_11,
+    MIGRATION_12,
+    MIGRATION_13,
+    MIGRATION_14,
+    MIGRATION_15,
+    MIGRATION_16,
+    MIGRATION_17,
+    MIGRATION_18,
+    MIGRATION_19,
+    MIGRATION_20,
+    MIGRATION_21
   )
 }
