@@ -29,7 +29,7 @@ class BottomMenuView : FrameLayout {
 
   companion object {
     private const val SWIPE_MIN_THRESHOLD = 200F
-    private const val FADE_DELAY = 150L
+    private const val FADE_DELAY = 100L
   }
 
   constructor(context: Context) : super(context)
@@ -58,7 +58,7 @@ class BottomMenuView : FrameLayout {
       ACTION_DOWN -> {
         touchX = ev.x
         isModeMenu = false
-//        disableTooltips()
+        disableTooltips()
       }
       ACTION_MOVE -> {
         val delta = ev.x - touchX
@@ -121,7 +121,7 @@ class BottomMenuView : FrameLayout {
     if (content is ViewGroup) {
       content.forEach {
         if (it is BottomNavigationItemView) {
-          it.setOnLongClickListener { true }
+          it.setOnLongClickListener(null)
         }
       }
     }
