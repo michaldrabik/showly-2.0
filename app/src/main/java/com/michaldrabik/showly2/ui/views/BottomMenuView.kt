@@ -58,7 +58,7 @@ class BottomMenuView : FrameLayout {
       ACTION_DOWN -> {
         touchX = ev.x
         isModeMenu = false
-//        disableTooltips()
+        disableTooltips()
       }
       ACTION_MOVE -> {
         val delta = ev.x - touchX
@@ -121,7 +121,7 @@ class BottomMenuView : FrameLayout {
     if (content is ViewGroup) {
       content.forEach {
         if (it is BottomNavigationItemView) {
-          it.setOnLongClickListener { true }
+          it.setOnLongClickListener(null)
         }
       }
     }
