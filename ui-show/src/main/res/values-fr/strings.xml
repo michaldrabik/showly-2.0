@@ -2,7 +2,7 @@
 <resources>
   <string name="textAdd">Ajouter à mes séries</string>
   <string name="textWatchLater">Watchlist</string>
-  <string name="textNextEpisode">Prochain Épisode:</string>
+  <string name="textNextEpisode">Prochain épisode:</string>
   <string name="textInMyShows">Ajouté à mes séries</string>
   <string name="textInWatchlist">Ajouté à la Watchlist</string>
   <string name="textInArchive">Archivé</string>
