@@ -57,12 +57,10 @@ object Config {
   val DISPLAY_DATE_DAY_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("dd MMM yyyy") }
   val DISPLAY_DATE_FULL_DAY_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy") }
 
-  const val SHOW_TIPS = true
+  const val SHOW_TIPS = false
   const val SHOW_WHATS_NEW = true
   const val WHATS_NEW_TEXT =
-    "* Added French language support.\n\n" +
-      "* Added episodes ratings in seasons lists.\n\n" +
-      "* Added option to remove recents section for movies.\n\n" +
-      "* Bugfixes\n\n" +
+    "* Swipe bottom menu left or right to quickly switch between shows and movies mode.\n\n" +
+      "* Translations fixes.\n\n" +
       "Showly is now on Twitter! Follow  @AppShowly  for news, current app status and other important information."
 }
