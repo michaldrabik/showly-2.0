@@ -29,6 +29,7 @@
   <string name="textTipShowDetailsQuickProgress">Tippe auf das Symbol \'Schneller Fortschritt\', um den Fortschritt der Show schnell einzurichten.\n\nTippe das \'Archiv\' Icon an um die Serie ins Archiv zu verschieben.</string>
   <string name="textTipDiscoverFilters">Benutze verschiedene Filter um deinen Entdecken Feed zu verfeinern.</string>
   <string name="textTipWatchlistPinItem">Tippe &amp; Halte um oben anzupinnen.</string>
+  <string name="textTipBottomModeMenu">Wischen Sie unten Menü links oder rechts um den Modus zu wechseln.</string>
   <string name="textGenreAction">Action</string>
   <string name="textGenreAdventure">Abenteuer</string>
   <string name="textGenreAnimation">Animation</string>
