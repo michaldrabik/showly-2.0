@@ -298,6 +298,12 @@ object Analytics {
     }
   }
 
+  fun logSettingsPremium(value: Boolean) {
+    firebaseAnalytics.logEvent("settings_premium") {
+      param("value", value.toString())
+    }
+  }
+
   fun logSettingsWidgetsTheme(value: Int) {
     firebaseAnalytics.logEvent("settings_widgets_theme") {
       param("value", value.toString())
