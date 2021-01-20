@@ -29,6 +29,7 @@
   <string name="textTipShowDetailsQuickProgress">Kliknij ikonkę \'Szybki Postęp\' aby szybko ustawić obejrzane odcinki.\n\nKliknij ikonkę \'Archiwum\' aby przenieść serial do Archiwum.</string>
   <string name="textTipDiscoverFilters">Użyj filtrów aby dostosować zakładkę \'Odkrywaj\' pod swoje upodobania.</string>
   <string name="textTipWatchlistPinItem">Kliknij i przytrzymaj element aby przypiąć go u góry listy.</string>
+  <string name="textTipBottomModeMenu">Kliknij i przesuń dolne menu w lewo lub prawo aby szybko przełączyć się między serialami i filmami.</string>
   <string name="textGenreAction">Akcja</string>
   <string name="textGenreAdventure">Przygoda</string>
   <string name="textGenreAnimation">Animacja</string>
