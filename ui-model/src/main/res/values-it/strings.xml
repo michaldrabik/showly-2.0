@@ -29,6 +29,7 @@
   <string name="textTipShowDetailsQuickProgress">Tocca l\'icona \'Progresso Rapido\' per aggiornare velocemente i tuoi progressi per la serie TV.\n\nTocca l\'icona \'Archivia\' per archiviarla.</string>
   <string name="textTipDiscoverFilters">Usa i filtri per migliorare la tua pagina Scopri.</string>
   <string name="textTipWatchlistPinItem">Tocca e mantieni un elemento della lista per fissarlo in cima.</string>
+  <string name="textTipBottomModeMenu">Scorri a sinistra o a destra il menu inferiore per cambiare modalità rapidamente.</string>
   <string name="textGenreAction">Azione</string>
   <string name="textGenreAdventure">Avventura</string>
   <string name="textGenreAnimation">Animazione</string>
