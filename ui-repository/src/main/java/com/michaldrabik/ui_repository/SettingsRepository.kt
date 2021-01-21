@@ -29,7 +29,7 @@ class SettingsRepository @Inject constructor(
     private const val KEY_THEME = "KEY_THEME"
     private const val KEY_THEME_WIDGET = "KEY_THEME_WIDGET"
     private const val KEY_THEME_WIDGET_TRANSPARENT = "KEY_THEME_WIDGET_TRANSPARENT"
-    private const val KEY_PREMIUM = "KEY_THEME_WIDGET"
+    private const val KEY_PREMIUM = "KEY_PREMIUM"
   }
 
   suspend fun isInitialized() =
