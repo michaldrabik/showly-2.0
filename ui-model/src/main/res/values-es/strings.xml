@@ -29,6 +29,7 @@
   <string name="textTipShowDetailsQuickProgress">Toca el ícono \'Progreso Rápido\' para configurar rápidamente tu progreso de la serie.\n\nToca el ícono \'Archivar\' para mover la serie al archivo.</string>
   <string name="textTipDiscoverFilters">Usa la vista de filtros para mejorar tu feed de Descubrir.</string>
   <string name="textTipWatchlistPinItem">Mantén pulsado el elemento de la lista para fijarlo en la parte superior.</string>
+  <string name="textTipBottomModeMenu">Desliza el menú inferior izquierda o derecha para cambiar el modo rápidamente.</string>
   <string name="textGenreAction">Acción</string>
   <string name="textGenreAdventure">Aventura</string>
   <string name="textGenreAnimation">Animación</string>
