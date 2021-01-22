@@ -24,7 +24,8 @@ data class MovieDetailsUiModel(
   val removeFromTraktWatchlist: ActionEvent<Boolean>? = null,
   val showFromTraktLoading: Boolean? = null,
   val translation: Translation? = null,
-  val country: AppCountry? = null
+  val country: AppCountry? = null,
+  val isPremium: Boolean? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -41,6 +42,7 @@ data class MovieDetailsUiModel(
       removeFromTraktWatchlist = newModel.removeFromTraktWatchlist ?: removeFromTraktWatchlist,
       translation = newModel.translation ?: translation,
       country = newModel.country ?: country,
+      isPremium = newModel.isPremium ?: isPremium,
       ratingState = newModel.ratingState?.copy(
         rateLoading = newModel.ratingState.rateLoading ?: ratingState?.rateLoading,
         rateAllowed = newModel.ratingState.rateAllowed ?: ratingState?.rateAllowed,

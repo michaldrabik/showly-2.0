@@ -75,6 +75,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   override fun onResume() {
     super.onResume()
+    hideNavigation()
     handleBackPressed()
   }
 
@@ -115,23 +116,39 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         }
         settingsTraktAuthorizeSummary.text = summaryText
       }
-      isPremium?.let {
-        val alpha = if (it) 1F else 0.5F
+      isPremium?.let { isPremium ->
+        listOf(
+          settingsTraktQuickRate,
+          settingsTraktQuickRateSwitch,
+          settingsTheme,
+          settingsThemeValue,
+          settingsWidgetsTheme,
+          settingsWidgetsThemeValue,
+          settingsWidgetsTransparency,
+          settingsWidgetsTransparencyValue
+        ).forEach {
+          it.alpha = if (isPremium) 1F else 0.5F
+        }
 
-        settingsTraktQuickRate.alpha = alpha
-        settingsTraktQuickRateSwitch.alpha = alpha
-        settingsTheme.alpha = alpha
-        settingsThemeValue.alpha = alpha
-        settingsWidgetsTheme.alpha = alpha
-        settingsWidgetsThemeValue.alpha = alpha
-        settingsWidgetsTransparency.alpha = alpha
-        settingsWidgetsTransparencyValue.alpha = alpha
+        listOf(
+          settingsTraktQuickRateSwitch,
+          settingsThemeValue,
+          settingsWidgetsThemeValue,
+          settingsWidgetsTransparencyValue
+        ).forEach {
+          it.isEnabled = isPremium
+        }
 
-        settingsTraktQuickRateSwitch.isEnabled = it
-        settingsThemeValue.isEnabled = it
-        settingsThemeValue.isEnabled = it
-        settingsWidgetsThemeValue.isEnabled = it
-        settingsWidgetsTransparencyValue.isEnabled = it
+        if (!isPremium) {
+          listOf(
+            settingsTraktQuickRate,
+            settingsTheme,
+            settingsWidgetsTheme,
+            settingsWidgetsTransparency
+          ).onClick {
+            navigateTo(R.id.actionSettingsFragmentToPremium)
+          }
+        }
       }
       restartApp?.let { if (it) restartApp() }
     }

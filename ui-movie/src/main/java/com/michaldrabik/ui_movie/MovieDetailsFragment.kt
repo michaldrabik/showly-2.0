@@ -121,7 +121,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     super.onCreate(savedInstanceState)
     setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
       viewModel.loadBackgroundImage()
-      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) showCustomImages(movieId.id)
+      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) showCustomImages(movieId.id, true)
     }
   }
 
@@ -145,6 +145,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   override fun onResume() {
     super.onResume()
+    hideNavigation()
     handleBackPressed()
   }
 
@@ -294,7 +295,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsActorFullName.fadeOut()
   }
 
-  private fun showCustomImages(movieId: Long) {
+  private fun showCustomImages(movieId: Long, isPremium: Boolean?) {
+    if (isPremium == false) {
+      navigateTo(R.id.actionMovieDetailsFragmentToPremium)
+      return
+    }
     val bundle = bundleOf(
       ARG_MOVIE_ID to movieId,
       ARG_FAMILY to MOVIE
@@ -343,7 +348,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         }
         movieDetailsSeparator4.visible()
         movieDetailsCustomImagesLabel.visible()
-        movieDetailsCustomImagesLabel.onClick { showCustomImages(movie.traktId) }
+        movieDetailsCustomImagesLabel.onClick { showCustomImages(movie.traktId, isPremium) }
         movieDetailsAddButton.isEnabled = true
       }
       movieLoading?.let {

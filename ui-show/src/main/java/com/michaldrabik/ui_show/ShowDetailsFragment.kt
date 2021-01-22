@@ -137,7 +137,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     super.onCreate(savedInstanceState)
     setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
       viewModel.loadBackgroundImage()
-      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) showCustomImages(showId.id)
+      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) showCustomImages(showId.id, true)
     }
   }
 
@@ -162,6 +162,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   override fun onResume() {
     super.onResume()
+    hideNavigation()
     handleBackPressed()
   }
 
@@ -323,7 +324,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     modal.show(requireActivity().supportFragmentManager, "MODAL")
   }
 
-  private fun showCustomImages(showId: Long) {
+  private fun showCustomImages(showId: Long, isPremium: Boolean?) {
+    if (isPremium == false) {
+      navigateTo(R.id.actionShowDetailsFragmentToPremium)
+      return
+    }
     val bundle = bundleOf(
       ARG_SHOW_ID to showId,
       ARG_FAMILY to SHOW
@@ -423,7 +428,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
         showDetailsSeparator4.visible()
         showDetailsCustomImagesLabel.visible()
-        showDetailsCustomImagesLabel.onClick { showCustomImages(show.traktId) }
+        showDetailsCustomImagesLabel.onClick { showCustomImages(show.traktId, isPremium) }
         showDetailsAddButton.isEnabled = true
       }
       showLoading?.let {

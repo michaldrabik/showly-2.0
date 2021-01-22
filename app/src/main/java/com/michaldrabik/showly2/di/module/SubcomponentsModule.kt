@@ -9,6 +9,7 @@ import com.michaldrabik.ui_gallery.fanart.di.UiFanartGalleryComponent
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponent
 import com.michaldrabik.ui_my_movies.di.UiMyMoviesComponent
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
+import com.michaldrabik.ui_premium.di.UiPremiumComponent
 import com.michaldrabik.ui_progress.di.UiProgressComponent
 import com.michaldrabik.ui_progress_movies.di.UiProgressMoviesComponent
 import com.michaldrabik.ui_settings.di.UiSettingsComponent
@@ -39,6 +40,7 @@ import dagger.Module
     UiProgressComponent::class,
     UiProgressMoviesComponent::class,
     UiWidgetsComponent::class,
+    UiPremiumComponent::class,
     ServiceComponent::class
   ]
 )

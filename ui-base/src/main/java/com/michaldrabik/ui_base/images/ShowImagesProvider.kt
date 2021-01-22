@@ -23,6 +23,7 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.mappers.Mappers
 import javax.inject.Inject
 
@@ -30,13 +31,15 @@ import javax.inject.Inject
 class ShowImagesProvider @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
-  private val mappers: Mappers
+  private val mappers: Mappers,
+  private val settingsRepository: SettingsRepository
 ) {
 
   private val unavailableCache = mutableSetOf<IdTrakt>()
   private var awsImagesCache: AwsImages? = null
 
   suspend fun findCustomImage(traktId: Long, type: ImageType): Image? {
+    if (!settingsRepository.isPremium) return null
     val custom = database.customImagesDao().getById(traktId, "show", type.key)
     return custom?.let { mappers.image.fromDatabase(it, type) }
   }

@@ -15,6 +15,7 @@ import com.michaldrabik.ui_my_shows.archive.ArchiveViewModel
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
 import com.michaldrabik.ui_my_shows.myshows.MyShowsViewModel
 import com.michaldrabik.ui_my_shows.watchlist.WatchlistViewModel
+import com.michaldrabik.ui_premium.PremiumViewModel
 import com.michaldrabik.ui_progress.calendar.ProgressCalendarViewModel
 import com.michaldrabik.ui_progress.main.ProgressViewModel
 import com.michaldrabik.ui_progress.progress.ProgressMainViewModel
@@ -160,6 +161,11 @@ abstract class ViewModelsModule {
   @IntoMap
   @ViewModelKey(StatisticsViewModel::class)
   abstract fun bindStatisticsViewModel(viewModel: StatisticsViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(PremiumViewModel::class)
+  abstract fun bindPremiumViewModel(viewModel: PremiumViewModel): ViewModel
 
   @Binds
   @IntoMap

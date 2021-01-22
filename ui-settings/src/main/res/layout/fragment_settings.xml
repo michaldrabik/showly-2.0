@@ -186,7 +186,7 @@
 
     <LinearLayout
       android:id="@+id/settingsTraktQuickRate"
-      style="@style/Settings.ItemLayout"
+      style="@style/Settings.ItemLayoutNoRipple"
       app:layout_constraintBottom_toTopOf="@id/settingsCategoryGeneral"
       app:layout_constraintEnd_toStartOf="@id/settingsTraktQuickRateSwitch"
       app:layout_constraintStart_toStartOf="parent"
@@ -263,7 +263,7 @@
 
     <LinearLayout
       android:id="@+id/settingsTheme"
-      style="@style/Settings.ItemLayout"
+      style="@style/Settings.ItemLayoutNoRipple"
       app:layout_constraintBottom_toTopOf="@id/settingsMoviesEnabled"
       app:layout_constraintEnd_toStartOf="@id/settingsThemeValue"
       app:layout_constraintStart_toStartOf="parent"
@@ -648,7 +648,7 @@
 
     <LinearLayout
       android:id="@+id/settingsWidgetsTheme"
-      style="@style/Settings.ItemLayout"
+      style="@style/Settings.ItemLayoutNoRipple"
       app:layout_constraintBottom_toTopOf="@+id/settingsWidgetsTransparency"
       app:layout_constraintEnd_toStartOf="@id/settingsWidgetsThemeValue"
       app:layout_constraintStart_toStartOf="parent"
@@ -684,7 +684,7 @@
 
     <LinearLayout
       android:id="@+id/settingsWidgetsTransparency"
-      style="@style/Settings.ItemLayout"
+      style="@style/Settings.ItemLayoutNoRipple"
       app:layout_constraintBottom_toTopOf="@id/settingsWidgetsLabels"
       app:layout_constraintEnd_toStartOf="@id/settingsWidgetsTransparencyValue"
       app:layout_constraintStart_toStartOf="parent"

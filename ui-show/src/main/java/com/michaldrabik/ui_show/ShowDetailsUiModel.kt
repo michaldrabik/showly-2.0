@@ -29,7 +29,8 @@ data class ShowDetailsUiModel(
   val showFromTraktLoading: Boolean? = null,
   val translation: Translation? = null,
   val seasonTranslation: ActionEvent<SeasonListItem>? = null,
-  val country: AppCountry? = null
+  val country: AppCountry? = null,
+  val isPremium: Boolean? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -49,6 +50,7 @@ data class ShowDetailsUiModel(
       translation = newModel.translation ?: translation,
       seasonTranslation = newModel.seasonTranslation ?: seasonTranslation,
       country = newModel.country ?: country,
+      isPremium = newModel.isPremium ?: isPremium,
       ratingState = newModel.ratingState?.copy(
         rateLoading = newModel.ratingState.rateLoading ?: ratingState?.rateLoading,
         rateAllowed = newModel.ratingState.rateAllowed ?: ratingState?.rateAllowed,

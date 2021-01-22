@@ -71,15 +71,24 @@ class SettingsRepository @Inject constructor(
     set(value) = miscPreferences.edit(true) { putString(KEY_COUNTRY, value) }
 
   var theme: Int
-    get() = miscPreferences.getInt(KEY_THEME, MODE_NIGHT_YES)
+    get() {
+      if (!isPremium) return MODE_NIGHT_YES
+      return miscPreferences.getInt(KEY_THEME, MODE_NIGHT_YES)
+    }
     set(value) = miscPreferences.edit(true) { putInt(KEY_THEME, value) }
 
   var widgetsTheme: Int
-    get() = miscPreferences.getInt(KEY_THEME_WIDGET, MODE_NIGHT_YES)
+    get() {
+      if (!isPremium) return MODE_NIGHT_YES
+      return miscPreferences.getInt(KEY_THEME_WIDGET, MODE_NIGHT_YES)
+    }
     set(value) = miscPreferences.edit(true) { putInt(KEY_THEME_WIDGET, value) }
 
   var widgetsTransparency: Int
-    get() = miscPreferences.getInt(KEY_THEME_WIDGET_TRANSPARENT, 100)
+    get() {
+      if (!isPremium) return 100
+      return miscPreferences.getInt(KEY_THEME_WIDGET_TRANSPARENT, 100)
+    }
     set(value) = miscPreferences.edit(true) { putInt(KEY_THEME_WIDGET_TRANSPARENT, value) }
 
   suspend fun clearLanguageLogs() {
