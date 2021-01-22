@@ -186,6 +186,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
         galleryAdapter.setItems(it, type!!)
         artGalleryEmptyView.visibleIf(it.isEmpty())
         artGallerySelectButton.visibleIf(it.isNotEmpty() && isPickMode == true)
+        artGalleryUrlButton.visibleIf(it.isNotEmpty() && isPickMode == true)
 
         if (size != it.size) artGalleryPager.currentItem = 0
       }
