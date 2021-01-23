@@ -63,6 +63,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun setupView() {
     settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+    settingsPremium.onClick { navigateTo(R.id.actionSettingsFragmentToPremium) }
     settingsTraktSync.onClick { navigateTo(R.id.actionSettingsFragmentToTraktSync) }
     settingsDeleteCache.onClick { viewModel.deleteImagesCache(requireAppContext()) }
     settingsTwitterIcon.onClick { openWebUrl(Config.TWITTER_URL) }
@@ -117,6 +118,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         settingsTraktAuthorizeSummary.text = summaryText
       }
       isPremium?.let { isPremium ->
+        settingsPremium.visibleIf(!isPremium)
         listOf(
           settingsTraktQuickRate,
           settingsTraktQuickRateSwitch,

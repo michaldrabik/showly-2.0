@@ -37,15 +37,30 @@
       app:title="@string/textSettings"
       />
 
+    <com.michaldrabik.ui_premium.views.PremiumAdView
+      android:id="@+id/settingsPremium"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceTiny"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:visibility="visible"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsToolbar"
+      />
+
     <TextView
       android:id="@+id/settingsCategoryTrakt"
       style="@style/Settings.Category"
+      android:layout_marginTop="@dimen/spaceNormal"
       android:text="@string/textSettingsTrakt"
       app:layout_constraintBottom_toTopOf="@id/settingsTraktAuthorize"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsToolbar"
+      app:layout_constraintTop_toBottomOf="@id/settingsPremium"
       app:layout_constraintVertical_bias="0"
       app:layout_constraintVertical_chainStyle="packed"
+      app:layout_goneMarginTop="@dimen/spaceBig"
       />
 
     <LinearLayout
