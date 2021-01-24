@@ -33,4 +33,7 @@ dependencies {
   implementation project(':network')
   implementation project(':ui-base')
   implementation project(':ui-navigation')
+  implementation project(':ui-repository')
+
+  implementation "com.android.billingclient:billing-ktx:$versions.androidBilling"
 }

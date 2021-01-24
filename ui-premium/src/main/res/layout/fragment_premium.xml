@@ -44,17 +44,18 @@
       android:layout_marginStart="@dimen/spaceNormal"
       android:layout_marginTop="@dimen/spaceSmall"
       android:layout_marginEnd="@dimen/spaceNormal"
+      android:layout_marginBottom="@dimen/spaceSmall"
       android:drawablePadding="@dimen/spaceSmall"
       android:gravity="center_vertical"
       android:text="@string/textPremiumAdFull"
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="14sp"
-      app:layout_constraintBottom_toTopOf="@id/premiumProgress"
+      app:layout_constraintBottom_toTopOf="@id/premiumPurchaseItems"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/premiumToolbar"
-      app:layout_goneMarginBottom="@dimen/spaceBig"
+      app:layout_goneMarginBottom="36dp"
       />
 
     <ProgressBar
@@ -63,12 +64,26 @@
       android:layout_width="30dp"
       android:layout_height="wrap_content"
       android:layout_margin="@dimen/spaceNormal"
-      android:visibility="gone"
       app:layout_constraintBottom_toTopOf="@id/premiumLightThemeTitle"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/premiumTitle"
       tools:visibility="visible"
+      />
+
+    <LinearLayout
+      android:id="@+id/premiumPurchaseItems"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_margin="@dimen/spaceNormal"
+      android:divider="@drawable/divider_purchase_items"
+      android:orientation="vertical"
+      android:showDividers="middle"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/premiumLightThemeTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/premiumTitle"
       />
 
     <ImageView
@@ -83,11 +98,13 @@
     <TextView
       android:id="@+id/premiumLightThemeTitle"
       style="@style/Premium.Title"
+      android:layout_marginTop="@dimen/spaceSmall"
       android:text="@string/textLightThemeTitle"
       app:layout_constraintBottom_toTopOf="@id/premiumLightThemeDescription"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/premiumLightThemeImage"
-      app:layout_constraintTop_toBottomOf="@id/premiumProgress"
+      app:layout_constraintTop_toBottomOf="@id/premiumPurchaseItems"
+      app:layout_goneMarginTop="36dp"
       />
 
     <TextView

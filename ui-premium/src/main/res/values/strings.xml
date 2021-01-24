@@ -3,7 +3,7 @@
   <string name="textPremium">Showly Premium</string>
   <string name="textPremiumAd">Become a supporter and get access to bonus features! Click to see more.</string>
   <string name="textPremiumAdFull">Become Showly supporter, help its development and get access to the bonus features listed below!</string>
-  <string name="textLightThemeTitle">Exclusive light theme</string>
+  <string name="textLightThemeTitle">Light theme</string>
   <string name="textLightThemeDesc">Join the light side of the force with an additional light theme applicable for main app and the widgets.</string>
   <string name="textCustomImagesTitle">Custom images</string>
   <string name="textCustomImagesDesc">Set your own favorite posters and fanarts for shows and movies. Select an image from gallery or upload your own URL.</string>
@@ -11,4 +11,7 @@
   <string name="textQuickRatingDesc">Never forget to rate a movie or show\'s episode that you have just watched. With quick rating feature you will be able to automatically rate an item whenever you mark it as watched.</string>
   <string name="textWidgetsTitle">Transparent Widgets</string>
   <string name="textWidgetsDesc">Set widgets background transparency to better match your home screen.</string>
+
+  <string name="textPurchaseThanks">You are now Showly Supporter! Thank you and enjoy the app!</string>
+  <string name="textSubscriptionEnd">Your premium subscription has ended. Thank you for your support.</string>
 </resources>
