@@ -35,5 +35,5 @@ dependencies {
   implementation project(':ui-navigation')
   implementation project(':ui-repository')
 
-  implementation "com.android.billingclient:billing-ktx:$versions.androidBilling"
+  api "com.android.billingclient:billing-ktx:$versions.androidBilling"
 }

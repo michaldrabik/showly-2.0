@@ -16,7 +16,6 @@ import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_repository.SettingsRepository
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import timber.log.Timber
@@ -31,19 +30,36 @@ class PremiumViewModel @Inject constructor(
     private const val YEARLY_SUBSCRIPTION = "showly_premium_1_year"
   }
 
+  private var connectionsCount = 0
+
   fun loadBilling(billingClient: BillingClient) {
     uiState = PremiumUiModel(isLoading = true)
+    connectionsCount += 1
     billingClient.startConnection(object : BillingClientStateListener {
       override fun onBillingSetupFinished(billingResult: BillingResult) {
         Timber.d("BillingClient Setup Finished ${billingResult.debugMessage}")
         if (billingResult.responseCode == BillingResponseCode.OK) {
-          checkOwnedPurchases(billingClient)
+          val featureResult = billingClient.isFeatureSupported(BillingClient.FeatureType.SUBSCRIPTIONS)
+          if (featureResult.responseCode == BillingResponseCode.OK) {
+            checkOwnedPurchases(billingClient)
+            connectionsCount = 0
+          } else {
+            _messageLiveData.value = MessageEvent.error(R.string.errorSubscriptionsNotAvailable)
+          }
+        } else {
+          _messageLiveData.value = MessageEvent.error(R.string.errorSubscriptionsNotAvailable)
         }
       }
 
       override fun onBillingServiceDisconnected() {
-        Timber.e("BillingClient Disconnected")
-        //TODO
+        if (connectionsCount > 3) {
+          Timber.e("BillingClient Disconnected. All retries failed.")
+          _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+          connectionsCount = 0
+        } else {
+          Timber.w("BillingClient Disconnected. Retrying....")
+          loadBilling(billingClient)
+        }
       }
     })
   }
@@ -62,7 +78,6 @@ class PremiumViewModel @Inject constructor(
             it.isAcknowledged && productId in arrayOf(MONTHLY_SUBSCRIPTION, YEARLY_SUBSCRIPTION)
           }) {
           settingsRepository.isPremium = true
-          delay(250)
           _messageLiveData.value = MessageEvent.info(R.string.textPurchaseThanks)
           uiState = PremiumUiModel(finishEvent = ActionEvent(true))
         } else {
@@ -72,6 +87,7 @@ class PremiumViewModel @Inject constructor(
       } catch (error: Throwable) {
         Timber.e(error)
         uiState = PremiumUiModel(purchaseItems = emptyList(), isLoading = false)
+        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
       }
     }
   }
@@ -82,7 +98,7 @@ class PremiumViewModel @Inject constructor(
     purchases: MutableList<Purchase>
   ) {
     viewModelScope.launch {
-      uiState = PremiumUiModel(isLoading = true)
+      uiState = PremiumUiModel(purchaseItems = emptyList(), isLoading = true)
       Timber.d("${billingResult.responseCode} ${purchases.size}")
       when (billingResult.responseCode) {
         BillingResponseCode.OK -> {
@@ -128,6 +144,7 @@ class PremiumViewModel @Inject constructor(
       } catch (error: Throwable) {
         Timber.e(error)
         uiState = PremiumUiModel(purchaseItems = emptyList(), isLoading = false)
+        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
       }
     }
   }

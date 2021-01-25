@@ -22,7 +22,7 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
   override val viewModel by viewModels<PremiumViewModel> { viewModelFactory }
 
   private val billingClient: BillingClient by lazy {
-    BillingClient.newBuilder(requireActivity())
+    BillingClient.newBuilder(requireAppContext())
       .setListener(purchasesUpdateListener)
       .enablePendingPurchases()
       .build()
@@ -68,7 +68,7 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
       }
       finishEvent?.let {
         it.consume()?.let {
-          findNavControl().navigateUp()
+          requireActivity().onBackPressed()
         }
       }
     }

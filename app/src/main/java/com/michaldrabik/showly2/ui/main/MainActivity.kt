@@ -23,7 +23,7 @@ import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
-import com.michaldrabik.showly2.ui.UpdateActivity
+import com.michaldrabik.showly2.ui.BillingActivity
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.ui_base.Analytics
@@ -58,7 +58,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class MainActivity :
-  UpdateActivity(),
+  BillingActivity(),
   EventObserver,
   NetworkObserver,
   SnackbarHost,
