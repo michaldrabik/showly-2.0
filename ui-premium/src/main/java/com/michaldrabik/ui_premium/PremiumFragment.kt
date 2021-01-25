@@ -68,7 +68,7 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
       }
       finishEvent?.let {
         it.consume()?.let {
-          findNavControl().popBackStack()
+          findNavControl().navigateUp()
         }
       }
     }

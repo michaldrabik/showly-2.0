@@ -12,6 +12,5 @@
   <string name="textWidgetsTitle">Transparent Widgets</string>
   <string name="textWidgetsDesc">Set widgets background transparency to better match your home screen.</string>
 
-  <string name="textPurchaseThanks">You are now Showly Supporter! Thank you and enjoy the app!</string>
-  <string name="textSubscriptionEnd">Your premium subscription has ended. Thank you for your support.</string>
+  <string name="textPurchaseThanks">You are now Showly Supporter!\nThank you and enjoy the app!</string>
 </resources>
