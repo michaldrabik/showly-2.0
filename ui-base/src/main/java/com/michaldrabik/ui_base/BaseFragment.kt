@@ -2,6 +2,7 @@ package com.michaldrabik.ui_base
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import android.view.ViewPropertyAnimator
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
@@ -17,6 +18,7 @@ import com.michaldrabik.ui_base.utilities.TipsHost
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_model.Tip
+import timber.log.Timber
 import javax.inject.Inject
 
 abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLayoutId: Int) :
@@ -53,6 +55,11 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
         ERROR -> host.showErrorSnackbar(getString(it))
       }
     }
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    Timber.d("onViewCreated $javaClass")
   }
 
   protected fun navigateTo(@IdRes destination: Int, bundle: Bundle? = null) =

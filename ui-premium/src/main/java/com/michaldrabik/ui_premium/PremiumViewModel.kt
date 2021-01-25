@@ -98,7 +98,7 @@ class PremiumViewModel @Inject constructor(
     purchases: MutableList<Purchase>
   ) {
     viewModelScope.launch {
-      uiState = PremiumUiModel(purchaseItems = emptyList(), isLoading = true)
+      uiState = PremiumUiModel(isLoading = true)
       Timber.d("${billingResult.responseCode} ${purchases.size}")
       when (billingResult.responseCode) {
         BillingResponseCode.OK -> {

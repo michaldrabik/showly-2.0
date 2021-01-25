@@ -30,9 +30,4 @@ open class BaseViewModel<UM : UiModel> : ViewModel() {
       throw t
     }
   }
-
-  override fun onCleared() {
-    super.onCleared()
-    Timber.d("ViewModel cleared.")
-  }
 }

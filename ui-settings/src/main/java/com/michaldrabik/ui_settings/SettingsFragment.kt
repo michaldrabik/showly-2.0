@@ -57,7 +57,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner) { render(it!!) }
       messageLiveData.observe(viewLifecycleOwner) { showSnack(it) }
-      loadSettings()
     }
   }
 
@@ -78,6 +77,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     super.onResume()
     hideNavigation()
     handleBackPressed()
+    viewModel.loadSettings()
   }
 
   private fun render(uiModel: SettingsUiModel) {
@@ -141,15 +141,13 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
           it.isEnabled = isPremium
         }
 
-        if (!isPremium) {
-          listOf(
-            settingsTraktQuickRate,
-            settingsTheme,
-            settingsWidgetsTheme,
-            settingsWidgetsTransparency
-          ).onClick {
-            navigateTo(R.id.actionSettingsFragmentToPremium)
-          }
+        listOf(
+          settingsTraktQuickRate,
+          settingsTheme,
+          settingsWidgetsTheme,
+          settingsWidgetsTransparency
+        ).onClick {
+          if (!isPremium) navigateTo(R.id.actionSettingsFragmentToPremium)
         }
       }
       restartApp?.let { if (it) restartApp() }

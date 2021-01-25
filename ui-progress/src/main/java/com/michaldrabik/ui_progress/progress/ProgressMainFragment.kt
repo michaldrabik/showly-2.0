@@ -59,8 +59,11 @@ class ProgressMainFragment :
     setupStatusBar()
 
     parentViewModel.uiLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
-    viewModel.uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-    viewModel.messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
+    viewModel.run {
+      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
+      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
+      checkQuickRateEnabled()
+    }
   }
 
   private fun setupView() {

@@ -70,11 +70,6 @@
       app:destination="@id/searchFragment"
       app:launchSingleTop="true"
       />
-    <action
-      android:id="@+id/actionDiscoverFragmentToSettingsFragment"
-      app:destination="@id/settingsFragment"
-      app:launchSingleTop="true"
-      />
   </fragment>
 
   <fragment
@@ -92,11 +87,6 @@
     <action
       android:id="@+id/actionDiscoverMoviesFragmentToSearchFragment"
       app:destination="@id/searchFragment"
-      app:launchSingleTop="true"
-      />
-    <action
-      android:id="@+id/actionDiscoverMoviesFragmentToSettingsFragment"
-      app:destination="@id/settingsFragment"
       app:launchSingleTop="true"
       />
   </fragment>

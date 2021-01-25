@@ -34,15 +34,6 @@ class ProgressMainViewModel @Inject constructor(
   private val language by lazy { translationsRepository.getLanguage() }
   var isQuickRateEnabled = false
 
-  init {
-    viewModelScope.launch {
-      val isSignedIn = userTraktManager.isAuthorized()
-      val isPremium = settingsRepository.isPremium
-      val isQuickRate = settingsRepository.load().traktQuickRateEnabled
-      isQuickRateEnabled = isPremium && isSignedIn && isQuickRate
-    }
-  }
-
   fun handleParentAction(model: ProgressUiModel) {
     val allItems = model.items?.toMutableList() ?: mutableListOf()
 
@@ -104,6 +95,15 @@ class ProgressMainViewModel @Inject constructor(
       } finally {
         uiState = ProgressMainUiModel(ratingState = RatingState(rateLoading = false))
       }
+    }
+  }
+
+  fun checkQuickRateEnabled() {
+    viewModelScope.launch {
+      val isSignedIn = userTraktManager.isAuthorized()
+      val isPremium = settingsRepository.isPremium
+      val isQuickRate = settingsRepository.load().traktQuickRateEnabled
+      isQuickRateEnabled = isPremium && isSignedIn && isQuickRate
     }
   }
 
