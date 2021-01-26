@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textOk">TAMAM</string>
+  <string name="textYes">Evet</string>
+  <string name="textNo">Hayır</string>
+  <string name="textApply">Uygula</string>
+  <string name="textCancel">İptal</string>
+  <string name="textClose">Kapat</string>
+  <string name="textNotNow">Şimdi değil</string>
+  <string name="textNew">Yeni</string>
+  <string name="textSelect">Seç</string>
+  <string name="textHot">Popüler</string>
+  <string name="textEmptyResults">Hiçbir sonuç bulunamadı…</string>
+  <string name="textSearchFor">Ara…</string>
+  <string name="textTip">İpucu:</string>
+  <string name="textSeason">%1$d. Sezon</string>
+  <string name="textSpecials">Özel Bölümler</string>
+  <string name="textEpisode">%1$d. Bölüm</string>
+  <string name="textSortBy">Sırala:</string>
+  <string name="textSpoilersWarning">Bu yorum spoiler içermektedir.\nOkumak için dokunun.</string>
+  <string name="textCommentedOn">%s, %s için yorum yaptı:</string>
+  <string name="textNetwork">%1$s (%2$s)</string>
+  <string name="textShows">Diziler</string>
+  <string name="textMovies">Filmler</string>
+  <string name="textMinutesShort">dk</string>
+  <string name="textRemoveFromTrakt">Trakt.tv hizmetinden çıkarılsın mı?</string>
+  <string name="textNoDescription">Genel bakış mevcut değil.</string>
+  <string name="textAiredAlready">Yayınlandı</string>
+  <string name="textAirsNow">Şimdi Yayında</string>
+  <plurals name="textDaysToAir">
+    <item quantity="one">Yarın yayında</item>
+    <item quantity="other">%d gün içinde yayınlanacak</item>
+  </plurals>
+  <plurals name="textHoursToAir">
+    <item quantity="one">1 saat içinde yayınlanacak</item>
+    <item quantity="other">%d saat içinde yayınlanır</item>
+  </plurals>
+  <plurals name="textMinutesToAir">
+    <item quantity="one">Şimdi yayında</item>
+    <item quantity="other">%d dakika içinde yayında</item>
+  </plurals>
+  <string name="textToday">Bugün</string>
+  <string name="textTomorrow">Yarın</string>
+  <string name="textThisWeek">Bu Hafta</string>
+  <string name="textNextWeek">Gelecek Hafta</string>
+  <string name="textNextMonth">Gelecek Ay</string>
+  <string name="textThisYear">Bu Yıl</string>
+  <string name="textNextYear">Gelecek Yıl</string>
+  <string name="textLater">Daha sonra</string>
+  <string name="textNewEpisodeAvailable">Yeni bölüm yayınlandı!</string>
+  <string name="textNewEpisodeAvailableSoon">Yeni bölüm yakında yayınlanacak!</string>
+  <string name="textNewSeasonAvailable">Yeni sezon yayınlandı!</string>
+  <string name="textNewSeasonAvailableSoon">Yeni sezon yakında yayınlanacak!</string>
+  <string name="textNewMovieAvailable">Film yayınlandı!</string>
+  <string name="textTraktSync">Trakt.tv Eşitlemesi</string>
+  <string name="textTraktSyncComplete">Eşitleme başarıyla tamamlandı.</string>
+  <string name="textTraktSyncRunning">Çalışıyor…</string>
+  <string name="textTraktSyncError">Trakt.tv senkronizasyonu başarısız.</string>
+  <string name="textTraktSyncErrorFull">Trakt.tv eşitlemesi başarısız oldu. Lütfen internet bağlantınızı kontrol edin ve tekrar deneyin veya bu sorun devam ederse bizimle iletişime geçin.</string>
+  <string name="textTraktQuickSyncError">Anlık Eşitleme başarısız.</string>
+  <string name="textTraktQuickSyncErrorFull">Anlık Eşitleme başarısız oldu. Uygulamayı bir sonraki başlattığınızda tekrar deneyeceğiz. Lütfen internet bağlantınızı kontrol edin.</string>
+  <string name="menuPin">En üste sabitle</string>
+  <string name="menuUnpin">Sabitlemeyi kaldır</string>
+  <string name="errorGeneral">Hay aksi… Bir şeyler ters gitti.\nBu sorun devam ederse lütfen bizimle iletişime geçin.</string>
+  <string name="errorAuthorization">Yetkilendirme başarısız oldu. Bu durum devam ederse lütfen bizimle iletişime geçin.</string>
+  <string name="errorTraktAuthorization">Trakt hesabı yetkilendirmesi başarısız oldu.\nLütfen giriş yapın ve tekrar deneyin.</string>
+  <string name="errorSeasonsNotLoaded">Lütfen sezon verilerinin yüklenmesini bekleyin.</string>
+  <string name="errorEpisodeNotAired">Bu bölüm henüz yayınlanmadı.</string>
+  <string name="errorCouldNotLoadDiscover">Şu anda keşfet sayfasını yükleyemiyoruz.\nBu durum devam ederse lütfen bizimle iletişime geçin.</string>
+  <string name="errorCouldNotLoadShow">Bu dizinin ayrıntılarını şu anda yükleyemiyoruz.\nBu durum devam ederse lütfen bizimle iletişime geçin.</string>
+  <string name="errorCouldNotLoadMovie">Bu filmin ayrıntılarını şu anda yükleyemiyoruz.\nBu durum devam ederse lütfen bizimle iletişime geçin.</string>
+  <string name="errorCouldNotLoadSearchResults">Şu anda arama sonuçlarını yükleyemiyoruz.\nBu durum devam ederse lütfen bizimle iletişime geçin.</string>
+  <string name="errorNoInternetConnection">İnternet bağlantısı yok. Lütfen bağlantınızı kontrol edin.</string>
+  <string name="errorTraktSyncGeneral">Trakt.tv eşitleme hatası.\nLütfen internet bağlantınızı kontrol edin ve tekrar deneyin.</string>
+  <string name="errorTraktLocked">Trakt.tv hesabınız şu anda kilitli.\nHesabınızın kilidini açmak için lütfen https://support.trakt.tv/ adresinden Trakt.tv destek ekibi ile iletişime geçin.</string>
+</resources>
