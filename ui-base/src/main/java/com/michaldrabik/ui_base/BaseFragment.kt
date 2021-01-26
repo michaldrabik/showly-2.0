@@ -57,11 +57,6 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
     }
   }
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    Timber.d("onViewCreated $javaClass")
-  }
-
   protected fun navigateTo(@IdRes destination: Int, bundle: Bundle? = null) =
     findNavControl().navigate(destination, bundle)
 
@@ -69,9 +64,15 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
 
   override fun showTip(tip: Tip) = (requireActivity() as TipsHost).showTip(tip)
 
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    Timber.d("onViewCreated $javaClass")
+  }
+
   override fun onDestroyView() {
     animations.forEach { it?.cancel() }
     animations.clear()
+    Timber.d("onDestroyView $javaClass")
     super.onDestroyView()
   }
 

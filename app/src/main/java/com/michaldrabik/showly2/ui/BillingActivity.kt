@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2.ui
 
+import androidx.lifecycle.lifecycleScope
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
@@ -36,31 +37,33 @@ abstract class BillingActivity : UpdateActivity() {
       }
 
       override fun onBillingServiceDisconnected() {
-        Timber.e("BillingClient Disconnected")
+        Timber.w("BillingClient Disconnected")
       }
     })
   }
 
   private fun checkOwnedPurchases(billingClient: BillingClient) {
     Timber.d("Checking subscriptions...")
-    try {
-      val subscriptions = billingClient.queryPurchases(BillingClient.SkuType.SUBS)
-      val purchases = subscriptions.purchasesList ?: emptyList()
-      if (purchases.none {
-          val json = JSONObject(it.originalJson)
-          val productId = json.optString("productId", "")
-          it.isAcknowledged && productId in arrayOf(MONTHLY_SUBSCRIPTION, YEARLY_SUBSCRIPTION)
-        }) {
-        Timber.d("No subscription found. Revoking...")
-        settingsRepository.isPremium = false
-        try {
-          ProcessPhoenix.triggerRebirth(applicationContext)
-        } catch (error: Throwable) {
-          Runtime.getRuntime().exit(0)
+    lifecycleScope.launchWhenCreated {
+      try {
+        val subscriptions = billingClient.queryPurchases(BillingClient.SkuType.SUBS)
+        val purchases = subscriptions.purchasesList ?: emptyList()
+        if (purchases.none {
+            val json = JSONObject(it.originalJson)
+            val productId = json.optString("productId", "")
+            it.isAcknowledged && productId in arrayOf(MONTHLY_SUBSCRIPTION, YEARLY_SUBSCRIPTION)
+          }) {
+          Timber.d("No subscription found. Revoking...")
+          settingsRepository.revokePremium()
+          try {
+            ProcessPhoenix.triggerRebirth(applicationContext)
+          } catch (error: Throwable) {
+            Runtime.getRuntime().exit(0)
+          }
         }
+      } catch (error: Throwable) {
+        Timber.e(error)
       }
-    } catch (error: Throwable) {
-      Timber.e(error)
     }
   }
 }

@@ -91,6 +91,15 @@ class SettingsRepository @Inject constructor(
     }
     set(value) = miscPreferences.edit(true) { putInt(KEY_THEME_WIDGET_TRANSPARENT, value) }
 
+  suspend fun revokePremium() {
+    val settings = load()
+    update(settings.copy(traktQuickRateEnabled = false))
+    isPremium = false
+    theme = MODE_NIGHT_YES
+    widgetsTheme = MODE_NIGHT_YES
+    widgetsTransparency = 100
+  }
+
   suspend fun clearLanguageLogs() {
     database.withTransaction {
       database.translationsSyncLogDao().deleteAll()
