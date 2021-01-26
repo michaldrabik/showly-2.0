@@ -23,7 +23,6 @@ class MainViewModel @Inject constructor(
 
   fun initialize() {
     viewModelScope.launch {
-      initCase.initSettings()
       checkInitialRun()
       initCase.initFcm()
       initCase.initRatings()
