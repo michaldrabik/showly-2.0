@@ -27,7 +27,7 @@
       android:background="?android:attr/windowBackground"
       android:elevation="@dimen/elevationNormal"
       app:contentInsetStartWithNavigation="0dp"
-      app:layout_constraintBottom_toTopOf="@id/premiumTitle"
+      app:layout_constraintBottom_toTopOf="@id/premiumCrown"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
@@ -42,20 +42,30 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceNormal"
-      android:layout_marginTop="@dimen/spaceSmall"
       android:layout_marginEnd="@dimen/spaceNormal"
-      android:layout_marginBottom="@dimen/spaceSmall"
-      android:drawablePadding="@dimen/spaceSmall"
       android:gravity="center_vertical"
       android:text="@string/textPremiumAdFull"
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="14sp"
-      app:layout_constraintBottom_toTopOf="@id/premiumPurchaseItems"
+      app:layout_constraintBottom_toBottomOf="@id/premiumCrown"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/premiumCrown"
+      app:layout_constraintTop_toTopOf="@id/premiumCrown"
+      />
+
+    <ImageView
+      android:id="@+id/premiumCrown"
+      style="@style/Premium.Image"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:layout_marginBottom="@dimen/spaceSmall"
+      app:layout_constraintBottom_toTopOf="@id/premiumPurchaseItems"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/premiumToolbar"
       app:layout_goneMarginBottom="36dp"
+      app:srcCompat="@drawable/ic_crown"
+      app:tint="?android:attr/textColorPrimary"
       />
 
     <ProgressBar
@@ -64,10 +74,10 @@
       android:layout_width="30dp"
       android:layout_height="wrap_content"
       android:layout_margin="@dimen/spaceNormal"
-      app:layout_constraintBottom_toTopOf="@id/premiumLightThemeTitle"
+      app:layout_constraintBottom_toBottomOf="@id/premiumPurchaseItems"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/premiumTitle"
+      app:layout_constraintTop_toTopOf="@id/premiumPurchaseItems"
       tools:visibility="visible"
       />
 
@@ -77,13 +87,14 @@
       android:layout_height="wrap_content"
       android:layout_margin="@dimen/spaceNormal"
       android:divider="@drawable/divider_purchase_items"
+      android:gravity="center"
+      android:minHeight="152dp"
       android:orientation="vertical"
       android:showDividers="middle"
-      android:visibility="gone"
       app:layout_constraintBottom_toTopOf="@id/premiumLightThemeTitle"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/premiumTitle"
+      app:layout_constraintTop_toBottomOf="@id/premiumCrown"
       />
 
     <ImageView
