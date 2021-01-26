@@ -26,6 +26,7 @@ import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsActivityCallbacks
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
+import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_widgets.calendar.CalendarWidgetProvider
 import com.michaldrabik.ui_widgets.calendar_movies.CalendarMoviesWidgetProvider
@@ -35,6 +36,7 @@ import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider
 import com.yariksoffice.lingver.Lingver
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import javax.inject.Inject
 import com.michaldrabik.ui_base.fcm.NotificationChannel as AppNotificationChannel
@@ -74,6 +76,12 @@ class App :
         .preferencesModule(PreferencesModule(applicationContext))
         .build()
       appComponent.inject(this)
+    }
+
+    fun setupSettings() = runBlocking {
+      if (!settingsRepository.isInitialized()) {
+        settingsRepository.update(Settings.createInitial())
+      }
     }
 
     fun setupLanguage() {
@@ -128,6 +136,7 @@ class App :
     }
 
     setupComponents()
+    setupSettings()
     setupStrictMode()
     setupNotificationChannels()
     setupLanguage()

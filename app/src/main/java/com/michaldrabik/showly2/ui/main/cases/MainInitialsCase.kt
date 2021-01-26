@@ -9,7 +9,6 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.fcm.NotificationChannel
-import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_repository.RatingsRepository
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
@@ -26,12 +25,6 @@ class MainInitialsCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
   @Named("miscPreferences") private var miscPreferences: SharedPreferences
 ) {
-
-  suspend fun initSettings() {
-    if (!settingsRepository.isInitialized()) {
-      settingsRepository.update(Settings.createInitial())
-    }
-  }
 
   suspend fun setInitialRun(value: Boolean) {
     val settings = settingsRepository.load()
