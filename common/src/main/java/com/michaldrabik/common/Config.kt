@@ -1,6 +1,5 @@
 package com.michaldrabik.common
 
-import org.threeten.bp.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit.DAYS
 import java.util.concurrent.TimeUnit.HOURS
 import java.util.concurrent.TimeUnit.MINUTES
@@ -33,6 +32,7 @@ object Config {
   const val INITIAL_RATING = 0
   const val DEFAULT_LANGUAGE = "en"
   const val DEFAULT_COUNTRY = "us"
+  const val DEFAULT_DATE_FORMAT = "DEFAULT_24"
   const val HOST_ACTIVITY_NAME = "com.michaldrabik.showly2.ui.main.MainActivity"
 
   val MY_SHOWS_RECENTS_OPTIONS = arrayOf(2, 4, 6, 8)
@@ -52,10 +52,6 @@ object Config {
   val TRANSLATION_SYNC_COOLDOWN by lazy {
     if (BuildConfig.DEBUG) MINUTES.toMillis(60) else DAYS.toMillis(7)
   }
-
-  val DISPLAY_DATE_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, HH:mm") }
-  val DISPLAY_DATE_DAY_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("dd MMM yyyy") }
-  val DISPLAY_DATE_FULL_DAY_FORMAT: DateTimeFormatter by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMMM yyyy") }
 
   const val SHOW_TIPS = false
   const val SHOW_WHATS_NEW = true

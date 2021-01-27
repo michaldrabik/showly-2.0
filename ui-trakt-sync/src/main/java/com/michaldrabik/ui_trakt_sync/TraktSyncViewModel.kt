@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
 import com.michaldrabik.ui_base.events.TraktSyncError
@@ -30,6 +31,7 @@ class TraktSyncViewModel @Inject constructor(
   @Named("miscPreferences") private var miscPreferences: SharedPreferences,
   private val userManager: UserTraktManager,
   private val settingsRepository: SettingsRepository,
+  private val dateFormatProvider: DateFormatProvider,
   importWatchedRunner: TraktImportWatchedRunner,
   importWatchlistRunner: TraktImportWatchlistRunner,
   exportWatchedRunner: TraktImportWatchedRunner,
@@ -58,7 +60,8 @@ class TraktSyncViewModel @Inject constructor(
         isAuthorized = isAuthorized,
         traktSyncSchedule = settings.traktSyncSchedule,
         quickSyncEnabled = settings.traktQuickSyncEnabled,
-        lastTraktSyncTimestamp = timestamp
+        lastTraktSyncTimestamp = timestamp,
+        dateFormat = dateFormatProvider.loadFullHourFormat()
       )
     }
   }

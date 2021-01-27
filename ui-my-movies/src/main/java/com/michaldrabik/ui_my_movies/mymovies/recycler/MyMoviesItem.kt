@@ -7,6 +7,7 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.Translation
+import org.threeten.bp.format.DateTimeFormatter
 
 data class MyMoviesItem(
   val type: Type,
@@ -17,7 +18,8 @@ data class MyMoviesItem(
   override val image: Image,
   override val isLoading: Boolean,
   val translation: Translation? = null,
-  val userRating: Int? = null
+  val userRating: Int? = null,
+  val dateFormat: DateTimeFormatter? = null
 ) : MovieListItem {
 
   enum class Type {

@@ -7,6 +7,7 @@ import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
+import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
@@ -66,7 +67,8 @@ class ShowDetailsViewModel @Inject constructor(
   private val episodesManager: EpisodesManager,
   private val quickSyncManager: QuickSyncManager,
   private val announcementManager: AnnouncementManager,
-  private val imagesProvider: ShowImagesProvider
+  private val imagesProvider: ShowImagesProvider,
+  private val dateFormatProvider: DateFormatProvider
 ) : BaseViewModel<ShowDetailsUiModel>() {
 
   private var show by notNull<Show>()
@@ -100,7 +102,8 @@ class ShowDetailsViewModel @Inject constructor(
           showLoading = false,
           followedState = followedState,
           ratingState = RatingState(rateAllowed = isSignedIn, rateLoading = false),
-          country = AppCountry.fromCode(settingsRepository.getCountry())
+          country = AppCountry.fromCode(settingsRepository.getCountry()),
+          commentsDateFormat = dateFormatProvider.loadShortDayFormat()
         )
 
         launch { loadNextEpisode(show) }
@@ -128,12 +131,13 @@ class ShowDetailsViewModel @Inject constructor(
   private suspend fun loadNextEpisode(show: Show) {
     try {
       val episode = episodesCase.loadNextEpisode(show.ids.trakt)
+      val dateFormat = dateFormatProvider.loadFullHourFormat()
       episode?.let {
-        uiState = ShowDetailsUiModel(nextEpisode = Pair(show, it))
+        uiState = ShowDetailsUiModel(nextEpisode = Pair(show, it), dateFormat = dateFormat)
         val translation = translationCase.loadTranslation(episode, show)
         if (translation?.title?.isNotBlank() == true) {
           val translated = it.copy(title = translation.title)
-          uiState = ShowDetailsUiModel(nextEpisode = Pair(show, translated))
+          uiState = ShowDetailsUiModel(nextEpisode = Pair(show, translated), dateFormat = dateFormat)
         }
       }
     } catch (t: Throwable) {
@@ -162,12 +166,13 @@ class ShowDetailsViewModel @Inject constructor(
   private suspend fun loadSeasons(show: Show, isOnline: Boolean): List<Season> = try {
     val (seasons, isLocal) = episodesCase.loadSeasons(show, isOnline)
     areSeasonsLocal = isLocal
+    val format = dateFormatProvider.loadFullHourFormat()
     val seasonsItems = seasons
       .map {
         val episodes = it.episodes.map { episode ->
           val rating = ratingsCase.loadRating(episode)
           val translation = translationCase.loadTranslation(episode, show, onlyLocal = true)
-          EpisodeListItem(episode, it, false, translation, rating)
+          EpisodeListItem(episode, it, false, translation, rating, format)
         }
         SeasonListItem(show, it, episodes, isWatched = false)
       }

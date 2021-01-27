@@ -11,6 +11,7 @@
   android:overScrollMode="never"
   android:scrollbars="none"
   tools:background="@color/colorBackground"
+  tools:layout_marginTop="-200dp"
   tools:theme="@style/AppTheme"
   >
 
@@ -258,13 +259,35 @@
       app:layout_constraintTop_toTopOf="@id/settingsMoviesEnabled"
       />
 
+    <LinearLayout
+      android:id="@+id/settingsDateFormat"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@id/settingsSeparator1"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsIncludeArchivedStats"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsDateFormatTitle"
+        />
+
+      <TextView
+        android:id="@+id/settingsDateFormatValue"
+        style="@style/Settings.Summary"
+        tools:text="MMM dd, yyyy HH:mm (EEEE)"
+        />
+
+    </LinearLayout>
+
     <View
       android:id="@+id/settingsSeparator1"
       style="@style/Settings.Separator"
       app:layout_constraintBottom_toTopOf="@id/settingsMyShowsSections"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsIncludeArchivedStats"
+      app:layout_constraintTop_toBottomOf="@id/settingsDateFormat"
       />
 
     <LinearLayout
@@ -333,7 +356,7 @@
     <LinearLayout
       android:id="@+id/settingsIncludeArchivedStats"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsSeparator1"
+      app:layout_constraintBottom_toTopOf="@id/settingsDateFormat"
       app:layout_constraintEnd_toStartOf="@id/settingsIncludeArchivedStatsSwitch"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/settingsIncludeSpecials"

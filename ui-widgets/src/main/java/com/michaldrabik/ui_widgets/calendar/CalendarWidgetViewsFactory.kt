@@ -10,8 +10,7 @@ import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.michaldrabik.common.extensions.toDisplayString
-import com.michaldrabik.common.extensions.toLocalTimeZone
+import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -49,12 +48,13 @@ class CalendarWidgetViewsFactory(
   private fun loadData() {
     runBlocking {
       val shows = loadItemsCase.loadMyShows()
+      val dateFormat = loadItemsCase.loadDateFormat()
       val items = shows.map { show ->
         async {
           val item = loadItemsCase.loadProgressItem(show)
           try {
             val image = imagesProvider.loadRemoteImage(show, ImageType.POSTER)
-            item.copy(image = image)
+            item.copy(image = image, dateFormat = dateFormat)
           } catch (error: Throwable) {
             item
           }
@@ -100,7 +100,7 @@ class CalendarWidgetViewsFactory(
       else -> item.upcomingEpisode.title
     }
 
-    val date = item.upcomingEpisode.firstAired?.toLocalTimeZone()?.toDisplayString()
+    val date = item.upcomingEpisode.firstAired?.toLocalZone()?.let { item.dateFormat?.format(it)?.capitalizeWords() }
 
     val remoteView = RemoteViews(context.packageName, R.layout.widget_calendar_item).apply {
       setTextViewText(R.id.calendarWidgetItemTitle, title)

@@ -3,9 +3,10 @@ package com.michaldrabik.ui_progress.main.cases
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
-import com.michaldrabik.common.extensions.toLocalTimeZone
+import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.EpisodeWatchlist
+import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
@@ -30,7 +31,8 @@ class ProgressLoadItemsCase @Inject constructor(
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,
-  private val pinnedItemsRepository: PinnedItemsRepository
+  private val pinnedItemsRepository: PinnedItemsRepository,
+  private val dateFormatProvider: DateFormatProvider
 ) {
 
   suspend fun loadMyShows() = showsRepository.myShows.loadAll()
@@ -54,8 +56,8 @@ class ProgressLoadItemsCase @Inject constructor(
       .filter { it.firstAired != null }
       .sortedBy { it.firstAired }
       .firstOrNull {
-        val now = nowUtc().toLocalTimeZone()
-        val airtime = it.firstAired!!.toLocalTimeZone()
+        val now = nowUtc().toLocalZone()
+        val airtime = it.firstAired!!.toLocalZone()
         airtime.isAfter(now) || airtime.truncatedTo(DAYS) == now.truncatedTo(DAYS)
       }
 
@@ -128,4 +130,6 @@ class ProgressLoadItemsCase @Inject constructor(
           it.episodeTranslation?.title?.contains(searchQuery, true) == true
       }
   }
+
+  fun loadDateFormat() = dateFormatProvider.loadFullHourFormat()
 }

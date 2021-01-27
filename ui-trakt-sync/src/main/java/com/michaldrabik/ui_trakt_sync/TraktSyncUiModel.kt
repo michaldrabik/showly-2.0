@@ -2,6 +2,7 @@ package com.michaldrabik.ui_trakt_sync
 
 import com.michaldrabik.ui_base.UiModel
 import com.michaldrabik.ui_model.TraktSyncSchedule
+import org.threeten.bp.format.DateTimeFormatter
 
 data class TraktSyncUiModel(
   val isProgress: Boolean? = null,
@@ -10,7 +11,8 @@ data class TraktSyncUiModel(
   val authError: Boolean? = null,
   val traktSyncSchedule: TraktSyncSchedule? = null,
   val quickSyncEnabled: Boolean? = null,
-  val lastTraktSyncTimestamp: Long? = null
+  val lastTraktSyncTimestamp: Long? = null,
+  val dateFormat: DateTimeFormatter? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -21,6 +23,7 @@ data class TraktSyncUiModel(
       authError = newModel.authError ?: authError,
       traktSyncSchedule = newModel.traktSyncSchedule ?: traktSyncSchedule,
       quickSyncEnabled = newModel.quickSyncEnabled ?: quickSyncEnabled,
+      dateFormat = newModel.dateFormat ?: dateFormat,
       lastTraktSyncTimestamp = newModel.lastTraktSyncTimestamp ?: lastTraktSyncTimestamp
     )
 }

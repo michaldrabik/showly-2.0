@@ -8,13 +8,13 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
-import com.michaldrabik.common.extensions.toDayDisplayString
-import com.michaldrabik.common.extensions.toLocalTimeZone
+import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Comment
 import kotlinx.android.synthetic.main.view_comment.view.*
+import org.threeten.bp.format.DateTimeFormatter
 import java.util.Locale
 
 class CommentView : ConstraintLayout {
@@ -32,13 +32,13 @@ class CommentView : ConstraintLayout {
   private val colorTextSpoiler by lazy { context.colorFromAttr(android.R.attr.colorAccent) }
 
   @SuppressLint("SetTextI18n", "DefaultLocale")
-  fun bind(comment: Comment) {
+  fun bind(comment: Comment, dateFormat: DateTimeFormatter?) {
     clear()
 
     commentHeader.text = context.getString(
       R.string.textCommentedOn,
       comment.user.username.capitalize(),
-      comment.createdAt?.toLocalTimeZone()?.toDayDisplayString()
+      comment.createdAt?.toLocalZone()?.let { dateFormat?.format(it) }
     )
     commentRating.visibleIf(comment.userRating > 0)
     commentRating.text = String.format(Locale.ENGLISH, "%d", comment.userRating)

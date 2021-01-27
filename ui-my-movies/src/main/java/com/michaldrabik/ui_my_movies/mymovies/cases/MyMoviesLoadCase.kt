@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_movies.mymovies.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class MyMoviesLoadCase @Inject constructor(
   private val imagesProvider: MovieImagesProvider,
   private val moviesRepository: MoviesRepository,
+  private val dateFormatProvider: DateFormatProvider,
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository
 ) {
@@ -79,6 +81,8 @@ class MyMoviesLoadCase @Inject constructor(
     if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
     return translationsRepository.loadTranslation(movie, language, onlyLocal)
   }
+
+  fun loadDateFormat() = dateFormatProvider.loadShortDayFormat()
 
   suspend fun findCachedImage(movie: Movie, type: ImageType) =
     imagesProvider.findCachedImage(movie, type)

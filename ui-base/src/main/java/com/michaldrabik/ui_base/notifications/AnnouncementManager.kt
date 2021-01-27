@@ -10,7 +10,6 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.nowUtcDay
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.common.extensions.toDisplayString
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.Episode
@@ -31,6 +30,7 @@ import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.mappers.Mappers
 import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.format.DateTimeFormatter
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeUnit.MILLISECONDS
@@ -52,6 +52,8 @@ class AnnouncementManager @Inject constructor(
     private const val MOVIE_MIN_THRESHOLD_DAYS = 30
     private const val MOVIE_THRESHOLD_HOUR = 12
   }
+
+  private val logFormatter by lazy { DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, HH:mm") }
 
   suspend fun refreshShowsAnnouncements(context: Context) {
     Timber.i("Refreshing shows announcements")
@@ -155,8 +157,8 @@ class AnnouncementManager @Inject constructor(
 
     WorkManager.getInstance(context.applicationContext).enqueue(request)
 
-    val logTime = dateFromMillis(nowUtcMillis() + delayed)
-    Timber.i("Notification set for ${show.title}: ${logTime.toDisplayString()} UTC")
+    val logTime = logFormatter.format(dateFromMillis(nowUtcMillis() + delayed))
+    Timber.i("Notification set for ${show.title}: $logTime UTC")
   }
 
   @RequiresApi(Build.VERSION_CODES.N)
@@ -192,7 +194,7 @@ class AnnouncementManager @Inject constructor(
 
     WorkManager.getInstance(context.applicationContext).enqueue(request)
 
-    val logTime = dateFromMillis(nowUtcMillis() + delayed)
-    Timber.i("Notification set for ${movie.title}: ${logTime.toDisplayString()} UTC")
+    val logTime = logFormatter.format(dateFromMillis(nowUtcMillis() + delayed))
+    Timber.i("Notification set for ${movie.title}: $logTime UTC")
   }
 }

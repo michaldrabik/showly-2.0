@@ -10,6 +10,7 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.related.RelatedListItem
+import org.threeten.bp.format.DateTimeFormatter
 
 data class MovieDetailsUiModel(
   val movie: Movie? = null,
@@ -24,7 +25,8 @@ data class MovieDetailsUiModel(
   val removeFromTraktWatchlist: ActionEvent<Boolean>? = null,
   val showFromTraktLoading: Boolean? = null,
   val translation: Translation? = null,
-  val country: AppCountry? = null
+  val country: AppCountry? = null,
+  val dateFormat: DateTimeFormatter? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -41,6 +43,7 @@ data class MovieDetailsUiModel(
       removeFromTraktWatchlist = newModel.removeFromTraktWatchlist ?: removeFromTraktWatchlist,
       translation = newModel.translation ?: translation,
       country = newModel.country ?: country,
+      dateFormat = newModel.dateFormat ?: dateFormat,
       ratingState = newModel.ratingState?.copy(
         rateLoading = newModel.ratingState.rateLoading ?: ratingState?.rateLoading,
         rateAllowed = newModel.ratingState.rateAllowed ?: ratingState?.rateAllowed,

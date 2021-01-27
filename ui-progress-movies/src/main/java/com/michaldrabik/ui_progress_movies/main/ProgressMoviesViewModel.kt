@@ -30,11 +30,12 @@ class ProgressMoviesViewModel @Inject constructor(
   fun loadProgress(resetScroll: Boolean = false) {
     viewModelScope.launch {
       val movies = loadItemsCase.loadWatchlistMovies()
+      val dateFormat = loadItemsCase.loadDateFormat()
       val items = movies.map { movie ->
         async {
           val item = loadItemsCase.loadProgressItem(movie)
           val image = imagesProvider.findCachedImage(movie, POSTER)
-          item.copy(image = image)
+          item.copy(image = image, dateFormat = dateFormat)
         }
       }.awaitAll()
 

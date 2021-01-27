@@ -10,7 +10,6 @@ import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.michaldrabik.common.extensions.toFullDayDisplayString
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -47,12 +46,13 @@ class CalendarMoviesWidgetViewsFactory(
   private fun loadData() {
     runBlocking {
       val movies = loadItemsCase.loadWatchlistMovies()
+      val dateFormat = loadItemsCase.loadDateFormat()
       val items = movies.map { movie ->
         async {
           val item = loadItemsCase.loadProgressItem(movie)
           try {
             val image = imagesProvider.loadRemoteImage(movie, ImageType.POSTER)
-            item.copy(image = image)
+            item.copy(image = image, dateFormat = dateFormat)
           } catch (error: Throwable) {
             item
           }
@@ -90,8 +90,11 @@ class CalendarMoviesWidgetViewsFactory(
       if (translatedDescription?.isBlank() == false) translatedDescription.capitalizeWords()
       else item.movie.overview
 
-    val date = item.movie.released?.toFullDayDisplayString()
-      ?: context.getString(com.michaldrabik.ui_progress_movies.R.string.textTba)
+    val date = if (item.movie.released != null) {
+      item.dateFormat?.format(item.movie.released)?.capitalizeWords()
+    } else {
+      context.getString(R.string.textTba)
+    }
 
     val remoteView = RemoteViews(context.packageName, R.layout.widget_movies_calendar_item).apply {
       setTextViewText(R.id.calendarMoviesWidgetItemTitle, title)

@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_movies.watchlist.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
@@ -17,6 +18,7 @@ import javax.inject.Inject
 class WatchlistLoadMoviesCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
+  private val dateFormatProvider: DateFormatProvider,
   private val settingsRepository: SettingsRepository
 ) {
 
@@ -53,4 +55,6 @@ class WatchlistLoadMoviesCase @Inject constructor(
     if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY
     return translationsRepository.loadTranslation(movie, language, onlyLocal)
   }
+
+  fun loadDateFormat() = dateFormatProvider.loadShortDayFormat()
 }

@@ -8,6 +8,7 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.WidgetsProvider
+import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -162,6 +163,16 @@ class SettingsMainCase @Inject constructor(
   fun getCountry() = AppCountry.fromCode(settingsRepository.getCountry())
 
   fun setCountry(country: AppCountry) = settingsRepository.setCountry(country.code)
+
+  fun setDateFormat(format: AppDateFormat, context: Context) {
+    settingsRepository.setDateFormat(format.name)
+    (context.applicationContext as WidgetsProvider).run {
+      requestShowsWidgetsUpdate()
+      requestMoviesWidgetsUpdate()
+    }
+  }
+
+  fun getDateFormat() = AppDateFormat.valueOf(settingsRepository.getDateFormat())
 
   suspend fun deleteImagesCache() {
     showsImagesProvider.deleteLocalCache()

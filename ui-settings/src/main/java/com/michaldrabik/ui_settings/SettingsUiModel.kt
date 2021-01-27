@@ -2,12 +2,14 @@ package com.michaldrabik.ui_settings
 
 import com.michaldrabik.ui_base.UiModel
 import com.michaldrabik.ui_base.common.AppCountry
+import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 
 data class SettingsUiModel(
   val language: AppLanguage? = null,
   val country: AppCountry? = null,
+  val dateFormat: AppDateFormat? = null,
   val settings: Settings? = null,
   val isSignedInTrakt: Boolean? = null,
   val isSigningIn: Boolean? = null,
@@ -20,6 +22,7 @@ data class SettingsUiModel(
     (newModel as SettingsUiModel).copy(
       language = newModel.language ?: language,
       country = newModel.country ?: country,
+      dateFormat = newModel.dateFormat ?: dateFormat,
       settings = newModel.settings ?: settings,
       isSignedInTrakt = newModel.isSignedInTrakt ?: isSignedInTrakt,
       isSigningIn = newModel.isSigningIn ?: isSigningIn,

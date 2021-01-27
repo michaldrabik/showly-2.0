@@ -105,6 +105,10 @@
     <item name="android:textColor">@color/colorGrayLight</item>
   </style>
 
+  <style name="AlertDialog.SmallText" parent="AlertDialog">
+    <item name="android:textSize">13sp</item>
+  </style>
+
   <!-- Other  -->
 
   <style name="ImageTitle">

@@ -19,14 +19,15 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
-import com.michaldrabik.common.extensions.toDisplayString
-import com.michaldrabik.common.extensions.toLocalTimeZone
+import com.michaldrabik.common.extensions.dateFromMillis
+import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.info
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.ERROR
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -115,9 +116,6 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   private fun setupView(view: View) {
     view.run {
-      val date = getDateString()
-      episodeDetailsName.text =
-        String.format(ENGLISH, context.getString(R.string.textSeasonEpisodeDate), episode.season, episode.number, date)
       episodeDetailsTitle.text = episode.title
       episodeDetailsOverview.text =
         if (episode.overview.isBlank()) getString(R.string.textNoDescription) else episode.overview
@@ -135,17 +133,6 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       episodeDetailsCommentsButton.onClick {
         viewModel.loadComments(showTraktId, episode.season, episode.number)
       }
-    }
-  }
-
-  private fun getDateString(): String {
-    val millis = episode.firstAired?.toInstant()?.toEpochMilli() ?: -1
-    return if (millis == -1L) {
-      getString(R.string.textTba)
-    } else {
-      com.michaldrabik.common.extensions.dateFromMillis(millis)
-        .toLocalTimeZone()
-        .toDisplayString()
     }
   }
 
@@ -171,6 +158,16 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   @SuppressLint("SetTextI18n")
   private fun render(uiModel: EpisodeDetailsUiModel) {
     uiModel.run {
+      dateFormat?.let {
+        val millis = episode.firstAired?.toInstant()?.toEpochMilli() ?: -1
+        val date = if (millis == -1L) {
+          getString(R.string.textTba)
+        } else {
+          it.format(dateFromMillis(millis).toLocalZone()).capitalizeWords()
+        }
+        val name = String.format(ENGLISH, requireContext().getString(R.string.textSeasonEpisodeDate), episode.season, episode.number, date)
+        episodeDetailsName.text = name
+      }
       imageLoading?.let { episodeDetailsProgress.visibleIf(it) }
       image?.let {
         Glide.with(this@EpisodeDetailsBottomSheet)
@@ -188,7 +185,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         episodeDetailsComments.removeAllViews()
         comments.forEach {
           val view = CommentView(requireContext()).apply {
-            bind(it)
+            bind(it, commentsDateFormat)
           }
           episodeDetailsComments.addView(view)
         }

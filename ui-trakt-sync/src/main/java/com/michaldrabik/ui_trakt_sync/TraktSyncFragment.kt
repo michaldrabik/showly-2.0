@@ -10,8 +10,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.common.extensions.dateFromMillis
-import com.michaldrabik.common.extensions.toDisplayString
-import com.michaldrabik.common.extensions.toLocalTimeZone
+import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.network.Config
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
@@ -19,6 +18,7 @@ import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventObserver
 import com.michaldrabik.ui_base.trakt.TraktSyncService
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -133,7 +133,7 @@ class TraktSyncFragment :
       traktSyncSchedule?.let { traktSyncScheduleButton.setText(it.buttonStringRes) }
       lastTraktSyncTimestamp?.let {
         if (it != 0L) {
-          val date = dateFromMillis(it).toLocalTimeZone().toDisplayString()
+          val date = dateFormat?.format(dateFromMillis(it).toLocalZone())?.capitalizeWords()
           traktLastSyncTimestamp.text = getString(R.string.textTraktSyncLastTimestamp, date)
         }
       }
