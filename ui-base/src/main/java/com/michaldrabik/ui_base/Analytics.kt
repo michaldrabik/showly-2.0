@@ -292,7 +292,7 @@ object Analytics {
     }
   }
 
-1  fun logSettingsDateFormat(value: String) {
+  fun logSettingsDateFormat(value: String) {
     firebaseAnalytics.logEvent("settings_date_format") {
       param("value", value.toLowerCase(ROOT))
     }
