@@ -13,7 +13,7 @@ abstract class UpdateActivity : DiActivity() {
 
   companion object {
     private const val REQUEST_APP_UPDATE = 5278
-    private const val DAYS_FOR_UPDATE = 3
+    private const val DAYS_FOR_UPDATE = 5
   }
 
   private lateinit var updateListener: InstallStateUpdatedListener
