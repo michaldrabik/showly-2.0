@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textAdd">Dizilerime ekle</string>
-  <string name="textWatchLater">See Later</string>
+  <string name="textWatchLater">Daha Sonra İzle</string>
   <string name="textNextEpisode">Sonraki Bölüm:</string>
   <string name="textInMyShows">Dizilerime eklendi</string>
-  <string name="textInWatchlist">Added to watchlist</string>
+  <string name="textInWatchlist">İzleme listesine eklendi</string>
   <string name="textInArchive">Arşivlendi</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">Hızlı İlerleme</string>
@@ -12,14 +12,14 @@
   <string name="textShowQuickProgressDone">İlerlemeniz güncellendi.</string>
   <string name="textEpisodeDate">Bölüm %1$d | %2$s</string>
   <string name="textEpisodeTitle">S.%02d B.%02d - \'%s\'</string>
-  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv synced successfully.</string>
-  <string name="textActorsEmpty">Actors are not available</string>
+  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv eşitlemesi başarılı.</string>
+  <string name="textActorsEmpty">Oyuncular mevcut değil</string>
   <string name="textSeasons">Sezonlar:</string>
   <string name="textSeasonsEmpty">Sezonlar mevcut değil.</string>
-  <string name="textTrailer">Trailer</string>
+  <string name="textTrailer">Fragman</string>
   <string name="textLink">Link</string>
-  <string name="textShare">Share</string>
-  <string name="textYouMayAlsoLike">You may also like:</string>
+  <string name="textShare">Paylaş</string>
+  <string name="textYouMayAlsoLike">Şunlar da hoşunuza gidebilir:</string>
   <string name="textRuntimeLeftHours">~%s sa %s dk kaldı</string>
   <string name="textRuntimeLeftMinutes">~%s dk kaldı</string>
   <string name="textWhatIsArchive">Arşivlensin mi?</string>
