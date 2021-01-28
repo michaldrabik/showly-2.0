@@ -29,6 +29,7 @@
   <string name="textSettingsMyShowsLanguageSummary">Opisy będą tłumaczone na bieżąco w miarę dostępności. Aplikacja zostanie ponownie uruchomiona.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Statystyki Archiwum</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Uwzględniaj seriale z Archiwum w statystykach.</string>
+  <string name="textSettingsDateFormatTitle">Format Daty i Czasu</string>
   <string name="textSettingsIncludeSpecialsTitle">Sezony Specjalne</string>
   <string name="textSettingsIncludeSpecialsSummary">Pokaż \'Specjalne\' sezony na ekranie informacji o serialu.</string>
   <string name="textSettingsNotifications">Powiadomienia</string>

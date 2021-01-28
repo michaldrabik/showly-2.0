@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyMovies">Filmlerim</string>
+  <string name="menuWatchlistMovies">İzleme Listesi</string>
+  <string name="textSearchForMyMovies">Ara…</string>
+  <string name="textMyMoviesEmpty">Film koleksiyonunuz şu anda boştur.\n\nİlk filminizi eklemek için <b>Keşfet</b> sekmesini ziyaret edin.</string>
+  <string name="textWatchlistMoviesEmpty"><b>İzleme Listeniz</b> şu anda boştur.\n\nGelecekte izlemek istediğiniz filmleri eklemek için <b>Keşfet</b> sekmesini ziyaret edin.</string>
+</resources>

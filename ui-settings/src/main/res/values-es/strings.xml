@@ -29,6 +29,7 @@
   <string name="textSettingsMyShowsLanguageSummary">Las descripciones y los títulos se traducirán cuando estén disponibles. La aplicación se reiniciará.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Estadísticas Archivados</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Incluir datos de series archivadas en las estadísticas.</string>
+  <string name="textSettingsDateFormatTitle">Formato de fecha/hora</string>
   <string name="textSettingsIncludeSpecialsTitle">Temporadas Especiales</string>
   <string name="textSettingsIncludeSpecialsSummary">Muestra temporadas \'Especiales\' en la pantalla de detalles de la serie.</string>
   <string name="textSettingsNotifications">Notificaciones</string>

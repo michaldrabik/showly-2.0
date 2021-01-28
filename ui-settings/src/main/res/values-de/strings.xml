@@ -29,6 +29,7 @@
   <string name="textSettingsMyShowsLanguageSummary">Beschreibungen &amp; Titel werden übersetzt, sofern eine Übersetzung vorhanden ist.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Archivierte Statistik</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Berücksichtige archivierte Serien in der Statistik mit.</string>
+  <string name="textSettingsDateFormatTitle">Datum/Uhrzeit-Format</string>
   <string name="textSettingsIncludeSpecialsTitle">Spezial Staffel</string>
   <string name="textSettingsIncludeSpecialsSummary">Zeige \'Spezial\' Staffeln in den Seriendetails.</string>
   <string name="textSettingsNotifications">Benachrichtigungen </string>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textComments">Yorumlar:</string>
+  <string name="textComments2">Yorumlar</string>
+  <string name="textNoComments">Hiçbir yorum yok.</string>
+  <string name="textShowRated">Oyunuz kaydedildi.</string>
+  <string name="textShowRatingDeleted">Verdiğiniz oy kaldırıldı.</string>
+  <string name="textSignBeforeRate">Bir diziye oy vermeden önce lütfen oturum açın.</string>
+  <string name="textSignBeforeRateMovie">Bir filme oy vermeden önce lütfen oturum açın.</string>
+  <string name="textRate">Oy Ver</string>
+  <string name="textRateDelete">Kaldır</string>
+</resources>
