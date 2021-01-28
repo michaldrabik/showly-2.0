@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textStatisticsMovies">İstatistikler</string>
-  <string name="textStatisticsMoviesEmpty">İstatistiklerin görüntülenebilmesi için <b>Filmlerim</b> bölümünde\n en az bir filmin bulunması gerekir.</string>
+  <string name="textStatisticsMoviesEmpty">İstatistiklerin görüntülenebilmesi için <b>Filmlerim</b> bölümünde en az bir filmin bulunması gerekir.</string>
   <string name="textStatisticsMoviesTotalTimeSpent">İzlemek için Harcanan Toplam Süre</string>
   <string name="textStatisticsMoviesTotalTimeItIs">ve</string>
   <string name="textStatisticsMoviesTotalTimeSpentHours">%s saat</string>
