@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSearchInitial1">Ne arıyorsunuz?</string>
+  <string name="textSearchInitial2">Arama özelliği Trakt.tv hizmetiyle desteklenmektedir</string>
+  <string name="textClear">Son aramaları temizle</string>
+</resources>
