@@ -54,12 +54,6 @@ class WatchlistMovieView : MovieView<WatchlistListItem> {
         else -> item.translation?.overview
       }
 
-    val date = if (item.movie.released != null) {
-      item.dateFormat?.format(item.movie.released)?.capitalizeWords()
-    } else {
-      String.format(ENGLISH, "%d", item.movie.year)
-    }
-
     watchlistMoviesRating.text = String.format(ENGLISH, "%.1f", item.movie.rating)
     watchlistMoviesYear.visibleIf(item.movie.released != null || item.movie.year > 0)
     watchlistMoviesYear.text = when {

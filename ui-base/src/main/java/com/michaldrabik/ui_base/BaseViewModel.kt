@@ -33,6 +33,6 @@ open class BaseViewModel<UM : UiModel> : ViewModel() {
 
   override fun onCleared() {
     super.onCleared()
-    Timber.d("ViewModel cleared.")
+    Timber.d("ViewModel cleared. $javaClass")
   }
 }

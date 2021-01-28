@@ -9,6 +9,8 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
+import com.michaldrabik.ui_model.SortOrder.NEWEST
+import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_repository.PinnedItemsRepository
@@ -51,22 +53,23 @@ class ProgressMoviesLoadItemsCase @Inject constructor(
     searchQuery: String,
     sortOrder: SortOrder
   ): List<ProgressMovieItem> {
-    return input
-      .sortedWith(
-        when (sortOrder) {
-          NAME -> compareBy {
-            val translatedTitle = if (it.movieTranslation?.hasTitle == false) null else it.movieTranslation?.title
-            (translatedTitle ?: it.movie.title).toUpperCase(ROOT)
-          }
-          DATE_ADDED -> compareByDescending { it.movie.updatedAt }
-          else -> throw IllegalStateException("Invalid sort order")
-        }
-      )
-      .filter {
-        if (searchQuery.isBlank()) true
-        else it.movie.title.contains(searchQuery, true) ||
-          it.movieTranslation?.title?.contains(searchQuery, true) == true
+    return when (sortOrder) {
+      NAME -> input.sortedBy {
+        val translatedTitle = if (it.movieTranslation?.hasTitle == false) null else it.movieTranslation?.title
+        (translatedTitle ?: it.movie.title).toUpperCase(ROOT)
       }
+      DATE_ADDED -> input.sortedByDescending { it.movie.updatedAt }
+      RATING -> input.sortedByDescending { it.movie.rating }
+      NEWEST -> input.sortedWith(
+        compareByDescending<ProgressMovieItem> { it.movie.released }
+          .thenByDescending { it.movie.year }
+      )
+      else -> throw IllegalStateException("Invalid sort order")
+    }.filter {
+      if (searchQuery.isBlank()) true
+      else it.movie.title.contains(searchQuery, true) ||
+        it.movieTranslation?.title?.contains(searchQuery, true) == true
+    }
   }
 
   fun loadDateFormat() = dateFormatProvider.loadFullDayFormat()

@@ -17,6 +17,7 @@ import com.michaldrabik.ui_base.utilities.TipsHost
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_model.Tip
+import timber.log.Timber
 import javax.inject.Inject
 
 abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLayoutId: Int) : Fragment(contentLayoutId), TipsHost {
@@ -62,6 +63,7 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
   override fun showTip(tip: Tip) = (requireActivity() as TipsHost).showTip(tip)
 
   override fun onDestroyView() {
+    Timber.d("onDestroyView $javaClass")
     animations.forEach { it?.cancel() }
     animations.clear()
     super.onDestroyView()
