@@ -29,6 +29,7 @@
   <string name="textSettingsMyShowsLanguageSummary">Açıklamalar ve başlıklar mevcut olduğunda tercüme edilecektir. Uygulama yeniden başlatılacaktır.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Arşivlenenler İstatistikleri</string>
   <string name="textSettingsIncludeArchiveStatsSummary">İstatistiklere arşivlenmiş dizi verilerini dahil et.</string>
+  <string name="textSettingsDateFormatTitle">Tarih/Saat Biçimi</string>
   <string name="textSettingsIncludeSpecialsTitle">Özel Sezonlar</string>
   <string name="textSettingsIncludeSpecialsSummary">Dizinin ayrıntılar ekranında \'Özel\' sezonları görüntüleyin.</string>
   <string name="textSettingsNotifications">Bildirimler</string>
