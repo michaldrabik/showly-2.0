@@ -9,7 +9,7 @@
   <string name="textSettingsTraktAuthorizeTitle">Trakt.tv Yetkilendirmesi</string>
   <string name="textSettingsTraktAuthorizeSummarySignIn">Trakt.tv hesabınızda oturum açmak için tıklayın.</string>
   <string name="textSettingsTraktAuthorizeSummarySignOut">Giriş yapıldı. Çıkış yapmak için tıklayın.</string>
-  <string name="textSettingsTraktAuthorizeSummarySignOutUser">%1$s olarak giriş yapıldı. Çıkış yapmak için tıklayın.</string>
+  <string name="textSettingsTraktAuthorizeSummarySignOutUser">%1$s olarak giriş yapıldı.\nÇıkış yapmak için tıklayın.</string>
   <string name="textSettingsTraktSyncTitle">Trakt.tv Eşitlemesi</string>
   <string name="textSettingsTraktSyncSummary">Trakt.tv ve Showly arasında verileri eşitle.</string>
   <string name="textSettingsTraktQuickSyncTitle">Trakt.tv Anlık Karşıya Yükleme</string>
