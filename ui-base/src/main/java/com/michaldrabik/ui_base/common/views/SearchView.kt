@@ -29,6 +29,7 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
   var onSettingsClickListener: (() -> Unit)? = null
   var onSortClickListener: (() -> Unit)? = null
   var onStatsClickListener: (() -> Unit)? = null
+  var onTraktClickListener: (() -> Unit)? = null
 
   init {
     inflate(context, R.layout.view_search, this)
@@ -38,6 +39,7 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
     searchSortIcon.onClick { onSortClickListener?.invoke() }
     searchSettingsIcon.onClick { onSettingsClickListener?.invoke() }
     searchStatsIcon.onClick { onStatsClickListener?.invoke() }
+    searchTraktIcon.onClick { onTraktClickListener?.invoke() }
   }
 
   var hint: String
@@ -63,6 +65,12 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
     get() = searchStatsIcon.isVisible
     set(value) {
       searchStatsIcon.visibleIf(value)
+    }
+
+  var traktIconVisible
+    get() = searchTraktIcon.isVisible
+    set(value) {
+      searchTraktIcon.visibleIf(value)
     }
 
   var sortIconClickable
@@ -104,6 +112,7 @@ class SearchView : FrameLayout, CoordinatorLayout.AttachedBehavior {
     searchViewIcon.visibleIf(!isProgress)
     searchViewText.visibleIf(!isProgress)
     searchViewInput.visibleIf(!isProgress)
+    searchTraktIcon.visibleIf(!isProgress)
     searchViewTraktSync.visibleIf(isProgress)
   }
 }

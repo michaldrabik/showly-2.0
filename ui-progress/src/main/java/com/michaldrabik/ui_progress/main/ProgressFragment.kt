@@ -101,6 +101,10 @@ class ProgressFragment :
       onModeSelected = { mode = it }
       animateShows()
     }
+    progressSearchView.traktIconVisible = true
+    progressSearchView.onTraktClickListener = {
+      navigateTo(R.id.actionProgressFragmentToTraktSyncFragment)
+    }
 
     progressTabs.translationY = tabsTranslation
     progressPagerModeTabs.translationY = tabsTranslation
@@ -162,7 +166,6 @@ class ProgressFragment :
 
   fun openTraktSync() {
     navigateTo(R.id.actionProgressFragmentToTraktSyncFragment)
-    hideNavigation()
     saveUiTranslations()
   }
 

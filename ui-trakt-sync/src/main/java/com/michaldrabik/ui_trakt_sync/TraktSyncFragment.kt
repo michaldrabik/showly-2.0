@@ -71,6 +71,7 @@ class TraktSyncFragment :
   override fun onResume() {
     super.onResume()
     handleBackPressed()
+    hideNavigation()
   }
 
   private fun startImport() {

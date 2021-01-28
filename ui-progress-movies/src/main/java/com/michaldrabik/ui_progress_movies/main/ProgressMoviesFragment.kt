@@ -99,6 +99,11 @@ class ProgressMoviesFragment :
       onModeSelected = { mode = it }
       animateMovies()
     }
+    progressMoviesSearchView.traktIconVisible = true
+    progressMoviesSearchView.onTraktClickListener = {
+      navigateTo(R.id.actionProgressMoviesFragmentToTraktSyncFragment)
+    }
+
     progressMoviesTabs.translationY = tabsTranslation
     progressMoviesModeTabs.translationY = tabsTranslation
     progressMoviesSearchView.translationY = searchViewTranslation
