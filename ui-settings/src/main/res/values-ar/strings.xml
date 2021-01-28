@@ -29,6 +29,7 @@
   <string name="textSettingsMyShowsLanguageSummary">سيتم ترجمة الأوصاف والعناوين عندما تتوفر الترجمة.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">إحصائيات الأرشيف</string>
   <string name="textSettingsIncludeArchiveStatsSummary">تضمين بيانات المسلسلات المؤرشفة في صفحة الإحصائيات.</string>
+  <string name="textSettingsDateFormatTitle">تنسيق التاريخ/الوقت</string>
   <string name="textSettingsIncludeSpecialsTitle">الحلقات الخاصة</string>
   <string name="textSettingsIncludeSpecialsSummary">عرض \'الحلقات الخاصة\' في صفحة تفاصيل المسلسل</string>
   <string name="textSettingsNotifications">الإشعارات</string>
