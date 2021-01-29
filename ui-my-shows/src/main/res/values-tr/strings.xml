@@ -4,7 +4,7 @@
   <string name="menuWatchlist">İzleme Listesi</string>
   <string name="menuArchive">Arşiv</string>
   <string name="textSearchForMyShows">Ara…</string>
-  <string name="textMyShowsEmpty">Dizi koleksiyonunuz şu anda boştur.\n\nİlk dizinizi eklemek için <b>Keşfet </b> sekmesini ziyaret edin.</string>
+  <string name="textMyShowsEmpty">Dizi koleksiyonunuz şu anda boştur.\n\nİlk dizinizi eklemek için <b>Keşfet</b> sekmesini ziyaret edin.</string>
   <string name="textWatchlistEmpty"><b>İzleme Listeniz</b> şu anda boştur.\n\nGelecekte izlemek isteyebileceğiniz dizileri eklemek için <b>Keşfet</b> sekmesini ziyaret edin.</string>
   <string name="textArchiveEmpty"><b>Arşiviniz</b> şu anda boştur.\n\n <b>Arşiv</b>, izlemesi bırakılmış, terk edilmiş veya artık ilgilenmediğiniz dizilerin bir listesidir.\n\nArşivlenmiş diziler artık <b>İlerleme Durumu</b>, <b>Keşfet</b> ve <b>Dizilerim</b> bölümlerinde görünmez ve ayrıca Trakt.tv hizmetinden aktarım sırasında atlanacaktır.</string>
 </resources>
