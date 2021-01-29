@@ -7,6 +7,7 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.michaldrabik.common.Mode
+import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.di.DaggerViewModelFactory
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.ERROR
@@ -61,6 +62,8 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
   override fun isTipShown(tip: Tip) = (requireActivity() as TipsHost).isTipShown(tip)
 
   override fun showTip(tip: Tip) = (requireActivity() as TipsHost).showTip(tip)
+
+  protected fun isTraktSyncing() = (requireAppContext() as OnTraktSyncListener).isTraktSyncActive()
 
   override fun onDestroyView() {
     Timber.d("onDestroyView $javaClass")

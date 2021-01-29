@@ -94,6 +94,7 @@ class DiscoverFragment :
       onClick { navigateToSearch() }
       onSortClickListener = { toggleFiltersView() }
       translationY = searchViewPosition
+      if (isTraktSyncing()) setTraktProgress(true)
     }
     discoverModeTabsView.run {
       visibleIf(moviesEnabled)

@@ -92,6 +92,7 @@ class ProgressMoviesFragment :
       isClickable = false
       onClick { enterSearch() }
       onSettingsClickListener = { openSettings() }
+      if (isTraktSyncing()) setTraktProgress(true)
     }
     progressMoviesModeTabs.run {
       visibleIf(moviesEnabled)

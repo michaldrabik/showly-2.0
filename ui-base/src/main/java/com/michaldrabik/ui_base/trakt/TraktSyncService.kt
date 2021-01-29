@@ -8,6 +8,7 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.R
+import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
@@ -25,6 +26,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -96,8 +98,9 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
     Timber.d("Sync started.")
     launch {
       try {
+        (applicationContext as OnTraktSyncListener).onTraktSyncProgress()
         EventsManager.sendEvent(TraktSyncStart)
-
+        delay(20000)
         if (isImport) {
           val resultCount = runImportWatched()
           runImportWatchlist(resultCount)
@@ -111,6 +114,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
         miscPreferences.edit().putLong(KEY_LAST_SYNC_TIMESTAMP, nowUtcMillis()).apply()
 
         EventsManager.sendEvent(TraktSyncSuccess)
+        (applicationContext as OnTraktSyncListener).onTraktSyncComplete()
         Analytics.logTraktFullSyncSuccess(isImport, isExport)
         if (!isSilent) {
           notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification())
@@ -118,6 +122,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
       } catch (t: Throwable) {
         if (t is TraktAuthError) EventsManager.sendEvent(TraktSyncAuthError)
         EventsManager.sendEvent(TraktSyncError)
+        (applicationContext as OnTraktSyncListener).onTraktSyncComplete()
         if (!isSilent) {
           notificationManager().notify(
             SYNC_NOTIFICATION_COMPLETE_ERROR_ID,

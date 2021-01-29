@@ -20,6 +20,7 @@ import com.michaldrabik.showly2.di.module.PreferencesModule
 import com.michaldrabik.showly2.utilities.NetworkMonitorCallbacks
 import com.michaldrabik.storage.di.DaggerStorageComponent
 import com.michaldrabik.storage.di.StorageModule
+import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.di.UiBaseComponentProvider
@@ -46,12 +47,14 @@ class App :
   UiBaseComponentProvider,
   UiWidgetsComponentProvider,
   OnlineStatusProvider,
-  WidgetsProvider {
+  WidgetsProvider,
+  OnTraktSyncListener {
 
   @Inject lateinit var settingsRepository: SettingsRepository
 
-  lateinit var appComponent: AppComponent
   var isAppOnline = true
+  lateinit var appComponent: AppComponent
+  private var isSyncRunning = false
 
   private val activityCallbacks by lazy {
     listOf(
@@ -164,6 +167,10 @@ class App :
 
   override fun provideBaseComponent() = appComponent.uiBaseComponent().create()
   override fun provideWidgetsComponent() = appComponent.uiWidgetsComponent().create()
+
+  override fun onTraktSyncProgress() = run { isSyncRunning = true }
+  override fun onTraktSyncComplete() = run { isSyncRunning = false }
+  override fun isTraktSyncActive() = isSyncRunning
 }
 
 fun Context.connectivityManager() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

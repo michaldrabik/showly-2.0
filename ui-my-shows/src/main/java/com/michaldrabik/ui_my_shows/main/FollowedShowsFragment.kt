@@ -93,6 +93,7 @@ class FollowedShowsFragment :
       onClick { enterSearch() }
       onSettingsClickListener = { openSettings() }
       onStatsClickListener = { openStatistics() }
+      if (isTraktSyncing()) setTraktProgress(true)
     }
     followedShowsModeTabs.run {
       visibleIf(moviesEnabled)
