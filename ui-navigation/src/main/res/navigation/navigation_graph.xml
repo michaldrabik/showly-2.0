@@ -131,7 +131,6 @@
       android:id="@+id/actionProgressFragmentToTraktSyncFragment"
       app:destination="@id/traktSyncFragment"
       app:enterAnim="@anim/anim_fade_in"
-      app:exitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
@@ -167,7 +166,6 @@
       android:id="@+id/actionProgressMoviesFragmentToTraktSyncFragment"
       app:destination="@id/traktSyncFragment"
       app:enterAnim="@anim/anim_fade_in"
-      app:exitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
