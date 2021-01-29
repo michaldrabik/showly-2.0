@@ -56,7 +56,8 @@ object Config {
   const val SHOW_TIPS = false
   const val SHOW_WHATS_NEW = true
   const val WHATS_NEW_TEXT =
-    "* Swipe bottom menu left or right to quickly switch between shows and movies mode.\n\n" +
-      "* Translations fixes.\n\n" +
-      "Showly is now on Twitter! Follow  @AppShowly  for news, current app status and other important information."
+    "* Added Turkish language support.\n\n" +
+      "* Added Trakt Sync shortcut in Progress tab toolbar.\n\n" +
+      "* Minor UI fixes.\n\n" +
+      "Showly is on Twitter! Follow  @AppShowly  for news, current app status and other important information."
 }
