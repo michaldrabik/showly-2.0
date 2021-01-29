@@ -26,7 +26,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -100,7 +99,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
       try {
         (applicationContext as OnTraktSyncListener).onTraktSyncProgress()
         EventsManager.sendEvent(TraktSyncStart)
-        delay(20000)
+
         if (isImport) {
           val resultCount = runImportWatched()
           runImportWatchlist(resultCount)
