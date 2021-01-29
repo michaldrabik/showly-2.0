@@ -66,13 +66,13 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    Timber.d("onViewCreated $javaClass")
+    Timber.d("onViewCreated ${javaClass.simpleName}")
   }
 
   override fun onDestroyView() {
+    Timber.d("onDestroyView ${javaClass.simpleName}")
     animations.forEach { it?.cancel() }
     animations.clear()
-    Timber.d("onDestroyView $javaClass")
     super.onDestroyView()
   }
 

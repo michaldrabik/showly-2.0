@@ -121,7 +121,6 @@
       android:id="@+id/actionProgressFragmentToTraktSyncFragment"
       app:destination="@id/traktSyncFragment"
       app:enterAnim="@anim/anim_fade_in"
-      app:exitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
@@ -157,7 +156,6 @@
       android:id="@+id/actionProgressMoviesFragmentToTraktSyncFragment"
       app:destination="@id/traktSyncFragment"
       app:enterAnim="@anim/anim_fade_in"
-      app:exitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
@@ -192,9 +190,7 @@
       android:id="@+id/actionShowDetailsFragmentToPremium"
       app:destination="@id/premiumFragment"
       app:enterAnim="@anim/anim_fade_in"
-      app:exitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
-      app:popEnterAnim="@anim/anim_fade_in"
       app:popExitAnim="@anim/anim_fade_out"
       />
   </fragment>
@@ -228,9 +224,7 @@
       android:id="@+id/actionMovieDetailsFragmentToPremium"
       app:destination="@id/premiumFragment"
       app:enterAnim="@anim/anim_fade_in"
-      app:exitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
-      app:popEnterAnim="@anim/anim_fade_in"
       app:popExitAnim="@anim/anim_fade_out"
       />
   </fragment>
@@ -327,7 +321,6 @@
       android:id="@+id/actionSettingsFragmentToTraktSync"
       app:destination="@id/traktSyncFragment"
       app:enterAnim="@anim/anim_fade_in"
-      app:exitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
@@ -335,9 +328,7 @@
       android:id="@+id/actionSettingsFragmentToPremium"
       app:destination="@id/premiumFragment"
       app:enterAnim="@anim/anim_fade_in"
-      app:exitAnim="@anim/anim_fade_out"
       app:launchSingleTop="true"
-      app:popEnterAnim="@anim/anim_fade_in"
       app:popExitAnim="@anim/anim_fade_out"
       />
   </fragment>

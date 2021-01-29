@@ -140,6 +140,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         loadDetails(movieId, requireAppContext())
         isInitialized = true
       }
+      loadPremium()
     }
   }
 

@@ -57,6 +57,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner) { render(it!!) }
       messageLiveData.observe(viewLifecycleOwner) { showSnack(it) }
+      loadSettings()
     }
   }
 
@@ -77,7 +78,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     super.onResume()
     hideNavigation()
     handleBackPressed()
-    viewModel.loadSettings()
   }
 
   private fun render(uiModel: SettingsUiModel) {

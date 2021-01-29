@@ -175,6 +175,10 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
+  fun loadPremium() {
+    uiState = MovieDetailsUiModel(isPremium = settingsRepository.isPremium)
+  }
+
   private suspend fun loadRating(movie: Movie) {
     try {
       uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = true))

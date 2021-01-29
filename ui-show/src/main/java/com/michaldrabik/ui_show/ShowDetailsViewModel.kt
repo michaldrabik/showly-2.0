@@ -265,6 +265,10 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
+  fun loadPremium() {
+    uiState = ShowDetailsUiModel(isPremium = settingsRepository.isPremium)
+  }
+
   private suspend fun loadRating(show: Show) {
     try {
       uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = true))

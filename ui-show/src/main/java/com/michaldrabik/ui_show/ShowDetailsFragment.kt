@@ -157,6 +157,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         loadShowDetails(showId, requireAppContext())
         isInitialized = true
       }
+      loadPremium()
     }
   }
 
