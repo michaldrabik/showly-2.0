@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textTraktLoginSuccess">Başarılı bir şekilde yetkilendirildiniz.</string>
+  <string name="textTraktLoginSuccess">Başarılı bir şekilde yetkilendirdiniz.</string>
   <string name="textTraktLogoutSuccess">Çıkış yaptınız.</string>
   <string name="textImagesCacheCleared">Görüntü önbelleği temizlendi.</string>
   <string name="textTurnOff">Kapat</string>
@@ -11,9 +11,9 @@
   <string name="textSettingsTraktAuthorizeSummarySignOut">Giriş yapıldı. Çıkış yapmak için tıklayın.</string>
   <string name="textSettingsTraktAuthorizeSummarySignOutUser">%1$s olarak giriş yapıldı.\nÇıkış yapmak için tıklayın.</string>
   <string name="textSettingsTraktSyncTitle">Trakt.tv Eşitlemesi</string>
-  <string name="textSettingsTraktSyncSummary">Trakt.tv ve Showly arasında verileri eşitle.</string>
+  <string name="textSettingsTraktSyncSummary">Trakt.tv ve Showly arasında verileri eşitleyin.</string>
   <string name="textSettingsTraktQuickSyncTitle">Trakt.tv Anlık Karşıya Yükleme</string>
-  <string name="textSettingsTraktQuickSyncSummary">Uygulamaya ekledikten sonra verileri anında Trakt.tv hizmetine yükleyin.</string>
+  <string name="textSettingsTraktQuickSyncSummary">Verileri, uygulamaya ekledikten sonra anında Trakt.tv hizmetine yükleyin.</string>
   <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv Anlık Silme</string>
   <string name="textSettingsTraktQuickRemoveSummary">Uygulamadan kaldırdıktan sonra verileri Trakt.tv\'den kaldırma seçeneği ekle.</string>
   <string name="textSettingsGeneral">Genel ve Deneyim</string>
