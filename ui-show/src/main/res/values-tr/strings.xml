@@ -4,7 +4,7 @@
   <string name="textWatchLater">Daha Sonra İzle</string>
   <string name="textNextEpisode">Sonraki Bölüm:</string>
   <string name="textInMyShows">Dizilerime eklendi</string>
-  <string name="textInWatchlist">İzleme listesine eklendi</string>
+  <string name="textInWatchlist">İstek listesine eklendi</string>
   <string name="textInArchive">Arşivlendi</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">Hızlı İlerleme</string>
