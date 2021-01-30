@@ -15,7 +15,7 @@
   <string name="textSettingsTraktQuickSyncTitle">Trakt.tv Anlık Karşıya Yükleme</string>
   <string name="textSettingsTraktQuickSyncSummary">Verileri, uygulamaya ekledikten sonra anında Trakt.tv hizmetine yükleyin.</string>
   <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv Anlık Silme</string>
-  <string name="textSettingsTraktQuickRemoveSummary">Uygulamadan kaldırdıktan sonra verileri Trakt.tv\'den kaldırma seçeneği ekle.</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Verileri uygulamadan kaldırdıktan sonra Trakt.tv\'den de silme seçeneği ekleyin.</string>
   <string name="textSettingsGeneral">Genel ve Deneyim</string>
   <string name="textSettingsRecentShowsTitle">Son Eklenenler Miktarı</string>
   <string name="textSettingsRecentShowsSummary">\'Koleksiyon\'da görüntülenecek en son ögeler sayısı.</string>
