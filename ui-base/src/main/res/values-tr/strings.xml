@@ -18,12 +18,12 @@
   <string name="textEpisode">%1$d. Bölüm</string>
   <string name="textSortBy">Sırala:</string>
   <string name="textSpoilersWarning">Bu yorum spoiler içermektedir.\nOkumak için dokunun.</string>
-  <string name="textCommentedOn">%s, %s için yorum yaptı:</string>
+  <string name="textCommentedOn">%s, %s tarihinde yorum yaptı:</string>
   <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textShows">Diziler</string>
   <string name="textMovies">Filmler</string>
   <string name="textMinutesShort">dk</string>
-  <string name="textRemoveFromTrakt">Trakt.tv hizmetinden çıkarılsın mı?</string>
+  <string name="textRemoveFromTrakt">Trakt.tv\'den silinsin mi?</string>
   <string name="textNoDescription">Genel bakış mevcut değil.</string>
   <string name="textAiredAlready">Yayınlandı</string>
   <string name="textAirsNow">Şimdi Yayında</string>
@@ -55,7 +55,7 @@
   <string name="textTraktSync">Trakt.tv Eşitlemesi</string>
   <string name="textTraktSyncComplete">Eşitleme başarıyla tamamlandı.</string>
   <string name="textTraktSyncRunning">Çalışıyor…</string>
-  <string name="textTraktSyncError">Trakt.tv senkronizasyonu başarısız.</string>
+  <string name="textTraktSyncError">Trakt.tv eşitlemesi başarısız.</string>
   <string name="textTraktSyncErrorFull">Trakt.tv eşitlemesi başarısız oldu. Lütfen internet bağlantınızı kontrol edin ve tekrar deneyin veya bu sorun devam ederse bizimle iletişime geçin.</string>
   <string name="textTraktQuickSyncError">Anlık Eşitleme başarısız.</string>
   <string name="textTraktQuickSyncErrorFull">Anlık Eşitleme başarısız oldu. Uygulamayı bir sonraki başlattığınızda tekrar deneyeceğiz. Lütfen internet bağlantınızı kontrol edin.</string>
