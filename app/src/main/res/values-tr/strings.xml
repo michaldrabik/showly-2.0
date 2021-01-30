@@ -14,7 +14,7 @@
   <string name="shortcutSearch">Ara</string>
   <string name="shortcutProgress">İlerleme</string>
   <plurals name="textTraktQuickSyncComplete">
-    <item quantity="one">1 öge başarıyla senkronize edildi.</item>
+    <item quantity="one">1 öge başarıyla eşitlendi.</item>
     <item quantity="other">%d öge başarıyla senkronize edildi.</item>
   </plurals>
 </resources>
