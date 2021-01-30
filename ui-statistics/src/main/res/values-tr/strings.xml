@@ -2,9 +2,9 @@
 <resources>
   <string name="textThisShowIsArchived">Bu arşivlenmiş bir dizidir</string>
   <string name="textStatistics">İstatistikler</string>
-  <string name="textStatisticsEmpty">İstatistiklerin görüntülenebilmesi için <b>Dizilerim</b> bölümünde en az bir dizinin bulunması gerekir.</string>
+  <string name="textStatisticsEmpty">İstatistiklerin görüntülenebilmesi için <b>Dizilerim</b>\nbölümünde en az bir dizinin bulunması gerekir.</string>
   <string name="textStatisticsMostWatchedShows">En Çok Görüntülenen Diziler</string>
-  <string name="textStatisticsTotalTimeSpent">İzlemek için Harcanan Toplam Süre</string>
+  <string name="textStatisticsTotalTimeSpent">Harcanan Toplam Süre</string>
   <string name="textStatisticsTotalTimeItIs">ve</string>
   <string name="textStatisticsTotalTimeSpentHours">%s saat</string>
   <string name="textStatisticsTotalTimeSpentMinutes">%s dakika</string>
