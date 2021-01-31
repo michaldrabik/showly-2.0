@@ -2,7 +2,7 @@
 <resources>
   <string name="tabMoviesCalendar">Takvim</string>
   <string name="tabMoviesProgress">İlerleme</string>
-  <string name="textMoviesCalendarEmpty">Yeni film yok.</string>
+  <string name="textMoviesCalendarEmpty">Yaklaşan yeni hiçbir film yok.</string>
   <string name="textMoviesSearchWatchlist">Ara…</string>
   <string name="textDiscoverMovies">Filmleri Keşfet</string>
   <string name="textMoviesTraktSynchronize">Trakt.tv hizmetinden aktar</string>
