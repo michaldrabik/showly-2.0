@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatisticsMovies">Estatísticas</string>
+  <string name="textStatisticsMoviesEmpty">Pelo menos um filme deve estar presente na aba <b>Meus filmes</b>\npara que as estatísticas possam ser exibidas.</string>
+  <string name="textStatisticsMoviesTotalTimeSpent">Tempo total gasto assistindo</string>
+  <string name="textStatisticsMoviesTotalTimeItIs">e é</string>
+  <string name="textStatisticsMoviesTotalTimeSpentHours">%s horas</string>
+  <string name="textStatisticsMoviesTotalTimeSpentMinutes">%s minutos</string>
+  <string name="textStatisticsMoviesTotalTimeSpentDays">que é aproximadamente %s dias.</string>
+  <string name="textStatisticsMoviesTotalMovies">Total de filmes assistidos</string>
+  <string name="textStatisticsMoviesTotalMoviesCount">%s Filmes</string>
+  <string name="textStatisticsMoviesTopGenre">Top Gêneros</string>
+  <string name="textStatisticsMoviesTopGenreSubValue">Seus favoritos. Toque para ver mais.</string>
+  <string name="textStatisticsMoviesTopGenreSubValue2">Seus favoritos</string>
+  <string name="textStatisticsMoviesRatings">Avaliado recentemente</string>
+</resources>
