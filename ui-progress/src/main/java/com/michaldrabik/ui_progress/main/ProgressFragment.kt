@@ -283,9 +283,7 @@ class ProgressFragment :
         progressSortIcon.animate().translationY(0F).setDuration(duration).start()
         requireView().postDelayed(
           {
-            childFragmentManager.fragments.forEach {
-              (it as? OnScrollResetListener)?.onScrollReset()
-            }
+            childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
           },
           duration
         )
