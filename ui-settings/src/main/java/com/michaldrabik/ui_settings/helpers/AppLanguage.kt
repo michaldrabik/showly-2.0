@@ -8,11 +8,12 @@ enum class AppLanguage(
   @StringRes val displayName: Int
 ) {
   ENGLISH("en", R.string.textLanguageEnglish),
-  POLISH("pl", R.string.textLanguagePolish),
   GERMAN("de", R.string.textLanguageGerman),
-  SPANISH("es", R.string.textLanguageSpanish),
-  ITALIAN("it", R.string.textLanguageItalian),
   FRENCH("fr", R.string.textLanguageFrench),
+  ITALIAN("it", R.string.textLanguageItalian),
+  SPANISH("es", R.string.textLanguageSpanish),
+  PORTUGAL_BRASIL("pt", R.string.textLanguagePortugalBrasil),
+  POLISH("pl", R.string.textLanguagePolish),
   TURKISH("tr", R.string.textLanguageTurkish),
   ARABIC("ar", R.string.textLanguageArabic);
 
