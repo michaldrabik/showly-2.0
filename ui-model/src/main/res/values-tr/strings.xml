@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textSortName">Başlık</string>
-  <string name="textSortNewest">En Yeniler</string>
-  <string name="textSortRated">En Yüksek Puan Alanlar</string>
-  <string name="textSortDateAdded">Son Eklenenler</string>
-  <string name="textSortRecentlyWatched">Son İzlenenler</string>
+  <string name="textSortNewest">En Yeni</string>
+  <string name="textSortRated">En Yüksek Puan Alan</string>
+  <string name="textSortDateAdded">Son Eklenen</string>
+  <string name="textSortRecentlyWatched">Son İzlenen</string>
   <string name="textSortEpisodesLeft">Kalan Bölümler</string>
-  <string name="textHeaderRecentlyAdded">Son Eklenenler</string>
-  <string name="textHeaderWatching">İzlenenler</string>
-  <string name="textHeaderFinished">Tamamlananlar</string>
-  <string name="textHeaderReturning">Geri Dönenler ve Yaklaşanlar</string>
+  <string name="textHeaderRecentlyAdded">Son Eklenen</string>
+  <string name="textHeaderWatching">İzlemeye Devam Edilen</string>
+  <string name="textHeaderFinished">Tamamlanan</string>
+  <string name="textHeaderReturning">Geri Dönen ve Yaklaşan</string>
   <string name="textHeaderAll">Tümü</string>
   <string name="textSettingsShowsNotificationsWhenTitle">Bildirim Zamanı</string>
   <string name="textSettingsShowsNotificationsWhenSummary">Bölüm duyurularını ne zaman almak istersiniz?</string>
@@ -61,7 +61,7 @@
   <string name="textTraktSyncOptionDailyButton">Her gün çalışacak şekilde zamanlandı</string>
   <string name="textTraktSyncOption3DayButton">Her üç güne bir çalışacak şekilde zamanlandı</string>
   <string name="textTraktSyncOptionWeeklyButton">Her hafta çalışacak şekilde zamanlandı</string>
-  <string name="textShowStatusReturning">Geri Dönen Seriler</string>
+  <string name="textShowStatusReturning">Devam Ediyor</string>
   <string name="textShowStatusUpcoming">Yakında</string>
   <string name="textShowStatusInProduction">Yapım Aşamasında</string>
   <string name="textShowStatusPlanned">Planlanan</string>
@@ -72,5 +72,5 @@
   <string name="textMovieStatusPostProduction">Yapım Sonrası</string>
   <string name="textMovieStatusPlanned">Planlanan</string>
   <string name="textMovieStatusCanceled">İptal Edildi</string>
-  <string name="textMovieStatusRumored">Söylentiler</string>
+  <string name="textMovieStatusRumored">Söylenti</string>
 </resources>
