@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="menuMyShows">Minhas séries</string>
-  <string name="menuWatchlist">Lista de interesses</string>
+  <string name="menuWatchlist">Interesses</string>
   <string name="menuArchive">Arquivos</string>
   <string name="textSearchForMyShows">Pesquisar…</string>
   <string name="textMyShowsEmpty">Sua coleção de séries está vazia no momento.\n\nVisite a guia <b>Explorar</b> para adicionar sua primeira série.</string>
