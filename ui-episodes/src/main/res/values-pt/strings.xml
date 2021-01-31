@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSeasonEpisodeDate">S.%1$02d E.%2$02d | %3$s</string>
+  <string name="textLoadCommentsCount">Comentários (%d)</string>
+  <string name="textVotes">%.1f (%d votos)</string>
+</resources>
