@@ -58,6 +58,7 @@ object Config {
   const val WHATS_NEW_TEXT =
     "* Added Turkish language support.\n\n" +
       "* Added Trakt Sync shortcut in Progress tab toolbar.\n\n" +
+      "* Added added additional time/date formats to choose from.\n\n" +
       "* Minor UI fixes.\n\n" +
       "Showly is on Twitter! Follow  @AppShowly  for news, current app status and other important information."
 }
