@@ -17,9 +17,9 @@ class DateFormatProvider @Inject constructor(
   companion object {
     fun loadSettingsFormat(format: AppDateFormat): DateTimeFormatter =
       when (format) {
-        DEFAULT_12 -> DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, hh:mm a")
+        DEFAULT_12 -> DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, h:mm a")
         DEFAULT_24 -> DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, HH:mm")
-        TRAKT_12 -> DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm a (EEEE)")
+        TRAKT_12 -> DateTimeFormatter.ofPattern("MMM dd, yyyy h:mm a (EEEE)")
         TRAKT_24 -> DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm (EEEE)")
       }
   }
@@ -42,9 +42,9 @@ class DateFormatProvider @Inject constructor(
 
   fun loadFullHourFormat(): DateTimeFormatter =
     when (AppDateFormat.valueOf(settingsRepository.getDateFormat())) {
-      DEFAULT_12 -> DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, hh:mm a")
+      DEFAULT_12 -> DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, h:mm a")
       DEFAULT_24 -> DateTimeFormatter.ofPattern("EEEE, dd MMM yyyy, HH:mm")
-      TRAKT_12 -> DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm a (EEEE)")
+      TRAKT_12 -> DateTimeFormatter.ofPattern("MMM dd, yyyy h:mm a (EEEE)")
       TRAKT_24 -> DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm (EEEE)")
     }
 }
