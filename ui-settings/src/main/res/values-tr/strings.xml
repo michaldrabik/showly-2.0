@@ -43,7 +43,7 @@
   <string name="textSettingsRateAppTitle">Geri Bildirim Gönder</string>
   <string name="textSettingsRateAppSummary">Showly uygulamasından keyif alıyor musunuz? PlayStore\'da yorum yapabilirsiniz. Teşekkürler!</string>
   <string name="textSettingsDeleteCacheTitle">Görüntü Önbelleğini Temizle</string>
-  <string name="textSettingsDeleteCacheSummary">Yerel görüntü önbelleğini temizlemek için tıklayın. Bu, dizi görüntülerinin doğru yüklenmediğinde yardımcı olabilir.</string>
+  <string name="textSettingsDeleteCacheSummary">Yerel görüntü önbelleğini temizlemek için dokunun. Bu, dizi görüntülerinin doğru yüklenmediğinde yardımcı olabilir.</string>
   <string name="textSettingsQuickSyncConfirmationTitle">Otomatik Eşitlemeyi Devre Dışı Bırak</string>
   <string name="textSettingsQuickSyncConfirmationMessage">\nOtomatik Eşitleme zaten açık gibi görünüyor.\n\nAnlık eşitlemeyi etkinleştirmeden önce bu özelliği kapatmak ister misiniz (önerilir)?\n</string>
   <string name="textSettingsLogoutTitle">Trakt.tv Çıkış Yap</string>
