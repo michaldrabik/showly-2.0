@@ -27,7 +27,7 @@
   <string name="textSettingsMyShowsCountrySummary">Selecione a região para usar com os links JustWatch.</string>
   <string name="textSettingsMyShowsLanguageTitle">Idioma</string>
   <string name="textSettingsMyShowsLanguageSummary">Descrições e títulos serão traduzidos quando disponível. O aplicativo será reiniciado.</string>
-  <string name="textSettingsIncludeArchiveStatsTitle">Estatísticas Arquivadas</string>
+  <string name="textSettingsIncludeArchiveStatsTitle">Estatísticas arquivadas</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Incluir séries arquivadas nas estatísticas.</string>
   <string name="textSettingsDateFormatTitle">Formato data/hora</string>
   <string name="textSettingsIncludeSpecialsTitle">Temporadas especiais</string>
@@ -51,6 +51,6 @@
   <string name="textSettingsMoviesEnabledTitle">Filmes</string>
   <string name="textSettingsMoviesEnabledSummary">Ativar/desativar o suporte a filmes. O aplicativo reiniciará.</string>
   <string name="textSettingsWidgets">Widgets</string>
-  <string name="textSettingsWidgetsLabelsTitle">Mostrar Títulos</string>
+  <string name="textSettingsWidgetsLabelsTitle">Mostrar títulos</string>
   <string name="textSettingsWidgetsLabelsSummary">Exibir títulos de widgets translúcidos.</string>
 </resources>
