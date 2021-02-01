@@ -9,7 +9,7 @@
   <string name="textHeaderRecentlyAdded">Son Eklenen</string>
   <string name="textHeaderWatching">İzlemeye Devam Edilen</string>
   <string name="textHeaderFinished">Tamamlanan</string>
-  <string name="textHeaderReturning">Geri Dönen ve Yaklaşan</string>
+  <string name="textHeaderReturning">Yakında Devam Edecek</string>
   <string name="textHeaderAll">Tümü</string>
   <string name="textSettingsShowsNotificationsWhenTitle">Bildirim Zamanı</string>
   <string name="textSettingsShowsNotificationsWhenSummary">Bölüm duyurularını ne zaman almak istersiniz?</string>
