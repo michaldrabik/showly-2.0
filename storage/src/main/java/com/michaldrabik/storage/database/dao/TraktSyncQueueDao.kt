@@ -14,5 +14,5 @@ interface TraktSyncQueueDao : BaseDao<TraktSyncQueue> {
   suspend fun getAll(types: List<String>): List<TraktSyncQueue>
 
   @Query("DELETE FROM trakt_sync_queue WHERE id_trakt IN (:idsTrakt) AND type = :type")
-  suspend fun deleteAll(idsTrakt: List<Long>, type: String)
+  suspend fun deleteAll(idsTrakt: List<Long>, type: String): Int
 }

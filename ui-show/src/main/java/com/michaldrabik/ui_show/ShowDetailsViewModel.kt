@@ -422,7 +422,10 @@ class ShowDetailsViewModel @Inject constructor(
             quickSyncManager.scheduleEpisodes(context, listOf(episode.ids.trakt.id))
           }
         }
-        else -> episodesManager.setEpisodeUnwatched(bundle)
+        else -> {
+          episodesManager.setEpisodeUnwatched(bundle)
+          quickSyncManager.clearEpisodes(listOf(episode.ids.trakt.id))
+        }
       }
       refreshWatchedEpisodes()
     }
@@ -438,7 +441,10 @@ class ShowDetailsViewModel @Inject constructor(
             quickSyncManager.scheduleEpisodes(context, episodesAdded.map { it.ids.trakt.id })
           }
         }
-        else -> episodesManager.setSeasonUnwatched(bundle)
+        else -> {
+          episodesManager.setSeasonUnwatched(bundle)
+          quickSyncManager.clearEpisodes(season.episodes.map { it.ids.trakt.id })
+        }
       }
       refreshWatchedEpisodes()
     }
