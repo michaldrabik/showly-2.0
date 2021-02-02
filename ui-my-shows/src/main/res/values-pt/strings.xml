@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuMyShows">Minhas séries</string>
+  <string name="menuMyShows">Minhas Séries</string>
   <string name="menuWatchlist">Interesses</string>
   <string name="menuArchive">Arquivos</string>
   <string name="textSearchForMyShows">Pesquisar…</string>
