@@ -5,8 +5,10 @@ import android.app.Application
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
+import android.net.NetworkCapabilities.NET_CAPABILITY_NOT_VPN
 import android.net.NetworkCapabilities.TRANSPORT_CELLULAR
 import android.net.NetworkCapabilities.TRANSPORT_ETHERNET
+import android.net.NetworkCapabilities.TRANSPORT_VPN
 import android.net.NetworkCapabilities.TRANSPORT_WIFI
 import android.net.NetworkRequest
 import android.os.Build
@@ -30,7 +32,9 @@ class NetworkMonitorCallbacks(
       .addTransportType(TRANSPORT_WIFI)
       .addTransportType(TRANSPORT_CELLULAR)
       .addTransportType(TRANSPORT_ETHERNET)
+      .addTransportType(TRANSPORT_VPN)
       .addCapability(NET_CAPABILITY_INTERNET)
+      .removeCapability(NET_CAPABILITY_NOT_VPN)
       .build()
 
     connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
