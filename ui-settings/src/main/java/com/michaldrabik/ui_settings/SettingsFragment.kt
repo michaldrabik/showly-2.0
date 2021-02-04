@@ -27,6 +27,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection.FINISHED
@@ -68,6 +69,10 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsTwitterIcon.onClick { openWebUrl(Config.TWITTER_URL) }
     settingsTraktIcon.onClick { openWebUrl(Config.TRAKT_URL) }
     settingsTmdbIcon.onClick { openWebUrl(Config.TMDB_URL) }
+    settingsVersion.setOnLongClickListener {
+      settingsUserId.visible()
+      true
+    }
     settingsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
       view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
     }
@@ -109,6 +114,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         }
         settingsTraktAuthorizeSummary.text = summaryText
       }
+      userId?.let { settingsUserId.text = it }
       restartApp?.let { if (it) restartApp() }
     }
   }

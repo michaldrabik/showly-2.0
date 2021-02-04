@@ -14,6 +14,7 @@ data class SettingsUiModel(
   val isSignedInTrakt: Boolean? = null,
   val isSigningIn: Boolean? = null,
   val traktUsername: String? = null,
+  val userId: String? = null,
   val moviesEnabled: Boolean? = null,
   val restartApp: Boolean? = null
 ) : UiModel() {
@@ -27,6 +28,7 @@ data class SettingsUiModel(
       isSignedInTrakt = newModel.isSignedInTrakt ?: isSignedInTrakt,
       isSigningIn = newModel.isSigningIn ?: isSigningIn,
       traktUsername = newModel.traktUsername ?: traktUsername,
+      userId = newModel.userId ?: userId,
       moviesEnabled = newModel.moviesEnabled ?: moviesEnabled,
       restartApp = newModel.restartApp ?: restartApp
     )

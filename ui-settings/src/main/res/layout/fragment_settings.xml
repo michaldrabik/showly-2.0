@@ -11,7 +11,7 @@
   android:overScrollMode="never"
   android:scrollbars="none"
   tools:background="@color/colorBackground"
-  tools:layout_marginTop="-200dp"
+  tools:layout_marginTop="-20000dp"
   tools:theme="@style/AppTheme"
   >
 
@@ -716,13 +716,26 @@
     <TextView
       android:id="@+id/settingsVersion"
       style="@style/Settings.Summary"
-      android:layout_marginBottom="@dimen/spaceBig"
       android:textColor="?android:attr/textColorPrimary"
-      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintBottom_toTopOf="@id/settingsUserId"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsTraktIcon"
+      app:layout_goneMarginBottom="@dimen/spaceBig"
       tools:text="Version: 1.1.3"
+      />
+
+    <TextView
+      android:id="@+id/settingsUserId"
+      style="@style/Settings.Summary"
+      android:layout_marginBottom="@dimen/spaceBig"
+      android:textColor="?android:attr/textColorSecondary"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsVersion"
+      tools:text="xxxxxxxxx"
       />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

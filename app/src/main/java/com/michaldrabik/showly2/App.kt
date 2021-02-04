@@ -8,6 +8,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.StrictMode
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -110,6 +111,7 @@ class App :
     if (!settingsRepository.isInitialized()) {
       settingsRepository.update(Settings.createInitial())
     }
+    FirebaseCrashlytics.getInstance().setUserId(settingsRepository.getUserId())
   }
 
   private fun setupStrictMode() {

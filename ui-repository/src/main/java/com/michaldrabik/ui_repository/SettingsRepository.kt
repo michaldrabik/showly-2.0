@@ -10,6 +10,7 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_repository.mappers.Mappers
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -26,6 +27,7 @@ class SettingsRepository @Inject constructor(
     private const val KEY_MOVIES_ENABLED = "KEY_MOVIES_ENABLED"
     private const val KEY_MODE = "KEY_MOVIES_MODE"
     private const val KEY_DATE_FORMAT = "KEY_DATE_FORMAT"
+    private const val KEY_USER_ID = "KEY_USER_ID"
   }
 
   suspend fun isInitialized() =
@@ -67,6 +69,16 @@ class SettingsRepository @Inject constructor(
   fun getDateFormat() = miscPreferences.getString(KEY_DATE_FORMAT, DEFAULT_DATE_FORMAT) ?: DEFAULT_DATE_FORMAT
 
   fun setDateFormat(format: String) = miscPreferences.edit().putString(KEY_DATE_FORMAT, format).apply()
+
+  fun getUserId() =
+    when (val id = miscPreferences.getString(KEY_USER_ID, null)) {
+      null -> {
+        val uuid = UUID.randomUUID().toString().take(13)
+        miscPreferences.edit().putString(KEY_USER_ID, uuid).apply()
+        uuid
+      }
+      else -> id
+    }
 
   suspend fun clearLanguageLogs() {
     database.withTransaction {

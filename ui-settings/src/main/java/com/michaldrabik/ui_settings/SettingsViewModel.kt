@@ -214,6 +214,7 @@ class SettingsViewModel @Inject constructor(
       moviesEnabled = mainCase.isMoviesEnabled(),
       isSignedInTrakt = traktCase.isTraktAuthorized(),
       traktUsername = traktCase.getTraktUsername(),
+      userId = mainCase.getUserId(),
       restartApp = restartApp
     )
   }
