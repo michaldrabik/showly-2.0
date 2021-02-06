@@ -32,11 +32,12 @@ class ProgressViewModel @Inject constructor(
   fun loadProgress(resetScroll: Boolean = false) {
     viewModelScope.launch {
       val shows = loadItemsCase.loadMyShows()
+      val dateFormat = loadItemsCase.loadDateFormat()
       val items = shows.map { show ->
         async {
           val item = loadItemsCase.loadProgressItem(show)
           val image = imagesProvider.findCachedImage(show, ImageType.POSTER)
-          item.copy(image = image)
+          item.copy(image = image, dateFormat = dateFormat)
         }
       }.awaitAll()
 

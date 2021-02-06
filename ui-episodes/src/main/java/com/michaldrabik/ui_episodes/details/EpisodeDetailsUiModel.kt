@@ -6,6 +6,7 @@ import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Translation
+import org.threeten.bp.format.DateTimeFormatter
 
 data class EpisodeDetailsUiModel(
   val image: Image? = null,
@@ -14,7 +15,9 @@ data class EpisodeDetailsUiModel(
   val commentsLoading: Boolean? = null,
   val ratingState: RatingState? = null,
   val ratingChanged: ActionEvent<Boolean>? = null,
-  val translation: ActionEvent<Translation>? = null
+  val translation: ActionEvent<Translation>? = null,
+  val dateFormat: DateTimeFormatter? = null,
+  val commentsDateFormat: DateTimeFormatter? = null,
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -25,6 +28,8 @@ data class EpisodeDetailsUiModel(
       commentsLoading = newModel.commentsLoading ?: commentsLoading,
       translation = newModel.translation ?: translation,
       ratingChanged = newModel.ratingChanged ?: ratingChanged,
+      dateFormat = newModel.dateFormat ?: dateFormat,
+      commentsDateFormat = newModel.commentsDateFormat ?: commentsDateFormat,
       ratingState = newModel.ratingState?.copy(
         rateLoading = newModel.ratingState.rateLoading ?: ratingState?.rateLoading,
         rateAllowed = newModel.ratingState.rateAllowed ?: ratingState?.rateAllowed,

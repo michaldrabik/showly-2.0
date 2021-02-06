@@ -29,6 +29,7 @@
   <string name="textSettingsMyShowsLanguageSummary">Le descrizioni e i titoli verranno tradotti quando possibile. L\'app verrà riavviata.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Statistiche Archiviate</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Includi le serie TV archiviate nelle statistiche.</string>
+  <string name="textSettingsDateFormatTitle">Formato data / ora</string>
   <string name="textSettingsIncludeSpecialsTitle">Stagioni Speciali</string>
   <string name="textSettingsIncludeSpecialsSummary">Mostra le stagioni \'Speciali\' nei dettagli della serie TV.</string>
   <string name="textSettingsNotifications">Notifiche</string>

@@ -5,6 +5,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.EpisodeImagesProvider
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -24,12 +25,17 @@ import javax.inject.Inject
 
 class EpisodeDetailsViewModel @Inject constructor(
   private val imagesProvider: EpisodeImagesProvider,
+  private val dateFormatProvider: DateFormatProvider,
   private val ratingsRepository: RatingsRepository,
   private val translationsRepository: TranslationsRepository,
   private val userTraktManager: UserTraktManager,
   private val mappers: Mappers,
   private val cloud: Cloud
 ) : BaseViewModel<EpisodeDetailsUiModel>() {
+
+  init {
+    uiState = EpisodeDetailsUiModel(dateFormat = dateFormatProvider.loadFullHourFormat())
+  }
 
   fun loadImage(showId: IdTmdb, episode: Episode) {
     viewModelScope.launch {
@@ -62,11 +68,17 @@ class EpisodeDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         uiState = EpisodeDetailsUiModel(commentsLoading = true)
+
         val comments = cloud.traktApi.fetchEpisodeComments(idTrakt.id, season, episode)
           .map { mappers.comment.fromNetwork(it) }
           .filter { it.parentId <= 0 }
           .sortedByDescending { it.id }
-        uiState = EpisodeDetailsUiModel(comments = comments, commentsLoading = false)
+
+        uiState = EpisodeDetailsUiModel(
+          comments = comments,
+          commentsLoading = false,
+          commentsDateFormat = dateFormatProvider.loadShortDayFormat()
+        )
       } catch (t: Throwable) {
         Timber.w("Failed to load comments. ${t.message}")
         uiState = EpisodeDetailsUiModel(commentsLoading = false)

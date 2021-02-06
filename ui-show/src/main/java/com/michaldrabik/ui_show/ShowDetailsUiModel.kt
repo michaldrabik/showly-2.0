@@ -12,6 +12,7 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
+import org.threeten.bp.format.DateTimeFormatter
 
 data class ShowDetailsUiModel(
   val show: Show? = null,
@@ -31,6 +32,8 @@ data class ShowDetailsUiModel(
   val seasonTranslation: ActionEvent<SeasonListItem>? = null,
   val country: AppCountry? = null,
   val isPremium: Boolean? = null
+  val dateFormat: DateTimeFormatter? = null,
+  val commentsDateFormat: DateTimeFormatter? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -51,6 +54,8 @@ data class ShowDetailsUiModel(
       seasonTranslation = newModel.seasonTranslation ?: seasonTranslation,
       country = newModel.country ?: country,
       isPremium = newModel.isPremium ?: isPremium,
+      dateFormat = newModel.dateFormat ?: dateFormat,
+      commentsDateFormat = newModel.commentsDateFormat ?: commentsDateFormat,
       ratingState = newModel.ratingState?.copy(
         rateLoading = newModel.ratingState.rateLoading ?: ratingState?.rateLoading,
         rateAllowed = newModel.ratingState.rateAllowed ?: ratingState?.rateAllowed,

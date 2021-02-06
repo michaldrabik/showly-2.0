@@ -93,6 +93,17 @@ class QuickSyncManager @Inject constructor(
     QuickSyncWorker.schedule(context)
   }
 
+  suspend fun clearEpisodes(episodesIds: List<Long>) {
+    val settings = settingsRepository.load()
+    if (!settings.traktQuickSyncEnabled) {
+      Timber.d("Quick Sync is disabled. Skipping...")
+      return
+    }
+
+    val count = database.traktSyncQueueDao().deleteAll(episodesIds, TraktSyncQueue.Type.EPISODE.slug)
+    Timber.d("Episodes removed from sync queue. Count: $count")
+  }
+
   suspend fun clearMovies(moviesIds: List<Long>) {
     val settings = settingsRepository.load()
     if (!settings.traktQuickSyncEnabled) {

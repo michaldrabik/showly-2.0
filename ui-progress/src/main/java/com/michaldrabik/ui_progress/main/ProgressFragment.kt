@@ -94,12 +94,17 @@ class ProgressFragment :
       isClickable = false
       onClick { enterSearch() }
       onSettingsClickListener = { openSettings() }
+      if (isTraktSyncing()) setTraktProgress(true)
     }
     progressPagerModeTabs.run {
       visibleIf(moviesEnabled)
       isEnabled = false
       onModeSelected = { mode = it }
       animateShows()
+    }
+    progressSearchView.traktIconVisible = true
+    progressSearchView.onTraktClickListener = {
+      navigateTo(R.id.actionProgressFragmentToTraktSyncFragment)
     }
 
     progressTabs.translationY = tabsTranslation
@@ -162,7 +167,6 @@ class ProgressFragment :
 
   fun openTraktSync() {
     navigateTo(R.id.actionProgressFragmentToTraktSyncFragment)
-    hideNavigation()
     saveUiTranslations()
   }
 
@@ -279,9 +283,7 @@ class ProgressFragment :
         progressSortIcon.animate().translationY(0F).setDuration(duration).start()
         requireView().postDelayed(
           {
-            childFragmentManager.fragments.forEach {
-              (it as? OnScrollResetListener)?.onScrollReset()
-            }
+            childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
           },
           duration
         )

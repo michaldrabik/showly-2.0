@@ -28,6 +28,7 @@ class UserTraktManager @Inject constructor(
   private var traktTokenTimestamp = 0L
 
   suspend fun checkAuthorization(): TraktAuthToken {
+    // TODO Check refreshing logic
     if (!isAuthorized()) {
       if (traktRefreshToken == null) throw TraktAuthError("Authorization needed")
       val tokens = cloud.traktApi.refreshAuthTokens(traktRefreshToken?.token!!)

@@ -28,8 +28,8 @@ import kotlin.math.abs
 class BottomMenuView : FrameLayout {
 
   companion object {
-    private const val SWIPE_MIN_THRESHOLD = 200F
-    private const val FADE_DELAY = 100L
+    private const val SWIPE_MIN_THRESHOLD = 150F
+    private const val FADE_DELAY = 150L
   }
 
   constructor(context: Context) : super(context)

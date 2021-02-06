@@ -110,6 +110,10 @@
     <item name="tint">?android:attr/textColorPrimary</item>
   </style>
 
+  <style name="AlertDialog.SmallText" parent="AlertDialog">
+    <item name="android:textSize">13sp</item>
+  </style>
+
   <!-- Other  -->
 
   <style name="ImageTitle">

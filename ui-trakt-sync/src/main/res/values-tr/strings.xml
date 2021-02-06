@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textTraktLoginSuccess">Başarılı bir şekilde yetkilendirdiniz.</string>
+  <string name="textTraktSyncStarted">Eşitleme başladı. Arka planda çalışmaya devam edecek.</string>
+  <string name="textTraktSyncStart">Şimdi Eşitle</string>
+  <string name="textTraktSyncSchedule">Zamanla</string>
+  <string name="textTraktSyncFromTraktToShowly">Trakt.tv hizmetinden Showly uygulamasına aktar</string>
+  <string name="textTraktSyncFromShowlyToTrakt">Showly uygulamasından Trakt.tv hizmetine aktar</string>
+  <string name="textTraktSyncDescription">Trakt.tv hesabınızın ilerleme ve istek listesi verilerini Showly ile eşitleyin.\n\nMevcut koleksiyonunuzdaki ögelerden hiçbiri silinmeyecek. Eşitleme, yalnızca koleksiyonlarınızdaki eksik ögeleri ele alır.</string>
+  <string name="textTraktSyncLastTimestamp">Son Eşitleme: %s</string>
+  <string name="textSettingsTraktAuthorizeTitle">Trakt.tv Yetkilendirmesi</string>
+  <string name="textSettingsScheduleImportConfirmationTitle">Anlık Eşitleme Etkinleştirildi</string>
+  <string name="textSettingsScheduleImportConfirmationMessage">\nAnlık Eşitleme zaten açık gibi görünüyor.\n\nHala otomatik eşitlemeyi programlamak istiyor musunuz?\n</string>
+</resources>

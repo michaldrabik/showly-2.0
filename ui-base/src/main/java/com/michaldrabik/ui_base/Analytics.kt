@@ -316,6 +316,12 @@ object Analytics {
     }
   }
 
+  fun logSettingsDateFormat(value: String) {
+    firebaseAnalytics.logEvent("settings_date_format") {
+      param("value", value.toLowerCase(ROOT))
+    }
+  }
+
   fun logSettingsMyShowsSection(section: MyShowsSection, enabled: Boolean) {
     firebaseAnalytics.logEvent("settings_my_shows_section") {
       param("section", section.name.toLowerCase(ROOT))

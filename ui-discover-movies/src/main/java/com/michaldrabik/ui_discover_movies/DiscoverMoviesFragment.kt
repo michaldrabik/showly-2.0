@@ -95,6 +95,7 @@ class DiscoverMoviesFragment :
       onClick { navigateToSearch() }
       onSortClickListener = { toggleFiltersView() }
       translationY = searchViewPosition
+      if (isTraktSyncing()) setTraktProgress(true)
     }
     discoverMoviesTabsView.run {
       translationY = tabsViewPosition

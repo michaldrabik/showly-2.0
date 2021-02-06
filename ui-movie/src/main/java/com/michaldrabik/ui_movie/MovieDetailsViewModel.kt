@@ -6,6 +6,7 @@ import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
+import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
@@ -49,7 +50,8 @@ class MovieDetailsViewModel @Inject constructor(
   private val userManager: UserTraktManager,
   private val quickSyncManager: QuickSyncManager,
   private val imagesProvider: MovieImagesProvider,
-  private val announcementManager: AnnouncementManager
+  private val dateFormatProvider: DateFormatProvider,
+  private val announcementManager: AnnouncementManager,
 ) : BaseViewModel<MovieDetailsUiModel>() {
 
   private var movie by notNull<Movie>()
@@ -80,7 +82,8 @@ class MovieDetailsViewModel @Inject constructor(
           followedState = followedState,
           ratingState = RatingState(rateAllowed = isSignedIn, rateLoading = false),
           country = AppCountry.fromCode(settingsRepository.country),
-          isPremium = settingsRepository.isPremium
+          isPremium = settingsRepository.isPremium,
+          dateFormat = dateFormatProvider.loadShortDayFormat()
         )
 
         loadBackgroundImage(movie)

@@ -5,6 +5,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Translation
+import org.threeten.bp.format.DateTimeFormatter
 
 data class ProgressMovieItem(
   override val movie: Movie,
@@ -12,7 +13,8 @@ data class ProgressMovieItem(
   override val isLoading: Boolean = false,
   val headerTextResId: Int? = null,
   val isPinned: Boolean = false,
-  val movieTranslation: Translation? = null
+  val movieTranslation: Translation? = null,
+  val dateFormat: DateTimeFormatter? = null
 ) : MovieListItem {
 
   fun isSameAs(other: ProgressMovieItem) =

@@ -5,19 +5,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_model.Comment
+import org.threeten.bp.format.DateTimeFormatter
 
 class CommentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   private val asyncDiffer = AsyncListDiffer(this, CommentItemDiffCallback())
+  private var dateFormat: DateTimeFormatter? = null
 
-  fun setItems(newItems: List<Comment>) = asyncDiffer.submitList(newItems)
+  fun setItems(newItems: List<Comment>, dateFormat: DateTimeFormatter?) {
+    this.dateFormat = dateFormat
+    asyncDiffer.submitList(newItems)
+  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     ViewHolderShow(CommentView(parent.context))
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]
-    (holder.itemView as CommentView).bind(item)
+    (holder.itemView as CommentView).bind(item, dateFormat)
   }
 
   override fun getItemCount() = asyncDiffer.currentList.size

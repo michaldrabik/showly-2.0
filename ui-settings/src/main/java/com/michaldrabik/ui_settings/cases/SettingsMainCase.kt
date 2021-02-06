@@ -8,6 +8,7 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.WidgetsProvider
+import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -166,6 +167,18 @@ class SettingsMainCase @Inject constructor(
   }
 
   fun isPremium() = settingsRepository.isPremium
+
+  fun setDateFormat(format: AppDateFormat, context: Context) {
+    settingsRepository.setDateFormat(format.name)
+    (context.applicationContext as WidgetsProvider).run {
+      requestShowsWidgetsUpdate()
+      requestMoviesWidgetsUpdate()
+    }
+  }
+
+  fun getDateFormat() = AppDateFormat.valueOf(settingsRepository.getDateFormat())
+
+  fun getUserId() = settingsRepository.getUserId()
 
   suspend fun deleteImagesCache() {
     showsImagesProvider.deleteLocalCache()

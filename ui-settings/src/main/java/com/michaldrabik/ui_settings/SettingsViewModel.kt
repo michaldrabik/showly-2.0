@@ -8,6 +8,7 @@ import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
+import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection
@@ -183,6 +184,14 @@ class SettingsViewModel @Inject constructor(
     Analytics.logSettingsCountry(country.code)
   }
 
+  fun setDateFormat(format: AppDateFormat, context: Context) {
+    viewModelScope.launch {
+      mainCase.setDateFormat(format, context)
+      refreshSettings()
+    }
+    Analytics.logSettingsDateFormat(format.name)
+  }
+
   fun setTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {
     viewModelScope.launch {
       traktCase.setTraktSyncSchedule(schedule, context)
@@ -238,10 +247,12 @@ class SettingsViewModel @Inject constructor(
       themeWidgets = themesCase.getWidgetsTheme(),
       widgetsTransparency = themesCase.getWidgetsTransparency(),
       country = mainCase.getCountry(),
+      dateFormat = mainCase.getDateFormat(),
       moviesEnabled = mainCase.isMoviesEnabled(),
       isSignedInTrakt = traktCase.isTraktAuthorized(),
       isPremium = mainCase.isPremium(),
       traktUsername = traktCase.getTraktUsername(),
+      userId = mainCase.getUserId(),
       restartApp = restartApp
     )
   }

@@ -11,6 +11,7 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
+import org.threeten.bp.format.DateTimeFormatter
 
 data class ProgressItem(
   override val show: Show,
@@ -25,7 +26,8 @@ data class ProgressItem(
   val isPinned: Boolean = false,
   val showTranslation: Translation? = null,
   val episodeTranslation: Translation? = null,
-  val upcomingEpisodeTranslation: Translation? = null
+  val upcomingEpisodeTranslation: Translation? = null,
+  val dateFormat: DateTimeFormatter? = null
 ) : ListItem {
 
   fun isSameAs(other: ProgressItem) =

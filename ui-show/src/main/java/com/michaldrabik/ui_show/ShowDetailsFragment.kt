@@ -36,8 +36,7 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
-import com.michaldrabik.common.extensions.toDisplayString
-import com.michaldrabik.common.extensions.toLocalTimeZone
+import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.AppCountry
@@ -106,6 +105,7 @@ import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import kotlinx.android.synthetic.main.view_links_menu.view.*
 import org.threeten.bp.Duration
+import org.threeten.bp.format.DateTimeFormatter
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
@@ -446,7 +446,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           else -> showDetailsAddButton.setState(ADD, it.withAnimation)
         }
       }
-      nextEpisode?.let { renderNextEpisode(it) }
+      nextEpisode?.let { renderNextEpisode(it, dateFormat) }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
       seasons?.let {
@@ -459,7 +459,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         item.consume()?.let { showDetailsEpisodesView.bindEpisodes(it.episodes, animate = false) }
       }
       relatedShows?.let { renderRelatedShows(it) }
-      comments?.let { showDetailsCommentsView.bind(it) }
+      comments?.let { showDetailsCommentsView.bind(it, commentsDateFormat) }
       ratingState?.let { renderRating(it) }
       showFromTraktLoading?.let {
         showDetailsRemoveTraktButton.isLoading = it
@@ -539,7 +539,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .into(showDetailsImage)
   }
 
-  private fun renderNextEpisode(episodeBundle: Pair<Show, Episode>) {
+  private fun renderNextEpisode(
+    episodeBundle: Pair<Show, Episode>,
+    dateFormat: DateTimeFormatter?
+  ) {
     episodeBundle.run {
       val (show, episode) = episodeBundle
       showDetailsEpisodeText.text =
@@ -550,7 +553,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
 
       episode.firstAired?.let {
-        val displayDate = it.toLocalTimeZone().toDisplayString()
+        val displayDate = dateFormat?.format(it.toLocalZone())?.capitalizeWords()
         showDetailsEpisodeAirtime.visible()
         showDetailsEpisodeAirtime.text = displayDate
       }
@@ -572,7 +575,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsSeasonsEmptyView.fadeIf(seasonsItems.isEmpty())
     showDetailsSeasonsProgress.gone()
     showDetailsAddButton.onQuickSetupClickListener = {
-      openQuickSetupDialog(seasonsItems.map { it.season })
+      if (seasonsItems.isNotEmpty()) {
+        openQuickSetupDialog(seasonsItems.map { it.season })
+      } else {
+        showSnack(MessageEvent.info(R.string.textSeasonsEmpty))
+      }
     }
   }
 

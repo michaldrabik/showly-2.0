@@ -7,8 +7,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.michaldrabik.common.extensions.toDisplayString
-import com.michaldrabik.common.extensions.toLocalTimeZone
+import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
@@ -54,7 +53,8 @@ class ProgressCalendarItemView : ShowView<ProgressItem> {
       if (item.showTranslation?.title.isNullOrBlank()) item.show.title
       else item.showTranslation?.title?.capitalizeWords()
 
-    progressCalendarItemDateText.text = item.upcomingEpisode.firstAired?.toLocalTimeZone()?.toDisplayString()
+    progressCalendarItemDateText.text =
+      item.upcomingEpisode.firstAired?.toLocalZone()?.let { item.dateFormat?.format(it)?.capitalizeWords() }
 
     val isNewSeason = item.upcomingEpisode.number == 1
     if (isNewSeason) {

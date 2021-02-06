@@ -23,6 +23,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
 
 class MyMoviesViewModel @Inject constructor(
@@ -33,11 +34,12 @@ class MyMoviesViewModel @Inject constructor(
   fun loadMovies(notifyListsUpdate: Boolean = false) {
     viewModelScope.launch {
       val settings = loadMoviesCase.loadSettings()
-      val movies = loadMoviesCase.loadAll().map { toListItemAsync(ALL_MOVIES_ITEM, it) }.awaitAll()
+      val dateFormat = loadMoviesCase.loadDateFormat()
+      val movies = loadMoviesCase.loadAll().map { toListItemAsync(ALL_MOVIES_ITEM, it, dateFormat) }.awaitAll()
 
       val allMovies = loadMoviesCase.filterSectionMovies(movies, ALL)
       val recentMovies = if (settings.myMoviesRecentIsEnabled) {
-        loadMoviesCase.loadRecentMovies().map { toListItemAsync(RECENT_MOVIE, it, ImageType.FANART) }.awaitAll()
+        loadMoviesCase.loadRecentMovies().map { toListItemAsync(RECENT_MOVIE, it, dateFormat, ImageType.FANART) }.awaitAll()
       } else {
         emptyList()
       }
@@ -111,10 +113,11 @@ class MyMoviesViewModel @Inject constructor(
   private fun CoroutineScope.toListItemAsync(
     itemType: Type,
     movie: Movie,
+    dateFormat: DateTimeFormatter,
     type: ImageType = POSTER
   ) = async {
     val image = loadMoviesCase.findCachedImage(movie, type)
     val translation = loadMoviesCase.loadTranslation(movie, true)
-    MyMoviesItem(itemType, null, null, null, movie, image, false, translation)
+    MyMoviesItem(itemType, null, null, null, movie, image, false, translation, null, dateFormat)
   }
 }

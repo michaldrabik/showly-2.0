@@ -16,15 +16,20 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.MY_SHOWS_RECENTS_OPTIONS
+import com.michaldrabik.common.extensions.nowUtc
+import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
+import com.michaldrabik.ui_base.dates.AppDateFormat
+import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection.FINISHED
@@ -69,6 +74,10 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsTwitterIcon.onClick { openWebUrl(Config.TWITTER_URL) }
     settingsTraktIcon.onClick { openWebUrl(Config.TRAKT_URL) }
     settingsTmdbIcon.onClick { openWebUrl(Config.TMDB_URL) }
+    settingsVersion.setOnLongClickListener {
+      settingsUserId.visible()
+      true
+    }
     settingsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
       view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
     }
@@ -82,14 +91,13 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun render(uiModel: SettingsUiModel) {
     uiModel.run {
-      settings?.let {
-        renderSettings(it, moviesEnabled ?: true)
-      }
+      settings?.let { renderSettings(it, moviesEnabled ?: true) }
       language?.let { renderLanguage(it) }
       theme?.let { renderTheme(it) }
       themeWidgets?.let { renderWidgetsTheme(it) }
       widgetsTransparency?.let { renderWidgetsTransparency(it) }
       country?.let { renderCountry(it) }
+      dateFormat?.let { renderDateFormat(it) }
       isSigningIn?.let { settingsTraktAuthorizeProgress.visibleIf(it) }
       isSignedInTrakt?.let { isSignedIn ->
         settingsTraktSync.visibleIf(isSignedIn)
@@ -150,6 +158,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
           if (!isPremium) navigateTo(R.id.actionSettingsFragmentToPremium)
         }
       }
+      userId?.let { settingsUserId.text = it }
       restartApp?.let { if (it) restartApp() }
     }
   }
@@ -269,6 +278,13 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     }
   }
 
+  private fun renderDateFormat(format: AppDateFormat) {
+    settingsDateFormat.run {
+      settingsDateFormatValue.text = DateFormatProvider.loadSettingsFormat(format).format(nowUtc().toLocalZone())
+      onClick { showDateFormatDialog(format) }
+    }
+  }
+
   private fun showQuickSyncConfirmationDialog() {
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
       .setTitle(R.string.textSettingsQuickSyncConfirmationTitle)
@@ -353,6 +369,26 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       .setSingleChoiceItems(options.map { it.displayName }.toTypedArray(), selected) { dialog, index ->
         if (index != selected) {
           viewModel.setCountry(options[index])
+        }
+        dialog.dismiss()
+      }
+      .show()
+  }
+
+  private fun showDateFormatDialog(format: AppDateFormat) {
+    val options = AppDateFormat.values()
+    val selected = options.indexOf(format)
+
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog_SmallText)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setSingleChoiceItems(
+        options.map {
+          DateFormatProvider.loadSettingsFormat(it).format(nowUtc().toLocalZone())
+        }.toTypedArray(),
+        selected
+      ) { dialog, index ->
+        if (index != selected) {
+          viewModel.setDateFormat(options[index], requireAppContext())
         }
         dialog.dismiss()
       }

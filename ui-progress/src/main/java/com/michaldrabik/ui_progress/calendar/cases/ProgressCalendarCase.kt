@@ -3,7 +3,7 @@ package com.michaldrabik.ui_progress.calendar.cases
 import androidx.annotation.StringRes
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
-import com.michaldrabik.common.extensions.toLocalTimeZone
+import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
@@ -21,11 +21,11 @@ import javax.inject.Inject
 class ProgressCalendarCase @Inject constructor() {
 
   fun prepareItems(items: List<ProgressItem>): List<ProgressItem> {
-    val today = nowUtc().toLocalTimeZone()
+    val today = nowUtc().toLocalZone()
     val calendarItems = items
       .filter { it.upcomingEpisode != Episode.EMPTY }
       .filter {
-        val airTime = it.upcomingEpisode.firstAired?.toLocalTimeZone()
+        val airTime = it.upcomingEpisode.firstAired?.toLocalZone()
         airTime != null && (airTime.truncatedTo(DAYS) == today.truncatedTo(DAYS) || airTime.isAfter(today))
       }
       .sortedBy { it.upcomingEpisode.firstAired }
@@ -35,14 +35,14 @@ class ProgressCalendarCase @Inject constructor() {
   }
 
   private fun groupByTime(items: MutableList<ProgressItem>): List<ProgressItem> {
-    val today = nowUtc().toLocalTimeZone()
+    val today = nowUtc().toLocalZone()
     val nextWeekStart = today.plusDays(((DayOfWeek.SUNDAY.value - today.dayOfWeek.value) + 1L))
 
     val timeMap = mutableMapOf<Section, MutableList<ProgressItem>>()
     val sectionsList = mutableListOf<ProgressItem>()
 
     items.forEach { item ->
-      val time = item.upcomingEpisode.firstAired!!.toLocalTimeZone()
+      val time = item.upcomingEpisode.firstAired!!.toLocalZone()
       when {
         time.dayOfYear == today.dayOfYear ->
           timeMap.getOrPut(TODAY, { mutableListOf() }).add(item)

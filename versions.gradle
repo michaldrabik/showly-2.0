@@ -1,13 +1,13 @@
 ext.versions = [
-    versionCode            : 280,
-    versionName            : '2.7.0',
+    versionCode            : 285,
+    versionName            : '2.7.1',
 
     minSdk                 : 21,
     compileSdk             : 29,
 
     kotlin                 : '1.4.21',
     kotlinCoroutines       : '1.4.1',
-    gradleBuildTools       : '4.1.1',
+    gradleBuildTools       : '4.1.2',
 
     androidAppCompat       : '1.2.0',
     androidBilling         : '3.0.2',

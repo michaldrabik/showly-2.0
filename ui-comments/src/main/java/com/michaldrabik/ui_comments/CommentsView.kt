@@ -12,6 +12,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Comment
 import kotlinx.android.synthetic.main.view_comments.view.*
+import org.threeten.bp.format.DateTimeFormatter
 
 class CommentsView : ConstraintLayout {
 
@@ -20,6 +21,7 @@ class CommentsView : ConstraintLayout {
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   private val commentsAdapter by lazy { CommentsAdapter() }
+  private var dateFormat: DateTimeFormatter? = null
 
   init {
     inflate(context, R.layout.view_comments, this)
@@ -27,16 +29,17 @@ class CommentsView : ConstraintLayout {
     setupRecycler()
   }
 
-  fun bind(comments: List<Comment>) {
+  fun bind(comments: List<Comment>, dateFormat: DateTimeFormatter?) {
+    this.dateFormat = dateFormat
     commentsProgress.gone()
     commentsEmpty.visibleIf(comments.isEmpty())
-    commentsAdapter.setItems(comments)
+    commentsAdapter.setItems(comments, dateFormat)
   }
 
   fun clear() {
     commentsProgress.visible()
     commentsEmpty.gone()
-    commentsAdapter.setItems(emptyList())
+    commentsAdapter.setItems(emptyList(), dateFormat)
   }
 
   private fun setupRecycler() {

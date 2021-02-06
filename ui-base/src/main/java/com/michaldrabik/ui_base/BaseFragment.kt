@@ -8,6 +8,7 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.michaldrabik.common.Mode
+import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.di.DaggerViewModelFactory
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type.ERROR
@@ -18,7 +19,6 @@ import com.michaldrabik.ui_base.utilities.TipsHost
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_model.Tip
-import timber.log.Timber
 import javax.inject.Inject
 
 abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLayoutId: Int) :
@@ -64,13 +64,9 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
 
   override fun showTip(tip: Tip) = (requireActivity() as TipsHost).showTip(tip)
 
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    Timber.d("onViewCreated ${javaClass.simpleName}")
-  }
+  protected fun isTraktSyncing() = (requireAppContext() as OnTraktSyncListener).isTraktSyncActive()
 
   override fun onDestroyView() {
-    Timber.d("onDestroyView ${javaClass.simpleName}")
     animations.forEach { it?.cancel() }
     animations.clear()
     super.onDestroyView()

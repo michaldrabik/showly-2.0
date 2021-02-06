@@ -25,7 +25,7 @@ abstract class BaseActivity : AppCompatActivity() {
     EXTRA_MOVIE_ID
   )
 
-  fun findNavHostFragment() = supportFragmentManager.findFragmentById(R.id.navigationHost) as NavHostFragment
+  protected fun findNavHostFragment() = supportFragmentManager.findFragmentById(R.id.navigationHost) as NavHostFragment
 
   fun handleNotification(extras: Bundle?, action: () -> Unit = {}) {
     if (extras == null) return

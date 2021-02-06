@@ -5,12 +5,14 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.room.withTransaction
 import com.michaldrabik.common.Config.DEFAULT_COUNTRY
+import com.michaldrabik.common.Config.DEFAULT_DATE_FORMAT
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_repository.mappers.Mappers
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -30,6 +32,8 @@ class SettingsRepository @Inject constructor(
     private const val KEY_THEME_WIDGET = "KEY_THEME_WIDGET"
     private const val KEY_THEME_WIDGET_TRANSPARENT = "KEY_THEME_WIDGET_TRANSPARENT"
     private const val KEY_PREMIUM = "KEY_PREMIUM"
+    private const val KEY_DATE_FORMAT = "KEY_DATE_FORMAT"
+    private const val KEY_USER_ID = "KEY_USER_ID"
   }
 
   suspend fun isInitialized() =
@@ -99,6 +103,20 @@ class SettingsRepository @Inject constructor(
     widgetsTheme = MODE_NIGHT_YES
     widgetsTransparency = 100
   }
+
+  fun getDateFormat() = miscPreferences.getString(KEY_DATE_FORMAT, DEFAULT_DATE_FORMAT) ?: DEFAULT_DATE_FORMAT
+
+  fun setDateFormat(format: String) = miscPreferences.edit().putString(KEY_DATE_FORMAT, format).apply()
+
+  fun getUserId() =
+    when (val id = miscPreferences.getString(KEY_USER_ID, null)) {
+      null -> {
+        val uuid = UUID.randomUUID().toString().take(13)
+        miscPreferences.edit().putString(KEY_USER_ID, uuid).apply()
+        uuid
+      }
+      else -> id
+    }
 
   suspend fun clearLanguageLogs() {
     database.withTransaction {

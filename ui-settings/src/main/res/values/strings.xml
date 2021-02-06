@@ -38,6 +38,7 @@
   <string name="textSettingsMyShowsLanguageSummary">Descriptions and titles will be translated when available. App will restart.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Archived Statistics</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Include archived shows data in the statistics.</string>
+  <string name="textSettingsDateFormatTitle">Date / Time Format</string>
   <string name="textSettingsIncludeSpecialsTitle">Special Seasons</string>
   <string name="textSettingsIncludeSpecialsSummary">Display \'Special\' seasons in show\'s details screen.</string>
   <string name="textSettingsNotifications">Notifications</string>
@@ -68,6 +69,8 @@
   <string name="textLanguageSpanish" translatable="false">Español</string>
   <string name="textLanguageItalian" translatable="false">Italiano</string>
   <string name="textLanguageFrench" translatable="false">Français</string>
+  <string name="textLanguagePortugalBrasil" translatable="false">Português brasileiro</string>
+  <string name="textLanguageTurkish" translatable="false">Türkçe</string>
   <string name="textLanguageGerman" translatable="false">Deutsche</string>
 
   <string name="textThemeDark">Dark</string>

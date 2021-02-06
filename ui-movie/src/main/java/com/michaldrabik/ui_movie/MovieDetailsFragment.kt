@@ -35,7 +35,6 @@ import com.google.android.material.transition.platform.MaterialContainerTransfor
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
-import com.michaldrabik.common.extensions.toDayDisplayString
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.AppCountry
@@ -314,9 +313,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         movieDetailsTitle.text = movie.title
         movieDetailsDescription.setTextIfEmpty(if (movie.overview.isNotBlank()) movie.overview else getString(R.string.textNoDescription))
         movieDetailsStatus.text = getString(movie.status.displayName)
+
         val releaseDate =
-          if (movie.released != null) String.format(ENGLISH, "%s", movie.released?.toDayDisplayString())
+          if (movie.released != null) String.format(ENGLISH, "%s", dateFormat?.format(movie.released)?.capitalizeWords())
           else movie.year.toString()
+
         val country = if (movie.country.isNotBlank()) String.format(ENGLISH, "(%s)", movie.country) else ""
         movieDetailsExtraInfo.text = getString(
           R.string.textMovieExtraInfo,
@@ -372,7 +373,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       translation?.let { renderTranslation(it) }
       relatedMovies?.let { renderRelatedMovies(it) }
       comments?.let {
-        movieDetailsCommentsView.bind(it)
+        movieDetailsCommentsView.bind(it, dateFormat)
       }
       ratingState?.let { renderRating(it) }
       showFromTraktLoading?.let {

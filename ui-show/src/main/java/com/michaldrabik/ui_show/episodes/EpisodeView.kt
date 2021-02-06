@@ -5,9 +5,9 @@ import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.michaldrabik.common.extensions.toDisplayString
-import com.michaldrabik.common.extensions.toLocalTimeZone
+import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -61,8 +61,8 @@ class EpisodeView : ConstraintLayout {
         itemCheckedListener(item.episode, isChecked)
       }
     } else {
-      val date = item.episode.firstAired?.toLocalTimeZone()
-      val displayDate = date?.toDisplayString() ?: context.getString(R.string.textTba)
+      val date = item.episode.firstAired?.toLocalZone()
+      val displayDate = date?.let { item.dateFormat?.format(it)?.capitalizeWords() } ?: context.getString(R.string.textTba)
       episodeTitle.text = String.format(ENGLISH, context.getString(R.string.textEpisodeDate), item.episode.number, displayDate)
     }
 

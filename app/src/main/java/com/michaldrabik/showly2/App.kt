@@ -8,6 +8,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
 import android.os.StrictMode
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import com.google.firebase.messaging.FirebaseMessaging
 import com.jakewharton.processphoenix.ProcessPhoenix
@@ -21,6 +22,7 @@ import com.michaldrabik.showly2.di.module.PreferencesModule
 import com.michaldrabik.showly2.utilities.NetworkMonitorCallbacks
 import com.michaldrabik.storage.di.DaggerStorageComponent
 import com.michaldrabik.storage.di.StorageModule
+import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.di.UiBaseComponentProvider
@@ -46,12 +48,14 @@ class App :
   UiBaseComponentProvider,
   UiWidgetsComponentProvider,
   OnlineStatusProvider,
-  WidgetsProvider {
+  WidgetsProvider,
+  OnTraktSyncListener {
 
   @Inject lateinit var settingsRepository: SettingsRepository
-  lateinit var appComponent: AppComponent
 
   var isAppOnline = true
+  lateinit var appComponent: AppComponent
+  private var isSyncRunning = false
 
   private val activityCallbacks by lazy {
     listOf(
@@ -82,6 +86,7 @@ class App :
       if (!settingsRepository.isInitialized()) {
         settingsRepository.update(Settings.createInitial())
       }
+      FirebaseCrashlytics.getInstance().setUserId(settingsRepository.getUserId())
     }
 
     fun setupLanguage() {
@@ -161,6 +166,10 @@ class App :
 
   override fun provideBaseComponent() = appComponent.uiBaseComponent().create()
   override fun provideWidgetsComponent() = appComponent.uiWidgetsComponent().create()
+
+  override fun onTraktSyncProgress() = run { isSyncRunning = true }
+  override fun onTraktSyncComplete() = run { isSyncRunning = false }
+  override fun isTraktSyncActive() = isSyncRunning
 }
 
 fun Context.connectivityManager() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
