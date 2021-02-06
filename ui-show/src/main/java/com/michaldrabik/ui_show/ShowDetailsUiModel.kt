@@ -31,7 +31,7 @@ data class ShowDetailsUiModel(
   val translation: Translation? = null,
   val seasonTranslation: ActionEvent<SeasonListItem>? = null,
   val country: AppCountry? = null,
-  val isPremium: Boolean? = null
+  val isPremium: Boolean? = null,
   val dateFormat: DateTimeFormatter? = null,
   val commentsDateFormat: DateTimeFormatter? = null
 ) : UiModel() {

@@ -26,7 +26,7 @@ data class MovieDetailsUiModel(
   val showFromTraktLoading: Boolean? = null,
   val translation: Translation? = null,
   val country: AppCountry? = null,
-  val dateFormat: DateTimeFormatter? = null
+  val dateFormat: DateTimeFormatter? = null,
   val isPremium: Boolean? = null
 ) : UiModel() {
 
