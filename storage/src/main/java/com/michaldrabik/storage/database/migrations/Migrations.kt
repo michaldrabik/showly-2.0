@@ -320,9 +320,8 @@ object Migrations {
         execSQL("ALTER TABLE shows ADD COLUMN created_at INTEGER NOT NULL DEFAULT -1")
         val cursor = database.query("SELECT id_trakt, updated_at FROM shows")
         while (cursor.moveToNext()) {
-          val id = cursor.getColumnIndexOrThrow("id_trakt")
-          val updatedAtIndex = cursor.getColumnIndexOrThrow("updated_at")
-          val updatedAt = cursor.getLong(updatedAtIndex)
+          val id = cursor.getLong(cursor.getColumnIndexOrThrow("id_trakt"))
+          val updatedAt = cursor.getLong(cursor.getColumnIndexOrThrow("updated_at"))
           execSQL("UPDATE shows SET created_at = $updatedAt WHERE id_trakt == $id")
         }
       }
