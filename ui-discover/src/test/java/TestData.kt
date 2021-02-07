@@ -44,6 +44,7 @@ object TestData {
       commentCount = 0,
       genres = listOf(),
       airedEpisodes = 0,
+      createdAt = 0,
       updatedAt = 0
     ),
     image = Image(
