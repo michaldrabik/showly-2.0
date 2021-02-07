@@ -19,7 +19,7 @@ interface MyMoviesDao {
   )
   suspend fun getAll(ids: List<Long>): List<Movie>
 
-  @Query("SELECT movies.* FROM movies INNER JOIN movies_my_movies USING(id_trakt) ORDER BY id DESC LIMIT :limit")
+  @Query("SELECT movies.* FROM movies INNER JOIN movies_my_movies USING(id_trakt) ORDER BY movies_my_movies.updated_at DESC LIMIT :limit")
   suspend fun getAllRecent(limit: Int): List<Movie>
 
   @Query("SELECT movies.id_trakt FROM movies INNER JOIN movies_my_movies USING(id_trakt)")
