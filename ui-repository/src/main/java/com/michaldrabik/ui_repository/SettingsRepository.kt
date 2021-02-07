@@ -95,21 +95,12 @@ class SettingsRepository @Inject constructor(
     }
     set(value) = miscPreferences.edit(true) { putInt(KEY_THEME_WIDGET_TRANSPARENT, value) }
 
-  suspend fun revokePremium() {
-    val settings = load()
-    update(settings.copy(traktQuickRateEnabled = false))
-    isPremium = false
-    theme = MODE_NIGHT_YES
-    widgetsTheme = MODE_NIGHT_YES
-    widgetsTransparency = 100
-  }
+  var dateFormat: String
+    get() = miscPreferences.getString(KEY_DATE_FORMAT, DEFAULT_DATE_FORMAT) ?: DEFAULT_DATE_FORMAT
+    set(value) = miscPreferences.edit(true) { putString(KEY_DATE_FORMAT, value) }
 
-  fun getDateFormat() = miscPreferences.getString(KEY_DATE_FORMAT, DEFAULT_DATE_FORMAT) ?: DEFAULT_DATE_FORMAT
-
-  fun setDateFormat(format: String) = miscPreferences.edit().putString(KEY_DATE_FORMAT, format).apply()
-
-  fun getUserId() =
-    when (val id = miscPreferences.getString(KEY_USER_ID, null)) {
+  val userId
+    get() = when (val id = miscPreferences.getString(KEY_USER_ID, null)) {
       null -> {
         val uuid = UUID.randomUUID().toString().take(13)
         miscPreferences.edit().putString(KEY_USER_ID, uuid).apply()
@@ -118,6 +109,15 @@ class SettingsRepository @Inject constructor(
       else -> id
     }
 
+  suspend fun revokePremium() {
+    val settings = load()
+    update(settings.copy(traktQuickRateEnabled = false))
+    isPremium = false
+    theme = MODE_NIGHT_YES
+    widgetsTheme = MODE_NIGHT_YES
+    widgetsTransparency = 100
+  }
+  
   suspend fun clearLanguageLogs() {
     database.withTransaction {
       database.translationsSyncLogDao().deleteAll()

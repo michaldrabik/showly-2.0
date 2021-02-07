@@ -169,16 +169,16 @@ class SettingsMainCase @Inject constructor(
   fun isPremium() = settingsRepository.isPremium
 
   fun setDateFormat(format: AppDateFormat, context: Context) {
-    settingsRepository.setDateFormat(format.name)
+    settingsRepository.dateFormat = format.name
     (context.applicationContext as WidgetsProvider).run {
       requestShowsWidgetsUpdate()
       requestMoviesWidgetsUpdate()
     }
   }
 
-  fun getDateFormat() = AppDateFormat.valueOf(settingsRepository.getDateFormat())
+  fun getDateFormat() = AppDateFormat.valueOf(settingsRepository.dateFormat)
 
-  fun getUserId() = settingsRepository.getUserId()
+  fun getUserId() = settingsRepository.userId
 
   suspend fun deleteImagesCache() {
     showsImagesProvider.deleteLocalCache()

@@ -33,6 +33,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.platform.MaterialContainerTransform
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
@@ -428,7 +429,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           }
         }
         showDetailsSeparator4.visible()
-        showDetailsCustomImagesLabel.visible()
+        showDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
         showDetailsCustomImagesLabel.onClick { showCustomImages(show.traktId, isPremium) }
         showDetailsAddButton.isEnabled = true
       }

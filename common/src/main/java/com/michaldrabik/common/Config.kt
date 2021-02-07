@@ -55,6 +55,7 @@ object Config {
 
   const val SHOW_TIPS = false
   const val SHOW_WHATS_NEW = true
+  const val SHOW_PREMIUM = false
   const val WHATS_NEW_TEXT =
     "* Added Turkish and Portuguese/Brazilian languages support.\n\n" +
       "* Added Trakt Sync shortcut in Progress tab toolbar.\n\n" +

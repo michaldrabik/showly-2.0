@@ -11,7 +11,7 @@
   android:overScrollMode="never"
   android:scrollbars="none"
   tools:background="@color/colorBackground"
-  tools:layout_marginTop="-20000dp"
+  tools:layout_marginTop="-0dp"
   tools:theme="@style/AppTheme"
   >
 

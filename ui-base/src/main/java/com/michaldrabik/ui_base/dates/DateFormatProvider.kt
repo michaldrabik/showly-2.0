@@ -43,7 +43,7 @@ class DateFormatProvider @Inject constructor(
   private val hourPattern6 by lazy { DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm (EEEE)") }
 
   fun loadShortDayFormat(): DateTimeFormatter =
-    when (valueOf(settingsRepository.getDateFormat())) {
+    when (valueOf(settingsRepository.dateFormat)) {
       DEFAULT_12 -> dayPattern1
       DEFAULT_24 -> dayPattern1
       TRAKT_12 -> dayPattern2
@@ -53,7 +53,7 @@ class DateFormatProvider @Inject constructor(
     }
 
   fun loadFullDayFormat(): DateTimeFormatter =
-    when (valueOf(settingsRepository.getDateFormat())) {
+    when (valueOf(settingsRepository.dateFormat)) {
       DEFAULT_12 -> dayPattern3
       DEFAULT_24 -> dayPattern3
       TRAKT_12 -> dayPattern4
@@ -63,7 +63,7 @@ class DateFormatProvider @Inject constructor(
     }
 
   fun loadFullHourFormat(): DateTimeFormatter =
-    when (valueOf(settingsRepository.getDateFormat())) {
+    when (valueOf(settingsRepository.dateFormat)) {
       DEFAULT_12 -> hourPattern1
       DEFAULT_24 -> hourPattern2
       TRAKT_12 -> hourPattern3

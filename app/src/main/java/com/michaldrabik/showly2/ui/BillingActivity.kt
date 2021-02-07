@@ -5,6 +5,7 @@ import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
 import com.jakewharton.processphoenix.ProcessPhoenix
+import com.michaldrabik.common.Config
 import com.michaldrabik.showly2.App
 import org.json.JSONObject
 import timber.log.Timber
@@ -27,7 +28,7 @@ abstract class BillingActivity : UpdateActivity() {
 
   override fun onResume() {
     super.onResume()
-    if (!settingsRepository.isPremium) return
+    if (!Config.SHOW_PREMIUM || !settingsRepository.isPremium) return
 
     billingClient.startConnection(object : BillingClientStateListener {
       override fun onBillingSetupFinished(billingResult: BillingResult) {

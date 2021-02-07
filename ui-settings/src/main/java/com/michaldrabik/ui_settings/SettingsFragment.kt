@@ -16,6 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.MY_SHOWS_RECENTS_OPTIONS
+import com.michaldrabik.common.Config.SHOW_PREMIUM
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.BaseFragment
@@ -68,6 +69,14 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun setupView() {
     settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
+    settingsTheme.visibleIf(SHOW_PREMIUM)
+    settingsThemeValue.visibleIf(SHOW_PREMIUM)
+    settingsWidgetsTheme.visibleIf(SHOW_PREMIUM)
+    settingsWidgetsThemeValue.visibleIf(SHOW_PREMIUM)
+    settingsWidgetsTransparency.visibleIf(SHOW_PREMIUM)
+    settingsWidgetsTransparencyValue.visibleIf(SHOW_PREMIUM)
+    settingsTraktQuickRate.visibleIf(SHOW_PREMIUM)
+    settingsTraktQuickRateSwitch.visibleIf(SHOW_PREMIUM)
     settingsPremium.onClick { navigateTo(R.id.actionSettingsFragmentToPremium) }
     settingsTraktSync.onClick { navigateTo(R.id.actionSettingsFragmentToTraktSync) }
     settingsDeleteCache.onClick { viewModel.deleteImagesCache(requireAppContext()) }
@@ -105,8 +114,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         settingsTraktQuickSyncSwitch.visibleIf(isSignedIn)
         settingsTraktQuickRemove.visibleIf(isSignedIn)
         settingsTraktQuickRemoveSwitch.visibleIf(isSignedIn)
-        settingsTraktQuickRate.visibleIf(isSignedIn)
-        settingsTraktQuickRateSwitch.visibleIf(isSignedIn)
+        settingsTraktQuickRate.visibleIf(isSignedIn && SHOW_PREMIUM)
+        settingsTraktQuickRateSwitch.visibleIf(isSignedIn && SHOW_PREMIUM)
         settingsTraktAuthorizeIcon.visibleIf(isSignedIn)
         settingsTraktAuthorize.onClick {
           if (isSignedIn) showLogoutDialog()
@@ -126,7 +135,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         settingsTraktAuthorizeSummary.text = summaryText
       }
       isPremium?.let { isPremium ->
-        settingsPremium.visibleIf(!isPremium)
+        settingsPremium.visibleIf(!isPremium && SHOW_PREMIUM)
         listOf(
           settingsTraktQuickRate,
           settingsTraktQuickRateSwitch,
