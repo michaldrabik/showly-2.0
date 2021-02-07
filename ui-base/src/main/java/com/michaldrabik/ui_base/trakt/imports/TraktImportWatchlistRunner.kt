@@ -104,7 +104,7 @@ class TraktImportWatchlistRunner @Inject constructor(
               val show = mappers.show.fromNetwork(result.show!!)
               val showDb = mappers.show.toDatabase(show)
               database.showsDao().upsert(listOf(showDb))
-              database.watchlistShowsDao().insert(WatchlistShow.fromTraktId(showId, nowUtcMillis()))
+              database.watchlistShowsDao().insert(WatchlistShow.fromTraktId(showId, result.lastListedMillis()))
             }
           }
         } catch (error: Throwable) {

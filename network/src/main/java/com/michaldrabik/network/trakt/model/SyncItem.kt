@@ -8,7 +8,8 @@ data class SyncItem(
   val movie: Movie?,
   val seasons: List<Season>?,
   val last_watched_at: String?,
-  val last_updated_at: String?
+  val last_updated_at: String?,
+  val listed_at: String?
 ) {
 
   fun lastWatchedMillis() =
@@ -16,4 +17,7 @@ data class SyncItem(
 
   fun lastUpdateMillis() =
     (last_updated_at?.let { ZonedDateTime.parse(last_updated_at) } ?: ZonedDateTime.now(UTC)).toInstant().toEpochMilli()
+
+  fun lastListedMillis() =
+    (listed_at?.let { ZonedDateTime.parse(listed_at) } ?: ZonedDateTime.now(UTC)).toInstant().toEpochMilli()
 }

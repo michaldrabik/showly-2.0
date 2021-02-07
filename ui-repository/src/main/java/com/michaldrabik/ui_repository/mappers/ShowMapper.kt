@@ -36,6 +36,7 @@ class ShowMapper @Inject constructor(
     show.comment_count ?: -1,
     show.genres ?: emptyList(),
     show.aired_episodes ?: -1,
+    nowUtcMillis(),
     nowUtcMillis()
   )
 
@@ -83,6 +84,7 @@ class ShowMapper @Inject constructor(
     show.commentCount,
     show.genres.split(","),
     show.airedEpisodes,
+    show.createdAt,
     show.updatedAt
   )
 
@@ -112,6 +114,7 @@ class ShowMapper @Inject constructor(
     show.commentCount,
     show.genres.joinToString(","),
     show.airedEpisodes,
+    show.createdAt,
     nowUtcMillis()
   )
 }

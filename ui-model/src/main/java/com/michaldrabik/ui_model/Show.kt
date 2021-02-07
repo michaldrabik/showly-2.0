@@ -19,6 +19,7 @@ data class Show(
   val commentCount: Long,
   val genres: List<String>,
   val airedEpisodes: Int,
+  val createdAt: Long,
   val updatedAt: Long
 ) {
 
@@ -51,6 +52,7 @@ data class Show(
       commentCount = 0,
       genres = listOf(),
       airedEpisodes = 0,
+      createdAt = 0,
       updatedAt = 0
     )
   }

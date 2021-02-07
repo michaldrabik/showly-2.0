@@ -3,7 +3,7 @@ package com.michaldrabik.storage.database.migrations
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 21
+const val DATABASE_VERSION = 22
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 // TODO Split into separate files
@@ -314,6 +314,21 @@ object Migrations {
     }
   }
 
+  private val MIGRATION_22 = object : Migration(21, 22) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
+        execSQL("ALTER TABLE shows ADD COLUMN created_at INTEGER NOT NULL DEFAULT -1")
+        val cursor = database.query("SELECT id_trakt, updated_at FROM shows")
+        while (cursor.moveToNext()) {
+          val id = cursor.getColumnIndexOrThrow("id_trakt")
+          val updatedAtIndex = cursor.getColumnIndexOrThrow("updated_at")
+          val updatedAt = cursor.getLong(updatedAtIndex)
+          execSQL("UPDATE shows SET created_at = $updatedAt WHERE id_trakt == $id")
+        }
+      }
+    }
+  }
+
   val MIGRATIONS = listOf(
     MIGRATION_2,
     MIGRATION_3,
@@ -334,6 +349,7 @@ object Migrations {
     MIGRATION_18,
     MIGRATION_19,
     MIGRATION_20,
-    MIGRATION_21
+    MIGRATION_21,
+    MIGRATION_22
   )
 }

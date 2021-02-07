@@ -131,7 +131,7 @@ class TraktImportWatchedRunner @Inject constructor(
               val showDb = mappers.show.toDatabase(show)
 
               val timestamp = result.lastWatchedMillis()
-              val myShow = MyShow.fromTraktId(showDb.idTrakt, nowUtcMillis(), timestamp)
+              val myShow = MyShow.fromTraktId(showDb.idTrakt, timestamp, timestamp)
               database.showsDao().upsert(listOf(showDb))
               database.myShowsDao().insert(listOf(myShow))
 

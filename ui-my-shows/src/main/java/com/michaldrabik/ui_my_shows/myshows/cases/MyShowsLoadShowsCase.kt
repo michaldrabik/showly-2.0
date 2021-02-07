@@ -101,7 +101,7 @@ class MyShowsLoadShowsCase @Inject constructor(
       }
       NEWEST -> shows.sortedByDescending { it.show.year }
       RATING -> shows.sortedByDescending { it.show.rating }
-      DATE_ADDED -> shows.sortedByDescending { it.show.updatedAt }
+      DATE_ADDED -> shows.sortedByDescending { it.show.createdAt }
       else -> error("Should not be used here.")
     }
 

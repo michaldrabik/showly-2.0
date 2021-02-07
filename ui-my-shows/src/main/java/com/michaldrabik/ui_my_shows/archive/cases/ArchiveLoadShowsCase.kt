@@ -36,7 +36,7 @@ class ArchiveLoadShowsCase @Inject constructor(
         val translatedTitle = if (it.second?.hasTitle == false) null else it.second?.title
         translatedTitle ?: it.first.title
       }
-      DATE_ADDED -> shows.sortedByDescending { it.first.updatedAt }
+      DATE_ADDED -> shows.sortedByDescending { it.first.createdAt }
       RATING -> shows.sortedByDescending { it.first.rating }
       NEWEST -> shows.sortedByDescending { it.first.year }
       else -> error("Should not be used here.")

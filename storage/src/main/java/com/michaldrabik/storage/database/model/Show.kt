@@ -31,5 +31,6 @@ data class Show(
   @ColumnInfo(name = "comment_count", defaultValue = "-1") var commentCount: Long,
   @ColumnInfo(name = "genres", defaultValue = "") var genres: String,
   @ColumnInfo(name = "aired_episodes", defaultValue = "-1") var airedEpisodes: Int,
+  @ColumnInfo(name = "created_at", defaultValue = "-1") var createdAt: Long,
   @ColumnInfo(name = "updated_at", defaultValue = "-1") var updatedAt: Long
 )
