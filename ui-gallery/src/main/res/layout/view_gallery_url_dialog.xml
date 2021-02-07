@@ -8,7 +8,6 @@
   android:clipToPadding="false"
   android:focusable="true"
   android:focusableInTouchMode="true"
-  android:minWidth="300dp"
   tools:parentTag="android.widget.FrameLayout"
   >
 
@@ -19,7 +18,8 @@
     android:layout_marginStart="@dimen/spaceNormal"
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginEnd="@dimen/spaceNormal"
-    app:boxStrokeColor="?android:attr/textColorPrimary"
+    android:minWidth="300dp"
+    app:boxStrokeColor="@color/selector_url_input_layout"
     app:hintTextColor="?android:attr/textColorPrimary"
     >
 
