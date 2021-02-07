@@ -2,7 +2,6 @@ package com.michaldrabik.ui_base
 
 import android.content.Context
 import android.os.Bundle
-import android.view.View
 import android.view.ViewPropertyAnimator
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes

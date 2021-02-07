@@ -15,6 +15,5 @@ class PremiumAdView : FrameLayout {
   init {
     inflate(context, R.layout.view_premium_ad, this)
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
-
   }
 }

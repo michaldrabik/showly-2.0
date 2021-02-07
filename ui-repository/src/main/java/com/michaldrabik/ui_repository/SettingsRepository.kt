@@ -117,7 +117,7 @@ class SettingsRepository @Inject constructor(
     widgetsTheme = MODE_NIGHT_YES
     widgetsTransparency = 100
   }
-  
+
   suspend fun clearLanguageLogs() {
     database.withTransaction {
       database.translationsSyncLogDao().deleteAll()

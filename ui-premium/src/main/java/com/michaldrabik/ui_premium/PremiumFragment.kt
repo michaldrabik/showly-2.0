@@ -99,4 +99,3 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
     }
   }
 }
-

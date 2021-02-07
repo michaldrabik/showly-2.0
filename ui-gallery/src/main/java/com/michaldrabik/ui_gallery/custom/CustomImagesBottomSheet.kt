@@ -24,7 +24,7 @@ import com.michaldrabik.ui_gallery.R
 import com.michaldrabik.ui_gallery.custom.di.UiCustomImagesComponentProvider
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageFamily
-import com.michaldrabik.ui_model.ImageStatus.*
+import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.POSTER
@@ -116,7 +116,7 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
 
     uiModel.run {
       posterImage?.let {
-        if (it.status == UNAVAILABLE) {
+        if (it.status == ImageStatus.UNAVAILABLE) {
           Glide.with(requireContext()).clear(viewCustomImagesPosterImage)
           viewCustomImagesPosterAddButton.visible()
           viewCustomImagesPosterDelete.gone()
@@ -131,7 +131,7 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
         )
       }
       fanartImage?.let {
-        if (it.status == UNAVAILABLE) {
+        if (it.status == ImageStatus.UNAVAILABLE) {
           Glide.with(requireContext()).clear(viewCustomImagesFanartImage)
           viewCustomImagesFanartAddButton.visible()
           viewCustomImagesFanartDelete.gone()

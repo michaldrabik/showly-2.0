@@ -8,7 +8,9 @@ import com.michaldrabik.ui_gallery.fanart.recycler.views.ArtGalleryFanartView
 import com.michaldrabik.ui_gallery.fanart.recycler.views.ArtGalleryPosterView
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
-import com.michaldrabik.ui_model.ImageType.*
+import com.michaldrabik.ui_model.ImageType.FANART
+import com.michaldrabik.ui_model.ImageType.FANART_WIDE
+import com.michaldrabik.ui_model.ImageType.POSTER
 
 class ArtGalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -49,7 +51,6 @@ class ArtGalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
       )
       else -> error("Invalid type")
     }
-
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     when (val itemView = holder.itemView) {
