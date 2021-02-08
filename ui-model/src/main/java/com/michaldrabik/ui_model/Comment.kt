@@ -9,8 +9,12 @@ data class Comment(
   val userRating: Int,
   val spoiler: Boolean,
   val review: Boolean,
+  val likes: Long,
+  val replies: Long,
   val createdAt: ZonedDateTime?,
-  val user: User
+  val updatedAt: ZonedDateTime?,
+  val user: User,
+  val isMe: Boolean
 ) {
 
   fun hasSpoilers() = spoiler || comment.contains("spoiler", true)

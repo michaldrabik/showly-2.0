@@ -16,10 +16,14 @@ class CommentMapper @Inject constructor() {
       userRating = comment?.user_rating ?: -1,
       spoiler = comment?.spoiler ?: false,
       review = comment?.review ?: false,
+      likes = comment?.likes ?: 0,
+      replies = comment?.replies ?: 0,
       createdAt = if (comment?.created_at.isNullOrBlank()) null else ZonedDateTime.parse(comment?.created_at),
+      updatedAt = if (comment?.updated_at.isNullOrBlank()) null else ZonedDateTime.parse(comment?.updated_at),
       user = User(
         username = comment?.user?.username ?: "",
         avatarUrl = comment?.user?.images?.avatar?.full ?: ""
-      )
+      ),
+      isMe = false
     )
 }

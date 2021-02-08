@@ -83,7 +83,8 @@ class MovieDetailsViewModel @Inject constructor(
           ratingState = RatingState(rateAllowed = isSignedIn, rateLoading = false),
           country = AppCountry.fromCode(settingsRepository.country),
           isPremium = settingsRepository.isPremium,
-          dateFormat = dateFormatProvider.loadShortDayFormat()
+          dateFormat = dateFormatProvider.loadShortDayFormat(),
+          commentsDateFormat = dateFormatProvider.loadFullDayFormat()
         )
 
         loadBackgroundImage(movie)

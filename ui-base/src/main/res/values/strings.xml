@@ -18,7 +18,7 @@
   <string name="textEpisode">Episode %1$d</string>
   <string name="textSortBy">Sort by:</string>
   <string name="textSpoilersWarning">This comment contains spoilers.\nTap to read.</string>
-  <string name="textCommentedOn">%s commented on %s:</string>
+  <string name="textCommentedOn">Commented by %s</string>
   <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textTba" translatable="false">TBA</string>
   <string name="textShows">Shows</string>

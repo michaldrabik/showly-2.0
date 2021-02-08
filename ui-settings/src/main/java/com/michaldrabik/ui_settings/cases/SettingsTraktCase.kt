@@ -82,5 +82,5 @@ class SettingsTraktCase @Inject constructor(
 
   suspend fun isTraktAuthorized() = userManager.isAuthorized()
 
-  suspend fun getTraktUsername() = userManager.getTraktUsername()
+  suspend fun getTraktUsername() = userManager.getUsername()
 }

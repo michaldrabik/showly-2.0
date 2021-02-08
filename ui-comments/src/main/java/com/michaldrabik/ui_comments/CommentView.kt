@@ -28,27 +28,32 @@ class CommentView : ConstraintLayout {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
   }
 
-  private val colorTextNormal by lazy { context.colorFromAttr(android.R.attr.textColorPrimary) }
-  private val colorTextSpoiler by lazy { context.colorFromAttr(android.R.attr.colorAccent) }
+  private val colorTextPrimary by lazy { context.colorFromAttr(android.R.attr.textColorPrimary) }
+  private val colorTextSecondary by lazy { context.colorFromAttr(android.R.attr.textColorSecondary) }
+  private val colorTextAccent by lazy { context.colorFromAttr(android.R.attr.colorAccent) }
 
   @SuppressLint("SetTextI18n", "DefaultLocale")
   fun bind(comment: Comment, dateFormat: DateTimeFormatter?) {
     clear()
 
-    commentHeader.text = context.getString(
-      R.string.textCommentedOn,
-      comment.user.username.capitalize(),
-      comment.createdAt?.toLocalZone()?.let { dateFormat?.format(it) }
-    )
+    commentHeader.text = context.getString(R.string.textCommentedOn, comment.user.username)
+    commentDate.text = comment.updatedAt?.toLocalZone()?.let { dateFormat?.format(it) }
+
+    if (comment.isMe) {
+      commentDate.setTextColor(colorTextAccent)
+      commentHeader.setTextColor(colorTextAccent)
+    }
+
     commentRating.visibleIf(comment.userRating > 0)
     commentRating.text = String.format(Locale.ENGLISH, "%d", comment.userRating)
+    commentLikesCount.text = comment.likes.toString()
 
     if (comment.hasSpoilers()) {
       commentText.text = context.getString(R.string.textSpoilersWarning)
-      commentText.setTextColor(colorTextSpoiler)
+      commentText.setTextColor(colorTextAccent)
       onClick {
         commentText.text = comment.comment
-        commentText.setTextColor(colorTextNormal)
+        commentText.setTextColor(colorTextPrimary)
       }
     } else {
       commentText.text = comment.comment
@@ -66,8 +71,12 @@ class CommentView : ConstraintLayout {
   private fun clear() {
     onClick { /* NOOP */ }
     commentHeader.text = ""
+    commentDate.text = ""
     commentText.text = ""
-    commentText.setTextColor(colorTextNormal)
+    commentLikesCount.text = ""
+    commentText.setTextColor(colorTextPrimary)
+    commentDate.setTextColor(colorTextSecondary)
+    commentHeader.setTextColor(colorTextSecondary)
     Glide.with(this).clear(commentImage)
   }
 }

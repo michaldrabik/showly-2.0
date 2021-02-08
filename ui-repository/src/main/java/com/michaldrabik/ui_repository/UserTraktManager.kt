@@ -85,7 +85,7 @@ class UserTraktManager @Inject constructor(
     }
   }
 
-  suspend fun getTraktUsername(): String {
+  suspend fun getUsername(): String {
     val user = database.userDao().get()
     user?.let {
       traktUsername = it.traktUsername

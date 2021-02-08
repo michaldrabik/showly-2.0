@@ -104,7 +104,7 @@ class ShowDetailsViewModel @Inject constructor(
           ratingState = RatingState(rateAllowed = isSignedIn, rateLoading = false),
           country = AppCountry.fromCode(settingsRepository.country),
           isPremium = settingsRepository.isPremium,
-          commentsDateFormat = dateFormatProvider.loadShortDayFormat()
+          commentsDateFormat = dateFormatProvider.loadFullDayFormat()
         )
 
         loadBackgroundImage(show)

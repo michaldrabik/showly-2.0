@@ -374,7 +374,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       translation?.let { renderTranslation(it) }
       relatedMovies?.let { renderRelatedMovies(it) }
       comments?.let {
-        movieDetailsCommentsView.bind(it, dateFormat)
+        movieDetailsCommentsView.bind(it, commentsDateFormat)
       }
       ratingState?.let { renderRating(it) }
       showFromTraktLoading?.let {

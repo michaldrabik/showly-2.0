@@ -27,6 +27,7 @@ data class MovieDetailsUiModel(
   val translation: Translation? = null,
   val country: AppCountry? = null,
   val dateFormat: DateTimeFormatter? = null,
+  val commentsDateFormat: DateTimeFormatter? = null,
   val isPremium: Boolean? = null
 ) : UiModel() {
 
@@ -45,6 +46,7 @@ data class MovieDetailsUiModel(
       translation = newModel.translation ?: translation,
       country = newModel.country ?: country,
       dateFormat = newModel.dateFormat ?: dateFormat,
+      commentsDateFormat = newModel.commentsDateFormat ?: commentsDateFormat,
       isPremium = newModel.isPremium ?: isPremium,
       ratingState = newModel.ratingState?.copy(
         rateLoading = newModel.ratingState.rateLoading ?: ratingState?.rateLoading,

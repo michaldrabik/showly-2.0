@@ -69,15 +69,19 @@ class EpisodeDetailsViewModel @Inject constructor(
       try {
         uiState = EpisodeDetailsUiModel(commentsLoading = true)
 
+        val username = userTraktManager.getUsername()
         val comments = cloud.traktApi.fetchEpisodeComments(idTrakt.id, season, episode)
+          .asSequence()
           .map { mappers.comment.fromNetwork(it) }
           .filter { it.parentId <= 0 }
           .sortedByDescending { it.id }
+          .map { it.copy(isMe = it.user.username == username) }
+          .partition { it.isMe }
 
         uiState = EpisodeDetailsUiModel(
-          comments = comments,
+          comments = comments.first + comments.second,
           commentsLoading = false,
-          commentsDateFormat = dateFormatProvider.loadShortDayFormat()
+          commentsDateFormat = dateFormatProvider.loadFullDayFormat()
         )
       } catch (t: Throwable) {
         Timber.w("Failed to load comments. ${t.message}")

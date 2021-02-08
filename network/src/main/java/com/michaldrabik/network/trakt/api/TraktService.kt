@@ -91,13 +91,13 @@ interface TraktService {
   @GET("shows/{traktId}/seasons?extended=full,episodes")
   suspend fun fetchSeasons(@Path("traktId") traktId: Long): List<Season>
 
-  @GET("shows/{traktId}/comments?extended=full")
+  @GET("shows/{traktId}/comments/newest?extended=full")
   suspend fun fetchShowComments(
     @Path("traktId") traktId: Long,
     @Query("limit") limit: Int
   ): List<Comment>
 
-  @GET("movies/{traktId}/comments?extended=full")
+  @GET("movies/{traktId}/comments/newest?extended=full")
   suspend fun fetchMovieComments(
     @Path("traktId") traktId: Long,
     @Query("limit") limit: Int
@@ -122,7 +122,7 @@ interface TraktService {
     @Query("translations") countryCode: String
   ): List<SeasonTranslation>
 
-  @GET("shows/{traktId}/seasons/{seasonNumber}/episodes/{episodeNumber}/comments?limit=40&extended=full")
+  @GET("shows/{traktId}/seasons/{seasonNumber}/episodes/{episodeNumber}/comments/newest?limit=40&extended=full")
   suspend fun fetchEpisodeComments(
     @Path("traktId") traktId: Long,
     @Path("seasonNumber") seasonNumber: Int,
