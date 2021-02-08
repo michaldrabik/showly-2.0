@@ -15,6 +15,7 @@ abstract class BillingActivity : UpdateActivity() {
   companion object {
     private const val MONTHLY_SUBSCRIPTION = "showly_premium_1_month"
     private const val YEARLY_SUBSCRIPTION = "showly_premium_1_year"
+    private const val LIFETIME_PROMO_INAPP = "showly_premium_lifetime_promo"
   }
 
   private val billingClient: BillingClient by lazy {
@@ -48,12 +49,13 @@ abstract class BillingActivity : UpdateActivity() {
     lifecycleScope.launchWhenCreated {
       try {
         val subscriptions = billingClient.queryPurchases(BillingClient.SkuType.SUBS)
-        val purchases = subscriptions.purchasesList ?: emptyList()
+        val inApps = billingClient.queryPurchases(BillingClient.SkuType.INAPP)
+        val purchases = (subscriptions.purchasesList ?: emptyList()) + (inApps.purchasesList ?: emptyList())
         if (purchases.none {
-          val json = JSONObject(it.originalJson)
-          val productId = json.optString("productId", "")
-          it.isAcknowledged && productId in arrayOf(MONTHLY_SUBSCRIPTION, YEARLY_SUBSCRIPTION)
-        }
+            val json = JSONObject(it.originalJson)
+            val productId = json.optString("productId", "")
+            it.isAcknowledged && productId in arrayOf(MONTHLY_SUBSCRIPTION, YEARLY_SUBSCRIPTION, LIFETIME_PROMO_INAPP)
+          }
         ) {
           Timber.d("No subscription found. Revoking...")
           settingsRepository.revokePremium()

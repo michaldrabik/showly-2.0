@@ -28,6 +28,7 @@ class PremiumViewModel @Inject constructor(
   companion object {
     private const val MONTHLY_SUBSCRIPTION = "showly_premium_1_month"
     private const val YEARLY_SUBSCRIPTION = "showly_premium_1_year"
+    private const val LIFETIME_PROMO_INAPP = "showly_premium_lifetime_promo"
   }
 
   private var connectionsCount = 0
@@ -71,12 +72,13 @@ class PremiumViewModel @Inject constructor(
 
       try {
         val subscriptions = billingClient.queryPurchases(SkuType.SUBS)
-        val purchases = subscriptions.purchasesList ?: emptyList()
+        val inApps = billingClient.queryPurchases(SkuType.INAPP)
+        val purchases = (subscriptions.purchasesList ?: emptyList()) + (inApps.purchasesList ?: emptyList())
         if (purchases.any {
-          val json = JSONObject(it.originalJson)
-          val productId = json.optString("productId", "")
-          it.isAcknowledged && productId in arrayOf(MONTHLY_SUBSCRIPTION, YEARLY_SUBSCRIPTION)
-        }
+            val json = JSONObject(it.originalJson)
+            val productId = json.optString("productId", "")
+            it.isAcknowledged && productId in arrayOf(LIFETIME_PROMO_INAPP)
+          }
         ) {
           settingsRepository.isPremium = true
           _messageLiveData.value = MessageEvent.info(R.string.textPurchaseThanks)
@@ -84,7 +86,6 @@ class PremiumViewModel @Inject constructor(
         } else {
           loadPurchases(billingClient)
         }
-        Timber.d("checkOwnedPurchases")
       } catch (error: Throwable) {
         Timber.e(error)
         uiState = PremiumUiModel(purchaseItems = emptyList(), isLoading = false)
