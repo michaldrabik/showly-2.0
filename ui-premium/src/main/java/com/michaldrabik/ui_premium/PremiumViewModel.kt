@@ -75,10 +75,10 @@ class PremiumViewModel @Inject constructor(
         val inApps = billingClient.queryPurchases(SkuType.INAPP)
         val purchases = (subscriptions.purchasesList ?: emptyList()) + (inApps.purchasesList ?: emptyList())
         if (purchases.any {
-            val json = JSONObject(it.originalJson)
-            val productId = json.optString("productId", "")
-            it.isAcknowledged && productId in arrayOf(LIFETIME_PROMO_INAPP)
-          }
+          val json = JSONObject(it.originalJson)
+          val productId = json.optString("productId", "")
+          it.isAcknowledged && productId in arrayOf(LIFETIME_PROMO_INAPP)
+        }
         ) {
           settingsRepository.isPremium = true
           _messageLiveData.value = MessageEvent.info(R.string.textPurchaseThanks)
