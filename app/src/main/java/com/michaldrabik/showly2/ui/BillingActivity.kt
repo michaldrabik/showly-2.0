@@ -51,11 +51,14 @@ abstract class BillingActivity : UpdateActivity() {
         val subscriptions = billingClient.queryPurchases(BillingClient.SkuType.SUBS)
         val inApps = billingClient.queryPurchases(BillingClient.SkuType.INAPP)
         val purchases = (subscriptions.purchasesList ?: emptyList()) + (inApps.purchasesList ?: emptyList())
+        val eligibleProducts = mutableListOf(MONTHLY_SUBSCRIPTION, YEARLY_SUBSCRIPTION)
+        if (Config.PROMOS_ENABLED) eligibleProducts.add(LIFETIME_PROMO_INAPP)
+
         if (purchases.none {
-          val json = JSONObject(it.originalJson)
-          val productId = json.optString("productId", "")
-          it.isAcknowledged && productId in arrayOf(MONTHLY_SUBSCRIPTION, YEARLY_SUBSCRIPTION, LIFETIME_PROMO_INAPP)
-        }
+            val json = JSONObject(it.originalJson)
+            val productId = json.optString("productId", "")
+            it.isAcknowledged && productId in eligibleProducts
+          }
         ) {
           Timber.d("No subscription found. Revoking...")
           settingsRepository.revokePremium()
