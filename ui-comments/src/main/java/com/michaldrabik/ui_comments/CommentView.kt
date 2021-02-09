@@ -33,11 +33,13 @@ class CommentView : ConstraintLayout {
   init {
     inflate(context, R.layout.view_comment, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-    with(commentReplies) {
-      expandTouch()
-      onClick {
-        if (!comment.isLoading) {
-          onRepliesClickListener?.invoke(comment)
+    arrayOf(commentReplies, commentRepliesCount).forEach {
+      with(it) {
+        expandTouch()
+        onClick {
+          if (!comment.isLoading) {
+            onRepliesClickListener?.invoke(comment)
+          }
         }
       }
     }
