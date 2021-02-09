@@ -168,6 +168,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       showCommentsView()
       viewModel.loadComments()
     }
+    movieDetailsCommentsView.onRepliesClickListener = {
+      viewModel.loadCommentReplies(it)
+    }
     movieDetailsAddButton.run {
       isEnabled = false
       onAddMyMoviesClickListener = {

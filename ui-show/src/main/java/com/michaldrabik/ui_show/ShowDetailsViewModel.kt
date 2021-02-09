@@ -17,6 +17,7 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_episodes.EpisodesManager
+import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.IdTrakt
@@ -104,7 +105,7 @@ class ShowDetailsViewModel @Inject constructor(
           ratingState = RatingState(rateAllowed = isSignedIn, rateLoading = false),
           country = AppCountry.fromCode(settingsRepository.country),
           isPremium = settingsRepository.isPremium,
-          commentsDateFormat = dateFormatProvider.loadFullDayFormat()
+          commentsDateFormat = dateFormatProvider.loadFullHourFormat()
         )
 
         loadBackgroundImage(show)
@@ -249,6 +250,35 @@ class ShowDetailsViewModel @Inject constructor(
       }
     }
     Analytics.logShowCommentsClick(show)
+  }
+
+  fun loadCommentReplies(comment: Comment) {
+    var currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
+    if (currentComments.any { it.parentId == comment.id }) return
+
+    viewModelScope.launch {
+      try {
+        val parent = currentComments.find { it.id == comment.id }
+        parent?.let {
+          val copy = parent.copy(isLoading = true)
+          currentComments.findReplace(copy) { it.id == comment.id }
+          uiState = ShowDetailsUiModel(comments = currentComments)
+        }
+
+        val replies = commentsCase.loadReplies(comment)
+
+        currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
+        val parentIndex = currentComments.indexOfFirst { it.id == comment.id }
+        if (parentIndex > -1) currentComments.addAll(parentIndex + 1, replies)
+        parent?.let {
+          currentComments.findReplace(parent.copy(isLoading = false, replies = 0)) { it.id == comment.id }
+        }
+
+        uiState = ShowDetailsUiModel(comments = currentComments)
+      } catch (t: Throwable) {
+        uiState = ShowDetailsUiModel(comments = currentComments)
+      }
+    }
   }
 
   fun loadMissingImage(item: RelatedListItem, force: Boolean) {

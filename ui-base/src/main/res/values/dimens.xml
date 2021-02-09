@@ -49,6 +49,7 @@
   <dimen name="swipeRefreshEndOffset">140dp</dimen>
 
   <dimen name="showsMoviesTabsMargin">64dp</dimen>
+  <dimen name="commentViewSpace">16dp</dimen>
 
   <dimen name="tutorialTipSize">28dp</dimen>
   <dimen name="scrollBarWidth">3dp</dimen>

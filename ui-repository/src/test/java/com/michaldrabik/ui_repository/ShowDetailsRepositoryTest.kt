@@ -3,20 +3,15 @@ package com.michaldrabik.ui_repository
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.trakt.api.TraktApi
-import com.michaldrabik.network.trakt.model.TraktUser
 import com.michaldrabik.storage.database.dao.ShowsDao
 import com.michaldrabik.storage.database.model.Show
-import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.IdTrakt
-import com.michaldrabik.ui_model.User
 import com.michaldrabik.ui_repository.common.BaseMockTest
 import com.michaldrabik.ui_repository.shows.ShowDetailsRepository
 import io.mockk.Called
 import io.mockk.Runs
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.coVerifySequence
-import io.mockk.confirmVerified
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.just
@@ -25,7 +20,6 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.TimeUnit
-import com.michaldrabik.network.trakt.model.Comment as CommentNetwork
 import com.michaldrabik.network.trakt.model.Show as ShowRemote
 
 class ShowDetailsRepositoryTest : BaseMockTest() {
@@ -130,21 +124,6 @@ class ShowDetailsRepositoryTest : BaseMockTest() {
         traktApi.fetchShow(any())
         showsDao.upsert(any())
       }
-    }
-  }
-
-  @Test
-  fun `Should load comments with given limit`() {
-    runBlocking {
-      val commentNetwork = CommentNetwork(1, 2, "", 1, true, true, null, TraktUser("", null))
-      val comment = Comment(1, 2, "", 1, true, true, null, User("", ""))
-      coEvery { traktApi.fetchShowComments(any(), any()) } returns listOf(commentNetwork)
-
-      val comments = SUT.loadComments(IdTrakt(1), 10)
-
-      assertThat(comments).containsExactly(comment)
-      coVerify { traktApi.fetchShowComments(1, 10) }
-      confirmVerified(traktApi)
     }
   }
 }

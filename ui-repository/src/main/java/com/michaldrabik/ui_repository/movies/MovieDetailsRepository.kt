@@ -29,8 +29,4 @@ class MovieDetailsRepository @Inject constructor(
     }
     return mappers.movie.fromDatabase(local)
   }
-
-  suspend fun loadComments(idTrakt: IdTrakt, limit: Int) =
-    cloud.traktApi.fetchMovieComments(idTrakt.id, limit)
-      .map { mappers.comment.fromNetwork(it) }
 }

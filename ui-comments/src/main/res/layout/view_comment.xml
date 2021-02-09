@@ -8,13 +8,33 @@
   tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
   >
 
+  <androidx.constraintlayout.widget.Guideline
+    android:id="@+id/commentSpacer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_constraintGuide_begin="@dimen/commentViewSpace"
+    />
+
+  <View
+    android:id="@+id/commentSpacerLine"
+    android:layout_width="1dp"
+    android:layout_height="0dp"
+    android:layout_marginTop="3dp"
+    android:background="?attr/colorSeparator"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="@id/commentSpacer"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    />
+
   <ImageView
     android:id="@+id/commentImage"
     android:layout_width="36dp"
     android:layout_height="36dp"
     android:layout_marginTop="3dp"
     app:layout_constraintEnd_toStartOf="@id/commentHeader"
-    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintStart_toStartOf="@id/commentSpacer"
     app:layout_constraintTop_toTopOf="parent"
     app:srcCompat="@drawable/ic_person_placeholder"
     />
@@ -24,6 +44,7 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceSmall"
+    android:layout_marginEnd="@dimen/spaceNormal"
     android:ellipsize="end"
     android:gravity="start"
     android:maxLines="1"
@@ -32,7 +53,7 @@
     android:textSize="12sp"
     android:textStyle="bold"
     app:layout_constraintBottom_toBottomOf="@id/commentImage"
-    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/commentReplies"
     app:layout_constraintStart_toEndOf="@id/commentImage"
     app:layout_constraintTop_toBottomOf="@+id/commentDate"
     app:layout_constraintVertical_chainStyle="packed"
@@ -45,6 +66,7 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceSmall"
+    android:layout_marginEnd="@dimen/spaceNormal"
     android:ellipsize="end"
     android:gravity="start"
     android:maxLines="1"
@@ -52,7 +74,7 @@
     android:textColor="?android:attr/textColorSecondary"
     android:textSize="12sp"
     app:layout_constraintBottom_toTopOf="@+id/commentHeader"
-    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/commentReplies"
     app:layout_constraintStart_toEndOf="@id/commentImage"
     app:layout_constraintTop_toTopOf="@id/commentImage"
     tools:ignore="SmallSp"
@@ -72,8 +94,9 @@
     android:textSize="14sp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintStart_toStartOf="@id/commentSpacer"
     app:layout_constraintTop_toBottomOf="@id/commentImage"
+    app:layout_constraintVertical_bias="0"
     tools:targetApi="o"
     tools:text="@tools:sample/lorem"
     />
@@ -96,22 +119,22 @@
     tools:text="10"
     />
 
-
   <ImageView
-    android:id="@+id/commentLikes"
+    android:id="@+id/commentReplies"
     android:layout_width="18dp"
     android:layout_height="18dp"
     android:layout_marginEnd="@dimen/spaceTiny"
     android:visibility="gone"
     app:layout_constraintBottom_toBottomOf="@id/commentImage"
-    app:layout_constraintEnd_toStartOf="@id/commentLikesCount"
+    app:layout_constraintEnd_toStartOf="@id/commentRepliesCount"
     app:layout_constraintTop_toTopOf="@id/commentImage"
-    app:srcCompat="@drawable/ic_thumb_up"
+    app:srcCompat="@drawable/ic_comment"
     app:tint="?android:attr/textColorSecondary"
+    tools:visibility="visible"
     />
 
   <TextView
-    android:id="@+id/commentLikesCount"
+    android:id="@+id/commentRepliesCount"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:textColor="?android:attr/textColorSecondary"
@@ -123,6 +146,23 @@
     app:layout_constraintTop_toTopOf="@id/commentImage"
     tools:ignore="SmallSp"
     tools:text="200"
+    tools:visibility="visible"
+    />
+
+  <ProgressBar
+    android:id="@+id/commentProgress"
+    style="@style/ProgressBar.Dark"
+    android:layout_width="28dp"
+    android:layout_height="28dp"
+    android:layout_gravity="center"
+    android:layout_marginTop="@dimen/spaceNormal"
+    android:layout_marginBottom="@dimen/spaceMicro"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="@id/commentSpacer"
+    app:layout_constraintTop_toBottomOf="@id/commentText"
+    tools:visibility="visible"
     />
 
 </merge>

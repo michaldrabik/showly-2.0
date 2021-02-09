@@ -103,6 +103,11 @@ interface TraktService {
     @Query("limit") limit: Int
   ): List<Comment>
 
+  @GET("comments/{id}/replies")
+  suspend fun fetchCommentReplies(
+    @Path("id") commentIt: Long
+  ): List<Comment>
+
   @GET("shows/{traktId}/translations/{code}")
   suspend fun fetchShowTranslations(
     @Path("traktId") traktId: Long,

@@ -12,13 +12,17 @@ class CommentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private val asyncDiffer = AsyncListDiffer(this, CommentItemDiffCallback())
   private var dateFormat: DateTimeFormatter? = null
 
+  var onRepliesClickListener: ((Comment) -> Unit)? = null
+
   fun setItems(newItems: List<Comment>, dateFormat: DateTimeFormatter?) {
     this.dateFormat = dateFormat
     asyncDiffer.submitList(newItems)
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ViewHolderShow(CommentView(parent.context))
+    ViewHolderShow(CommentView(parent.context).apply {
+      onRepliesClickListener = { this@CommentsAdapter.onRepliesClickListener?.invoke(it) }
+    })
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]

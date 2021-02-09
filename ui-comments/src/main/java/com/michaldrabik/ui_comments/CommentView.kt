@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Comment
@@ -23,19 +25,33 @@ class CommentView : ConstraintLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  init {
-    inflate(context, R.layout.view_comment, this)
-    layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-  }
-
   private val colorTextPrimary by lazy { context.colorFromAttr(android.R.attr.textColorPrimary) }
   private val colorTextSecondary by lazy { context.colorFromAttr(android.R.attr.textColorSecondary) }
   private val colorTextAccent by lazy { context.colorFromAttr(android.R.attr.colorAccent) }
+  private val commentSpace by lazy { context.dimenToPx(R.dimen.commentViewSpace) }
+
+  init {
+    inflate(context, R.layout.view_comment, this)
+    layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    with(commentReplies) {
+      expandTouch()
+      onClick {
+        if (!comment.isLoading) {
+          onRepliesClickListener?.invoke(comment)
+        }
+      }
+    }
+  }
+
+  var onRepliesClickListener: ((Comment) -> Unit)? = null
+  private lateinit var comment: Comment
 
   @SuppressLint("SetTextI18n", "DefaultLocale")
   fun bind(comment: Comment, dateFormat: DateTimeFormatter?) {
     clear()
+    this.comment = comment
 
+    commentSpacer.setGuidelineBegin(if (comment.isReply()) commentSpace else 0)
     commentHeader.text = context.getString(R.string.textCommentedOn, comment.user.username)
     commentDate.text = comment.updatedAt?.toLocalZone()?.let { dateFormat?.format(it) }
 
@@ -46,7 +62,12 @@ class CommentView : ConstraintLayout {
 
     commentRating.visibleIf(comment.userRating > 0)
     commentRating.text = String.format(Locale.ENGLISH, "%d", comment.userRating)
-    commentLikesCount.text = comment.likes.toString()
+    commentRepliesCount.text = comment.replies.toString()
+    commentReplies.visibleIf(comment.replies > 0 && !comment.isLoading)
+    commentRepliesCount.visibleIf(comment.replies > 0 && !comment.isLoading)
+    commentRepliesCount.text = comment.replies.toString()
+    commentProgress.visibleIf(comment.isLoading)
+    commentSpacerLine.visibleIf(comment.isReply())
 
     if (comment.hasSpoilers()) {
       commentText.text = context.getString(R.string.textSpoilersWarning)
@@ -73,7 +94,7 @@ class CommentView : ConstraintLayout {
     commentHeader.text = ""
     commentDate.text = ""
     commentText.text = ""
-    commentLikesCount.text = ""
+    commentRepliesCount.text = ""
     commentText.setTextColor(colorTextPrimary)
     commentDate.setTextColor(colorTextSecondary)
     commentHeader.setTextColor(colorTextSecondary)

@@ -14,8 +14,11 @@ data class Comment(
   val createdAt: ZonedDateTime?,
   val updatedAt: ZonedDateTime?,
   val user: User,
-  val isMe: Boolean
+  val isMe: Boolean,
+  val isLoading: Boolean
 ) {
 
   fun hasSpoilers() = spoiler || comment.contains("spoiler", true)
+
+  fun isReply() = parentId > 0
 }

@@ -23,6 +23,8 @@ class CommentsView : ConstraintLayout {
   private val commentsAdapter by lazy { CommentsAdapter() }
   private var dateFormat: DateTimeFormatter? = null
 
+  var onRepliesClickListener: ((Comment) -> Unit)? = null
+
   init {
     inflate(context, R.layout.view_comments, this)
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
@@ -43,6 +45,7 @@ class CommentsView : ConstraintLayout {
   }
 
   private fun setupRecycler() {
+    commentsAdapter.onRepliesClickListener = { onRepliesClickListener?.invoke(it) }
     commentsRecycler.apply {
       setHasFixedSize(true)
       adapter = commentsAdapter

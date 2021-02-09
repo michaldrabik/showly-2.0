@@ -27,8 +27,4 @@ class ShowDetailsRepository @Inject constructor(
     }
     return mappers.show.fromDatabase(localShow)
   }
-
-  suspend fun loadComments(idTrakt: IdTrakt, limit: Int) =
-    cloud.traktApi.fetchShowComments(idTrakt.id, limit)
-      .map { mappers.comment.fromNetwork(it) }
 }

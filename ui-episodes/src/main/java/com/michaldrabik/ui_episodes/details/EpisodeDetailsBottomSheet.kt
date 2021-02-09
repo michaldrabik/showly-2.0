@@ -186,6 +186,11 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         comments.forEach {
           val view = CommentView(requireContext()).apply {
             bind(it, commentsDateFormat)
+            if (it.replies > 0) {
+              onRepliesClickListener = { comment ->
+                viewModel.loadCommentReplies(comment)
+              }
+            }
           }
           episodeDetailsComments.addView(view)
         }

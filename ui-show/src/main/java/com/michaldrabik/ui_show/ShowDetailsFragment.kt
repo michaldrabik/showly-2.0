@@ -189,6 +189,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       showCommentsView()
       viewModel.loadComments()
     }
+    showDetailsCommentsView.onRepliesClickListener = {
+      viewModel.loadCommentReplies(it)
+    }
     showDetailsTipGallery.onClick {
       it.gone()
       showTip(SHOW_DETAILS_GALLERY)
