@@ -35,6 +35,10 @@ object Config {
   const val DEFAULT_DATE_FORMAT = "DEFAULT_24"
   const val HOST_ACTIVITY_NAME = "com.michaldrabik.showly2.ui.main.MainActivity"
 
+  const val SHOW_TIPS_DEBUG = false
+  const val SHOW_PREMIUM = true
+  const val PROMOS_ENABLED = false
+
   val MY_SHOWS_RECENTS_OPTIONS = arrayOf(2, 4, 6, 8)
   val DISCOVER_SHOWS_CACHE_DURATION by lazy { HOURS.toMillis(12) }
   val DISCOVER_MOVIES_CACHE_DURATION by lazy { HOURS.toMillis(12) }
@@ -53,9 +57,7 @@ object Config {
     if (BuildConfig.DEBUG) MINUTES.toMillis(60) else DAYS.toMillis(7)
   }
 
-  const val SHOW_TIPS = false
   const val SHOW_WHATS_NEW = true
-  const val SHOW_PREMIUM = true
   const val WHATS_NEW_TEXT =
     "* Added Turkish and Portuguese/Brazilian languages support.\n\n" +
       "* Added Trakt Sync shortcut in Progress tab toolbar.\n\n" +

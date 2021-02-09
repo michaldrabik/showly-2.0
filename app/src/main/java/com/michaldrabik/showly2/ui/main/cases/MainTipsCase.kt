@@ -14,7 +14,7 @@ class MainTipsCase @Inject constructor(
 ) {
 
   fun isTipShown(tip: Tip) = when {
-    BuildConfig.DEBUG -> !Config.SHOW_TIPS
+    BuildConfig.DEBUG -> !Config.SHOW_TIPS_DEBUG
     else -> sharedPreferences.getBoolean(tip.name, false)
   }
 

@@ -12,6 +12,7 @@ import com.android.billingclient.api.Purchase.PurchaseState.PURCHASED
 import com.android.billingclient.api.SkuDetailsParams
 import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.querySkuDetails
+import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -74,10 +75,13 @@ class PremiumViewModel @Inject constructor(
         val subscriptions = billingClient.queryPurchases(SkuType.SUBS)
         val inApps = billingClient.queryPurchases(SkuType.INAPP)
         val purchases = (subscriptions.purchasesList ?: emptyList()) + (inApps.purchasesList ?: emptyList())
+        val eligibleProducts = mutableListOf(MONTHLY_SUBSCRIPTION, YEARLY_SUBSCRIPTION)
+        if (Config.PROMOS_ENABLED) eligibleProducts.add(LIFETIME_PROMO_INAPP)
+
         if (purchases.any {
           val json = JSONObject(it.originalJson)
           val productId = json.optString("productId", "")
-          it.isAcknowledged && productId in arrayOf(LIFETIME_PROMO_INAPP)
+          it.isAcknowledged && productId in eligibleProducts
         }
         ) {
           settingsRepository.isPremium = true
