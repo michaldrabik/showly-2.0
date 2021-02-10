@@ -1,6 +1,8 @@
 package com.michaldrabik.showly2.ui
 
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.ui_comments.post.di.UiPostCommentComponent
+import com.michaldrabik.ui_comments.post.di.UiPostCommentComponentProvider
 import com.michaldrabik.ui_discover.di.UiDiscoverComponent
 import com.michaldrabik.ui_discover.di.UiDiscoverComponentProvider
 import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponent
@@ -54,6 +56,7 @@ abstract class DiActivity :
   UiProgressMoviesComponentProvider,
   UiSearchComponentProvider,
   UiSettingsComponentProvider,
+  UiPostCommentComponentProvider,
   UiPremiumComponentProvider {
 
   private lateinit var uiDiscoverComponent: UiDiscoverComponent
@@ -73,6 +76,7 @@ abstract class DiActivity :
   private lateinit var uiProgressComponent: UiProgressComponent
   private lateinit var uiProgressMoviesComponent: UiProgressMoviesComponent
   private lateinit var uiPremiumComponent: UiPremiumComponent
+  private lateinit var uiPostCommentComponent: UiPostCommentComponent
 
   override fun provideDiscoverComponent() = uiDiscoverComponent
   override fun provideDiscoverMoviesComponent() = uiDiscoverMoviesComponent
@@ -91,6 +95,7 @@ abstract class DiActivity :
   override fun provideProgressComponent() = uiProgressComponent
   override fun provideProgressMoviesComponent() = uiProgressMoviesComponent
   override fun providePremiumComponent() = uiPremiumComponent
+  override fun providePostCommentComponent() = uiPostCommentComponent
 
   protected open fun setupComponents() {
     uiDiscoverComponent = appComponent().uiDiscoverComponent().create()
@@ -110,5 +115,6 @@ abstract class DiActivity :
     uiProgressComponent = appComponent().uiProgressComponent().create()
     uiProgressMoviesComponent = appComponent().uiProgressMoviesComponent().create()
     uiPremiumComponent = appComponent().uiPremiumMoviesComponent().create()
+    uiPostCommentComponent = appComponent().uiPostCommentComponent().create()
   }
 }

@@ -9,6 +9,7 @@ import com.michaldrabik.showly2.di.module.ViewModelsModule
 import com.michaldrabik.showly2.ui.main.MainActivity
 import com.michaldrabik.storage.di.StorageMarker
 import com.michaldrabik.ui_base.di.UiBaseComponent
+import com.michaldrabik.ui_comments.post.di.UiPostCommentComponent
 import com.michaldrabik.ui_discover.di.UiDiscoverComponent
 import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponent
 import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponent
@@ -84,6 +85,8 @@ interface AppComponent {
   fun uiProgressMoviesComponent(): UiProgressMoviesComponent.Factory
 
   fun uiPremiumMoviesComponent(): UiPremiumComponent.Factory
+
+  fun uiPostCommentComponent(): UiPostCommentComponent.Factory
 
   fun uiWidgetsComponent(): UiWidgetsComponent.Factory
 }

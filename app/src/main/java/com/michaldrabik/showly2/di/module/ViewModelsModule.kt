@@ -3,6 +3,7 @@ package com.michaldrabik.showly2.di.module
 import androidx.lifecycle.ViewModel
 import com.michaldrabik.showly2.di.ViewModelKey
 import com.michaldrabik.showly2.ui.main.MainViewModel
+import com.michaldrabik.ui_comments.post.PostCommentViewModel
 import com.michaldrabik.ui_discover.DiscoverViewModel
 import com.michaldrabik.ui_discover_movies.DiscoverMoviesViewModel
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsViewModel
@@ -106,6 +107,11 @@ abstract class ViewModelsModule {
   @IntoMap
   @ViewModelKey(MovieDetailsViewModel::class)
   abstract fun bindMovieDetailsViewModel(viewModel: MovieDetailsViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(PostCommentViewModel::class)
+  abstract fun bindPostCommentViewModel(viewModel: PostCommentViewModel): ViewModel
 
   @Binds
   @IntoMap

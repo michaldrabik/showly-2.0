@@ -13,9 +13,9 @@ class ShowDetailsCommentsCase @Inject constructor(
   private val userManager: UserTraktManager
 ) {
 
-  suspend fun loadComments(show: Show, limit: Int = 75): List<Comment> {
+  suspend fun loadComments(show: Show): List<Comment> {
     val username = userManager.getUsername()
-    val comments = commentsRepository.loadComments(show, limit)
+    val comments = commentsRepository.loadComments(show)
       .map { it.copy(isMe = it.user.username == username) }
       .partition { it.isMe }
 

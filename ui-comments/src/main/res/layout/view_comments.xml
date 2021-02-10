@@ -34,6 +34,7 @@
     android:overScrollMode="never"
     android:paddingStart="@dimen/spaceNormal"
     android:paddingEnd="@dimen/spaceNormal"
+    android:paddingBottom="80dp"
     android:scrollbars="vertical"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
@@ -64,6 +65,21 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/commentsTitle"
+    tools:visibility="visible"
+    />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/commentsPostButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:contentDescription="@string/textComment"
+    android:visibility="gone"
+    app:backgroundTint="?attr/colorAccent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:srcCompat="@drawable/ic_add_comment"
+    app:tint="?attr/textColorOnSurface"
     tools:visibility="visible"
     />
 

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="textComment">Comment</string>
   <string name="textComments">Comments:</string>
   <string name="textComments2">Comments</string>
   <string name="textNoComments">No comments.</string>
+  <string name="textCommentDisclaimer">English only, 5+ words, be respectful, mark spoilers!</string>
+  <string name="textSpoilers">Spoilers</string>
+  <string name="textCommentPosted">Your comment has been submitted.</string>
 
   <string name="textShowRated">Your rating has been saved.</string>
   <string name="textShowRatingDeleted">Your rating has been removed.</string>

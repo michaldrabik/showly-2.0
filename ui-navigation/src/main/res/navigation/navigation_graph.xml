@@ -197,6 +197,11 @@
       app:launchSingleTop="true"
       />
     <action
+      android:id="@+id/actionShowDetailsFragmentToPostComment"
+      app:destination="@id/postCommentDialog"
+      app:launchSingleTop="true"
+      />
+    <action
       android:id="@+id/actionShowDetailsFragmentToPremium"
       app:destination="@id/premiumFragment"
       app:enterAnim="@anim/anim_fade_in"
@@ -396,5 +401,11 @@
       app:popExitAnim="@anim/anim_fade_out"
       />
   </dialog>
+
+  <dialog
+    android:id="@+id/postCommentDialog"
+    android:name="com.michaldrabik.ui_comments.post.PostCommentBottomSheet"
+    android:label="dialogPostComment"
+    />
 
 </navigation>

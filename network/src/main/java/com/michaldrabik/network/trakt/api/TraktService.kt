@@ -21,6 +21,7 @@ import com.michaldrabik.network.trakt.model.SyncExportResult
 import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.network.trakt.model.Translation
 import com.michaldrabik.network.trakt.model.User
+import com.michaldrabik.network.trakt.model.request.CommentRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRevokeRequest
@@ -30,6 +31,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -94,19 +96,34 @@ interface TraktService {
   @GET("shows/{traktId}/comments/newest?extended=full")
   suspend fun fetchShowComments(
     @Path("traktId") traktId: Long,
-    @Query("limit") limit: Int
+    @Query("limit") limit: Int,
+    @Query("timestamp") timestamp: Long
   ): List<Comment>
 
   @GET("movies/{traktId}/comments/newest?extended=full")
   suspend fun fetchMovieComments(
     @Path("traktId") traktId: Long,
-    @Query("limit") limit: Int
+    @Query("limit") limit: Int,
+    @Query("timestamp") timestamp: Long
   ): List<Comment>
 
   @GET("comments/{id}/replies")
   suspend fun fetchCommentReplies(
     @Path("id") commentIt: Long
   ): List<Comment>
+
+  @POST("comments")
+  suspend fun postComment(
+    @Header("Authorization") authToken: String,
+    @Body commentBody: CommentRequest
+  ): Comment
+
+  @PUT("comments/{id}")
+  suspend fun updateComment(
+    @Header("Authorization") authToken: String,
+    @Path("id") commentIt: Long,
+    @Body commentBody: CommentRequest
+  ): Comment
 
   @GET("shows/{traktId}/translations/{code}")
   suspend fun fetchShowTranslations(

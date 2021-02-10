@@ -83,6 +83,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEAR
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
@@ -136,10 +137,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiShowDetailsComponentProvider).provideShowDetailsComponent().inject(this)
     super.onCreate(savedInstanceState)
-    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
-      viewModel.loadBackgroundImage()
-      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) showCustomImages(showId.id, true)
-    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -189,9 +186,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       showCommentsView()
       viewModel.loadComments()
     }
-    showDetailsCommentsView.onRepliesClickListener = {
-      viewModel.loadCommentReplies(it)
-    }
+    showDetailsCommentsView.onRepliesClickListener = { viewModel.loadCommentReplies(it) }
+    showDetailsCommentsView.onPostCommentClickListener = { showPostCommentSheet() }
     showDetailsTipGallery.onClick {
       it.gone()
       showTip(SHOW_DETAILS_GALLERY)
@@ -329,16 +325,32 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     modal.show(requireActivity().supportFragmentManager, "MODAL")
   }
 
-  private fun showCustomImages(showId: Long, isPremium: Boolean?) {
+  private fun showCustomImagesSheet(showId: Long, isPremium: Boolean?) {
     if (isPremium == false) {
       navigateTo(R.id.actionShowDetailsFragmentToPremium)
       return
     }
+
+    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
+      viewModel.loadBackgroundImage()
+      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) showCustomImagesSheet(showId, true)
+    }
+
     val bundle = bundleOf(
       ARG_SHOW_ID to showId,
       ARG_FAMILY to SHOW
     )
     navigateTo(R.id.actionShowDetailsFragmentToCustomImages, bundle)
+  }
+
+  private fun showPostCommentSheet() {
+    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
+      showDetailsCommentsView.hideCommentButton()
+      viewModel.loadComments()
+      showSnack(MessageEvent.info(R.string.textCommentPosted))
+    }
+    val bundle = bundleOf(ARG_SHOW_ID to showId.id)
+    navigateTo(R.id.actionShowDetailsFragmentToPostComment, bundle)
   }
 
   private fun showFullActorView(actor: Actor) {
@@ -433,7 +445,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
         showDetailsSeparator4.visible()
         showDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
-        showDetailsCustomImagesLabel.onClick { showCustomImages(show.traktId, isPremium) }
+        showDetailsCustomImagesLabel.onClick { showCustomImagesSheet(show.traktId, isPremium) }
         showDetailsAddButton.isEnabled = true
       }
       showLoading?.let {
@@ -463,7 +475,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         item.consume()?.let { showDetailsEpisodesView.bindEpisodes(it.episodes, animate = false) }
       }
       relatedShows?.let { renderRelatedShows(it) }
-      comments?.let { showDetailsCommentsView.bind(it, commentsDateFormat) }
+      comments?.let {
+        showDetailsCommentsView.bind(it, commentsDateFormat)
+        if (isSignedIn == true) {
+          showDetailsCommentsView.showCommentButton()
+        }
+      }
       ratingState?.let { renderRating(it) }
       showFromTraktLoading?.let {
         showDetailsRemoveTraktButton.isLoading = it

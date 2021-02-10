@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.di.module
 
 import com.michaldrabik.showly2.di.component.ServiceComponent
 import com.michaldrabik.ui_base.di.UiBaseComponent
+import com.michaldrabik.ui_comments.post.di.UiPostCommentComponent
 import com.michaldrabik.ui_discover.di.UiDiscoverComponent
 import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponent
 import com.michaldrabik.ui_gallery.custom.di.UiCustomImagesComponent
@@ -41,6 +42,7 @@ import dagger.Module
     UiProgressMoviesComponent::class,
     UiWidgetsComponent::class,
     UiPremiumComponent::class,
+    UiPostCommentComponent::class,
     ServiceComponent::class
   ]
 )

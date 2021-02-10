@@ -7,7 +7,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Comment
@@ -24,14 +26,19 @@ class CommentsView : ConstraintLayout {
   private var dateFormat: DateTimeFormatter? = null
 
   var onRepliesClickListener: ((Comment) -> Unit)? = null
+  var onPostCommentClickListener: ((Comment?) -> Unit)? = null
 
   init {
     inflate(context, R.layout.view_comments, this)
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
     setupRecycler()
+    commentsPostButton.onClick { onPostCommentClickListener?.invoke(null) }
   }
 
-  fun bind(comments: List<Comment>, dateFormat: DateTimeFormatter?) {
+  fun bind(
+    comments: List<Comment>,
+    dateFormat: DateTimeFormatter?
+  ) {
     this.dateFormat = dateFormat
     commentsProgress.gone()
     commentsEmpty.visibleIf(comments.isEmpty())
@@ -42,10 +49,10 @@ class CommentsView : ConstraintLayout {
     commentsProgress.visible()
     commentsEmpty.gone()
     commentsAdapter.setItems(emptyList(), dateFormat)
+    hideCommentButton()
   }
 
   private fun setupRecycler() {
-    commentsAdapter.onRepliesClickListener = { onRepliesClickListener?.invoke(it) }
     commentsRecycler.apply {
       setHasFixedSize(true)
       adapter = commentsAdapter
@@ -53,5 +60,14 @@ class CommentsView : ConstraintLayout {
       itemAnimator = null
       addDivider(R.drawable.divider_comments_list)
     }
+    commentsAdapter.onRepliesClickListener = { onRepliesClickListener?.invoke(it) }
+  }
+
+  fun showCommentButton() {
+    commentsPostButton.fadeIn(duration = 200, startDelay = 100)
+  }
+
+  fun hideCommentButton() {
+    commentsPostButton.gone()
   }
 }

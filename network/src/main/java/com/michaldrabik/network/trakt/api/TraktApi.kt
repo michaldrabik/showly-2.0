@@ -11,6 +11,7 @@ import com.michaldrabik.network.trakt.model.OAuthResponse
 import com.michaldrabik.network.trakt.model.Show
 import com.michaldrabik.network.trakt.model.SyncExportRequest
 import com.michaldrabik.network.trakt.model.SyncItem
+import com.michaldrabik.network.trakt.model.request.CommentRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRevokeRequest
@@ -54,13 +55,19 @@ class TraktApi(private val service: TraktService) {
       .sortedByDescending { it.number }
 
   suspend fun fetchShowComments(traktId: Long, limit: Int) =
-    service.fetchShowComments(traktId, limit)
+    service.fetchShowComments(traktId, limit, System.currentTimeMillis())
 
   suspend fun fetchMovieComments(traktId: Long, limit: Int) =
-    service.fetchMovieComments(traktId, limit)
+    service.fetchMovieComments(traktId, limit, System.currentTimeMillis())
 
   suspend fun fetchCommentReplies(commentId: Long) =
     service.fetchCommentReplies(commentId)
+
+  suspend fun postComment(token: String, commentRequest: CommentRequest) =
+    service.postComment("Bearer $token", commentRequest)
+
+  suspend fun updateComment(token: String, commentId: Long, commentRequest: CommentRequest) =
+    service.updateComment("Bearer $token", commentId, commentRequest)
 
   suspend fun fetchShowTranslations(traktId: Long, code: String) =
     service.fetchShowTranslations(traktId, code)
