@@ -17,6 +17,7 @@ class PostCommentViewModel @Inject constructor(
 ) : BaseViewModel<PostCommentUiModel>() {
 
   fun postShowComment(showId: IdTrakt, comment: String, isSpoiler: Boolean) {
+    if (comment.trim().split(" ").count { it.length > 1 } < 5) return
     viewModelScope.launch {
       try {
         uiState = PostCommentUiModel(isLoading = true)

@@ -56,7 +56,7 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
       viewPostCommentInputValue.doOnTextChanged { text, _, _, _ ->
         val isValid =
           !text?.trim().isNullOrEmpty() &&
-            (text?.trim()?.split(" ")?.size ?: 0) >= 5
+            (text?.trim()?.split(" ")?.count { it.length > 1 } ?: 0) >= 5
         viewPostCommentButton.isEnabled = isValid
       }
       viewPostCommentButton.onClick {
