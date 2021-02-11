@@ -20,9 +20,11 @@ class CommentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ViewHolderShow(CommentView(parent.context).apply {
-      onRepliesClickListener = { this@CommentsAdapter.onRepliesClickListener?.invoke(it) }
-    })
+    ViewHolderShow(
+      CommentView(parent.context).apply {
+        onRepliesClickListener = { this@CommentsAdapter.onRepliesClickListener?.invoke(it) }
+      }
+    )
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]
