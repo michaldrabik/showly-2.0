@@ -11,7 +11,12 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
+import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.MessageEvent.Type
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
+import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_comments.R
 import com.michaldrabik.ui_comments.post.di.UiPostCommentComponentProvider
 import com.michaldrabik.ui_model.IdTrakt
@@ -47,6 +52,7 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
     super.onViewCreated(view, savedInstanceState)
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it) })
+      messageLiveData.observe(viewLifecycleOwner, { renderSnackbar(it) })
     }
     setupView(view)
   }
@@ -79,12 +85,23 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
         viewPostCommentInput.isEnabled = !it
         viewPostCommentInputValue.isEnabled = !it
         viewPostCommentSpoilersCheck.isEnabled = !it
+        viewPostCommentProgress.visibleIf(it)
+        viewPostCommentButton.visibleIf(!it, gone = false)
       }
       successEvent?.let {
         it.consume()?.let {
           setFragmentResult(REQUEST_COMMENT, bundleOf())
           dismiss()
         }
+      }
+    }
+  }
+
+  private fun renderSnackbar(message: MessageEvent) {
+    message.consume()?.let {
+      when (message.type) {
+        Type.INFO -> viewPostCommentSnackHost.showInfoSnackbar(getString(it))
+        Type.ERROR -> viewPostCommentSnackHost.showErrorSnackbar(getString(it))
       }
     }
   }

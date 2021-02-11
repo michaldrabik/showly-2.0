@@ -72,11 +72,13 @@ class CommentView : ConstraintLayout {
     commentSpacerLine.visibleIf(comment.isReply())
 
     if (comment.hasSpoilers()) {
-      commentText.text = context.getString(R.string.textSpoilersWarning)
-      commentText.setTextColor(colorTextAccent)
-      onClick {
-        commentText.text = comment.comment
-        commentText.setTextColor(colorTextPrimary)
+      with(commentText) {
+        text = context.getString(R.string.textSpoilersWarning)
+        setTextColor(colorTextAccent)
+        onClick {
+          text = comment.comment
+          setTextColor(colorTextPrimary)
+        }
       }
     } else {
       commentText.text = comment.comment

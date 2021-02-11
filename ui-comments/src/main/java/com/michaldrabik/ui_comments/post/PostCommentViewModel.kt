@@ -3,13 +3,15 @@ package com.michaldrabik.ui_comments.post
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_comments.R
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.CommentsRepository
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import retrofit2.HttpException
 import javax.inject.Inject
 
 class PostCommentViewModel @Inject constructor(
@@ -25,10 +27,8 @@ class PostCommentViewModel @Inject constructor(
         commentsRepository.postComment(show, comment, isSpoiler)
         uiState = PostCommentUiModel(successEvent = ActionEvent(true))
       } catch (error: Throwable) {
-        uiState = PostCommentUiModel(isLoading = false)
-        Timber.e(error)
+        handleError(error)
         rethrowCancellation(error)
-        //TODO
       }
     }
   }
@@ -41,11 +41,18 @@ class PostCommentViewModel @Inject constructor(
         commentsRepository.postComment(movie, comment, isSpoiler)
         uiState = PostCommentUiModel(successEvent = ActionEvent(true))
       } catch (error: Throwable) {
-        uiState = PostCommentUiModel(isLoading = false)
-        Timber.e(error)
+        handleError(error)
         rethrowCancellation(error)
-        //TODO
       }
     }
+  }
+
+  private fun handleError(error: Throwable) {
+    if (error is HttpException && error.code() == 422) {
+      _messageLiveData.value = MessageEvent.error(R.string.errorCommentFormat)
+    } else {
+      _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+    }
+    uiState = PostCommentUiModel(isLoading = false)
   }
 }
