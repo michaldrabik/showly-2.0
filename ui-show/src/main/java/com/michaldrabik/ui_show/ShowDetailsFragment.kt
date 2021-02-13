@@ -344,7 +344,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun showPostCommentSheet() {
-    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
+    setFragmentResultListener(REQUEST_COMMENT) { _, _ ->
       showDetailsCommentsView.hideCommentButton()
       viewModel.loadComments()
       showSnack(MessageEvent.info(R.string.textCommentPosted))

@@ -28,6 +28,7 @@ data class MovieDetailsUiModel(
   val country: AppCountry? = null,
   val dateFormat: DateTimeFormatter? = null,
   val commentsDateFormat: DateTimeFormatter? = null,
+  val isSignedIn: Boolean? = null,
   val isPremium: Boolean? = null
 ) : UiModel() {
 
@@ -48,6 +49,7 @@ data class MovieDetailsUiModel(
       dateFormat = newModel.dateFormat ?: dateFormat,
       commentsDateFormat = newModel.commentsDateFormat ?: commentsDateFormat,
       isPremium = newModel.isPremium ?: isPremium,
+      isSignedIn = newModel.isSignedIn ?: isSignedIn,
       ratingState = newModel.ratingState?.copy(
         rateLoading = newModel.ratingState.rateLoading ?: ratingState?.rateLoading,
         rateAllowed = newModel.ratingState.rateAllowed ?: ratingState?.rateAllowed,

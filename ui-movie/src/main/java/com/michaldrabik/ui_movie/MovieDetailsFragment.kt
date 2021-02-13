@@ -83,6 +83,7 @@ import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_WATCHLIST
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.UPCOMING
+import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEARED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
@@ -119,10 +120,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiMovieDetailsComponentProvider).provideMovieDetailsComponent().inject(this)
     super.onCreate(savedInstanceState)
-    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
-      viewModel.loadBackgroundImage()
-      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) showCustomImages(movieId.id, true)
-    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -168,9 +165,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       showCommentsView()
       viewModel.loadComments()
     }
-    movieDetailsCommentsView.onRepliesClickListener = {
-      viewModel.loadCommentReplies(it)
-    }
+    movieDetailsCommentsView.onRepliesClickListener = { viewModel.loadCommentReplies(it) }
+    movieDetailsCommentsView.onPostCommentClickListener = { showPostCommentSheet() }
     movieDetailsAddButton.run {
       isEnabled = false
       onAddMyMoviesClickListener = {
@@ -299,16 +295,32 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsActorFullName.fadeOut()
   }
 
-  private fun showCustomImages(movieId: Long, isPremium: Boolean?) {
+  private fun showCustomImagesSheet(movieId: Long, isPremium: Boolean?) {
     if (isPremium == false) {
       navigateTo(R.id.actionMovieDetailsFragmentToPremium)
       return
     }
+
+    setFragmentResultListener(REQUEST_CUSTOM_IMAGE) { _, bundle ->
+      viewModel.loadBackgroundImage()
+      if (!bundle.getBoolean(ARG_CUSTOM_IMAGE_CLEARED)) showCustomImagesSheet(movieId, true)
+    }
+
     val bundle = bundleOf(
       ARG_MOVIE_ID to movieId,
       ARG_FAMILY to MOVIE
     )
     navigateTo(R.id.actionMovieDetailsFragmentToCustomImages, bundle)
+  }
+
+  private fun showPostCommentSheet() {
+    setFragmentResultListener(NavigationArgs.REQUEST_COMMENT) { _, _ ->
+      movieDetailsCommentsView.hideCommentButton()
+      viewModel.loadComments()
+      showSnack(MessageEvent.info(R.string.textCommentPosted))
+    }
+    val bundle = bundleOf(ARG_MOVIE_ID to movieId.id)
+    navigateTo(R.id.actionMovieDetailsFragmentToPostComment, bundle)
   }
 
   private fun render(uiModel: MovieDetailsUiModel) {
@@ -354,7 +366,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         }
         movieDetailsSeparator4.visible()
         movieDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
-        movieDetailsCustomImagesLabel.onClick { showCustomImages(movie.traktId, isPremium) }
+        movieDetailsCustomImagesLabel.onClick { showCustomImagesSheet(movie.traktId, isPremium) }
         movieDetailsAddButton.isEnabled = true
       }
       movieLoading?.let {
@@ -378,6 +390,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       relatedMovies?.let { renderRelatedMovies(it) }
       comments?.let {
         movieDetailsCommentsView.bind(it, commentsDateFormat)
+        if (isSignedIn == true) {
+          movieDetailsCommentsView.showCommentButton()
+        }
       }
       ratingState?.let { renderRating(it) }
       showFromTraktLoading?.let {

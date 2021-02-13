@@ -84,6 +84,7 @@ class MovieDetailsViewModel @Inject constructor(
           ratingState = RatingState(rateAllowed = isSignedIn, rateLoading = false),
           country = AppCountry.fromCode(settingsRepository.country),
           isPremium = settingsRepository.isPremium,
+          isSignedIn = isSignedIn,
           dateFormat = dateFormatProvider.loadShortDayFormat(),
           commentsDateFormat = dateFormatProvider.loadFullHourFormat()
         )

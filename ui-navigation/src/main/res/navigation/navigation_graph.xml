@@ -236,6 +236,11 @@
       app:launchSingleTop="true"
       />
     <action
+      android:id="@+id/actionMovieDetailsFragmentToPostComment"
+      app:destination="@id/postCommentDialog"
+      app:launchSingleTop="true"
+      />
+    <action
       android:id="@+id/actionMovieDetailsFragmentToPremium"
       app:destination="@id/premiumFragment"
       app:enterAnim="@anim/anim_fade_in"
