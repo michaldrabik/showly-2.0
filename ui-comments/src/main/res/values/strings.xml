@@ -18,6 +18,6 @@
   <string name="textRate">Rate</string>
   <string name="textRateDelete">Remove</string>
 
-  <string name="errorCommentFormat">Your comment must have 5 words or more.</string>
+  <string name="errorCommentFormat">Your comment must be in English and have 5 words or more.</string>
   <string name="errorCommentDelete">This comment can\'t be deleted anymore.</string>
 </resources>

@@ -200,6 +200,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         episodeDetailsCommentsEmpty.fadeIf(comments.isEmpty())
         episodeDetailsPostCommentButton.fadeIf(isSignedIn == true)
         episodeDetailsCommentsButton.isEnabled = false
+        episodeDetailsCommentsButton.text = String.format(ENGLISH, getString(R.string.textLoadCommentsCount), comments.size)
       }
       ratingState?.let { state ->
         episodeDetailsRateProgress.visibleIf(state.rateLoading == true)

@@ -19,17 +19,32 @@ class MovieDetailsCommentsCase @Inject constructor(
   private val userManager: UserTraktManager
 ) {
 
-  suspend fun loadComments(movie: Movie, limit: Int = 75): List<Comment> {
+  suspend fun loadComments(movie: Movie): List<Comment> {
+    val isSignedIn = userManager.isAuthorized()
     val username = userManager.getUsername()
-    val comments = commentsRepository.loadComments(movie, limit)
-      .map { it.copy(isMe = it.user.username == username) }
+    val comments = commentsRepository.loadComments(movie)
+      .map {
+        it.copy(
+          isSignedIn = isSignedIn,
+          isMe = it.user.username == username
+        )
+      }
       .partition { it.isMe }
 
     return comments.first + comments.second
   }
 
-  suspend fun loadReplies(comment: Comment) =
-    commentsRepository.loadReplies(comment.id)
+  suspend fun loadReplies(comment: Comment): List<Comment> {
+    val isSignedIn = userManager.isAuthorized()
+    val username = userManager.getUsername()
+    return commentsRepository.loadReplies(comment.id)
+      .map {
+        it.copy(
+          isSignedIn = isSignedIn,
+          isMe = it.user.username == username
+        )
+      }
+  }
 
   suspend fun delete(comment: Comment) {
     val dateMillis = comment.createdAt?.toMillis()

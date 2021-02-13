@@ -2,6 +2,7 @@ package com.michaldrabik.ui_comments
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -44,11 +45,14 @@ class CommentView : ConstraintLayout {
         }
       }
     }
+    commentReply.onClick { onReplyClickListener?.invoke(comment) }
     commentDelete.onClick { onDeleteClickListener?.invoke(comment) }
   }
 
   var onRepliesClickListener: ((Comment) -> Unit)? = null
+  var onReplyClickListener: ((Comment) -> Unit)? = null
   var onDeleteClickListener: ((Comment) -> Unit)? = null
+
   private lateinit var comment: Comment
 
   @SuppressLint("SetTextI18n", "DefaultLocale")
@@ -68,20 +72,23 @@ class CommentView : ConstraintLayout {
     commentRating.visibleIf(comment.userRating > 0)
     commentRating.text = String.format(Locale.ENGLISH, "%d", comment.userRating)
     commentRepliesCount.text = comment.replies.toString()
-    commentReplies.visibleIf(comment.replies > 0 && !comment.isLoading)
-    commentRepliesCount.visibleIf(comment.replies > 0 && !comment.isLoading)
+    commentReplies.visibleIf(comment.replies > 0 && !comment.isLoading && !comment.hasRepliesLoaded)
+    commentRepliesCount.visibleIf(comment.replies > 0 && !comment.isLoading && !comment.hasRepliesLoaded)
     commentRepliesCount.text = comment.replies.toString()
-    commentProgress.visibleIf(comment.isLoading || comment.isDeleting)
+    commentProgress.visibleIf(comment.isLoading || comment.isLoading)
     commentSpacerLine.visibleIf(comment.isReply())
-    commentDelete.visibleIf(comment.isMe && comment.replies == 0L)
+    commentReply.visibleIf(comment.isSignedIn && !comment.isLoading)
+    commentDelete.visibleIf(comment.isSignedIn && comment.isMe && comment.replies == 0L && !comment.isLoading)
 
     if (comment.hasSpoilers()) {
       with(commentText) {
         text = context.getString(R.string.textSpoilersWarning)
-        setTextColor(colorTextAccent)
+        commentText.setTypeface(null, Typeface.BOLD_ITALIC)
+        commentText.setTextColor(colorTextSecondary)
         onClick {
           text = comment.comment
-          setTextColor(colorTextPrimary)
+          commentText.setTypeface(null, Typeface.NORMAL)
+          commentText.setTextColor(colorTextPrimary)
         }
       }
     } else {
@@ -100,8 +107,9 @@ class CommentView : ConstraintLayout {
   private fun clear() {
     commentHeader.text = ""
     commentDate.text = ""
-    commentText.text = ""
     commentRepliesCount.text = ""
+    commentText.text = ""
+    commentText.setTypeface(null, Typeface.NORMAL)
     commentText.setTextColor(colorTextPrimary)
     commentDate.setTextColor(colorTextSecondary)
     commentHeader.setTextColor(colorTextSecondary)

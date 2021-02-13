@@ -170,9 +170,9 @@ class MovieDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         val parent = currentComments.find { it.id == comment.id }
-        parent?.let {
-          val copy = parent.copy(isLoading = true)
-          currentComments.findReplace(copy) { it.id == comment.id }
+        parent?.let { p ->
+          val copy = p.copy(isLoading = true)
+          currentComments.findReplace(copy) { it.id == p.id }
           uiState = MovieDetailsUiModel(comments = currentComments)
         }
 
@@ -182,34 +182,55 @@ class MovieDetailsViewModel @Inject constructor(
         val parentIndex = currentComments.indexOfFirst { it.id == comment.id }
         if (parentIndex > -1) currentComments.addAll(parentIndex + 1, replies)
         parent?.let {
-          currentComments.findReplace(parent.copy(isLoading = false, replies = 0)) { it.id == comment.id }
+          currentComments.findReplace(parent.copy(isLoading = false, hasRepliesLoaded = true)) { it.id == comment.id }
         }
 
         uiState = MovieDetailsUiModel(comments = currentComments)
       } catch (t: Throwable) {
+        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
         uiState = MovieDetailsUiModel(comments = currentComments)
       }
     }
   }
 
+  fun addNewComment(comment: Comment) {
+    val currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
+    if (!comment.isReply()) {
+      currentComments.add(0, comment)
+    } else {
+      val parentIndex = currentComments.indexOfLast { it.id == comment.parentId }
+      if (parentIndex > -1) {
+        val parent = currentComments[parentIndex]
+        currentComments.add(parentIndex + 1, comment)
+        val repliesCount = currentComments.count { it.parentId == parent.id }.toLong()
+        currentComments.findReplace(parent.copy(replies = repliesCount)) { it.id == comment.parentId }
+      }
+    }
+    uiState = MovieDetailsUiModel(comments = currentComments)
+  }
+
   fun deleteComment(comment: Comment) {
     var currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
-    if (currentComments.none { it.id == comment.id }) return
+    val target = currentComments.find { it.id == comment.id } ?: return
 
     viewModelScope.launch {
       try {
-        val target = currentComments.find { it.id == comment.id }
-        target?.let {
-          val copy = target.copy(isDeleting = true)
-          currentComments.findReplace(copy) { it.id == comment.id }
-          uiState = MovieDetailsUiModel(comments = currentComments)
-        }
+        val copy = target.copy(isLoading = true)
+        currentComments.findReplace(copy) { it.id == target.id }
+        uiState = MovieDetailsUiModel(comments = currentComments)
 
-        commentsCase.delete(comment)
+        commentsCase.delete(target)
 
         currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
-        val targetIndex = currentComments.indexOfFirst { it.id == comment.id }
-        if (targetIndex > -1) currentComments.removeAt(targetIndex)
+        val targetIndex = currentComments.indexOfFirst { it.id == target.id }
+        if (targetIndex > -1) {
+          currentComments.removeAt(targetIndex)
+          if (target.isReply()) {
+            val parent = currentComments.first { it.id == target.parentId }
+            val repliesCount = currentComments.count { it.parentId == parent.id }.toLong()
+            currentComments.findReplace(parent.copy(replies = repliesCount)) { it.id == target.parentId }
+          }
+        }
 
         uiState = MovieDetailsUiModel(comments = currentComments)
         _messageLiveData.value = MessageEvent.info(R.string.textCommentDeleted)

@@ -27,6 +27,7 @@ class CommentsView : ConstraintLayout {
 
   var onRepliesClickListener: ((Comment) -> Unit)? = null
   var onPostCommentClickListener: ((Comment?) -> Unit)? = null
+  var onReplyCommentClickListener: ((Comment) -> Unit)? = null
   var onDeleteCommentClickListener: ((Comment) -> Unit)? = null
 
   init {
@@ -49,8 +50,8 @@ class CommentsView : ConstraintLayout {
   fun clear() {
     commentsProgress.visible()
     commentsEmpty.gone()
+    commentsPostButton.gone()
     commentsAdapter.setItems(emptyList(), dateFormat)
-    hideCommentButton()
   }
 
   private fun setupRecycler() {
@@ -63,15 +64,12 @@ class CommentsView : ConstraintLayout {
     }
     commentsAdapter.run {
       onRepliesClickListener = { this@CommentsView.onRepliesClickListener?.invoke(it) }
+      onReplyClickListener = { this@CommentsView.onReplyCommentClickListener?.invoke(it) }
       onDeleteClickListener = { this@CommentsView.onDeleteCommentClickListener?.invoke(it) }
     }
   }
 
   fun showCommentButton() {
     commentsPostButton.fadeIn(duration = 200, startDelay = 100)
-  }
-
-  fun hideCommentButton() {
-    commentsPostButton.gone()
   }
 }

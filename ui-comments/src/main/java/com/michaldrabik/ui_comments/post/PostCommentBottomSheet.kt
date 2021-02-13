@@ -20,8 +20,12 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_comments.R
 import com.michaldrabik.ui_comments.post.di.UiPostCommentComponentProvider
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_EPISODE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import kotlinx.android.synthetic.main.view_post_comment.*
@@ -32,6 +36,9 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
   private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_SHOW_ID)) }
   private val movieTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_MOVIE_ID)) }
   private val episodeTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_EPISODE_ID)) }
+
+  private val replyCommentId by lazy { IdTrakt(requireArguments().getLong(ARG_COMMENT_ID)) }
+  private val replyUser by lazy { requireArguments().getString(ARG_REPLY_USER, "") }
 
   override val layoutResId = R.layout.view_post_comment
 
@@ -59,6 +66,7 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
     setupView(view)
   }
 
+  @SuppressLint("SetTextI18n")
   private fun setupView(view: View) {
     view.run {
       viewPostCommentInputValue.doOnTextChanged { text, _, _, _ ->
@@ -71,11 +79,15 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
         val commentText = viewPostCommentInputValue.text.toString()
         val isSpoiler = viewPostCommentSpoilersCheck.isChecked
         when {
+          replyCommentId.id > 0 -> viewModel.postReply(replyCommentId, commentText, isSpoiler)
           showTraktId.id > 0 -> viewModel.postShowComment(showTraktId, commentText, isSpoiler)
           movieTraktId.id > 0 -> viewModel.postMovieComment(movieTraktId, commentText, isSpoiler)
           episodeTraktId.id > 0 -> viewModel.postEpisodeComment(episodeTraktId, commentText, isSpoiler)
           else -> error("Invalid comment target.")
         }
+      }
+      if (replyUser.isNotEmpty() && replyCommentId.id != 0L) {
+        viewPostCommentInputValue.setText("@$replyUser ")
       }
     }
   }
@@ -92,8 +104,14 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
         viewPostCommentButton.visibleIf(!it, gone = false)
       }
       successEvent?.let {
-        it.consume()?.let {
-          setFragmentResult(REQUEST_COMMENT, bundleOf())
+        it.consume()?.let { commentBundle ->
+          setFragmentResult(
+            REQUEST_COMMENT,
+            bundleOf(
+              ARG_COMMENT_ACTION to commentBundle.first,
+              ARG_COMMENT to commentBundle.second
+            )
+          )
           dismiss()
         }
       }

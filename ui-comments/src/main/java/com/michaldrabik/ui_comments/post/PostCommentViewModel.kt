@@ -10,6 +10,7 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
 import com.michaldrabik.ui_repository.CommentsRepository
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -19,14 +20,16 @@ class PostCommentViewModel @Inject constructor(
   private val commentsRepository: CommentsRepository
 ) : BaseViewModel<PostCommentUiModel>() {
 
-  fun postShowComment(showId: IdTrakt, comment: String, isSpoiler: Boolean) {
-    if (comment.trim().split(" ").count { it.length > 1 } < 5) return
+  fun postShowComment(showId: IdTrakt, commentText: String, isSpoiler: Boolean) {
+    if (!isValid(commentText)) return
     viewModelScope.launch {
       try {
         uiState = PostCommentUiModel(isLoading = true)
         val show = Show.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = showId))
-        commentsRepository.postComment(show, comment, isSpoiler)
-        uiState = PostCommentUiModel(successEvent = ActionEvent(true))
+        val comment = commentsRepository
+          .postComment(show, commentText, isSpoiler)
+          .copy(isMe = true, isSignedIn = true)
+        uiState = PostCommentUiModel(successEvent = ActionEvent(Pair(ACTION_NEW_COMMENT, comment)))
       } catch (error: Throwable) {
         handleError(error)
         rethrowCancellation(error)
@@ -34,13 +37,16 @@ class PostCommentViewModel @Inject constructor(
     }
   }
 
-  fun postMovieComment(movieId: IdTrakt, comment: String, isSpoiler: Boolean) {
+  fun postMovieComment(movieId: IdTrakt, commentText: String, isSpoiler: Boolean) {
+    if (!isValid(commentText)) return
     viewModelScope.launch {
       try {
         uiState = PostCommentUiModel(isLoading = true)
         val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = movieId))
-        commentsRepository.postComment(movie, comment, isSpoiler)
-        uiState = PostCommentUiModel(successEvent = ActionEvent(true))
+        val comment = commentsRepository
+          .postComment(movie, commentText, isSpoiler)
+          .copy(isMe = true, isSignedIn = true)
+        uiState = PostCommentUiModel(successEvent = ActionEvent(Pair(ACTION_NEW_COMMENT, comment)))
       } catch (error: Throwable) {
         handleError(error)
         rethrowCancellation(error)
@@ -48,19 +54,43 @@ class PostCommentViewModel @Inject constructor(
     }
   }
 
-  fun postEpisodeComment(episodeId: IdTrakt, comment: String, isSpoiler: Boolean) {
+  fun postEpisodeComment(episodeId: IdTrakt, commentText: String, isSpoiler: Boolean) {
+    if (!isValid(commentText)) return
     viewModelScope.launch {
       try {
         uiState = PostCommentUiModel(isLoading = true)
         val episode = Episode.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = episodeId))
-        commentsRepository.postComment(episode, comment, isSpoiler)
-        uiState = PostCommentUiModel(successEvent = ActionEvent(true))
+        val comment = commentsRepository
+          .postComment(episode, commentText, isSpoiler)
+          .copy(isMe = true, isSignedIn = true)
+        uiState = PostCommentUiModel(successEvent = ActionEvent(Pair(ACTION_NEW_COMMENT, comment)))
       } catch (error: Throwable) {
         handleError(error)
         rethrowCancellation(error)
       }
     }
   }
+
+  fun postReply(commentId: IdTrakt, commentText: String, isSpoiler: Boolean) {
+    if (!isValid(commentText)) return
+    viewModelScope.launch {
+      try {
+        uiState = PostCommentUiModel(isLoading = true)
+        val comment = commentsRepository
+          .postReply(commentId.id, commentText, isSpoiler)
+          .copy(isMe = true, isSignedIn = true)
+        uiState = PostCommentUiModel(successEvent = ActionEvent(Pair(ACTION_NEW_COMMENT, comment)))
+      } catch (error: Throwable) {
+        handleError(error)
+        rethrowCancellation(error)
+      }
+    }
+  }
+
+  private fun isValid(commentText: String) = commentText
+    .trim().split(" ")
+    .filter { !it.startsWith("@") }
+    .count { it.length > 1 } >= 5
 
   private fun handleError(error: Throwable) {
     if (error is HttpException && error.code() == 422) {
