@@ -3,6 +3,7 @@ package com.michaldrabik.ui_repository
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.request.CommentRequest
+import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Movie
@@ -37,25 +38,39 @@ class CommentsRepository @Inject constructor(
       .map { mappers.comment.fromNetwork(it).copy(replies = 0) }
       .sortedBy { it.createdAt?.toEpochSecond() }
 
-  suspend fun postComment(show: Show, commentText: String, isSpoiler: Boolean) {
+  suspend fun postComment(show: Show, commentText: String, isSpoiler: Boolean): Comment {
     val token = userTraktManager.checkAuthorization().token
     val showBody = mappers.show.toNetwork(Show.EMPTY.copy(ids = show.ids))
     val request = CommentRequest(show = showBody, comment = commentText, spoiler = isSpoiler)
-    cloud.traktApi.postComment(token, request)
+
+    val comment = cloud.traktApi.postComment(token, request)
+    return mappers.comment.fromNetwork(comment)
   }
 
-  suspend fun postComment(movie: Movie, commentText: String, isSpoiler: Boolean) {
+  suspend fun postComment(movie: Movie, commentText: String, isSpoiler: Boolean): Comment {
     val token = userTraktManager.checkAuthorization().token
     val movieBody = mappers.movie.toNetwork(Movie.EMPTY.copy(ids = movie.ids))
     val request = CommentRequest(movie = movieBody, comment = commentText, spoiler = isSpoiler)
-    cloud.traktApi.postComment(token, request)
+
+    val comment = cloud.traktApi.postComment(token, request)
+    return mappers.comment.fromNetwork(comment)
   }
 
-  suspend fun postComment(episode: Episode, commentText: String, isSpoiler: Boolean) {
+  suspend fun postComment(episode: Episode, commentText: String, isSpoiler: Boolean): Comment {
     val token = userTraktManager.checkAuthorization().token
     val episodeBody = mappers.episode.toNetwork(Episode.EMPTY.copy(ids = episode.ids))
     val request = CommentRequest(episode = episodeBody, comment = commentText, spoiler = isSpoiler)
-    cloud.traktApi.postComment(token, request)
+
+    val comment = cloud.traktApi.postComment(token, request)
+    return mappers.comment.fromNetwork(comment)
+  }
+
+  suspend fun postReply(commentId: Long, commentText: String, isSpoiler: Boolean): Comment {
+    val token = userTraktManager.checkAuthorization().token
+    val request = CommentRequest(comment = commentText, spoiler = isSpoiler)
+
+    val comment = cloud.traktApi.postCommentReply(token, commentId, request)
+    return mappers.comment.fromNetwork(comment)
   }
 
   suspend fun deleteComment(commentId: Long) {

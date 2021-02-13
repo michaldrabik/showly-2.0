@@ -20,16 +20,30 @@ class ShowDetailsCommentsCase @Inject constructor(
 ) {
 
   suspend fun loadComments(show: Show): List<Comment> {
+    val isSignedIn = userManager.isAuthorized()
     val username = userManager.getUsername()
     val comments = commentsRepository.loadComments(show)
-      .map { it.copy(isMe = it.user.username == username) }
+      .map {
+        it.copy(
+          isSignedIn = isSignedIn,
+          isMe = it.user.username == username
+        )
+      }
       .partition { it.isMe }
 
     return comments.first + comments.second
   }
 
   suspend fun loadReplies(comment: Comment): List<Comment> {
+    val isSignedIn = userManager.isAuthorized()
+    val username = userManager.getUsername()
     return commentsRepository.loadReplies(comment.id)
+      .map {
+        it.copy(
+          isSignedIn = isSignedIn,
+          isMe = it.user.username == username
+        )
+      }
   }
 
   suspend fun delete(comment: Comment) {

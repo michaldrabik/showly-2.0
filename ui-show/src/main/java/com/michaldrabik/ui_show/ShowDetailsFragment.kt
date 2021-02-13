@@ -81,10 +81,14 @@ import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_QUICK_PROGRESS
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_WATCHED
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_RATING_CHANGED
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEARED
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_EPISODE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
@@ -193,6 +197,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsCommentsView.run {
       onRepliesClickListener = { viewModel.loadCommentReplies(it) }
+      onReplyCommentClickListener = { showPostCommentSheet(comment = it) }
       onDeleteCommentClickListener = { openDeleteCommentDialog(it) }
       onPostCommentClickListener = { showPostCommentSheet() }
     }
@@ -364,15 +369,24 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     navigateTo(R.id.actionShowDetailsFragmentToCustomImages, bundle)
   }
 
-  private fun showPostCommentSheet(episode: Episode? = null) {
-    setFragmentResultListener(REQUEST_COMMENT) { _, _ ->
-      showDetailsCommentsView.hideCommentButton()
-      viewModel.loadComments()
+  private fun showPostCommentSheet(comment: Comment? = null) {
+    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
       showSnack(MessageEvent.info(R.string.textCommentPosted))
+      when (bundle.getString(ARG_COMMENT_ACTION)) {
+        ACTION_NEW_COMMENT -> {
+          val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
+          viewModel.addNewComment(newComment)
+        }
+      }
     }
-    val bundle =
-      if (episode != null) bundleOf(ARG_EPISODE_ID to episode.ids.trakt.id)
-      else bundleOf(ARG_SHOW_ID to showId.id)
+
+    val bundle = when {
+      comment != null -> bundleOf(
+        ARG_COMMENT_ID to comment.getReplyId(),
+        ARG_REPLY_USER to comment.user.username
+      )
+      else -> bundleOf(ARG_SHOW_ID to showId.id)
+    }
     navigateTo(R.id.actionShowDetailsFragmentToPostComment, bundle)
   }
 

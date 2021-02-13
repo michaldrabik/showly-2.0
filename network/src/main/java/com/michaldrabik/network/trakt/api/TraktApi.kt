@@ -62,13 +62,13 @@ class TraktApi(private val service: TraktService) {
     service.fetchMovieComments(traktId, limit, currentTimeMillis())
 
   suspend fun fetchCommentReplies(commentId: Long) =
-    service.fetchCommentReplies(commentId)
+    service.fetchCommentReplies(commentId, currentTimeMillis())
 
   suspend fun postComment(token: String, commentRequest: CommentRequest) =
     service.postComment("Bearer $token", commentRequest)
 
-  suspend fun updateComment(token: String, commentId: Long, commentRequest: CommentRequest) =
-    service.updateComment("Bearer $token", commentId, commentRequest)
+  suspend fun postCommentReply(token: String, commentId: Long, commentRequest: CommentRequest) =
+    service.postCommentReply("Bearer $token", commentId, commentRequest)
 
   suspend fun deleteComment(token: String, commentId: Long) =
     service.deleteComment("Bearer $token", commentId)

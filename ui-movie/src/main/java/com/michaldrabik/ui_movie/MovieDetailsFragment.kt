@@ -84,11 +84,16 @@ import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_WATCHLIST
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.UPCOMING
-import com.michaldrabik.ui_navigation.java.NavigationArgs
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEARED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
@@ -168,6 +173,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
     movieDetailsCommentsView.run {
       onRepliesClickListener = { viewModel.loadCommentReplies(it) }
+      onReplyCommentClickListener = { showPostCommentSheet(comment = it) }
       onDeleteCommentClickListener = { openDeleteCommentDialog(it) }
       onPostCommentClickListener = { showPostCommentSheet() }
     }
@@ -317,13 +323,23 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     navigateTo(R.id.actionMovieDetailsFragmentToCustomImages, bundle)
   }
 
-  private fun showPostCommentSheet() {
-    setFragmentResultListener(NavigationArgs.REQUEST_COMMENT) { _, _ ->
-      movieDetailsCommentsView.hideCommentButton()
-      viewModel.loadComments()
+  private fun showPostCommentSheet(comment: Comment? = null) {
+    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
       showSnack(MessageEvent.info(R.string.textCommentPosted))
+      when (bundle.getString(ARG_COMMENT_ACTION)) {
+        ACTION_NEW_COMMENT -> {
+          val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
+          viewModel.addNewComment(newComment)
+        }
+      }
     }
-    val bundle = bundleOf(ARG_MOVIE_ID to movieId.id)
+    val bundle = when {
+      comment != null -> bundleOf(
+        ARG_COMMENT_ID to comment.getReplyId(),
+        ARG_REPLY_USER to comment.user.username
+      )
+      else -> bundleOf(ARG_MOVIE_ID to movieId.id)
+    }
     navigateTo(R.id.actionMovieDetailsFragmentToPostComment, bundle)
   }
 

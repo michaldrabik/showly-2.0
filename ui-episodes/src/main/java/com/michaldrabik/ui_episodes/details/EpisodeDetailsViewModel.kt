@@ -73,7 +73,12 @@ class EpisodeDetailsViewModel @Inject constructor(
         val isSignedIn = userTraktManager.isAuthorized()
         val username = userTraktManager.getUsername()
         val comments = commentsRepository.loadEpisodeComments(idTrakt, season, episode)
-          .map { it.copy(isMe = it.user.username == username) }
+          .map {
+            it.copy(
+              isMe = it.user.username == username,
+              isSignedIn = isSignedIn
+            )
+          }
           .partition { it.isMe }
 
         uiState = EpisodeDetailsUiModel(
@@ -96,9 +101,9 @@ class EpisodeDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         val parent = currentComments.find { it.id == comment.id }
-        parent?.let {
-          val copy = parent.copy(isLoading = true)
-          currentComments.findReplace(copy) { it.id == comment.id }
+        parent?.let { p ->
+          val copy = p.copy(isLoading = true)
+          currentComments.findReplace(copy) { it.id == p.id }
           uiState = EpisodeDetailsUiModel(comments = currentComments)
         }
 
@@ -120,22 +125,26 @@ class EpisodeDetailsViewModel @Inject constructor(
 
   fun deleteComment(comment: Comment) {
     var currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
-    if (currentComments.none { it.id == comment.id }) return
+    val target = currentComments.find { it.id == comment.id } ?: return
 
     viewModelScope.launch {
       try {
-        val target = currentComments.find { it.id == comment.id }
-        target?.let {
-          val copy = target.copy(isDeleting = true)
-          currentComments.findReplace(copy) { it.id == comment.id }
-          uiState = EpisodeDetailsUiModel(comments = currentComments)
-        }
+        val copy = target.copy(isLoading = true)
+        currentComments.findReplace(copy) { it.id == target.id }
+        uiState = EpisodeDetailsUiModel(comments = currentComments)
 
-        commentsRepository.deleteComment(comment.id)
+        commentsRepository.deleteComment(target.id)
 
         currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
-        val targetIndex = currentComments.indexOfFirst { it.id == comment.id }
-        if (targetIndex > -1) currentComments.removeAt(targetIndex)
+        val targetIndex = currentComments.indexOfFirst { it.id == target.id }
+        if (targetIndex > -1) {
+          currentComments.removeAt(targetIndex)
+          if (target.isReply()) {
+            val parent = currentComments.first { it.id == target.parentId }
+            val repliesCount = currentComments.count { it.parentId == parent.id }.toLong()
+            currentComments.findReplace(parent.copy(replies = repliesCount)) { it.id == target.parentId }
+          }
+        }
 
         uiState = EpisodeDetailsUiModel(comments = currentComments)
         _messageLiveData.value = MessageEvent.info(R.string.textCommentDeleted)

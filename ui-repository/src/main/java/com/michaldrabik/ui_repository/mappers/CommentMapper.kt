@@ -25,7 +25,8 @@ class CommentMapper @Inject constructor() {
         avatarUrl = comment?.user?.images?.avatar?.full ?: ""
       ),
       isMe = false,
+      isSignedIn = false,
       isLoading = false,
-      isDeleting = false
+      hasRepliesLoaded = false
     )
 }
