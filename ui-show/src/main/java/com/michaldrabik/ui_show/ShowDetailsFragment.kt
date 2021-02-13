@@ -65,6 +65,7 @@ import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_model.Actor
+import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.IdImdb
@@ -190,8 +191,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       showCommentsView()
       viewModel.loadComments()
     }
-    showDetailsCommentsView.onRepliesClickListener = { viewModel.loadCommentReplies(it) }
-    showDetailsCommentsView.onPostCommentClickListener = { showPostCommentSheet() }
+    showDetailsCommentsView.run {
+      onRepliesClickListener = { viewModel.loadCommentReplies(it) }
+      onDeleteCommentClickListener = { openDeleteCommentDialog(it) }
+      onPostCommentClickListener = { showPostCommentSheet() }
+    }
     showDetailsTipGallery.onClick {
       it.gone()
       showTip(SHOW_DETAILS_GALLERY)
@@ -785,6 +789,16 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .setTitle(R.string.textWhatIsArchiveFull)
       .setMessage(R.string.textArchiveDescription)
       .setPositiveButton(R.string.textOk) { _, _ -> openArchiveConfirmationDialog() }
+      .show()
+  }
+
+  private fun openDeleteCommentDialog(comment: Comment) {
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setTitle(R.string.textCommentConfirmDeleteTitle)
+      .setMessage(R.string.textCommentConfirmDelete)
+      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.deleteComment(comment) }
+      .setNegativeButton(R.string.textNo) { _, _ -> }
       .show()
   }
 

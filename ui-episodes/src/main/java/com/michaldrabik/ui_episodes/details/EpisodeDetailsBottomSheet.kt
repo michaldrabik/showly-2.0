@@ -43,6 +43,7 @@ import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_comments.CommentView
 import com.michaldrabik.ui_episodes.R
 import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponentProvider
+import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
@@ -188,13 +189,16 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
             if (it.replies > 0) {
               onRepliesClickListener = { comment -> viewModel.loadCommentReplies(comment) }
             }
+            if (it.replies == 0L && it.isMe) {
+              onDeleteClickListener = { comment -> openDeleteCommentDialog(comment) }
+            }
           }
           episodeDetailsComments.addView(view)
         }
         episodeDetailsCommentsLabel.fadeIf(comments.isNotEmpty())
         episodeDetailsComments.fadeIf(comments.isNotEmpty())
         episodeDetailsCommentsEmpty.fadeIf(comments.isEmpty())
-        episodeDetailsPostCommentButton.fadeIf(isSignedIn == true, 150)
+        episodeDetailsPostCommentButton.fadeIf(isSignedIn == true)
         episodeDetailsCommentsButton.isEnabled = false
       }
       ratingState?.let { state ->
@@ -241,5 +245,15 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         ERROR -> episodeDetailsSnackbarHost.showErrorSnackbar(getString(it))
       }
     }
+  }
+
+  private fun openDeleteCommentDialog(comment: Comment) {
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setTitle(R.string.textCommentConfirmDeleteTitle)
+      .setMessage(R.string.textCommentConfirmDelete)
+      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.deleteComment(comment) }
+      .setNegativeButton(R.string.textNo) { _, _ -> }
+      .show()
   }
 }

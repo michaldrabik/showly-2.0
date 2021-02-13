@@ -70,6 +70,9 @@ class TraktApi(private val service: TraktService) {
   suspend fun updateComment(token: String, commentId: Long, commentRequest: CommentRequest) =
     service.updateComment("Bearer $token", commentId, commentRequest)
 
+  suspend fun deleteComment(token: String, commentId: Long) =
+    service.deleteComment("Bearer $token", commentId)
+
   suspend fun fetchShowTranslations(traktId: Long, code: String) =
     service.fetchShowTranslations(traktId, code)
 

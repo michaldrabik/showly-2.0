@@ -28,6 +28,7 @@ import com.michaldrabik.network.trakt.model.request.OAuthRevokeRequest
 import com.michaldrabik.network.trakt.model.request.RatingRequest
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -124,6 +125,12 @@ interface TraktService {
     @Path("id") commentIt: Long,
     @Body commentBody: CommentRequest
   ): Comment
+
+  @DELETE("comments/{id}")
+  suspend fun deleteComment(
+    @Header("Authorization") authToken: String,
+    @Path("id") commentIt: Long
+  ): Response<Any>
 
   @GET("shows/{traktId}/translations/{code}")
   suspend fun fetchShowTranslations(

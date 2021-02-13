@@ -33,6 +33,7 @@ class CommentView : ConstraintLayout {
   init {
     inflate(context, R.layout.view_comment, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+
     arrayOf(commentReplies, commentRepliesCount).forEach {
       with(it) {
         expandTouch()
@@ -43,9 +44,11 @@ class CommentView : ConstraintLayout {
         }
       }
     }
+    commentDelete.onClick { onDeleteClickListener?.invoke(comment) }
   }
 
   var onRepliesClickListener: ((Comment) -> Unit)? = null
+  var onDeleteClickListener: ((Comment) -> Unit)? = null
   private lateinit var comment: Comment
 
   @SuppressLint("SetTextI18n", "DefaultLocale")
@@ -68,8 +71,9 @@ class CommentView : ConstraintLayout {
     commentReplies.visibleIf(comment.replies > 0 && !comment.isLoading)
     commentRepliesCount.visibleIf(comment.replies > 0 && !comment.isLoading)
     commentRepliesCount.text = comment.replies.toString()
-    commentProgress.visibleIf(comment.isLoading)
+    commentProgress.visibleIf(comment.isLoading || comment.isDeleting)
     commentSpacerLine.visibleIf(comment.isReply())
+    commentDelete.visibleIf(comment.isMe && comment.replies == 0L)
 
     if (comment.hasSpoilers()) {
       with(commentText) {
@@ -94,7 +98,6 @@ class CommentView : ConstraintLayout {
   }
 
   private fun clear() {
-    onClick { /* NOOP */ }
     commentHeader.text = ""
     commentDate.text = ""
     commentText.text = ""

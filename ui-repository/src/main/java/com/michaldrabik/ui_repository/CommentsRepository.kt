@@ -57,4 +57,9 @@ class CommentsRepository @Inject constructor(
     val request = CommentRequest(episode = episodeBody, comment = commentText, spoiler = isSpoiler)
     cloud.traktApi.postComment(token, request)
   }
+
+  suspend fun deleteComment(commentId: Long) {
+    val token = userTraktManager.checkAuthorization().token
+    cloud.traktApi.deleteComment(token, commentId)
+  }
 }

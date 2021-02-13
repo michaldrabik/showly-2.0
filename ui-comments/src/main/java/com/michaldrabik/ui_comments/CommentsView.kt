@@ -27,6 +27,7 @@ class CommentsView : ConstraintLayout {
 
   var onRepliesClickListener: ((Comment) -> Unit)? = null
   var onPostCommentClickListener: ((Comment?) -> Unit)? = null
+  var onDeleteCommentClickListener: ((Comment) -> Unit)? = null
 
   init {
     inflate(context, R.layout.view_comments, this)
@@ -60,7 +61,10 @@ class CommentsView : ConstraintLayout {
       itemAnimator = null
       addDivider(R.drawable.divider_comments_list)
     }
-    commentsAdapter.onRepliesClickListener = { onRepliesClickListener?.invoke(it) }
+    commentsAdapter.run {
+      onRepliesClickListener = { this@CommentsView.onRepliesClickListener?.invoke(it) }
+      onDeleteClickListener = { this@CommentsView.onDeleteCommentClickListener?.invoke(it) }
+    }
   }
 
   fun showCommentButton() {

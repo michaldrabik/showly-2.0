@@ -34,6 +34,7 @@ import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
@@ -186,6 +187,38 @@ class MovieDetailsViewModel @Inject constructor(
 
         uiState = MovieDetailsUiModel(comments = currentComments)
       } catch (t: Throwable) {
+        uiState = MovieDetailsUiModel(comments = currentComments)
+      }
+    }
+  }
+
+  fun deleteComment(comment: Comment) {
+    var currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
+    if (currentComments.none { it.id == comment.id }) return
+
+    viewModelScope.launch {
+      try {
+        val target = currentComments.find { it.id == comment.id }
+        target?.let {
+          val copy = target.copy(isDeleting = true)
+          currentComments.findReplace(copy) { it.id == comment.id }
+          uiState = MovieDetailsUiModel(comments = currentComments)
+        }
+
+        commentsCase.delete(comment)
+
+        currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
+        val targetIndex = currentComments.indexOfFirst { it.id == comment.id }
+        if (targetIndex > -1) currentComments.removeAt(targetIndex)
+
+        uiState = MovieDetailsUiModel(comments = currentComments)
+        _messageLiveData.value = MessageEvent.info(R.string.textCommentDeleted)
+      } catch (t: Throwable) {
+        if (t is HttpException && t.code() == 409) {
+          _messageLiveData.value = MessageEvent.error(R.string.errorCommentDelete)
+        } else {
+          _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+        }
         uiState = MovieDetailsUiModel(comments = currentComments)
       }
     }

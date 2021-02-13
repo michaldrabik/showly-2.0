@@ -13,6 +13,7 @@ class CommentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   private var dateFormat: DateTimeFormatter? = null
 
   var onRepliesClickListener: ((Comment) -> Unit)? = null
+  var onDeleteClickListener: ((Comment) -> Unit)? = null
 
   fun setItems(newItems: List<Comment>, dateFormat: DateTimeFormatter?) {
     this.dateFormat = dateFormat
@@ -23,6 +24,7 @@ class CommentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     ViewHolderShow(
       CommentView(parent.context).apply {
         onRepliesClickListener = { this@CommentsAdapter.onRepliesClickListener?.invoke(it) }
+        onDeleteClickListener = { this@CommentsAdapter.onDeleteClickListener?.invoke(it) }
       }
     )
 

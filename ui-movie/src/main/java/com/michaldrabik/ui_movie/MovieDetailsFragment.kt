@@ -62,6 +62,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_model.Actor
+import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdTrakt
@@ -165,8 +166,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       showCommentsView()
       viewModel.loadComments()
     }
-    movieDetailsCommentsView.onRepliesClickListener = { viewModel.loadCommentReplies(it) }
-    movieDetailsCommentsView.onPostCommentClickListener = { showPostCommentSheet() }
+    movieDetailsCommentsView.run {
+      onRepliesClickListener = { viewModel.loadCommentReplies(it) }
+      onDeleteCommentClickListener = { openDeleteCommentDialog(it) }
+      onPostCommentClickListener = { showPostCommentSheet() }
+    }
     movieDetailsAddButton.run {
       isEnabled = false
       onAddMyMoviesClickListener = {
@@ -577,6 +581,16 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           setNeutralButton(R.string.textRateDelete) { _, _ -> viewModel.deleteRating() }
         }
       }
+      .show()
+  }
+
+  private fun openDeleteCommentDialog(comment: Comment) {
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setTitle(R.string.textCommentConfirmDeleteTitle)
+      .setMessage(R.string.textCommentConfirmDelete)
+      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.deleteComment(comment) }
+      .setNegativeButton(R.string.textNo) { _, _ -> }
       .show()
   }
 

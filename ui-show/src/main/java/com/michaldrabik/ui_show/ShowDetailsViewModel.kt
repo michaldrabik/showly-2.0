@@ -48,6 +48,7 @@ import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
@@ -277,6 +278,39 @@ class ShowDetailsViewModel @Inject constructor(
 
         uiState = ShowDetailsUiModel(comments = currentComments)
       } catch (t: Throwable) {
+        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+        uiState = ShowDetailsUiModel(comments = currentComments)
+      }
+    }
+  }
+
+  fun deleteComment(comment: Comment) {
+    var currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
+    if (currentComments.none { it.id == comment.id }) return
+
+    viewModelScope.launch {
+      try {
+        val target = currentComments.find { it.id == comment.id }
+        target?.let {
+          val copy = target.copy(isDeleting = true)
+          currentComments.findReplace(copy) { it.id == comment.id }
+          uiState = ShowDetailsUiModel(comments = currentComments)
+        }
+
+        commentsCase.delete(comment)
+
+        currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
+        val targetIndex = currentComments.indexOfFirst { it.id == comment.id }
+        if (targetIndex > -1) currentComments.removeAt(targetIndex)
+
+        uiState = ShowDetailsUiModel(comments = currentComments)
+        _messageLiveData.value = MessageEvent.info(R.string.textCommentDeleted)
+      } catch (t: Throwable) {
+        if (t is HttpException && t.code() == 409) {
+          _messageLiveData.value = MessageEvent.error(R.string.errorCommentDelete)
+        } else {
+          _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+        }
         uiState = ShowDetailsUiModel(comments = currentComments)
       }
     }

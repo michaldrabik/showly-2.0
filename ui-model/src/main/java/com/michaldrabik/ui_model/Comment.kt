@@ -15,7 +15,8 @@ data class Comment(
   val updatedAt: ZonedDateTime?,
   val user: User,
   val isMe: Boolean,
-  val isLoading: Boolean
+  val isLoading: Boolean,
+  val isDeleting: Boolean
 ) {
 
   fun hasSpoilers() = spoiler || comment.contains("spoiler", true)

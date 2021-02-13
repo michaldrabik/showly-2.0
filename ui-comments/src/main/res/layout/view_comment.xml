@@ -137,15 +137,29 @@
     android:id="@+id/commentRepliesCount"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceSmall"
     android:textColor="?android:attr/textColorSecondary"
     android:textSize="12sp"
     android:textStyle="bold"
     android:visibility="gone"
     app:layout_constraintBottom_toBottomOf="@id/commentImage"
-    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintEnd_toStartOf="@id/commentDelete"
     app:layout_constraintTop_toTopOf="@id/commentImage"
     tools:ignore="SmallSp"
     tools:text="200"
+    tools:visibility="visible"
+    />
+
+  <ImageView
+    android:id="@+id/commentDelete"
+    android:layout_width="20dp"
+    android:layout_height="20dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/commentImage"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@id/commentImage"
+    app:srcCompat="@drawable/ic_delete"
+    app:tint="?android:attr/textColorSecondary"
     tools:visibility="visible"
     />
 
