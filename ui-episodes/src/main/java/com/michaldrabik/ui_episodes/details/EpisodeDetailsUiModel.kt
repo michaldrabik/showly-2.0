@@ -13,6 +13,7 @@ data class EpisodeDetailsUiModel(
   val imageLoading: Boolean? = null,
   val comments: List<Comment>? = null,
   val commentsLoading: Boolean? = null,
+  val isSignedIn: Boolean? = null,
   val ratingState: RatingState? = null,
   val ratingChanged: ActionEvent<Boolean>? = null,
   val translation: ActionEvent<Translation>? = null,
@@ -28,6 +29,7 @@ data class EpisodeDetailsUiModel(
       commentsLoading = newModel.commentsLoading ?: commentsLoading,
       translation = newModel.translation ?: translation,
       ratingChanged = newModel.ratingChanged ?: ratingChanged,
+      isSignedIn = newModel.isSignedIn ?: isSignedIn,
       dateFormat = newModel.dateFormat ?: dateFormat,
       commentsDateFormat = newModel.commentsDateFormat ?: commentsDateFormat,
       ratingState = newModel.ratingState?.copy(

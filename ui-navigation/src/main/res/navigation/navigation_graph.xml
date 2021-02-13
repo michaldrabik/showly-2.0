@@ -134,6 +134,11 @@
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
+    <action
+      android:id="@+id/actionProgressFragmentToEpisodeDetails"
+      app:destination="@id/episodeDetailsDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -199,6 +204,11 @@
     <action
       android:id="@+id/actionShowDetailsFragmentToPostComment"
       app:destination="@id/postCommentDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionShowDetailsFragmentEpisodeDetails"
+      app:destination="@id/episodeDetailsDialog"
       app:launchSingleTop="true"
       />
     <action
@@ -404,6 +414,18 @@
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
+      />
+  </dialog>
+
+  <dialog
+    android:id="@+id/episodeDetailsDialog"
+    android:name="com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet"
+    android:label="dialogEpisodeDetails"
+    >
+    <action
+      android:id="@+id/actionEpisodeDetailsDialogToPostComment"
+      app:destination="@id/postCommentDialog"
+      app:launchSingleTop="true"
       />
   </dialog>
 

@@ -144,11 +144,12 @@ interface TraktService {
     @Query("translations") countryCode: String
   ): List<SeasonTranslation>
 
-  @GET("shows/{traktId}/seasons/{seasonNumber}/episodes/{episodeNumber}/comments/newest?limit=40&extended=full")
+  @GET("shows/{traktId}/seasons/{seasonNumber}/episodes/{episodeNumber}/comments/newest?limit=50&extended=full")
   suspend fun fetchEpisodeComments(
     @Path("traktId") traktId: Long,
     @Path("seasonNumber") seasonNumber: Int,
-    @Path("episodeNumber") episodeNumber: Int
+    @Path("episodeNumber") episodeNumber: Int,
+    @Query("timestamp") timestamp: Long
   ): List<Comment>
 
   @GET("shows/{traktId}/people")

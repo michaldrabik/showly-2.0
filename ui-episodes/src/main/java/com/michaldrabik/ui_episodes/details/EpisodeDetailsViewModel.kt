@@ -69,12 +69,14 @@ class EpisodeDetailsViewModel @Inject constructor(
       try {
         uiState = EpisodeDetailsUiModel(commentsLoading = true)
 
+        val isSignedIn = userTraktManager.isAuthorized()
         val username = userTraktManager.getUsername()
         val comments = commentsRepository.loadEpisodeComments(idTrakt, season, episode)
           .map { it.copy(isMe = it.user.username == username) }
           .partition { it.isMe }
 
         uiState = EpisodeDetailsUiModel(
+          isSignedIn = isSignedIn,
           comments = comments.first + comments.second,
           commentsLoading = false,
           commentsDateFormat = dateFormatProvider.loadFullHourFormat()

@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_episodes.details
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import android.graphics.Typeface.BOLD
 import android.graphics.Typeface.NORMAL
 import android.os.Bundle
@@ -10,7 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.setPadding
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -30,6 +32,7 @@ import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.setTextFade
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
@@ -43,7 +46,11 @@ import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponentProvider
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
-import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_WATCHED
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_RATING_CHANGED
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_EPISODE_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import kotlinx.android.synthetic.main.view_episode_details.*
 import kotlinx.android.synthetic.main.view_episode_details.view.*
 import java.util.Locale.ENGLISH
@@ -51,31 +58,12 @@ import java.util.Locale.ENGLISH
 class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewModel>() {
 
   companion object {
-    private const val ARG_ID_TRAKT = "ARG_ID_TRAKT"
-    private const val ARG_ID_TMDB = "ARG_ID_TMDB"
-    private const val ARG_EPISODE = "ARG_EPISODE"
-    private const val ARG_IS_WATCHED = "ARG_IS_WATCHED"
-    private const val ARG_SHOW_BUTTON = "ARG_SHOW_BUTTON"
-
-    fun create(
-      show: Show,
-      episode: Episode,
-      isWatched: Boolean,
-      showButton: Boolean = true
-    ): EpisodeDetailsBottomSheet {
-      val bundle = Bundle().apply {
-        putLong(ARG_ID_TRAKT, show.traktId)
-        putLong(ARG_ID_TMDB, show.ids.tmdb.id)
-        putParcelable(ARG_EPISODE, episode)
-        putBoolean(ARG_IS_WATCHED, isWatched)
-        putBoolean(ARG_SHOW_BUTTON, showButton)
-      }
-      return EpisodeDetailsBottomSheet().apply { arguments = bundle }
-    }
+    const val ARG_ID_TRAKT = "ARG_ID_TRAKT"
+    const val ARG_ID_TMDB = "ARG_ID_TMDB"
+    const val ARG_EPISODE = "ARG_EPISODE"
+    const val ARG_IS_WATCHED = "ARG_IS_WATCHED"
+    const val ARG_SHOW_BUTTON = "ARG_SHOW_BUTTON"
   }
-
-  var onEpisodeWatchedClick: ((Boolean) -> Unit)? = null
-  var onRatingChanged: (() -> Unit)? = null
 
   private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_ID_TRAKT)) }
   private val showTmdbId by lazy { IdTmdb(requireArguments().getLong(ARG_ID_TMDB)) }
@@ -123,7 +111,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         visibleIf(showButton)
         setImageResource(if (isWatched) R.drawable.ic_eye else R.drawable.ic_check)
         onClick {
-          onEpisodeWatchedClick?.invoke(!isWatched)
+          setFragmentResult(REQUEST_EPISODE_DETAILS, bundleOf(ACTION_EPISODE_WATCHED to !isWatched))
           dismiss()
         }
       }
@@ -133,6 +121,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       episodeDetailsCommentsButton.onClick {
         viewModel.loadComments(showTraktId, episode.season, episode.number)
       }
+      episodeDetailsPostCommentButton.onClick { openPostCommentSheet() }
     }
   }
 
@@ -153,6 +142,16 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         }
       }
       .show()
+  }
+
+  private fun openPostCommentSheet() {
+    setFragmentResultListener(REQUEST_COMMENT) { _, _ ->
+      episodeDetailsPostCommentButton.gone()
+      viewModel.loadComments(showTraktId, episode.season, episode.number)
+      renderSnackbar(info(R.string.textCommentPosted))
+    }
+    val bundle = bundleOf(ARG_EPISODE_ID to episode.ids.trakt.id)
+    navigateTo(R.id.actionEpisodeDetailsDialogToPostComment, bundle)
   }
 
   @SuppressLint("SetTextI18n")
@@ -178,7 +177,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
           .into(episodeDetailsImage)
       }
       commentsLoading?.let {
-        episodeDetailsButtons.visibleIf(!it && comments?.isEmpty() == true)
+        episodeDetailsButtons.visibleIf(!it)
         episodeDetailsCommentsProgress.visibleIf(it)
       }
       comments?.let { comments ->
@@ -187,9 +186,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
           val view = CommentView(requireContext()).apply {
             bind(it, commentsDateFormat)
             if (it.replies > 0) {
-              onRepliesClickListener = { comment ->
-                viewModel.loadCommentReplies(comment)
-              }
+              onRepliesClickListener = { comment -> viewModel.loadCommentReplies(comment) }
             }
           }
           episodeDetailsComments.addView(view)
@@ -197,6 +194,8 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         episodeDetailsCommentsLabel.fadeIf(comments.isNotEmpty())
         episodeDetailsComments.fadeIf(comments.isNotEmpty())
         episodeDetailsCommentsEmpty.fadeIf(comments.isEmpty())
+        episodeDetailsPostCommentButton.fadeIf(isSignedIn == true, 150)
+        episodeDetailsCommentsButton.isEnabled = false
       }
       ratingState?.let { state ->
         episodeDetailsRateProgress.visibleIf(state.rateLoading == true)
@@ -217,7 +216,11 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
           episodeDetailsRateButton.setText(R.string.textRate)
         }
       }
-      ratingChanged?.let { it.consume()?.let { onRatingChanged?.invoke() } }
+      ratingChanged?.let {
+        it.consume()?.let {
+          setFragmentResult(REQUEST_EPISODE_DETAILS, bundleOf(ACTION_RATING_CHANGED to true))
+        }
+      }
       translation?.let { t ->
         t.consume()?.let {
           if (it.overview.isNotBlank()) {
@@ -238,10 +241,5 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         ERROR -> episodeDetailsSnackbarHost.showErrorSnackbar(getString(it))
       }
     }
-  }
-
-  override fun onDismiss(dialog: DialogInterface) {
-    onEpisodeWatchedClick = null
-    super.onDismiss(dialog)
   }
 }

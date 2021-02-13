@@ -32,6 +32,7 @@ dependencies {
     implementation project(':storage')
     implementation project(':network')
     implementation project(':ui-base')
+    implementation project(':ui-navigation')
     implementation project(':ui-repository')
     implementation project(':ui-model')
     implementation project(':ui-comments')

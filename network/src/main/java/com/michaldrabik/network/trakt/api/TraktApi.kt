@@ -17,6 +17,7 @@ import com.michaldrabik.network.trakt.model.request.OAuthRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRevokeRequest
 import com.michaldrabik.network.trakt.model.request.RatingRequest
 import com.michaldrabik.network.trakt.model.request.RatingRequestValue
+import java.lang.System.currentTimeMillis
 
 class TraktApi(private val service: TraktService) {
 
@@ -55,10 +56,10 @@ class TraktApi(private val service: TraktService) {
       .sortedByDescending { it.number }
 
   suspend fun fetchShowComments(traktId: Long, limit: Int) =
-    service.fetchShowComments(traktId, limit, System.currentTimeMillis())
+    service.fetchShowComments(traktId, limit, currentTimeMillis())
 
   suspend fun fetchMovieComments(traktId: Long, limit: Int) =
-    service.fetchMovieComments(traktId, limit, System.currentTimeMillis())
+    service.fetchMovieComments(traktId, limit, currentTimeMillis())
 
   suspend fun fetchCommentReplies(commentId: Long) =
     service.fetchCommentReplies(commentId)
@@ -83,7 +84,7 @@ class TraktApi(private val service: TraktService) {
     seasonNumber: Int,
     episodeNumber: Int
   ): List<Comment> = try {
-    service.fetchEpisodeComments(traktId, seasonNumber, episodeNumber)
+    service.fetchEpisodeComments(traktId, seasonNumber, episodeNumber, currentTimeMillis())
   } catch (t: Throwable) {
     emptyList()
   }

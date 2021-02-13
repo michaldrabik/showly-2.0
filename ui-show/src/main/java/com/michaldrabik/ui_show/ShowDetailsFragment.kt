@@ -79,12 +79,16 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_QUICK_PROGRESS
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_WATCHED
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_RATING_CHANGED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEARED
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_EPISODE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
 import com.michaldrabik.ui_show.helpers.ShowLink
@@ -317,12 +321,25 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     isWatched: Boolean,
     showButton: Boolean = true
   ) {
-    val modal = EpisodeDetailsBottomSheet.create(show, episode, isWatched, showButton)
-    if (season != null) {
-      modal.onEpisodeWatchedClick = { viewModel.setWatchedEpisode(requireAppContext(), episode, season, it) }
-      modal.onRatingChanged = { viewModel.refreshEpisodesRatings() }
+    if (season !== null) {
+      setFragmentResultListener(REQUEST_EPISODE_DETAILS) { _, bundle ->
+        when {
+          bundle.containsKey(ACTION_RATING_CHANGED) -> viewModel.refreshEpisodesRatings()
+          bundle.containsKey(ACTION_EPISODE_WATCHED) -> {
+            val watched = bundle.getBoolean(ACTION_EPISODE_WATCHED)
+            viewModel.setWatchedEpisode(requireAppContext(), episode, season, watched)
+          }
+        }
+      }
     }
-    modal.show(requireActivity().supportFragmentManager, "MODAL")
+    val bundle = Bundle().apply {
+      putLong(EpisodeDetailsBottomSheet.ARG_ID_TRAKT, show.traktId)
+      putLong(EpisodeDetailsBottomSheet.ARG_ID_TMDB, show.ids.tmdb.id)
+      putParcelable(EpisodeDetailsBottomSheet.ARG_EPISODE, episode)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_IS_WATCHED, isWatched)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, showButton)
+    }
+    navigateTo(R.id.actionShowDetailsFragmentEpisodeDetails, bundle)
   }
 
   private fun showCustomImagesSheet(showId: Long, isPremium: Boolean?) {
@@ -343,13 +360,15 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     navigateTo(R.id.actionShowDetailsFragmentToCustomImages, bundle)
   }
 
-  private fun showPostCommentSheet() {
+  private fun showPostCommentSheet(episode: Episode? = null) {
     setFragmentResultListener(REQUEST_COMMENT) { _, _ ->
       showDetailsCommentsView.hideCommentButton()
       viewModel.loadComments()
       showSnack(MessageEvent.info(R.string.textCommentPosted))
     }
-    val bundle = bundleOf(ARG_SHOW_ID to showId.id)
+    val bundle =
+      if (episode != null) bundleOf(ARG_EPISODE_ID to episode.ids.trakt.id)
+      else bundleOf(ARG_SHOW_ID to showId.id)
     navigateTo(R.id.actionShowDetailsFragmentToPostComment, bundle)
   }
 

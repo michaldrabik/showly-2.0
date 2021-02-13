@@ -5,6 +5,7 @@ import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_comments.R
+import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Movie
@@ -39,6 +40,20 @@ class PostCommentViewModel @Inject constructor(
         uiState = PostCommentUiModel(isLoading = true)
         val movie = Movie.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = movieId))
         commentsRepository.postComment(movie, comment, isSpoiler)
+        uiState = PostCommentUiModel(successEvent = ActionEvent(true))
+      } catch (error: Throwable) {
+        handleError(error)
+        rethrowCancellation(error)
+      }
+    }
+  }
+
+  fun postEpisodeComment(episodeId: IdTrakt, comment: String, isSpoiler: Boolean) {
+    viewModelScope.launch {
+      try {
+        uiState = PostCommentUiModel(isLoading = true)
+        val episode = Episode.EMPTY.copy(ids = Ids.EMPTY.copy(trakt = episodeId))
+        commentsRepository.postComment(episode, comment, isSpoiler)
         uiState = PostCommentUiModel(successEvent = ActionEvent(true))
       } catch (error: Throwable) {
         handleError(error)

@@ -171,13 +171,14 @@ class ProgressFragment :
   }
 
   fun openEpisodeDetails(show: Show, episode: Episode) {
-    val modal = EpisodeDetailsBottomSheet.create(
-      show,
-      episode,
-      isWatched = false,
-      showButton = false
-    )
-    modal.show(requireActivity().supportFragmentManager, "MODAL")
+    val bundle = Bundle().apply {
+      putLong(EpisodeDetailsBottomSheet.ARG_ID_TRAKT, show.traktId)
+      putLong(EpisodeDetailsBottomSheet.ARG_ID_TMDB, show.ids.tmdb.id)
+      putParcelable(EpisodeDetailsBottomSheet.ARG_EPISODE, episode)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_IS_WATCHED, false)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, false)
+    }
+    navigateTo(R.id.actionProgressFragmentToEpisodeDetails, bundle)
   }
 
   private fun openSortOrderDialog(order: SortOrder) {

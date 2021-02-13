@@ -176,7 +176,7 @@
           android:layout_height="wrap_content"
           android:layout_marginEnd="@dimen/spaceTiny"
           android:layout_weight="@integer/buttonCommentsWeight"
-          android:backgroundTint="?attr/colorAccent"
+          android:backgroundTint="@color/selector_comment_button"
           android:gravity="center"
           android:text="@string/textLoadCommentsCount"
           android:textColor="?attr/textColorOnSurface"
@@ -226,6 +226,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginBottom="56dp"
         android:gravity="center"
         android:text="@string/textNoComments"
         android:textColor="?android:attr/textColorPrimary"
@@ -244,7 +245,7 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="gone"
-        tools:visibility="visible"
+        tools:visibility="gone"
         />
 
       <LinearLayout
@@ -258,7 +259,7 @@
         android:paddingBottom="200dp"
         android:showDividers="middle|end"
         android:visibility="gone"
-        tools:visibility="visible"
+        tools:visibility="gone"
         />
 
     </LinearLayout>
@@ -277,6 +278,22 @@
     app:layout_constraintTop_toBottomOf="@id/episodeDetailsSeparator"
     app:srcCompat="@drawable/ic_eye"
     app:tint="?attr/textColorOnSurface"
+    />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/episodeDetailsPostCommentButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spaceNormal"
+    android:layout_marginBottom="@dimen/spaceNormal"
+    android:visibility="gone"
+    app:backgroundTint="?attr/colorAccent"
+    app:fabSize="mini"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:srcCompat="@drawable/ic_add_comment"
+    app:tint="?attr/textColorOnSurface"
+    tools:visibility="visible"
     />
 
   <androidx.coordinatorlayout.widget.CoordinatorLayout

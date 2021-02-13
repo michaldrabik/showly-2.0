@@ -3,6 +3,7 @@ package com.michaldrabik.ui_repository
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.request.CommentRequest
+import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
@@ -47,6 +48,13 @@ class CommentsRepository @Inject constructor(
     val token = userTraktManager.checkAuthorization().token
     val movieBody = mappers.movie.toNetwork(Movie.EMPTY.copy(ids = movie.ids))
     val request = CommentRequest(movie = movieBody, comment = commentText, spoiler = isSpoiler)
+    cloud.traktApi.postComment(token, request)
+  }
+
+  suspend fun postComment(episode: Episode, commentText: String, isSpoiler: Boolean) {
+    val token = userTraktManager.checkAuthorization().token
+    val episodeBody = mappers.episode.toNetwork(Episode.EMPTY.copy(ids = episode.ids))
+    val request = CommentRequest(episode = episodeBody, comment = commentText, spoiler = isSpoiler)
     cloud.traktApi.postComment(token, request)
   }
 }
