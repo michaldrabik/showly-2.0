@@ -17,7 +17,7 @@ class ActorsDaoTest : BaseDaoTest() {
   @Test
   fun shouldInsertSingleEntity() {
     runBlocking {
-      val actor = actor.copy(id = 99, idShowTvdb = 22)
+      val actor = actor.copy(id = 99, idShowTmdb = 22)
 
       database.actorsDao().upsert(listOf(actor))
       val result = database.actorsDao().getAllByShow(22)
@@ -29,8 +29,8 @@ class ActorsDaoTest : BaseDaoTest() {
   @Test
   fun shouldInsertMultipleEntities() {
     runBlocking {
-      val actor1 = actor.copy(id = 99, idShowTvdb = 22)
-      val actor2 = actor.copy(id = 23, idShowTvdb = 22)
+      val actor1 = actor.copy(id = 99, idShowTmdb = 22)
+      val actor2 = actor.copy(id = 23, idShowTmdb = 22)
 
       database.actorsDao().upsert(listOf(actor1, actor2))
       val result = database.actorsDao().getAllByShow(22)
@@ -42,11 +42,11 @@ class ActorsDaoTest : BaseDaoTest() {
   @Test
   fun shouldUpdateEntitiesIfExist() {
     runBlocking {
-      val actor1 = actor.copy(id = 99, idShowTvdb = 22)
-      val actor2 = actor.copy(id = 23, idShowTvdb = 22)
+      val actor1 = actor.copy(id = 99, idShowTmdb = 22)
+      val actor2 = actor.copy(id = 23, idShowTmdb = 22)
 
-      val actor1Updated = actor1.copy(id = 99, idShowTvdb = 99)
-      val actor2Updated = actor2.copy(id = 23, idShowTvdb = 99)
+      val actor1Updated = actor1.copy(id = 99, idShowTmdb = 99)
+      val actor2Updated = actor2.copy(id = 23, idShowTmdb = 99)
 
       database.actorsDao().upsert(listOf(actor1, actor2))
       database.actorsDao().upsert(listOf(actor1Updated, actor2Updated))
@@ -59,8 +59,8 @@ class ActorsDaoTest : BaseDaoTest() {
   @Test
   fun shouldDeleteEntitiesByShowId() {
     runBlocking {
-      val actor1 = actor.copy(id = 99, idShowTvdb = 11)
-      val actor2 = actor.copy(id = 23, idShowTvdb = 22)
+      val actor1 = actor.copy(id = 99, idShowTmdb = 11)
+      val actor2 = actor.copy(id = 23, idShowTmdb = 22)
 
       database.actorsDao().upsert(listOf(actor1, actor2))
       assertThat(database.actorsDao().getAllByShow(11)).containsExactly(actor1)
@@ -75,16 +75,16 @@ class ActorsDaoTest : BaseDaoTest() {
   @Test
   fun shouldReplaceEntitiesByShowId() {
     runBlocking {
-      val actor1 = actor.copy(id = 11, idShowTvdb = 111)
-      val actor2 = actor.copy(id = 22, idShowTvdb = 111)
-      val actor3 = actor.copy(id = 33, idShowTvdb = 333)
+      val actor1 = actor.copy(id = 11, idShowTmdb = 111)
+      val actor2 = actor.copy(id = 22, idShowTmdb = 111)
+      val actor3 = actor.copy(id = 33, idShowTmdb = 333)
 
       database.actorsDao().upsert(listOf(actor1, actor2, actor3))
       assertThat(database.actorsDao().getAllByShow(111)).containsExactly(actor1, actor2)
       assertThat(database.actorsDao().getAllByShow(333)).containsExactly(actor3)
 
-      val actor4 = actor.copy(id = 44, idShowTvdb = 111)
-      val actor5 = actor.copy(id = 55, idShowTvdb = 111)
+      val actor4 = actor.copy(id = 44, idShowTmdb = 111)
+      val actor5 = actor.copy(id = 55, idShowTmdb = 111)
 
       database.actorsDao().replaceForShow(listOf(actor4, actor5), 111)
       assertThat(database.actorsDao().getAllByShow(111)).containsExactly(actor4, actor5)

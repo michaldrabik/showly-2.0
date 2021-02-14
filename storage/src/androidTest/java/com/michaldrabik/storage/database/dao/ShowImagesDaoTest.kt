@@ -13,10 +13,10 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class ShowImagesDaoTest : BaseDaoTest() {
 
-  private val image1 = ShowImage(1, 1, "poster", "show", "url", "thumbUrl", "tmdb")
-  private val image2 = ShowImage(2, 2, "poster", "episode", "url", "thumbUrl", "tmdb")
-  private val image3 = ShowImage(3, 1, "fanart", "show", "url", "thumbUrl", "tmdb")
-  private val image4 = ShowImage(4, 2, "fanart", "episode", "url", "thumbUrl", "tmdb")
+  private val image1 = ShowImage(1, 1, 1, "poster", "show", "url", "thumbUrl", "tmdb")
+  private val image2 = ShowImage(2, 2, 2, "poster", "episode", "url", "thumbUrl", "tmdb")
+  private val image3 = ShowImage(3, 1, 1, "fanart", "show", "url", "thumbUrl", "tmdb")
+  private val image4 = ShowImage(4, 2, 2, "fanart", "episode", "url", "thumbUrl", "tmdb")
 
   @Before
   fun setUp() = runBlocking {
@@ -49,13 +49,13 @@ class ShowImagesDaoTest : BaseDaoTest() {
     val result = database.showImagesDao().getByShowId(10, "fanart")
     assertThat(result).isNull()
 
-    val image = ShowImage(10, 10, "fanart", "show", "url", "thumbUrl", "tmdb")
+    val image = ShowImage(10, 10, 10, "fanart", "show", "url", "thumbUrl", "tmdb")
     database.showImagesDao().insertShowImage(image)
 
     val result2 = database.showImagesDao().getByShowId(10, "fanart")
     assertThat(result2).isEqualTo(image)
 
-    val image2 = ShowImage(10, 10, "fanart", "show", "url2", "thumbUrl2", "tmdb")
+    val image2 = ShowImage(10, 10, 10, "fanart", "show", "url2", "thumbUrl2", "tmdb")
     database.showImagesDao().insertShowImage(image2)
 
     val result3 = database.showImagesDao().getByShowId(10, "fanart")
@@ -67,13 +67,13 @@ class ShowImagesDaoTest : BaseDaoTest() {
     val result = database.showImagesDao().getByEpisodeId(10, "fanart")
     assertThat(result).isNull()
 
-    val image = ShowImage(10, 10, "fanart", "episode", "url", "thumbUrl", "tmdb")
+    val image = ShowImage(10, 10, 10, "fanart", "episode", "url", "thumbUrl", "tmdb")
     database.showImagesDao().insertEpisodeImage(image)
 
     val result2 = database.showImagesDao().getByEpisodeId(10, "fanart")
     assertThat(result2).isEqualTo(image)
 
-    val image2 = ShowImage(10, 10, "fanart", "episode", "url2", "thumbUrl2", "tmdb")
+    val image2 = ShowImage(10, 10, 10, "fanart", "episode", "url2", "thumbUrl2", "tmdb")
     database.showImagesDao().insertEpisodeImage(image2)
 
     val result3 = database.showImagesDao().getByEpisodeId(10, "fanart")

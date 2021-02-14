@@ -22,7 +22,7 @@ class WatchlistShowsDaoTest : BaseDaoTest() {
       database.showsDao().upsert(listOf(show))
       database.watchlistShowsDao().insert(seeLaterShow)
       val result = database.watchlistShowsDao().getAll()
-      assertThat(result).containsExactlyElementsIn(listOf(show.copy(updatedAt = 999)))
+      assertThat(result).containsExactlyElementsIn(listOf(show.copy(updatedAt = 999, createdAt = 999)))
     }
   }
 
@@ -57,7 +57,7 @@ class WatchlistShowsDaoTest : BaseDaoTest() {
       database.watchlistShowsDao().deleteById(2)
 
       val result = database.watchlistShowsDao().getAll()
-      assertThat(result).containsExactlyElementsIn(listOf(show.copy(updatedAt = 999)))
+      assertThat(result).containsExactlyElementsIn(listOf(show.copy(updatedAt = 999, createdAt = 999)))
     }
   }
 }
