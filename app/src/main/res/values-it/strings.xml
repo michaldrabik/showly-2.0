@@ -14,7 +14,7 @@
   <string name="shortcutSearch">Cerca</string>
   <string name="shortcutProgress">Progressi</string>
   <plurals name="textTraktQuickSyncComplete">
-    <item quantity="one">1 oggetto sincronizzato correttamente.</item>
+    <item quantity="one">1 elemento sincronizzato correttamente.</item>
     <item quantity="other">%d elementi sincronizzati correttamente.</item>
   </plurals>
 </resources>

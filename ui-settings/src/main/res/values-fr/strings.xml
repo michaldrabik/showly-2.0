@@ -15,7 +15,9 @@
   <string name="textSettingsTraktQuickSyncTitle">Téléversement Instantané Trakt.tv</string>
   <string name="textSettingsTraktQuickSyncSummary">Téléversement instantané des données vers Trakt.tv après les avoir ajoutées dans l\'application.</string>
   <string name="textSettingsTraktQuickRemoveTitle">Suppression Instantanée Trakt.tv</string>
-  <string name="textSettingsTraktQuickRemoveSummary">Ajoutez l\'option pour supprimer des données sur Trakt.tv après les avoir supprimées dans l\'application.</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Ajouter l\'option pour supprimer des données sur Trakt.tv après leur suppression dans l\'application.</string>
+  <string name="textSettingsTraktQuickRateTitle">Évaluation rapide sur Trakt.tv</string>
+  <string name="textSettingsTraktQuickRateSummary">Évaluez les épisodes et les films chaque fois que vous les marquez comme visionnés dans l\'écran « Avancement ».</string>
   <string name="textSettingsGeneral">Général &amp; Expérience utilisateur</string>
   <string name="textSettingsRecentShowsTitle">Nombre d\'éléments récents</string>
   <string name="textSettingsRecentShowsSummary">Nombre d\'éléments récents à afficher dans \'Collection\'.</string>
@@ -23,6 +25,12 @@
   <string name="textSettingsMyShowsSectionSummary">Activer/désactiver les catégories dans l\'onglet \'Mes Séries\'.</string>
   <string name="textSettingsMyMoviesSectionsTitle">Catégories de Mes Films</string>
   <string name="textSettingsMyMoviesSectionSummary">Activer/désactiver les catégories dans l\'onglet \'Mes Films\'.</string>
+  <string name="textSettingsThemeTitle">Thème</string>
+  <string name="textSettingsThemeSummary">Sélectionnez le thème principal.</string>
+  <string name="textSettingsThemeWidgetsTitle">Thème</string>
+  <string name="textSettingsThemeWidgetsSummary">Sélectionnez le thème des widgets.</string>
+  <string name="textSettingsWidgetsTransparencyTitle">Fond</string>
+  <string name="textSettingsWidgetsTransparencySummary">Définir le niveau de transparence des widgets.</string>
   <string name="textSettingsMyShowsCountryTitle">Région JustWatch</string>
   <string name="textSettingsMyShowsCountrySummary">Sélectionnez la région à utiliser avec les liens JustWatch.</string>
   <string name="textSettingsMyShowsLanguageTitle">Langue</string>
@@ -51,6 +59,10 @@
   <string name="textSettingsMoviesEnabledTitle">Films</string>
   <string name="textSettingsMoviesEnabledSummary">Activer/désactiver la prise en compte des films. L\'application va redémarrer.</string>
   <string name="textSettingsWidgets">Widgets</string>
-  <string name="textSettingsWidgetsLabelsTitle">Afficher les titres</string>
+  <string name="textSettingsWidgetsLabelsTitle">Titres</string>
   <string name="textSettingsWidgetsLabelsSummary">Afficher les titres translucides des widgets.</string>
+  <string name="textThemeDark">Sombre</string>
+  <string name="textThemeLight">Clair</string>
+  <string name="textThemeSystem">Système</string>
+  <string name="textTransparency100">Opaque</string>
 </resources>
