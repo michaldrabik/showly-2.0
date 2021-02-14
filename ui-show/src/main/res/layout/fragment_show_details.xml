@@ -12,9 +12,8 @@
   <androidx.core.widget.NestedScrollView
     android:id="@+id/showDetailsMainLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:clipToPadding="false"
-    android:fillViewport="true"
     android:overScrollMode="never"
     android:scrollbars="none"
     android:visibility="gone"
@@ -32,9 +31,13 @@
 
       <androidx.constraintlayout.widget.Guideline
         android:id="@+id/showDetailsImageGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/separator1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout_constraintGuide_begin="230dp"
         />
 
@@ -165,6 +168,7 @@
         android:layout_height="wrap_content"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/showDetailsStatus"
         app:layout_constraintStart_toEndOf="@+id/showDetailsStarIcon"
         app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"
         tools:text="7.62 (9239 votes)"
@@ -269,8 +273,8 @@
 
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/showDetailsActorsRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/actorTileImageHeight"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/spaceMedium"
         android:layout_marginBottom="@dimen/spaceMicro"
         android:clipChildren="false"
@@ -278,9 +282,11 @@
         android:overScrollMode="never"
         android:paddingStart="@dimen/spaceNormal"
         android:paddingEnd="@dimen/spaceNormal"
-        android:visibility="gone"
+        android:visibility="invisible"
+        app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toTopOf="@id/separator2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_min="@dimen/actorTileImageHeight"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
         />
@@ -289,12 +295,11 @@
         android:id="@+id/showDetailsActorsProgress"
         style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
-        android:layout_height="@dimen/actorTileImageHeight"
-        android:layout_margin="@dimen/spaceNormal"
-        app:layout_constraintBottom_toTopOf="@id/separator2"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/showDetailsActorsRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
+        app:layout_constraintTop_toTopOf="@id/showDetailsActorsRecycler"
         />
 
       <TextView
@@ -320,7 +325,6 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsRecycler"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/separator2"
@@ -347,15 +351,17 @@
 
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/showDetailsSeasonsRecycler"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:nestedScrollingEnabled="false"
         android:overScrollMode="never"
-        android:visibility="gone"
+        android:visibility="invisible"
+        app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toTopOf="@id/separator3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_min="48dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsSeasonsLabel"
         tools:visibility="visible"
@@ -366,11 +372,10 @@
         style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_margin="@dimen/spaceMedium"
-        app:layout_constraintBottom_toTopOf="@id/separator3"
+        app:layout_constraintBottom_toBottomOf="@id/showDetailsSeasonsRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator2"
+        app:layout_constraintTop_toTopOf="@id/showDetailsSeasonsRecycler"
         />
 
       <TextView
@@ -498,16 +503,19 @@
 
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/showDetailsRelatedRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/relatedShowHeight"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/spaceSmall"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingStart="@dimen/spaceNormal"
         android:paddingEnd="@dimen/spaceNormal"
-        android:visibility="gone"
+        android:visibility="invisible"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsCustomImagesLabel"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_min="@dimen/relatedShowHeight"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedLabel"
         tools:visibility="visible"
@@ -517,11 +525,11 @@
         android:id="@+id/showDetailsRelatedProgress"
         style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
-        android:layout_height="@dimen/relatedShowHeight"
-        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/showDetailsRelatedRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedLabel"
+        app:layout_constraintTop_toTopOf="@id/showDetailsRelatedRecycler"
         />
 
       <View
@@ -548,7 +556,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/customImagesLabelMargin"
+        android:layout_marginTop="@dimen/spaceNormal"
         android:drawablePadding="@dimen/spaceTiny"
         android:gravity="center_vertical"
         android:text="@string/textSetCustomImages"
@@ -559,7 +567,7 @@
         app:drawableStartCompat="@drawable/ic_custom_image"
         app:drawableTint="?android:attr/textColorPrimary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedLabel"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsRelatedRecycler"
         app:layout_goneMarginTop="0dp"
         tools:visibility="visible"
         />

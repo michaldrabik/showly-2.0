@@ -264,7 +264,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun setupSeasonsList() {
     val context = requireContext()
     showDetailsSeasonsRecycler.apply {
-      setHasFixedSize(true)
       adapter = seasonsAdapter
       layoutManager = LinearLayoutManager(context, VERTICAL, false)
       itemAnimator = null

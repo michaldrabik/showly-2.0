@@ -30,9 +30,13 @@
 
       <androidx.constraintlayout.widget.Guideline
         android:id="@+id/movieDetailsImageGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/separator1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout_constraintGuide_begin="230dp"
         />
 
@@ -151,6 +155,7 @@
         android:layout_height="wrap_content"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/movieDetailsStatus"
         app:layout_constraintStart_toEndOf="@+id/movieDetailsStarIcon"
         app:layout_constraintTop_toBottomOf="@+id/movieDetailsExtraInfo"
         tools:text="7.62 (9239 votes)"
@@ -227,8 +232,8 @@
 
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/movieDetailsActorsRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/actorMovieTileImageHeight"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/spaceMedium"
         android:layout_marginBottom="@dimen/spaceMicro"
         android:clipChildren="false"
@@ -236,9 +241,11 @@
         android:overScrollMode="never"
         android:paddingStart="@dimen/spaceNormal"
         android:paddingEnd="@dimen/spaceNormal"
-        android:visibility="gone"
+        android:visibility="invisible"
+        app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toTopOf="@id/separator2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_min="@dimen/actorMovieTileImageHeight"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsDescription"
         />
@@ -247,12 +254,11 @@
         android:id="@+id/movieDetailsActorsProgress"
         style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
-        android:layout_height="@dimen/actorMovieTileImageHeight"
-        android:layout_margin="@dimen/spaceNormal"
-        app:layout_constraintBottom_toTopOf="@id/separator2"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/movieDetailsActorsRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsDescription"
+        app:layout_constraintTop_toTopOf="@id/movieDetailsActorsRecycler"
         />
 
       <TextView
@@ -365,30 +371,33 @@
 
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/movieDetailsRelatedRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/relatedMovieHeight"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/spaceSmall"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:overScrollMode="never"
         android:paddingStart="@dimen/spaceNormal"
         android:paddingEnd="@dimen/spaceNormal"
-        android:visibility="gone"
+        android:visibility="invisible"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@id/movieDetailsCustomImagesLabel"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_min="@dimen/relatedMovieHeight"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsRelatedLabel"
-        tools:visibility="invisible"
+        tools:visibility="visible"
         />
 
       <ProgressBar
         android:id="@+id/movieDetailsRelatedProgress"
         style="@style/ProgressBar.Dark"
         android:layout_width="30dp"
-        android:layout_height="@dimen/relatedMovieHeight"
-        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/movieDetailsRelatedRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsRelatedLabel"
+        app:layout_constraintTop_toTopOf="@id/movieDetailsRelatedRecycler"
         />
 
       <TextView
@@ -396,7 +405,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/customImagesLabelMargin"
+        android:layout_marginTop="@dimen/spaceNormal"
         android:drawablePadding="@dimen/spaceTiny"
         android:gravity="center_vertical"
         android:text="@string/textSetCustomImages"
@@ -407,7 +416,7 @@
         app:drawableStartCompat="@drawable/ic_custom_image"
         app:drawableTint="?android:attr/textColorPrimary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsRelatedLabel"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsRelatedRecycler"
         app:layout_goneMarginTop="0dp"
         tools:visibility="visible"
         />
