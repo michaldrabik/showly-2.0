@@ -37,6 +37,21 @@ class CommentsView : ConstraintLayout {
     commentsPostButton.onClick { onPostCommentClickListener?.invoke(null) }
   }
 
+  private fun setupRecycler() {
+    commentsRecycler.apply {
+      setHasFixedSize(true)
+      adapter = commentsAdapter
+      layoutManager = LinearLayoutManager(context, VERTICAL, false)
+      itemAnimator = null
+      addDivider(R.drawable.divider_comments_list)
+    }
+    commentsAdapter.run {
+      onRepliesClickListener = { this@CommentsView.onRepliesClickListener?.invoke(it) }
+      onReplyClickListener = { this@CommentsView.onReplyCommentClickListener?.invoke(it) }
+      onDeleteClickListener = { this@CommentsView.onDeleteCommentClickListener?.invoke(it) }
+    }
+  }
+
   fun bind(
     comments: List<Comment>,
     dateFormat: DateTimeFormatter?
@@ -54,20 +69,7 @@ class CommentsView : ConstraintLayout {
     commentsAdapter.setItems(emptyList(), dateFormat)
   }
 
-  private fun setupRecycler() {
-    commentsRecycler.apply {
-      setHasFixedSize(true)
-      adapter = commentsAdapter
-      layoutManager = LinearLayoutManager(context, VERTICAL, false)
-      itemAnimator = null
-      addDivider(R.drawable.divider_comments_list)
-    }
-    commentsAdapter.run {
-      onRepliesClickListener = { this@CommentsView.onRepliesClickListener?.invoke(it) }
-      onReplyClickListener = { this@CommentsView.onReplyCommentClickListener?.invoke(it) }
-      onDeleteClickListener = { this@CommentsView.onDeleteCommentClickListener?.invoke(it) }
-    }
-  }
+  fun resetScroll() = commentsRecycler.smoothScrollToPosition(0)
 
   fun showCommentButton() {
     commentsPostButton.fadeIn(duration = 200, startDelay = 100)

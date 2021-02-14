@@ -330,6 +330,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         ACTION_NEW_COMMENT -> {
           val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
           viewModel.addNewComment(newComment)
+          if (comment == null) movieDetailsCommentsView.resetScroll()
         }
       }
     }

@@ -32,7 +32,6 @@ import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
-import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.setTextFade
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
@@ -48,8 +47,13 @@ import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_WATCHED
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_RATING_CHANGED
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_EPISODE_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import kotlinx.android.synthetic.main.view_episode_details.*
@@ -145,13 +149,23 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       .show()
   }
 
-  private fun openPostCommentSheet() {
-    setFragmentResultListener(REQUEST_COMMENT) { _, _ ->
-      episodeDetailsPostCommentButton.gone()
-      viewModel.loadComments(showTraktId, episode.season, episode.number)
+  private fun openPostCommentSheet(comment: Comment? = null) {
+    setFragmentResultListener(REQUEST_COMMENT) { _, bundle ->
       renderSnackbar(info(R.string.textCommentPosted))
+      when (bundle.getString(ARG_COMMENT_ACTION)) {
+        ACTION_NEW_COMMENT -> {
+          val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
+          viewModel.addNewComment(newComment)
+        }
+      }
     }
-    val bundle = bundleOf(ARG_EPISODE_ID to episode.ids.trakt.id)
+    val bundle = when {
+      comment != null -> bundleOf(
+        ARG_COMMENT_ID to comment.getReplyId(),
+        ARG_REPLY_USER to comment.user.username
+      )
+      else -> bundleOf(ARG_EPISODE_ID to episode.ids.trakt.id)
+    }
     navigateTo(R.id.actionEpisodeDetailsDialogToPostComment, bundle)
   }
 
@@ -189,7 +203,10 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
             if (it.replies > 0) {
               onRepliesClickListener = { comment -> viewModel.loadCommentReplies(comment) }
             }
-            if (it.replies == 0L && it.isMe) {
+            if (it.isSignedIn) {
+              onReplyClickListener = { comment -> openPostCommentSheet(comment) }
+            }
+            if (it.replies == 0L && it.isMe && it.isSignedIn) {
               onDeleteClickListener = { comment -> openDeleteCommentDialog(comment) }
             }
           }

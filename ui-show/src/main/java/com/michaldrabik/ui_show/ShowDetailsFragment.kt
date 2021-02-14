@@ -376,6 +376,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         ACTION_NEW_COMMENT -> {
           val newComment = bundle.getParcelable<Comment>(ARG_COMMENT)!!
           viewModel.addNewComment(newComment)
+          if (comment == null) showDetailsCommentsView.resetScroll()
         }
       }
     }

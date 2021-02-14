@@ -95,58 +95,74 @@ class EpisodeDetailsViewModel @Inject constructor(
   }
 
   fun loadCommentReplies(comment: Comment) {
-    var currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
-    if (currentComments.any { it.parentId == comment.id }) return
+    var current = uiState?.comments?.toMutableList() ?: mutableListOf()
+    if (current.any { it.parentId == comment.id }) return
 
     viewModelScope.launch {
       try {
-        val parent = currentComments.find { it.id == comment.id }
+        val parent = current.find { it.id == comment.id }
         parent?.let { p ->
           val copy = p.copy(isLoading = true)
-          currentComments.findReplace(copy) { it.id == p.id }
-          uiState = EpisodeDetailsUiModel(comments = currentComments)
+          current.findReplace(copy) { it.id == p.id }
+          uiState = EpisodeDetailsUiModel(comments = current)
         }
 
         val replies = commentsRepository.loadReplies(comment.id)
 
-        currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
-        val parentIndex = currentComments.indexOfFirst { it.id == comment.id }
-        if (parentIndex > -1) currentComments.addAll(parentIndex + 1, replies)
+        current = uiState?.comments?.toMutableList() ?: mutableListOf()
+        val parentIndex = current.indexOfFirst { it.id == comment.id }
+        if (parentIndex > -1) current.addAll(parentIndex + 1, replies)
         parent?.let {
-          currentComments.findReplace(parent.copy(isLoading = false, replies = 0)) { it.id == comment.id }
+          current.findReplace(parent.copy(isLoading = false, replies = 0)) { it.id == comment.id }
         }
 
-        uiState = EpisodeDetailsUiModel(comments = currentComments)
+        uiState = EpisodeDetailsUiModel(comments = current)
       } catch (t: Throwable) {
-        uiState = EpisodeDetailsUiModel(comments = currentComments)
+        uiState = EpisodeDetailsUiModel(comments = current)
       }
     }
   }
 
+  fun addNewComment(comment: Comment) {
+    val current = uiState?.comments?.toMutableList() ?: mutableListOf()
+    if (!comment.isReply()) {
+      current.add(0, comment)
+    } else {
+      val parentIndex = current.indexOfLast { it.id == comment.parentId }
+      if (parentIndex > -1) {
+        val parent = current[parentIndex]
+        current.add(parentIndex + 1, comment)
+        val repliesCount = current.count { it.parentId == parent.id }.toLong()
+        current.findReplace(parent.copy(replies = repliesCount)) { it.id == comment.parentId }
+      }
+    }
+    uiState = EpisodeDetailsUiModel(comments = current)
+  }
+
   fun deleteComment(comment: Comment) {
-    var currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
-    val target = currentComments.find { it.id == comment.id } ?: return
+    var current = uiState?.comments?.toMutableList() ?: mutableListOf()
+    val target = current.find { it.id == comment.id } ?: return
 
     viewModelScope.launch {
       try {
         val copy = target.copy(isLoading = true)
-        currentComments.findReplace(copy) { it.id == target.id }
-        uiState = EpisodeDetailsUiModel(comments = currentComments)
+        current.findReplace(copy) { it.id == target.id }
+        uiState = EpisodeDetailsUiModel(comments = current)
 
         commentsRepository.deleteComment(target.id)
 
-        currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
-        val targetIndex = currentComments.indexOfFirst { it.id == target.id }
+        current = uiState?.comments?.toMutableList() ?: mutableListOf()
+        val targetIndex = current.indexOfFirst { it.id == target.id }
         if (targetIndex > -1) {
-          currentComments.removeAt(targetIndex)
+          current.removeAt(targetIndex)
           if (target.isReply()) {
-            val parent = currentComments.first { it.id == target.parentId }
-            val repliesCount = currentComments.count { it.parentId == parent.id }.toLong()
-            currentComments.findReplace(parent.copy(replies = repliesCount)) { it.id == target.parentId }
+            val parent = current.first { it.id == target.parentId }
+            val repliesCount = current.count { it.parentId == parent.id }.toLong()
+            current.findReplace(parent.copy(replies = repliesCount)) { it.id == target.parentId }
           }
         }
 
-        uiState = EpisodeDetailsUiModel(comments = currentComments)
+        uiState = EpisodeDetailsUiModel(comments = current)
         _messageLiveData.value = MessageEvent.info(R.string.textCommentDeleted)
       } catch (t: Throwable) {
         if (t is HttpException && t.code() == 409) {
@@ -154,7 +170,7 @@ class EpisodeDetailsViewModel @Inject constructor(
         } else {
           _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
         }
-        uiState = EpisodeDetailsUiModel(comments = currentComments)
+        uiState = EpisodeDetailsUiModel(comments = current)
       }
     }
   }
