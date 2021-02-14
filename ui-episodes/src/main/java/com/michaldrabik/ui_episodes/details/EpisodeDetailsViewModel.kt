@@ -107,7 +107,15 @@ class EpisodeDetailsViewModel @Inject constructor(
           uiState = EpisodeDetailsUiModel(comments = current)
         }
 
+        val isSignedIn = userTraktManager.isAuthorized()
+        val username = userTraktManager.getUsername()
         val replies = commentsRepository.loadReplies(comment.id)
+          .map {
+            it.copy(
+              isSignedIn = isSignedIn,
+              isMe = it.user.username == username
+            )
+          }
 
         current = uiState?.comments?.toMutableList() ?: mutableListOf()
         val parentIndex = current.indexOfFirst { it.id == comment.id }
