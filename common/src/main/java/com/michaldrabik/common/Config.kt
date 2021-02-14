@@ -36,7 +36,7 @@ object Config {
   const val HOST_ACTIVITY_NAME = "com.michaldrabik.showly2.ui.main.MainActivity"
 
   const val SHOW_TIPS_DEBUG = false
-  const val SHOW_PREMIUM = true
+  const val SHOW_PREMIUM = false
   const val PROMOS_ENABLED = false
 
   val MY_SHOWS_RECENTS_OPTIONS = arrayOf(2, 4, 6, 8)

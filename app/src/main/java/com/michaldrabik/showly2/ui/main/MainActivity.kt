@@ -41,7 +41,6 @@ import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
-import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -125,24 +124,6 @@ class MainActivity :
   }
 
   private fun setupView() {
-    with(rateAppView) {
-      onYesClickListener = {
-        rateAppView.fadeOut()
-        val manager = ReviewManagerFactory.create(applicationContext)
-        val request = manager.requestReviewFlow()
-        request.addOnCompleteListener {
-          if (it.isSuccessful) {
-            val flow = manager.launchReviewFlow(this@MainActivity, it.result)
-            flow.addOnCompleteListener { viewModel.finishRateApp() }
-          }
-        }
-        Analytics.logInAppRateDecision(true)
-      }
-      onNoClickListener = {
-        rateAppView.fadeOut()
-        Analytics.logInAppRateDecision(false)
-      }
-    }
     with(bottomMenuView) {
       isModeMenuEnabled = moviesEnabled()
       onModeSelected = { setMode(it) }
@@ -278,8 +259,21 @@ class MainActivity :
       }
       showWhatsNew?.let { if (it) showWhatsNew() }
       showRateApp?.let {
-        rateAppView.fadeIf(it, startDelay = 1500)
-        if (it) Analytics.logInAppRateDisplayed()
+        if (it) {
+          launchInAppReview()
+          Analytics.logInAppRateDisplayed()
+        }
+      }
+    }
+  }
+
+  private fun launchInAppReview() {
+    val manager = ReviewManagerFactory.create(applicationContext)
+    val request = manager.requestReviewFlow()
+    request.addOnCompleteListener {
+      if (it.isSuccessful) {
+        val flow = manager.launchReviewFlow(this@MainActivity, it.result)
+        flow.addOnCompleteListener { viewModel.completeAppRate() }
       }
     }
   }

@@ -22,19 +22,15 @@ class MainRateAppCase @Inject constructor(
   fun shouldShowRateApp(): Boolean {
     val count = miscPreferences.getInt(KEY_RATE_APP_COUNT, 0)
     val timestamp = miscPreferences.getLong(KEY_RATE_APP_TIMESTAMP, -1)
+    val isPastTwoWeeks = nowUtcMillis() - timestamp > TimeUnit.DAYS.toMillis(14)
 
     if (timestamp == -1L) {
       updateTimestamp(count)
       return false
     }
 
-    if (count < (MAX_COUNT - 1) && nowUtcMillis() - timestamp > TimeUnit.DAYS.toMillis(10)) {
-      updateTimestamp(count + 1)
-      return true
-    }
-
-    if (count < MAX_COUNT && nowUtcMillis() - timestamp > TimeUnit.DAYS.toMillis(14)) {
-      updateTimestamp(count + 1)
+    if (count < MAX_COUNT && isPastTwoWeeks) {
+      updateTimestamp(count)
       return true
     }
 
@@ -49,5 +45,8 @@ class MainRateAppCase @Inject constructor(
     }
   }
 
-  fun finalize() = updateTimestamp(MAX_COUNT)
+  fun complete() {
+    val count = miscPreferences.getInt(KEY_RATE_APP_COUNT, 0)
+    updateTimestamp(count + 1)
+  }
 }
