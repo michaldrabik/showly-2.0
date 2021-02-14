@@ -2,7 +2,6 @@ package com.michaldrabik.ui_base.trakt.imports
 
 import androidx.room.withTransaction
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.WatchlistMovie
@@ -137,7 +136,7 @@ class TraktImportWatchlistRunner @Inject constructor(
               val movie = mappers.movie.fromNetwork(result.movie!!)
               val movieDb = mappers.movie.toDatabase(movie)
               database.moviesDao().upsert(listOf(movieDb))
-              database.watchlistMoviesDao().insert(WatchlistMovie.fromTraktId(movieId, nowUtcMillis()))
+              database.watchlistMoviesDao().insert(WatchlistMovie.fromTraktId(movieId, result.lastListedMillis()))
             }
           }
         } catch (error: Throwable) {
