@@ -13,8 +13,8 @@
   <string name="textStatisticsTotalEpisodesCount">%s bölüm</string>
   <string name="textStatisticsTotalEpisodesShowsCount">%s diziye yayılmıştır.</string>
   <string name="textStatisticsTopGenre">En Popüler Türler</string>
-  <string name="textStatisticsTopGenreSubValue">bir fincan çayınız gibi görünüyor. Daha fazlasını görmek için dokunun.</string>
-  <string name="textStatisticsTopGenreSubValue2">bir fincan çayınız gibi görünüyor.</string>
+  <string name="textStatisticsTopGenreSubValue">tam sizin zevkinize uygun görünüyor. Daha fazlasını görmek için dokunun.</string>
+  <string name="textStatisticsTopGenreSubValue2">tam sizin zevkinize uygun görünüyor.</string>
   <string name="textStatisticsShowMore">Daha Fazlasını Göster</string>
   <string name="textStatisticsRatings">En Son Derecelendirilenler</string>
   <string name="textStatisticsHours">Saat</string>
