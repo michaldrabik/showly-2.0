@@ -27,9 +27,9 @@ class ProgressMoviesCalendarFragment :
   private val parentViewModel by viewModels<ProgressMoviesViewModel>({ requireParentFragment() }) { viewModelFactory }
   override val viewModel by viewModels<ProgressMoviesCalendarViewModel> { viewModelFactory }
 
+  private var adapter: ProgressMoviesCalendarAdapter? = null
+  private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
-  private lateinit var adapter: ProgressMoviesCalendarAdapter
-  private lateinit var layoutManager: LinearLayoutManager
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiProgressMoviesComponentProvider).provideProgressMoviesComponent().inject(this)
@@ -46,18 +46,17 @@ class ProgressMoviesCalendarFragment :
   }
 
   private fun setupRecycler() {
-    adapter = ProgressMoviesCalendarAdapter()
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
+    adapter = ProgressMoviesCalendarAdapter().apply {
+      itemClickListener = { (requireParentFragment() as ProgressMoviesFragment).openMovieDetails(it) }
+      missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
+      missingTranslationListener = { item -> viewModel.findMissingTranslation(item) }
+    }
     progressMoviesCalendarRecycler.apply {
       adapter = this@ProgressMoviesCalendarFragment.adapter
       layoutManager = this@ProgressMoviesCalendarFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
-    }
-    adapter.run {
-      itemClickListener = { (requireParentFragment() as ProgressMoviesFragment).openMovieDetails(it) }
-      missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
-      missingTranslationListener = { item -> viewModel.findMissingTranslation(item) }
     }
   }
 
@@ -77,10 +76,16 @@ class ProgressMoviesCalendarFragment :
   private fun render(uiModel: ProgressMoviesCalendarUiModel) {
     uiModel.run {
       items?.let {
-        adapter.setItems(it)
+        adapter?.setItems(it)
         progressMoviesCalendarRecycler.fadeIn()
         progressMoviesCalendarEmptyView.visibleIf(it.isEmpty())
       }
     }
+  }
+
+  override fun onDestroyView() {
+    adapter = null
+    layoutManager = null
+    super.onDestroyView()
   }
 }

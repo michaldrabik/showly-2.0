@@ -187,6 +187,8 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
 
   override fun onDestroy() {
     coroutineContext.cancelChildren()
+    importWatchedRunner.progressListener = null
+    importWatchlistRunner.progressListener = null
     super.onDestroy()
   }
 

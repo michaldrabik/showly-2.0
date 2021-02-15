@@ -37,8 +37,8 @@ class ArchiveFragment :
 
   override val viewModel by viewModels<ArchiveViewModel> { viewModelFactory }
 
-  private lateinit var adapter: ArchiveAdapter
-  private lateinit var layoutManager: LinearLayoutManager
+  private var adapter: ArchiveAdapter? = null
+  private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,7 +105,7 @@ class ArchiveFragment :
     uiModel.run {
       items?.let {
         val notifyChange = resetScroll?.consume() == true
-        adapter.setItems(it, notifyChange = notifyChange)
+        adapter?.setItems(it, notifyChange = notifyChange)
         archiveEmptyView.fadeIf(it.isEmpty())
       }
       sortOrder?.let { event ->
@@ -123,4 +123,10 @@ class ArchiveFragment :
   override fun onScrollReset() = archiveRecycler.scrollToPosition(0)
 
   override fun onTraktSyncComplete() = viewModel.loadShows()
+
+  override fun onDestroyView() {
+    adapter = null
+    layoutManager = null
+    super.onDestroyView()
+  }
 }

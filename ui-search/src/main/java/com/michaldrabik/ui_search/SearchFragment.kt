@@ -46,8 +46,8 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   override val viewModel by viewModels<SearchViewModel> { viewModelFactory }
 
-  private lateinit var adapter: SearchAdapter
-  private lateinit var layoutManager: LinearLayoutManager
+  private var adapter: SearchAdapter? = null
+  private var layoutManager: LinearLayoutManager? = null
 
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
@@ -123,8 +123,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
-    adapter = SearchAdapter()
-    adapter.run {
+    adapter = SearchAdapter().apply {
       itemClickListener = { openShowDetails(it) }
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
     }
@@ -152,8 +151,9 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   private fun openShowDetails(item: SearchListItem) {
     disableUi()
-    val clickedIndex = adapter.indexOf(item)
-    (0..adapter.itemCount).forEach {
+    val clickedIndex = adapter?.indexOf(item) ?: 0
+    val itemCount = adapter?.itemCount ?: 0
+    (0..itemCount).forEach {
       if (it != clickedIndex) {
         val view = searchRecycler.findViewHolderForAdapterPosition(it)
         view?.let { v ->
@@ -185,7 +185,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   private fun render(uiModel: SearchUiModel) {
     uiModel.run {
       searchItems?.let {
-        adapter.setItems(it)
+        adapter?.setItems(it)
         if (searchItemsAnimate == true) searchRecycler.scheduleLayoutAnimation()
       }
       recentSearchItems?.let { renderRecentSearches(it) }
@@ -266,5 +266,11 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
       remove()
       findNavControl().popBackStack()
     }
+  }
+
+  override fun onDestroyView() {
+    adapter = null
+    layoutManager = null
+    super.onDestroyView()
   }
 }

@@ -64,4 +64,6 @@ object Config {
       "* Added additional time/date formats to choose from.\n\n" +
       "* Minor UI fixes.\n\n" +
       "Showly is on Twitter! Follow  @AppShowly  for news, current app status and other important information."
+
+  const val LEAK_CANARY = true
 }

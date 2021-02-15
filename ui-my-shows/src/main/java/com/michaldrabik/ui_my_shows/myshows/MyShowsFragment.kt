@@ -27,6 +27,7 @@ import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsAdapter
 import kotlinx.android.synthetic.main.fragment_my_shows.*
+import kotlinx.android.synthetic.main.fragment_watchlist.*
 
 class MyShowsFragment :
   BaseFragment<MyShowsViewModel>(R.layout.fragment_my_shows),
@@ -35,8 +36,8 @@ class MyShowsFragment :
 
   override val viewModel by viewModels<MyShowsViewModel> { viewModelFactory }
 
-  private val adapter by lazy { MyShowsAdapter() }
-  private lateinit var layoutManager: LinearLayoutManager
+  private var adapter: MyShowsAdapter? = null
+  private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,26 +58,18 @@ class MyShowsFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
+    adapter = MyShowsAdapter().apply {
+      itemClickListener = { openShowDetails(it.show) }
+      missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) }
+      missingTranslationListener = { viewModel.loadMissingTranslation(it) }
+      sectionMissingImageListener = { item, section, force -> viewModel.loadSectionMissingItem(item, section, force) }
+      onSortOrderClickListener = { section, order -> showSortOrderDialog(section, order) }
+    }
     myShowsRecycler.apply {
       adapter = this@MyShowsFragment.adapter
       layoutManager = this@MyShowsFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
-    }
-    adapter.run {
-      itemClickListener = { openShowDetails(it.show) }
-      missingImageListener = { item, force ->
-        viewModel.loadMissingImage(item, force)
-      }
-      missingTranslationListener = {
-        viewModel.loadMissingTranslation(it)
-      }
-      sectionMissingImageListener = { item, section, force ->
-        viewModel.loadSectionMissingItem(item, section, force)
-      }
-      onSortOrderClickListener = { section, order ->
-        showSortOrderDialog(section, order)
-      }
     }
   }
 
@@ -111,8 +104,8 @@ class MyShowsFragment :
   private fun render(uiModel: MyShowsUiModel) {
     uiModel.run {
       listItems?.let {
-        adapter.notifyListsUpdate = notifyListsUpdate ?: false
-        adapter.setItems(it)
+        adapter?.notifyListsUpdate = notifyListsUpdate ?: false
+        adapter?.setItems(it)
         myShowsEmptyView.fadeIf(it.isEmpty())
         (parentFragment as FollowedShowsFragment).enableSearch(it.isNotEmpty())
       }
@@ -126,4 +119,10 @@ class MyShowsFragment :
   override fun onScrollReset() = myShowsRecycler.scrollToPosition(0)
 
   override fun onTraktSyncComplete() = viewModel.loadShows()
+
+  override fun onDestroyView() {
+    adapter = null
+    layoutManager = null
+    super.onDestroyView()
+  }
 }

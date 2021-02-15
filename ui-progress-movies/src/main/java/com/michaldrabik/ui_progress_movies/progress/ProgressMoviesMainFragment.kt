@@ -40,9 +40,9 @@ class ProgressMoviesMainFragment :
   private val parentViewModel by viewModels<ProgressMoviesViewModel>({ requireParentFragment() }) { viewModelFactory }
   override val viewModel by viewModels<ProgressMoviesMainViewModel> { viewModelFactory }
 
+  private var adapter: ProgressMainAdapter? = null
+  private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
-  private lateinit var adapter: ProgressMainAdapter
-  private lateinit var layoutManager: LinearLayoutManager
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiProgressMoviesComponentProvider).provideProgressMoviesComponent().inject(this)
@@ -71,15 +71,8 @@ class ProgressMoviesMainFragment :
   }
 
   private fun setupRecycler() {
-    adapter = ProgressMainAdapter()
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
-    progressMoviesMainRecycler.apply {
-      adapter = this@ProgressMoviesMainFragment.adapter
-      layoutManager = this@ProgressMoviesMainFragment.layoutManager
-      (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-      setHasFixedSize(true)
-    }
-    adapter.run {
+    adapter = ProgressMainAdapter().apply {
       itemClickListener = { (requireParentFragment() as ProgressMoviesFragment).openMovieDetails(it) }
       itemLongClickListener = { item, view -> openPopupMenu(item, view) }
       checkClickListener = {
@@ -93,8 +86,14 @@ class ProgressMoviesMainFragment :
       missingTranslationListener = { item -> viewModel.findMissingTranslation(item) }
       listChangeListener = {
         (requireParentFragment() as ProgressMoviesFragment).resetTranslations()
-        layoutManager.scrollToPosition(0)
+        layoutManager?.scrollToPosition(0)
       }
+    }
+    progressMoviesMainRecycler.apply {
+      adapter = this@ProgressMoviesMainFragment.adapter
+      layoutManager = this@ProgressMoviesMainFragment.layoutManager
+      (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+      setHasFixedSize(true)
     }
   }
 
@@ -150,11 +149,17 @@ class ProgressMoviesMainFragment :
     uiModel.run {
       items?.let {
         val notifyChange = resetScroll?.consume() == true
-        adapter.setItems(it, notifyChange = notifyChange)
+        adapter?.setItems(it, notifyChange = notifyChange)
         progressMoviesEmptyView.fadeIf(it.isEmpty() && isSearching == false)
         progressMoviesMainRecycler.fadeIn()
         (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
       }
     }
+  }
+
+  override fun onDestroyView() {
+    adapter = null
+    layoutManager = null
+    super.onDestroyView()
   }
 }

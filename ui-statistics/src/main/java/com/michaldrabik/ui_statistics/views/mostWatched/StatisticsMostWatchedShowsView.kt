@@ -23,8 +23,8 @@ class StatisticsMostWatchedShowsView : ConstraintLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  private lateinit var adapter: MostWatchedAdapter
-  private lateinit var layoutManager: LinearLayoutManager
+  private var adapter: MostWatchedAdapter? = null
+  private var layoutManager: LinearLayoutManager? = null
 
   var onLoadMoreClickListener: ((Int) -> Unit)? = null
   var onShowClickListener: ((Show) -> Unit)? = null
@@ -54,7 +54,7 @@ class StatisticsMostWatchedShowsView : ConstraintLayout {
     items: List<StatisticsMostWatchedItem>,
     totalCount: Int
   ) {
-    adapter.setItems(items)
+    adapter?.setItems(items)
     viewMostWatchedShowsMoreButton.run {
       visibleIf(items.size < totalCount)
       onClick { onLoadMoreClickListener?.invoke(10) }

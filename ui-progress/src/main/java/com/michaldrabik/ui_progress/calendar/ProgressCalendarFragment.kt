@@ -27,9 +27,9 @@ class ProgressCalendarFragment :
   private val parentViewModel by viewModels<ProgressViewModel>({ requireParentFragment() }) { viewModelFactory }
   override val viewModel by viewModels<ProgressCalendarViewModel> { viewModelFactory }
 
+  private var adapter: ProgressCalendarAdapter? = null
+  private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
-  private lateinit var adapter: ProgressCalendarAdapter
-  private lateinit var layoutManager: LinearLayoutManager
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiProgressComponentProvider).provideProgressComponent().inject(this)
@@ -46,19 +46,18 @@ class ProgressCalendarFragment :
   }
 
   private fun setupRecycler() {
-    adapter = ProgressCalendarAdapter()
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
+    adapter = ProgressCalendarAdapter().apply {
+      itemClickListener = { (requireParentFragment() as ProgressFragment).openShowDetails(it) }
+      detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show, it.upcomingEpisode) }
+      missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
+      missingTranslationListener = { viewModel.findMissingTranslation(it) }
+    }
     progressCalendarRecycler.apply {
       adapter = this@ProgressCalendarFragment.adapter
       layoutManager = this@ProgressCalendarFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
-    }
-    adapter.run {
-      itemClickListener = { (requireParentFragment() as ProgressFragment).openShowDetails(it) }
-      detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show, it.upcomingEpisode) }
-      missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
-      missingTranslationListener = { viewModel.findMissingTranslation(it) }
     }
   }
 
@@ -79,10 +78,16 @@ class ProgressCalendarFragment :
   private fun render(uiModel: ProgressCalendarUiModel) {
     uiModel.run {
       items?.let {
-        adapter.setItems(it)
+        adapter?.setItems(it)
         progressCalendarRecycler.fadeIn()
         progressCalendarEmptyView.visibleIf(it.isEmpty())
       }
     }
+  }
+
+  override fun onDestroyView() {
+    adapter = null
+    layoutManager = null
+    super.onDestroyView()
   }
 }

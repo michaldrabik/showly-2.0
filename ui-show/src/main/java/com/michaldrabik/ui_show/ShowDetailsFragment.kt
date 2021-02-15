@@ -126,9 +126,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private val showId by lazy { IdTrakt(requireArguments().getLong(ARG_SHOW_ID, -1)) }
 
-  private val actorsAdapter by lazy { ActorsAdapter() }
-  private val relatedAdapter by lazy { RelatedShowAdapter() }
-  private val seasonsAdapter by lazy { SeasonsAdapter() }
+  private var actorsAdapter: ActorsAdapter? = null
+  private var relatedAdapter: RelatedShowAdapter? = null
+  private var seasonsAdapter: SeasonsAdapter? = null
 
   private val imageHeight by lazy {
     if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
@@ -236,41 +236,44 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun setupActorsList() {
-    val context = requireContext()
+    actorsAdapter = ActorsAdapter().apply {
+      itemClickListener = { showFullActorView(it) }
+    }
     showDetailsActorsRecycler.apply {
       setHasFixedSize(true)
       adapter = actorsAdapter
-      layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
+      layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
       addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
     }
-    actorsAdapter.itemClickListener = { showFullActorView(it) }
   }
 
   private fun setupRelatedList() {
-    val context = requireContext()
+    relatedAdapter = RelatedShowAdapter().apply {
+      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+      itemClickListener = {
+        val bundle = Bundle().apply { putLong(ARG_SHOW_ID, it.show.traktId) }
+        navigateTo(R.id.actionShowDetailsFragmentToSelf, bundle)
+      }
+    }
     showDetailsRelatedRecycler.apply {
       setHasFixedSize(true)
       adapter = relatedAdapter
-      layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
+      layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
       addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
-    }
-    relatedAdapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
-    relatedAdapter.itemClickListener = {
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, it.show.traktId) }
-      navigateTo(R.id.actionShowDetailsFragmentToSelf, bundle)
     }
   }
 
   private fun setupSeasonsList() {
-    val context = requireContext()
+    seasonsAdapter = SeasonsAdapter().apply {
+      itemClickListener = { showEpisodesView(it) }
+      itemCheckedListener = { item: SeasonListItem, isChecked: Boolean ->
+        viewModel.setWatchedSeason(requireAppContext(), item.season, isChecked)
+      }
+    }
     showDetailsSeasonsRecycler.apply {
       adapter = seasonsAdapter
-      layoutManager = LinearLayoutManager(context, VERTICAL, false)
+      layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
       itemAnimator = null
-    }
-    seasonsAdapter.itemClickListener = { showEpisodesView(it) }
-    seasonsAdapter.itemCheckedListener = { item: SeasonListItem, isChecked: Boolean ->
-      viewModel.setWatchedSeason(requireAppContext(), item.season, isChecked)
     }
   }
 
@@ -619,14 +622,14 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun renderActors(actors: List<Actor>) {
-    actorsAdapter.setItems(actors)
+    actorsAdapter?.setItems(actors)
     showDetailsActorsRecycler.fadeIf(actors.isNotEmpty())
     showDetailsActorsEmptyView.fadeIf(actors.isEmpty())
     showDetailsActorsProgress.gone()
   }
 
   private fun renderSeasons(seasonsItems: List<SeasonListItem>) {
-    seasonsAdapter.setItems(seasonsItems)
+    seasonsAdapter?.setItems(seasonsItems)
     showDetailsEpisodesView.updateEpisodes(seasonsItems)
     showDetailsSeasonsRecycler.fadeIf(seasonsItems.isNotEmpty())
     showDetailsSeasonsLabel.fadeIf(seasonsItems.isNotEmpty())
@@ -662,7 +665,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun renderRelatedShows(items: List<RelatedListItem>) {
-    relatedAdapter.setItems(items)
+    relatedAdapter?.setItems(items)
     showDetailsRelatedRecycler.fadeIf(items.isNotEmpty())
     showDetailsRelatedLabel.fadeIf(items.isNotEmpty())
     showDetailsRelatedProgress.gone()
@@ -838,5 +841,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
       }
     }
+  }
+
+  override fun onDestroyView() {
+    actorsAdapter = null
+    relatedAdapter = null
+    seasonsAdapter = null
+    super.onDestroyView()
   }
 }

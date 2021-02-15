@@ -49,8 +49,8 @@ class DiscoverFragment :
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
 
-  private lateinit var adapter: DiscoverAdapter
-  private lateinit var layoutManager: GridLayoutManager
+  private var adapter: DiscoverAdapter? = null
+  private var layoutManager: GridLayoutManager? = null
 
   private var searchViewPosition = 0F
   private var tabsViewPosition = 0F
@@ -201,8 +201,9 @@ class DiscoverFragment :
     discoverModeTabsView.fadeOut().add(animations)
     discoverFiltersView.fadeOut().add(animations)
 
-    val clickedIndex = adapter.indexOf(item)
-    (0..adapter.itemCount).forEach {
+    val clickedIndex = adapter?.indexOf(item) ?: 0
+    val itemsCount = adapter?.itemCount ?: 0
+    (0..itemsCount).forEach {
       if (it != clickedIndex) {
         val view = discoverRecycler.findViewHolderForAdapterPosition(it)
         view?.let { v ->
@@ -250,8 +251,8 @@ class DiscoverFragment :
   private fun render(uiModel: DiscoverUiModel) {
     uiModel.run {
       shows?.let {
-        adapter.setItems(it, scrollToTop == true)
-        layoutManager.withSpanSizeLookup { pos -> adapter.getItems()[pos].image.type.spanSize }
+        adapter?.setItems(it, scrollToTop == true)
+        layoutManager?.withSpanSizeLookup { pos -> adapter?.getItems()?.get(pos)?.image?.type?.spanSize!! }
         discoverRecycler.fadeIn()
       }
       showLoading?.let {
@@ -280,5 +281,11 @@ class DiscoverFragment :
     super.onSaveInstanceState(outState)
     outState.putFloat("ARG_DISCOVER_SEARCH_POS", searchViewPosition)
     outState.putFloat("ARG_DISCOVER_TABS_POS", tabsViewPosition)
+  }
+
+  override fun onDestroyView() {
+    adapter = null
+    layoutManager = null
+    super.onDestroyView()
   }
 }

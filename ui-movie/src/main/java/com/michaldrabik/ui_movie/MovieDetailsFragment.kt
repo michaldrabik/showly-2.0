@@ -107,8 +107,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private val movieId by lazy { IdTrakt(requireArguments().getLong(ARG_MOVIE_ID, -1)) }
 
-  private val actorsAdapter by lazy { ActorsAdapter() }
-  private val relatedAdapter by lazy { RelatedMovieAdapter() }
+  private var actorsAdapter: ActorsAdapter? = null
+  private var relatedAdapter: RelatedMovieAdapter? = null
 
   private val imageHeight by lazy {
     if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
@@ -202,30 +202,30 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   }
 
   private fun setupActorsList() {
-    val context = requireContext()
+    actorsAdapter = ActorsAdapter().apply {
+      itemClickListener = { showFullActorView(it) }
+    }
     movieDetailsActorsRecycler.apply {
       setHasFixedSize(true)
       adapter = actorsAdapter
-      layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
+      layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
       addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
-    }
-    actorsAdapter.itemClickListener = {
-      showFullActorView(it)
     }
   }
 
   private fun setupRelatedList() {
-    val context = requireContext()
+    relatedAdapter = RelatedMovieAdapter().apply {
+      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+      itemClickListener = {
+        val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, it.movie.ids.trakt.id) }
+        navigateTo(R.id.actionMovieDetailsFragmentToSelf, bundle)
+      }
+    }
     movieDetailsRelatedRecycler.apply {
       setHasFixedSize(true)
       adapter = relatedAdapter
-      layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
+      layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
       addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
-    }
-    relatedAdapter.missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
-    relatedAdapter.itemClickListener = {
-      val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, it.movie.ids.trakt.id) }
-      navigateTo(R.id.actionMovieDetailsFragmentToSelf, bundle)
     }
   }
 
@@ -494,14 +494,14 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   }
 
   private fun renderActors(actors: List<Actor>) {
-    actorsAdapter.setItems(actors)
+    actorsAdapter?.setItems(actors)
     movieDetailsActorsRecycler.fadeIf(actors.isNotEmpty())
     movieDetailsActorsEmptyView.fadeIf(actors.isEmpty())
     movieDetailsActorsProgress.gone()
   }
 
   private fun renderRelatedMovies(items: List<RelatedListItem>) {
-    relatedAdapter.setItems(items)
+    relatedAdapter?.setItems(items)
     movieDetailsRelatedRecycler.fadeIf(items.isNotEmpty())
     movieDetailsRelatedLabel.fadeIf(items.isNotEmpty())
     movieDetailsRelatedProgress.gone()
@@ -629,5 +629,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         }
       }
     }
+  }
+
+  override fun onDestroyView() {
+    actorsAdapter = null
+    relatedAdapter = null
+    super.onDestroyView()
   }
 }

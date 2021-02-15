@@ -34,8 +34,8 @@ class MyMoviesFragment :
 
   override val viewModel by viewModels<MyMoviesViewModel> { viewModelFactory }
 
-  private val adapter by lazy { MyMoviesAdapter() }
-  private lateinit var layoutManager: LinearLayoutManager
+  private var adapter: MyMoviesAdapter? = null
+  private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,17 +56,17 @@ class MyMoviesFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
+    adapter = MyMoviesAdapter().apply {
+      itemClickListener = { openMovieDetails(it.movie) }
+      missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) }
+      missingTranslationListener = { viewModel.loadMissingTranslation(it) }
+      onSortOrderClickListener = { section, order -> showSortOrderDialog(section, order) }
+    }
     myMoviesRecycler.apply {
       adapter = this@MyMoviesFragment.adapter
       layoutManager = this@MyMoviesFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
-    }
-    adapter.run {
-      itemClickListener = { openMovieDetails(it.movie) }
-      missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) }
-      missingTranslationListener = { viewModel.loadMissingTranslation(it) }
-      onSortOrderClickListener = { section, order -> showSortOrderDialog(section, order) }
     }
   }
 
@@ -98,8 +98,8 @@ class MyMoviesFragment :
   private fun render(uiModel: MyMoviesUiModel) {
     uiModel.run {
       listItems?.let {
-        adapter.notifyListsUpdate = notifyListsUpdate ?: false
-        adapter.setItems(it)
+        adapter?.notifyListsUpdate = notifyListsUpdate ?: false
+        adapter?.setItems(it)
         myMoviesEmptyView.fadeIf(it.isEmpty())
         (parentFragment as FollowedMoviesFragment).enableSearch(it.isNotEmpty())
       }
@@ -113,4 +113,10 @@ class MyMoviesFragment :
   override fun onScrollReset() = myMoviesRecycler.scrollToPosition(0)
 
   override fun onTraktSyncComplete() = viewModel.loadMovies()
+
+  override fun onDestroyView() {
+    adapter = null
+    layoutManager = null
+    super.onDestroyView()
+  }
 }

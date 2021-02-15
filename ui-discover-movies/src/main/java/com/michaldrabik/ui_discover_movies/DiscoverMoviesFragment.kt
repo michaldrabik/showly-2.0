@@ -45,8 +45,8 @@ class DiscoverMoviesFragment :
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
 
-  private lateinit var adapter: DiscoverMoviesAdapter
-  private lateinit var layoutManager: GridLayoutManager
+  private var adapter: DiscoverMoviesAdapter? = null
+  private var layoutManager: GridLayoutManager? = null
 
   private var searchViewPosition = 0F
   private var tabsViewPosition = 0F
@@ -184,8 +184,9 @@ class DiscoverMoviesFragment :
     discoverMoviesTabsView.fadeOut().add(animations)
     discoverMoviesFiltersView.fadeOut().add(animations)
 
-    val clickedIndex = adapter.indexOf(item)
-    (0..adapter.itemCount).forEach {
+    val clickedIndex = adapter?.indexOf(item) ?: 0
+    val itemCount = adapter?.itemCount ?: 0
+    (0..itemCount).forEach {
       if (it != clickedIndex) {
         val view = discoverMoviesRecycler.findViewHolderForAdapterPosition(it)
         view?.let { v ->
@@ -233,8 +234,8 @@ class DiscoverMoviesFragment :
   private fun render(uiModel: DiscoverMoviesUiModel) {
     uiModel.run {
       movies?.let {
-        adapter.setItems(it, resetScroll == true)
-        layoutManager.withSpanSizeLookup { pos -> adapter.getItems()[pos].image.type.spanSize }
+        adapter?.setItems(it, resetScroll == true)
+        layoutManager?.withSpanSizeLookup { pos -> adapter?.getItems()?.get(pos)?.image?.type?.spanSize!! }
         discoverMoviesRecycler.fadeIn()
       }
       showLoading?.let {
@@ -258,4 +259,10 @@ class DiscoverMoviesFragment :
   override fun onTraktSyncComplete() = discoverMoviesSearchView.setTraktProgress(false)
 
   override fun onTabReselected() = navigateToSearch()
+
+  override fun onDestroyView() {
+    adapter = null
+    layoutManager = null
+    super.onDestroyView()
+  }
 }

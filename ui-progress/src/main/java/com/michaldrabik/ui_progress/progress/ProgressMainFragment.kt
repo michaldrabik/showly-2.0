@@ -43,9 +43,9 @@ class ProgressMainFragment :
   private val parentViewModel by viewModels<ProgressViewModel>({ requireParentFragment() }) { viewModelFactory }
   override val viewModel by viewModels<ProgressMainViewModel> { viewModelFactory }
 
+  private var adapter: ProgressMainAdapter? = null
+  private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
-  private lateinit var adapter: ProgressMainAdapter
-  private lateinit var layoutManager: LinearLayoutManager
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiProgressComponentProvider).provideProgressComponent().inject(this)
@@ -78,15 +78,8 @@ class ProgressMainFragment :
   }
 
   private fun setupRecycler() {
-    adapter = ProgressMainAdapter()
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
-    progressMainRecycler.apply {
-      adapter = this@ProgressMainFragment.adapter
-      layoutManager = this@ProgressMainFragment.layoutManager
-      (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-      setHasFixedSize(true)
-    }
-    adapter.run {
+    adapter = ProgressMainAdapter().apply {
       itemClickListener = { (requireParentFragment() as ProgressFragment).openShowDetails(it) }
       itemLongClickListener = { item, view -> openPopupMenu(item, view) }
       detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show, it.episode) }
@@ -101,8 +94,14 @@ class ProgressMainFragment :
       missingTranslationListener = { viewModel.findMissingTranslation(it) }
       listChangeListener = {
         (requireParentFragment() as ProgressFragment).resetTranslations()
-        layoutManager.scrollToPosition(0)
+        layoutManager?.scrollToPosition(0)
       }
+    }
+    progressMainRecycler.apply {
+      adapter = this@ProgressMainFragment.adapter
+      layoutManager = this@ProgressMainFragment.layoutManager
+      (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+      setHasFixedSize(true)
     }
   }
 
@@ -159,12 +158,18 @@ class ProgressMainFragment :
     uiModel.run {
       items?.let {
         val notifyChange = resetScroll?.consume() == true
-        adapter.setItems(it, notifyChange = notifyChange)
+        adapter?.setItems(it, notifyChange = notifyChange)
         progressEmptyView.fadeIf(it.isEmpty() && isSearching == false)
         progressMainRecycler.fadeIn()
         progressMainTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
     }
+  }
+
+  override fun onDestroyView() {
+    adapter = null
+    layoutManager = null
+    super.onDestroyView()
   }
 }
