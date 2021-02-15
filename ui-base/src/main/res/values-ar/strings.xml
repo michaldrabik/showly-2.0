@@ -10,6 +10,7 @@
   <string name="textNew">جديد</string>
   <string name="textSelect">إختر</string>
   <string name="textHot">شائع</string>
+  <string name="textSubmit">إرسال</string>
   <string name="textEmptyResults">لا توجد نتائج…</string>
   <string name="textSearchFor">بحث…</string>
   <string name="textTip">نصيحة:</string>
@@ -85,4 +86,5 @@
   <string name="errorNoInternetConnection">لا يوجد إتصال بالإنترنت. رجاءً تحقق من إتصالك بالإنترنت.</string>
   <string name="errorTraktSyncGeneral">فشلت مزامنة Trakt.tv.\nرجاءً تحقق من إتصالك بالإنترنت ثم حاول مرة أخرى.</string>
   <string name="errorTraktLocked">حساب Trakt.tv الخاص بك مغلق حاليًا. اتصل بدعم Trakt.tv على https://support.trakt.tv/ لفتح حسابك.</string>
+  <string name="errorSubscriptionsNotAvailable">اشتراكات Google Play غير متوفرة على هذا الجهاز.</string>
 </resources>
