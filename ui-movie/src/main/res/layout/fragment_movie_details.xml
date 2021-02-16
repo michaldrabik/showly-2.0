@@ -25,6 +25,7 @@
       android:layout_height="wrap_content"
       android:clipChildren="false"
       android:clipToPadding="false"
+      android:descendantFocusability="blocksDescendants"
       android:paddingBottom="@dimen/spaceNormal"
       >
 
