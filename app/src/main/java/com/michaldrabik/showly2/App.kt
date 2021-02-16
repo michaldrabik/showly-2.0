@@ -13,7 +13,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.messaging.FirebaseMessaging
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.network.di.DaggerCloudComponent
 import com.michaldrabik.showly2.common.ShowsMoviesSyncActivityCallbacks
@@ -40,7 +39,6 @@ import com.yariksoffice.lingver.Lingver
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import leakcanary.LeakCanary
 import timber.log.Timber
 import javax.inject.Inject
 import com.michaldrabik.ui_base.fcm.NotificationChannel as AppNotificationChannel
@@ -148,8 +146,6 @@ class App :
     setupNotificationChannels()
     setupLanguage()
     setupTheme()
-
-    LeakCanary.config = LeakCanary.Config(dumpHeap = Config.LEAK_CANARY)
   }
 
   override fun isOnline() = isAppOnline
