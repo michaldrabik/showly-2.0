@@ -41,6 +41,7 @@ class QuickSetupView : FrameLayout {
   fun bind(seasons: List<Season>) {
     val items = mutableListOf<QuickSetupListItem>()
     seasons
+      .filterNot { it.isSpecial() }
       .sortedByDescending { it.number }
       .forEach { season ->
         season.episodes

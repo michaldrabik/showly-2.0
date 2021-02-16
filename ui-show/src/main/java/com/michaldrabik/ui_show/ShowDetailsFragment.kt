@@ -636,7 +636,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsSeasonsEmptyView.fadeIf(seasonsItems.isEmpty())
     showDetailsSeasonsProgress.gone()
     showDetailsAddButton.onQuickSetupClickListener = {
-      if (seasonsItems.isNotEmpty()) {
+      if (seasonsItems.any { !it.season.isSpecial() }) {
         openQuickSetupDialog(seasonsItems.map { it.season })
       } else {
         showSnack(MessageEvent.info(R.string.textSeasonsEmpty))

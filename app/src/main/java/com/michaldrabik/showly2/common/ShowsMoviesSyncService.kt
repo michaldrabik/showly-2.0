@@ -42,7 +42,6 @@ class ShowsMoviesSyncService : JobIntentService(), CoroutineScope {
       } catch (t: Throwable) {
         Logger.record(t, "Source" to "ShowsSyncRunner")
       }
-
       try {
         syncCount += moviesSyncRunner.run()
       } catch (t: Throwable) {

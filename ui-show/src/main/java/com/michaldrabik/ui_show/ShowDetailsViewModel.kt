@@ -596,10 +596,10 @@ class ShowDetailsViewModel @Inject constructor(
       return
     }
     viewModelScope.launch {
-      episodesManager.setAllUnwatched(show)
+      episodesManager.setAllUnwatched(show, skipSpecials = true)
       val seasons = seasonItems.map { it.season }
       seasons
-        .filter { it.number < item.season.number }
+        .filter { !it.isSpecial() && it.number < item.season.number }
         .forEach { season ->
           setWatchedSeason(context, season, true)
         }

@@ -59,7 +59,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
   private val type by lazy { arguments?.getSerializable(ARG_TYPE) as ImageType }
   private val isPickMode by lazy { arguments?.getBoolean(ARG_PICK_MODE, false) }
 
-  private val galleryAdapter by lazy { ArtGalleryAdapter() }
+  private var galleryAdapter: ArtGalleryAdapter? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiArtGalleryComponentProvider).provideArtGalleryComponent().inject(this)
@@ -87,6 +87,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
   }
 
   override fun onDestroyView() {
+    galleryAdapter = null
     requireActivity().requestedOrientation = SCREEN_ORIENTATION_PORTRAIT
     super.onDestroyView()
   }
@@ -116,8 +117,10 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
       if (isPickMode == true) setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf())
       requireActivity().onBackPressed()
     }
+    galleryAdapter = ArtGalleryAdapter().apply {
+      onItemClickListener = { artGalleryPager.nextPage() }
+    }
     artGalleryPager.run {
-      galleryAdapter.onItemClickListener = { nextPage() }
       adapter = galleryAdapter
       offscreenPageLimit = 2
       artGalleryPagerIndicator.setViewPager(this)
@@ -126,8 +129,10 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
     artGallerySelectButton.run {
       onClick {
         val id = if (family == SHOW) showId else movieId
-        val currentImage = galleryAdapter.getItem(artGalleryPager.currentItem)
-        viewModel.saveCustomImage(id, currentImage, family, type)
+        val currentImage = galleryAdapter?.getItem(artGalleryPager.currentItem)
+        currentImage?.let {
+          viewModel.saveCustomImage(id, it, family, type)
+        }
       }
     }
     artGalleryUrlButton.onClick { showUrlInput() }
@@ -181,9 +186,9 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
   private fun render(uiModel: ArtGalleryUiModel) {
     uiModel.run {
       images?.let {
-        val size = galleryAdapter.itemCount
+        val size = galleryAdapter?.itemCount
 
-        galleryAdapter.setItems(it, type!!)
+        galleryAdapter?.setItems(it, type!!)
         artGalleryEmptyView.visibleIf(it.isEmpty())
         artGallerySelectButton.visibleIf(it.isNotEmpty() && isPickMode == true)
         artGalleryUrlButton.visibleIf(it.isNotEmpty() && isPickMode == true)
