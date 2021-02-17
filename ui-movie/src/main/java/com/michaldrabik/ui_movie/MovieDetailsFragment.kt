@@ -375,7 +375,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           isEnabled = movie.trailer.isNotBlank()
           alpha = if (isEnabled) 1.0F else 0.35F
           onClick {
-            openWebUrl(movie.trailer)
+            openWebUrl(movie.trailer) ?: showSnack(MessageEvent.info(R.string.errorCouldNotFindApp))
             Analytics.logMovieTrailerClick(movie)
           }
         }
@@ -523,7 +523,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       startActivity(i)
     } catch (e: ActivityNotFoundException) {
       // IMDb App not installed. Start in web browser
-      openWebUrl("http://www.imdb.com/$type/${id.id}")
+      openWebUrl("http://www.imdb.com/$type/${id.id}") ?: showSnack(MessageEvent.info(R.string.errorCouldNotFindApp))
     }
   }
 
@@ -531,7 +531,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     if (link == IMDB) {
       openIMDbLink(IdImdb(id), "title")
     } else {
-      openWebUrl(link.getUri(id, country))
+      openWebUrl(link.getUri(id, country)) ?: showSnack(MessageEvent.info(R.string.errorCouldNotFindApp))
     }
   }
 

@@ -147,7 +147,9 @@ class TraktSyncFragment :
           }
           else -> {
             traktSyncButton.text = getString(R.string.textSettingsTraktAuthorizeTitle)
-            traktSyncButton.onClick { openWebUrl(Config.TRAKT_AUTHORIZE_URL) }
+            traktSyncButton.onClick {
+              openWebUrl(Config.TRAKT_AUTHORIZE_URL) ?: showSnack(MessageEvent.error(R.string.errorCouldNotFindApp))
+            }
             traktSyncScheduleButton.gone()
           }
         }

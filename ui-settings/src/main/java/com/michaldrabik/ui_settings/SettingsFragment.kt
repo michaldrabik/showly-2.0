@@ -24,6 +24,7 @@ import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.dates.DateFormatProvider
+import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
@@ -80,9 +81,9 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsPremium.onClick { navigateTo(R.id.actionSettingsFragmentToPremium) }
     settingsTraktSync.onClick { navigateTo(R.id.actionSettingsFragmentToTraktSync) }
     settingsDeleteCache.onClick { viewModel.deleteImagesCache(requireAppContext()) }
-    settingsTwitterIcon.onClick { openWebUrl(Config.TWITTER_URL) }
-    settingsTraktIcon.onClick { openWebUrl(Config.TRAKT_URL) }
-    settingsTmdbIcon.onClick { openWebUrl(Config.TMDB_URL) }
+    settingsTwitterIcon.onClick { openWebLink(Config.TWITTER_URL) }
+    settingsTraktIcon.onClick { openWebLink(Config.TRAKT_URL) }
+    settingsTmdbIcon.onClick { openWebLink(Config.TMDB_URL) }
     settingsVersion.setOnLongClickListener {
       settingsUserId.visible()
       true
@@ -478,6 +479,10 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     } catch (error: Throwable) {
       Runtime.getRuntime().exit(0)
     }
+  }
+
+  private fun openWebLink(url: String) {
+    openWebUrl(url) ?: showSnack(MessageEvent.info(R.string.errorCouldNotFindApp))
   }
 
   override fun onAuthorizationResult(authData: Uri?) = viewModel.authorizeTrakt(authData)

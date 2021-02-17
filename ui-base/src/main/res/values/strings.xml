@@ -86,5 +86,6 @@
   <string name="errorTraktSyncGeneral">Trakt.tv sync error.\nPlease check your internet connection and try again.</string>
   <string name="errorTraktLocked">Your Trakt.tv account is currently locked.\nPlease contact Trakt.tv support at https://support.trakt.tv/ to unlock your account.</string>
   <string name="errorSubscriptionsNotAvailable">Google Play Subscriptions are not available on this device.</string>
+  <string name="errorCouldNotFindApp" translatable="false">Sorry, we could not find app on this device that could handle this link.</string>
 
 </resources>
