@@ -16,6 +16,8 @@
   <string name="textSettingsTraktQuickSyncSummary">Natychmiast wyślij odcinki i seriale \'Na Później\' do Trakt.tv po dodaniu w aplikacji.</string>
   <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv Szybkie Usunięcie</string>
   <string name="textSettingsTraktQuickRemoveSummary">Uruchom opcję natychmiastowego usunięcia danych z Trakt.tv po usunięciu z aplikacji.</string>
+  <string name="textSettingsTraktQuickRateTitle">Trakt.tv Szybkie Oceny</string>
+  <string name="textSettingsTraktQuickRateSummary">Oceń odcinki i filmy za każdym razem, gdy oznaczasz je jako obejrzane na ekranie \"Postępu\".</string>
   <string name="textSettingsGeneral">Ogólne</string>
   <string name="textSettingsRecentShowsTitle">Ilość Ostatnio Dodanych</string>
   <string name="textSettingsRecentShowsSummary">Liczba ostatnio dodanych elementów w zakładce \'Kolekcja\'.</string>
@@ -23,6 +25,12 @@
   <string name="textSettingsMyShowsSectionSummary">Włącz/wyłącz sekcje w zakładce \'Moje Seriale\'.</string>
   <string name="textSettingsMyMoviesSectionsTitle">Moje Filmy - Sekcje</string>
   <string name="textSettingsMyMoviesSectionSummary">Włącz/wyłącz sekcje w zakładce \'Moje Filmy\'.</string>
+  <string name="textSettingsThemeTitle">Motyw</string>
+  <string name="textSettingsThemeSummary">Wybierz główny motyw.</string>
+  <string name="textSettingsThemeWidgetsTitle">Motyw</string>
+  <string name="textSettingsThemeWidgetsSummary">Wybierz motyw widgetów.</string>
+  <string name="textSettingsWidgetsTransparencyTitle">Tło</string>
+  <string name="textSettingsWidgetsTransparencySummary">Ustaw poziom przezroczystości tła widgetów.</string>
   <string name="textSettingsMyShowsCountryTitle">Region JustWatch</string>
   <string name="textSettingsMyShowsCountrySummary">Wybierz region do użycia z linkami JustWatch.</string>
   <string name="textSettingsMyShowsLanguageTitle">Język</string>
@@ -52,5 +60,9 @@
   <string name="textSettingsMoviesEnabledSummary">Włącz/wyłącz filmy. Aplikacja zostanie ponownie uruchomiona.</string>
   <string name="textSettingsWidgets">Widgety</string>
   <string name="textSettingsWidgetsLabelsTitle">Pokaż Tytuły</string>
-  <string name="textSettingsWidgetsLabelsSummary">Pokazuj przeźroczyste tytuły widgetów.</string>
+  <string name="textSettingsWidgetsLabelsSummary">Pokazuj przezroczyste tytuły widgetów.</string>
+  <string name="textThemeDark">Ciemny</string>
+  <string name="textThemeLight">Jasny</string>
+  <string name="textThemeSystem">Systemowy</string>
+  <string name="textTransparency100">Nieprzezroczysty</string>
 </resources>

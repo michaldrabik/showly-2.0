@@ -30,7 +30,7 @@
   <string name="textSettingsThemeWidgetsTitle">Thème</string>
   <string name="textSettingsThemeWidgetsSummary">Sélectionnez le thème des widgets.</string>
   <string name="textSettingsWidgetsTransparencyTitle">Fond</string>
-  <string name="textSettingsWidgetsTransparencySummary">Définir le niveau de transparence des widgets.</string>
+  <string name="textSettingsWidgetsTransparencySummary">Définir le niveau de transparence du fond des widgets.</string>
   <string name="textSettingsMyShowsCountryTitle">Région JustWatch</string>
   <string name="textSettingsMyShowsCountrySummary">Sélectionnez la région à utiliser avec les liens JustWatch.</string>
   <string name="textSettingsMyShowsLanguageTitle">Langue</string>
@@ -48,7 +48,7 @@
   <string name="textSettingsMisc">Divers</string>
   <string name="textSettingsContactDevsTitle">Contactez les développeurs</string>
   <string name="textSettingsContactDevsSummary">Un problème? Envoyez-nous un courriel (showlyapp@gmail.com).</string>
-  <string name="textSettingsRateAppTitle">Donnez votre avis</string>
+  <string name="textSettingsRateAppTitle">Donner un avis</string>
   <string name="textSettingsRateAppSummary">Vous aimez Showly ? Évaluez-nous sur le Play Store. Merci !</string>
   <string name="textSettingsDeleteCacheTitle">Vider la mémoire cache des images</string>
   <string name="textSettingsDeleteCacheSummary">Cliquez pour vider la mémoire cache des images. Cela peut aider si les images des séries ne se chargent pas correctement.</string>

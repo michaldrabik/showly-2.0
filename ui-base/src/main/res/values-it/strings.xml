@@ -10,6 +10,7 @@
   <string name="textNew">Nuovo</string>
   <string name="textSelect">Seleziona</string>
   <string name="textHot">Famosi</string>
+  <string name="textSubmit">Invia</string>
   <string name="textEmptyResults">Non ci sono risultati...</string>
   <string name="textSearchFor">Cerca...</string>
   <string name="textTip">Consiglio:</string>
@@ -73,4 +74,5 @@
   <string name="errorNoInternetConnection">Nessuna connessione. Per favore controlla la tua connessione internet.</string>
   <string name="errorTraktSyncGeneral">Errore sincronizzazione Trakt.tv .\nPer favore controlla la tua connessione internet e prova di nuovo.</string>
   <string name="errorTraktLocked">Il tuo account Trakt.tv è bloccato.\nPer favore contatta il supporto di Trakt.tv al link https://support.trakt.tv/ per sbloccare il tuo account.</string>
+  <string name="errorSubscriptionsNotAvailable">Gli abbonamenti tramite Google Play non sono disponibili su questo dispositivo.</string>
 </resources>
