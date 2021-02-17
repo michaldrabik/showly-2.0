@@ -16,6 +16,8 @@
   <string name="textSettingsTraktQuickSyncSummary">رفع فوري لبيانات المسلسلات والأفلام ل Trakt.tv بعد أن تقوم بإضافتهم في Showly.</string>
   <string name="textSettingsTraktQuickRemoveTitle">الحذف الفوري في Trakt.tv</string>
   <string name="textSettingsTraktQuickRemoveSummary">حذف فوري لبيانات المسلسلات والأفلام في Trakt.tv بعد أن تقوم بحذفهم في Showly.</string>
+  <string name="textSettingsTraktQuickRateTitle">التقييم السريع على Trakt.tv</string>
+  <string name="textSettingsTraktQuickRateSummary">قيّم الحلقات والأفلام كلما وضعت علامة على انك شاهدتهم في قسم \'مستوى التقدم\'.</string>
   <string name="textSettingsGeneral">إعدادات عامة &amp; إعدادت واجهة المستخدم</string>
   <string name="textSettingsRecentShowsTitle">عدد المحتويات الأخيرة</string>
   <string name="textSettingsRecentShowsSummary">عدد المسلسلات والأفلام الأخيرة التي تابعتها التي سيتم عرضها في صفحة \'المجموعة\'.</string>
@@ -23,6 +25,12 @@
   <string name="textSettingsMyShowsSectionSummary">تفعيل/إلغاء تفعيل أقسام في صفحة مسلسلاتي</string>
   <string name="textSettingsMyMoviesSectionsTitle">أقسام صفحة أفلامي</string>
   <string name="textSettingsMyMoviesSectionSummary">تفعيل/إلغاء تفعيل أقسام في صفحة \"أفلامي\".</string>
+  <string name="textSettingsThemeTitle">المظهر</string>
+  <string name="textSettingsThemeSummary">إختر المظهر الأساسي.</string>
+  <string name="textSettingsThemeWidgetsTitle">المظهر</string>
+  <string name="textSettingsThemeWidgetsSummary">إختر مظهر التطبيقات المصغّرة.</string>
+  <string name="textSettingsWidgetsTransparencyTitle">الخلفية</string>
+  <string name="textSettingsWidgetsTransparencySummary">تعيين مستوى شفافية الخلفية للتطبيقات المصغّرة.</string>
   <string name="textSettingsMyShowsCountryTitle">منطقة JustWatch</string>
   <string name="textSettingsMyShowsCountrySummary">حدد المنطقة المراد استخدامها مع روابط JustWatch.</string>
   <string name="textSettingsMyShowsLanguageTitle">اللغة</string>
@@ -50,7 +58,11 @@
   <string name="textSettingsLogoutMessage">\nهل فعلاً ترغب في تسجيل الخروج؟\n</string>
   <string name="textSettingsMoviesEnabledTitle">أفلام</string>
   <string name="textSettingsMoviesEnabledSummary">تفعيل/إلغاء تفعيل عرض الأفلام في التطبيق. التطبيق سيتم إعادة تشغيله.</string>
-  <string name="textSettingsWidgets">الويدجيت</string>
-  <string name="textSettingsWidgetsLabelsTitle">إظهار العناوين</string>
-  <string name="textSettingsWidgetsLabelsSummary">إظهار العناوين في الويدجيت.</string>
+  <string name="textSettingsWidgets">التطبيقات المصغّرة</string>
+  <string name="textSettingsWidgetsLabelsTitle">العناوين</string>
+  <string name="textSettingsWidgetsLabelsSummary">إظهار العناوين في التطبيقات المصغّرة.</string>
+  <string name="textThemeDark">داكن</string>
+  <string name="textThemeLight">فاتح</string>
+  <string name="textThemeSystem">النظام</string>
+  <string name="textTransparency100">غير شفاف</string>
 </resources>

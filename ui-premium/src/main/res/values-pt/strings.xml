@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textPremium">Showly Premium</string>
+  <string name="textPremiumAd">Torne-se um apoiador e tenha acesso a recursos premium! Clique para ver mais.</string>
+  <string name="textPremiumAdFull">Torne-se um apoiador Showly, ajude no seu desenvolvimento e tenha acesso a recursos premium!</string>
+  <string name="textLightThemeTitle">Tema claro</string>
+  <string name="textLightThemeDesc">Junte-se ao lado da luz com um tema claro adicional aplicável ao aplicativo principal e aos widgets.</string>
+  <string name="textCustomImagesTitle">Imagens personalizadas</string>
+  <string name="textCustomImagesDesc">Defina seus próprios pôsteres e fanarts favoritos para séries e filmes. Selecione uma imagem da galeria ou carregue sua própria URL.</string>
+  <string name="textQuickRatingTitle">Avaliações rápidas</string>
+  <string name="textQuickRatingDesc">Nunca esqueça de avaliar um filme ou um episódio que você acabou de assistir. Com o recurso de avaliação rápida, você será capaz de avaliar automaticamente um item sempre que você marcar como assistido.</string>
+  <string name="textWidgetsTitle">Widgets transparentes</string>
+  <string name="textWidgetsDesc">Defina transparência de fundo dos widgets para melhor coincidir com a sua tela inicial.</string>
+  <string name="textPurchaseThanks">Você agora é um apoiador Showly!\nObrigado e aproveite o aplicativo!</string>
+</resources>

@@ -10,6 +10,7 @@
   <string name="textNew">Nuevo</string>
   <string name="textSelect">Seleccionar</string>
   <string name="textHot">Tendencia</string>
+  <string name="textSubmit">Enviar</string>
   <string name="textEmptyResults">No hay resultados...</string>
   <string name="textSearchFor">Buscar...</string>
   <string name="textTip">Consejo:</string>
@@ -18,7 +19,7 @@
   <string name="textEpisode">Episodio %1$d</string>
   <string name="textSortBy">Ordenar por:</string>
   <string name="textSpoilersWarning">Este comentario contiene spoilers.\nTap para leer.</string>
-  <string name="textCommentedOn">Comentario de %s</string>
+  <string name="textCommentedOn">Comentado por %s</string>
   <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textShows">Series</string>
   <string name="textMovies">Películas</string>
@@ -73,4 +74,5 @@
   <string name="errorNoInternetConnection">Sin Internet. Por favor compruebe su conexión.</string>
   <string name="errorTraktSyncGeneral">Error de sincronización de Trakt.tv.\nPor favor comprueba tu conexión a Internet y prueba de nuevo o contáctanos si sigue sucediendo.</string>
   <string name="errorTraktLocked">Tu cuenta de Trakt.tv está bloqueada actualmente.\nPor favor, ponte en contacto con el soporte de Trakt.tv en https://support.trakt.tv/ para desbloquear tu cuenta.</string>
+  <string name="errorSubscriptionsNotAvailable">Las suscripciones de Google Play no están disponibles en este dispositivo.</string>
 </resources>

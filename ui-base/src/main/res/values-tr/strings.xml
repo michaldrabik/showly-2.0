@@ -10,6 +10,7 @@
   <string name="textNew">Yeni</string>
   <string name="textSelect">Seç</string>
   <string name="textHot">Popüler</string>
+  <string name="textSubmit">Gönder</string>
   <string name="textEmptyResults">Hiçbir sonuç bulunamadı…</string>
   <string name="textSearchFor">Ara…</string>
   <string name="textTip">İpucu:</string>
@@ -18,7 +19,7 @@
   <string name="textEpisode">%1$d. Bölüm</string>
   <string name="textSortBy">Sırala:</string>
   <string name="textSpoilersWarning">Bu yorum spoiler içermektedir.\nOkumak için dokunun.</string>
-  <string name="textCommentedOn">%s tarafından yorumlandı</string>
+  <string name="textCommentedOn">%s tarafından yorum yapıldı</string>
   <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textShows">Diziler</string>
   <string name="textMovies">Filmler</string>
@@ -73,4 +74,5 @@
   <string name="errorNoInternetConnection">İnternet bağlantısı yok. Lütfen bağlantınızı kontrol edin.</string>
   <string name="errorTraktSyncGeneral">Trakt.tv eşitleme hatası.\nLütfen internet bağlantınızı kontrol edin ve tekrar deneyin.</string>
   <string name="errorTraktLocked">Trakt.tv hesabınız şu anda kilitli.\nHesabınızın kilidini açmak için lütfen https://support.trakt.tv/ adresinden Trakt.tv destek ekibi ile iletişime geçin.</string>
+  <string name="errorSubscriptionsNotAvailable">Google Play Abonelikleri bu cihazda kullanılamaz.</string>
 </resources>

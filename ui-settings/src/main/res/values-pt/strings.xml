@@ -16,6 +16,8 @@
   <string name="textSettingsTraktQuickSyncSummary">Envie instantaneamente dados para Trakt.tv depois de adicioná-los no aplicativo.</string>
   <string name="textSettingsTraktQuickRemoveTitle">Remoção instantânea de Trakt.tv</string>
   <string name="textSettingsTraktQuickRemoveSummary">Adicione a opção de remover dados do Trakt.tv depois de removê-lo do aplicativo.</string>
+  <string name="textSettingsTraktQuickRateTitle">Avaliação rápida do Trakt.tv</string>
+  <string name="textSettingsTraktQuickRateSummary">Avalie episódios e filmes sempre que você marcá-los como assistidos na tela \'Progresso\'.</string>
   <string name="textSettingsGeneral">Geral &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Quantidade adicionada recentemente</string>
   <string name="textSettingsRecentShowsSummary">Número de itens recentes a serem exibidos em \'Coleção\'.</string>
@@ -23,6 +25,12 @@
   <string name="textSettingsMyShowsSectionSummary">Ativar/desativar seções na guia \'Minhas séries\'.</string>
   <string name="textSettingsMyMoviesSectionsTitle">Meus filmes</string>
   <string name="textSettingsMyMoviesSectionSummary">Ativar/desativar seções na guia \'Meus Filmes\'.</string>
+  <string name="textSettingsThemeTitle">Tema</string>
+  <string name="textSettingsThemeSummary">Selecione o tema principal.</string>
+  <string name="textSettingsThemeWidgetsTitle">Tema</string>
+  <string name="textSettingsThemeWidgetsSummary">Selecione o tema dos widgets.</string>
+  <string name="textSettingsWidgetsTransparencyTitle">Plano de fundo</string>
+  <string name="textSettingsWidgetsTransparencySummary">Nível de transparência de fundo dos Widgets.</string>
   <string name="textSettingsMyShowsCountryTitle">Região do JustWatch</string>
   <string name="textSettingsMyShowsCountrySummary">Selecione a região para usar com os links JustWatch.</string>
   <string name="textSettingsMyShowsLanguageTitle">Idioma</string>
@@ -51,6 +59,10 @@
   <string name="textSettingsMoviesEnabledTitle">Filmes</string>
   <string name="textSettingsMoviesEnabledSummary">Ativar/desativar o suporte a filmes. O aplicativo reiniciará.</string>
   <string name="textSettingsWidgets">Widgets</string>
-  <string name="textSettingsWidgetsLabelsTitle">Mostrar títulos</string>
+  <string name="textSettingsWidgetsLabelsTitle">Títulos</string>
   <string name="textSettingsWidgetsLabelsSummary">Exibir títulos de widgets translúcidos.</string>
+  <string name="textThemeDark">Escuro</string>
+  <string name="textThemeLight">Claro</string>
+  <string name="textThemeSystem">Sistema</string>
+  <string name="textTransparency100">Opaco</string>
 </resources>

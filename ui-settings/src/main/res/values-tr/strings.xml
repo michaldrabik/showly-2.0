@@ -16,6 +16,8 @@
   <string name="textSettingsTraktQuickSyncSummary">Verileri, uygulamaya ekledikten sonra anında Trakt.tv hizmetine yükleyin.</string>
   <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv Anlık Silme</string>
   <string name="textSettingsTraktQuickRemoveSummary">Verileri uygulamadan kaldırdıktan sonra Trakt.tv\'den de silme seçeneği ekleyin.</string>
+  <string name="textSettingsTraktQuickRateTitle">Trakt.tv Hızlı Oy Verme</string>
+  <string name="textSettingsTraktQuickRateSummary">Bölümleri ve filmleri \"İlerleme\" ekranında izlendi olarak işaretlediğinizde oy verin.</string>
   <string name="textSettingsGeneral">Genel ve Deneyim</string>
   <string name="textSettingsRecentShowsTitle">Son Eklenenler Miktarı</string>
   <string name="textSettingsRecentShowsSummary">\'Koleksiyon\'da görüntülenecek en son ögeler sayısı.</string>
@@ -23,6 +25,12 @@
   <string name="textSettingsMyShowsSectionSummary">\'Dizilerim\' sekmesindeki bölümleri etkinleştir/devre dışı bırak.</string>
   <string name="textSettingsMyMoviesSectionsTitle">Filmlerim Bölümleri</string>
   <string name="textSettingsMyMoviesSectionSummary">\'Filmlerim\' sekmesindeki bölümleri etkinleştir/devre dışı bırak.</string>
+  <string name="textSettingsThemeTitle">Tema</string>
+  <string name="textSettingsThemeSummary">Ana temayı seçin.</string>
+  <string name="textSettingsThemeWidgetsTitle">Tema</string>
+  <string name="textSettingsThemeWidgetsSummary">Widget\'ların temasını seçin.</string>
+  <string name="textSettingsWidgetsTransparencyTitle">Arka Plan</string>
+  <string name="textSettingsWidgetsTransparencySummary">Widget\'ların arka plan şeffaflık düzeyini ayarlayın.</string>
   <string name="textSettingsMyShowsCountryTitle">JustWatch Bölgesi</string>
   <string name="textSettingsMyShowsCountrySummary">JustWatch bağlantılarıyla kullanılacak bölgeyi seçin.</string>
   <string name="textSettingsMyShowsLanguageTitle">Dil</string>
@@ -51,6 +59,10 @@
   <string name="textSettingsMoviesEnabledTitle">Filmler</string>
   <string name="textSettingsMoviesEnabledSummary">Film desteğini etkinleştirin/devre dışı bırakın. Uygulama yeniden başlatılacaktır.</string>
   <string name="textSettingsWidgets">Widget’lar</string>
-  <string name="textSettingsWidgetsLabelsTitle">Başlıkları Göster</string>
+  <string name="textSettingsWidgetsLabelsTitle">Başlıklar</string>
   <string name="textSettingsWidgetsLabelsSummary">Yarı saydam widget başlıklarını görüntüleyin.</string>
+  <string name="textThemeDark">Karanlık</string>
+  <string name="textThemeLight">Aydınlık</string>
+  <string name="textThemeSystem">Sistem</string>
+  <string name="textTransparency100">Mat</string>
 </resources>
