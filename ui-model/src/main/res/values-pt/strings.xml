@@ -26,7 +26,7 @@
   <string name="textTipDiscover">Toque duas vezes no botão do menu \'Explorar\' para abrir rapidamente a tela de pesquisa.</string>
   <string name="textTipMyShows">Toque duas vezes no botão de menu \'Coleção\' para alternar rapidamente entre as abas.</string>
   <string name="textTipShowDetailsGallery">Toque na imagem para abrir a galeria.</string>
-  <string name="textTipShowDetailsQuickProgress">Toque no ícone \'Arquivo\' para mover para o arquivo.</string>
+  <string name="textTipShowDetailsQuickProgress">Toque no ícone \'Arquivo\' para mover a exibição para o arquivo.</string>
   <string name="textTipDiscoverFilters">Use filtros para melhorar sua pesquisa.</string>
   <string name="textTipWatchlistPinItem">Toque e segure o item da lista para fixá-lo no topo.</string>
   <string name="textTipBottomModeMenu">Deslize para a esquerda ou para a direita para alterar o modo rapidamente.</string>
