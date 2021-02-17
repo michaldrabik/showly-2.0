@@ -33,6 +33,19 @@
     app:layout_constraintTop_toTopOf="parent"
     />
 
+  <ImageView
+    android:id="@+id/episodesUnlockButton"
+    android:layout_width="22dp"
+    android:layout_height="22dp"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    app:layout_constraintBottom_toTopOf="@id/episodesOverview"
+    app:layout_constraintEnd_toStartOf="@id/episodesCheckbox"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_goneMarginEnd="@dimen/spaceNormal"
+    app:srcCompat="@drawable/ic_locked"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
   <com.michaldrabik.ui_base.common.views.FoldableTextView
     android:id="@+id/episodesOverview"
     android:layout_width="wrap_content"

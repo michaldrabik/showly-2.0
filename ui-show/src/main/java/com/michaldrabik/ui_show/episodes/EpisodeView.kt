@@ -34,18 +34,19 @@ class EpisodeView : ConstraintLayout {
   fun bind(
     item: EpisodeListItem,
     itemClickListener: (Episode, Boolean) -> Unit,
-    itemCheckedListener: (Episode, Boolean) -> Unit
+    itemCheckedListener: (Episode, Boolean) -> Unit,
+    isLocked: Boolean
   ) {
     clear()
 
-    val hasAired = item.episode.hasAired(item.season)
+    val hasAired = item.episode.hasAired(item.season) || item.season.isSpecial()
     episodeTitle.text = String.format(ENGLISH, context.getString(R.string.textEpisode), item.episode.number)
     episodeOverview.text = when {
       !item.translation?.title.isNullOrBlank() -> item.translation?.title
       else -> item.episode.title.ifEmpty { context.getString(R.string.textTba) }
     }
     episodeCheckbox.isChecked = item.isWatched
-    episodeCheckbox.isEnabled = hasAired
+    episodeCheckbox.isEnabled = hasAired || !isLocked
 
     episodeRating.visibleIf(item.episode.rating != 0F)
     episodeRating.text = String.format(ENGLISH, "%.1f", item.episode.rating)
@@ -56,21 +57,18 @@ class EpisodeView : ConstraintLayout {
       episodeMyRating.text = String.format(ENGLISH, "%d", item.myRating.rating)
     }
 
-    if (hasAired) {
-      episodeCheckbox.setOnCheckedChangeListener { _, isChecked ->
-        itemCheckedListener(item.episode, isChecked)
-      }
-    } else {
+    if (!hasAired) {
       val date = item.episode.firstAired?.toLocalZone()
       val displayDate = date?.let { item.dateFormat?.format(it)?.capitalizeWords() } ?: context.getString(R.string.textTba)
       episodeTitle.text = String.format(ENGLISH, context.getString(R.string.textEpisodeDate), item.episode.number, displayDate)
     }
 
+    episodeCheckbox.setOnCheckedChangeListener { _, isChecked -> itemCheckedListener(item.episode, isChecked) }
     onClick { itemClickListener(item.episode, item.isWatched) }
   }
 
   private fun clear() {
-    episodeCheckbox.setOnCheckedChangeListener { _, _ -> }
+    episodeCheckbox.setOnCheckedChangeListener(null)
     episodeMyStarIcon.gone()
     episodeMyRating.gone()
   }

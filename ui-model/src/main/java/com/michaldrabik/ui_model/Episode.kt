@@ -25,7 +25,7 @@ data class Episode(
 
   fun hasAired(season: Season) =
     when (firstAired) {
-      null -> season.episodes.any { it.number > number && it.firstAired != null } || season.isSpecial()
+      null -> season.episodes.any { it.number > number && it.firstAired != null }
       else -> nowUtcMillis() >= firstAired.toInstant().toEpochMilli()
     }
 }

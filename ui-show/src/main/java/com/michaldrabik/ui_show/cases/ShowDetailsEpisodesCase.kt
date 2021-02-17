@@ -35,6 +35,7 @@ class ShowDetailsEpisodesCase @Inject constructor(
 
       val remoteSeasons = cloud.traktApi.fetchSeasons(show.traktId)
         .map { mappers.season.fromNetwork(it) }
+        .filter { it.episodes.isNotEmpty() }
         .filter { if (!showSpecials()) !it.isSpecial() else true }
 
       val isFollowed = showsRepository.myShows.load(show.ids.trakt) != null
@@ -50,9 +51,9 @@ class ShowDetailsEpisodesCase @Inject constructor(
       val localSeasons = database.seasonsDao().getAllByShowId(show.traktId).map { season ->
         val seasonEpisodes = localEpisodes.filter { ep -> ep.idSeason == season.idTrakt }
         mappers.season.fromDatabase(season, seasonEpisodes)
-      }.filter {
-        if (!showSpecials()) !it.isSpecial() else true
       }
+        .filter { it.episodes.isNotEmpty() }
+        .filter { if (!showSpecials()) !it.isSpecial() else true }
 
       return SeasonsBundle(localSeasons, isLocal = true)
     }

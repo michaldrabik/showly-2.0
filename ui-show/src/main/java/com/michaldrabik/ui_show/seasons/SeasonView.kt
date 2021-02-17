@@ -54,7 +54,7 @@ class SeasonView : FrameLayout {
     seasonViewProgressText.text = String.format(ENGLISH, "%d/%d (%d%%)", progressCount, item.episodes.size, percent)
 
     seasonViewCheckbox.isChecked = item.isWatched
-    seasonViewCheckbox.isEnabled = item.episodes.all { it.episode.hasAired(item.season) }
+    seasonViewCheckbox.isEnabled = item.episodes.all { it.episode.hasAired(item.season) } || item.isWatched
 
     val color = context.colorFromAttr(if (item.isWatched) android.R.attr.colorAccent else android.R.attr.textColorPrimary)
     seasonViewTitle.setTextColor(color)
@@ -70,6 +70,6 @@ class SeasonView : FrameLayout {
     seasonViewTitle.text = ""
     seasonViewProgress.progress = 0
     seasonViewProgress.max = 0
-    seasonViewCheckbox.setOnCheckedChangeListener { _, _ -> }
+    seasonViewCheckbox.setOnCheckedChangeListener(null)
   }
 }
