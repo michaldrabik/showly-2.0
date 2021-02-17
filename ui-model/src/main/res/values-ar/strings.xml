@@ -26,7 +26,7 @@
   <string name="textTipDiscover">انقر نقراً مزدوجاً على زر صفحة \'إكتشف\' لِفتح صفحة البحث بسرعة.</string>
   <string name="textTipMyShows">انقر نقراً مزدوجاً على زر صفحة \'المجموعة\' للتبديل بين النوافذ بسرعة.</string>
   <string name="textTipShowDetailsGallery">انقر على صورة المسلسل لفتح معرض الصور.</string>
-  <string name="textTipShowDetailsQuickProgress">انقر على أيقونة \'مستوى التقدم السريع\' لتعيين مستوى تقدمك في المسلسل بسرعة.\n\nانقر على أيقونة \'الأرشيف\' لنقل المسلسل إلى الأرشيف.</string>
+  <string name="textTipShowDetailsQuickProgress">انقر على أيقونة \'الأرشيف\' لنقل المسلسل إلى الأرشيف.</string>
   <string name="textTipDiscoverFilters">إستخدم الفلاتر لفلترة محتويات صفحة إكتشف.</string>
   <string name="textTipWatchlistPinItem">إضغط مطولاً على أي مسلسل لتثبيته في الأعلى.</string>
   <string name="textTipBottomModeMenu">مرر أسفل القائمة لليسار أو لليمين لتغيير الوضع بسرعة.</string>
