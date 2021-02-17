@@ -64,7 +64,7 @@ class EpisodesView : ConstraintLayout {
       jumpDrawablesToCurrentState()
     }
     episodesUnlockButton.visibleIf(!seasonItem.season.isSpecial() && seasonItem.episodes.any { !it.episode.hasAired(season) })
-    episodesUnlockButton.onClick { toggleEpisodesLock() }
+    episodesUnlockButton.onClick(safe = false) { toggleEpisodesLock() }
   }
 
   fun bindEpisodes(episodes: List<EpisodeListItem>, animate: Boolean = true) {

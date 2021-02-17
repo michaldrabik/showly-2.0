@@ -352,10 +352,10 @@
 
       <ImageView
         android:id="@+id/showDetailsQuickProgress"
-        android:layout_width="28dp"
-        android:layout_height="wrap_content"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_gravity="center_vertical|end"
-        android:layout_marginEnd="@dimen/spaceSmall"
+        android:layout_marginEnd="@dimen/spaceMedium"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_quick_setup"
         android:translationY="1dp"

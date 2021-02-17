@@ -28,7 +28,7 @@ class CommentsRepository @Inject constructor(
       .map { mappers.comment.fromNetwork(it) }
       .filter { it.parentId <= 0 }
 
-  suspend fun loadEpisodeComments(idTrakt: IdTrakt, season: Int, episode: Int, limit: Int = 100) =
+  suspend fun loadEpisodeComments(idTrakt: IdTrakt, season: Int, episode: Int) =
     cloud.traktApi.fetchEpisodeComments(idTrakt.id, season, episode)
       .map { mappers.comment.fromNetwork(it) }
       .filter { it.parentId <= 0 }

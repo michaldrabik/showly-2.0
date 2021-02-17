@@ -35,8 +35,8 @@
 
   <ImageView
     android:id="@+id/episodesUnlockButton"
-    android:layout_width="22dp"
-    android:layout_height="22dp"
+    android:layout_width="24dp"
+    android:layout_height="24dp"
     android:layout_marginEnd="@dimen/spaceMedium"
     app:layout_constraintBottom_toTopOf="@id/episodesOverview"
     app:layout_constraintEnd_toStartOf="@id/episodesCheckbox"
