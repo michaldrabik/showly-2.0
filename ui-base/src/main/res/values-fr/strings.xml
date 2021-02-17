@@ -10,6 +10,7 @@
   <string name="textNew">Nouveau</string>
   <string name="textSelect">Sélectionner</string>
   <string name="textHot">Tendance</string>
+  <string name="textSubmit">Envoyer</string>
   <string name="textEmptyResults">Il n\'y a aucun résultat…</string>
   <string name="textSearchFor">Recherche…</string>
   <string name="textTip">Astuce :</string>
