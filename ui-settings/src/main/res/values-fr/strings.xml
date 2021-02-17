@@ -30,7 +30,7 @@
   <string name="textSettingsThemeWidgetsTitle">Thème</string>
   <string name="textSettingsThemeWidgetsSummary">Sélectionnez le thème des widgets.</string>
   <string name="textSettingsWidgetsTransparencyTitle">Fond</string>
-  <string name="textSettingsWidgetsTransparencySummary">Définir le niveau de transparence des widgets.</string>
+  <string name="textSettingsWidgetsTransparencySummary">Définir le niveau de transparence du fond des widgets.</string>
   <string name="textSettingsMyShowsCountryTitle">Région JustWatch</string>
   <string name="textSettingsMyShowsCountrySummary">Sélectionnez la région à utiliser avec les liens JustWatch.</string>
   <string name="textSettingsMyShowsLanguageTitle">Langue</string>
