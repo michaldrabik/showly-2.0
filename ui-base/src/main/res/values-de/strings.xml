@@ -10,6 +10,7 @@
   <string name="textNew">Neu</string>
   <string name="textSelect">Ausgewählt</string>
   <string name="textHot">Hot</string>
+  <string name="textSubmit">Absenden</string>
   <string name="textEmptyResults">Keine Ergebnisse…</string>
   <string name="textSearchFor">Suche…</string>
   <string name="textTip">Tipp:</string>
@@ -73,4 +74,5 @@
   <string name="errorNoInternetConnection">Kein Internet. Bitte überprüfe deine Verbindung.</string>
   <string name="errorTraktSyncGeneral">Synchronisationserror mit Trakt.tv.\nBitte check deine Internetverbindung und versuch es erneut. </string>
   <string name="errorTraktLocked">Ihr Trakt.tv-Konto ist derzeit gesperrt. Wenden Sie sich unter https://support.trakt.tv/ an den Trakt.tv-Support, um Ihr Konto zu entsperren.</string>
+  <string name="errorSubscriptionsNotAvailable">Google Play Abonnements sind auf diesem Gerät nicht verfügbar.</string>
 </resources>
