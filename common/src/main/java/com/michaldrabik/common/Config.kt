@@ -59,11 +59,8 @@ object Config {
 
   const val SHOW_WHATS_NEW = true
   const val WHATS_NEW_TEXT =
-    "* Added Turkish and Portuguese/Brazilian languages support.\n\n" +
-      "* Added Trakt Sync shortcut in Progress tab toolbar.\n\n" +
-      "* Added additional time/date formats to choose from.\n\n" +
-      "* Minor UI fixes.\n\n" +
-      "Showly is on Twitter! Follow  @AppShowly  for news, current app status and other important information."
-
-  const val LEAK_CANARY = true
+    "* Added extended comments support with replies and possibility to write your own comments.\n\n" +
+      "* Added option to manually unlock and mark episodes that have not been aired yet.\n\n" +
+      "* Minor UI tweaks and optimizations.\n\n" +
+      "As usual in case of any issues or translations mistakes don\'t hesitate to drop us an email or a tweet!"
 }

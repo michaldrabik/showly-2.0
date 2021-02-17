@@ -8,6 +8,7 @@
   android:layout_height="wrap_content"
   android:background="@drawable/bg_bottom_sheet"
   android:clipToPadding="false"
+  android:focusableInTouchMode="true"
   android:paddingStart="@dimen/spaceNormal"
   android:paddingTop="@dimen/spaceMedium"
   android:paddingEnd="@dimen/spaceNormal"

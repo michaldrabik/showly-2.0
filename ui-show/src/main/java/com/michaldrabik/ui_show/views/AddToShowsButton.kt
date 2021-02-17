@@ -21,7 +21,6 @@ class AddToShowsButton : FrameLayout {
   var onAddMyShowsClickListener: (() -> Unit)? = null
   var onAddWatchLaterClickListener: (() -> Unit)? = null
   var onRemoveClickListener: (() -> Unit)? = null
-  var onQuickSetupClickListener: (() -> Unit)? = null
   var onArchiveClickListener: (() -> Unit)? = null
 
   private var state: State = State.ADD
@@ -32,7 +31,6 @@ class AddToShowsButton : FrameLayout {
     addToMyShowsButton.onClick { onAddMyShowsClickListener?.invoke() }
     watchlistButton.onClick { onAddWatchLaterClickListener?.invoke() }
     inMyShowsButton.onClick { onRemoveClickListener?.invoke() }
-    quickSetupButton.onClick { onQuickSetupClickListener?.invoke() }
     archiveButton.onClick { onArchiveClickListener?.invoke() }
   }
 
@@ -45,7 +43,6 @@ class AddToShowsButton : FrameLayout {
         addToMyShowsButton.fadeIn(duration)
         watchlistButton.fadeIn(duration)
         inMyShowsButton.fadeOut(duration) { isEnabled = true }
-        quickSetupButton.fadeOut(duration) { isEnabled = true }
         archiveButton.fadeOut(duration) { isEnabled = true }
       }
       State.IN_MY_SHOWS -> {
@@ -67,7 +64,6 @@ class AddToShowsButton : FrameLayout {
           fadeIn(duration) { isEnabled = true }
           setColorFilter(color)
         }
-        quickSetupButton.fadeIn(duration) { isEnabled = true }
       }
       State.IN_WATCHLIST -> {
         val color = context.colorFromAttr(android.R.attr.textColorSecondary)
@@ -88,7 +84,6 @@ class AddToShowsButton : FrameLayout {
           fadeIn(duration) { isEnabled = true }
           setColorFilter(color)
         }
-        quickSetupButton.fadeOut(duration)
       }
       State.IN_ARCHIVE -> {
         addToMyShowsButton.fadeOut(duration)
@@ -104,7 +99,6 @@ class AddToShowsButton : FrameLayout {
           rippleColor = colorState
           fadeIn(duration) { isEnabled = true }
         }
-        quickSetupButton.gone()
         archiveButton.gone()
       }
     }
@@ -114,7 +108,6 @@ class AddToShowsButton : FrameLayout {
     addToMyShowsButton.isEnabled = enabled
     watchlistButton.isEnabled = enabled
     inMyShowsButton.isEnabled = enabled
-    quickSetupButton.isEnabled = enabled
     archiveButton.isEnabled = enabled
   }
 

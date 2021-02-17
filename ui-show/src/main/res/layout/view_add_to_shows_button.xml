@@ -76,17 +76,6 @@
       />
 
     <ImageView
-      android:id="@+id/quickSetupButton"
-      android:layout_width="28dp"
-      android:layout_height="match_parent"
-      android:layout_gravity="center_vertical|end"
-      android:layout_marginStart="@dimen/spaceNormal"
-      android:background="?android:attr/selectableItemBackgroundBorderless"
-      android:src="@drawable/ic_quick_setup"
-      app:tint="?attr/colorAccent"
-      />
-
-    <ImageView
       android:id="@+id/archiveButton"
       android:layout_width="22dp"
       android:layout_height="match_parent"
