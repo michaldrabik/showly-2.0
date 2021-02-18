@@ -10,9 +10,9 @@
   <string name="textRateAppYesButton">Sure, why not?</string>
   <string name="textRateAppNoButton">Not now</string>
 
-  <string name="textDisclaimerTitle">Welcome!</string>
-  <string name="textDisclaimerText">Please note that you CAN\'T watch or download shows and movies with this app! Use apps like Netflix or HBO GO to watch content.</string>
-  '
+  <string name="textDisclaimerTitle" translatable="false">Welcome!</string>
+  <string name="textDisclaimerText" translatable="false">Please note that you CAN\'T watch or download shows and movies with this app! Use apps like Netflix or HBO GO to watch content.</string>
+
   <string name="textWhatsNewTitle">What\'s New</string>
   <string name="textWhatsNewSubtitle">Version %s</string>
 
