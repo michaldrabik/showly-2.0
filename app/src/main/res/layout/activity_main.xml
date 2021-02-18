@@ -124,6 +124,32 @@
     android:layout_margin="@dimen/spaceNormal"
     android:visibility="gone"
     app:layout_constraintBottom_toTopOf="@id/bottomNavigationWrapper"
+    tools:visibility="gone"
+    />
+
+  <View
+    android:id="@+id/welcomeViewMask"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:background="@color/colorBlackTranslucent"
+    android:translationZ="12dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible"
+    />
+
+  <com.michaldrabik.showly2.ui.views.WelcomeNoteView
+    android:id="@+id/welcomeView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/spaceNormal"
+    android:translationZ="13dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
     tools:visibility="visible"
     />
 

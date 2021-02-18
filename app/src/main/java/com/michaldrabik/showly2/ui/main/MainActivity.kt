@@ -41,6 +41,7 @@ import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -255,7 +256,23 @@ class MainActivity :
   private fun render(uiModel: MainUiModel) {
     uiModel.run {
       isInitialRun?.let {
-        if (it) openTab(R.id.menuDiscover)
+        if (it) {
+          openTab(R.id.menuDiscover)
+          with(welcomeView) {
+            fadeIn()
+            onOkClickListener = {
+              fadeOut()
+              welcomeViewMask.fadeOut()
+            }
+          }
+          with(welcomeViewMask) {
+            fadeIn()
+            onClick {
+              fadeOut()
+              welcomeView.fadeOut()
+            }
+          }
+        }
       }
       showWhatsNew?.let { if (it) showWhatsNew() }
       showRateApp?.let {
