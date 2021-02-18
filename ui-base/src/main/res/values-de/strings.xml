@@ -34,7 +34,7 @@
   </plurals>
   <plurals name="textHoursToAir">
     <item quantity="one">Veröffentlichung in 1 Stunde</item>
-    <item quantity="other">Veröffentlichung in %d Stunden</item>
+    <item quantity="other">Verfügbar in %d Stunden</item>
   </plurals>
   <plurals name="textMinutesToAir">
     <item quantity="one">Jetzt verfügbar</item>
