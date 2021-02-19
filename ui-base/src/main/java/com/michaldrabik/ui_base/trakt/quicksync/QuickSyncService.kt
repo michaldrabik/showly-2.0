@@ -11,6 +11,7 @@ import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.trakt.TraktNotificationsService
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
+import com.michaldrabik.ui_repository.SettingsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -30,8 +31,8 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.IO
 
-  @Inject
-  lateinit var quickSyncRunner: QuickSyncRunner
+  @Inject lateinit var settingsRepository: SettingsRepository
+  @Inject lateinit var quickSyncRunner: QuickSyncRunner
 
   override fun onCreate() {
     super.onCreate()
@@ -45,7 +46,9 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
       Timber.d("Already running. Skipping...")
       return START_NOT_STICKY
     }
-    startForeground(SYNC_NOTIFICATION_PROGRESS_ID, createProgressNotification().build())
+
+    val theme = settingsRepository.theme
+    startForeground(SYNC_NOTIFICATION_PROGRESS_ID, createProgressNotification(theme).build())
 
     Timber.d("Sync started.")
     launch {

@@ -22,6 +22,7 @@ import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchlistRunner
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
 import com.michaldrabik.ui_model.error.TraktAuthError
+import com.michaldrabik.ui_repository.SettingsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -59,6 +60,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
   override val coroutineContext = Job() + Dispatchers.IO
   private val runners = mutableListOf<TraktSyncRunner>()
 
+  @Inject lateinit var settingsRepository: SettingsRepository
   @Inject lateinit var importWatchedRunner: TraktImportWatchedRunner
   @Inject lateinit var importWatchlistRunner: TraktImportWatchlistRunner
   @Inject lateinit var exportWatchedRunner: TraktExportWatchedRunner
@@ -87,12 +89,13 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
     val isImport = intent?.extras?.getBoolean(ARG_IS_IMPORT) ?: false
     val isExport = intent?.extras?.getBoolean(ARG_IS_EXPORT) ?: false
     val isSilent = intent?.extras?.getBoolean(ARG_IS_SILENT) ?: false
+    val theme = settingsRepository.theme
 
     if (runners.any { it.isRunning }) {
       Timber.d("Already running. Skipping...")
       return START_NOT_STICKY
     }
-    startForeground(SYNC_NOTIFICATION_PROGRESS_ID, createProgressNotification().build())
+    startForeground(SYNC_NOTIFICATION_PROGRESS_ID, createProgressNotification(theme).build())
 
     Timber.d("Sync started.")
     launch {
@@ -116,7 +119,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
         (applicationContext as OnTraktSyncListener).onTraktSyncComplete()
         Analytics.logTraktFullSyncSuccess(isImport, isExport)
         if (!isSilent) {
-          notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification())
+          notificationManager().notify(SYNC_NOTIFICATION_COMPLETE_SUCCESS_ID, createSuccessNotification(theme))
         }
       } catch (t: Throwable) {
         if (t is TraktAuthError) EventsManager.sendEvent(TraktSyncAuthError)
@@ -140,9 +143,10 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
   }
 
   private suspend fun runImportWatched(): Int {
+    val theme = settingsRepository.theme
     importWatchedRunner.progressListener = { title: String, progress: Int, total: Int ->
       val status = "Importing \'$title\'..."
-      val notification = createProgressNotification().run {
+      val notification = createProgressNotification(theme).run {
         setContentText(status)
         setProgress(total, progress, false)
       }
@@ -153,9 +157,10 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
   }
 
   private suspend fun runImportWatchlist(totalProgress: Int) {
+    val theme = settingsRepository.theme
     importWatchlistRunner.progressListener = { title: String, progress: Int, total: Int ->
       val status = "Importing \'$title\'..."
-      val notification = createProgressNotification().run {
+      val notification = createProgressNotification(theme).run {
         setContentText(status)
         setProgress(totalProgress + total, totalProgress + progress, false)
       }
@@ -167,7 +172,8 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
 
   private suspend fun runExportWatched() {
     val status = "Exporting progress..."
-    val notification = createProgressNotification().run {
+    val theme = settingsRepository.theme
+    val notification = createProgressNotification(theme).run {
       setContentText(status)
     }
     notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
@@ -177,7 +183,8 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
 
   private suspend fun runExportWatchlist() {
     val status = "Exporting watchlist..."
-    val notification = createProgressNotification().run {
+    val theme = settingsRepository.theme
+    val notification = createProgressNotification(theme).run {
       setContentText(status)
     }
     notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
