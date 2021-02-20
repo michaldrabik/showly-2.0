@@ -31,5 +31,5 @@ abstract class BaseBottomSheetFragment<T : BaseViewModel<out UiModel>> : BottomS
   ): View = inflater.inflate(layoutResId, container, false)
 
   protected fun navigateTo(@IdRes destination: Int, bundle: Bundle? = null) =
-    (requireActivity() as NavigationHost).findNavControl().navigate(destination, bundle)
+    (requireActivity() as NavigationHost).findNavControl()?.navigate(destination, bundle)
 }

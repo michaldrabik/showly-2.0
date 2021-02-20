@@ -94,7 +94,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
     dispatcher.addCallback(viewLifecycleOwner) {
       remove()
       showNavigation()
-      findNavControl().popBackStack()
+      findNavControl()?.popBackStack()
     }
   }
 }

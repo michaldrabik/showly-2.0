@@ -492,7 +492,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     dispatcher.addCallback(viewLifecycleOwner) {
       remove()
       showNavigation()
-      findNavControl().popBackStack()
+      findNavControl()?.popBackStack()
     }
   }
 }

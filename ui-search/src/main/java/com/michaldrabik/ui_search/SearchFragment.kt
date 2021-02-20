@@ -105,7 +105,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
         if (id == EditorInfo.IME_ACTION_SEARCH) {
           val query = textView.text.toString()
           if (query.trim().isBlank()) {
-            searchViewLayout.shake()
+            searchViewLayout?.shake()
             return@setOnEditorActionListener true
           }
           viewModel.search(query)
@@ -264,7 +264,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     dispatcher.addCallback(viewLifecycleOwner) {
       showNavigation()
       remove()
-      findNavControl().popBackStack()
+      findNavControl()?.popBackStack()
     }
   }
 

@@ -209,7 +209,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
     dispatcher.addCallback(viewLifecycleOwner) {
       if (isPickMode == true) setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf())
       remove()
-      findNavControl().popBackStack()
+      findNavControl()?.popBackStack()
     }
   }
 }

@@ -95,7 +95,7 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
       remove()
-      findNavControl().popBackStack()
+      findNavControl()?.popBackStack()
     }
   }
 }

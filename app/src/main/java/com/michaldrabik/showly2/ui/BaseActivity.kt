@@ -25,7 +25,7 @@ abstract class BaseActivity : AppCompatActivity() {
     EXTRA_MOVIE_ID
   )
 
-  protected fun findNavHostFragment() = supportFragmentManager.findFragmentById(R.id.navigationHost) as NavHostFragment
+  protected fun findNavHostFragment() = supportFragmentManager.findFragmentById(R.id.navigationHost) as? NavHostFragment
 
   fun handleNotification(extras: Bundle?, action: () -> Unit = {}) {
     if (extras == null) return
@@ -41,7 +41,7 @@ abstract class BaseActivity : AppCompatActivity() {
   }
 
   private fun handleSearchWidgetClick(extras: Bundle?) {
-    findNavHostFragment().findNavController().run {
+    findNavHostFragment()?.findNavController()?.run {
       try {
         when (currentDestination?.id) {
           R.id.searchFragment -> return@run
@@ -70,7 +70,7 @@ abstract class BaseActivity : AppCompatActivity() {
       putLong(ARG_MOVIE_ID, itemId)
     }
 
-    findNavHostFragment().findNavController().run {
+    findNavHostFragment()?.findNavController()?.run {
       try {
         when (currentDestination?.id) {
           R.id.showDetailsFragment -> navigate(R.id.actionShowDetailsFragmentToSelf, bundle)
@@ -100,7 +100,7 @@ abstract class BaseActivity : AppCompatActivity() {
   }
 
   protected fun handleTraktAuthorization(authData: Uri?) {
-    findNavHostFragment().findNavController().currentDestination?.id?.let {
+    findNavHostFragment()?.findNavController()?.currentDestination?.id?.let {
       val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
       navHost?.childFragmentManager?.primaryNavigationFragment?.let {
         (it as? OnTraktAuthorizeListener)?.onAuthorizationResult(authData)

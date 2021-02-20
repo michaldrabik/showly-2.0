@@ -9,7 +9,7 @@ interface NavigationHost {
   fun setMode(mode: Mode)
   fun getMode(): Mode
 
-  fun findNavControl(): NavController
+  fun findNavControl(): NavController?
   fun hideNavigation(animate: Boolean)
   fun showNavigation(animate: Boolean)
 

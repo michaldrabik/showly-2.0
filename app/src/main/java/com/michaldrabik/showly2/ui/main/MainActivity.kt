@@ -132,7 +132,7 @@ class MainActivity :
   }
 
   private fun setupNavigation() {
-    findNavControl().run {
+    findNavControl()?.run {
       val graph = navInflater.inflate(R.navigation.navigation_graph)
       graph.startDestination = when (viewModel.getMode()) {
         SHOWS -> R.id.progressFragment
@@ -153,7 +153,7 @@ class MainActivity :
         else -> throw IllegalStateException("Invalid menu item.")
       }
 
-      findNavControl().navigate(target)
+      findNavControl()?.navigate(target)
       showNavigation(true)
       return@setOnNavigationItemSelectedListener true
     }
@@ -166,7 +166,7 @@ class MainActivity :
         return@addCallback
       }
 
-      findNavControl().run {
+      findNavControl()?.run {
         if (currentDestination?.id == R.id.progressFragment ||
           currentDestination?.id == R.id.progressMoviesFragment
         ) {
@@ -244,7 +244,7 @@ class MainActivity :
         else -> 0
       }
       if (target != 0) {
-        findNavControl().navigate(target)
+        findNavControl()?.navigate(target)
       }
     }
   }
@@ -306,7 +306,7 @@ class MainActivity :
   }
 
   private fun doForFragments(action: (Fragment) -> Unit) {
-    findNavControl().currentDestination?.id?.let {
+    findNavControl()?.currentDestination?.id?.let {
       val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
       navHost?.childFragmentManager?.primaryNavigationFragment?.let {
         action(it)
@@ -360,7 +360,7 @@ class MainActivity :
           SHOWS -> R.id.actionDiscoverFragmentToSearchFragment
           MOVIES -> R.id.actionDiscoverMoviesFragmentToSearchFragment
         }
-        findNavControl().navigate(action)
+        findNavControl()?.navigate(action)
       }
     }
   }
@@ -400,7 +400,7 @@ class MainActivity :
     }
   }
 
-  override fun findNavControl() = findNavHostFragment().findNavController()
+  override fun findNavControl() = findNavHostFragment()?.findNavController()
 
   override fun provideSnackbarLayout(): ViewGroup =
     if (bottomNavigationWrapper.translationY == 0F) snackbarHost else rootLayout

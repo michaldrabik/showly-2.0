@@ -57,7 +57,7 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
   }
 
   protected fun navigateTo(@IdRes destination: Int, bundle: Bundle? = null) =
-    findNavControl().navigate(destination, bundle)
+    findNavControl()?.navigate(destination, bundle)
 
   override fun isTipShown(tip: Tip) = (requireActivity() as TipsHost).isTipShown(tip)
 
