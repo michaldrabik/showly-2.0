@@ -12,7 +12,7 @@ class ArchiveAdapter : BaseAdapter<ArchiveListItem>() {
   override val asyncDiffer = AsyncListDiffer(this, ArchiveDiffCallback())
 
   override fun setItems(newItems: List<ArchiveListItem>, notifyChange: Boolean) {
-    //TODO Remove this and other after possible bug is identified.
+    // TODO Remove this and other after possible bug is identified.
     FirebaseCrashlytics.getInstance().setCustomKey("Adapter", "ArchiveAdapter")
     super.setItems(newItems, notifyChange)
   }

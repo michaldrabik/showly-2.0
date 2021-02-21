@@ -11,8 +11,6 @@ class MostWatchedAdapter : BaseAdapter<StatisticsMostWatchedItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, MostWatchedItemDiffCallback())
 
-
-
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     BaseViewHolder(
       StatisticsMostWatchedItemView(parent.context).apply {
