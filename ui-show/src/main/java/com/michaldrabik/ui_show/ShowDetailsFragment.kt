@@ -323,6 +323,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       startAnimation(animationEnterLeft)
     }
     showDetailsBackArrow2.crossfadeTo(showDetailsBackArrow)
+
+    viewModel.refreshAnnouncements(requireAppContext())
   }
 
   private fun showEpisodeDetails(

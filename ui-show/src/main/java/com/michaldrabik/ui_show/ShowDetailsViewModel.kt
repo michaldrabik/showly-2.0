@@ -589,6 +589,15 @@ class ShowDetailsViewModel @Inject constructor(
     return items
   }
 
+  fun refreshAnnouncements(context: Context) {
+    viewModelScope.launch {
+      val isFollowed = myShowsCase.isMyShows(show)
+      if (isFollowed) {
+        announcementManager.refreshShowsAnnouncements(context)
+      }
+    }
+  }
+
   fun setQuickProgress(context: Context, item: QuickSetupListItem?) {
     if (item == null) return
     if (!areSeasonsLoaded) {
