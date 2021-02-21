@@ -4,12 +4,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_statistics.views.ratings.StatisticsRateItemView
 
 class StatisticsRatingsAdapter : BaseAdapter<StatisticsRatingItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, StatisticsRatingsDiffCallback())
+
+  override fun setItems(newItems: List<StatisticsRatingItem>, notifyChange: Boolean) {
+    FirebaseCrashlytics.getInstance().setCustomKey("Adapter", "StatisticsRatingsAdapter")
+    super.setItems(newItems, notifyChange)
+  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     ViewHolderShow(

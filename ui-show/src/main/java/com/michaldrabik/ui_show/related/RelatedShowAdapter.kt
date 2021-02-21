@@ -4,11 +4,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.BaseAdapter
 
 class RelatedShowAdapter : BaseAdapter<RelatedListItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, RelatedItemDiffCallback())
+
+  override fun setItems(newItems: List<RelatedListItem>, notifyChange: Boolean) {
+    FirebaseCrashlytics.getInstance().setCustomKey("Adapter", "RelatedShowAdapter")
+    super.setItems(newItems, notifyChange)
+  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     ViewHolderShow(

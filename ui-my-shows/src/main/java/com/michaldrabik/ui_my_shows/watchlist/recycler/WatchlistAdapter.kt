@@ -3,12 +3,18 @@ package com.michaldrabik.ui_my_shows.watchlist.recycler
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_my_shows.watchlist.views.WatchlistShowView
 
 class WatchlistAdapter : BaseAdapter<WatchlistListItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, WatchlistItemDiffCallback())
+
+  override fun setItems(newItems: List<WatchlistListItem>, notifyChange: Boolean) {
+    FirebaseCrashlytics.getInstance().setCustomKey("Adapter", "WatchlistAdapter")
+    super.setItems(newItems, notifyChange)
+  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     BaseViewHolder(
