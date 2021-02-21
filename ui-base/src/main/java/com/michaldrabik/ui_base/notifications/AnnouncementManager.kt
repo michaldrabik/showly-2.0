@@ -78,7 +78,7 @@ class AnnouncementManager @Inject constructor(
       Timber.i("Processing ${show.title} (${show.idTrakt})")
       val episodes = database.episodesDao().getAllByShowId(show.idTrakt)
       episodes
-        .filter { it.seasonNumber != 0 }
+        .filter { it.seasonNumber != 0 && !it.isWatched }
         .filter { it.firstAired != null && (it.firstAired!!.toMillis() + delay.delayMs) > now }
         .minBy { it.firstAired!!.toMillis() }
         ?.let {
