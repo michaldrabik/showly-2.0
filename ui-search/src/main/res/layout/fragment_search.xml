@@ -37,7 +37,7 @@
     android:id="@+id/separator"
     android:layout_width="match_parent"
     android:layout_height="@dimen/spaceSmall"
-    android:background="?android:attr/windowBackground"
+    android:background="?attr/colorPrimaryBackground"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"

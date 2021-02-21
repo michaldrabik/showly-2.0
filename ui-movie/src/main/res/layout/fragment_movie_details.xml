@@ -449,7 +449,7 @@
     android:id="@+id/movieDetailsCommentsView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground"
+    android:background="?attr/colorPrimaryBackground"
     android:visibility="gone"
     />
 

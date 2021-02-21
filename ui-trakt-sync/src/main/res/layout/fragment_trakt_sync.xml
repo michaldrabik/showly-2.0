@@ -23,7 +23,7 @@
       android:id="@+id/traktSyncToolbar"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:background="?android:attr/windowBackground"
+      android:background="?attr/colorPrimaryBackground"
       android:elevation="@dimen/elevationNormal"
       app:contentInsetStartWithNavigation="0dp"
       app:layout_constraintEnd_toEndOf="parent"
