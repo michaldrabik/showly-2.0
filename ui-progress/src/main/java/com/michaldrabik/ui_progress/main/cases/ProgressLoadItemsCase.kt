@@ -96,7 +96,7 @@ class ProgressLoadItemsCase @Inject constructor(
     )
   }
 
-  fun prepareWatchlistItems(
+  fun prepareItems(
     input: List<ProgressItem>,
     searchQuery: String,
     sortOrder: SortOrder
@@ -110,7 +110,7 @@ class ProgressLoadItemsCase @Inject constructor(
         when (sortOrder) {
           NAME -> compareBy {
             val translatedTitle = if (it.showTranslation?.hasTitle == false) null else it.showTranslation?.title
-            (translatedTitle ?: it.show.title).toUpperCase(ROOT)
+            (translatedTitle ?: it.show.titleNoThe).toUpperCase(ROOT)
           }
           RECENTLY_WATCHED -> compareByDescending { it.show.updatedAt }
           EPISODES_LEFT -> compareBy { it.episodesCount - it.watchedEpisodesCount }

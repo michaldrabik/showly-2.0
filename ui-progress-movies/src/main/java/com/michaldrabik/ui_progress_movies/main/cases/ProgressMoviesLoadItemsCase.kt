@@ -56,7 +56,7 @@ class ProgressMoviesLoadItemsCase @Inject constructor(
     return when (sortOrder) {
       NAME -> input.sortedBy {
         val translatedTitle = if (it.movieTranslation?.hasTitle == false) null else it.movieTranslation?.title
-        (translatedTitle ?: it.movie.title).toUpperCase(ROOT)
+        (translatedTitle ?: it.movie.titleNoThe).toUpperCase(ROOT)
       }
       DATE_ADDED -> input.sortedByDescending { it.movie.updatedAt }
       RATING -> input.sortedByDescending { it.movie.rating }

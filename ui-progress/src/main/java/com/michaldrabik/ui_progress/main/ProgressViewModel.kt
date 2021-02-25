@@ -42,7 +42,7 @@ class ProgressViewModel @Inject constructor(
       }.awaitAll()
 
       val sortOrder = sortOrderCase.loadSortOrder()
-      val allItems = loadItemsCase.prepareWatchlistItems(items, searchQuery, sortOrder)
+      val allItems = loadItemsCase.prepareItems(items, searchQuery, sortOrder)
       uiState =
         ProgressUiModel(
           items = allItems,

@@ -25,6 +25,8 @@ data class Show(
 
   val traktId = ids.trakt.id
 
+  val titleNoThe = title.removePrefix("The").trim()
+
   companion object {
     val EMPTY = Show(
       ids = Ids(

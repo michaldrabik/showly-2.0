@@ -70,7 +70,7 @@ class ProgressWidgetViewsFactory(
       }.awaitAll()
 
       val sortOrder = sortOrderCase.loadSortOrder()
-      val allItems = loadItemsCase.prepareWatchlistItems(items, "", sortOrder).toMutableList()
+      val allItems = loadItemsCase.prepareItems(items, "", sortOrder).toMutableList()
 
       val headerIndex = allItems.indexOfFirst { !it.isHeader() && !it.episode.hasAired(it.season) }
       if (headerIndex != -1) {

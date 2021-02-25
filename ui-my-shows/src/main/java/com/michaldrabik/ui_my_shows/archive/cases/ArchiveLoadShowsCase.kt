@@ -34,7 +34,7 @@ class ArchiveLoadShowsCase @Inject constructor(
     return when (sortType) {
       NAME -> shows.sortedBy {
         val translatedTitle = if (it.second?.hasTitle == false) null else it.second?.title
-        translatedTitle ?: it.first.title
+        translatedTitle ?: it.first.titleNoThe
       }
       DATE_ADDED -> shows.sortedByDescending { it.first.createdAt }
       RATING -> shows.sortedByDescending { it.first.rating }

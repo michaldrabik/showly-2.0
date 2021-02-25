@@ -36,7 +36,7 @@ class WatchlistLoadMoviesCase @Inject constructor(
     return when (sortType) {
       NAME -> movies.sortedBy {
         val translatedTitle = if (it.second?.hasTitle == false) null else it.second?.title
-        translatedTitle ?: it.first.title
+        translatedTitle ?: it.first.titleNoThe
       }
       DATE_ADDED ->
         movies.sortedByDescending { it.first.updatedAt }

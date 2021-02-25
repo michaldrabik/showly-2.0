@@ -24,6 +24,8 @@ data class Movie(
 
   val traktId = ids.trakt.id
 
+  val titleNoThe = title.removePrefix("The").trim()
+
   fun hasAired(): Boolean {
     if (released == null) return false
     val now = nowUtcDay()
