@@ -79,19 +79,19 @@ class DiscoverMoviesViewModel @Inject constructor(
 
   fun loadMissingImage(item: DiscoverMovieListItem, force: Boolean) {
 
-    fun updateMoviesItem(newItem: DiscoverMovieListItem) {
+    fun updateItem(newItem: DiscoverMovieListItem) {
       val currentItems = uiState?.movies?.toMutableList()
       currentItems?.findReplace(newItem) { it.isSameAs(newItem) }
       uiState = DiscoverMoviesUiModel(movies = currentItems, resetScroll = false)
     }
 
     viewModelScope.launch {
-      updateMoviesItem(item.copy(isLoading = true))
+      updateItem(item.copy(isLoading = true))
       try {
         val image = imagesProvider.loadRemoteImage(item.movie, item.image.type, force)
-        updateMoviesItem(item.copy(isLoading = false, image = image))
+        updateItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
-        updateMoviesItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type, MOVIE, TMDB)))
+        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type, MOVIE, TMDB)))
         rethrowCancellation(t)
       }
     }

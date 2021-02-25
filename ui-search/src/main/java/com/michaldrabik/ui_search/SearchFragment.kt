@@ -210,10 +210,10 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
       openDetails(it)
     }
     val missingImage: (SearchListItem, Boolean) -> Unit = { item, force ->
-      viewModel.loadMissingImage(item, force)
+      viewModel.loadMissingSuggestionImage(item, force)
     }
     val missingTranslation: (SearchListItem) -> Unit = {
-      viewModel.loadMissingTranslation(it)
+      viewModel.loadMissingSuggestionTranslation(it)
     }
     suggestions.forEach { item ->
       val view = SearchSuggestionView(requireContext()).apply {

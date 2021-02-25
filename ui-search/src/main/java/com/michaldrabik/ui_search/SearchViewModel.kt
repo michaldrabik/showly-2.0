@@ -153,6 +153,16 @@ class SearchViewModel @Inject constructor(
   }
 
   fun loadMissingImage(item: SearchListItem, force: Boolean) {
+
+    fun updateItem(new: SearchListItem) {
+      val currentItems = uiState?.searchItems?.toMutableList()
+      currentItems?.run {
+        findReplace(new) { it.isSameAs(new) }
+        lastSearchItems.replace(this)
+      }
+      uiState = uiState?.copy(searchItems = currentItems, searchItemsAnimate = false)
+    }
+
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -166,36 +176,39 @@ class SearchViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingTranslation(item: SearchListItem) {
+  fun loadMissingSuggestionImage(item: SearchListItem, force: Boolean) {
+    viewModelScope.launch {
+      updateSuggestionsItem(item.copy(isLoading = true))
+      try {
+        val image =
+          if (item.isShow) showsImagesProvider.loadRemoteImage(item.show, item.image.type, force)
+          else moviesImagesProvider.loadRemoteImage(item.movie, item.image.type, force)
+        updateSuggestionsItem(item.copy(isLoading = false, image = image))
+      } catch (t: Throwable) {
+        updateSuggestionsItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
+      }
+    }
+  }
+
+  fun loadMissingSuggestionTranslation(item: SearchListItem) {
     if (item.translation != null || searchMainCase.language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {
         val translation =
           if (item.isShow) searchMainCase.loadTranslation(item.show)
           else searchMainCase.loadTranslation(item.movie)
-        updateItem(item.copy(translation = translation))
+        updateSuggestionsItem(item.copy(translation = translation))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "${SearchViewModel::class.simpleName}::loadMissingTranslation()")
+        Logger.record(error, "Source" to "SearchViewModel::loadMissingTranslation()")
       }
     }
   }
 
-  private fun updateItem(new: SearchListItem) {
+  private fun updateSuggestionsItem(new: SearchListItem) {
     val currentState = uiState
-    val currentItems = currentState?.searchItems?.toMutableList()
-    val currentSuggestions = currentState?.suggestionsItems?.toMutableList()
-    currentItems?.run {
-      findReplace(new) { it.isSameAs(new) }
-      lastSearchItems.replace(this)
-    }
-    currentSuggestions?.run {
-      findReplace(new) { it.isSameAs(new) }
-    }
-    uiState = currentState?.copy(
-      searchItems = currentItems,
-      suggestionsItems = currentSuggestions,
-      searchItemsAnimate = false
-    )
+    val currentItems = currentState?.suggestionsItems?.toMutableList()
+    currentItems?.run { findReplace(new) { it.isSameAs(new) } }
+    uiState = currentState?.copy(suggestionsItems = currentItems, searchItemsAnimate = false)
   }
 
   private fun onError() {
