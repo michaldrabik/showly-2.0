@@ -21,6 +21,7 @@ import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_CHANNEL
 import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_CONTENT
 import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_IMAGE_URL
+import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_THEME
 import com.michaldrabik.ui_base.notifications.AnnouncementWorker.Companion.DATA_TITLE
 import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageType.FANART
@@ -130,6 +131,7 @@ class AnnouncementManager @Inject constructor(
     val data = Data.Builder().apply {
       putString(DATA_CHANNEL, NotificationChannel.EPISODES_ANNOUNCEMENTS.name)
       putString(DATA_TITLE, "${show.title} - Season ${episodeDb.seasonNumber}")
+      putInt(DATA_THEME, settingsRepository.theme)
 
       val stringResId = when (episodeDb.episodeNumber) {
         1 -> if (delay.isBefore()) R.string.textNewSeasonAvailableSoon else R.string.textNewSeasonAvailable
@@ -170,6 +172,7 @@ class AnnouncementManager @Inject constructor(
       putString(DATA_CHANNEL, NotificationChannel.MOVIES_ANNOUNCEMENTS.name)
       putString(DATA_TITLE, movie.title)
       putString(DATA_CONTENT, context.getString(R.string.textNewMovieAvailable))
+      putInt(DATA_THEME, settingsRepository.theme)
 
       val posterImage = moviesImagesProvider.findCachedImage(movie, POSTER)
       if (posterImage.status == AVAILABLE) {

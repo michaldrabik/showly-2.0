@@ -1,11 +1,13 @@
 package com.michaldrabik.ui_base.notifications
 
 import android.app.PendingIntent
+import android.app.UiModeManager.MODE_NIGHT_NO
+import android.app.UiModeManager.MODE_NIGHT_YES
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.ContextCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.bumptech.glide.Glide
@@ -20,9 +22,16 @@ class AnnouncementWorker(context: Context, workerParams: WorkerParameters) : Wor
     const val DATA_CONTENT = "DATA_CONTENT"
     const val DATA_CHANNEL = "DATA_CHANNEL"
     const val DATA_IMAGE_URL = "DATA_IMAGE_URL"
+    const val DATA_THEME = "DATA_THEME"
   }
 
   override fun doWork(): Result {
+    val color = when (inputData.getInt(DATA_THEME, MODE_NIGHT_YES)) {
+      MODE_NIGHT_YES -> R.color.colorNotificationDark
+      MODE_NIGHT_NO -> R.color.colorNotificationLight
+      else -> R.color.colorNotificationDark
+    }
+
     val notification = NotificationCompat.Builder(applicationContext, inputData.getString(DATA_CHANNEL)!!)
       .setContentIntent(createIntent())
       .setSmallIcon(R.drawable.ic_notification)
@@ -30,7 +39,7 @@ class AnnouncementWorker(context: Context, workerParams: WorkerParameters) : Wor
       .setContentText(inputData.getString(DATA_CONTENT))
       .setPriority(NotificationCompat.PRIORITY_DEFAULT)
       .setAutoCancel(true)
-      .setColor(ResourcesCompat.getColor(applicationContext.resources, R.color.colorAccent, null))
+      .setColor(ContextCompat.getColor(applicationContext, color))
 
     val imageUrl = inputData.getString(DATA_IMAGE_URL)
     if ((imageUrl ?: "").isNotBlank()) {
