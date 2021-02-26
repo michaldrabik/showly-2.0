@@ -4,6 +4,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
+import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.EpisodeWatchlist
 import com.michaldrabik.ui_base.dates.DateFormatProvider
@@ -14,6 +15,7 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
 import com.michaldrabik.ui_model.SortOrder.NAME
+import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_progress.ProgressItem
@@ -113,6 +115,7 @@ class ProgressLoadItemsCase @Inject constructor(
             (translatedTitle ?: it.show.titleNoThe).toUpperCase(ROOT)
           }
           RECENTLY_WATCHED -> compareByDescending { it.show.updatedAt }
+          NEWEST -> compareByDescending { it.episode.firstAired?.toMillis() }
           EPISODES_LEFT -> compareBy { it.episodesCount - it.watchedEpisodesCount }
           else -> throw IllegalStateException("Invalid sort order")
         }
