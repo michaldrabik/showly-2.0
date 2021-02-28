@@ -4,7 +4,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.ProgressItemDiffCallback
@@ -23,11 +22,6 @@ class ProgressMainAdapter : BaseAdapter<ProgressItem>() {
   var detailsClickListener: ((ProgressItem) -> Unit)? = null
   var checkClickListener: ((ProgressItem) -> Unit)? = null
   var itemLongClickListener: ((ProgressItem, View) -> Unit)? = null
-
-  override fun setItems(newItems: List<ProgressItem>, notifyChange: Boolean) {
-    FirebaseCrashlytics.getInstance().setCustomKey("Adapter", "ProgressMainAdapter")
-    super.setItems(newItems, notifyChange)
-  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {

@@ -3,7 +3,6 @@ package com.michaldrabik.ui_discover.recycler
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_discover.views.ShowFanartView
 import com.michaldrabik.ui_discover.views.ShowPosterView
@@ -14,11 +13,6 @@ import com.michaldrabik.ui_model.ImageType.POSTER
 class DiscoverAdapter : BaseAdapter<DiscoverListItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, DiscoverItemDiffCallback())
-
-  override fun setItems(newItems: List<DiscoverListItem>, notifyChange: Boolean) {
-    FirebaseCrashlytics.getInstance().setCustomKey("Adapter", "DiscoverAdapter")
-    super.setItems(newItems, notifyChange)
-  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
     POSTER.id -> BaseViewHolder(

@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 class SearchItemDiffCallback : DiffUtil.ItemCallback<SearchListItem>() {
 
   override fun areItemsTheSame(oldItem: SearchListItem, newItem: SearchListItem) =
-    oldItem.idTrakt == newItem.idTrakt
+    oldItem.id == newItem.id
 
   override fun areContentsTheSame(oldItem: SearchListItem, newItem: SearchListItem) =
     oldItem.image == newItem.image &&

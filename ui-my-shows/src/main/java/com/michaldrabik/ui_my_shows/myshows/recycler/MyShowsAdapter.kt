@@ -3,7 +3,6 @@ package com.michaldrabik.ui_my_shows.myshows.recycler
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.SortOrder
@@ -29,11 +28,6 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
 
   private val horizontalPositions = mutableMapOf<MyShowsSection, Pair<Int, Int>>()
   var notifyListsUpdate = false
-
-  override fun setItems(newItems: List<MyShowsItem>, notifyChange: Boolean) {
-    FirebaseCrashlytics.getInstance().setCustomKey("Adapter", "MyShowsAdapter")
-    super.setItems(newItems, notifyListsUpdate)
-  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {

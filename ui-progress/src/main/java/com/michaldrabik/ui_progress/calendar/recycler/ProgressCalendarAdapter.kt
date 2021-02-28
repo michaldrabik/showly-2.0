@@ -3,7 +3,6 @@ package com.michaldrabik.ui_progress.calendar.recycler
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.ProgressItemDiffCallback
@@ -20,11 +19,6 @@ class ProgressCalendarAdapter : BaseAdapter<ProgressItem>() {
   override val asyncDiffer = AsyncListDiffer(this, ProgressItemDiffCallback())
 
   var detailsClickListener: ((ProgressItem) -> Unit)? = null
-
-  override fun setItems(newItems: List<ProgressItem>, notifyChange: Boolean) {
-    FirebaseCrashlytics.getInstance().setCustomKey("Adapter", "ProgressCalendarAdapter")
-    super.setItems(newItems, notifyChange)
-  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {

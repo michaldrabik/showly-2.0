@@ -21,6 +21,7 @@ import com.michaldrabik.ui_search.cases.SearchSuggestionsCase
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
@@ -74,6 +75,7 @@ class SearchViewModel @Inject constructor(
           else moviesImagesProvider.findCachedImage(it.movie, POSTER)
         val translation = searchMainCase.loadTranslation(it)
         SearchListItem(
+          UUID.randomUUID(),
           it.show,
           image,
           movie = it.movie,
@@ -125,6 +127,7 @@ class SearchViewModel @Inject constructor(
             else it.traktId in watchlistMoviesIds
 
           SearchListItem(
+            UUID.randomUUID(),
             it.show,
             image,
             movie = it.movie,

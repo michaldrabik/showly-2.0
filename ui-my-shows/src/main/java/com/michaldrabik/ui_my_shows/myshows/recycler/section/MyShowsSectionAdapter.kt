@@ -4,7 +4,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import com.michaldrabik.ui_my_shows.myshows.views.section.MyShowsSectionItemView
@@ -12,11 +11,6 @@ import com.michaldrabik.ui_my_shows.myshows.views.section.MyShowsSectionItemView
 open class MyShowsSectionAdapter : BaseAdapter<MyShowsItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, MyShowsSectionDiffCallback())
-
-  override fun setItems(newItems: List<MyShowsItem>, notifyChange: Boolean) {
-    FirebaseCrashlytics.getInstance().setCustomKey("Adapter", "MyShowsSectionAdapter")
-    super.setItems(newItems, notifyChange)
-  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     ViewHolderShow(
