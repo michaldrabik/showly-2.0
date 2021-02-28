@@ -183,7 +183,7 @@ class ProgressFragment :
   }
 
   private fun openSortOrderDialog(order: SortOrder) {
-    val options = listOf(NAME, RECENTLY_WATCHED, NEWEST, EPISODES_LEFT)
+    val options = listOf(NAME, NEWEST, RECENTLY_WATCHED, EPISODES_LEFT)
     val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
 
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
