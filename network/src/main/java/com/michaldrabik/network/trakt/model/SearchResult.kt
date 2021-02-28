@@ -6,5 +6,9 @@ data class SearchResult(
   val movie: Movie?
 ) {
 
-  val votes = show?.votes ?: movie?.votes
+  fun getVotes() = when {
+    show != null -> show.votes ?: 0
+    movie != null -> movie.votes ?: 0
+    else -> 0
+  }
 }

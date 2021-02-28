@@ -14,6 +14,7 @@ import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.movies.MoviesRepository
 import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
+import com.michaldrabik.network.trakt.model.SearchResult as SearchResultNetwork
 
 @AppScope
 class SearchMainCase @Inject constructor(
@@ -31,15 +32,15 @@ class SearchMainCase @Inject constructor(
     Analytics.logSearchQuery(query)
     val withMovies = settingsRepository.isMoviesEnabled
     val results = cloud.traktApi.fetchSearch(query, withMovies)
-      .sortedWith(compareBy({ it.score }, { it.votes ?: 0 }))
-      .reversed()
-    return results.map {
-      SearchResult(
-        it.score ?: 0F,
-        it.show?.let { s -> mappers.show.fromNetwork(s) } ?: Show.EMPTY,
-        it.movie?.let { m -> mappers.movie.fromNetwork(m) } ?: Movie.EMPTY
-      )
-    }
+    return results
+      .sortedWith(compareByDescending<SearchResultNetwork> { it.getVotes() }.thenByDescending { it.score ?: 0 })
+      .map {
+        SearchResult(
+          it.score ?: 0F,
+          it.show?.let { s -> mappers.show.fromNetwork(s) } ?: Show.EMPTY,
+          it.movie?.let { m -> mappers.movie.fromNetwork(m) } ?: Movie.EMPTY
+        )
+      }
   }
 
   suspend fun loadMyShowsIds() = showsRepository.myShows.loadAllIds()
