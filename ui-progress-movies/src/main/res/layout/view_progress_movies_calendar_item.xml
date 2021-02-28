@@ -41,6 +41,7 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:srcCompat="@drawable/ic_film"
+      app:tint="?attr/colorPlaceholderIcon"
       tools:visibility="visible"
       />
 
@@ -93,8 +94,8 @@
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceNormal"
       android:layout_marginTop="@dimen/spaceSmall"
-      android:elevation="@dimen/elevationTiny"
       android:background="@drawable/bg_movie_date_badge"
+      android:elevation="@dimen/elevationTiny"
       android:gravity="start|center_vertical"
       android:paddingStart="6dp"
       android:paddingTop="2dp"
