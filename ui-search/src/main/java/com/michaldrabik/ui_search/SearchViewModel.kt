@@ -19,6 +19,7 @@ import com.michaldrabik.ui_search.cases.SearchMainCase
 import com.michaldrabik.ui_search.cases.SearchRecentsCase
 import com.michaldrabik.ui_search.cases.SearchSuggestionsCase
 import com.michaldrabik.ui_search.recycler.SearchListItem
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.UUID
@@ -33,6 +34,7 @@ class SearchViewModel @Inject constructor(
 ) : BaseViewModel<SearchUiModel>() {
 
   private var isSearching = false
+  private var suggestionsJob: Job? = null
   private val lastSearchItems = mutableListOf<SearchListItem>()
 
   fun preloadCache() {
@@ -53,12 +55,14 @@ class SearchViewModel @Inject constructor(
   }
 
   fun loadSuggestions(query: String) {
-    viewModelScope.launch {
-      if (query.trim().length < 2 || isSearching) {
-        uiState = SearchUiModel(suggestionsItems = emptyList())
-        return@launch
-      }
+    suggestionsJob?.cancel()
 
+    if (query.trim().length < 2 || isSearching) {
+      uiState = SearchUiModel(suggestionsItems = emptyList())
+      return
+    }
+
+    suggestionsJob = viewModelScope.launch {
       val showsDef = async { suggestionsCase.loadShows(query.trim(), 5) }
       val moviesDef = async { suggestionsCase.loadMovies(query.trim(), 5) }
       val suggestions = (showsDef.await() + moviesDef.await()).map {

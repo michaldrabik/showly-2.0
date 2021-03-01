@@ -36,9 +36,9 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_search.di.UiSearchComponentProvider
 import com.michaldrabik.ui_search.recycler.SearchAdapter
 import com.michaldrabik.ui_search.recycler.SearchListItem
+import com.michaldrabik.ui_search.recycler.suggestions.SuggestionAdapter
 import com.michaldrabik.ui_search.utilities.TextWatcherAdapter
 import com.michaldrabik.ui_search.views.RecentSearchView
-import com.michaldrabik.ui_search.views.SearchSuggestionView
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlin.random.Random
 
@@ -47,7 +47,9 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   override val viewModel by viewModels<SearchViewModel> { viewModelFactory }
 
   private var adapter: SearchAdapter? = null
+  private var suggestionsAdapter: SuggestionAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
+  private var suggestionsLayoutManager: LinearLayoutManager? = null
 
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
@@ -61,6 +63,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupRecycler()
+    setupSuggestionsRecycler()
     setupStatusBar()
 
     if (savedInstanceState == null && !isInitialized) {
@@ -143,6 +146,26 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     }
   }
 
+  private fun setupSuggestionsRecycler() {
+    suggestionsLayoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
+    suggestionsAdapter = SuggestionAdapter().apply {
+      itemClickListener = {
+        val query =
+          if (it.translation?.title?.isNotBlank() == true) it.translation.title
+          else it.title
+        viewModel.saveRecentSearch(query)
+        openDetails(it)
+      }
+      missingImageListener = { ids, force -> viewModel.loadMissingSuggestionImage(ids, force) }
+      missingTranslationListener = { viewModel.loadMissingSuggestionTranslation(it) }
+    }
+    suggestionsRecycler.apply {
+      adapter = this@SearchFragment.suggestionsAdapter
+      layoutManager = this@SearchFragment.suggestionsLayoutManager
+      itemAnimator = null
+    }
+  }
+
   private fun setupStatusBar() {
     searchRoot.doOnApplyWindowInsets { view, insets, _, _ ->
       view.updatePadding(top = insets.systemWindowInsetTop)
@@ -189,40 +212,16 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
         if (searchItemsAnimate == true) searchRecycler.scheduleLayoutAnimation()
       }
       recentSearchItems?.let { renderRecentSearches(it) }
-      suggestionsItems?.let { renderSuggestions(it) }
+      suggestionsItems?.let {
+        suggestionsAdapter?.setItems(it)
+        suggestionsRecycler.visibleIf(it.isNotEmpty())
+      }
       isSearching?.let {
         searchSwipeRefresh.isRefreshing = it
         searchViewLayout.isEnabled = !it
       }
       isEmpty?.let { searchEmptyView.fadeIf(it) }
       isInitial?.let { searchInitialView.fadeIf(it) }
-    }
-  }
-
-  private fun renderSuggestions(suggestions: List<SearchListItem>) {
-    searchSuggestionsWrapper.visibleIf(suggestions.isNotEmpty())
-    searchSuggestionsLayout.removeAllViews()
-    val itemClick: (SearchListItem) -> Unit = {
-      val query =
-        if (it.translation?.title?.isNotBlank() == true) it.translation.title
-        else it.title
-      viewModel.saveRecentSearch(query)
-      openDetails(it)
-    }
-    val missingImage: (SearchListItem, Boolean) -> Unit = { item, force ->
-      viewModel.loadMissingSuggestionImage(item, force)
-    }
-    val missingTranslation: (SearchListItem) -> Unit = {
-      viewModel.loadMissingSuggestionTranslation(it)
-    }
-    suggestions.forEach { item ->
-      val view = SearchSuggestionView(requireContext()).apply {
-        bind(item)
-        itemClickListener = itemClick
-        missingImageListener = missingImage
-        missingTranslationListener = missingTranslation
-      }
-      searchSuggestionsLayout.addView(view)
     }
   }
 
