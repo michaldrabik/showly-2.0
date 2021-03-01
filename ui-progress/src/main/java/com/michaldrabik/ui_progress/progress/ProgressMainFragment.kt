@@ -82,7 +82,7 @@ class ProgressMainFragment :
     adapter = ProgressMainAdapter().apply {
       itemClickListener = { (requireParentFragment() as ProgressFragment).openShowDetails(it) }
       itemLongClickListener = { item, view -> openPopupMenu(item, view) }
-      detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show, it.episode) }
+      detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show, it.episode, it.season) }
       checkClickListener = {
         if (viewModel.isQuickRateEnabled) {
           openRateDialog(it)

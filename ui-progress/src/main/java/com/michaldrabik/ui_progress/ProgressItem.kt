@@ -16,6 +16,7 @@ import org.threeten.bp.format.DateTimeFormatter
 data class ProgressItem(
   override val show: Show,
   val season: Season,
+  val upcomingSeason: Season,
   val episode: Episode,
   val upcomingEpisode: Episode,
   override val image: Image,
@@ -41,6 +42,7 @@ data class ProgressItem(
   companion object {
     val EMPTY = ProgressItem(
       Show.EMPTY,
+      Season.EMPTY,
       Season.EMPTY,
       Episode.EMPTY,
       Episode.EMPTY,

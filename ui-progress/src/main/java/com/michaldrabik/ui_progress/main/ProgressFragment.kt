@@ -8,6 +8,7 @@ import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.updateMargins
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -33,13 +34,16 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_model.Episode
+import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.di.UiProgressComponentProvider
@@ -171,11 +175,24 @@ class ProgressFragment :
     saveUiTranslations()
   }
 
-  fun openEpisodeDetails(show: Show, episode: Episode) {
+  fun openEpisodeDetails(show: Show, episode: Episode, season: Season) {
+    setFragmentResultListener(REQUEST_EPISODE_DETAILS) { _, bundle ->
+      when {
+        bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
+          val episodeNumber = bundle.getInt(ACTION_EPISODE_TAB_SELECTED)
+          val selectedEpisode = season.episodes.first { it.number == episodeNumber }
+          openEpisodeDetails(show, selectedEpisode, season)
+        }
+      }
+    }
     val bundle = Bundle().apply {
       putLong(EpisodeDetailsBottomSheet.ARG_ID_TRAKT, show.traktId)
       putLong(EpisodeDetailsBottomSheet.ARG_ID_TMDB, show.ids.tmdb.id)
       putParcelable(EpisodeDetailsBottomSheet.ARG_EPISODE, episode)
+
+      val seasonEpisodes = season.episodes.map { it.number }.toIntArray()
+      putIntArray(EpisodeDetailsBottomSheet.ARG_SEASON_EPISODES, seasonEpisodes)
+
       putBoolean(EpisodeDetailsBottomSheet.ARG_IS_WATCHED, false)
       putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, false)
     }

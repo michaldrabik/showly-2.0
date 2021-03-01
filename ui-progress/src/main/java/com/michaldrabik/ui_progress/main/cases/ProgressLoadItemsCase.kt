@@ -27,6 +27,7 @@ import org.threeten.bp.temporal.ChronoUnit.DAYS
 import java.util.Locale.ROOT
 import javax.inject.Inject
 import com.michaldrabik.storage.database.model.Episode as EpisodeDb
+import com.michaldrabik.storage.database.model.Season as SeasonDb
 
 @AppScope
 class ProgressLoadItemsCase @Inject constructor(
@@ -65,11 +66,9 @@ class ProgressLoadItemsCase @Inject constructor(
 
     val episodeUi = nextEpisode?.let { mappers.episode.fromDatabase(it) } ?: Episode.EMPTY
     val upcomingEpisodeUi = upcomingEpisode?.let { mappers.episode.fromDatabase(it) } ?: Episode.EMPTY
-    val seasonUi = nextEpisode?.let { nextEp ->
-      seasons
-        .firstOrNull { it.seasonNumber == nextEp.seasonNumber }
-        ?.let { mappers.season.fromDatabase(it) }
-    } ?: Season.EMPTY
+
+    val seasonUi = nextEpisode?.let { findSeason(seasons, it, episodes) } ?: Season.EMPTY
+    val upcomingSeasonUi = upcomingEpisode?.let { findSeason(seasons, it, episodes) } ?: Season.EMPTY
 
     var showTranslation: Translation? = null
     var episodeTranslation: Translation? = null
@@ -85,6 +84,7 @@ class ProgressLoadItemsCase @Inject constructor(
     return ProgressItem(
       show,
       seasonUi,
+      upcomingSeasonUi,
       episodeUi,
       upcomingEpisodeUi,
       Image.createUnavailable(ImageType.POSTER),
@@ -96,6 +96,17 @@ class ProgressLoadItemsCase @Inject constructor(
       upcomingEpisodeTranslation = upcomingTranslation
     )
   }
+
+  private fun findSeason(
+    seasons: List<SeasonDb>,
+    episode: EpisodeDb,
+    episodes: List<EpisodeDb>
+  ) = seasons
+    .firstOrNull { it.seasonNumber == episode.seasonNumber }
+    ?.let { season ->
+      val seasonEpisodes = episodes.filter { e -> e.seasonNumber == season.seasonNumber }
+      mappers.season.fromDatabase(season, seasonEpisodes)
+    }
 
   fun prepareItems(
     input: List<ProgressItem>,
