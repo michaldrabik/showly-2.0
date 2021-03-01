@@ -19,6 +19,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.tabs.TabLayout
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.extensions.dateFromMillis
@@ -46,6 +47,7 @@ import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_WATCHED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_RATING_CHANGED
@@ -66,6 +68,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     const val ARG_ID_TRAKT = "ARG_ID_TRAKT"
     const val ARG_ID_TMDB = "ARG_ID_TMDB"
     const val ARG_EPISODE = "ARG_EPISODE"
+    const val ARG_SEASON_EPISODES = "ARG_SEASON_EPISODES"
     const val ARG_IS_WATCHED = "ARG_IS_WATCHED"
     const val ARG_SHOW_BUTTON = "ARG_SHOW_BUTTON"
   }
@@ -73,6 +76,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_ID_TRAKT)) }
   private val showTmdbId by lazy { IdTmdb(requireArguments().getLong(ARG_ID_TMDB)) }
   private val episode by lazy { requireArguments().getParcelable<Episode>(ARG_EPISODE)!! }
+  private val seasonEpisodes by lazy { requireArguments().getIntArray(ARG_SEASON_EPISODES) }
   private val isWatched by lazy { requireArguments().getBoolean(ARG_IS_WATCHED) }
   private val showButton by lazy { requireArguments().getBoolean(ARG_SHOW_BUTTON) }
 
@@ -97,6 +101,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it) })
       messageLiveData.observe(viewLifecycleOwner, { renderSnackbar(it) })
@@ -117,7 +122,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         setImageResource(if (isWatched) R.drawable.ic_eye else R.drawable.ic_check)
         onClick {
           setFragmentResult(REQUEST_EPISODE_DETAILS, bundleOf(ACTION_EPISODE_WATCHED to !isWatched))
-          dismiss()
+          closeSheet()
         }
       }
       episodeDetailsRatingLayout.visibleIf(episode.votes > 0)
@@ -127,6 +132,35 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         viewModel.loadComments(showTraktId, episode.season, episode.number)
       }
       episodeDetailsPostCommentButton.onClick { openPostCommentSheet() }
+      setupTabs(view)
+    }
+  }
+
+  private fun setupTabs(view: View) {
+    if (seasonEpisodes?.isNotEmpty() == true) {
+      with(episodeDetailsTabs) {
+        visible()
+        seasonEpisodes?.forEach {
+          addTab(
+            newTab()
+              .setText("${episode.season}x${it.toString().padStart(2, '0')}")
+              .setTag(it)
+          )
+        }
+        val index = seasonEpisodes?.indexOf(episode.number) ?: 0
+        view.post {
+          getTabAt(index)?.select()
+          addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+              closeSheet()
+              setFragmentResult(REQUEST_EPISODE_DETAILS, bundleOf(ACTION_EPISODE_TAB_SELECTED to tab?.tag))
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
+            override fun onTabReselected(tab: TabLayout.Tab?) = Unit
+          })
+        }
+      }
     }
   }
 

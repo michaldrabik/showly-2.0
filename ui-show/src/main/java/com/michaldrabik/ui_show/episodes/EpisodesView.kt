@@ -32,6 +32,7 @@ class EpisodesView : ConstraintLayout {
   private val episodesAdapter by lazy { EpisodesAdapter() }
   private lateinit var show: Show
   private lateinit var season: Season
+  private lateinit var episodes: List<EpisodeListItem>
   private var isLocked = true
 
   init {
@@ -51,6 +52,7 @@ class EpisodesView : ConstraintLayout {
     clear()
     this.show = seasonItem.show.copy()
     this.season = seasonItem.season.copy()
+    this.episodes = seasonItem.episodes.toList()
     episodesTitle.text =
       if (seasonItem.season.isSpecial()) context.getString(R.string.textSpecials)
       else String.format(ENGLISH, context.getString(R.string.textSeason), season.number)
@@ -81,6 +83,13 @@ class EpisodesView : ConstraintLayout {
         seasonCheckedListener(season, isChecked)
       }
       episodesAdapter.setItems(it.episodes)
+    }
+  }
+
+  fun selectEpisode(episodeNumber: Int) {
+    val item = episodes.find { it.episode.number == episodeNumber }
+    if (item != null) {
+      itemClickListener.invoke(show, item.episode, season, item.isWatched)
     }
   }
 

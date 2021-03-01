@@ -80,6 +80,7 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_QUICK_PROGRESS
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_WATCHED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_RATING_CHANGED
@@ -342,6 +343,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
             val watched = bundle.getBoolean(ACTION_EPISODE_WATCHED)
             viewModel.setWatchedEpisode(requireAppContext(), episode, season, watched)
           }
+          bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
+            val episodeNumber = bundle.getInt(ACTION_EPISODE_TAB_SELECTED)
+            showDetailsEpisodesView.selectEpisode(episodeNumber)
+          }
         }
       }
     }
@@ -349,6 +354,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       putLong(EpisodeDetailsBottomSheet.ARG_ID_TRAKT, show.traktId)
       putLong(EpisodeDetailsBottomSheet.ARG_ID_TMDB, show.ids.tmdb.id)
       putParcelable(EpisodeDetailsBottomSheet.ARG_EPISODE, episode)
+
+      val seasonEpisodes = season?.episodes?.map { it.number }?.toIntArray() ?: intArrayOf()
+      putIntArray(EpisodeDetailsBottomSheet.ARG_SEASON_EPISODES, seasonEpisodes)
+
       putBoolean(EpisodeDetailsBottomSheet.ARG_IS_WATCHED, isWatched)
       putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, showButton)
     }

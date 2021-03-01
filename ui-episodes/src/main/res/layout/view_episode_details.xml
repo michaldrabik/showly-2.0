@@ -70,7 +70,7 @@
     android:clipChildren="false"
     android:fillViewport="true"
     android:overScrollMode="never"
-    android:paddingTop="@dimen/spaceNormal"
+    android:paddingTop="@dimen/spaceSmall"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -88,63 +88,103 @@
       android:paddingBottom="@dimen/spaceNormal"
       >
 
-      <TextView
-        android:id="@+id/episodeDetailsName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="12sp"
-        tools:text="S.01 E.99 | Thursday, 23 December 2019 at 15:00"
+      <com.google.android.material.tabs.TabLayout
+        android:id="@+id/episodeDetailsTabs"
+        style="@style/ScrollableTabsEpisodesStyle"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:layout_marginBottom="@dimen/spaceTiny"
+        android:overScrollMode="never"
+        android:translationX="-7dp"
+        android:visibility="gone"
+        tools:visibility="visible"
         />
 
-      <LinearLayout
-        android:id="@+id/episodeDetailsRatingLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spaceMicro"
-        android:layout_marginBottom="@dimen/spaceMicro"
-        android:gravity="center_vertical|start"
-        android:orientation="horizontal"
-        android:translationX="-1dp"
-        >
-
-        <ImageView
-          android:id="@+id/episodeDetailsRatingIcon"
-          android:layout_width="16dp"
-          android:layout_height="match_parent"
-          android:layout_marginEnd="@dimen/spaceMicro"
-          app:srcCompat="@drawable/ic_star"
-          app:tint="?attr/colorAccent"
-          />
-
-        <TextView
-          android:id="@+id/episodeDetailsRating"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:ellipsize="end"
-          android:gravity="center_vertical"
-          android:textColor="?android:attr/textColorSecondary"
-          android:textSize="12sp"
-          tools:text="8.2 (1000 votes)"
-          />
-
-      </LinearLayout>
-
-      <TextView
-        android:id="@+id/episodeDetailsTitle"
+      <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/spaceMedium"
-        android:ellipsize="end"
-        android:gravity="center_vertical|start"
-        android:maxLines="2"
-        android:textAlignment="viewStart"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:text="That is not an example."
-        />
+        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginBottom="@dimen/spaceNormal"
+        >
+
+        <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          >
+
+          <TextView
+            android:id="@+id/episodeDetailsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="52dp"
+            android:layout_marginBottom="@dimen/spaceMicro"
+            android:ellipsize="end"
+            android:gravity="center_vertical|start"
+            android:maxLines="1"
+            android:textAlignment="viewStart"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:text="That is not an example."
+            />
+
+          <TextView
+            android:id="@+id/episodeDetailsName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="12sp"
+            tools:text="S.01 E.99 | Thursday, 23 December 2019 at 15:00"
+            />
+
+          <LinearLayout
+            android:id="@+id/episodeDetailsRatingLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spaceMicro"
+            android:gravity="center_vertical|start"
+            android:orientation="horizontal"
+            android:translationX="-1dp"
+            >
+
+            <ImageView
+              android:id="@+id/episodeDetailsRatingIcon"
+              android:layout_width="16dp"
+              android:layout_height="match_parent"
+              android:layout_marginEnd="@dimen/spaceMicro"
+              app:srcCompat="@drawable/ic_star"
+              app:tint="?attr/colorAccent"
+              />
+
+            <TextView
+              android:id="@+id/episodeDetailsRating"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:ellipsize="end"
+              android:gravity="center_vertical"
+              android:textColor="?android:attr/textColorSecondary"
+              android:textSize="12sp"
+              tools:text="8.2 (1000 votes)"
+              />
+
+          </LinearLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+          android:id="@+id/episodeDetailsButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical|end"
+          app:backgroundTint="?attr/colorAccent"
+          app:fabSize="mini"
+          app:srcCompat="@drawable/ic_eye"
+          app:tint="?attr/textColorOnSurface"
+          />
+
+      </FrameLayout>
 
       <TextView
         android:id="@+id/episodeDetailsOverview"
@@ -152,10 +192,12 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:gravity="start"
+        android:justificationMode="inter_word"
         android:maxLines="12"
         android:textAlignment="viewStart"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="14sp"
+        tools:targetApi="o"
         tools:text="That is not an example."
         />
 
@@ -265,20 +307,6 @@
     </LinearLayout>
 
   </androidx.core.widget.NestedScrollView>
-
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/episodeDetailsButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginEnd="@dimen/spaceNormal"
-    android:translationY="-24dp"
-    app:backgroundTint="?attr/colorAccent"
-    app:fabSize="mini"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/episodeDetailsSeparator"
-    app:srcCompat="@drawable/ic_eye"
-    app:tint="?attr/textColorOnSurface"
-    />
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/episodeDetailsPostCommentButton"

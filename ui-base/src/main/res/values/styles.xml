@@ -145,6 +145,26 @@
     <item name="textAllCaps">false</item>
   </style>
 
+  <style name="ScrollableTabsEpisodesStyle" parent="Widget.Design.TabLayout">
+    <item name="tabMode">scrollable</item>
+    <item name="tabMinWidth">0dp</item>
+    <item name="tabPaddingStart">8dp</item>
+    <item name="tabPaddingEnd">8dp</item>
+    <item name="tabIndicatorColor">@color/colorAccent</item>
+    <item name="tabTextAppearance">@style/ScrollableTabEpisodeTextStyle</item>
+    <item name="tabSelectedTextColor">?attr/textColorTabSelected</item>
+    <item name="tabIndicatorFullWidth">false</item>
+    <item name="tabRippleColor">@android:color/transparent</item>
+    <item name="tabIndicatorAnimationDuration">0</item>
+  </style>
+
+  <style name="ScrollableTabEpisodeTextStyle" parent="TextAppearance.Design.Tab">
+    <item name="android:textSize">14sp</item>
+    <item name="android:textColor">?attr/textColorTab</item>
+    <item name="android:layout_gravity">start</item>
+    <item name="textAllCaps">false</item>
+  </style>
+
   <style name="Badge">
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
