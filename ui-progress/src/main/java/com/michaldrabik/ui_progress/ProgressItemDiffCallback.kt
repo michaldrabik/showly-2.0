@@ -17,5 +17,6 @@ class ProgressItemDiffCallback : DiffUtil.ItemCallback<ProgressItem>() {
       oldItem.isPinned == newItem.isPinned &&
       oldItem.image == newItem.image &&
       oldItem.showTranslation == newItem.showTranslation &&
-      oldItem.episodeTranslation == newItem.episodeTranslation
+      oldItem.episodeTranslation == newItem.episodeTranslation &&
+      oldItem.headerTextResId == newItem.headerTextResId
 }

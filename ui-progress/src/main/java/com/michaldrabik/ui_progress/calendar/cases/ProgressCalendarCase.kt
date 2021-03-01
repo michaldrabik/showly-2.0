@@ -26,7 +26,7 @@ class ProgressCalendarCase @Inject constructor() {
       .filter { it.upcomingEpisode != Episode.EMPTY }
       .filter {
         val airTime = it.upcomingEpisode.firstAired?.toLocalZone()
-        airTime != null && (airTime.truncatedTo(DAYS) == today.truncatedTo(DAYS) || airTime.isAfter(today))
+        airTime != null && airTime.truncatedTo(DAYS) >= today.truncatedTo(DAYS)
       }
       .sortedBy { it.upcomingEpisode.firstAired }
       .toMutableList()

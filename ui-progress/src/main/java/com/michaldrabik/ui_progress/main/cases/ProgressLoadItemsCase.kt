@@ -6,11 +6,11 @@ import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.EpisodeWatchlist
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
@@ -26,6 +26,7 @@ import com.michaldrabik.ui_repository.shows.ShowsRepository
 import org.threeten.bp.temporal.ChronoUnit.DAYS
 import java.util.Locale.ROOT
 import javax.inject.Inject
+import com.michaldrabik.storage.database.model.Episode as EpisodeDb
 
 @AppScope
 class ProgressLoadItemsCase @Inject constructor(
@@ -40,19 +41,18 @@ class ProgressLoadItemsCase @Inject constructor(
   suspend fun loadMyShows() = showsRepository.myShows.loadAll()
 
   suspend fun loadProgressItem(show: Show): ProgressItem {
-    val episodes = database.episodesDao().getAllForShowWatchlist(show.traktId)
+    val episodes = database.episodesDao().getAllByShowId(show.traktId)
       .filter { it.seasonNumber != 0 }
     val seasons = database.seasonsDao().getAllForShow(show.traktId)
       .filter { it.seasonNumber != 0 }
 
     val episodesCount = episodes.count()
     val unwatchedEpisodes = episodes.filter { !it.isWatched }
-    val unwatchedEpisodesCount = unwatchedEpisodes.count()
 
     val nextEpisode = unwatchedEpisodes
       .filter { it.firstAired != null }
-      .sortedWith(compareBy<EpisodeWatchlist> { it.seasonNumber }.thenBy { it.episodeNumber })
-      .firstOrNull() ?: return ProgressItem.EMPTY
+      .sortedWith(compareBy<EpisodeDb> { it.seasonNumber }.thenBy { it.episodeNumber })
+      .firstOrNull()
 
     val upcomingEpisode = unwatchedEpisodes
       .filter { it.firstAired != null }
@@ -60,17 +60,16 @@ class ProgressLoadItemsCase @Inject constructor(
       .firstOrNull {
         val now = nowUtc().toLocalZone()
         val airtime = it.firstAired!!.toLocalZone()
-        airtime.isAfter(now) || airtime.truncatedTo(DAYS) == now.truncatedTo(DAYS)
+        airtime.truncatedTo(DAYS) >= now.truncatedTo(DAYS)
       }
 
-    val isPinned = pinnedItemsRepository.isItemPinned(show)
-    val season = seasons.first { it.idTrakt == nextEpisode.idSeason }
-    val episode = database.episodesDao().getById(nextEpisode.idTrakt)
-    val episodeUi = mappers.episode.fromDatabase(episode)
-    val upEpisode = upcomingEpisode?.let {
-      val epDb = database.episodesDao().getById(it.idTrakt)
-      mappers.episode.fromDatabase(epDb)
-    } ?: Episode.EMPTY
+    val episodeUi = nextEpisode?.let { mappers.episode.fromDatabase(it) } ?: Episode.EMPTY
+    val upcomingEpisodeUi = upcomingEpisode?.let { mappers.episode.fromDatabase(it) } ?: Episode.EMPTY
+    val seasonUi = nextEpisode?.let { nextEp ->
+      seasons
+        .firstOrNull { it.seasonNumber == nextEp.seasonNumber }
+        ?.let { mappers.season.fromDatabase(it) }
+    } ?: Season.EMPTY
 
     var showTranslation: Translation? = null
     var episodeTranslation: Translation? = null
@@ -80,18 +79,18 @@ class ProgressLoadItemsCase @Inject constructor(
     if (language != Config.DEFAULT_LANGUAGE) {
       showTranslation = translationsRepository.loadTranslation(show, language, true)
       episodeTranslation = translationsRepository.loadTranslation(episodeUi, show.ids.trakt, language, true)
-      upcomingTranslation = translationsRepository.loadTranslation(upEpisode, show.ids.trakt, language, true)
+      upcomingTranslation = translationsRepository.loadTranslation(upcomingEpisodeUi, show.ids.trakt, language, true)
     }
 
     return ProgressItem(
       show,
-      mappers.season.fromDatabase(season),
+      seasonUi,
       episodeUi,
-      upEpisode,
+      upcomingEpisodeUi,
       Image.createUnavailable(ImageType.POSTER),
       episodesCount,
-      episodesCount - unwatchedEpisodesCount,
-      isPinned = isPinned,
+      episodesCount - unwatchedEpisodes.count(),
+      isPinned = pinnedItemsRepository.isItemPinned(show),
       showTranslation = showTranslation,
       episodeTranslation = episodeTranslation,
       upcomingEpisodeTranslation = upcomingTranslation
