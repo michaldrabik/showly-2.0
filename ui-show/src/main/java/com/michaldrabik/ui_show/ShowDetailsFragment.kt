@@ -252,8 +252,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     relatedAdapter = RelatedShowAdapter().apply {
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
       itemClickListener = {
-        val bundle = Bundle().apply { putLong(ARG_SHOW_ID, it.show.traktId) }
-        navigateTo(R.id.actionShowDetailsFragmentToSelf, bundle)
+        if (findNavControl()?.currentDestination?.id == R.id.showDetailsFragment) {
+          val bundle = Bundle().apply { putLong(ARG_SHOW_ID, it.show.traktId) }
+          navigateTo(R.id.actionShowDetailsFragmentToSelf, bundle)
+        }
       }
     }
     showDetailsRelatedRecycler.apply {
@@ -335,6 +337,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     isWatched: Boolean,
     showButton: Boolean = true
   ) {
+    if (findNavControl()?.currentDestination?.id != R.id.showDetailsFragment) {
+      return
+    }
     if (season !== null) {
       setFragmentResultListener(REQUEST_EPISODE_DETAILS) { _, bundle ->
         when {

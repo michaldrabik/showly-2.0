@@ -24,6 +24,7 @@ import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
@@ -159,8 +160,13 @@ class ProgressFragment :
     hideNavigation()
     saveUiTranslations()
     progressRoot.fadeOut {
-      val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
-      navigateTo(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
+      if (findNavControl()?.currentDestination?.id == R.id.progressFragment) {
+        val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
+        navigateTo(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
+      } else {
+        showNavigation()
+        progressRoot.fadeIn(50).add(animations)
+      }
     }.add(animations)
   }
 
