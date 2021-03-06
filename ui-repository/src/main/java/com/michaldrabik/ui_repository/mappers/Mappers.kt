@@ -13,5 +13,6 @@ class Mappers @Inject constructor(
   val actor: ActorMapper,
   val comment: CommentMapper,
   val settings: SettingsMapper,
-  val translation: TranslationMapper
+  val translation: TranslationMapper,
+  val customList: CustomListMapper
 )
