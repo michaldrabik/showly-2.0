@@ -7,6 +7,7 @@ import com.michaldrabik.ui_discover.di.UiDiscoverComponent
 import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponent
 import com.michaldrabik.ui_gallery.custom.di.UiCustomImagesComponent
 import com.michaldrabik.ui_gallery.fanart.di.UiFanartGalleryComponent
+import com.michaldrabik.ui_lists.di.UiMyListsComponent
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponent
 import com.michaldrabik.ui_my_movies.di.UiMyMoviesComponent
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
@@ -43,6 +44,7 @@ import dagger.Module
     UiWidgetsComponent::class,
     UiPremiumComponent::class,
     UiPostCommentComponent::class,
+    UiMyListsComponent::class,
     ServiceComponent::class
   ]
 )

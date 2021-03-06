@@ -97,9 +97,11 @@ class FollowedShowsFragment :
       if (isTraktSyncing()) setTraktProgress(true)
     }
     followedShowsModeTabs.run {
-      visibleIf(moviesEnabled)
       onModeSelected = { mode = it }
-      animateShows()
+      onListsSelected = { navigateTo(R.id.actionNavigateListsFragment) }
+      showMovies(moviesEnabled)
+      showLists(true)
+      selectShows()
     }
     followedShowsSortIcon.run {
       visibleIf(currentPage != 0)
@@ -135,12 +137,11 @@ class FollowedShowsFragment :
   private fun setupStatusBar() {
     followedShowsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.systemWindowInsetTop
-      val tabsPadding = if (moviesEnabled) R.dimen.myShowsSearchViewPadding else R.dimen.myShowsSearchViewPaddingNoModes
       followedShowsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
       followedShowsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
-      followedShowsModeTabs.updateTopMargin(dimenToPx(R.dimen.showsMoviesTabsMargin) + statusBarSize)
-      followedShowsTabs.updateTopMargin(dimenToPx(tabsPadding) + statusBarSize)
-      followedShowsSortIcon.updateTopMargin(dimenToPx(tabsPadding) + statusBarSize)
+      followedShowsModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
+      followedShowsTabs.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
+      followedShowsSortIcon.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
       followedShowsSearchEmptyView.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
       followedShowsSearchWrapper.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
     }
@@ -214,7 +215,7 @@ class FollowedShowsFragment :
         followedShowsSearchWrapper.gone()
         followedShowsPager.visible()
         followedShowsTabs.visible()
-        if (moviesEnabled) followedShowsModeTabs.visible()
+        followedShowsModeTabs.visible()
         followedShowsSearchEmptyView.gone()
       }
     }

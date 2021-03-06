@@ -45,12 +45,12 @@
     android:visibility="gone"
     />
 
-  <com.michaldrabik.ui_base.common.views.ShowsMoviesTabsView
+  <com.michaldrabik.ui_base.common.views.ModeTabsView
     android:id="@+id/discoverMoviesTabsView"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceMedium"
-    android:layout_marginTop="@dimen/showsMoviesTabsMargin"
+    android:layout_marginTop="@dimen/collectionTabsMargin"
     />
 
   <com.michaldrabik.ui_base.common.views.SearchView

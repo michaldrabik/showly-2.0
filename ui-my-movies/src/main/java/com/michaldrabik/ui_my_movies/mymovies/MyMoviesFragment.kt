@@ -98,7 +98,7 @@ class MyMoviesFragment :
   private fun render(uiModel: MyMoviesUiModel) {
     uiModel.run {
       listItems?.let {
-        adapter?.notifyListsUpdate = notifyListsUpdate ?: false
+//        adapter?.notifyListsUpdate = notifyListsUpdate ?: false
         adapter?.setItems(it)
         myMoviesEmptyView.fadeIf(it.isEmpty())
         (parentFragment as FollowedMoviesFragment).enableSearch(it.isNotEmpty())

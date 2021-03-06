@@ -13,6 +13,8 @@ import com.michaldrabik.ui_gallery.custom.di.UiCustomImagesComponent
 import com.michaldrabik.ui_gallery.custom.di.UiCustomImagesComponentProvider
 import com.michaldrabik.ui_gallery.fanart.di.UiArtGalleryComponentProvider
 import com.michaldrabik.ui_gallery.fanart.di.UiFanartGalleryComponent
+import com.michaldrabik.ui_lists.di.UiMyListsComponent
+import com.michaldrabik.ui_lists.di.UiMyListsComponentProvider
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponent
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponentProvider
 import com.michaldrabik.ui_my_movies.di.UiMyMoviesComponent
@@ -52,6 +54,7 @@ abstract class DiActivity :
   UiCustomImagesComponentProvider,
   UiMyShowsComponentProvider,
   UiMyMoviesComponentProvider,
+  UiMyListsComponentProvider,
   UiProgressComponentProvider,
   UiProgressMoviesComponentProvider,
   UiSearchComponentProvider,
@@ -65,6 +68,7 @@ abstract class DiActivity :
   private lateinit var uiCustomImagesComponent: UiCustomImagesComponent
   private lateinit var uiMyShowsComponent: UiMyShowsComponent
   private lateinit var uiMyMoviesComponent: UiMyMoviesComponent
+  private lateinit var uiMyListsComponent: UiMyListsComponent
   private lateinit var uiSearchComponent: UiSearchComponent
   private lateinit var uiSettingsComponent: UiSettingsComponent
   private lateinit var uiShowDetailsComponent: UiShowDetailsComponent
@@ -96,6 +100,7 @@ abstract class DiActivity :
   override fun provideProgressMoviesComponent() = uiProgressMoviesComponent
   override fun providePremiumComponent() = uiPremiumComponent
   override fun providePostCommentComponent() = uiPostCommentComponent
+  override fun provideMyListsComponent() = uiMyListsComponent
 
   protected open fun setupComponents() {
     uiDiscoverComponent = appComponent().uiDiscoverComponent().create()
@@ -104,6 +109,7 @@ abstract class DiActivity :
     uiCustomImagesComponent = appComponent().uiCustomImagesComponent().create()
     uiMyShowsComponent = appComponent().uiMyShowsComponent().create()
     uiMyMoviesComponent = appComponent().uiMyMoviesComponent().create()
+    uiMyListsComponent = appComponent().uiMyListsComponent().create()
     uiSearchComponent = appComponent().uiSearchComponent().create()
     uiSettingsComponent = appComponent().uiSettingsComponent().create()
     uiShowDetailsComponent = appComponent().uiShowDetailsComponent().create()

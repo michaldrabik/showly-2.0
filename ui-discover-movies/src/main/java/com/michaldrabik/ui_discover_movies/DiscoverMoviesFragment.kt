@@ -100,7 +100,7 @@ class DiscoverMoviesFragment :
     discoverMoviesTabsView.run {
       translationY = tabsViewPosition
       onModeSelected = { mode = it }
-      animateMovies()
+      selectMovies()
     }
     discoverMoviesMask.onClick { toggleFiltersView() }
     discoverMoviesFiltersView.onApplyClickListener = {
@@ -124,7 +124,7 @@ class DiscoverMoviesFragment :
       (discoverMoviesFiltersView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.searchViewHeight))
       (discoverMoviesTabsView.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.showsMoviesTabsMargin))
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
       discoverMoviesSwipeRefresh.setProgressViewOffset(
         true,
         swipeRefreshStartOffset + statusBarSize,

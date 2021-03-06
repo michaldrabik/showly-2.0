@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuMyLists">Lists</string>
+
+  <string name="textSearchForMyLists">Search…</string>
+  <string name="textMyListsEmpty">Your lists collection is currently empty.</string>
+</resources>

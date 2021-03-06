@@ -98,7 +98,7 @@ class ProgressMoviesFragment :
       visibleIf(moviesEnabled)
       isEnabled = false
       onModeSelected = { mode = it }
-      animateMovies()
+      selectMovies()
     }
     progressMoviesSearchView.traktIconVisible = true
     progressMoviesSearchView.onTraktClickListener = {
@@ -128,7 +128,7 @@ class ProgressMoviesFragment :
       (progressMoviesTabs.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchViewPadding))
       (progressMoviesModeTabs.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.showsMoviesTabsMargin))
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
       (progressMoviesSortIcon.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchViewPadding))
     }

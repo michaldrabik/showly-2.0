@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="myListsTabsViewPadding">124dp</dimen>
+  <dimen name="myListsBottomPadding">68dp</dimen>
+</resources>

@@ -137,6 +137,7 @@ class MainActivity :
       graph.startDestination = when (viewModel.getMode()) {
         SHOWS -> R.id.progressFragment
         MOVIES -> R.id.progressMoviesFragment
+        else -> throw IllegalStateException()
       }
       setGraph(graph)
     }
@@ -177,7 +178,8 @@ class MainActivity :
           R.id.discoverFragment,
           R.id.discoverMoviesFragment,
           R.id.followedShowsFragment,
-          R.id.followedMoviesFragment -> {
+          R.id.followedMoviesFragment,
+          R.id.listsFragment -> {
             bottomNavigationView.selectedItemId = R.id.menuProgress
           }
         }
@@ -234,8 +236,8 @@ class MainActivity :
 
   override fun openDiscoverTab() = openTab(R.id.menuDiscover)
 
-  override fun setMode(mode: Mode) {
-    if (viewModel.getMode() != mode) {
+  override fun setMode(mode: Mode, force: Boolean) {
+    if (force || viewModel.getMode() != mode) {
       viewModel.setMode(mode)
       val target = when (bottomNavigationView.selectedItemId) {
         R.id.menuDiscover -> getMenuDiscoverAction()
@@ -359,6 +361,7 @@ class MainActivity :
         val action = when (viewModel.getMode()) {
           SHOWS -> R.id.actionDiscoverFragmentToSearchFragment
           MOVIES -> R.id.actionDiscoverMoviesFragmentToSearchFragment
+          else -> throw IllegalStateException()
         }
         findNavControl()?.navigate(action)
       }
@@ -378,16 +381,19 @@ class MainActivity :
   private fun getMenuDiscoverAction() = when (viewModel.getMode()) {
     SHOWS -> R.id.actionNavigateDiscoverFragment
     MOVIES -> R.id.actionNavigateDiscoverMoviesFragment
+    else -> throw IllegalStateException()
   }
 
   private fun getMenuCollectionAction() = when (viewModel.getMode()) {
     SHOWS -> R.id.actionNavigateFollowedShowsFragment
     MOVIES -> R.id.actionNavigateFollowedMoviesFragment
+    else -> throw IllegalStateException()
   }
 
   private fun getMenuProgressAction() = when (viewModel.getMode()) {
     SHOWS -> R.id.actionNavigateProgressFragment
     MOVIES -> R.id.actionNavigateProgressMoviesFragment
+    else -> throw IllegalStateException()
   }
 
   override fun onUpdateDownloaded(appUpdateManager: AppUpdateManager) {

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/fragmentMyListsRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  >
+
+  <com.michaldrabik.ui_base.common.views.ModeTabsView
+    android:id="@+id/fragmentMyListsModeTabs"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/collectionTabsMargin"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    />
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/fragmentMyListsRecycler"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:paddingTop="@dimen/myListsTabsViewPadding"
+    android:paddingBottom="@dimen/myListsBottomPadding"
+    />
+
+  <include
+    android:id="@+id/fragmentMyListsEmptyView"
+    layout="@layout/layout_my_lists_empty"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginEnd="@dimen/spaceBig"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
+  <com.michaldrabik.ui_base.common.views.SearchView
+    android:id="@+id/fragmentMyListsSearchView"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/searchViewHeight"
+    android:layout_marginLeft="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginRight="@dimen/spaceMedium"
+    />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

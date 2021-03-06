@@ -74,16 +74,15 @@ class MyShowsFragment :
   }
 
   private fun setupStatusBar() {
-    val recyclerPadding = if (moviesEnabled) R.dimen.myShowsTabsViewPadding else R.dimen.myShowsTabsViewPaddingNoModes
     if (statusBarHeight != 0) {
       myShowsRoot.updatePadding(top = statusBarHeight)
-      myShowsRecycler.updatePadding(top = dimenToPx(recyclerPadding))
+      myShowsRecycler.updatePadding(top = dimenToPx(R.dimen.myShowsTabsViewPadding))
       return
     }
     myShowsRoot.doOnApplyWindowInsets { view, insets, _, _ ->
       statusBarHeight = insets.systemWindowInsetTop
       view.updatePadding(top = statusBarHeight)
-      myShowsRecycler.updatePadding(top = dimenToPx(recyclerPadding))
+      myShowsRecycler.updatePadding(top = dimenToPx(R.dimen.myShowsTabsViewPadding))
     }
   }
 

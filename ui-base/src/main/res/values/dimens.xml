@@ -48,7 +48,7 @@
   <dimen name="swipeRefreshStartOffset">8dp</dimen>
   <dimen name="swipeRefreshEndOffset">140dp</dimen>
 
-  <dimen name="showsMoviesTabsMargin">64dp</dimen>
+  <dimen name="collectionTabsMargin">64dp</dimen>
   <dimen name="commentViewSpace">16dp</dimen>
 
   <dimen name="tutorialTipSize">28dp</dimen>

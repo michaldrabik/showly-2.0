@@ -98,7 +98,9 @@ class FollowedMoviesFragment :
     }
     followedMoviesModeTabs.run {
       onModeSelected = { mode = it }
-      animateMovies()
+      onListsSelected = { navigateTo(R.id.actionNavigateListsFragment) }
+      showLists(true)
+      selectMovies()
     }
     followedMoviesSortIcon.run {
       visibleIf(currentPage != 0)
@@ -137,7 +139,7 @@ class FollowedMoviesFragment :
       followedMoviesSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
       followedMoviesSearchView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
       followedMoviesTabs.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchViewPadding) + statusBarSize)
-      followedMoviesModeTabs.updateTopMargin(dimenToPx(R.dimen.showsMoviesTabsMargin) + statusBarSize)
+      followedMoviesModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
       followedMoviesSortIcon.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchViewPadding) + statusBarSize)
       followedMoviesSearchEmptyView.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
       followedMoviesSearchWrapper.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)

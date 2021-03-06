@@ -53,6 +53,14 @@
     app:popUpToInclusive="true"
     />
 
+  <action
+    android:id="@+id/actionNavigateListsFragment"
+    app:destination="@id/listsFragment"
+    app:launchSingleTop="true"
+    app:popUpTo="@id/navigationGraph"
+    app:popUpToInclusive="true"
+    />
+
   <fragment
     android:id="@+id/discoverFragment"
     android:name="com.michaldrabik.ui_discover.DiscoverFragment"
@@ -315,6 +323,27 @@
     <action
       android:id="@+id/actionFollowedMoviesFragmentToStatisticsFragment"
       app:destination="@id/statisticsMoviesFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/listsFragment"
+    android:name="com.michaldrabik.ui_lists.MyListsFragment"
+    android:label="fragmentLists"
+    >
+    <!--    <action-->
+    <!--      android:id="@+id/actionFollowedMoviesFragmentToMovieDetailsFragment"-->
+    <!--      app:destination="@id/movieDetailsFragment"-->
+    <!--      app:enterAnim="@anim/anim_fade_in"-->
+    <!--      app:launchSingleTop="true"-->
+    <!--      app:popExitAnim="@anim/anim_fade_out"-->
+    <!--      />-->
+    <action
+      android:id="@+id/actionListsFragmentToSettingsFragment"
+      app:destination="@id/settingsFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"

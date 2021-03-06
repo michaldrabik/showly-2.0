@@ -74,16 +74,15 @@ class WatchlistFragment :
   }
 
   private fun setupStatusBar() {
-    val recyclerPadding = if (moviesEnabled) R.dimen.watchlistTabsViewPadding else R.dimen.watchlistTabsViewPaddingNoModes
     if (statusBarHeight != 0) {
       watchlistContent.updatePadding(top = watchlistContent.paddingTop + statusBarHeight)
-      watchlistRecycler.updatePadding(top = dimenToPx(recyclerPadding))
+      watchlistRecycler.updatePadding(top = dimenToPx(R.dimen.watchlistTabsViewPadding))
       return
     }
     watchlistContent.doOnApplyWindowInsets { view, insets, padding, _ ->
       statusBarHeight = insets.systemWindowInsetTop
       view.updatePadding(top = padding.top + statusBarHeight)
-      watchlistRecycler.updatePadding(top = dimenToPx(recyclerPadding))
+      watchlistRecycler.updatePadding(top = dimenToPx(R.dimen.watchlistTabsViewPadding))
     }
   }
 

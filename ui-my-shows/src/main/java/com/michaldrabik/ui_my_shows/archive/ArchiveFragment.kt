@@ -74,16 +74,15 @@ class ArchiveFragment :
   }
 
   private fun setupStatusBar() {
-    val recyclerPadding = if (moviesEnabled) R.dimen.archiveTabsViewPadding else R.dimen.archiveTabsViewPaddingNoModes
     if (statusBarHeight != 0) {
       archiveContent.updatePadding(top = archiveContent.paddingTop + statusBarHeight)
-      archiveRecycler.updatePadding(top = dimenToPx(recyclerPadding))
+      archiveRecycler.updatePadding(top = dimenToPx(R.dimen.archiveTabsViewPadding))
       return
     }
     archiveContent.doOnApplyWindowInsets { view, insets, padding, _ ->
       statusBarHeight = insets.systemWindowInsetTop
       view.updatePadding(top = padding.top + statusBarHeight)
-      archiveRecycler.updatePadding(top = dimenToPx(recyclerPadding))
+      archiveRecycler.updatePadding(top = dimenToPx(R.dimen.archiveTabsViewPadding))
     }
   }
 

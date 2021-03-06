@@ -9,6 +9,7 @@ import com.michaldrabik.ui_discover_movies.DiscoverMoviesViewModel
 import com.michaldrabik.ui_episodes.details.EpisodeDetailsViewModel
 import com.michaldrabik.ui_gallery.custom.CustomImagesViewModel
 import com.michaldrabik.ui_gallery.fanart.ArtGalleryViewModel
+import com.michaldrabik.ui_lists.MyListsViewModel
 import com.michaldrabik.ui_movie.MovieDetailsViewModel
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
 import com.michaldrabik.ui_my_movies.mymovies.MyMoviesViewModel
@@ -82,6 +83,11 @@ abstract class ViewModelsModule {
   @IntoMap
   @ViewModelKey(MyMoviesViewModel::class)
   abstract fun bindMyMoviesViewModel(viewModel: MyMoviesViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(MyListsViewModel::class)
+  abstract fun bindMyListsViewModel(viewModel: MyListsViewModel): ViewModel
 
   @Binds
   @IntoMap
