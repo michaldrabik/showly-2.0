@@ -94,7 +94,6 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     exSearchViewText.gone()
     (exSearchViewIcon.drawable as Animatable).start()
     searchViewLayout.settingsIconVisible = false
-    viewModel.loadLastSearch()
     viewModel.preloadCache()
     if (!isInitialized) {
       exSearchViewInput.showKeyboard()
