@@ -3,10 +3,10 @@ package com.michaldrabik.storage.database.migrations
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 22
+const val DATABASE_VERSION = 23
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
-// TODO Split into separate files
+// TODO Split into separate files?
 object Migrations {
 
   private val MIGRATION_2 = object : Migration(1, 2) {
@@ -328,6 +328,33 @@ object Migrations {
     }
   }
 
+  private val MIGRATION_23 = object : Migration(22, 23) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
+        execSQL(
+          "CREATE TABLE IF NOT EXISTS `custom_lists` (" +
+            "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+            "`id_trakt` INTEGER, " +
+            "`id_slug` TEXT NOT NULL, " +
+            "`name` TEXT NOT NULL, " +
+            "`description` TEXT, " +
+            "`privacy` TEXT NOT NULL, " +
+            "`display_numbers` INTEGER NOT NULL, " +
+            "`allow_comments` INTEGER NOT NULL, " +
+            "`sort_by` TEXT NOT NULL, " +
+            "`sort_how` TEXT NOT NULL, " +
+            "`item_count` INTEGER NOT NULL, " +
+            "`comment_count` INTEGER NOT NULL, " +
+            "`likes` INTEGER NOT NULL, " +
+            "`created_at` INTEGER NOT NULL, " +
+            "`updated_at` INTEGER NOT NULL" +
+            ")"
+        )
+        execSQL("CREATE UNIQUE INDEX index_custom_lists_id_trakt ON custom_lists(id_trakt)")
+      }
+    }
+  }
+
   val MIGRATIONS = listOf(
     MIGRATION_2,
     MIGRATION_3,
@@ -349,6 +376,7 @@ object Migrations {
     MIGRATION_19,
     MIGRATION_20,
     MIGRATION_21,
-    MIGRATION_22
+    MIGRATION_22,
+    MIGRATION_23
   )
 }
