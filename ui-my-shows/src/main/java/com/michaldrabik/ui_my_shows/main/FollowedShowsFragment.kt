@@ -100,7 +100,7 @@ class FollowedShowsFragment :
       onModeSelected = { mode = it }
       onListsSelected = { navigateTo(R.id.actionNavigateListsFragment) }
       showMovies(moviesEnabled)
-      showLists(true)
+      showLists(true, anchorEnd = moviesEnabled)
       selectShows()
     }
     followedShowsSortIcon.run {
