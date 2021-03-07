@@ -2,7 +2,6 @@
 <resources>
   <string name="menuMyMovies">Mes films</string>
   <string name="menuWatchlistMovies">Watchlist</string>
-  <string name="textSearchForMyMovies">Recherche…</string>
   <string name="textMyMoviesEmpty">Votre collection de films est présentement vide.\n\nVisitez l\'onglet <b>Découvrir</b> pour ajouter votre premier film.</string>
   <string name="textWatchlistMoviesEmpty">Votre liste <b>Watchlist</b> est présentement vide.\n\nVisitez l\'onglet <b>Découvrir</b> pour ajouter des films que vous souhaitez visionner plus tard.</string>
 </resources>

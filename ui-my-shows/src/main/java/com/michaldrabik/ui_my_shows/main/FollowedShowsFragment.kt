@@ -89,7 +89,7 @@ class FollowedShowsFragment :
 
   private fun setupView() {
     followedShowsSearchView.run {
-      hint = getString(R.string.textSearchForMyShows)
+      hint = getString(R.string.textSearchFor)
       statsIconVisible = true
       onClick { enterSearch() }
       onSettingsClickListener = { openSettings() }

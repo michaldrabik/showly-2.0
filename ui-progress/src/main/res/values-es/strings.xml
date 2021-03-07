@@ -4,7 +4,6 @@
   <string name="tabProgress">Progreso</string>
   <string name="textCalendarEmpty">No hay nuevos episodios en camino.</string>
   <string name="textWatchlistIncoming">Próximamente</string>
-  <string name="textSearchWatchlist">Buscar…</string>
   <string name="textDiscoverShows">Descubrir Series</string>
   <string name="textEpisodeInfo">Detalles</string>
   <string name="textTraktSynchronize">Importar desde Trakt.tv</string>

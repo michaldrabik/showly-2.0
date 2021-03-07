@@ -3,7 +3,6 @@
   <string name="tabMoviesCalendar">Calendário</string>
   <string name="tabMoviesProgress">Progresso</string>
   <string name="textMoviesCalendarEmpty">Não há novos filmes a caminho.</string>
-  <string name="textMoviesSearchWatchlist">Pesquisar…</string>
   <string name="textDiscoverMovies">Descubra filmes</string>
   <string name="textMoviesTraktSynchronize">Importar de Trakt.tv</string>
   <string name="textMoviesProgressEmpty">Seu <b>Progresso</b> está vazio atualmente.\n\nVisite a guia <b>Explorar</b> para adicionar filmes ou importar sua coleção de Trakt.tv.</string>

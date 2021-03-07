@@ -95,7 +95,7 @@ class ProgressFragment :
   private fun setupView() {
     progressSortIcon.visibleIf(currentPage == 0)
     progressSearchView.run {
-      hint = getString(R.string.textSearchWatchlist)
+      hint = getString(R.string.textSearchFor)
       settingsIconVisible = true
       isClickable = false
       onClick { enterSearch() }
