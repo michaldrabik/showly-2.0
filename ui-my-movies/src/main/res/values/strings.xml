@@ -3,7 +3,6 @@
   <string name="menuMyMovies">My Movies</string>
   <string name="menuWatchlistMovies">Watchlist</string>
 
-  <string name="textSearchForMyMovies">Search…</string>
   <string name="textMyMoviesEmpty">Your movies collection is currently empty.\n\nVisit <b>Discover</b> tab to add your first movie.</string>
   <string name="textWatchlistMoviesEmpty">Your <b>Watchlist</b> is currently empty.\n\nVisit <b>Discover</b> tab to add movies you want to watch in the future.</string>
 </resources>

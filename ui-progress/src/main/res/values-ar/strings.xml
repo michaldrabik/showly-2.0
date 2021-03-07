@@ -4,7 +4,6 @@
   <string name="tabProgress">مستوى التقدم</string>
   <string name="textCalendarEmpty">لا توجد أي حلقات جديدة قادمة.</string>
   <string name="textWatchlistIncoming">المسلسلات القادمة</string>
-  <string name="textSearchWatchlist">بحث…</string>
   <string name="textDiscoverShows">إكتشف مسلسلات</string>
   <string name="textEpisodeInfo">تفاصيل الحلقة</string>
   <string name="textTraktSynchronize">إستيراد البيانات من Trakt.tv</string>

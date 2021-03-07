@@ -89,7 +89,7 @@ class FollowedMoviesFragment :
 
   private fun setupView() {
     followedMoviesSearchView.run {
-      hint = getString(R.string.textSearchForMyMovies)
+      hint = getString(R.string.textSearchFor)
       statsIconVisible = true
       onClick { enterSearch() }
       onSettingsClickListener = { openSettings() }

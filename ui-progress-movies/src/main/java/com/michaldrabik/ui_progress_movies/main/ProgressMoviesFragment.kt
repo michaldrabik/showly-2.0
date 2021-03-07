@@ -87,7 +87,7 @@ class ProgressMoviesFragment :
   private fun setupView() {
     progressMoviesSortIcon.visibleIf(currentPage == 0)
     progressMoviesSearchView.run {
-      hint = getString(R.string.textMoviesSearchWatchlist)
+      hint = getString(R.string.textSearchFor)
       settingsIconVisible = true
       isClickable = false
       onClick { enterSearch() }
