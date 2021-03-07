@@ -13,8 +13,10 @@ import com.michaldrabik.ui_gallery.custom.di.UiCustomImagesComponent
 import com.michaldrabik.ui_gallery.custom.di.UiCustomImagesComponentProvider
 import com.michaldrabik.ui_gallery.fanart.di.UiArtGalleryComponentProvider
 import com.michaldrabik.ui_gallery.fanart.di.UiFanartGalleryComponent
-import com.michaldrabik.ui_lists.di.UiMyListsComponent
-import com.michaldrabik.ui_lists.di.UiMyListsComponentProvider
+import com.michaldrabik.ui_lists.create.di.UiCreateListComponent
+import com.michaldrabik.ui_lists.create.di.UiCreateListComponentProvider
+import com.michaldrabik.ui_lists.my_lists.di.UiMyListsComponent
+import com.michaldrabik.ui_lists.my_lists.di.UiMyListsComponentProvider
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponent
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponentProvider
 import com.michaldrabik.ui_my_movies.di.UiMyMoviesComponent
@@ -55,6 +57,7 @@ abstract class DiActivity :
   UiMyShowsComponentProvider,
   UiMyMoviesComponentProvider,
   UiMyListsComponentProvider,
+  UiCreateListComponentProvider,
   UiProgressComponentProvider,
   UiProgressMoviesComponentProvider,
   UiSearchComponentProvider,
@@ -69,6 +72,7 @@ abstract class DiActivity :
   private lateinit var uiMyShowsComponent: UiMyShowsComponent
   private lateinit var uiMyMoviesComponent: UiMyMoviesComponent
   private lateinit var uiMyListsComponent: UiMyListsComponent
+  private lateinit var uiCreateListComponent: UiCreateListComponent
   private lateinit var uiSearchComponent: UiSearchComponent
   private lateinit var uiSettingsComponent: UiSettingsComponent
   private lateinit var uiShowDetailsComponent: UiShowDetailsComponent
@@ -101,6 +105,7 @@ abstract class DiActivity :
   override fun providePremiumComponent() = uiPremiumComponent
   override fun providePostCommentComponent() = uiPostCommentComponent
   override fun provideMyListsComponent() = uiMyListsComponent
+  override fun provideCreateListComponent() = uiCreateListComponent
 
   protected open fun setupComponents() {
     uiDiscoverComponent = appComponent().uiDiscoverComponent().create()
@@ -110,6 +115,7 @@ abstract class DiActivity :
     uiMyShowsComponent = appComponent().uiMyShowsComponent().create()
     uiMyMoviesComponent = appComponent().uiMyMoviesComponent().create()
     uiMyListsComponent = appComponent().uiMyListsComponent().create()
+    uiCreateListComponent = appComponent().uiCreateListComponent().create()
     uiSearchComponent = appComponent().uiSearchComponent().create()
     uiSettingsComponent = appComponent().uiSettingsComponent().create()
     uiShowDetailsComponent = appComponent().uiShowDetailsComponent().create()

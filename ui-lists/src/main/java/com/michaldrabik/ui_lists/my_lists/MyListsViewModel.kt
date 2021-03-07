@@ -1,8 +1,8 @@
-package com.michaldrabik.ui_lists
+package com.michaldrabik.ui_lists.my_lists
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
-import com.michaldrabik.ui_lists.cases.MainMyListsCase
+import com.michaldrabik.ui_lists.my_lists.cases.MainMyListsCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

@@ -15,7 +15,8 @@ import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponent
 import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponent
 import com.michaldrabik.ui_gallery.custom.di.UiCustomImagesComponent
 import com.michaldrabik.ui_gallery.fanart.di.UiFanartGalleryComponent
-import com.michaldrabik.ui_lists.di.UiMyListsComponent
+import com.michaldrabik.ui_lists.create.di.UiCreateListComponent
+import com.michaldrabik.ui_lists.my_lists.di.UiMyListsComponent
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponent
 import com.michaldrabik.ui_my_movies.di.UiMyMoviesComponent
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
@@ -82,6 +83,8 @@ interface AppComponent {
   fun uiMyMoviesComponent(): UiMyMoviesComponent.Factory
 
   fun uiMyListsComponent(): UiMyListsComponent.Factory
+
+  fun uiCreateListComponent(): UiCreateListComponent.Factory
 
   fun uiProgressComponent(): UiProgressComponent.Factory
 

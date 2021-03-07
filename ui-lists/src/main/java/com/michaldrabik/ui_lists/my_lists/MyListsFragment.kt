@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_lists
+package com.michaldrabik.ui_lists.my_lists
 
 import android.os.Bundle
 import android.view.View
@@ -12,9 +12,12 @@ import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
+import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
-import com.michaldrabik.ui_lists.di.UiMyListsComponentProvider
+import com.michaldrabik.ui_lists.R
+import com.michaldrabik.ui_lists.my_lists.di.UiMyListsComponentProvider
 import kotlinx.android.synthetic.main.fragment_my_lists.*
 
 class MyListsFragment :
@@ -58,6 +61,11 @@ class MyListsFragment :
       showLists(true, anchorEnd = moviesEnabled)
       selectLists()
     }
+    fragmentMyListsCreateListButton.run {
+      fadeIn()
+      onClick { openCreateList() }
+    }
+
     exSearchViewInput.run {
       imeOptions = EditorInfo.IME_ACTION_DONE
       setOnEditorActionListener { _, _, _ ->
@@ -200,6 +208,10 @@ class MyListsFragment :
 
     viewModel.tabsTranslation = fragmentMyListsModeTabs.translationY
     viewModel.searchViewTranslation = fragmentMyListsSearchView.translationY
+  }
+
+  private fun openCreateList() {
+    navigateTo(R.id.actionListsFragmentToCreateListDialog)
   }
 
   fun enableSearch(enable: Boolean) {

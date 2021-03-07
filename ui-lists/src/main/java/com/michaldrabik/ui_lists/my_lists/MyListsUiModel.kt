@@ -1,7 +1,7 @@
-package com.michaldrabik.ui_lists
+package com.michaldrabik.ui_lists.my_lists
 
 import com.michaldrabik.ui_base.UiModel
-import com.michaldrabik.ui_lists.recycler.MyListItem
+import com.michaldrabik.ui_lists.my_lists.recycler.MyListItem
 
 data class MyListsUiModel(
   val items: List<MyListItem>? = null,

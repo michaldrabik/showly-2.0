@@ -331,7 +331,7 @@
 
   <fragment
     android:id="@+id/listsFragment"
-    android:name="com.michaldrabik.ui_lists.MyListsFragment"
+    android:name="com.michaldrabik.ui_lists.my_lists.MyListsFragment"
     android:label="fragmentLists"
     >
     <!--    <action-->
@@ -347,6 +347,11 @@
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionListsFragmentToCreateListDialog"
+      app:destination="@id/createListDialog"
+      app:launchSingleTop="true"
       />
   </fragment>
 
@@ -462,6 +467,12 @@
     android:id="@+id/postCommentDialog"
     android:name="com.michaldrabik.ui_comments.post.PostCommentBottomSheet"
     android:label="dialogPostComment"
+    />
+
+  <dialog
+    android:id="@+id/createListDialog"
+    android:name="com.michaldrabik.ui_lists.create.CreateListBottomSheet"
+    android:label="dialogCreateList"
     />
 
 </navigation>

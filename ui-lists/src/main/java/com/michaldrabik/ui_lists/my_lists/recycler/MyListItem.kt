@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_lists.recycler
+package com.michaldrabik.ui_lists.my_lists.recycler
 
 import com.michaldrabik.ui_model.CustomList
 

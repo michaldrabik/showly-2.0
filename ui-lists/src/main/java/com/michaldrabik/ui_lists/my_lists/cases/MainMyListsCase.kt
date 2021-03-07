@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_lists.cases
+package com.michaldrabik.ui_lists.my_lists.cases
 
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_base.images.MovieImagesProvider

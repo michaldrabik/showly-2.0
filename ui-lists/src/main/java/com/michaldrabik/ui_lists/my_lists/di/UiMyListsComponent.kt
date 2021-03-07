@@ -1,6 +1,6 @@
-package com.michaldrabik.ui_lists.di
+package com.michaldrabik.ui_lists.my_lists.di
 
-import com.michaldrabik.ui_lists.MyListsFragment
+import com.michaldrabik.ui_lists.my_lists.MyListsFragment
 import dagger.Subcomponent
 
 @Subcomponent
