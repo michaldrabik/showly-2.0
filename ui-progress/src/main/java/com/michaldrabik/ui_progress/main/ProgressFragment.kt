@@ -66,6 +66,7 @@ class ProgressFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiProgressComponentProvider).provideProgressComponent().inject(this)
     super.onCreate(savedInstanceState)
+    setupBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,7 +83,6 @@ class ProgressFragment :
 
   override fun onResume() {
     super.onResume()
-    setupBackPressed()
     showNavigation()
     viewModel.loadProgress()
   }
@@ -145,7 +145,7 @@ class ProgressFragment :
 
   private fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
+    dispatcher.addCallback(this) {
       if (progressSearchView.isSearching) {
         exitSearch()
       } else {

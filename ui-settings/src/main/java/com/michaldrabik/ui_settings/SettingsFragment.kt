@@ -56,6 +56,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiSettingsComponentProvider).provideSettingsComponent().inject(this)
     super.onCreate(savedInstanceState)
+    handleBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,12 +92,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
       view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
     }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    hideNavigation()
-    handleBackPressed()
   }
 
   private fun render(uiModel: SettingsUiModel) {
@@ -489,9 +484,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun handleBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
+    dispatcher.addCallback(this) {
       remove()
-      showNavigation()
       findNavControl()?.popBackStack()
     }
   }

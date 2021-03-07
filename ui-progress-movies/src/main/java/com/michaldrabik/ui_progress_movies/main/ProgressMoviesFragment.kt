@@ -58,6 +58,7 @@ class ProgressMoviesFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiProgressMoviesComponentProvider).provideProgressMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
+    setupBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,7 +75,6 @@ class ProgressMoviesFragment :
 
   override fun onResume() {
     super.onResume()
-    setupBackPressed()
     showNavigation()
     viewModel.loadProgress()
   }
@@ -136,7 +136,7 @@ class ProgressMoviesFragment :
 
   private fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
+    dispatcher.addCallback(this) {
       if (progressMoviesSearchView.isSearching) {
         exitSearch()
       } else {

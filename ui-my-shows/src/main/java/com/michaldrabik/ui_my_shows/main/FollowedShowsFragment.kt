@@ -57,6 +57,7 @@ class FollowedShowsFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiMyShowsComponentProvider).provideMyShowsComponent().inject(this)
     super.onCreate(savedInstanceState)
+    setupBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,7 +75,6 @@ class FollowedShowsFragment :
   override fun onResume() {
     super.onResume()
     showNavigation()
-    setupBackPress()
   }
 
   override fun onPause() {
@@ -147,9 +147,9 @@ class FollowedShowsFragment :
     }
   }
 
-  private fun setupBackPress() {
+  private fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
+    dispatcher.addCallback(this) {
       if (followedShowsSearchView.isSearching) {
         exitSearch()
       } else {

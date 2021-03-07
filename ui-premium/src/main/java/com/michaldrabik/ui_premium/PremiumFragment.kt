@@ -36,6 +36,7 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiPremiumComponentProvider).providePremiumComponent().inject(this)
     super.onCreate(savedInstanceState)
+    handleBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,11 +54,6 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
     premiumRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
       view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
     }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    handleBackPressed()
   }
 
   private fun render(uiModel: PremiumUiModel) {
@@ -93,7 +89,7 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
 
   private fun handleBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
+    dispatcher.addCallback(this) {
       remove()
       findNavControl()?.popBackStack()
     }

@@ -1,12 +1,13 @@
 package com.michaldrabik.ui_search
 
 import com.michaldrabik.ui_base.UiModel
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_model.RecentSearch
 import com.michaldrabik.ui_search.recycler.SearchListItem
 
 data class SearchUiModel(
   val searchItems: List<SearchListItem>? = null,
-  val searchItemsAnimate: Boolean? = null,
+  val searchItemsAnimate: ActionEvent<Boolean>? = null,
   val recentSearchItems: List<RecentSearch>? = null,
   val suggestionsItems: List<SearchListItem>? = null,
   val isSearching: Boolean? = null,
@@ -28,7 +29,7 @@ data class SearchUiModel(
   companion object {
     fun createLoading() = SearchUiModel(
       emptyList(),
-      false,
+      ActionEvent(false),
       emptyList(),
       isSearching = true,
       isEmpty = false,
@@ -38,7 +39,7 @@ data class SearchUiModel(
 
     fun createResults(items: List<SearchListItem>) = SearchUiModel(
       items,
-      searchItemsAnimate = true,
+      searchItemsAnimate = ActionEvent(true),
       isSearching = false,
       isEmpty = items.isEmpty(),
       isInitial = false,

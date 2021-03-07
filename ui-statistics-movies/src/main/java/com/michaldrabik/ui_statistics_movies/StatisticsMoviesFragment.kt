@@ -21,6 +21,7 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiStatisticsMoviesComponentProvider).provideStatisticsMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
+    handleBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,12 +37,6 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
       }
       loadRatings()
     }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    hideNavigation()
-    handleBackPressed()
   }
 
   private fun setupView() {
@@ -78,9 +73,8 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
 
   private fun handleBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
+    dispatcher.addCallback(this) {
       remove()
-      showNavigation()
       findNavControl()?.popBackStack()
     }
   }

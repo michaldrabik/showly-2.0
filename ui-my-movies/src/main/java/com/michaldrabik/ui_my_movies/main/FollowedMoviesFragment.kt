@@ -57,6 +57,7 @@ class FollowedMoviesFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiMyMoviesComponentProvider).provideMyMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
+    setupBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,7 +75,6 @@ class FollowedMoviesFragment :
   override fun onResume() {
     super.onResume()
     showNavigation()
-    setupBackPress()
   }
 
   override fun onPause() {
@@ -146,9 +146,9 @@ class FollowedMoviesFragment :
     }
   }
 
-  private fun setupBackPress() {
+  private fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
+    dispatcher.addCallback(this) {
       if (followedMoviesSearchView.isSearching) {
         exitSearch()
       } else {

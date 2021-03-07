@@ -26,13 +26,13 @@ class MyListsFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiMyListsComponentProvider).provideMyListsComponent().inject(this)
     super.onCreate(savedInstanceState)
+    setupBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupStatusBar()
-    setupBackPress()
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
@@ -81,9 +81,9 @@ class MyListsFragment :
     }
   }
 
-  private fun setupBackPress() {
+  private fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
+    dispatcher.addCallback(this) {
       if (fragmentMyListsSearchView.isSearching) {
 //        exitSearch()
       } else {

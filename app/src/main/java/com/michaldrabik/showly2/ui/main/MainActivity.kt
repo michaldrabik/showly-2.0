@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
-import androidx.activity.addCallback
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -90,7 +89,6 @@ class MainActivity :
 
     setupViewModel()
     setupNavigation()
-    setupNavigationBackHandler()
     setupTips()
     setupView()
 
@@ -160,28 +158,22 @@ class MainActivity :
     }
   }
 
-  private fun setupNavigationBackHandler() {
-    onBackPressedDispatcher.addCallback(this) {
-      if (tutorialView.isVisible) {
-        tutorialView.fadeOut()
-        return@addCallback
-      }
-
-      findNavControl()?.run {
-        if (currentDestination?.id == R.id.progressFragment ||
-          currentDestination?.id == R.id.progressMoviesFragment
-        ) {
-          remove()
-          super.onBackPressed()
+  override fun onBackPressed() {
+    if (tutorialView.isVisible) {
+      tutorialView.fadeOut()
+      return
+    }
+    findNavControl()?.run {
+      when (currentDestination?.id) {
+        R.id.discoverFragment,
+        R.id.discoverMoviesFragment,
+        R.id.followedShowsFragment,
+        R.id.followedMoviesFragment,
+        R.id.listsFragment -> {
+          bottomNavigationView.selectedItemId = R.id.menuProgress
         }
-        when (currentDestination?.id) {
-          R.id.discoverFragment,
-          R.id.discoverMoviesFragment,
-          R.id.followedShowsFragment,
-          R.id.followedMoviesFragment,
-          R.id.listsFragment -> {
-            bottomNavigationView.selectedItemId = R.id.menuProgress
-          }
+        else -> {
+          super.onBackPressed()
         }
       }
     }

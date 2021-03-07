@@ -64,6 +64,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiArtGalleryComponentProvider).provideArtGalleryComponent().inject(this)
     super.onCreate(savedInstanceState)
+    handleBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -79,11 +80,6 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
       val id = if (family == SHOW) showId else movieId
       loadImages(id, family, type)
     }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    handleBackPressed()
   }
 
   override fun onDestroyView() {
@@ -206,7 +202,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
 
   private fun handleBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
+    dispatcher.addCallback(this) {
       if (isPickMode == true) setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf())
       remove()
       findNavControl()?.popBackStack()
