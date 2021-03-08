@@ -17,10 +17,10 @@ data class SearchUiModel(
 
   override fun update(newModel: UiModel) =
     (newModel as SearchUiModel).copy(
-      searchItems = newModel.searchItems ?: searchItems,
-      suggestionsItems = newModel.suggestionsItems ?: suggestionsItems,
+      searchItems = newModel.searchItems?.toList() ?: searchItems,
+      suggestionsItems = newModel.suggestionsItems?.toList() ?: suggestionsItems,
       searchItemsAnimate = newModel.searchItemsAnimate ?: searchItemsAnimate,
-      recentSearchItems = newModel.recentSearchItems ?: recentSearchItems,
+      recentSearchItems = newModel.recentSearchItems?.toList() ?: recentSearchItems,
       isSearching = newModel.isSearching ?: isSearching,
       isEmpty = newModel.isEmpty ?: isEmpty,
       isInitial = newModel.isInitial ?: isInitial
