@@ -82,6 +82,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   }
 
   override fun onStop() {
+    viewModel.clearSuggestions()
     exSearchViewInput.removeTextChangedListener(this)
     exSearchViewInput.setText("")
     enableUi()
@@ -94,7 +95,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     exSearchViewText.gone()
     (exSearchViewIcon.drawable as Animatable).start()
     searchViewLayout.settingsIconVisible = false
-    viewModel.preloadCache()
+    viewModel.preloadSuggestions()
     if (!isInitialized) {
       exSearchViewInput.showKeyboard()
       exSearchViewInput.requestFocus()
@@ -208,7 +209,9 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     uiModel.run {
       searchItems?.let {
         adapter?.setItems(it)
-        if (searchItemsAnimate == true) searchRecycler.scheduleLayoutAnimation()
+        if (searchItemsAnimate?.consume() == true) {
+          searchRecycler.scheduleLayoutAnimation()
+        }
       }
       recentSearchItems?.let { renderRecentSearches(it) }
       suggestionsItems?.let {

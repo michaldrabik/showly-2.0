@@ -35,7 +35,7 @@ class SearchViewModel @Inject constructor(
   private var isSearching = false
   private var suggestionsJob: Job? = null
 
-  fun preloadCache() {
+  fun preloadSuggestions() {
     viewModelScope.launch {
       suggestionsCase.preloadCache()
     }
@@ -112,11 +112,15 @@ class SearchViewModel @Inject constructor(
     }
   }
 
+  fun clearSuggestions() {
+    uiState = SearchUiModel(suggestionsItems = emptyList())
+  }
+
   fun loadSuggestions(query: String) {
     suggestionsJob?.cancel()
 
     if (query.trim().length < 2 || isSearching) {
-      uiState = SearchUiModel(suggestionsItems = emptyList())
+      clearSuggestions()
       return
     }
 
@@ -159,7 +163,7 @@ class SearchViewModel @Inject constructor(
       currentItems?.run {
         findReplace(new) { it.isSameAs(new) }
       }
-      uiState = uiState?.copy(searchItems = currentItems, searchItemsAnimate = false)
+      uiState = uiState?.copy(searchItems = currentItems)
     }
 
     viewModelScope.launch {
@@ -207,7 +211,7 @@ class SearchViewModel @Inject constructor(
     val currentState = uiState
     val currentItems = currentState?.suggestionsItems?.toMutableList()
     currentItems?.run { findReplace(new) { it.isSameAs(new) } }
-    uiState = currentState?.copy(suggestionsItems = currentItems, searchItemsAnimate = false)
+    uiState = currentState?.copy(suggestionsItems = currentItems)
   }
 
   private fun onError() {
