@@ -352,8 +352,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         movieDetailsStatus.text = getString(movie.status.displayName)
 
         val releaseDate =
-          if (movie.released != null) String.format(ENGLISH, "%s", dateFormat?.format(movie.released)?.capitalizeWords())
-          else movie.year.toString()
+          when {
+            movie.released != null -> String.format(ENGLISH, "%s", dateFormat?.format(movie.released)?.capitalizeWords())
+            movie.year > 0 -> movie.year.toString()
+            else -> ""
+          }
 
         val country = if (movie.country.isNotBlank()) String.format(ENGLISH, "(%s)", movie.country) else ""
         movieDetailsExtraInfo.text = getString(
