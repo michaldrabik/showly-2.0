@@ -26,6 +26,8 @@ data class Movie(
 
   val titleNoThe = title.removePrefix("The").trim()
 
+  fun hasNoDate() = released == null && year <= 0
+
   fun hasAired(): Boolean {
     if (released == null) return false
     val now = nowUtcDay()

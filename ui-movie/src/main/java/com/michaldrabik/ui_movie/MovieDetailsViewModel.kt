@@ -310,7 +310,7 @@ class MovieDetailsViewModel @Inject constructor(
   }
 
   fun addFollowedMovie(context: Context) {
-    if (movie.released != null && !movie.hasAired()) {
+    if (movie.hasNoDate() || (movie.released != null && !movie.hasAired())) {
       _messageLiveData.value = MessageEvent.info(R.string.textMovieNotYetReleased)
       return
     }
