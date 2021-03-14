@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/fragmentListDetailsRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  >
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/fragmentListDetailsRecycler"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:overScrollMode="never"
+    android:paddingTop="@dimen/listDetailsRecyclerPaddingTop"
+    android:paddingBottom="@dimen/spaceNormal"
+    />
+
+  <androidx.appcompat.widget.Toolbar
+    android:id="@+id/fragmentListDetailsToolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimaryBackground"
+    android:elevation="@dimen/elevationNormal"
+    app:contentInsetStartWithNavigation="0dp"
+    app:navigationIcon="@drawable/ic_arrow_back"
+    >
+
+    <ImageView
+      android:id="@+id/fragmentListDetailsDeleteButton"
+      android:layout_width="40dp"
+      android:layout_height="match_parent"
+      android:layout_gravity="end"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:padding="8dp"
+      app:srcCompat="@drawable/ic_delete"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+    <ImageView
+      android:id="@+id/fragmentListDetailsEditButton"
+      android:layout_width="40dp"
+      android:layout_height="match_parent"
+      android:layout_gravity="end"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:padding="8dp"
+      app:srcCompat="@drawable/ic_edit"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+  </androidx.appcompat.widget.Toolbar>
+
+  <include
+    android:id="@+id/fragmentListDetailsEmptyView"
+    layout="@layout/layout_list_details_empty"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginEnd="@dimen/spaceBig"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

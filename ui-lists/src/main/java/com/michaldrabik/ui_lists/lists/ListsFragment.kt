@@ -7,6 +7,7 @@ import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,8 +32,11 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.lists.di.UiListsComponentProvider
 import com.michaldrabik.ui_lists.lists.recycler.ListsAdapter
+import com.michaldrabik.ui_lists.lists.recycler.ListsItem
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.*
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST_NAME
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
 import kotlinx.android.synthetic.main.fragment_lists.*
 
@@ -71,7 +75,6 @@ class ListsFragment :
   private fun setupView() {
     fragmentListsSearchView.run {
       hint = getString(R.string.textSearchFor)
-//      onClick { enterSearch() }
       onSettingsClickListener = { openSettings() }
       if (isTraktSyncing()) setTraktProgress(true)
     }
@@ -115,12 +118,12 @@ class ListsFragment :
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = ListsAdapter().apply {
+      itemClickListener = { openListDetails(it) }
       itemsChangedListener = {
         fragmentListsRecycler.scrollToPosition(0)
         fragmentListsModeTabs.animate().translationY(0F).start()
         fragmentListsSearchView.animate().translationY(0F).start()
       }
-//      itemClickListener = { openMovieDetails(it.movie) }
     }
     fragmentListsRecycler.apply {
       adapter = this@ListsFragment.adapter
@@ -148,6 +151,14 @@ class ListsFragment :
         }
       })
     }
+  }
+
+  private fun openListDetails(listItem: ListsItem) {
+    val bundle = bundleOf(
+      ARG_LIST_ID to listItem.list.id,
+      ARG_LIST_NAME to listItem.list.name
+    )
+    navigateTo(R.id.actionListsFragmentToDetailsFragment, bundle)
   }
 
   private fun setupBackPressed() {

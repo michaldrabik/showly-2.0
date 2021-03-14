@@ -28,6 +28,7 @@
   <string name="textMinutesShort">min</string>
   <string name="textActorRole" translatable="false">%s\n(%s)</string>
   <string name="textRemoveFromTrakt">Remove from Trakt.tv?</string>
+  <string name="textRemoveFromTraktAccount">Remove from Trakt.tv account?</string>
   <string name="textNoDescription">Overview not available.</string>
 
   <string name="textAiredAlready">Aired</string>

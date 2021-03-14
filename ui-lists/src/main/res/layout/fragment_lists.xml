@@ -17,13 +17,13 @@
     android:clipChildren="false"
     android:clipToPadding="false"
     android:overScrollMode="never"
-    android:paddingTop="@dimen/listsTabsViewPadding"
+    android:paddingTop="@dimen/listsRecyclerPaddingTop"
     android:paddingBottom="@dimen/listsBottomPadding"
     />
 
   <include
     android:id="@+id/fragmentListsEmptyView"
-    layout="@layout/layout_my_lists_empty"
+    layout="@layout/layout_lists_empty"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"

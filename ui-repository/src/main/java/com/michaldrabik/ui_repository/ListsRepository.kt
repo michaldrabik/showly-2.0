@@ -26,6 +26,8 @@ class ListsRepository @Inject constructor(
     return list
   }
 
+  suspend fun deleteList(listId: Long) = database.customListsDao().deleteById(listId)
+
   suspend fun loadAll(): List<CustomList> {
     val listsDb = database.customListsDao().getAll()
     return listsDb.map { mappers.customList.fromDatabase(it) }

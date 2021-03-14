@@ -1,16 +1,17 @@
-package com.michaldrabik.ui_lists.lists.recycler
+package com.michaldrabik.ui_lists.details.recycler
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
+import com.michaldrabik.ui_lists.lists.recycler.ListsItem
+import com.michaldrabik.ui_lists.lists.recycler.ListsItemDiffCallback
 import com.michaldrabik.ui_lists.lists.views.ListsItemView
 
-class ListsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListDiffer.ListListener<ListsItem> {
+class ListDetailsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListDiffer.ListListener<ListsItem> {
 
   private val asyncDiffer = AsyncListDiffer(this, ListsItemDiffCallback())
 
-  var itemClickListener: ((ListsItem) -> Unit)? = null
   var itemsChangedListener: (() -> Unit)? = null
   private var notifyItemsChange = false
 
@@ -24,9 +25,7 @@ class ListsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListD
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ListsItemViewHolder(ListsItemView(parent.context).apply {
-      itemClickListener = { this@ListsAdapter.itemClickListener?.invoke(it) }
-    })
+    ListsItemViewHolder(ListsItemView(parent.context))
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]

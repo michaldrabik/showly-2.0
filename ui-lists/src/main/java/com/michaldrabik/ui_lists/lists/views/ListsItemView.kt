@@ -7,6 +7,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
+import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.lists.recycler.ListsItem
@@ -22,11 +23,12 @@ class ListsItemView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+  var itemClickListener: ((ListsItem) -> Unit)? = null
+
   init {
     inflate(context, R.layout.view_lists_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-//    imageLoadCompleteListener = { loadTranslation() }
-//    myMovieAllRoot.onClick { itemClickListener?.invoke(item) }
+    listsItemRoot.onClick { itemClickListener?.invoke(item) }
   }
 
   private lateinit var item: ListsItem

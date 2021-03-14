@@ -15,6 +15,8 @@ import com.michaldrabik.ui_gallery.fanart.di.UiArtGalleryComponentProvider
 import com.michaldrabik.ui_gallery.fanart.di.UiFanartGalleryComponent
 import com.michaldrabik.ui_lists.create.di.UiCreateListComponent
 import com.michaldrabik.ui_lists.create.di.UiCreateListComponentProvider
+import com.michaldrabik.ui_lists.details.di.UiListDetailsComponent
+import com.michaldrabik.ui_lists.details.di.UiListDetailsComponentProvider
 import com.michaldrabik.ui_lists.lists.di.UiListsComponent
 import com.michaldrabik.ui_lists.lists.di.UiListsComponentProvider
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponent
@@ -57,6 +59,7 @@ abstract class DiActivity :
   UiMyShowsComponentProvider,
   UiMyMoviesComponentProvider,
   UiListsComponentProvider,
+  UiListDetailsComponentProvider,
   UiCreateListComponentProvider,
   UiProgressComponentProvider,
   UiProgressMoviesComponentProvider,
@@ -72,6 +75,7 @@ abstract class DiActivity :
   private lateinit var uiMyShowsComponent: UiMyShowsComponent
   private lateinit var uiMyMoviesComponent: UiMyMoviesComponent
   private lateinit var uiListsComponent: UiListsComponent
+  private lateinit var uiListDetailsComponent: UiListDetailsComponent
   private lateinit var uiCreateListComponent: UiCreateListComponent
   private lateinit var uiSearchComponent: UiSearchComponent
   private lateinit var uiSettingsComponent: UiSettingsComponent
@@ -105,6 +109,7 @@ abstract class DiActivity :
   override fun providePremiumComponent() = uiPremiumComponent
   override fun providePostCommentComponent() = uiPostCommentComponent
   override fun provideListsComponent() = uiListsComponent
+  override fun provideListDetailsComponent() = uiListDetailsComponent
   override fun provideCreateListComponent() = uiCreateListComponent
 
   protected open fun setupComponents() {
@@ -115,6 +120,7 @@ abstract class DiActivity :
     uiMyShowsComponent = appComponent().uiMyShowsComponent().create()
     uiMyMoviesComponent = appComponent().uiMyMoviesComponent().create()
     uiListsComponent = appComponent().uiListsComponent().create()
+    uiListDetailsComponent = appComponent().uiListDetailsComponent().create()
     uiCreateListComponent = appComponent().uiCreateListComponent().create()
     uiSearchComponent = appComponent().uiSearchComponent().create()
     uiSettingsComponent = appComponent().uiSettingsComponent().create()
