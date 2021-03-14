@@ -2,6 +2,8 @@ package com.michaldrabik.ui_repository.mappers
 
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.ui_model.CustomList
+import com.michaldrabik.ui_model.SortOrderList
+import com.michaldrabik.ui_model.SortType
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -19,8 +21,8 @@ class CustomListMapper @Inject constructor() {
     privacy = list.privacy,
     displayNumbers = list.displayNumbers,
     allowComments = list.allowComments,
-    sortBy = list.sortBy,
-    sortHow = list.sortHow,
+    sortBy = SortOrderList.fromSlug(list.sortBy) ?: SortOrderList.RANK,
+    sortHow = SortType.fromSlug(list.sortHow),
     itemCount = list.itemCount,
     commentCount = list.commentCount,
     likes = list.likes,
@@ -37,8 +39,8 @@ class CustomListMapper @Inject constructor() {
     privacy = list.privacy,
     displayNumbers = list.displayNumbers,
     allowComments = list.allowComments,
-    sortBy = list.sortBy,
-    sortHow = list.sortHow,
+    sortBy = list.sortBy.slug,
+    sortHow = list.sortHow.slug,
     itemCount = list.itemCount,
     commentCount = list.commentCount,
     likes = list.likes,

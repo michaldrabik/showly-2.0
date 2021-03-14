@@ -53,20 +53,23 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
   }
 
   private fun onCreateListClick() {
-    if (viewCreateListNameValue.text?.toString()?.trim().isNullOrBlank()) {
+    val name = viewCreateListNameValue.text?.toString() ?: ""
+    val description = viewCreateListDescriptionValue.text?.toString()
+    if (name.trim().isBlank()) {
       viewCreateListNameInput.shake()
       return
     }
+    viewModel.createList(name, description)
   }
 
   @SuppressLint("SetTextI18n")
   private fun render(uiModel: CreateListUiModel) {
     uiModel.run {
       isLoading?.let {
-
+        viewCreateListButton.isEnabled == !it
       }
-      successEvent?.let {
-        it.consume()?.let { commentBundle ->
+      listCreatedEvent?.let {
+        it.consume()?.let {
           setFragmentResult(REQUEST_CREATE_LIST, bundleOf())
           dismiss()
         }

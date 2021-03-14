@@ -3,35 +3,26 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/fragmentMyListsRoot"
+  android:id="@+id/fragmentListsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:clipChildren="false"
   android:clipToPadding="false"
   >
 
-  <com.michaldrabik.ui_base.common.views.ModeTabsView
-    android:id="@+id/fragmentMyListsModeTabs"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/spaceMedium"
-    android:layout_marginTop="@dimen/collectionTabsMargin"
-    android:layout_marginEnd="@dimen/spaceMedium"
-    />
-
   <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/fragmentMyListsRecycler"
+    android:id="@+id/fragmentListsRecycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:overScrollMode="never"
-    android:paddingTop="@dimen/myListsTabsViewPadding"
-    android:paddingBottom="@dimen/myListsBottomPadding"
+    android:paddingTop="@dimen/listsTabsViewPadding"
+    android:paddingBottom="@dimen/listsBottomPadding"
     />
 
   <include
-    android:id="@+id/fragmentMyListsEmptyView"
+    android:id="@+id/fragmentListsEmptyView"
     layout="@layout/layout_my_lists_empty"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -42,8 +33,29 @@
     tools:visibility="visible"
     />
 
+  <com.michaldrabik.ui_base.common.views.ScrollableImageView
+    android:id="@+id/fragmentListsSortButton"
+    android:layout_width="wrap_content"
+    android:layout_height="36dp"
+    android:layout_gravity="end"
+    android:layout_marginTop="@dimen/listsSortIconPadding"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:visibility="gone"
+    app:srcCompat="@drawable/ic_sort"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
+  <com.michaldrabik.ui_base.common.views.ModeTabsView
+    android:id="@+id/fragmentListsModeTabs"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/collectionTabsMargin"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    />
+
   <com.michaldrabik.ui_base.common.views.SearchView
-    android:id="@+id/fragmentMyListsSearchView"
+    android:id="@+id/fragmentListsSearchView"
     android:layout_width="match_parent"
     android:layout_height="@dimen/searchViewHeight"
     android:layout_marginLeft="@dimen/spaceMedium"
@@ -52,12 +64,12 @@
     />
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/fragmentMyListsCreateListButton"
+    android:id="@+id/fragmentListsCreateListButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="end|bottom"
     android:layout_marginEnd="@dimen/spaceNormal"
-    android:layout_marginBottom="@dimen/myListsFabBottomPadding"
+    android:layout_marginBottom="@dimen/listsFabBottomPadding"
     android:visibility="gone"
     app:backgroundTint="?attr/colorAccent"
     app:srcCompat="@drawable/ic_list_create"

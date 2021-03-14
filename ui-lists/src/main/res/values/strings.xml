@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuMyLists">Lists</string>
-  <string name="textMyListsEmpty">Your lists collection is currently empty.</string>
+  <string name="menuLists">Lists</string>
+  <string name="textListsEmpty">Your lists collection is currently empty.</string>
   <string name="textCreateList">Create list</string>
   <string name="textCreateListDescription">Create a new custom list.</string>
   <string name="textName">Name</string>

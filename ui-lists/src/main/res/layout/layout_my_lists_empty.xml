@@ -11,7 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/spaceTiny"
-    android:text="@string/menuMyLists"
+    android:text="@string/menuLists"
     android:textAllCaps="true"
     android:textColor="?android:attr/textColorPrimary"
     android:textSize="20sp"
@@ -21,7 +21,7 @@
   <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="@string/textMyListsEmpty"
+    android:text="@string/textListsEmpty"
     android:textColor="?android:attr/textColorSecondary"
     android:textSize="14sp"
     />

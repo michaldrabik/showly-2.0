@@ -1,0 +1,53 @@
+package com.michaldrabik.ui_lists.lists.views
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.util.AttributeSet
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.FrameLayout
+import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_lists.R
+import com.michaldrabik.ui_lists.lists.recycler.ListsItem
+import com.michaldrabik.ui_model.SortOrder
+import kotlinx.android.synthetic.main.view_lists_item.view.*
+
+@SuppressLint("SetTextI18n")
+class ListsItemView : FrameLayout {
+
+  constructor(context: Context) : super(context)
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+  constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+
+  init {
+    inflate(context, R.layout.view_lists_item, this)
+    layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+//    imageLoadCompleteListener = { loadTranslation() }
+//    myMovieAllRoot.onClick { itemClickListener?.invoke(item) }
+  }
+
+  private lateinit var item: ListsItem
+
+  fun bind(item: ListsItem) {
+    this.item = item
+
+    listsItemTitle.text = item.list.name
+    with(listsItemDescription) {
+      text = item.list.description
+      visibleIf(!item.list.description.isNullOrBlank())
+    }
+
+    listsItemHeader.visibleIf(item.sortOrder != SortOrder.NAME)
+    listsItemHeader.text = when (item.sortOrder) {
+      SortOrder.NAME -> ""
+      SortOrder.NEWEST -> item.dateFormat?.format(item.list.createdAt)?.capitalizeWords()
+      SortOrder.DATE_UPDATED -> item.dateFormat?.format(item.list.updatedAt)?.capitalizeWords()
+      else -> throw IllegalStateException()
+    }
+
+    val hasItems = item.list.itemCount > 0
+    listsItemPlaceholder.visibleIf(!hasItems)
+    listsItemImage.visibleIf(hasItems)
+  }
+}

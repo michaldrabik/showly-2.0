@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="textSortRank">Rank</string>
   <string name="textSortName">Title</string>
   <string name="textSortNewest">Most Recent</string>
   <string name="textSortRated">Top Rated</string>
   <string name="textSortDateAdded">Recently Added</string>
+  <string name="textSortDateUpdated">Recently Updated</string>
   <string name="textSortRecentlyWatched">Recently Watched</string>
   <string name="textSortEpisodesLeft">Episodes Left</string>
 

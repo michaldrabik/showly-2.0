@@ -331,7 +331,7 @@
 
   <fragment
     android:id="@+id/listsFragment"
-    android:name="com.michaldrabik.ui_lists.my_lists.MyListsFragment"
+    android:name="com.michaldrabik.ui_lists.lists.ListsFragment"
     android:label="fragmentLists"
     >
     <!--    <action-->

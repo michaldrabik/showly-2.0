@@ -46,7 +46,8 @@ class SettingsMapper @Inject constructor() {
     showCollectionShows = settings.showCollectionShows,
     showCollectionMovies = settings.showCollectionMovies,
     widgetsShowLabel = settings.widgetsShowLabel,
-    traktQuickRateEnabled = settings.quickRateEnabled
+    traktQuickRateEnabled = settings.quickRateEnabled,
+    listsSortBy = enumValueOf(settings.listsSortBy)
   )
 
   fun toDatabase(settings: Settings) = SettingsDb(
@@ -87,6 +88,7 @@ class SettingsMapper @Inject constructor() {
     showCollectionShows = settings.showCollectionShows,
     showCollectionMovies = settings.showCollectionMovies,
     widgetsShowLabel = settings.widgetsShowLabel,
-    quickRateEnabled = settings.traktQuickRateEnabled
+    quickRateEnabled = settings.traktQuickRateEnabled,
+    listsSortBy = settings.listsSortBy.name
   )
 }

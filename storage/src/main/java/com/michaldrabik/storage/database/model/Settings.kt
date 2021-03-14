@@ -44,5 +44,6 @@ data class Settings(
   @ColumnInfo(name = "show_collection_movies", defaultValue = "1") var showCollectionMovies: Boolean,
   @ColumnInfo(name = "widgets_show_label", defaultValue = "1") var widgetsShowLabel: Boolean,
   @ColumnInfo(name = "my_movies_recent_is_enabled", defaultValue = "1") var myMoviesRecentIsEnabled: Boolean,
-  @ColumnInfo(name = "quick_rate_enabled", defaultValue = "0") var quickRateEnabled: Boolean
+  @ColumnInfo(name = "quick_rate_enabled", defaultValue = "0") var quickRateEnabled: Boolean,
+  @ColumnInfo(name = "lists_sort_by", defaultValue = "DATE_UPDATED") var listsSortBy: String
 )
