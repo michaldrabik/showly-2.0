@@ -10,7 +10,9 @@ import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.lists.recycler.ListsItem
-import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortOrder.DATE_UPDATED
+import com.michaldrabik.ui_model.SortOrder.NAME
+import com.michaldrabik.ui_model.SortOrder.NEWEST
 import kotlinx.android.synthetic.main.view_lists_item.view.*
 
 @SuppressLint("SetTextI18n")
@@ -38,16 +40,16 @@ class ListsItemView : FrameLayout {
       visibleIf(!item.list.description.isNullOrBlank())
     }
 
-    listsItemHeader.visibleIf(item.sortOrder != SortOrder.NAME)
+    listsItemHeader.visibleIf(item.sortOrder != NAME)
     listsItemHeader.text = when (item.sortOrder) {
-      SortOrder.NAME -> ""
-      SortOrder.NEWEST -> item.dateFormat?.format(item.list.createdAt)?.capitalizeWords()
-      SortOrder.DATE_UPDATED -> item.dateFormat?.format(item.list.updatedAt)?.capitalizeWords()
+      NAME -> ""
+      NEWEST -> item.dateFormat?.format(item.list.createdAt)?.capitalizeWords()
+      DATE_UPDATED -> item.dateFormat?.format(item.list.updatedAt)?.capitalizeWords()
       else -> throw IllegalStateException()
     }
 
-    val hasItems = item.list.itemCount > 0
-    listsItemPlaceholder.visibleIf(!hasItems)
-    listsItemImage.visibleIf(hasItems)
+//    val hasItems = item.list.itemCount > 0
+//    listsItemPlaceholder.visibleIf(!hasItems)
+//    listsItemImage.visibleIf(hasItems)
   }
 }

@@ -25,51 +25,31 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="vertical"
-      app:layout_constraintGuide_begin="@dimen/listsImageWidth"
+      app:layout_constraintGuide_begin="@dimen/listsTripleImageWidth"
       app:layout_constraintStart_toStartOf="parent"
       />
 
-    <ImageView
-      android:id="@+id/listsItemImage"
-      android:layout_width="@dimen/listsImageWidth"
+    <com.michaldrabik.ui_lists.ListsTripleImageView
+      android:layout_width="wrap_content"
       android:layout_height="@dimen/listsImageHeight"
-      android:background="@drawable/bg_media_view_elevation"
-      android:elevation="@dimen/elevationSmall"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       />
 
-    <ImageView
-      android:id="@+id/listsItemPlaceholder"
-      android:layout_width="@dimen/listsImageWidth"
-      android:layout_height="@dimen/listsImageHeight"
-      android:layout_gravity="center"
-      android:background="@drawable/bg_media_view_placeholder"
-      android:elevation="@dimen/elevationSmall"
-      android:padding="@dimen/spaceBig"
-      android:visibility="gone"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:srcCompat="@drawable/ic_list_alt"
-      app:tint="?attr/colorPlaceholderIcon"
-      tools:visibility="visible"
-      />
-
-    <ProgressBar
-      android:id="@+id/listsItemProgress"
-      style="@style/ProgressBar.Dark"
-      android:layout_width="28dp"
-      android:layout_height="28dp"
-      android:layout_gravity="center"
-      android:visibility="gone"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="@id/listsItemImage"
-      app:layout_constraintStart_toStartOf="@id/listsItemImage"
-      app:layout_constraintTop_toTopOf="parent"
-      tools:visibility="visible"
-      />
+    <!--    <ProgressBar-->
+    <!--      android:id="@+id/listsItemProgress"-->
+    <!--      style="@style/ProgressBar.Dark"-->
+    <!--      android:layout_width="28dp"-->
+    <!--      android:layout_height="28dp"-->
+    <!--      android:layout_gravity="center"-->
+    <!--      android:visibility="gone"-->
+    <!--      app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--      app:layout_constraintEnd_toEndOf="@id/listsItemImage"-->
+    <!--      app:layout_constraintStart_toStartOf="@id/listsItemImage"-->
+    <!--      app:layout_constraintTop_toTopOf="parent"-->
+    <!--      tools:visibility="visible"-->
+    <!--      />-->
 
     <TextView
       android:id="@+id/listsItemTitle"
