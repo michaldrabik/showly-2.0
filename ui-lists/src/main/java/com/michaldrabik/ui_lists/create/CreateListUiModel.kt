@@ -6,12 +6,12 @@ import com.michaldrabik.ui_model.CustomList
 
 data class CreateListUiModel(
   val isLoading: Boolean? = null,
-  val listCreatedEvent: ActionEvent<CustomList>? = null,
+  val listUpdatedEvent: ActionEvent<CustomList>? = null,
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
     (newModel as CreateListUiModel).copy(
       isLoading = newModel.isLoading ?: isLoading,
-      listCreatedEvent = newModel.listCreatedEvent ?: listCreatedEvent
+      listUpdatedEvent = newModel.listUpdatedEvent ?: listUpdatedEvent
     )
 }

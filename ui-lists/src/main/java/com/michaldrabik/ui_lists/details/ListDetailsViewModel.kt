@@ -12,6 +12,13 @@ class ListDetailsViewModel @Inject constructor(
   private val mainCase: MainListDetailsCase
 ) : BaseViewModel<ListDetailsUiModel>() {
 
+  fun loadDetails(id: Long) {
+    viewModelScope.launch {
+      val details = mainCase.loadDetails(id)
+      uiState = ListDetailsUiModel(details = details)
+    }
+  }
+
   fun loadItems() {
     viewModelScope.launch {
       uiState = ListDetailsUiModel(items = emptyList())

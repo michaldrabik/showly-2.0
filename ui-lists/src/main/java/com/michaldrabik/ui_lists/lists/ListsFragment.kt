@@ -35,8 +35,7 @@ import com.michaldrabik.ui_lists.lists.recycler.ListsAdapter
 import com.michaldrabik.ui_lists.lists.recycler.ListsItem
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.*
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST_ID
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST_NAME
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
 import kotlinx.android.synthetic.main.fragment_lists.*
 
@@ -154,10 +153,7 @@ class ListsFragment :
   }
 
   private fun openListDetails(listItem: ListsItem) {
-    val bundle = bundleOf(
-      ARG_LIST_ID to listItem.list.id,
-      ARG_LIST_NAME to listItem.list.name
-    )
+    val bundle = bundleOf(ARG_LIST to listItem.list)
     navigateTo(R.id.actionListsFragmentToDetailsFragment, bundle)
   }
 
@@ -239,7 +235,7 @@ class ListsFragment :
 
   private fun openCreateList() {
     setFragmentResultListener(REQUEST_CREATE_LIST) { _, _ -> viewModel.loadItems() }
-    navigateTo(R.id.actionListsFragmentToCreateListDialog)
+    navigateTo(R.id.actionListsFragmentToCreateListDialog, bundleOf())
   }
 
   fun enableSearch(enable: Boolean) {

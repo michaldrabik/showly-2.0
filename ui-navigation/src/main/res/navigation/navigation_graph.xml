@@ -360,7 +360,11 @@
     android:name="com.michaldrabik.ui_lists.details.ListDetailsFragment"
     android:label="fragmentListDetails"
     >
-
+    <action
+      android:id="@+id/actionListDetailsFragmentToEditListDialog"
+      app:destination="@id/createListDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment

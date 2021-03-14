@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.*
@@ -17,9 +19,11 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.di.UiListDetailsComponentProvider
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsAdapter
+import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.*
 import com.michaldrabik.ui_navigation.java.NavigationArgs
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import kotlinx.android.synthetic.main.fragment_list_details.*
 import kotlinx.android.synthetic.main.fragment_lists.*
 
@@ -28,8 +32,7 @@ class ListDetailsFragment :
 
   override val viewModel by viewModels<ListDetailsViewModel> { viewModelFactory }
 
-  private val listId by lazy { requireArguments().getLong(NavigationArgs.ARG_LIST_ID) }
-  private val listName by lazy { requireArguments().getString(NavigationArgs.ARG_LIST_NAME) }
+  private val list by lazy { requireArguments().getParcelable<CustomList>(ARG_LIST)!! }
 
   private var adapter: ListDetailsAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
@@ -47,6 +50,7 @@ class ListDetailsFragment :
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it) })
+      loadDetails(list.id)
       loadItems()
     }
   }
@@ -61,9 +65,13 @@ class ListDetailsFragment :
       view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
     }
     with(fragmentListDetailsToolbar) {
-      title = listName
+      title = list.name
+      if (!list.description.isNullOrBlank()) {
+        subtitle = list.description
+      }
       setNavigationOnClickListener { activity?.onBackPressed() }
     }
+    fragmentListDetailsEditButton.onClick { showEditDialog() }
     fragmentListDetailsDeleteButton.onClick { showDeleteDialog() }
 //    fragmentListDetailsSortButton.onClick {
 //      viewModel.loadSortOrder()
@@ -110,24 +118,36 @@ class ListDetailsFragment :
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setTitle(R.string.textConfirmDeleteListTitle)
       .setMessage(R.string.textConfirmDeleteListSubtitle)
-      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.deleteList(listId) }
+      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.deleteList(list.id) }
       .setNegativeButton(R.string.textNo) { _, _ -> }
       .show()
   }
 
+  private fun showEditDialog() {
+    setFragmentResultListener(NavigationArgs.REQUEST_CREATE_LIST) { _, _ ->
+      viewModel.loadDetails(list.id)
+    }
+    val bundle = bundleOf(ARG_LIST to list)
+    navigateTo(R.id.actionListDetailsFragmentToEditListDialog, bundle)
+  }
+
   private fun render(uiModel: ListDetailsUiModel) {
     uiModel.run {
+      details?.let {
+        with(fragmentListDetailsToolbar) {
+          title = it.name
+          if (!it.description.isNullOrBlank()) {
+            subtitle = it.description
+          }
+        }
+      }
       items?.let {
         fragmentListDetailsEmptyView.fadeIf(it.isEmpty())
 //        fragmentListDetailsSortButton.visibleIf(it.isNotEmpty())
         adapter?.setItems(it, true)
       }
-      deleteEvent?.let { event ->
-        event.consume()?.let { activity?.onBackPressed() }
-      }
-      sortOrderEvent?.let { event ->
-        event.consume()?.let { showSortOrderDialog(it) }
-      }
+      deleteEvent?.let { event -> event.consume()?.let { activity?.onBackPressed() } }
+      sortOrderEvent?.let { event -> event.consume()?.let { showSortOrderDialog(it) } }
     }
   }
 

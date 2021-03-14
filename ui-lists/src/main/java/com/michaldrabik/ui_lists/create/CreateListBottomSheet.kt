@@ -14,6 +14,8 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.shake
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.create.di.UiCreateListComponentProvider
+import com.michaldrabik.ui_model.CustomList
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
 import kotlinx.android.synthetic.main.view_create_list.*
 import kotlinx.android.synthetic.main.view_create_list.view.*
@@ -21,6 +23,8 @@ import kotlinx.android.synthetic.main.view_create_list.view.*
 class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
 
   override val layoutResId = R.layout.view_create_list
+
+  private val list by lazy { requireArguments().getParcelable<CustomList>(ARG_LIST) }
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
@@ -49,6 +53,13 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
   private fun setupView(view: View) {
     view.run {
       viewCreateListButton.onClick { onCreateListClick() }
+      if (isEditMode()) {
+        viewCreateListTitle.setText(R.string.textEditList)
+        viewCreateListSubtitle.setText(R.string.textEditListDescription)
+        viewCreateListButton.setText(R.string.textApply)
+        viewCreateListNameValue.setText(list?.name)
+        viewCreateListDescriptionValue.setText(list?.description)
+      }
     }
   }
 
@@ -59,7 +70,11 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
       viewCreateListNameInput.shake()
       return
     }
-    viewModel.createList(name, description)
+    if (isEditMode()) {
+      viewModel.updateList(list!!, name, description)
+    } else {
+      viewModel.createList(name, description)
+    }
   }
 
   @SuppressLint("SetTextI18n")
@@ -68,7 +83,7 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
       isLoading?.let {
         viewCreateListButton.isEnabled == !it
       }
-      listCreatedEvent?.let {
+      listUpdatedEvent?.let {
         it.consume()?.let {
           setFragmentResult(REQUEST_CREATE_LIST, bundleOf())
           dismiss()
@@ -76,4 +91,6 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
       }
     }
   }
+
+  private fun isEditMode() = list != null
 }

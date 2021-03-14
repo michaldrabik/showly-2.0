@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_repository
 
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_repository.mappers.Mappers
@@ -26,7 +27,23 @@ class ListsRepository @Inject constructor(
     return list
   }
 
+  suspend fun updateList(
+    id: Long,
+    name: String,
+    description: String?
+  ): CustomList {
+    val listDb = database.customListsDao().getById(id)!!
+    val updated = listDb.copy(name = name, description = description, updatedAt = nowUtcMillis())
+    database.customListsDao().update(listOf(updated))
+    return mappers.customList.fromDatabase(updated)
+  }
+
   suspend fun deleteList(listId: Long) = database.customListsDao().deleteById(listId)
+
+  suspend fun loadById(listId: Long): CustomList {
+    val listDb = database.customListsDao().getById(listId)!!
+    return mappers.customList.fromDatabase(listDb)
+  }
 
   suspend fun loadAll(): List<CustomList> {
     val listsDb = database.customListsDao().getAll()

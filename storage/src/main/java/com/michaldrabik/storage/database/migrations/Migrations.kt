@@ -343,6 +343,8 @@ object Migrations {
             "`allow_comments` INTEGER NOT NULL, " +
             "`sort_by` TEXT NOT NULL, " +
             "`sort_how` TEXT NOT NULL, " +
+            "`sort_by_local` TEXT NOT NULL, " +
+            "`sort_how_local` TEXT NOT NULL, " +
             "`item_count` INTEGER NOT NULL, " +
             "`comment_count` INTEGER NOT NULL, " +
             "`likes` INTEGER NOT NULL, " +
