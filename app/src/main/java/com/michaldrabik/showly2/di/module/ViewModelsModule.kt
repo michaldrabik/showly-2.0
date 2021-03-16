@@ -12,6 +12,7 @@ import com.michaldrabik.ui_gallery.fanart.ArtGalleryViewModel
 import com.michaldrabik.ui_lists.create.CreateListViewModel
 import com.michaldrabik.ui_lists.details.ListDetailsViewModel
 import com.michaldrabik.ui_lists.lists.ListsViewModel
+import com.michaldrabik.ui_lists.manage.ManageListsViewModel
 import com.michaldrabik.ui_movie.MovieDetailsViewModel
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesViewModel
 import com.michaldrabik.ui_my_movies.mymovies.MyMoviesViewModel
@@ -90,6 +91,11 @@ abstract class ViewModelsModule {
   @IntoMap
   @ViewModelKey(ListsViewModel::class)
   abstract fun bindListsViewModel(viewModel: ListsViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(ManageListsViewModel::class)
+  abstract fun bindManageListsViewModel(viewModel: ManageListsViewModel): ViewModel
 
   @Binds
   @IntoMap

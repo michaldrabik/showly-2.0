@@ -184,6 +184,13 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       movieDetailsAddButton.fadeIn()
       movieDetailsRemoveTraktButton.fadeOut()
     }
+    movieDetailsManageListsLabel.onClick {
+      val bundle = bundleOf(
+        ARG_MOVIE_ID to movieId.id,
+        ARG_TYPE to "MOVIE"
+      )
+      navigateTo(R.id.actionMovieDetailsFragmentToManageLists, bundle)
+    }
   }
 
   private fun setupStatusBar() {
@@ -383,7 +390,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
             Analytics.logMovieLinksClick(movie)
           }
         }
-        movieDetailsSeparator4.visible()
+        movieDetailsSeparator5.visible()
         movieDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
         movieDetailsCustomImagesLabel.onClick { showCustomImagesSheet(movie.traktId, isPremium) }
         movieDetailsAddButton.isEnabled = true

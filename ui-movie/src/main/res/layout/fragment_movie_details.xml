@@ -168,8 +168,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
-        android:layout_marginBottom="@dimen/spaceSmall"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsDescription"
+        app:layout_constraintBottom_toTopOf="@id/movieDetailsManageListsLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsStatus"
@@ -191,6 +190,46 @@
 
       </FrameLayout>
 
+      <TextView
+        android:id="@+id/movieDetailsManageListsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="@dimen/spaceTiny"
+        android:drawablePadding="@dimen/spaceTiny"
+        android:gravity="start|center_vertical"
+        android:text="@string/textMovieManageLists"
+        android:textAlignment="viewStart"
+        android:textAllCaps="true"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="12sp"
+        app:drawableStartCompat="@drawable/ic_manage_lists"
+        app:drawableTint="?android:attr/textColorPrimary"
+        app:layout_constraintBottom_toTopOf="@id/separator4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsButtonsLayout"
+        />
+
+      <View
+        android:id="@+id/separator4"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:layout_marginBottom="@dimen/spaceMedium"
+        android:background="?attr/colorSeparator"
+        app:layout_constraintBottom_toTopOf="@id/movieDetailsDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsManageListsLabel"
+        app:layout_goneMarginBottom="@dimen/spaceBig"
+        app:layout_goneMarginTop="@dimen/spaceBig"
+        />
+
       <com.michaldrabik.ui_base.common.views.FoldableTextView
         android:id="@+id/movieDetailsDescription"
         android:layout_width="0dp"
@@ -207,7 +246,7 @@
         app:layout_constraintBottom_toTopOf="@id/movieDetailsActorsRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/movieDetailsButtonsLayout"
+        app:layout_constraintTop_toBottomOf="@+id/separator4"
         app:layout_goneMarginBottom="@dimen/spaceBig"
         tools:targetApi="o"
         tools:text="Description"
@@ -326,7 +365,7 @@
         style="@style/MovieDetails.ExtraButton"
         android:text="@string/textMovieComments2"
         app:drawableTopCompat="@drawable/ic_comment"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsSeparator4"
+        app:layout_constraintBottom_toTopOf="@id/movieDetailsSeparator5"
         app:layout_constraintEnd_toStartOf="@+id/movieDetailsLinksButton"
         app:layout_constraintStart_toEndOf="@+id/movieDetailsRateButton"
         app:layout_constraintTop_toBottomOf="@id/separator2"
@@ -358,7 +397,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsSeparator4"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsSeparator5"
         />
 
       <com.michaldrabik.ui_movie.views.MovieLinksView
@@ -423,7 +462,7 @@
         />
 
       <View
-        android:id="@+id/movieDetailsSeparator4"
+        android:id="@+id/movieDetailsSeparator5"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="@dimen/spaceNormal"

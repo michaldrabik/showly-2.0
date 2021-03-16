@@ -13,4 +13,9 @@
   <string name="textEditListDescription">Update your custom list.</string>
   <string name="textConfirmDeleteListTitle">Delete List</string>
   <string name="textConfirmDeleteListSubtitle">Are you sure you want to delete this list?</string>
+
+  <string name="textManageLists">Manage lists</string>
+  <string name="textManageListsShows">Manage your lists for this show.</string>
+  <string name="textManageListsMovies">Manage your lists for this movie.</string>
+
 </resources>

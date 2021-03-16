@@ -210,6 +210,11 @@
       app:launchSingleTop="true"
       />
     <action
+      android:id="@+id/actionShowDetailsFragmentToManageLists"
+      app:destination="@id/manageListsDialog"
+      app:launchSingleTop="true"
+      />
+    <action
       android:id="@+id/actionShowDetailsFragmentToPostComment"
       app:destination="@id/postCommentDialog"
       app:launchSingleTop="true"
@@ -251,6 +256,11 @@
     <action
       android:id="@+id/actionMovieDetailsFragmentToCustomImages"
       app:destination="@id/customImagesDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToManageLists"
+      app:destination="@id/manageListsDialog"
       app:launchSingleTop="true"
       />
     <action
@@ -485,6 +495,12 @@
     android:id="@+id/createListDialog"
     android:name="com.michaldrabik.ui_lists.create.CreateListBottomSheet"
     android:label="dialogCreateList"
+    />
+
+  <dialog
+    android:id="@+id/manageListsDialog"
+    android:name="com.michaldrabik.ui_lists.manage.ManageListsBottomSheet"
+    android:label="dialogManageLists"
     />
 
 </navigation>

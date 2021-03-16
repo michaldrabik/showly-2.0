@@ -19,6 +19,8 @@ import com.michaldrabik.ui_lists.details.di.UiListDetailsComponent
 import com.michaldrabik.ui_lists.details.di.UiListDetailsComponentProvider
 import com.michaldrabik.ui_lists.lists.di.UiListsComponent
 import com.michaldrabik.ui_lists.lists.di.UiListsComponentProvider
+import com.michaldrabik.ui_lists.manage.di.UiManageListsComponent
+import com.michaldrabik.ui_lists.manage.di.UiManageListsComponentProvider
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponent
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponentProvider
 import com.michaldrabik.ui_my_movies.di.UiMyMoviesComponent
@@ -61,6 +63,7 @@ abstract class DiActivity :
   UiListsComponentProvider,
   UiListDetailsComponentProvider,
   UiCreateListComponentProvider,
+  UiManageListsComponentProvider,
   UiProgressComponentProvider,
   UiProgressMoviesComponentProvider,
   UiSearchComponentProvider,
@@ -77,6 +80,7 @@ abstract class DiActivity :
   private lateinit var uiListsComponent: UiListsComponent
   private lateinit var uiListDetailsComponent: UiListDetailsComponent
   private lateinit var uiCreateListComponent: UiCreateListComponent
+  private lateinit var uiManageListComponent: UiManageListsComponent
   private lateinit var uiSearchComponent: UiSearchComponent
   private lateinit var uiSettingsComponent: UiSettingsComponent
   private lateinit var uiShowDetailsComponent: UiShowDetailsComponent
@@ -111,6 +115,7 @@ abstract class DiActivity :
   override fun provideListsComponent() = uiListsComponent
   override fun provideListDetailsComponent() = uiListDetailsComponent
   override fun provideCreateListComponent() = uiCreateListComponent
+  override fun provideManageListsComponent() = uiManageListComponent
 
   protected open fun setupComponents() {
     uiDiscoverComponent = appComponent().uiDiscoverComponent().create()
@@ -122,6 +127,7 @@ abstract class DiActivity :
     uiListsComponent = appComponent().uiListsComponent().create()
     uiListDetailsComponent = appComponent().uiListDetailsComponent().create()
     uiCreateListComponent = appComponent().uiCreateListComponent().create()
+    uiManageListComponent = appComponent().uiManageListsComponent().create()
     uiSearchComponent = appComponent().uiSearchComponent().create()
     uiSettingsComponent = appComponent().uiSettingsComponent().create()
     uiShowDetailsComponent = appComponent().uiShowDetailsComponent().create()

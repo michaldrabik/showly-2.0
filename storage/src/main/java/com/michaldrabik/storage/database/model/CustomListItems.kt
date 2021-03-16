@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 @Entity(
   tableName = "custom_lists_items",
   indices = [
-    Index(value = ["id_trakt, type"], unique = false),
+    Index(value = ["id_trakt", "type"], unique = false),
     Index(value = ["id_list"], unique = false)
   ],
   foreignKeys = [
