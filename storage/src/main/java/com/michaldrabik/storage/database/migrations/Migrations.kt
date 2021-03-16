@@ -3,7 +3,7 @@ package com.michaldrabik.storage.database.migrations
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 23
+const val DATABASE_VERSION = 24
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 // TODO Split into separate files?
@@ -358,6 +358,27 @@ object Migrations {
     }
   }
 
+  private val MIGRATION_24 = object : Migration(23, 24) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
+        execSQL(
+          "CREATE TABLE IF NOT EXISTS `custom_lists_items` (" +
+            "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+            "`id_list` INTEGER NOT NULL, " +
+            "`id_trakt` INTEGER NOT NULL, " +
+            "`type` TEXT NOT NULL, " +
+            "`rank` INTEGER NOT NULL, " +
+            "`created_at` INTEGER NOT NULL, " +
+            "`updated_at` INTEGER NOT NULL, " +
+            "FOREIGN KEY(`id_list`) REFERENCES `custom_lists`(`id`) ON DELETE CASCADE" +
+            ")"
+        )
+        execSQL("CREATE INDEX index_custom_lists_items_id_list ON custom_lists_items(id_list)")
+        execSQL("CREATE INDEX index_custom_lists_items_id_trakt ON custom_lists_items(id_trakt, type)")
+      }
+    }
+  }
+
   val MIGRATIONS = listOf(
     MIGRATION_2,
     MIGRATION_3,
@@ -380,6 +401,7 @@ object Migrations {
     MIGRATION_20,
     MIGRATION_21,
     MIGRATION_22,
-    MIGRATION_23
+    MIGRATION_23,
+    MIGRATION_24
   )
 }

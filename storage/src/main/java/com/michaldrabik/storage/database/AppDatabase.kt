@@ -6,6 +6,7 @@ import com.michaldrabik.storage.database.dao.ActorsDao
 import com.michaldrabik.storage.database.dao.ArchiveShowsDao
 import com.michaldrabik.storage.database.dao.CustomImagesDao
 import com.michaldrabik.storage.database.dao.CustomListsDao
+import com.michaldrabik.storage.database.dao.CustomListsItemsDao
 import com.michaldrabik.storage.database.dao.DiscoverMoviesDao
 import com.michaldrabik.storage.database.dao.DiscoverShowsDao
 import com.michaldrabik.storage.database.dao.EpisodeTranslationsDao
@@ -37,6 +38,7 @@ import com.michaldrabik.storage.database.model.Actor
 import com.michaldrabik.storage.database.model.ArchiveShow
 import com.michaldrabik.storage.database.model.CustomImage
 import com.michaldrabik.storage.database.model.CustomList
+import com.michaldrabik.storage.database.model.CustomListItems
 import com.michaldrabik.storage.database.model.DiscoverMovie
 import com.michaldrabik.storage.database.model.DiscoverShow
 import com.michaldrabik.storage.database.model.Episode
@@ -96,7 +98,8 @@ import com.michaldrabik.storage.database.model.WatchlistShow
     MovieTranslation::class,
     EpisodeTranslation::class,
     CustomImage::class,
-    CustomList::class
+    CustomList::class,
+    CustomListItems::class
   ],
   exportSchema = false
 )
@@ -161,4 +164,7 @@ abstract class AppDatabase : RoomDatabase() {
   abstract fun episodeTranslationsDao(): EpisodeTranslationsDao
 
   abstract fun customListsDao(): CustomListsDao
+
+  abstract fun customListsItemsDao(): CustomListsItemsDao
+
 }
