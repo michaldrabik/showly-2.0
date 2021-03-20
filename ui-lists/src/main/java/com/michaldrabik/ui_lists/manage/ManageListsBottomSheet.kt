@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,8 +21,10 @@ import com.michaldrabik.ui_lists.manage.recycler.ManageListsAdapter
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
 import kotlinx.android.synthetic.main.fragment_lists.*
 import kotlinx.android.synthetic.main.view_manage_lists.*
+import kotlinx.android.synthetic.main.view_manage_lists.view.*
 
 class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>() {
 
@@ -76,6 +79,10 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>() {
   private fun setupView(view: View) {
     view.run {
       viewManageListsButton.onClick { findNavController().popBackStack() }
+      viewManageListsCreateButton.onClick {
+        setFragmentResultListener(REQUEST_CREATE_LIST) { _, _ -> viewModel.loadLists(itemId, itemType) }
+        navigateTo(R.id.actionManageListsDialogToCreateListDialog, Bundle.EMPTY)
+      }
     }
   }
 

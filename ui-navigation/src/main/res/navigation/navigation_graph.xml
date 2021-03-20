@@ -501,6 +501,12 @@
     android:id="@+id/manageListsDialog"
     android:name="com.michaldrabik.ui_lists.manage.ManageListsBottomSheet"
     android:label="dialogManageLists"
-    />
+    >
+    <action
+      android:id="@+id/actionManageListsDialogToCreateListDialog"
+      app:destination="@id/createListDialog"
+      app:launchSingleTop="true"
+      />
+  </dialog>
 
 </navigation>

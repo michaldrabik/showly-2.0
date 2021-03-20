@@ -16,6 +16,16 @@
   tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout"
   >
 
+  <ImageView
+    android:id="@+id/viewManageListsCreateButton"
+    android:layout_width="28dp"
+    android:layout_height="28dp"
+    app:layout_constraintBottom_toBottomOf="@id/viewManageListsSubtitle"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@id/viewManageListsTitle"
+    app:srcCompat="@drawable/ic_list_create"
+    />
+
   <TextView
     android:id="@+id/viewManageListsTitle"
     android:layout_width="0dp"
