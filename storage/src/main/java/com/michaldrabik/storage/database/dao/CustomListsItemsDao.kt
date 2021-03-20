@@ -3,21 +3,31 @@ package com.michaldrabik.storage.database.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import com.michaldrabik.storage.database.model.CustomListItems
+import com.michaldrabik.storage.database.model.CustomListItem
+import timber.log.Timber
 
 @Dao
-interface CustomListsItemsDao : BaseDao<CustomListItems> {
+interface CustomListsItemsDao : BaseDao<CustomListItem> {
 
-  @Query("SELECT * FROM custom_lists_items WHERE id_trakt = :idTrakt AND type = :type")
-  suspend fun getById(idTrakt: Long, type: String): CustomListItems?
+  @Query("SELECT id_list FROM custom_list_item WHERE id_trakt = :idTrakt AND type = :type")
+  suspend fun getListsForItem(idTrakt: Long, type: String): List<Long>
+
+  @Query("SELECT * FROM custom_list_item WHERE id_list = :idList AND id_trakt = :idTrakt AND type = :type")
+  suspend fun getById(idList: Long, idTrakt: Long, type: String): CustomListItem?
+
+  @Query("SELECT rank FROM custom_list_item WHERE id_list = :idList ORDER BY rank DESC LIMIT 1")
+  suspend fun getRankForList(idList: Long): Long?
 
   @Transaction
-  suspend fun insertItem(item: CustomListItems) {
-    val localItem = getById(item.idTrakt, item.type)
+  suspend fun insertItem(item: CustomListItem) {
+    val localItem = getById(item.idList, item.idTrakt, item.type)
     if (localItem != null) return
-    insert(listOf(item))
+    val rank = getRankForList(item.idList) ?: 0L
+    Timber.d("RANK $rank")
+    val rankedItem = item.copy(rank = rank + 1L)
+    insert(listOf(rankedItem))
   }
 
-  @Query("DELETE FROM custom_lists_items WHERE id_trakt == :idTrakt AND type = :type")
-  suspend fun deleteItem(idTrakt: Long, type: String)
+  @Query("DELETE FROM custom_list_item WHERE id_list = :idList AND id_trakt == :idTrakt AND type = :type")
+  suspend fun deleteItem(idList: Long, idTrakt: Long, type: String)
 }

@@ -38,7 +38,7 @@ import com.michaldrabik.storage.database.model.Actor
 import com.michaldrabik.storage.database.model.ArchiveShow
 import com.michaldrabik.storage.database.model.CustomImage
 import com.michaldrabik.storage.database.model.CustomList
-import com.michaldrabik.storage.database.model.CustomListItems
+import com.michaldrabik.storage.database.model.CustomListItem
 import com.michaldrabik.storage.database.model.DiscoverMovie
 import com.michaldrabik.storage.database.model.DiscoverShow
 import com.michaldrabik.storage.database.model.Episode
@@ -99,7 +99,7 @@ import com.michaldrabik.storage.database.model.WatchlistShow
     EpisodeTranslation::class,
     CustomImage::class,
     CustomList::class,
-    CustomListItems::class
+    CustomListItem::class
   ],
   exportSchema = false
 )

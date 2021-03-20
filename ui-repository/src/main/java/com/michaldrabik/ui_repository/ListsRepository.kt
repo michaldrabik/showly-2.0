@@ -3,7 +3,9 @@ package com.michaldrabik.ui_repository
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.CustomListItem
 import com.michaldrabik.ui_model.CustomList
+import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_repository.mappers.Mappers
 import javax.inject.Inject
 
@@ -39,6 +41,26 @@ class ListsRepository @Inject constructor(
   }
 
   suspend fun deleteList(listId: Long) = database.customListsDao().deleteById(listId)
+
+  suspend fun addToList(listId: Long, itemTraktId: IdTrakt, itemType: String) {
+    val timestamp = nowUtcMillis()
+    val itemDb = CustomListItem(
+      rank = 0,
+      idList = listId,
+      idTrakt = itemTraktId.id,
+      type = itemType,
+      listedAt = timestamp,
+      createdAt = timestamp,
+      updatedAt = timestamp
+    )
+    database.customListsItemsDao().insertItem(itemDb)
+  }
+
+  suspend fun removeFromList(listId: Long, itemTraktId: IdTrakt, itemType: String) =
+    database.customListsItemsDao().deleteItem(listId, itemTraktId.id, itemType)
+
+  suspend fun loadListIdsForItem(itemTraktId: IdTrakt, itemType: String) =
+    database.customListsItemsDao().getListsForItem(itemTraktId.id, itemType)
 
   suspend fun loadById(listId: Long): CustomList {
     val listDb = database.customListsDao().getById(listId)!!

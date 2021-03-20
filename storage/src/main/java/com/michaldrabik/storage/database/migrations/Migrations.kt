@@ -362,19 +362,21 @@ object Migrations {
     override fun migrate(database: SupportSQLiteDatabase) {
       with(database) {
         execSQL(
-          "CREATE TABLE IF NOT EXISTS `custom_lists_items` (" +
+          "CREATE TABLE IF NOT EXISTS `custom_list_item` (" +
             "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
             "`id_list` INTEGER NOT NULL, " +
             "`id_trakt` INTEGER NOT NULL, " +
             "`type` TEXT NOT NULL, " +
             "`rank` INTEGER NOT NULL, " +
+            "`listed_at` INTEGER NOT NULL, " +
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL, " +
             "FOREIGN KEY(`id_list`) REFERENCES `custom_lists`(`id`) ON DELETE CASCADE" +
             ")"
         )
-        execSQL("CREATE INDEX index_custom_lists_items_id_list ON custom_lists_items(id_list)")
-        execSQL("CREATE INDEX index_custom_lists_items_id_trakt ON custom_lists_items(id_trakt, type)")
+        execSQL("CREATE INDEX index_custom_list_item_id_list ON custom_list_item(id_list)")
+        execSQL("CREATE INDEX index_custom_list_item_id_trakt_type ON custom_list_item(id_trakt, type)")
+        execSQL("CREATE UNIQUE INDEX index_custom_list_item_id_list_id_trakt_type ON custom_list_item(id_list, id_trakt, type)")
       }
     }
   }

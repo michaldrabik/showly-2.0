@@ -27,9 +27,11 @@
     android:textColor="?android:attr/textColorPrimary"
     android:textSize="20sp"
     android:textStyle="bold"
+    app:layout_constraintBottom_toTopOf="@id/viewManageListsSubtitle"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_chainStyle="packed"
     />
 
   <TextView
@@ -52,6 +54,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/spaceMedium"
+    android:minHeight="64dp"
+    android:overScrollMode="never"
+    android:translationX="-6dp"
     app:layout_constrainedHeight="true"
     app:layout_constraintBottom_toTopOf="@id/viewManageListsButton"
     app:layout_constraintEnd_toEndOf="parent"
@@ -74,6 +79,21 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/viewManageListsRecycler"
     app:rippleColor="?android:attr/textColorPrimary"
+    />
+
+  <include
+    android:id="@+id/viewManageListsEmptyView"
+    layout="@layout/layout_manage_lists_empty"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/spaceBig"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/viewManageListsRecycler"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/viewManageListsRecycler"
+    tools:visibility="visible"
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

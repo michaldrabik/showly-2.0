@@ -90,6 +90,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEARED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
@@ -184,13 +185,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       movieDetailsAddButton.fadeIn()
       movieDetailsRemoveTraktButton.fadeOut()
     }
-    movieDetailsManageListsLabel.onClick {
-      val bundle = bundleOf(
-        ARG_MOVIE_ID to movieId.id,
-        ARG_TYPE to "MOVIE"
-      )
-      navigateTo(R.id.actionMovieDetailsFragmentToManageLists, bundle)
-    }
+    movieDetailsManageListsLabel.onClick { openListsDialog() }
   }
 
   private fun setupStatusBar() {
@@ -614,6 +609,14 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       .setPositiveButton(R.string.textYes) { _, _ -> viewModel.deleteComment(comment) }
       .setNegativeButton(R.string.textNo) { _, _ -> }
       .show()
+  }
+
+  private fun openListsDialog() {
+    val bundle = bundleOf(
+      ARG_ID to movieId.id,
+      ARG_TYPE to "movie"
+    )
+    navigateTo(R.id.actionMovieDetailsFragmentToManageLists, bundle)
   }
 
   private fun handleBackPressed() {
