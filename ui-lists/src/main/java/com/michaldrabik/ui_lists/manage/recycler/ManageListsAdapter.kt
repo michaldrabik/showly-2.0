@@ -17,11 +17,13 @@ class ManageListsAdapter(
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ManageListsItemViewHolder(ManageListsItemView(parent.context).apply {
-      itemCheckListener = { item, isChecked ->
-        this@ManageListsAdapter.itemCheckListener?.invoke(item, isChecked)
+    ManageListsItemViewHolder(
+      ManageListsItemView(parent.context).apply {
+        itemCheckListener = { item, isChecked ->
+          this@ManageListsAdapter.itemCheckListener?.invoke(item, isChecked)
+        }
       }
-    })
+    )
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]

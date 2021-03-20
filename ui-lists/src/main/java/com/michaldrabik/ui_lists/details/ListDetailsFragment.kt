@@ -9,7 +9,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.*
+import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
@@ -21,11 +21,9 @@ import com.michaldrabik.ui_lists.details.di.UiListDetailsComponentProvider
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsAdapter
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortOrder.*
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import kotlinx.android.synthetic.main.fragment_list_details.*
-import kotlinx.android.synthetic.main.fragment_lists.*
 
 class ListDetailsFragment :
   BaseFragment<ListDetailsViewModel>(R.layout.fragment_list_details) {

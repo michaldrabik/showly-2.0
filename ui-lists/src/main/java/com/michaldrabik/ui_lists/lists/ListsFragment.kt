@@ -11,7 +11,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager.*
+import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -34,7 +34,9 @@ import com.michaldrabik.ui_lists.lists.di.UiListsComponentProvider
 import com.michaldrabik.ui_lists.lists.recycler.ListsAdapter
 import com.michaldrabik.ui_lists.lists.recycler.ListsItem
 import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortOrder.*
+import com.michaldrabik.ui_model.SortOrder.DATE_UPDATED
+import com.michaldrabik.ui_model.SortOrder.NAME
+import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
 import kotlinx.android.synthetic.main.fragment_lists.*

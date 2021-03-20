@@ -24,9 +24,11 @@ class ListsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListD
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-    ListsItemViewHolder(ListsItemView(parent.context).apply {
-      itemClickListener = { this@ListsAdapter.itemClickListener?.invoke(it) }
-    })
+    ListsItemViewHolder(
+      ListsItemView(parent.context).apply {
+        itemClickListener = { this@ListsAdapter.itemClickListener?.invoke(it) }
+      }
+    )
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]

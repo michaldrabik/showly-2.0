@@ -166,5 +166,4 @@ abstract class AppDatabase : RoomDatabase() {
   abstract fun customListsDao(): CustomListsDao
 
   abstract fun customListsItemsDao(): CustomListsItemsDao
-
 }
