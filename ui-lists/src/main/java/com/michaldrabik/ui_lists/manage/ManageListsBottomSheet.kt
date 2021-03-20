@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -22,6 +24,7 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import kotlinx.android.synthetic.main.fragment_lists.*
 import kotlinx.android.synthetic.main.view_manage_lists.*
 import kotlinx.android.synthetic.main.view_manage_lists.view.*
@@ -97,6 +100,7 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>() {
   }
 
   override fun onDestroyView() {
+    setFragmentResult(REQUEST_MANAGE_LISTS, bundleOf())
     adapter = null
     layoutManager = null
     super.onDestroyView()

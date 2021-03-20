@@ -96,6 +96,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
 import kotlinx.android.synthetic.main.view_links_movie_menu.view.*
@@ -415,6 +416,12 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           movieDetailsCommentsView.showCommentButton()
         }
       }
+      listsCount?.let {
+        val text =
+          if (it > 0) getString(R.string.textMovieManageListsCount, it)
+          else getString(R.string.textMovieManageLists)
+        movieDetailsManageListsLabel.text = text
+      }
       ratingState?.let { renderRating(it) }
       showFromTraktLoading?.let {
         movieDetailsRemoveTraktButton.isLoading = it
@@ -612,6 +619,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   }
 
   private fun openListsDialog() {
+    setFragmentResultListener(REQUEST_MANAGE_LISTS) { _, _ -> viewModel.loadListsCount() }
     val bundle = bundleOf(
       ARG_ID to movieId.id,
       ARG_TYPE to "movie"

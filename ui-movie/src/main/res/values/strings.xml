@@ -19,5 +19,6 @@
 
   <string name="textMovieNotYetReleased">This movie has not been released yet.</string>
   <string name="textMovieManageLists">Manage Lists</string>
+  <string name="textMovieManageListsCount">Manage Lists (%d)</string>
   <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv synced successfully.</string>
 </resources>

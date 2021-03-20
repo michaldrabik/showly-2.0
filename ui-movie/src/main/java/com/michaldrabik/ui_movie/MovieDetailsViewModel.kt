@@ -23,6 +23,7 @@ import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_movie.cases.MovieDetailsActorsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsCommentsCase
+import com.michaldrabik.ui_movie.cases.MovieDetailsListsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMainCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMyMoviesCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsRatingCase
@@ -48,6 +49,7 @@ class MovieDetailsViewModel @Inject constructor(
   private val ratingsCase: MovieDetailsRatingCase,
   private val myMoviesCase: MovieDetailsMyMoviesCase,
   private val watchlistCase: MovieDetailsWatchlistCase,
+  private val listsCase: MovieDetailsListsCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
   private val quickSyncManager: QuickSyncManager,
@@ -92,6 +94,7 @@ class MovieDetailsViewModel @Inject constructor(
 
         loadBackgroundImage(movie)
         launch { loadActors(movie) }
+        launch { loadListsCount(movie) }
         launch { loadRelatedMovies(movie) }
         launch { loadTranslation(movie) }
 
@@ -148,6 +151,13 @@ class MovieDetailsViewModel @Inject constructor(
       }
     } catch (error: Throwable) {
       Logger.record(error, "Source" to "${MovieDetailsViewModel::class.simpleName}::loadTranslation()")
+    }
+  }
+
+  fun loadListsCount(movie: Movie? = null) {
+    viewModelScope.launch {
+      val count = listsCase.countLists(movie ?: this@MovieDetailsViewModel.movie)
+      uiState = MovieDetailsUiModel(listsCount = count)
     }
   }
 
