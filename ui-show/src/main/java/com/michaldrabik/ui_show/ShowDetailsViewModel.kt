@@ -36,6 +36,7 @@ import com.michaldrabik.ui_show.cases.ShowDetailsActorsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsArchiveCase
 import com.michaldrabik.ui_show.cases.ShowDetailsCommentsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsEpisodesCase
+import com.michaldrabik.ui_show.cases.ShowDetailsListsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsMainCase
 import com.michaldrabik.ui_show.cases.ShowDetailsMyShowsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsRatingCase
@@ -63,6 +64,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val myShowsCase: ShowDetailsMyShowsCase,
   private val episodesCase: ShowDetailsEpisodesCase,
   private val commentsCase: ShowDetailsCommentsCase,
+  private val listsCase: ShowDetailsListsCase,
   private val relatedShowsCase: ShowDetailsRelatedShowsCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
@@ -121,6 +123,7 @@ class ShowDetailsViewModel @Inject constructor(
           }
           areSeasonsLoaded = true
         }
+        launch { loadListsCount(show) }
         launch { loadRelatedShows(show) }
         launch { loadTranslation(show) }
         if (isSignedIn) launch { loadRating(show) }
@@ -239,6 +242,13 @@ class ShowDetailsViewModel @Inject constructor(
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "${ShowDetailsViewModel::class.simpleName}::loadSeasonTranslation()")
       }
+    }
+  }
+
+  fun loadListsCount(show: Show? = null) {
+    viewModelScope.launch {
+      val count = listsCase.countLists(show ?: this@ShowDetailsViewModel.show)
+      uiState = ShowDetailsUiModel(listsCount = count)
     }
   }
 

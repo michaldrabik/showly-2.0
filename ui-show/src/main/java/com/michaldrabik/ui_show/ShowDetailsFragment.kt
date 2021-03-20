@@ -89,12 +89,14 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEARED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
 import com.michaldrabik.ui_show.helpers.ShowLink
@@ -219,6 +221,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       showDetailsAddButton.fadeIn()
       showDetailsRemoveTraktButton.fadeOut()
     }
+    showDetailsManageListsLabel.onClick { openListsDialog() }
   }
 
   private fun setupStatusBar() {
@@ -532,6 +535,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           showDetailsCommentsView.showCommentButton()
         }
       }
+      listsCount?.let {
+        val text =
+          if (it > 0) getString(R.string.textShowManageListsCount, it)
+          else getString(R.string.textShowManageLists)
+        showDetailsManageListsLabel.text = text
+      }
       ratingState?.let { renderRating(it) }
       showFromTraktLoading?.let {
         showDetailsRemoveTraktButton.isLoading = it
@@ -829,6 +838,15 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .setPositiveButton(R.string.textYes) { _, _ -> viewModel.deleteComment(comment) }
       .setNegativeButton(R.string.textNo) { _, _ -> }
       .show()
+  }
+
+  private fun openListsDialog() {
+    setFragmentResultListener(REQUEST_MANAGE_LISTS) { _, _ -> viewModel.loadListsCount() }
+    val bundle = bundleOf(
+      ARG_ID to showId.id,
+      ARG_TYPE to "show"
+    )
+    navigateTo(R.id.actionShowDetailsFragmentToManageLists, bundle)
   }
 
   private fun handleBackPressed() {
