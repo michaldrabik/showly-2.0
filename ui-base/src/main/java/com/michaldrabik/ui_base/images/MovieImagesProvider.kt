@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.images
 
+import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.tmdb.model.TmdbImage
@@ -37,7 +38,7 @@ class MovieImagesProvider @Inject constructor(
 
   suspend fun findCustomImage(traktId: Long, type: ImageType): Image? {
     if (!settingsRepository.isPremium) return null
-    val custom = database.customImagesDao().getById(traktId, "movie", type.key)
+    val custom = database.customImagesDao().getById(traktId, Mode.MOVIES.type, type.key)
     return custom?.let { mappers.image.fromDatabase(it, type) }
   }
 

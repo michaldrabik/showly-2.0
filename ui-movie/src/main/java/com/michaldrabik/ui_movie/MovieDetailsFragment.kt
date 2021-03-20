@@ -36,6 +36,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
+import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.AppCountry
@@ -622,7 +623,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     setFragmentResultListener(REQUEST_MANAGE_LISTS) { _, _ -> viewModel.loadListsCount() }
     val bundle = bundleOf(
       ARG_ID to movieId.id,
-      ARG_TYPE to "movie"
+      ARG_TYPE to Mode.MOVIES.type
     )
     navigateTo(R.id.actionMovieDetailsFragmentToManageLists, bundle)
   }

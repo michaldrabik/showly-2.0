@@ -37,6 +37,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
+import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
@@ -844,7 +845,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     setFragmentResultListener(REQUEST_MANAGE_LISTS) { _, _ -> viewModel.loadListsCount() }
     val bundle = bundleOf(
       ARG_ID to showId.id,
-      ARG_TYPE to "show"
+      ARG_TYPE to Mode.SHOWS.type
     )
     navigateTo(R.id.actionShowDetailsFragmentToManageLists, bundle)
   }

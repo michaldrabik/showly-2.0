@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_show.cases
 
+import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Show
@@ -12,5 +13,5 @@ class ShowDetailsListsCase @Inject constructor(
 ) {
 
   suspend fun countLists(show: Show) =
-    listsRepository.loadListIdsForItem(IdTrakt(show.traktId), "show").size
+    listsRepository.loadListIdsForItem(IdTrakt(show.traktId), Mode.SHOWS.type).size
 }

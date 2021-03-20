@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_movie.cases
 
+import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Movie
@@ -12,5 +13,5 @@ class MovieDetailsListsCase @Inject constructor(
 ) {
 
   suspend fun countLists(movie: Movie) =
-    listsRepository.loadListIdsForItem(IdTrakt(movie.traktId), "movie").size
+    listsRepository.loadListIdsForItem(IdTrakt(movie.traktId), Mode.MOVIES.type).size
 }

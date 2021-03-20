@@ -1,6 +1,6 @@
 package com.michaldrabik.common
 
-enum class Mode {
-  SHOWS,
-  MOVIES
+enum class Mode(val type: String) {
+  SHOWS("show"),
+  MOVIES("movie")
 }

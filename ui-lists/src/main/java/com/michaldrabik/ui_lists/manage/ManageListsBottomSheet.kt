@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -56,7 +57,7 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    setupView(view)
+    setupView()
     setupRecycler()
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it) })
@@ -78,14 +79,14 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>() {
     }
   }
 
-  @SuppressLint("SetTextI18n")
-  private fun setupView(view: View) {
-    view.run {
-      viewManageListsButton.onClick { findNavController().popBackStack() }
-      viewManageListsCreateButton.onClick {
-        setFragmentResultListener(REQUEST_CREATE_LIST) { _, _ -> viewModel.loadLists(itemId, itemType) }
-        navigateTo(R.id.actionManageListsDialogToCreateListDialog, Bundle.EMPTY)
-      }
+  private fun setupView() {
+    viewManageListsButton.onClick { findNavController().popBackStack() }
+    viewManageListsCreateButton.onClick {
+      setFragmentResultListener(REQUEST_CREATE_LIST) { _, _ -> viewModel.loadLists(itemId, itemType) }
+      navigateTo(R.id.actionManageListsDialogToCreateListDialog, Bundle.EMPTY)
+    }
+    if (itemType == Mode.MOVIES.type) {
+      viewManageListsSubtitle.setText(R.string.textManageListsMovies)
     }
   }
 
