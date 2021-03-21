@@ -64,7 +64,7 @@ class ListsFragment :
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it) })
-      loadItems()
+      loadItems(resetScroll = false)
     }
   }
 
@@ -101,8 +101,9 @@ class ListsFragment :
       }
     }
 
-    fragmentListsModeTabs.translationY = viewModel.tabsTranslation
     fragmentListsSearchView.translationY = viewModel.searchViewTranslation
+    fragmentListsModeTabs.translationY = viewModel.tabsTranslation
+    fragmentListsSortButton.translationY = viewModel.tabsTranslation
   }
 
   private fun setupStatusBar() {
@@ -124,6 +125,7 @@ class ListsFragment :
         fragmentListsRecycler.scrollToPosition(0)
         fragmentListsModeTabs.animate().translationY(0F).start()
         fragmentListsSearchView.animate().translationY(0F).start()
+        fragmentListsSortButton.animate().translationY(0F).start()
       }
     }
     fragmentListsRecycler.apply {
@@ -152,11 +154,6 @@ class ListsFragment :
         }
       })
     }
-  }
-
-  private fun openListDetails(listItem: ListsItem) {
-    val bundle = bundleOf(ARG_LIST to listItem.list)
-    navigateTo(R.id.actionListsFragmentToDetailsFragment, bundle)
   }
 
   private fun setupBackPressed() {
@@ -219,12 +216,21 @@ class ListsFragment :
       items?.let {
         fragmentListsEmptyView.fadeIf(it.isEmpty())
         fragmentListsSortButton.visibleIf(it.isNotEmpty())
-        adapter?.setItems(it, true)
+        val resetScroll = resetScroll?.consume() == true
+        adapter?.setItems(it, resetScroll)
       }
       sortOrderEvent?.let { event ->
         event.consume()?.let { showSortOrderDialog(it) }
       }
     }
+  }
+
+  private fun openListDetails(listItem: ListsItem) {
+    val bundle = bundleOf(ARG_LIST to listItem.list)
+    navigateTo(R.id.actionListsFragmentToDetailsFragment, bundle)
+
+    viewModel.tabsTranslation = fragmentListsModeTabs.translationY
+    viewModel.searchViewTranslation = fragmentListsSearchView.translationY
   }
 
   private fun openSettings() {
@@ -236,7 +242,7 @@ class ListsFragment :
   }
 
   private fun openCreateList() {
-    setFragmentResultListener(REQUEST_CREATE_LIST) { _, _ -> viewModel.loadItems() }
+    setFragmentResultListener(REQUEST_CREATE_LIST) { _, _ -> viewModel.loadItems(resetScroll = true) }
     navigateTo(R.id.actionListsFragmentToCreateListDialog, bundleOf())
   }
 

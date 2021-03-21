@@ -17,10 +17,10 @@ class ListsViewModel @Inject constructor(
   var searchViewTranslation = 0F
   var tabsTranslation = 0F
 
-  fun loadItems() {
+  fun loadItems(resetScroll: Boolean) {
     viewModelScope.launch {
       val items = mainCase.loadLists()
-      uiState = ListsUiModel(items = items)
+      uiState = ListsUiModel(items = items, resetScroll = ActionEvent(resetScroll))
     }
   }
 
@@ -34,7 +34,7 @@ class ListsViewModel @Inject constructor(
   fun setSortOrder(sortOrder: SortOrder) {
     viewModelScope.launch {
       sortCase.setSortOrder(sortOrder)
-      loadItems()
+      loadItems(resetScroll = true)
     }
   }
 }

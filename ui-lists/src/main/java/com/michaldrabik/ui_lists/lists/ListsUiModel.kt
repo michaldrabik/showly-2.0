@@ -7,6 +7,7 @@ import com.michaldrabik.ui_model.SortOrder
 
 data class ListsUiModel(
   val items: List<ListsItem>? = null,
+  val resetScroll: ActionEvent<Boolean>? = null,
   val sortOrderEvent: ActionEvent<SortOrder>? = null
 ) : UiModel() {
 
@@ -14,6 +15,7 @@ data class ListsUiModel(
     (newModel as ListsUiModel)
       .copy(
         items = newModel.items?.toList() ?: items,
+        resetScroll = newModel.resetScroll ?: resetScroll,
         sortOrderEvent = newModel.sortOrderEvent ?: sortOrderEvent
       )
 }
