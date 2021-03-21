@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_repository
 
+import androidx.room.withTransaction
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
@@ -12,8 +13,7 @@ import javax.inject.Inject
 @AppScope
 class ListsRepository @Inject constructor(
   private val database: AppDatabase,
-  private val mappers: Mappers,
-  private val userTraktManager: UserTraktManager
+  private val mappers: Mappers
 ) {
 
   suspend fun createList(
@@ -53,11 +53,18 @@ class ListsRepository @Inject constructor(
       createdAt = timestamp,
       updatedAt = timestamp
     )
-    database.customListsItemsDao().insertItem(itemDb)
+    database.withTransaction {
+      database.customListsItemsDao().insertItem(itemDb)
+      database.customListsDao().updateTimestamp(listId, nowUtcMillis())
+    }
   }
 
-  suspend fun removeFromList(listId: Long, itemTraktId: IdTrakt, itemType: String) =
-    database.customListsItemsDao().deleteItem(listId, itemTraktId.id, itemType)
+  suspend fun removeFromList(listId: Long, itemTraktId: IdTrakt, itemType: String) {
+    database.withTransaction {
+      database.customListsItemsDao().deleteItem(listId, itemTraktId.id, itemType)
+      database.customListsDao().updateTimestamp(listId, nowUtcMillis())
+    }
+  }
 
   suspend fun loadListIdsForItem(itemTraktId: IdTrakt, itemType: String) =
     database.customListsItemsDao().getListsForItem(itemTraktId.id, itemType)

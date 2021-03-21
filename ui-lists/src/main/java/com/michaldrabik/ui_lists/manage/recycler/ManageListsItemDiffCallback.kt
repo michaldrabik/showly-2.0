@@ -9,5 +9,6 @@ class ManageListsItemDiffCallback : DiffUtil.ItemCallback<ManageListsItem>() {
 
   override fun areContentsTheSame(oldItem: ManageListsItem, newItem: ManageListsItem) =
     oldItem.list == newItem.list &&
-      oldItem.isChecked == newItem.isChecked
+      oldItem.isChecked == newItem.isChecked &&
+      oldItem.isEnabled == newItem.isEnabled
 }

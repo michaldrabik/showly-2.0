@@ -18,12 +18,13 @@
 
   <ImageView
     android:id="@+id/viewManageListsCreateButton"
-    android:layout_width="28dp"
-    android:layout_height="28dp"
+    android:layout_width="26dp"
+    android:layout_height="26dp"
     app:layout_constraintBottom_toBottomOf="@id/viewManageListsSubtitle"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="@id/viewManageListsTitle"
     app:srcCompat="@drawable/ic_list_create"
+    app:tint="?android:attr/textColorPrimary"
     />
 
   <TextView

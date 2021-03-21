@@ -18,12 +18,13 @@ class ManageListsItemView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   var itemCheckListener: ((ManageListsItem, Boolean) -> Unit)? = null
+  var isCheckEnabled = false
 
   init {
     inflate(context, R.layout.view_manage_lists_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     manageListsItemCheckbox.setOnCheckedChangeListener { _, isChecked ->
-      itemCheckListener?.invoke(item, isChecked)
+      if (isCheckEnabled) itemCheckListener?.invoke(item, isChecked)
     }
   }
 
@@ -31,7 +32,10 @@ class ManageListsItemView : FrameLayout {
 
   fun bind(item: ManageListsItem) {
     this.item = item
+    isCheckEnabled = false
     manageListsItemCheckbox.text = item.list.name
     manageListsItemCheckbox.isChecked = item.isChecked
+    manageListsItemCheckbox.isEnabled = item.isEnabled
+    isCheckEnabled = true
   }
 }

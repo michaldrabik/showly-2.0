@@ -13,6 +13,9 @@ interface CustomListsDao : BaseDao<CustomList> {
   @Query("SELECT * FROM custom_lists WHERE id == :id")
   suspend fun getById(id: Long): CustomList?
 
+  @Query("UPDATE custom_lists SET updated_at = :timestamp WHERE id == :id")
+  suspend fun updateTimestamp(id: Long, timestamp: Long)
+
   @Query("DELETE FROM custom_lists WHERE id == :id")
   suspend fun deleteById(id: Long)
 

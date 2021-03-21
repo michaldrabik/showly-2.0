@@ -21,7 +21,7 @@ class ManageListsCase @Inject constructor(
       .sortedBy { it.name }
       .map {
         val isChecked = listsWithItem.contains(it.id)
-        ManageListsItem(it, isChecked)
+        ManageListsItem(it, isChecked, true)
       }
   }
 
