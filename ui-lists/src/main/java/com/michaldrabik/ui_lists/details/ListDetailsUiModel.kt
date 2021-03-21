@@ -2,14 +2,13 @@ package com.michaldrabik.ui_lists.details
 
 import com.michaldrabik.ui_base.UiModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
-import com.michaldrabik.ui_lists.lists.recycler.ListsItem
+import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.CustomList
-import com.michaldrabik.ui_model.SortOrder
 
 data class ListDetailsUiModel(
   val details: CustomList? = null,
-  val items: List<ListsItem>? = null,
-  val sortOrderEvent: ActionEvent<SortOrder>? = null,
+  val items: List<ListDetailsItem>? = null,
+  val resetScroll: ActionEvent<Boolean>? = null,
   val deleteEvent: ActionEvent<Boolean>? = null
 ) : UiModel() {
 
@@ -18,7 +17,7 @@ data class ListDetailsUiModel(
       .copy(
         details = newModel.details ?: details,
         items = newModel.items?.toList() ?: items,
-        sortOrderEvent = newModel.sortOrderEvent ?: sortOrderEvent,
+        resetScroll = newModel.resetScroll ?: resetScroll,
         deleteEvent = newModel.deleteEvent ?: deleteEvent
       )
 }

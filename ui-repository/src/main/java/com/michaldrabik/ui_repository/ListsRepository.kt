@@ -74,6 +74,9 @@ class ListsRepository @Inject constructor(
     return mappers.customList.fromDatabase(listDb)
   }
 
+  suspend fun loadItemsById(listId: Long) =
+    database.customListsItemsDao().getItemsById(listId)
+
   suspend fun loadAll(): List<CustomList> {
     val listsDb = database.customListsDao().getAll()
     return listsDb.map { mappers.customList.fromDatabase(it) }

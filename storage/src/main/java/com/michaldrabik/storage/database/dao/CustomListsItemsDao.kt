@@ -15,6 +15,9 @@ interface CustomListsItemsDao : BaseDao<CustomListItem> {
   @Query("SELECT * FROM custom_list_item WHERE id_list = :idList AND id_trakt = :idTrakt AND type = :type")
   suspend fun getById(idList: Long, idTrakt: Long, type: String): CustomListItem?
 
+  @Query("SELECT * FROM custom_list_item WHERE id_list = :idList ORDER BY rank ASC")
+  suspend fun getItemsById(idList: Long): List<CustomListItem>
+
   @Query("SELECT rank FROM custom_list_item WHERE id_list = :idList ORDER BY rank DESC LIMIT 1")
   suspend fun getRankForList(idList: Long): Long?
 

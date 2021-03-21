@@ -16,14 +16,17 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.di.UiListDetailsComponentProvider
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsAdapter
+import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.CustomList
-import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortOrderList
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import kotlinx.android.synthetic.main.fragment_list_details.*
+import kotlinx.android.synthetic.main.fragment_lists.*
 
 class ListDetailsFragment :
   BaseFragment<ListDetailsViewModel>(R.layout.fragment_list_details) {
@@ -49,7 +52,6 @@ class ListDetailsFragment :
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it) })
       loadDetails(list.id)
-      loadItems()
     }
   }
 
@@ -71,16 +73,15 @@ class ListDetailsFragment :
     }
     fragmentListDetailsEditButton.onClick { showEditDialog() }
     fragmentListDetailsDeleteButton.onClick { showDeleteDialog() }
-//    fragmentListDetailsSortButton.onClick {
-//      viewModel.loadSortOrder()
-//    }
   }
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
-    adapter = ListDetailsAdapter().apply {
-//      itemClickListener = { openMovieDetails(it.movie) }
-    }
+    adapter = ListDetailsAdapter(
+      missingImageListener = { item: ListDetailsItem, force: Boolean -> viewModel.loadMissingImage(item, force) },
+      missingTranslationListener = { viewModel.loadMissingTranslation(it) },
+      itemsChangedListener = { fragmentListDetailsRecycler.scrollToPosition(0) }
+    )
     fragmentListDetailsRecycler.apply {
       adapter = this@ListDetailsFragment.adapter
       layoutManager = this@ListDetailsFragment.layoutManager
@@ -97,18 +98,18 @@ class ListDetailsFragment :
     }
   }
 
-  private fun showSortOrderDialog(order: SortOrder) {
-//    val options = listOf(NAME, NEWEST, DATE_UPDATED)
-//    val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
-//
-//    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-//      .setTitle(R.string.textSortBy)
-//      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-//      .setSingleChoiceItems(optionsStrings, options.indexOf(order)) { dialog, index ->
-//        viewModel.setSortOrder(options[index])
-//        dialog.dismiss()
-//      }
-//      .show()
+  private fun showSortOrderDialog(order: SortOrderList) {
+    val options = SortOrderList.values()
+    val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
+
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setTitle(R.string.textSortBy)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setSingleChoiceItems(optionsStrings, options.indexOf(order)) { dialog, index ->
+        viewModel.setSortOrder(list.id, options[index])
+        dialog.dismiss()
+      }
+      .show()
   }
 
   private fun showDeleteDialog() {
@@ -131,21 +132,22 @@ class ListDetailsFragment :
 
   private fun render(uiModel: ListDetailsUiModel) {
     uiModel.run {
-      details?.let {
+      details?.let { details ->
         with(fragmentListDetailsToolbar) {
-          title = it.name
-          if (!it.description.isNullOrBlank()) {
-            subtitle = it.description
+          title = details.name
+          if (!details.description.isNullOrBlank()) {
+            subtitle = details.description
           }
         }
+        fragmentListDetailsSortButton.onClick { showSortOrderDialog(details.sortByLocal) }
       }
       items?.let {
         fragmentListDetailsEmptyView.fadeIf(it.isEmpty())
-//        fragmentListDetailsSortButton.visibleIf(it.isNotEmpty())
-        adapter?.setItems(it, true)
+        fragmentListDetailsSortButton.visibleIf(it.isNotEmpty())
+        val scrollTop = resetScroll?.consume() == true
+        adapter?.setItems(it, scrollTop)
       }
       deleteEvent?.let { event -> event.consume()?.let { activity?.onBackPressed() } }
-      sortOrderEvent?.let { event -> event.consume()?.let { showSortOrderDialog(it) } }
     }
   }
 

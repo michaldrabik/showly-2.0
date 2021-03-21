@@ -6,7 +6,7 @@
   android:id="@+id/fragmentListDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:clipChildren="false"
+  android:clipChildren="true"
   android:clipToPadding="false"
   >
 
@@ -14,11 +14,12 @@
     android:id="@+id/fragmentListDetailsRecycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="?android:attr/actionBarSize"
     android:clipChildren="false"
     android:clipToPadding="false"
     android:overScrollMode="never"
-    android:paddingTop="@dimen/listDetailsRecyclerPaddingTop"
-    android:paddingBottom="@dimen/spaceNormal"
+    android:paddingTop="@dimen/spaceSmall"
+    android:paddingBottom="@dimen/spaceSmall"
     />
 
   <androidx.appcompat.widget.Toolbar
@@ -29,6 +30,8 @@
     android:elevation="@dimen/elevationNormal"
     app:contentInsetStartWithNavigation="0dp"
     app:navigationIcon="@drawable/ic_arrow_back"
+    app:subtitleTextAppearance="@style/ListDetailsToolbarSubtitleAppearance"
+    app:titleTextAppearance="@style/ListDetailsToolbarTitleAppearance"
     >
 
     <ImageView
@@ -50,6 +53,17 @@
       android:layout_marginEnd="@dimen/spaceTiny"
       android:padding="8dp"
       app:srcCompat="@drawable/ic_edit"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+    <ImageView
+      android:id="@+id/fragmentListDetailsSortButton"
+      android:layout_width="40dp"
+      android:layout_height="match_parent"
+      android:layout_gravity="end"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:padding="8dp"
+      app:srcCompat="@drawable/ic_sort"
       app:tint="?android:attr/textColorPrimary"
       />
 
