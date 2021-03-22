@@ -23,7 +23,6 @@ import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
-import com.michaldrabik.ui_base.utilities.extensions.enableUi
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
@@ -73,11 +72,6 @@ class ListsFragment :
   override fun onResume() {
     super.onResume()
     showNavigation()
-  }
-
-  override fun onPause() {
-    enableUi()
-    super.onPause()
   }
 
   private fun setupView() {
