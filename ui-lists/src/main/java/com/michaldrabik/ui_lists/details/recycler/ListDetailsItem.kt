@@ -1,9 +1,11 @@
 package com.michaldrabik.ui_lists.details.recycler
 
+import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
+import org.threeten.bp.ZoneOffset
 import org.threeten.bp.ZonedDateTime
 
 data class ListDetailsItem(
@@ -30,6 +32,16 @@ data class ListDetailsItem(
   fun getYear(): Int {
     if (isShow()) return requireShow().year
     if (isMovie()) return requireMovie().year
+    throw IllegalStateException()
+  }
+
+  fun getDate(): Long {
+    if (isShow()) {
+      return if (requireShow().firstAired.isBlank()) 0 else ZonedDateTime.parse(requireShow().firstAired).toMillis()
+    }
+    if (isMovie()) {
+      return requireMovie().released?.atStartOfDay()?.toInstant(ZoneOffset.UTC)?.toEpochMilli() ?: 0
+    }
     throw IllegalStateException()
   }
 

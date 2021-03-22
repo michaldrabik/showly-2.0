@@ -87,10 +87,12 @@ class MainListDetailsCase @Inject constructor(
     when (sort) {
       RANK -> items.sortedBy { it.rank }
       TITLE -> items.sortedBy {
-        val translatedTitle = if (it.translation?.hasTitle == false) null else it.translation?.title
+        val translatedTitle =
+          if (it.translation?.hasTitle == false) null
+          else it.translation?.title
         translatedTitle ?: it.getTitleNoThe()
       }
-      NEWEST -> items.sortedByDescending { it.getYear() }
+      NEWEST -> items.sortedWith(compareByDescending<ListDetailsItem> { it.getYear() }.thenByDescending { it.getDate() })
       RATING -> items.sortedByDescending { it.getRating() }
       DATE_ADDED -> items.sortedByDescending { it.listedAt }
     }

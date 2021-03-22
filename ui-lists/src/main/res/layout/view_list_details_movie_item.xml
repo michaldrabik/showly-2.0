@@ -86,6 +86,7 @@
       android:layout_width="20dp"
       android:layout_height="0dp"
       android:layout_marginStart="10dp"
+      android:padding="1dp"
       app:layout_constraintBottom_toBottomOf="@id/listDetailsMovieHeader"
       app:layout_constraintStart_toEndOf="@id/listDetailsMovieImage"
       app:layout_constraintTop_toTopOf="@id/listDetailsMovieHeader"
