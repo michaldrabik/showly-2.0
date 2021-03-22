@@ -15,6 +15,7 @@ data class ListDetailsItem(
   val image: Image,
   val translation: Translation?,
   val isLoading: Boolean,
+  val isRankDisplayed: Boolean,
   val listedAt: ZonedDateTime
 ) {
 

@@ -40,7 +40,7 @@ abstract class ListDetailsItemView : FrameLayout {
 
   protected lateinit var item: ListDetailsItem
 
-  open fun bind(item: ListDetailsItem) {
+  open fun bind(item: ListDetailsItem, position: Int) {
     this.item = item
   }
 

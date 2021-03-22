@@ -11,6 +11,7 @@ class ListDetailsDiffCallback : DiffUtil.ItemCallback<ListDetailsItem>() {
     oldItem.isShow() -> {
       oldItem.show == newItem.show &&
         oldItem.isLoading == newItem.isLoading &&
+        oldItem.isRankDisplayed == newItem.isRankDisplayed &&
         oldItem.translation == newItem.translation &&
         oldItem.image == newItem.image &&
         oldItem.listedAt == newItem.listedAt &&
@@ -19,6 +20,7 @@ class ListDetailsDiffCallback : DiffUtil.ItemCallback<ListDetailsItem>() {
     oldItem.isMovie() -> {
       oldItem.movie == newItem.movie &&
         oldItem.isLoading == newItem.isLoading &&
+        oldItem.isRankDisplayed == newItem.isRankDisplayed &&
         oldItem.translation == newItem.translation &&
         oldItem.image == newItem.image &&
         oldItem.listedAt == newItem.listedAt &&

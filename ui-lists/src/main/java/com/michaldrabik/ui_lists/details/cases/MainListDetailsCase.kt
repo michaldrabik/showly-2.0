@@ -72,6 +72,7 @@ class MainListDetailsCase @Inject constructor(
     val (shows, movies) = Pair(showsAsync.await(), moviesAsync.await())
     val (showsTranslations, moviesTranslations) = Pair(showsTranslationsAsync.await(), moviesTranslationsAsync.await())
 
+    val isRankSort = list.sortByLocal == RANK
     val items = listItems.map { listItem ->
       async {
         val listedAt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(listItem.listedAt), ZoneId.of("UTC"))
@@ -80,13 +81,13 @@ class MainListDetailsCase @Inject constructor(
             val show = mappers.show.fromDatabase(shows.first { it.idTrakt == listItem.idTrakt })
             val image = showImagesProvider.findCachedImage(show, ImageType.POSTER)
             val translation = showsTranslations[show.traktId]
-            ListDetailsItem(listItem.rank, show, null, image, translation, false, listedAt)
+            ListDetailsItem(listItem.rank, show, null, image, translation, false, isRankSort, listedAt)
           }
           MOVIES.type -> {
             val movie = mappers.movie.fromDatabase(movies.first { it.idTrakt == listItem.idTrakt })
             val image = movieImagesProvider.findCachedImage(movie, ImageType.POSTER)
             val translation = moviesTranslations[movie.traktId]
-            ListDetailsItem(listItem.rank, null, movie, image, translation, false, listedAt)
+            ListDetailsItem(listItem.rank, null, movie, image, translation, false, isRankSort, listedAt)
           }
           else -> throw IllegalStateException("Unsupported list item type.")
         }
@@ -96,8 +97,8 @@ class MainListDetailsCase @Inject constructor(
     sortItems(items, list.sortByLocal)
   }
 
-  fun sortItems(items: List<ListDetailsItem>, sort: SortOrderList) =
-    when (sort) {
+  fun sortItems(items: List<ListDetailsItem>, sort: SortOrderList): List<ListDetailsItem> {
+    val sorted = when (sort) {
       RANK -> items.sortedBy { it.rank }
       TITLE -> items.sortedBy {
         val translatedTitle =
@@ -109,6 +110,8 @@ class MainListDetailsCase @Inject constructor(
       RATING -> items.sortedByDescending { it.getRating() }
       DATE_ADDED -> items.sortedByDescending { it.listedAt }
     }
+    return sorted.map { it.copy(isRankDisplayed = sort == RANK) }
+  }
 
   suspend fun deleteList(listId: Long) = listsRepository.deleteList(listId)
 }
