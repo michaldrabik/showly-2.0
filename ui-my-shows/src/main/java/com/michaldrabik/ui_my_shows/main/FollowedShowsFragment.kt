@@ -261,7 +261,7 @@ class FollowedShowsFragment :
   fun openShowDetails(show: Show) {
     disableUi()
     hideNavigation()
-    followedShowsRoot.fadeOut {
+    followedShowsRoot.fadeOut(150) {
       exitSearch(false)
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.traktId) }
       navigateTo(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)

@@ -150,7 +150,7 @@ class ProgressMoviesFragment :
     exitSearch()
     hideNavigation()
     saveUiTranslations()
-    progressMoviesRoot.fadeOut {
+    progressMoviesRoot.fadeOut(150) {
       val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, item.movie.ids.trakt.id) }
       navigateTo(R.id.actionProgressMoviesFragmentToMovieDetailsFragment, bundle)
     }.add(animations)

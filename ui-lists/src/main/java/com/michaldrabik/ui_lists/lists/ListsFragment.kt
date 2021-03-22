@@ -21,7 +21,9 @@ import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.enableUi
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
@@ -71,6 +73,11 @@ class ListsFragment :
   override fun onResume() {
     super.onResume()
     showNavigation()
+  }
+
+  override fun onPause() {
+    enableUi()
+    super.onPause()
   }
 
   private fun setupView() {
@@ -226,8 +233,13 @@ class ListsFragment :
   }
 
   private fun openListDetails(listItem: ListsItem) {
-    val bundle = bundleOf(ARG_LIST to listItem.list)
-    navigateTo(R.id.actionListsFragmentToDetailsFragment, bundle)
+    disableUi()
+    hideNavigation()
+    fragmentListsRoot.fadeOut(150) {
+//      exitSearch(false)
+      val bundle = bundleOf(ARG_LIST to listItem.list)
+      navigateTo(R.id.actionListsFragmentToDetailsFragment, bundle)
+    }.add(animations)
 
     viewModel.tabsTranslation = fragmentListsModeTabs.translationY
     viewModel.searchViewTranslation = fragmentListsSearchView.translationY

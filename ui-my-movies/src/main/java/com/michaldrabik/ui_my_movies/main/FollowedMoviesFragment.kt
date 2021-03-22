@@ -260,7 +260,7 @@ class FollowedMoviesFragment :
   fun openMovieDetails(movie: Movie) {
     disableUi()
     hideNavigation()
-    followedMoviesRoot.fadeOut {
+    followedMoviesRoot.fadeOut(150) {
       exitSearch(false)
       val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, movie.ids.trakt.id) }
       navigateTo(R.id.actionFollowedMoviesFragmentToMovieDetailsFragment, bundle)

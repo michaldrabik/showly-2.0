@@ -159,7 +159,7 @@ class ProgressFragment :
     exitSearch()
     hideNavigation()
     saveUiTranslations()
-    progressRoot.fadeOut {
+    progressRoot.fadeOut(150) {
       if (findNavControl()?.currentDestination?.id == R.id.progressFragment) {
         val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
         navigateTo(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
