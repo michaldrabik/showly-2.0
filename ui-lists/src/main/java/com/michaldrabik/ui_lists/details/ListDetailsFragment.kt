@@ -16,6 +16,7 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.enableUi
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -63,6 +64,11 @@ class ListDetailsFragment :
   override fun onResume() {
     super.onResume()
     hideNavigation()
+  }
+
+  override fun onPause() {
+    enableUi()
+    super.onPause()
   }
 
   private fun setupView() {

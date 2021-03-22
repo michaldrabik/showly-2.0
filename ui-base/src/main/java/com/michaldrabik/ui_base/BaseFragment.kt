@@ -15,7 +15,6 @@ import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost
-import com.michaldrabik.ui_base.utilities.extensions.enableUi
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_model.Tip
@@ -65,11 +64,6 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
   override fun showTip(tip: Tip) = (requireActivity() as TipsHost).showTip(tip)
 
   protected fun isTraktSyncing() = (requireAppContext() as OnTraktSyncListener).isTraktSyncActive()
-
-  override fun onPause() {
-    enableUi()
-    super.onPause()
-  }
 
   override fun onDestroyView() {
     animations.forEach { it?.cancel() }

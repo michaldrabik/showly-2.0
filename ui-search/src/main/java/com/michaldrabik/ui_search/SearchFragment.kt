@@ -78,6 +78,11 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     }
   }
 
+  override fun onPause() {
+    enableUi()
+    super.onPause()
+  }
+
   override fun onStop() {
     viewModel.clearSuggestions()
     exSearchViewInput.removeTextChangedListener(this)

@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_lists
+package com.michaldrabik.ui_lists.lists.views
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -13,10 +13,12 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.invisible
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
+import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType
@@ -39,6 +41,12 @@ class ListsTripleImageView : FrameLayout {
   fun bind(images: List<Image>) {
     clear()
     if (images.all { it.status == ImageStatus.UNAVAILABLE }) {
+      viewTripleImagePlaceholder1.visible()
+      viewTripleImagePlaceholder2.visible()
+      viewTripleImagePlaceholder3.visible()
+      viewTripleImage1.gone()
+      viewTripleImage2.gone()
+      viewTripleImage3.gone()
       return
     }
     // List is guaranteed to always have exact 3 items.

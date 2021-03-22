@@ -20,6 +20,7 @@ import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.enableUi
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.invisible
@@ -65,6 +66,11 @@ class DiscoverMoviesFragment :
   override fun onResume() {
     super.onResume()
     showNavigation()
+  }
+
+  override fun onPause() {
+    enableUi()
+    super.onPause()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

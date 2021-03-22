@@ -30,7 +30,7 @@
       app:layout_constraintStart_toStartOf="parent"
       />
 
-    <com.michaldrabik.ui_lists.ListsTripleImageView
+    <com.michaldrabik.ui_lists.lists.views.ListsTripleImageView
       android:id="@+id/listsItemImages"
       android:layout_width="0dp"
       android:layout_height="@dimen/listsImageHeight"
