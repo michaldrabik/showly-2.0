@@ -13,6 +13,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
+    android:clipChildren="false"
     android:clipToPadding="false"
     android:paddingLeft="@dimen/listsMarginHorizontal"
     android:paddingTop="@dimen/spaceSmall"
@@ -30,26 +31,14 @@
       />
 
     <com.michaldrabik.ui_lists.ListsTripleImageView
-      android:layout_width="wrap_content"
+      android:id="@+id/listsItemImages"
+      android:layout_width="0dp"
       android:layout_height="@dimen/listsImageHeight"
       app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/listsItemGuideline"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       />
-
-    <!--    <ProgressBar-->
-    <!--      android:id="@+id/listsItemProgress"-->
-    <!--      style="@style/ProgressBar.Dark"-->
-    <!--      android:layout_width="28dp"-->
-    <!--      android:layout_height="28dp"-->
-    <!--      android:layout_gravity="center"-->
-    <!--      android:visibility="gone"-->
-    <!--      app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--      app:layout_constraintEnd_toEndOf="@id/listsItemImage"-->
-    <!--      app:layout_constraintStart_toStartOf="@id/listsItemImage"-->
-    <!--      app:layout_constraintTop_toTopOf="parent"-->
-    <!--      tools:visibility="visible"-->
-    <!--      />-->
 
     <TextView
       android:id="@+id/listsItemTitle"

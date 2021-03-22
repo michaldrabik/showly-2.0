@@ -28,7 +28,7 @@ abstract class ListDetailsItemView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  private val cornerRadius by lazy { context.dimenToPx(R.dimen.movieTileCorner) }
+  private val cornerRadius by lazy { context.dimenToPx(R.dimen.listItemCorner) }
 
   protected abstract val imageView: ImageView
   protected abstract val placeholderView: ImageView

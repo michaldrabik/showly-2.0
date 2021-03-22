@@ -30,7 +30,9 @@ class ListDetailsMovieItemView : ListDetailsItemView {
       }
     }
 
-    listDetailsMovieRoot.onClick { itemClickListener?.invoke(item) }
+    listDetailsMovieRoot.onClick {
+      if (item.isEnabled) itemClickListener?.invoke(item)
+    }
   }
 
   override val imageView: ImageView = listDetailsMovieImage
@@ -61,6 +63,8 @@ class ListDetailsMovieItemView : ListDetailsItemView {
 
     listDetailsMovieRank.visibleIf(item.isRankDisplayed)
     listDetailsMovieRank.text = String.format(ENGLISH, "%d", position + 1)
+
+    listDetailsMovieRoot.alpha = if (item.isEnabled) 1F else 0.45F
 
     loadImage(item)
   }

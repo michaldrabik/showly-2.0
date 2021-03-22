@@ -50,8 +50,6 @@ class ListsItemView : FrameLayout {
       else -> throw IllegalStateException()
     }
 
-//    val hasItems = item.list.itemCount > 0
-//    listsItemPlaceholder.visibleIf(!hasItems)
-//    listsItemImage.visibleIf(hasItems)
+    listsItemImages.bind(item.images)
   }
 }

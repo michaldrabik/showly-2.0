@@ -46,18 +46,12 @@ class MainListDetailsCase @Inject constructor(
   suspend fun loadItems(list: CustomList) = coroutineScope {
     val moviesEnabled = settingsRepository.isMoviesEnabled
     val listItems = listsRepository.loadItemsById(list.id)
-      .filter {
-        if (moviesEnabled) true
-        else it.type == SHOWS.type
-      }
 
-    val showsAsync = async { database.showsDao().getAll(listItems.filter { it.type == SHOWS.type }.map { it.idTrakt }) }
+    val showsAsync = async {
+      database.showsDao().getAll(listItems.filter { it.type == SHOWS.type }.map { it.idTrakt })
+    }
     val moviesAsync = async {
-      if (moviesEnabled) {
-        database.moviesDao().getAll(listItems.filter { it.type == MOVIES.type }.map { it.idTrakt })
-      } else {
-        emptyList()
-      }
+      database.moviesDao().getAll(listItems.filter { it.type == MOVIES.type }.map { it.idTrakt })
     }
 
     val showsTranslationsAsync = async {
@@ -65,7 +59,7 @@ class MainListDetailsCase @Inject constructor(
       else translationsRepository.loadAllShowsLocal(language)
     }
     val moviesTranslationsAsync = async {
-      if (language == Config.DEFAULT_LANGUAGE || !moviesEnabled) emptyMap()
+      if (language == Config.DEFAULT_LANGUAGE) emptyMap()
       else translationsRepository.loadAllMoviesLocal(language)
     }
 
@@ -81,13 +75,13 @@ class MainListDetailsCase @Inject constructor(
             val show = mappers.show.fromDatabase(shows.first { it.idTrakt == listItem.idTrakt })
             val image = showImagesProvider.findCachedImage(show, ImageType.POSTER)
             val translation = showsTranslations[show.traktId]
-            ListDetailsItem(listItem.rank, show, null, image, translation, false, isRankSort, listedAt)
+            ListDetailsItem(listItem.rank, show, null, image, translation, false, isRankSort, true, listedAt)
           }
           MOVIES.type -> {
             val movie = mappers.movie.fromDatabase(movies.first { it.idTrakt == listItem.idTrakt })
             val image = movieImagesProvider.findCachedImage(movie, ImageType.POSTER)
             val translation = moviesTranslations[movie.traktId]
-            ListDetailsItem(listItem.rank, null, movie, image, translation, false, isRankSort, listedAt)
+            ListDetailsItem(listItem.rank, null, movie, image, translation, false, isRankSort, moviesEnabled, listedAt)
           }
           else -> throw IllegalStateException("Unsupported list item type.")
         }

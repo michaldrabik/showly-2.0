@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.michaldrabik.storage.database.model.CustomListItem
-import timber.log.Timber
 
 @Dao
 interface CustomListsItemsDao : BaseDao<CustomListItem> {
@@ -18,6 +17,9 @@ interface CustomListsItemsDao : BaseDao<CustomListItem> {
   @Query("SELECT * FROM custom_list_item WHERE id_list = :idList ORDER BY rank ASC")
   suspend fun getItemsById(idList: Long): List<CustomListItem>
 
+  @Query("SELECT * FROM custom_list_item WHERE id_list = :idList ORDER BY rank ASC LIMIT :limit")
+  suspend fun getItemsForListImages(idList: Long, limit: Int): List<CustomListItem>
+
   @Query("SELECT rank FROM custom_list_item WHERE id_list = :idList ORDER BY rank DESC LIMIT 1")
   suspend fun getRankForList(idList: Long): Long?
 
@@ -26,7 +28,6 @@ interface CustomListsItemsDao : BaseDao<CustomListItem> {
     val localItem = getById(item.idList, item.idTrakt, item.type)
     if (localItem != null) return
     val rank = getRankForList(item.idList) ?: 0L
-    Timber.d("RANK $rank")
     val rankedItem = item.copy(rank = rank + 1L)
     insert(listOf(rankedItem))
   }

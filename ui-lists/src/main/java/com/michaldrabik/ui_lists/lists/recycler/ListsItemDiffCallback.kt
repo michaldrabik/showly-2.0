@@ -10,5 +10,7 @@ class ListsItemDiffCallback : DiffUtil.ItemCallback<ListsItem>() {
   override fun areContentsTheSame(oldItem: ListsItem, newItem: ListsItem) =
     oldItem.list == newItem.list &&
       oldItem.sortOrder == newItem.sortOrder &&
+      oldItem.images.size == newItem.images.size &&
+      oldItem.images == newItem.images &&
       oldItem.dateFormat?.toString() == newItem.dateFormat?.toString()
 }
