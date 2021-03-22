@@ -7,6 +7,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
+import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
@@ -28,7 +29,8 @@ class ListDetailsMovieItemView : ListDetailsItemView {
         missingTranslationListener?.invoke(item)
       }
     }
-//    watchlistMoviesRoot.onClick { itemClickListener?.invoke(item) }
+
+    listDetailsMovieRoot.onClick { itemClickListener?.invoke(item) }
   }
 
   override val imageView: ImageView = listDetailsMovieImage

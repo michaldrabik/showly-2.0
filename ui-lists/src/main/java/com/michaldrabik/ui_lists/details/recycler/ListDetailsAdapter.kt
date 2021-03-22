@@ -8,6 +8,7 @@ import com.michaldrabik.ui_lists.details.views.ListDetailsMovieItemView
 import com.michaldrabik.ui_lists.details.views.ListDetailsShowItemView
 
 class ListDetailsAdapter(
+  val itemClickListener: (ListDetailsItem) -> Unit,
   val missingImageListener: (ListDetailsItem, Boolean) -> Unit,
   val missingTranslationListener: (ListDetailsItem) -> Unit,
   val itemsChangedListener: () -> Unit
@@ -41,10 +42,12 @@ class ListDetailsAdapter(
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
     VIEW_TYPE_SHOW -> ListDetailsItemViewHolder(ListDetailsShowItemView(parent.context).apply {
+      itemClickListener = { item -> this@ListDetailsAdapter.itemClickListener(item) }
       missingImageListener = { item, force -> this@ListDetailsAdapter.missingImageListener(item, force) }
       missingTranslationListener = { item -> this@ListDetailsAdapter.missingTranslationListener(item) }
     })
     VIEW_TYPE_MOVIE -> ListDetailsItemViewHolder(ListDetailsMovieItemView(parent.context).apply {
+      itemClickListener = { item -> this@ListDetailsAdapter.itemClickListener(item) }
       missingImageListener = { item, force -> this@ListDetailsAdapter.missingImageListener(item, force) }
       missingTranslationListener = { item -> this@ListDetailsAdapter.missingTranslationListener(item) }
     })

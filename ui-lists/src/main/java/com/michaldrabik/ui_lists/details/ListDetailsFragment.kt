@@ -13,8 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.utilities.extensions.add
+import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
@@ -25,6 +28,8 @@ import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.SortOrderList
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import kotlinx.android.synthetic.main.fragment_list_details.*
 import kotlinx.android.synthetic.main.fragment_lists.*
 
@@ -78,6 +83,7 @@ class ListDetailsFragment :
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = ListDetailsAdapter(
+      itemClickListener = { openItemDetails(it) },
       missingImageListener = { item: ListDetailsItem, force: Boolean -> viewModel.loadMissingImage(item, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it) },
       itemsChangedListener = { fragmentListDetailsRecycler.scrollToPosition(0) }
@@ -128,6 +134,23 @@ class ListDetailsFragment :
     }
     val bundle = bundleOf(ARG_LIST to list)
     navigateTo(R.id.actionListDetailsFragmentToEditListDialog, bundle)
+  }
+
+  private fun openItemDetails(listItem: ListDetailsItem) {
+    disableUi()
+    fragmentListDetailsRoot.fadeOut(150) {
+      val bundle = bundleOf(
+        ARG_SHOW_ID to listItem.show?.traktId,
+        ARG_MOVIE_ID to listItem.movie?.traktId
+      )
+      val destination =
+        when {
+          listItem.isShow() -> R.id.actionListDetailsFragmentToShowDetailsFragment
+          listItem.isMovie() -> R.id.actionListDetailsFragmentToMovieDetailsFragment
+          else -> throw IllegalStateException()
+        }
+      navigateTo(destination, bundle)
+    }.add(animations)
   }
 
   private fun render(uiModel: ListDetailsUiModel) {

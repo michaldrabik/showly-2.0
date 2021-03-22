@@ -375,6 +375,20 @@
       app:destination="@id/createListDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionListDetailsFragmentToShowDetailsFragment"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionListDetailsFragmentToMovieDetailsFragment"
+      app:destination="@id/movieDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
   </fragment>
 
   <fragment
