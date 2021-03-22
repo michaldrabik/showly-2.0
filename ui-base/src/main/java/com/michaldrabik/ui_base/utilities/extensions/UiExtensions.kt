@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.core.animation.doOnEnd
 import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
+import timber.log.Timber
 import java.util.Locale
 
 fun View.visible() {
@@ -105,9 +106,15 @@ fun TextView.setTextFade(text: String, duration: Long = 125) {
   )
 }
 
-fun Activity.disableUi() = window.setFlags(FLAG_NOT_TOUCHABLE, FLAG_NOT_TOUCHABLE)
+fun Activity.disableUi() {
+  window.setFlags(FLAG_NOT_TOUCHABLE, FLAG_NOT_TOUCHABLE)
+  Timber.d("UI disabled.")
+}
 
-fun Activity.enableUi() = window.clearFlags(FLAG_NOT_TOUCHABLE)
+fun Activity.enableUi() {
+  window.clearFlags(FLAG_NOT_TOUCHABLE)
+  Timber.d("UI enabled.")
+}
 
 fun Fragment.disableUi() = activity?.disableUi()
 

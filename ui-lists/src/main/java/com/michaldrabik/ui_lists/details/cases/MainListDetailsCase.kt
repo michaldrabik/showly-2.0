@@ -17,6 +17,7 @@ import com.michaldrabik.ui_model.SortOrderList.RANK
 import com.michaldrabik.ui_model.SortOrderList.RATING
 import com.michaldrabik.ui_model.SortOrderList.TITLE
 import com.michaldrabik.ui_repository.ListsRepository
+import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.async
@@ -34,7 +35,8 @@ class MainListDetailsCase @Inject constructor(
   private val listsRepository: ListsRepository,
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
-  private val translationsRepository: TranslationsRepository
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository
 ) {
 
   private val language by lazy { translationsRepository.getLanguage() }
@@ -42,17 +44,28 @@ class MainListDetailsCase @Inject constructor(
   suspend fun loadDetails(id: Long) = listsRepository.loadById(id)
 
   suspend fun loadItems(list: CustomList) = coroutineScope {
+    val moviesEnabled = settingsRepository.isMoviesEnabled
     val listItems = listsRepository.loadItemsById(list.id)
+      .filter {
+        if (moviesEnabled) true
+        else it.type == SHOWS.type
+      }
 
     val showsAsync = async { database.showsDao().getAll(listItems.filter { it.type == SHOWS.type }.map { it.idTrakt }) }
-    val moviesAsync = async { database.moviesDao().getAll(listItems.filter { it.type == MOVIES.type }.map { it.idTrakt }) }
+    val moviesAsync = async {
+      if (moviesEnabled) {
+        database.moviesDao().getAll(listItems.filter { it.type == MOVIES.type }.map { it.idTrakt })
+      } else {
+        emptyList()
+      }
+    }
 
     val showsTranslationsAsync = async {
       if (language == Config.DEFAULT_LANGUAGE) emptyMap()
       else translationsRepository.loadAllShowsLocal(language)
     }
     val moviesTranslationsAsync = async {
-      if (language == Config.DEFAULT_LANGUAGE) emptyMap()
+      if (language == Config.DEFAULT_LANGUAGE || !moviesEnabled) emptyMap()
       else translationsRepository.loadAllMoviesLocal(language)
     }
 
