@@ -216,9 +216,9 @@ class ListDetailsFragment :
           fragmentListDetailsToolbar.title = getString(R.string.textChangeRanks)
           fragmentListDetailsToolbar.subtitle = getString(R.string.textChangeRanksSubtitle)
         } else {
-          fragmentListDetailsToolbar.title = list.name
+          fragmentListDetailsToolbar.title = details?.name ?: list.name
           if (!list.description.isNullOrBlank()) {
-            fragmentListDetailsToolbar.subtitle = list.description
+            fragmentListDetailsToolbar.subtitle = details?.description ?: list.description
           } else {
             fragmentListDetailsToolbar.subtitle = null
           }

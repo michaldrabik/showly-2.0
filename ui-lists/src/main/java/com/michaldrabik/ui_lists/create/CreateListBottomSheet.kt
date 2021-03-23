@@ -46,6 +46,9 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
     setupView(view)
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it) })
+      if (isEditMode()) {
+        viewModel.loadDetails(list?.id!!)
+      }
     }
   }
 
@@ -57,8 +60,6 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
         viewCreateListTitle.setText(R.string.textEditList)
         viewCreateListSubtitle.setText(R.string.textEditListDescription)
         viewCreateListButton.setText(R.string.textApply)
-        viewCreateListNameValue.setText(list?.name)
-        viewCreateListDescriptionValue.setText(list?.description)
       }
     }
   }
@@ -80,6 +81,10 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
   @SuppressLint("SetTextI18n")
   private fun render(uiModel: CreateListUiModel) {
     uiModel.run {
+      listDetails?.let {
+        viewCreateListNameValue.setText(it.name)
+        viewCreateListDescriptionValue.setText(it.description)
+      }
       isLoading?.let {
         viewCreateListButton.isEnabled == !it
       }
