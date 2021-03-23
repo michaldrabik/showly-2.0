@@ -9,6 +9,7 @@ import org.threeten.bp.ZoneOffset
 import org.threeten.bp.ZonedDateTime
 
 data class ListDetailsItem(
+  val id: Long,
   val rank: Long,
   val show: Show?,
   val movie: Movie?,
@@ -19,11 +20,6 @@ data class ListDetailsItem(
   val isEnabled: Boolean,
   val listedAt: ZonedDateTime
 ) {
-
-  fun getId(): String {
-    val type = if (show != null) "show" else "movie"
-    return "$type${show?.traktId ?: movie?.traktId}"
-  }
 
   fun getTitleNoThe(): String {
     if (isShow()) return requireShow().titleNoThe

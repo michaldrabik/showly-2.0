@@ -62,6 +62,13 @@ class ListDetailsViewModel @Inject constructor(
     }
   }
 
+  fun updateRanks(listId: Long, items: List<ListDetailsItem>) {
+    viewModelScope.launch {
+      val updatedItems = mainCase.updateRanks(listId, items)
+      uiState = ListDetailsUiModel(items = updatedItems)
+    }
+  }
+
   fun setSortOrder(id: Long, sortOrder: SortOrderList) {
     viewModelScope.launch {
       val list = sortCase.setSortOrder(id, sortOrder)
@@ -86,7 +93,7 @@ class ListDetailsViewModel @Inject constructor(
 
   private fun updateItem(newItem: ListDetailsItem) {
     val currentItems = uiState?.items?.toMutableList()
-    currentItems?.findReplace(newItem) { it.getId() == newItem.getId() }
+    currentItems?.findReplace(newItem) { it.id == newItem.id }
     uiState = uiState?.copy(items = currentItems)
   }
 }

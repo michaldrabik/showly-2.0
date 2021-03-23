@@ -1,10 +1,13 @@
 package com.michaldrabik.ui_lists.details.cases
 
+import androidx.room.withTransaction
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.CustomListItem
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
@@ -75,13 +78,13 @@ class MainListDetailsCase @Inject constructor(
             val show = mappers.show.fromDatabase(shows.first { it.idTrakt == listItem.idTrakt })
             val image = showImagesProvider.findCachedImage(show, ImageType.POSTER)
             val translation = showsTranslations[show.traktId]
-            ListDetailsItem(listItem.rank, show, null, image, translation, false, isRankSort, true, listedAt)
+            ListDetailsItem(listItem.id, listItem.rank, show, null, image, translation, false, isRankSort, true, listedAt)
           }
           MOVIES.type -> {
             val movie = mappers.movie.fromDatabase(movies.first { it.idTrakt == listItem.idTrakt })
             val image = movieImagesProvider.findCachedImage(movie, ImageType.POSTER)
             val translation = moviesTranslations[movie.traktId]
-            ListDetailsItem(listItem.rank, null, movie, image, translation, false, isRankSort, moviesEnabled, listedAt)
+            ListDetailsItem(listItem.id, listItem.rank, null, movie, image, translation, false, isRankSort, moviesEnabled, listedAt)
           }
           else -> throw IllegalStateException("Unsupported list item type.")
         }
@@ -105,6 +108,24 @@ class MainListDetailsCase @Inject constructor(
       DATE_ADDED -> items.sortedByDescending { it.listedAt }
     }
     return sorted.map { it.copy(isRankDisplayed = sort == RANK) }
+  }
+
+  suspend fun updateRanks(listId: Long, items: List<ListDetailsItem>): List<ListDetailsItem> {
+    val now = nowUtcMillis()
+    val listItems = listsRepository.loadItemsById(listId)
+    val updateItems = mutableListOf<ListDetailsItem>()
+    val updateItemsDb = mutableListOf<CustomListItem>()
+    items.forEachIndexed { index, item ->
+      val dbItem = listItems.first { it.id == item.id }.copy(rank = index + 1L, updatedAt = now)
+      val updatedItem = item.copy(rank = index + 1L)
+      updateItems.add(updatedItem)
+      updateItemsDb.add(dbItem)
+    }
+    database.withTransaction {
+      database.customListsItemsDao().update(updateItemsDb)
+      database.customListsDao().updateTimestamp(listId, now)
+    }
+    return updateItems
   }
 
   suspend fun deleteList(listId: Long) = listsRepository.deleteList(listId)

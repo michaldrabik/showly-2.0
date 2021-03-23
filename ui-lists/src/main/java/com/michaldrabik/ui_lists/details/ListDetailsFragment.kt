@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -23,6 +24,8 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.di.UiListDetailsComponentProvider
+import com.michaldrabik.ui_lists.details.helpers.ReorderListCallback
+import com.michaldrabik.ui_lists.details.helpers.ReorderListCallbackAdapter
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsAdapter
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.CustomList
@@ -42,6 +45,7 @@ class ListDetailsFragment :
   private val list by lazy { requireArguments().getParcelable<CustomList>(ARG_LIST)!! }
 
   private var adapter: ListDetailsAdapter? = null
+  private var touchHelper: ItemTouchHelper? = null
   private var layoutManager: LinearLayoutManager? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,7 +96,8 @@ class ListDetailsFragment :
       itemClickListener = { openItemDetails(it) },
       missingImageListener = { item: ListDetailsItem, force: Boolean -> viewModel.loadMissingImage(item, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it) },
-      itemsChangedListener = { fragmentListDetailsRecycler.scrollToPosition(0) }
+      itemsChangedListener = { fragmentListDetailsRecycler.scrollToPosition(0) },
+      itemsMovedListener = { viewModel.updateRanks(list.id, it) }
     )
     fragmentListDetailsRecycler.apply {
       adapter = this@ListDetailsFragment.adapter
@@ -100,6 +105,9 @@ class ListDetailsFragment :
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
     }
+    val touchCallback = ReorderListCallback(adapter as ReorderListCallbackAdapter)
+    touchHelper = ItemTouchHelper(touchCallback)
+    touchHelper?.attachToRecyclerView(fragmentListDetailsRecycler)
   }
 
   private fun setupBackPressed() {
@@ -182,6 +190,7 @@ class ListDetailsFragment :
 
   override fun onDestroyView() {
     adapter = null
+    touchHelper = null
     layoutManager = null
     super.onDestroyView()
   }

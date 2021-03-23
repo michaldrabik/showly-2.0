@@ -2,32 +2,43 @@ package com.michaldrabik.ui_lists.details.recycler
 
 import androidx.recyclerview.widget.DiffUtil
 
-class ListDetailsDiffCallback : DiffUtil.ItemCallback<ListDetailsItem>() {
+class ListDetailsDiffCallback(
+  private val oldItems: List<ListDetailsItem>,
+  private val newItems: List<ListDetailsItem>
+) : DiffUtil.Callback() {
 
-  override fun areItemsTheSame(oldItem: ListDetailsItem, newItem: ListDetailsItem) =
-    oldItem.getId() == newItem.getId()
+  override fun areItemsTheSame(oldPos: Int, newPos: Int) =
+    oldItems[oldPos].id == newItems[newPos].id
 
-  override fun areContentsTheSame(oldItem: ListDetailsItem, newItem: ListDetailsItem) = when {
-    oldItem.isShow() -> {
-      oldItem.show == newItem.show &&
-        oldItem.isLoading == newItem.isLoading &&
-        oldItem.isRankDisplayed == newItem.isRankDisplayed &&
-        oldItem.isEnabled == newItem.isEnabled &&
-        oldItem.translation == newItem.translation &&
-        oldItem.image == newItem.image &&
-        oldItem.listedAt == newItem.listedAt &&
-        oldItem.rank == newItem.rank
+  override fun areContentsTheSame(oldPos: Int, newPos: Int): Boolean {
+    val oldItem = oldItems[oldPos]
+    val newItem = newItems[newPos]
+    return when {
+      oldItem.isShow() -> {
+        oldItem.show == newItem.show &&
+          oldItem.isLoading == newItem.isLoading &&
+          oldItem.isRankDisplayed == newItem.isRankDisplayed &&
+          oldItem.isEnabled == newItem.isEnabled &&
+          oldItem.translation == newItem.translation &&
+          oldItem.image == newItem.image &&
+          oldItem.listedAt == newItem.listedAt &&
+          oldItem.rank == newItem.rank
+      }
+      oldItem.isMovie() -> {
+        oldItem.movie == newItem.movie &&
+          oldItem.isLoading == newItem.isLoading &&
+          oldItem.isRankDisplayed == newItem.isRankDisplayed &&
+          oldItem.isEnabled == newItem.isEnabled &&
+          oldItem.translation == newItem.translation &&
+          oldItem.image == newItem.image &&
+          oldItem.listedAt == newItem.listedAt &&
+          oldItem.rank == newItem.rank
+      }
+      else -> throw IllegalStateException()
     }
-    oldItem.isMovie() -> {
-      oldItem.movie == newItem.movie &&
-        oldItem.isLoading == newItem.isLoading &&
-        oldItem.isRankDisplayed == newItem.isRankDisplayed &&
-        oldItem.isEnabled == newItem.isEnabled &&
-        oldItem.translation == newItem.translation &&
-        oldItem.image == newItem.image &&
-        oldItem.listedAt == newItem.listedAt &&
-        oldItem.rank == newItem.rank
-    }
-    else -> throw IllegalStateException()
   }
+
+  override fun getOldListSize() = oldItems.size
+
+  override fun getNewListSize() = newItems.size
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
+import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
@@ -23,6 +24,7 @@ class ListDetailsMovieItemView : ListDetailsItemView {
   init {
     inflate(context, R.layout.view_list_details_movie_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    setBackgroundColor(context.colorFromAttr(android.R.attr.colorBackground))
 
     imageLoadCompleteListener = {
       if (item.translation == null) {
