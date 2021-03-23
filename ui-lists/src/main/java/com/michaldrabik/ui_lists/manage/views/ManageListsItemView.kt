@@ -33,7 +33,7 @@ class ManageListsItemView : FrameLayout {
   fun bind(item: ManageListsItem) {
     this.item = item
     isCheckEnabled = false
-    manageListsItemCheckbox.text = item.list.name
+    manageListsItemCheckbox.text = " ${item.list.name}"
     manageListsItemCheckbox.isChecked = item.isChecked
     manageListsItemCheckbox.isEnabled = item.isEnabled
     isCheckEnabled = true
