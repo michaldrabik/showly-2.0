@@ -29,7 +29,7 @@ class ListDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       val list = mainCase.loadDetails(id)
       val listItems = mainCase.loadItems(list)
-      uiState = ListDetailsUiModel(details = list, items = listItems)
+      uiState = ListDetailsUiModel(details = list, items = listItems, isManageMode = false)
     }
   }
 
@@ -58,6 +58,22 @@ class ListDetailsViewModel @Inject constructor(
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "ListDetailsViewModel::loadMissingTranslation()")
+      }
+    }
+  }
+
+  fun setManageMode(listId: Long, isManageMode: Boolean) {
+    viewModelScope.launch {
+      uiState = if (isManageMode) {
+        val currentItems = uiState?.items?.toList() ?: emptyList()
+        val sortedItems = mainCase.sortItems(currentItems, SortOrderList.RANK)
+          .map { it.copy(isManageMode = true) }
+        ListDetailsUiModel(items = sortedItems, isManageMode = true, resetScroll = ActionEvent(true))
+      } else {
+        val list = mainCase.loadDetails(listId)
+        val listItems = mainCase.loadItems(list)
+          .map { it.copy(isManageMode = false) }
+        ListDetailsUiModel(items = listItems, isManageMode = false, resetScroll = ActionEvent(true))
       }
     }
   }

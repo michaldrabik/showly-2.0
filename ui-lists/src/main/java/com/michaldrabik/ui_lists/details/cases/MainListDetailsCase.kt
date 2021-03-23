@@ -72,19 +72,44 @@ class MainListDetailsCase @Inject constructor(
     val isRankSort = list.sortByLocal == RANK
     val items = listItems.map { listItem ->
       async {
+        val isDragEnabled = false
         val listedAt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(listItem.listedAt), ZoneId.of("UTC"))
         when (listItem.type) {
           SHOWS.type -> {
             val show = mappers.show.fromDatabase(shows.first { it.idTrakt == listItem.idTrakt })
             val image = showImagesProvider.findCachedImage(show, ImageType.POSTER)
             val translation = showsTranslations[show.traktId]
-            ListDetailsItem(listItem.id, listItem.rank, show, null, image, translation, false, isRankSort, true, listedAt)
+            ListDetailsItem(
+              id = listItem.id,
+              rank = listItem.rank,
+              show = show,
+              movie = null,
+              image = image,
+              translation = translation,
+              isLoading = false,
+              isRankDisplayed = isRankSort,
+              isManageMode = isDragEnabled,
+              isEnabled = true,
+              listedAt = listedAt
+            )
           }
           MOVIES.type -> {
             val movie = mappers.movie.fromDatabase(movies.first { it.idTrakt == listItem.idTrakt })
             val image = movieImagesProvider.findCachedImage(movie, ImageType.POSTER)
             val translation = moviesTranslations[movie.traktId]
-            ListDetailsItem(listItem.id, listItem.rank, null, movie, image, translation, false, isRankSort, moviesEnabled, listedAt)
+            ListDetailsItem(
+              id = listItem.id,
+              rank = listItem.rank,
+              show = null,
+              movie = movie,
+              image = image,
+              translation = translation,
+              isLoading = false,
+              isRankDisplayed = isRankSort,
+              isManageMode = isDragEnabled,
+              isEnabled = moviesEnabled,
+              listedAt = listedAt
+            )
           }
           else -> throw IllegalStateException("Unsupported list item type.")
         }

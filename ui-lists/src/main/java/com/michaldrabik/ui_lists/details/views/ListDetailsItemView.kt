@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_lists.details.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
@@ -22,6 +23,8 @@ import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNKNOWN
 import com.michaldrabik.ui_model.ImageType.POSTER
 
+@Suppress("LeakingThis")
+@SuppressLint("ClickableViewAccessibility")
 abstract class ListDetailsItemView : FrameLayout {
 
   constructor(context: Context) : super(context)
@@ -37,8 +40,13 @@ abstract class ListDetailsItemView : FrameLayout {
   var imageLoadCompleteListener: (() -> Unit)? = null
   var missingImageListener: ((ListDetailsItem, Boolean) -> Unit)? = null
   var missingTranslationListener: ((ListDetailsItem) -> Unit)? = null
+  var itemDragStartListener: (() -> Unit)? = null
 
   protected lateinit var item: ListDetailsItem
+
+  init {
+
+  }
 
   open fun bind(item: ListDetailsItem, position: Int) {
     this.item = item

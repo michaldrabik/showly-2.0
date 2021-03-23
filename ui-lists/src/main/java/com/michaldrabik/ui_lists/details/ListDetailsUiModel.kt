@@ -9,7 +9,8 @@ data class ListDetailsUiModel(
   val details: CustomList? = null,
   val items: List<ListDetailsItem>? = null,
   val resetScroll: ActionEvent<Boolean>? = null,
-  val deleteEvent: ActionEvent<Boolean>? = null
+  val deleteEvent: ActionEvent<Boolean>? = null,
+  val isManageMode: Boolean? = null
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -18,6 +19,7 @@ data class ListDetailsUiModel(
         details = newModel.details ?: details,
         items = newModel.items?.toList() ?: items,
         resetScroll = newModel.resetScroll ?: resetScroll,
+        isManageMode = newModel.isManageMode ?: isManageMode,
         deleteEvent = newModel.deleteEvent ?: deleteEvent
       )
 }

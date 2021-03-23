@@ -57,14 +57,29 @@
       />
 
     <ImageView
+      android:id="@+id/fragmentListDetailsManageButton"
+      android:layout_width="40dp"
+      android:layout_height="match_parent"
+      android:layout_gravity="end"
+      android:layout_marginEnd="@dimen/spaceTiny"
+      android:padding="8dp"
+      android:visibility="gone"
+      app:srcCompat="@drawable/ic_reorder"
+      app:tint="?android:attr/textColorPrimary"
+      tools:visibility="visible"
+      />
+
+    <ImageView
       android:id="@+id/fragmentListDetailsSortButton"
       android:layout_width="40dp"
       android:layout_height="match_parent"
       android:layout_gravity="end"
       android:layout_marginEnd="@dimen/spaceTiny"
       android:padding="8dp"
+      android:visibility="gone"
       app:srcCompat="@drawable/ic_sort"
       app:tint="?android:attr/textColorPrimary"
+      tools:visibility="visible"
       />
 
   </androidx.appcompat.widget.Toolbar>

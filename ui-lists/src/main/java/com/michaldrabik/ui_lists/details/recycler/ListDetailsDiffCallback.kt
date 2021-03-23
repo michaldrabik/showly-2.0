@@ -19,6 +19,7 @@ class ListDetailsDiffCallback(
           oldItem.isLoading == newItem.isLoading &&
           oldItem.isRankDisplayed == newItem.isRankDisplayed &&
           oldItem.isEnabled == newItem.isEnabled &&
+          oldItem.isManageMode == newItem.isManageMode &&
           oldItem.translation == newItem.translation &&
           oldItem.image == newItem.image &&
           oldItem.listedAt == newItem.listedAt &&
@@ -28,6 +29,7 @@ class ListDetailsDiffCallback(
         oldItem.movie == newItem.movie &&
           oldItem.isLoading == newItem.isLoading &&
           oldItem.isRankDisplayed == newItem.isRankDisplayed &&
+          oldItem.isManageMode == newItem.isManageMode &&
           oldItem.isEnabled == newItem.isEnabled &&
           oldItem.translation == newItem.translation &&
           oldItem.image == newItem.image &&

@@ -23,5 +23,7 @@ class ReorderListCallback(
     adapter.onItemMoveFinished()
   }
 
+  override fun isLongPressDragEnabled() = false
+
   override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) = Unit
 }

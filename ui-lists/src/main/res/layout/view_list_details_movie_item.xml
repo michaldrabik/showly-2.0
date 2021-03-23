@@ -86,6 +86,7 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceMedium"
+      android:layout_marginEnd="@dimen/spaceNormal"
       android:ellipsize="end"
       android:gravity="start"
       android:maxLines="1"
@@ -93,10 +94,11 @@
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="18sp"
       app:layout_constraintBottom_toTopOf="@id/listDetailsMovieDescription"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/listDetailsMovieHandle"
       app:layout_constraintStart_toEndOf="@id/listDetailsMovieImage"
       app:layout_constraintTop_toBottomOf="@id/listDetailsMovieHeader"
       app:layout_constraintVertical_chainStyle="packed"
+      app:layout_goneMarginEnd="0dp"
       tools:text="Game of Thrones"
       />
 
@@ -191,6 +193,7 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceMedium"
+      android:layout_marginEnd="@dimen/spaceNormal"
       android:ellipsize="end"
       android:gravity="start"
       android:maxLines="2"
@@ -198,10 +201,24 @@
       android:textColor="?android:attr/textColorSecondary"
       android:textSize="12sp"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/listDetailsMovieHandle"
       app:layout_constraintStart_toEndOf="@id/listDetailsMovieImage"
       app:layout_constraintTop_toBottomOf="@id/listDetailsMovieTitle"
+      app:layout_goneMarginEnd="0dp"
       tools:text="Lorem Ipsum"
+      />
+
+    <ImageView
+      android:id="@+id/listDetailsMovieHandle"
+      android:layout_width="wrap_content"
+      android:layout_height="100dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_handle"
+      app:tint="?android:attr/textColorPrimary"
+      tools:visibility="visible"
       />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,13 +1,16 @@
 package com.michaldrabik.ui_lists.details.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.view.MotionEvent
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
@@ -15,6 +18,7 @@ import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import kotlinx.android.synthetic.main.view_list_details_movie_item.view.*
 import java.util.Locale.ENGLISH
 
+@SuppressLint("ClickableViewAccessibility")
 class ListDetailsMovieItemView : ListDetailsItemView {
 
   constructor(context: Context) : super(context)
@@ -32,8 +36,16 @@ class ListDetailsMovieItemView : ListDetailsItemView {
       }
     }
 
+    listDetailsMovieHandle.expandTouch(100)
+    listDetailsMovieHandle.setOnTouchListener { _, event ->
+      if (item.isManageMode && event.action == MotionEvent.ACTION_DOWN) {
+        itemDragStartListener?.invoke()
+      }
+      false
+    }
+
     listDetailsMovieRoot.onClick {
-      if (item.isEnabled) itemClickListener?.invoke(item)
+      if (item.isEnabled && !item.isManageMode) itemClickListener?.invoke(item)
     }
   }
 
@@ -66,8 +78,11 @@ class ListDetailsMovieItemView : ListDetailsItemView {
     listDetailsMovieRank.visibleIf(item.isRankDisplayed)
     listDetailsMovieRank.text = String.format(ENGLISH, "%d", position + 1)
 
-    listDetailsMovieRoot.alpha = if (item.isEnabled) 1F else 0.45F
+    listDetailsMovieHandle.visibleIf(item.isManageMode)
+    listDetailsMovieStarIcon.visibleIf(!item.isManageMode)
+    listDetailsMovieRating.visibleIf(!item.isManageMode)
 
+    listDetailsMovieRoot.alpha = if (item.isEnabled) 1F else 0.45F
     loadImage(item)
   }
 }

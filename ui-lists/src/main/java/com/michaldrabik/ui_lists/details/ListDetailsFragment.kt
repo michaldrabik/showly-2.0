@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
@@ -24,6 +25,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.di.UiListDetailsComponentProvider
+import com.michaldrabik.ui_lists.details.helpers.ListItemDragListener
 import com.michaldrabik.ui_lists.details.helpers.ReorderListCallback
 import com.michaldrabik.ui_lists.details.helpers.ReorderListCallbackAdapter
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsAdapter
@@ -38,7 +40,7 @@ import kotlinx.android.synthetic.main.fragment_list_details.*
 import kotlinx.android.synthetic.main.fragment_lists.*
 
 class ListDetailsFragment :
-  BaseFragment<ListDetailsViewModel>(R.layout.fragment_list_details) {
+  BaseFragment<ListDetailsViewModel>(R.layout.fragment_list_details), ListItemDragListener {
 
   override val viewModel by viewModels<ListDetailsViewModel> { viewModelFactory }
 
@@ -47,6 +49,8 @@ class ListDetailsFragment :
   private var adapter: ListDetailsAdapter? = null
   private var touchHelper: ItemTouchHelper? = null
   private var layoutManager: LinearLayoutManager? = null
+
+  private var isManageMode = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiListDetailsComponentProvider).provideListDetailsComponent().inject(this)
@@ -84,10 +88,14 @@ class ListDetailsFragment :
       if (!list.description.isNullOrBlank()) {
         subtitle = list.description
       }
-      setNavigationOnClickListener { activity?.onBackPressed() }
+      setNavigationOnClickListener {
+        if (isManageMode) toggleManageMode()
+        else activity?.onBackPressed()
+      }
     }
     fragmentListDetailsEditButton.onClick { showEditDialog() }
     fragmentListDetailsDeleteButton.onClick { showDeleteDialog() }
+    fragmentListDetailsManageButton.onClick { toggleManageMode() }
   }
 
   private fun setupRecycler() {
@@ -97,7 +105,8 @@ class ListDetailsFragment :
       missingImageListener = { item: ListDetailsItem, force: Boolean -> viewModel.loadMissingImage(item, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it) },
       itemsChangedListener = { fragmentListDetailsRecycler.scrollToPosition(0) },
-      itemsMovedListener = { viewModel.updateRanks(list.id, it) }
+      itemsMovedListener = { viewModel.updateRanks(list.id, it) },
+      itemDragStartListener = this
     )
     fragmentListDetailsRecycler.apply {
       adapter = this@ListDetailsFragment.adapter
@@ -113,8 +122,12 @@ class ListDetailsFragment :
   private fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(this) {
-      remove()
-      findNavControl()?.popBackStack()
+      if (isManageMode) {
+        toggleManageMode()
+      } else {
+        remove()
+        findNavControl()?.popBackStack()
+      }
     }
   }
 
@@ -167,6 +180,11 @@ class ListDetailsFragment :
     }.add(animations)
   }
 
+  private fun toggleManageMode() {
+    isManageMode = !isManageMode
+    viewModel.setManageMode(list.id, isManageMode)
+  }
+
   private fun render(uiModel: ListDetailsUiModel) {
     uiModel.run {
       details?.let { details ->
@@ -180,12 +198,38 @@ class ListDetailsFragment :
       }
       items?.let {
         fragmentListDetailsEmptyView.fadeIf(it.isEmpty())
+        fragmentListDetailsManageButton.visibleIf(it.isNotEmpty())
         fragmentListDetailsSortButton.visibleIf(it.isNotEmpty())
         val scrollTop = resetScroll?.consume() == true
         adapter?.setItems(it, scrollTop)
       }
+      isManageMode?.let { isEnabled ->
+        if (items?.isEmpty() == true) return@let
+
+        fragmentListDetailsSortButton.visibleIf(!isEnabled)
+        fragmentListDetailsManageButton.visibleIf(!isEnabled)
+        fragmentListDetailsEditButton.visibleIf(!isEnabled)
+        fragmentListDetailsDeleteButton.visibleIf(!isEnabled)
+        fragmentListDetailsDeleteButton.visibleIf(!isEnabled)
+
+        if (isEnabled) {
+          fragmentListDetailsToolbar.title = getString(R.string.textChangeRanks)
+          fragmentListDetailsToolbar.subtitle = getString(R.string.textChangeRanksSubtitle)
+        } else {
+          fragmentListDetailsToolbar.title = list.name
+          if (!list.description.isNullOrBlank()) {
+            fragmentListDetailsToolbar.subtitle = list.description
+          } else {
+            fragmentListDetailsToolbar.subtitle = null
+          }
+        }
+      }
       deleteEvent?.let { event -> event.consume()?.let { activity?.onBackPressed() } }
     }
+  }
+
+  override fun onListItemDragStarted(viewHolder: RecyclerView.ViewHolder) {
+    touchHelper?.startDrag(viewHolder)
   }
 
   override fun onDestroyView() {

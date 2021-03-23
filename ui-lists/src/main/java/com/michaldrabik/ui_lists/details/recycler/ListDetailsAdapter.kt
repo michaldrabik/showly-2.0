@@ -1,10 +1,12 @@
 package com.michaldrabik.ui_lists.details.recycler
 
-import android.view.View
+import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.michaldrabik.ui_lists.details.helpers.ListItemDragListener
 import com.michaldrabik.ui_lists.details.helpers.ReorderListCallbackAdapter
+import com.michaldrabik.ui_lists.details.views.ListDetailsItemView
 import com.michaldrabik.ui_lists.details.views.ListDetailsMovieItemView
 import com.michaldrabik.ui_lists.details.views.ListDetailsShowItemView
 import java.util.Collections
@@ -15,7 +17,8 @@ class ListDetailsAdapter(
   val missingImageListener: (ListDetailsItem, Boolean) -> Unit,
   val missingTranslationListener: (ListDetailsItem) -> Unit,
   val itemsChangedListener: () -> Unit,
-  val itemsMovedListener: (List<ListDetailsItem>) -> Unit
+  val itemsMovedListener: (List<ListDetailsItem>) -> Unit,
+  val itemDragStartListener: ListItemDragListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
   ReorderListCallbackAdapter {
 
@@ -44,16 +47,22 @@ class ListDetailsAdapter(
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-    VIEW_TYPE_SHOW -> ListDetailsItemViewHolder(ListDetailsShowItemView(parent.context).apply {
-      itemClickListener = { item -> this@ListDetailsAdapter.itemClickListener(item) }
-      missingImageListener = { item, force -> this@ListDetailsAdapter.missingImageListener(item, force) }
-      missingTranslationListener = { item -> this@ListDetailsAdapter.missingTranslationListener(item) }
-    })
-    VIEW_TYPE_MOVIE -> ListDetailsItemViewHolder(ListDetailsMovieItemView(parent.context).apply {
-      itemClickListener = { item -> this@ListDetailsAdapter.itemClickListener(item) }
-      missingImageListener = { item, force -> this@ListDetailsAdapter.missingImageListener(item, force) }
-      missingTranslationListener = { item -> this@ListDetailsAdapter.missingTranslationListener(item) }
-    })
+    VIEW_TYPE_SHOW -> ListDetailsItemViewHolder(
+      ListDetailsShowItemView(parent.context).apply {
+        itemClickListener = { item -> this@ListDetailsAdapter.itemClickListener(item) }
+        missingImageListener = { item, force -> this@ListDetailsAdapter.missingImageListener(item, force) }
+        missingTranslationListener = { item -> this@ListDetailsAdapter.missingTranslationListener(item) }
+      },
+      itemDragStartListener
+    )
+    VIEW_TYPE_MOVIE -> ListDetailsItemViewHolder(
+      ListDetailsMovieItemView(parent.context).apply {
+        itemClickListener = { item -> this@ListDetailsAdapter.itemClickListener(item) }
+        missingImageListener = { item, force -> this@ListDetailsAdapter.missingImageListener(item, force) }
+        missingTranslationListener = { item -> this@ListDetailsAdapter.missingTranslationListener(item) }
+      },
+      itemDragStartListener
+    )
     else -> throw IllegalStateException()
   }
 
@@ -76,5 +85,15 @@ class ListDetailsAdapter(
 
   override fun onItemMoveFinished() = itemsMovedListener(items)
 
-  class ListDetailsItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+  @SuppressLint("ClickableViewAccessibility")
+  class ListDetailsItemViewHolder(
+    itemView: ListDetailsItemView,
+    dragStartListener: ListItemDragListener
+  ) : RecyclerView.ViewHolder(itemView) {
+    init {
+      itemView.itemDragStartListener = {
+        dragStartListener.onListItemDragStarted(this)
+      }
+    }
+  }
 }

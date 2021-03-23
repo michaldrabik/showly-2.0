@@ -82,7 +82,7 @@ data class Settings(
       showCollectionShows = true,
       widgetsShowLabel = true,
       traktQuickRateEnabled = false,
-      listsSortBy = SortOrder.DATE_UPDATED
+      listsSortBy = SortOrder.NEWEST
     )
   }
 }

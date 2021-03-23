@@ -13,6 +13,8 @@
   <string name="textEditListDescription">Update your custom list.</string>
   <string name="textConfirmDeleteListTitle">Delete List</string>
   <string name="textConfirmDeleteListSubtitle">Are you sure you want to delete this list?</string>
+  <string name="textChangeRanks">Change Ranks</string>
+  <string name="textChangeRanksSubtitle">Drag and drop list item to change its rank</string>
 
   <string name="textManageLists">Manage lists</string>
   <string name="textManageListsShows">Manage your lists for this show.</string>
