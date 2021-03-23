@@ -82,7 +82,7 @@ class ShowDetailsViewModel @Inject constructor(
 
   fun loadShowDetails(id: IdTrakt, context: Context) {
     viewModelScope.launch {
-      val progressJob = launchDelayed(500) {
+      val progressJob = launchDelayed(700) {
         uiState = ShowDetailsUiModel(showLoading = true)
       }
       try {

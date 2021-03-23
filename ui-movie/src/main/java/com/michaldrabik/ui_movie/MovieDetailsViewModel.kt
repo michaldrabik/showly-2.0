@@ -62,7 +62,7 @@ class MovieDetailsViewModel @Inject constructor(
 
   fun loadDetails(id: IdTrakt, context: Context) {
     viewModelScope.launch {
-      val progressJob = launchDelayed(500) {
+      val progressJob = launchDelayed(700) {
         uiState = MovieDetailsUiModel(movieLoading = true)
       }
       try {

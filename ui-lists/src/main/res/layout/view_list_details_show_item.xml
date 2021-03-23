@@ -86,7 +86,6 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceMedium"
-      android:layout_marginEnd="@dimen/spaceNormal"
       android:ellipsize="end"
       android:gravity="start"
       android:maxLines="1"
@@ -98,7 +97,6 @@
       app:layout_constraintStart_toEndOf="@id/listDetailsShowImage"
       app:layout_constraintTop_toBottomOf="@id/listDetailsShowHeader"
       app:layout_constraintVertical_chainStyle="packed"
-      app:layout_goneMarginEnd="0dp"
       tools:text="Game of Thrones"
       />
 
@@ -192,7 +190,6 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceMedium"
-      android:layout_marginEnd="@dimen/spaceNormal"
       android:ellipsize="end"
       android:gravity="start"
       android:maxLines="2"
@@ -203,14 +200,14 @@
       app:layout_constraintEnd_toStartOf="@id/listDetailsShowHandle"
       app:layout_constraintStart_toEndOf="@id/listDetailsShowImage"
       app:layout_constraintTop_toBottomOf="@id/listDetailsShowTitle"
-      app:layout_goneMarginEnd="0dp"
       tools:text="Lorem Ipsum"
       />
 
     <ImageView
       android:id="@+id/listDetailsShowHandle"
-      android:layout_width="wrap_content"
+      android:layout_width="40dp"
       android:layout_height="100dp"
+      android:paddingStart="12dp"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
