@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_lists.details.recycler
 
 import com.michaldrabik.common.extensions.toMillis
+import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
@@ -47,6 +48,12 @@ data class ListDetailsItem(
   fun getRating(): Float {
     if (isShow()) return requireShow().rating
     if (isMovie()) return requireMovie().rating
+    throw IllegalStateException()
+  }
+
+  fun getTraktId(): IdTrakt {
+    if (isShow()) return IdTrakt(requireShow().traktId)
+    if (isMovie()) return IdTrakt(requireMovie().traktId)
     throw IllegalStateException()
   }
 

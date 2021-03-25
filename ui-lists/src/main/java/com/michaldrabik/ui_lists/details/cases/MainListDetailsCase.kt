@@ -12,6 +12,7 @@ import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.CustomList
+import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.SortOrderList
 import com.michaldrabik.ui_model.SortOrderList.DATE_ADDED
@@ -153,5 +154,9 @@ class MainListDetailsCase @Inject constructor(
     return updateItems
   }
 
-  suspend fun deleteList(listId: Long) = listsRepository.deleteList(listId)
+  suspend fun deleteList(listId: Long) =
+    listsRepository.deleteList(listId)
+
+  suspend fun deleteListItem(listId: Long, itemTraktId: IdTrakt, itemType: String) =
+    listsRepository.removeFromList(listId, itemTraktId, itemType)
 }

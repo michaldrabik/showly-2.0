@@ -2,6 +2,7 @@ package com.michaldrabik.ui_lists.details
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
@@ -104,6 +105,19 @@ class ListDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       mainCase.deleteList(listId)
       uiState = ListDetailsUiModel(deleteEvent = ActionEvent(true))
+    }
+  }
+
+  fun deleteListItem(listId: Long, item: ListDetailsItem) {
+    viewModelScope.launch {
+      val type =
+        when {
+          item.isShow() -> Mode.SHOWS.type
+          item.isMovie() -> Mode.MOVIES.type
+          else -> throw IllegalStateException()
+        }
+      mainCase.deleteListItem(listId, item.getTraktId(), type)
+      loadDetails(listId)
     }
   }
 
