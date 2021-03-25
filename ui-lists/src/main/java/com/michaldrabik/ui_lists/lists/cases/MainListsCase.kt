@@ -36,12 +36,20 @@ class MainListsCase @Inject constructor(
     private const val IMAGES_LIMIT = 3
   }
 
-  suspend fun loadLists() = coroutineScope {
+  suspend fun loadLists(searchQuery: String?) = coroutineScope {
     val lists = listsRepository.loadAll()
     val dateFormat = dateProvider.loadFullDayFormat()
     val sortType = settingsRepository.load().listsSortBy
 
     lists
+      .filter {
+        if (searchQuery.isNullOrBlank()) {
+          true
+        } else {
+          it.name.contains(searchQuery, ignoreCase = true) ||
+            it.description?.contains(searchQuery, ignoreCase = true) == true
+        }
+      }
       .sortedByType(sortType)
       .map {
         async {

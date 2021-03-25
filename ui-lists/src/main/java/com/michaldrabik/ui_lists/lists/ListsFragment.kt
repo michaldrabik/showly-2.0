@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_lists.lists
 
+import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
@@ -8,6 +9,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +19,9 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
+import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
+import com.michaldrabik.ui_base.common.views.exSearchViewText
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -27,9 +31,12 @@ import com.michaldrabik.ui_base.utilities.extensions.enableUi
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
+import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.lists.di.UiListsComponentProvider
@@ -99,6 +106,7 @@ class ListsFragment :
     fragmentListsSortButton.onClick {
       viewModel.loadSortOrder()
     }
+    fragmentListsSearchView.onClick { enterSearch() }
     exSearchViewInput.run {
       imeOptions = EditorInfo.IME_ACTION_DONE
       setOnEditorActionListener { _, _, _ ->
@@ -175,34 +183,34 @@ class ListsFragment :
     }
   }
 
-//  private fun enterSearch() {
-//    if (followedMoviesSearchView.isSearching) return
-//    followedMoviesSearchView.isSearching = true
-//    exSearchViewText.gone()
-//    exSearchViewInput.run {
-//      setText("")
-//      doAfterTextChanged { viewModel.searchMovies(it?.toString() ?: "") }
-//      visible()
-//      showKeyboard()
-//      requestFocus()
-//    }
-//    (exSearchViewIcon.drawable as Animatable).start()
-//    exSearchViewIcon.onClick { exitSearch() }
-//    hideNavigation(false)
-//  }
-//
-//  private fun exitSearch(showNavigation: Boolean = true) {
-//    followedMoviesSearchView.isSearching = false
-//    exSearchViewText.visible()
-//    exSearchViewInput.run {
-//      setText("")
-//      gone()
-//      hideKeyboard()
-//      clearFocus()
-//    }
-//    exSearchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
-//    if (showNavigation) showNavigation()
-//  }
+  private fun enterSearch() {
+    if (fragmentListsSearchView.isSearching) return
+    fragmentListsSearchView.isSearching = true
+    exSearchViewText.gone()
+    exSearchViewInput.run {
+      setText("")
+      doAfterTextChanged {
+        viewModel.loadItems(searchQuery = it.toString().trim(), resetScroll = true)
+      }
+      visible()
+      showKeyboard()
+      requestFocus()
+    }
+    (exSearchViewIcon.drawable as Animatable).start()
+    exSearchViewIcon.onClick { exitSearch() }
+  }
+
+  private fun exitSearch() {
+    fragmentListsSearchView.isSearching = false
+    exSearchViewText.visible()
+    exSearchViewInput.run {
+      setText("")
+      gone()
+      hideKeyboard()
+      clearFocus()
+    }
+    exSearchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
+  }
 
   private fun showSortOrderDialog(order: SortOrder) {
     val options = listOf(NAME, NEWEST, DATE_UPDATED)
@@ -221,8 +229,16 @@ class ListsFragment :
   private fun render(uiModel: ListsUiModel) {
     uiModel.run {
       items?.let {
-        fragmentListsEmptyView.fadeIf(it.isEmpty())
+        val isSearching = fragmentListsSearchView.isSearching
+        fragmentListsEmptyView.fadeIf(it.isEmpty() && !isSearching)
         fragmentListsSortButton.visibleIf(it.isNotEmpty())
+        fragmentListsSortButton.isEnabled = it.isNotEmpty() && !isSearching
+
+        if (!isSearching) {
+          fragmentListsSearchView.isClickable = it.isNotEmpty()
+          fragmentListsSearchView.isEnabled = it.isNotEmpty()
+        }
+
         val resetScroll = resetScroll?.consume() == true
         adapter?.setItems(it, resetScroll)
       }
@@ -236,7 +252,7 @@ class ListsFragment :
     disableUi()
     hideNavigation()
     fragmentListsRoot.fadeOut(150) {
-//      exitSearch(false)
+      exitSearch()
       val bundle = bundleOf(ARG_LIST to listItem.list)
       navigateTo(R.id.actionListsFragmentToDetailsFragment, bundle)
     }.add(animations)
@@ -256,11 +272,6 @@ class ListsFragment :
   private fun openCreateList() {
     setFragmentResultListener(REQUEST_CREATE_LIST) { _, _ -> viewModel.loadItems(resetScroll = true) }
     navigateTo(R.id.actionListsFragmentToCreateListDialog, bundleOf())
-  }
-
-  fun enableSearch(enable: Boolean) {
-    fragmentListsSearchView.isClickable = enable
-    fragmentListsSearchView.isEnabled = enable
   }
 
   override fun onTraktSyncProgress() =

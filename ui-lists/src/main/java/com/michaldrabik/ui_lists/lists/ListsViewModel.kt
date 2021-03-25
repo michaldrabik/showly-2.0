@@ -17,9 +17,9 @@ class ListsViewModel @Inject constructor(
   var searchViewTranslation = 0F
   var tabsTranslation = 0F
 
-  fun loadItems(resetScroll: Boolean) {
+  fun loadItems(resetScroll: Boolean, searchQuery: String? = null) {
     viewModelScope.launch {
-      val items = mainCase.loadLists()
+      val items = mainCase.loadLists(searchQuery)
       uiState = ListsUiModel(items = items, resetScroll = ActionEvent(resetScroll))
     }
   }
