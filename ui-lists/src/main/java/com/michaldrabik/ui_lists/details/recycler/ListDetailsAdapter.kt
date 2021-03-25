@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_lists.details.helpers.ListItemDragListener
+import com.michaldrabik.ui_lists.details.helpers.ListItemSwipeListener
 import com.michaldrabik.ui_lists.details.helpers.ReorderListCallbackAdapter
 import com.michaldrabik.ui_lists.details.views.ListDetailsItemView
 import com.michaldrabik.ui_lists.details.views.ListDetailsMovieItemView
@@ -18,7 +19,9 @@ class ListDetailsAdapter(
   val missingTranslationListener: (ListDetailsItem) -> Unit,
   val itemsChangedListener: () -> Unit,
   val itemsMovedListener: (List<ListDetailsItem>) -> Unit,
-  val itemDragStartListener: ListItemDragListener
+  val itemsSwipedListener: (ListDetailsItem) -> Unit,
+  val itemDragStartListener: ListItemDragListener,
+  val itemSwipeStartListener: ListItemSwipeListener,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>(),
   ReorderListCallbackAdapter {
 
@@ -53,7 +56,8 @@ class ListDetailsAdapter(
         missingImageListener = { item, force -> this@ListDetailsAdapter.missingImageListener(item, force) }
         missingTranslationListener = { item -> this@ListDetailsAdapter.missingTranslationListener(item) }
       },
-      itemDragStartListener
+      itemDragStartListener,
+      itemSwipeStartListener
     )
     VIEW_TYPE_MOVIE -> ListDetailsItemViewHolder(
       ListDetailsMovieItemView(parent.context).apply {
@@ -61,7 +65,8 @@ class ListDetailsAdapter(
         missingImageListener = { item, force -> this@ListDetailsAdapter.missingImageListener(item, force) }
         missingTranslationListener = { item -> this@ListDetailsAdapter.missingTranslationListener(item) }
       },
-      itemDragStartListener
+      itemDragStartListener,
+      itemSwipeStartListener
     )
     else -> throw IllegalStateException()
   }
@@ -85,14 +90,23 @@ class ListDetailsAdapter(
 
   override fun onItemMoveFinished() = itemsMovedListener(items)
 
+  override fun onItemSwiped(viewHolder: RecyclerView.ViewHolder) {
+    val item = ((viewHolder as ListDetailsItemViewHolder).itemView as ListDetailsItemView).item
+    itemsSwipedListener(item)
+  }
+
   @SuppressLint("ClickableViewAccessibility")
   class ListDetailsItemViewHolder(
     itemView: ListDetailsItemView,
-    dragStartListener: ListItemDragListener
+    dragStartListener: ListItemDragListener,
+    swipeStartListener: ListItemSwipeListener
   ) : RecyclerView.ViewHolder(itemView) {
     init {
       itemView.itemDragStartListener = {
         dragStartListener.onListItemDragStarted(this)
+      }
+      itemView.itemSwipeStartListener = {
+        swipeStartListener.onListItemSwipeStarted(this)
       }
     }
   }

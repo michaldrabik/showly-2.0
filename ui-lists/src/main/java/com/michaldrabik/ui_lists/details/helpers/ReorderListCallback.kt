@@ -2,12 +2,13 @@ package com.michaldrabik.ui_lists.details.helpers
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.DOWN
+import androidx.recyclerview.widget.ItemTouchHelper.START
 import androidx.recyclerview.widget.ItemTouchHelper.UP
 import androidx.recyclerview.widget.RecyclerView
 
 class ReorderListCallback(
   private val adapter: ReorderListCallbackAdapter
-) : ItemTouchHelper.SimpleCallback(UP or DOWN, 0) {
+) : ItemTouchHelper.SimpleCallback(UP or DOWN, START) {
 
   override fun onMove(
     recyclerView: RecyclerView,
@@ -18,12 +19,17 @@ class ReorderListCallback(
     return true
   }
 
+  override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+    adapter.onItemSwiped(viewHolder)
+  }
+
   override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
     super.clearView(recyclerView, viewHolder)
     adapter.onItemMoveFinished()
   }
 
+  override fun isItemViewSwipeEnabled() = false
+
   override fun isLongPressDragEnabled() = false
 
-  override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) = Unit
 }

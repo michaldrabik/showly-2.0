@@ -41,12 +41,9 @@ abstract class ListDetailsItemView : FrameLayout {
   var missingImageListener: ((ListDetailsItem, Boolean) -> Unit)? = null
   var missingTranslationListener: ((ListDetailsItem) -> Unit)? = null
   var itemDragStartListener: (() -> Unit)? = null
+  var itemSwipeStartListener: (() -> Unit)? = null
 
-  protected lateinit var item: ListDetailsItem
-
-  init {
-
-  }
+  lateinit var item: ListDetailsItem
 
   open fun bind(item: ListDetailsItem, position: Int) {
     this.item = item

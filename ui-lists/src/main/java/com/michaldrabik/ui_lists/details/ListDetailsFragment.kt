@@ -28,6 +28,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.di.UiListDetailsComponentProvider
 import com.michaldrabik.ui_lists.details.helpers.ListItemDragListener
+import com.michaldrabik.ui_lists.details.helpers.ListItemSwipeListener
 import com.michaldrabik.ui_lists.details.helpers.ReorderListCallback
 import com.michaldrabik.ui_lists.details.helpers.ReorderListCallbackAdapter
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsAdapter
@@ -42,7 +43,7 @@ import kotlinx.android.synthetic.main.fragment_list_details.*
 import kotlinx.android.synthetic.main.fragment_lists.*
 
 class ListDetailsFragment :
-  BaseFragment<ListDetailsViewModel>(R.layout.fragment_list_details), ListItemDragListener {
+  BaseFragment<ListDetailsViewModel>(R.layout.fragment_list_details), ListItemDragListener, ListItemSwipeListener {
 
   override val viewModel by viewModels<ListDetailsViewModel> { viewModelFactory }
 
@@ -107,7 +108,9 @@ class ListDetailsFragment :
       missingTranslationListener = { viewModel.loadMissingTranslation(it) },
       itemsChangedListener = { fragmentListDetailsRecycler.scrollToPosition(0) },
       itemsMovedListener = { viewModel.updateRanks(list.id, it) },
-      itemDragStartListener = this
+      itemsSwipedListener = { viewModel.deleteListItem(list.id, it) },
+      itemDragStartListener = this,
+      itemSwipeStartListener = this
     )
     fragmentListDetailsRecycler.apply {
       adapter = this@ListDetailsFragment.adapter
@@ -243,6 +246,10 @@ class ListDetailsFragment :
 
   override fun onListItemDragStarted(viewHolder: RecyclerView.ViewHolder) {
     touchHelper?.startDrag(viewHolder)
+  }
+
+  override fun onListItemSwipeStarted(viewHolder: RecyclerView.ViewHolder) {
+    touchHelper?.startSwipe(viewHolder)
   }
 
   override fun onDestroyView() {

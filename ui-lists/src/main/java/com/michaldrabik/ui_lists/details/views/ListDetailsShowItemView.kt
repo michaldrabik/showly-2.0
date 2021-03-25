@@ -3,7 +3,7 @@ package com.michaldrabik.ui_lists.details.views
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.view.MotionEvent
+import android.view.MotionEvent.*
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
@@ -17,6 +17,7 @@ import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import kotlinx.android.synthetic.main.view_list_details_show_item.view.*
 import java.util.Locale.ENGLISH
+import kotlin.math.abs
 
 @SuppressLint("ClickableViewAccessibility")
 class ListDetailsShowItemView : ListDetailsItemView {
@@ -38,8 +39,22 @@ class ListDetailsShowItemView : ListDetailsItemView {
 
     listDetailsShowHandle.expandTouch(100)
     listDetailsShowHandle.setOnTouchListener { _, event ->
-      if (item.isManageMode && event.action == MotionEvent.ACTION_DOWN) {
+      if (item.isManageMode && event.action == ACTION_DOWN) {
         itemDragStartListener?.invoke()
+      }
+      false
+    }
+
+    var x = 0F
+    listDetailsShowRoot.setOnTouchListener { _, event ->
+      if (item.isManageMode) {
+        return@setOnTouchListener false
+      }
+      if (event.action == ACTION_DOWN) x = event.x
+      if (event.action == ACTION_UP) x = 0F
+      if (event.action == ACTION_MOVE && abs(x - event.x) > 50F) {
+        itemSwipeStartListener?.invoke()
+        return@setOnTouchListener true
       }
       false
     }
