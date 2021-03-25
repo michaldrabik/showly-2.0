@@ -217,7 +217,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceMedium"
         android:background="?attr/colorSeparator"
