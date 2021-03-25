@@ -1,8 +1,10 @@
 package com.michaldrabik.ui_lists.details
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import androidx.activity.addCallback
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
@@ -93,8 +95,7 @@ class ListDetailsFragment :
         else activity?.onBackPressed()
       }
     }
-    fragmentListDetailsEditButton.onClick { showEditDialog() }
-    fragmentListDetailsDeleteButton.onClick { showDeleteDialog() }
+    fragmentListDetailsMoreButton.onClick { openPopupMenu() }
     fragmentListDetailsManageButton.onClick { toggleManageMode() }
   }
 
@@ -180,6 +181,20 @@ class ListDetailsFragment :
     }.add(animations)
   }
 
+  private fun openPopupMenu() {
+    PopupMenu(requireContext(), fragmentListDetailsMoreButton, Gravity.CENTER).apply {
+      inflate(R.menu.menu_list_details)
+      setOnMenuItemClickListener { menuItem ->
+        when (menuItem.itemId) {
+          R.id.menuListDetailsEdit -> showEditDialog()
+          R.id.menuListDetailsDelete -> showDeleteDialog()
+        }
+        true
+      }
+      show()
+    }
+  }
+
   private fun toggleManageMode() {
     isManageMode = !isManageMode
     viewModel.setManageMode(list.id, isManageMode)
@@ -208,9 +223,7 @@ class ListDetailsFragment :
 
         fragmentListDetailsSortButton.visibleIf(!isEnabled)
         fragmentListDetailsManageButton.visibleIf(!isEnabled)
-        fragmentListDetailsEditButton.visibleIf(!isEnabled)
-        fragmentListDetailsDeleteButton.visibleIf(!isEnabled)
-        fragmentListDetailsDeleteButton.visibleIf(!isEnabled)
+        fragmentListDetailsMoreButton.visibleIf(!isEnabled)
 
         if (isEnabled) {
           fragmentListDetailsToolbar.title = getString(R.string.textChangeRanks)

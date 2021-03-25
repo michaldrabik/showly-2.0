@@ -35,24 +35,13 @@
     >
 
     <ImageView
-      android:id="@+id/fragmentListDetailsDeleteButton"
+      android:id="@+id/fragmentListDetailsMoreButton"
       android:layout_width="40dp"
       android:layout_height="match_parent"
       android:layout_gravity="end"
       android:layout_marginEnd="@dimen/spaceTiny"
       android:padding="8dp"
-      app:srcCompat="@drawable/ic_delete"
-      app:tint="?android:attr/textColorPrimary"
-      />
-
-    <ImageView
-      android:id="@+id/fragmentListDetailsEditButton"
-      android:layout_width="40dp"
-      android:layout_height="match_parent"
-      android:layout_gravity="end"
-      android:layout_marginEnd="@dimen/spaceTiny"
-      android:padding="8dp"
-      app:srcCompat="@drawable/ic_edit"
+      app:srcCompat="@drawable/ic_more"
       app:tint="?android:attr/textColorPrimary"
       />
 

@@ -9,6 +9,7 @@
   <string name="textCreateListDescription">Create a new custom list.</string>
   <string name="textName">Name</string>
   <string name="textDescription">Description (optional)</string>
+  <string name="textDeleteList">Delete list</string>
   <string name="textEditList">Edit list</string>
   <string name="textEditListDescription">Update your custom list.</string>
   <string name="textConfirmDeleteListTitle">Delete List</string>
