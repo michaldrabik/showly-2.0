@@ -8,9 +8,30 @@ import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
+import com.michaldrabik.network.trakt.model.CustomList as CustomListNetwork
 import com.michaldrabik.storage.database.model.CustomList as CustomListDb
 
 class CustomListMapper @Inject constructor() {
+
+  fun fromNetwork(list: CustomListNetwork) = CustomList(
+    id = 0,
+    idTrakt = list.ids.trakt,
+    idSlug = list.ids.slug,
+    name = list.name,
+    description = list.description,
+    privacy = list.privacy,
+    displayNumbers = list.display_numbers,
+    allowComments = list.allow_comments,
+    sortBy = SortOrderList.fromSlug(list.sort_by) ?: SortOrderList.RANK,
+    sortHow = SortType.fromSlug(list.sort_how),
+    sortByLocal = SortOrderList.RANK,
+    sortHowLocal = SortType.ASCENDING,
+    itemCount = list.item_count,
+    commentCount = list.comment_count,
+    likes = list.likes,
+    createdAt = ZonedDateTime.parse(list.created_at),
+    updatedAt = ZonedDateTime.parse(list.updated_at)
+  )
 
   fun fromDatabase(list: CustomListDb) = CustomList(
     id = list.id,

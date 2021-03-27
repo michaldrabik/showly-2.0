@@ -3,6 +3,7 @@ package com.michaldrabik.network.trakt.api
 import com.michaldrabik.network.Config
 import com.michaldrabik.network.trakt.model.ActorsResponse
 import com.michaldrabik.network.trakt.model.Comment
+import com.michaldrabik.network.trakt.model.CustomList
 import com.michaldrabik.network.trakt.model.Episode
 import com.michaldrabik.network.trakt.model.HiddenItem
 import com.michaldrabik.network.trakt.model.Movie
@@ -208,6 +209,20 @@ interface TraktService {
   suspend fun fetchSyncWatchlist(
     @Header("Authorization") authToken: String,
     @Path("type") type: String,
+    @Query("page") page: Int? = null,
+    @Query("limit") limit: Int? = null
+  ): List<SyncItem>
+
+  @GET("users/me/lists")
+  suspend fun fetchSyncLists(
+    @Header("Authorization") authToken: String,
+  ): List<CustomList>
+
+  @GET("users/me/lists/{id}/items/{types}?extended=full")
+  suspend fun fetchSyncListItems(
+    @Header("Authorization") authToken: String,
+    @Path("id") listId: Long,
+    @Path("types") types: String,
     @Query("page") page: Int? = null,
     @Query("limit") limit: Int? = null
   ): List<SyncItem>

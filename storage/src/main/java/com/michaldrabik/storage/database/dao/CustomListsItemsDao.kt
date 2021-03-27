@@ -12,7 +12,7 @@ interface CustomListsItemsDao : BaseDao<CustomListItem> {
   suspend fun getListsForItem(idTrakt: Long, type: String): List<Long>
 
   @Query("SELECT * FROM custom_list_item WHERE id_list = :idList AND id_trakt = :idTrakt AND type = :type")
-  suspend fun getById(idList: Long, idTrakt: Long, type: String): CustomListItem?
+  suspend fun getByIdTrakt(idList: Long, idTrakt: Long, type: String): CustomListItem?
 
   @Query("SELECT * FROM custom_list_item WHERE id_list = :idList ORDER BY rank ASC")
   suspend fun getItemsById(idList: Long): List<CustomListItem>
@@ -25,7 +25,7 @@ interface CustomListsItemsDao : BaseDao<CustomListItem> {
 
   @Transaction
   suspend fun insertItem(item: CustomListItem) {
-    val localItem = getById(item.idList, item.idTrakt, item.type)
+    val localItem = getByIdTrakt(item.idList, item.idTrakt, item.type)
     if (localItem != null) return
     val rank = getRankForList(item.idList) ?: 0L
     val rankedItem = item.copy(rank = rank + 1L)

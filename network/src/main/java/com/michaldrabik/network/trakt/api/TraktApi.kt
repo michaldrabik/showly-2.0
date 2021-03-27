@@ -159,6 +159,25 @@ class TraktApi(private val service: TraktService) {
     return results
   }
 
+  suspend fun fetchSyncLists(token: String) =
+    service.fetchSyncLists("Bearer $token")
+
+  suspend fun fetchSyncListItems(token: String, listId: Long, withMovies: Boolean): List<SyncItem> {
+    var page = 1
+    val results = mutableListOf<SyncItem>()
+    val types = arrayListOf("show")
+      .apply { if (withMovies) add("movie") }
+      .joinToString(",")
+
+    do {
+      val items = service.fetchSyncListItems("Bearer $token", listId, types, page, TRAKT_SYNC_PAGE_LIMIT)
+      results.addAll(items)
+      page += 1
+    } while (items.size >= TRAKT_SYNC_PAGE_LIMIT)
+
+    return results
+  }
+
   suspend fun postSyncWatchlist(token: String, request: SyncExportRequest) =
     service.postSyncWatchlist("Bearer $token", request)
 

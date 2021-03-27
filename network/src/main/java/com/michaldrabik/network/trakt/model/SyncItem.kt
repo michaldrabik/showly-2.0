@@ -12,6 +12,12 @@ data class SyncItem(
   val listed_at: String?
 ) {
 
+  fun getTraktId(): Long? {
+    if (show != null) return show.ids?.trakt
+    if (movie != null) return movie.ids?.trakt
+    return null
+  }
+
   fun lastWatchedMillis() =
     (last_watched_at?.let { ZonedDateTime.parse(last_watched_at) } ?: ZonedDateTime.now(UTC)).toInstant().toEpochMilli()
 
