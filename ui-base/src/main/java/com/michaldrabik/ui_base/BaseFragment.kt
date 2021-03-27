@@ -6,6 +6,8 @@ import android.view.ViewPropertyAnimator
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
+import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.di.DaggerViewModelFactory
@@ -50,7 +52,11 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
     message.consume()?.let {
       val host = (requireActivity() as SnackbarHost).provideSnackbarLayout()
       when (message.type) {
-        INFO -> host.showInfoSnackbar(getString(it))
+        INFO -> {
+          val length = if (message.indefinite) LENGTH_INDEFINITE else LENGTH_SHORT
+          val action = if (message.indefinite) ({}) else null
+          host.showInfoSnackbar(getString(it), length = length, action = action)
+        }
         ERROR -> host.showErrorSnackbar(getString(it))
       }
     }
