@@ -82,7 +82,7 @@ class TraktExportListsRunner @Inject constructor(
             delay(1000)
           }
         }
-        //TODO if updatedAt are different fetch all the items and send missing ones.
+        // TODO if updatedAt are different fetch all the items and send missing ones.
       }
     }
   }

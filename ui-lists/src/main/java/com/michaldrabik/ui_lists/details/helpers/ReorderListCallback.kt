@@ -31,5 +31,4 @@ class ReorderListCallback(
   override fun isItemViewSwipeEnabled() = false
 
   override fun isLongPressDragEnabled() = false
-
 }

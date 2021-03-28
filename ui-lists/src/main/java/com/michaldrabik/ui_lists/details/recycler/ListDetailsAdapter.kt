@@ -12,7 +12,7 @@ import com.michaldrabik.ui_lists.details.views.ListDetailsMovieItemView
 import com.michaldrabik.ui_lists.details.views.ListDetailsShowItemView
 import java.util.Collections
 
-//TODO Try drag drop again with asyncdiffer
+// TODO Try drag drop again with asyncdiffer
 class ListDetailsAdapter(
   val itemClickListener: (ListDetailsItem) -> Unit,
   val missingImageListener: (ListDetailsItem, Boolean) -> Unit,
