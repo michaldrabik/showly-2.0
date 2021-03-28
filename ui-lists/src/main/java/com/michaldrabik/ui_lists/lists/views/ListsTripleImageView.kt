@@ -19,7 +19,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_lists.R
-import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_lists.lists.helpers.ListsItemImage
 import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType
 import kotlinx.android.synthetic.main.view_triple_image.view.*
@@ -33,14 +33,16 @@ class ListsTripleImageView : FrameLayout {
 
   private val cornerRadius by lazy { context.dimenToPx(R.dimen.listItemCorner) }
 
+  var missingImageListener: ((ListsItemImage, Boolean) -> Unit)? = null
+
   init {
     inflate(context, R.layout.view_triple_image, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
   }
 
-  fun bind(images: List<Image>) {
+  fun bind(images: List<ListsItemImage>) {
     clear()
-    if (images.all { it.status == ImageStatus.UNAVAILABLE }) {
+    if (images.all { it.image.status == ImageStatus.UNAVAILABLE }) {
       viewTripleImagePlaceholder1.visible()
       viewTripleImagePlaceholder2.visible()
       viewTripleImagePlaceholder3.visible()
@@ -56,23 +58,23 @@ class ListsTripleImageView : FrameLayout {
   }
 
   private fun loadImage(
-    image: Image,
+    itemImage: ListsItemImage,
     imageView: ImageView,
     placeholderView: ImageView
   ) {
-    if (image.status == ImageStatus.UNAVAILABLE) {
+    if (itemImage.image.status == ImageStatus.UNAVAILABLE) {
       imageView.invisible()
       placeholderView.visible()
       return
     }
 
-    val unknownBase = when (image.type) {
+    val unknownBase = when (itemImage.image.type) {
       ImageType.POSTER -> Config.TVDB_IMAGE_BASE_POSTER_URL
       else -> Config.TVDB_IMAGE_BASE_FANART_URL
     }
-    val url = when (image.status) {
-      ImageStatus.UNKNOWN -> "${unknownBase}${image.idTvdb.id}-1.jpg"
-      ImageStatus.AVAILABLE -> image.fullFileUrl
+    val url = when (itemImage.image.status) {
+      ImageStatus.UNKNOWN -> "${unknownBase}${itemImage.getIds()?.tvdb?.id}-1.jpg"
+      ImageStatus.AVAILABLE -> itemImage.image.fullFileUrl
       else -> error("Should not handle other statuses.")
     }
 
@@ -85,8 +87,13 @@ class ListsTripleImageView : FrameLayout {
         placeholderView.invisible()
       }
       .withFailListener {
-        imageView.invisible()
-        placeholderView.visible()
+        if (itemImage.image.status == ImageStatus.AVAILABLE) {
+          imageView.invisible()
+          placeholderView.visible()
+          return@withFailListener
+        }
+        val force = (itemImage.image.status == ImageStatus.UNKNOWN)
+        missingImageListener?.invoke(itemImage, force)
       }
       .into(imageView)
   }

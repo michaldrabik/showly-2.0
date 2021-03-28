@@ -2,7 +2,6 @@ package com.michaldrabik.ui_base.utilities.extensions
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewPropertyAnimator
@@ -106,19 +105,15 @@ fun TextView.setTextFade(text: String, duration: Long = 125) {
   )
 }
 
-fun Activity.disableUi() {
-  window.setFlags(FLAG_NOT_TOUCHABLE, FLAG_NOT_TOUCHABLE)
+fun Fragment.disableUi() {
+  activity?.window?.setFlags(FLAG_NOT_TOUCHABLE, FLAG_NOT_TOUCHABLE)
   Timber.d("UI disabled.")
 }
 
-fun Activity.enableUi() {
-  window.clearFlags(FLAG_NOT_TOUCHABLE)
+fun Fragment.enableUi() {
+  activity?.window?.clearFlags(FLAG_NOT_TOUCHABLE)
   Timber.d("UI enabled.")
 }
-
-fun Fragment.disableUi() = activity?.disableUi()
-
-fun Fragment.enableUi() = activity?.enableUi()
 
 fun String.capitalizeWords(): String {
   return this

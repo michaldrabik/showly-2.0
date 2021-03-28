@@ -17,13 +17,11 @@
     android:background="@drawable/bg_media_view_placeholder"
     android:elevation="3dp"
     android:padding="@dimen/spaceBig"
-    android:visibility="gone"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:srcCompat="@drawable/ic_list_alt"
     app:tint="?attr/colorPlaceholderIcon"
-    tools:visibility="visible"
     />
 
 
@@ -49,7 +47,6 @@
     android:background="@drawable/bg_media_view_placeholder"
     android:elevation="3dp"
     android:padding="@dimen/spaceBig"
-    android:visibility="gone"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
@@ -80,7 +77,6 @@
     android:background="@drawable/bg_media_view_placeholder"
     android:elevation="3dp"
     android:padding="@dimen/spaceBig"
-    android:visibility="gone"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"

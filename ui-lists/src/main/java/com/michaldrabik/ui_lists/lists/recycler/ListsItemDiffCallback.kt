@@ -11,6 +11,6 @@ class ListsItemDiffCallback : DiffUtil.ItemCallback<ListsItem>() {
     oldItem.list == newItem.list &&
       oldItem.sortOrder == newItem.sortOrder &&
       oldItem.images.size == newItem.images.size &&
-      oldItem.images == newItem.images &&
+      oldItem.images.toTypedArray().contentDeepEquals(newItem.images.toTypedArray()) &&
       oldItem.dateFormat?.toString() == newItem.dateFormat?.toString()
 }

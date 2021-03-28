@@ -10,6 +10,7 @@ import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
+import com.michaldrabik.ui_lists.lists.helpers.ListsItemImage
 import com.michaldrabik.ui_lists.lists.recycler.ListsItem
 import com.michaldrabik.ui_model.SortOrder.DATE_UPDATED
 import com.michaldrabik.ui_model.SortOrder.NAME
@@ -24,11 +25,15 @@ class ListsItemView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   var itemClickListener: ((ListsItem) -> Unit)? = null
+  var missingImageListener: ((ListsItem, ListsItemImage, Boolean) -> Unit)? = null
 
   init {
     inflate(context, R.layout.view_lists_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     listsItemRoot.onClick { itemClickListener?.invoke(item) }
+    listsItemImages.missingImageListener = { itemImage, force ->
+      missingImageListener?.invoke(item, itemImage, force)
+    }
   }
 
   private lateinit var item: ListsItem

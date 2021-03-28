@@ -8,9 +8,9 @@ import com.michaldrabik.storage.database.model.CustomListItem
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_lists.lists.helpers.ListsItemImage
 import com.michaldrabik.ui_lists.lists.recycler.ListsItem
 import com.michaldrabik.ui_model.CustomList
-import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.SortOrder
@@ -55,8 +55,8 @@ class MainListsCase @Inject constructor(
       .map {
         async {
           val items = database.customListsItemsDao().getItemsForListImages(it.id, IMAGES_LIMIT)
-          val images = mutableListOf<Image>()
-          val unavailable = Image.createUnavailable(POSTER)
+          val images = mutableListOf<ListsItemImage>()
+          val unavailable = ListsItemImage(Image.createUnavailable(POSTER))
           items.forEach { item ->
             images.add(findImage(item) ?: unavailable)
           }
@@ -75,14 +75,15 @@ class MainListsCase @Inject constructor(
         showDb?.let {
           val show = mappers.show.fromDatabase(it)
           val image = showImagesProvider.findCachedImage(show, POSTER)
-          image.copy(idTvdb = IdTvdb(it.idTvdb))
+          ListsItemImage(image, show = show)
         }
       }
       MOVIES.type -> {
         val movieDb = database.moviesDao().getById(item.idTrakt)
         movieDb?.let {
           val movie = mappers.movie.fromDatabase(movieDb)
-          movieImagesProvider.findCachedImage(movie, POSTER)
+          val image = movieImagesProvider.findCachedImage(movie, POSTER)
+          ListsItemImage(image, movie = movie)
         }
       }
       else -> throw IllegalStateException()

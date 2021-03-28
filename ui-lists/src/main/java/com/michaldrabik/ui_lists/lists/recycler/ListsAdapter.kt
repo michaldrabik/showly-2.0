@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
+import com.michaldrabik.ui_lists.lists.helpers.ListsItemImage
 import com.michaldrabik.ui_lists.lists.views.ListsItemView
 
 class ListsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListDiffer.ListListener<ListsItem> {
@@ -12,6 +13,8 @@ class ListsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListD
 
   var itemClickListener: ((ListsItem) -> Unit)? = null
   var itemsChangedListener: (() -> Unit)? = null
+  var missingImageListener: ((ListsItem, ListsItemImage, Boolean) -> Unit)? = null
+
   private var notifyItemsChange = false
 
   init {
@@ -27,6 +30,7 @@ class ListsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListD
     ListsItemViewHolder(
       ListsItemView(parent.context).apply {
         itemClickListener = { this@ListsAdapter.itemClickListener?.invoke(it) }
+        missingImageListener = { item, itemImage, force -> this@ListsAdapter.missingImageListener?.invoke(item, itemImage, force) }
       }
     )
 

@@ -142,6 +142,9 @@ class ListsFragment :
         fragmentListsSearchView.animate().translationY(0F).start()
         fragmentListsSortButton.animate().translationY(0F).start()
       }
+      missingImageListener = { item, itemImage, force ->
+        viewModel.loadMissingImage(item, itemImage, force)
+      }
     }
     fragmentListsRecycler.apply {
       adapter = this@ListsFragment.adapter
@@ -175,7 +178,7 @@ class ListsFragment :
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(this) {
       if (fragmentListsSearchView.isSearching) {
-//        exitSearch()
+        exitSearch()
       } else {
         isEnabled = false
         dispatcher.onBackPressed()
@@ -279,6 +282,7 @@ class ListsFragment :
 
   override fun onTraktSyncComplete() {
     fragmentListsSearchView.setTraktProgress(false)
+    viewModel.loadItems(resetScroll = true)
   }
 
   override fun onDestroyView() {
