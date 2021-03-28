@@ -23,6 +23,7 @@ import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.network.trakt.model.Translation
 import com.michaldrabik.network.trakt.model.User
 import com.michaldrabik.network.trakt.model.request.CommentRequest
+import com.michaldrabik.network.trakt.model.request.CreateListRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRevokeRequest
@@ -33,6 +34,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -236,6 +238,26 @@ interface TraktService {
   @POST("sync/history")
   suspend fun postSyncWatched(
     @Header("Authorization") authToken: String,
+    @Body request: SyncExportRequest
+  ): SyncExportResult
+
+  @POST("users/me/lists")
+  suspend fun postCreateList(
+    @Header("Authorization") authToken: String,
+    @Body request: CreateListRequest
+  ): CustomList
+
+  @PUT("users/me/lists/{id}")
+  suspend fun postUpdateList(
+    @Header("Authorization") authToken: String,
+    @Path("id") listId: Long,
+    @Body request: CreateListRequest
+  ): CustomList
+
+  @POST("users/me/lists/{id}/items")
+  suspend fun postAddListItems(
+    @Header("Authorization") authToken: String,
+    @Path("id") listId: Long,
     @Body request: SyncExportRequest
   ): SyncExportResult
 

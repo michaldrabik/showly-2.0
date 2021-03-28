@@ -14,6 +14,7 @@ import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_FANART_URL
 import com.michaldrabik.common.Config.TVDB_IMAGE_BASE_POSTER_URL
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
@@ -82,7 +83,10 @@ abstract class ListDetailsItemView : FrameLayout {
       .into(imageView)
   }
 
-  protected open fun onImageLoadSuccess() = imageLoadCompleteListener?.invoke()
+  protected open fun onImageLoadSuccess() {
+    placeholderView.gone()
+    imageLoadCompleteListener?.invoke()
+  }
 
   protected open fun onImageLoadFail(item: ListDetailsItem) {
     if (item.image.status == AVAILABLE) {

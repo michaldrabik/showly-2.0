@@ -16,6 +16,7 @@ import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncProgress
 import com.michaldrabik.ui_base.events.TraktSyncStart
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
+import com.michaldrabik.ui_base.trakt.exports.TraktExportListsRunner
 import com.michaldrabik.ui_base.trakt.exports.TraktExportWatchedRunner
 import com.michaldrabik.ui_base.trakt.exports.TraktExportWatchlistRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportListsRunner
@@ -69,6 +70,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
 
   @Inject lateinit var exportWatchedRunner: TraktExportWatchedRunner
   @Inject lateinit var exportWatchlistRunner: TraktExportWatchlistRunner
+  @Inject lateinit var exportListsRunner: TraktExportListsRunner
 
   @Inject
   @Named("miscPreferences")
@@ -83,7 +85,8 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
         importWatchlistRunner,
         importListsRunner,
         exportWatchedRunner,
-        exportWatchlistRunner
+        exportWatchlistRunner,
+        exportListsRunner
       )
     )
   }
@@ -117,6 +120,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
         if (isExport) {
           runExportWatched()
           runExportWatchlist()
+          runExportLists()
         }
 
         miscPreferences.edit().putLong(KEY_LAST_SYNC_TIMESTAMP, nowUtcMillis()).apply()
@@ -210,6 +214,17 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
     notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
     EventsManager.sendEvent(TraktSyncProgress(status))
     exportWatchlistRunner.run()
+  }
+
+  private suspend fun runExportLists() {
+    val status = "Exporting custom lists..."
+    val theme = settingsRepository.theme
+    val notification = createProgressNotification(theme).run {
+      setContentText(status)
+    }
+    notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
+    EventsManager.sendEvent(TraktSyncProgress(status))
+    exportListsRunner.run()
   }
 
   override fun onDestroy() {

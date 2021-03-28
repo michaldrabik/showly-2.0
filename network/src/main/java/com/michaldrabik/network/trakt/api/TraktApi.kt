@@ -5,13 +5,17 @@ import com.michaldrabik.network.Config.TRAKT_CLIENT_SECRET
 import com.michaldrabik.network.Config.TRAKT_REDIRECT_URL
 import com.michaldrabik.network.Config.TRAKT_SYNC_PAGE_LIMIT
 import com.michaldrabik.network.trakt.model.Comment
+import com.michaldrabik.network.trakt.model.CustomList
 import com.michaldrabik.network.trakt.model.Episode
 import com.michaldrabik.network.trakt.model.Movie
 import com.michaldrabik.network.trakt.model.OAuthResponse
 import com.michaldrabik.network.trakt.model.Show
+import com.michaldrabik.network.trakt.model.SyncExportItem
 import com.michaldrabik.network.trakt.model.SyncExportRequest
+import com.michaldrabik.network.trakt.model.SyncExportResult
 import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.network.trakt.model.request.CommentRequest
+import com.michaldrabik.network.trakt.model.request.CreateListRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRevokeRequest
@@ -176,6 +180,24 @@ class TraktApi(private val service: TraktService) {
     } while (items.size >= TRAKT_SYNC_PAGE_LIMIT)
 
     return results
+  }
+
+  suspend fun postCreateList(token: String, name: String, description: String?): CustomList {
+    val body = CreateListRequest(name, description)
+    return service.postCreateList("Bearer $token", body)
+  }
+
+  suspend fun postUpdateList(token: String, customList: CustomList): CustomList {
+    val body = CreateListRequest(customList.name, customList.description)
+    return service.postUpdateList("Bearer $token", customList.ids.trakt, body)
+  }
+
+  suspend fun postAddListItems(token: String, listId: Long, showsIds: List<Long>, moviesIds: List<Long>): SyncExportResult {
+    val body = SyncExportRequest(
+      shows = showsIds.map { SyncExportItem.create(it, watchedAt = "") },
+      movies = moviesIds.map { SyncExportItem.create(it, watchedAt = "") }
+    )
+    return service.postAddListItems("Bearer $token", listId, body)
   }
 
   suspend fun postSyncWatchlist(token: String, request: SyncExportRequest) =

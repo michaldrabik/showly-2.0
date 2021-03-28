@@ -7,8 +7,10 @@ import com.michaldrabik.ui_model.SortType
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
+import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
 import com.michaldrabik.network.trakt.model.CustomList as CustomListNetwork
+import com.michaldrabik.network.trakt.model.CustomList.Ids as IdsList
 import com.michaldrabik.storage.database.model.CustomList as CustomListDb
 
 class CustomListMapper @Inject constructor() {
@@ -71,5 +73,24 @@ class CustomListMapper @Inject constructor() {
     likes = list.likes,
     createdAt = list.createdAt.toMillis(),
     updatedAt = list.updatedAt.toMillis()
+  )
+
+  fun toNetwork(list: CustomList) = CustomListNetwork(
+    ids = IdsList(
+      trakt = list.idTrakt ?: -1,
+      slug = list.idSlug
+    ),
+    name = list.name,
+    description = list.description,
+    privacy = list.privacy,
+    display_numbers = list.displayNumbers,
+    allow_comments = list.allowComments,
+    sort_by = list.sortBy.slug,
+    sort_how = list.sortHow.slug,
+    item_count = list.itemCount,
+    comment_count = list.commentCount,
+    likes = list.likes,
+    created_at = list.createdAt.format(DateTimeFormatter.ISO_INSTANT),
+    updated_at = list.updatedAt.format(DateTimeFormatter.ISO_INSTANT)
   )
 }
