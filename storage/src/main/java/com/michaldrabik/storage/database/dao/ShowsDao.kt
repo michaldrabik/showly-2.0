@@ -17,9 +17,6 @@ interface ShowsDao : BaseDao<Show> {
   @Query("SELECT * FROM shows WHERE id_trakt == :traktId")
   suspend fun getById(traktId: Long): Show?
 
-  @Query("SELECT EXISTS(SELECT 1 FROM shows WHERE id_trakt == :traktId)")
-  suspend fun existsById(traktId: Long): Boolean
-
   @Transaction
   suspend fun upsert(shows: List<Show>) {
     val result = insert(shows)

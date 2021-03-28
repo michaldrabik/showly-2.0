@@ -77,7 +77,7 @@ class TraktImportListsRunner @Inject constructor(
             val id = database.customListsDao().insert(listOf(listDb)).first()
             importListItems(id, remoteList.idTrakt!!, token, moviesEnabled, nowUtcMillis)
           }
-          remoteList.updatedAt.isEqual(local.updatedAt) -> {
+          remoteList.updatedAt.isEqual(local.updatedAt).not() -> {
             Timber.d("Local list found and timestamp is different. Updating...")
             if (remoteList.updatedAt.isAfter(local.updatedAt)) {
               val listDb = mappers.customList.toDatabase(remoteList)

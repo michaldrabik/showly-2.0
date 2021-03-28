@@ -10,6 +10,7 @@ import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_lists.lists.recycler.ListsItem
 import com.michaldrabik.ui_model.CustomList
+import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.SortOrder
@@ -72,8 +73,9 @@ class MainListsCase @Inject constructor(
       SHOWS.type -> {
         val showDb = database.showsDao().getById(item.idTrakt)
         showDb?.let {
-          val show = mappers.show.fromDatabase(showDb)
-          showImagesProvider.findCachedImage(show, POSTER)
+          val show = mappers.show.fromDatabase(it)
+          val image = showImagesProvider.findCachedImage(show, POSTER)
+          image.copy(idTvdb = IdTvdb(it.idTvdb))
         }
       }
       MOVIES.type -> {
