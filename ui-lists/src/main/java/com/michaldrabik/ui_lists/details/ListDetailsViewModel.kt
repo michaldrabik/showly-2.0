@@ -80,12 +80,12 @@ class ListDetailsViewModel @Inject constructor(
         val currentItems = uiState?.items?.toList() ?: emptyList()
         val sortedItems = mainCase.sortItems(currentItems, SortOrderList.RANK)
           .map { it.copy(isManageMode = true) }
-        ListDetailsUiModel(items = sortedItems, isManageMode = true, resetScroll = ActionEvent(true))
+        ListDetailsUiModel(items = sortedItems, isManageMode = true, resetScroll = ActionEvent(false))
       } else {
         val list = mainCase.loadDetails(listId)
         val listItems = mainCase.loadItems(list)
           .map { it.copy(isManageMode = false) }
-        ListDetailsUiModel(items = listItems, isManageMode = false, resetScroll = ActionEvent(true))
+        ListDetailsUiModel(items = listItems, isManageMode = false, resetScroll = ActionEvent(false))
       }
     }
   }
