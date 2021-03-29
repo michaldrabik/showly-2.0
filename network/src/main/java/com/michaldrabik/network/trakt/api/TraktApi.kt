@@ -166,6 +166,9 @@ class TraktApi(private val service: TraktService) {
   suspend fun fetchSyncLists(token: String) =
     service.fetchSyncLists("Bearer $token")
 
+  suspend fun fetchSyncList(token: String, listId: Long) =
+    service.fetchSyncList("Bearer $token", listId)
+
   suspend fun fetchSyncListItems(token: String, listId: Long, withMovies: Boolean): List<SyncItem> {
     var page = 1
     val results = mutableListOf<SyncItem>()

@@ -107,7 +107,11 @@ class TraktImportListsRunner @Inject constructor(
 
     val localItems = database.customListsItemsDao().getItemsById(listId)
     val items = cloud.traktApi.fetchSyncListItems(token.token, listIdTrakt, moviesEnabled)
-      .filter { item -> localItems.none { it.idTrakt == item.getTraktId() } }
+      .filter { item ->
+        localItems.none {
+          it.idTrakt == item.getTraktId() && it.type == item.getType()
+        }
+      }
       .filter { it.movie != null || it.show != null }
 
     val shows = items

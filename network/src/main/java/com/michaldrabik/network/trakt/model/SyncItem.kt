@@ -18,6 +18,12 @@ data class SyncItem(
     return null
   }
 
+  fun getType(): String? {
+    if (show != null) return "show"
+    if (movie != null) return "movie"
+    return null
+  }
+
   fun lastWatchedMillis() =
     (last_watched_at?.let { ZonedDateTime.parse(last_watched_at) } ?: ZonedDateTime.now(UTC)).toInstant().toEpochMilli()
 

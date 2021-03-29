@@ -220,6 +220,12 @@ interface TraktService {
     @Header("Authorization") authToken: String,
   ): List<CustomList>
 
+  @GET("users/me/lists/{id}")
+  suspend fun fetchSyncList(
+    @Header("Authorization") authToken: String,
+    @Path("id") listId: Long
+  ): CustomList
+
   @GET("users/me/lists/{id}/items/{types}?extended=full")
   suspend fun fetchSyncListItems(
     @Header("Authorization") authToken: String,
