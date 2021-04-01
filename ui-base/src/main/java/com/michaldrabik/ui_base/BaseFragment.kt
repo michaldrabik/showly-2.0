@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base
 
+import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
 import android.view.ViewPropertyAnimator
@@ -30,7 +31,9 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
   protected abstract val viewModel: T
 
   protected var isInitialized = false
+
   protected val animations = mutableListOf<ViewPropertyAnimator?>()
+  protected val animators = mutableListOf<Animator?>()
 
   protected var mode: Mode
     get() = (requireActivity() as NavigationHost).getMode()
@@ -71,9 +74,15 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
 
   protected fun isTraktSyncing() = (requireAppContext() as OnTraktSyncListener).isTraktSyncActive()
 
-  override fun onDestroyView() {
+  private fun clearAnimations() {
     animations.forEach { it?.cancel() }
+    animators.forEach { it?.cancel() }
     animations.clear()
+    animators.clear()
+  }
+
+  override fun onDestroyView() {
+    clearAnimations()
     super.onDestroyView()
   }
 

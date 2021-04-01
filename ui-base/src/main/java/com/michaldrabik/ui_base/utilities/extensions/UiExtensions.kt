@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_base.utilities.extensions
 
+import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.view.View
@@ -69,6 +70,10 @@ fun View.fadeOut(duration: Long = 250, startDelay: Long = 0, endAction: () -> Un
 
 fun ViewPropertyAnimator?.add(animations: MutableList<ViewPropertyAnimator?>) {
   animations.add(this)
+}
+
+fun Animator?.add(animators: MutableList<Animator?>) {
+  animators.add(this)
 }
 
 fun View.shake() = ObjectAnimator.ofFloat(this, "translationX", 0F, -15F, 15F, -10F, 10F, -5F, 5F, 0F)

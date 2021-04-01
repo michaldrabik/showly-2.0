@@ -236,10 +236,10 @@ class DiscoverFragment :
       anim.start()
     } else {
       ViewAnimationUtils.createCircularReveal(discoverFiltersView, cx, -delta, radius, 0F).apply {
-        doOnEnd { discoverFiltersView.invisible() }
+        doOnEnd { discoverFiltersView?.invisible() }
         start()
-      }
-      discoverMask.fadeOut()
+      }.add(animators)
+      discoverMask.fadeOut().add(animations)
     }
   }
 
