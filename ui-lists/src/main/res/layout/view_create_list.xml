@@ -114,7 +114,7 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/spaceMedium"
-    android:backgroundTint="?attr/colorAccent"
+    android:backgroundTint="@color/selector_create_list_button"
     android:gravity="center"
     android:text="@string/textCreateList"
     android:textColor="?attr/textColorOnSurface"

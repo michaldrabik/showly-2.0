@@ -18,9 +18,13 @@ class ListsRepository @Inject constructor(
 
   suspend fun createList(
     name: String,
-    description: String?
+    description: String?,
+    idTrakt: Long?,
+    idSlug: String?
   ): CustomList {
     val list = CustomList.create().copy(
+      idTrakt = idTrakt,
+      idSlug = idSlug ?: "",
       name = name.trim(),
       description = description?.trim()
     )

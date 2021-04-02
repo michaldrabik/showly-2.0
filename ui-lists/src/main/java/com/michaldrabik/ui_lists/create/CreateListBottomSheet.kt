@@ -72,7 +72,7 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
       return
     }
     if (isEditMode()) {
-      viewModel.updateList(list!!, name, description)
+      viewModel.updateList(list!!.copy(name = name, description = description))
     } else {
       viewModel.createList(name, description)
     }
@@ -86,7 +86,16 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
         viewCreateListDescriptionValue.setText(it.description)
       }
       isLoading?.let {
-        viewCreateListButton.isEnabled == !it
+        viewCreateListNameInput.isEnabled = !it
+        viewCreateListDescriptionInput.isEnabled = !it
+        viewCreateListButton.isEnabled = !it
+        viewCreateListButton.setText(
+          when {
+            it -> R.string.textPleaseWait
+            !it && isEditMode() -> R.string.textEditList
+            else -> R.string.textCreateList
+          }
+        )
       }
       listUpdatedEvent?.let {
         it.consume()?.let {

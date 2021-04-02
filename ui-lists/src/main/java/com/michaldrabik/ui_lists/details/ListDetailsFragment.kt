@@ -89,9 +89,7 @@ class ListDetailsFragment :
     }
     with(fragmentListDetailsToolbar) {
       title = list.name
-      if (!list.description.isNullOrBlank()) {
-        subtitle = list.description
-      }
+      subtitle = list.description
       setNavigationOnClickListener {
         if (isReorderMode) toggleReorderMode()
         else activity?.onBackPressed()
@@ -211,9 +209,7 @@ class ListDetailsFragment :
       details?.let { details ->
         with(fragmentListDetailsToolbar) {
           title = details.name
-          if (!details.description.isNullOrBlank()) {
-            subtitle = details.description
-          }
+          subtitle = details.description
         }
         fragmentListDetailsSortButton.onClick { showSortOrderDialog(details.sortByLocal) }
       }
@@ -236,11 +232,7 @@ class ListDetailsFragment :
           fragmentListDetailsToolbar.subtitle = getString(R.string.textChangeRanksSubtitle)
         } else {
           fragmentListDetailsToolbar.title = details?.name ?: list.name
-          if (!list.description.isNullOrBlank()) {
-            fragmentListDetailsToolbar.subtitle = details?.description ?: list.description
-          } else {
-            fragmentListDetailsToolbar.subtitle = null
-          }
+          fragmentListDetailsToolbar.subtitle = details?.description
         }
       }
       deleteEvent?.let { event -> event.consume()?.let { activity?.onBackPressed() } }
