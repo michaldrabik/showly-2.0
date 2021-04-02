@@ -53,7 +53,7 @@ class ListDetailsFragment :
   private var touchHelper: ItemTouchHelper? = null
   private var layoutManager: LinearLayoutManager? = null
 
-  private var isManageMode = false
+  private var isReorderMode = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiListDetailsComponentProvider).provideListDetailsComponent().inject(this)
@@ -93,12 +93,12 @@ class ListDetailsFragment :
         subtitle = list.description
       }
       setNavigationOnClickListener {
-        if (isManageMode) toggleManageMode()
+        if (isReorderMode) toggleReorderMode()
         else activity?.onBackPressed()
       }
     }
     fragmentListDetailsMoreButton.onClick { openPopupMenu() }
-    fragmentListDetailsManageButton.onClick { toggleManageMode() }
+    fragmentListDetailsManageButton.onClick { toggleReorderMode() }
   }
 
   private fun setupRecycler() {
@@ -108,7 +108,9 @@ class ListDetailsFragment :
       missingImageListener = { item: ListDetailsItem, force: Boolean -> viewModel.loadMissingImage(item, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it) },
       itemsChangedListener = { fragmentListDetailsRecycler.scrollToPosition(0) },
-      itemsMovedListener = { viewModel.updateRanks(list.id, it) },
+      itemsClearedListener = {
+        if (isReorderMode) viewModel.updateRanks(list.id, it)
+      },
       itemsSwipedListener = { viewModel.deleteListItem(list.id, it) },
       itemDragStartListener = this,
       itemSwipeStartListener = this
@@ -127,8 +129,8 @@ class ListDetailsFragment :
   private fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(this) {
-      if (isManageMode) {
-        toggleManageMode()
+      if (isReorderMode) {
+        toggleReorderMode()
       } else {
         remove()
         findNavControl()?.popBackStack()
@@ -199,9 +201,9 @@ class ListDetailsFragment :
     }
   }
 
-  private fun toggleManageMode() {
-    isManageMode = !isManageMode
-    viewModel.setManageMode(list.id, isManageMode)
+  private fun toggleReorderMode() {
+    isReorderMode = !isReorderMode
+    viewModel.setReorderMode(list.id, isReorderMode)
   }
 
   private fun render(uiModel: ListDetailsUiModel) {

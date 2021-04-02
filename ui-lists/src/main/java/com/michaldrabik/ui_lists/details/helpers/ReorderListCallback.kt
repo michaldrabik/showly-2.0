@@ -25,7 +25,7 @@ class ReorderListCallback(
 
   override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
     super.clearView(recyclerView, viewHolder)
-    adapter.onItemMoveFinished()
+    adapter.onItemCleared()
   }
 
   override fun isItemViewSwipeEnabled() = false

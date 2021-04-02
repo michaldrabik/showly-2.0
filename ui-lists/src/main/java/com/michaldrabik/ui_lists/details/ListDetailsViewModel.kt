@@ -74,9 +74,9 @@ class ListDetailsViewModel @Inject constructor(
     }
   }
 
-  fun setManageMode(listId: Long, isManageMode: Boolean) {
+  fun setReorderMode(listId: Long, isReorderMode: Boolean) {
     viewModelScope.launch {
-      uiState = if (isManageMode) {
+      uiState = if (isReorderMode) {
         val currentItems = uiState?.items?.toList() ?: emptyList()
         val sortedItems = mainCase.sortItems(currentItems, SortOrderList.RANK)
           .map { it.copy(isManageMode = true) }

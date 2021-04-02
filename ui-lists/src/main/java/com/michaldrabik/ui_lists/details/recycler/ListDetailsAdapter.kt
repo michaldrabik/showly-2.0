@@ -18,7 +18,7 @@ class ListDetailsAdapter(
   val missingImageListener: (ListDetailsItem, Boolean) -> Unit,
   val missingTranslationListener: (ListDetailsItem) -> Unit,
   val itemsChangedListener: () -> Unit,
-  val itemsMovedListener: (List<ListDetailsItem>) -> Unit,
+  val itemsClearedListener: (List<ListDetailsItem>) -> Unit,
   val itemsSwipedListener: (ListDetailsItem) -> Unit,
   val itemDragStartListener: ListItemDragListener,
   val itemSwipeStartListener: ListItemSwipeListener,
@@ -88,7 +88,7 @@ class ListDetailsAdapter(
     return true
   }
 
-  override fun onItemMoveFinished() = itemsMovedListener(items)
+  override fun onItemCleared() = itemsClearedListener(items)
 
   override fun onItemSwiped(viewHolder: RecyclerView.ViewHolder) {
     val item = ((viewHolder as ListDetailsItemViewHolder).itemView as ListDetailsItemView).item
