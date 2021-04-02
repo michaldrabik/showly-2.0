@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
@@ -52,7 +53,8 @@ import kotlinx.android.synthetic.main.fragment_lists.*
 
 class ListsFragment :
   BaseFragment<ListsViewModel>(R.layout.fragment_lists),
-  OnTraktSyncListener {
+  OnTraktSyncListener,
+  OnTabReselectedListener {
 
   override val viewModel by viewModels<ListsViewModel> { viewModelFactory }
 
@@ -136,12 +138,7 @@ class ListsFragment :
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = ListsAdapter().apply {
       itemClickListener = { openListDetails(it) }
-      itemsChangedListener = {
-        fragmentListsRecycler.scrollToPosition(0)
-        fragmentListsModeTabs.animate().translationY(0F).start()
-        fragmentListsSearchView.animate().translationY(0F).start()
-        fragmentListsSortButton.animate().translationY(0F).start()
-      }
+      itemsChangedListener = { scrollToTop(smooth = false) }
       missingImageListener = { item, itemImage, force ->
         viewModel.loadMissingImage(item, itemImage, force)
       }
@@ -277,6 +274,16 @@ class ListsFragment :
     navigateTo(R.id.actionListsFragmentToCreateListDialog, bundleOf())
   }
 
+  private fun scrollToTop(smooth: Boolean = true) {
+    fragmentListsModeTabs.animate().translationY(0F).start()
+    fragmentListsSearchView.animate().translationY(0F).start()
+    fragmentListsSortButton.animate().translationY(0F).start()
+    when {
+      smooth -> fragmentListsRecycler.smoothScrollToPosition(0)
+      else -> fragmentListsRecycler.scrollToPosition(0)
+    }
+  }
+
   override fun onTraktSyncProgress() =
     fragmentListsSearchView.setTraktProgress(true)
 
@@ -284,6 +291,8 @@ class ListsFragment :
     fragmentListsSearchView.setTraktProgress(false)
     viewModel.loadItems(resetScroll = true)
   }
+
+  override fun onTabReselected() = scrollToTop()
 
   override fun onDestroyView() {
     adapter = null
