@@ -260,6 +260,12 @@ interface TraktService {
     @Body request: CreateListRequest
   ): CustomList
 
+  @DELETE("users/me/lists/{id}")
+  suspend fun deleteList(
+    @Header("Authorization") authToken: String,
+    @Path("id") listId: Long
+  ): Response<Any>
+
   @POST("users/me/lists/{id}/items")
   suspend fun postAddListItems(
     @Header("Authorization") authToken: String,

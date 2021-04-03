@@ -6,8 +6,11 @@ import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.CustomListItem
+import com.michaldrabik.ui_base.events.EventsManager
+import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
@@ -23,24 +26,29 @@ import com.michaldrabik.ui_model.SortOrderList.TITLE
 import com.michaldrabik.ui_repository.ListsRepository
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
+import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
+import retrofit2.HttpException
 import javax.inject.Inject
 
 @AppScope
 class MainListDetailsCase @Inject constructor(
   private val database: AppDatabase,
+  private val cloud: Cloud,
   private val mappers: Mappers,
   private val listsRepository: ListsRepository,
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
   private val translationsRepository: TranslationsRepository,
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
+  private val userTraktManager: UserTraktManager
 ) {
 
   private val language by lazy { translationsRepository.getLanguage() }
@@ -154,9 +162,31 @@ class MainListDetailsCase @Inject constructor(
     return updateItems
   }
 
-  suspend fun deleteList(listId: Long) =
+  suspend fun deleteList(listId: Long, removeFromTrakt: Boolean) {
+    val isAuthorized = userTraktManager.isAuthorized()
+    val list = listsRepository.loadById(listId)
+    val listIdTrakt = list.idTrakt
+    if (isAuthorized && removeFromTrakt && listIdTrakt != null) {
+      val token = userTraktManager.checkAuthorization()
+      try {
+        delay(5000)
+        cloud.traktApi.deleteList(token.token, listIdTrakt)
+        EventsManager.sendEvent(TraktQuickSyncSuccess(1))
+      } catch (error: Throwable) {
+        if (error is HttpException && error.code() == 404) {
+          //NOOP List does not exist in Trakt already.
+        } else {
+          throw error
+        }
+      }
+    }
     listsRepository.deleteList(listId)
+  }
 
   suspend fun deleteListItem(listId: Long, itemTraktId: IdTrakt, itemType: String) =
     listsRepository.removeFromList(listId, itemTraktId, itemType)
+
+  suspend fun isQuickRemoveEnabled(list: CustomList): Boolean {
+    return list.idTrakt != null && settingsRepository.load().traktQuickRemoveEnabled
+  }
 }

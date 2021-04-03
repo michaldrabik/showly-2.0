@@ -28,7 +28,6 @@
   <string name="textMinutesShort">min</string>
   <string name="textActorRole" translatable="false">%s\n(%s)</string>
   <string name="textRemoveFromTrakt">Remove from Trakt.tv?</string>
-  <string name="textRemoveFromTraktAccount">Remove from Trakt.tv account?</string>
   <string name="textNoDescription">Overview not available.</string>
   <string name="textPleaseWait">Please wait…</string>
 
@@ -91,6 +90,7 @@
   <string name="errorSubscriptionsNotAvailable">Google Play Subscriptions are not available on this device.</string>
   <string name="errorCouldNotCreateList">We could not create new list in your Trakt account at this moment.\nPlease contact us if this keeps happening.</string>
   <string name="errorCouldNotUpdateList">We could not update this list in your Trakt account at this moment.\nPlease contact us if this keeps happening.</string>
+  <string name="errorCouldNotDeleteList">We could not delete this list from your Trakt account at this moment.\nPlease contact us if this keeps happening.</string>
   <string name="errorCouldNotFindApp" translatable="false">Sorry, we could not find app on this device that could handle this link.</string>
 
 </resources>

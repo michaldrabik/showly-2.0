@@ -10,6 +10,7 @@ import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
+import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.details.cases.MainListDetailsCase
 import com.michaldrabik.ui_lists.details.cases.SortOrderListDetailsCase
 import com.michaldrabik.ui_lists.details.cases.TipsListDetailsCase
@@ -34,8 +35,14 @@ class ListDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       val list = mainCase.loadDetails(id)
       val listItems = mainCase.loadItems(list)
+      val quickRemoveEnabled = mainCase.isQuickRemoveEnabled(list)
 
-      uiState = ListDetailsUiModel(details = list, items = listItems, isManageMode = false)
+      uiState = ListDetailsUiModel(
+        details = list,
+        items = listItems,
+        isManageMode = false,
+        isQuickRemoveEnabled = quickRemoveEnabled
+      )
 
       val tip = Tip.LIST_ITEM_SWIPE_DELETE
       if (listItems.isNotEmpty() && !tipsCase.isTipShown(tip)) {
@@ -112,10 +119,18 @@ class ListDetailsViewModel @Inject constructor(
     }
   }
 
-  fun deleteList(listId: Long) {
+  fun deleteList(listId: Long, removeFromTrakt: Boolean) {
     viewModelScope.launch {
-      mainCase.deleteList(listId)
-      uiState = ListDetailsUiModel(deleteEvent = ActionEvent(true))
+      try {
+        if (removeFromTrakt) {
+          uiState = ListDetailsUiModel(isLoading = true)
+        }
+        mainCase.deleteList(listId, removeFromTrakt)
+        uiState = ListDetailsUiModel(isLoading = false, deleteEvent = ActionEvent(true))
+      } catch (error: Throwable) {
+        _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotDeleteList)
+        uiState = ListDetailsUiModel(isLoading = false)
+      }
     }
   }
 

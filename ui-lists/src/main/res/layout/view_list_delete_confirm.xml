@@ -8,12 +8,14 @@
   >
 
   <androidx.appcompat.widget.AppCompatCheckBox
-    android:id="@+id/manageListsItemCheckbox"
+    android:id="@+id/viewListDeleteConfirmCheckbox"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceNormal"
+    android:layout_marginEnd="@dimen/spaceNormal"
     android:gravity="center"
+    android:text="@string/textRemoveFromTrakt"
     android:textColor="?android:attr/textColorPrimary"
-    tools:text="Some list name"
     />
 
 </merge>

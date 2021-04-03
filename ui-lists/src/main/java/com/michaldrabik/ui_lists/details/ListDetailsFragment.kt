@@ -33,6 +33,7 @@ import com.michaldrabik.ui_lists.details.helpers.ReorderListCallback
 import com.michaldrabik.ui_lists.details.helpers.ReorderListCallbackAdapter
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsAdapter
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
+import com.michaldrabik.ui_lists.details.views.ListDetailsDeleteConfirmView
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.SortOrderList
 import com.michaldrabik.ui_navigation.java.NavigationArgs
@@ -41,6 +42,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import kotlinx.android.synthetic.main.fragment_list_details.*
 import kotlinx.android.synthetic.main.fragment_lists.*
+import kotlinx.android.synthetic.main.view_list_delete_confirm.view.*
 
 class ListDetailsFragment :
   BaseFragment<ListDetailsViewModel>(R.layout.fragment_list_details), ListItemDragListener, ListItemSwipeListener {
@@ -95,7 +97,6 @@ class ListDetailsFragment :
         else activity?.onBackPressed()
       }
     }
-    fragmentListDetailsMoreButton.onClick { openPopupMenu() }
     fragmentListDetailsManageButton.onClick { toggleReorderMode() }
   }
 
@@ -150,12 +151,17 @@ class ListDetailsFragment :
       .show()
   }
 
-  private fun showDeleteDialog() {
+  private fun showDeleteDialog(quickRemoveEnabled: Boolean) {
+    val view = ListDetailsDeleteConfirmView(requireContext())
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .apply { if (quickRemoveEnabled) setView(view) }
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setTitle(R.string.textConfirmDeleteListTitle)
       .setMessage(R.string.textConfirmDeleteListSubtitle)
-      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.deleteList(list.id) }
+      .setPositiveButton(R.string.textYes) { _, _ ->
+        val removeFromTrakt = view.viewListDeleteConfirmCheckbox?.isChecked
+        viewModel.deleteList(list.id, removeFromTrakt == true)
+      }
       .setNegativeButton(R.string.textNo) { _, _ -> }
       .show()
   }
@@ -185,13 +191,13 @@ class ListDetailsFragment :
     }.add(animations)
   }
 
-  private fun openPopupMenu() {
+  private fun openPopupMenu(quickRemoveEnabled: Boolean) {
     PopupMenu(requireContext(), fragmentListDetailsMoreButton, Gravity.CENTER).apply {
       inflate(R.menu.menu_list_details)
       setOnMenuItemClickListener { menuItem ->
         when (menuItem.itemId) {
           R.id.menuListDetailsEdit -> showEditDialog()
-          R.id.menuListDetailsDelete -> showDeleteDialog()
+          R.id.menuListDetailsDelete -> showDeleteDialog(quickRemoveEnabled)
         }
         true
       }
@@ -211,7 +217,9 @@ class ListDetailsFragment :
           title = details.name
           subtitle = details.description
         }
+        val isQuickRemoveEnabled = isQuickRemoveEnabled == true
         fragmentListDetailsSortButton.onClick { showSortOrderDialog(details.sortByLocal) }
+        fragmentListDetailsMoreButton.onClick { openPopupMenu(isQuickRemoveEnabled) }
       }
       items?.let {
         fragmentListDetailsEmptyView.fadeIf(it.isEmpty())
@@ -234,6 +242,10 @@ class ListDetailsFragment :
           fragmentListDetailsToolbar.title = details?.name ?: list.name
           fragmentListDetailsToolbar.subtitle = details?.description
         }
+      }
+      isLoading?.let {
+        fragmentListDetailsLoadingView.visibleIf(it)
+        if (it) disableUi() else enableUi()
       }
       deleteEvent?.let { event -> event.consume()?.let { activity?.onBackPressed() } }
     }
