@@ -9,8 +9,6 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.CustomListItem
-import com.michaldrabik.ui_base.events.EventsManager
-import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
@@ -31,7 +29,6 @@ import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import org.threeten.bp.Instant
 import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
@@ -169,9 +166,7 @@ class MainListDetailsCase @Inject constructor(
     if (isAuthorized && removeFromTrakt && listIdTrakt != null) {
       val token = userTraktManager.checkAuthorization()
       try {
-        delay(5000)
         cloud.traktApi.deleteList(token.token, listIdTrakt)
-        EventsManager.sendEvent(TraktQuickSyncSuccess(1))
       } catch (error: Throwable) {
         if (error is HttpException && error.code() == 404) {
           //NOOP List does not exist in Trakt already.

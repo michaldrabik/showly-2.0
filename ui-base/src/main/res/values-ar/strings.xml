@@ -52,6 +52,14 @@
     <item quantity="many">تُعرض بعد %d دقائق</item>
     <item quantity="other">تُعرض بعد %d دقائق</item>
   </plurals>
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="zero">لم تتم مزامنة أي عنصر.</item>
+    <item quantity="one">عنصر واحد تمت مزامنته بنجاح.</item>
+    <item quantity="two">تمت مزامنة %d عناصر بنجاح.</item>
+    <item quantity="few">تمت مزامنة %d عناصر بنجاح.</item>
+    <item quantity="many">تمت مزامنة %d عناصر بنجاح.</item>
+    <item quantity="other">تمت مزامنة %d عناصر بنجاح.</item>
+  </plurals>
   <string name="textToday">اليوم</string>
   <string name="textTomorrow">غداً</string>
   <string name="textThisWeek">هذا الإسبوع</string>

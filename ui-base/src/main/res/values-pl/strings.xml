@@ -46,6 +46,12 @@
     <item quantity="many">Premiera za %d minut</item>
     <item quantity="other">Premiera za %d minut</item>
   </plurals>
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="one">1 element zsynchronizowany.</item>
+    <item quantity="few">%d elementów zsynchronizowanych.</item>
+    <item quantity="many">%d elementów zsynchronizowanych.</item>
+    <item quantity="other">%d elementów zsynchronizowanych.</item>
+  </plurals>
   <string name="textToday">Dzisiaj</string>
   <string name="textTomorrow">Jutro</string>
   <string name="textThisWeek">Ten Tydzień</string>

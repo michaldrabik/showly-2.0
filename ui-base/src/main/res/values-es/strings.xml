@@ -40,6 +40,10 @@
     <item quantity="one">Se emite ahora</item>
     <item quantity="other">Se emite en %d minutos</item>
   </plurals>
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="one">1 elemento sincronizado correctamente.</item>
+    <item quantity="other">%d elementos sincronizados correctamente.</item>
+  </plurals>
   <string name="textToday">Hoy</string>
   <string name="textTomorrow">Mañana</string>
   <string name="textThisWeek">Esta Semana</string>

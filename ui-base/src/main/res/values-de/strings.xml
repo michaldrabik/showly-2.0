@@ -40,6 +40,10 @@
     <item quantity="one">Jetzt verfügbar</item>
     <item quantity="other">Verfügbar in %d Minuten</item>
   </plurals>
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="one">1 Item erfolgreich synchronisiert. </item>
+    <item quantity="other">%d Items erfolgreich synchronisiert.  </item>
+  </plurals>
   <string name="textToday">Heute</string>
   <string name="textTomorrow">Morgen</string>
   <string name="textThisWeek">Diese Woche</string>

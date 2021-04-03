@@ -40,6 +40,10 @@
     <item quantity="one">Şimdi yayında</item>
     <item quantity="other">%d dakika içinde yayında</item>
   </plurals>
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="one">1 öge başarıyla eşitlendi.</item>
+    <item quantity="other">%d öge başarıyla senkronize edildi.</item>
+  </plurals>
   <string name="textToday">Bugün</string>
   <string name="textTomorrow">Yarın</string>
   <string name="textThisWeek">Bu Hafta</string>

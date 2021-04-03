@@ -63,19 +63,29 @@
     android:layout_marginRight="@dimen/spaceMedium"
     />
 
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/fragmentListsCreateListButton"
-    android:layout_width="wrap_content"
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/fragmentListsSnackHost"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="end|bottom"
-    android:layout_marginEnd="15dp"
+    android:layout_gravity="bottom"
     android:layout_marginBottom="@dimen/listsFabBottomPadding"
-    android:visibility="gone"
-    app:backgroundTint="?attr/colorAccent"
-    app:srcCompat="@drawable/ic_list_create"
-    app:tint="?attr/textColorOnSurface"
-    tools:ignore="ContentDescription"
-    tools:visibility="visible"
-    />
+    >
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+      android:id="@+id/fragmentListsCreateListButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="end"
+      android:layout_margin="15dp"
+      android:visibility="gone"
+      app:backgroundTint="?attr/colorAccent"
+      app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior"
+      app:srcCompat="@drawable/ic_list_create"
+      app:tint="?attr/textColorOnSurface"
+      tools:ignore="ContentDescription"
+      tools:visibility="visible"
+      />
+
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

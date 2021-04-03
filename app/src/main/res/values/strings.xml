@@ -21,11 +21,6 @@
   <string name="shortcutSearch">Search</string>
   <string name="shortcutProgress">Progress</string>
 
-  <plurals name="textTraktQuickSyncComplete">
-    <item quantity="one">1 item synced successfully.</item>
-    <item quantity="other">%d items synced successfully.</item>
-  </plurals>
-
   <string name="textUpdateDownloaded" translatable="false">Update is now available.</string>
   <string name="textUpdateInstall" translatable="false">Install</string>
 </resources>

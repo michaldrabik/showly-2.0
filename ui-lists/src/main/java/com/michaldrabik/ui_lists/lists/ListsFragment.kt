@@ -23,6 +23,9 @@ import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
+import com.michaldrabik.ui_base.events.Event
+import com.michaldrabik.ui_base.events.EventObserver
+import com.michaldrabik.ui_base.events.TraktListQuickSyncSuccess
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -35,6 +38,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_base.utilities.extensions.visible
@@ -54,7 +58,8 @@ import kotlinx.android.synthetic.main.fragment_lists.*
 class ListsFragment :
   BaseFragment<ListsViewModel>(R.layout.fragment_lists),
   OnTraktSyncListener,
-  OnTabReselectedListener {
+  OnTabReselectedListener,
+  EventObserver {
 
   override val viewModel by viewModels<ListsViewModel> { viewModelFactory }
 
@@ -290,6 +295,13 @@ class ListsFragment :
   override fun onTraktSyncComplete() {
     fragmentListsSearchView.setTraktProgress(false)
     viewModel.loadItems(resetScroll = true)
+  }
+
+  override fun onNewEvent(event: Event) {
+    if (event is TraktListQuickSyncSuccess) {
+      val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, 1, 1)
+      fragmentListsSnackHost.showInfoSnackbar(text)
+    }
   }
 
   override fun onTabReselected() = scrollToTop()

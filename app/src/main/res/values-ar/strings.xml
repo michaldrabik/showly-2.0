@@ -13,12 +13,4 @@
   <string name="shortcutCollection">المجموعة</string>
   <string name="shortcutSearch">البحث</string>
   <string name="shortcutProgress">مستوى التقدم</string>
-  <plurals name="textTraktQuickSyncComplete">
-    <item quantity="zero">لم تتم مزامنة أي عنصر.</item>
-    <item quantity="one">عنصر واحد تمت مزامنته بنجاح.</item>
-    <item quantity="two">تمت مزامنة %d عناصر بنجاح.</item>
-    <item quantity="few">تمت مزامنة %d عناصر بنجاح.</item>
-    <item quantity="many">تمت مزامنة %d عناصر بنجاح.</item>
-    <item quantity="other">تمت مزامنة %d عناصر بنجاح.</item>
-  </plurals>
 </resources>

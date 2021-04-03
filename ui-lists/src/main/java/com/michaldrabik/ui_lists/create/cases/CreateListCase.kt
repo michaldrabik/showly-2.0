@@ -5,7 +5,7 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.events.EventsManager
-import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
+import com.michaldrabik.ui_base.events.TraktListQuickSyncSuccess
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_repository.ListsRepository
 import com.michaldrabik.ui_repository.SettingsRepository
@@ -33,7 +33,7 @@ class CreateListCase @Inject constructor(
         mappers.customList.fromNetwork(this)
       }
       return listsRepository.createList(name, description, list.idTrakt, list.idSlug)
-        .also { EventsManager.sendEvent(TraktQuickSyncSuccess(1)) }
+        .also { EventsManager.sendEvent(TraktListQuickSyncSuccess) }
     }
     return listsRepository.createList(name, description, null, null)
   }
@@ -50,7 +50,7 @@ class CreateListCase @Inject constructor(
           mappers.customList.fromNetwork(this)
         }
         listsRepository.updateList(list.id, result.idTrakt, result.idSlug, result.name, result.description)
-          .also { EventsManager.sendEvent(TraktQuickSyncSuccess(1)) }
+          .also { EventsManager.sendEvent(TraktListQuickSyncSuccess) }
       } catch (error: Throwable) {
         if (error is HttpException && error.code() == 404) {
           // If list does not exist in Trakt account we need to create it and upload items as well.
@@ -68,7 +68,7 @@ class CreateListCase @Inject constructor(
           }
 
           listsRepository.updateList(list.id, result.idTrakt, result.idSlug, result.name, result.description)
-            .also { EventsManager.sendEvent(TraktQuickSyncSuccess(1)) }
+            .also { EventsManager.sendEvent(TraktListQuickSyncSuccess) }
         } else {
           Logger.record(error, "Source" to "CreateListCase::updateList()")
           throw error
