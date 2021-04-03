@@ -195,12 +195,12 @@ class TraktApi(private val service: TraktService) {
     return service.postUpdateList("Bearer $token", customList.ids.trakt, body)
   }
 
-  suspend fun postAddListItems(token: String, listId: Long, showsIds: List<Long>, moviesIds: List<Long>): SyncExportResult {
+  suspend fun postAddListItems(token: String, listTraktId: Long, showsIds: List<Long>, moviesIds: List<Long>): SyncExportResult {
     val body = SyncExportRequest(
       shows = showsIds.map { SyncExportItem.create(it, watchedAt = "") },
       movies = moviesIds.map { SyncExportItem.create(it, watchedAt = "") }
     )
-    return service.postAddListItems("Bearer $token", listId, body)
+    return service.postAddListItems("Bearer $token", listTraktId, body)
   }
 
   suspend fun postSyncWatchlist(token: String, request: SyncExportRequest) =

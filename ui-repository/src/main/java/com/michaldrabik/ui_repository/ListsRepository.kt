@@ -35,11 +35,19 @@ class ListsRepository @Inject constructor(
 
   suspend fun updateList(
     id: Long,
+    idTrakt: Long?,
+    idSlug: String?,
     name: String,
     description: String?
   ): CustomList {
     val listDb = database.customListsDao().getById(id)!!
-    val updated = listDb.copy(name = name, description = description, updatedAt = nowUtcMillis())
+    val updated = listDb.copy(
+      name = name,
+      idTrakt = idTrakt ?: listDb.idTrakt,
+      idSlug = idSlug ?: listDb.idSlug,
+      description = description,
+      updatedAt = nowUtcMillis()
+    )
     database.customListsDao().update(listOf(updated))
     return mappers.customList.fromDatabase(updated)
   }
@@ -72,6 +80,9 @@ class ListsRepository @Inject constructor(
 
   suspend fun loadListIdsForItem(itemTraktId: IdTrakt, itemType: String) =
     database.customListsItemsDao().getListsForItem(itemTraktId.id, itemType)
+
+  suspend fun loadListItemsForId(listId: Long) =
+    database.customListsItemsDao().getItemsById(listId)
 
   suspend fun loadById(listId: Long): CustomList {
     val listDb = database.customListsDao().getById(listId)!!

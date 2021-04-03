@@ -9,6 +9,10 @@ data class SyncExportItem(
     fun create(
       traktId: Long,
       watchedAt: String = "released"
-    ) = SyncExportItem(Ids(traktId, "", 0, "", 0, 0), watchedAt)
+    ) = SyncExportItem(Ids(traktId), watchedAt)
   }
+
+  data class Ids(
+    val trakt: Long
+  )
 }
