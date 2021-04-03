@@ -10,8 +10,12 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.ViewModelProvider
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
+import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.MessageEvent.Type
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.shake
+import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
+import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.create.di.UiCreateListComponentProvider
 import com.michaldrabik.ui_model.CustomList
@@ -46,6 +50,7 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
     setupView(view)
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it) })
+      messageLiveData.observe(viewLifecycleOwner, { renderSnackbar(it) })
       if (isEditMode()) {
         viewModel.loadDetails(list?.id!!)
       }
@@ -102,6 +107,15 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
           setFragmentResult(REQUEST_CREATE_LIST, bundleOf())
           dismiss()
         }
+      }
+    }
+  }
+
+  private fun renderSnackbar(message: MessageEvent) {
+    message.consume()?.let {
+      when (message.type) {
+        Type.INFO -> viewCreateListSnackHost.showInfoSnackbar(getString(it))
+        Type.ERROR -> viewCreateListSnackHost.showErrorSnackbar(getString(it))
       }
     }
   }

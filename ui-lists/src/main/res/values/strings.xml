@@ -21,4 +21,8 @@
   <string name="textManageListsShows">Manage your lists for this show.</string>
   <string name="textManageListsMovies">Manage your lists for this movie.</string>
 
+  <string name="errorCouldNotCreateList">We could not create new list in your Trakt account at this moment.\nPlease check internet connection and try again.</string>
+  <string name="errorCouldNotUpdateList">We could not update this list in your Trakt account at this moment.\nPlease check internet connection and try again.</string>
+  <string name="errorCouldNotDeleteList">We could not delete this list from your Trakt account at this moment.\nPlease check internet connection and try again.</string>
+
 </resources>

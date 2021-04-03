@@ -93,9 +93,6 @@
   <string name="errorTraktSyncGeneral">Trakt.tv sync error.\nPlease check your internet connection and try again.</string>
   <string name="errorTraktLocked">Your Trakt.tv account is currently locked.\nPlease contact Trakt.tv support at https://support.trakt.tv/ to unlock your account.</string>
   <string name="errorSubscriptionsNotAvailable">Google Play Subscriptions are not available on this device.</string>
-  <string name="errorCouldNotCreateList">We could not create new list in your Trakt account at this moment.\nPlease contact us if this keeps happening.</string>
-  <string name="errorCouldNotUpdateList">We could not update this list in your Trakt account at this moment.\nPlease contact us if this keeps happening.</string>
-  <string name="errorCouldNotDeleteList">We could not delete this list from your Trakt account at this moment.\nPlease contact us if this keeps happening.</string>
   <string name="errorCouldNotFindApp" translatable="false">Sorry, we could not find app on this device that could handle this link.</string>
 
 </resources>
