@@ -6,6 +6,7 @@ import com.michaldrabik.network.Cloud
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktListQuickSyncSuccess
+import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_repository.ListsRepository
 import com.michaldrabik.ui_repository.SettingsRepository
@@ -50,7 +51,7 @@ class CreateListCase @Inject constructor(
           mappers.customList.fromNetwork(this)
         }
         listsRepository.updateList(list.id, result.idTrakt, result.idSlug, result.name, result.description)
-          .also { EventsManager.sendEvent(TraktListQuickSyncSuccess) }
+          .also { EventsManager.sendEvent(TraktQuickSyncSuccess(1)) }
       } catch (error: Throwable) {
         if (error is HttpException && error.code() == 404) {
           // If list does not exist in Trakt account we need to create it and upload items as well.
