@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_lists.manage
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -28,6 +29,7 @@ class ManageListsViewModel @Inject constructor(
   }
 
   fun onListItemChecked(
+    context: Context,
     itemId: IdTrakt,
     itemType: String,
     listItem: ManageListsItem,
@@ -36,11 +38,11 @@ class ManageListsViewModel @Inject constructor(
     viewModelScope.launch {
       if (isChecked) {
         updateItem(listItem.copy(isEnabled = false, isChecked = true))
-        manageListsCase.addToList(itemId, itemType, listItem)
+        manageListsCase.addToList(context, itemId, itemType, listItem)
         updateItem(listItem.copy(isEnabled = true, isChecked = true))
       } else {
         updateItem(listItem.copy(isEnabled = false, isChecked = false))
-        manageListsCase.removeFromList(itemId, itemType, listItem)
+        manageListsCase.removeFromList(context, itemId, itemType, listItem)
         updateItem(listItem.copy(isEnabled = true, isChecked = false))
       }
     }

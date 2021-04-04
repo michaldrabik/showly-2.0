@@ -1,10 +1,14 @@
 package com.michaldrabik.ui_base.trakt.quicksync
 
 import android.content.Context
+import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.TraktSyncQueue
+import com.michaldrabik.storage.database.model.TraktSyncQueue.Operation
+import com.michaldrabik.storage.database.model.TraktSyncQueue.Type
+import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.UserTraktManager
 import timber.log.Timber
@@ -93,6 +97,75 @@ class QuickSyncManager @Inject constructor(
     QuickSyncWorker.schedule(context)
   }
 
+  //TODO Must also include list id when deleting
+  suspend fun scheduleAddToList(context: Context, idTrakt: Long, idList: Long, type: Mode) {
+    val settings = settingsRepository.load()
+    if (!settings.traktQuickSyncEnabled) {
+      Timber.d("Quick Sync is disabled. Skipping...")
+      return
+    }
+    if (!userTraktManager.isAuthorized()) {
+      Timber.d("User not logged into Trakt. Skipping...")
+      return
+    }
+
+    val time = nowUtcMillis()
+    val item = when (type) {
+      Mode.SHOWS -> TraktSyncQueue.createListShow(idTrakt, idList, Operation.ADD, time, time)
+      Mode.MOVIES -> TraktSyncQueue.createListMovie(idTrakt, idList, Operation.ADD, time, time)
+    }
+
+    val itemType = when (type) {
+      Mode.SHOWS -> Type.LIST_ITEM_SHOW
+      Mode.MOVIES -> Type.LIST_ITEM_MOVIE
+    }
+
+    database.runTransaction {
+      traktSyncQueueDao().deleteAll(listOf(idTrakt), itemType.slug, Operation.ADD.slug)
+      val count = traktSyncQueueDao().deleteAll(listOf(idTrakt), itemType.slug, Operation.REMOVE.slug)
+      if (count == 0) {
+        traktSyncQueueDao().insert(listOf(item))
+        Timber.d("Added ${type.type} list item into add to list queue.")
+      }
+    }
+
+    QuickSyncWorker.schedule(context)
+  }
+
+  suspend fun scheduleRemoveFromList(context: Context, idTrakt: Long, listIdTrakt: Long, type: Mode) {
+    val settings = settingsRepository.load()
+    if (!settings.traktQuickSyncEnabled) {
+      Timber.d("Quick Sync/Remove is disabled. Skipping...")
+      return
+    }
+    if (!userTraktManager.isAuthorized()) {
+      Timber.d("User not logged into Trakt. Skipping...")
+      return
+    }
+
+    val time = nowUtcMillis()
+    val item = when (type) {
+      Mode.SHOWS -> TraktSyncQueue.createListShow(idTrakt, listIdTrakt, Operation.REMOVE, time, time)
+      Mode.MOVIES -> TraktSyncQueue.createListMovie(idTrakt, listIdTrakt, Operation.REMOVE, time, time)
+    }
+
+    val itemType = when (type) {
+      Mode.SHOWS -> Type.LIST_ITEM_SHOW
+      Mode.MOVIES -> Type.LIST_ITEM_MOVIE
+    }
+
+    database.runTransaction {
+      traktSyncQueueDao().deleteAll(listOf(idTrakt), itemType.slug, Operation.REMOVE.slug)
+      val count = traktSyncQueueDao().deleteAll(listOf(idTrakt), itemType.slug, Operation.ADD.slug)
+      if (count == 0 && settings.traktQuickRemoveEnabled) {
+        traktSyncQueueDao().insert(listOf(item))
+        Timber.d("Added ${type.type} list item into remove from list queue.")
+      }
+    }
+
+    QuickSyncWorker.schedule(context)
+  }
+
   suspend fun clearEpisodes(episodesIds: List<Long>) {
     val settings = settingsRepository.load()
     if (!settings.traktQuickSyncEnabled) {
@@ -100,7 +173,7 @@ class QuickSyncManager @Inject constructor(
       return
     }
 
-    val count = database.traktSyncQueueDao().deleteAll(episodesIds, TraktSyncQueue.Type.EPISODE.slug)
+    val count = database.traktSyncQueueDao().deleteAll(episodesIds, Type.EPISODE.slug)
     Timber.d("Episodes removed from sync queue. Count: $count")
   }
 
@@ -111,7 +184,7 @@ class QuickSyncManager @Inject constructor(
       return
     }
 
-    database.traktSyncQueueDao().deleteAll(moviesIds, TraktSyncQueue.Type.MOVIE.slug)
+    database.traktSyncQueueDao().deleteAll(moviesIds, Type.MOVIE.slug)
     Timber.d("Movies removed from sync queue. Count: ${moviesIds.size}")
   }
 
@@ -122,7 +195,7 @@ class QuickSyncManager @Inject constructor(
       return
     }
 
-    database.traktSyncQueueDao().deleteAll(showsIds, TraktSyncQueue.Type.SHOW_WATCHLIST.slug)
+    database.traktSyncQueueDao().deleteAll(showsIds, Type.SHOW_WATCHLIST.slug)
     Timber.d("Shows removed from sync queue. Count: ${showsIds.size}")
   }
 
@@ -133,7 +206,7 @@ class QuickSyncManager @Inject constructor(
       return
     }
 
-    database.traktSyncQueueDao().deleteAll(moviesIds, TraktSyncQueue.Type.MOVIE_WATCHLIST.slug)
+    database.traktSyncQueueDao().deleteAll(moviesIds, Type.MOVIE_WATCHLIST.slug)
     Timber.d("Movies removed from sync queue. Count: ${moviesIds.size}")
   }
 
