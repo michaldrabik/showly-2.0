@@ -31,7 +31,7 @@ class ListDetailsShowItemView : ListDetailsItemView {
   init {
     inflate(context, R.layout.view_list_details_show_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
-    setBackgroundColor(context.colorFromAttr(android.R.attr.colorBackground))
+    setBackgroundColor(context.colorFromAttr(R.attr.colorPrimaryBackground))
 
     imageLoadCompleteListener = {
       if (item.translation == null) {
