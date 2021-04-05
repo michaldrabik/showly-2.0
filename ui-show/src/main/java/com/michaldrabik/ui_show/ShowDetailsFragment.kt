@@ -282,7 +282,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun showEpisodesView(item: SeasonListItem) {
     showDetailsEpisodesView.run {
       bind(item)
-      fadeIn(265) {
+      fadeIn(265, withHardware = true) {
         bindEpisodes(item.episodes)
         viewModel.loadSeasonTranslation(item)
       }
@@ -303,7 +303,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun showCommentsView() {
     showDetailsCommentsView.run {
-      fadeIn(275)
+      fadeIn(275, withHardware = true)
       startAnimation(animationEnterRight)
     }
     showDetailsMainLayout.run {
@@ -321,7 +321,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       startAnimation(animationExitLeft)
     }
     showDetailsMainLayout.run {
-      fadeIn()
+      fadeIn(withHardware = true)
       startAnimation(animationEnterLeft)
     }
     showDetailsBackArrow2.crossfadeTo(showDetailsBackArrow)
@@ -432,7 +432,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsActorFullName.apply {
       text = getString(R.string.textActorRole, actor.name, actor.role)
-      fadeIn()
+      fadeIn(withHardware = true)
     }
     showDetailsActorFullContainer.apply {
       tag = actor
@@ -441,7 +441,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsActorFullMask.apply {
       onClick { hideFullActorView(actor) }
-      fadeIn()
+      fadeIn(withHardware = true)
     }
   }
 
@@ -505,7 +505,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       showLoading?.let {
         if (!showDetailsEpisodesView.isVisible && !showDetailsCommentsView.isVisible) {
-          showDetailsMainLayout.fadeIf(!it)
+          showDetailsMainLayout.fadeIf(!it, withHardware = true)
           showDetailsMainProgress.visibleIf(it)
         }
       }
@@ -549,18 +549,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       removeFromTraktHistory?.let { event ->
         event.consume()?.let {
-          showDetailsAddButton.fadeIf(!it)
+          showDetailsAddButton.fadeIf(!it, withHardware = true)
           showDetailsRemoveTraktButton.run {
-            fadeIf(it)
+            fadeIf(it, withHardware = true)
             onYesClickListener = { viewModel.removeFromTraktHistory() }
           }
         }
       }
       removeFromTraktWatchlist?.let { event ->
         event.consume()?.let {
-          showDetailsAddButton.fadeIf(!it)
+          showDetailsAddButton.fadeIf(!it, withHardware = true)
           showDetailsRemoveTraktButton.run {
-            fadeIf(it)
+            fadeIf(it, withHardware = true)
             onYesClickListener = { viewModel.removeFromTraktWatchlist() }
           }
         }
@@ -644,18 +644,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun renderActors(actors: List<Actor>) {
     actorsAdapter?.setItems(actors)
-    showDetailsActorsRecycler.fadeIf(actors.isNotEmpty())
-    showDetailsActorsEmptyView.fadeIf(actors.isEmpty())
+    showDetailsActorsRecycler.fadeIf(actors.isNotEmpty(), withHardware = true)
+    showDetailsActorsEmptyView.fadeIf(actors.isEmpty(), withHardware = true)
     showDetailsActorsProgress.gone()
   }
 
   private fun renderSeasons(seasonsItems: List<SeasonListItem>) {
     seasonsAdapter?.setItems(seasonsItems)
     showDetailsEpisodesView.updateEpisodes(seasonsItems)
-    showDetailsSeasonsRecycler.fadeIf(seasonsItems.isNotEmpty())
-    showDetailsSeasonsLabel.fadeIf(seasonsItems.isNotEmpty())
-    showDetailsSeasonsEmptyView.fadeIf(seasonsItems.isEmpty())
-    showDetailsQuickProgress.fadeIf(seasonsItems.isNotEmpty())
+    showDetailsSeasonsRecycler.fadeIf(seasonsItems.isNotEmpty(), withHardware = true)
+    showDetailsSeasonsLabel.fadeIf(seasonsItems.isNotEmpty(), withHardware = true)
+    showDetailsSeasonsEmptyView.fadeIf(seasonsItems.isEmpty(), withHardware = true)
+    showDetailsQuickProgress.fadeIf(seasonsItems.isNotEmpty(), withHardware = true)
     showDetailsSeasonsProgress.gone()
     showDetailsQuickProgress.onClick {
       if (seasonsItems.any { !it.season.isSpecial() }) {
@@ -688,8 +688,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun renderRelatedShows(items: List<RelatedListItem>) {
     relatedAdapter?.setItems(items)
-    showDetailsRelatedRecycler.fadeIf(items.isNotEmpty())
-    showDetailsRelatedLabel.fadeIf(items.isNotEmpty())
+    showDetailsRelatedRecycler.fadeIf(items.isNotEmpty(), withHardware = true)
+    showDetailsRelatedLabel.fadeIf(items.isNotEmpty(), withHardware = true)
     showDetailsRelatedProgress.gone()
   }
 

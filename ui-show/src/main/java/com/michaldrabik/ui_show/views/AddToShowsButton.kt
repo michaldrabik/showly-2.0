@@ -40,17 +40,17 @@ class AddToShowsButton : FrameLayout {
     if (animate) isEnabled = false
     when (state) {
       State.ADD -> {
-        addToMyShowsButton.fadeIn(duration)
-        watchlistButton.fadeIn(duration)
-        inMyShowsButton.fadeOut(duration) { isEnabled = true }
-        archiveButton.fadeOut(duration) { isEnabled = true }
+        addToMyShowsButton.fadeIn(duration, withHardware = true)
+        watchlistButton.fadeIn(duration, withHardware = true)
+        inMyShowsButton.fadeOut(duration, withHardware = true) { isEnabled = true }
+        archiveButton.fadeOut(duration, withHardware = true) { isEnabled = true }
       }
       State.IN_MY_SHOWS -> {
         val color = context.colorFromAttr(R.attr.colorAccent)
         val colorState = context.colorStateListFromAttr(R.attr.colorAccent)
 
-        addToMyShowsButton.fadeOut(duration)
-        watchlistButton.fadeOut(duration)
+        addToMyShowsButton.fadeOut(duration, withHardware = true)
+        watchlistButton.fadeOut(duration, withHardware = true)
         inMyShowsButton.run {
           setIconResource(R.drawable.ic_bookmark_full)
           setText(R.string.textInMyShows)
@@ -58,10 +58,10 @@ class AddToShowsButton : FrameLayout {
           iconTint = colorState
           strokeColor = colorState
           rippleColor = colorState
-          fadeIn(duration) { isEnabled = true }
+          fadeIn(duration, withHardware = true) { isEnabled = true }
         }
         archiveButton.run {
-          fadeIn(duration) { isEnabled = true }
+          fadeIn(duration, withHardware = true) { isEnabled = true }
           setColorFilter(color)
         }
       }
@@ -69,8 +69,8 @@ class AddToShowsButton : FrameLayout {
         val color = context.colorFromAttr(android.R.attr.textColorSecondary)
         val colorState = context.colorStateListFromAttr(android.R.attr.textColorSecondary)
 
-        addToMyShowsButton.fadeOut(duration)
-        watchlistButton.fadeOut(duration)
+        addToMyShowsButton.fadeOut(duration, withHardware = true)
+        watchlistButton.fadeOut(duration, withHardware = true)
         inMyShowsButton.run {
           setIconResource(R.drawable.ic_bookmark_full)
           setText(R.string.textInWatchlist)
@@ -78,16 +78,16 @@ class AddToShowsButton : FrameLayout {
           iconTint = colorState
           strokeColor = colorState
           rippleColor = colorState
-          fadeIn(duration) { isEnabled = true }
+          fadeIn(duration, withHardware = true) { isEnabled = true }
         }
         archiveButton.run {
-          fadeIn(duration) { isEnabled = true }
+          fadeIn(duration, withHardware = true) { isEnabled = true }
           setColorFilter(color)
         }
       }
       State.IN_ARCHIVE -> {
-        addToMyShowsButton.fadeOut(duration)
-        watchlistButton.fadeOut(duration)
+        addToMyShowsButton.fadeOut(duration, withHardware = true)
+        watchlistButton.fadeOut(duration, withHardware = true)
         inMyShowsButton.run {
           val color = context.colorFromAttr(android.R.attr.textColorSecondary)
           val colorState = context.colorStateListFromAttr(android.R.attr.textColorSecondary)
@@ -97,7 +97,7 @@ class AddToShowsButton : FrameLayout {
           iconTint = colorState
           strokeColor = colorState
           rippleColor = colorState
-          fadeIn(duration) { isEnabled = true }
+          fadeIn(duration, withHardware = true) { isEnabled = true }
         }
         archiveButton.gone()
       }

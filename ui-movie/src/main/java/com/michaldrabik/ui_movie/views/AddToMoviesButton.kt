@@ -42,16 +42,16 @@ class AddToMoviesButton : FrameLayout {
     when (state) {
       ADD -> {
         addToMyMoviesButton.setText(R.string.textAddToMyMovies)
-        addToMyMoviesButton.fadeIn(duration)
-        watchlistButton.fadeIn(duration)
-        inMyMoviesButton.fadeOut(duration) { isEnabled = true }
+        addToMyMoviesButton.fadeIn(duration, withHardware = true)
+        watchlistButton.fadeIn(duration, withHardware = true)
+        inMyMoviesButton.fadeOut(duration, withHardware = true) { isEnabled = true }
       }
       IN_MY_MOVIES -> {
         val color = context.colorFromAttr(R.attr.colorAccent)
         val colorState = context.colorStateListFromAttr(R.attr.colorAccent)
 
-        addToMyMoviesButton.fadeOut(duration)
-        watchlistButton.fadeOut(duration)
+        addToMyMoviesButton.fadeOut(duration, withHardware = true)
+        watchlistButton.fadeOut(duration, withHardware = true)
         inMyMoviesButton.run {
           setIconResource(R.drawable.ic_bookmark_full)
           setText(R.string.textInMyMovies)
@@ -59,15 +59,15 @@ class AddToMoviesButton : FrameLayout {
           iconTint = colorState
           strokeColor = colorState
           rippleColor = colorState
-          fadeIn(duration) { isEnabled = true }
+          fadeIn(duration, withHardware = true) { isEnabled = true }
         }
       }
       IN_WATCHLIST -> {
         val color = context.colorFromAttr(android.R.attr.textColorSecondary)
         val colorState = context.colorStateListFromAttr(android.R.attr.textColorSecondary)
 
-        addToMyMoviesButton.fadeOut(duration)
-        watchlistButton.fadeOut(duration)
+        addToMyMoviesButton.fadeOut(duration, withHardware = true)
+        watchlistButton.fadeOut(duration, withHardware = true)
         inMyMoviesButton.run {
           setIconResource(R.drawable.ic_bookmark_full)
           setText(R.string.textInMoviesWatchlist)
@@ -75,14 +75,14 @@ class AddToMoviesButton : FrameLayout {
           iconTint = colorState
           strokeColor = colorState
           rippleColor = colorState
-          fadeIn(duration) { isEnabled = true }
+          fadeIn(duration, withHardware = true) { isEnabled = true }
         }
       }
       UPCOMING -> {
-        addToMyMoviesButton.fadeIn(duration)
+        addToMyMoviesButton.fadeIn(duration, withHardware = true)
         addToMyMoviesButton.setText(R.string.textUpcoming)
-        watchlistButton.fadeIn(duration)
-        inMyMoviesButton.fadeOut(duration) { isEnabled = true }
+        watchlistButton.fadeIn(duration, withHardware = true)
+        inMyMoviesButton.fadeOut(duration, withHardware = true) { isEnabled = true }
       }
     }
   }

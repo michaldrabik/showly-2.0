@@ -38,33 +38,57 @@ fun View.crossfadeTo(view: View, duration: Long = 250) {
   view.fadeIn(duration)
 }
 
-fun View.fadeIf(condition: Boolean, duration: Long = 250, startDelay: Long = 0) =
-  if (condition) {
-    fadeIn(duration, startDelay)
-  } else {
-    fadeOut(duration, startDelay)
-  }
+fun View.fadeIf(
+  condition: Boolean,
+  duration: Long = 250,
+  startDelay: Long = 0,
+  withHardware: Boolean = false
+) = if (condition) {
+  fadeIn(duration, startDelay, withHardware)
+} else {
+  fadeOut(duration, startDelay, withHardware)
+}
 
-fun View.fadeIn(duration: Long = 250, startDelay: Long = 0, endAction: () -> Unit = {}): ViewPropertyAnimator? {
+fun View.fadeIn(
+  duration: Long = 250,
+  startDelay: Long = 0,
+  withHardware: Boolean = false,
+  endAction: () -> Unit = {}
+): ViewPropertyAnimator? {
   if (visibility == View.VISIBLE) {
     endAction()
     return null
   }
   visibility = View.VISIBLE
   alpha = 0F
-  val animation = animate().alpha(1F).setDuration(duration).setStartDelay(startDelay).withEndAction(endAction)
+  val animation = animate()
+    .alpha(1F)
+    .setDuration(duration)
+    .setStartDelay(startDelay)
+    .apply { if (withHardware) withLayer() }
+    .withEndAction(endAction)
   return animation.also { it.start() }
 }
 
-fun View.fadeOut(duration: Long = 250, startDelay: Long = 0, endAction: () -> Unit = {}): ViewPropertyAnimator? {
+fun View.fadeOut(
+  duration: Long = 250,
+  startDelay: Long = 0,
+  withHardware: Boolean = false,
+  endAction: () -> Unit = {}
+): ViewPropertyAnimator? {
   if (visibility == View.GONE) {
     endAction()
     return null
   }
-  val animation = animate().alpha(0F).setDuration(duration).setStartDelay(startDelay).withEndAction {
-    gone()
-    endAction()
-  }
+  val animation = animate()
+    .alpha(0F)
+    .setDuration(duration)
+    .setStartDelay(startDelay)
+    .apply { if (withHardware) withLayer() }
+    .withEndAction {
+      gone()
+      endAction()
+    }
   return animation.also { it.start() }
 }
 

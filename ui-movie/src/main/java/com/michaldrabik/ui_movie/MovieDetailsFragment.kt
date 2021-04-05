@@ -184,8 +184,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       onRemoveClickListener = { viewModel.removeFromFollowed(requireAppContext()) }
     }
     movieDetailsRemoveTraktButton.onNoClickListener = {
-      movieDetailsAddButton.fadeIn()
-      movieDetailsRemoveTraktButton.fadeOut()
+      movieDetailsAddButton.fadeIn(withHardware = true)
+      movieDetailsRemoveTraktButton.fadeOut(withHardware = true)
     }
     movieDetailsManageListsLabel.onClick { openListsDialog() }
   }
@@ -300,8 +300,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     TransitionManager.beginDelayedTransition(movieDetailsRoot, transform)
     movieDetailsActorFullContainer.gone()
     actorView.visible()
-    movieDetailsActorFullMask.fadeOut()
-    movieDetailsActorFullName.fadeOut()
+    movieDetailsActorFullMask.fadeOut(withHardware = true)
+    movieDetailsActorFullName.fadeOut(withHardware = true)
   }
 
   private fun showCustomImagesSheet(movieId: Long, isPremium: Boolean?) {
@@ -394,7 +394,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       movieLoading?.let {
         if (!movieDetailsCommentsView.isVisible) {
-          movieDetailsMainLayout.fadeIf(!it)
+          movieDetailsMainLayout.fadeIf(!it, withHardware = true)
           movieDetailsMainProgress.visibleIf(it)
         }
       }
@@ -430,7 +430,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       removeFromTraktHistory?.let { event ->
         event.consume()?.let {
-          movieDetailsAddButton.fadeIf(!it)
+          movieDetailsAddButton.fadeIf(!it, withHardware = true)
           movieDetailsRemoveTraktButton.run {
             fadeIf(it)
             onYesClickListener = { viewModel.removeFromTraktHistory() }
@@ -439,7 +439,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       removeFromTraktWatchlist?.let { event ->
         event.consume()?.let {
-          movieDetailsAddButton.fadeIf(!it)
+          movieDetailsAddButton.fadeIf(!it, withHardware = true)
           movieDetailsRemoveTraktButton.run {
             fadeIf(it)
             onYesClickListener = { viewModel.removeFromTraktWatchlist() }
@@ -503,15 +503,15 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun renderActors(actors: List<Actor>) {
     actorsAdapter?.setItems(actors)
-    movieDetailsActorsRecycler.fadeIf(actors.isNotEmpty())
-    movieDetailsActorsEmptyView.fadeIf(actors.isEmpty())
+    movieDetailsActorsRecycler.fadeIf(actors.isNotEmpty(), withHardware = true)
+    movieDetailsActorsEmptyView.fadeIf(actors.isEmpty(), withHardware = true)
     movieDetailsActorsProgress.gone()
   }
 
   private fun renderRelatedMovies(items: List<RelatedListItem>) {
     relatedAdapter?.setItems(items)
-    movieDetailsRelatedRecycler.fadeIf(items.isNotEmpty())
-    movieDetailsRelatedLabel.fadeIf(items.isNotEmpty())
+    movieDetailsRelatedRecycler.fadeIf(items.isNotEmpty(), withHardware = true)
+    movieDetailsRelatedLabel.fadeIf(items.isNotEmpty(), withHardware = true)
     movieDetailsRelatedProgress.gone()
   }
 
