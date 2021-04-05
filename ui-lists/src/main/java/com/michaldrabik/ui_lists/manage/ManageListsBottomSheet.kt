@@ -16,7 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
+import com.michaldrabik.ui_base.events.Event
+import com.michaldrabik.ui_base.events.EventObserver
+import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.manage.di.UiManageListsComponentProvider
@@ -30,7 +34,7 @@ import kotlinx.android.synthetic.main.fragment_lists.*
 import kotlinx.android.synthetic.main.view_manage_lists.*
 import kotlinx.android.synthetic.main.view_manage_lists.view.*
 
-class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>() {
+class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), EventObserver {
 
   override val layoutResId = R.layout.view_manage_lists
 
@@ -106,5 +110,14 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>() {
     adapter = null
     layoutManager = null
     super.onDestroyView()
+  }
+
+  override fun onNewEvent(event: Event) {
+    activity?.runOnUiThread {
+      if (event is TraktQuickSyncSuccess) {
+        val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)
+        viewManageListsSnackHost?.showInfoSnackbar(text)
+      }
+    }
   }
 }

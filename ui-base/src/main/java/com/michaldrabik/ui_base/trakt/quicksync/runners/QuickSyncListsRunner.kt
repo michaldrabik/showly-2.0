@@ -1,13 +1,20 @@
 package com.michaldrabik.ui_base.trakt.quicksync.runners
 
+import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.storage.database.model.TraktSyncQueue
+import com.michaldrabik.storage.database.model.TraktSyncQueue.Operation
 import com.michaldrabik.storage.database.model.TraktSyncQueue.Type
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
-import com.michaldrabik.ui_base.utilities.extensions.runTransaction
-import com.michaldrabik.ui_repository.SettingsRepository
+import com.michaldrabik.ui_model.CustomList
+import com.michaldrabik.ui_repository.ListsRepository
+import com.michaldrabik.ui_repository.TraktAuthToken
 import com.michaldrabik.ui_repository.UserTraktManager
+import com.michaldrabik.ui_repository.mappers.Mappers
+import kotlinx.coroutines.delay
+import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -15,119 +22,163 @@ import javax.inject.Inject
 class QuickSyncListsRunner @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
-  private val settingsRepository: SettingsRepository,
+  private val mappers: Mappers,
+  private val listsRepository: ListsRepository,
   userTraktManager: UserTraktManager
 ) : TraktSyncRunner(userTraktManager) {
 
   companion object {
-    private const val BATCH_LIMIT = 100
-    private const val DELAY = 1000L
+    private const val TRAKT_DELAY = 1000L
   }
 
-  private val syncTypes = listOf(
-    Type.LIST_ITEM_SHOW,
-    Type.LIST_ITEM_MOVIE
-  )
+  private val syncTypes = listOf(Type.LIST_ITEM_SHOW, Type.LIST_ITEM_MOVIE).map { it.slug }
 
   override suspend fun run(): Int {
     Timber.d("Initialized.")
     isRunning = true
 
+    var count = 0
     val authToken = checkAuthorization()
-    val moviesEnabled = settingsRepository.isMoviesEnabled
 
-    database.runTransaction {
+    val items = database.traktSyncQueueDao().getAll(syncTypes)
+      .groupBy { it.idList }
+      .filter { it.key != null }
 
-      val items = traktSyncQueueDao().getAll(syncTypes.map { it.slug })
-      syncTypes.forEach { type ->
-        traktSyncQueueDao().deleteAll(items.map { it.idTrakt }, type.slug)
-        traktSyncQueueDao().deleteAll(items.map { it.idTrakt }, type.slug)
-      }
+    if (items.isEmpty()) {
+      Timber.d("Nothing to sync. Cancelling..")
+      return count
     }
 
-//    val historyCount = exportHistoryItems(authToken, moviesEnabled)
-//    val watchlistCount = exportWatchlistItems(authToken, moviesEnabled)
+    count += processItems(items, authToken, count)
 
     isRunning = false
     Timber.d("Finished with success.")
-    return 0
+    return count
   }
 
-//  private suspend fun exportHistoryItems(
-//    token: TraktAuthToken,
-//    moviesEnabled: Boolean,
-//    count: Int = 0
-//  ): Int {
-//    val types = if (moviesEnabled) listOf(MOVIE, EPISODE) else listOf(EPISODE)
-//    val items = database.traktSyncQueueDao().getAll(types.map { it.slug }).take(BATCH_LIMIT)
-//    if (items.isEmpty()) {
-//      Timber.d("Nothing to export. Cancelling..")
-//      return count
-//    }
-//
-//    val exportEpisodes = items.filter { it.type == EPISODE.slug }.distinctBy { it.idTrakt }
-//    val exportMovies = items.filter { it.type == MOVIE.slug }.distinctBy { it.idTrakt }
-//
-//    val request = SyncExportRequest(
-//      episodes = exportEpisodes.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) },
-//      movies = exportMovies.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) }
-//    )
-//
-//    cloud.traktApi.postSyncWatched(token.token, request)
-//    database.withTransaction {
-//      val ids = items.map { it.idTrakt }
-//      database.traktSyncQueueDao().deleteAll(ids, EPISODE.slug)
-//      database.traktSyncQueueDao().deleteAll(ids, MOVIE.slug)
-//    }
-//
-//    val currentCount = count + exportEpisodes.count() + exportMovies.count()
-//
-//    // Check for more items
-//    val newItems = database.traktSyncQueueDao().getAll(types.map { it.slug })
-//    if (newItems.isNotEmpty()) {
-//      delay(DELAY)
-//      return exportHistoryItems(token, moviesEnabled, currentCount)
-//    }
-//
-//    return currentCount
-//  }
-//
-//  private suspend fun exportWatchlistItems(
-//    token: TraktAuthToken,
-//    moviesEnabled: Boolean,
-//    count: Int = 0
-//  ): Int {
-//    val types = if (moviesEnabled) listOf(MOVIE_WATCHLIST, SHOW_WATCHLIST) else listOf(SHOW_WATCHLIST)
-//    val items = database.traktSyncQueueDao().getAll(types.map { it.slug }).take(BATCH_LIMIT)
-//    if (items.isEmpty()) {
-//      Timber.d("Nothing to export. Cancelling..")
-//      return count
-//    }
-//
-//    val exportShows = items.filter { it.type == SHOW_WATCHLIST.slug }.distinctBy { it.idTrakt }
-//    val exportMovies = items.filter { it.type == MOVIE_WATCHLIST.slug }.distinctBy { it.idTrakt }
-//
-//    val request = SyncExportRequest(
-//      shows = exportShows.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) },
-//      movies = exportMovies.map { SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt)) }
-//    )
-//
-//    cloud.traktApi.postSyncWatchlist(token.token, request)
-//    database.withTransaction {
-//      val ids = items.map { it.idTrakt }
-//      database.traktSyncQueueDao().deleteAll(ids, MOVIE_WATCHLIST.slug)
-//      database.traktSyncQueueDao().deleteAll(ids, SHOW_WATCHLIST.slug)
-//    }
-//
-//    val currentCount = count + exportShows.count() + exportMovies.count()
-//
-//    // Check for more items
-//    val newItems = database.traktSyncQueueDao().getAll(types.map { it.slug })
-//    if (newItems.isNotEmpty()) {
-//      delay(DELAY)
-//      return exportWatchlistItems(token, moviesEnabled, currentCount)
-//    }
-//
-//    return currentCount
-//  }
+  private suspend fun processItems(
+    items: Map<Long?, List<TraktSyncQueue>>,
+    authToken: TraktAuthToken,
+    count: Int
+  ): Int {
+    var counted = count
+
+    for (syncListItem in items) {
+      val listId = syncListItem.key!!
+      var localList = database.customListsDao().getById(listId)?.run {
+        mappers.customList.fromDatabase(this)
+      }
+      if (localList == null) {
+        database.traktSyncQueueDao().deleteAllForList(listId)
+        Timber.d("List with ID: $listId does not exist anymore. Skipping...")
+        continue
+      }
+
+      val addItems = syncListItem.value.filter { it.operation == Operation.ADD.slug }
+      val removeItems = syncListItem.value.filter { it.operation == Operation.REMOVE.slug }
+
+      if (localList.idTrakt == null && addItems.isNotEmpty()) {
+        Timber.d("List with ID: $listId does not exist in Trakt. Creating...")
+        localList = createMissingList(localList, authToken)
+      } else if (localList.idTrakt == null) {
+        Timber.d("List with ID: $listId does not exist in Trakt. No need to remove items...")
+        database.traktSyncQueueDao().delete(removeItems)
+        continue
+      }
+
+      //Handle remove items operation
+      handleRemoveItems(removeItems, authToken, localList)
+
+      //Handle add items operation
+      handleAddItems(addItems, authToken, localList)
+
+      counted++
+      delay(TRAKT_DELAY)
+    }
+
+    //Check in case more items appeared in the meantime.
+    val itemsCheck = database.traktSyncQueueDao().getAll(syncTypes)
+      .groupBy { it.idList }
+      .filter { it.key != null }
+
+    if (itemsCheck.isNotEmpty()) {
+      return processItems(itemsCheck, authToken, counted)
+    }
+
+    return counted
+  }
+
+  private suspend fun handleRemoveItems(
+    removeItems: List<TraktSyncQueue>,
+    authToken: TraktAuthToken,
+    list: CustomList
+  ) {
+    try {
+      val showIds = removeItems
+        .filter { it.type == Type.LIST_ITEM_SHOW.slug }
+        .map { it.idTrakt }
+
+      val movieIds = removeItems
+        .filter { it.type == Type.LIST_ITEM_MOVIE.slug }
+        .map { it.idTrakt }
+
+      if (showIds.isNotEmpty() || movieIds.isNotEmpty()) {
+        cloud.traktApi.postRemoveListItems(authToken.token, list.idTrakt!!, showIds, movieIds)
+        database.traktSyncQueueDao().delete(removeItems)
+      }
+    } catch (error: Throwable) {
+      if (error is HttpException && error.code() == 404) {
+        database.traktSyncQueueDao().delete(removeItems)
+        Timber.d("Tried to remove from list but it does not exist anymore. Skipping...")
+      } else {
+        throw error
+      }
+    }
+  }
+
+  private suspend fun handleAddItems(
+    addItems: List<TraktSyncQueue>,
+    authToken: TraktAuthToken,
+    localList: CustomList
+  ) {
+    val showIds = addItems
+      .filter { it.type == Type.LIST_ITEM_SHOW.slug }
+      .map { it.idTrakt }
+
+    val movieIds = addItems
+      .filter { it.type == Type.LIST_ITEM_MOVIE.slug }
+      .map { it.idTrakt }
+
+    try {
+      if (showIds.isNotEmpty() || movieIds.isNotEmpty()) {
+        cloud.traktApi.postAddListItems(authToken.token, localList.idTrakt!!, showIds, movieIds)
+        database.traktSyncQueueDao().delete(addItems)
+      }
+    } catch (error: Throwable) {
+      if (error is HttpException && error.code() == 404) {
+        Timber.d("Tried to add to list but it does not exist. Creating...")
+        delay(TRAKT_DELAY)
+        createMissingList(localList, authToken)
+        database.traktSyncQueueDao().delete(addItems)
+      } else {
+        throw error
+      }
+    }
+  }
+
+  private suspend fun createMissingList(localList: CustomList, token: TraktAuthToken): CustomList {
+    val result = cloud.traktApi.postCreateList(token.token, localList.name, localList.description)
+      .run { mappers.customList.fromNetwork(this) }
+    listsRepository.updateList(localList.id, result.idTrakt, result.idSlug, result.name, result.description)
+
+    val localItems = listsRepository.loadListItemsForId(localList.id)
+    if (localItems.isNotEmpty()) {
+      val showsIds = localItems.filter { it.type == Mode.SHOWS.type }.map { it.idTrakt }
+      val moviesIds = localItems.filter { it.type == Mode.MOVIES.type }.map { it.idTrakt }
+      delay(TRAKT_DELAY)
+      cloud.traktApi.postAddListItems(token.token, result.idTrakt!!, showsIds, moviesIds)
+    }
+
+    return listsRepository.updateList(localList.id, result.idTrakt, result.idSlug, result.name, result.description)
+  }
 }

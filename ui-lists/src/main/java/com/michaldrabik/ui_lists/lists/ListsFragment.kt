@@ -26,6 +26,7 @@ import com.michaldrabik.ui_base.common.views.exSearchViewText
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventObserver
 import com.michaldrabik.ui_base.events.TraktListQuickSyncSuccess
+import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -298,9 +299,18 @@ class ListsFragment :
   }
 
   override fun onNewEvent(event: Event) {
-    if (event is TraktListQuickSyncSuccess) {
-      val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, 1, 1)
-      fragmentListsSnackHost.showInfoSnackbar(text)
+    activity?.runOnUiThread {
+      when (event) {
+        is TraktListQuickSyncSuccess -> {
+          val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, 1, 1)
+          fragmentListsSnackHost.showInfoSnackbar(text)
+        }
+        is TraktQuickSyncSuccess -> {
+          val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, event.count, event.count)
+          fragmentListsSnackHost.showInfoSnackbar(text)
+        }
+        else -> Unit
+      }
     }
   }
 

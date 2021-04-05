@@ -2,13 +2,13 @@ package com.michaldrabik.network.trakt.model
 
 data class SyncExportItem(
   val ids: Ids,
-  val watched_at: String
+  val watched_at: String?
 ) {
 
   companion object {
     fun create(
       traktId: Long,
-      watchedAt: String = "released"
+      watchedAt: String? = "released"
     ) = SyncExportItem(Ids(traktId), watchedAt)
   }
 

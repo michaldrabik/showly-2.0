@@ -92,6 +92,15 @@
     app:rippleColor="?android:attr/textColorPrimary"
     />
 
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:id="@+id/viewManageListsSnackHost"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toTopOf="@id/viewManageListsButton"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    />
+
   <include
     android:id="@+id/viewManageListsEmptyView"
     layout="@layout/layout_manage_lists_empty"
