@@ -149,9 +149,7 @@ fun CoroutineScope.launchDelayed(delayMs: Long, action: () -> Unit): Job {
 }
 
 suspend fun AppDatabase.runTransaction(action: suspend AppDatabase.() -> Unit) {
-  with(this) {
-    withTransaction {
-      action()
-    }
+  withTransaction {
+    action()
   }
 }

@@ -97,7 +97,6 @@ class QuickSyncManager @Inject constructor(
     QuickSyncWorker.schedule(context)
   }
 
-  //TODO Must also include list id when deleting
   suspend fun scheduleAddToList(context: Context, idTrakt: Long, idList: Long, type: Mode) {
     val settings = settingsRepository.load()
     if (!settings.traktQuickSyncEnabled) {
@@ -121,8 +120,8 @@ class QuickSyncManager @Inject constructor(
     }
 
     database.runTransaction {
-      traktSyncQueueDao().deleteAll(listOf(idTrakt), itemType.slug, Operation.ADD.slug)
-      val count = traktSyncQueueDao().deleteAll(listOf(idTrakt), itemType.slug, Operation.REMOVE.slug)
+      traktSyncQueueDao().delete(idTrakt, idList, itemType.slug, Operation.ADD.slug)
+      val count = traktSyncQueueDao().delete(idTrakt, idList, itemType.slug, Operation.REMOVE.slug)
       if (count == 0) {
         traktSyncQueueDao().insert(listOf(item))
         Timber.d("Added ${type.type} list item into add to list queue.")
@@ -132,7 +131,7 @@ class QuickSyncManager @Inject constructor(
     QuickSyncWorker.schedule(context)
   }
 
-  suspend fun scheduleRemoveFromList(context: Context, idTrakt: Long, listIdTrakt: Long, type: Mode) {
+  suspend fun scheduleRemoveFromList(context: Context, idTrakt: Long, idList: Long, type: Mode) {
     val settings = settingsRepository.load()
     if (!settings.traktQuickSyncEnabled) {
       Timber.d("Quick Sync/Remove is disabled. Skipping...")
@@ -145,8 +144,8 @@ class QuickSyncManager @Inject constructor(
 
     val time = nowUtcMillis()
     val item = when (type) {
-      Mode.SHOWS -> TraktSyncQueue.createListShow(idTrakt, listIdTrakt, Operation.REMOVE, time, time)
-      Mode.MOVIES -> TraktSyncQueue.createListMovie(idTrakt, listIdTrakt, Operation.REMOVE, time, time)
+      Mode.SHOWS -> TraktSyncQueue.createListShow(idTrakt, idList, Operation.REMOVE, time, time)
+      Mode.MOVIES -> TraktSyncQueue.createListMovie(idTrakt, idList, Operation.REMOVE, time, time)
     }
 
     val itemType = when (type) {
@@ -155,8 +154,8 @@ class QuickSyncManager @Inject constructor(
     }
 
     database.runTransaction {
-      traktSyncQueueDao().deleteAll(listOf(idTrakt), itemType.slug, Operation.REMOVE.slug)
-      val count = traktSyncQueueDao().deleteAll(listOf(idTrakt), itemType.slug, Operation.ADD.slug)
+      traktSyncQueueDao().delete(idTrakt, idList, itemType.slug, Operation.REMOVE.slug)
+      val count = traktSyncQueueDao().delete(idTrakt, idList, itemType.slug, Operation.ADD.slug)
       if (count == 0 && settings.traktQuickRemoveEnabled) {
         traktSyncQueueDao().insert(listOf(item))
         Timber.d("Added ${type.type} list item into remove from list queue.")
