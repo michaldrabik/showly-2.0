@@ -104,13 +104,21 @@ class ListDetailsFragment :
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = ListDetailsAdapter(
       itemClickListener = { openItemDetails(it) },
-      missingImageListener = { item: ListDetailsItem, force: Boolean -> viewModel.loadMissingImage(item, force) },
-      missingTranslationListener = { viewModel.loadMissingTranslation(it) },
-      itemsChangedListener = { fragmentListDetailsRecycler.scrollToPosition(0) },
+      missingImageListener = { item: ListDetailsItem, force: Boolean ->
+        viewModel.loadMissingImage(item, force)
+      },
+      missingTranslationListener = {
+        viewModel.loadMissingTranslation(it)
+      },
+      itemsChangedListener = {
+        fragmentListDetailsRecycler.scrollToPosition(0)
+      },
       itemsClearedListener = {
         if (isReorderMode) viewModel.updateRanks(list.id, it)
       },
-      itemsSwipedListener = { viewModel.deleteListItem(list.id, it) },
+      itemsSwipedListener = {
+        viewModel.deleteListItem(requireAppContext(), list.id, it)
+      },
       itemDragStartListener = this,
       itemSwipeStartListener = this
     )

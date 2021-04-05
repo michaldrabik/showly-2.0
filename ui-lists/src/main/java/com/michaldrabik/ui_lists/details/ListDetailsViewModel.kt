@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_lists.details
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
@@ -134,15 +135,19 @@ class ListDetailsViewModel @Inject constructor(
     }
   }
 
-  fun deleteListItem(listId: Long, item: ListDetailsItem) {
+  fun deleteListItem(
+    context: Context,
+    listId: Long,
+    item: ListDetailsItem
+  ) {
     viewModelScope.launch {
       val type =
         when {
-          item.isShow() -> Mode.SHOWS.type
-          item.isMovie() -> Mode.MOVIES.type
+          item.isShow() -> Mode.SHOWS
+          item.isMovie() -> Mode.MOVIES
           else -> throw IllegalStateException()
         }
-      mainCase.deleteListItem(listId, item.getTraktId(), type)
+      mainCase.deleteListItem(context, listId, item.getTraktId(), type)
       loadDetails(listId)
     }
   }

@@ -1,7 +1,9 @@
 package com.michaldrabik.ui_lists.details.cases
 
+import android.content.Context
 import androidx.room.withTransaction
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.common.di.AppScope
@@ -11,6 +13,7 @@ import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.storage.database.model.CustomListItem
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.IdTrakt
@@ -45,7 +48,8 @@ class MainListDetailsCase @Inject constructor(
   private val movieImagesProvider: MovieImagesProvider,
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
-  private val userTraktManager: UserTraktManager
+  private val userTraktManager: UserTraktManager,
+  private val quickSyncManager: QuickSyncManager
 ) {
 
   private val language by lazy { translationsRepository.getLanguage() }
@@ -178,8 +182,17 @@ class MainListDetailsCase @Inject constructor(
     listsRepository.deleteList(listId)
   }
 
-  suspend fun deleteListItem(listId: Long, itemTraktId: IdTrakt, itemType: String) =
-    listsRepository.removeFromList(listId, itemTraktId, itemType)
+  suspend fun deleteListItem(
+    context: Context,
+    listId: Long,
+    itemTraktId: IdTrakt,
+    itemType: Mode
+  ) {
+    listsRepository.removeFromList(listId, itemTraktId, itemType.type)
+    if (settingsRepository.load().traktQuickRemoveEnabled) {
+      quickSyncManager.scheduleRemoveFromList(context, itemTraktId.id, listId, itemType)
+    }
+  }
 
   suspend fun isQuickRemoveEnabled(list: CustomList): Boolean {
     return list.idTrakt != null && settingsRepository.load().traktQuickRemoveEnabled
