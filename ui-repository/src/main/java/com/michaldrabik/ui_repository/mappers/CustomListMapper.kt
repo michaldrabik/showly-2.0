@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_repository.mappers
 
+import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.SortOrderList
@@ -28,6 +29,7 @@ class CustomListMapper @Inject constructor() {
     sortHow = SortType.fromSlug(list.sort_how),
     sortByLocal = SortOrderList.RANK,
     sortHowLocal = SortType.ASCENDING,
+    filterTypeLocal = Mode.getAll(),
     itemCount = list.item_count,
     commentCount = list.comment_count,
     likes = list.likes,
@@ -48,6 +50,7 @@ class CustomListMapper @Inject constructor() {
     sortHow = SortType.fromSlug(list.sortHow),
     sortByLocal = SortOrderList.fromSlug(list.sortByLocal) ?: SortOrderList.RANK,
     sortHowLocal = SortType.fromSlug(list.sortHowLocal),
+    filterTypeLocal = list.filterTypeLocal.split(",").map { Mode.fromType(it) },
     itemCount = list.itemCount,
     commentCount = list.commentCount,
     likes = list.likes,
@@ -68,6 +71,7 @@ class CustomListMapper @Inject constructor() {
     sortHow = list.sortHow.slug,
     sortByLocal = list.sortByLocal.slug,
     sortHowLocal = list.sortHowLocal.slug,
+    filterTypeLocal = list.filterTypeLocal.joinToString(",") { it.type },
     itemCount = list.itemCount,
     commentCount = list.commentCount,
     likes = list.likes,

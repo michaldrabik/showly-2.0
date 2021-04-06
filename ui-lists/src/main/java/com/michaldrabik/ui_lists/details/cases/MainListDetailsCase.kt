@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_lists.details.cases
 
 import android.content.Context
-import androidx.room.withTransaction
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
@@ -14,6 +13,7 @@ import com.michaldrabik.storage.database.model.CustomListItem
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
+import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.IdTrakt
@@ -126,10 +126,14 @@ class MainListDetailsCase @Inject constructor(
       }
     }.awaitAll()
 
-    sortItems(items, list.sortByLocal)
+    sortItems(items, list.sortByLocal, list.filterTypeLocal)
   }
 
-  fun sortItems(items: List<ListDetailsItem>, sort: SortOrderList): List<ListDetailsItem> {
+  fun sortItems(
+    items: List<ListDetailsItem>,
+    sort: SortOrderList,
+    typeFilters: List<Mode>
+  ): List<ListDetailsItem> {
     val sorted = when (sort) {
       RANK -> items.sortedBy { it.rank }
       TITLE -> items.sortedBy {
@@ -142,7 +146,15 @@ class MainListDetailsCase @Inject constructor(
       RATING -> items.sortedByDescending { it.getRating() }
       DATE_ADDED -> items.sortedByDescending { it.listedAt }
     }
-    return sorted.map { it.copy(isRankDisplayed = sort == RANK) }
+    return sorted
+      .filter {
+        when {
+          it.isShow() -> typeFilters.contains(SHOWS)
+          it.isMovie() -> typeFilters.contains(MOVIES)
+          else -> throw IllegalStateException()
+        }
+      }
+      .map { it.copy(isRankDisplayed = sort == RANK) }
   }
 
   suspend fun updateRanks(listId: Long, items: List<ListDetailsItem>): List<ListDetailsItem> {
@@ -156,9 +168,9 @@ class MainListDetailsCase @Inject constructor(
       updateItems.add(updatedItem)
       updateItemsDb.add(dbItem)
     }
-    database.withTransaction {
-      database.customListsItemsDao().update(updateItemsDb)
-      database.customListsDao().updateTimestamp(listId, now)
+    database.runTransaction {
+      customListsItemsDao().update(updateItemsDb)
+      customListsDao().updateTimestamp(listId, now)
     }
     return updateItems
   }

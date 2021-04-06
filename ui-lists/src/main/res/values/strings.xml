@@ -3,6 +3,7 @@
   <string name="menuLists">Lists</string>
   <string name="menuList">List</string>
 
+  <string name="textFilters">Filters:</string>
   <string name="textListsEmpty">Your lists collection is currently empty.</string>
   <string name="textListEmpty">Your list is currently empty.</string>
   <string name="textCreateList">Create list</string>

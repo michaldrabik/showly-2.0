@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_model
 
 import android.os.Parcelable
+import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.nowUtc
 import kotlinx.android.parcel.Parcelize
 import org.threeten.bp.ZonedDateTime
@@ -19,6 +20,7 @@ data class CustomList(
   val sortHow: SortType,
   val sortByLocal: SortOrderList,
   val sortHowLocal: SortType,
+  val filterTypeLocal: List<Mode>,
   val itemCount: Long,
   val commentCount: Long,
   val likes: Long,
@@ -40,6 +42,7 @@ data class CustomList(
       sortHow = SortType.ASCENDING,
       sortByLocal = SortOrderList.RANK,
       sortHowLocal = SortType.ASCENDING,
+      filterTypeLocal = Mode.getAll(),
       itemCount = 0,
       commentCount = 0,
       likes = 0,

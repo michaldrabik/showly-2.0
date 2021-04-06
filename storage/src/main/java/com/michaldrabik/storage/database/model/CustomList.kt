@@ -24,6 +24,7 @@ data class CustomList(
   @ColumnInfo(name = "sort_how") var sortHow: String,
   @ColumnInfo(name = "sort_by_local") var sortByLocal: String,
   @ColumnInfo(name = "sort_how_local") var sortHowLocal: String,
+  @ColumnInfo(name = "filter_type_local") var filterTypeLocal: String,
   @ColumnInfo(name = "item_count") var itemCount: Long,
   @ColumnInfo(name = "comment_count") var commentCount: Long,
   @ColumnInfo(name = "likes") var likes: Long,

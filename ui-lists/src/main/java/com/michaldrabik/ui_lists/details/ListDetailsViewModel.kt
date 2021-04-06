@@ -85,14 +85,15 @@ class ListDetailsViewModel @Inject constructor(
   fun setReorderMode(listId: Long, isReorderMode: Boolean) {
     viewModelScope.launch {
       uiState = if (isReorderMode) {
-        val currentItems = uiState?.items?.toList() ?: emptyList()
-        val sortedItems = mainCase.sortItems(currentItems, SortOrderList.RANK)
-          .map { it.copy(isManageMode = true) }
-        ListDetailsUiModel(items = sortedItems, isManageMode = true, resetScroll = ActionEvent(false))
+        val list = mainCase.loadDetails(listId).copy(
+          sortByLocal = SortOrderList.RANK,
+          filterTypeLocal = Mode.getAll()
+        )
+        val listItems = mainCase.loadItems(list).map { it.copy(isManageMode = true) }
+        ListDetailsUiModel(items = listItems, isManageMode = true, resetScroll = ActionEvent(false))
       } else {
         val list = mainCase.loadDetails(listId)
-        val listItems = mainCase.loadItems(list)
-          .map { it.copy(isManageMode = false) }
+        val listItems = mainCase.loadItems(list).map { it.copy(isManageMode = false) }
         ListDetailsUiModel(items = listItems, isManageMode = false, resetScroll = ActionEvent(false))
       }
     }
@@ -110,7 +111,22 @@ class ListDetailsViewModel @Inject constructor(
       val list = sortCase.setSortOrder(id, sortOrder)
 
       val currentItems = uiState?.items?.toList() ?: emptyList()
-      val sortedItems = mainCase.sortItems(currentItems, sortOrder)
+      val sortedItems = mainCase.sortItems(currentItems, list.sortByLocal, list.filterTypeLocal)
+
+      uiState = ListDetailsUiModel(
+        details = list,
+        items = sortedItems,
+        resetScroll = ActionEvent(true)
+      )
+    }
+  }
+
+  fun setSortTypes(listId: Long, types: List<Mode>) {
+    if (types.isEmpty()) return
+
+    viewModelScope.launch {
+      val list = sortCase.setSortTypes(listId, types)
+      val sortedItems = mainCase.loadItems(list)
 
       uiState = ListDetailsUiModel(
         details = list,

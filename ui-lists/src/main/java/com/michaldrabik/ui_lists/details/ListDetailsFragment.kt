@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
@@ -34,6 +35,7 @@ import com.michaldrabik.ui_lists.details.helpers.ReorderListCallbackAdapter
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsAdapter
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_lists.details.views.ListDetailsDeleteConfirmView
+import com.michaldrabik.ui_lists.details.views.ListDetailsFiltersView
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.SortOrderList
 import com.michaldrabik.ui_navigation.java.NavigationArgs
@@ -145,7 +147,14 @@ class ListDetailsFragment :
     }
   }
 
-  private fun showSortOrderDialog(order: SortOrderList) {
+  private fun showSortOrderDialog(order: SortOrderList, types: List<Mode>) {
+    val view = ListDetailsFiltersView(requireContext()).apply {
+      setTypes(types)
+      onChipsChangeListener = { types ->
+        viewModel.setSortTypes(list.id, types)
+      }
+    }
+
     val options = SortOrderList.values()
     val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
 
@@ -156,6 +165,7 @@ class ListDetailsFragment :
         viewModel.setSortOrder(list.id, options[index])
         dialog.dismiss()
       }
+      .setView(view)
       .show()
   }
 
@@ -226,18 +236,21 @@ class ListDetailsFragment :
           subtitle = details.description
         }
         val isQuickRemoveEnabled = isQuickRemoveEnabled == true
-        fragmentListDetailsSortButton.onClick { showSortOrderDialog(details.sortByLocal) }
+        fragmentListDetailsSortButton.onClick { showSortOrderDialog(details.sortByLocal, details.filterTypeLocal) }
         fragmentListDetailsMoreButton.onClick { openPopupMenu(isQuickRemoveEnabled) }
       }
       items?.let {
+        val isRealEmpty = it.isEmpty() && details?.filterTypeLocal?.containsAll(Mode.getAll()) == true
         fragmentListDetailsEmptyView.fadeIf(it.isEmpty())
-        fragmentListDetailsManageButton.visibleIf(it.isNotEmpty())
-        fragmentListDetailsSortButton.visibleIf(it.isNotEmpty())
+        fragmentListDetailsManageButton.visibleIf(!isRealEmpty)
+        fragmentListDetailsSortButton.visibleIf(!isRealEmpty)
         val scrollTop = resetScroll?.consume() == true
         adapter?.setItems(it, scrollTop)
       }
       isManageMode?.let { isEnabled ->
-        if (items?.isEmpty() == true) return@let
+        if (items?.isEmpty() == true && details?.filterTypeLocal?.containsAll(Mode.getAll()) == true) {
+          return@let
+        }
 
         fragmentListDetailsSortButton.visibleIf(!isEnabled)
         fragmentListDetailsManageButton.visibleIf(!isEnabled)

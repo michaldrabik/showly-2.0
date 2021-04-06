@@ -345,6 +345,7 @@ object Migrations {
             "`sort_how` TEXT NOT NULL, " +
             "`sort_by_local` TEXT NOT NULL, " +
             "`sort_how_local` TEXT NOT NULL, " +
+            "`filter_type_local` TEXT NOT NULL, " +
             "`item_count` INTEGER NOT NULL, " +
             "`comment_count` INTEGER NOT NULL, " +
             "`likes` INTEGER NOT NULL, " +
