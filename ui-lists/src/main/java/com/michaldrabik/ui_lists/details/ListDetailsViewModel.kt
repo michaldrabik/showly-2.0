@@ -12,10 +12,11 @@ import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_lists.R
-import com.michaldrabik.ui_lists.details.cases.MainListDetailsCase
-import com.michaldrabik.ui_lists.details.cases.SortOrderListDetailsCase
-import com.michaldrabik.ui_lists.details.cases.TipsListDetailsCase
-import com.michaldrabik.ui_lists.details.cases.TranslationsListDetailsCase
+import com.michaldrabik.ui_lists.details.cases.ListDetailsItemsCase
+import com.michaldrabik.ui_lists.details.cases.ListDetailsMainCase
+import com.michaldrabik.ui_lists.details.cases.ListDetailsSortCase
+import com.michaldrabik.ui_lists.details.cases.ListDetailsTipsCase
+import com.michaldrabik.ui_lists.details.cases.ListDetailsTranslationsCase
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrderList
@@ -24,18 +25,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ListDetailsViewModel @Inject constructor(
-  private val mainCase: MainListDetailsCase,
-  private val translationsCase: TranslationsListDetailsCase,
-  private val sortCase: SortOrderListDetailsCase,
-  private val tipsCase: TipsListDetailsCase,
+  private val mainCase: ListDetailsMainCase,
+  private val itemsCase: ListDetailsItemsCase,
+  private val translationsCase: ListDetailsTranslationsCase,
+  private val sortCase: ListDetailsSortCase,
+  private val tipsCase: ListDetailsTipsCase,
   private val showImagesProvider: ShowImagesProvider,
-  private val movieImagesProvider: MovieImagesProvider
+  private val movieImagesProvider: MovieImagesProvider,
 ) : BaseViewModel<ListDetailsUiModel>() {
 
   fun loadDetails(id: Long) {
     viewModelScope.launch {
       val list = mainCase.loadDetails(id)
-      val listItems = mainCase.loadItems(list)
+      val listItems = itemsCase.loadItems(list)
       val quickRemoveEnabled = mainCase.isQuickRemoveEnabled(list)
 
       uiState = ListDetailsUiModel(
@@ -89,11 +91,11 @@ class ListDetailsViewModel @Inject constructor(
           sortByLocal = SortOrderList.RANK,
           filterTypeLocal = Mode.getAll()
         )
-        val listItems = mainCase.loadItems(list).map { it.copy(isManageMode = true) }
+        val listItems = itemsCase.loadItems(list).map { it.copy(isManageMode = true) }
         ListDetailsUiModel(items = listItems, isManageMode = true, resetScroll = ActionEvent(false))
       } else {
         val list = mainCase.loadDetails(listId)
-        val listItems = mainCase.loadItems(list).map { it.copy(isManageMode = false) }
+        val listItems = itemsCase.loadItems(list).map { it.copy(isManageMode = false) }
         ListDetailsUiModel(items = listItems, isManageMode = false, resetScroll = ActionEvent(false))
       }
     }
@@ -111,7 +113,7 @@ class ListDetailsViewModel @Inject constructor(
       val list = sortCase.setSortOrder(id, sortOrder)
 
       val currentItems = uiState?.items?.toList() ?: emptyList()
-      val sortedItems = mainCase.sortItems(currentItems, list.sortByLocal, list.filterTypeLocal)
+      val sortedItems = itemsCase.sortItems(currentItems, list.sortByLocal, list.filterTypeLocal)
 
       uiState = ListDetailsUiModel(
         details = list,
@@ -126,7 +128,7 @@ class ListDetailsViewModel @Inject constructor(
 
     viewModelScope.launch {
       val list = sortCase.setSortTypes(listId, types)
-      val sortedItems = mainCase.loadItems(list)
+      val sortedItems = itemsCase.loadItems(list)
 
       uiState = ListDetailsUiModel(
         details = list,
@@ -154,7 +156,7 @@ class ListDetailsViewModel @Inject constructor(
   fun deleteListItem(
     context: Context,
     listId: Long,
-    item: ListDetailsItem
+    item: ListDetailsItem,
   ) {
     viewModelScope.launch {
       val type =
@@ -163,7 +165,7 @@ class ListDetailsViewModel @Inject constructor(
           item.isMovie() -> Mode.MOVIES
           else -> throw IllegalStateException()
         }
-      mainCase.deleteListItem(context, listId, item.getTraktId(), type)
+      itemsCase.deleteListItem(context, listId, item.getTraktId(), type)
       loadDetails(listId)
     }
   }

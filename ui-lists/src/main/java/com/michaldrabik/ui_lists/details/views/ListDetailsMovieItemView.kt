@@ -2,6 +2,7 @@ package com.michaldrabik.ui_lists.details.views
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.MotionEvent.ACTION_DOWN
 import android.view.MotionEvent.ACTION_MOVE
@@ -9,6 +10,7 @@ import android.view.MotionEvent.ACTION_UP
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
@@ -99,6 +101,15 @@ class ListDetailsMovieItemView : ListDetailsItemView {
     listDetailsMovieHandle.visibleIf(item.isManageMode)
     listDetailsMovieStarIcon.visibleIf(!item.isManageMode)
     listDetailsMovieRating.visibleIf(!item.isManageMode)
+
+    with(listDetailsMovieHeaderBadge) {
+      val inCollection = item.isWatched || item.isWatchlist
+      visibleIf(inCollection)
+      if (inCollection) {
+        val color = if (item.isWatched) R.color.colorAccent else R.color.colorGrayLight
+        imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, color))
+      }
+    }
 
     listDetailsMovieRoot.alpha = if (item.isEnabled) 1F else 0.45F
     loadImage(item)

@@ -20,6 +20,8 @@ data class ListDetailsItem(
   val isRankDisplayed: Boolean,
   val isManageMode: Boolean,
   val isEnabled: Boolean,
+  val isWatched: Boolean,
+  val isWatchlist: Boolean,
   val listedAt: ZonedDateTime
 ) {
 

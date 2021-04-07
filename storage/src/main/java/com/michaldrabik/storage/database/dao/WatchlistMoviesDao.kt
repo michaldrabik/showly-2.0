@@ -24,4 +24,7 @@ interface WatchlistMoviesDao {
 
   @Query("DELETE FROM movies_see_later WHERE id_trakt == :traktId")
   suspend fun deleteById(traktId: Long)
+
+  @Query("SELECT EXISTS(SELECT 1 FROM movies_see_later WHERE id_trakt = :traktId LIMIT 1);")
+  suspend fun checkExists(traktId: Long): Boolean
 }

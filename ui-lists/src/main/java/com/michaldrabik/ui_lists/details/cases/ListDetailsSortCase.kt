@@ -10,7 +10,7 @@ import com.michaldrabik.ui_repository.mappers.Mappers
 import javax.inject.Inject
 
 @AppScope
-class SortOrderListDetailsCase @Inject constructor(
+class ListDetailsSortCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers
 ) {

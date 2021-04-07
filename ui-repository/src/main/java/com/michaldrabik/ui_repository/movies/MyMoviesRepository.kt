@@ -11,7 +11,7 @@ import javax.inject.Inject
 @AppScope
 class MyMoviesRepository @Inject constructor(
   private val database: AppDatabase,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   suspend fun load(id: IdTrakt) =
@@ -39,5 +39,9 @@ class MyMoviesRepository @Inject constructor(
     database.myMoviesDao().insert(listOf(movie))
   }
 
-  suspend fun delete(id: IdTrakt) = database.myMoviesDao().deleteById(id.id)
+  suspend fun delete(id: IdTrakt) =
+    database.myMoviesDao().deleteById(id.id)
+
+  suspend fun exists(id: IdTrakt) =
+    database.myMoviesDao().checkExists(id.id)
 }

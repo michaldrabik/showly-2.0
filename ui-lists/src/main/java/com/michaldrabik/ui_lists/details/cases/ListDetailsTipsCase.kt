@@ -7,7 +7,7 @@ import javax.inject.Inject
 import javax.inject.Named
 
 @AppScope
-class TipsListDetailsCase @Inject constructor(
+class ListDetailsTipsCase @Inject constructor(
   @Named("tipsPreferences") private val sharedPreferences: SharedPreferences
 ) {
 

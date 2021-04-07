@@ -12,7 +12,7 @@ import javax.inject.Inject
 @AppScope
 class WatchlistShowsRepository @Inject constructor(
   private val database: AppDatabase,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   suspend fun loadAll() =
@@ -39,4 +39,7 @@ class WatchlistShowsRepository @Inject constructor(
 
   suspend fun delete(id: IdTrakt) =
     database.watchlistShowsDao().deleteById(id.id)
+
+  suspend fun exists(id: IdTrakt) =
+    database.watchlistShowsDao().checkExists(id.id)
 }

@@ -8,7 +8,7 @@ import com.michaldrabik.ui_repository.TranslationsRepository
 import javax.inject.Inject
 
 @AppScope
-class TranslationsListDetailsCase @Inject constructor(
+class ListDetailsTranslationsCase @Inject constructor(
   private val translationsRepository: TranslationsRepository
 ) {
 

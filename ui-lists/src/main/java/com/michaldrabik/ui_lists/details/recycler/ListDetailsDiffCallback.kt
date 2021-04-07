@@ -19,6 +19,8 @@ class ListDetailsDiffCallback(
           oldItem.isLoading == newItem.isLoading &&
           oldItem.isRankDisplayed == newItem.isRankDisplayed &&
           oldItem.isEnabled == newItem.isEnabled &&
+          oldItem.isWatchlist == newItem.isWatchlist &&
+          oldItem.isWatched == newItem.isWatched &&
           oldItem.isManageMode == newItem.isManageMode &&
           oldItem.translation == newItem.translation &&
           oldItem.image == newItem.image &&
@@ -30,6 +32,8 @@ class ListDetailsDiffCallback(
           oldItem.isLoading == newItem.isLoading &&
           oldItem.isRankDisplayed == newItem.isRankDisplayed &&
           oldItem.isManageMode == newItem.isManageMode &&
+          oldItem.isWatchlist == newItem.isWatchlist &&
+          oldItem.isWatched == newItem.isWatched &&
           oldItem.isEnabled == newItem.isEnabled &&
           oldItem.translation == newItem.translation &&
           oldItem.image == newItem.image &&
