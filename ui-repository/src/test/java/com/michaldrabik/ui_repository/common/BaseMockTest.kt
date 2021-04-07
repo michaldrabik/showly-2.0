@@ -6,6 +6,7 @@ import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_repository.R
 import com.michaldrabik.ui_repository.mappers.ActorMapper
 import com.michaldrabik.ui_repository.mappers.CommentMapper
+import com.michaldrabik.ui_repository.mappers.CustomListMapper
 import com.michaldrabik.ui_repository.mappers.EpisodeMapper
 import com.michaldrabik.ui_repository.mappers.IdsMapper
 import com.michaldrabik.ui_repository.mappers.ImageMapper
@@ -45,7 +46,8 @@ abstract class BaseMockTest {
     ActorMapper(),
     CommentMapper(),
     SettingsMapper(),
-    TranslationMapper(idsMapper)
+    TranslationMapper(idsMapper),
+    CustomListMapper()
   )
 
   @Before
