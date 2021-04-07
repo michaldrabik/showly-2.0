@@ -27,4 +27,6 @@
   <string name="textArchiveDescription"><b>Archiwum</b> jest listą porzuconych seriali które już cię nie interesują.\n\nZarchiwizowane seriale nie będą się wyświetlać w sekcjach <b>Postęp</b>, <b>Odkrywaj</b> i <b>Moje Seriale</b> oraz będą pominięte podczas importu z Trakt.tv.</string>
   <string name="textArchiveConfirmationTitle">Dodaj do Archiwum</string>
   <string name="textArchiveConfirmationMessage">\nCzy na pewno chcesz przenieść serial do Archiwum?\n</string>
+  <string name="textShowManageLists">Manage Lists</string>
+  <string name="textShowManageListsCount">Manage Lists (%d)</string>
 </resources>
