@@ -380,7 +380,7 @@ object Migrations {
         execSQL("CREATE UNIQUE INDEX index_custom_list_item_id_list_id_trakt_type ON custom_list_item(id_list, id_trakt, type)")
 
         execSQL("ALTER TABLE trakt_sync_queue ADD COLUMN id_list INTEGER")
-        execSQL("ALTER TABLE trakt_sync_queue ADD COLUMN operation TEXT NOT NULL")
+        execSQL("ALTER TABLE trakt_sync_queue ADD COLUMN operation TEXT NOT NULL DEFAULT ''")
       }
     }
   }
