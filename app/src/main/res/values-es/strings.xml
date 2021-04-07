@@ -13,8 +13,4 @@
   <string name="shortcutCollection">Colección</string>
   <string name="shortcutSearch">Buscar</string>
   <string name="shortcutProgress">Progreso</string>
-  <plurals name="textTraktQuickSyncComplete">
-    <item quantity="one">1 elemento sincronizado correctamente.</item>
-    <item quantity="other">%d elementos sincronizados correctamente.</item>
-  </plurals>
 </resources>
