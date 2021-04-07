@@ -86,17 +86,17 @@ class QuickSyncListsRunner @Inject constructor(
         continue
       }
 
-      //Handle remove items operation
+      // Handle remove items operation
       handleRemoveItems(removeItems, authToken, localList)
 
-      //Handle add items operation
+      // Handle add items operation
       handleAddItems(addItems, authToken, localList)
 
       counted++
       delay(TRAKT_DELAY)
     }
 
-    //Check in case more items appeared in the meantime.
+    // Check in case more items appeared in the meantime.
     val itemsCheck = database.traktSyncQueueDao().getAll(syncTypes)
       .groupBy { it.idList }
       .filter { it.key != null }

@@ -53,7 +53,7 @@ class ListDetailsMainCase @Inject constructor(
         cloud.traktApi.deleteList(token.token, listIdTrakt)
       } catch (error: Throwable) {
         if (error is HttpException && error.code() == 404) {
-          //NOOP List does not exist in Trakt already.
+          // NOOP List does not exist in Trakt already.
         } else {
           throw error
         }
