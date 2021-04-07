@@ -73,6 +73,7 @@
       android:textColor="?attr/textColorOnSurface"
       android:textSize="10sp"
       android:textStyle="bold"
+      android:translationZ="@dimen/elevationSmall"
       android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="@id/listDetailsShowImage"
       app:layout_constraintEnd_toEndOf="@id/listDetailsShowImage"
