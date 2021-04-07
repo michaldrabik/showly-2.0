@@ -27,4 +27,6 @@
   <string name="textArchiveDescription">Das <b>Archiv</b> ist eine Liste aller Serien, die du nicht mehr gucken möchtest.\n\nArchivierte Serien werden nicht mehr unter <b>Fortschritt</b>, <b>Entdecken</b> und <b>meine Serien</b> angezeigt und werden beim importieren zu Trakt.tv übersprungen.</string>
   <string name="textArchiveConfirmationTitle">Archivierte Serien</string>
   <string name="textArchiveConfirmationMessage">\nBist du sicher, dass du diese Serie archivieren möchtest?\n</string>
+  <string name="textShowManageLists">Manage Lists</string>
+  <string name="textShowManageListsCount">Manage Lists (%d)</string>
 </resources>
