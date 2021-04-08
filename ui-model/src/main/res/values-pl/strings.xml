@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="textSortRank">Ranga</string>
   <string name="textSortName">Tytuł</string>
   <string name="textSortNewest">Najnowsze</string>
   <string name="textSortRated">Docenione</string>
   <string name="textSortDateAdded">Ostatnio Dodane</string>
+  <string name="textSortDateUpdated">Ostatnio aktualizowane</string>
   <string name="textSortRecentlyWatched">Ostatnio Obejrzane</string>
   <string name="textSortEpisodesLeft">Pozostałe Odcinki</string>
   <string name="textHeaderRecentlyAdded">Ostatnio Dodane</string>
@@ -30,6 +32,7 @@
   <string name="textTipDiscoverFilters">Użyj filtrów aby dostosować zakładkę \'Odkrywaj\' pod swoje upodobania.</string>
   <string name="textTipWatchlistPinItem">Kliknij i przytrzymaj element aby przypiąć go u góry listy.</string>
   <string name="textTipBottomModeMenu">Kliknij i przesuń dolne menu w lewo lub prawo aby szybko przełączyć się między serialami i filmami.</string>
+  <string name="textTipListSwipeToDelete">Przeciągnij elementy listy aby je usunąć.</string>
   <string name="textGenreAction">Akcja</string>
   <string name="textGenreAdventure">Przygoda</string>
   <string name="textGenreAnimation">Animacja</string>
