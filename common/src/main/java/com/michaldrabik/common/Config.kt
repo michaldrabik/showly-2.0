@@ -2,7 +2,6 @@ package com.michaldrabik.common
 
 import java.util.concurrent.TimeUnit.DAYS
 import java.util.concurrent.TimeUnit.HOURS
-import java.util.concurrent.TimeUnit.MINUTES
 
 object Config {
   const val TVDB_IMAGE_BASE_BANNERS_URL = "https://artworks.thetvdb.com/banners/"
@@ -36,7 +35,7 @@ object Config {
   const val HOST_ACTIVITY_NAME = "com.michaldrabik.showly2.ui.main.MainActivity"
 
   const val SHOW_TIPS_DEBUG = false
-  const val SHOW_PREMIUM = false
+  const val SHOW_PREMIUM = true
   const val PROMOS_ENABLED = false
 
   val MY_SHOWS_RECENTS_OPTIONS = arrayOf(2, 4, 6, 8)
@@ -47,15 +46,6 @@ object Config {
   val MOVIE_DETAILS_CACHE_DURATION by lazy { DAYS.toMillis(3) }
   val ACTORS_CACHE_DURATION by lazy { DAYS.toMillis(3) }
   val NEW_BADGE_DURATION by lazy { HOURS.toMillis(30) }
-  val SHOW_SYNC_COOLDOWN by lazy {
-    if (BuildConfig.DEBUG) MINUTES.toMillis(5) else HOURS.toMillis(12)
-  }
-  val MOVIE_SYNC_COOLDOWN by lazy {
-    if (BuildConfig.DEBUG) MINUTES.toMillis(5) else DAYS.toMillis(3)
-  }
-  val TRANSLATION_SYNC_COOLDOWN by lazy {
-    if (BuildConfig.DEBUG) MINUTES.toMillis(60) else DAYS.toMillis(7)
-  }
 
   const val SHOW_WHATS_NEW = true
   const val WHATS_NEW_TEXT =

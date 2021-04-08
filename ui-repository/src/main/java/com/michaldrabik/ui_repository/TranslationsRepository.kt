@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_repository
 
 import android.content.SharedPreferences
-import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
+import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
@@ -29,7 +29,7 @@ class TranslationsRepository @Inject constructor(
   @Named("miscPreferences") private var miscPreferences: SharedPreferences,
   private val cloud: Cloud,
   private val database: AppDatabase,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   fun getLanguage() = miscPreferences.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
@@ -51,7 +51,7 @@ class TranslationsRepository @Inject constructor(
   suspend fun loadTranslation(
     show: Show,
     language: String = DEFAULT_LANGUAGE,
-    onlyLocal: Boolean = false
+    onlyLocal: Boolean = false,
   ): Translation? {
     val local = database.showTranslationsDao().getById(show.traktId, language)
     local?.let {
@@ -60,7 +60,7 @@ class TranslationsRepository @Inject constructor(
     if (onlyLocal) return null
 
     val timestamp = database.translationsSyncLogDao().getById(show.traktId)?.syncedAt ?: 0
-    if (nowUtcMillis() - timestamp < Config.TRANSLATION_SYNC_COOLDOWN) {
+    if (nowUtcMillis() - timestamp < ConfigVariant.TRANSLATION_SYNC_COOLDOWN) {
       return Translation.EMPTY
     }
 
@@ -90,7 +90,7 @@ class TranslationsRepository @Inject constructor(
   suspend fun loadTranslation(
     movie: Movie,
     language: String = DEFAULT_LANGUAGE,
-    onlyLocal: Boolean = false
+    onlyLocal: Boolean = false,
   ): Translation? {
     val local = database.movieTranslationsDao().getById(movie.traktId, language)
     local?.let {
@@ -99,7 +99,7 @@ class TranslationsRepository @Inject constructor(
     if (onlyLocal) return null
 
     val timestamp = database.translationsMoviesSyncLogDao().getById(movie.traktId)?.syncedAt ?: 0
-    if (nowUtcMillis() - timestamp < Config.TRANSLATION_SYNC_COOLDOWN) {
+    if (nowUtcMillis() - timestamp < ConfigVariant.TRANSLATION_SYNC_COOLDOWN) {
       return Translation.EMPTY
     }
 
@@ -130,7 +130,7 @@ class TranslationsRepository @Inject constructor(
     episode: Episode,
     showId: IdTrakt,
     language: String = DEFAULT_LANGUAGE,
-    onlyLocal: Boolean = false
+    onlyLocal: Boolean = false,
   ): Translation? {
     val local = database.episodeTranslationsDao().getById(episode.ids.trakt.id, showId.id, language)
     local?.let {
@@ -170,7 +170,7 @@ class TranslationsRepository @Inject constructor(
     season: Season,
     showId: IdTrakt,
     language: String = DEFAULT_LANGUAGE,
-    onlyLocal: Boolean = false
+    onlyLocal: Boolean = false,
   ): List<SeasonTranslation> {
     val episodes = season.episodes.toList()
     val episodesIds = season.episodes.map { it.ids.trakt.id }

@@ -1,6 +1,6 @@
 package com.michaldrabik.showly2.common.movies
 
-import com.michaldrabik.common.Config.MOVIE_SYNC_COOLDOWN
+import com.michaldrabik.common.ConfigVariant.MOVIE_SYNC_COOLDOWN
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.storage.database.AppDatabase
