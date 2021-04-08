@@ -10,6 +10,7 @@ import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config.MAIN_GRID_SPAN
 import com.michaldrabik.ui_base.BaseFragment
@@ -58,23 +59,21 @@ class DiscoverFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiDiscoverComponentProvider).provideDiscoverComponent().inject(this)
     super.onCreate(savedInstanceState)
-    if (!isInitialized) {
-      isInitialized = true
-      savedInstanceState?.let {
-        searchViewPosition = it.getFloat("ARG_DISCOVER_SEARCH_POS", 0F)
-        tabsViewPosition = it.getFloat("ARG_DISCOVER_TABS_POS", 0F)
-      }
+    savedInstanceState?.let {
+      searchViewPosition = it.getFloat("ARG_SEARCH_POS", 0F)
+      tabsViewPosition = it.getFloat("ARG_TABS_POS", 0F)
     }
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putFloat("ARG_SEARCH_POS", discoverSearchView?.translationY ?: 0F)
+    outState.putFloat("ARG_TABS_POS", discoverModeTabsView?.translationY ?: 0F)
   }
 
   override fun onResume() {
     super.onResume()
     showNavigation()
-  }
-
-  override fun onPause() {
-    enableUi()
-    super.onPause()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -129,6 +128,7 @@ class DiscoverFragment :
   private fun setupRecycler() {
     layoutManager = GridLayoutManager(context, MAIN_GRID_SPAN)
     adapter = DiscoverAdapter().apply {
+      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
       itemClickListener = { navigateToDetails(it) }
       listChangeListener = { discoverRecycler.scrollToPosition(0) }
@@ -180,7 +180,6 @@ class DiscoverFragment :
 
   private fun navigateToSearch() {
     disableUi()
-    saveUi()
     hideNavigation()
     discoverFiltersView.fadeOut().add(animations)
     discoverModeTabsView.fadeOut(duration = 200).add(animations)
@@ -191,7 +190,6 @@ class DiscoverFragment :
 
   private fun navigateToDetails(item: DiscoverListItem) {
     disableUi()
-    saveUi()
     hideNavigation()
     animateItemsExit(item)
   }
@@ -243,11 +241,6 @@ class DiscoverFragment :
     }
   }
 
-  private fun saveUi() {
-    searchViewPosition = discoverSearchView.translationY
-    tabsViewPosition = discoverModeTabsView.translationY
-  }
-
   private fun render(uiModel: DiscoverUiModel) {
     uiModel.run {
       shows?.let {
@@ -277,10 +270,11 @@ class DiscoverFragment :
 
   override fun onTabReselected() = navigateToSearch()
 
-  override fun onSaveInstanceState(outState: Bundle) {
-    super.onSaveInstanceState(outState)
-    outState.putFloat("ARG_DISCOVER_SEARCH_POS", searchViewPosition)
-    outState.putFloat("ARG_DISCOVER_TABS_POS", tabsViewPosition)
+  override fun onPause() {
+    enableUi()
+    searchViewPosition = discoverSearchView.translationY
+    tabsViewPosition = discoverModeTabsView.translationY
+    super.onPause()
   }
 
   override fun onDestroyView() {
