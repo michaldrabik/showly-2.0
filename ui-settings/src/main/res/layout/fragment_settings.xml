@@ -888,12 +888,11 @@
       style="@style/Settings.Summary"
       android:layout_marginBottom="@dimen/spaceBig"
       android:textColor="?android:attr/textColorSecondary"
-      android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsVersion"
-      tools:text="xxxxxxxxx"
+      tools:text="123456789"
       />
 
   </androidx.constraintlayout.widget.ConstraintLayout>
