@@ -319,9 +319,12 @@ class ProgressFragment :
         progressTabs.animate().translationY(0F).setDuration(duration).start()
         progressPagerModeTabs.animate().translationY(0F).setDuration(duration).start()
         progressSortIcon.animate().translationY(0F).setDuration(duration).start()
-        requireView().postDelayed({
-          childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
-        }, duration)
+        requireView().postDelayed(
+          {
+            childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
+          },
+          duration
+        )
       }
 
       currentPage = position
