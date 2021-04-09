@@ -67,6 +67,12 @@ class ProgressFragment :
     (requireActivity() as UiProgressComponentProvider).provideProgressComponent().inject(this)
     super.onCreate(savedInstanceState)
     setupBackPressed()
+    savedInstanceState?.let {
+      searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
+      tabsTranslation = it.getFloat("ARG_TABS_POSITION")
+      sortIconTranslation = it.getFloat("ARG_ICON_POSITION")
+      currentPage = it.getInt("ARG_PAGE")
+    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,10 +87,25 @@ class ProgressFragment :
     }
   }
 
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putFloat("ARG_SEARCH_POSITION", progressSearchView?.translationY ?: 0F)
+    outState.putFloat("ARG_TABS_POSITION", progressTabs?.translationY ?: 0F)
+    outState.putFloat("ARG_ICON_POSITION", progressSortIcon?.translationY ?: 0F)
+    outState.putInt("ARG_PAGE", progressPager?.currentItem ?: 0)
+  }
+
   override fun onResume() {
     super.onResume()
     showNavigation()
     viewModel.loadProgress()
+  }
+
+  override fun onPause() {
+    tabsTranslation = progressTabs.translationY
+    searchViewTranslation = progressSearchView.translationY
+    sortIconTranslation = progressSortIcon.translationY
+    super.onPause()
   }
 
   override fun onDestroyView() {
@@ -158,7 +179,6 @@ class ProgressFragment :
   fun openShowDetails(item: ProgressItem) {
     exitSearch()
     hideNavigation()
-    saveUiTranslations()
     progressRoot.fadeOut(150) {
       if (findNavControl()?.currentDestination?.id == R.id.progressFragment) {
         val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
@@ -173,12 +193,10 @@ class ProgressFragment :
   private fun openSettings() {
     hideNavigation()
     navigateTo(R.id.actionProgressFragmentToSettingsFragment)
-    saveUiTranslations()
   }
 
   fun openTraktSync() {
     navigateTo(R.id.actionProgressFragmentToTraktSyncFragment)
-    saveUiTranslations()
   }
 
   fun openEpisodeDetails(show: Show, episode: Episode, season: Season) {
@@ -217,12 +235,6 @@ class ProgressFragment :
         dialog.dismiss()
       }
       .show()
-  }
-
-  private fun saveUiTranslations() {
-    tabsTranslation = progressTabs.translationY
-    searchViewTranslation = progressSearchView.translationY
-    sortIconTranslation = progressSortIcon.translationY
   }
 
   private fun enterSearch() {
@@ -306,12 +318,9 @@ class ProgressFragment :
         progressTabs.animate().translationY(0F).setDuration(duration).start()
         progressPagerModeTabs.animate().translationY(0F).setDuration(duration).start()
         progressSortIcon.animate().translationY(0F).setDuration(duration).start()
-        requireView().postDelayed(
-          {
-            childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
-          },
-          duration
-        )
+        requireView().postDelayed({
+          childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
+        }, duration)
       }
 
       currentPage = position
