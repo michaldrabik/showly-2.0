@@ -27,6 +27,6 @@
   <string name="textArchiveDescription"><b>Archivo</b> es una lista de series que se han descartado, abandonado o que ya no te interesan.\n\nLas series archivadas ya o aparecerán en las secciones <b>Progreso</b>, <b>Descubrir</b> y <b>Mis Series</b> y también se omitirán durante la importación de Trakt.tv</string>
   <string name="textArchiveConfirmationTitle">Archivar Serie</string>
   <string name="textArchiveConfirmationMessage">\n¿Estás seguro/a de que quieres archivar esta serie?\n</string>
-  <string name="textShowManageLists">Manage Lists</string>
-  <string name="textShowManageListsCount">Manage Lists (%d)</string>
+  <string name="textShowManageLists">Gestionar Listas</string>
+  <string name="textShowManageListsCount">Gestionar Listas (%d)</string>
 </resources>
