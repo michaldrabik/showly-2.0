@@ -5,7 +5,7 @@
   <string name="textTraktSyncStart">المزامنة الآن</string>
   <string name="textTraktSyncSchedule">مزامنة مجدولة</string>
   <string name="textTraktSyncFromTraktToShowly">إستيراد من Trakt.tv ل Showly</string>
-  <string name="textTraktSyncFromShowlyToTrakt">تصدير من Showly ل Trakt.tv</string>
+  <string name="textTraktSyncFromShowlyToTrakt">رفع من Showly ل Trakt.tv</string>
   <string name="textTraktSyncDescription">مزامنة بيانات حسابك في Trakt.tv مع Showly، البيانات تتضمن مستوى تقدمك، قائمة المشاهدة.\n\nلن يتم حذف أي عنصر من مجموعتك الحالية. المزامنة فقط ستقوم بإضافة العناصر الغير موجودة في مجموعتك.</string>
   <string name="textTraktSyncLastTimestamp">وقت آخر مزامنة: %s</string>
   <string name="textSettingsTraktAuthorizeTitle">مصادقة Trakt.tv</string>
