@@ -15,5 +15,7 @@
   <string name="textMovieVotes">%.1f (%d votos)</string>
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
   <string name="textMovieNotYetReleased">Esta película aún no ha sido estrenada.</string>
+  <string name="textMovieManageLists">Gestionar Listas</string>
+  <string name="textMovieManageListsCount">Gestionar Listas (%d)</string>
   <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv se sincronizó correctamente.</string>
 </resources>
