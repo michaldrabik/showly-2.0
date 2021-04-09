@@ -196,6 +196,7 @@ class ProgressFragment :
   }
 
   fun openTraktSync() {
+    hideNavigation()
     navigateTo(R.id.actionProgressFragmentToTraktSyncFragment)
   }
 

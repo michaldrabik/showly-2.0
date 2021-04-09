@@ -59,6 +59,12 @@ class ProgressMoviesFragment :
     (requireActivity() as UiProgressMoviesComponentProvider).provideProgressMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
     setupBackPressed()
+    savedInstanceState?.let {
+      searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
+      tabsTranslation = it.getFloat("ARG_TABS_POSITION")
+      sortIconTranslation = it.getFloat("ARG_ICON_POSITION")
+      currentPage = it.getInt("ARG_PAGE")
+    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -73,10 +79,25 @@ class ProgressMoviesFragment :
     }
   }
 
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putFloat("ARG_SEARCH_POSITION", progressMoviesSearchView?.translationY ?: 0F)
+    outState.putFloat("ARG_TABS_POSITION", progressMoviesTabs?.translationY ?: 0F)
+    outState.putFloat("ARG_ICON_POSITION", progressMoviesSortIcon?.translationY ?: 0F)
+    outState.putInt("ARG_PAGE", progressMoviesPager?.currentItem ?: 0)
+  }
+
   override fun onResume() {
     super.onResume()
     showNavigation()
     viewModel.loadProgress()
+  }
+
+  override fun onPause() {
+    tabsTranslation = progressMoviesTabs.translationY
+    searchViewTranslation = progressMoviesSearchView.translationY
+    sortIconTranslation = progressMoviesSortIcon.translationY
+    super.onPause()
   }
 
   override fun onDestroyView() {
@@ -149,7 +170,6 @@ class ProgressMoviesFragment :
   fun openMovieDetails(item: ProgressMovieItem) {
     exitSearch()
     hideNavigation()
-    saveUiTranslations()
     progressMoviesRoot.fadeOut(150) {
       val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, item.movie.ids.trakt.id) }
       navigateTo(R.id.actionProgressMoviesFragmentToMovieDetailsFragment, bundle)
@@ -159,13 +179,11 @@ class ProgressMoviesFragment :
   private fun openSettings() {
     hideNavigation()
     navigateTo(R.id.actionProgressMoviesFragmentToSettingsFragment)
-    saveUiTranslations()
   }
 
   fun openTraktSync() {
-    navigateTo(R.id.actionProgressMoviesFragmentToTraktSyncFragment)
     hideNavigation()
-    saveUiTranslations()
+    navigateTo(R.id.actionProgressMoviesFragmentToTraktSyncFragment)
   }
 
   private fun openSortOrderDialog(order: SortOrder) {
@@ -180,12 +198,6 @@ class ProgressMoviesFragment :
         dialog.dismiss()
       }
       .show()
-  }
-
-  private fun saveUiTranslations() {
-    tabsTranslation = progressMoviesTabs.translationY
-    searchViewTranslation = progressMoviesSearchView.translationY
-    sortIconTranslation = progressMoviesSortIcon.translationY
   }
 
   private fun enterSearch() {
