@@ -15,7 +15,7 @@ class ReorderListCallback(
     viewHolder: RecyclerView.ViewHolder,
     target: RecyclerView.ViewHolder
   ): Boolean {
-    adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
+    adapter.onItemMove(viewHolder.bindingAdapterPosition, target.bindingAdapterPosition)
     return true
   }
 

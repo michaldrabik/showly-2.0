@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.michaldrabik.ui_my_movies.main
 
 import android.content.Context
@@ -10,7 +12,7 @@ import com.michaldrabik.ui_my_movies.watchlist.WatchlistFragment
 
 class FollowedPagesAdapter(
   fragManager: FragmentManager,
-  private val context: Context
+  private val context: Context,
 ) : FragmentStatePagerAdapter(fragManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
   companion object {
