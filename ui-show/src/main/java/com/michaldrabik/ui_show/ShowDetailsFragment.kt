@@ -16,8 +16,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup.GONE
 import android.view.ViewGroup.MarginLayoutParams
-import android.view.animation.AccelerateInterpolator
 import android.view.animation.AnimationUtils
+import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
 import androidx.core.animation.addListener
 import androidx.core.content.ContextCompat
@@ -646,11 +646,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           invisible()
           val targetHeight = dimenToPx(R.dimen.episodeNextViewHeight)
           ValueAnimator.ofInt(1, targetHeight).apply {
-            duration = if (animate) 125 else 0
-            interpolator = AccelerateInterpolator()
+            duration = if (animate) 100 else 0
+            interpolator = DecelerateInterpolator()
             addListener(
               onEnd = {
-                fadeIn(125, withHardware = true)
+                fadeIn(150, withHardware = true)
               }
             )
             addUpdateListener {
