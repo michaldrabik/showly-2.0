@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_show
 
+import android.animation.LayoutTransition
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
@@ -524,6 +525,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           else -> showDetailsAddButton.setState(ADD, it.withAnimation)
         }
       }
+      listsCount?.let {
+        val text =
+          if (it > 0) getString(R.string.textShowManageListsCount, it)
+          else getString(R.string.textShowManageLists)
+        showDetailsManageListsLabel.text = text
+      }
       nextEpisode?.let { renderNextEpisode(it, dateFormat) }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
@@ -542,12 +549,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         if (isSignedIn == true) {
           showDetailsCommentsView.showCommentButton()
         }
-      }
-      listsCount?.let {
-        val text =
-          if (it > 0) getString(R.string.textShowManageListsCount, it)
-          else getString(R.string.textShowManageLists)
-        showDetailsManageListsLabel.text = text
       }
       ratingState?.let { renderRating(it) }
       showFromTraktLoading?.let {
@@ -673,6 +674,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun renderActors(actors: List<Actor>) {
     actorsAdapter?.setItems(actors)
+    if (actors.isEmpty()) {
+      showDetailsMainContent.layoutTransition = LayoutTransition()
+    }
     showDetailsActorsRecycler.fadeIf(actors.isNotEmpty(), withHardware = true)
     showDetailsActorsEmptyView.fadeIf(actors.isEmpty(), withHardware = true)
     showDetailsActorsProgress.gone()

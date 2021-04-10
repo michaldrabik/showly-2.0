@@ -21,7 +21,7 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-      android:id="@+id/constraintLayout"
+      android:id="@+id/showDetailsMainContent"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:clipChildren="false"

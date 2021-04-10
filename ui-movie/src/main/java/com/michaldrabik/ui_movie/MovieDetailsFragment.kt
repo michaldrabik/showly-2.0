@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_movie
 
+import android.animation.LayoutTransition
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -503,6 +504,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun renderActors(actors: List<Actor>) {
     actorsAdapter?.setItems(actors)
+    if (actors.isEmpty()) {
+      movieDetailsMainContent.layoutTransition = LayoutTransition()
+    }
     movieDetailsActorsRecycler.fadeIf(actors.isNotEmpty(), withHardware = true)
     movieDetailsActorsEmptyView.fadeIf(actors.isEmpty(), withHardware = true)
     movieDetailsActorsProgress.gone()
