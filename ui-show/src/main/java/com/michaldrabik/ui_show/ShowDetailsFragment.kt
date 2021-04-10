@@ -648,9 +648,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           ValueAnimator.ofInt(1, targetHeight).apply {
             duration = if (animate) 125 else 0
             interpolator = AccelerateInterpolator()
-            addListener(onEnd = {
-              fadeIn(125, withHardware = true)
-            })
+            addListener(
+              onEnd = {
+                fadeIn(125, withHardware = true)
+              }
+            )
             addUpdateListener {
               layoutParams.height = it.animatedValue as Int
               requestLayout() // Not ideal. Might think about something else.
