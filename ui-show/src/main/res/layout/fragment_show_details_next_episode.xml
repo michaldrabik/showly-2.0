@@ -73,6 +73,7 @@
       android:visibility="gone"
       tools:ignore="SmallSp"
       tools:text="Airs in 3 days 2 hours"
+      tools:visibility="visible"
       />
 
   </LinearLayout>

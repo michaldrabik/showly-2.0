@@ -49,6 +49,7 @@ import com.michaldrabik.ui_show.quickSetup.QuickSetupListItem
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
@@ -141,6 +142,7 @@ class ShowDetailsViewModel @Inject constructor(
       val episode = episodesCase.loadNextEpisode(show.ids.trakt)
       val dateFormat = dateFormatProvider.loadFullHourFormat()
       episode?.let {
+        delay(275)
         val nextEpisode = NextEpisodeBundle(Pair(show, it))
         uiState = ShowDetailsUiModel(nextEpisode = nextEpisode, dateFormat = dateFormat)
         val translation = translationCase.loadTranslation(episode, show)
