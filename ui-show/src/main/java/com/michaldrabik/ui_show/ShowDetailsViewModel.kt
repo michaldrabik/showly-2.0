@@ -44,6 +44,7 @@ import com.michaldrabik.ui_show.cases.ShowDetailsRelatedShowsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsTranslationCase
 import com.michaldrabik.ui_show.cases.ShowDetailsWatchlistCase
 import com.michaldrabik.ui_show.episodes.EpisodeListItem
+import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.quickSetup.QuickSetupListItem
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
@@ -72,7 +73,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val quickSyncManager: QuickSyncManager,
   private val announcementManager: AnnouncementManager,
   private val imagesProvider: ShowImagesProvider,
-  private val dateFormatProvider: DateFormatProvider
+  private val dateFormatProvider: DateFormatProvider,
 ) : BaseViewModel<ShowDetailsUiModel>() {
 
   private var show by notNull<Show>()
@@ -140,15 +141,17 @@ class ShowDetailsViewModel @Inject constructor(
       val episode = episodesCase.loadNextEpisode(show.ids.trakt)
       val dateFormat = dateFormatProvider.loadFullHourFormat()
       episode?.let {
-        uiState = ShowDetailsUiModel(nextEpisode = Pair(show, it), dateFormat = dateFormat)
+        val nextEpisode = NextEpisodeBundle(Pair(show, it))
+        uiState = ShowDetailsUiModel(nextEpisode = nextEpisode, dateFormat = dateFormat)
         val translation = translationCase.loadTranslation(episode, show)
         if (translation?.title?.isNotBlank() == true) {
           val translated = it.copy(title = translation.title)
-          uiState = ShowDetailsUiModel(nextEpisode = Pair(show, translated), dateFormat = dateFormat)
+          val nextEpisodeTranslated = NextEpisodeBundle(Pair(show, translated))
+          uiState = ShowDetailsUiModel(nextEpisode = nextEpisodeTranslated, dateFormat = dateFormat)
         }
       }
     } catch (t: Throwable) {
-      Logger.record(t, "Source" to "${ShowDetailsViewModel::class.simpleName}::loadNextEpisode()")
+      Logger.record(t, "Source" to "ShowDetailsViewModel::loadNextEpisode()")
     }
   }
 
@@ -214,7 +217,7 @@ class ShowDetailsViewModel @Inject constructor(
         uiState = ShowDetailsUiModel(translation = it)
       }
     } catch (error: Throwable) {
-      Logger.record(error, "Source" to "${ShowDetailsViewModel::class.simpleName}::loadTranslation()")
+      Logger.record(error, "Source" to "ShowDetailsViewModel::loadTranslation()")
     }
   }
 
@@ -240,7 +243,7 @@ class ShowDetailsViewModel @Inject constructor(
         seasonItems.findReplace(updatedItem) { it.id == updatedItem.id }
         uiState = ShowDetailsUiModel(seasonTranslation = ActionEvent(updatedItem))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "${ShowDetailsViewModel::class.simpleName}::loadSeasonTranslation()")
+        Logger.record(error, "Source" to "ShowDetailsViewModel::loadSeasonTranslation()")
       }
     }
   }
@@ -513,7 +516,7 @@ class ShowDetailsViewModel @Inject constructor(
     context: Context,
     episode: Episode,
     season: Season,
-    isChecked: Boolean
+    isChecked: Boolean,
   ) {
     viewModelScope.launch {
       val bundle = EpisodeBundle(episode, season, show)

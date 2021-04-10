@@ -4,7 +4,7 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
-  android:layout_height="wrap_content"
+  android:layout_height="match_parent"
   app:cardBackgroundColor="?attr/colorCardBackground"
   app:cardCornerRadius="6dp"
   app:cardElevation="@dimen/elevationSmall"
@@ -13,6 +13,7 @@
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginEnd="@dimen/spaceMedium"
@@ -54,11 +55,13 @@
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
       android:layout_marginTop="@dimen/spaceMicro"
+      android:ellipsize="marquee"
       android:gravity="start"
+      android:singleLine="true"
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="14sp"
-      tools:text="S.00 E.00 - Episode Title"
+      tools:text="@tools:sample/lorem/random"
       />
 
     <TextView

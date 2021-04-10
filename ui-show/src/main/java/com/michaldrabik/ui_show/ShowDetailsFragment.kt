@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_show
 
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -13,9 +14,12 @@ import android.os.Bundle
 import android.transition.TransitionManager
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup.GONE
 import android.view.ViewGroup.MarginLayoutParams
+import android.view.animation.AccelerateInterpolator
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
+import androidx.core.animation.addListener
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -46,6 +50,7 @@ import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
@@ -55,6 +60,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.invisible
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
@@ -100,6 +106,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAIL
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
+import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.ShowLink
 import com.michaldrabik.ui_show.helpers.ShowLink.IMDB
 import com.michaldrabik.ui_show.helpers.ShowLink.JUST_WATCH
@@ -334,7 +341,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     episode: Episode,
     season: Season?,
     isWatched: Boolean,
-    showButton: Boolean = true
+    showButton: Boolean = true,
   ) {
     if (findNavControl()?.currentDestination?.id != R.id.showDetailsFragment) {
       return
@@ -622,16 +629,36 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun renderNextEpisode(
-    episodeBundle: Pair<Show, Episode>,
-    dateFormat: DateTimeFormatter?
+    episodeBundle: NextEpisodeBundle,
+    dateFormat: DateTimeFormatter?,
   ) {
     episodeBundle.run {
-      val (show, episode) = episodeBundle
+      val animate = enterTransition.consume() == true
+      val (show, episode) = episodeBundle.nextEpisode
       showDetailsEpisodeText.text =
         String.format(ENGLISH, getString(R.string.textEpisodeTitle), episode.season, episode.number, episode.title)
-      showDetailsEpisodeCard.visible()
-      showDetailsEpisodeCard.onClick {
-        showEpisodeDetails(show, episode, null, isWatched = false, showButton = false)
+
+      with(showDetailsEpisodeCard) {
+        onClick {
+          showEpisodeDetails(show, episode, null, isWatched = false, showButton = false)
+        }
+        if (visibility == GONE) {
+          invisible()
+          val targetHeight = dimenToPx(R.dimen.episodeNextViewHeight)
+          ValueAnimator.ofInt(1, targetHeight).apply {
+            duration = if (animate) 125 else 0
+            interpolator = AccelerateInterpolator()
+            addListener(onEnd = {
+              fadeIn(125, withHardware = true)
+            })
+            addUpdateListener {
+              layoutParams.height = it.animatedValue as Int
+              requestLayout() // Not ideal. Might think about something else.
+            }
+            add(animators)
+            start()
+          }
+        }
       }
 
       episode.firstAired?.let {
@@ -716,7 +743,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun openShowLink(
     link: ShowLink,
     id: String,
-    country: AppCountry = UNITED_STATES
+    country: AppCountry = UNITED_STATES,
   ) {
     if (link == IMDB) {
       openIMDbLink(IdImdb(id), "title")
