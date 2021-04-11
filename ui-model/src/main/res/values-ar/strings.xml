@@ -64,7 +64,7 @@
   <string name="textTraktSyncOptionDailyButton">تم توقيت الجدولة لتعمل كُل يوم</string>
   <string name="textTraktSyncOption3DayButton">تم توقيت الجدولة لتعمل كُل 3 أيام</string>
   <string name="textTraktSyncOptionWeeklyButton">تم توقيت الجدولة لتعمل كُل إسبوع</string>
-  <string name="textShowStatusReturning">قادم بموسم جديد</string>
+  <string name="textShowStatusReturning">مسلسل مستمر</string>
   <string name="textShowStatusUpcoming">يُعرض قريباً</string>
   <string name="textShowStatusInProduction">قيد الإنتاج</string>
   <string name="textShowStatusPlanned">مُخطط له</string>
