@@ -142,14 +142,14 @@ class ShowDetailsViewModel @Inject constructor(
       val episode = episodesCase.loadNextEpisode(show.ids.trakt)
       val dateFormat = dateFormatProvider.loadFullHourFormat()
       episode?.let {
-        delay(275)
-        val nextEpisode = NextEpisodeBundle(Pair(show, it))
-        uiState = ShowDetailsUiModel(nextEpisode = nextEpisode, dateFormat = dateFormat)
+        delay(250)
+        val nextEpisode = NextEpisodeBundle(Pair(show, it), dateFormat = dateFormat)
+        uiState = ShowDetailsUiModel(nextEpisode = nextEpisode)
         val translation = translationCase.loadTranslation(episode, show)
         if (translation?.title?.isNotBlank() == true) {
           val translated = it.copy(title = translation.title)
-          val nextEpisodeTranslated = NextEpisodeBundle(Pair(show, translated))
-          uiState = ShowDetailsUiModel(nextEpisode = nextEpisodeTranslated, dateFormat = dateFormat)
+          val nextEpisodeTranslated = NextEpisodeBundle(Pair(show, translated), dateFormat = dateFormat)
+          uiState = ShowDetailsUiModel(nextEpisode = nextEpisodeTranslated)
         }
       }
     } catch (t: Throwable) {

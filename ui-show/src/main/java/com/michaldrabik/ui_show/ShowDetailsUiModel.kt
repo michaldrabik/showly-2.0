@@ -34,7 +34,6 @@ data class ShowDetailsUiModel(
   val country: AppCountry? = null,
   val isPremium: Boolean? = null,
   val isSignedIn: Boolean? = null,
-  val dateFormat: DateTimeFormatter? = null,
   val commentsDateFormat: DateTimeFormatter? = null,
 ) : UiModel() {
 
@@ -58,7 +57,6 @@ data class ShowDetailsUiModel(
       country = newModel.country ?: country,
       isPremium = newModel.isPremium ?: isPremium,
       isSignedIn = newModel.isSignedIn ?: isSignedIn,
-      dateFormat = newModel.dateFormat ?: dateFormat,
       commentsDateFormat = newModel.commentsDateFormat ?: commentsDateFormat,
       ratingState = newModel.ratingState?.copy(
         rateLoading = newModel.ratingState.rateLoading ?: ratingState?.rateLoading,

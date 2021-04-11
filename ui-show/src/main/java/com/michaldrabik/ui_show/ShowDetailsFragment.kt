@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_show
 
 import android.animation.LayoutTransition
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -15,12 +14,9 @@ import android.os.Bundle
 import android.transition.TransitionManager
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup.GONE
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
-import android.view.animation.DecelerateInterpolator
 import androidx.activity.addCallback
-import androidx.core.animation.addListener
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -51,7 +47,6 @@ import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
-import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
@@ -61,7 +56,6 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
-import com.michaldrabik.ui_base.utilities.extensions.invisible
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
@@ -128,7 +122,6 @@ import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import kotlinx.android.synthetic.main.view_links_menu.view.*
 import org.threeten.bp.Duration
-import org.threeten.bp.format.DateTimeFormatter
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
@@ -531,7 +524,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           else getString(R.string.textShowManageLists)
         showDetailsManageListsLabel.text = text
       }
-      nextEpisode?.let { renderNextEpisode(it, dateFormat) }
+      nextEpisode?.let { renderNextEpisode(it) }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
       seasons?.let {
@@ -629,10 +622,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .into(showDetailsImage)
   }
 
-  private fun renderNextEpisode(
-    episodeBundle: NextEpisodeBundle,
-    dateFormat: DateTimeFormatter?,
-  ) {
+  private fun renderNextEpisode(episodeBundle: NextEpisodeBundle) {
     episodeBundle.run {
       val animate = enterTransition.consume() == true
       val (show, episode) = episodeBundle.nextEpisode
@@ -643,29 +633,14 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         onClick {
           showEpisodeDetails(show, episode, null, isWatched = false, showButton = false)
         }
-        if (visibility == GONE) {
-          invisible()
-          val targetHeight = dimenToPx(R.dimen.episodeNextViewHeight)
-          ValueAnimator.ofInt(1, targetHeight).apply {
-            duration = if (animate) 100 else 0
-            interpolator = DecelerateInterpolator()
-            addListener(
-              onEnd = {
-                fadeIn(150, withHardware = true)
-              }
-            )
-            addUpdateListener {
-              layoutParams.height = it.animatedValue as Int
-              requestLayout() // Not ideal. Might think about something else.
-            }
-            add(animators)
-            start()
-          }
+        if (animate) {
+          showDetailsMainContent.layoutTransition = LayoutTransition()
         }
+        visible()
       }
 
       episode.firstAired?.let {
-        val displayDate = dateFormat?.format(it.toLocalZone())?.capitalizeWords()
+        val displayDate = episodeBundle.dateFormat?.format(it.toLocalZone())?.capitalizeWords()
         showDetailsEpisodeAirtime.visible()
         showDetailsEpisodeAirtime.text = displayDate
       }

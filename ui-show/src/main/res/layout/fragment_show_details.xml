@@ -240,7 +240,7 @@
         android:id="@+id/showDetailsEpisodeCard"
         layout="@layout/fragment_show_details_next_episode"
         android:layout_width="match_parent"
-        android:layout_height="1px"
+        android:layout_height="@dimen/episodeNextViewHeight"
         android:layout_marginLeft="@dimen/spaceNormal"
         android:layout_marginTop="@dimen/spaceTiny"
         android:layout_marginRight="@dimen/spaceNormal"
