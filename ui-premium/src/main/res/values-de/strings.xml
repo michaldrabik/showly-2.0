@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textPremium">Showly Premium</string>
-  <string name="textPremiumAd">Werden Sie Unterstützer und erhalten Sie Zugang zu Bonusfunktionen! Klicken Sie hier, um mehr zu sehen.</string>
   <string name="textPremiumAdFull">Werden Sie Showly Unterstützer, helfen Sie bei der Entwicklung und erhalten Sie Zugang zu coolen Bonusfunktionen!</string>
   <string name="textLightThemeTitle">Licht Thema</string>
   <string name="textLightThemeDesc">Schließen Sie sich der Lichtseite der Kraft mit einem zusätzlichen hellen Theme an, das für die Hauptanwendung und die Widgets anwendbar ist.</string>

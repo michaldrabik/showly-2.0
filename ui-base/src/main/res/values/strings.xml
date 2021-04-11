@@ -30,6 +30,8 @@
   <string name="textRemoveFromTrakt">Remove from Trakt.tv?</string>
   <string name="textNoDescription">Overview not available.</string>
   <string name="textPleaseWait">Please wait…</string>
+  <string name="textRate">Rate</string>
+  <string name="textShowRated">Your rating has been saved.</string>
 
   <string name="textAiredAlready">Aired</string>
   <string name="textAirsNow">Airs Now</string>

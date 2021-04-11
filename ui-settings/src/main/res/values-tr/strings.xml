@@ -65,4 +65,6 @@
   <string name="textThemeLight">Aydınlık</string>
   <string name="textThemeSystem">Sistem</string>
   <string name="textTransparency100">Mat</string>
+  <string name="textPremiumAd">Destekçi olun ve bonus özelliklere erişin! Daha fazlasını görmek için dokunun.</string>
+  <string name="textPremium">Showly Premium</string>
 </resources>

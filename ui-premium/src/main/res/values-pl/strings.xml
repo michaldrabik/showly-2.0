@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textPremium">Showly Premium</string>
-  <string name="textPremiumAd">Zostań subskrybentem i uzyskaj dostęp do dodatkowych funkcji! Kliknij, aby zobaczyć więcej.</string>
   <string name="textPremiumAdFull">Zostań subskrybentem, pomóż w rozwoju aplikacji i uzyskaj dostęp do funkcji bonusowych!</string>
   <string name="textLightThemeTitle">Jasny motyw</string>
   <string name="textLightThemeDesc">Dołącz do jasnej strony mocy i odblokuj dodatkowy motyw głównej aplikacji i widgetów.</string>

@@ -1,10 +1,10 @@
-package com.michaldrabik.ui_premium.views
+package com.michaldrabik.ui_settings.views
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
-import com.michaldrabik.ui_premium.R
+import com.michaldrabik.ui_settings.R
 
 class PremiumAdView : FrameLayout {
 

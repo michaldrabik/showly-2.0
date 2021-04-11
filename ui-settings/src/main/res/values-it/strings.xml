@@ -65,4 +65,6 @@
   <string name="textThemeLight">Chiaro</string>
   <string name="textThemeSystem">Sistema</string>
   <string name="textTransparency100">Opaco</string>
+  <string name="textPremiumAd">Diventa un sostenitore e ottieni l\'accesso alle funzionalità bonus! Clicca per saperne di più.</string>
+  <string name="textPremium">Showly Premium</string>
 </resources>

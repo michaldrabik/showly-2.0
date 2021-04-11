@@ -65,4 +65,6 @@
   <string name="textThemeLight">Clair</string>
   <string name="textThemeSystem">Système</string>
   <string name="textTransparency100">Opaque</string>
+  <string name="textPremiumAd">Devenez un supporteur et accédez à des fonctionnalités bonus ! Cliquez pour en savoir plus.</string>
+  <string name="textPremium">Devenez un supporteur de Showly, aidez son développement et accédez à des super fonctionnalités en plus !</string>
 </resources>

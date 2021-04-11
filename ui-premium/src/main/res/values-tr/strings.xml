@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textPremium">Showly Premium</string>
-  <string name="textPremiumAd">Destekçi olun ve bonus özelliklere erişin! Daha fazlasını görmek için dokunun.</string>
   <string name="textPremiumAdFull">Showly destekçisi olun, gelişimine yardımcı olun ve harika bonus özelliklere erişin!</string>
   <string name="textLightThemeTitle">Aydınlık tema</string>
   <string name="textLightThemeDesc">Ana uygulama ve widget\'lar için geçerli olan aydınlık temasıyla gücün aydınlık tarafına katılın.</string>

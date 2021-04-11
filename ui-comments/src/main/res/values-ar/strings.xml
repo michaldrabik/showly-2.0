@@ -10,11 +10,9 @@
   <string name="textCommentDeleted">تم حذف تعليقك.</string>
   <string name="textCommentConfirmDeleteTitle">حذف التعليق</string>
   <string name="textCommentConfirmDelete">هل أنت متأكد أنك تريد حذف هذا التعليق؟</string>
-  <string name="textShowRated">لقد تم حفظ تقييمك.</string>
   <string name="textShowRatingDeleted">لقد تم حذف تقييمك.</string>
   <string name="textSignBeforeRate">رجاءً قُم بتسجيل الدخول قبل تقييم مسلسل.</string>
   <string name="textSignBeforeRateMovie">الرجاء تسجيل الدخول قبل تصنيف الفيلم.</string>
-  <string name="textRate">تقييم</string>
   <string name="textRateDelete">حذف</string>
   <string name="errorCommentFormat">يجب أن يكون تعليقك بالإنجليزية وأن يحتوي على 5 كلمات أو أكثر.</string>
   <string name="errorCommentDelete">لا يُمكن حذف هذا التعليق.</string>

@@ -65,4 +65,6 @@
   <string name="textThemeLight">فاتح</string>
   <string name="textThemeSystem">النظام</string>
   <string name="textTransparency100">غير شفاف</string>
+  <string name="textPremiumAd">كن داعماً واحصل على مميزات إضافية! انقر لرؤية المزيد.</string>
+  <string name="textPremium">نسخة Showly المدفوعة</string>
 </resources>
