@@ -19,11 +19,8 @@ class ListsViewModel @Inject constructor(
   private val mainCase: MainListsCase,
   private val sortCase: SortOrderListsCase,
   private val showImagesProvider: ShowImagesProvider,
-  private val movieImagesProvider: MovieImagesProvider
+  private val movieImagesProvider: MovieImagesProvider,
 ) : BaseViewModel<ListsUiModel>() {
-
-  var searchViewTranslation = 0F
-  var tabsTranslation = 0F
 
   fun loadItems(resetScroll: Boolean, searchQuery: String? = null) {
     viewModelScope.launch {

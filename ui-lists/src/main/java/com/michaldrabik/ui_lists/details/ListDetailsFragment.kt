@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.common.Mode
@@ -123,7 +124,9 @@ class ListDetailsFragment :
       },
       itemDragStartListener = this,
       itemSwipeStartListener = this
-    )
+    ).apply {
+      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+    }
     fragmentListDetailsRecycler.apply {
       adapter = this@ListDetailsFragment.adapter
       layoutManager = this@ListDetailsFragment.layoutManager

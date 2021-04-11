@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
@@ -67,10 +68,20 @@ class ListsFragment :
   private var adapter: ListsAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
 
+  private var searchViewTranslation = 0F
+  private var tabsTranslation = 0F
+  private var isFabHidden = false
+
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiListsComponentProvider).provideListsComponent().inject(this)
     super.onCreate(savedInstanceState)
     setupBackPressed()
+
+    savedInstanceState?.let {
+      searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
+      tabsTranslation = it.getFloat("ARG_TABS_POSITION")
+      isFabHidden = it.getBoolean("ARG_FAB_HIDDEN")
+    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -90,8 +101,17 @@ class ListsFragment :
     showNavigation()
   }
 
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putFloat("ARG_SEARCH_POSITION", fragmentListsSearchView?.translationY ?: 0F)
+    outState.putFloat("ARG_TABS_POSITION", fragmentListsModeTabs?.translationY ?: 0F)
+    outState.putBoolean("ARG_FAB_HIDDEN", fragmentListsCreateListButton?.visibility != VISIBLE)
+  }
+
   override fun onPause() {
     enableUi()
+    tabsTranslation = fragmentListsModeTabs.translationY
+    searchViewTranslation = fragmentListsSearchView.translationY
     super.onPause()
   }
 
@@ -108,7 +128,7 @@ class ListsFragment :
       selectLists()
     }
     fragmentListsCreateListButton.run {
-      fadeIn()
+      if (!isFabHidden) fadeIn()
       onClick { openCreateList() }
     }
     fragmentListsSortButton.onClick {
@@ -124,9 +144,9 @@ class ListsFragment :
       }
     }
 
-    fragmentListsSearchView.translationY = viewModel.searchViewTranslation
-    fragmentListsModeTabs.translationY = viewModel.tabsTranslation
-    fragmentListsSortButton.translationY = viewModel.tabsTranslation
+    fragmentListsSearchView.translationY = searchViewTranslation
+    fragmentListsModeTabs.translationY = tabsTranslation
+    fragmentListsSortButton.translationY = tabsTranslation
   }
 
   private fun setupStatusBar() {
@@ -143,6 +163,7 @@ class ListsFragment :
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = ListsAdapter().apply {
+      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
       itemClickListener = { openListDetails(it) }
       itemsChangedListener = { scrollToTop(smooth = false) }
       missingImageListener = { item, itemImage, force ->
@@ -262,17 +283,11 @@ class ListsFragment :
       val bundle = bundleOf(ARG_LIST to listItem.list)
       navigateTo(R.id.actionListsFragmentToDetailsFragment, bundle)
     }.add(animations)
-
-    viewModel.tabsTranslation = fragmentListsModeTabs.translationY
-    viewModel.searchViewTranslation = fragmentListsSearchView.translationY
   }
 
   private fun openSettings() {
     hideNavigation()
     navigateTo(R.id.actionListsFragmentToSettingsFragment)
-
-    viewModel.tabsTranslation = fragmentListsModeTabs.translationY
-    viewModel.searchViewTranslation = fragmentListsSearchView.translationY
   }
 
   private fun openCreateList() {
