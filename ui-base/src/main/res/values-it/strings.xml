@@ -28,6 +28,8 @@
   <string name="textRemoveFromTrakt">Rimuovere da Trakt.tv?</string>
   <string name="textNoDescription">Panoramica non disponibile.</string>
   <string name="textPleaseWait">Attendere prego…</string>
+  <string name="textRate">Valuta</string>
+  <string name="textRateSaved">La tua valutazione è stata salvata.</string>
   <string name="textAiredAlready">Trasmesso</string>
   <string name="textAirsNow">Trasmesso ora</string>
   <plurals name="textDaysToAir">
