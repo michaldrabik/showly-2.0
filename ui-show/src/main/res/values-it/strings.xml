@@ -27,6 +27,6 @@
   <string name="textArchiveDescription">La pagina <b>Archivio</b> è una lista delle serie TV che hai mollato, abbandonato o in cui non sei più interessato.\n\nLe serie TV archiviate non appariranno più nelle sezioni <b>Progressi</b>, <b>Scopri</b> and <b>Le Mie Serie TV</b> e non verranno considerate durante l\'importazione da Trakt.tv.</string>
   <string name="textArchiveConfirmationTitle">Archivia Serie TV</string>
   <string name="textArchiveConfirmationMessage">\nSei sicuro di voler archiviare questa serie tv?\n</string>
-  <string name="textShowManageLists">Manage Lists</string>
-  <string name="textShowManageListsCount">Manage Lists (%d)</string>
+  <string name="textShowManageLists">Gestisci liste</string>
+  <string name="textShowManageListsCount">Gestisci liste (%d)</string>
 </resources>
