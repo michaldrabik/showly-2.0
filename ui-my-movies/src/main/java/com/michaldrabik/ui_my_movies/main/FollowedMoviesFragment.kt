@@ -58,6 +58,12 @@ class FollowedMoviesFragment :
     (requireActivity() as UiMyMoviesComponentProvider).provideMyMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
     setupBackPressed()
+
+    savedInstanceState?.let {
+      viewModel.searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
+      viewModel.tabsTranslation = it.getFloat("ARG_TABS_POSITION")
+      currentPage = it.getInt("ARG_PAGE")
+    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,8 +83,17 @@ class FollowedMoviesFragment :
     showNavigation()
   }
 
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putFloat("ARG_SEARCH_POSITION", followedMoviesSearchView?.translationY ?: 0F)
+    outState.putFloat("ARG_TABS_POSITION", followedMoviesTabs?.translationY ?: 0F)
+    outState.putInt("ARG_PAGE", followedMoviesPager?.currentItem ?: 0)
+  }
+
   override fun onPause() {
     enableUi()
+    viewModel.tabsTranslation = followedMoviesTabs.translationY
+    viewModel.searchViewTranslation = followedMoviesSearchView.translationY
     super.onPause()
   }
 
@@ -265,24 +280,16 @@ class FollowedMoviesFragment :
       val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, movie.ids.trakt.id) }
       navigateTo(R.id.actionFollowedMoviesFragmentToMovieDetailsFragment, bundle)
     }.add(animations)
-    viewModel.tabsTranslation = followedMoviesTabs.translationY
-    viewModel.searchViewTranslation = followedMoviesSearchView.translationY
   }
 
   private fun openSettings() {
     hideNavigation()
     navigateTo(R.id.actionFollowedMoviesFragmentToSettingsFragment)
-
-    viewModel.tabsTranslation = followedMoviesTabs.translationY
-    viewModel.searchViewTranslation = followedMoviesSearchView.translationY
   }
 
   private fun openStatistics() {
     hideNavigation()
     navigateTo(R.id.actionFollowedMoviesFragmentToStatisticsFragment)
-
-    viewModel.tabsTranslation = followedMoviesTabs.translationY
-    viewModel.searchViewTranslation = followedMoviesSearchView.translationY
   }
 
   fun enableSearch(enable: Boolean) {

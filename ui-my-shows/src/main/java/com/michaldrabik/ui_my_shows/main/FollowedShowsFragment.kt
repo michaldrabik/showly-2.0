@@ -281,7 +281,6 @@ class FollowedShowsFragment :
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.traktId) }
       navigateTo(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
     }.add(animations)
-
   }
 
   private fun openSettings() {
