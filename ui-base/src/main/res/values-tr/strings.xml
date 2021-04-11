@@ -23,9 +23,11 @@
   <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textShows">Diziler</string>
   <string name="textMovies">Filmler</string>
+  <string name="textLists">Listeler</string>
   <string name="textMinutesShort">dk</string>
   <string name="textRemoveFromTrakt">Trakt.tv\'den silinsin mi?</string>
   <string name="textNoDescription">Genel bakış mevcut değil.</string>
+  <string name="textPleaseWait">Lütfen bekleyin…</string>
   <string name="textAiredAlready">Yayınlandı</string>
   <string name="textAirsNow">Şimdi Yayında</string>
   <plurals name="textDaysToAir">
@@ -39,6 +41,10 @@
   <plurals name="textMinutesToAir">
     <item quantity="one">Şimdi yayında</item>
     <item quantity="other">%d dakika içinde yayında</item>
+  </plurals>
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="one">1 öge başarıyla eşitlendi.</item>
+    <item quantity="other">%d öge başarıyla senkronize edildi.</item>
   </plurals>
   <string name="textToday">Bugün</string>
   <string name="textTomorrow">Yarın</string>
