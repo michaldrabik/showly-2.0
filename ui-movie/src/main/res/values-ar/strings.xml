@@ -6,7 +6,7 @@
   <string name="textInMyMovies">تمت الإضافة إلى أفلامي</string>
   <string name="textInMoviesWatchlist">تمت الإضافة إلى قائمة المشاهدة</string>
   <string name="textMovieActorsEmpty">قائمة الممثلين غير متاحة</string>
-  <string name="textMovieTrailer">التريلر</string>
+  <string name="textMovieTrailer">العرض الدعائي</string>
   <string name="textMovieRate">قيم</string>
   <string name="textMovieLink">إفتح في</string>
   <string name="textMovieComments2">التعليقات</string>
@@ -14,7 +14,7 @@
   <string name="textMovieYouMayAlsoLike">قد يعجبك أيضاً:</string>
   <string name="textMovieVotes">%.1f (%d تقييم)</string>
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
-  <string name="textMovieNotYetReleased">لم يُعرض الفيلم حتى الآن.</string>
+  <string name="textMovieNotYetReleased">لم يتوفر الفيلم حتى الآن.</string>
   <string name="textMovieManageLists">إدارة القوائم</string>
   <string name="textMovieManageListsCount">إدارة القوائم (%d)</string>
   <string name="textTraktSyncMovieRemovedFromTrakt">إكتملت مزامنة Trakt.tv بنجاح.</string>
