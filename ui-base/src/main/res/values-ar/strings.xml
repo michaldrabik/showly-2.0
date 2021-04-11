@@ -96,5 +96,5 @@
   <string name="errorTraktLocked">حساب Trakt.tv الخاص بك مغلق حاليًا. اتصل بدعم Trakt.tv على https://support.trakt.tv/ لفتح حسابك.</string>
   <string name="errorSubscriptionsNotAvailable">اشتراكات Google Play غير متوفرة على هذا الجهاز.</string>
   <string name="textRate">تقييم</string>
-  <string name="textShowRated">لقد تم حفظ تقييمك.</string>
+  <string name="textRateSaved">لقد تم حفظ تقييمك.</string>
 </resources>

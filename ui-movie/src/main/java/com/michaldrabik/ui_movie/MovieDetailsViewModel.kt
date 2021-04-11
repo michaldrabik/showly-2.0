@@ -296,7 +296,7 @@ class MovieDetailsViewModel @Inject constructor(
         ratingsCase.addRating(movie, rating)
         val userRating = TraktRating(movie.ids.trakt, rating)
         uiState = MovieDetailsUiModel(ratingState = RatingState(userRating = userRating, rateLoading = false))
-        _messageLiveData.value = MessageEvent.info(R.string.textShowRated)
+        _messageLiveData.value = MessageEvent.info(R.string.textRateSaved)
         Analytics.logMovieRated(movie, rating)
       } catch (error: Throwable) {
         uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = false))

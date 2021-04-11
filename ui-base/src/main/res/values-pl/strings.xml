@@ -88,5 +88,5 @@
   <string name="errorTraktLocked">Twoje konto Trakt.tv jest obecnie zablokowane.\nSkontaktuj się z obsługą Trakt.tv aby je odblokować: https://support.trakt.tv/</string>
   <string name="errorSubscriptionsNotAvailable">Subskrypcje Google Play nie są dostępne na tym urządzeniu.</string>
   <string name="textRate">Oceń</string>
-  <string name="textShowRated">Ocena została zapisana.</string>
+  <string name="textRateSaved">Ocena została zapisana.</string>
 </resources>

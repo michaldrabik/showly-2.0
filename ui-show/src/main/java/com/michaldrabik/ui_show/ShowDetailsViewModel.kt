@@ -392,7 +392,7 @@ class ShowDetailsViewModel @Inject constructor(
         ratingsCase.addRating(show, rating)
         val userRating = TraktRating(show.ids.trakt, rating)
         uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = userRating, rateLoading = false))
-        _messageLiveData.value = MessageEvent.info(R.string.textShowRated)
+        _messageLiveData.value = MessageEvent.info(R.string.textRateSaved)
         Analytics.logShowRated(show, rating)
       } catch (error: Throwable) {
         uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = false))

@@ -80,5 +80,5 @@
   <string name="errorTraktLocked">Ihr Trakt.tv-Konto ist derzeit gesperrt. Wenden Sie sich unter https://support.trakt.tv/ an den Trakt.tv-Support, um Ihr Konto zu entsperren.</string>
   <string name="errorSubscriptionsNotAvailable">Google Play Abonnements sind auf diesem Gerät nicht verfügbar.</string>
   <string name="textRate">Bewerten</string>
-  <string name="textShowRated">Deine Bewertung wurde gespeichert.</string>
+  <string name="textRateSaved">Deine Bewertung wurde gespeichert.</string>
 </resources>
