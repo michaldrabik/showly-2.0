@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textPremium">Showly Premium</string>
-  <string name="textPremiumAd">Devenez un supporteur et accédez à des fonctionnalités bonus ! Cliquez pour en savoir plus.</string>
   <string name="textPremiumAdFull">Devenez un supporteur de Showly, aidez son développement et accédez à des super fonctionnalités en plus !</string>
   <string name="textLightThemeTitle">Thème clair</string>
   <string name="textLightThemeDesc">Rejoignez le côté lumineux de la force avec un thème clair supplémentaire pour l\'application principale et les widgets.</string>
