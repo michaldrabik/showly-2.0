@@ -23,9 +23,11 @@
   <string name="textNetwork">(%2$s) %1$s</string>
   <string name="textShows">مسلسلات</string>
   <string name="textMovies">أفلام</string>
+  <string name="textLists">قوائم</string>
   <string name="textMinutesShort">دقائق</string>
   <string name="textRemoveFromTrakt">حذف من Trakt.tv؟</string>
   <string name="textNoDescription">لا يتوفر وصف.</string>
+  <string name="textPleaseWait">فضلاً إنتظر…</string>
   <string name="textAiredAlready">تم عرضها</string>
   <string name="textAirsNow">تُعرض الآن</string>
   <plurals name="textDaysToAir">
@@ -51,6 +53,14 @@
     <item quantity="few">تُعرض بعد %d دقائق</item>
     <item quantity="many">تُعرض بعد %d دقائق</item>
     <item quantity="other">تُعرض بعد %d دقائق</item>
+  </plurals>
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="zero">لم تتم مزامنة أي عنصر.</item>
+    <item quantity="one">عنصر واحد تمت مزامنته بنجاح.</item>
+    <item quantity="two">تمت مزامنة %d عناصر بنجاح.</item>
+    <item quantity="few">تمت مزامنة %d عناصر بنجاح.</item>
+    <item quantity="many">تمت مزامنة %d عناصر بنجاح.</item>
+    <item quantity="other">تمت مزامنة %d عناصر بنجاح.</item>
   </plurals>
   <string name="textToday">اليوم</string>
   <string name="textTomorrow">غداً</string>
