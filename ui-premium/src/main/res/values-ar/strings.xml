@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textPremium">نسخة Showly المدفوعة</string>
-  <string name="textPremiumAd">كن داعماً واحصل على مميزات إضافية! انقر لرؤية المزيد.</string>
   <string name="textPremiumAdFull">كن داعماً ل Showly وساعد في تطويره واحصل على مميزات إضافية رائعة!</string>
   <string name="textLightThemeTitle">مظهر فاتح</string>
   <string name="textLightThemeDesc">مظهر مضيء إضافي يعمل على كِلا التطبيق الأساسي والتطبيقات المصغّرة.</string>
