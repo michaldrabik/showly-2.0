@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="textSortRank">ترتيب العناصر</string>
   <string name="textSortName">الإسم</string>
   <string name="textSortNewest">الأحدث</string>
   <string name="textSortRated">الأعلى تقيماً</string>
   <string name="textSortDateAdded">أضيف مؤخراً</string>
+  <string name="textSortDateUpdated">حُدثت مؤخراً</string>
   <string name="textSortRecentlyWatched">شاهدت مؤخراً</string>
   <string name="textSortEpisodesLeft">عدد الحلقات المتبقية</string>
   <string name="textHeaderRecentlyAdded">أضيف مؤخراً</string>
@@ -30,6 +32,7 @@
   <string name="textTipDiscoverFilters">إستخدم الفلاتر لفلترة محتويات صفحة إكتشف.</string>
   <string name="textTipWatchlistPinItem">إضغط مطولاً على أي مسلسل لتثبيته في الأعلى.</string>
   <string name="textTipBottomModeMenu">مرر أسفل القائمة لليسار أو لليمين لتغيير الوضع بسرعة.</string>
+  <string name="textTipListSwipeToDelete">اسحب عناصر القائمة لحذفها من القائمة.</string>
   <string name="textGenreAction">أكشن</string>
   <string name="textGenreAdventure">مغامرة</string>
   <string name="textGenreAnimation">أنميشن</string>
