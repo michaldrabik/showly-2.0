@@ -31,8 +31,13 @@ abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.
 
   fun indexOf(item: Item) = asyncDiffer.currentList.indexOfFirst { it.isSameAs(item) }
 
-  override fun onCurrentListChanged(previousList: MutableList<Item>, currentList: MutableList<Item>) {
-    if (notifyChange) listChangeListener()
+  override fun onCurrentListChanged(
+    previousList: MutableList<Item>,
+    currentList: MutableList<Item>,
+  ) {
+    if (notifyChange) {
+      listChangeListener()
+    }
   }
 
   class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

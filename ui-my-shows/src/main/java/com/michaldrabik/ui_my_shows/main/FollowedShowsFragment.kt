@@ -58,6 +58,12 @@ class FollowedShowsFragment :
     (requireActivity() as UiMyShowsComponentProvider).provideMyShowsComponent().inject(this)
     super.onCreate(savedInstanceState)
     setupBackPressed()
+
+    savedInstanceState?.let {
+      viewModel.searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
+      viewModel.tabsTranslation = it.getFloat("ARG_TABS_POSITION")
+      currentPage = it.getInt("ARG_PAGE")
+    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -77,8 +83,17 @@ class FollowedShowsFragment :
     showNavigation()
   }
 
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putFloat("ARG_SEARCH_POSITION", followedShowsSearchView?.translationY ?: 0F)
+    outState.putFloat("ARG_TABS_POSITION", followedShowsTabs?.translationY ?: 0F)
+    outState.putInt("ARG_PAGE", followedShowsPager?.currentItem ?: 0)
+  }
+
   override fun onPause() {
     enableUi()
+    viewModel.tabsTranslation = followedShowsTabs.translationY
+    viewModel.searchViewTranslation = followedShowsSearchView.translationY
     super.onPause()
   }
 
@@ -266,24 +281,17 @@ class FollowedShowsFragment :
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.traktId) }
       navigateTo(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
     }.add(animations)
-    viewModel.tabsTranslation = followedShowsTabs.translationY
-    viewModel.searchViewTranslation = followedShowsSearchView.translationY
+
   }
 
   private fun openSettings() {
     hideNavigation()
     navigateTo(R.id.actionFollowedShowsFragmentToSettingsFragment)
-
-    viewModel.tabsTranslation = followedShowsTabs.translationY
-    viewModel.searchViewTranslation = followedShowsSearchView.translationY
   }
 
   private fun openStatistics() {
     hideNavigation()
     navigateTo(R.id.actionFollowedShowsFragmentToStatisticsFragment)
-
-    viewModel.tabsTranslation = followedShowsTabs.translationY
-    viewModel.searchViewTranslation = followedShowsSearchView.translationY
   }
 
   fun enableSearch(enable: Boolean) {

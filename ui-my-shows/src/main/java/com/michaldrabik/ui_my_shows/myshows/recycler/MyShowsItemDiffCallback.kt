@@ -11,7 +11,8 @@ class MyShowsItemDiffCallback : DiffUtil.ItemCallback<MyShowsItem>() {
     when (oldItem.type) {
       RECENT_SHOWS -> true
       HORIZONTAL_SHOWS -> {
-        oldItem.type == newItem.type && oldItem.horizontalSection?.section == newItem.horizontalSection?.section
+        oldItem.type == newItem.type &&
+          oldItem.horizontalSection?.section?.name == newItem.horizontalSection?.section?.name
       }
       else -> oldItem.type == newItem.type && oldItem.show.ids.trakt == newItem.show.ids.trakt
     }
