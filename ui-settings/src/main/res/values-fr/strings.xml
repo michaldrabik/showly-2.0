@@ -46,7 +46,7 @@
   <string name="textSettingsShowsNotificationsTitle">Annonces</string>
   <string name="textSettingsShowsNotificationsSummary">Recevoir des notifications pour les nouveaux films, épisodes, saisons pour les séries que vous suivez.</string>
   <string name="textSettingsMisc">Divers</string>
-  <string name="textSettingsContactDevsTitle">Contactez les développeurs</string>
+  <string name="textSettingsContactDevsTitle">Contacter les développeurs</string>
   <string name="textSettingsContactDevsSummary">Un problème? Envoyez-nous un courriel (showlyapp@gmail.com).</string>
   <string name="textSettingsRateAppTitle">Donner un avis</string>
   <string name="textSettingsRateAppSummary">Vous aimez Showly ? Évaluez-nous sur le Play Store. Merci !</string>
@@ -61,6 +61,8 @@
   <string name="textSettingsWidgets">Widgets</string>
   <string name="textSettingsWidgetsLabelsTitle">Titres</string>
   <string name="textSettingsWidgetsLabelsSummary">Afficher les titres translucides des widgets.</string>
+  <string name="textPremium">Showly Premium</string>
+  <string name="textPremiumAd">Devenez un supporteur et accédez à des fonctionnalités bonus ! Cliquez pour en savoir plus.</string>
   <string name="textThemeDark">Sombre</string>
   <string name="textThemeLight">Clair</string>
   <string name="textThemeSystem">Système</string>
