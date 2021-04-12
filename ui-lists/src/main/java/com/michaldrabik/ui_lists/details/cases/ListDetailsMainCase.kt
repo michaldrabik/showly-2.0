@@ -45,9 +45,11 @@ class ListDetailsMainCase @Inject constructor(
 
   suspend fun deleteList(listId: Long, removeFromTrakt: Boolean) {
     val isAuthorized = userTraktManager.isAuthorized()
+    val isQuickRemove = settingsRepository.load().traktQuickRemoveEnabled
     val list = listsRepository.loadById(listId)
     val listIdTrakt = list.idTrakt
-    if (isAuthorized && removeFromTrakt && listIdTrakt != null) {
+
+    if (isQuickRemove && isAuthorized && removeFromTrakt && listIdTrakt != null) {
       val token = userTraktManager.checkAuthorization()
       try {
         cloud.traktApi.deleteList(token.token, listIdTrakt)
@@ -59,10 +61,10 @@ class ListDetailsMainCase @Inject constructor(
         }
       }
     }
+
     listsRepository.deleteList(listId)
   }
 
-  suspend fun isQuickRemoveEnabled(list: CustomList): Boolean {
-    return list.idTrakt != null && settingsRepository.load().traktQuickRemoveEnabled
-  }
+  suspend fun isQuickRemoveEnabled(list: CustomList) =
+    list.idTrakt != null && settingsRepository.load().traktQuickRemoveEnabled
 }
