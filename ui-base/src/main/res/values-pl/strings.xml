@@ -28,6 +28,8 @@
   <string name="textRemoveFromTrakt">Usunąć z Trakt.tv?</string>
   <string name="textNoDescription">Opis niedostępny.</string>
   <string name="textPleaseWait">Proszę czekać…</string>
+  <string name="textRate">Oceń</string>
+  <string name="textRateSaved">Ocena została zapisana.</string>
   <string name="textAiredAlready">Po premierze</string>
   <string name="textAirsNow">Premiera teraz</string>
   <plurals name="textDaysToAir">
@@ -49,10 +51,10 @@
     <item quantity="other">Premiera za %d minut</item>
   </plurals>
   <plurals name="textTraktQuickSyncComplete">
-    <item quantity="one">1 element zsynchronizowany.</item>
-    <item quantity="few">%d elementów zsynchronizowanych.</item>
-    <item quantity="many">%d elementów zsynchronizowanych.</item>
-    <item quantity="other">%d elementów zsynchronizowanych.</item>
+    <item quantity="one">Zsynchronizowano 1 element.</item>
+    <item quantity="few">Zsynchronizowano %d elementy.</item>
+    <item quantity="many">Zsynchronizowano %d elementów.</item>
+    <item quantity="other">Zsynchronizowano %d elementów.</item>
   </plurals>
   <string name="textToday">Dzisiaj</string>
   <string name="textTomorrow">Jutro</string>
@@ -89,6 +91,4 @@
   <string name="errorTraktSyncGeneral">Błąd synchronizacji Trakt.tv\nSprawdź połączenie z internetem i spróbuj ponownie.</string>
   <string name="errorTraktLocked">Twoje konto Trakt.tv jest obecnie zablokowane.\nSkontaktuj się z obsługą Trakt.tv aby je odblokować: https://support.trakt.tv/</string>
   <string name="errorSubscriptionsNotAvailable">Subskrypcje Google Play nie są dostępne na tym urządzeniu.</string>
-  <string name="textRate">Oceń</string>
-  <string name="textRateSaved">Ocena została zapisana.</string>
 </resources>

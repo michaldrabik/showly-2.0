@@ -28,6 +28,8 @@
   <string name="textRemoveFromTrakt">Trakt.tv\'den silinsin mi?</string>
   <string name="textNoDescription">Genel bakış mevcut değil.</string>
   <string name="textPleaseWait">Lütfen bekleyin…</string>
+  <string name="textRate">Oy Ver</string>
+  <string name="textRateSaved">Oyunuz kaydedildi.</string>
   <string name="textAiredAlready">Yayınlandı</string>
   <string name="textAirsNow">Şimdi Yayında</string>
   <plurals name="textDaysToAir">
@@ -81,6 +83,4 @@
   <string name="errorTraktSyncGeneral">Trakt.tv eşitleme hatası.\nLütfen internet bağlantınızı kontrol edin ve tekrar deneyin.</string>
   <string name="errorTraktLocked">Trakt.tv hesabınız şu anda kilitli.\nHesabınızın kilidini açmak için lütfen https://support.trakt.tv/ adresinden Trakt.tv destek ekibi ile iletişime geçin.</string>
   <string name="errorSubscriptionsNotAvailable">Google Play Abonelikleri bu cihazda kullanılamaz.</string>
-  <string name="textRate">Oy Ver</string>
-  <string name="textRateSaved">Oyunuz kaydedildi.</string>
 </resources>
