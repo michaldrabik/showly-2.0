@@ -21,6 +21,7 @@ import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
+import com.michaldrabik.showly2.common.ShowsMoviesSyncService
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.ui.BillingActivity
 import com.michaldrabik.showly2.ui.views.WhatsNewView
@@ -96,6 +97,11 @@ class MainActivity :
     onNewIntent(intent)
   }
 
+  override fun onStart() {
+    super.onStart()
+    ShowsMoviesSyncService.initialize(applicationContext)
+  }
+
   override fun setupComponents() {
     appComponent().inject(this)
     super.setupComponents()
@@ -169,7 +175,8 @@ class MainActivity :
         R.id.discoverMoviesFragment,
         R.id.followedShowsFragment,
         R.id.followedMoviesFragment,
-        R.id.listsFragment -> {
+        R.id.listsFragment,
+        -> {
           bottomNavigationView.selectedItemId = R.id.menuProgress
         }
         else -> {

@@ -15,7 +15,6 @@ import com.jakewharton.processphoenix.ProcessPhoenix
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.network.di.DaggerCloudComponent
-import com.michaldrabik.showly2.common.ShowsMoviesSyncActivityCallbacks
 import com.michaldrabik.showly2.di.component.AppComponent
 import com.michaldrabik.showly2.di.component.DaggerAppComponent
 import com.michaldrabik.showly2.di.module.PreferencesModule
@@ -56,14 +55,6 @@ class App :
   var isAppOnline = true
   lateinit var appComponent: AppComponent
   private var isSyncRunning = false
-
-  private val activityCallbacks by lazy {
-    listOf(
-      EventsActivityCallbacks(),
-      ShowsMoviesSyncActivityCallbacks(),
-      NetworkMonitorCallbacks(connectivityManager())
-    )
-  }
 
   private val appScope = MainScope()
 
@@ -128,12 +119,19 @@ class App :
 //      setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
     }
 
+    fun setupLifecycleCallbacks() {
+      val eventsCallbacks = EventsActivityCallbacks()
+      val networkMonitorCallbacks = NetworkMonitorCallbacks(connectivityManager())
+
+      registerActivityLifecycleCallbacks(eventsCallbacks)
+      registerActivityLifecycleCallbacks(networkMonitorCallbacks)
+    }
+
     super.onCreate()
+
     if (ProcessPhoenix.isPhoenixProcess(this)) return
-
-    activityCallbacks.forEach { registerActivityLifecycleCallbacks(it) }
-
     AndroidThreeTen.init(this)
+
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
       FirebaseMessaging.getInstance().token.addOnCompleteListener {
@@ -141,6 +139,7 @@ class App :
       }
     }
 
+    setupLifecycleCallbacks()
     setupComponents()
     setupSettings()
     setupStrictMode()
@@ -166,10 +165,13 @@ class App :
   }
 
   override fun provideBaseComponent() = appComponent.uiBaseComponent().create()
+
   override fun provideWidgetsComponent() = appComponent.uiWidgetsComponent().create()
 
   override fun onTraktSyncProgress() = run { isSyncRunning = true }
+
   override fun onTraktSyncComplete() = run { isSyncRunning = false }
+
   override fun isTraktSyncActive() = isSyncRunning
 }
 
