@@ -66,6 +66,13 @@ class ProgressFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiProgressComponentProvider).provideProgressComponent().inject(this)
     super.onCreate(savedInstanceState)
+    setupBackPressed()
+    savedInstanceState?.let {
+      searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
+      tabsTranslation = it.getFloat("ARG_TABS_POSITION")
+      sortIconTranslation = it.getFloat("ARG_ICON_POSITION")
+      currentPage = it.getInt("ARG_PAGE")
+    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,11 +87,25 @@ class ProgressFragment :
     }
   }
 
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putFloat("ARG_SEARCH_POSITION", progressSearchView?.translationY ?: 0F)
+    outState.putFloat("ARG_TABS_POSITION", progressTabs?.translationY ?: 0F)
+    outState.putFloat("ARG_ICON_POSITION", progressSortIcon?.translationY ?: 0F)
+    outState.putInt("ARG_PAGE", progressPager?.currentItem ?: 0)
+  }
+
   override fun onResume() {
     super.onResume()
-    setupBackPressed()
     showNavigation()
     viewModel.loadProgress()
+  }
+
+  override fun onPause() {
+    tabsTranslation = progressTabs.translationY
+    searchViewTranslation = progressSearchView.translationY
+    sortIconTranslation = progressSortIcon.translationY
+    super.onPause()
   }
 
   override fun onDestroyView() {
@@ -106,7 +127,7 @@ class ProgressFragment :
       visibleIf(moviesEnabled)
       isEnabled = false
       onModeSelected = { mode = it }
-      animateShows()
+      selectShows()
     }
     progressSearchView.traktIconVisible = true
     progressSearchView.onTraktClickListener = {
@@ -137,7 +158,7 @@ class ProgressFragment :
       (progressTabs.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(progressTabsMargin))
       (progressPagerModeTabs.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.showsMoviesTabsMargin))
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
       (progressSortIcon.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(progressTabsMargin))
     }
@@ -145,7 +166,7 @@ class ProgressFragment :
 
   private fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
+    dispatcher.addCallback(this) {
       if (progressSearchView.isSearching) {
         exitSearch()
       } else {
@@ -158,8 +179,7 @@ class ProgressFragment :
   fun openShowDetails(item: ProgressItem) {
     exitSearch()
     hideNavigation()
-    saveUiTranslations()
-    progressRoot.fadeOut {
+    progressRoot.fadeOut(150) {
       if (findNavControl()?.currentDestination?.id == R.id.progressFragment) {
         val bundle = Bundle().apply { putLong(ARG_SHOW_ID, item.show.traktId) }
         navigateTo(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
@@ -173,12 +193,11 @@ class ProgressFragment :
   private fun openSettings() {
     hideNavigation()
     navigateTo(R.id.actionProgressFragmentToSettingsFragment)
-    saveUiTranslations()
   }
 
   fun openTraktSync() {
+    hideNavigation()
     navigateTo(R.id.actionProgressFragmentToTraktSyncFragment)
-    saveUiTranslations()
   }
 
   fun openEpisodeDetails(show: Show, episode: Episode, season: Season) {
@@ -217,12 +236,6 @@ class ProgressFragment :
         dialog.dismiss()
       }
       .show()
-  }
-
-  private fun saveUiTranslations() {
-    tabsTranslation = progressTabs.translationY
-    searchViewTranslation = progressSearchView.translationY
-    sortIconTranslation = progressSortIcon.translationY
   }
 
   private fun enterSearch() {

@@ -31,7 +31,6 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.setCheckedSilent
-import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection.FINISHED
@@ -56,6 +55,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiSettingsComponentProvider).provideSettingsComponent().inject(this)
     super.onCreate(savedInstanceState)
+    handleBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,19 +84,9 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsTwitterIcon.onClick { openWebLink(Config.TWITTER_URL) }
     settingsTraktIcon.onClick { openWebLink(Config.TRAKT_URL) }
     settingsTmdbIcon.onClick { openWebLink(Config.TMDB_URL) }
-    settingsVersion.setOnLongClickListener {
-      settingsUserId.visible()
-      true
-    }
     settingsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
       view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
     }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    hideNavigation()
-    handleBackPressed()
   }
 
   private fun render(uiModel: SettingsUiModel) {
@@ -489,9 +479,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun handleBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
+    dispatcher.addCallback(this) {
       remove()
-      showNavigation()
       findNavControl()?.popBackStack()
     }
   }

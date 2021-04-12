@@ -23,6 +23,7 @@ import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_movie.cases.MovieDetailsActorsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsCommentsCase
+import com.michaldrabik.ui_movie.cases.MovieDetailsListsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMainCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMyMoviesCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsRatingCase
@@ -48,6 +49,7 @@ class MovieDetailsViewModel @Inject constructor(
   private val ratingsCase: MovieDetailsRatingCase,
   private val myMoviesCase: MovieDetailsMyMoviesCase,
   private val watchlistCase: MovieDetailsWatchlistCase,
+  private val listsCase: MovieDetailsListsCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
   private val quickSyncManager: QuickSyncManager,
@@ -60,7 +62,7 @@ class MovieDetailsViewModel @Inject constructor(
 
   fun loadDetails(id: IdTrakt, context: Context) {
     viewModelScope.launch {
-      val progressJob = launchDelayed(500) {
+      val progressJob = launchDelayed(700) {
         uiState = MovieDetailsUiModel(movieLoading = true)
       }
       try {
@@ -92,6 +94,7 @@ class MovieDetailsViewModel @Inject constructor(
 
         loadBackgroundImage(movie)
         launch { loadActors(movie) }
+        launch { loadListsCount(movie) }
         launch { loadRelatedMovies(movie) }
         launch { loadTranslation(movie) }
 
@@ -148,6 +151,13 @@ class MovieDetailsViewModel @Inject constructor(
       }
     } catch (error: Throwable) {
       Logger.record(error, "Source" to "${MovieDetailsViewModel::class.simpleName}::loadTranslation()")
+    }
+  }
+
+  fun loadListsCount(movie: Movie? = null) {
+    viewModelScope.launch {
+      val count = listsCase.countLists(movie ?: this@MovieDetailsViewModel.movie)
+      uiState = MovieDetailsUiModel(listsCount = count)
     }
   }
 
@@ -286,7 +296,7 @@ class MovieDetailsViewModel @Inject constructor(
         ratingsCase.addRating(movie, rating)
         val userRating = TraktRating(movie.ids.trakt, rating)
         uiState = MovieDetailsUiModel(ratingState = RatingState(userRating = userRating, rateLoading = false))
-        _messageLiveData.value = MessageEvent.info(R.string.textShowRated)
+        _messageLiveData.value = MessageEvent.info(R.string.textRateSaved)
         Analytics.logMovieRated(movie, rating)
       } catch (error: Throwable) {
         uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = false))
@@ -310,7 +320,7 @@ class MovieDetailsViewModel @Inject constructor(
   }
 
   fun addFollowedMovie(context: Context) {
-    if (movie.released != null && !movie.hasAired()) {
+    if (movie.hasNoDate() || (movie.released != null && !movie.hasAired())) {
       _messageLiveData.value = MessageEvent.info(R.string.textMovieNotYetReleased)
       return
     }

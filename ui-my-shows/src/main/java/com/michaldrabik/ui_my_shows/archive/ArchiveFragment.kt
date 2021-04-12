@@ -7,6 +7,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
@@ -60,6 +61,7 @@ class ArchiveFragment :
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
     adapter = ArchiveAdapter().apply {
+      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
       missingTranslationListener = { viewModel.loadMissingTranslation(it) }
       itemClickListener = { openShowDetails(it.show) }
@@ -74,16 +76,15 @@ class ArchiveFragment :
   }
 
   private fun setupStatusBar() {
-    val recyclerPadding = if (moviesEnabled) R.dimen.archiveTabsViewPadding else R.dimen.archiveTabsViewPaddingNoModes
     if (statusBarHeight != 0) {
       archiveContent.updatePadding(top = archiveContent.paddingTop + statusBarHeight)
-      archiveRecycler.updatePadding(top = dimenToPx(recyclerPadding))
+      archiveRecycler.updatePadding(top = dimenToPx(R.dimen.archiveTabsViewPadding))
       return
     }
     archiveContent.doOnApplyWindowInsets { view, insets, padding, _ ->
       statusBarHeight = insets.systemWindowInsetTop
       view.updatePadding(top = padding.top + statusBarHeight)
-      archiveRecycler.updatePadding(top = dimenToPx(recyclerPadding))
+      archiveRecycler.updatePadding(top = dimenToPx(R.dimen.archiveTabsViewPadding))
     }
   }
 

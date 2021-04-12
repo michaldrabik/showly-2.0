@@ -29,42 +29,41 @@ class TraktImportWatchlistRunner @Inject constructor(
     Timber.d("Initialized.")
     isRunning = true
 
+    var syncedCount = 0
     val authToken = checkAuthorization()
 
     resetRetries()
-    runShows(authToken)
+    syncedCount += runShows(authToken)
 
     resetRetries()
-    runMovies(authToken)
+    syncedCount += runMovies(authToken)
 
     isRunning = false
     Timber.d("Finished with success.")
-    return 0
+    return syncedCount
   }
 
-  private suspend fun runShows(authToken: TraktAuthToken) {
-    try {
-      importShowsWatchlist(authToken)
-    } catch (error: Throwable) {
-      if (retryCount < MAX_RETRY_COUNT) {
-        Timber.w("runShows HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
-        retryCount += 1
-        delay(RETRY_DELAY_MS)
-        runShows(authToken)
-      } else {
-        isRunning = false
-        throw error
-      }
+  private suspend fun runShows(authToken: TraktAuthToken): Int = try {
+    importShowsWatchlist(authToken)
+  } catch (error: Throwable) {
+    if (retryCount < MAX_RETRY_COUNT) {
+      Timber.w("runShows HTTP failed. Will retry in $RETRY_DELAY_MS ms... $error")
+      retryCount += 1
+      delay(RETRY_DELAY_MS)
+      runShows(authToken)
+    } else {
+      isRunning = false
+      throw error
     }
   }
 
-  private suspend fun runMovies(authToken: TraktAuthToken) {
+  private suspend fun runMovies(authToken: TraktAuthToken): Int {
     if (!settingsRepository.isMoviesEnabled) {
       Timber.d("Movies are disabled. Exiting...")
-      return
+      return 0
     }
 
-    try {
+    return try {
       importMoviesWatchlist(authToken)
     } catch (error: Throwable) {
       if (retryCount < MAX_RETRY_COUNT) {
@@ -79,7 +78,7 @@ class TraktImportWatchlistRunner @Inject constructor(
     }
   }
 
-  private suspend fun importShowsWatchlist(token: TraktAuthToken) {
+  private suspend fun importShowsWatchlist(token: TraktAuthToken): Int {
     Timber.d("Importing shows watchlist...")
     val syncResults = cloud.traktApi.fetchSyncShowsWatchlist(token.token)
       .filter { it.show != null }
@@ -111,9 +110,11 @@ class TraktImportWatchlistRunner @Inject constructor(
           Logger.record(error, "Source" to "Import Shows Watchlist")
         }
       }
+
+    return syncResults.size
   }
 
-  private suspend fun importMoviesWatchlist(token: TraktAuthToken) {
+  private suspend fun importMoviesWatchlist(token: TraktAuthToken): Int {
     Timber.d("Importing movies watchlist...")
     val syncResults = cloud.traktApi.fetchSyncMoviesWatchlist(token.token)
       .filter { it.movie != null }
@@ -144,5 +145,7 @@ class TraktImportWatchlistRunner @Inject constructor(
           Logger.record(error, "Source" to "Import Movies Watchlist")
         }
       }
+
+    return syncResults.size
   }
 }

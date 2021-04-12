@@ -13,13 +13,16 @@ abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.
   var missingTranslationListener: (Item) -> Unit = { _ -> }
   var itemClickListener: (Item) -> Unit = { }
   var listChangeListener: () -> Unit = { }
+
   private var notifyChange = false
 
   open fun setItems(newItems: List<Item>, notifyChange: Boolean = false) {
     this.notifyChange = notifyChange
-    asyncDiffer.removeListListener(this)
-    asyncDiffer.addListListener(this)
-    asyncDiffer.submitList(newItems)
+    with(asyncDiffer) {
+      removeListListener(this@BaseAdapter)
+      addListListener(this@BaseAdapter)
+      submitList(newItems)
+    }
   }
 
   override fun getItemCount() = asyncDiffer.currentList.size
@@ -28,8 +31,13 @@ abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.
 
   fun indexOf(item: Item) = asyncDiffer.currentList.indexOfFirst { it.isSameAs(item) }
 
-  override fun onCurrentListChanged(previousList: MutableList<Item>, currentList: MutableList<Item>) {
-    if (notifyChange) listChangeListener()
+  override fun onCurrentListChanged(
+    previousList: MutableList<Item>,
+    currentList: MutableList<Item>,
+  ) {
+    if (notifyChange) {
+      listChangeListener()
+    }
   }
 
   class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

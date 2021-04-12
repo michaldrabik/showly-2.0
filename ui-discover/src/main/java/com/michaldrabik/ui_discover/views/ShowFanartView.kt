@@ -11,6 +11,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_discover.R
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
+import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import kotlinx.android.synthetic.main.view_show_fanart.view.*
 
@@ -46,6 +47,13 @@ class ShowFanartView : ShowView<DiscoverListItem> {
   override fun loadImage(item: DiscoverListItem) {
     super.loadImage(item)
     if (item.image.status == UNAVAILABLE) {
+      showFanartRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
+    }
+  }
+
+  override fun onImageLoadFail(item: DiscoverListItem) {
+    super.onImageLoadFail(item)
+    if (item.image.status == AVAILABLE) {
       showFanartRoot.setBackgroundResource(R.drawable.bg_media_view_placeholder)
     }
   }

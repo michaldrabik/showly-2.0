@@ -24,10 +24,14 @@
   <string name="textTba" translatable="false">TBA</string>
   <string name="textShows">Shows</string>
   <string name="textMovies">Movies</string>
+  <string name="textLists">Lists</string>
   <string name="textMinutesShort">min</string>
   <string name="textActorRole" translatable="false">%s\n(%s)</string>
   <string name="textRemoveFromTrakt">Remove from Trakt.tv?</string>
   <string name="textNoDescription">Overview not available.</string>
+  <string name="textPleaseWait">Please wait…</string>
+  <string name="textRate">Rate</string>
+  <string name="textRateSaved">Your rating has been saved.</string>
 
   <string name="textAiredAlready">Aired</string>
   <string name="textAirsNow">Airs Now</string>
@@ -45,6 +49,11 @@
   <plurals name="textMinutesToAir">
     <item quantity="one">Airs now</item>
     <item quantity="other">Airs in %d minutes</item>
+  </plurals>
+
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="one">1 item synced successfully.</item>
+    <item quantity="other">%d items synced successfully.</item>
   </plurals>
 
   <string name="textToday">Today</string>

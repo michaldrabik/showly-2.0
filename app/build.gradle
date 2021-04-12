@@ -13,6 +13,10 @@ android {
     targetCompatibility JavaVersion.VERSION_1_8
   }
 
+  buildFeatures {
+    buildConfig = true
+  }
+
   compileSdkVersion versions.compileSdk
 
   defaultConfig {
@@ -68,6 +72,7 @@ dependencies {
   implementation project(':ui-discover-movies')
   implementation project(':ui-episodes')
   implementation project(':ui-comments')
+  implementation project(':ui-lists')
   implementation project(':ui-show')
   implementation project(':ui-movie')
   implementation project(':ui-gallery')

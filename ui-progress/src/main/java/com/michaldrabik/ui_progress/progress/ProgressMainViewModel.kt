@@ -87,7 +87,7 @@ class ProgressMainViewModel @Inject constructor(
         val token = userTraktManager.checkAuthorization().token
         uiState = ProgressMainUiModel(ratingState = RatingState(rateLoading = true))
         ratingsRepository.shows.addRating(token, episode, rating)
-        _messageLiveData.value = MessageEvent.info(R.string.textShowRated)
+        _messageLiveData.value = MessageEvent.info(R.string.textRateSaved)
         uiState = ProgressMainUiModel(ratingState = RatingState(userRating = TraktRating(episode.ids.trakt, rating)))
         Analytics.logEpisodeRated(showTraktId.id, episode, rating)
       } catch (error: Throwable) {

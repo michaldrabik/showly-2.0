@@ -1,11 +1,13 @@
 package com.michaldrabik.ui_navigation.java
 
 object NavigationArgs {
+  const val ARG_ID = "ARG_ID"
   const val ARG_SHOW_ID = "ARG_SHOW_ID"
   const val ARG_MOVIE_ID = "ARG_MOVIE_ID"
   const val ARG_EPISODE_ID = "ARG_EPISODE_ID"
   const val ARG_COMMENT_ID = "ARG_COMMENT_ID"
 
+  const val ARG_LIST = "ARG_LIST"
   const val ARG_COMMENT = "ARG_COMMENT"
   const val ARG_COMMENT_ACTION = "ARG_COMMENT_ACTION"
   const val ARG_FAMILY = "ARG_FAMILY"
@@ -22,4 +24,7 @@ object NavigationArgs {
   const val ACTION_RATING_CHANGED = "ACTION_RATING_CHANGED"
   const val ACTION_EPISODE_WATCHED = "ACTION_EPISODE_WATCHED"
   const val ACTION_EPISODE_TAB_SELECTED = "ACTION_EPISODE_TAB_SELECTED"
+
+  const val REQUEST_CREATE_LIST = "REQUEST_CREATE_LIST"
+  const val REQUEST_MANAGE_LISTS = "REQUEST_MANAGE_LISTS"
 }

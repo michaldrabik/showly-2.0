@@ -36,4 +36,7 @@ interface MyMoviesDao {
 
   @Query("DELETE FROM movies_my_movies WHERE id_trakt == :traktId")
   suspend fun deleteById(traktId: Long)
+
+  @Query("SELECT EXISTS(SELECT 1 FROM movies_my_movies WHERE id_trakt = :traktId LIMIT 1);")
+  suspend fun checkExists(traktId: Long): Boolean
 }

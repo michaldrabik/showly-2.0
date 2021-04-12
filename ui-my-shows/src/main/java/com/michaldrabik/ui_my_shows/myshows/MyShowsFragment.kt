@@ -7,6 +7,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
@@ -38,11 +39,23 @@ class MyShowsFragment :
 
   private var adapter: MyShowsAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
+  private var horizontalPositions: MutableMap<MyShowsSection, Pair<Int, Int>>? = null
   private var statusBarHeight = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiMyShowsComponentProvider).provideMyShowsComponent().inject(this)
     super.onCreate(savedInstanceState)
+
+    savedInstanceState?.let { bundle ->
+      val horizontalPositionsMap = mutableMapOf<MyShowsSection, Pair<Int, Int>>()
+      MyShowsSection.values().forEach { section ->
+        if (bundle.containsKey(section.name)) {
+          @Suppress("UNCHECKED_CAST")
+          horizontalPositionsMap[section] = bundle.getSerializable(section.name) as Pair<Int, Int>
+        }
+      }
+      horizontalPositions = horizontalPositionsMap
+    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,9 +69,23 @@ class MyShowsFragment :
     }
   }
 
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    horizontalPositions?.entries?.forEach { (section, position) ->
+      outState.putSerializable(section.name, position)
+    }
+  }
+
+  override fun onPause() {
+    horizontalPositions = adapter?.horizontalPositions?.toMutableMap()
+    super.onPause()
+  }
+
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = MyShowsAdapter().apply {
+      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+      horizontalPositions = this@MyShowsFragment.horizontalPositions?.toMutableMap() ?: mutableMapOf()
       itemClickListener = { openShowDetails(it.show) }
       missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) }
       missingTranslationListener = { viewModel.loadMissingTranslation(it) }
@@ -74,16 +101,15 @@ class MyShowsFragment :
   }
 
   private fun setupStatusBar() {
-    val recyclerPadding = if (moviesEnabled) R.dimen.myShowsTabsViewPadding else R.dimen.myShowsTabsViewPaddingNoModes
     if (statusBarHeight != 0) {
       myShowsRoot.updatePadding(top = statusBarHeight)
-      myShowsRecycler.updatePadding(top = dimenToPx(recyclerPadding))
+      myShowsRecycler.updatePadding(top = dimenToPx(R.dimen.myShowsTabsViewPadding))
       return
     }
     myShowsRoot.doOnApplyWindowInsets { view, insets, _, _ ->
       statusBarHeight = insets.systemWindowInsetTop
       view.updatePadding(top = statusBarHeight)
-      myShowsRecycler.updatePadding(top = dimenToPx(recyclerPadding))
+      myShowsRecycler.updatePadding(top = dimenToPx(R.dimen.myShowsTabsViewPadding))
     }
   }
 

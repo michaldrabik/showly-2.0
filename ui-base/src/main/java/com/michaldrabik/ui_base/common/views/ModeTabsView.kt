@@ -2,6 +2,7 @@ package com.michaldrabik.ui_base.common.views
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -12,38 +13,57 @@ import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.onClick
-import kotlinx.android.synthetic.main.view_shows_movies_tabs.view.*
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import kotlinx.android.synthetic.main.view_mode_tabs.view.*
 
-class ShowsMoviesTabsView : LinearLayout, CoordinatorLayout.AttachedBehavior {
+class ModeTabsView : LinearLayout, CoordinatorLayout.AttachedBehavior {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   init {
-    inflate(context, R.layout.view_shows_movies_tabs, this)
-    layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+    inflate(context, R.layout.view_mode_tabs, this)
+    layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     orientation = HORIZONTAL
 
     viewMovies.onClick { onModeSelected?.invoke(MOVIES) }
     viewShows.onClick { onModeSelected?.invoke(SHOWS) }
+    viewLists.onClick { onListsSelected?.invoke() }
   }
 
   var onModeSelected: ((Mode) -> Unit)? = null
+  var onListsSelected: (() -> Unit)? = null
 
-  fun animateMovies() {
-    viewShows.setTextColor(context.colorFromAttr(R.attr.textColorTab))
-    viewMovies.setTextColor(context.colorFromAttr(R.attr.textColorTabSelected))
-  }
-
-  fun animateShows() {
+  fun selectShows() {
     viewShows.setTextColor(context.colorFromAttr(R.attr.textColorTabSelected))
     viewMovies.setTextColor(context.colorFromAttr(R.attr.textColorTab))
+    viewLists.setTextColor(context.colorFromAttr(R.attr.textColorTab))
+  }
+
+  fun selectMovies() {
+    viewShows.setTextColor(context.colorFromAttr(R.attr.textColorTab))
+    viewMovies.setTextColor(context.colorFromAttr(R.attr.textColorTabSelected))
+    viewLists.setTextColor(context.colorFromAttr(R.attr.textColorTab))
+  }
+
+  fun selectLists() {
+    viewShows.setTextColor(context.colorFromAttr(R.attr.textColorTab))
+    viewMovies.setTextColor(context.colorFromAttr(R.attr.textColorTab))
+    viewLists.setTextColor(context.colorFromAttr(R.attr.textColorTabSelected))
+  }
+
+  fun showMovies(show: Boolean) = viewMovies.visibleIf(show)
+
+  fun showLists(show: Boolean, anchorEnd: Boolean = true) {
+    viewLists.visibleIf(show)
+    viewSpacer.visibleIf(anchorEnd)
   }
 
   override fun setEnabled(enabled: Boolean) {
     viewShows.isEnabled = enabled
     viewMovies.isEnabled = enabled
+    viewLists.isEnabled = enabled
   }
 
   override fun getBehavior() = ScrollableViewBehaviour()

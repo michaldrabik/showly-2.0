@@ -57,6 +57,13 @@ class FollowedMoviesFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiMyMoviesComponentProvider).provideMyMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
+    setupBackPressed()
+
+    savedInstanceState?.let {
+      viewModel.searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
+      viewModel.tabsTranslation = it.getFloat("ARG_TABS_POSITION")
+      currentPage = it.getInt("ARG_PAGE")
+    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,11 +81,19 @@ class FollowedMoviesFragment :
   override fun onResume() {
     super.onResume()
     showNavigation()
-    setupBackPress()
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putFloat("ARG_SEARCH_POSITION", followedMoviesSearchView?.translationY ?: 0F)
+    outState.putFloat("ARG_TABS_POSITION", followedMoviesTabs?.translationY ?: 0F)
+    outState.putInt("ARG_PAGE", followedMoviesPager?.currentItem ?: 0)
   }
 
   override fun onPause() {
     enableUi()
+    viewModel.tabsTranslation = followedMoviesTabs.translationY
+    viewModel.searchViewTranslation = followedMoviesSearchView.translationY
     super.onPause()
   }
 
@@ -98,7 +113,9 @@ class FollowedMoviesFragment :
     }
     followedMoviesModeTabs.run {
       onModeSelected = { mode = it }
-      animateMovies()
+      onListsSelected = { navigateTo(R.id.actionNavigateListsFragment) }
+      showLists(true)
+      selectMovies()
     }
     followedMoviesSortIcon.run {
       visibleIf(currentPage != 0)
@@ -137,16 +154,16 @@ class FollowedMoviesFragment :
       followedMoviesSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
       followedMoviesSearchView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
       followedMoviesTabs.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchViewPadding) + statusBarSize)
-      followedMoviesModeTabs.updateTopMargin(dimenToPx(R.dimen.showsMoviesTabsMargin) + statusBarSize)
+      followedMoviesModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
       followedMoviesSortIcon.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchViewPadding) + statusBarSize)
       followedMoviesSearchEmptyView.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
       followedMoviesSearchWrapper.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
     }
   }
 
-  private fun setupBackPress() {
+  private fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
+    dispatcher.addCallback(this) {
       if (followedMoviesSearchView.isSearching) {
         exitSearch()
       } else {
@@ -258,29 +275,21 @@ class FollowedMoviesFragment :
   fun openMovieDetails(movie: Movie) {
     disableUi()
     hideNavigation()
-    followedMoviesRoot.fadeOut {
+    followedMoviesRoot.fadeOut(150) {
       exitSearch(false)
       val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, movie.ids.trakt.id) }
       navigateTo(R.id.actionFollowedMoviesFragmentToMovieDetailsFragment, bundle)
     }.add(animations)
-    viewModel.tabsTranslation = followedMoviesTabs.translationY
-    viewModel.searchViewTranslation = followedMoviesSearchView.translationY
   }
 
   private fun openSettings() {
     hideNavigation()
     navigateTo(R.id.actionFollowedMoviesFragmentToSettingsFragment)
-
-    viewModel.tabsTranslation = followedMoviesTabs.translationY
-    viewModel.searchViewTranslation = followedMoviesSearchView.translationY
   }
 
   private fun openStatistics() {
     hideNavigation()
     navigateTo(R.id.actionFollowedMoviesFragmentToStatisticsFragment)
-
-    viewModel.tabsTranslation = followedMoviesTabs.translationY
-    viewModel.searchViewTranslation = followedMoviesSearchView.translationY
   }
 
   fun enableSearch(enable: Boolean) {

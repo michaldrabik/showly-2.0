@@ -37,7 +37,7 @@
       app:title="@string/textSettings"
       />
 
-    <com.michaldrabik.ui_premium.views.PremiumAdView
+    <com.michaldrabik.ui_settings.views.PremiumAdView
       android:id="@+id/settingsPremium"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -888,12 +888,11 @@
       style="@style/Settings.Summary"
       android:layout_marginBottom="@dimen/spaceBig"
       android:textColor="?android:attr/textColorSecondary"
-      android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsVersion"
-      tools:text="xxxxxxxxx"
+      tools:text="123456789"
       />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

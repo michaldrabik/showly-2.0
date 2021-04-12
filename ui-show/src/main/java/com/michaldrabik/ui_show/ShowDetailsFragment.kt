@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_show
 
+import android.animation.LayoutTransition
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -37,6 +38,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
+import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
@@ -89,14 +91,17 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEARED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
+import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.ShowLink
 import com.michaldrabik.ui_show.helpers.ShowLink.IMDB
 import com.michaldrabik.ui_show.helpers.ShowLink.JUST_WATCH
@@ -117,7 +122,6 @@ import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import kotlinx.android.synthetic.main.view_links_menu.view.*
 import org.threeten.bp.Duration
-import org.threeten.bp.format.DateTimeFormatter
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
@@ -147,6 +151,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiShowDetailsComponentProvider).provideShowDetailsComponent().inject(this)
     super.onCreate(savedInstanceState)
+    handleBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -167,12 +172,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       loadPremium()
     }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    hideNavigation()
-    handleBackPressed()
   }
 
   private fun setupView() {
@@ -224,6 +223,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       showDetailsAddButton.fadeIn()
       showDetailsRemoveTraktButton.fadeOut()
     }
+    showDetailsManageListsLabel.onClick { openListsDialog() }
   }
 
   private fun setupStatusBar() {
@@ -283,7 +283,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun showEpisodesView(item: SeasonListItem) {
     showDetailsEpisodesView.run {
       bind(item)
-      fadeIn(265) {
+      fadeIn(265, withHardware = true) {
         bindEpisodes(item.episodes)
         viewModel.loadSeasonTranslation(item)
       }
@@ -304,7 +304,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun showCommentsView() {
     showDetailsCommentsView.run {
-      fadeIn(275)
+      fadeIn(275, withHardware = true)
       startAnimation(animationEnterRight)
     }
     showDetailsMainLayout.run {
@@ -322,7 +322,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       startAnimation(animationExitLeft)
     }
     showDetailsMainLayout.run {
-      fadeIn()
+      fadeIn(withHardware = true)
       startAnimation(animationEnterLeft)
     }
     showDetailsBackArrow2.crossfadeTo(showDetailsBackArrow)
@@ -335,7 +335,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     episode: Episode,
     season: Season?,
     isWatched: Boolean,
-    showButton: Boolean = true
+    showButton: Boolean = true,
   ) {
     if (findNavControl()?.currentDestination?.id != R.id.showDetailsFragment) {
       return
@@ -433,7 +433,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsActorFullName.apply {
       text = getString(R.string.textActorRole, actor.name, actor.role)
-      fadeIn()
+      fadeIn(withHardware = true)
     }
     showDetailsActorFullContainer.apply {
       tag = actor
@@ -442,7 +442,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsActorFullMask.apply {
       onClick { hideFullActorView(actor) }
-      fadeIn()
+      fadeIn(withHardware = true)
     }
   }
 
@@ -506,7 +506,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       showLoading?.let {
         if (!showDetailsEpisodesView.isVisible && !showDetailsCommentsView.isVisible) {
-          showDetailsMainLayout.fadeIf(!it)
+          showDetailsMainLayout.fadeIf(!it, withHardware = true)
           showDetailsMainProgress.visibleIf(it)
         }
       }
@@ -518,7 +518,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           else -> showDetailsAddButton.setState(ADD, it.withAnimation)
         }
       }
-      nextEpisode?.let { renderNextEpisode(it, dateFormat) }
+      listsCount?.let {
+        val text =
+          if (it > 0) getString(R.string.textShowManageListsCount, it)
+          else getString(R.string.textShowManageLists)
+        showDetailsManageListsLabel.text = text
+      }
+      nextEpisode?.let { renderNextEpisode(it) }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
       seasons?.let {
@@ -544,18 +550,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       removeFromTraktHistory?.let { event ->
         event.consume()?.let {
-          showDetailsAddButton.fadeIf(!it)
+          showDetailsAddButton.fadeIf(!it, withHardware = true)
           showDetailsRemoveTraktButton.run {
-            fadeIf(it)
+            fadeIf(it, withHardware = true)
             onYesClickListener = { viewModel.removeFromTraktHistory() }
           }
         }
       }
       removeFromTraktWatchlist?.let { event ->
         event.consume()?.let {
-          showDetailsAddButton.fadeIf(!it)
+          showDetailsAddButton.fadeIf(!it, withHardware = true)
           showDetailsRemoveTraktButton.run {
-            fadeIf(it)
+            fadeIf(it, withHardware = true)
             onYesClickListener = { viewModel.removeFromTraktWatchlist() }
           }
         }
@@ -616,21 +622,25 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .into(showDetailsImage)
   }
 
-  private fun renderNextEpisode(
-    episodeBundle: Pair<Show, Episode>,
-    dateFormat: DateTimeFormatter?
-  ) {
+  private fun renderNextEpisode(episodeBundle: NextEpisodeBundle) {
     episodeBundle.run {
-      val (show, episode) = episodeBundle
+      val animate = enterTransition.consume() == true
+      val (show, episode) = episodeBundle.nextEpisode
       showDetailsEpisodeText.text =
         String.format(ENGLISH, getString(R.string.textEpisodeTitle), episode.season, episode.number, episode.title)
-      showDetailsEpisodeCard.visible()
-      showDetailsEpisodeCard.onClick {
-        showEpisodeDetails(show, episode, null, isWatched = false, showButton = false)
+
+      with(showDetailsEpisodeCard) {
+        onClick {
+          showEpisodeDetails(show, episode, null, isWatched = false, showButton = false)
+        }
+        if (animate) {
+          showDetailsMainContent.layoutTransition = LayoutTransition()
+        }
+        visible()
       }
 
       episode.firstAired?.let {
-        val displayDate = dateFormat?.format(it.toLocalZone())?.capitalizeWords()
+        val displayDate = episodeBundle.dateFormat?.format(it.toLocalZone())?.capitalizeWords()
         showDetailsEpisodeAirtime.visible()
         showDetailsEpisodeAirtime.text = displayDate
       }
@@ -639,18 +649,21 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun renderActors(actors: List<Actor>) {
     actorsAdapter?.setItems(actors)
-    showDetailsActorsRecycler.fadeIf(actors.isNotEmpty())
-    showDetailsActorsEmptyView.fadeIf(actors.isEmpty())
+    if (actors.isEmpty()) {
+      showDetailsMainContent.layoutTransition = LayoutTransition()
+    }
+    showDetailsActorsRecycler.fadeIf(actors.isNotEmpty(), withHardware = true)
+    showDetailsActorsEmptyView.fadeIf(actors.isEmpty(), withHardware = true)
     showDetailsActorsProgress.gone()
   }
 
   private fun renderSeasons(seasonsItems: List<SeasonListItem>) {
     seasonsAdapter?.setItems(seasonsItems)
     showDetailsEpisodesView.updateEpisodes(seasonsItems)
-    showDetailsSeasonsRecycler.fadeIf(seasonsItems.isNotEmpty())
-    showDetailsSeasonsLabel.fadeIf(seasonsItems.isNotEmpty())
-    showDetailsSeasonsEmptyView.fadeIf(seasonsItems.isEmpty())
-    showDetailsQuickProgress.fadeIf(seasonsItems.isNotEmpty())
+    showDetailsSeasonsRecycler.fadeIf(seasonsItems.isNotEmpty(), withHardware = true)
+    showDetailsSeasonsLabel.fadeIf(seasonsItems.isNotEmpty(), withHardware = true)
+    showDetailsSeasonsEmptyView.fadeIf(seasonsItems.isEmpty(), withHardware = true)
+    showDetailsQuickProgress.fadeIf(seasonsItems.isNotEmpty(), withHardware = true)
     showDetailsSeasonsProgress.gone()
     showDetailsQuickProgress.onClick {
       if (seasonsItems.any { !it.season.isSpecial() }) {
@@ -683,8 +696,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun renderRelatedShows(items: List<RelatedListItem>) {
     relatedAdapter?.setItems(items)
-    showDetailsRelatedRecycler.fadeIf(items.isNotEmpty())
-    showDetailsRelatedLabel.fadeIf(items.isNotEmpty())
+    showDetailsRelatedRecycler.fadeIf(items.isNotEmpty(), withHardware = true)
+    showDetailsRelatedLabel.fadeIf(items.isNotEmpty(), withHardware = true)
     showDetailsRelatedProgress.gone()
   }
 
@@ -711,7 +724,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun openShowLink(
     link: ShowLink,
     id: String,
-    country: AppCountry = UNITED_STATES
+    country: AppCountry = UNITED_STATES,
   ) {
     if (link == IMDB) {
       openIMDbLink(IdImdb(id), "title")
@@ -836,9 +849,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .show()
   }
 
+  private fun openListsDialog() {
+    setFragmentResultListener(REQUEST_MANAGE_LISTS) { _, _ -> viewModel.loadListsCount() }
+    val bundle = bundleOf(
+      ARG_ID to showId.id,
+      ARG_TYPE to Mode.SHOWS.type
+    )
+    navigateTo(R.id.actionShowDetailsFragmentToManageLists, bundle)
+  }
+
   private fun handleBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
+    dispatcher.addCallback(this) {
       when {
         showDetailsEpisodesView.isVisible -> {
           hideExtraView(showDetailsEpisodesView)

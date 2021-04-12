@@ -6,7 +6,7 @@ import com.michaldrabik.common.Mode
 
 interface NavigationHost {
   fun moviesEnabled(): Boolean
-  fun setMode(mode: Mode)
+  fun setMode(mode: Mode, force: Boolean = false)
   fun getMode(): Mode
 
   fun findNavControl(): NavController?

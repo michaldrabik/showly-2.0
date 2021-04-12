@@ -5,13 +5,17 @@ import com.michaldrabik.network.Config.TRAKT_CLIENT_SECRET
 import com.michaldrabik.network.Config.TRAKT_REDIRECT_URL
 import com.michaldrabik.network.Config.TRAKT_SYNC_PAGE_LIMIT
 import com.michaldrabik.network.trakt.model.Comment
+import com.michaldrabik.network.trakt.model.CustomList
 import com.michaldrabik.network.trakt.model.Episode
 import com.michaldrabik.network.trakt.model.Movie
 import com.michaldrabik.network.trakt.model.OAuthResponse
 import com.michaldrabik.network.trakt.model.Show
+import com.michaldrabik.network.trakt.model.SyncExportItem
 import com.michaldrabik.network.trakt.model.SyncExportRequest
+import com.michaldrabik.network.trakt.model.SyncExportResult
 import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.network.trakt.model.request.CommentRequest
+import com.michaldrabik.network.trakt.model.request.CreateListRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRevokeRequest
@@ -157,6 +161,68 @@ class TraktApi(private val service: TraktService) {
     } while (items.size >= TRAKT_SYNC_PAGE_LIMIT)
 
     return results
+  }
+
+  suspend fun fetchSyncLists(token: String) =
+    service.fetchSyncLists("Bearer $token")
+
+  suspend fun fetchSyncList(token: String, listId: Long) =
+    service.fetchSyncList("Bearer $token", listId)
+
+  suspend fun fetchSyncListItems(token: String, listId: Long, withMovies: Boolean): List<SyncItem> {
+    var page = 1
+    val results = mutableListOf<SyncItem>()
+    val types = arrayListOf("show")
+      .apply { if (withMovies) add("movie") }
+      .joinToString(",")
+
+    do {
+      val items = service.fetchSyncListItems("Bearer $token", listId, types, page, TRAKT_SYNC_PAGE_LIMIT)
+      results.addAll(items)
+      page += 1
+    } while (items.size >= TRAKT_SYNC_PAGE_LIMIT)
+
+    return results
+  }
+
+  suspend fun postCreateList(token: String, name: String, description: String?): CustomList {
+    val body = CreateListRequest(name, description)
+    return service.postCreateList("Bearer $token", body)
+  }
+
+  suspend fun postUpdateList(token: String, customList: CustomList): CustomList {
+    val body = CreateListRequest(customList.name, customList.description)
+    return service.postUpdateList("Bearer $token", customList.ids.trakt, body)
+  }
+
+  suspend fun deleteList(token: String, listId: Long) {
+    service.deleteList("Bearer $token", listId)
+  }
+
+  suspend fun postAddListItems(
+    token: String,
+    listTraktId: Long,
+    showsIds: List<Long>,
+    moviesIds: List<Long>
+  ): SyncExportResult {
+    val body = SyncExportRequest(
+      shows = showsIds.map { SyncExportItem.create(it, null) },
+      movies = moviesIds.map { SyncExportItem.create(it, null) }
+    )
+    return service.postAddListItems("Bearer $token", listTraktId, body)
+  }
+
+  suspend fun postRemoveListItems(
+    token: String,
+    listTraktId: Long,
+    showsIds: List<Long>,
+    moviesIds: List<Long>
+  ): SyncExportResult {
+    val body = SyncExportRequest(
+      shows = showsIds.map { SyncExportItem.create(it, null) },
+      movies = moviesIds.map { SyncExportItem.create(it, null) }
+    )
+    return service.postRemoveListItems("Bearer $token", listTraktId, body)
   }
 
   suspend fun postSyncWatchlist(token: String, request: SyncExportRequest) =

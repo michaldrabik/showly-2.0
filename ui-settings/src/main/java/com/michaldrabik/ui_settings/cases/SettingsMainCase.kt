@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_base.common.AppCountry
@@ -13,7 +14,6 @@ import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
-import com.michaldrabik.ui_model.BuildConfig
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.MyShowsSection.FINISHED
@@ -31,7 +31,7 @@ class SettingsMainCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val announcementManager: AnnouncementManager,
   private val showsImagesProvider: ShowImagesProvider,
-  private val moviesImagesProvider: MovieImagesProvider
+  private val moviesImagesProvider: MovieImagesProvider,
 ) {
 
   suspend fun getSettings(): Settings = settingsRepository.load()
@@ -53,7 +53,7 @@ class SettingsMainCase @Inject constructor(
       settingsRepository.update(new)
     }
     FirebaseMessaging.getInstance().run {
-      val suffix = if (BuildConfig.DEBUG) "-debug" else ""
+      val suffix = ConfigVariant.FIREBASE_SUFFIX
       if (enable) {
         subscribeToTopic(NotificationChannel.GENERAL_INFO.topicName + suffix)
         subscribeToTopic(NotificationChannel.SHOWS_INFO.topicName + suffix)

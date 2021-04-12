@@ -10,6 +10,8 @@ import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.trakt.TraktNotificationsService
+import com.michaldrabik.ui_base.trakt.quicksync.runners.QuickSyncListsRunner
+import com.michaldrabik.ui_base.trakt.quicksync.runners.QuickSyncRunner
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
 import com.michaldrabik.ui_repository.SettingsRepository
 import kotlinx.coroutines.CoroutineScope
@@ -33,6 +35,7 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
 
   @Inject lateinit var settingsRepository: SettingsRepository
   @Inject lateinit var quickSyncRunner: QuickSyncRunner
+  @Inject lateinit var quickSyncListsRunner: QuickSyncListsRunner
 
   override fun onCreate() {
     super.onCreate()
@@ -42,7 +45,7 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     Timber.d("Service initialized.")
 
-    if (quickSyncRunner.isRunning) {
+    if (quickSyncRunner.isRunning || quickSyncListsRunner.isRunning) {
       Timber.d("Already running. Skipping...")
       return START_NOT_STICKY
     }
@@ -53,7 +56,8 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
     Timber.d("Sync started.")
     launch {
       try {
-        val count = quickSyncRunner.run()
+        var count = quickSyncRunner.run()
+        count += quickSyncListsRunner.run()
         if (count > 0) {
           EventsManager.sendEvent(TraktQuickSyncSuccess(count))
           Analytics.logTraktQuickSyncSuccess(count)
@@ -81,6 +85,7 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
 
   private fun clear() {
     quickSyncRunner.isRunning = false
+    quickSyncListsRunner.isRunning = false
   }
 
   override fun onBind(intent: Intent?): IBinder? = null

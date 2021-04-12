@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuLists">Lists</string>
+  <string name="menuList">List</string>
+
+  <string name="textFilters">Filters:</string>
+  <string name="textListsEmpty">Your lists collection is currently empty.</string>
+  <string name="textListEmpty">Your list is currently empty.</string>
+  <string name="textCreateList">Create list</string>
+  <string name="textCreateListDescription">Create a new custom list.</string>
+  <string name="textName">Name</string>
+  <string name="textDescription">Description (optional)</string>
+  <string name="textDeleteList">Delete list</string>
+  <string name="textEditList">Edit list</string>
+  <string name="textEditListDescription">Update your custom list.</string>
+  <string name="textConfirmDeleteListTitle">Delete List</string>
+  <string name="textConfirmDeleteListSubtitle">Are you sure you want to delete this list?</string>
+  <string name="textChangeRanks">Change Ranks</string>
+  <string name="textChangeRanksSubtitle">Drag and drop list item to change its rank</string>
+
+  <string name="textManageLists">Manage lists</string>
+  <string name="textManageListsShows">Manage your lists for this show.</string>
+  <string name="textManageListsMovies">Manage your lists for this movie.</string>
+
+  <string name="errorCouldNotCreateList">We could not create new list in your Trakt account at this moment.\nPlease check internet connection and try again.</string>
+  <string name="errorCouldNotUpdateList">We could not update this list in your Trakt account at this moment.\nPlease check internet connection and try again.</string>
+  <string name="errorCouldNotDeleteList">We could not delete this list from your Trakt account at this moment.\nPlease check internet connection and try again.</string>
+
+</resources>

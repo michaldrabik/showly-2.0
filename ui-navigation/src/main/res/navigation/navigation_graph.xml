@@ -53,6 +53,14 @@
     app:popUpToInclusive="true"
     />
 
+  <action
+    android:id="@+id/actionNavigateListsFragment"
+    app:destination="@id/listsFragment"
+    app:launchSingleTop="true"
+    app:popUpTo="@id/navigationGraph"
+    app:popUpToInclusive="true"
+    />
+
   <fragment
     android:id="@+id/discoverFragment"
     android:name="com.michaldrabik.ui_discover.DiscoverFragment"
@@ -202,6 +210,11 @@
       app:launchSingleTop="true"
       />
     <action
+      android:id="@+id/actionShowDetailsFragmentToManageLists"
+      app:destination="@id/manageListsDialog"
+      app:launchSingleTop="true"
+      />
+    <action
       android:id="@+id/actionShowDetailsFragmentToPostComment"
       app:destination="@id/postCommentDialog"
       app:launchSingleTop="true"
@@ -243,6 +256,11 @@
     <action
       android:id="@+id/actionMovieDetailsFragmentToCustomImages"
       app:destination="@id/customImagesDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToManageLists"
+      app:destination="@id/manageListsDialog"
       app:launchSingleTop="true"
       />
     <action
@@ -315,6 +333,58 @@
     <action
       android:id="@+id/actionFollowedMoviesFragmentToStatisticsFragment"
       app:destination="@id/statisticsMoviesFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/listsFragment"
+    android:name="com.michaldrabik.ui_lists.lists.ListsFragment"
+    android:label="fragmentLists"
+    >
+    <action
+      android:id="@+id/actionListsFragmentToDetailsFragment"
+      app:destination="@id/listDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionListsFragmentToSettingsFragment"
+      app:destination="@id/settingsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionListsFragmentToCreateListDialog"
+      app:destination="@id/createListDialog"
+      app:launchSingleTop="true"
+      />
+  </fragment>
+
+  <fragment
+    android:id="@+id/listDetailsFragment"
+    android:name="com.michaldrabik.ui_lists.details.ListDetailsFragment"
+    android:label="fragmentListDetails"
+    >
+    <action
+      android:id="@+id/actionListDetailsFragmentToEditListDialog"
+      app:destination="@id/createListDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionListDetailsFragmentToShowDetailsFragment"
+      app:destination="@id/showDetailsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionListDetailsFragmentToMovieDetailsFragment"
+      app:destination="@id/movieDetailsFragment"
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
@@ -434,5 +504,23 @@
     android:name="com.michaldrabik.ui_comments.post.PostCommentBottomSheet"
     android:label="dialogPostComment"
     />
+
+  <dialog
+    android:id="@+id/createListDialog"
+    android:name="com.michaldrabik.ui_lists.create.CreateListBottomSheet"
+    android:label="dialogCreateList"
+    />
+
+  <dialog
+    android:id="@+id/manageListsDialog"
+    android:name="com.michaldrabik.ui_lists.manage.ManageListsBottomSheet"
+    android:label="dialogManageLists"
+    >
+    <action
+      android:id="@+id/actionManageListsDialogToCreateListDialog"
+      app:destination="@id/createListDialog"
+      app:launchSingleTop="true"
+      />
+  </dialog>
 
 </navigation>

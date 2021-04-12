@@ -83,4 +83,6 @@
   <string name="errorTraktSyncGeneral">Erreur de synchronisation Trakt.tv.\nVeuillez vérifier votre connexion internet et réessayer.</string>
   <string name="errorTraktLocked">Votre compte Trakt.tv est actuellement verrouillé.\nVeuillez contacter l\'assistance Trakt.tv à https://support.trakt.tv/ pour déverrouiller votre compte.</string>
   <string name="errorSubscriptionsNotAvailable">Les abonnements via Google Play ne sont pas disponibles sur cet appareil.</string>
+  <string name="textRate">Noter</string>
+  <string name="textRateSaved">Votre évaluation a été enregistrée.</string>
 </resources>

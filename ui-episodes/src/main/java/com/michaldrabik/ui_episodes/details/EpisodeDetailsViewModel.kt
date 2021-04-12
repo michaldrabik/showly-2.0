@@ -206,7 +206,7 @@ class EpisodeDetailsViewModel @Inject constructor(
         val token = userTraktManager.checkAuthorization().token
         uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateLoading = true))
         ratingsRepository.shows.addRating(token, episode, rating)
-        _messageLiveData.value = MessageEvent.info(R.string.textShowRated)
+        _messageLiveData.value = MessageEvent.info(R.string.textRateSaved)
         uiState = EpisodeDetailsUiModel(
           ratingState = RatingState(userRating = TraktRating(episode.ids.trakt, rating)),
           ratingChanged = ActionEvent(true)

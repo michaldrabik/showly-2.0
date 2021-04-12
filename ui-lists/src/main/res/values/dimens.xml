@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <dimen name="listsRecyclerPaddingTop">154dp</dimen>
+  <dimen name="listsSortIconPadding">96dp</dimen>
+  <dimen name="listsBottomPadding">64dp</dimen>
+  <dimen name="listsFabBottomPadding">57dp</dimen>
+
+  <dimen name="listsImageHeight">120dp</dimen>
+  <dimen name="listsImageWidth">80dp</dimen>
+  <dimen name="listsTripleImageWidth">116dp</dimen>
+  <dimen name="listsMarginHorizontal">12dp</dimen>
+
+  <dimen name="listDetailsRecyclerPaddingTop">64dp</dimen>
+  <dimen name="listDetailsItemMarginHorizontal">12dp</dimen>
+
+  <dimen name="listDetailsItemImageWidth">80dp</dimen>
+  <dimen name="listDetailsItemImageHeight">120dp</dimen>
+</resources>

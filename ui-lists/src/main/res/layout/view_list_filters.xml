@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  tools:parentTag="android.widget.LinearLayout"
+  >
+
+  <TextView
+    android:id="@+id/viewListFiltersTitle"
+    style="@style/TextAppearance.AppCompat.Title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="25dp"
+    android:layout_marginBottom="@dimen/spaceSmall"
+    android:gravity="start"
+    android:text="@string/textFilters"
+    android:textAlignment="viewStart"
+    android:textColor="?android:attr/textColorPrimary"
+    />
+
+  <com.google.android.material.chip.ChipGroup
+    android:id="@+id/viewListFiltersChipGroup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="25dp"
+    android:layout_marginBottom="@dimen/spaceNormal"
+    app:chipSpacingHorizontal="@dimen/spaceMedium"
+    app:selectionRequired="true"
+    >
+
+    <com.google.android.material.chip.Chip
+      android:id="@+id/viewListFiltersShowsChip"
+      style="@style/Widget.MaterialComponents.Chip.Choice"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:checked="true"
+      android:text="@string/textShows"
+      android:textColor="@color/selector_discover_chip_text"
+      android:textSize="16sp"
+      app:checkedIconTint="@color/selector_discover_chip_text"
+      app:chipBackgroundColor="@color/selector_discover_chip_background"
+      app:chipStrokeColor="@color/selector_discover_chip_text"
+      app:chipStrokeWidth="1dp"
+      />
+
+    <com.google.android.material.chip.Chip
+      android:id="@+id/viewListFiltersMoviesChip"
+      style="@style/Widget.MaterialComponents.Chip.Choice"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:checked="true"
+      android:text="@string/textMovies"
+      android:textColor="@color/selector_discover_chip_text"
+      android:textSize="16sp"
+      app:checkedIconTint="@color/selector_discover_chip_text"
+      app:chipBackgroundColor="@color/selector_discover_chip_background"
+      app:chipStrokeColor="@color/selector_discover_chip_text"
+      app:chipStrokeWidth="1dp"
+      />
+
+  </com.google.android.material.chip.ChipGroup>
+
+</merge>

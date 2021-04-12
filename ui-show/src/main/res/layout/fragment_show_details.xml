@@ -21,7 +21,7 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-      android:id="@+id/constraintLayout"
+      android:id="@+id/showDetailsMainContent"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:clipChildren="false"
@@ -181,8 +181,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
-        android:layout_marginBottom="@dimen/spaceSmall"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeCard"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsManageListsLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsStatus"
@@ -215,21 +214,62 @@
         tools:visibility="visible"
         />
 
+      <TextView
+        android:id="@+id/showDetailsManageListsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="@dimen/spaceTiny"
+        android:drawablePadding="@dimen/spaceTiny"
+        android:gravity="start|center_vertical"
+        android:text="@string/textShowManageLists"
+        android:textAlignment="viewStart"
+        android:textAllCaps="true"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="12sp"
+        app:drawableStartCompat="@drawable/ic_manage_lists"
+        app:drawableTint="?android:attr/textColorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/separator5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsButtonsLayout"
+        />
+
       <include
         android:id="@+id/showDetailsEpisodeCard"
         layout="@layout/fragment_show_details_next_episode"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/episodeNextViewHeight"
         android:layout_marginLeft="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceTiny"
         android:layout_marginRight="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceMedium"
         android:visibility="gone"
+        app:layout_constrainedHeight="false"
         app:layout_constraintBottom_toTopOf="@id/showDetailsDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsButtonsLayout"
+        app:layout_constraintTop_toBottomOf="@+id/separator5"
         app:layout_goneMarginBottom="0dp"
+        tools:layout_height="@dimen/episodeNextViewHeight"
         tools:visibility="visible"
+        />
+
+      <View
+        android:id="@+id/separator5"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:layout_marginBottom="@dimen/spaceMedium"
+        android:background="?attr/colorSeparator"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeCard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsManageListsLabel"
+        app:layout_goneMarginTop="@dimen/spaceSmall"
         />
 
       <com.michaldrabik.ui_base.common.views.FoldableTextView
@@ -248,7 +288,7 @@
         app:layout_constraintBottom_toTopOf="@id/showDetailsActorsRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/showDetailsEpisodeCard"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsEpisodeCard"
         app:layout_goneMarginBottom="@dimen/spaceBig"
         tools:targetApi="o"
         tools:text="Description"

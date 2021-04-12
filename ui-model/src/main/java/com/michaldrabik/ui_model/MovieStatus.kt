@@ -8,8 +8,8 @@ enum class MovieStatus(
 ) {
   RELEASED("released", R.string.textMovieStatusReleased),
   IN_PRODUCTION("in production", R.string.textMovieStatusInProduction),
-  POST_PRODUCTION("post production", R.string.textMovieStatusInProduction),
-  PLANNED("planned", R.string.textMovieStatusPostProduction),
+  POST_PRODUCTION("post production", R.string.textMovieStatusPostProduction),
+  PLANNED("planned", R.string.textMovieStatusPlanned),
   RUMORED("rumored", R.string.textMovieStatusRumored),
   CANCELED("canceled", R.string.textMovieStatusCanceled),
   UNKNOWN("unknown", R.string.textMovieStatusUnknown);

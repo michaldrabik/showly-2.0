@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_base.trakt.quicksync
+package com.michaldrabik.ui_base.trakt.quicksync.runners
 
 import androidx.room.withTransaction
 import com.michaldrabik.common.di.AppScope

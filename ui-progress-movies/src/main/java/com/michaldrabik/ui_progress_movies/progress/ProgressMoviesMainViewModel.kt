@@ -79,7 +79,7 @@ class ProgressMoviesMainViewModel @Inject constructor(
         val token = userTraktManager.checkAuthorization().token
         uiState = ProgressMoviesMainUiModel(ratingState = RatingState(rateLoading = true))
         ratingsRepository.movies.addRating(token, movie, rating)
-        _messageLiveData.value = MessageEvent.info(R.string.textShowRated)
+        _messageLiveData.value = MessageEvent.info(R.string.textRateSaved)
         uiState = ProgressMoviesMainUiModel(ratingState = RatingState(userRating = TraktRating(movie.ids.trakt, rating)))
         Analytics.logMovieRated(movie, rating)
       } catch (error: Throwable) {

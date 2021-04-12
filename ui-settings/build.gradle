@@ -11,6 +11,10 @@ android {
     targetCompatibility JavaVersion.VERSION_1_8
   }
 
+  buildFeatures {
+    buildConfig = true
+  }
+
   compileSdkVersion versions.compileSdk
 
   defaultConfig {
@@ -37,7 +41,6 @@ dependencies {
   implementation project(':ui-repository')
   implementation project(':ui-model')
   implementation project(':ui-navigation')
-  implementation project(':ui-premium')
 
   api "com.jakewharton:process-phoenix:$versions.phoenix"
 }

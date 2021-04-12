@@ -4,11 +4,12 @@ import androidx.annotation.StringRes
 
 class MessageEvent(
   @StringRes private val messageResId: Int,
-  val type: Type
+  val type: Type,
+  val indefinite: Boolean = false
 ) {
 
   companion object {
-    fun info(@StringRes messageResId: Int) = MessageEvent(messageResId, Type.INFO)
+    fun info(@StringRes messageResId: Int, indefinite: Boolean = false) = MessageEvent(messageResId, Type.INFO, indefinite)
     fun error(@StringRes messageResId: Int) = MessageEvent(messageResId, Type.ERROR)
   }
 

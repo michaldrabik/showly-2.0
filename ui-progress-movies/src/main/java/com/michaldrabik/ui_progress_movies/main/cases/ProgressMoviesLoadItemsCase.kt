@@ -65,11 +65,13 @@ class ProgressMoviesLoadItemsCase @Inject constructor(
           .thenByDescending { it.movie.year }
       )
       else -> throw IllegalStateException("Invalid sort order")
-    }.filter {
-      if (searchQuery.isBlank()) true
-      else it.movie.title.contains(searchQuery, true) ||
-        it.movieTranslation?.title?.contains(searchQuery, true) == true
     }
+      .filter { !it.movie.hasNoDate() }
+      .filter {
+        if (searchQuery.isBlank()) true
+        else it.movie.title.contains(searchQuery, true) ||
+          it.movieTranslation?.title?.contains(searchQuery, true) == true
+      }
   }
 
   fun loadDateFormat() = dateFormatProvider.loadFullDayFormat()

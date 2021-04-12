@@ -7,6 +7,7 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
@@ -60,6 +61,7 @@ class WatchlistFragment :
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
     adapter = WatchlistAdapter().apply {
+      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
       missingTranslationListener = { viewModel.loadMissingTranslation(it) }
       itemClickListener = { openShowDetails(it.show) }
@@ -74,16 +76,15 @@ class WatchlistFragment :
   }
 
   private fun setupStatusBar() {
-    val recyclerPadding = if (moviesEnabled) R.dimen.watchlistTabsViewPadding else R.dimen.watchlistTabsViewPaddingNoModes
     if (statusBarHeight != 0) {
       watchlistContent.updatePadding(top = watchlistContent.paddingTop + statusBarHeight)
-      watchlistRecycler.updatePadding(top = dimenToPx(recyclerPadding))
+      watchlistRecycler.updatePadding(top = dimenToPx(R.dimen.watchlistTabsViewPadding))
       return
     }
     watchlistContent.doOnApplyWindowInsets { view, insets, padding, _ ->
       statusBarHeight = insets.systemWindowInsetTop
       view.updatePadding(top = padding.top + statusBarHeight)
-      watchlistRecycler.updatePadding(top = dimenToPx(recyclerPadding))
+      watchlistRecycler.updatePadding(top = dimenToPx(R.dimen.watchlistTabsViewPadding))
     }
   }
 

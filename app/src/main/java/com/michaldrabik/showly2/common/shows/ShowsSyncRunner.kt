@@ -1,6 +1,6 @@
 package com.michaldrabik.showly2.common.shows
 
-import com.michaldrabik.common.Config.SHOW_SYNC_COOLDOWN
+import com.michaldrabik.common.ConfigVariant.SHOW_SYNC_COOLDOWN
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.Cloud
@@ -25,7 +25,7 @@ class ShowsSyncRunner @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val episodesManager: EpisodesManager,
-  private val showsRepository: ShowsRepository
+  private val showsRepository: ShowsRepository,
 ) {
 
   companion object {

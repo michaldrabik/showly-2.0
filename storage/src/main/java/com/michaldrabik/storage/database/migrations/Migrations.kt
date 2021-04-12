@@ -3,10 +3,10 @@ package com.michaldrabik.storage.database.migrations
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 22
+const val DATABASE_VERSION = 24
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
-// TODO Split into separate files
+// TODO Split into separate files?
 object Migrations {
 
   private val MIGRATION_2 = object : Migration(1, 2) {
@@ -328,6 +328,63 @@ object Migrations {
     }
   }
 
+  private val MIGRATION_23 = object : Migration(22, 23) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
+        execSQL(
+          "CREATE TABLE IF NOT EXISTS `custom_lists` (" +
+            "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+            "`id_trakt` INTEGER, " +
+            "`id_slug` TEXT NOT NULL, " +
+            "`name` TEXT NOT NULL, " +
+            "`description` TEXT, " +
+            "`privacy` TEXT NOT NULL, " +
+            "`display_numbers` INTEGER NOT NULL, " +
+            "`allow_comments` INTEGER NOT NULL, " +
+            "`sort_by` TEXT NOT NULL, " +
+            "`sort_how` TEXT NOT NULL, " +
+            "`sort_by_local` TEXT NOT NULL, " +
+            "`sort_how_local` TEXT NOT NULL, " +
+            "`filter_type_local` TEXT NOT NULL, " +
+            "`item_count` INTEGER NOT NULL, " +
+            "`comment_count` INTEGER NOT NULL, " +
+            "`likes` INTEGER NOT NULL, " +
+            "`created_at` INTEGER NOT NULL, " +
+            "`updated_at` INTEGER NOT NULL" +
+            ")"
+        )
+        execSQL("CREATE UNIQUE INDEX index_custom_lists_id_trakt ON custom_lists(id_trakt)")
+        execSQL("ALTER TABLE settings ADD COLUMN lists_sort_by TEXT NOT NULL DEFAULT 'DATE_UPDATED'")
+      }
+    }
+  }
+
+  private val MIGRATION_24 = object : Migration(23, 24) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
+        execSQL(
+          "CREATE TABLE IF NOT EXISTS `custom_list_item` (" +
+            "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+            "`id_list` INTEGER NOT NULL, " +
+            "`id_trakt` INTEGER NOT NULL, " +
+            "`type` TEXT NOT NULL, " +
+            "`rank` INTEGER NOT NULL, " +
+            "`listed_at` INTEGER NOT NULL, " +
+            "`created_at` INTEGER NOT NULL, " +
+            "`updated_at` INTEGER NOT NULL, " +
+            "FOREIGN KEY(`id_list`) REFERENCES `custom_lists`(`id`) ON DELETE CASCADE" +
+            ")"
+        )
+        execSQL("CREATE INDEX index_custom_list_item_id_list ON custom_list_item(id_list)")
+        execSQL("CREATE INDEX index_custom_list_item_id_trakt_type ON custom_list_item(id_trakt, type)")
+        execSQL("CREATE UNIQUE INDEX index_custom_list_item_id_list_id_trakt_type ON custom_list_item(id_list, id_trakt, type)")
+
+        execSQL("ALTER TABLE trakt_sync_queue ADD COLUMN id_list INTEGER")
+        execSQL("ALTER TABLE trakt_sync_queue ADD COLUMN operation TEXT NOT NULL DEFAULT ''")
+      }
+    }
+  }
+
   val MIGRATIONS = listOf(
     MIGRATION_2,
     MIGRATION_3,
@@ -349,6 +406,8 @@ object Migrations {
     MIGRATION_19,
     MIGRATION_20,
     MIGRATION_21,
-    MIGRATION_22
+    MIGRATION_22,
+    MIGRATION_23,
+    MIGRATION_24
   )
 }

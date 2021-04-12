@@ -30,4 +30,7 @@
   <string name="textArchiveDescription"><b>Archive</b> is a list of shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Progress</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
   <string name="textArchiveConfirmationTitle">Archive Show</string>
   <string name="textArchiveConfirmationMessage">\nAre you sure you want to archive this show?\n</string>
+
+  <string name="textShowManageLists">Manage Lists</string>
+  <string name="textShowManageListsCount">Manage Lists (%d)</string>
 </resources>

@@ -3,6 +3,7 @@ package com.michaldrabik.network.trakt.api
 import com.michaldrabik.network.Config
 import com.michaldrabik.network.trakt.model.ActorsResponse
 import com.michaldrabik.network.trakt.model.Comment
+import com.michaldrabik.network.trakt.model.CustomList
 import com.michaldrabik.network.trakt.model.Episode
 import com.michaldrabik.network.trakt.model.HiddenItem
 import com.michaldrabik.network.trakt.model.Movie
@@ -22,6 +23,7 @@ import com.michaldrabik.network.trakt.model.SyncItem
 import com.michaldrabik.network.trakt.model.Translation
 import com.michaldrabik.network.trakt.model.User
 import com.michaldrabik.network.trakt.model.request.CommentRequest
+import com.michaldrabik.network.trakt.model.request.CreateListRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRefreshRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRequest
 import com.michaldrabik.network.trakt.model.request.OAuthRevokeRequest
@@ -32,6 +34,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -212,6 +215,26 @@ interface TraktService {
     @Query("limit") limit: Int? = null
   ): List<SyncItem>
 
+  @GET("users/me/lists")
+  suspend fun fetchSyncLists(
+    @Header("Authorization") authToken: String,
+  ): List<CustomList>
+
+  @GET("users/me/lists/{id}")
+  suspend fun fetchSyncList(
+    @Header("Authorization") authToken: String,
+    @Path("id") listId: Long
+  ): CustomList
+
+  @GET("users/me/lists/{id}/items/{types}?extended=full")
+  suspend fun fetchSyncListItems(
+    @Header("Authorization") authToken: String,
+    @Path("id") listId: Long,
+    @Path("types") types: String,
+    @Query("page") page: Int? = null,
+    @Query("limit") limit: Int? = null
+  ): List<SyncItem>
+
   @POST("sync/watchlist")
   suspend fun postSyncWatchlist(
     @Header("Authorization") authToken: String,
@@ -221,6 +244,39 @@ interface TraktService {
   @POST("sync/history")
   suspend fun postSyncWatched(
     @Header("Authorization") authToken: String,
+    @Body request: SyncExportRequest
+  ): SyncExportResult
+
+  @POST("users/me/lists")
+  suspend fun postCreateList(
+    @Header("Authorization") authToken: String,
+    @Body request: CreateListRequest
+  ): CustomList
+
+  @PUT("users/me/lists/{id}")
+  suspend fun postUpdateList(
+    @Header("Authorization") authToken: String,
+    @Path("id") listId: Long,
+    @Body request: CreateListRequest
+  ): CustomList
+
+  @DELETE("users/me/lists/{id}")
+  suspend fun deleteList(
+    @Header("Authorization") authToken: String,
+    @Path("id") listId: Long
+  ): Response<Any>
+
+  @POST("users/me/lists/{id}/items")
+  suspend fun postAddListItems(
+    @Header("Authorization") authToken: String,
+    @Path("id") listId: Long,
+    @Body request: SyncExportRequest
+  ): SyncExportResult
+
+  @POST("users/me/lists/{id}/items/remove")
+  suspend fun postRemoveListItems(
+    @Header("Authorization") authToken: String,
+    @Path("id") listId: Long,
     @Body request: SyncExportRequest
   ): SyncExportResult
 

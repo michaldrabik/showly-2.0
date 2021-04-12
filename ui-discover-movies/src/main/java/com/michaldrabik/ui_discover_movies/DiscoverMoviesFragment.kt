@@ -10,6 +10,7 @@ import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseFragment
@@ -54,23 +55,21 @@ class DiscoverMoviesFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiDiscoverMoviesComponentProvider).provideDiscoverMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
-    if (!isInitialized) {
-      isInitialized = true
-      savedInstanceState?.let {
-        searchViewPosition = it.getFloat("ARG_DISCOVER_MOVIES_SEARCH_POS", 0F)
-        tabsViewPosition = it.getFloat("ARG_DISCOVER_MOVIES_TABS_POS", 0F)
-      }
+    savedInstanceState?.let {
+      searchViewPosition = it.getFloat("ARG_SEARCH_POS", 0F)
+      tabsViewPosition = it.getFloat("ARG_TABS_POS", 0F)
     }
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putFloat("ARG_SEARCH_POS", discoverMoviesSearchView?.translationY ?: 0F)
+    outState.putFloat("ARG_TABS_POS", discoverMoviesTabsView?.translationY ?: 0F)
   }
 
   override fun onResume() {
     super.onResume()
     showNavigation()
-  }
-
-  override fun onPause() {
-    enableUi()
-    super.onPause()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -100,7 +99,7 @@ class DiscoverMoviesFragment :
     discoverMoviesTabsView.run {
       translationY = tabsViewPosition
       onModeSelected = { mode = it }
-      animateMovies()
+      selectMovies()
     }
     discoverMoviesMask.onClick { toggleFiltersView() }
     discoverMoviesFiltersView.onApplyClickListener = {
@@ -124,7 +123,7 @@ class DiscoverMoviesFragment :
       (discoverMoviesFiltersView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.searchViewHeight))
       (discoverMoviesTabsView.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.showsMoviesTabsMargin))
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
       discoverMoviesSwipeRefresh.setProgressViewOffset(
         true,
         swipeRefreshStartOffset + statusBarSize,
@@ -136,6 +135,7 @@ class DiscoverMoviesFragment :
   private fun setupRecycler() {
     layoutManager = GridLayoutManager(context, Config.MAIN_GRID_SPAN)
     adapter = DiscoverMoviesAdapter().apply {
+      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
       itemClickListener = { navigateToDetails(it) }
       listChangeListener = { discoverMoviesRecycler.scrollToPosition(0) }
@@ -163,7 +163,6 @@ class DiscoverMoviesFragment :
 
   private fun navigateToSearch() {
     disableUi()
-    saveUi()
     hideNavigation()
     discoverMoviesFiltersView.fadeOut().add(animations)
     discoverMoviesTabsView.fadeOut(duration = 200).add(animations)
@@ -174,7 +173,6 @@ class DiscoverMoviesFragment :
 
   private fun navigateToDetails(item: DiscoverMovieListItem) {
     disableUi()
-    saveUi()
     hideNavigation()
     animateItemsExit(item)
   }
@@ -219,16 +217,11 @@ class DiscoverMoviesFragment :
       anim.start()
     } else {
       ViewAnimationUtils.createCircularReveal(discoverMoviesFiltersView, cx, -delta, radius, 0F).apply {
-        doOnEnd { discoverMoviesFiltersView.invisible() }
+        doOnEnd { discoverMoviesFiltersView?.invisible() }
         start()
-      }
-      discoverMoviesMask.fadeOut()
+      }.add(animators)
+      discoverMoviesMask.fadeOut().add(animations)
     }
-  }
-
-  private fun saveUi() {
-    searchViewPosition = discoverMoviesSearchView.translationY
-    tabsViewPosition = discoverMoviesTabsView.translationY
   }
 
   private fun render(uiModel: DiscoverMoviesUiModel) {
@@ -259,6 +252,13 @@ class DiscoverMoviesFragment :
   override fun onTraktSyncComplete() = discoverMoviesSearchView.setTraktProgress(false)
 
   override fun onTabReselected() = navigateToSearch()
+
+  override fun onPause() {
+    enableUi()
+    searchViewPosition = discoverMoviesSearchView.translationY
+    tabsViewPosition = discoverMoviesTabsView.translationY
+    super.onPause()
+  }
 
   override fun onDestroyView() {
     adapter = null

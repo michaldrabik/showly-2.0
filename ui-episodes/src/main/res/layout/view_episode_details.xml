@@ -68,6 +68,7 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:clipChildren="false"
+    android:clipToPadding="false"
     android:fillViewport="true"
     android:overScrollMode="never"
     android:paddingTop="@dimen/spaceSmall"

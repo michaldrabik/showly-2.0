@@ -38,6 +38,12 @@ class TraktSyncFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiTraktSyncComponentProvider).provideTraktSyncComponent().inject(this)
     super.onCreate(savedInstanceState)
+    handleBackPressed()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    hideNavigation()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,12 +72,6 @@ class TraktSyncFragment :
     traktSyncRoot.doOnApplyWindowInsets { view, insets, _, _ ->
       view.updatePadding(top = insets.systemWindowInsetTop)
     }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    handleBackPressed()
-    hideNavigation()
   }
 
   private fun startImport() {
@@ -159,7 +159,7 @@ class TraktSyncFragment :
 
   private fun handleBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
+    dispatcher.addCallback(this) {
       remove()
       findNavControl()?.popBackStack()
     }

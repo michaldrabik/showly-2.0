@@ -57,6 +57,13 @@ class FollowedShowsFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiMyShowsComponentProvider).provideMyShowsComponent().inject(this)
     super.onCreate(savedInstanceState)
+    setupBackPressed()
+
+    savedInstanceState?.let {
+      viewModel.searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
+      viewModel.tabsTranslation = it.getFloat("ARG_TABS_POSITION")
+      currentPage = it.getInt("ARG_PAGE")
+    }
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,11 +81,19 @@ class FollowedShowsFragment :
   override fun onResume() {
     super.onResume()
     showNavigation()
-    setupBackPress()
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putFloat("ARG_SEARCH_POSITION", followedShowsSearchView?.translationY ?: 0F)
+    outState.putFloat("ARG_TABS_POSITION", followedShowsTabs?.translationY ?: 0F)
+    outState.putInt("ARG_PAGE", followedShowsPager?.currentItem ?: 0)
   }
 
   override fun onPause() {
     enableUi()
+    viewModel.tabsTranslation = followedShowsTabs.translationY
+    viewModel.searchViewTranslation = followedShowsSearchView.translationY
     super.onPause()
   }
 
@@ -97,9 +112,11 @@ class FollowedShowsFragment :
       if (isTraktSyncing()) setTraktProgress(true)
     }
     followedShowsModeTabs.run {
-      visibleIf(moviesEnabled)
       onModeSelected = { mode = it }
-      animateShows()
+      onListsSelected = { navigateTo(R.id.actionNavigateListsFragment) }
+      showMovies(moviesEnabled)
+      showLists(true, anchorEnd = moviesEnabled)
+      selectShows()
     }
     followedShowsSortIcon.run {
       visibleIf(currentPage != 0)
@@ -135,20 +152,19 @@ class FollowedShowsFragment :
   private fun setupStatusBar() {
     followedShowsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.systemWindowInsetTop
-      val tabsPadding = if (moviesEnabled) R.dimen.myShowsSearchViewPadding else R.dimen.myShowsSearchViewPaddingNoModes
       followedShowsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
       followedShowsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
-      followedShowsModeTabs.updateTopMargin(dimenToPx(R.dimen.showsMoviesTabsMargin) + statusBarSize)
-      followedShowsTabs.updateTopMargin(dimenToPx(tabsPadding) + statusBarSize)
-      followedShowsSortIcon.updateTopMargin(dimenToPx(tabsPadding) + statusBarSize)
+      followedShowsModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
+      followedShowsTabs.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
+      followedShowsSortIcon.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
       followedShowsSearchEmptyView.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
       followedShowsSearchWrapper.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
     }
   }
 
-  private fun setupBackPress() {
+  private fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
+    dispatcher.addCallback(this) {
       if (followedShowsSearchView.isSearching) {
         exitSearch()
       } else {
@@ -214,7 +230,7 @@ class FollowedShowsFragment :
         followedShowsSearchWrapper.gone()
         followedShowsPager.visible()
         followedShowsTabs.visible()
-        if (moviesEnabled) followedShowsModeTabs.visible()
+        followedShowsModeTabs.visible()
         followedShowsSearchEmptyView.gone()
       }
     }
@@ -260,29 +276,21 @@ class FollowedShowsFragment :
   fun openShowDetails(show: Show) {
     disableUi()
     hideNavigation()
-    followedShowsRoot.fadeOut {
+    followedShowsRoot.fadeOut(150) {
       exitSearch(false)
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.traktId) }
       navigateTo(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
     }.add(animations)
-    viewModel.tabsTranslation = followedShowsTabs.translationY
-    viewModel.searchViewTranslation = followedShowsSearchView.translationY
   }
 
   private fun openSettings() {
     hideNavigation()
     navigateTo(R.id.actionFollowedShowsFragmentToSettingsFragment)
-
-    viewModel.tabsTranslation = followedShowsTabs.translationY
-    viewModel.searchViewTranslation = followedShowsSearchView.translationY
   }
 
   private fun openStatistics() {
     hideNavigation()
     navigateTo(R.id.actionFollowedShowsFragmentToStatisticsFragment)
-
-    viewModel.tabsTranslation = followedShowsTabs.translationY
-    viewModel.searchViewTranslation = followedShowsSearchView.translationY
   }
 
   fun enableSearch(enable: Boolean) {

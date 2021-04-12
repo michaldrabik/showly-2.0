@@ -57,10 +57,12 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiSearchComponentProvider).provideSearchComponent().inject(this)
     super.onCreate(savedInstanceState)
+    handleBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
+    enableUi()
     setupView()
     setupRecycler()
     setupSuggestionsRecycler()
@@ -76,25 +78,30 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     }
   }
 
-  override fun onResume() {
-    super.onResume()
-    handleBackPressed()
+  override fun onPause() {
+    enableUi()
+    super.onPause()
   }
 
   override fun onStop() {
+    viewModel.clearSuggestions()
     exSearchViewInput.removeTextChangedListener(this)
     exSearchViewInput.setText("")
-    enableUi()
     super.onStop()
   }
 
+  override fun onDestroyView() {
+    adapter = null
+    layoutManager = null
+    super.onDestroyView()
+  }
+
   private fun setupView() {
-    hideNavigation()
     exSearchViewInput.visible()
     exSearchViewText.gone()
     (exSearchViewIcon.drawable as Animatable).start()
     searchViewLayout.settingsIconVisible = false
-    viewModel.preloadCache()
+    viewModel.preloadSuggestions()
     if (!isInitialized) {
       exSearchViewInput.showKeyboard()
       exSearchViewInput.requestFocus()
@@ -208,7 +215,9 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     uiModel.run {
       searchItems?.let {
         adapter?.setItems(it)
-        if (searchItemsAnimate == true) searchRecycler.scheduleLayoutAnimation()
+        if (searchItemsAnimate?.consume() == true) {
+          searchRecycler.scheduleLayoutAnimation()
+        }
       }
       recentSearchItems?.let { renderRecentSearches(it) }
       suggestionsItems?.let {
@@ -259,16 +268,9 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   private fun handleBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
-      showNavigation()
+    dispatcher.addCallback(this) {
       remove()
       findNavControl()?.popBackStack()
     }
-  }
-
-  override fun onDestroyView() {
-    adapter = null
-    layoutManager = null
-    super.onDestroyView()
   }
 }

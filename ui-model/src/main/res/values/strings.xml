@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="textSortRank">Rank</string>
   <string name="textSortName">Title</string>
   <string name="textSortNewest">Most Recent</string>
   <string name="textSortRated">Top Rated</string>
   <string name="textSortDateAdded">Recently Added</string>
+  <string name="textSortDateUpdated">Recently Updated</string>
   <string name="textSortRecentlyWatched">Recently Watched</string>
   <string name="textSortEpisodesLeft">Episodes Left</string>
 
@@ -33,6 +35,7 @@
   <string name="textTipDiscoverFilters">Use filters view to refine your Discover feed.</string>
   <string name="textTipWatchlistPinItem">Tap and hold list item to pin it to the top.</string>
   <string name="textTipBottomModeMenu">Swipe bottom menu left or right to quickly change mode.</string>
+  <string name="textTipListSwipeToDelete">Swipe list items to remove them from the list.</string>
 
   <string name="textGenreAction">Action</string>
   <string name="textGenreAdventure">Adventure</string>

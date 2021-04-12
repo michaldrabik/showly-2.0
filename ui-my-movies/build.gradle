@@ -29,8 +29,6 @@ android {
 
 dependencies {
   implementation project(':common')
-  implementation project(':storage')
-  implementation project(':network')
   implementation project(':ui-base')
   implementation project(':ui-repository')
   implementation project(':ui-model')

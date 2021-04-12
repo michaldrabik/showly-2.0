@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
-import androidx.activity.addCallback
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -90,7 +89,6 @@ class MainActivity :
 
     setupViewModel()
     setupNavigation()
-    setupNavigationBackHandler()
     setupTips()
     setupView()
 
@@ -137,6 +135,7 @@ class MainActivity :
       graph.startDestination = when (viewModel.getMode()) {
         SHOWS -> R.id.progressFragment
         MOVIES -> R.id.progressMoviesFragment
+        else -> throw IllegalStateException()
       }
       setGraph(graph)
     }
@@ -159,27 +158,22 @@ class MainActivity :
     }
   }
 
-  private fun setupNavigationBackHandler() {
-    onBackPressedDispatcher.addCallback(this) {
-      if (tutorialView.isVisible) {
-        tutorialView.fadeOut()
-        return@addCallback
-      }
-
-      findNavControl()?.run {
-        if (currentDestination?.id == R.id.progressFragment ||
-          currentDestination?.id == R.id.progressMoviesFragment
-        ) {
-          remove()
-          super.onBackPressed()
+  override fun onBackPressed() {
+    if (tutorialView.isVisible) {
+      tutorialView.fadeOut()
+      return
+    }
+    findNavControl()?.run {
+      when (currentDestination?.id) {
+        R.id.discoverFragment,
+        R.id.discoverMoviesFragment,
+        R.id.followedShowsFragment,
+        R.id.followedMoviesFragment,
+        R.id.listsFragment -> {
+          bottomNavigationView.selectedItemId = R.id.menuProgress
         }
-        when (currentDestination?.id) {
-          R.id.discoverFragment,
-          R.id.discoverMoviesFragment,
-          R.id.followedShowsFragment,
-          R.id.followedMoviesFragment -> {
-            bottomNavigationView.selectedItemId = R.id.menuProgress
-          }
+        else -> {
+          super.onBackPressed()
         }
       }
     }
@@ -234,8 +228,8 @@ class MainActivity :
 
   override fun openDiscoverTab() = openTab(R.id.menuDiscover)
 
-  override fun setMode(mode: Mode) {
-    if (viewModel.getMode() != mode) {
+  override fun setMode(mode: Mode, force: Boolean) {
+    if (force || viewModel.getMode() != mode) {
       viewModel.setMode(mode)
       val target = when (bottomNavigationView.selectedItemId) {
         R.id.menuDiscover -> getMenuDiscoverAction()
@@ -359,6 +353,7 @@ class MainActivity :
         val action = when (viewModel.getMode()) {
           SHOWS -> R.id.actionDiscoverFragmentToSearchFragment
           MOVIES -> R.id.actionDiscoverMoviesFragmentToSearchFragment
+          else -> throw IllegalStateException()
         }
         findNavControl()?.navigate(action)
       }
@@ -378,16 +373,19 @@ class MainActivity :
   private fun getMenuDiscoverAction() = when (viewModel.getMode()) {
     SHOWS -> R.id.actionNavigateDiscoverFragment
     MOVIES -> R.id.actionNavigateDiscoverMoviesFragment
+    else -> throw IllegalStateException()
   }
 
   private fun getMenuCollectionAction() = when (viewModel.getMode()) {
     SHOWS -> R.id.actionNavigateFollowedShowsFragment
     MOVIES -> R.id.actionNavigateFollowedMoviesFragment
+    else -> throw IllegalStateException()
   }
 
   private fun getMenuProgressAction() = when (viewModel.getMode()) {
     SHOWS -> R.id.actionNavigateProgressFragment
     MOVIES -> R.id.actionNavigateProgressMoviesFragment
+    else -> throw IllegalStateException()
   }
 
   override fun onUpdateDownloaded(appUpdateManager: AppUpdateManager) {

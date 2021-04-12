@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -46,6 +47,13 @@ class MyShowsSectionView : FrameLayout {
       layoutManager = this@MyShowsSectionView.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       addDivider(R.drawable.divider_my_shows_horizontal, HORIZONTAL)
+      addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+          if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+            saveScrollPosition()
+          }
+        }
+      })
     }
   }
 
@@ -54,7 +62,7 @@ class MyShowsSectionView : FrameLayout {
     scrollPosition: Pair<Int, Int>,
     notifyListsUpdate: Boolean,
     clickListener: (MyShowsItem) -> Unit,
-    sectionImageListener: ((MyShowsItem, MyShowsItem.HorizontalSection, Boolean) -> Unit)?
+    sectionImageListener: ((MyShowsItem, MyShowsItem.HorizontalSection, Boolean) -> Unit)?,
   ) {
     this.section = section.section
     sectionAdapter.run {
@@ -77,12 +85,6 @@ class MyShowsSectionView : FrameLayout {
     val (position, offset) = scrollPosition
     if (position != 0) {
       layoutManager.scrollToPositionWithOffset(position, offset)
-      scrollPositionListener?.invoke(section, Pair(0, 0))
     }
-  }
-
-  override fun onDetachedFromWindow() {
-    saveScrollPosition()
-    super.onDetachedFromWindow()
   }
 }

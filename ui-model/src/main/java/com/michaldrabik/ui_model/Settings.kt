@@ -38,7 +38,8 @@ data class Settings(
   val showCollectionShows: Boolean,
   val showCollectionMovies: Boolean,
   val widgetsShowLabel: Boolean,
-  val traktQuickRateEnabled: Boolean
+  val traktQuickRateEnabled: Boolean,
+  val listsSortBy: SortOrder
 ) {
 
   companion object {
@@ -80,7 +81,8 @@ data class Settings(
       showCollectionMovies = true,
       showCollectionShows = true,
       widgetsShowLabel = true,
-      traktQuickRateEnabled = false
+      traktQuickRateEnabled = false,
+      listsSortBy = SortOrder.NEWEST
     )
   }
 }

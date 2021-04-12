@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_movie
 
+import android.animation.LayoutTransition
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -36,6 +37,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
+import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.AppCountry
@@ -90,11 +92,13 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_CUSTOM_IMAGE_CLEARED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_FAMILY
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
 import kotlinx.android.synthetic.main.view_links_movie_menu.view.*
@@ -126,6 +130,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiMovieDetailsComponentProvider).provideMovieDetailsComponent().inject(this)
     super.onCreate(savedInstanceState)
+    handleBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -145,12 +150,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       loadPremium()
     }
-  }
-
-  override fun onResume() {
-    super.onResume()
-    hideNavigation()
-    handleBackPressed()
   }
 
   private fun setupView() {
@@ -186,9 +185,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       onRemoveClickListener = { viewModel.removeFromFollowed(requireAppContext()) }
     }
     movieDetailsRemoveTraktButton.onNoClickListener = {
-      movieDetailsAddButton.fadeIn()
-      movieDetailsRemoveTraktButton.fadeOut()
+      movieDetailsAddButton.fadeIn(withHardware = true)
+      movieDetailsRemoveTraktButton.fadeOut(withHardware = true)
     }
+    movieDetailsManageListsLabel.onClick { openListsDialog() }
   }
 
   private fun setupStatusBar() {
@@ -301,8 +301,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     TransitionManager.beginDelayedTransition(movieDetailsRoot, transform)
     movieDetailsActorFullContainer.gone()
     actorView.visible()
-    movieDetailsActorFullMask.fadeOut()
-    movieDetailsActorFullName.fadeOut()
+    movieDetailsActorFullMask.fadeOut(withHardware = true)
+    movieDetailsActorFullName.fadeOut(withHardware = true)
   }
 
   private fun showCustomImagesSheet(movieId: Long, isPremium: Boolean?) {
@@ -352,8 +352,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         movieDetailsStatus.text = getString(movie.status.displayName)
 
         val releaseDate =
-          if (movie.released != null) String.format(ENGLISH, "%s", dateFormat?.format(movie.released)?.capitalizeWords())
-          else movie.year.toString()
+          when {
+            movie.released != null -> String.format(ENGLISH, "%s", dateFormat?.format(movie.released)?.capitalizeWords())
+            movie.year > 0 -> movie.year.toString()
+            else -> ""
+          }
 
         val country = if (movie.country.isNotBlank()) String.format(ENGLISH, "(%s)", movie.country) else ""
         movieDetailsExtraInfo.text = getString(
@@ -385,14 +388,14 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
             Analytics.logMovieLinksClick(movie)
           }
         }
-        movieDetailsSeparator4.visible()
+        movieDetailsSeparator5.visible()
         movieDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
         movieDetailsCustomImagesLabel.onClick { showCustomImagesSheet(movie.traktId, isPremium) }
         movieDetailsAddButton.isEnabled = true
       }
       movieLoading?.let {
         if (!movieDetailsCommentsView.isVisible) {
-          movieDetailsMainLayout.fadeIf(!it)
+          movieDetailsMainLayout.fadeIf(!it, withHardware = true)
           movieDetailsMainProgress.visibleIf(it)
         }
       }
@@ -415,6 +418,12 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           movieDetailsCommentsView.showCommentButton()
         }
       }
+      listsCount?.let {
+        val text =
+          if (it > 0) getString(R.string.textMovieManageListsCount, it)
+          else getString(R.string.textMovieManageLists)
+        movieDetailsManageListsLabel.text = text
+      }
       ratingState?.let { renderRating(it) }
       showFromTraktLoading?.let {
         movieDetailsRemoveTraktButton.isLoading = it
@@ -422,7 +431,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       removeFromTraktHistory?.let { event ->
         event.consume()?.let {
-          movieDetailsAddButton.fadeIf(!it)
+          movieDetailsAddButton.fadeIf(!it, withHardware = true)
           movieDetailsRemoveTraktButton.run {
             fadeIf(it)
             onYesClickListener = { viewModel.removeFromTraktHistory() }
@@ -431,7 +440,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       removeFromTraktWatchlist?.let { event ->
         event.consume()?.let {
-          movieDetailsAddButton.fadeIf(!it)
+          movieDetailsAddButton.fadeIf(!it, withHardware = true)
           movieDetailsRemoveTraktButton.run {
             fadeIf(it)
             onYesClickListener = { viewModel.removeFromTraktWatchlist() }
@@ -495,15 +504,18 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun renderActors(actors: List<Actor>) {
     actorsAdapter?.setItems(actors)
-    movieDetailsActorsRecycler.fadeIf(actors.isNotEmpty())
-    movieDetailsActorsEmptyView.fadeIf(actors.isEmpty())
+    if (actors.isEmpty()) {
+      movieDetailsMainContent.layoutTransition = LayoutTransition()
+    }
+    movieDetailsActorsRecycler.fadeIf(actors.isNotEmpty(), withHardware = true)
+    movieDetailsActorsEmptyView.fadeIf(actors.isEmpty(), withHardware = true)
     movieDetailsActorsProgress.gone()
   }
 
   private fun renderRelatedMovies(items: List<RelatedListItem>) {
     relatedAdapter?.setItems(items)
-    movieDetailsRelatedRecycler.fadeIf(items.isNotEmpty())
-    movieDetailsRelatedLabel.fadeIf(items.isNotEmpty())
+    movieDetailsRelatedRecycler.fadeIf(items.isNotEmpty(), withHardware = true)
+    movieDetailsRelatedLabel.fadeIf(items.isNotEmpty(), withHardware = true)
     movieDetailsRelatedProgress.gone()
   }
 
@@ -611,9 +623,18 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       .show()
   }
 
+  private fun openListsDialog() {
+    setFragmentResultListener(REQUEST_MANAGE_LISTS) { _, _ -> viewModel.loadListsCount() }
+    val bundle = bundleOf(
+      ARG_ID to movieId.id,
+      ARG_TYPE to Mode.MOVIES.type
+    )
+    navigateTo(R.id.actionMovieDetailsFragmentToManageLists, bundle)
+  }
+
   private fun handleBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(viewLifecycleOwner) {
+    dispatcher.addCallback(this) {
       when {
         movieDetailsCommentsView.isVisible -> {
           hideExtraView(movieDetailsCommentsView)

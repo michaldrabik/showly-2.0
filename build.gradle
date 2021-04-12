@@ -2,7 +2,7 @@
 buildscript {
   apply from: './versions.gradle'
   ext {
-    versions.kotlin = '1.4.20'
+    versions.kotlin = '1.4.32'
   }
   repositories {
     google()
@@ -13,9 +13,9 @@ buildscript {
   dependencies {
     classpath "com.android.tools.build:gradle:$versions.gradleBuildTools"
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
-    classpath "com.google.gms:google-services:4.3.4"
-    classpath "com.google.firebase:firebase-appdistribution-gradle:2.0.1"
-    classpath 'com.google.firebase:firebase-crashlytics-gradle:2.4.1'
+    classpath "com.google.gms:google-services:4.3.5"
+    classpath "com.google.firebase:firebase-appdistribution-gradle:2.1.0"
+    classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.2'
   }
 }
 

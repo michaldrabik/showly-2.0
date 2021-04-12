@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_base.utilities.extensions
 
+import android.animation.Animator
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
-import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewPropertyAnimator
@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.core.animation.doOnEnd
 import androidx.core.view.updateMargins
 import androidx.fragment.app.Fragment
+import timber.log.Timber
 import java.util.Locale
 
 fun View.visible() {
@@ -37,38 +38,66 @@ fun View.crossfadeTo(view: View, duration: Long = 250) {
   view.fadeIn(duration)
 }
 
-fun View.fadeIf(condition: Boolean, duration: Long = 250, startDelay: Long = 0) =
-  if (condition) {
-    fadeIn(duration, startDelay)
-  } else {
-    fadeOut(duration, startDelay)
-  }
+fun View.fadeIf(
+  condition: Boolean,
+  duration: Long = 250,
+  startDelay: Long = 0,
+  withHardware: Boolean = false
+) = if (condition) {
+  fadeIn(duration, startDelay, withHardware)
+} else {
+  fadeOut(duration, startDelay, withHardware)
+}
 
-fun View.fadeIn(duration: Long = 250, startDelay: Long = 0, endAction: () -> Unit = {}): ViewPropertyAnimator? {
+fun View.fadeIn(
+  duration: Long = 250,
+  startDelay: Long = 0,
+  withHardware: Boolean = false,
+  endAction: () -> Unit = {}
+): ViewPropertyAnimator? {
   if (visibility == View.VISIBLE) {
     endAction()
     return null
   }
   visibility = View.VISIBLE
   alpha = 0F
-  val animation = animate().alpha(1F).setDuration(duration).setStartDelay(startDelay).withEndAction(endAction)
+  val animation = animate()
+    .alpha(1F)
+    .setDuration(duration)
+    .setStartDelay(startDelay)
+    .apply { if (withHardware) withLayer() }
+    .withEndAction(endAction)
   return animation.also { it.start() }
 }
 
-fun View.fadeOut(duration: Long = 250, startDelay: Long = 0, endAction: () -> Unit = {}): ViewPropertyAnimator? {
+fun View.fadeOut(
+  duration: Long = 250,
+  startDelay: Long = 0,
+  withHardware: Boolean = false,
+  endAction: () -> Unit = {}
+): ViewPropertyAnimator? {
   if (visibility == View.GONE) {
     endAction()
     return null
   }
-  val animation = animate().alpha(0F).setDuration(duration).setStartDelay(startDelay).withEndAction {
-    gone()
-    endAction()
-  }
+  val animation = animate()
+    .alpha(0F)
+    .setDuration(duration)
+    .setStartDelay(startDelay)
+    .apply { if (withHardware) withLayer() }
+    .withEndAction {
+      gone()
+      endAction()
+    }
   return animation.also { it.start() }
 }
 
 fun ViewPropertyAnimator?.add(animations: MutableList<ViewPropertyAnimator?>) {
   animations.add(this)
+}
+
+fun Animator?.add(animators: MutableList<Animator?>) {
+  animators.add(this)
 }
 
 fun View.shake() = ObjectAnimator.ofFloat(this, "translationX", 0F, -15F, 15F, -10F, 10F, -5F, 5F, 0F)
@@ -105,13 +134,15 @@ fun TextView.setTextFade(text: String, duration: Long = 125) {
   )
 }
 
-fun Activity.disableUi() = window.setFlags(FLAG_NOT_TOUCHABLE, FLAG_NOT_TOUCHABLE)
+fun Fragment.disableUi() {
+  activity?.window?.setFlags(FLAG_NOT_TOUCHABLE, FLAG_NOT_TOUCHABLE)
+  Timber.d("UI disabled.")
+}
 
-fun Activity.enableUi() = window.clearFlags(FLAG_NOT_TOUCHABLE)
-
-fun Fragment.disableUi() = activity?.disableUi()
-
-fun Fragment.enableUi() = activity?.enableUi()
+fun Fragment.enableUi() {
+  activity?.window?.clearFlags(FLAG_NOT_TOUCHABLE)
+  Timber.d("UI enabled.")
+}
 
 fun String.capitalizeWords(): String {
   return this

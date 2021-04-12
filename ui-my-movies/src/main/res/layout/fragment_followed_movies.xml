@@ -16,12 +16,13 @@
     android:overScrollMode="never"
     />
 
-  <com.michaldrabik.ui_base.common.views.ShowsMoviesTabsView
+  <com.michaldrabik.ui_base.common.views.ModeTabsView
     android:id="@+id/followedMoviesModeTabs"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceMedium"
-    android:layout_marginTop="@dimen/showsMoviesTabsMargin"
+    android:layout_marginTop="@dimen/collectionTabsMargin"
+    android:layout_marginEnd="@dimen/spaceMedium"
     />
 
   <com.michaldrabik.ui_base.common.views.ScrollableTabLayout

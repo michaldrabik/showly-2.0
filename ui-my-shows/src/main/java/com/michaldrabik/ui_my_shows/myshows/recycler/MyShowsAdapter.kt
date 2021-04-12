@@ -26,7 +26,7 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
   var onSortOrderClickListener: ((MyShowsSection, SortOrder) -> Unit)? = null
   var sectionMissingImageListener: ((MyShowsItem, MyShowsItem.HorizontalSection, Boolean) -> Unit)? = null
 
-  private val horizontalPositions = mutableMapOf<MyShowsSection, Pair<Int, Int>>()
+  var horizontalPositions = mutableMapOf<MyShowsSection, Pair<Int, Int>>()
   var notifyListsUpdate = false
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =

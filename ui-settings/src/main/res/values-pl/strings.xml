@@ -67,4 +67,6 @@
   <string name="textThemeLight">Jasny</string>
   <string name="textThemeSystem">Systemowy</string>
   <string name="textTransparency100">Nieprzezroczysty</string>
+  <string name="textPremiumAd">Zostań subskrybentem i uzyskaj dostęp do dodatkowych funkcji! Kliknij, aby zobaczyć więcej.</string>
+  <string name="textPremium">Showly Premium</string>
 </resources>

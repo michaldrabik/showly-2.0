@@ -16,8 +16,10 @@ import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncProgress
 import com.michaldrabik.ui_base.events.TraktSyncStart
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
+import com.michaldrabik.ui_base.trakt.exports.TraktExportListsRunner
 import com.michaldrabik.ui_base.trakt.exports.TraktExportWatchedRunner
 import com.michaldrabik.ui_base.trakt.exports.TraktExportWatchlistRunner
+import com.michaldrabik.ui_base.trakt.imports.TraktImportListsRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchlistRunner
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
@@ -61,10 +63,14 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
   private val runners = mutableListOf<TraktSyncRunner>()
 
   @Inject lateinit var settingsRepository: SettingsRepository
+
   @Inject lateinit var importWatchedRunner: TraktImportWatchedRunner
   @Inject lateinit var importWatchlistRunner: TraktImportWatchlistRunner
+  @Inject lateinit var importListsRunner: TraktImportListsRunner
+
   @Inject lateinit var exportWatchedRunner: TraktExportWatchedRunner
   @Inject lateinit var exportWatchlistRunner: TraktExportWatchlistRunner
+  @Inject lateinit var exportListsRunner: TraktExportListsRunner
 
   @Inject
   @Named("miscPreferences")
@@ -77,8 +83,10 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
       arrayOf(
         importWatchedRunner,
         importWatchlistRunner,
+        importListsRunner,
         exportWatchedRunner,
-        exportWatchlistRunner
+        exportWatchlistRunner,
+        exportListsRunner
       )
     )
   }
@@ -104,13 +112,15 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
         EventsManager.sendEvent(TraktSyncStart)
 
         if (isImport) {
-          val resultCount = runImportWatched()
-          runImportWatchlist(resultCount)
+          var resultCount = runImportWatched()
+          resultCount += runImportWatchlist(resultCount)
+          runImportLists(resultCount)
         }
 
         if (isExport) {
           runExportWatched()
           runExportWatchlist()
+          runExportLists()
         }
 
         miscPreferences.edit().putLong(KEY_LAST_SYNC_TIMESTAMP, nowUtcMillis()).apply()
@@ -156,7 +166,7 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
     return importWatchedRunner.run()
   }
 
-  private suspend fun runImportWatchlist(totalProgress: Int) {
+  private suspend fun runImportWatchlist(totalProgress: Int): Int {
     val theme = settingsRepository.theme
     importWatchlistRunner.progressListener = { title: String, progress: Int, total: Int ->
       val status = "Importing \'$title\'..."
@@ -167,7 +177,21 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
       notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
       EventsManager.sendEvent(TraktSyncProgress(status))
     }
-    importWatchlistRunner.run()
+    return importWatchlistRunner.run()
+  }
+
+  private suspend fun runImportLists(totalProgress: Int) {
+    val theme = settingsRepository.theme
+    importListsRunner.progressListener = { title: String, progress: Int, total: Int ->
+      val status = "Importing \'$title\'..."
+      val notification = createProgressNotification(theme).run {
+        setContentText(status)
+        setProgress(totalProgress + total, totalProgress + progress, false)
+      }
+      notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
+      EventsManager.sendEvent(TraktSyncProgress(status))
+    }
+    importListsRunner.run()
   }
 
   private suspend fun runExportWatched() {
@@ -192,10 +216,22 @@ class TraktSyncService : TraktNotificationsService(), CoroutineScope {
     exportWatchlistRunner.run()
   }
 
+  private suspend fun runExportLists() {
+    val status = "Exporting custom lists..."
+    val theme = settingsRepository.theme
+    val notification = createProgressNotification(theme).run {
+      setContentText(status)
+    }
+    notificationManager().notify(SYNC_NOTIFICATION_PROGRESS_ID, notification.build())
+    EventsManager.sendEvent(TraktSyncProgress(status))
+    exportListsRunner.run()
+  }
+
   override fun onDestroy() {
     coroutineContext.cancelChildren()
     importWatchedRunner.progressListener = null
     importWatchlistRunner.progressListener = null
+    importListsRunner.progressListener = null
     super.onDestroy()
   }
 
