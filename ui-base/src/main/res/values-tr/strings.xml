@@ -28,8 +28,6 @@
   <string name="textRemoveFromTrakt">Trakt.tv\'den silinsin mi?</string>
   <string name="textNoDescription">Genel bakış mevcut değil.</string>
   <string name="textPleaseWait">Lütfen bekleyin…</string>
-  <string name="textRate">Oy Ver</string>
-  <string name="textRateSaved">Oyunuz kaydedildi.</string>
   <string name="textAiredAlready">Yayınlandı</string>
   <string name="textAirsNow">Şimdi Yayında</string>
   <plurals name="textDaysToAir">

@@ -28,8 +28,6 @@
   <string name="textRemoveFromTrakt">حذف من Trakt.tv؟</string>
   <string name="textNoDescription">لا يتوفر وصف.</string>
   <string name="textPleaseWait">فضلاً إنتظر…</string>
-  <string name="textRate">قيم</string>
-  <string name="textRateSaved">تم حفظ تقييمك.</string>
   <string name="textAiredAlready">تم عرضها</string>
   <string name="textAirsNow">تُعرض الآن</string>
   <plurals name="textDaysToAir">

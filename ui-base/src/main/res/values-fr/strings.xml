@@ -28,8 +28,6 @@
   <string name="textRemoveFromTrakt">Retirer de Trakt.tv?</string>
   <string name="textNoDescription">Aperçu non disponible.</string>
   <string name="textPleaseWait">Veuillez patienter…</string>
-  <string name="textRate">Noter</string>
-  <string name="textRateSaved">Votre évaluation a été enregistrée.</string>
   <string name="textAiredAlready">Diffusé</string>
   <string name="textAirsNow">Diffusé en ce moment</string>
   <plurals name="textDaysToAir">
