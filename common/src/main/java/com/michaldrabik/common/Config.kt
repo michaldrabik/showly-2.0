@@ -49,8 +49,7 @@ object Config {
 
   const val SHOW_WHATS_NEW = true
   const val WHATS_NEW_TEXT =
-    "* Added extended comments support with replies and possibility to write your own comments.\n\n" +
-      "* Added option to manually unlock and mark episodes that have not been aired yet.\n\n" +
-      "* Minor UI tweaks and optimizations.\n\n" +
-      "As usual in case of any issues or translations mistakes don\'t hesitate to drop us an email or a tweet!"
+    "* Added new Custom Lists feature! Check it out in the 'Collection' tab.\n\n" +
+      "* Bugfixes and optimizations.\n\n" +
+      "As usual in case of any issues or translations mistakes don\'t hesitate to drop an email or a tweet!"
 }
