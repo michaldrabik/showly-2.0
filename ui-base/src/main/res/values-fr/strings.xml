@@ -23,9 +23,13 @@
   <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textShows">Séries</string>
   <string name="textMovies">Films</string>
+  <string name="textLists">Listes</string>
   <string name="textMinutesShort">min</string>
   <string name="textRemoveFromTrakt">Retirer de Trakt.tv?</string>
   <string name="textNoDescription">Aperçu non disponible.</string>
+  <string name="textPleaseWait">Veuillez patienter…</string>
+  <string name="textRate">Noter</string>
+  <string name="textRateSaved">Votre évaluation a été enregistrée.</string>
   <string name="textAiredAlready">Diffusé</string>
   <string name="textAirsNow">Diffusé en ce moment</string>
   <plurals name="textDaysToAir">

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="textSortRank">Clasificación</string>
   <string name="textSortName">Título</string>
   <string name="textSortNewest">Más Reciente</string>
   <string name="textSortRated">Mejores Valorados</string>
   <string name="textSortDateAdded">Añadidos Recientemente</string>
+  <string name="textSortDateUpdated">Actualizado Recientemente</string>
   <string name="textSortRecentlyWatched">Visto Recientemente</string>
   <string name="textSortEpisodesLeft">Episodios Restantes</string>
   <string name="textHeaderRecentlyAdded">Añadidos Recientemente</string>
@@ -30,6 +32,7 @@
   <string name="textTipDiscoverFilters">Usa la vista de filtros para mejorar tu feed de Descubrir.</string>
   <string name="textTipWatchlistPinItem">Mantén pulsado el elemento de la lista para fijarlo en la parte superior.</string>
   <string name="textTipBottomModeMenu">Desliza el menú inferior izquierda o derecha para cambiar el modo rápidamente.</string>
+  <string name="textTipListSwipeToDelete">Desliza los elementos de la lista para eliminarlos de ella.</string>
   <string name="textGenreAction">Acción</string>
   <string name="textGenreAdventure">Aventura</string>
   <string name="textGenreAnimation">Animación</string>

@@ -15,5 +15,7 @@
   <string name="textMovieVotes">%.1f (%d oy)</string>
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
   <string name="textMovieNotYetReleased">Bu film henüz yayınlanmadı.</string>
+  <string name="textMovieManageLists">Listeleri Yönet</string>
+  <string name="textMovieManageListsCount">Listeleri Yönet (%d)</string>
   <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv eşitlemesi başarılı.</string>
 </resources>

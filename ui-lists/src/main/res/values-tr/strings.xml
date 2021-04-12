@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuLists">Listeler</string>
+  <string name="menuList">Liste</string>
+  <string name="textFilters">Filtreler:</string>
+  <string name="textListsEmpty">Listeler koleksiyonunuz şu anda boş.</string>
+  <string name="textListEmpty">Listeniz şu anda boş.</string>
+  <string name="textCreateList">Liste oluştur</string>
+  <string name="textCreateListDescription">Yeni bir özel liste oluştur.</string>
+  <string name="textName">İsim</string>
+  <string name="textDescription">Açıklama (isteğe bağlı)</string>
+  <string name="textDeleteList">Listeyi sil</string>
+  <string name="textEditList">Listeyi düzenle</string>
+  <string name="textEditListDescription">Özel listenizi güncelleyin.</string>
+  <string name="textConfirmDeleteListTitle">Listeyi Sil</string>
+  <string name="textConfirmDeleteListSubtitle">Bu listeyi silmek istediğinizden emin misiniz?</string>
+  <string name="textChangeRanks">Dereceleri Değiştir</string>
+  <string name="textChangeRanksSubtitle">Derecesini değiştirmek için liste öğesini sürükleyip bırakın</string>
+  <string name="textManageLists">Listeleri yönet</string>
+  <string name="textManageListsShows">Bu dizi için listelerinizi yönetin.</string>
+  <string name="textManageListsMovies">Bu film için listelerinizi yönetin.</string>
+  <string name="errorCouldNotCreateList">Şu anda Trakt hesabınızda yeni liste oluşturamıyoruz.\nLütfen internet bağlantısını kontrol edin ve tekrar deneyin.</string>
+  <string name="errorCouldNotUpdateList">Şu anda Trakt hesabınızdaki bu listeyi güncelleyemiyoruz.\nLütfen internet bağlantısını kontrol edin ve tekrar deneyin.</string>
+  <string name="errorCouldNotDeleteList">Şu anda Trakt hesabınızdaki bu listeyi silemiyoruz.\nLütfen internet bağlantısını kontrol edin ve tekrar deneyin.</string>
+</resources>

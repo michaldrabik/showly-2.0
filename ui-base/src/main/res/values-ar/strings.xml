@@ -23,9 +23,13 @@
   <string name="textNetwork">(%2$s) %1$s</string>
   <string name="textShows">مسلسلات</string>
   <string name="textMovies">أفلام</string>
+  <string name="textLists">قوائم</string>
   <string name="textMinutesShort">دقائق</string>
   <string name="textRemoveFromTrakt">حذف من Trakt.tv؟</string>
   <string name="textNoDescription">لا يتوفر وصف.</string>
+  <string name="textPleaseWait">فضلاً إنتظر…</string>
+  <string name="textRate">قيم</string>
+  <string name="textRateSaved">تم حفظ تقييمك.</string>
   <string name="textAiredAlready">تم عرضها</string>
   <string name="textAirsNow">تُعرض الآن</string>
   <plurals name="textDaysToAir">
@@ -70,14 +74,14 @@
   <string name="textLater">لاحقاً</string>
   <string name="textNewEpisodeAvailable">توفرت حلقة جديدة!</string>
   <string name="textNewEpisodeAvailableSoon">ستتوفر حلقة جديدة قريباً!</string>
-  <string name="textNewSeasonAvailable">موسم جديد أصبح متاحاً الآن!</string>
+  <string name="textNewSeasonAvailable">توفر موسم جديد!</string>
   <string name="textNewSeasonAvailableSoon">موسم جديد قادم قريباً!</string>
-  <string name="textNewMovieAvailable">تم إصدار الفيلم!</string>
+  <string name="textNewMovieAvailable">توفر الفيلم!</string>
   <string name="textTraktSync">مزامنة Trakt.tv</string>
   <string name="textTraktSyncComplete">إكتملت المزامنة بنجاح.</string>
   <string name="textTraktSyncRunning">بدء المزامنة…</string>
-  <string name="textTraktSyncError">فشلت مزامنة Trakt.tv.</string>
-  <string name="textTraktSyncErrorFull">فشلت مزامنة Trakt.tv. رجاءً تأكد من أنك مُتصل بالإنترنت ثم حاول مجدداً، وإذا إستمرت المشكلة بالحدوث، تواصل معنا.</string>
+  <string name="textTraktSyncError">فشلت المزامنة مع Trakt.tv.</string>
+  <string name="textTraktSyncErrorFull">فشلت المزامنة مع Trakt.tv. رجاءً تأكد من أنك مُتصل بالإنترنت ثم حاول مجدداً، وإذا إستمرت المشكلة بالحدوث، تواصل معنا.</string>
   <string name="textTraktQuickSyncError">فشلت المزامنة الفورية.</string>
   <string name="textTraktQuickSyncErrorFull">فشلت المزامنة الفورية. سيتم محاولة المزامنة الفورية بعد تشغيل التطبيق مرة أخرى، رجاءً تأكد من إتصالك بالإنترنت.</string>
   <string name="menuPin">تثبيت في الأعلى</string>
@@ -91,10 +95,10 @@
   <string name="errorCouldNotLoadShow">لم نستطع تحميل معلومات هذا المسلسل.\nرجاءً تواصل معنا إذا إستمرت هذه المشكلة بالحدوث</string>
   <string name="errorCouldNotLoadMovie">لم نستطع تحميل معلومات هذا الفيلم.\nرجاءً تواصل معنا إذا إستمرت هذه المشكلة بالحدوث.</string>
   <string name="errorCouldNotLoadSearchResults">لم نستطع تحميل نتائج البحث.\nرجاءً تواصل معنا إذا استمرت هذه المشكلة بالحدوث.</string>
-  <string name="errorNoInternetConnection">لا يوجد إتصال بالإنترنت. رجاءً تحقق من إتصالك بالإنترنت.</string>
+  <string name="errorNoInternetConnection">لا يوجد إتصال بالإنترنت. رجاءً تحقق من إتصالك.</string>
   <string name="errorTraktSyncGeneral">فشلت مزامنة Trakt.tv.\nرجاءً تحقق من إتصالك بالإنترنت ثم حاول مرة أخرى.</string>
-  <string name="errorTraktLocked">حساب Trakt.tv الخاص بك مغلق حاليًا. اتصل بدعم Trakt.tv على https://support.trakt.tv/ لفتح حسابك.</string>
-  <string name="errorSubscriptionsNotAvailable">اشتراكات Google Play غير متوفرة على هذا الجهاز.</string>
+  <string name="errorTraktLocked">حسابك في Trakt.tv مغلق. تواصل مع دعم Trakt.tv عبر الرابط https://support.trakt.tv/ لِفتح حسابك.</string>
+  <string name="errorSubscriptionsNotAvailable">الدفع عبر Google Play غير متوفر على هذا الجهاز.</string>
   <string name="textRate">تقييم</string>
   <string name="textRateSaved">لقد تم حفظ تقييمك.</string>
 </resources>
