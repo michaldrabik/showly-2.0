@@ -61,6 +61,8 @@
   <string name="textSettingsWidgets">Widget’lar</string>
   <string name="textSettingsWidgetsLabelsTitle">Başlıklar</string>
   <string name="textSettingsWidgetsLabelsSummary">Yarı saydam widget başlıklarını görüntüleyin.</string>
+  <string name="textPremium">Showly Premium</string>
+  <string name="textPremiumAd">Destekçi olun ve bonus özelliklere erişin! Daha fazlasını görmek için dokunun.</string>
   <string name="textThemeDark">Karanlık</string>
   <string name="textThemeLight">Aydınlık</string>
   <string name="textThemeSystem">Sistem</string>

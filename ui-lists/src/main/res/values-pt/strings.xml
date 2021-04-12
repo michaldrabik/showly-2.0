@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuLists">Listas</string>
+  <string name="menuList">Lista</string>
+  <string name="textFilters">Filtros:</string>
+  <string name="textListsEmpty">A sua coleção de listas está vazia.</string>
+  <string name="textListEmpty">Sua lista está vazia no momento.</string>
+  <string name="textCreateList">Criar lista</string>
+  <string name="textCreateListDescription">Criar uma nova lista personalizada.</string>
+  <string name="textName">Nome</string>
+  <string name="textDescription">Descrição (opcional)</string>
+  <string name="textDeleteList">Excluir lista</string>
+  <string name="textEditList">Editar lista</string>
+  <string name="textEditListDescription">Atualize sua lista personalizada.</string>
+  <string name="textConfirmDeleteListTitle">Excluir Lista</string>
+  <string name="textConfirmDeleteListSubtitle">Tem certeza que deseja excluir esta lista?</string>
+  <string name="textChangeRanks">Alterar Rank</string>
+  <string name="textChangeRanksSubtitle">Arraste e solte o item da lista para alterar seu rank</string>
+  <string name="textManageLists">Gerenciar listas</string>
+  <string name="textManageListsShows">Gerencie suas listas para esta série.</string>
+  <string name="textManageListsMovies">Gerencie suas listas para este filme.</string>
+  <string name="errorCouldNotCreateList">Não foi possível criar uma nova lista na sua conta Trakt neste momento.\nPor favor, verifique a conexão com a internet e tente novamente.</string>
+  <string name="errorCouldNotUpdateList">Não foi possível atualizar esta lista na sua conta Trakt neste momento.\nPor favor, verifique a conexão com a internet e tente novamente.</string>
+  <string name="errorCouldNotDeleteList">Não foi possível excluir esta lista da sua conta Trakt neste momento.\nPor favor, verifique a conexão com a internet e tente novamente.</string>
+</resources>

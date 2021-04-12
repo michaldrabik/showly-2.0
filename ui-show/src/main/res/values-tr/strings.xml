@@ -27,4 +27,6 @@
   <string name="textArchiveDescription"><b>Arşiv</b>, izlemesi bırakılan, terk edilen veya artık ilgilenmediğiniz dizilerin bir listesidir.\n\nArşivlenmiş diziler artık <b>İlerleme</b>, <b>Keşfet</b> ve <b>Dizilerim</b> bölümlerinde gözükmeyecektir ve ayrıca Trakt.tv içe aktarımı sırasında atlanacaktır.</string>
   <string name="textArchiveConfirmationTitle">Diziyi Arşivle</string>
   <string name="textArchiveConfirmationMessage">\nBu diziyi arşivlemek istediğinizden emin misiniz?\n</string>
+  <string name="textShowManageLists">Listeleri Yönet</string>
+  <string name="textShowManageListsCount">Listeleri Yönet (%d)</string>
 </resources>

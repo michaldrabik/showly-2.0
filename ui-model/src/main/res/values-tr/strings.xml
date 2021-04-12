@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="textSortRank">Derece</string>
   <string name="textSortName">Başlık</string>
   <string name="textSortNewest">En Yeni</string>
   <string name="textSortRated">En Yüksek Puan Alan</string>
   <string name="textSortDateAdded">Son Eklenen</string>
+  <string name="textSortDateUpdated">Son Güncellenen</string>
   <string name="textSortRecentlyWatched">Son İzlenen</string>
   <string name="textSortEpisodesLeft">Kalan Bölümler</string>
   <string name="textHeaderRecentlyAdded">Son Eklenen</string>
@@ -30,6 +32,7 @@
   <string name="textTipDiscoverFilters">Keşfet akışınızı hassaslaştırmak için filtreler görünümünü kullanın.</string>
   <string name="textTipWatchlistPinItem">En üste sabitlemek için liste ögesine dokunun ve basılı tutun.</string>
   <string name="textTipBottomModeMenu">Modu hızlı bir şekilde değiştirmek için alt menüyü sola veya sağa kaydırın.</string>
+  <string name="textTipListSwipeToDelete">Listeden çıkarmak için liste ögelerini kaydırın.</string>
   <string name="textGenreAction">Aksiyon</string>
   <string name="textGenreAdventure">Macera</string>
   <string name="textGenreAnimation">Animasyon</string>
