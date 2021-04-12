@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <string name="textSortRank">Rank</string>
   <string name="textSortName">Título</string>
   <string name="textSortNewest">Mais recentes</string>
   <string name="textSortRated">Melhor avaliação</string>
   <string name="textSortDateAdded">Adicionado recentemente</string>
+  <string name="textSortDateUpdated">Atualizadas recentemente</string>
   <string name="textSortRecentlyWatched">Assistidos recentemente</string>
   <string name="textSortEpisodesLeft">Episódios restantes</string>
   <string name="textHeaderRecentlyAdded">Adicionado recentemente</string>
@@ -30,6 +32,7 @@
   <string name="textTipDiscoverFilters">Use filtros para melhorar sua pesquisa.</string>
   <string name="textTipWatchlistPinItem">Toque e segure o item da lista para fixá-lo no topo.</string>
   <string name="textTipBottomModeMenu">Deslize para a esquerda ou para a direita para alterar o modo rapidamente.</string>
+  <string name="textTipListSwipeToDelete">Passe os itens para removê-los da lista.</string>
   <string name="textGenreAction">Ação</string>
   <string name="textGenreAdventure">Aventura</string>
   <string name="textGenreAnimation">Animação</string>
