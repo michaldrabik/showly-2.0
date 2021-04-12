@@ -61,10 +61,10 @@
   <string name="textSettingsWidgets">Widgets</string>
   <string name="textSettingsWidgetsLabelsTitle">Titel</string>
   <string name="textSettingsWidgetsLabelsSummary">Zeigen Sie durchscheinende Widgets-Titel an.</string>
+  <string name="textPremium">Showly Premium</string>
+  <string name="textPremiumAd">Werden Sie Unterstützer und erhalten Sie Zugang zu Bonusfunktionen! Klicken Sie hier, um mehr zu sehen.</string>
   <string name="textThemeDark">Dunkel</string>
   <string name="textThemeLight">Licht</string>
   <string name="textThemeSystem">System</string>
   <string name="textTransparency100">Undurchsichtig</string>
-  <string name="textPremiumAd">Werden Sie Unterstützer und erhalten Sie Zugang zu Bonusfunktionen! Klicken Sie hier, um mehr zu sehen.</string>
-  <string name="textPremium">Showly Premium</string>
 </resources>
