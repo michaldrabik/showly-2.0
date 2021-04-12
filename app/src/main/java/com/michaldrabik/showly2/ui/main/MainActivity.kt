@@ -4,11 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
+import androidx.activity.viewModels
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
@@ -71,7 +71,7 @@ class MainActivity :
   }
 
   @Inject lateinit var viewModelFactory: DaggerViewModelFactory
-  private lateinit var viewModel: MainViewModel
+  private val viewModel by viewModels<MainViewModel> { viewModelFactory }
 
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
@@ -120,7 +120,6 @@ class MainActivity :
   }
 
   private fun setupViewModel() {
-    viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     viewModel.run {
       uiLiveData.observe(this@MainActivity) { render(it!!) }
       initialize()

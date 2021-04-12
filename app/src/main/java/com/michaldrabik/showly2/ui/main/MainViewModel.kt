@@ -18,7 +18,7 @@ class MainViewModel @Inject constructor(
   private val tipsCase: MainTipsCase,
   private val traktCase: MainTraktCase,
   private val miscCase: MainMiscCase,
-  private val rateAppCase: MainRateAppCase
+  private val rateAppCase: MainRateAppCase,
 ) : BaseViewModel<MainUiModel>() {
 
   fun initialize() {
@@ -36,7 +36,12 @@ class MainViewModel @Inject constructor(
     }
     val showWhatsNew = initCase.showWhatsNew(isInitialRun)
     val showRateApp = rateAppCase.shouldShowRateApp()
-    uiState = MainUiModel(isInitialRun = isInitialRun, showWhatsNew = showWhatsNew, showRateApp = showRateApp)
+
+    uiState = MainUiModel(
+      isInitialRun = isInitialRun,
+      showWhatsNew = showWhatsNew,
+      showRateApp = showRateApp
+    )
   }
 
   fun refreshAnnouncements(context: Context) {
@@ -55,14 +60,12 @@ class MainViewModel @Inject constructor(
   }
 
   fun setMode(mode: Mode) = miscCase.setMode(mode)
-
   fun getMode(): Mode = miscCase.getMode()
 
-  fun moviesEnabled(): Boolean = miscCase.moviesEnabled()
-
   fun isTipShown(tip: Tip) = tipsCase.isTipShown(tip)
-
   fun setTipShown(tip: Tip) = tipsCase.setTipShown(tip)
+
+  fun moviesEnabled(): Boolean = miscCase.moviesEnabled()
 
   fun completeAppRate() = rateAppCase.complete()
 
