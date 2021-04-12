@@ -61,10 +61,10 @@
   <string name="textSettingsWidgets">التطبيقات المصغّرة</string>
   <string name="textSettingsWidgetsLabelsTitle">العناوين</string>
   <string name="textSettingsWidgetsLabelsSummary">إظهار العناوين في التطبيقات المصغّرة.</string>
+  <string name="textPremium">نسخة Showly المدفوعة</string>
+  <string name="textPremiumAd">إدعم تطوير التطبيق واحصل على مميزات إضافية! انقر لرؤية المزيد.</string>
   <string name="textThemeDark">داكن</string>
   <string name="textThemeLight">فاتح</string>
   <string name="textThemeSystem">إستخدم مظهر النظام</string>
   <string name="textTransparency100">غير شفاف</string>
-  <string name="textPremiumAd">كن داعماً واحصل على مميزات إضافية! انقر لرؤية المزيد.</string>
-  <string name="textPremium">نسخة Showly المدفوعة</string>
 </resources>
