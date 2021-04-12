@@ -9,13 +9,13 @@
   <string name="textShowExtraInfo">%3$s %2$s %1$s | %6$s | %4$s %5$s</string>
   <string name="textShowQuickProgressTitle">مستوى التقدم السريع</string>
   <string name="textShowQuickProgressSubTitle">إختر آخر حلقة قمت بمتابعتها لتحديث قائمة مستوى التقدم بسرعة.</string>
-  <string name="textShowQuickProgressDone">لقد تم تحديث مستوى تقدمك.</string>
+  <string name="textShowQuickProgressDone">تم تحديث مستوى تقدمك.</string>
   <string name="textEpisodeDate">الحلقة %1$d | %2$s</string>
   <string name="textEpisodeTitle">الموسم %02d الحلقة %02d - %s</string>
   <string name="textTraktSyncRemovedFromTrakt">إكتملت مزامنة Trakt.tv بنجاح.</string>
   <string name="textActorsEmpty">قائمة الممثلين غير متاحة</string>
   <string name="textSeasons">المواسم:</string>
-  <string name="textSeasonsEmpty">المواسم غير متاحة.</string>
+  <string name="textSeasonsEmpty">المواسم غير متوفرة.</string>
   <string name="textTrailer">التريلر</string>
   <string name="textLink">إفتح في</string>
   <string name="textShare">مشاركة</string>
@@ -26,7 +26,7 @@
   <string name="textWhatIsArchiveFull">ما هو الأرشيف؟</string>
   <string name="textArchiveDescription"><b>الأرشيف</b> عبارة عن قائمة بالمسلسلات التي لم تعد ترغب بمتابعتها بعد الآن\n\nالمسلسلات في قائمة الأرشيف لن تظهر في أقسام <b>مستوى التقدم</b>، <b>إكتشف</b> و <b>مسلسلاتي</b> وسيتم تخطيها أثناء المزامنة إلى Trakt.tv.</string>
   <string name="textArchiveConfirmationTitle">أرشفة مسلسل</string>
-  <string name="textArchiveConfirmationMessage">\nهل أنت متأكد من رغبتك في أرشفة هذا المسلسل؟\n</string>
+  <string name="textArchiveConfirmationMessage">\nأمتأكد أنك تريد أرشفة هذا المسلسل؟\n</string>
   <string name="textShowManageLists">إدارة القوائم</string>
   <string name="textShowManageListsCount">إدارة القوائم (%d)</string>
 </resources>
