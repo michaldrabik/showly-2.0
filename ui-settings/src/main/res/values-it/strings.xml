@@ -61,10 +61,10 @@
   <string name="textSettingsWidgets">Widget</string>
   <string name="textSettingsWidgetsLabelsTitle">Titoli</string>
   <string name="textSettingsWidgetsLabelsSummary">Mostra i titoli semitrasparenti per le sezioni dei widget.</string>
+  <string name="textPremium">Showly Premium</string>
+  <string name="textPremiumAd">Diventa un sostenitore e ottieni l\'accesso alle funzionalità bonus! Clicca per saperne di più.</string>
   <string name="textThemeDark">Scuro</string>
   <string name="textThemeLight">Chiaro</string>
   <string name="textThemeSystem">Sistema</string>
   <string name="textTransparency100">Opaco</string>
-  <string name="textPremiumAd">Diventa un sostenitore e ottieni l\'accesso alle funzionalità bonus! Clicca per saperne di più.</string>
-  <string name="textPremium">Showly Premium</string>
 </resources>
