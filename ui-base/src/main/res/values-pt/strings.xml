@@ -23,9 +23,13 @@
   <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textShows">Séries</string>
   <string name="textMovies">Filmes</string>
+  <string name="textLists">Listas</string>
   <string name="textMinutesShort">min</string>
   <string name="textRemoveFromTrakt">Remover do Trakt.tv?</string>
   <string name="textNoDescription">Resumo não disponível.</string>
+  <string name="textPleaseWait">Por favor, aguarde…</string>
+  <string name="textRate">Avaliar</string>
+  <string name="textRateSaved">Sua avaliação foi salva.</string>
   <string name="textAiredAlready">Exibido</string>
   <string name="textAirsNow">No ar agora</string>
   <plurals name="textDaysToAir">
@@ -39,6 +43,10 @@
   <plurals name="textMinutesToAir">
     <item quantity="one">No ar agora</item>
     <item quantity="other">No ar em %d minutos</item>
+  </plurals>
+  <plurals name="textTraktQuickSyncComplete">
+    <item quantity="one">1 item sincronizado com sucesso.</item>
+    <item quantity="other">%d itens sincronizados com sucesso.</item>
   </plurals>
   <string name="textToday">Hoje</string>
   <string name="textTomorrow">Amanhã</string>
