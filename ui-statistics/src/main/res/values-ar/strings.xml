@@ -15,10 +15,10 @@
   <string name="textStatisticsTopGenre">أعلى التصنيفات</string>
   <string name="textStatisticsTopGenreSubValue">يبدو أنهم تصنيفاتك المفضلة. انقر للمزيد.</string>
   <string name="textStatisticsTopGenreSubValue2">يبدو أنهم تصنيفاتك المفضلة.</string>
-  <string name="textStatisticsShowMore">إظهار المزيد</string>
+  <string name="textStatisticsShowMore">عرض المزيد</string>
   <string name="textStatisticsRatings">تم تقييمه مؤخراً</string>
   <string name="textStatisticsHours">ساعات</string>
   <string name="textStatisticsEpisodes">حلقات</string>
   <string name="textStatisticsSeasons">مواسم</string>
-  <string name="textArchivedShowsExcluded">المسلسلات المؤرشفة مستبعدة</string>
+  <string name="textArchivedShowsExcluded">لا تشمل المسلسلات المؤرشفة</string>
 </resources>
