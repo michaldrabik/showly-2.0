@@ -2,7 +2,7 @@ package com.michaldrabik.showly2.di.component
 
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.di.StorageMarker
-import com.michaldrabik.network.di.CloudMarker
+import com.michaldrabik.data_remote.di.CloudMarker
 import com.michaldrabik.showly2.App
 import com.michaldrabik.showly2.di.module.PreferencesModule
 import com.michaldrabik.showly2.di.module.SubcomponentsModule

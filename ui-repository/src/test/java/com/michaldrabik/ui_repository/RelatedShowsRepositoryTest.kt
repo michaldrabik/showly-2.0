@@ -5,7 +5,7 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.dao.RelatedShowsDao
 import com.michaldrabik.data_local.database.dao.ShowsDao
 import com.michaldrabik.data_local.database.model.RelatedShow
-import com.michaldrabik.network.trakt.api.TraktApi
+import com.michaldrabik.data_remote.trakt.api.TraktApi
 import com.michaldrabik.ui_repository.common.BaseMockTest
 import com.michaldrabik.ui_repository.shows.RelatedShowsRepository
 import io.mockk.Runs

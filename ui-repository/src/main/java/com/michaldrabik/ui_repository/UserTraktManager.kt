@@ -7,10 +7,10 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.User
-import com.michaldrabik.network.Cloud
+import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.ui_model.error.TraktAuthError
 import javax.inject.Inject
-import com.michaldrabik.network.trakt.model.User as UserModel
+import com.michaldrabik.data_remote.trakt.model.User as UserModel
 
 @AppScope
 class UserTraktManager @Inject constructor(

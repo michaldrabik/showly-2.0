@@ -4,7 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.dao.ShowsDao
 import com.michaldrabik.data_local.database.model.Show
-import com.michaldrabik.network.trakt.api.TraktApi
+import com.michaldrabik.data_remote.trakt.api.TraktApi
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_repository.common.BaseMockTest
 import com.michaldrabik.ui_repository.shows.ShowDetailsRepository
@@ -20,7 +20,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.TimeUnit
-import com.michaldrabik.network.trakt.model.Show as ShowRemote
+import com.michaldrabik.data_remote.trakt.model.Show as ShowRemote
 
 class ShowDetailsRepositoryTest : BaseMockTest() {
 

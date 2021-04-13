@@ -1,9 +1,9 @@
 package com.michaldrabik.ui_movie.cases
 
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.network.Cloud
-import com.michaldrabik.network.trakt.model.SyncExportItem
-import com.michaldrabik.network.trakt.model.SyncExportRequest
+import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.trakt.model.SyncExportItem
+import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.movies.MoviesRepository

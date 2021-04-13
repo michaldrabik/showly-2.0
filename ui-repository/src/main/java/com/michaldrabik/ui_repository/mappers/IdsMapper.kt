@@ -10,7 +10,7 @@ import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Ids
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Show as ShowDb
-import com.michaldrabik.network.trakt.model.Ids as IdsNetwork
+import com.michaldrabik.data_remote.trakt.model.Ids as IdsNetwork
 
 class IdsMapper @Inject constructor() {
 

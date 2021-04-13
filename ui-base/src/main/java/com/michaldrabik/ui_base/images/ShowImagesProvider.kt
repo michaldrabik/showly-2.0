@@ -4,10 +4,10 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.CustomImage
-import com.michaldrabik.network.Cloud
-import com.michaldrabik.network.aws.model.AwsImages
-import com.michaldrabik.network.tmdb.model.TmdbImage
-import com.michaldrabik.network.tmdb.model.TmdbImages
+import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.aws.model.AwsImages
+import com.michaldrabik.data_remote.tmdb.model.TmdbImage
+import com.michaldrabik.data_remote.tmdb.model.TmdbImages
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb

@@ -2,7 +2,7 @@ package com.michaldrabik.ui_lists.create.cases
 
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.network.Cloud
+import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktListQuickSyncSuccess

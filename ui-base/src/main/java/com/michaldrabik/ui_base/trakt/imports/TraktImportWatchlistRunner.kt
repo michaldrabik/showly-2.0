@@ -5,7 +5,7 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.WatchlistMovie
 import com.michaldrabik.data_local.database.model.WatchlistShow
-import com.michaldrabik.network.Cloud
+import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import com.michaldrabik.ui_repository.SettingsRepository

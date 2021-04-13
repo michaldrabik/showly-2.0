@@ -6,8 +6,8 @@ import com.michaldrabik.data_local.database.model.ShowTranslation
 import com.michaldrabik.ui_model.SeasonTranslation
 import com.michaldrabik.ui_model.Translation
 import javax.inject.Inject
-import com.michaldrabik.network.trakt.model.SeasonTranslation as SeasonTranslationNetwork
-import com.michaldrabik.network.trakt.model.Translation as TranslationNetwork
+import com.michaldrabik.data_remote.trakt.model.SeasonTranslation as SeasonTranslationNetwork
+import com.michaldrabik.data_remote.trakt.model.Translation as TranslationNetwork
 
 class TranslationMapper @Inject constructor(
   private val idsMapper: IdsMapper

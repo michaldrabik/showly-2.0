@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_repository
 
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.network.Cloud
-import com.michaldrabik.network.trakt.model.request.CommentRequest
+import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.trakt.model.request.CommentRequest
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt

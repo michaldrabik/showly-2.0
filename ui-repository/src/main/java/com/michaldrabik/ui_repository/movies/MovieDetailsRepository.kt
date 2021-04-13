@@ -5,7 +5,7 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.MoviesSyncLog
-import com.michaldrabik.network.Cloud
+import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_repository.mappers.Mappers

@@ -8,8 +8,8 @@ import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.MyMovie
 import com.michaldrabik.data_local.database.model.MyShow
 import com.michaldrabik.data_local.database.model.Season
-import com.michaldrabik.network.Cloud
-import com.michaldrabik.network.trakt.model.SyncItem
+import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.trakt.model.SyncItem
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider

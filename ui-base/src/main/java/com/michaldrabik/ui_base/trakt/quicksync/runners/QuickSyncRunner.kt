@@ -8,9 +8,9 @@ import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.EPISODE
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.MOVIE
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.MOVIE_WATCHLIST
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.SHOW_WATCHLIST
-import com.michaldrabik.network.Cloud
-import com.michaldrabik.network.trakt.model.SyncExportItem
-import com.michaldrabik.network.trakt.model.SyncExportRequest
+import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.trakt.model.SyncExportItem
+import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TraktAuthToken

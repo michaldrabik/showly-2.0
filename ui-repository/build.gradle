@@ -29,7 +29,7 @@ android {
 
 dependencies {
   implementation project(':common')
-  implementation project(':network')
+  implementation project(':data-remote')
   implementation project(':data-local')
   implementation project(':ui-model')
 

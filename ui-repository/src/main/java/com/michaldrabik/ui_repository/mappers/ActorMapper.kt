@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_repository.mappers
 
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.network.tmdb.model.TmdbActor
+import com.michaldrabik.data_remote.tmdb.model.TmdbActor
 import com.michaldrabik.ui_model.Actor
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Actor as ActorDb

@@ -46,7 +46,7 @@ import com.michaldrabik.ui_settings.helpers.AppTheme
 import com.michaldrabik.ui_settings.helpers.PlayStoreHelper
 import com.michaldrabik.ui_settings.helpers.WidgetTransparency
 import kotlinx.android.synthetic.main.fragment_settings.*
-import com.michaldrabik.network.Config as ConfigNetwork
+import com.michaldrabik.data_remote.Config as ConfigNetwork
 
 class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_settings), OnTraktAuthorizeListener {
 

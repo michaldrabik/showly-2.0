@@ -6,7 +6,7 @@ import com.michaldrabik.ui_model.MovieStatus
 import org.threeten.bp.LocalDate
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Movie as MovieDb
-import com.michaldrabik.network.trakt.model.Movie as MovieNetwork
+import com.michaldrabik.data_remote.trakt.model.Movie as MovieNetwork
 
 class MovieMapper @Inject constructor(
   private val idsMapper: IdsMapper

@@ -6,8 +6,8 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.DiscoverMovie
-import com.michaldrabik.network.Cloud
-import com.michaldrabik.network.Config.TRAKT_TRENDING_MOVIES_LIMIT
+import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.data_remote.Config.TRAKT_TRENDING_MOVIES_LIMIT
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_repository.mappers.Mappers
