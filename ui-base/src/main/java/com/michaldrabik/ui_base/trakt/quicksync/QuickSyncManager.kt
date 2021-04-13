@@ -8,9 +8,9 @@ import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Operation
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.utilities.extensions.runTransaction
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.UserTraktManager
 import timber.log.Timber
 import javax.inject.Inject
 

@@ -4,9 +4,9 @@ import androidx.room.withTransaction
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.Season
+import com.michaldrabik.repository.PinnedItemsRepository
+import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_repository.PinnedItemsRepository
-import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope

@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_comments.post
 
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.repository.CommentsRepository
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -11,7 +12,6 @@ import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
-import com.michaldrabik.ui_repository.CommentsRepository
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject

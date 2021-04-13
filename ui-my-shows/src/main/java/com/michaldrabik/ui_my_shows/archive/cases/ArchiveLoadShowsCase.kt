@@ -2,15 +2,15 @@ package com.michaldrabik.ui_my_shows.archive.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.TranslationsRepository
-import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
 
 @AppScope

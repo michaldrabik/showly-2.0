@@ -31,7 +31,7 @@ dependencies {
   implementation project(':common')
   implementation project(':data-local')
   implementation project(':ui-base')
-  implementation project(':ui-repository')
+  implementation project(':repository')
   implementation project(':ui-model')
   implementation project(':ui-navigation')
 

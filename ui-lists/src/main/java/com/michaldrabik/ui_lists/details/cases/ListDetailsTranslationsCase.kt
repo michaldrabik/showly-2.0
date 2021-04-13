@@ -2,9 +2,9 @@ package com.michaldrabik.ui_lists.details.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_repository.TranslationsRepository
 import javax.inject.Inject
 
 @AppScope

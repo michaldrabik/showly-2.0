@@ -5,14 +5,14 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.EpisodesSyncLog
+import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.SeasonBundle
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_repository.mappers.Mappers
-import com.michaldrabik.ui_repository.shows.ShowsRepository
 import timber.log.Timber
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Episode as EpisodeDb

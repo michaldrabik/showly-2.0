@@ -3,10 +3,10 @@ package com.michaldrabik.ui_show.cases
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
+import com.michaldrabik.repository.CommentsRepository
+import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_repository.CommentsRepository
-import com.michaldrabik.ui_repository.UserTraktManager
 import okhttp3.internal.EMPTY_RESPONSE
 import retrofit2.HttpException
 import retrofit2.Response

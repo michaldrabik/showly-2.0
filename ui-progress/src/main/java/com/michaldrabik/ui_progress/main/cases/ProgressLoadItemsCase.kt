@@ -6,6 +6,10 @@ import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.repository.PinnedItemsRepository
+import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Image
@@ -19,10 +23,6 @@ import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_progress.ProgressItem
-import com.michaldrabik.ui_repository.PinnedItemsRepository
-import com.michaldrabik.ui_repository.TranslationsRepository
-import com.michaldrabik.ui_repository.mappers.Mappers
-import com.michaldrabik.ui_repository.shows.ShowsRepository
 import org.threeten.bp.temporal.ChronoUnit.DAYS
 import java.util.Locale.ROOT
 import javax.inject.Inject

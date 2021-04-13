@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.events.Event
@@ -20,8 +22,6 @@ import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchlistRunner
 import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.error
 import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.info
 import com.michaldrabik.ui_model.TraktSyncSchedule
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.UserTraktManager
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject

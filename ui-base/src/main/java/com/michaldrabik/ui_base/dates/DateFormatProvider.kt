@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_base.dates
 
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.dates.AppDateFormat.DEFAULT_12
 import com.michaldrabik.ui_base.dates.AppDateFormat.DEFAULT_24
 import com.michaldrabik.ui_base.dates.AppDateFormat.MISC_12
@@ -8,7 +9,6 @@ import com.michaldrabik.ui_base.dates.AppDateFormat.MISC_24
 import com.michaldrabik.ui_base.dates.AppDateFormat.TRAKT_12
 import com.michaldrabik.ui_base.dates.AppDateFormat.TRAKT_24
 import com.michaldrabik.ui_base.dates.AppDateFormat.valueOf
-import com.michaldrabik.ui_repository.SettingsRepository
 import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
 

@@ -3,16 +3,16 @@ package com.michaldrabik.ui_search.cases
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.movies.MoviesRepository
+import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SearchResult
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.TranslationsRepository
-import com.michaldrabik.ui_repository.mappers.Mappers
-import com.michaldrabik.ui_repository.movies.MoviesRepository
-import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
 import com.michaldrabik.data_remote.trakt.model.SearchResult as SearchResultNetwork
 

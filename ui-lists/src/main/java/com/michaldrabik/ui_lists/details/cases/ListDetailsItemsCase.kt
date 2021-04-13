@@ -7,6 +7,12 @@ import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.repository.ListsRepository
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.movies.MoviesRepository
+import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
@@ -20,12 +26,6 @@ import com.michaldrabik.ui_model.SortOrderList.NEWEST
 import com.michaldrabik.ui_model.SortOrderList.RANK
 import com.michaldrabik.ui_model.SortOrderList.RATING
 import com.michaldrabik.ui_model.SortOrderList.TITLE
-import com.michaldrabik.ui_repository.ListsRepository
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.TranslationsRepository
-import com.michaldrabik.ui_repository.mappers.Mappers
-import com.michaldrabik.ui_repository.movies.MoviesRepository
-import com.michaldrabik.ui_repository.shows.ShowsRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

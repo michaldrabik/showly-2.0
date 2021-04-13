@@ -2,6 +2,8 @@ package com.michaldrabik.ui_discover_movies.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_model.DiscoverFilters
@@ -14,8 +16,6 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_repository.TranslationsRepository
-import com.michaldrabik.ui_repository.movies.MoviesRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

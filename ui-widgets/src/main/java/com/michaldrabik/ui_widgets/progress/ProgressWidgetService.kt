@@ -2,11 +2,11 @@ package com.michaldrabik.ui_widgets.progress
 
 import android.content.Intent
 import android.widget.RemoteViewsService
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
 import com.michaldrabik.ui_progress.main.cases.ProgressSortOrderCase
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.shows.ShowsRepository
 import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
 import javax.inject.Inject
 

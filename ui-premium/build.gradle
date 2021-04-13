@@ -33,7 +33,7 @@ dependencies {
   implementation project(':data-remote')
   implementation project(':ui-base')
   implementation project(':ui-navigation')
-  implementation project(':ui-repository')
+  implementation project(':repository')
 
   api "com.android.billingclient:billing-ktx:$versions.androidBilling"
 }

@@ -1,9 +1,9 @@
 package com.michaldrabik.ui_my_shows.archive.cases
 
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.RatingsRepository
+import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveListItem
-import com.michaldrabik.ui_repository.RatingsRepository
-import com.michaldrabik.ui_repository.UserTraktManager
 import javax.inject.Inject
 
 @AppScope

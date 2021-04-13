@@ -4,12 +4,12 @@ import android.content.Context
 import androidx.room.withTransaction
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.repository.PinnedItemsRepository
+import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_repository.PinnedItemsRepository
-import com.michaldrabik.ui_repository.movies.MoviesRepository
 import javax.inject.Inject
 
 @AppScope

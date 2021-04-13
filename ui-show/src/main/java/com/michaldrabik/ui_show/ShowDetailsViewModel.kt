@@ -2,6 +2,8 @@ package com.michaldrabik.ui_show
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
@@ -30,8 +32,6 @@ import com.michaldrabik.ui_model.SeasonBundle
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_show.cases.ShowDetailsActorsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsArchiveCase
 import com.michaldrabik.ui_show.cases.ShowDetailsCommentsCase

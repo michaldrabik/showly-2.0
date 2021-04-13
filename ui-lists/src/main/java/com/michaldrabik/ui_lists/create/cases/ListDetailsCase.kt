@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_lists.create.cases
 
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.ui_repository.ListsRepository
+import com.michaldrabik.repository.ListsRepository
 import javax.inject.Inject
 
 @AppScope

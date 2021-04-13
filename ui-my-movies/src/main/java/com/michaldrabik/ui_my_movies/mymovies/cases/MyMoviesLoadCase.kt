@@ -2,6 +2,9 @@ package com.michaldrabik.ui_my_movies.mymovies.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_model.ImageType
@@ -15,9 +18,6 @@ import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.TranslationsRepository
-import com.michaldrabik.ui_repository.movies.MoviesRepository
 import javax.inject.Inject
 
 @AppScope

@@ -2,9 +2,9 @@ package com.michaldrabik.ui_movie.cases
 
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_repository.TranslationsRepository
 import javax.inject.Inject
 
 @AppScope

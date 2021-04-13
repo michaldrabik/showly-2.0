@@ -6,12 +6,12 @@ import androidx.core.content.edit
 import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.RatingsRepository
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.fcm.NotificationChannel
-import com.michaldrabik.ui_repository.RatingsRepository
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.UserTraktManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope

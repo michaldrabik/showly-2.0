@@ -1,10 +1,10 @@
 package com.michaldrabik.ui_movie.cases
 
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.RatingsRepository
+import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.TraktRating
-import com.michaldrabik.ui_repository.RatingsRepository
-import com.michaldrabik.ui_repository.UserTraktManager
 import javax.inject.Inject
 
 @AppScope

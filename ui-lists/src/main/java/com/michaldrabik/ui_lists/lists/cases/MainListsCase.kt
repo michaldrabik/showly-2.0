@@ -5,6 +5,9 @@ import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.CustomListItem
+import com.michaldrabik.repository.ListsRepository
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -14,9 +17,6 @@ import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_repository.ListsRepository
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

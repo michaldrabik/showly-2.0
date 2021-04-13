@@ -7,6 +7,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.dates.AppDateFormat
@@ -22,7 +23,6 @@ import com.michaldrabik.ui_model.MyShowsSection.UPCOMING
 import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Settings
-import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import javax.inject.Inject
 

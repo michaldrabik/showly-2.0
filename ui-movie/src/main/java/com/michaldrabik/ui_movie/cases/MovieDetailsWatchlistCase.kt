@@ -4,9 +4,9 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
+import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_repository.UserTraktManager
-import com.michaldrabik.ui_repository.movies.MoviesRepository
 import javax.inject.Inject
 
 @AppScope

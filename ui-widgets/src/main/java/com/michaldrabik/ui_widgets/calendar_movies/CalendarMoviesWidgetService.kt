@@ -2,10 +2,10 @@ package com.michaldrabik.ui_widgets.calendar_movies
 
 import android.content.Intent
 import android.widget.RemoteViewsService
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_progress_movies.calendar.cases.ProgressMoviesCalendarCase
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesLoadItemsCase
-import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
 import javax.inject.Inject
 

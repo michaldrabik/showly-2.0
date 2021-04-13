@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.DurationPrinter
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
@@ -21,8 +23,6 @@ import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
 import com.michaldrabik.ui_progress.main.cases.ProgressSortOrderCase
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.shows.ShowsRepository
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_SHOW_ID
 import com.michaldrabik.ui_widgets.R
 import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider.Companion.EXTRA_EPISODE_ID

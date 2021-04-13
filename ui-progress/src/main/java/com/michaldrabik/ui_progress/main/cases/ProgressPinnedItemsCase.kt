@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_progress.main.cases
 
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.ui_progress.ProgressItem
-import com.michaldrabik.ui_repository.PinnedItemsRepository
 import javax.inject.Inject
 
 @AppScope

@@ -17,6 +17,7 @@ import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.data_local.di.DaggerStorageComponent
 import com.michaldrabik.data_local.di.StorageModule
 import com.michaldrabik.data_remote.di.DaggerCloudComponent
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.showly2.di.component.AppComponent
 import com.michaldrabik.showly2.di.component.DaggerAppComponent
 import com.michaldrabik.showly2.di.module.PreferencesModule
@@ -28,7 +29,6 @@ import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsActivityCallbacks
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
 import com.michaldrabik.ui_model.Settings
-import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_widgets.calendar.CalendarWidgetProvider
 import com.michaldrabik.ui_widgets.calendar_movies.CalendarMoviesWidgetProvider
 import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider

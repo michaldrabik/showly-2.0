@@ -5,9 +5,9 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_repository.mappers.Mappers
 import java.util.Locale.ENGLISH
 import javax.inject.Inject
 

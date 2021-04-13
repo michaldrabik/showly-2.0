@@ -5,11 +5,11 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.RatingsRepository
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
-import com.michaldrabik.ui_repository.RatingsRepository
-import com.michaldrabik.ui_repository.SettingsRepository
 import timber.log.Timber
 import javax.inject.Inject
 

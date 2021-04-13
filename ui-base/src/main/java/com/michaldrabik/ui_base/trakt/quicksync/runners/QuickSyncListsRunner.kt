@@ -7,12 +7,12 @@ import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Operation
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type
 import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.repository.ListsRepository
+import com.michaldrabik.repository.TraktAuthToken
+import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import com.michaldrabik.ui_model.CustomList
-import com.michaldrabik.ui_repository.ListsRepository
-import com.michaldrabik.ui_repository.TraktAuthToken
-import com.michaldrabik.ui_repository.UserTraktManager
-import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.delay
 import retrofit2.HttpException
 import timber.log.Timber

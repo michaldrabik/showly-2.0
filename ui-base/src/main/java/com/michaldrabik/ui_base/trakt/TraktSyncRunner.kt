@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_base.trakt
 
+import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_model.error.TraktAuthError
-import com.michaldrabik.ui_repository.UserTraktManager
 import timber.log.Timber
 
 abstract class TraktSyncRunner(

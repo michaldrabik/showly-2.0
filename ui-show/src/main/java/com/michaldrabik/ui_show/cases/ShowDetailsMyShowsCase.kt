@@ -6,14 +6,14 @@ import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
+import com.michaldrabik.repository.PinnedItemsRepository
+import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_episodes.EpisodesManager
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_repository.PinnedItemsRepository
-import com.michaldrabik.ui_repository.UserTraktManager
-import com.michaldrabik.ui_repository.mappers.Mappers
-import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
 import com.michaldrabik.data_local.database.model.Season as SeasonDb

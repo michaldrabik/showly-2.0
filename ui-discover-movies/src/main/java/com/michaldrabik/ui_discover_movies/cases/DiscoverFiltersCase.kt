@@ -1,9 +1,9 @@
 package com.michaldrabik.ui_discover_movies.cases
 
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_model.DiscoverFilters
-import com.michaldrabik.ui_repository.SettingsRepository
 import javax.inject.Inject
 
 @AppScope

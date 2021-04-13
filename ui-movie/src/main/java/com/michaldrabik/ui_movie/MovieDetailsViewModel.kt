@@ -2,6 +2,8 @@ package com.michaldrabik.ui_movie
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
@@ -31,8 +33,6 @@ import com.michaldrabik.ui_movie.cases.MovieDetailsRelatedCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsTranslationCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsWatchlistCase
 import com.michaldrabik.ui_movie.related.RelatedListItem
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.UserTraktManager
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import retrofit2.HttpException

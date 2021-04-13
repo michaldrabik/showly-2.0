@@ -8,6 +8,8 @@ import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.data_remote.aws.model.AwsImages
 import com.michaldrabik.data_remote.tmdb.model.TmdbImage
 import com.michaldrabik.data_remote.tmdb.model.TmdbImages
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb
@@ -24,8 +26,6 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.mappers.Mappers
 import javax.inject.Inject
 
 @AppScope

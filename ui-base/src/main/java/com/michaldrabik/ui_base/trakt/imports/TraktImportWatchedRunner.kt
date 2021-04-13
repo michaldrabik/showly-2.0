@@ -10,6 +10,10 @@ import com.michaldrabik.data_local.database.model.MyShow
 import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.data_remote.trakt.model.SyncItem
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.TraktAuthToken
+import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -18,10 +22,6 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.TraktAuthToken
-import com.michaldrabik.ui_repository.UserTraktManager
-import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject

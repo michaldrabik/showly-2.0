@@ -31,6 +31,6 @@ dependencies {
   implementation project(':common')
   implementation project(':data-remote')
   implementation project(':ui-base')
-  implementation project(':ui-repository')
+  implementation project(':repository')
   implementation project(':ui-model')
 }

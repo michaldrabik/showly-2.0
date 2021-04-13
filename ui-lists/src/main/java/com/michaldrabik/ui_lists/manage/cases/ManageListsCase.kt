@@ -3,10 +3,10 @@ package com.michaldrabik.ui_lists.manage.cases
 import android.content.Context
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.ListsRepository
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_lists.manage.recycler.ManageListsItem
 import com.michaldrabik.ui_model.IdTrakt
-import com.michaldrabik.ui_repository.ListsRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject

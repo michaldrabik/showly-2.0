@@ -10,10 +10,10 @@ import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.data_remote.trakt.model.SyncItem
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.TraktAuthToken
+import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.TraktAuthToken
-import com.michaldrabik.ui_repository.UserTraktManager
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject

@@ -1,9 +1,9 @@
 package com.michaldrabik.ui_progress_movies.main.cases
 
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_repository.SettingsRepository
 import javax.inject.Inject
 
 @AppScope

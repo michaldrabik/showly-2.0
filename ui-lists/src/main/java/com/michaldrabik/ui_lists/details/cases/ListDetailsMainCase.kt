@@ -5,12 +5,12 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.repository.ListsRepository
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.CustomList
-import com.michaldrabik.ui_repository.ListsRepository
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.UserTraktManager
 import retrofit2.HttpException
 import javax.inject.Inject
 

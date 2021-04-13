@@ -6,12 +6,12 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.EpisodesSyncLog
 import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_episodes.EpisodesManager
 import com.michaldrabik.ui_model.ShowStatus.CANCELED
 import com.michaldrabik.ui_model.ShowStatus.ENDED
 import com.michaldrabik.ui_model.ShowStatus.UNKNOWN
-import com.michaldrabik.ui_repository.mappers.Mappers
-import com.michaldrabik.ui_repository.shows.ShowsRepository
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject

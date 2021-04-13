@@ -13,10 +13,10 @@ import com.android.billingclient.api.SkuDetailsParams
 import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.querySkuDetails
 import com.michaldrabik.common.Config
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
-import com.michaldrabik.ui_repository.SettingsRepository
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import timber.log.Timber

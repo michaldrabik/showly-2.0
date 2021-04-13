@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.common.extensions.toLocalZone
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -21,7 +22,6 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.calendar.cases.ProgressCalendarCase
 import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
-import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_SHOW_ID
 import com.michaldrabik.ui_widgets.R
 import kotlinx.coroutines.CoroutineScope

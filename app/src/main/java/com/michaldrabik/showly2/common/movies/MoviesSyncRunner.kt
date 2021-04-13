@@ -4,12 +4,12 @@ import com.michaldrabik.common.ConfigVariant.MOVIE_SYNC_COOLDOWN
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_model.MovieStatus.IN_PRODUCTION
 import com.michaldrabik.ui_model.MovieStatus.PLANNED
 import com.michaldrabik.ui_model.MovieStatus.POST_PRODUCTION
 import com.michaldrabik.ui_model.MovieStatus.RUMORED
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.movies.MoviesRepository
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject

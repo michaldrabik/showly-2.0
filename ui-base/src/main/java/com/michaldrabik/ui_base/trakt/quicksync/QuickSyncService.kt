@@ -3,6 +3,7 @@ package com.michaldrabik.ui_base.trakt.quicksync
 import android.content.Context
 import android.content.Intent
 import android.os.IBinder
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.R
@@ -13,7 +14,6 @@ import com.michaldrabik.ui_base.trakt.TraktNotificationsService
 import com.michaldrabik.ui_base.trakt.quicksync.runners.QuickSyncListsRunner
 import com.michaldrabik.ui_base.trakt.quicksync.runners.QuickSyncRunner
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
-import com.michaldrabik.ui_repository.SettingsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

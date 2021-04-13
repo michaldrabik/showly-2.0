@@ -2,13 +2,13 @@ package com.michaldrabik.ui_my_movies.main.cases
 
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
-import com.michaldrabik.ui_repository.TranslationsRepository
-import com.michaldrabik.ui_repository.movies.MoviesRepository
 import javax.inject.Inject
 
 @AppScope

@@ -3,8 +3,8 @@ package com.michaldrabik.ui_widgets
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_model.Settings
-import com.michaldrabik.ui_repository.SettingsRepository
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 

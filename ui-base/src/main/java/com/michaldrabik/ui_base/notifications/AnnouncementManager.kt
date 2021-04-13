@@ -14,6 +14,8 @@ import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Show
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
@@ -28,8 +30,6 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.NotificationDelay
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.mappers.Mappers
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import timber.log.Timber

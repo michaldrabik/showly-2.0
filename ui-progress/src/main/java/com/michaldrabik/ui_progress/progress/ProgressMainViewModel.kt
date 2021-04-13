@@ -2,6 +2,10 @@ package com.michaldrabik.ui_progress.progress
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
+import com.michaldrabik.repository.RatingsRepository
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
@@ -16,10 +20,6 @@ import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.main.ProgressUiModel
-import com.michaldrabik.ui_repository.RatingsRepository
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.TranslationsRepository
-import com.michaldrabik.ui_repository.UserTraktManager
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

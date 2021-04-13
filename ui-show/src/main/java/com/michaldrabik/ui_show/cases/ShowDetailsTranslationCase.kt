@@ -2,12 +2,12 @@ package com.michaldrabik.ui_show.cases
 
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.SeasonTranslation
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_repository.TranslationsRepository
 import javax.inject.Inject
 
 @AppScope

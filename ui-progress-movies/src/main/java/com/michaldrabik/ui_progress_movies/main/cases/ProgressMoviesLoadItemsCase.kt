@@ -2,6 +2,9 @@ package com.michaldrabik.ui_progress_movies.main.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.repository.PinnedItemsRepository
+import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
@@ -13,9 +16,6 @@ import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
-import com.michaldrabik.ui_repository.PinnedItemsRepository
-import com.michaldrabik.ui_repository.TranslationsRepository
-import com.michaldrabik.ui_repository.movies.MoviesRepository
 import org.threeten.bp.format.DateTimeFormatter
 import java.util.Locale.ROOT
 import javax.inject.Inject

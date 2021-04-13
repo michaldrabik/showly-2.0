@@ -7,11 +7,11 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.data_remote.Cloud
+import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.TraktAuthToken
+import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
-import com.michaldrabik.ui_repository.SettingsRepository
-import com.michaldrabik.ui_repository.TraktAuthToken
-import com.michaldrabik.ui_repository.UserTraktManager
-import com.michaldrabik.ui_repository.mappers.Mappers
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject

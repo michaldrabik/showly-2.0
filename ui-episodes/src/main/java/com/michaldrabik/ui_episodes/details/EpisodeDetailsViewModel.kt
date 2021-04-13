@@ -2,6 +2,10 @@ package com.michaldrabik.ui_episodes.details
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
+import com.michaldrabik.repository.CommentsRepository
+import com.michaldrabik.repository.RatingsRepository
+import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.dates.DateFormatProvider
@@ -16,10 +20,6 @@ import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.TraktRating
-import com.michaldrabik.ui_repository.CommentsRepository
-import com.michaldrabik.ui_repository.RatingsRepository
-import com.michaldrabik.ui_repository.TranslationsRepository
-import com.michaldrabik.ui_repository.UserTraktManager
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
