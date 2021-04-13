@@ -1,13 +1,13 @@
 package com.michaldrabik.ui_repository.mappers
 
-import com.michaldrabik.storage.database.model.Episode
+import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Season
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
+import com.michaldrabik.data_local.database.model.Season as SeasonDb
 import com.michaldrabik.network.trakt.model.Season as SeasonNetwork
-import com.michaldrabik.storage.database.model.Season as SeasonDb
 
 class SeasonMapper @Inject constructor(
   private val idsMapper: IdsMapper,

@@ -9,7 +9,7 @@ import com.michaldrabik.common.Config.DEFAULT_DATE_FORMAT
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_repository.mappers.Mappers
 import java.util.UUID

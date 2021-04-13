@@ -4,10 +4,10 @@ import android.content.Context
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.TraktSyncQueue
-import com.michaldrabik.storage.database.model.TraktSyncQueue.Operation
-import com.michaldrabik.storage.database.model.TraktSyncQueue.Type
+import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.TraktSyncQueue
+import com.michaldrabik.data_local.database.model.TraktSyncQueue.Operation
+import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type
 import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.UserTraktManager

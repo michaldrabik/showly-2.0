@@ -3,9 +3,9 @@ package com.michaldrabik.showly2.common.shows
 import com.michaldrabik.common.ConfigVariant.SHOW_SYNC_COOLDOWN
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.EpisodesSyncLog
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.EpisodesSyncLog
 import com.michaldrabik.ui_episodes.EpisodesManager
 import com.michaldrabik.ui_model.ShowStatus.CANCELED
 import com.michaldrabik.ui_model.ShowStatus.ENDED

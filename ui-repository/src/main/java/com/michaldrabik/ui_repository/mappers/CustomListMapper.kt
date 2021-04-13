@@ -10,9 +10,9 @@ import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
+import com.michaldrabik.data_local.database.model.CustomList as CustomListDb
 import com.michaldrabik.network.trakt.model.CustomList as CustomListNetwork
 import com.michaldrabik.network.trakt.model.CustomList.Ids as IdsList
-import com.michaldrabik.storage.database.model.CustomList as CustomListDb
 
 class CustomListMapper @Inject constructor() {
 

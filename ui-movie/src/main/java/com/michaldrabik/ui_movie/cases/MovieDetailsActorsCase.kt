@@ -3,8 +3,8 @@ package com.michaldrabik.ui_movie.cases
 import com.michaldrabik.common.Config.ACTORS_CACHE_DURATION
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_repository.mappers.Mappers

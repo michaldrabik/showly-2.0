@@ -2,10 +2,10 @@ package com.michaldrabik.ui_movie.cases
 
 import androidx.room.withTransaction
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncExportItem
 import com.michaldrabik.network.trakt.model.SyncExportRequest
-import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_repository.PinnedItemsRepository
 import com.michaldrabik.ui_repository.UserTraktManager

@@ -2,9 +2,9 @@ package com.michaldrabik.ui_repository
 
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.storage.database.dao.DiscoverShowsDao
-import com.michaldrabik.storage.database.dao.ShowsDao
-import com.michaldrabik.storage.database.model.DiscoverShow
+import com.michaldrabik.data_local.database.dao.DiscoverShowsDao
+import com.michaldrabik.data_local.database.dao.ShowsDao
+import com.michaldrabik.data_local.database.model.DiscoverShow
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.common.BaseMockTest
 import com.michaldrabik.ui_repository.shows.DiscoverShowsRepository
@@ -19,7 +19,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.util.concurrent.TimeUnit
-import com.michaldrabik.storage.database.model.Show as ShowDb
+import com.michaldrabik.data_local.database.model.Show as ShowDb
 
 class DiscoverShowsRepositoryTest : BaseMockTest() {
 

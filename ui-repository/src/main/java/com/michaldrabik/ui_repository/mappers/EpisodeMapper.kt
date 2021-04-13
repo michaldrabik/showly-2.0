@@ -9,8 +9,8 @@ import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Season
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
+import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
 import com.michaldrabik.network.trakt.model.Episode as EpisodeNetwork
-import com.michaldrabik.storage.database.model.Episode as EpisodeDb
 
 class EpisodeMapper @Inject constructor(
   private val idsMapper: IdsMapper

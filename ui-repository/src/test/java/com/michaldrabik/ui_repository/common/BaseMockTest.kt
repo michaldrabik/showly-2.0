@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_repository.common
 
 import androidx.room.withTransaction
+import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_repository.R
 import com.michaldrabik.ui_repository.mappers.ActorMapper
 import com.michaldrabik.ui_repository.mappers.CommentMapper

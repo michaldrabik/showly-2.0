@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_repository.mappers
 
-import com.michaldrabik.storage.database.model.Movie
+import com.michaldrabik.data_local.database.model.Movie
 import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.IdSlug
 import com.michaldrabik.ui_model.IdTmdb
@@ -9,8 +9,8 @@ import com.michaldrabik.ui_model.IdTvRage
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Ids
 import javax.inject.Inject
+import com.michaldrabik.data_local.database.model.Show as ShowDb
 import com.michaldrabik.network.trakt.model.Ids as IdsNetwork
-import com.michaldrabik.storage.database.model.Show as ShowDb
 
 class IdsMapper @Inject constructor() {
 

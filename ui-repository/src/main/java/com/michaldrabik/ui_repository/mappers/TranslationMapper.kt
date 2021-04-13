@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_repository.mappers
 
-import com.michaldrabik.storage.database.model.EpisodeTranslation
-import com.michaldrabik.storage.database.model.MovieTranslation
-import com.michaldrabik.storage.database.model.ShowTranslation
+import com.michaldrabik.data_local.database.model.EpisodeTranslation
+import com.michaldrabik.data_local.database.model.MovieTranslation
+import com.michaldrabik.data_local.database.model.ShowTranslation
 import com.michaldrabik.ui_model.SeasonTranslation
 import com.michaldrabik.ui_model.Translation
 import javax.inject.Inject

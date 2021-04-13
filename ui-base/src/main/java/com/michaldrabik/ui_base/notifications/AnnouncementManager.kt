@@ -11,9 +11,9 @@ import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.nowUtcDay
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
-import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.Episode
-import com.michaldrabik.storage.database.model.Show
+import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.Episode
+import com.michaldrabik.data_local.database.model.Show
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_base.images.MovieImagesProvider

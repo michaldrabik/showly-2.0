@@ -3,13 +3,13 @@ package com.michaldrabik.ui_base.trakt.exports
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.dateIsoStringFromMillis
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.Episode
+import com.michaldrabik.data_local.database.model.Movie
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncExportItem
 import com.michaldrabik.network.trakt.model.SyncExportRequest
 import com.michaldrabik.network.trakt.model.SyncItem
-import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.Episode
-import com.michaldrabik.storage.database.model.Movie
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TraktAuthToken

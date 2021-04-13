@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_repository.mappers
 
-import com.michaldrabik.storage.database.model.CustomImage
+import com.michaldrabik.data_local.database.model.CustomImage
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Image
@@ -10,8 +10,8 @@ import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageType
 import java.util.Locale.ROOT
 import javax.inject.Inject
-import com.michaldrabik.storage.database.model.MovieImage as MovieImageDb
-import com.michaldrabik.storage.database.model.ShowImage as ShowImageDb
+import com.michaldrabik.data_local.database.model.MovieImage as MovieImageDb
+import com.michaldrabik.data_local.database.model.ShowImage as ShowImageDb
 
 class ImageMapper @Inject constructor() {
 

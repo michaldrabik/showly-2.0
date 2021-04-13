@@ -4,7 +4,7 @@ import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Settings
 import javax.inject.Inject
-import com.michaldrabik.storage.database.model.Settings as SettingsDb
+import com.michaldrabik.data_local.database.model.Settings as SettingsDb
 
 class SettingsMapper @Inject constructor() {
 

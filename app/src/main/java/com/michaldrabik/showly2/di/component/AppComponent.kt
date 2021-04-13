@@ -1,13 +1,13 @@
 package com.michaldrabik.showly2.di.component
 
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.data_local.di.StorageMarker
 import com.michaldrabik.network.di.CloudMarker
 import com.michaldrabik.showly2.App
 import com.michaldrabik.showly2.di.module.PreferencesModule
 import com.michaldrabik.showly2.di.module.SubcomponentsModule
 import com.michaldrabik.showly2.di.module.ViewModelsModule
 import com.michaldrabik.showly2.ui.main.MainActivity
-import com.michaldrabik.storage.di.StorageMarker
 import com.michaldrabik.ui_base.di.UiBaseComponent
 import com.michaldrabik.ui_comments.post.di.UiPostCommentComponent
 import com.michaldrabik.ui_discover.di.UiDiscoverComponent

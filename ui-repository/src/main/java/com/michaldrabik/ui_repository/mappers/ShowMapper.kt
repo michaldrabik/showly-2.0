@@ -5,9 +5,9 @@ import com.michaldrabik.ui_model.AirTime
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.ShowStatus
 import javax.inject.Inject
+import com.michaldrabik.data_local.database.model.Show as ShowDb
 import com.michaldrabik.network.trakt.model.AirTime as AirTimeNetwork
 import com.michaldrabik.network.trakt.model.Show as ShowNetwork
-import com.michaldrabik.storage.database.model.Show as ShowDb
 
 class ShowMapper @Inject constructor(
   private val idsMapper: IdsMapper

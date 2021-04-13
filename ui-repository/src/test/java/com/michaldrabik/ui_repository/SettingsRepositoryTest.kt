@@ -2,7 +2,7 @@ package com.michaldrabik.ui_repository
 
 import android.content.SharedPreferences
 import com.google.common.truth.Truth.assertThat
-import com.michaldrabik.storage.database.dao.SettingsDao
+import com.michaldrabik.data_local.database.dao.SettingsDao
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_repository.common.BaseMockTest
 import com.michaldrabik.ui_repository.mappers.SettingsMapper

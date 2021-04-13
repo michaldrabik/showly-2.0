@@ -2,10 +2,10 @@ package com.michaldrabik.ui_show.cases
 
 import androidx.room.withTransaction
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.trakt.model.SyncExportItem
 import com.michaldrabik.network.trakt.model.SyncExportRequest
-import com.michaldrabik.storage.database.AppDatabase
 import com.michaldrabik.ui_episodes.EpisodesManager
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
@@ -15,8 +15,8 @@ import com.michaldrabik.ui_repository.UserTraktManager
 import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.shows.ShowsRepository
 import javax.inject.Inject
-import com.michaldrabik.storage.database.model.Episode as EpisodeDb
-import com.michaldrabik.storage.database.model.Season as SeasonDb
+import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
+import com.michaldrabik.data_local.database.model.Season as SeasonDb
 
 @AppScope
 class ShowDetailsMyShowsCase @Inject constructor(

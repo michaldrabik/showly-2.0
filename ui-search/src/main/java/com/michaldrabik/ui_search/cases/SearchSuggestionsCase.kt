@@ -2,7 +2,7 @@ package com.michaldrabik.ui_search.cases
 
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
@@ -10,8 +10,8 @@ import com.michaldrabik.ui_repository.SettingsRepository
 import com.michaldrabik.ui_repository.TranslationsRepository
 import com.michaldrabik.ui_repository.mappers.Mappers
 import javax.inject.Inject
-import com.michaldrabik.storage.database.model.Movie as MovieDb
-import com.michaldrabik.storage.database.model.Show as ShowDb
+import com.michaldrabik.data_local.database.model.Movie as MovieDb
+import com.michaldrabik.data_local.database.model.Show as ShowDb
 
 @AppScope
 class SearchSuggestionsCase @Inject constructor(

@@ -3,8 +3,8 @@ package com.michaldrabik.ui_lists.lists.cases
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.CustomListItem
+import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider

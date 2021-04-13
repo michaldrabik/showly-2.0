@@ -14,13 +14,13 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
+import com.michaldrabik.data_local.di.DaggerStorageComponent
+import com.michaldrabik.data_local.di.StorageModule
 import com.michaldrabik.network.di.DaggerCloudComponent
 import com.michaldrabik.showly2.di.component.AppComponent
 import com.michaldrabik.showly2.di.component.DaggerAppComponent
 import com.michaldrabik.showly2.di.module.PreferencesModule
 import com.michaldrabik.showly2.utilities.NetworkMonitorCallbacks
-import com.michaldrabik.storage.di.DaggerStorageComponent
-import com.michaldrabik.storage.di.StorageModule
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
 import com.michaldrabik.ui_base.common.WidgetsProvider

@@ -3,8 +3,8 @@ package com.michaldrabik.ui_my_shows.myshows.cases
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
-import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.Season
+import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.MyShowsSection

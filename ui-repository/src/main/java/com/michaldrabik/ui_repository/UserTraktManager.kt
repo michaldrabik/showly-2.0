@@ -5,9 +5,9 @@ package com.michaldrabik.ui_repository
 import androidx.room.withTransaction
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.User
 import com.michaldrabik.network.Cloud
-import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.User
 import com.michaldrabik.ui_model.error.TraktAuthError
 import javax.inject.Inject
 import com.michaldrabik.network.trakt.model.User as UserModel

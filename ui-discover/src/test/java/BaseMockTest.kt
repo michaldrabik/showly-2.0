@@ -1,5 +1,5 @@
 import androidx.room.withTransaction
-import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.ui_discover.R
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery

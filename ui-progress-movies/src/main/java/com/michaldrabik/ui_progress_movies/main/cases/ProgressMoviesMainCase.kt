@@ -3,7 +3,7 @@ package com.michaldrabik.ui_progress_movies.main.cases
 import android.content.Context
 import androidx.room.withTransaction
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids

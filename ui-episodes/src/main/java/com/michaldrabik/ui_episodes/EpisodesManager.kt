@@ -3,8 +3,8 @@ package com.michaldrabik.ui_episodes
 import androidx.room.withTransaction
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.EpisodesSyncLog
+import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.EpisodesSyncLog
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.IdTrakt
@@ -15,8 +15,8 @@ import com.michaldrabik.ui_repository.mappers.Mappers
 import com.michaldrabik.ui_repository.shows.ShowsRepository
 import timber.log.Timber
 import javax.inject.Inject
-import com.michaldrabik.storage.database.model.Episode as EpisodeDb
-import com.michaldrabik.storage.database.model.Season as SeasonDb
+import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
+import com.michaldrabik.data_local.database.model.Season as SeasonDb
 
 @AppScope
 class EpisodesManager @Inject constructor(

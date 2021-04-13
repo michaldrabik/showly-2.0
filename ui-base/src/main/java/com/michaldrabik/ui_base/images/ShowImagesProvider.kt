@@ -2,12 +2,12 @@ package com.michaldrabik.ui_base.images
 
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.CustomImage
 import com.michaldrabik.network.Cloud
 import com.michaldrabik.network.aws.model.AwsImages
 import com.michaldrabik.network.tmdb.model.TmdbImage
 import com.michaldrabik.network.tmdb.model.TmdbImages
-import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.CustomImage
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb

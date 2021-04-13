@@ -3,8 +3,8 @@ package com.michaldrabik.ui_repository.shows
 import androidx.room.withTransaction
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.WatchlistShow
+import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.WatchlistShow
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_repository.mappers.Mappers
 import javax.inject.Inject

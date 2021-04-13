@@ -2,9 +2,9 @@ package com.michaldrabik.ui_repository
 
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.data_local.database.dao.ShowsDao
+import com.michaldrabik.data_local.database.model.Show
 import com.michaldrabik.network.trakt.api.TraktApi
-import com.michaldrabik.storage.database.dao.ShowsDao
-import com.michaldrabik.storage.database.model.Show
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_repository.common.BaseMockTest
 import com.michaldrabik.ui_repository.shows.ShowDetailsRepository

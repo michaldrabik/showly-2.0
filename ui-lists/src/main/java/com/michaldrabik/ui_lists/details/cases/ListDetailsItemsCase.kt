@@ -6,7 +6,7 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager

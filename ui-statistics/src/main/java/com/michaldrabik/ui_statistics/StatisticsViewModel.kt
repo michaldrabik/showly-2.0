@@ -2,9 +2,9 @@ package com.michaldrabik.ui_statistics
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
-import com.michaldrabik.storage.database.AppDatabase
-import com.michaldrabik.storage.database.model.Episode
-import com.michaldrabik.storage.database.model.Season
+import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.Episode
+import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.Genre

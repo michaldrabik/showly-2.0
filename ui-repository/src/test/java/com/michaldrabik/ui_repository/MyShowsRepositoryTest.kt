@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_repository
 
 import com.google.common.truth.Truth.assertThat
-import com.michaldrabik.storage.database.dao.MyShowsDao
-import com.michaldrabik.storage.database.model.MyShow
+import com.michaldrabik.data_local.database.dao.MyShowsDao
+import com.michaldrabik.data_local.database.model.MyShow
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_repository.common.BaseMockTest
@@ -18,7 +18,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import com.michaldrabik.storage.database.model.Show as ShowDb
+import com.michaldrabik.data_local.database.model.Show as ShowDb
 
 class MyShowsRepositoryTest : BaseMockTest() {
 

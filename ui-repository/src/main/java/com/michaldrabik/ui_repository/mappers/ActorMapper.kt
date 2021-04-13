@@ -4,7 +4,7 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.network.tmdb.model.TmdbActor
 import com.michaldrabik.ui_model.Actor
 import javax.inject.Inject
-import com.michaldrabik.storage.database.model.Actor as ActorDb
+import com.michaldrabik.data_local.database.model.Actor as ActorDb
 
 class ActorMapper @Inject constructor() {
 

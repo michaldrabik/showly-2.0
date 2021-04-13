@@ -3,7 +3,7 @@ package com.michaldrabik.showly2.common.movies
 import com.michaldrabik.common.ConfigVariant.MOVIE_SYNC_COOLDOWN
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
-import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.ui_model.MovieStatus.IN_PRODUCTION
 import com.michaldrabik.ui_model.MovieStatus.PLANNED
 import com.michaldrabik.ui_model.MovieStatus.POST_PRODUCTION

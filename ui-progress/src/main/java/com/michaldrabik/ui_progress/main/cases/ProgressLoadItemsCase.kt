@@ -5,7 +5,7 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.common.extensions.toMillis
-import com.michaldrabik.storage.database.AppDatabase
+import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Image
@@ -26,8 +26,8 @@ import com.michaldrabik.ui_repository.shows.ShowsRepository
 import org.threeten.bp.temporal.ChronoUnit.DAYS
 import java.util.Locale.ROOT
 import javax.inject.Inject
-import com.michaldrabik.storage.database.model.Episode as EpisodeDb
-import com.michaldrabik.storage.database.model.Season as SeasonDb
+import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
+import com.michaldrabik.data_local.database.model.Season as SeasonDb
 
 @AppScope
 class ProgressLoadItemsCase @Inject constructor(
