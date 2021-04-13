@@ -23,7 +23,7 @@ class MainInitialsCase @Inject constructor(
   private val userTraktManager: UserTraktManager,
   private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
-  @Named("miscPreferences") private var miscPreferences: SharedPreferences
+  @Named("miscPreferences") private var miscPreferences: SharedPreferences,
 ) {
 
   suspend fun setInitialRun(value: Boolean) {
@@ -39,7 +39,7 @@ class MainInitialsCase @Inject constructor(
   }
 
   @SuppressLint("NewApi")
-  suspend fun initFcm() {
+  suspend fun initializeFcm() {
     FirebaseMessaging.getInstance().run {
       val isEnabled = settingsRepository.load().pushNotificationsEnabled
       val suffix = if (BuildConfig.DEBUG) "-debug" else ""
@@ -53,7 +53,7 @@ class MainInitialsCase @Inject constructor(
     }
   }
 
-  suspend fun initRatings() = supervisorScope {
+  suspend fun preloadRatings() = supervisorScope {
     try {
       if (!userTraktManager.isAuthorized()) return@supervisorScope
       val token = userTraktManager.checkAuthorization().token

@@ -10,6 +10,7 @@ import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_repository.RatingsRepository
 import com.michaldrabik.ui_repository.SettingsRepository
+import timber.log.Timber
 import javax.inject.Inject
 
 @AppScope
@@ -18,7 +19,7 @@ class MainMiscCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
-  private val announcementManager: AnnouncementManager
+  private val announcementManager: AnnouncementManager,
 ) {
 
   suspend fun refreshAnnouncements(context: Context) {
@@ -30,6 +31,7 @@ class MainMiscCase @Inject constructor(
     ratingsRepository.clear()
     showImagesProvider.clear()
     movieImagesProvider.clear()
+    Timber.d("Clearing...")
   }
 
   fun setMode(mode: Mode) {

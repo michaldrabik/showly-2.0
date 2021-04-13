@@ -8,7 +8,7 @@ import javax.inject.Inject
 @AppScope
 class RatingsRepository @Inject constructor(
   val shows: ShowsRatingsRepository,
-  val movies: MoviesRatingsRepository
+  val movies: MoviesRatingsRepository,
 ) {
 
   fun clear() {

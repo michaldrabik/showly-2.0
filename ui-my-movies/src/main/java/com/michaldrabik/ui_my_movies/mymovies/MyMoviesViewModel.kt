@@ -28,7 +28,7 @@ import javax.inject.Inject
 
 class MyMoviesViewModel @Inject constructor(
   private val loadMoviesCase: MyMoviesLoadCase,
-  private val ratingsCase: MyMoviesRatingsCase
+  private val ratingsCase: MyMoviesRatingsCase,
 ) : BaseViewModel<MyMoviesUiModel>() {
 
   fun loadMovies(notifyListsUpdate: Boolean = false) {
@@ -114,7 +114,7 @@ class MyMoviesViewModel @Inject constructor(
     itemType: Type,
     movie: Movie,
     dateFormat: DateTimeFormatter,
-    type: ImageType = POSTER
+    type: ImageType = POSTER,
   ) = async {
     val image = loadMoviesCase.findCachedImage(movie, type)
     val translation = loadMoviesCase.loadTranslation(movie, true)

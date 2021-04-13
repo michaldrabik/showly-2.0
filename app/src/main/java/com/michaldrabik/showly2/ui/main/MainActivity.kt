@@ -114,11 +114,6 @@ class MainActivity :
     handleTraktAuthorization(intent?.data)
   }
 
-  override fun onStop() {
-    viewModel.clearUp()
-    super.onStop()
-  }
-
   private fun setupViewModel() {
     viewModel.run {
       uiLiveData.observe(this@MainActivity) { render(it!!) }

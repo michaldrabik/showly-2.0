@@ -24,8 +24,8 @@ class MainViewModel @Inject constructor(
   fun initialize() {
     viewModelScope.launch {
       checkInitialRun()
-      initCase.initFcm()
-      initCase.initRatings()
+      initCase.initializeFcm()
+      initCase.preloadRatings()
     }
   }
 
@@ -69,5 +69,8 @@ class MainViewModel @Inject constructor(
 
   fun completeAppRate() = rateAppCase.complete()
 
-  fun clearUp() = miscCase.clear()
+  override fun onCleared() {
+    miscCase.clear()
+    super.onCleared()
+  }
 }

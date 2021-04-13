@@ -13,7 +13,7 @@ import javax.inject.Inject
 @AppScope
 class MoviesRatingsRepository @Inject constructor(
   private val cloud: Cloud,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   private var moviesCache: MutableList<TraktRating>? = null
