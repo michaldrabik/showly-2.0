@@ -62,8 +62,8 @@ class App :
 
     fun setupComponents() {
       appComponent = DaggerAppComponent.builder()
-        .cloudMarker(DaggerCloudComponent.create())
-        .storageMarker(
+        .cloudContract(DaggerCloudComponent.create())
+        .storageContract(
           DaggerStorageComponent.builder()
             .storageModule(StorageModule(applicationContext))
             .build()

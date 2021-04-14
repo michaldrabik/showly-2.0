@@ -1,3 +1,4 @@
+include ':ui-news'
 include ':ui-lists'
 include ':ui-premium'
 include ':ui-statistics-movies'

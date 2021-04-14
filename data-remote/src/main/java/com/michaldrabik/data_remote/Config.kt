@@ -22,5 +22,8 @@ object Config {
   const val TMDB_BASE_URL = "https://api.themoviedb.org/3/"
   const val TMDB_API_KEY = BuildConfig.TMDB_API_KEY
 
+  const val REDDIT_BASE_URL = "https://www.reddit.com/"
+  const val REDDIT_DEFAULT_LIMIT = 50
+
   const val AWS_BASE_URL = "https://showly2.s3.eu-west-2.amazonaws.com/"
 }

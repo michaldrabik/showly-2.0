@@ -1,8 +1,8 @@
 package com.michaldrabik.showly2.di.component
 
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.data_local.di.StorageMarker
-import com.michaldrabik.data_remote.di.CloudMarker
+import com.michaldrabik.data_local.di.StorageContract
+import com.michaldrabik.data_remote.di.CloudContract
 import com.michaldrabik.showly2.App
 import com.michaldrabik.showly2.di.module.PreferencesModule
 import com.michaldrabik.showly2.di.module.SubcomponentsModule
@@ -37,8 +37,8 @@ import dagger.Component
 @AppScope
 @Component(
   dependencies = [
-    CloudMarker::class,
-    StorageMarker::class
+    CloudContract::class,
+    StorageContract::class
   ],
   modules = [
     ViewModelsModule::class,

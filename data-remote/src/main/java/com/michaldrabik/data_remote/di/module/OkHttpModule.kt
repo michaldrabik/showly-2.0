@@ -21,7 +21,7 @@ object OkHttpModule {
   @Named("okHttpTrakt")
   fun providesTraktOkHttp(
     httpLoggingInterceptor: HttpLoggingInterceptor,
-    traktInterceptor: TraktInterceptor
+    traktInterceptor: TraktInterceptor,
   ) = createBaseOkHttpClient()
     .addInterceptor(httpLoggingInterceptor)
     .addInterceptor(traktInterceptor)
@@ -32,10 +32,28 @@ object OkHttpModule {
   @Named("okHttpTmdb")
   fun providesTmdbOkHttp(
     httpLoggingInterceptor: HttpLoggingInterceptor,
-    tmdbInterceptor: TmdbInterceptor
+    tmdbInterceptor: TmdbInterceptor,
   ) = createBaseOkHttpClient()
     .addInterceptor(httpLoggingInterceptor)
     .addInterceptor(tmdbInterceptor)
+    .build()
+
+  @Provides
+  @CloudScope
+  @Named("okHttpAws")
+  fun providesAwsOkHttp(
+    httpLoggingInterceptor: HttpLoggingInterceptor,
+  ) = createBaseOkHttpClient()
+    .addInterceptor(httpLoggingInterceptor)
+    .build()
+
+  @Provides
+  @CloudScope
+  @Named("okHttpReddit")
+  fun providesRedditOkHttp(
+    httpLoggingInterceptor: HttpLoggingInterceptor,
+  ) = createBaseOkHttpClient()
+    .addInterceptor(httpLoggingInterceptor)
     .build()
 
   @Provides

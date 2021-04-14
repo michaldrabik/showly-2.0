@@ -1,6 +1,7 @@
 package com.michaldrabik.data_remote.di.module
 
 import com.michaldrabik.data_remote.Config.AWS_BASE_URL
+import com.michaldrabik.data_remote.Config.REDDIT_BASE_URL
 import com.michaldrabik.data_remote.Config.TMDB_BASE_URL
 import com.michaldrabik.data_remote.Config.TRAKT_BASE_URL
 import com.michaldrabik.data_remote.di.CloudScope
@@ -18,7 +19,10 @@ object RetrofitModule {
   @Provides
   @CloudScope
   @Named("retrofitTrakt")
-  fun providesTraktRetrofit(@Named("okHttpTrakt") okHttpClient: OkHttpClient, moshi: Moshi): Retrofit =
+  fun providesTraktRetrofit(
+    @Named("okHttpTrakt") okHttpClient: OkHttpClient,
+    moshi: Moshi,
+  ): Retrofit =
     Retrofit.Builder()
       .client(okHttpClient)
       .addConverterFactory(MoshiConverterFactory.create(moshi))
@@ -28,7 +32,10 @@ object RetrofitModule {
   @Provides
   @CloudScope
   @Named("retrofitTmdb")
-  fun providesTmdbRetrofit(@Named("okHttpTmdb") okHttpClient: OkHttpClient, moshi: Moshi): Retrofit =
+  fun providesTmdbRetrofit(
+    @Named("okHttpTmdb") okHttpClient: OkHttpClient,
+    moshi: Moshi,
+  ): Retrofit =
     Retrofit.Builder()
       .client(okHttpClient)
       .addConverterFactory(MoshiConverterFactory.create(moshi))
@@ -38,11 +45,27 @@ object RetrofitModule {
   @Provides
   @CloudScope
   @Named("retrofitAws")
-  fun providesAwsRetrofit(@Named("okHttpTrakt") okHttpClient: OkHttpClient, moshi: Moshi): Retrofit =
+  fun providesAwsRetrofit(
+    @Named("okHttpAws") okHttpClient: OkHttpClient,
+    moshi: Moshi,
+  ): Retrofit =
     Retrofit.Builder()
       .client(okHttpClient)
       .addConverterFactory(MoshiConverterFactory.create(moshi))
       .baseUrl(AWS_BASE_URL)
+      .build()
+
+  @Provides
+  @CloudScope
+  @Named("retrofitReddit")
+  fun providesRedditRetrofit(
+    @Named("okHttpReddit") okHttpClient: OkHttpClient,
+    moshi: Moshi,
+  ): Retrofit =
+    Retrofit.Builder()
+      .client(okHttpClient)
+      .addConverterFactory(MoshiConverterFactory.create(moshi))
+      .baseUrl(REDDIT_BASE_URL)
       .build()
 
   @Provides

@@ -4,4 +4,4 @@ import dagger.Component
 
 @StorageScope
 @Component(modules = [StorageModule::class])
-interface StorageComponent : StorageMarker
+interface StorageComponent : StorageContract
