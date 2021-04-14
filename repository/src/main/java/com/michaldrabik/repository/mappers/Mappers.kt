@@ -13,6 +13,7 @@ class Mappers @Inject constructor(
   val season: SeasonMapper,
   val actor: ActorMapper,
   val comment: CommentMapper,
+  val news: NewsMapper,
   val settings: SettingsMapper,
   val translation: TranslationMapper,
   val customList: CustomListMapper,
