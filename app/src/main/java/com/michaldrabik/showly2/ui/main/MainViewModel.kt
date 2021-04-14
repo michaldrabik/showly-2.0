@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Mode
 import com.michaldrabik.showly2.ui.main.cases.MainInitialsCase
 import com.michaldrabik.showly2.ui.main.cases.MainMiscCase
+import com.michaldrabik.showly2.ui.main.cases.MainModesCase
 import com.michaldrabik.showly2.ui.main.cases.MainRateAppCase
 import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTraktCase
@@ -18,6 +19,7 @@ class MainViewModel @Inject constructor(
   private val tipsCase: MainTipsCase,
   private val traktCase: MainTraktCase,
   private val miscCase: MainMiscCase,
+  private val modesCase: MainModesCase,
   private val rateAppCase: MainRateAppCase,
 ) : BaseViewModel<MainUiModel>() {
 
@@ -59,13 +61,14 @@ class MainViewModel @Inject constructor(
     }
   }
 
-  fun setMode(mode: Mode) = miscCase.setMode(mode)
-  fun getMode(): Mode = miscCase.getMode()
+  fun setMode(mode: Mode) = modesCase.setMode(mode)
+  fun getMode(): Mode = modesCase.getMode()
 
   fun isTipShown(tip: Tip) = tipsCase.isTipShown(tip)
   fun setTipShown(tip: Tip) = tipsCase.setTipShown(tip)
 
   fun moviesEnabled(): Boolean = miscCase.moviesEnabled()
+  fun newsEnabled(): Boolean = miscCase.newsEnabled()
 
   fun completeAppRate() = rateAppCase.complete()
 

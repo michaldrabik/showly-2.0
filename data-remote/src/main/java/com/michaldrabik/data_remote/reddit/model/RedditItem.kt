@@ -4,5 +4,5 @@ data class RedditItem(
   val id: String,
   val is_self: Boolean,
   val title: String,
-  val created: Long,
+  val created_utc: Long,
 )

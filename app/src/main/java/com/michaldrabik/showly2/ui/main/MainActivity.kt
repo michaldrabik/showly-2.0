@@ -139,22 +139,26 @@ class MainActivity :
       }
       setGraph(graph)
     }
-    bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-      if (bottomNavigationView.selectedItemId == item.itemId) {
-        doForFragments { (it as? OnTabReselectedListener)?.onTabReselected() }
+    with(bottomNavigationView) {
+      setOnNavigationItemSelectedListener { item ->
+        if (selectedItemId == item.itemId) {
+          doForFragments { (it as? OnTabReselectedListener)?.onTabReselected() }
+          return@setOnNavigationItemSelectedListener true
+        }
+
+        val target = when (item.itemId) {
+          R.id.menuProgress -> getMenuProgressAction()
+          R.id.menuDiscover -> getMenuDiscoverAction()
+          R.id.menuCollection -> getMenuCollectionAction()
+          R.id.menuNews -> R.id.actionNavigateNewsFragment
+          else -> throw IllegalStateException("Invalid menu item.")
+        }
+
+        findNavControl()?.navigate(target)
+        showNavigation(true)
         return@setOnNavigationItemSelectedListener true
       }
-
-      val target = when (item.itemId) {
-        R.id.menuProgress -> getMenuProgressAction()
-        R.id.menuDiscover -> getMenuDiscoverAction()
-        R.id.menuCollection -> getMenuCollectionAction()
-        else -> throw IllegalStateException("Invalid menu item.")
-      }
-
-      findNavControl()?.navigate(target)
-      showNavigation(true)
-      return@setOnNavigationItemSelectedListener true
+      menu.findItem(R.id.menuNews).isVisible = viewModel.newsEnabled()
     }
   }
 
@@ -170,6 +174,7 @@ class MainActivity :
         R.id.followedShowsFragment,
         R.id.followedMoviesFragment,
         R.id.listsFragment,
+        R.id.newsFragment,
         -> {
           bottomNavigationView.selectedItemId = R.id.menuProgress
         }
@@ -236,6 +241,7 @@ class MainActivity :
         R.id.menuDiscover -> getMenuDiscoverAction()
         R.id.menuCollection -> getMenuCollectionAction()
         R.id.menuProgress -> getMenuProgressAction()
+        R.id.menuNews -> R.id.actionNavigateNewsFragment
         else -> 0
       }
       if (target != 0) {

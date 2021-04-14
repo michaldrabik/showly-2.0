@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><!--suppress AndroidDomInspection -->
+<!-- Start destination is set programmatically -->
 <navigation
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -56,6 +57,14 @@
   <action
     android:id="@+id/actionNavigateListsFragment"
     app:destination="@id/listsFragment"
+    app:launchSingleTop="true"
+    app:popUpTo="@id/navigationGraph"
+    app:popUpToInclusive="true"
+    />
+
+  <action
+    android:id="@+id/actionNavigateNewsFragment"
+    app:destination="@id/newsFragment"
     app:launchSingleTop="true"
     app:popUpTo="@id/navigationGraph"
     app:popUpToInclusive="true"
@@ -459,6 +468,32 @@
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
+  </fragment>
+
+  <fragment
+    android:id="@+id/newsFragment"
+    android:name="com.michaldrabik.ui_news.NewsFragment"
+    android:label="fragmentNews"
+    >
+    <!--    <action-->
+    <!--      android:id="@+id/actionListsFragmentToDetailsFragment"-->
+    <!--      app:destination="@id/listDetailsFragment"-->
+    <!--      app:enterAnim="@anim/anim_fade_in"-->
+    <!--      app:launchSingleTop="true"-->
+    <!--      app:popExitAnim="@anim/anim_fade_out"-->
+    <!--      />-->
+    <!--    <action-->
+    <!--      android:id="@+id/actionListsFragmentToSettingsFragment"-->
+    <!--      app:destination="@id/settingsFragment"-->
+    <!--      app:enterAnim="@anim/anim_fade_in"-->
+    <!--      app:launchSingleTop="true"-->
+    <!--      app:popExitAnim="@anim/anim_fade_out"-->
+    <!--      />-->
+    <!--    <action-->
+    <!--      android:id="@+id/actionListsFragmentToCreateListDialog"-->
+    <!--      app:destination="@id/createListDialog"-->
+    <!--      app:launchSingleTop="true"-->
+    <!--      />-->
   </fragment>
 
   <fragment

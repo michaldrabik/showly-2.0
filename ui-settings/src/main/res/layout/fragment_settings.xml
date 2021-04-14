@@ -11,7 +11,7 @@
   android:overScrollMode="never"
   android:scrollbars="none"
   tools:background="@color/colorBackground"
-  tools:layout_marginTop="-0dp"
+  tools:layout_marginTop="-300dp"
   tools:theme="@style/AppTheme"
   >
 
@@ -315,7 +315,7 @@
     <LinearLayout
       android:id="@+id/settingsMoviesEnabled"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@+id/settingsIncludeSpecials"
+      app:layout_constraintBottom_toTopOf="@+id/settingsNewsEnabled"
       app:layout_constraintEnd_toStartOf="@id/settingsMoviesEnabledSwitch"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsTheme"
@@ -342,6 +342,38 @@
       app:layout_constraintBottom_toBottomOf="@id/settingsMoviesEnabled"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/settingsMoviesEnabled"
+      />
+
+    <LinearLayout
+      android:id="@+id/settingsNewsEnabled"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@+id/settingsIncludeSpecials"
+      app:layout_constraintEnd_toStartOf="@id/settingsNewsEnabledSwitch"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsMoviesEnabled"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsNewsEnabledTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:text="@string/textSettingsNewsEnabledSummary"
+        />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+      android:id="@+id/settingsNewsEnabledSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:checked="true"
+      app:layout_constraintBottom_toBottomOf="@id/settingsNewsEnabled"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsNewsEnabled"
       />
 
     <LinearLayout

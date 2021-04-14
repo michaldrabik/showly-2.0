@@ -72,6 +72,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsToolbar.setNavigationOnClickListener { activity?.onBackPressed() }
     settingsTheme.visibleIf(SHOW_PREMIUM)
     settingsThemeValue.visibleIf(SHOW_PREMIUM)
+    settingsNewsEnabled.visibleIf(SHOW_PREMIUM)
+    settingsNewsEnabledSwitch.visibleIf(SHOW_PREMIUM)
     settingsWidgetsTheme.visibleIf(SHOW_PREMIUM)
     settingsWidgetsThemeValue.visibleIf(SHOW_PREMIUM)
     settingsWidgetsTransparency.visibleIf(SHOW_PREMIUM)
@@ -91,7 +93,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun render(uiModel: SettingsUiModel) {
     uiModel.run {
-      settings?.let { renderSettings(it, moviesEnabled ?: true) }
+      settings?.let { renderSettings(it, moviesEnabled ?: true, newsEnabled ?: false) }
       language?.let { renderLanguage(it) }
       theme?.let { renderTheme(it) }
       themeWidgets?.let { renderWidgetsTheme(it) }
@@ -132,6 +134,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
           settingsTraktQuickRateSwitch,
           settingsTheme,
           settingsThemeValue,
+          settingsNewsEnabled,
+          settingsNewsEnabledSwitch,
           settingsWidgetsTheme,
           settingsWidgetsThemeValue,
           settingsWidgetsTransparency,
@@ -144,7 +148,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
           settingsTraktQuickRateSwitch,
           settingsThemeValue,
           settingsWidgetsThemeValue,
-          settingsWidgetsTransparencyValue
+          settingsWidgetsTransparencyValue,
+          settingsNewsEnabledSwitch
         ).forEach {
           it.isEnabled = isPremium
         }
@@ -153,7 +158,8 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
           settingsTraktQuickRate,
           settingsTheme,
           settingsWidgetsTheme,
-          settingsWidgetsTransparency
+          settingsWidgetsTransparency,
+          settingsNewsEnabled
         ).onClick {
           if (!isPremium) navigateTo(R.id.actionSettingsFragmentToPremium)
         }
@@ -163,7 +169,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     }
   }
 
-  private fun renderSettings(settings: Settings, moviesEnabled: Boolean) {
+  private fun renderSettings(
+    settings: Settings,
+    moviesEnabled: Boolean,
+    newsEnabled: Boolean,
+  ) {
     settingsContent.fadeIn(200)
     settingsRecentShowsAmount.onClick { showRecentShowsDialog(settings) }
     settingsMyShowsSections.onClick { showSectionsDialog(settings) }
@@ -215,6 +225,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsMoviesEnabledSwitch
       .setCheckedSilent(moviesEnabled) { _, isChecked ->
         viewModel.enableMovies(isChecked, requireAppContext())
+      }
+
+    settingsNewsEnabledSwitch
+      .setCheckedSilent(newsEnabled) { _, isChecked ->
+        viewModel.enableNews(isChecked)
       }
 
     settingsWidgetsLabelsSwitch

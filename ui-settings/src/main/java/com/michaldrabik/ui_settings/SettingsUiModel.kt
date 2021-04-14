@@ -22,6 +22,7 @@ data class SettingsUiModel(
   val traktUsername: String? = null,
   val userId: String? = null,
   val moviesEnabled: Boolean? = null,
+  val newsEnabled: Boolean? = null,
   val restartApp: Boolean? = null
 ) : UiModel() {
 
@@ -40,6 +41,7 @@ data class SettingsUiModel(
       traktUsername = newModel.traktUsername ?: traktUsername,
       userId = newModel.userId ?: userId,
       moviesEnabled = newModel.moviesEnabled ?: moviesEnabled,
+      newsEnabled = newModel.newsEnabled ?: newsEnabled,
       restartApp = newModel.restartApp ?: restartApp
     )
 }

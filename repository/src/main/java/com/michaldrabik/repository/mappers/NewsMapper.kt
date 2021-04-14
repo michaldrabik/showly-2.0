@@ -11,6 +11,6 @@ class NewsMapper @Inject constructor() {
     id = input.id,
     title = input.title,
     type = type,
-    createdAt = dateFromMillis(input.created * 1000)
+    createdAt = dateFromMillis(input.created_utc * 1000)
   )
 }

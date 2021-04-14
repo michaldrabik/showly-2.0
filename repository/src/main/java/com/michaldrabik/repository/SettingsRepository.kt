@@ -20,13 +20,14 @@ import javax.inject.Named
 class SettingsRepository @Inject constructor(
   @Named("miscPreferences") private var miscPreferences: SharedPreferences,
   private val database: AppDatabase,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   companion object {
     const val KEY_LANGUAGE = "KEY_LANGUAGE"
     private const val KEY_COUNTRY = "KEY_COUNTRY"
     private const val KEY_MOVIES_ENABLED = "KEY_MOVIES_ENABLED"
+    private const val KEY_NEWS_ENABLED = "KEY_NEWS_ENABLED"
     private const val KEY_MODE = "KEY_MOVIES_MODE"
     private const val KEY_THEME = "KEY_THEME"
     private const val KEY_THEME_WIDGET = "KEY_THEME_WIDGET"
@@ -65,6 +66,10 @@ class SettingsRepository @Inject constructor(
   var isMoviesEnabled: Boolean
     get() = miscPreferences.getBoolean(KEY_MOVIES_ENABLED, true)
     set(value) = miscPreferences.edit(true) { putBoolean(KEY_MOVIES_ENABLED, value) }
+
+  var isNewsEnabled: Boolean
+    get() = miscPreferences.getBoolean(KEY_NEWS_ENABLED, false)
+    set(value) = miscPreferences.edit(true) { putBoolean(KEY_NEWS_ENABLED, value) }
 
   var language: String
     get() = miscPreferences.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
@@ -116,6 +121,7 @@ class SettingsRepository @Inject constructor(
     theme = MODE_NIGHT_YES
     widgetsTheme = MODE_NIGHT_YES
     widgetsTransparency = 100
+    isNewsEnabled = false
   }
 
   suspend fun clearLanguageLogs() {

@@ -126,6 +126,14 @@ class SettingsMainCase @Inject constructor(
     announcementManager.refreshMoviesAnnouncements(context.applicationContext)
   }
 
+  fun isNewsEnabled() = settingsRepository.isNewsEnabled
+
+  fun enableNews(enable: Boolean) {
+    settingsRepository.run {
+      isNewsEnabled = enable
+    }
+  }
+
   suspend fun enableWidgetsTitles(enable: Boolean, context: Context) {
     val settings = settingsRepository.load()
     settings.let {

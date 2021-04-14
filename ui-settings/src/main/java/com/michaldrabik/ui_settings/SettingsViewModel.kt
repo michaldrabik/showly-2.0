@@ -30,7 +30,7 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
   private val mainCase: SettingsMainCase,
   private val traktCase: SettingsTraktCase,
-  private val themesCase: SettingsThemesCase
+  private val themesCase: SettingsThemesCase,
 ) : BaseViewModel<SettingsUiModel>() {
 
   fun loadSettings() {
@@ -126,6 +126,15 @@ class SettingsViewModel @Inject constructor(
       refreshSettings(restartApp = true)
     }
     Analytics.logSettingsMoviesEnabled(enable)
+  }
+
+  fun enableNews(enable: Boolean) {
+    viewModelScope.launch {
+      mainCase.enableNews(enable)
+      delay(250)
+      refreshSettings(restartApp = true)
+    }
+    Analytics.logSettingsNewsEnabled(enable)
   }
 
   fun enableWidgetsTitles(enable: Boolean, context: Context) {
@@ -249,6 +258,7 @@ class SettingsViewModel @Inject constructor(
       country = mainCase.getCountry(),
       dateFormat = mainCase.getDateFormat(),
       moviesEnabled = mainCase.isMoviesEnabled(),
+      newsEnabled = mainCase.isNewsEnabled(),
       isSignedInTrakt = traktCase.isTraktAuthorized(),
       isPremium = mainCase.isPremium(),
       traktUsername = traktCase.getTraktUsername(),
