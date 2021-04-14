@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuNews">News</string>
+  <string name="textNewsEmpty">There are no news at the moment.</string>
+</resources>

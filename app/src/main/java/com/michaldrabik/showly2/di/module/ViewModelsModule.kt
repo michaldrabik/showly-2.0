@@ -20,6 +20,7 @@ import com.michaldrabik.ui_my_shows.archive.ArchiveViewModel
 import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
 import com.michaldrabik.ui_my_shows.myshows.MyShowsViewModel
 import com.michaldrabik.ui_my_shows.watchlist.WatchlistViewModel
+import com.michaldrabik.ui_news.NewsViewModel
 import com.michaldrabik.ui_premium.PremiumViewModel
 import com.michaldrabik.ui_progress.calendar.ProgressCalendarViewModel
 import com.michaldrabik.ui_progress.main.ProgressViewModel
@@ -201,4 +202,9 @@ abstract class ViewModelsModule {
   @IntoMap
   @ViewModelKey(StatisticsMoviesViewModel::class)
   abstract fun bindStatisticsMoviesViewModel(viewModel: StatisticsMoviesViewModel): ViewModel
+
+  @Binds
+  @IntoMap
+  @ViewModelKey(NewsViewModel::class)
+  abstract fun bindNewsViewModel(viewModel: NewsViewModel): ViewModel
 }

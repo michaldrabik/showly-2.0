@@ -13,9 +13,9 @@ import javax.inject.Inject
 
 @AppScope
 class NewsRepository @Inject constructor(
-  val cloud: Cloud,
-  val database: AppDatabase,
-  val mappers: Mappers,
+  private val cloud: Cloud,
+  private val database: AppDatabase,
+  private val mappers: Mappers,
 ) {
 
   private var showsNewsCache: List<NewsItem>? = null

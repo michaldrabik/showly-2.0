@@ -27,6 +27,8 @@ import com.michaldrabik.ui_my_movies.di.UiMyMoviesComponent
 import com.michaldrabik.ui_my_movies.di.UiMyMoviesComponentProvider
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
+import com.michaldrabik.ui_news.di.UiNewsComponent
+import com.michaldrabik.ui_news.di.UiNewsComponentProvider
 import com.michaldrabik.ui_premium.di.UiPremiumComponent
 import com.michaldrabik.ui_premium.di.UiPremiumComponentProvider
 import com.michaldrabik.ui_progress.di.UiProgressComponent
@@ -69,6 +71,7 @@ abstract class DiActivity :
   UiSearchComponentProvider,
   UiSettingsComponentProvider,
   UiPostCommentComponentProvider,
+  UiNewsComponentProvider,
   UiPremiumComponentProvider {
 
   private lateinit var uiDiscoverComponent: UiDiscoverComponent
@@ -93,6 +96,7 @@ abstract class DiActivity :
   private lateinit var uiProgressMoviesComponent: UiProgressMoviesComponent
   private lateinit var uiPremiumComponent: UiPremiumComponent
   private lateinit var uiPostCommentComponent: UiPostCommentComponent
+  private lateinit var uiNewsComponent: UiNewsComponent
 
   override fun provideDiscoverComponent() = uiDiscoverComponent
   override fun provideDiscoverMoviesComponent() = uiDiscoverMoviesComponent
@@ -116,6 +120,7 @@ abstract class DiActivity :
   override fun provideListDetailsComponent() = uiListDetailsComponent
   override fun provideCreateListComponent() = uiCreateListComponent
   override fun provideManageListsComponent() = uiManageListComponent
+  override fun provideNewsComponent() = uiNewsComponent
 
   protected open fun setupComponents() {
     uiDiscoverComponent = appComponent().uiDiscoverComponent().create()
@@ -140,5 +145,6 @@ abstract class DiActivity :
     uiProgressMoviesComponent = appComponent().uiProgressMoviesComponent().create()
     uiPremiumComponent = appComponent().uiPremiumMoviesComponent().create()
     uiPostCommentComponent = appComponent().uiPostCommentComponent().create()
+    uiNewsComponent = appComponent().uiNewsComponent().create()
   }
 }

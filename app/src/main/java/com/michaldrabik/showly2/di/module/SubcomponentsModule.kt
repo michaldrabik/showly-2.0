@@ -14,6 +14,7 @@ import com.michaldrabik.ui_lists.manage.di.UiManageListsComponent
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponent
 import com.michaldrabik.ui_my_movies.di.UiMyMoviesComponent
 import com.michaldrabik.ui_my_shows.di.UiMyShowsComponent
+import com.michaldrabik.ui_news.di.UiNewsComponent
 import com.michaldrabik.ui_premium.di.UiPremiumComponent
 import com.michaldrabik.ui_progress.di.UiProgressComponent
 import com.michaldrabik.ui_progress_movies.di.UiProgressMoviesComponent
@@ -51,6 +52,7 @@ import dagger.Module
     UiListDetailsComponent::class,
     UiCreateListComponent::class,
     UiManageListsComponent::class,
+    UiNewsComponent::class,
     ServiceComponent::class
   ]
 )
