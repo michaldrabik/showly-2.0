@@ -17,7 +17,9 @@ class NewsViewModel @Inject constructor(
   fun loadItems() {
     viewModelScope.launch {
       try {
-        uiState = NewsUiModel(isLoading = true)
+        val cachedItems = loadNewsCase.preloadItems()
+        uiState = NewsUiModel(items = cachedItems, isLoading = true)
+
         val items = loadNewsCase.loadItems()
         uiState = NewsUiModel(items = items, isLoading = false)
       } catch (error: Throwable) {

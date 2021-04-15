@@ -2,25 +2,33 @@ package com.michaldrabik.ui_news
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
-import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventObserver
+import com.michaldrabik.ui_base.utilities.extensions.addDivider
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.enableUi
+import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_news.di.UiNewsComponentProvider
+import com.michaldrabik.ui_news.recycler.NewsAdapter
+import kotlinx.android.synthetic.main.fragment_news.*
 
 class NewsFragment :
   BaseFragment<NewsViewModel>(R.layout.fragment_news),
-  OnTraktSyncListener,
   OnTabReselectedListener,
   EventObserver {
 
   override val viewModel by viewModels<NewsViewModel> { viewModelFactory }
 
-  //  private var adapter: ListsAdapter? = null
+  private var adapter: NewsAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
 
   private var searchViewTranslation = 0F
@@ -47,7 +55,6 @@ class NewsFragment :
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it) })
-//      loadItems(resetScroll = false)
     }
   }
 
@@ -105,32 +112,25 @@ class NewsFragment :
   }
 
   private fun setupStatusBar() {
-//    fragmentListsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
-//      val statusBarSize = insets.systemWindowInsetTop
-//      fragmentListsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
-//      fragmentListsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
-//      fragmentListsModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
-//      fragmentListsSortButton.updateTopMargin(dimenToPx(R.dimen.listsSortIconPadding) + statusBarSize)
-//      fragmentListsEmptyView.updateTopMargin(statusBarSize)
-//    }
+    fragmentNewsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
+      val statusBarSize = insets.systemWindowInsetTop
+      fragmentNewsRecycler
+        .updatePadding(top = statusBarSize + dimenToPx(R.dimen.newsRecyclerTopPadding))
+    }
   }
 
   private fun setupRecycler() {
-//    layoutManager = LinearLayoutManager(context, VERTICAL, false)
-//    adapter = ListsAdapter().apply {
-//      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
-//      itemClickListener = { openListDetails(it) }
-//      itemsChangedListener = { scrollToTop(smooth = false) }
-//      missingImageListener = { item, itemImage, force ->
-//        viewModel.loadMissingImage(item, itemImage, force)
-//      }
-//    }
-//    fragmentListsRecycler.apply {
-//      adapter = this@NewsFragment.adapter
-//      layoutManager = this@NewsFragment.layoutManager
-//      (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
-//      setHasFixedSize(true)
-//    }
+    layoutManager = LinearLayoutManager(context, VERTICAL, false)
+    adapter = NewsAdapter().apply {
+      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+    }
+    fragmentNewsRecycler.apply {
+      adapter = this@NewsFragment.adapter
+      layoutManager = this@NewsFragment.layoutManager
+      (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
+      setHasFixedSize(true)
+      addDivider(R.drawable.divider_news, VERTICAL)
+    }
   }
 
   private fun setupBackPressed() {
@@ -147,23 +147,11 @@ class NewsFragment :
 
   private fun render(uiModel: NewsUiModel) {
     uiModel.run {
-//      items?.let {
-//        val isSearching = fragmentListsSearchView.isSearching
-//        fragmentListsEmptyView.fadeIf(it.isEmpty() && !isSearching)
-//        fragmentListsSortButton.visibleIf(it.isNotEmpty())
-//        fragmentListsSortButton.isEnabled = it.isNotEmpty() && !isSearching
-//
-//        if (!isSearching) {
-//          fragmentListsSearchView.isClickable = it.isNotEmpty()
-//          fragmentListsSearchView.isEnabled = it.isNotEmpty()
-//        }
-//
-//        val resetScroll = resetScroll?.consume() == true
-//        adapter?.setItems(it, resetScroll)
-//      }
-//      sortOrderEvent?.let { event ->
-//        event.consume()?.let { showSortOrderDialog(it) }
-//      }
+      items?.let {
+        fragmentNewsRecycler.fadeIf(it.isNotEmpty())
+        fragmentNewsEmptyView.fadeIf(it.isEmpty())
+        adapter?.setItems(it)
+      }
     }
   }
 
@@ -176,19 +164,10 @@ class NewsFragment :
 //    fragmentListsModeTabs.animate().translationY(0F).start()
 //    fragmentListsSearchView.animate().translationY(0F).start()
 //    fragmentListsSortButton.animate().translationY(0F).start()
-//    when {
-//      smooth -> fragmentListsRecycler.smoothScrollToPosition(0)
-//      else -> fragmentListsRecycler.scrollToPosition(0)
-//    }
-  }
-
-  override fun onTraktSyncProgress() {
-//    fragmentListsSearchView.setTraktProgress(true)
-  }
-
-  override fun onTraktSyncComplete() {
-//    fragmentListsSearchView.setTraktProgress(false)
-//    viewModel.loadItems(resetScroll = true)
+    when {
+      smooth -> fragmentNewsRecycler.smoothScrollToPosition(0)
+      else -> fragmentNewsRecycler.scrollToPosition(0)
+    }
   }
 
   override fun onNewEvent(event: Event) {
@@ -210,8 +189,8 @@ class NewsFragment :
   override fun onTabReselected() = scrollToTop()
 
   override fun onDestroyView() {
-//    adapter = null
-//    layoutManager = null
+    adapter = null
+    layoutManager = null
     super.onDestroyView()
   }
 }

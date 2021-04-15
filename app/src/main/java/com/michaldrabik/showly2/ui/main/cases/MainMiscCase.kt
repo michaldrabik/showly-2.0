@@ -4,6 +4,7 @@ import android.content.Context
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
@@ -26,7 +27,10 @@ class MainMiscCase @Inject constructor(
 
   fun moviesEnabled() = settingsRepository.isMoviesEnabled
 
-  fun newsEnabled() = settingsRepository.isNewsEnabled && settingsRepository.isPremium
+  fun newsEnabled(): Boolean {
+    if (BuildConfig.DEBUG) return true
+    return settingsRepository.isNewsEnabled && settingsRepository.isPremium
+  }
 
   fun clear() {
     ratingsRepository.clear()

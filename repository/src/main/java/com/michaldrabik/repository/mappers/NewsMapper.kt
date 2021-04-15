@@ -10,7 +10,10 @@ class NewsMapper @Inject constructor() {
   fun fromNetwork(input: RedditItem, type: NewsItem.Type) = NewsItem(
     id = input.id,
     title = input.title,
+    url = input.url,
     type = type,
+    score = input.score,
+    image = input.findImageUrl()?.replace("&amp;", "&"),
     createdAt = dateFromMillis(input.created_utc * 1000)
   )
 }

@@ -27,7 +27,7 @@ object Config {
   const val REDDIT_CLIENT_ID = BuildConfig.REDDIT_CLIENT_ID
   const val REDDIT_GRANT_TYPE = "https://oauth.reddit.com/grants/installed_client"
   const val REDDIT_DEVICE_ID = "DO_NOT_TRACK_THIS_DEVICE"
-  const val REDDIT_LIST_LIMIT = 50
+  const val REDDIT_LIST_LIMIT = 100
 
   const val AWS_BASE_URL = "https://showly2.s3.eu-west-2.amazonaws.com/"
 }

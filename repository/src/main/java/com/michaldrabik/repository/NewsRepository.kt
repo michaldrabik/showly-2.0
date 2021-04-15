@@ -24,6 +24,14 @@ class NewsRepository @Inject constructor(
   private var moviesNewsCache: List<NewsItem>? = null
   private var moviesNewsCacheTimestamp = 0L
 
+  fun getCachedShowsNews(): List<NewsItem> {
+    return showsNewsCache?.toList() ?: emptyList()
+  }
+
+  fun getCachedMoviesNews(): List<NewsItem> {
+    return moviesNewsCache?.toList() ?: emptyList()
+  }
+
   suspend fun loadShowsNews(token: RedditAuthToken): List<NewsItem> {
     val isCacheValid = nowUtcMillis() - showsNewsCacheTimestamp <= TimeUnit.SECONDS.toMillis(15)
     if (showsNewsCache != null && isCacheValid) {

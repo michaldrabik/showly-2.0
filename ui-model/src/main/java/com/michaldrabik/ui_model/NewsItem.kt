@@ -5,7 +5,10 @@ import org.threeten.bp.ZonedDateTime
 data class NewsItem(
   val id: String,
   val title: String,
+  val url: String,
   val type: Type,
+  val image: String?,
+  val score: Long,
   val createdAt: ZonedDateTime,
 ) {
 
@@ -13,5 +16,10 @@ data class NewsItem(
     SHOW("show"),
     MOVIE("movie")
   }
+
+  val isVideo =
+    url.startsWith("https://www.youtu") ||
+      url.startsWith("https://youtu") ||
+      url.startsWith("www.youtu")
 }
 
