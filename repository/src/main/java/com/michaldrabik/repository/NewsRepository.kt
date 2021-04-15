@@ -24,13 +24,13 @@ class NewsRepository @Inject constructor(
   private var moviesNewsCache: List<NewsItem>? = null
   private var moviesNewsCacheTimestamp = 0L
 
-  suspend fun loadShowsNews(): List<NewsItem> {
+  suspend fun loadShowsNews(token: RedditAuthToken): List<NewsItem> {
     val isCacheValid = nowUtcMillis() - showsNewsCacheTimestamp <= TimeUnit.SECONDS.toMillis(15)
     if (showsNewsCache != null && isCacheValid) {
       return showsNewsCache!!.toList()
     }
 
-    val remoteItems = cloud.redditApi.fetchTelevision()
+    val remoteItems = cloud.redditApi.fetchTelevision(token.token)
       .filterNot { it.is_self }
       .map { mappers.news.fromNetwork(it, SHOW) }
 
@@ -40,13 +40,13 @@ class NewsRepository @Inject constructor(
     return showsNewsCache?.toList() ?: emptyList()
   }
 
-  suspend fun loadMoviesNews(): List<NewsItem> {
+  suspend fun loadMoviesNews(token: RedditAuthToken): List<NewsItem> {
     val isCacheValid = nowUtcMillis() - moviesNewsCacheTimestamp <= TimeUnit.SECONDS.toMillis(15)
     if (moviesNewsCache != null && isCacheValid) {
       return moviesNewsCache!!.toList()
     }
 
-    val remoteItems = cloud.redditApi.fetchMovies()
+    val remoteItems = cloud.redditApi.fetchMovies(token.token)
       .filterNot { it.is_self }
       .map { mappers.news.fromNetwork(it, MOVIE) }
 

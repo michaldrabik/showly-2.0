@@ -2,6 +2,7 @@ package com.michaldrabik.data_remote.di.module
 
 import com.michaldrabik.data_remote.Config.AWS_BASE_URL
 import com.michaldrabik.data_remote.Config.REDDIT_BASE_URL
+import com.michaldrabik.data_remote.Config.REDDIT_OAUTH_BASE_URL
 import com.michaldrabik.data_remote.Config.TMDB_BASE_URL
 import com.michaldrabik.data_remote.Config.TRAKT_BASE_URL
 import com.michaldrabik.data_remote.di.CloudScope
@@ -57,7 +58,7 @@ object RetrofitModule {
 
   @Provides
   @CloudScope
-  @Named("retrofitReddit")
+  @Named("retrofitRedditAuth")
   fun providesRedditRetrofit(
     @Named("okHttpReddit") okHttpClient: OkHttpClient,
     moshi: Moshi,
@@ -67,6 +68,23 @@ object RetrofitModule {
       .addConverterFactory(MoshiConverterFactory.create(moshi))
       .baseUrl(REDDIT_BASE_URL)
       .build()
+
+  @Provides
+  @CloudScope
+  @Named("retrofitRedditListing")
+  fun providesRedditRetrofitOAuth(
+    @Named("okHttpReddit") okHttpClient: OkHttpClient,
+    moshiConverter: MoshiConverterFactory,
+  ): Retrofit =
+    Retrofit.Builder()
+      .client(okHttpClient)
+      .addConverterFactory(moshiConverter)
+      .baseUrl(REDDIT_OAUTH_BASE_URL)
+      .build()
+
+  @Provides
+  @CloudScope
+  fun providesMoshiFactory(moshi: Moshi): MoshiConverterFactory = MoshiConverterFactory.create(moshi)
 
   @Provides
   @CloudScope

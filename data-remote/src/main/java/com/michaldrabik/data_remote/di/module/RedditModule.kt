@@ -1,7 +1,9 @@
 package com.michaldrabik.data_remote.di.module
 
 import com.michaldrabik.data_remote.di.CloudScope
-import com.michaldrabik.data_remote.reddit.api.RedditApi
+import com.michaldrabik.data_remote.reddit.RedditInterceptor
+import com.michaldrabik.data_remote.reddit.api.RedditAuthApi
+import com.michaldrabik.data_remote.reddit.api.RedditListingApi
 import com.michaldrabik.data_remote.reddit.api.RedditService
 import dagger.Module
 import dagger.Provides
@@ -13,6 +15,15 @@ object RedditModule {
 
   @Provides
   @CloudScope
-  fun providesRedditApi(@Named("retrofitReddit") retrofit: Retrofit): RedditApi =
-    RedditApi(retrofit.create(RedditService::class.java))
+  fun providesRedditAuthApi(@Named("retrofitRedditAuth") retrofit: Retrofit): RedditAuthApi =
+    RedditAuthApi(retrofit.create(RedditService::class.java))
+
+  @Provides
+  @CloudScope
+  fun providesRedditListingApi(@Named("retrofitRedditListing") retrofit: Retrofit): RedditListingApi =
+    RedditListingApi(retrofit.create(RedditService::class.java))
+
+  @Provides
+  @CloudScope
+  fun providesRedditInterceptor() = RedditInterceptor()
 }

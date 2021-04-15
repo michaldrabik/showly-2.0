@@ -2,6 +2,7 @@ package com.michaldrabik.data_remote.di.module
 
 import com.michaldrabik.data_remote.BuildConfig
 import com.michaldrabik.data_remote.di.CloudScope
+import com.michaldrabik.data_remote.reddit.RedditInterceptor
 import com.michaldrabik.data_remote.tmdb.TmdbInterceptor
 import com.michaldrabik.data_remote.trakt.TraktInterceptor
 import dagger.Module
@@ -52,8 +53,10 @@ object OkHttpModule {
   @Named("okHttpReddit")
   fun providesRedditOkHttp(
     httpLoggingInterceptor: HttpLoggingInterceptor,
+    redditInterceptor: RedditInterceptor,
   ) = createBaseOkHttpClient()
     .addInterceptor(httpLoggingInterceptor)
+    .addInterceptor(redditInterceptor)
     .build()
 
   @Provides

@@ -1,17 +1,24 @@
 package com.michaldrabik.data_remote.reddit.api
 
-import com.michaldrabik.data_remote.Config.REDDIT_DEFAULT_LIMIT
-import com.michaldrabik.data_remote.reddit.model.RedditItem
+import com.michaldrabik.data_remote.Config
+import com.michaldrabik.data_remote.di.CloudScope
+import javax.inject.Inject
 
-class RedditApi(private val service: RedditService) {
+@CloudScope
+class RedditApi @Inject constructor(
+  private val authApi: RedditAuthApi,
+  private val listingApi: RedditListingApi,
+) {
 
-  suspend fun fetchTelevision(limit: Int = REDDIT_DEFAULT_LIMIT): List<RedditItem> {
-    val response = service.fetchTelevision(limit)
-    return response.data.children.map { it.data }
-  }
+  suspend fun fetchAuthToken() = authApi.fetchAuthToken()
 
-  suspend fun fetchMovies(limit: Int = REDDIT_DEFAULT_LIMIT): List<RedditItem> {
-    val response = service.fetchMovies(limit)
-    return response.data.children.map { it.data }
-  }
+  suspend fun fetchTelevision(
+    token: String,
+    limit: Int = Config.REDDIT_LIST_LIMIT,
+  ) = listingApi.fetchTelevision(token, limit)
+
+  suspend fun fetchMovies(
+    token: String,
+    limit: Int = Config.REDDIT_LIST_LIMIT,
+  ) = listingApi.fetchMovies(token, limit)
 }
