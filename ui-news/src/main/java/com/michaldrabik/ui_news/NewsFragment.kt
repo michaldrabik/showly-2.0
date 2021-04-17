@@ -17,6 +17,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.enableUi
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_news.di.UiNewsComponentProvider
 import com.michaldrabik.ui_news.recycler.NewsAdapter
 import kotlinx.android.synthetic.main.fragment_news.*
@@ -31,9 +32,8 @@ class NewsFragment :
   private var adapter: NewsAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
 
-  private var searchViewTranslation = 0F
+  private var headerTranslation = 0F
   private var tabsTranslation = 0F
-  private var isFabHidden = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireActivity() as UiNewsComponentProvider).provideNewsComponent().inject(this)
@@ -41,7 +41,7 @@ class NewsFragment :
     setupBackPressed()
 
     savedInstanceState?.let {
-//      searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
+      headerTranslation = it.getFloat("ARG_HEADER_POSITION")
 //      tabsTranslation = it.getFloat("ARG_TABS_POSITION")
 //      isFabHidden = it.getBoolean("ARG_FAB_HIDDEN")
     }
@@ -65,7 +65,7 @@ class NewsFragment :
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-//    outState.putFloat("ARG_SEARCH_POSITION", fragmentListsSearchView?.translationY ?: 0F)
+    outState.putFloat("ARG_HEADER_POSITION", fragmentNewsHeaderView?.translationY ?: 0F)
 //    outState.putFloat("ARG_TABS_POSITION", fragmentListsModeTabs?.translationY ?: 0F)
 //    outState.putBoolean("ARG_FAB_HIDDEN", fragmentListsCreateListButton?.visibility != VISIBLE)
   }
@@ -73,7 +73,7 @@ class NewsFragment :
   override fun onPause() {
     enableUi()
 //    tabsTranslation = fragmentListsModeTabs.translationY
-//    searchViewTranslation = fragmentListsSearchView.translationY
+    headerTranslation = fragmentNewsHeaderView.translationY
     super.onPause()
   }
 
@@ -106,7 +106,7 @@ class NewsFragment :
 //      }
 //    }
 
-//    fragmentListsSearchView.translationY = searchViewTranslation
+    fragmentNewsHeaderView.translationY = headerTranslation
 //    fragmentListsModeTabs.translationY = tabsTranslation
 //    fragmentListsSortButton.translationY = tabsTranslation
   }
@@ -114,8 +114,8 @@ class NewsFragment :
   private fun setupStatusBar() {
     fragmentNewsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.systemWindowInsetTop
-      fragmentNewsRecycler
-        .updatePadding(top = statusBarSize + dimenToPx(R.dimen.newsRecyclerTopPadding))
+      fragmentNewsRecycler.updatePadding(top = statusBarSize + dimenToPx(R.dimen.newsRecyclerTopPadding))
+      fragmentNewsHeaderView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
     }
   }
 
@@ -162,7 +162,7 @@ class NewsFragment :
 
   private fun scrollToTop(smooth: Boolean = true) {
 //    fragmentListsModeTabs.animate().translationY(0F).start()
-//    fragmentListsSearchView.animate().translationY(0F).start()
+    fragmentNewsHeaderView.animate().translationY(0F).start()
 //    fragmentListsSortButton.animate().translationY(0F).start()
     when {
       smooth -> fragmentNewsRecycler.smoothScrollToPosition(0)

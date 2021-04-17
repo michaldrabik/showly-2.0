@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/viewNewsHeaderRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  >
+
+  <TextView
+    android:id="@+id/viewNewsHeaderText"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical|start"
+    android:text="@string/menuNews"
+    android:textAlignment="viewStart"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="24sp"
+    android:textStyle="bold"
+    />
+
+  <ImageView
+    android:id="@+id/searchSettingsIcon"
+    android:layout_width="22dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="end"
+    app:srcCompat="@drawable/ic_settings"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
+</FrameLayout>

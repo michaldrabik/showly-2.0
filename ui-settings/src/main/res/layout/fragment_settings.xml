@@ -346,7 +346,7 @@
 
     <LinearLayout
       android:id="@+id/settingsNewsEnabled"
-      style="@style/Settings.ItemLayout"
+      style="@style/Settings.ItemLayoutNoRipple"
       app:layout_constraintBottom_toTopOf="@+id/settingsIncludeSpecials"
       app:layout_constraintEnd_toStartOf="@id/settingsNewsEnabledSwitch"
       app:layout_constraintStart_toStartOf="parent"

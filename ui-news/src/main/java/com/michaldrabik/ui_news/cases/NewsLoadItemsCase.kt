@@ -9,6 +9,7 @@ import com.michaldrabik.ui_news.recycler.NewsListItem
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
 
 @AppScope
@@ -27,9 +28,7 @@ class NewsLoadItemsCase @Inject constructor(
     val (showsNews, moviesNews) = awaitAll(showsNewsAsync, moviesNewsAsync)
     val dateFormat = dateFormatProvider.loadShortDayFormat()
 
-    (showsNews + moviesNews)
-      .sortedWith(newsComparator)
-      .map { NewsListItem(it, dateFormat) }
+    prepareListItems(showsNews, moviesNews, dateFormat)
   }
 
   suspend fun loadItems() = coroutineScope {
@@ -41,9 +40,16 @@ class NewsLoadItemsCase @Inject constructor(
     val (showsNews, moviesNews) = awaitAll(showsNewsAsync, moviesNewsAsync)
     val dateFormat = dateFormatProvider.loadShortDayFormat()
 
-    (showsNews + moviesNews)
-      .sortedWith(newsComparator)
-      .map { NewsListItem(it, dateFormat) }
+    prepareListItems(showsNews, moviesNews, dateFormat)
   }
+
+  private fun prepareListItems(
+    showsNews: List<NewsItem>,
+    moviesNews: List<NewsItem>,
+    dateFormat: DateTimeFormatter,
+  ) = (showsNews + moviesNews)
+    .sortedWith(newsComparator)
+    .distinctBy { it.url }
+    .map { NewsListItem(it, dateFormat) }
 
 }
