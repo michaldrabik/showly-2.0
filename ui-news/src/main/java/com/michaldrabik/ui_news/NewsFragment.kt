@@ -41,6 +41,8 @@ class NewsFragment :
 
   override val viewModel by viewModels<NewsViewModel> { viewModelFactory }
 
+  private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.newsSwipeRefreshEndOffset) }
+
   private var tabsClient: CustomTabsClient? = null
   private var adapter: NewsAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
@@ -61,6 +63,7 @@ class NewsFragment :
     setupView()
     setupStatusBar()
     setupRecycler()
+    setupSwipeRefresh()
     setupCustomTabs()
 
     viewModel.run {
@@ -110,6 +113,7 @@ class NewsFragment :
       val statusBarSize = insets.systemWindowInsetTop
       fragmentNewsRecycler.updatePadding(top = statusBarSize + dimenToPx(R.dimen.newsRecyclerTopPadding))
       fragmentNewsHeaderView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
+      fragmentNewsSwipeRefresh.setProgressViewOffset(true, 0, swipeRefreshEndOffset + statusBarSize)
     }
   }
 
@@ -129,12 +133,25 @@ class NewsFragment :
     }
   }
 
+  private fun setupSwipeRefresh() =
+    with(fragmentNewsSwipeRefresh) {
+      val color = requireContext().colorFromAttr(R.attr.colorAccent)
+      setProgressBackgroundColorSchemeColor(requireContext().colorFromAttr(R.attr.colorSearchViewBackground))
+      setColorSchemeColors(color, color, color)
+      setOnRefreshListener {
+        viewModel.loadItems(forceRefresh = true)
+      }
+    }
+
   private fun render(uiModel: NewsUiModel) {
     uiModel.run {
       items?.let {
         fragmentNewsRecycler.fadeIf(it.isNotEmpty())
         fragmentNewsEmptyView.fadeIf(it.isEmpty())
         adapter?.setItems(it)
+      }
+      isLoading?.let {
+        fragmentNewsSwipeRefresh.isRefreshing = it
       }
     }
   }

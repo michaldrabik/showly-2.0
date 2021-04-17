@@ -27,13 +27,15 @@ class NewsRepository @Inject constructor(
     database.newsDao().getAllByType(type.slug)
       .map { mappers.news.fromDatabase(it) }
 
-  suspend fun loadShowsNews(token: RedditAuthToken): List<NewsItem> {
-    val cachedNews = getCachedNews(SHOW)
-    val cacheTimestamp = cachedNews.firstOrNull()?.createdAt?.toMillis() ?: 0
+  suspend fun loadShowsNews(token: RedditAuthToken, forceRefresh: Boolean): List<NewsItem> {
+    if (!forceRefresh) {
+      val cachedNews = getCachedNews(SHOW)
+      val cacheTimestamp = cachedNews.firstOrNull()?.createdAt?.toMillis() ?: 0
 
-    val isCacheValid = nowUtcMillis() - cacheTimestamp <= TimeUnit.MINUTES.toMillis(VALID_CACHE_MINUTES)
-    if (isCacheValid && getCachedNews(SHOW).isNotEmpty()) {
-      return cachedNews.toList()
+      val isCacheValid = nowUtcMillis() - cacheTimestamp <= TimeUnit.MINUTES.toMillis(VALID_CACHE_MINUTES)
+      if (isCacheValid && getCachedNews(SHOW).isNotEmpty()) {
+        return cachedNews.toList()
+      }
     }
 
     val remoteItems = cloud.redditApi.fetchTelevision(token.token)
@@ -46,13 +48,15 @@ class NewsRepository @Inject constructor(
     return remoteItems.toList()
   }
 
-  suspend fun loadMoviesNews(token: RedditAuthToken): List<NewsItem> {
-    val cachedNews = getCachedNews(MOVIE)
-    val cacheTimestamp = cachedNews.firstOrNull()?.createdAt?.toMillis() ?: 0
+  suspend fun loadMoviesNews(token: RedditAuthToken, forceRefresh: Boolean): List<NewsItem> {
+    if (!forceRefresh) {
+      val cachedNews = getCachedNews(MOVIE)
+      val cacheTimestamp = cachedNews.firstOrNull()?.createdAt?.toMillis() ?: 0
 
-    val isCacheValid = nowUtcMillis() - cacheTimestamp <= TimeUnit.MINUTES.toMillis(VALID_CACHE_MINUTES)
-    if (isCacheValid && getCachedNews(MOVIE).isNotEmpty()) {
-      return cachedNews.toList()
+      val isCacheValid = nowUtcMillis() - cacheTimestamp <= TimeUnit.MINUTES.toMillis(VALID_CACHE_MINUTES)
+      if (isCacheValid && getCachedNews(MOVIE).isNotEmpty()) {
+        return cachedNews.toList()
+      }
     }
 
     val remoteItems = cloud.redditApi.fetchMovies(token.token)

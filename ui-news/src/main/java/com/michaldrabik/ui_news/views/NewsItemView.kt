@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Build
 import android.os.Build.VERSION_CODES
 import android.text.Html
+import android.text.format.DateUtils
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -15,6 +16,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.toLocalZone
+import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
@@ -29,6 +31,7 @@ import com.michaldrabik.ui_model.NewsItem.Type
 import com.michaldrabik.ui_news.R
 import com.michaldrabik.ui_news.recycler.NewsListItem
 import kotlinx.android.synthetic.main.view_news_item.view.*
+import java.util.Locale
 
 @SuppressLint("SetTextI18n")
 class NewsItemView : FrameLayout {
@@ -67,8 +70,10 @@ class NewsItemView : FrameLayout {
       Build.VERSION.SDK_INT >= VERSION_CODES.N -> Html.fromHtml(item.item.title, Html.FROM_HTML_MODE_LEGACY)
       else -> Html.fromHtml(item.item.title)
     }
-    newsItemHeader.text = "~1 day ago"
-    newsItemSubheader.text = item.dateFormat.format(item.item.datedAt.toLocalZone()).capitalizeWords()
+
+    val relativeTIme = DateUtils.getRelativeTimeSpanString(item.item.datedAt.toMillis()).toString().toLowerCase(Locale.ROOT)
+    newsItemHeader.text = item.dateFormat.format(item.item.datedAt.toLocalZone()).capitalizeWords()
+    newsItemSubheader.text = "~ $relativeTIme"
 
     loadImage(item)
   }

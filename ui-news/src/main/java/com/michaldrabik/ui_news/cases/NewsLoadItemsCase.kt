@@ -31,11 +31,11 @@ class NewsLoadItemsCase @Inject constructor(
     prepareListItems(showsNews, moviesNews, dateFormat)
   }
 
-  suspend fun loadItems() = coroutineScope {
+  suspend fun loadItems(forceRefresh: Boolean) = coroutineScope {
     val token = userManager.checkAuthorization()
 
-    val showsNewsAsync = async { newsRepository.loadShowsNews(token) }
-    val moviesNewsAsync = async { newsRepository.loadMoviesNews(token) }
+    val showsNewsAsync = async { newsRepository.loadShowsNews(token, forceRefresh) }
+    val moviesNewsAsync = async { newsRepository.loadMoviesNews(token, forceRefresh) }
 
     val (showsNews, moviesNews) = awaitAll(showsNewsAsync, moviesNewsAsync)
     val dateFormat = dateFormatProvider.loadShortDayFormat()
@@ -48,6 +48,7 @@ class NewsLoadItemsCase @Inject constructor(
     moviesNews: List<NewsItem>,
     dateFormat: DateTimeFormatter,
   ) = (showsNews + moviesNews)
+    .filter { it.score > 10 }
     .sortedWith(newsComparator)
     .distinctBy { it.url }
     .map { NewsListItem(it, dateFormat) }

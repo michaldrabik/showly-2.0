@@ -10,20 +10,28 @@
   tools:theme="@style/AppTheme"
   >
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/fragmentNewsRecycler"
-    style="@style/ScrollbarsStyle"
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/fragmentNewsSwipeRefresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    android:clipToPadding="false"
-    android:overScrollMode="never"
-    android:paddingTop="@dimen/newsRecyclerTopPadding"
-    android:paddingBottom="@dimen/newsRecyclerBottomPadding"
-    android:scrollbars="vertical"
-    android:visibility="gone"
-    tools:visibility="visible"
-    />
+    android:layout_height="wrap_content"
+    >
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/fragmentNewsRecycler"
+      style="@style/ScrollbarsStyle"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@android:color/transparent"
+      android:clipToPadding="false"
+      android:overScrollMode="never"
+      android:paddingTop="@dimen/newsRecyclerTopPadding"
+      android:paddingBottom="@dimen/newsRecyclerBottomPadding"
+      android:scrollbars="vertical"
+      android:visibility="gone"
+      tools:visibility="visible"
+      />
+
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
   <include
     android:id="@+id/fragmentNewsEmptyView"
