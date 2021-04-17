@@ -35,4 +35,6 @@ dependencies {
   implementation project(':ui-base')
   implementation project(':ui-model')
   implementation project(':ui-navigation')
+
+  implementation "androidx.browser:browser:$versions.androidBrowser"
 }

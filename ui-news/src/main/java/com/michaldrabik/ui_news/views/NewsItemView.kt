@@ -20,6 +20,7 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.invisible
+import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
@@ -38,9 +39,15 @@ class NewsItemView : FrameLayout {
 
   private val cornerRadius by lazy { context.dimenToPx(R.dimen.listItemCorner) }
 
+  var itemClickListener: ((NewsListItem) -> Unit)? = null
+
   init {
     inflate(context, R.layout.view_news_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+
+    newsItemRoot.onClick { itemClickListener?.invoke(item) }
+    newsItemImage.onClick { itemClickListener?.invoke(item) }
+    newsItemPlaceholder.onClick { itemClickListener?.invoke(item) }
   }
 
   private lateinit var item: NewsListItem

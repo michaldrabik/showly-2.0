@@ -23,7 +23,7 @@ class SearchViewBehaviour(private val padding: Int) : CoordinatorLayout.Behavior
     dx: Int,
     dy: Int,
     consumed: IntArray,
-    type: Int
+    type: Int,
   ) {
     super.onNestedPreScroll(coordinatorLayout, child, target, dx, dy, consumed, type)
     stopNestedScrollIfNeeded(dy, target, type)
@@ -35,12 +35,10 @@ class SearchViewBehaviour(private val padding: Int) : CoordinatorLayout.Behavior
     directTargetChild: View,
     target: View,
     axes: Int,
-    type: Int
-  ): Boolean {
-    return when (axes) {
-      ViewCompat.SCROLL_AXIS_VERTICAL -> true
-      else -> super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, axes, type)
-    }
+    type: Int,
+  ) = when (axes) {
+    ViewCompat.SCROLL_AXIS_VERTICAL -> true
+    else -> super.onStartNestedScroll(coordinatorLayout, child, directTargetChild, target, axes, type)
   }
 
   override fun onNestedScroll(
@@ -52,7 +50,7 @@ class SearchViewBehaviour(private val padding: Int) : CoordinatorLayout.Behavior
     dxUnconsumed: Int,
     dyUnconsumed: Int,
     type: Int,
-    consumed: IntArray
+    consumed: IntArray,
   ) {
     super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed)
     if (dyConsumed > 0) {

@@ -475,6 +475,13 @@
     android:name="com.michaldrabik.ui_news.NewsFragment"
     android:label="fragmentNews"
     >
+    <action
+      android:id="@+id/actionNewsFragmentToSettingsFragment"
+      app:destination="@id/settingsFragment"
+      app:enterAnim="@anim/anim_fade_in"
+      app:launchSingleTop="true"
+      app:popExitAnim="@anim/anim_fade_out"
+      />
     <!--    <action-->
     <!--      android:id="@+id/actionListsFragmentToDetailsFragment"-->
     <!--      app:destination="@id/listDetailsFragment"-->

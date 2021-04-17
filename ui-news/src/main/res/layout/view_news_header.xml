@@ -20,7 +20,7 @@
     />
 
   <ImageView
-    android:id="@+id/searchSettingsIcon"
+    android:id="@+id/viewNewsHeaderSettingsIcon"
     android:layout_width="22dp"
     android:layout_height="match_parent"
     android:layout_gravity="end"

@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_news.views.NewsItemView
 
-class NewsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class NewsAdapter(
+  val itemClickListener: (NewsListItem) -> Unit,
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   private val asyncDiffer = AsyncListDiffer(this, NewsListItemDiffCallback())
 
@@ -17,7 +19,7 @@ class NewsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     ViewHolder(
       NewsItemView(parent.context).apply {
-//        itemClickListener = { super.itemClickListener.invoke(it) }
+        itemClickListener = { this@NewsAdapter.itemClickListener(it) }
       }
     )
 
