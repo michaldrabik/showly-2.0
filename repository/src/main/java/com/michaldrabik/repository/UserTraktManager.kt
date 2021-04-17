@@ -15,7 +15,7 @@ import com.michaldrabik.data_remote.trakt.model.User as UserModel
 @AppScope
 class UserTraktManager @Inject constructor(
   private val cloud: Cloud,
-  private val database: AppDatabase
+  private val database: AppDatabase,
 ) {
 
   companion object {
@@ -109,7 +109,9 @@ class UserTraktManager @Inject constructor(
           traktTokenTimestamp = timestamp,
           traktUsername = userModel.username,
           tvdbToken = "",
-          tvdbTokenTimestamp = 0
+          tvdbTokenTimestamp = 0,
+          redditToken = "",
+          redditTokenTimestamp = 0
         )
       )
     }

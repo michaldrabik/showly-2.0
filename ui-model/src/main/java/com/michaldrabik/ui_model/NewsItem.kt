@@ -9,12 +9,18 @@ data class NewsItem(
   val type: Type,
   val image: String?,
   val score: Long,
+  val datedAt: ZonedDateTime,
   val createdAt: ZonedDateTime,
-) {
+  val updatedAt: ZonedDateTime
+  ) {
 
   enum class Type(val slug: String) {
     SHOW("show"),
-    MOVIE("movie")
+    MOVIE("movie");
+
+    companion object {
+      fun fromSlug(slug: String) = Type.values().first { it.slug == slug }
+    }
   }
 
   val isVideo =

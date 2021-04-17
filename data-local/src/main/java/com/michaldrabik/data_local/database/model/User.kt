@@ -12,5 +12,7 @@ data class User(
   @ColumnInfo(name = "trakt_token", defaultValue = "") var traktToken: String,
   @ColumnInfo(name = "trakt_refresh_token", defaultValue = "") var traktRefreshToken: String,
   @ColumnInfo(name = "trakt_token_timestamp", defaultValue = "0") var traktTokenTimestamp: Long,
-  @ColumnInfo(name = "trakt_username", defaultValue = "") var traktUsername: String
+  @ColumnInfo(name = "trakt_username", defaultValue = "") var traktUsername: String,
+  @ColumnInfo(name = "reddit_token", defaultValue = "") var redditToken: String,
+  @ColumnInfo(name = "reddit_token_timestamp", defaultValue = "0") var redditTokenTimestamp: Long,
 )

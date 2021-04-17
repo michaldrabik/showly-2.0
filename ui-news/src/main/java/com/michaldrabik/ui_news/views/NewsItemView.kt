@@ -61,7 +61,7 @@ class NewsItemView : FrameLayout {
       else -> Html.fromHtml(item.item.title)
     }
     newsItemHeader.text = "~1 day ago"
-    newsItemSubheader.text = item.dateFormat.format(item.item.createdAt.toLocalZone()).capitalizeWords()
+    newsItemSubheader.text = item.dateFormat.format(item.item.datedAt.toLocalZone()).capitalizeWords()
 
     loadImage(item)
   }

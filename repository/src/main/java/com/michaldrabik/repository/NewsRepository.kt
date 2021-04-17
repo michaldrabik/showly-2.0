@@ -2,6 +2,7 @@ package com.michaldrabik.repository
 
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.mappers.Mappers
@@ -18,56 +19,49 @@ class NewsRepository @Inject constructor(
   private val mappers: Mappers,
 ) {
 
-  private var showsNewsCache: List<NewsItem>? = null
-  private var showsNewsCacheTimestamp = 0L
-
-  private var moviesNewsCache: List<NewsItem>? = null
-  private var moviesNewsCacheTimestamp = 0L
-
-  fun getCachedShowsNews(): List<NewsItem> {
-    return showsNewsCache?.toList() ?: emptyList()
+  companion object {
+    const val VALID_CACHE_MINUTES = 60L
   }
 
-  fun getCachedMoviesNews(): List<NewsItem> {
-    return moviesNewsCache?.toList() ?: emptyList()
-  }
+  suspend fun getCachedNews(type: NewsItem.Type) =
+    database.newsDao().getAllByType(type.slug)
+      .map { mappers.news.fromDatabase(it) }
 
   suspend fun loadShowsNews(token: RedditAuthToken): List<NewsItem> {
-    val isCacheValid = nowUtcMillis() - showsNewsCacheTimestamp <= TimeUnit.SECONDS.toMillis(15)
-    if (showsNewsCache != null && isCacheValid) {
-      return showsNewsCache!!.toList()
+    val cachedNews = getCachedNews(SHOW)
+    val cacheTimestamp = cachedNews.firstOrNull()?.createdAt?.toMillis() ?: 0
+
+    val isCacheValid = nowUtcMillis() - cacheTimestamp <= TimeUnit.MINUTES.toMillis(VALID_CACHE_MINUTES)
+    if (isCacheValid && getCachedNews(SHOW).isNotEmpty()) {
+      return cachedNews.toList()
     }
 
     val remoteItems = cloud.redditApi.fetchTelevision(token.token)
       .filterNot { it.is_self }
       .map { mappers.news.fromNetwork(it, SHOW) }
 
-    showsNewsCache = remoteItems
-    showsNewsCacheTimestamp = nowUtcMillis()
+    val dbItems = remoteItems.map { mappers.news.toDatabase(it) }
+    database.newsDao().replaceForType(dbItems, SHOW.slug)
 
-    return showsNewsCache?.toList() ?: emptyList()
+    return remoteItems.toList()
   }
 
   suspend fun loadMoviesNews(token: RedditAuthToken): List<NewsItem> {
-    val isCacheValid = nowUtcMillis() - moviesNewsCacheTimestamp <= TimeUnit.SECONDS.toMillis(15)
-    if (moviesNewsCache != null && isCacheValid) {
-      return moviesNewsCache!!.toList()
+    val cachedNews = getCachedNews(MOVIE)
+    val cacheTimestamp = cachedNews.firstOrNull()?.createdAt?.toMillis() ?: 0
+
+    val isCacheValid = nowUtcMillis() - cacheTimestamp <= TimeUnit.MINUTES.toMillis(VALID_CACHE_MINUTES)
+    if (isCacheValid && getCachedNews(MOVIE).isNotEmpty()) {
+      return cachedNews.toList()
     }
 
     val remoteItems = cloud.redditApi.fetchMovies(token.token)
       .filterNot { it.is_self }
       .map { mappers.news.fromNetwork(it, MOVIE) }
 
-    moviesNewsCache = remoteItems
-    moviesNewsCacheTimestamp = nowUtcMillis()
+    val dbItems = remoteItems.map { mappers.news.toDatabase(it) }
+    database.newsDao().replaceForType(dbItems, MOVIE.slug)
 
-    return moviesNewsCache?.toList() ?: emptyList()
-  }
-
-  fun clear() {
-    showsNewsCache = null
-    showsNewsCacheTimestamp = 0L
-    moviesNewsCache = null
-    moviesNewsCacheTimestamp = 0L
+    return remoteItems.toList()
   }
 }

@@ -19,11 +19,11 @@ class NewsLoadItemsCase @Inject constructor(
   private val userManager: UserRedditManager,
 ) {
 
-  private val newsComparator = compareByDescending<NewsItem> { it.createdAt.dayOfYear }.thenByDescending { it.score }
+  private val newsComparator = compareByDescending<NewsItem> { it.datedAt.dayOfYear }.thenByDescending { it.score }
 
   suspend fun preloadItems() = coroutineScope {
-    val showsNewsAsync = async { newsRepository.getCachedShowsNews() }
-    val moviesNewsAsync = async { newsRepository.getCachedMoviesNews() }
+    val showsNewsAsync = async { newsRepository.getCachedNews(NewsItem.Type.SHOW) }
+    val moviesNewsAsync = async { newsRepository.getCachedNews(NewsItem.Type.MOVIE) }
 
     val (showsNews, moviesNews) = awaitAll(showsNewsAsync, moviesNewsAsync)
     val dateFormat = dateFormatProvider.loadShortDayFormat()

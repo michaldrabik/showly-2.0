@@ -18,6 +18,7 @@ import com.michaldrabik.data_local.database.dao.MoviesDao
 import com.michaldrabik.data_local.database.dao.MoviesSyncLogDao
 import com.michaldrabik.data_local.database.dao.MyMoviesDao
 import com.michaldrabik.data_local.database.dao.MyShowsDao
+import com.michaldrabik.data_local.database.dao.NewsDao
 import com.michaldrabik.data_local.database.dao.RecentSearchDao
 import com.michaldrabik.data_local.database.dao.RelatedMoviesDao
 import com.michaldrabik.data_local.database.dao.RelatedShowsDao
@@ -50,6 +51,7 @@ import com.michaldrabik.data_local.database.model.MovieTranslation
 import com.michaldrabik.data_local.database.model.MoviesSyncLog
 import com.michaldrabik.data_local.database.model.MyMovie
 import com.michaldrabik.data_local.database.model.MyShow
+import com.michaldrabik.data_local.database.model.News
 import com.michaldrabik.data_local.database.model.RecentSearch
 import com.michaldrabik.data_local.database.model.RelatedMovie
 import com.michaldrabik.data_local.database.model.RelatedShow
@@ -99,7 +101,8 @@ import com.michaldrabik.data_local.database.model.WatchlistShow
     EpisodeTranslation::class,
     CustomImage::class,
     CustomList::class,
-    CustomListItem::class
+    CustomListItem::class,
+    News::class
   ],
   exportSchema = false
 )
@@ -166,4 +169,6 @@ abstract class AppDatabase : RoomDatabase() {
   abstract fun customListsDao(): CustomListsDao
 
   abstract fun customListsItemsDao(): CustomListsItemsDao
+
+  abstract fun newsDao(): NewsDao
 }
