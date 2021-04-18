@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="newsRecyclerTopPadding">104dp</dimen>
+  <dimen name="newsRecyclerTopPadding">106dp</dimen>
   <dimen name="newsRecyclerBottomPadding">68dp</dimen>
-  <dimen name="newsFiltersTopPadding">52dp</dimen>
+  <dimen name="newsFiltersTopPadding">54dp</dimen>
   <dimen name="newsSwipeRefreshEndOffset">32dp</dimen>
 
   <dimen name="newsItemPaddingHorizontal">12dp</dimen>
