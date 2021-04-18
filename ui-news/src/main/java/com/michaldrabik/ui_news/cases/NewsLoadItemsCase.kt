@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_news.cases
 
 import com.michaldrabik.common.di.AppScope
+import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.repository.NewsRepository
 import com.michaldrabik.repository.UserRedditManager
 import com.michaldrabik.ui_base.dates.DateFormatProvider
@@ -71,15 +72,18 @@ class NewsLoadItemsCase @Inject constructor(
     showsNews: List<NewsItem>,
     moviesNews: List<NewsItem>,
     dateFormat: DateTimeFormatter,
-  ) = (showsNews + moviesNews)
-    .asSequence()
-    .distinctBy { it.url }
-    .filter { it.score > 10 && it.isWebLink }
-    .sortedByDescending { it.datedAt }
-    .groupBy { it.datedAt.dayOfYear }
-    .map { news -> news.value.sortedByDescending { it.score } }
-    .flatten()
-    .map { NewsListItem(it, dateFormat) }
-    .toList()
+  ): List<NewsListItem> {
+    val timeThreshold = nowUtc().minusMinutes(5)
+    return (showsNews + moviesNews)
+      .asSequence()
+      .distinctBy { it.url }
+      .filter { it.isWebLink && it.datedAt.isBefore(timeThreshold) }
+      .sortedByDescending { it.datedAt }
+      .groupBy { it.datedAt.dayOfYear }
+      .map { news -> news.value.sortedByDescending { it.score } }
+      .flatten()
+      .map { NewsListItem(it, dateFormat) }
+      .toList()
+  }
 
 }
