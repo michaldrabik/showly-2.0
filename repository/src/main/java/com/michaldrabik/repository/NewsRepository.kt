@@ -39,7 +39,6 @@ class NewsRepository @Inject constructor(
     }
 
     val remoteItems = cloud.redditApi.fetchTelevision(token.token)
-      .filterNot { it.is_self }
       .map { mappers.news.fromNetwork(it, SHOW) }
 
     val dbItems = remoteItems.map { mappers.news.toDatabase(it) }
@@ -60,7 +59,6 @@ class NewsRepository @Inject constructor(
     }
 
     val remoteItems = cloud.redditApi.fetchMovies(token.token)
-      .filterNot { it.is_self }
       .map { mappers.news.fromNetwork(it, MOVIE) }
 
     val dbItems = remoteItems.map { mappers.news.toDatabase(it) }

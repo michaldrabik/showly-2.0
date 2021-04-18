@@ -27,5 +27,9 @@ data class NewsItem(
     url.startsWith("https://www.youtu") ||
       url.startsWith("https://youtu") ||
       url.startsWith("www.youtu")
+
+  val isWebLink =
+    url.startsWith("http") ||
+      url.startsWith("www")
 }
 

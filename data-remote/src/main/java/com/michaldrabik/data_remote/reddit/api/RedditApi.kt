@@ -16,9 +16,11 @@ class RedditApi @Inject constructor(
     token: String,
     limit: Int = Config.REDDIT_LIST_LIMIT,
   ) = listingApi.fetchTelevision(token, limit)
+    .filterNot { it.is_self }
 
   suspend fun fetchMovies(
     token: String,
     limit: Int = Config.REDDIT_LIST_LIMIT,
   ) = listingApi.fetchMovies(token, limit)
+    .filterNot { it.is_self }
 }

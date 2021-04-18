@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_news
 
 import android.content.ComponentName
+import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -30,6 +31,7 @@ import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_news.di.UiNewsComponentProvider
 import com.michaldrabik.ui_news.recycler.NewsAdapter
 import kotlinx.android.synthetic.main.fragment_news.*
+import kotlinx.android.synthetic.main.view_news_filters.*
 
 class NewsFragment :
   BaseFragment<NewsViewModel>(R.layout.fragment_news),
@@ -71,20 +73,6 @@ class NewsFragment :
     }
   }
 
-  private fun setupCustomTabs() {
-    val serviceConnection: CustomTabsServiceConnection = object : CustomTabsServiceConnection() {
-      override fun onCustomTabsServiceConnected(name: ComponentName, client: CustomTabsClient) {
-        tabsClient = client
-        tabsClient?.warmup(0)
-      }
-
-      override fun onServiceDisconnected(name: ComponentName?) {
-        tabsClient = null
-      }
-    }
-    CustomTabsClient.bindCustomTabsService(requireActivity(), "com.android.chrome", serviceConnection)
-  }
-
   override fun onResume() {
     super.onResume()
     showNavigation()
@@ -106,13 +94,18 @@ class NewsFragment :
       onSettingsClickListener = { openSettings() }
       translationY = headerTranslation
     }
+    with(fragmentNewsFiltersView) {
+      onChipsChangeListener = { viewModel.loadItems(false, it) }
+      translationY = headerTranslation
+    }
   }
 
   private fun setupStatusBar() {
     fragmentNewsRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.systemWindowInsetTop
-      fragmentNewsRecycler.updatePadding(top = statusBarSize + dimenToPx(R.dimen.newsRecyclerTopPadding))
+      fragmentNewsRecycler.updatePadding(top = dimenToPx(R.dimen.newsRecyclerTopPadding) + statusBarSize)
       fragmentNewsHeaderView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
+      fragmentNewsFiltersView.updateTopMargin(dimenToPx(R.dimen.newsFiltersTopPadding) + statusBarSize)
       fragmentNewsSwipeRefresh.setProgressViewOffset(true, 0, swipeRefreshEndOffset + statusBarSize)
     }
   }
@@ -120,7 +113,8 @@ class NewsFragment :
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = NewsAdapter(
-      itemClickListener = { openLink(it.item) }
+      itemClickListener = { openLink(it.item) },
+      listChangeListener = { scrollToTop(false) }
     ).apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
@@ -143,17 +137,18 @@ class NewsFragment :
       }
     }
 
-  private fun render(uiModel: NewsUiModel) {
-    uiModel.run {
-      items?.let {
-        fragmentNewsRecycler.fadeIf(it.isNotEmpty())
-        fragmentNewsEmptyView.fadeIf(it.isEmpty())
-        adapter?.setItems(it)
+  private fun setupCustomTabs() {
+    val serviceConnection: CustomTabsServiceConnection = object : CustomTabsServiceConnection() {
+      override fun onCustomTabsServiceConnected(name: ComponentName, client: CustomTabsClient) {
+        tabsClient = client
+        tabsClient?.warmup(0)
       }
-      isLoading?.let {
-        fragmentNewsSwipeRefresh.isRefreshing = it
+
+      override fun onServiceDisconnected(name: ComponentName?) {
+        tabsClient = null
       }
     }
+    CustomTabsClient.bindCustomTabsService(requireActivity(), "com.android.chrome", serviceConnection)
   }
 
   private fun openLink(item: NewsItem) {
@@ -168,8 +163,14 @@ class NewsFragment :
         .setNavigationBarColor(tabColor)
         .build()
 
+      val closeButton = when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+        Configuration.UI_MODE_NIGHT_YES -> R.drawable.ic_arrow_back_tabs
+        Configuration.UI_MODE_NIGHT_NO -> R.drawable.ic_arrow_back_tabs_black
+        else -> R.drawable.ic_arrow_back_tabs
+      }
+
       val tabsIntent = CustomTabsIntent.Builder()
-        .setCloseButtonIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_arrow_back_tabs))
+        .setCloseButtonIcon(BitmapFactory.decodeResource(resources, closeButton))
         .setDefaultColorSchemeParams(params)
         .setStartAnimations(context, R.anim.anim_slide_in_from_right, R.anim.anim_slide_out_from_right)
         .setExitAnimations(context, R.anim.anim_slide_in_from_left, R.anim.anim_slide_out_from_left)
@@ -184,8 +185,24 @@ class NewsFragment :
     navigateTo(R.id.actionNewsFragmentToSettingsFragment)
   }
 
+  private fun render(uiModel: NewsUiModel) {
+    with(uiModel) {
+      items?.let {
+        fragmentNewsRecycler.fadeIf(it.isNotEmpty())
+        fragmentNewsFiltersView.fadeIf(it.isNotEmpty())
+        fragmentNewsEmptyView.fadeIf(it.isEmpty())
+        adapter?.setItems(it)
+      }
+      isLoading?.let {
+        fragmentNewsSwipeRefresh.isRefreshing = it
+        fragmentNewsFiltersView.isEnabled = !it
+      }
+    }
+  }
+
   private fun scrollToTop(smooth: Boolean = true) {
     fragmentNewsHeaderView.animate().translationY(0F).start()
+    fragmentNewsFiltersView.animate().translationY(0F).start()
     when {
       smooth -> fragmentNewsRecycler.smoothScrollToPosition(0)
       else -> fragmentNewsRecycler.scrollToPosition(0)

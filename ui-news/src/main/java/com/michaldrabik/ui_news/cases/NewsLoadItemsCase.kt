@@ -5,6 +5,7 @@ import com.michaldrabik.repository.NewsRepository
 import com.michaldrabik.repository.UserRedditManager
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.NewsItem
+import com.michaldrabik.ui_model.NewsItem.Type
 import com.michaldrabik.ui_news.recycler.NewsListItem
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -19,11 +20,20 @@ class NewsLoadItemsCase @Inject constructor(
   private val userManager: UserRedditManager,
 ) {
 
-  private val newsComparator = compareByDescending<NewsItem> { it.datedAt.dayOfYear }.thenByDescending { it.score }
+  suspend fun preloadItems(types: List<Type>) = coroutineScope {
+    val showsNewsAsync = async {
+      when {
+        types.contains(Type.SHOW) -> newsRepository.getCachedNews(Type.SHOW)
+        else -> emptyList()
+      }
+    }
 
-  suspend fun preloadItems() = coroutineScope {
-    val showsNewsAsync = async { newsRepository.getCachedNews(NewsItem.Type.SHOW) }
-    val moviesNewsAsync = async { newsRepository.getCachedNews(NewsItem.Type.MOVIE) }
+    val moviesNewsAsync = async {
+      when {
+        types.contains(Type.MOVIE) -> newsRepository.getCachedNews(Type.MOVIE)
+        else -> emptyList()
+      }
+    }
 
     val (showsNews, moviesNews) = awaitAll(showsNewsAsync, moviesNewsAsync)
     val dateFormat = dateFormatProvider.loadShortDayFormat()
@@ -31,11 +41,25 @@ class NewsLoadItemsCase @Inject constructor(
     prepareListItems(showsNews, moviesNews, dateFormat)
   }
 
-  suspend fun loadItems(forceRefresh: Boolean) = coroutineScope {
+  suspend fun loadItems(
+    forceRefresh: Boolean,
+    types: List<Type>,
+  ) = coroutineScope {
     val token = userManager.checkAuthorization()
 
-    val showsNewsAsync = async { newsRepository.loadShowsNews(token, forceRefresh) }
-    val moviesNewsAsync = async { newsRepository.loadMoviesNews(token, forceRefresh) }
+    val showsNewsAsync = async {
+      when {
+        types.contains(Type.SHOW) -> newsRepository.loadShowsNews(token, forceRefresh)
+        else -> emptyList()
+      }
+    }
+
+    val moviesNewsAsync = async {
+      when {
+        types.contains(Type.MOVIE) -> newsRepository.loadMoviesNews(token, forceRefresh)
+        else -> emptyList()
+      }
+    }
 
     val (showsNews, moviesNews) = awaitAll(showsNewsAsync, moviesNewsAsync)
     val dateFormat = dateFormatProvider.loadShortDayFormat()
@@ -48,9 +72,14 @@ class NewsLoadItemsCase @Inject constructor(
     moviesNews: List<NewsItem>,
     dateFormat: DateTimeFormatter,
   ) = (showsNews + moviesNews)
-    .filter { it.score > 10 }
-    .sortedWith(newsComparator)
+    .asSequence()
     .distinctBy { it.url }
+    .filter { it.score > 10 && it.isWebLink }
+    .sortedByDescending { it.datedAt }
+    .groupBy { it.datedAt.dayOfYear }
+    .map { news -> news.value.sortedByDescending { it.score } }
+    .flatten()
     .map { NewsListItem(it, dateFormat) }
+    .toList()
 
 }

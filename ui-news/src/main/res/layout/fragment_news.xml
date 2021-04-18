@@ -54,4 +54,14 @@
     android:layout_marginRight="@dimen/spaceMedium"
     />
 
+  <com.michaldrabik.ui_news.views.NewsFiltersView
+    android:id="@+id/fragmentNewsFiltersView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/newsFiltersTopPadding"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:visibility="gone"
+    />
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

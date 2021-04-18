@@ -8,13 +8,17 @@ import com.michaldrabik.ui_news.views.NewsItemView
 
 class NewsAdapter(
   val itemClickListener: (NewsListItem) -> Unit,
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+  val listChangeListener: () -> Unit,
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AsyncListDiffer.ListListener<NewsListItem> {
 
   private val asyncDiffer = AsyncListDiffer(this, NewsListItemDiffCallback())
 
-  fun setItems(newItems: List<NewsListItem>) {
-    asyncDiffer.submitList(newItems)
-  }
+  fun setItems(newItems: List<NewsListItem>) =
+    with(asyncDiffer) {
+      removeListListener(this@NewsAdapter)
+      addListListener(this@NewsAdapter)
+      submitList(newItems)
+    }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     ViewHolder(
@@ -29,6 +33,13 @@ class NewsAdapter(
   }
 
   override fun getItemCount() = asyncDiffer.currentList.size
+
+  override fun onCurrentListChanged(
+    previousList: MutableList<NewsListItem>,
+    currentList: MutableList<NewsListItem>,
+  ) {
+    listChangeListener()
+  }
 
   class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 }
