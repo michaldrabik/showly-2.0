@@ -31,7 +31,7 @@ class NewsViewModel @Inject constructor(
       currentTypes = types.toList()
     }
 
-    if (forceRefresh && nowUtcMillis() - previousRefresh < TimeUnit.SECONDS.toMillis(15)) {
+    if (forceRefresh && nowUtcMillis() - previousRefresh < TimeUnit.SECONDS.toMillis(30)) {
       uiState = NewsUiModel(isLoading = false)
       return
     }

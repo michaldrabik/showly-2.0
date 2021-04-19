@@ -2,6 +2,7 @@ package com.michaldrabik.data_remote.reddit.api
 
 import com.michaldrabik.data_remote.Config
 import com.michaldrabik.data_remote.di.CloudScope
+import com.michaldrabik.data_remote.reddit.model.RedditItem
 import javax.inject.Inject
 
 @CloudScope
@@ -12,15 +13,16 @@ class RedditApi @Inject constructor(
 
   suspend fun fetchAuthToken() = authApi.fetchAuthToken()
 
-  suspend fun fetchTelevision(
+  suspend fun fetchTelevisionItems(
     token: String,
     limit: Int = Config.REDDIT_LIST_LIMIT,
-  ) = listingApi.fetchTelevision(token, limit)
-    .filterNot { it.is_self }
+    pages: Int = Config.REDDIT_LIST_PAGES,
+  ): List<RedditItem> =
+    listingApi.fetchTelevision(token, limit, pages).filterNot { it.is_self }
 
-  suspend fun fetchMovies(
+  suspend fun fetchMoviesItems(
     token: String,
     limit: Int = Config.REDDIT_LIST_LIMIT,
-  ) = listingApi.fetchMovies(token, limit)
-    .filterNot { it.is_self }
+    pages: Int = Config.REDDIT_LIST_PAGES,
+  ) = listingApi.fetchMovies(token, limit, pages).filterNot { it.is_self }
 }

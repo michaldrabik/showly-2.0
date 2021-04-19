@@ -28,6 +28,7 @@ interface RedditService {
   suspend fun fetchTelevision(
     @Header("Authorization") token: String,
     @Query("limit") limit: Int,
+    @Query("after") after: String? = null,
   ): RedditResponse
 
   @Headers("User-Agent: $USER_AGENT")
@@ -35,5 +36,6 @@ interface RedditService {
   suspend fun fetchMovies(
     @Header("Authorization") token: String,
     @Query("limit") limit: Int,
+    @Query("after") after: String? = null,
   ): RedditResponse
 }
