@@ -209,7 +209,7 @@ class NewsFragment :
     }
   }
 
-  override fun onTabReselected() = scrollToTop(false)
+  override fun onTabReselected() = scrollToTop()
 
   override fun onDestroyView() {
     tabsClient = null
