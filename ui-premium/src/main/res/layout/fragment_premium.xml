@@ -122,10 +122,49 @@
       android:id="@+id/premiumLightThemeDescription"
       style="@style/Premium.Description"
       android:text="@string/textLightThemeDesc"
-      app:layout_constraintBottom_toTopOf="@id/premiumSeparator1"
+      app:layout_constraintBottom_toTopOf="@id/premiumSeparator4"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/premiumLightThemeImage"
       app:layout_constraintTop_toBottomOf="@id/premiumLightThemeTitle"
+      />
+
+    <View
+      android:id="@+id/premiumSeparator4"
+      style="@style/Premium.Separator"
+      app:layout_constraintBottom_toTopOf="@id/premiumNewsTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/premiumLightThemeDescription"
+      />
+
+    <ImageView
+      android:id="@+id/premiumNewsImage"
+      style="@style/Premium.Image"
+      app:layout_constraintBottom_toBottomOf="@id/premiumNewsDescription"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="@id/premiumNewsTitle"
+      app:srcCompat="@drawable/ic_spongebob"
+      />
+
+    <TextView
+      android:id="@+id/premiumNewsTitle"
+      style="@style/Premium.Title"
+      android:text="@string/textNewsTitle"
+      app:layout_constraintBottom_toTopOf="@id/premiumNewsDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/premiumNewsImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumSeparator4"
+      />
+
+    <TextView
+      android:id="@+id/premiumNewsDescription"
+      style="@style/Premium.Description"
+      android:text="@string/textNewsDesc"
+      app:layout_constraintBottom_toTopOf="@id/premiumSeparator1"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="1.0"
+      app:layout_constraintStart_toEndOf="@id/premiumNewsImage"
+      app:layout_constraintTop_toBottomOf="@id/premiumNewsTitle"
       />
 
     <View
@@ -134,7 +173,7 @@
       app:layout_constraintBottom_toTopOf="@id/premiumCustomImagesTitle"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/premiumLightThemeDescription"
+      app:layout_constraintTop_toBottomOf="@id/premiumNewsDescription"
       />
 
     <ImageView

@@ -10,6 +10,8 @@
   <string name="textQuickRatingDesc">Never forget to rate a movie or show\'s episode that you have just watched. With quick rating feature you will be able to automatically rate an item whenever you mark it as watched.</string>
   <string name="textWidgetsTitle">Transparent Widgets</string>
   <string name="textWidgetsDesc">Set widgets background transparency to better match your home screen.</string>
+  <string name="textNewsTitle">News Section</string>
+  <string name="textNewsDesc">Enable news section with the latest shows and movies articles, news and trailers. Powered by Reddit.</string>
 
   <string name="textPurchaseThanks">You are now Showly Supporter!\nThank you and enjoy the app!</string>
 </resources>
