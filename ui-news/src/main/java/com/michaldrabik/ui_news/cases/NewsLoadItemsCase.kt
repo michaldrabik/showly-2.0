@@ -2,6 +2,7 @@ package com.michaldrabik.ui_news.cases
 
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
+import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.repository.NewsRepository
 import com.michaldrabik.repository.UserRedditManager
 import com.michaldrabik.ui_base.dates.DateFormatProvider
@@ -79,7 +80,7 @@ class NewsLoadItemsCase @Inject constructor(
       .distinctBy { it.url }
       .filter { it.isWebLink && it.datedAt.isBefore(timeThreshold) }
       .sortedByDescending { it.datedAt }
-      .groupBy { it.datedAt.dayOfYear }
+      .groupBy { it.datedAt.toLocalZone().dayOfYear }
       .map { news -> news.value.sortedByDescending { it.score } }
       .flatten()
       .map { NewsListItem(it, dateFormat) }
