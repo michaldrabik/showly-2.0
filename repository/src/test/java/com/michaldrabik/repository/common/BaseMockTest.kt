@@ -12,6 +12,7 @@ import com.michaldrabik.repository.mappers.IdsMapper
 import com.michaldrabik.repository.mappers.ImageMapper
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.mappers.MovieMapper
+import com.michaldrabik.repository.mappers.NewsMapper
 import com.michaldrabik.repository.mappers.SeasonMapper
 import com.michaldrabik.repository.mappers.SettingsMapper
 import com.michaldrabik.repository.mappers.ShowMapper
@@ -22,13 +23,10 @@ import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.SpyK
 import io.mockk.mockkStatic
 import io.mockk.slot
-import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Before
 
 @Suppress("EXPERIMENTAL_API_USAGE")
 abstract class BaseMockTest {
-
-  protected val testDispatcher = TestCoroutineDispatcher()
 
   @MockK lateinit var database: AppDatabase
   @MockK lateinit var cloud: Cloud
@@ -45,6 +43,7 @@ abstract class BaseMockTest {
     SeasonMapper(idsMapper, episodeMappers),
     ActorMapper(),
     CommentMapper(),
+    NewsMapper(),
     SettingsMapper(),
     TranslationMapper(idsMapper),
     CustomListMapper()
