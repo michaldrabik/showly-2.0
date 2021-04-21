@@ -12,7 +12,7 @@ data class NewsItem(
   val datedAt: ZonedDateTime,
   val createdAt: ZonedDateTime,
   val updatedAt: ZonedDateTime
-  ) {
+) {
 
   enum class Type(val slug: String) {
     SHOW("show"),
@@ -32,4 +32,3 @@ data class NewsItem(
     url.startsWith("http") ||
       url.startsWith("www")
 }
-

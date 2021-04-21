@@ -86,5 +86,4 @@ class NewsLoadItemsCase @Inject constructor(
       .map { NewsListItem(it, dateFormat) }
       .toList()
   }
-
 }

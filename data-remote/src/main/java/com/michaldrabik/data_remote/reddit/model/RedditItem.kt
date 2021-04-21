@@ -30,5 +30,3 @@ data class RedditItem(
       ?: resolutions?.lastOrNull()?.url
   }
 }
-
-

@@ -72,4 +72,3 @@ class UserRedditManager @Inject constructor(
 }
 
 inline class RedditAuthToken(val token: String = "")
-
