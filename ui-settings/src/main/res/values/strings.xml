@@ -23,7 +23,7 @@
   <string name="textSettingsRecentShowsTitle">Recently Added Amount</string>
   <string name="textSettingsRecentShowsSummary">Number of recent items to display in \'Collection\'.</string>
   <string name="textSettingsUpcomingSectionTitle">Upcoming Section</string>
-  <string name="textSettingsUpcomingSectionSummary">Enable/disable \'Upcoming\'section in \'Progress\' tab.</string>
+  <string name="textSettingsUpcomingSectionSummary">Enable/disable \'Upcoming\' section in \'Progress\' tab.</string>
   <string name="textSettingsMyShowsSectionsTitle">My Shows Sections</string>
   <string name="textSettingsMyShowsSectionSummary">Enable/disable sections in \'My Shows\' tab.</string>
   <string name="textSettingsMyMoviesSectionsTitle">My Movies Sections</string>
