@@ -58,6 +58,8 @@
   <string name="textSettingsLogoutMessage">\nSei sicuro di voler uscire?\n</string>
   <string name="textSettingsMoviesEnabledTitle">Film</string>
   <string name="textSettingsMoviesEnabledSummary">Attiva/Disattiva il supporto ai film. L\'app verrà riavviata.</string>
+  <string name="textSettingsNewsEnabledTitle">Notizie</string>
+  <string name="textSettingsNewsEnabledSummary">Attiva/disattiva la sezione news. L\'app verrà riavviata.</string>
   <string name="textSettingsWidgets">Widget</string>
   <string name="textSettingsWidgetsLabelsTitle">Titoli</string>
   <string name="textSettingsWidgetsLabelsSummary">Mostra i titoli semitrasparenti per le sezioni dei widget.</string>
