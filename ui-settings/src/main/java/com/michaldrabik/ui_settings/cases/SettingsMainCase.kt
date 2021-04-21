@@ -115,6 +115,16 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
+  suspend fun enableProgressUpcoming(enable: Boolean, context: Context) {
+    with(settingsRepository) {
+      val updatedSettings = load().copy(progressUpcomingEnabled = enable)
+      update(updatedSettings)
+    }
+    (context.applicationContext as WidgetsProvider).run {
+      requestShowsWidgetsUpdate()
+    }
+  }
+
   fun isMoviesEnabled() = settingsRepository.isMoviesEnabled
 
   suspend fun enableMovies(enable: Boolean, context: Context) {

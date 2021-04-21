@@ -268,6 +268,12 @@ object Analytics {
     }
   }
 
+  fun logSettingsProgressUpcoming(enabled: Boolean) {
+    firebaseAnalytics.logEvent("settings_progress_upcoming") {
+      param("enabled", enabled.toString())
+    }
+  }
+
   fun logSettingsMoviesEnabled(enabled: Boolean) {
     firebaseAnalytics.logEvent("settings_movies") {
       param("enabled", enabled.toString())

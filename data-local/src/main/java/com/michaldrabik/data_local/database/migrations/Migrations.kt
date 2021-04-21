@@ -3,7 +3,7 @@ package com.michaldrabik.data_local.database.migrations
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 25
+const val DATABASE_VERSION = 26
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 // TODO Split into separate files?
@@ -409,6 +409,14 @@ object Migrations {
     }
   }
 
+  private val MIGRATION_26 = object : Migration(25, 26) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
+        execSQL("ALTER TABLE settings ADD COLUMN progress_upcoming_enabled INTEGER NOT NULL DEFAULT 1")
+      }
+    }
+  }
+
   val MIGRATIONS = listOf(
     MIGRATION_2,
     MIGRATION_3,
@@ -433,6 +441,7 @@ object Migrations {
     MIGRATION_22,
     MIGRATION_23,
     MIGRATION_24,
-    MIGRATION_25
+    MIGRATION_25,
+    MIGRATION_26
   )
 }

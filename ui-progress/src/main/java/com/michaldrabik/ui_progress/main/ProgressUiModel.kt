@@ -9,13 +9,15 @@ data class ProgressUiModel(
   val items: List<ProgressItem>? = null,
   val isSearching: Boolean? = null,
   val resetScroll: ActionEvent<Boolean>? = null,
-  val sortOrder: SortOrder? = null
+  val sortOrder: SortOrder? = null,
+  val isUpcomingEnabled: Boolean? = null,
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
     (newModel as ProgressUiModel).copy(
       items = newModel.items?.toList() ?: items,
       isSearching = newModel.isSearching ?: isSearching,
+      isUpcomingEnabled = newModel.isUpcomingEnabled ?: isUpcomingEnabled,
       resetScroll = newModel.resetScroll ?: resetScroll,
       sortOrder = newModel.sortOrder ?: sortOrder
     )

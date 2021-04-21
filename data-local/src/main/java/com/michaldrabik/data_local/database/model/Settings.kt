@@ -45,5 +45,6 @@ data class Settings(
   @ColumnInfo(name = "widgets_show_label", defaultValue = "1") var widgetsShowLabel: Boolean,
   @ColumnInfo(name = "my_movies_recent_is_enabled", defaultValue = "1") var myMoviesRecentIsEnabled: Boolean,
   @ColumnInfo(name = "quick_rate_enabled", defaultValue = "0") var quickRateEnabled: Boolean,
-  @ColumnInfo(name = "lists_sort_by", defaultValue = "DATE_UPDATED") var listsSortBy: String
+  @ColumnInfo(name = "lists_sort_by", defaultValue = "DATE_UPDATED") var listsSortBy: String,
+  @ColumnInfo(name = "progress_upcoming_enabled", defaultValue = "1") var progressUpcomingEnabled: Boolean,
 )

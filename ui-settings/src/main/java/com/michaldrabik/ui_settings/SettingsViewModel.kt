@@ -119,10 +119,18 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
+  fun enableProgressUpcoming(enable: Boolean, context: Context) {
+    viewModelScope.launch {
+      mainCase.enableProgressUpcoming(enable, context)
+      refreshSettings()
+      Analytics.logSettingsProgressUpcoming(enable)
+    }
+  }
+
   fun enableMovies(enable: Boolean, context: Context) {
     viewModelScope.launch {
       mainCase.enableMovies(enable, context)
-      delay(250)
+      delay(300)
       refreshSettings(restartApp = true)
     }
     Analytics.logSettingsMoviesEnabled(enable)
@@ -131,7 +139,7 @@ class SettingsViewModel @Inject constructor(
   fun enableNews(enable: Boolean) {
     viewModelScope.launch {
       mainCase.enableNews(enable)
-      delay(250)
+      delay(300)
       refreshSettings(restartApp = true)
     }
     Analytics.logSettingsNewsEnabled(enable)
@@ -156,7 +164,7 @@ class SettingsViewModel @Inject constructor(
   fun setLanguage(language: AppLanguage) {
     viewModelScope.launch {
       mainCase.setLanguage(language)
-      delay(250)
+      delay(300)
       refreshSettings(restartApp = true)
     }
     Analytics.logSettingsLanguage(language.code)

@@ -28,7 +28,7 @@ class ProgressMainViewModel @Inject constructor(
   private val userTraktManager: UserTraktManager,
   private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
-  private val translationsRepository: TranslationsRepository
+  private val translationsRepository: TranslationsRepository,
 ) : BaseViewModel<ProgressMainUiModel>() {
 
   private val language by lazy { translationsRepository.getLanguage() }
@@ -46,6 +46,13 @@ class ProgressMainViewModel @Inject constructor(
     }
 
     val pinnedItems = allItems
+      .filter {
+        if (model.isUpcomingEnabled == true) {
+          true
+        } else {
+          !it.isHeader() && (it.isPinned || it.episode.hasAired(it.season))
+        }
+      }
       .sortedByDescending { !it.isHeader() && it.isPinned }
 
     uiState = ProgressMainUiModel(

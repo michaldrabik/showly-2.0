@@ -11,7 +11,7 @@
   android:overScrollMode="never"
   android:scrollbars="none"
   tools:background="@color/colorBackground"
-  tools:layout_marginTop="-300dp"
+  tools:layout_marginTop="-700dp"
   tools:theme="@style/AppTheme"
   >
 
@@ -401,10 +401,42 @@
     <View
       android:id="@+id/settingsSeparator1"
       style="@style/Settings.Separator"
-      app:layout_constraintBottom_toTopOf="@id/settingsMyShowsSections"
+      app:layout_constraintBottom_toTopOf="@id/settingsUpcomingSection"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsDateFormat"
+      />
+
+    <LinearLayout
+      android:id="@+id/settingsUpcomingSection"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@id/settingsMyShowsSections"
+      app:layout_constraintEnd_toStartOf="@id/settingsUpcomingSectionSwitch"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/settingsSeparator1"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsUpcomingSectionTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:text="@string/textSettingsUpcomingSectionSummary"
+        />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+      android:id="@+id/settingsUpcomingSectionSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:checked="true"
+      app:layout_constraintBottom_toBottomOf="@id/settingsUpcomingSection"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsUpcomingSection"
       />
 
     <LinearLayout
@@ -413,7 +445,7 @@
       app:layout_constraintBottom_toTopOf="@id/settingsMyMoviesSections"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/settingsSeparator1"
+      app:layout_constraintTop_toBottomOf="@+id/settingsUpcomingSection"
       >
 
       <TextView

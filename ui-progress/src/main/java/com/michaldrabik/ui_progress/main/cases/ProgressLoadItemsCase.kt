@@ -36,7 +36,7 @@ class ProgressLoadItemsCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,
   private val pinnedItemsRepository: PinnedItemsRepository,
-  private val dateFormatProvider: DateFormatProvider
+  private val dateFormatProvider: DateFormatProvider,
 ) {
 
   suspend fun loadMyShows() = showsRepository.myShows.loadAll()
@@ -100,7 +100,7 @@ class ProgressLoadItemsCase @Inject constructor(
   private fun findSeason(
     seasons: List<SeasonDb>,
     episode: EpisodeDb,
-    episodes: List<EpisodeDb>
+    episodes: List<EpisodeDb>,
   ) = seasons
     .firstOrNull { it.seasonNumber == episode.seasonNumber }
     ?.let { season ->
@@ -111,8 +111,10 @@ class ProgressLoadItemsCase @Inject constructor(
   fun prepareItems(
     input: List<ProgressItem>,
     searchQuery: String,
-    sortOrder: SortOrder
+    sortOrder: SortOrder,
+    upcomingEnabled: Boolean = true,
   ): List<ProgressItem> {
+
     val items = input
       .filter { it.episodesCount != 0 && it.episode.firstAired != null }
       .groupBy { it.episode.hasAired(it.season) }
@@ -131,7 +133,11 @@ class ProgressLoadItemsCase @Inject constructor(
         }
       )
 
-    val notAired = (items[false] ?: emptyList())
+    val notAiredItems =
+      if (!upcomingEnabled) emptyList()
+      else items[false] ?: emptyList()
+
+    val notAired = notAiredItems
       .sortedBy { it.episode.firstAired?.toInstant()?.toEpochMilli() }
 
     return (aired + notAired)

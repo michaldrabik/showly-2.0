@@ -43,7 +43,7 @@ class ProgressWidgetViewsFactory(
   private val sortOrderCase: ProgressSortOrderCase,
   private val showsRepository: ShowsRepository,
   private val imagesProvider: ShowImagesProvider,
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.Main
@@ -69,8 +69,9 @@ class ProgressWidgetViewsFactory(
         }
       }.awaitAll()
 
+      val upcomingEnabled = settingsRepository.load().progressUpcomingEnabled
       val sortOrder = sortOrderCase.loadSortOrder()
-      val allItems = loadItemsCase.prepareItems(items, "", sortOrder).toMutableList()
+      val allItems = loadItemsCase.prepareItems(items, "", sortOrder, upcomingEnabled).toMutableList()
 
       val headerIndex = allItems.indexOfFirst { !it.isHeader() && !it.episode.hasAired(it.season) }
       if (headerIndex != -1) {

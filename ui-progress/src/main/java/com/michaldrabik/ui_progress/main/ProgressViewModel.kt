@@ -13,6 +13,7 @@ import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.main.cases.ProgressEpisodesCase
 import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
 import com.michaldrabik.ui_progress.main.cases.ProgressPinnedItemsCase
+import com.michaldrabik.ui_progress.main.cases.ProgressSettingsCase
 import com.michaldrabik.ui_progress.main.cases.ProgressSortOrderCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -24,7 +25,8 @@ class ProgressViewModel @Inject constructor(
   private val pinnedItemsCase: ProgressPinnedItemsCase,
   private val sortOrderCase: ProgressSortOrderCase,
   private val episodesCase: ProgressEpisodesCase,
-  private val imagesProvider: ShowImagesProvider
+  private val settingsCase: ProgressSettingsCase,
+  private val imagesProvider: ShowImagesProvider,
 ) : BaseViewModel<ProgressUiModel>() {
 
   private var searchQuery = ""
@@ -33,6 +35,8 @@ class ProgressViewModel @Inject constructor(
     viewModelScope.launch {
       val shows = loadItemsCase.loadMyShows()
       val dateFormat = loadItemsCase.loadDateFormat()
+      val upcomingEnabled = settingsCase.isUpcomingEnabled()
+
       val items = shows.map { show ->
         async {
           val item = loadItemsCase.loadProgressItem(show)
@@ -43,13 +47,13 @@ class ProgressViewModel @Inject constructor(
 
       val sortOrder = sortOrderCase.loadSortOrder()
       val allItems = loadItemsCase.prepareItems(items, searchQuery, sortOrder)
-      uiState =
-        ProgressUiModel(
-          items = allItems,
-          isSearching = searchQuery.isNotBlank(),
-          sortOrder = sortOrder,
-          resetScroll = ActionEvent(resetScroll)
-        )
+      uiState = ProgressUiModel(
+        items = allItems,
+        isSearching = searchQuery.isNotBlank(),
+        isUpcomingEnabled = upcomingEnabled,
+        sortOrder = sortOrder,
+        resetScroll = ActionEvent(resetScroll),
+      )
     }
   }
 

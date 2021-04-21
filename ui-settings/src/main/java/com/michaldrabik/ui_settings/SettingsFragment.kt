@@ -222,6 +222,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         viewModel.enableSpecialSeasons(isChecked)
       }
 
+    settingsUpcomingSectionSwitch
+      .setCheckedSilent(settings.progressUpcomingEnabled) { _, isChecked ->
+        viewModel.enableProgressUpcoming(isChecked, requireAppContext())
+      }
+
     settingsMoviesEnabledSwitch
       .setCheckedSilent(moviesEnabled) { _, isChecked ->
         viewModel.enableMovies(isChecked, requireAppContext())
