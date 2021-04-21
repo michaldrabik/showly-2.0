@@ -58,6 +58,8 @@
   <string name="textSettingsLogoutMessage">\nCzy na pewno chcesz się wylogować?\n</string>
   <string name="textSettingsMoviesEnabledTitle">Filmy</string>
   <string name="textSettingsMoviesEnabledSummary">Włącz/wyłącz filmy. Aplikacja zostanie ponownie uruchomiona.</string>
+  <string name="textSettingsNewsEnabledTitle">Newsy</string>
+  <string name="textSettingsNewsEnabledSummary">Włącz/wyłącz sekcję newsów. Aplikacja zostanie ponownie uruchomiona.</string>
   <string name="textSettingsWidgets">Widgety</string>
   <string name="textSettingsWidgetsLabelsTitle">Pokaż Tytuły</string>
   <string name="textSettingsWidgetsLabelsSummary">Pokazuj przezroczyste tytuły widgetów.</string>
