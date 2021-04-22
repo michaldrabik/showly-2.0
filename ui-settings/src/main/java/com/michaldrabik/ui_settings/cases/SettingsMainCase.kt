@@ -6,7 +6,6 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.Mode
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.WidgetsProvider
@@ -26,7 +25,6 @@ import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import javax.inject.Inject
 
-@AppScope
 class SettingsMainCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val announcementManager: AnnouncementManager,

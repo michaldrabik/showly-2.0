@@ -5,7 +5,6 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.ListsRepository
 import com.michaldrabik.repository.SettingsRepository
@@ -34,7 +33,6 @@ import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
-@AppScope
 class ListDetailsItemsCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,

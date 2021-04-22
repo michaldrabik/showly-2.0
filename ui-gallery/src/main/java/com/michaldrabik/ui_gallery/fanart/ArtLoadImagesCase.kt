@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_gallery.fanart
 
 import com.michaldrabik.common.Config.FANART_GALLERY_IMAGES_LIMIT
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
@@ -15,7 +14,6 @@ import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageType
 import javax.inject.Inject
 
-@AppScope
 class ArtLoadImagesCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val moviesRepository: MoviesRepository,

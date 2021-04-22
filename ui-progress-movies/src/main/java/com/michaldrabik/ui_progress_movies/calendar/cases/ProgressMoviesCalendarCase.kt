@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_progress_movies.calendar.cases
 
 import androidx.annotation.StringRes
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcDay
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.R
@@ -16,7 +15,6 @@ import com.michaldrabik.ui_progress_movies.calendar.cases.ProgressMoviesCalendar
 import org.threeten.bp.DayOfWeek
 import javax.inject.Inject
 
-@AppScope
 class ProgressMoviesCalendarCase @Inject constructor() {
 
   fun prepareItems(items: List<ProgressMovieItem>): List<ProgressMovieItem> {

@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
@@ -18,7 +17,6 @@ import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
 import javax.inject.Named
 
-@AppScope
 class MainInitialsCase @Inject constructor(
   private val userTraktManager: UserTraktManager,
   private val ratingsRepository: RatingsRepository,

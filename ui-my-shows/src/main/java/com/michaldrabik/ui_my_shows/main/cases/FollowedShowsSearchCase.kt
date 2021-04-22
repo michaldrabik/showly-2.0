@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_my_shows.main.cases
 
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -11,7 +10,6 @@ import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import javax.inject.Inject
 
-@AppScope
 class FollowedShowsSearchCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,

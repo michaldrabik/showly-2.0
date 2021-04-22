@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_progress.main.cases
 
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.common.extensions.toMillis
@@ -29,7 +28,6 @@ import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
 import com.michaldrabik.data_local.database.model.Season as SeasonDb
 
-@AppScope
 class ProgressLoadItemsCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,

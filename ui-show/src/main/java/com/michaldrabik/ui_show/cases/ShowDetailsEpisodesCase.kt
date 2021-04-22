@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_show.cases
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.SettingsRepository
@@ -14,7 +13,6 @@ import com.michaldrabik.ui_show.helpers.SeasonsBundle
 import timber.log.Timber
 import javax.inject.Inject
 
-@AppScope
 class ShowDetailsEpisodesCase @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,

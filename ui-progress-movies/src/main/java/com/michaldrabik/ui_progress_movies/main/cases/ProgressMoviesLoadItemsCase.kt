@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_progress_movies.main.cases
 
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
@@ -20,7 +19,6 @@ import org.threeten.bp.format.DateTimeFormatter
 import java.util.Locale.ROOT
 import javax.inject.Inject
 
-@AppScope
 class ProgressMoviesLoadItemsCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,

@@ -1,12 +1,10 @@
 package com.michaldrabik.ui_progress.main.cases
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.SortOrder
 import javax.inject.Inject
 
-@AppScope
 class ProgressSortOrderCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {

@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_show.cases
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.repository.CommentsRepository
@@ -13,7 +12,6 @@ import retrofit2.Response
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-@AppScope
 class ShowDetailsCommentsCase @Inject constructor(
   private val commentsRepository: CommentsRepository,
   private val userManager: UserTraktManager

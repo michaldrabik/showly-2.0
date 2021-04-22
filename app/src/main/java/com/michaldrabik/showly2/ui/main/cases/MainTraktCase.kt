@@ -1,14 +1,12 @@
 package com.michaldrabik.showly2.ui.main.cases
 
 import android.content.Context
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncWorker
 import javax.inject.Inject
 
-@AppScope
 class MainTraktCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val quickSyncManager: QuickSyncManager

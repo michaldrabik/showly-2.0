@@ -1,11 +1,9 @@
 package com.michaldrabik.ui_lists.lists.cases
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_model.SortOrder
 import javax.inject.Inject
 
-@AppScope
 class SortOrderListsCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {

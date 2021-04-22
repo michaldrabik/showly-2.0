@@ -1,14 +1,12 @@
 package com.michaldrabik.ui_settings.cases
 
 import android.content.Context
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_settings.helpers.AppTheme
 import com.michaldrabik.ui_settings.helpers.WidgetTransparency
 import javax.inject.Inject
 
-@AppScope
 class SettingsThemesCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {

@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_lists.create.cases
 
 import com.michaldrabik.common.Mode
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.ListsRepository
 import com.michaldrabik.repository.SettingsRepository
@@ -16,7 +15,6 @@ import kotlinx.coroutines.delay
 import retrofit2.HttpException
 import javax.inject.Inject
 
-@AppScope
 class CreateListCase @Inject constructor(
   private val cloud: Cloud,
   private val mappers: Mappers,

@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_statistics.cases
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
@@ -10,7 +9,6 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_statistics.views.ratings.recycler.StatisticsRatingItem
 import javax.inject.Inject
 
-@AppScope
 class StatisticsLoadRatingsCase @Inject constructor(
   private val userTraktManager: UserTraktManager,
   private val showsRepository: ShowsRepository,

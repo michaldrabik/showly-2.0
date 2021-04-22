@@ -84,7 +84,7 @@ class MainActivity :
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    setupComponents()
+    appComponent().inject(this)
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
@@ -100,11 +100,6 @@ class MainActivity :
   override fun onStart() {
     super.onStart()
     ShowsMoviesSyncService.initialize(applicationContext)
-  }
-
-  override fun setupComponents() {
-    appComponent().inject(this)
-    super.setupComponents()
   }
 
   override fun onNewIntent(intent: Intent?) {

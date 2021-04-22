@@ -97,7 +97,7 @@ interface AppComponent {
 
   fun uiProgressMoviesComponent(): UiProgressMoviesComponent.Factory
 
-  fun uiPremiumMoviesComponent(): UiPremiumComponent.Factory
+  fun uiPremiumComponent(): UiPremiumComponent.Factory
 
   fun uiPostCommentComponent(): UiPostCommentComponent.Factory
 

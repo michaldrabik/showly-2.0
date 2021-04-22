@@ -1,12 +1,10 @@
 package com.michaldrabik.ui_discover.cases
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_model.DiscoverFilters
 import javax.inject.Inject
 
-@AppScope
 class DiscoverFiltersCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {

@@ -1,11 +1,9 @@
 package com.michaldrabik.ui_movie.cases
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_model.Movie
 import javax.inject.Inject
 
-@AppScope
 class MovieDetailsRelatedCase @Inject constructor(
   private val moviesRepository: MoviesRepository
 ) {

@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_show.cases
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
@@ -9,7 +8,6 @@ import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_model.Show
 import javax.inject.Inject
 
-@AppScope
 class ShowDetailsWatchlistCase @Inject constructor(
   private val cloud: Cloud,
   private val userManager: UserTraktManager,

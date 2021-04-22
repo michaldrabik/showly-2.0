@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_lists.details.cases
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.CustomListItem
@@ -14,7 +13,6 @@ import com.michaldrabik.ui_model.CustomList
 import retrofit2.HttpException
 import javax.inject.Inject
 
-@AppScope
 class ListDetailsMainCase @Inject constructor(
   private val database: AppDatabase,
   private val cloud: Cloud,

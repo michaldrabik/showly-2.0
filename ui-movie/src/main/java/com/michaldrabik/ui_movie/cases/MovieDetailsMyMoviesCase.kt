@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_movie.cases
 
 import androidx.room.withTransaction
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
@@ -12,7 +11,6 @@ import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_model.Movie
 import javax.inject.Inject
 
-@AppScope
 class MovieDetailsMyMoviesCase @Inject constructor(
   private val database: AppDatabase,
   private val cloud: Cloud,

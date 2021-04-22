@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_progress.calendar.cases
 
 import androidx.annotation.StringRes
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_model.Episode
@@ -17,7 +16,6 @@ import org.threeten.bp.LocalTime
 import org.threeten.bp.temporal.ChronoUnit.DAYS
 import javax.inject.Inject
 
-@AppScope
 class ProgressCalendarCase @Inject constructor() {
 
   fun prepareItems(items: List<ProgressItem>): List<ProgressItem> {

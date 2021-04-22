@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_show.cases
 
 import androidx.room.withTransaction
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.repository.PinnedItemsRepository
@@ -9,7 +8,6 @@ import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_model.Show
 import javax.inject.Inject
 
-@AppScope
 class ShowDetailsArchiveCase @Inject constructor(
   private val database: AppDatabase,
   private val showsRepository: ShowsRepository,

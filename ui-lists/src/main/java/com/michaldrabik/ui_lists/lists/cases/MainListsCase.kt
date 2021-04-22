@@ -2,7 +2,6 @@ package com.michaldrabik.ui_lists.lists.cases
 
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.repository.ListsRepository
@@ -22,7 +21,6 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
-@AppScope
 class MainListsCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,

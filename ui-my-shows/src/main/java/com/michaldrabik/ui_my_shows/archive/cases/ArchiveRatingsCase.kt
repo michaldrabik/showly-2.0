@@ -1,12 +1,10 @@
 package com.michaldrabik.ui_my_shows.archive.cases
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveListItem
 import javax.inject.Inject
 
-@AppScope
 class ArchiveRatingsCase @Inject constructor(
   private val ratingsRepository: RatingsRepository,
   private val userTraktManager: UserTraktManager

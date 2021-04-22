@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_show.cases
 
 import androidx.room.withTransaction
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
@@ -18,7 +17,6 @@ import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
 import com.michaldrabik.data_local.database.model.Season as SeasonDb
 
-@AppScope
 class ShowDetailsMyShowsCase @Inject constructor(
   private val database: AppDatabase,
   private val cloud: Cloud,

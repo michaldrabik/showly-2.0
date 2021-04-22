@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_news.cases
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.repository.NewsRepository
@@ -15,7 +14,6 @@ import kotlinx.coroutines.coroutineScope
 import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
 
-@AppScope
 class NewsLoadItemsCase @Inject constructor(
   private val newsRepository: NewsRepository,
   private val dateFormatProvider: DateFormatProvider,

@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_search.cases
 
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
@@ -16,7 +15,6 @@ import com.michaldrabik.ui_model.Translation
 import javax.inject.Inject
 import com.michaldrabik.data_remote.trakt.model.SearchResult as SearchResultNetwork
 
-@AppScope
 class SearchMainCase @Inject constructor(
   private val cloud: Cloud,
   private val mappers: Mappers,

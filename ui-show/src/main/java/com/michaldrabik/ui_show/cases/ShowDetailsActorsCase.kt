@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_show.cases
 
 import com.michaldrabik.common.Config.ACTORS_CACHE_DURATION
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_remote.Cloud
@@ -11,7 +10,6 @@ import com.michaldrabik.ui_model.Show
 import java.util.Locale.ENGLISH
 import javax.inject.Inject
 
-@AppScope
 class ShowDetailsActorsCase @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,

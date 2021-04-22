@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_discover.cases
 
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -18,7 +17,6 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
-@AppScope
 class DiscoverShowsCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val imagesProvider: ShowImagesProvider,

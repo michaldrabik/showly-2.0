@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_show.cases
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_model.Episode
@@ -8,7 +7,6 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.TraktRating
 import javax.inject.Inject
 
-@AppScope
 class ShowDetailsRatingCase @Inject constructor(
   private val userTraktManager: UserTraktManager,
   private val ratingsRepository: RatingsRepository

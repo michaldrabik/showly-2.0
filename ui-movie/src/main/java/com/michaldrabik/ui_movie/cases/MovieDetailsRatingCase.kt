@@ -1,13 +1,11 @@
 package com.michaldrabik.ui_movie.cases
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.TraktRating
 import javax.inject.Inject
 
-@AppScope
 class MovieDetailsRatingCase @Inject constructor(
   private val userTraktManager: UserTraktManager,
   private val ratingsRepository: RatingsRepository

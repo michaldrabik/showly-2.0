@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_my_shows.watchlist.cases
 
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
@@ -13,7 +12,6 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.Translation
 import javax.inject.Inject
 
-@AppScope
 class WatchlistLoadShowsCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,

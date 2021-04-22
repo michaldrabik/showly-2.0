@@ -1,13 +1,11 @@
 package com.michaldrabik.ui_search.cases
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.ui_model.RecentSearch
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.RecentSearch as RecentSearchDb
 
-@AppScope
 class SearchRecentsCase @Inject constructor(
   private val database: AppDatabase
 ) {
