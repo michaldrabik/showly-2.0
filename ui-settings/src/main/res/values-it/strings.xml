@@ -21,6 +21,8 @@
   <string name="textSettingsGeneral">Generale &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Aggiunti di Recente</string>
   <string name="textSettingsRecentShowsSummary">Numero di elementi recenti da mostrare in \'Raccolta\'.</string>
+  <string name="textSettingsUpcomingSectionTitle">Sezione \"In Arrivo\"</string>
+  <string name="textSettingsUpcomingSectionSummary">Attiva/disattiva la sezione \"In Arrivo\" nella scheda \"Progressi\".</string>
   <string name="textSettingsMyShowsSectionsTitle">Le Mie Serie TV Sezioni</string>
   <string name="textSettingsMyShowsSectionSummary">Attiva/Disattiva le sezioni nella pagina \'Le Mie Serie TV\'.</string>
   <string name="textSettingsMyMoviesSectionsTitle">I Miei Film Sezioni</string>
@@ -59,7 +61,7 @@
   <string name="textSettingsMoviesEnabledTitle">Film</string>
   <string name="textSettingsMoviesEnabledSummary">Attiva/Disattiva il supporto ai film. L\'app verrà riavviata.</string>
   <string name="textSettingsNewsEnabledTitle">Notizie</string>
-  <string name="textSettingsNewsEnabledSummary">Attiva/disattiva la sezione news. L\'app verrà riavviata.</string>
+  <string name="textSettingsNewsEnabledSummary">Attiva/disattiva la sezione notizie. L\'app verrà riavviata.</string>
   <string name="textSettingsWidgets">Widget</string>
   <string name="textSettingsWidgetsLabelsTitle">Titoli</string>
   <string name="textSettingsWidgetsLabelsSummary">Mostra i titoli semitrasparenti per le sezioni dei widget.</string>
