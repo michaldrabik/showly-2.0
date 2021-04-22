@@ -21,6 +21,8 @@
   <string name="textSettingsGeneral">Allgemein &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Kürzlich hinzugefügte Menge</string>
   <string name="textSettingsRecentShowsSummary">Anzahl an Einträgen, die unter \'Sammlung\' zu sehen sind.</string>
+  <string name="textSettingsUpcomingSectionTitle">\'Demnächst\' Abschnitt</string>
+  <string name="textSettingsUpcomingSectionSummary">Aktiviere/deaktiviere den Abschnitt \'Demnächst\' im \'Fortschritte\'.</string>
   <string name="textSettingsMyShowsSectionsTitle">Meine Serien Abschnitt</string>
   <string name="textSettingsMyShowsSectionSummary">Aktiviere/Deaktiviere die Abschnitte im \'Meine Serien\' Tab.</string>
   <string name="textSettingsMyMoviesSectionsTitle">Meine Filme Abschnitt</string>
@@ -58,6 +60,8 @@
   <string name="textSettingsLogoutMessage">\nBist du sicher, dass du dich ausloggen möchtest?\n</string>
   <string name="textSettingsMoviesEnabledTitle">Filme</string>
   <string name="textSettingsMoviesEnabledSummary">Aktiviere/Deaktiviere die Unterstützung fur Filme. Die App wird neu gestartet.</string>
+  <string name="textSettingsNewsEnabledTitle">News</string>
+  <string name="textSettingsNewsEnabledSummary">Aktiviere/deaktiviere News. App wird neu starten.</string>
   <string name="textSettingsWidgets">Widgets</string>
   <string name="textSettingsWidgetsLabelsTitle">Titel</string>
   <string name="textSettingsWidgetsLabelsSummary">Zeigen Sie durchscheinende Widgets-Titel an.</string>
