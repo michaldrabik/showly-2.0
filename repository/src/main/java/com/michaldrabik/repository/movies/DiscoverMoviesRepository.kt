@@ -2,7 +2,6 @@ package com.michaldrabik.repository.movies
 
 import androidx.room.withTransaction
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.DiscoverMovie
@@ -13,7 +12,6 @@ import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Movie
 import javax.inject.Inject
 
-@AppScope
 class DiscoverMoviesRepository @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,

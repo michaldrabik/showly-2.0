@@ -1,7 +1,6 @@
 package com.michaldrabik.repository.movies
 
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.MoviesSyncLog
@@ -11,7 +10,6 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Movie
 import javax.inject.Inject
 
-@AppScope
 class MovieDetailsRepository @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
