@@ -1,6 +1,5 @@
 package com.michaldrabik.showly2.di.module
 
-import com.michaldrabik.showly2.di.component.ServiceComponent
 import com.michaldrabik.ui_base.di.UiBaseComponent
 import com.michaldrabik.ui_comments.post.di.UiPostCommentComponent
 import com.michaldrabik.ui_discover.di.UiDiscoverComponent
@@ -52,8 +51,7 @@ import dagger.Module
     UiListDetailsComponent::class,
     UiCreateListComponent::class,
     UiManageListsComponent::class,
-    UiNewsComponent::class,
-    ServiceComponent::class
+    UiNewsComponent::class
   ]
 )
 class SubcomponentsModule

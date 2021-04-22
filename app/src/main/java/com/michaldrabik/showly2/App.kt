@@ -3,7 +3,6 @@ package com.michaldrabik.showly2
 import android.app.Activity
 import android.app.Application
 import android.app.NotificationChannel
-import android.app.Service
 import android.content.Context
 import android.net.ConnectivityManager
 import android.os.Build
@@ -178,5 +177,3 @@ class App :
 fun Context.connectivityManager() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
 fun Activity.appComponent() = (application as App).appComponent
-
-fun Service.serviceComponent() = (application as App).appComponent.serviceComponent().create()
