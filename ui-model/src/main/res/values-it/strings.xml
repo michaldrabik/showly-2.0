@@ -28,7 +28,7 @@
   <string name="textTipDiscover">Doppio tocco sul tasto \'Scopri\' per iniziare la ricerca.</string>
   <string name="textTipMyShows">Doppio tocco sul tasto \'Raccolta\' per navigare velocemente fra le pagine.</string>
   <string name="textTipShowDetailsGallery">Tocca l\'immagine della serie TV per aprire la galleria.</string>
-  <string name="textTipShowDetailsQuickProgress">Tocca l\'icona \'Archivio\' per spostare la serie nell\'archivio.</string>
+  <string name="textTipShowDetailsQuickProgress">Tocca l\'icona \"Archivio\" per spostare la serie nell\'archivio.</string>
   <string name="textTipDiscoverFilters">Usa i filtri per migliorare la tua pagina Scopri.</string>
   <string name="textTipWatchlistPinItem">Tocca e mantieni un elemento della lista per fissarlo in cima.</string>
   <string name="textTipBottomModeMenu">Scorri a sinistra o a destra il menu inferiore per cambiare modalità rapidamente.</string>
