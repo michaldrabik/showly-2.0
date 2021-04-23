@@ -70,6 +70,7 @@ class NewsFragment :
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it) })
+      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
     }
   }
 

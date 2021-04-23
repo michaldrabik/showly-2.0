@@ -32,9 +32,7 @@ class NewsFiltersView : FrameLayout, CoordinatorLayout.AttachedBehavior {
         else -> throw IllegalStateException()
       }
     }
-    if (ids.isNotEmpty()) {
-      onChipsChangeListener?.invoke(ids)
-    }
+    onChipsChangeListener?.invoke(ids)
   }
 
   override fun setEnabled(enabled: Boolean) {

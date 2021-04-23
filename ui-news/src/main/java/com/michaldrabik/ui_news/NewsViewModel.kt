@@ -3,6 +3,7 @@ package com.michaldrabik.ui_news
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_model.NewsItem.Type.MOVIE
@@ -29,6 +30,9 @@ class NewsViewModel @Inject constructor(
   ) {
     if (types != null) {
       currentTypes = types.toList()
+      if (types.isEmpty()) {
+        currentTypes = listOf(SHOW, MOVIE)
+      }
     }
 
     if (forceRefresh && nowUtcMillis() - previousRefresh < TimeUnit.SECONDS.toMillis(30)) {
@@ -56,6 +60,7 @@ class NewsViewModel @Inject constructor(
         }
       } catch (error: Throwable) {
         uiState = NewsUiModel(isLoading = false)
+        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
         rethrowCancellation(error)
       } finally {
         progressJob.cancel()

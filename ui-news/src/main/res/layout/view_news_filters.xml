@@ -13,7 +13,6 @@
     android:layout_height="wrap_content"
     app:chipSpacingHorizontal="@dimen/spaceSmall"
     app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
-    app:selectionRequired="true"
     >
 
     <com.google.android.material.chip.Chip
@@ -21,7 +20,6 @@
       style="@style/Widget.MaterialComponents.Chip.Choice"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:checked="true"
       android:text="@string/textShows"
       android:textColor="@color/selector_news_chip_text"
       android:textSize="16sp"
@@ -36,7 +34,6 @@
       style="@style/Widget.MaterialComponents.Chip.Choice"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:checked="true"
       android:text="@string/textMovies"
       android:textColor="@color/selector_news_chip_text"
       android:textSize="16sp"
