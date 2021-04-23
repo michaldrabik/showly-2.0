@@ -5,7 +5,7 @@ import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
-import com.michaldrabik.ui_episodes.EpisodesManager
+import com.michaldrabik.ui_base.episodes.EpisodesManager
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Show

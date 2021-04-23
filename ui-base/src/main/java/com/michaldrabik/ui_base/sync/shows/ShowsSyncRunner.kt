@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.common.shows
+package com.michaldrabik.ui_base.sync.shows
 
 import com.michaldrabik.common.ConfigVariant.SHOW_SYNC_COOLDOWN
 import com.michaldrabik.common.di.AppScope
@@ -8,7 +8,7 @@ import com.michaldrabik.data_local.database.model.EpisodesSyncLog
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
-import com.michaldrabik.ui_episodes.EpisodesManager
+import com.michaldrabik.ui_base.episodes.EpisodesManager
 import com.michaldrabik.ui_model.ShowStatus.CANCELED
 import com.michaldrabik.ui_model.ShowStatus.ENDED
 import com.michaldrabik.ui_model.ShowStatus.UNKNOWN

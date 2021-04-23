@@ -9,7 +9,7 @@ import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
-import com.michaldrabik.ui_episodes.EpisodesManager
+import com.michaldrabik.ui_base.episodes.EpisodesManager
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show

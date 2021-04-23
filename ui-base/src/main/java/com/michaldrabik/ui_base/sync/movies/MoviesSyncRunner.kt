@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.common.movies
+package com.michaldrabik.ui_base.sync.movies
 
 import com.michaldrabik.common.ConfigVariant.MOVIE_SYNC_COOLDOWN
 import com.michaldrabik.common.di.AppScope
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class MoviesSyncRunner @Inject constructor(
   private val database: AppDatabase,
   private val moviesRepository: MoviesRepository,
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) {
 
   companion object {

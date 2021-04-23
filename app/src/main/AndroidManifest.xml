@@ -69,7 +69,7 @@
     </service>
 
     <service
-      android:name=".common.ShowsMoviesSyncService"
+      android:name="com.michaldrabik.ui_base.sync.ShowsMoviesSyncService"
       android:exported="true"
       android:permission="android.permission.BIND_JOB_SERVICE"
       />

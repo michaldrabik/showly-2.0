@@ -21,7 +21,6 @@ import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.appComponent
-import com.michaldrabik.showly2.common.ShowsMoviesSyncService
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.ui.BillingActivity
 import com.michaldrabik.showly2.ui.views.WhatsNewView
@@ -37,6 +36,7 @@ import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncProgress
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
+import com.michaldrabik.ui_base.sync.ShowsMoviesSyncService
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.TipsHost

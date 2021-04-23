@@ -10,6 +10,7 @@ import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
 import com.michaldrabik.ui_base.dates.DateFormatProvider
+import com.michaldrabik.ui_base.episodes.EpisodesManager
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
@@ -18,7 +19,6 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.replace
-import com.michaldrabik.ui_episodes.EpisodesManager
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.EpisodeBundle

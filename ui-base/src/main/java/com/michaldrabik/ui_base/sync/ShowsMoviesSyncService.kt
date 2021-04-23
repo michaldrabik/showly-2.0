@@ -1,14 +1,14 @@
-package com.michaldrabik.showly2.common
+package com.michaldrabik.ui_base.sync
 
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
-import com.michaldrabik.showly2.App
-import com.michaldrabik.showly2.common.movies.MoviesSyncRunner
-import com.michaldrabik.showly2.common.shows.ShowsSyncRunner
 import com.michaldrabik.ui_base.Logger
+import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ShowsMoviesSyncComplete
+import com.michaldrabik.ui_base.sync.movies.MoviesSyncRunner
+import com.michaldrabik.ui_base.sync.shows.ShowsSyncRunner
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -36,7 +36,7 @@ class ShowsMoviesSyncService : JobIntentService(), CoroutineScope {
 
   override fun onHandleWork(intent: Intent) {
     Timber.d("Sync service initialized")
-    (applicationContext as App).appComponent.inject(this)
+    (applicationContext as UiBaseComponentProvider).provideBaseComponent().inject(this)
 
     val showsAsync = async {
       try {

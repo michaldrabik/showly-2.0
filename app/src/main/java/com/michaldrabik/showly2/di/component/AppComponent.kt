@@ -4,7 +4,6 @@ import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.di.StorageContract
 import com.michaldrabik.data_remote.di.CloudContract
 import com.michaldrabik.showly2.App
-import com.michaldrabik.showly2.common.ShowsMoviesSyncService
 import com.michaldrabik.showly2.di.module.PreferencesModule
 import com.michaldrabik.showly2.di.module.SubcomponentsModule
 import com.michaldrabik.showly2.di.module.ViewModelsModule
@@ -53,8 +52,6 @@ interface AppComponent {
   fun inject(application: App)
 
   fun inject(activity: MainActivity)
-
-  fun inject(service: ShowsMoviesSyncService)
 
   fun uiBaseComponent(): UiBaseComponent.Factory
 
