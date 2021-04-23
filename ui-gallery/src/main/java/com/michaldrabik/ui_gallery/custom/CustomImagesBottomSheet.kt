@@ -51,7 +51,7 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiCustomImagesComponentProvider).provideCustomImagesComponent().inject(this)
+    (requireContext().applicationContext as UiCustomImagesComponentProvider).provideCustomImagesComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 

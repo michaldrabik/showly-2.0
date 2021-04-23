@@ -33,7 +33,7 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiCreateListComponentProvider).provideCreateListComponent().inject(this)
+    (requireContext().applicationContext as UiCreateListComponentProvider).provideCreateListComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 

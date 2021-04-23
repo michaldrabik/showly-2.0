@@ -53,7 +53,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   override val viewModel by viewModels<SettingsViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiSettingsComponentProvider).provideSettingsComponent().inject(this)
+    (requireAppContext() as UiSettingsComponentProvider).provideSettingsComponent().inject(this)
     super.onCreate(savedInstanceState)
     handleBackPressed()
   }

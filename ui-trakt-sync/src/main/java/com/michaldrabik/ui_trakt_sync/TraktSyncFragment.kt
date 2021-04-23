@@ -36,7 +36,7 @@ class TraktSyncFragment :
   override val viewModel by viewModels<TraktSyncViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiTraktSyncComponentProvider).provideTraktSyncComponent().inject(this)
+    (requireAppContext() as UiTraktSyncComponentProvider).provideTraktSyncComponent().inject(this)
     super.onCreate(savedInstanceState)
     handleBackPressed()
   }

@@ -32,7 +32,7 @@ class ProgressMoviesCalendarFragment :
   private var statusBarHeight = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiProgressMoviesComponentProvider).provideProgressMoviesComponent().inject(this)
+    (requireAppContext() as UiProgressMoviesComponentProvider).provideProgressMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 

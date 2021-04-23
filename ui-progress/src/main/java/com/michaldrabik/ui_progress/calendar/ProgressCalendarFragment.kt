@@ -32,7 +32,7 @@ class ProgressCalendarFragment :
   private var statusBarHeight = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiProgressComponentProvider).provideProgressComponent().inject(this)
+    (requireAppContext() as UiProgressComponentProvider).provideProgressComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 

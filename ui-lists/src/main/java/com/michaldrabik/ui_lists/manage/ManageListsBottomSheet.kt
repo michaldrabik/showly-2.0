@@ -47,7 +47,7 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiManageListsComponentProvider).provideManageListsComponent().inject(this)
+    (requireContext().applicationContext as UiManageListsComponentProvider).provideManageListsComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 

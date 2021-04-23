@@ -53,7 +53,7 @@ class DiscoverMoviesFragment :
   private var tabsViewPosition = 0F
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiDiscoverMoviesComponentProvider).provideDiscoverMoviesComponent().inject(this)
+    (requireAppContext() as UiDiscoverMoviesComponentProvider).provideDiscoverMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
     savedInstanceState?.let {
       searchViewPosition = it.getFloat("ARG_SEARCH_POS", 0F)

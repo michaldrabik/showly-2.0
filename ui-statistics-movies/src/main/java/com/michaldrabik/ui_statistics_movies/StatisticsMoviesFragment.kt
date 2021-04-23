@@ -19,7 +19,7 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
   override val viewModel by viewModels<StatisticsMoviesViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiStatisticsMoviesComponentProvider).provideStatisticsMoviesComponent().inject(this)
+    (requireAppContext() as UiStatisticsMoviesComponentProvider).provideStatisticsMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
     handleBackPressed()
   }

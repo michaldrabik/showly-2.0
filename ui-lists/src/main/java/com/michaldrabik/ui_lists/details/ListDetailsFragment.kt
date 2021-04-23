@@ -61,7 +61,7 @@ class ListDetailsFragment :
   private var isReorderMode = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiListDetailsComponentProvider).provideListDetailsComponent().inject(this)
+    (requireAppContext() as UiListDetailsComponentProvider).provideListDetailsComponent().inject(this)
     super.onCreate(savedInstanceState)
     setupBackPressed()
   }

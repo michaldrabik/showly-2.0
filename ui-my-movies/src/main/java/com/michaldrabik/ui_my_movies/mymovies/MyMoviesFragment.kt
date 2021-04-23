@@ -40,7 +40,7 @@ class MyMoviesFragment :
   private var statusBarHeight = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiMyMoviesComponentProvider).provideMyMoviesComponent().inject(this)
+    (requireAppContext() as UiMyMoviesComponentProvider).provideMyMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 

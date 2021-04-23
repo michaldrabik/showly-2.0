@@ -55,7 +55,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiSearchComponentProvider).provideSearchComponent().inject(this)
+    (requireAppContext() as UiSearchComponentProvider).provideSearchComponent().inject(this)
     super.onCreate(savedInstanceState)
     handleBackPressed()
   }

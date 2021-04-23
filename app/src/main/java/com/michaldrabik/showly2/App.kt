@@ -1,7 +1,5 @@
 package com.michaldrabik.showly2
 
-import android.app.Activity
-import android.app.Application
 import android.app.NotificationChannel
 import android.content.Context
 import android.net.ConnectivityManager
@@ -13,24 +11,15 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
-import com.michaldrabik.data_local.di.DaggerStorageComponent
-import com.michaldrabik.data_local.di.StorageModule
-import com.michaldrabik.data_remote.di.DaggerCloudComponent
-import com.michaldrabik.repository.SettingsRepository
-import com.michaldrabik.showly2.di.component.AppComponent
-import com.michaldrabik.showly2.di.component.DaggerAppComponent
-import com.michaldrabik.showly2.di.module.PreferencesModule
 import com.michaldrabik.showly2.utilities.NetworkMonitorCallbacks
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
 import com.michaldrabik.ui_base.common.WidgetsProvider
-import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsActivityCallbacks
 import com.michaldrabik.ui_base.utilities.extensions.notificationManager
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_widgets.calendar.CalendarWidgetProvider
 import com.michaldrabik.ui_widgets.calendar_movies.CalendarMoviesWidgetProvider
-import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
 import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider
 import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider
 import com.yariksoffice.lingver.Lingver
@@ -38,39 +27,19 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
-import javax.inject.Inject
 import com.michaldrabik.ui_base.fcm.NotificationChannel as AppNotificationChannel
 
-class App :
-  Application(),
-  UiBaseComponentProvider,
-  UiWidgetsComponentProvider,
+class App : DiApp(),
   OnlineStatusProvider,
   WidgetsProvider,
   OnTraktSyncListener {
 
-  @Inject lateinit var settingsRepository: SettingsRepository
-
   var isAppOnline = true
-  lateinit var appComponent: AppComponent
   private var isSyncRunning = false
 
   private val appScope = MainScope()
 
   override fun onCreate() {
-
-    fun setupComponents() {
-      appComponent = DaggerAppComponent.builder()
-        .cloudContract(DaggerCloudComponent.create())
-        .storageContract(
-          DaggerStorageComponent.builder()
-            .storageModule(StorageModule(applicationContext))
-            .build()
-        )
-        .preferencesModule(PreferencesModule(applicationContext))
-        .build()
-      appComponent.inject(this)
-    }
 
     fun setupSettings() = runBlocking {
       if (!settingsRepository.isInitialized()) {
@@ -119,8 +88,9 @@ class App :
     }
 
     fun setupLifecycleCallbacks() {
+      val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
       val eventsCallbacks = EventsActivityCallbacks()
-      val networkMonitorCallbacks = NetworkMonitorCallbacks(connectivityManager())
+      val networkMonitorCallbacks = NetworkMonitorCallbacks(connectivityManager)
 
       registerActivityLifecycleCallbacks(eventsCallbacks)
       registerActivityLifecycleCallbacks(networkMonitorCallbacks)
@@ -139,7 +109,6 @@ class App :
     }
 
     setupLifecycleCallbacks()
-    setupComponents()
     setupSettings()
     setupStrictMode()
     setupNotificationChannels()
@@ -163,17 +132,7 @@ class App :
     }
   }
 
-  override fun provideBaseComponent() = appComponent.uiBaseComponent().create()
-
-  override fun provideWidgetsComponent() = appComponent.uiWidgetsComponent().create()
-
   override fun onTraktSyncProgress() = run { isSyncRunning = true }
-
   override fun onTraktSyncComplete() = run { isSyncRunning = false }
-
   override fun isTraktSyncActive() = isSyncRunning
 }
-
-fun Context.connectivityManager() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-fun Activity.appComponent() = (application as App).appComponent

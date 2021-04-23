@@ -43,7 +43,7 @@ class ArchiveFragment :
   private var statusBarHeight = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiMyShowsComponentProvider).provideMyShowsComponent().inject(this)
+    (requireAppContext() as UiMyShowsComponentProvider).provideMyShowsComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 

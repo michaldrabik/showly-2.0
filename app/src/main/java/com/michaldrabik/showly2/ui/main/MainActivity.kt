@@ -19,8 +19,8 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.showly2.BuildConfig
+import com.michaldrabik.showly2.DiApp
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.appComponent
 import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.ui.BillingActivity
 import com.michaldrabik.showly2.ui.views.WhatsNewView
@@ -84,7 +84,7 @@ class MainActivity :
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    appComponent().inject(this)
+    (application as DiApp).appComponent.inject(this)
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 

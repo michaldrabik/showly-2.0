@@ -128,7 +128,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private val animationExitLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_left) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiMovieDetailsComponentProvider).provideMovieDetailsComponent().inject(this)
+    (requireAppContext() as UiMovieDetailsComponentProvider).provideMovieDetailsComponent().inject(this)
     super.onCreate(savedInstanceState)
     handleBackPressed()
   }

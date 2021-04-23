@@ -19,7 +19,7 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
   override val viewModel by viewModels<StatisticsViewModel> { viewModelFactory }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiStatisticsComponentProvider).provideStatisticsComponent().inject(this)
+    (requireAppContext() as UiStatisticsComponentProvider).provideStatisticsComponent().inject(this)
     super.onCreate(savedInstanceState)
     handleBackPressed()
   }

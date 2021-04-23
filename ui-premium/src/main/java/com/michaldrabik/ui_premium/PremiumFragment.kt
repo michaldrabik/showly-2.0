@@ -34,7 +34,7 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
     }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiPremiumComponentProvider).providePremiumComponent().inject(this)
+    (requireAppContext() as UiPremiumComponentProvider).providePremiumComponent().inject(this)
     super.onCreate(savedInstanceState)
     handleBackPressed()
   }

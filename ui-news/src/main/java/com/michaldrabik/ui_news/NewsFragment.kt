@@ -52,7 +52,7 @@ class NewsFragment :
   private var headerTranslation = 0F
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiNewsComponentProvider).provideNewsComponent().inject(this)
+    (requireAppContext() as UiNewsComponentProvider).provideNewsComponent().inject(this)
     super.onCreate(savedInstanceState)
 
     savedInstanceState?.let {

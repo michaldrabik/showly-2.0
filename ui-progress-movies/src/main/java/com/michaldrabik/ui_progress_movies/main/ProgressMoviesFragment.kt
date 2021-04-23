@@ -56,7 +56,7 @@ class ProgressMoviesFragment :
   private var currentPage = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiProgressMoviesComponentProvider).provideProgressMoviesComponent().inject(this)
+    (requireAppContext() as UiProgressMoviesComponentProvider).provideProgressMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
     setupBackPressed()
     savedInstanceState?.let {

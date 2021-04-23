@@ -9,7 +9,7 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus.DOWNLOADED
 import com.google.android.play.core.install.model.UpdateAvailability
 
-abstract class UpdateActivity : DiActivity() {
+abstract class UpdateActivity : BaseActivity() {
 
   companion object {
     private const val REQUEST_APP_UPDATE = 5278
@@ -41,7 +41,7 @@ abstract class UpdateActivity : DiActivity() {
 
   private fun startUpdate(
     appUpdateManager: AppUpdateManager,
-    updateInfo: AppUpdateInfo
+    updateInfo: AppUpdateInfo,
   ) {
     updateListener = InstallStateUpdatedListener {
       if (it.installStatus() == DOWNLOADED) {

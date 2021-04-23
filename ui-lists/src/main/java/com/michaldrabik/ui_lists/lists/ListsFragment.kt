@@ -73,7 +73,7 @@ class ListsFragment :
   private var isFabHidden = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiListsComponentProvider).provideListsComponent().inject(this)
+    (requireAppContext() as UiListsComponentProvider).provideListsComponent().inject(this)
     super.onCreate(savedInstanceState)
     setupBackPressed()
 

@@ -64,7 +64,7 @@ class ProgressFragment :
   private var currentPage = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiProgressComponentProvider).provideProgressComponent().inject(this)
+    (requireAppContext() as UiProgressComponentProvider).provideProgressComponent().inject(this)
     super.onCreate(savedInstanceState)
     setupBackPressed()
     savedInstanceState?.let {

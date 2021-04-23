@@ -149,7 +149,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private val animationExitLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_left) }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiShowDetailsComponentProvider).provideShowDetailsComponent().inject(this)
+    (requireAppContext() as UiShowDetailsComponentProvider).provideShowDetailsComponent().inject(this)
     super.onCreate(savedInstanceState)
     handleBackPressed()
   }

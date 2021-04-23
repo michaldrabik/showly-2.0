@@ -45,7 +45,7 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiPostCommentComponentProvider).providePostCommentComponent().inject(this)
+    (requireContext().applicationContext as UiPostCommentComponentProvider).providePostCommentComponent().inject(this)
     super.onCreate(savedInstanceState)
   }
 

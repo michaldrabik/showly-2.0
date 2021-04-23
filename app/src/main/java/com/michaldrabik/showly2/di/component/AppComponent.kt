@@ -3,7 +3,7 @@ package com.michaldrabik.showly2.di.component
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.di.StorageContract
 import com.michaldrabik.data_remote.di.CloudContract
-import com.michaldrabik.showly2.App
+import com.michaldrabik.showly2.DiApp
 import com.michaldrabik.showly2.di.module.PreferencesModule
 import com.michaldrabik.showly2.di.module.SubcomponentsModule
 import com.michaldrabik.showly2.di.module.ViewModelsModule
@@ -49,7 +49,7 @@ import dagger.Component
 )
 interface AppComponent {
 
-  fun inject(application: App)
+  fun inject(application: DiApp)
 
   fun inject(activity: MainActivity)
 

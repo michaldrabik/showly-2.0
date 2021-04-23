@@ -62,7 +62,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
   private var galleryAdapter: ArtGalleryAdapter? = null
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiArtGalleryComponentProvider).provideArtGalleryComponent().inject(this)
+    (requireAppContext() as UiArtGalleryComponentProvider).provideArtGalleryComponent().inject(this)
     super.onCreate(savedInstanceState)
     handleBackPressed()
   }

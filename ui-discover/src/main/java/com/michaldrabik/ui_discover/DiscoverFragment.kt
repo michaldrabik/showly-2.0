@@ -57,7 +57,7 @@ class DiscoverFragment :
   private var tabsViewPosition = 0F
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireActivity() as UiDiscoverComponentProvider).provideDiscoverComponent().inject(this)
+    (requireAppContext() as UiDiscoverComponentProvider).provideDiscoverComponent().inject(this)
     super.onCreate(savedInstanceState)
     savedInstanceState?.let {
       searchViewPosition = it.getFloat("ARG_SEARCH_POS", 0F)
