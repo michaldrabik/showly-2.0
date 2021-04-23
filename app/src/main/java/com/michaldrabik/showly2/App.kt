@@ -29,7 +29,8 @@ import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import com.michaldrabik.ui_base.fcm.NotificationChannel as AppNotificationChannel
 
-class App : DiApp(),
+class App :
+  DiApp(),
   OnlineStatusProvider,
   WidgetsProvider,
   OnTraktSyncListener {

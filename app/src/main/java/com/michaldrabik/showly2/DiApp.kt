@@ -35,7 +35,8 @@ import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponentProvider
 import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
 import javax.inject.Inject
 
-open class DiApp : Application(),
+open class DiApp :
+  Application(),
   UiBaseComponentProvider,
   UiWidgetsComponentProvider,
   UiNewsComponentProvider,
