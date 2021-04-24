@@ -11,7 +11,7 @@
   <string name="textShowQuickProgressSubTitle">Выберите последний просмотренный эпизод, чтобы быстро отметить эпизоды.</string>
   <string name="textShowQuickProgressDone">Ваш прогресс был обновлен.</string>
   <string name="textEpisodeDate">Эпизод %1$d | %2$s</string>
-  <string name="textEpisodeTitle">С.%02d Е.%02d - \'%s\'</string>
+  <string name="textEpisodeTitle">S.%02d E.%02d - \'%s\'</string>
   <string name="textTraktSyncRemovedFromTrakt">Trakt.tv успешно синхронизирован.</string>
   <string name="textActorsEmpty">Актеры недоступны</string>
   <string name="textSeasons">Сезоны:</string>
