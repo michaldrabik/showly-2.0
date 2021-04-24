@@ -10,5 +10,7 @@
   <string name="textQuickRatingDesc">Non dimenticare mai di valutare un film o l\'episodio di una serie TV che hai appena visto. Con la funzione di valutazione rapida sarai in grado di valutare automaticamente un elemento ogni volta che lo contrassegni come visto.</string>
   <string name="textWidgetsTitle">Widget trasparenti</string>
   <string name="textWidgetsDesc">Imposta la trasparenza dello sfondo dei widget per abbinarli meglio alla tua schermata iniziale.</string>
+  <string name="textNewsTitle">Sezione Notizie</string>
+  <string name="textNewsDesc">Attiva la sezione notizie con gli ultimi articoli di serie TV e film, notizie e trailer. Offerto da Reddit.</string>
   <string name="textPurchaseThanks">Ora sei un sostenitore di Showly!\nGrazie e goditi l\'app!</string>
 </resources>

@@ -21,6 +21,8 @@
   <string name="textSettingsGeneral">إعدادات عامة &amp; إعدادت واجهة المستخدم</string>
   <string name="textSettingsRecentShowsTitle">عدد المحتويات الأخيرة</string>
   <string name="textSettingsRecentShowsSummary">عدد المسلسلات والأفلام الأخيرة التي تابعتها التي سيتم عرضها في صفحة \'المجموعة\'.</string>
+  <string name="textSettingsUpcomingSectionTitle">المحتويات القادمة</string>
+  <string name="textSettingsUpcomingSectionSummary">تفعيل/إلغاء تفعيل \"المحتويات القادمة\" في صفحة \"مستوى التقدم\".</string>
   <string name="textSettingsMyShowsSectionsTitle">أقسام صفحة مسلسلاتي</string>
   <string name="textSettingsMyShowsSectionSummary">تفعيل/إلغاء تفعيل أقسام في صفحة \"مسلسلاتي\".</string>
   <string name="textSettingsMyMoviesSectionsTitle">أقسام صفحة أفلامي</string>
@@ -58,6 +60,8 @@
   <string name="textSettingsLogoutMessage">\nأترغب فِعلاً في تسجيل الخروج؟\n</string>
   <string name="textSettingsMoviesEnabledTitle">أفلام</string>
   <string name="textSettingsMoviesEnabledSummary">تفعيل/إلغاء تفعيل عرض الأفلام في التطبيق، سيتم إعادة تشغيله.</string>
+  <string name="textSettingsNewsEnabledTitle">الأخبار</string>
+  <string name="textSettingsNewsEnabledSummary">تفعيل/إلغاء تفعيل قِسم الأخبار في التطبيق، سيتم إعادة تشغيله.</string>
   <string name="textSettingsWidgets">التطبيقات المصغّرة</string>
   <string name="textSettingsWidgetsLabelsTitle">العناوين</string>
   <string name="textSettingsWidgetsLabelsSummary">إظهار العناوين في التطبيقات المصغّرة.</string>
