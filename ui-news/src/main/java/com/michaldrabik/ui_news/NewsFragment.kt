@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_news
 
 import android.content.ComponentName
+import android.content.ServiceConnection
 import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -45,6 +46,7 @@ class NewsFragment :
 
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.newsSwipeRefreshEndOffset) }
 
+  private var tabsService: ServiceConnection? = null
   private var tabsClient: CustomTabsClient? = null
   private var adapter: NewsAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
@@ -139,7 +141,7 @@ class NewsFragment :
     }
 
   private fun setupCustomTabs() {
-    val serviceConnection: CustomTabsServiceConnection = object : CustomTabsServiceConnection() {
+    tabsService = object : CustomTabsServiceConnection() {
       override fun onCustomTabsServiceConnected(name: ComponentName, client: CustomTabsClient) {
         tabsClient = client
         tabsClient?.warmup(0)
@@ -149,7 +151,11 @@ class NewsFragment :
         tabsClient = null
       }
     }
-    CustomTabsClient.bindCustomTabsService(requireActivity(), "com.android.chrome", serviceConnection)
+    CustomTabsClient.bindCustomTabsService(
+      requireActivity(),
+      "com.android.chrome",
+      (tabsService as CustomTabsServiceConnection)
+    )
   }
 
   private fun openLink(item: NewsItem) {
@@ -213,9 +219,13 @@ class NewsFragment :
   override fun onTabReselected() = scrollToTop()
 
   override fun onDestroyView() {
-    tabsClient = null
     adapter = null
     layoutManager = null
+    tabsClient = null
+    if (tabsService != null) {
+      activity?.unbindService(tabsService!!)
+      tabsService = null
+    }
     super.onDestroyView()
   }
 }
