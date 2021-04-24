@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textComment">Комментировать</string>
-  <string name="textComments">Комментарии:</string>
-  <string name="textComments2">Комментарии</string>
+  <string name="textComments">Мнения:</string>
+  <string name="textComments2">Мнения</string>
   <string name="textNoComments">Нет комментариев.</string>
   <string name="textCommentDisclaimer">Только английский, 5+ слов, будьте уважительны, помечайте спойлеры!</string>
   <string name="textSpoilers">Спойлеры</string>
