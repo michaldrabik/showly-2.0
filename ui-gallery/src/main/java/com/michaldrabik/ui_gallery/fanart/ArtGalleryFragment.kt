@@ -187,7 +187,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
         galleryAdapter?.setItems(it, type!!)
         artGalleryEmptyView.visibleIf(it.isEmpty())
         artGallerySelectButton.visibleIf(it.isNotEmpty() && isPickMode == true)
-        artGalleryUrlButton.visibleIf(it.isNotEmpty() && isPickMode == true)
+        artGalleryUrlButton.visibleIf(isPickMode == true)
 
         if (size != it.size) artGalleryPager.currentItem = 0
       }
@@ -196,6 +196,9 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
           setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf())
           requireActivity().onBackPressed()
         }
+      }
+      isLoading?.let {
+        artGalleryImagesProgress.visibleIf(it)
       }
     }
   }

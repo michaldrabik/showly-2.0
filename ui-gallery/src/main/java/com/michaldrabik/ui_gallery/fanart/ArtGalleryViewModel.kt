@@ -24,10 +24,11 @@ class ArtGalleryViewModel @Inject constructor(
         uiState = ArtGalleryUiModel(listOf(image), type)
       }
       try {
+        uiState = ArtGalleryUiModel(isLoading = true)
         val allImages = imagesCase.loadAllImages(id, family, type, image)
-        uiState = ArtGalleryUiModel(allImages, type)
+        uiState = ArtGalleryUiModel(allImages, type, isLoading = false)
       } catch (t: Throwable) {
-        // NOOP Don't show rest of the gallery
+        uiState = ArtGalleryUiModel(isLoading = false)
       }
     }
   }

@@ -8,13 +8,15 @@ import com.michaldrabik.ui_model.ImageType
 data class ArtGalleryUiModel(
   val images: List<Image>? = null,
   val type: ImageType? = null,
-  val pickedImage: ActionEvent<Image>? = null
+  val pickedImage: ActionEvent<Image>? = null,
+  val isLoading: Boolean? = null,
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
     (newModel as ArtGalleryUiModel).copy(
       images = newModel.images ?: images,
       type = newModel.type ?: type,
+      isLoading = newModel.isLoading ?: isLoading,
       pickedImage = newModel.pickedImage ?: pickedImage
     )
 }

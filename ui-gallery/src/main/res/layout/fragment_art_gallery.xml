@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/fanartGalleryRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
@@ -83,20 +84,21 @@
     app:layout_constraintHorizontal_chainStyle="packed"
     app:layout_constraintStart_toStartOf="parent"
     app:rippleColor="?android:attr/textColorPrimary"
+    tools:visibility="visible"
     />
 
   <ImageView
     android:id="@+id/artGalleryUrlButton"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="48dp"
+    android:layout_marginBottom="40dp"
     android:visibility="gone"
-    app:layout_constraintBottom_toBottomOf="@id/artGallerySelectButton"
+    app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toEndOf="@id/artGallerySelectButton"
-    app:layout_constraintTop_toTopOf="@id/artGallerySelectButton"
-    app:layout_goneMarginBottom="120dp"
     app:srcCompat="@drawable/ic_download"
     app:tint="?attr/colorAccent"
+    tools:visibility="visible"
     />
 
   <ProgressBar
@@ -109,6 +111,21 @@
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
+    tools:visibility="visible"
+    />
+
+  <ProgressBar
+    android:id="@+id/artGalleryImagesProgress"
+    style="@style/ProgressBar"
+    android:layout_width="20dp"
+    android:layout_height="20dp"
+    android:layout_margin="@dimen/spaceMedium"
+    android:indeterminateTint="?android:attr/textColorPrimary"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    tools:visibility="visible"
     />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
