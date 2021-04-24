@@ -79,6 +79,7 @@
   <string name="textLanguagePortugalBrasil" translatable="false">Português brasileiro</string>
   <string name="textLanguageTurkish" translatable="false">Türkçe</string>
   <string name="textLanguageGerman" translatable="false">Deutsche</string>
+  <string name="textLanguageRussian" translatable="false">Pусский</string>
 
   <string name="textThemeDark">Dark</string>
   <string name="textThemeLight">Light</string>
