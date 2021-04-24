@@ -80,7 +80,9 @@ class FollowedMoviesFragment :
 
   override fun onResume() {
     super.onResume()
-    showNavigation()
+    if (!followedMoviesSearchView.isSearching) {
+      showNavigation()
+    }
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
