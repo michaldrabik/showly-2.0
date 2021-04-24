@@ -36,7 +36,7 @@ object Config {
 
   const val SHOW_TIPS_DEBUG = false
   const val SHOW_PREMIUM = true
-  const val PROMOS_ENABLED = false
+  const val PROMOS_ENABLED = true
 
   val MY_SHOWS_RECENTS_OPTIONS = arrayOf(2, 4, 6, 8)
   val DISCOVER_SHOWS_CACHE_DURATION by lazy { HOURS.toMillis(12) }
