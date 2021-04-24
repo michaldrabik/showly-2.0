@@ -3,5 +3,5 @@
   <string name="textGenres">Жанры:</string>
   <string name="textSortOrder">Сортировать по:</string>
   <string name="textDiscoverFilterAnticipated">Скрыть ожидаемые сериалы</string>
-  <string name="textDiscoverFilterCollection">Hide Collection</string>
+  <string name="textDiscoverFilterCollection">Скрыть коллекцию</string>
 </resources>
