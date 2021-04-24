@@ -21,6 +21,8 @@
   <string name="textSettingsGeneral">Genel ve Deneyim</string>
   <string name="textSettingsRecentShowsTitle">Son Eklenenler Miktarı</string>
   <string name="textSettingsRecentShowsSummary">\'Koleksiyon\'da görüntülenecek en son ögeler sayısı.</string>
+  <string name="textSettingsUpcomingSectionTitle">Yaklaşan Bölümü</string>
+  <string name="textSettingsUpcomingSectionSummary">\'İlerleme\' sekmesinde \'Yaklaşan\' bölümünü etkinleştir/devre dışı bırak.</string>
   <string name="textSettingsMyShowsSectionsTitle">Dizilerim Bölümleri</string>
   <string name="textSettingsMyShowsSectionSummary">\'Dizilerim\' sekmesindeki bölümleri etkinleştir/devre dışı bırak.</string>
   <string name="textSettingsMyMoviesSectionsTitle">Filmlerim Bölümleri</string>
@@ -58,6 +60,8 @@
   <string name="textSettingsLogoutMessage">\nOturumu kapatmak istediğinizden emin misiniz?\n</string>
   <string name="textSettingsMoviesEnabledTitle">Filmler</string>
   <string name="textSettingsMoviesEnabledSummary">Film desteğini etkinleştirin/devre dışı bırakın. Uygulama yeniden başlatılacaktır.</string>
+  <string name="textSettingsNewsEnabledTitle">Haberler</string>
+  <string name="textSettingsNewsEnabledSummary">Haberler bölümünü etkinleştir/devre dışı bırak. Uygulama tekrar başlatılacaktır.</string>
   <string name="textSettingsWidgets">Widget’lar</string>
   <string name="textSettingsWidgetsLabelsTitle">Başlıklar</string>
   <string name="textSettingsWidgetsLabelsSummary">Yarı saydam widget başlıklarını görüntüleyin.</string>

@@ -3,6 +3,7 @@
   <string name="menuProgress">İlerleme</string>
   <string name="menuDiscover">Keşfet</string>
   <string name="menuCollection">Koleksiyon</string>
+  <string name="menuNews">Haberler</string>
   <string name="textRateAppTitle">Showly 2.0 uygulamasından memnun musunuz?</string>
   <string name="textRateAppMessage">Uygulamayı derecelendirmek ister misiniz?\nSadece birkaç saniye sürer. Teşekkürler!\n\n <i>Uygulama kapatılmayacaktır.</i></string>
   <string name="textRateAppYesButton">Tabii ki, neden olmasın?</string>

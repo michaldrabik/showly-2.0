@@ -21,6 +21,8 @@
   <string name="textSettingsGeneral">Général &amp; Expérience utilisateur</string>
   <string name="textSettingsRecentShowsTitle">Nombre d\'éléments récents</string>
   <string name="textSettingsRecentShowsSummary">Nombre d\'éléments récents à afficher dans \'Collection\'.</string>
+  <string name="textSettingsUpcomingSectionTitle">Section À venir</string>
+  <string name="textSettingsUpcomingSectionSummary">Activer/désactiver la section \'À venir\' dans l\'onglet \'Avancement\'.</string>
   <string name="textSettingsMyShowsSectionsTitle">Catégories dans Mes Séries</string>
   <string name="textSettingsMyShowsSectionSummary">Activer/désactiver les catégories dans l\'onglet \'Mes Séries\'.</string>
   <string name="textSettingsMyMoviesSectionsTitle">Catégories de Mes Films</string>
@@ -58,6 +60,8 @@
   <string name="textSettingsLogoutMessage">\nVoulez-vous vraiment vous déconnecter ?\n</string>
   <string name="textSettingsMoviesEnabledTitle">Films</string>
   <string name="textSettingsMoviesEnabledSummary">Activer/désactiver la prise en compte des films. L\'application va redémarrer.</string>
+  <string name="textSettingsNewsEnabledTitle">Actualités</string>
+  <string name="textSettingsNewsEnabledSummary">Activer/désactiver la section Actualités. L\'application va redémarrer.</string>
   <string name="textSettingsWidgets">Widgets</string>
   <string name="textSettingsWidgetsLabelsTitle">Titres</string>
   <string name="textSettingsWidgetsLabelsSummary">Afficher les titres translucides des widgets.</string>

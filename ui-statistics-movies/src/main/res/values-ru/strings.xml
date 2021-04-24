@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatisticsMovies">Статистика</string>
+  <string name="textStatisticsMoviesEmpty">По крайней мере один фильм должен присутствовать в <b>Мои фильмы</b>\nперед отображением статистики.</string>
+  <string name="textStatisticsMoviesTotalTimeSpent">Общее время, потраченное на просмотр</string>
+  <string name="textStatisticsMoviesTotalTimeItIs">это</string>
+  <string name="textStatisticsMoviesTotalTimeSpentHours">%s часов</string>
+  <string name="textStatisticsMoviesTotalTimeSpentMinutes">%s минут</string>
+  <string name="textStatisticsMoviesTotalTimeSpentDays">которые составляют около %s дней.</string>
+  <string name="textStatisticsMoviesTotalMovies">Количество просмотренных фильмов</string>
+  <string name="textStatisticsMoviesTotalMoviesCount">%s Фильмов</string>
+  <string name="textStatisticsMoviesTopGenre">Топ жанров</string>
+  <string name="textStatisticsMoviesTopGenreSubValue">кажется, это ваша чашка чая. Нажмите, чтобы увидеть больше.</string>
+  <string name="textStatisticsMoviesTopGenreSubValue2">кажется, это ваша чашка чая.</string>
+  <string name="textStatisticsMoviesRatings">Недавно оцененные</string>
+</resources>
