@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="menuProgress">Avancement</string>
+  <string name="menuProgress">Progression</string>
   <string name="menuDiscover">Découvrir</string>
   <string name="menuCollection">Collection</string>
   <string name="menuNews">Actualités</string>
@@ -13,5 +13,5 @@
   <string name="shortcutDiscover">Découvrir</string>
   <string name="shortcutCollection">Collection</string>
   <string name="shortcutSearch">Recherche</string>
-  <string name="shortcutProgress">Avancement</string>
+  <string name="shortcutProgress">Progression</string>
 </resources>
