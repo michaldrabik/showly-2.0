@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.content.Context
 import android.os.Bundle
 import android.view.ViewPropertyAnimator
+import androidx.activity.addCallback
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
@@ -42,6 +43,11 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
   protected val moviesEnabled: Boolean
     get() = (requireActivity() as NavigationHost).moviesEnabled()
 
+  override fun onResume() {
+    super.onResume()
+    setupBackPressed()
+  }
+
   protected fun findNavControl() =
     (requireActivity() as NavigationHost).findNavControl()
 
@@ -62,6 +68,14 @@ abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLa
         }
         ERROR -> host.showErrorSnackbar(getString(it))
       }
+    }
+  }
+
+  protected open fun setupBackPressed() {
+    val dispatcher = requireActivity().onBackPressedDispatcher
+    dispatcher.addCallback(viewLifecycleOwner) {
+      isEnabled = false
+      findNavControl()?.popBackStack()
     }
   }
 

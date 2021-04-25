@@ -151,7 +151,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireAppContext() as UiShowDetailsComponentProvider).provideShowDetailsComponent().inject(this)
     super.onCreate(savedInstanceState)
-    handleBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -858,9 +857,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     navigateTo(R.id.actionShowDetailsFragmentToManageLists, bundle)
   }
 
-  private fun handleBackPressed() {
+  override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(this) {
+    dispatcher.addCallback(viewLifecycleOwner) {
       when {
         showDetailsEpisodesView.isVisible -> {
           hideExtraView(showDetailsEpisodesView)
@@ -875,7 +874,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           return@addCallback
         }
         else -> {
-          remove()
+          isEnabled = false
           findNavControl()?.popBackStack()
         }
       }

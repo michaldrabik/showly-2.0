@@ -130,7 +130,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireAppContext() as UiMovieDetailsComponentProvider).provideMovieDetailsComponent().inject(this)
     super.onCreate(savedInstanceState)
-    handleBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -632,9 +631,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     navigateTo(R.id.actionMovieDetailsFragmentToManageLists, bundle)
   }
 
-  private fun handleBackPressed() {
+  override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(this) {
+    dispatcher.addCallback(viewLifecycleOwner) {
       when {
         movieDetailsCommentsView.isVisible -> {
           hideExtraView(movieDetailsCommentsView)
@@ -645,7 +644,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           return@addCallback
         }
         else -> {
-          remove()
+          isEnabled = false
           findNavControl()?.popBackStack()
         }
       }

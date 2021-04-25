@@ -57,7 +57,6 @@ class FollowedMoviesFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireAppContext() as UiMyMoviesComponentProvider).provideMyMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
-    setupBackPressed()
 
     savedInstanceState?.let {
       viewModel.searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
@@ -163,14 +162,14 @@ class FollowedMoviesFragment :
     }
   }
 
-  private fun setupBackPressed() {
+  override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(this) {
+    dispatcher.addCallback(viewLifecycleOwner) {
       if (followedMoviesSearchView.isSearching) {
         exitSearch()
       } else {
-        remove()
-        dispatcher.onBackPressed()
+        isEnabled = false
+        activity?.onBackPressed()
       }
     }
   }

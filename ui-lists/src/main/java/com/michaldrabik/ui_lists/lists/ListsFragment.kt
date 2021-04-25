@@ -75,7 +75,6 @@ class ListsFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireAppContext() as UiListsComponentProvider).provideListsComponent().inject(this)
     super.onCreate(savedInstanceState)
-    setupBackPressed()
 
     savedInstanceState?.let {
       searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
@@ -198,14 +197,14 @@ class ListsFragment :
     }
   }
 
-  private fun setupBackPressed() {
+  override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(this) {
+    dispatcher.addCallback(viewLifecycleOwner) {
       if (fragmentListsSearchView.isSearching) {
         exitSearch()
       } else {
         isEnabled = false
-        dispatcher.onBackPressed()
+        activity?.onBackPressed()
       }
     }
   }

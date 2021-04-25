@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import androidx.activity.addCallback
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -57,7 +56,6 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireAppContext() as UiSearchComponentProvider).provideSearchComponent().inject(this)
     super.onCreate(savedInstanceState)
-    handleBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -264,13 +262,5 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   override fun afterTextChanged(text: Editable?) {
     viewModel.loadSuggestions(text.toString())
-  }
-
-  private fun handleBackPressed() {
-    val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(this) {
-      remove()
-      findNavControl()?.popBackStack()
-    }
   }
 }

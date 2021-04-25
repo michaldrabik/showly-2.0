@@ -2,7 +2,6 @@ package com.michaldrabik.ui_statistics_movies
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
@@ -21,7 +20,6 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireAppContext() as UiStatisticsMoviesComponentProvider).provideStatisticsMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
-    handleBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,13 +67,5 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
   private fun openMovieDetails(traktId: Long) {
     val bundle = bundleOf(ARG_MOVIE_ID to traktId)
     navigateTo(R.id.actionStatisticsMoviesFragmentToMovieDetailsFragment, bundle)
-  }
-
-  private fun handleBackPressed() {
-    val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(this) {
-      remove()
-      findNavControl()?.popBackStack()
-    }
   }
 }

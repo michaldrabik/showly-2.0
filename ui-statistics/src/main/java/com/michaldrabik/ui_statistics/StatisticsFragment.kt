@@ -2,7 +2,6 @@ package com.michaldrabik.ui_statistics
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.addCallback
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
@@ -21,7 +20,6 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireAppContext() as UiStatisticsComponentProvider).provideStatisticsComponent().inject(this)
     super.onCreate(savedInstanceState)
-    handleBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,13 +80,5 @@ class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_s
   private fun openShowDetails(traktId: Long) {
     val bundle = bundleOf(ARG_SHOW_ID to traktId)
     navigateTo(R.id.actionStatisticsFragmentToShowDetailsFragment, bundle)
-  }
-
-  private fun handleBackPressed() {
-    val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(this) {
-      remove()
-      findNavControl()?.popBackStack()
-    }
   }
 }

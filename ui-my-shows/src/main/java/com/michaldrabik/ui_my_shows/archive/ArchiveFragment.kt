@@ -125,6 +125,8 @@ class ArchiveFragment :
 
   override fun onTraktSyncComplete() = viewModel.loadShows()
 
+  override fun setupBackPressed() = Unit
+
   override fun onDestroyView() {
     adapter = null
     layoutManager = null

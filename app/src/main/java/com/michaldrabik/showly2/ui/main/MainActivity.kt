@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
@@ -88,6 +89,7 @@ class MainActivity :
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
+    setupBackPressed()
     setupViewModel()
     setupNavigation()
     setupTips()
@@ -157,24 +159,27 @@ class MainActivity :
     }
   }
 
-  override fun onBackPressed() {
-    if (tutorialView.isVisible) {
-      tutorialView.fadeOut()
-      return
-    }
-    findNavControl()?.run {
-      when (currentDestination?.id) {
-        R.id.discoverFragment,
-        R.id.discoverMoviesFragment,
-        R.id.followedShowsFragment,
-        R.id.followedMoviesFragment,
-        R.id.listsFragment,
-        R.id.newsFragment,
-        -> {
-          bottomNavigationView.selectedItemId = R.id.menuProgress
-        }
-        else -> {
-          super.onBackPressed()
+  private fun setupBackPressed() {
+    onBackPressedDispatcher.addCallback(this) {
+      if (tutorialView.isVisible) {
+        tutorialView.fadeOut()
+        return@addCallback
+      }
+      findNavControl()?.run {
+        when (currentDestination?.id) {
+          R.id.discoverFragment,
+          R.id.discoverMoviesFragment,
+          R.id.followedShowsFragment,
+          R.id.followedMoviesFragment,
+          R.id.listsFragment,
+          R.id.newsFragment,
+          -> {
+            bottomNavigationView.selectedItemId = R.id.menuProgress
+          }
+          else -> {
+            remove()
+            super.onBackPressed()
+          }
         }
       }
     }

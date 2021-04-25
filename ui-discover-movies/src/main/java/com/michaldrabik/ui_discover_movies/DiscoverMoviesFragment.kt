@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.core.animation.doOnEnd
 import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
@@ -158,6 +159,14 @@ class DiscoverMoviesFragment :
         tabsViewPosition = 0F
         viewModel.loadMovies(pullToRefresh = true)
       }
+    }
+  }
+
+  override fun setupBackPressed() {
+    val dispatcher = requireActivity().onBackPressedDispatcher
+    dispatcher.addCallback(viewLifecycleOwner) {
+      isEnabled = false
+      activity?.onBackPressed()
     }
   }
 

@@ -7,7 +7,6 @@ import android.content.Intent.EXTRA_SUBJECT
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
@@ -55,7 +54,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireAppContext() as UiSettingsComponentProvider).provideSettingsComponent().inject(this)
     super.onCreate(savedInstanceState)
-    handleBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -496,12 +494,4 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
   }
 
   override fun onAuthorizationResult(authData: Uri?) = viewModel.authorizeTrakt(authData)
-
-  private fun handleBackPressed() {
-    val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(this) {
-      remove()
-      findNavControl()?.popBackStack()
-    }
-  }
 }

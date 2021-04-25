@@ -13,6 +13,9 @@ import com.android.billingclient.api.SkuDetailsParams
 import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.querySkuDetails
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.Config.PREMIUM_LIFETIME_PROMO_INAPP
+import com.michaldrabik.common.Config.PREMIUM_MONTHLY_SUBSCRIPTION
+import com.michaldrabik.common.Config.PREMIUM_YEARLY_SUBSCRIPTION
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
@@ -23,14 +26,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class PremiumViewModel @Inject constructor(
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) : BaseViewModel<PremiumUiModel>() {
-
-  companion object {
-    private const val MONTHLY_SUBSCRIPTION = "showly_premium_1_month"
-    private const val YEARLY_SUBSCRIPTION = "showly_premium_1_year"
-    private const val LIFETIME_PROMO_INAPP = "showly_premium_lifetime_promo"
-  }
 
   private var connectionsCount = 0
 
@@ -75,14 +72,14 @@ class PremiumViewModel @Inject constructor(
         val subscriptions = billingClient.queryPurchases(SkuType.SUBS)
         val inApps = billingClient.queryPurchases(SkuType.INAPP)
         val purchases = (subscriptions.purchasesList ?: emptyList()) + (inApps.purchasesList ?: emptyList())
-        val eligibleProducts = mutableListOf(MONTHLY_SUBSCRIPTION, YEARLY_SUBSCRIPTION)
-        if (Config.PROMOS_ENABLED) eligibleProducts.add(LIFETIME_PROMO_INAPP)
+        val eligibleProducts = mutableListOf(PREMIUM_MONTHLY_SUBSCRIPTION, PREMIUM_YEARLY_SUBSCRIPTION)
+        if (Config.PROMOS_ENABLED) eligibleProducts.add(PREMIUM_LIFETIME_PROMO_INAPP)
 
         if (purchases.any {
-          val json = JSONObject(it.originalJson)
-          val productId = json.optString("productId", "")
-          it.isAcknowledged && productId in eligibleProducts
-        }
+            val json = JSONObject(it.originalJson)
+            val productId = json.optString("productId", "")
+            it.isAcknowledged && productId in eligibleProducts
+          }
         ) {
           settingsRepository.isPremium = true
           _messageLiveData.value = MessageEvent.info(R.string.textPurchaseThanks)
@@ -101,7 +98,7 @@ class PremiumViewModel @Inject constructor(
   fun handlePurchase(
     billingClient: BillingClient,
     billingResult: BillingResult,
-    purchases: MutableList<Purchase>
+    purchases: MutableList<Purchase>,
   ) {
     viewModelScope.launch {
       uiState = PremiumUiModel(isLoading = true)
@@ -140,7 +137,7 @@ class PremiumViewModel @Inject constructor(
         uiState = PremiumUiModel(isLoading = true)
 
         val paramsSubs = SkuDetailsParams.newBuilder()
-          .setSkusList(listOf(MONTHLY_SUBSCRIPTION, YEARLY_SUBSCRIPTION))
+          .setSkusList(listOf(PREMIUM_MONTHLY_SUBSCRIPTION, PREMIUM_YEARLY_SUBSCRIPTION))
           .setType(SkuType.SUBS)
           .build()
 

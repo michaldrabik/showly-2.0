@@ -157,6 +157,8 @@ class ProgressMoviesMainFragment :
     }
   }
 
+  override fun setupBackPressed() = Unit
+
   override fun onDestroyView() {
     adapter = null
     layoutManager = null

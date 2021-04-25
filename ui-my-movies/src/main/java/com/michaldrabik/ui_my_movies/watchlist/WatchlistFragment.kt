@@ -124,6 +124,8 @@ class WatchlistFragment :
 
   override fun onTraktSyncComplete() = viewModel.loadMovies()
 
+  override fun setupBackPressed() = Unit
+
   override fun onDestroyView() {
     adapter = null
     layoutManager = null

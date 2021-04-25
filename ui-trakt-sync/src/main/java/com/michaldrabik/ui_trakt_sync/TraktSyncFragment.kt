@@ -4,7 +4,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import androidx.activity.addCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
@@ -38,7 +37,6 @@ class TraktSyncFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireAppContext() as UiTraktSyncComponentProvider).provideTraktSyncComponent().inject(this)
     super.onCreate(savedInstanceState)
-    handleBackPressed()
   }
 
   override fun onResume() {
@@ -154,14 +152,6 @@ class TraktSyncFragment :
           }
         }
       }
-    }
-  }
-
-  private fun handleBackPressed() {
-    val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(this) {
-      remove()
-      findNavControl()?.popBackStack()
     }
   }
 

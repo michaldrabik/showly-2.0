@@ -63,7 +63,6 @@ class ListDetailsFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireAppContext() as UiListDetailsComponentProvider).provideListDetailsComponent().inject(this)
     super.onCreate(savedInstanceState)
-    setupBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -138,13 +137,13 @@ class ListDetailsFragment :
     touchHelper?.attachToRecyclerView(fragmentListDetailsRecycler)
   }
 
-  private fun setupBackPressed() {
+  override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(this) {
+    dispatcher.addCallback(viewLifecycleOwner) {
       if (isReorderMode) {
         toggleReorderMode()
       } else {
-        remove()
+        isEnabled = false
         findNavControl()?.popBackStack()
       }
     }

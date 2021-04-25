@@ -64,7 +64,6 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireAppContext() as UiArtGalleryComponentProvider).provideArtGalleryComponent().inject(this)
     super.onCreate(savedInstanceState)
-    handleBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -203,11 +202,13 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
     }
   }
 
-  private fun handleBackPressed() {
+  override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(this) {
-      if (isPickMode == true) setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf())
-      remove()
+    dispatcher.addCallback(viewLifecycleOwner) {
+      if (isPickMode == true) {
+        setFragmentResult(REQUEST_CUSTOM_IMAGE, bundleOf())
+      }
+      isEnabled = false
       findNavControl()?.popBackStack()
     }
   }

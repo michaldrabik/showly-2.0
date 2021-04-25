@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.activity.addCallback
 import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsClient
 import androidx.browser.customtabs.CustomTabsIntent
@@ -156,6 +157,14 @@ class NewsFragment :
       "com.android.chrome",
       (tabsService as CustomTabsServiceConnection)
     )
+  }
+
+  override fun setupBackPressed() {
+    val dispatcher = requireActivity().onBackPressedDispatcher
+    dispatcher.addCallback(viewLifecycleOwner) {
+      isEnabled = false
+      activity?.onBackPressed()
+    }
   }
 
   private fun openLink(item: NewsItem) {

@@ -2,7 +2,6 @@ package com.michaldrabik.ui_premium
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.addCallback
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import com.android.billingclient.api.BillingClient
@@ -36,7 +35,6 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireAppContext() as UiPremiumComponentProvider).providePremiumComponent().inject(this)
     super.onCreate(savedInstanceState)
-    handleBackPressed()
   }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,14 +82,6 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
         onClick { billingClient.launchBillingFlow(requireActivity(), flowParams) }
       }
       premiumPurchaseItems.addView(view)
-    }
-  }
-
-  private fun handleBackPressed() {
-    val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(this) {
-      remove()
-      findNavControl()?.popBackStack()
     }
   }
 }

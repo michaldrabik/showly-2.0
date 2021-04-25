@@ -66,7 +66,6 @@ class ProgressFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireAppContext() as UiProgressComponentProvider).provideProgressComponent().inject(this)
     super.onCreate(savedInstanceState)
-    setupBackPressed()
     savedInstanceState?.let {
       searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
       tabsTranslation = it.getFloat("ARG_TABS_POSITION")
@@ -164,14 +163,14 @@ class ProgressFragment :
     }
   }
 
-  private fun setupBackPressed() {
+  override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(this) {
+    dispatcher.addCallback(viewLifecycleOwner) {
       if (progressSearchView.isSearching) {
         exitSearch()
       } else {
-        remove()
-        dispatcher.onBackPressed()
+        isEnabled = false
+        activity?.onBackPressed()
       }
     }
   }

@@ -57,7 +57,6 @@ class FollowedShowsFragment :
   override fun onCreate(savedInstanceState: Bundle?) {
     (requireAppContext() as UiMyShowsComponentProvider).provideMyShowsComponent().inject(this)
     super.onCreate(savedInstanceState)
-    setupBackPressed()
 
     savedInstanceState?.let {
       viewModel.searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
@@ -164,14 +163,14 @@ class FollowedShowsFragment :
     }
   }
 
-  private fun setupBackPressed() {
+  override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
-    dispatcher.addCallback(this) {
+    dispatcher.addCallback(viewLifecycleOwner) {
       if (followedShowsSearchView.isSearching) {
         exitSearch()
       } else {
-        remove()
-        dispatcher.onBackPressed()
+        isEnabled = false
+        activity?.onBackPressed()
       }
     }
   }
