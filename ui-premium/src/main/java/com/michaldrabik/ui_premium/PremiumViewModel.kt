@@ -76,10 +76,10 @@ class PremiumViewModel @Inject constructor(
         if (Config.PROMOS_ENABLED) eligibleProducts.add(PREMIUM_LIFETIME_PROMO_INAPP)
 
         if (purchases.any {
-            val json = JSONObject(it.originalJson)
-            val productId = json.optString("productId", "")
-            it.isAcknowledged && productId in eligibleProducts
-          }
+          val json = JSONObject(it.originalJson)
+          val productId = json.optString("productId", "")
+          it.isAcknowledged && productId in eligibleProducts
+        }
         ) {
           settingsRepository.isPremium = true
           _messageLiveData.value = MessageEvent.info(R.string.textPurchaseThanks)
