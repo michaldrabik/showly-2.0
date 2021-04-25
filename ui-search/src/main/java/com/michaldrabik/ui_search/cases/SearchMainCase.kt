@@ -21,7 +21,7 @@ class SearchMainCase @Inject constructor(
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
   private val showsRepository: ShowsRepository,
-  private val moviesRepository: MoviesRepository
+  private val moviesRepository: MoviesRepository,
 ) {
 
   val language by lazy { translationsRepository.getLanguage() }
@@ -31,7 +31,7 @@ class SearchMainCase @Inject constructor(
     val withMovies = settingsRepository.isMoviesEnabled
     val results = cloud.traktApi.fetchSearch(query, withMovies)
     return results
-      .sortedWith(compareByDescending<SearchResultNetwork> { it.getVotes() }.thenByDescending { it.score ?: 0 })
+      .sortedWith(compareByDescending<SearchResultNetwork> { it.score }.thenByDescending { it.getVotes() })
       .map {
         SearchResult(
           it.score ?: 0F,
