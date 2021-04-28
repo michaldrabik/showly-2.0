@@ -202,7 +202,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun setupActorsList() {
     actorsAdapter = ActorsAdapter().apply {
-      itemClickListener = { showFullActorView(it) }
+      itemClickListener = { if (!movieDetailsActorFullContainer.isVisible) showFullActorView(it) }
     }
     movieDetailsActorsRecycler.apply {
       setHasFixedSize(true)

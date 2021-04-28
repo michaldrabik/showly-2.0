@@ -237,7 +237,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun setupActorsList() {
     actorsAdapter = ActorsAdapter().apply {
-      itemClickListener = { showFullActorView(it) }
+      itemClickListener = { if (!showDetailsActorFullContainer.isVisible) showFullActorView(it) }
     }
     showDetailsActorsRecycler.apply {
       setHasFixedSize(true)
