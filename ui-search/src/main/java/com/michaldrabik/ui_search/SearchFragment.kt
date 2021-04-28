@@ -39,7 +39,6 @@ import com.michaldrabik.ui_search.recycler.suggestions.SuggestionAdapter
 import com.michaldrabik.ui_search.utilities.TextWatcherAdapter
 import com.michaldrabik.ui_search.views.RecentSearchView
 import kotlinx.android.synthetic.main.fragment_search.*
-import kotlin.random.Random
 
 class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), TextWatcherAdapter {
 
@@ -178,25 +177,9 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   private fun openShowDetails(item: SearchListItem) {
     disableUi()
-    val clickedIndex = adapter?.indexOf(item) ?: 0
-    val itemCount = adapter?.itemCount ?: 0
-    (0..itemCount).forEach {
-      if (it != clickedIndex) {
-        val view = searchRecycler.findViewHolderForAdapterPosition(it)
-        view?.let { v ->
-          val randomDelay = Random.nextLong(50, 200)
-          v.itemView.fadeOut(duration = 150, startDelay = randomDelay).add(animations)
-        }
-      }
-    }
-    val clickedView = searchRecycler.findViewHolderForAdapterPosition(clickedIndex)
-    clickedView?.itemView?.fadeOut(
-      duration = 150, startDelay = 350,
-      endAction = {
-        enableUi()
-        openDetails(item)
-      }
-    ).add(animations)
+    searchRoot?.fadeOut(150) {
+      openDetails(item)
+    }.add(animations)
   }
 
   private fun openDetails(item: SearchListItem) {
