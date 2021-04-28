@@ -55,7 +55,8 @@ object Config {
   const val WHATS_NEW_TEXT =
     "* Added Russian language (feel free to contact me if you see any translations mistakes).\n\n" +
       "* Added option to hide \'Upcoming\' section in \'Progress\' tab.\n\n" +
-      "* Added Premium features. You can now join Premium users of the app, support development and gain access to cool bonus features. Visit Settings to check it out!\n\n" +
+      "* Added Premium features. You can now join Premium users of the app, " +
+      "support development and gain access to cool bonus features. Visit Settings to check it out!\n\n" +
       "* Bugfixes and optimizations.\n\n" +
       "As usual in case of any issues or translations mistakes don\'t hesitate to drop an email or a tweet!"
 }

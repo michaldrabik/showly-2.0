@@ -186,7 +186,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         ARG_FAMILY to SHOW,
         ARG_TYPE to FANART
       )
-      navigateTo(R.id.actionShowDetailsFragmentToArtGallery, bundle)
+      if (checkNavigation(R.id.showDetailsFragment)) {
+        navigateTo(R.id.actionShowDetailsFragmentToArtGallery, bundle)
+      }
       Analytics.logShowGalleryClick(showId.id)
     }
     showDetailsCommentsButton.onClick {
@@ -336,9 +338,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     isWatched: Boolean,
     showButton: Boolean = true,
   ) {
-    if (findNavControl()?.currentDestination?.id != R.id.showDetailsFragment) {
-      return
-    }
+    if (!checkNavigation(R.id.showDetailsFragment)) return
     if (season !== null) {
       setFragmentResultListener(REQUEST_EPISODE_DETAILS) { _, bundle ->
         when {
@@ -853,6 +853,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun openListsDialog() {
+    if (findNavControl()?.currentDestination?.id != R.id.showDetailsFragment) {
+      return
+    }
     setFragmentResultListener(REQUEST_MANAGE_LISTS) { _, _ -> viewModel.loadListsCount() }
     val bundle = bundleOf(
       ARG_ID to showId.id,

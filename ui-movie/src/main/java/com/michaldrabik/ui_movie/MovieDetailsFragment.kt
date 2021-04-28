@@ -161,7 +161,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         ARG_FAMILY to MOVIE,
         ARG_TYPE to FANART
       )
-      navigateTo(R.id.actionMovieDetailsFragmentToArtGallery, bundle)
+      if (checkNavigation(R.id.movieDetailsFragment)) {
+        navigateTo(R.id.actionMovieDetailsFragmentToArtGallery, bundle)
+      }
       Analytics.logMovieGalleryClick(movieId.id)
     }
     movieDetailsCommentsButton.onClick {
