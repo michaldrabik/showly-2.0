@@ -202,7 +202,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun setupActorsList() {
     actorsAdapter = ActorsAdapter().apply {
-      itemClickListener = { if (!movieDetailsActorFullContainer.isVisible) showFullActorView(it) }
+      itemClickListener = { showFullActorView(it) }
     }
     movieDetailsActorsRecycler.apply {
       setHasFixedSize(true)
@@ -255,6 +255,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   }
 
   private fun showFullActorView(actor: Actor) {
+    if (movieDetailsActorFullContainer.isVisible) {
+      return
+    }
+
     Glide.with(this)
       .load("$TMDB_IMAGE_BASE_ACTOR_FULL_URL${actor.image}")
       .transform(CenterCrop(), RoundedCorners(actorViewCorner))
