@@ -21,6 +21,8 @@
   <string name="textSettingsGeneral">Geral &amp; UX</string>
   <string name="textSettingsRecentShowsTitle">Quantidade adicionada recentemente</string>
   <string name="textSettingsRecentShowsSummary">Número de itens recentes a serem exibidos em \'Coleção\'.</string>
+  <string name="textSettingsUpcomingSectionTitle">Próximos</string>
+  <string name="textSettingsUpcomingSectionSummary">Ativar/desativar a seção \'Em breve\' na aba \'Progresso\'.</string>
   <string name="textSettingsMyShowsSectionsTitle">Minhas séries</string>
   <string name="textSettingsMyShowsSectionSummary">Ativar/desativar seções na guia \'Minhas séries\'.</string>
   <string name="textSettingsMyMoviesSectionsTitle">Meus filmes</string>
@@ -58,6 +60,8 @@
   <string name="textSettingsLogoutMessage">\nTem certeza de que quer sair?\n</string>
   <string name="textSettingsMoviesEnabledTitle">Filmes</string>
   <string name="textSettingsMoviesEnabledSummary">Ativar/desativar o suporte a filmes. O aplicativo reiniciará.</string>
+  <string name="textSettingsNewsEnabledTitle">Notícias</string>
+  <string name="textSettingsNewsEnabledSummary">Ativar/desativar a seção de notícias. O aplicativo será reiniciado.</string>
   <string name="textSettingsWidgets">Widgets</string>
   <string name="textSettingsWidgetsLabelsTitle">Títulos</string>
   <string name="textSettingsWidgetsLabelsSummary">Exibir títulos de widgets translúcidos.</string>
