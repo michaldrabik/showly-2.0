@@ -21,7 +21,7 @@
   <string name="textSettingsGeneral">Général &amp; Expérience utilisateur</string>
   <string name="textSettingsRecentShowsTitle">Nombre d\'éléments récents</string>
   <string name="textSettingsRecentShowsSummary">Nombre d\'éléments récents à afficher dans \'Collection\'.</string>
-  <string name="textSettingsUpcomingSectionTitle">Section À venir</string>
+  <string name="textSettingsUpcomingSectionTitle">Section à venir</string>
   <string name="textSettingsUpcomingSectionSummary">Activer/désactiver la section \'À venir\' dans l\'onglet \'Progression\'.</string>
   <string name="textSettingsMyShowsSectionsTitle">Catégories dans Mes Séries</string>
   <string name="textSettingsMyShowsSectionSummary">Activer/désactiver les catégories dans l\'onglet \'Mes Séries\'.</string>
