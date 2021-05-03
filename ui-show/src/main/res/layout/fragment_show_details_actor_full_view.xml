@@ -5,6 +5,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  tools:parentTag="android.widget.FrameLayout"
   >
 
   <View
@@ -17,8 +18,8 @@
 
   <FrameLayout
     android:id="@+id/showDetailsActorFullContainer"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="@dimen/actorFullTileImageWidth"
+    android:layout_height="@dimen/actorFullTileImageHeight"
     android:layout_gravity="center"
     android:visibility="gone"
     tools:visibility="visible"
@@ -38,7 +39,8 @@
       android:layout_gravity="bottom|start"
       android:layout_margin="@dimen/spaceSmall"
       android:gravity="start"
-      android:maxLines="2"
+      android:maxWidth="206dp"
+      android:maxLines="5"
       android:textAlignment="viewStart"
       android:textSize="13sp"
       android:visibility="gone"
