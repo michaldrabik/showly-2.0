@@ -13,7 +13,8 @@
   <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/viewPurchaseItemRoot"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="wrap_content"
+    android:minHeight="70dp"
     android:padding="@dimen/spaceMedium"
     >
 
@@ -45,16 +46,34 @@
       android:drawablePadding="@dimen/spaceSmall"
       android:ellipsize="end"
       android:gravity="center_vertical"
-      android:lines="1"
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="12sp"
-      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintBottom_toTopOf="@id/viewPurchaseItemDescriptionDetails"
       app:layout_constraintEnd_toStartOf="@id/viewPurchaseItemPrice"
       app:layout_constraintHorizontal_bias="0"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/viewPurchaseItemTitle"
       tools:text="Description"
+      />
+
+    <TextView
+      android:id="@+id/viewPurchaseItemDescriptionDetails"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/spaceSmall"
+      android:drawablePadding="@dimen/spaceSmall"
+      android:ellipsize="end"
+      android:gravity="center_vertical"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="10sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewPurchaseItemDescription"
+      tools:text="@tools:sample/lorem/random"
       />
 
     <TextView
@@ -67,22 +86,11 @@
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="16sp"
       android:textStyle="bold"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toStartOf="@id/viewPurchaseItemArrow"
-      app:layout_constraintStart_toEndOf="@id/viewPurchaseItemTitle"
-      app:layout_constraintTop_toTopOf="parent"
-      tools:text="USD 12.99"
-      />
-
-    <ImageView
-      android:id="@+id/viewPurchaseItemArrow"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintBottom_toBottomOf="@id/viewPurchaseItemDescription"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:srcCompat="@drawable/ic_arrow_right"
-      app:tint="?android:attr/textColorPrimary"
+      app:layout_constraintStart_toEndOf="@id/viewPurchaseItemTitle"
+      app:layout_constraintTop_toTopOf="@id/viewPurchaseItemTitle"
+      tools:text="USD 12.99 / year"
       />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

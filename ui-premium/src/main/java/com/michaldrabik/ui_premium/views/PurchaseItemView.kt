@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_premium.views
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -7,10 +8,18 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import com.android.billingclient.api.SkuDetails
 import com.google.android.material.card.MaterialCardView
 import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
+import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_premium.R
 import kotlinx.android.synthetic.main.view_purchase_item.view.*
 
+
 class PurchaseItemView : MaterialCardView {
+
+  companion object {
+    private const val INDIA_CURRENCY_CODE = "INR"
+    private const val PERIOD_1_MONTH = "P1M"
+    private const val PERIOD_1_YEAR = "P1Y"
+  }
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -22,9 +31,45 @@ class PurchaseItemView : MaterialCardView {
     setCardBackgroundColor(context.colorStateListFromAttr(R.attr.colorAccent))
   }
 
+  @SuppressLint("SetTextI18n")
   fun bind(item: SkuDetails) {
+    if (item.priceCurrencyCode == INDIA_CURRENCY_CODE) {
+      bindForIndia(item)
+      return
+    }
+
     viewPurchaseItemTitle.text = item.title.substringBefore("(").trim()
-    viewPurchaseItemDescription.text = item.description
-    viewPurchaseItemPrice.text = "${item.price}"
+    viewPurchaseItemDescription.text = "Try 7 days for free!"
+    when (item.subscriptionPeriod) {
+      PERIOD_1_MONTH -> {
+        viewPurchaseItemDescriptionDetails.text =
+          "You will be automatically enrolled in a paid subscription at the end of the free period. Cancel anytime during free period if you do not want to convert to a paid subscription. " +
+            "Subscription will be automatically renewed and charged every month."
+        viewPurchaseItemPrice.text = "${item.price} / month"
+      }
+      PERIOD_1_YEAR -> {
+        viewPurchaseItemDescriptionDetails.text =
+          "You will be automatically enrolled in a paid subscription at the end of the free period. Cancel anytime during free period if you do not want to convert to a paid subscription. " +
+            "Subscription will be automatically renewed and charged every year."
+        viewPurchaseItemPrice.text = "${item.price} / year"
+      }
+    }
+  }
+
+  /**
+   * https://www.xda-developers.com/google-play-suspend-free-trials-auto-renewing-subscriptions/
+   */
+  private fun bindForIndia(item: SkuDetails) {
+    viewPurchaseItemTitle.text = item.title.substringBefore("(").trim()
+    viewPurchaseItemDescription.gone()
+    viewPurchaseItemDescriptionDetails.gone()
+    when (item.subscriptionPeriod) {
+      PERIOD_1_MONTH -> {
+        viewPurchaseItemPrice.text = "${item.price} / month"
+      }
+      PERIOD_1_YEAR -> {
+        viewPurchaseItemPrice.text = "${item.price} / year"
+      }
+    }
   }
 }
