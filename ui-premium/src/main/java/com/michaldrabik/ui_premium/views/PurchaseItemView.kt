@@ -42,14 +42,16 @@ class PurchaseItemView : MaterialCardView {
     when (item.subscriptionPeriod) {
       PERIOD_1_MONTH -> {
         viewPurchaseItemDescriptionDetails.text =
-          "You will be automatically enrolled in a paid subscription at the end of the free period. Cancel anytime during free period if you do not want to convert to a paid subscription. " +
-            "Subscription will be automatically renewed and charged every month."
+          "You will be automatically enrolled in a paid subscription at the end of the free period. " +
+          "Cancel anytime during free period if you do not want to convert to a paid subscription. " +
+          "Subscription will be automatically renewed and charged every month."
         viewPurchaseItemPrice.text = "${item.price} / month"
       }
       PERIOD_1_YEAR -> {
         viewPurchaseItemDescriptionDetails.text =
-          "You will be automatically enrolled in a paid subscription at the end of the free period. Cancel anytime during free period if you do not want to convert to a paid subscription. " +
-            "Subscription will be automatically renewed and charged every year."
+          "You will be automatically enrolled in a paid subscription at the end of the free period. " +
+          "Cancel anytime during free period if you do not want to convert to a paid subscription. " +
+          "Subscription will be automatically renewed and charged every year."
         viewPurchaseItemPrice.text = "${item.price} / year"
       }
     }
