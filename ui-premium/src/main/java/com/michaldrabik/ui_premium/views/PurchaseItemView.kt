@@ -12,7 +12,7 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_premium.R
 import kotlinx.android.synthetic.main.view_purchase_item.view.*
 
-
+@SuppressLint("SetTextI18n")
 class PurchaseItemView : MaterialCardView {
 
   companion object {
@@ -31,7 +31,6 @@ class PurchaseItemView : MaterialCardView {
     setCardBackgroundColor(context.colorStateListFromAttr(R.attr.colorAccent))
   }
 
-  @SuppressLint("SetTextI18n")
   fun bind(item: SkuDetails) {
     if (item.priceCurrencyCode == INDIA_CURRENCY_CODE) {
       bindForIndia(item)
