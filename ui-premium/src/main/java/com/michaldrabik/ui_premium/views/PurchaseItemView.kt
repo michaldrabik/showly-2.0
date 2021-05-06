@@ -39,22 +39,16 @@ class PurchaseItemView : MaterialCardView {
 
     viewPurchaseItemTitle.text = item.title.substringBefore("(").trim()
     viewPurchaseItemDescription.text = "Try 7 days for free!"
-    when (item.subscriptionPeriod) {
-      PERIOD_1_MONTH -> {
-        viewPurchaseItemDescriptionDetails.text =
-          "You will be automatically enrolled in a paid subscription at the end of the free period. " +
-          "Cancel anytime during free period if you do not want to convert to a paid subscription. " +
-          "Subscription will be automatically renewed and charged every month."
-        viewPurchaseItemPrice.text = "${item.price} / month"
-      }
-      PERIOD_1_YEAR -> {
-        viewPurchaseItemDescriptionDetails.text =
-          "You will be automatically enrolled in a paid subscription at the end of the free period. " +
-          "Cancel anytime during free period if you do not want to convert to a paid subscription. " +
-          "Subscription will be automatically renewed and charged every year."
-        viewPurchaseItemPrice.text = "${item.price} / year"
-      }
+    val period = when (item.subscriptionPeriod) {
+      PERIOD_1_MONTH -> "month"
+      PERIOD_1_YEAR -> "year"
+      else -> ""
     }
+    viewPurchaseItemDescriptionDetails.text =
+      "You will be automatically enrolled in a paid subscription at the end of the free period. " +
+      "Cancel anytime during free period if you do not want to convert to a paid subscription. " +
+      "Subscription will be automatically renewed and charged every $period."
+    viewPurchaseItemPrice.text = "${item.price} / $period"
   }
 
   /**
@@ -65,12 +59,8 @@ class PurchaseItemView : MaterialCardView {
     viewPurchaseItemDescription.gone()
     viewPurchaseItemDescriptionDetails.gone()
     when (item.subscriptionPeriod) {
-      PERIOD_1_MONTH -> {
-        viewPurchaseItemPrice.text = "${item.price} / month"
-      }
-      PERIOD_1_YEAR -> {
-        viewPurchaseItemPrice.text = "${item.price} / year"
-      }
+      PERIOD_1_MONTH -> viewPurchaseItemPrice.text = "${item.price} for month"
+      PERIOD_1_YEAR -> viewPurchaseItemPrice.text = "${item.price} for year"
     }
   }
 }
