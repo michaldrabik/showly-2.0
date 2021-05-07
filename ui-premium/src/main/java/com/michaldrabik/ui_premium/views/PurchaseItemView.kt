@@ -38,7 +38,7 @@ class PurchaseItemView : MaterialCardView {
     }
 
     viewPurchaseItemTitle.text = item.title.substringBefore("(").trim()
-    viewPurchaseItemDescription.text = "Try 7 days for free!"
+    viewPurchaseItemDescription.text = "Try 7 days for free and then:"
     val period = when (item.subscriptionPeriod) {
       PERIOD_1_MONTH -> "month"
       PERIOD_1_YEAR -> "year"
@@ -58,6 +58,7 @@ class PurchaseItemView : MaterialCardView {
     viewPurchaseItemTitle.text = item.title.substringBefore("(").trim()
     viewPurchaseItemDescription.gone()
     viewPurchaseItemDescriptionDetails.gone()
+    viewPurchaseItemSeparator.gone()
     when (item.subscriptionPeriod) {
       PERIOD_1_MONTH -> viewPurchaseItemPrice.text = "${item.price} for month"
       PERIOD_1_YEAR -> viewPurchaseItemPrice.text = "${item.price} for year"

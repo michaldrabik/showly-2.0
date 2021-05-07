@@ -49,7 +49,7 @@
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="12sp"
-      app:layout_constraintBottom_toTopOf="@id/viewPurchaseItemDescriptionDetails"
+      app:layout_constraintBottom_toTopOf="@id/viewPurchaseItemSeparator"
       app:layout_constraintEnd_toStartOf="@id/viewPurchaseItemPrice"
       app:layout_constraintHorizontal_bias="0"
       app:layout_constraintStart_toStartOf="parent"
@@ -57,14 +57,28 @@
       tools:text="Description"
       />
 
+    <View
+      android:id="@+id/viewPurchaseItemSeparator"
+      android:layout_width="0dp"
+      android:layout_height="1dp"
+      android:layout_marginTop="10dp"
+      android:layout_marginBottom="10dp"
+      android:alpha="0.75"
+      android:background="@color/colorWhite"
+      app:layout_constraintBottom_toTopOf="@id/viewPurchaseItemDescriptionDetails"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewPurchaseItemDescription"
+      />
+
     <TextView
       android:id="@+id/viewPurchaseItemDescriptionDetails"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/spaceSmall"
       android:drawablePadding="@dimen/spaceSmall"
       android:ellipsize="end"
       android:gravity="center_vertical"
+      android:justificationMode="inter_word"
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="10sp"
@@ -72,7 +86,7 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/viewPurchaseItemDescription"
+      app:layout_constraintTop_toBottomOf="@id/viewPurchaseItemSeparator"
       tools:text="@tools:sample/lorem/random"
       />
 
