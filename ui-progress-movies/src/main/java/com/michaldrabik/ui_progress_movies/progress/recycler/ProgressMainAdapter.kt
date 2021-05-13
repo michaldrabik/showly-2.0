@@ -9,23 +9,30 @@ import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.ProgressMovieItemDiffCallback
 import com.michaldrabik.ui_progress_movies.progress.views.ProgressMoviesMainItemView
 
-class ProgressMainAdapter : BaseMovieAdapter<ProgressMovieItem>() {
+class ProgressMainAdapter(
+  itemClickListener: (ProgressMovieItem) -> Unit,
+  missingImageListener: (ProgressMovieItem, Boolean) -> Unit,
+  missingTranslationListener: (ProgressMovieItem) -> Unit,
+  listChangeListener: () -> Unit,
+  val checkClickListener: (ProgressMovieItem) -> Unit,
+  val itemLongClickListener: (ProgressMovieItem, View) -> Unit
+) : BaseMovieAdapter<ProgressMovieItem>(
+  itemClickListener = itemClickListener,
+  missingImageListener = missingImageListener,
+  missingTranslationListener = missingTranslationListener,
+  listChangeListener = listChangeListener
+) {
 
   override val asyncDiffer = AsyncListDiffer(this, ProgressMovieItemDiffCallback())
-
-  var checkClickListener: ((ProgressMovieItem) -> Unit)? = null
-  var itemLongClickListener: ((ProgressMovieItem, View) -> Unit)? = null
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     BaseViewHolder(
       ProgressMoviesMainItemView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
-        itemLongClickListener = { item, view ->
-          this@ProgressMainAdapter.itemLongClickListener?.invoke(item, view)
-        }
-        checkClickListener = { this@ProgressMainAdapter.checkClickListener?.invoke(it) }
-        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
-        missingTranslationListener = { item -> super.missingTranslationListener.invoke(item) }
+        itemClickListener = this@ProgressMainAdapter.itemClickListener
+        itemLongClickListener = this@ProgressMainAdapter.itemLongClickListener
+        checkClickListener = this@ProgressMainAdapter.checkClickListener
+        missingImageListener = this@ProgressMainAdapter.missingImageListener
+        missingTranslationListener = this@ProgressMainAdapter.missingTranslationListener
       }
     )
 

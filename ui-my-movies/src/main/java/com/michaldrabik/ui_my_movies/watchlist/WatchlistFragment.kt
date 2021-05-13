@@ -7,7 +7,6 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
-import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
@@ -59,13 +58,12 @@ class WatchlistFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
-    adapter = WatchlistAdapter().apply {
-      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
-      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
-      missingTranslationListener = { viewModel.loadMissingTranslation(it) }
-      itemClickListener = { openMovieDetails(it.movie) }
+    adapter = WatchlistAdapter(
+      itemClickListener = { openMovieDetails(it.movie) },
+      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
+      missingTranslationListener = { viewModel.loadMissingTranslation(it) },
       listChangeListener = { watchlistMoviesRecycler.scrollToPosition(0) }
-    }
+    )
     watchlistMoviesRecycler.apply {
       setHasFixedSize(true)
       adapter = this@WatchlistFragment.adapter

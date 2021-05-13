@@ -9,7 +9,15 @@ import com.michaldrabik.ui_progress_movies.ProgressMovieItemDiffCallback
 import com.michaldrabik.ui_progress_movies.calendar.views.ProgressMoviesCalendarHeaderView
 import com.michaldrabik.ui_progress_movies.calendar.views.ProgressMoviesCalendarItemView
 
-class ProgressMoviesCalendarAdapter : BaseMovieAdapter<ProgressMovieItem>() {
+class ProgressMoviesCalendarAdapter(
+  itemClickListener: (ProgressMovieItem) -> Unit,
+  missingImageListener: (ProgressMovieItem, Boolean) -> Unit,
+  missingTranslationListener: (ProgressMovieItem) -> Unit,
+) : BaseMovieAdapter<ProgressMovieItem>(
+  itemClickListener = itemClickListener,
+  missingImageListener = missingImageListener,
+  missingTranslationListener = missingTranslationListener,
+) {
 
   companion object {
     private const val VIEW_TYPE_ITEM = 1
@@ -22,9 +30,9 @@ class ProgressMoviesCalendarAdapter : BaseMovieAdapter<ProgressMovieItem>() {
     when (viewType) {
       VIEW_TYPE_ITEM -> BaseViewHolder(
         ProgressMoviesCalendarItemView(parent.context).apply {
-          itemClickListener = { super.itemClickListener.invoke(it) }
-          missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
-          missingTranslationListener = { item -> super.missingTranslationListener.invoke(item) }
+          itemClickListener = this@ProgressMoviesCalendarAdapter.itemClickListener
+          missingImageListener = this@ProgressMoviesCalendarAdapter.missingImageListener
+          missingTranslationListener = this@ProgressMoviesCalendarAdapter.missingTranslationListener
         }
       )
       VIEW_TYPE_HEADER -> BaseViewHolder(ProgressMoviesCalendarHeaderView(parent.context))

@@ -7,7 +7,6 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
-import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
@@ -57,13 +56,12 @@ class MyMoviesFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
-    adapter = MyMoviesAdapter().apply {
-      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
-      itemClickListener = { openMovieDetails(it.movie) }
-      missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) }
-      missingTranslationListener = { viewModel.loadMissingTranslation(it) }
+    adapter = MyMoviesAdapter(
+      itemClickListener = { openMovieDetails(it.movie) },
+      missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) },
+      missingTranslationListener = { viewModel.loadMissingTranslation(it) },
       onSortOrderClickListener = { section, order -> showSortOrderDialog(section, order) }
-    }
+    )
     myMoviesRecycler.apply {
       adapter = this@MyMoviesFragment.adapter
       layoutManager = this@MyMoviesFragment.layoutManager

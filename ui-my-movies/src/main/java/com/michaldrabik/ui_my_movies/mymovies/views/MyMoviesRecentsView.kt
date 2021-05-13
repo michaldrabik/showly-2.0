@@ -30,11 +30,11 @@ class MyMoviesRecentsView : FrameLayout {
 
   fun bind(
     item: MyMoviesItem.RecentsSection,
-    itemClickListener: (MyMoviesItem) -> Unit
+    itemClickListener: ((MyMoviesItem) -> Unit)?
   ) {
     myMoviesRecentsContainer.removeAllViews()
 
-    val clickListener: (MyMoviesItem) -> Unit = { itemClickListener.invoke(it) }
+    val clickListener: (MyMoviesItem) -> Unit = { itemClickListener?.invoke(it) }
 
     item.items.forEachIndexed { index, showItem ->
       val view = MyMovieFanartView(context).apply {

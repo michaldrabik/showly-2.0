@@ -11,7 +11,6 @@ import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseFragment
@@ -135,12 +134,11 @@ class DiscoverMoviesFragment :
 
   private fun setupRecycler() {
     layoutManager = GridLayoutManager(context, Config.MAIN_GRID_SPAN)
-    adapter = DiscoverMoviesAdapter().apply {
-      stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
-      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
-      itemClickListener = { navigateToDetails(it) }
+    adapter = DiscoverMoviesAdapter(
+      itemClickListener = { navigateToDetails(it) },
+      missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
       listChangeListener = { discoverMoviesRecycler.scrollToPosition(0) }
-    }
+    )
     discoverMoviesRecycler.apply {
       adapter = this@DiscoverMoviesFragment.adapter
       layoutManager = this@DiscoverMoviesFragment.layoutManager

@@ -10,7 +10,16 @@ import com.michaldrabik.ui_my_movies.mymovies.views.MyMovieAllView
 import com.michaldrabik.ui_my_movies.mymovies.views.MyMovieHeaderView
 import com.michaldrabik.ui_my_movies.mymovies.views.MyMoviesRecentsView
 
-class MyMoviesAdapter : BaseMovieAdapter<MyMoviesItem>() {
+class MyMoviesAdapter(
+  itemClickListener: (MyMoviesItem) -> Unit,
+  missingImageListener: (MyMoviesItem, Boolean) -> Unit,
+  missingTranslationListener: (MyMoviesItem) -> Unit,
+  val onSortOrderClickListener: (MyMoviesSection, SortOrder) -> Unit
+) : BaseMovieAdapter<MyMoviesItem>(
+  itemClickListener = itemClickListener,
+  missingImageListener = missingImageListener,
+  missingTranslationListener = missingTranslationListener
+) {
 
   companion object {
     private const val VIEW_TYPE_HEADER = 1
@@ -18,9 +27,11 @@ class MyMoviesAdapter : BaseMovieAdapter<MyMoviesItem>() {
     private const val VIEW_TYPE_RECENTS_SECTION = 3
   }
 
-  override val asyncDiffer = AsyncListDiffer(this, MyMoviesItemDiffCallback())
+  init {
+    stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+  }
 
-  var onSortOrderClickListener: ((MyMoviesSection, SortOrder) -> Unit)? = null
+  override val asyncDiffer = AsyncListDiffer(this, MyMoviesItemDiffCallback())
   var notifyListsUpdate = false
 
   override fun setItems(newItems: List<MyMoviesItem>, notifyChange: Boolean) {
@@ -33,9 +44,9 @@ class MyMoviesAdapter : BaseMovieAdapter<MyMoviesItem>() {
       VIEW_TYPE_RECENTS_SECTION -> BaseViewHolder(MyMoviesRecentsView(parent.context))
       VIEW_TYPE_MOVIE_ITEM -> BaseViewHolder(
         MyMovieAllView(parent.context).apply {
-          itemClickListener = { super.itemClickListener.invoke(it) }
-          missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
-          missingTranslationListener = { super.missingTranslationListener.invoke(it) }
+          itemClickListener = this@MyMoviesAdapter.itemClickListener
+          missingImageListener = this@MyMoviesAdapter.missingImageListener
+          missingTranslationListener = this@MyMoviesAdapter.missingTranslationListener
         }
       )
       else -> throw IllegalStateException()

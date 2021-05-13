@@ -28,13 +28,13 @@ class MyMovieHeaderView : FrameLayout {
     clipToPadding = false
   }
 
-  fun bind(item: MyMoviesItem.Header, sortClickListener: ((MyMoviesSection, SortOrder) -> Unit)?) {
+  fun bind(item: MyMoviesItem.Header, sortClickListener: (MyMoviesSection, SortOrder) -> Unit) {
     bindLabel(item)
 
     item.sortOrder?.let {
       myMoviesHeaderSortButton.visible()
       myMoviesHeaderSortButton.onClick {
-        sortClickListener?.invoke(item.section, item.sortOrder)
+        sortClickListener(item.section, item.sortOrder)
       }
     }
   }

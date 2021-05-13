@@ -10,21 +10,33 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
 
-class DiscoverMoviesAdapter : BaseMovieAdapter<DiscoverMovieListItem>() {
+class DiscoverMoviesAdapter(
+  itemClickListener: (DiscoverMovieListItem) -> Unit,
+  missingImageListener: (DiscoverMovieListItem, Boolean) -> Unit,
+  listChangeListener: () -> Unit
+) : BaseMovieAdapter<DiscoverMovieListItem>(
+  itemClickListener = itemClickListener,
+  missingImageListener = missingImageListener,
+  listChangeListener = listChangeListener
+) {
+
+  init {
+    stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
+  }
 
   override val asyncDiffer = AsyncListDiffer(this, DiscoverMovieItemDiffCallback())
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
     POSTER.id -> BaseViewHolder(
       MoviePosterView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
-        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
+        itemClickListener = this@DiscoverMoviesAdapter.itemClickListener
+        missingImageListener = this@DiscoverMoviesAdapter.missingImageListener
       }
     )
     FANART.id, FANART_WIDE.id -> BaseViewHolder(
       MovieFanartView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
-        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
+        itemClickListener = this@DiscoverMoviesAdapter.itemClickListener
+        missingImageListener = this@DiscoverMoviesAdapter.missingImageListener
       }
     )
     else -> throw IllegalStateException("Unknown view type.")

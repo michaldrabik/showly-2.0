@@ -7,15 +7,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseMovieAdapter
 import com.michaldrabik.ui_statistics_movies.views.ratings.StatisticsMoviesRateItemView
 
-class StatisticsMoviesRatingsAdapter : BaseMovieAdapter<StatisticsMoviesRatingItem>() {
+class StatisticsMoviesRatingsAdapter(
+  itemClickListener: (StatisticsMoviesRatingItem) -> Unit
+) : BaseMovieAdapter<StatisticsMoviesRatingItem>(
+  itemClickListener = itemClickListener,
+) {
 
   override val asyncDiffer = AsyncListDiffer(this, StatisticsMoviesRatingsDiffCallback())
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     ViewHolderShow(
       StatisticsMoviesRateItemView(parent.context).apply {
-        itemClickListener = { super.itemClickListener.invoke(it) }
-        missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
+        itemClickListener = this@StatisticsMoviesRatingsAdapter.itemClickListener
       }
     )
 

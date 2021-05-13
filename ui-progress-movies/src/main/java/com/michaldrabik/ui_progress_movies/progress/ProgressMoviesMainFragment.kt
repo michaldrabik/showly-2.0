@@ -72,9 +72,15 @@ class ProgressMoviesMainFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
-    adapter = ProgressMainAdapter().apply {
-      itemClickListener = { (requireParentFragment() as ProgressMoviesFragment).openMovieDetails(it) }
-      itemLongClickListener = { item, view -> openPopupMenu(item, view) }
+    adapter = ProgressMainAdapter(
+      itemClickListener = { (requireParentFragment() as ProgressMoviesFragment).openMovieDetails(it) },
+      itemLongClickListener = { item, view -> openPopupMenu(item, view) },
+      missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
+      missingTranslationListener = { item -> viewModel.findMissingTranslation(item) },
+      listChangeListener = {
+        (requireParentFragment() as ProgressMoviesFragment).resetTranslations()
+        layoutManager?.scrollToPosition(0)
+      },
       checkClickListener = {
         if (viewModel.isQuickRateEnabled) {
           openRateDialog(it)
@@ -82,13 +88,7 @@ class ProgressMoviesMainFragment :
           parentViewModel.addWatchedMovie(requireAppContext(), it)
         }
       }
-      missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
-      missingTranslationListener = { item -> viewModel.findMissingTranslation(item) }
-      listChangeListener = {
-        (requireParentFragment() as ProgressMoviesFragment).resetTranslations()
-        layoutManager?.scrollToPosition(0)
-      }
-    }
+    )
     progressMoviesMainRecycler.apply {
       adapter = this@ProgressMoviesMainFragment.adapter
       layoutManager = this@ProgressMoviesMainFragment.layoutManager

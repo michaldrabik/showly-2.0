@@ -24,7 +24,11 @@ class StatisticsMoviesRatingsView : MaterialCardView {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  private val adapter by lazy { StatisticsMoviesRatingsAdapter() }
+  private val adapter by lazy {
+    StatisticsMoviesRatingsAdapter(
+      itemClickListener = { onMovieClickListener?.invoke(it) }
+    )
+  }
   private val layoutManager by lazy { LinearLayoutManager(context, HORIZONTAL, false) }
 
   var onMovieClickListener: ((MovieListItem) -> Unit)? = null
@@ -46,9 +50,6 @@ class StatisticsMoviesRatingsView : MaterialCardView {
       layoutManager = this@StatisticsMoviesRatingsView.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       addDivider(R.drawable.divider_statistics_ratings, HORIZONTAL)
-    }
-    adapter.itemClickListener = {
-      onMovieClickListener?.invoke(it)
     }
   }
 

@@ -47,11 +47,11 @@ class ProgressMoviesCalendarFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
-    adapter = ProgressMoviesCalendarAdapter().apply {
-      itemClickListener = { (requireParentFragment() as ProgressMoviesFragment).openMovieDetails(it) }
-      missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
+    adapter = ProgressMoviesCalendarAdapter(
+      itemClickListener = { (requireParentFragment() as ProgressMoviesFragment).openMovieDetails(it) },
+      missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
       missingTranslationListener = { item -> viewModel.findMissingTranslation(item) }
-    }
+    )
     progressMoviesCalendarRecycler.apply {
       adapter = this@ProgressMoviesCalendarFragment.adapter
       layoutManager = this@ProgressMoviesCalendarFragment.layoutManager
