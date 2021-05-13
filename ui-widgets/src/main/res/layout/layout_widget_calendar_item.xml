@@ -88,7 +88,7 @@
       android:layout_marginTop="@dimen/spaceMicro"
       android:layout_marginEnd="6dp"
       android:layout_marginBottom="@dimen/spaceTiny"
-      android:background="@drawable/bg_episode_badge"
+      android:background="@drawable/bg_badge"
       android:elevation="@dimen/elevationTiny"
       android:ellipsize="end"
       android:includeFontPadding="false"

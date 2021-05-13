@@ -83,7 +83,7 @@
       android:layout_height="wrap_content"
       android:layout_below="@id/calendarMoviesWidgetItemOverview"
       android:layout_marginTop="@dimen/spaceTiny"
-      android:background="@drawable/bg_movie_date_badge"
+      android:background="@drawable/bg_badge"
       android:elevation="@dimen/elevationTiny"
       android:gravity="start|center_vertical"
       android:paddingStart="6dp"

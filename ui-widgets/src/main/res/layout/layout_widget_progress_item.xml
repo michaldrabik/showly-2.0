@@ -83,7 +83,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_below="@id/progressWidgetItemTitle"
-      android:background="@drawable/bg_widget_episode_badge"
+      android:background="@drawable/bg_badge"
       android:elevation="@dimen/elevationTiny"
       android:ellipsize="end"
       android:includeFontPadding="false"
