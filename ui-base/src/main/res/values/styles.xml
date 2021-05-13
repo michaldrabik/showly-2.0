@@ -2,7 +2,7 @@
 
   <!-- Base app theme -->
   <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-    <item name="android:windowBackground">#141414</item>
+    <item name="android:windowBackground">#131313</item>
     <item name="android:navigationBarColor">@color/colorPrimary</item>
     <item name="android:windowTranslucentStatus">true</item>
     <item name="toolbarNavigationButtonStyle">@style/Toolbar.Button.Navigation.Tinted</item>
