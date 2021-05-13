@@ -747,6 +747,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       false
     }
     showDetailsLinksMenu.run {
+      showDetailsMainContent.layoutTransition = null
       fadeIn(125)
       viewLinkTrakt.visibleIf(ids.trakt.id != -1L)
       viewLinkTrakt.onClick {

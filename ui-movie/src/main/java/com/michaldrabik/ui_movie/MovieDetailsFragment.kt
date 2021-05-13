@@ -563,6 +563,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       false
     }
     movieDetailsLinksMenu.run {
+      movieDetailsMainContent.layoutTransition = null
       fadeIn(125)
       viewLinkTrakt.visibleIf(ids.trakt.id != -1L)
       viewLinkTrakt.onClick {
