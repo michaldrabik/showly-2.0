@@ -22,6 +22,9 @@ object Config {
   const val TMDB_BASE_URL = "https://api.themoviedb.org/3/"
   const val TMDB_API_KEY = BuildConfig.TMDB_API_KEY
 
+  const val OMDB_BASE_URL = "https://www.omdbapi.com/"
+  const val OMDB_API_KEY = BuildConfig.OMDB_API_KEY
+
   const val REDDIT_BASE_URL = "https://www.reddit.com/api/v1/"
   const val REDDIT_OAUTH_BASE_URL = "https://oauth.reddit.com/"
   const val REDDIT_CLIENT_ID = BuildConfig.REDDIT_CLIENT_ID

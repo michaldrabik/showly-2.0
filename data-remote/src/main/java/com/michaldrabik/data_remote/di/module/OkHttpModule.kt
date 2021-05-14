@@ -2,6 +2,7 @@ package com.michaldrabik.data_remote.di.module
 
 import com.michaldrabik.data_remote.BuildConfig
 import com.michaldrabik.data_remote.di.CloudScope
+import com.michaldrabik.data_remote.omdb.OmdbInterceptor
 import com.michaldrabik.data_remote.tmdb.TmdbInterceptor
 import com.michaldrabik.data_remote.trakt.TraktInterceptor
 import dagger.Module
@@ -36,6 +37,17 @@ object OkHttpModule {
   ) = createBaseOkHttpClient()
     .addInterceptor(httpLoggingInterceptor)
     .addInterceptor(tmdbInterceptor)
+    .build()
+
+  @Provides
+  @CloudScope
+  @Named("okHttpOmdb")
+  fun providesOmdbOkHttp(
+    httpLoggingInterceptor: HttpLoggingInterceptor,
+    omdbInterceptor: OmdbInterceptor,
+  ) = createBaseOkHttpClient()
+    .addInterceptor(httpLoggingInterceptor)
+    .addInterceptor(omdbInterceptor)
     .build()
 
   @Provides
