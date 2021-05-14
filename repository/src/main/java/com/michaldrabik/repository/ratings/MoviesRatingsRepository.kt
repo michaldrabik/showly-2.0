@@ -63,6 +63,10 @@ class MoviesRatingsRepository @Inject constructor(
     }
   }
 
+  suspend fun loadRatings(movie: Movie) =
+    cloud.omdbApi.fetchOmdbData(movie.ids.imdb.id)
+      .let { mappers.ratings.fromNetwork(it) }
+
   fun clear() {
     moviesCache = null
   }

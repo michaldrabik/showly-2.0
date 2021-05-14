@@ -22,6 +22,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_movie.cases.MovieDetailsActorsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsCommentsCase
@@ -93,6 +94,7 @@ class MovieDetailsViewModel @Inject constructor(
         )
 
         loadBackgroundImage(movie)
+        launch { loadRatings(movie) }
         launch { loadActors(movie) }
         launch { loadListsCount(movie) }
         launch { loadRelatedMovies(movie) }
@@ -286,6 +288,23 @@ class MovieDetailsViewModel @Inject constructor(
     } catch (error: Throwable) {
       Timber.e(error)
       uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = false))
+    }
+  }
+
+  private suspend fun loadRatings(movie: Movie) {
+    val traktRatings = Ratings(
+      trakt = Ratings.Value(String.format("%.1f", movie.rating), false),
+      imdb = Ratings.Value(null, true),
+      metascore = Ratings.Value(null, true),
+      rottenTomatoes = Ratings.Value(null, true)
+    )
+    try {
+      uiState = MovieDetailsUiModel(ratings = traktRatings)
+      val ratings = ratingsCase.loadRatings(movie)
+      uiState = MovieDetailsUiModel(ratings = ratings)
+    } catch (error: Throwable) {
+      Timber.e(error)
+      uiState = MovieDetailsUiModel(ratings = traktRatings)
     }
   }
 

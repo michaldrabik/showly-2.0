@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_statistics_movies.cases
 
-import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.movies.MoviesRepository
+import com.michaldrabik.repository.ratings.RatingsRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_statistics_movies.views.ratings.recycler.StatisticsMoviesRatingItem

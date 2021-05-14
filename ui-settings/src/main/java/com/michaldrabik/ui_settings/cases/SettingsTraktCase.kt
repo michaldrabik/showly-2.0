@@ -2,9 +2,9 @@ package com.michaldrabik.ui_settings.cases
 
 import android.content.Context
 import android.net.Uri
-import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.ratings.RatingsRepository
 import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import javax.inject.Inject

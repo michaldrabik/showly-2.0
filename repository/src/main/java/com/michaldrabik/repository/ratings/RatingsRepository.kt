@@ -1,8 +1,6 @@
-package com.michaldrabik.repository
+package com.michaldrabik.repository.ratings
 
 import com.michaldrabik.common.di.AppScope
-import com.michaldrabik.repository.ratings.MoviesRatingsRepository
-import com.michaldrabik.repository.ratings.ShowsRatingsRepository
 import javax.inject.Inject
 
 @AppScope

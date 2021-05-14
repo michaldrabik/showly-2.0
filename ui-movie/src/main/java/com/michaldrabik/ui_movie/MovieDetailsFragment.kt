@@ -74,12 +74,16 @@ import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.actors.ActorsAdapter
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponentProvider
 import com.michaldrabik.ui_movie.helpers.MovieLink
 import com.michaldrabik.ui_movie.helpers.MovieLink.IMDB
 import com.michaldrabik.ui_movie.helpers.MovieLink.JUST_WATCH
+import com.michaldrabik.ui_movie.helpers.MovieLink.METACRITIC
+import com.michaldrabik.ui_movie.helpers.MovieLink.ROTTEN
+import com.michaldrabik.ui_movie.helpers.MovieLink.TRAKT
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import com.michaldrabik.ui_movie.related.RelatedMovieAdapter
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
@@ -430,6 +434,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         movieDetailsManageListsLabel.text = text
       }
       ratingState?.let { renderRating(it) }
+      ratings?.let { renderRatings(it, movie) }
       showFromTraktLoading?.let {
         movieDetailsRemoveTraktButton.isLoading = it
         movieDetailsAddButton.isEnabled = !it
@@ -479,6 +484,16 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       } else {
         showSnack(MessageEvent.info(R.string.textSignBeforeRateMovie))
       }
+    }
+  }
+
+  private fun renderRatings(ratings: Ratings, movie: Movie?) {
+    movieDetailsRatings.bind(ratings)
+    movie?.let {
+      movieDetailsRatings.onTraktClick = { openMovieLink(TRAKT, it.traktId.toString()) }
+      movieDetailsRatings.onImdbClick = { openMovieLink(IMDB, it.ids.imdb.id) }
+      movieDetailsRatings.onMetaClick = { openMovieLink(METACRITIC, it.title) }
+      movieDetailsRatings.onRottenClick = { openMovieLink(ROTTEN, "${it.title} ${it.year}") }
     }
   }
 

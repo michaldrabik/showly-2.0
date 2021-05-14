@@ -1,8 +1,8 @@
 package com.michaldrabik.showly2.ui.main.cases
 
 import android.content.Context
-import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
+import com.michaldrabik.repository.ratings.RatingsRepository
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider

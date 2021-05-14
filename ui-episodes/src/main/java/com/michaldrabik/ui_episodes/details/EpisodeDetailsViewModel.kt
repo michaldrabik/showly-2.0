@@ -3,9 +3,9 @@ package com.michaldrabik.ui_episodes.details
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.CommentsRepository
-import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.ratings.RatingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.dates.DateFormatProvider

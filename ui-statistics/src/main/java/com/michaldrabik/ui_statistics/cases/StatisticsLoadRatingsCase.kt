@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_statistics.cases
 
-import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
+import com.michaldrabik.repository.ratings.RatingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.ImageType

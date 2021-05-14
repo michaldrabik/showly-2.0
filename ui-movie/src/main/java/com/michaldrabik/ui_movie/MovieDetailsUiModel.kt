@@ -8,6 +8,7 @@ import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import org.threeten.bp.format.DateTimeFormatter
@@ -22,6 +23,7 @@ data class MovieDetailsUiModel(
   val listsCount: Int? = null,
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
+  val ratings: Ratings? = null,
   val removeFromTraktHistory: ActionEvent<Boolean>? = null,
   val removeFromTraktWatchlist: ActionEvent<Boolean>? = null,
   val showFromTraktLoading: Boolean? = null,
@@ -30,7 +32,7 @@ data class MovieDetailsUiModel(
   val dateFormat: DateTimeFormatter? = null,
   val commentsDateFormat: DateTimeFormatter? = null,
   val isSignedIn: Boolean? = null,
-  val isPremium: Boolean? = null
+  val isPremium: Boolean? = null,
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -52,6 +54,7 @@ data class MovieDetailsUiModel(
       commentsDateFormat = newModel.commentsDateFormat ?: commentsDateFormat,
       isPremium = newModel.isPremium ?: isPremium,
       isSignedIn = newModel.isSignedIn ?: isSignedIn,
+      ratings = newModel.ratings ?: ratings,
       ratingState = newModel.ratingState?.copy(
         rateLoading = newModel.ratingState.rateLoading ?: ratingState?.rateLoading,
         rateAllowed = newModel.ratingState.rateAllowed ?: ratingState?.rateAllowed,
@@ -64,7 +67,7 @@ data class FollowedState(
   val isMyMovie: Boolean,
   val isWatchlist: Boolean,
   val isUpcoming: Boolean,
-  val withAnimation: Boolean
+  val withAnimation: Boolean,
 ) {
 
   companion object {

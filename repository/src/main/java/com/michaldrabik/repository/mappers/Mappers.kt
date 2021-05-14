@@ -17,4 +17,5 @@ class Mappers @Inject constructor(
   val settings: SettingsMapper,
   val translation: TranslationMapper,
   val customList: CustomListMapper,
+  val ratings: RatingsMapper,
 )

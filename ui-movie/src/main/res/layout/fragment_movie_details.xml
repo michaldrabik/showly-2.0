@@ -219,9 +219,8 @@
         android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="@dimen/spaceNormal"
-        android:layout_marginBottom="@dimen/spaceMedium"
         android:background="?attr/colorSeparator"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsDescription"
+        app:layout_constraintBottom_toTopOf="@+id/movieDetailsRatings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -236,7 +235,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
-        android:layout_marginBottom="@dimen/spaceMicro"
+        android:layout_marginBottom="@dimen/spaceTiny"
         android:ellipsize="end"
         android:gravity="start"
         android:justificationMode="inter_word"
@@ -246,10 +245,24 @@
         app:layout_constraintBottom_toTopOf="@id/movieDetailsActorsRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/separator4"
+        app:layout_constraintTop_toBottomOf="@+id/movieDetailsRatings"
         app:layout_goneMarginBottom="@dimen/spaceBig"
         tools:targetApi="o"
         tools:text="Description"
+        />
+
+      <com.michaldrabik.ui_base.common.views.RatingsStripView
+        android:id="@+id/movieDetailsRatings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@id/movieDetailsDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/separator4"
         />
 
       <View
