@@ -5,7 +5,7 @@ ext.versions = [
     minSdk                 : 21,
     compileSdk             : 29,
 
-    kotlin                 : '1.4.32',
+    kotlin                 : '1.4.31',
     kotlinCoroutines       : '1.4.1',
     gradleBuildTools       : '4.1.3',
 
@@ -27,7 +27,7 @@ ext.versions = [
     androidWork            : '2.5.0',
     androidBrowser         : '1.3.0',
     circleIndicator        : '2.1.4',
-    dagger                 : '2.33',
+    dagger                 : '2.35',
     firebaseCrashlytics    : '17.4.1',
     firebaseAnalytics      : '18.0.3',
     firebaseMessaging      : '21.1.0',
