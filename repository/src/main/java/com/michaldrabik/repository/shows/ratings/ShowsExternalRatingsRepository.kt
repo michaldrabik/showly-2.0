@@ -8,6 +8,7 @@ import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Show
+import java.util.Locale
 import javax.inject.Inject
 
 @AppScope
@@ -27,7 +28,7 @@ class ShowsExternalRatingsRepository @Inject constructor(
 
     val remoteRatings = cloud.omdbApi.fetchOmdbData(show.ids.imdb.id)
       .let { mappers.ratings.fromNetwork(it) }
-      .copy(trakt = Ratings.Value(String.format("%.1f", show.rating), false))
+      .copy(trakt = Ratings.Value(String.format(Locale.ENGLISH, "%.1f", show.rating), false))
 
     val dbRatings = mappers.ratings.toShowDatabase(show.ids.trakt, remoteRatings)
     database.showRatingsDao().upsert(dbRatings)

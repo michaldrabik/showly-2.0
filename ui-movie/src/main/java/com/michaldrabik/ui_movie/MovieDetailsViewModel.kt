@@ -38,6 +38,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
 
@@ -293,7 +294,7 @@ class MovieDetailsViewModel @Inject constructor(
 
   private suspend fun loadRatings(movie: Movie) {
     val traktRatings = Ratings(
-      trakt = Ratings.Value(String.format("%.1f", movie.rating), false),
+      trakt = Ratings.Value(String.format(Locale.ENGLISH, "%.1f", movie.rating), false),
       imdb = Ratings.Value(null, true),
       metascore = Ratings.Value(null, true),
       rottenTomatoes = Ratings.Value(null, true)
