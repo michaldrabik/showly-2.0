@@ -154,4 +154,16 @@
     tools:visibility="visible"
     />
 
+  <com.michaldrabik.showly2.ui.views.WelcomeLanguageView
+    android:id="@+id/welcomeLanguageView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/spaceBig"
+    android:translationZ="15dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    tools:visibility="visible"
+    />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

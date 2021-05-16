@@ -15,9 +15,11 @@ import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.fcm.NotificationChannel
+import com.michaldrabik.ui_settings.helpers.AppLanguage
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -73,6 +75,30 @@ class MainInitialsCase @Inject constructor(
         }
       }
     }
+  }
+
+  fun setLanguage(appLanguage: AppLanguage) {
+    settingsRepository.language = appLanguage.code
+  }
+
+  fun checkLanguageChange(): AppLanguage {
+    val locale = LocaleListCompat.getAdjustedDefault()
+    if (locale.size() == 1 && !locale[0].language.equals(Locale("en").language)) {
+      AppLanguage.values().forEach { appLanguage ->
+        if (appLanguage.code.equals(locale[0].language, ignoreCase = true)) {
+          return appLanguage
+        }
+      }
+    }
+    if (locale.size() > 1 && !locale[1].language.equals(Locale("en").language)) {
+      AppLanguage.values().forEach { appLanguage ->
+        if (appLanguage.code.equals(locale[1].language, ignoreCase = true)) {
+          return appLanguage
+        }
+      }
+    }
+
+    return AppLanguage.ENGLISH
   }
 
   suspend fun preloadRatings() = supervisorScope {

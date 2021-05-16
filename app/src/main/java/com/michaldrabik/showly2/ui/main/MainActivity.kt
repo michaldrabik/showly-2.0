@@ -15,6 +15,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.jakewharton.processphoenix.ProcessPhoenix
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
@@ -48,11 +49,13 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
+import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MODES
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
+import com.michaldrabik.ui_settings.helpers.AppLanguage
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_bottom_menu.*
 import timber.log.Timber
@@ -257,32 +260,64 @@ class MainActivity :
   private fun render(uiModel: MainUiModel) {
     uiModel.run {
       isInitialRun?.let {
-        if (it) {
-          openTab(R.id.menuDiscover)
-          with(welcomeView) {
-            fadeIn()
-            onOkClickListener = {
-              fadeOut()
-              welcomeViewMask.fadeOut()
-            }
-          }
-          with(welcomeViewMask) {
-            fadeIn()
-            onClick {
-              fadeOut()
-              welcomeView.fadeOut()
-            }
-          }
-        }
+        val event = it.consume()
+        if (event == true) showWelcomeDialog(event)
       }
-      showWhatsNew?.let { if (it) showWhatsNew() }
+      showWhatsNew?.let {
+        if (it.consume() == true) showWhatsNewDialog()
+      }
       showRateApp?.let {
-        if (it) {
+        if (it.consume() == true) {
           launchInAppReview()
           Analytics.logInAppRateDisplayed()
         }
       }
+      initialLanguage?.let { event ->
+        event.consume()?.let {
+          showWelcomeLanguageDialog(it)
+        }
+      }
     }
+  }
+
+  private fun showWelcomeDialog(isInitialRun: Boolean) {
+    openTab(R.id.menuDiscover)
+    with(welcomeView) {
+      fadeIn()
+      onOkClickListener = {
+        fadeOut()
+        welcomeViewMask.gone()
+        viewModel.checkLanguageChange(isInitialRun)
+      }
+    }
+    with(welcomeViewMask) {
+      fadeIn()
+      onClick { /* NOOP */ }
+    }
+  }
+
+  private fun showWelcomeLanguageDialog(language: AppLanguage) {
+    with(welcomeLanguageView) {
+      setLanguage(language)
+      fadeIn()
+      onYesClick = {
+        viewModel.setLanguage(language)
+        fadeOut()
+        welcomeViewMask.fadeOut()
+        postDelayed({
+          try {
+            ProcessPhoenix.triggerRebirth(applicationContext)
+          } catch (error: Throwable) {
+            Runtime.getRuntime().exit(0)
+          }
+        }, 300)
+      }
+      onNoClick = {
+        fadeOut()
+        welcomeViewMask.fadeOut()
+      }
+    }
+    welcomeViewMask.visible()
   }
 
   private fun launchInAppReview() {
@@ -367,7 +402,7 @@ class MainActivity :
     }
   }
 
-  private fun showWhatsNew() {
+  private fun showWhatsNewDialog() {
     MaterialAlertDialogBuilder(this, R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(this, R.drawable.bg_dialog))
       .setView(WhatsNewView(this))

@@ -13,6 +13,8 @@
 
   <string name="textDisclaimerTitle" translatable="false">Welcome to Showly!</string>
   <string name="textDisclaimerText" translatable="false">Please note that you <b>CAN\'T</b> watch or download shows and movies with this app.\n\nPlease use apps like <b>Netflix</b> or <b>HBO GO</b> to stream and watch content.</string>
+  <string name="textLanguagesChoose2" translatable="false">Language can always be changed later via Settings.</string>
+  <string name="textLeaveEnglish" translatable="false">No, I prefer English</string>
 
   <string name="textWhatsNewTitle">What\'s New</string>
   <string name="textWhatsNewSubtitle">Version %s</string>

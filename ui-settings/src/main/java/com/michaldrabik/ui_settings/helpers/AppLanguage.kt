@@ -5,18 +5,19 @@ import com.michaldrabik.ui_settings.R
 
 enum class AppLanguage(
   val code: String,
-  @StringRes val displayName: Int
+  val displayNameRaw: String,
+  @StringRes val displayName: Int,
 ) {
-  ENGLISH("en", R.string.textLanguageEnglish),
-  GERMAN("de", R.string.textLanguageGerman),
-  FRENCH("fr", R.string.textLanguageFrench),
-  ITALIAN("it", R.string.textLanguageItalian),
-  SPANISH("es", R.string.textLanguageSpanish),
-  PORTUGAL_BRASIL("pt", R.string.textLanguagePortugalBrasil),
-  POLISH("pl", R.string.textLanguagePolish),
-  RUSSIAN("ru", R.string.textLanguageRussian),
-  TURKISH("tr", R.string.textLanguageTurkish),
-  ARABIC("ar", R.string.textLanguageArabic);
+  ENGLISH("en", "English", R.string.textLanguageEnglish),
+  GERMAN("de", "German", R.string.textLanguageGerman),
+  FRENCH("fr", "French", R.string.textLanguageFrench),
+  ITALIAN("it", "Italian", R.string.textLanguageItalian),
+  SPANISH("es", "Spanish", R.string.textLanguageSpanish),
+  PORTUGAL_BRASIL("pt", "Portuguese", R.string.textLanguagePortugalBrasil),
+  POLISH("pl", "Polish", R.string.textLanguagePolish),
+  RUSSIAN("ru", "Russian", R.string.textLanguageRussian),
+  TURKISH("tr", "Turkish", R.string.textLanguageTurkish),
+  ARABIC("ar", "Arabic", R.string.textLanguageArabic);
 
   companion object {
     fun fromCode(code: String) = values().first { it.code == code }

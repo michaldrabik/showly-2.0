@@ -10,7 +10,9 @@ import com.michaldrabik.showly2.ui.main.cases.MainRateAppCase
 import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTraktCase
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_model.Tip
+import com.michaldrabik.ui_settings.helpers.AppLanguage
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,14 +39,27 @@ class MainViewModel @Inject constructor(
       initCase.setInitialRun(false)
       initCase.setInitialCountry(context)
     }
+
     val showWhatsNew = initCase.showWhatsNew(isInitialRun)
     val showRateApp = rateAppCase.shouldShowRateApp()
 
     uiState = MainUiModel(
-      isInitialRun = isInitialRun,
-      showWhatsNew = showWhatsNew,
-      showRateApp = showRateApp
+      isInitialRun = ActionEvent(isInitialRun),
+      showWhatsNew = ActionEvent(showWhatsNew),
+      showRateApp = ActionEvent(showRateApp)
     )
+  }
+
+  fun setLanguage(appLanguage: AppLanguage) =
+    initCase.setLanguage(appLanguage)
+
+  fun checkLanguageChange(isInitialRun: Boolean) {
+    if (!isInitialRun) return
+
+    val initialLanguage = initCase.checkLanguageChange()
+    if (initialLanguage != AppLanguage.ENGLISH) {
+      uiState = MainUiModel(initialLanguage = ActionEvent(initialLanguage))
+    }
   }
 
   fun refreshAnnouncements(context: Context) {
