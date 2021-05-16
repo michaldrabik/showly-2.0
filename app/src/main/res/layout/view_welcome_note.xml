@@ -23,6 +23,7 @@
       android:id="@+id/viewWelcomeNoteIcon"
       android:layout_width="60dp"
       android:layout_height="60dp"
+      app:elevation="@dimen/elevationNormal"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0"
       app:layout_constraintStart_toStartOf="parent"
