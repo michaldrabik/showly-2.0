@@ -33,7 +33,6 @@
         android:fontFamily="sans-serif-medium"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="20sp"
-        tools:text="---"
         />
 
       <ProgressBar
@@ -153,7 +152,6 @@
         android:fontFamily="sans-serif-medium"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="20sp"
-        tools:text="---"
         />
 
       <ProgressBar
@@ -189,7 +187,7 @@
   </LinearLayout>
 
   <LinearLayout
-    android:id="@+id/viewRatingsRotten"
+    android:id="@+id/viewRatingsStripRotten"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_weight="1"
@@ -211,7 +209,6 @@
         android:fontFamily="sans-serif-medium"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="20sp"
-        tools:text="---"
         />
 
       <ProgressBar

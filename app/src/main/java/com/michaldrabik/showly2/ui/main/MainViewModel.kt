@@ -23,18 +23,19 @@ class MainViewModel @Inject constructor(
   private val rateAppCase: MainRateAppCase,
 ) : BaseViewModel<MainUiModel>() {
 
-  fun initialize() {
+  fun initialize(context: Context) {
     viewModelScope.launch {
-      checkInitialRun()
+      checkInitialRun(context)
       initCase.initializeFcm()
       initCase.preloadRatings()
     }
   }
 
-  private suspend fun checkInitialRun() {
+  private suspend fun checkInitialRun(context: Context) {
     val isInitialRun = initCase.isInitialRun()
     if (isInitialRun) {
       initCase.setInitialRun(false)
+      initCase.setInitialCountry(context)
     }
     val showWhatsNew = initCase.showWhatsNew(isInitialRun)
     val showRateApp = rateAppCase.shouldShowRateApp()

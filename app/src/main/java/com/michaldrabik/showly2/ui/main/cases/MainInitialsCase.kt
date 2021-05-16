@@ -1,8 +1,11 @@
 package com.michaldrabik.showly2.ui.main.cases
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.SharedPreferences
+import android.telephony.TelephonyManager
 import androidx.core.content.edit
+import androidx.core.os.LocaleListCompat
 import com.google.firebase.messaging.FirebaseMessaging
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.RatingsRepository
@@ -10,6 +13,7 @@ import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.ui_base.Logger
+import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.fcm.NotificationChannel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -47,6 +51,26 @@ class MainInitialsCase @Inject constructor(
       } else {
         unsubscribeFromTopic(NotificationChannel.GENERAL_INFO.topicName + suffix)
         unsubscribeFromTopic(NotificationChannel.SHOWS_INFO.topicName + suffix)
+      }
+    }
+  }
+
+  fun setInitialCountry(context: Context) {
+    var country = (context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager)?.simCountryIso
+    if (country == null) {
+      val locale = LocaleListCompat.getAdjustedDefault()
+      country = if (locale.size() > 1) {
+        locale.get(1).country
+      } else {
+        locale.get(0).country
+      }
+    }
+    if (!country.isNullOrBlank()) {
+      AppCountry.values().forEach { appCountry ->
+        if (appCountry.code.equals(country, ignoreCase = true)) {
+          settingsRepository.country = appCountry.code
+          return
+        }
       }
     }
   }

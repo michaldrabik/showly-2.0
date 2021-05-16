@@ -38,7 +38,7 @@ class RatingsStripView : LinearLayout {
     viewRatingsStripTrakt.onClick { onTraktClick?.invoke() }
     viewRatingsStripImdb.onClick { onImdbClick?.invoke() }
     viewRatingsStripMeta.onClick { onMetaClick?.invoke() }
-    viewRatingsRotten.onClick { onRottenClick?.invoke() }
+    viewRatingsStripRotten.onClick { onRottenClick?.invoke() }
   }
 
   fun bind(ratings: Ratings) {
