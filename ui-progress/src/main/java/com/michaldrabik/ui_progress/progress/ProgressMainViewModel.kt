@@ -2,10 +2,10 @@ package com.michaldrabik.ui_progress.progress
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
+import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
-import com.michaldrabik.repository.ratings.RatingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger

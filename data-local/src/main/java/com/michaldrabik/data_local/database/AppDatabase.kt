@@ -13,6 +13,7 @@ import com.michaldrabik.data_local.database.dao.EpisodeTranslationsDao
 import com.michaldrabik.data_local.database.dao.EpisodesDao
 import com.michaldrabik.data_local.database.dao.EpisodesSyncLogDao
 import com.michaldrabik.data_local.database.dao.MovieImagesDao
+import com.michaldrabik.data_local.database.dao.MovieRatingsDao
 import com.michaldrabik.data_local.database.dao.MovieTranslationsDao
 import com.michaldrabik.data_local.database.dao.MoviesDao
 import com.michaldrabik.data_local.database.dao.MoviesSyncLogDao
@@ -25,6 +26,7 @@ import com.michaldrabik.data_local.database.dao.RelatedShowsDao
 import com.michaldrabik.data_local.database.dao.SeasonsDao
 import com.michaldrabik.data_local.database.dao.SettingsDao
 import com.michaldrabik.data_local.database.dao.ShowImagesDao
+import com.michaldrabik.data_local.database.dao.ShowRatingsDao
 import com.michaldrabik.data_local.database.dao.ShowTranslationsDao
 import com.michaldrabik.data_local.database.dao.ShowsDao
 import com.michaldrabik.data_local.database.dao.TraktSyncLogDao
@@ -47,6 +49,7 @@ import com.michaldrabik.data_local.database.model.EpisodeTranslation
 import com.michaldrabik.data_local.database.model.EpisodesSyncLog
 import com.michaldrabik.data_local.database.model.Movie
 import com.michaldrabik.data_local.database.model.MovieImage
+import com.michaldrabik.data_local.database.model.MovieRatings
 import com.michaldrabik.data_local.database.model.MovieTranslation
 import com.michaldrabik.data_local.database.model.MoviesSyncLog
 import com.michaldrabik.data_local.database.model.MyMovie
@@ -59,6 +62,7 @@ import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.data_local.database.model.Settings
 import com.michaldrabik.data_local.database.model.Show
 import com.michaldrabik.data_local.database.model.ShowImage
+import com.michaldrabik.data_local.database.model.ShowRatings
 import com.michaldrabik.data_local.database.model.ShowTranslation
 import com.michaldrabik.data_local.database.model.TraktSyncLog
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
@@ -102,7 +106,9 @@ import com.michaldrabik.data_local.database.model.WatchlistShow
     CustomImage::class,
     CustomList::class,
     CustomListItem::class,
-    News::class
+    News::class,
+    ShowRatings::class,
+    MovieRatings::class
   ],
   exportSchema = false
 )
@@ -163,6 +169,10 @@ abstract class AppDatabase : RoomDatabase() {
   abstract fun showTranslationsDao(): ShowTranslationsDao
 
   abstract fun movieTranslationsDao(): MovieTranslationsDao
+
+  abstract fun showRatingsDao(): ShowRatingsDao
+
+  abstract fun movieRatingsDao(): MovieRatingsDao
 
   abstract fun episodeTranslationsDao(): EpisodeTranslationsDao
 

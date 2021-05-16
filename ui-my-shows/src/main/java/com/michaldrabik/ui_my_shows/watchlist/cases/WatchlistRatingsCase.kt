@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_my_shows.watchlist.cases
 
+import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.UserTraktManager
-import com.michaldrabik.repository.ratings.RatingsRepository
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
 import javax.inject.Inject
 

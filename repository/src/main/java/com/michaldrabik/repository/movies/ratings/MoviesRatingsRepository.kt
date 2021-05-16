@@ -1,4 +1,4 @@
-package com.michaldrabik.repository.ratings
+package com.michaldrabik.repository.movies.ratings
 
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
@@ -12,6 +12,7 @@ import javax.inject.Inject
 
 @AppScope
 class MoviesRatingsRepository @Inject constructor(
+  val external: MoviesExternalRatingsRepository,
   private val cloud: Cloud,
   private val mappers: Mappers,
 ) {
@@ -62,10 +63,6 @@ class MoviesRatingsRepository @Inject constructor(
       if (index != -1) removeAt(index)
     }
   }
-
-  suspend fun loadRatings(movie: Movie) =
-    cloud.omdbApi.fetchOmdbData(movie.ids.imdb.id)
-      .let { mappers.ratings.fromNetwork(it) }
 
   fun clear() {
     moviesCache = null

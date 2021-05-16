@@ -300,7 +300,7 @@ class MovieDetailsViewModel @Inject constructor(
     )
     try {
       uiState = MovieDetailsUiModel(ratings = traktRatings)
-      val ratings = ratingsCase.loadRatings(movie)
+      val ratings = ratingsCase.loadExternalRatings(movie)
       uiState = MovieDetailsUiModel(ratings = ratings)
     } catch (error: Throwable) {
       Timber.e(error)

@@ -3,7 +3,7 @@ package com.michaldrabik.data_local.database.migrations
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 26
+const val DATABASE_VERSION = 27
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 // TODO Split into separate files?
@@ -417,6 +417,40 @@ object Migrations {
     }
   }
 
+  private val MIGRATION_27 = object : Migration(26, 27) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
+        execSQL(
+          "CREATE TABLE IF NOT EXISTS `movies_ratings` (" +
+            "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+            "`id_trakt` INTEGER NOT NULL, " +
+            "`trakt` TEXT, " +
+            "`imdb` TEXT, " +
+            "`metascore` TEXT, " +
+            "`rotten_tomatoes` TEXT, " +
+            "`created_at` INTEGER NOT NULL, " +
+            "`updated_at` INTEGER NOT NULL, " +
+            "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+        )
+        execSQL("CREATE UNIQUE INDEX index_movies_ratings_id_trakt ON movies_ratings(id_trakt)")
+
+        execSQL(
+          "CREATE TABLE IF NOT EXISTS `shows_ratings` (" +
+            "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+            "`id_trakt` INTEGER NOT NULL, " +
+            "`trakt` TEXT, " +
+            "`imdb` TEXT, " +
+            "`metascore` TEXT, " +
+            "`rotten_tomatoes` TEXT, " +
+            "`created_at` INTEGER NOT NULL, " +
+            "`updated_at` INTEGER NOT NULL, " +
+            "FOREIGN KEY(`id_trakt`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE)"
+        )
+        execSQL("CREATE UNIQUE INDEX index_shows_ratings_id_trakt ON shows_ratings(id_trakt)")
+      }
+    }
+  }
+
   val MIGRATIONS = listOf(
     MIGRATION_2,
     MIGRATION_3,
@@ -442,6 +476,7 @@ object Migrations {
     MIGRATION_23,
     MIGRATION_24,
     MIGRATION_25,
-    MIGRATION_26
+    MIGRATION_26,
+    MIGRATION_27
   )
 }

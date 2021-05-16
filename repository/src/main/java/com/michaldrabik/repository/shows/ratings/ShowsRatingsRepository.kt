@@ -1,4 +1,4 @@
-package com.michaldrabik.repository.ratings
+package com.michaldrabik.repository.shows.ratings
 
 import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc

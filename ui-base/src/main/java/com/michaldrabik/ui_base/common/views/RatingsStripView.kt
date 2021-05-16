@@ -3,9 +3,11 @@ package com.michaldrabik.ui_base.common.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.michaldrabik.ui_base.R
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -45,37 +47,24 @@ class RatingsStripView : LinearLayout {
 
   fun bind(ratings: Ratings) {
 
-    fun bindTrakt(ratings: Ratings) {
-      viewRatingsStripTraktValue.text = ratings.trakt?.value ?: EMPTY_SYMBOL
-      viewRatingsStripTraktValue.visibleIf(ratings.trakt?.isLoading == false, gone = false)
-      viewRatingsStripTraktProgress.visibleIf(ratings.trakt?.isLoading == true)
-      viewRatingsStripTraktValue.setTextColor(if (ratings.trakt?.value != null) colorPrimary else colorSecondary)
+    fun bindValue(
+      ratings: Ratings.Value?,
+      valueView: TextView,
+      progressView: View,
+    ) {
+      val rating = ratings?.value
+      val isLoading = ratings?.isLoading == true
+      with(valueView) {
+        visibleIf(!isLoading, gone = false)
+        text = if (rating.isNullOrBlank()) EMPTY_SYMBOL else rating
+        setTextColor(if (rating != null) colorPrimary else colorSecondary)
+      }
+      progressView.visibleIf(isLoading)
     }
 
-    fun bindImdb(ratings: Ratings) {
-      viewRatingsStripImdbValue.text = ratings.imdb?.value ?: EMPTY_SYMBOL
-      viewRatingsStripImdbValue.visibleIf(ratings.imdb?.isLoading == false, gone = false)
-      viewRatingsStripImdbProgress.visibleIf(ratings.imdb?.isLoading == true)
-      viewRatingsStripImdbValue.setTextColor(if (ratings.imdb?.value != null) colorPrimary else colorSecondary)
-    }
-
-    fun bindMeta(ratings: Ratings) {
-      viewRatingsStripMetaValue.text = ratings.metascore?.value ?: EMPTY_SYMBOL
-      viewRatingsStripMetaValue.visibleIf(ratings.metascore?.isLoading == false, gone = false)
-      viewRatingsStripMetaProgress.visibleIf(ratings.metascore?.isLoading == true)
-      viewRatingsStripMetaValue.setTextColor(if (ratings.metascore?.value != null) colorPrimary else colorSecondary)
-    }
-
-    fun bindRotten(ratings: Ratings) {
-      viewRatingsStripRottenValue.text = ratings.rottenTomatoes?.value ?: EMPTY_SYMBOL
-      viewRatingsStripRottenValue.visibleIf(ratings.rottenTomatoes?.isLoading == false, gone = false)
-      viewRatingsStripRottenProgress.visibleIf(ratings.rottenTomatoes?.isLoading == true)
-      viewRatingsStripRottenValue.setTextColor(if (ratings.rottenTomatoes?.value != null) colorPrimary else colorSecondary)
-    }
-
-    bindTrakt(ratings)
-    bindImdb(ratings)
-    bindMeta(ratings)
-    bindRotten(ratings)
+    bindValue(ratings.trakt, viewRatingsStripTraktValue, viewRatingsStripTraktProgress)
+    bindValue(ratings.imdb, viewRatingsStripImdbValue, viewRatingsStripImdbProgress)
+    bindValue(ratings.metascore, viewRatingsStripMetaValue, viewRatingsStripMetaProgress)
+    bindValue(ratings.rottenTomatoes, viewRatingsStripRottenValue, viewRatingsStripRottenProgress)
   }
 }
