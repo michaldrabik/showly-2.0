@@ -13,6 +13,7 @@ import com.michaldrabik.repository.mappers.ImageMapper
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.mappers.MovieMapper
 import com.michaldrabik.repository.mappers.NewsMapper
+import com.michaldrabik.repository.mappers.RatingsMapper
 import com.michaldrabik.repository.mappers.SeasonMapper
 import com.michaldrabik.repository.mappers.SettingsMapper
 import com.michaldrabik.repository.mappers.ShowMapper
@@ -46,7 +47,8 @@ abstract class BaseMockTest {
     NewsMapper(),
     SettingsMapper(),
     TranslationMapper(idsMapper),
-    CustomListMapper()
+    CustomListMapper(),
+    RatingsMapper()
   )
 
   @Before
