@@ -55,5 +55,6 @@ object Config {
   const val WHATS_NEW_TEXT =
     "* Added IMDb, Metascore and RT ratings information for shows and movies.\n\n" +
       "* Bugfixes and optimizations.\n\n" +
-      "Do you enjoy Showly app and want to support its development? Become Premium subscriber and gain access to cool bonus features! Check app settings to learn more!"
+      "Do you enjoy Showly app and want to support its development?\n" +
+      "Become Premium subscriber and gain access to cool bonus features! Check app settings to learn more!"
 }
