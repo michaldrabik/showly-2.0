@@ -38,8 +38,8 @@
       <ProgressBar
         android:id="@+id/viewRatingsStripTraktProgress"
         style="@style/ProgressBar.Dark"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_gravity="center"
         />
 
@@ -98,8 +98,8 @@
       <ProgressBar
         android:id="@+id/viewRatingsStripImdbProgress"
         style="@style/ProgressBar.Dark"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_gravity="center"
         />
 
@@ -157,8 +157,8 @@
       <ProgressBar
         android:id="@+id/viewRatingsStripMetaProgress"
         style="@style/ProgressBar.Dark"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_gravity="center"
         />
 
@@ -214,8 +214,8 @@
       <ProgressBar
         android:id="@+id/viewRatingsStripRottenProgress"
         style="@style/ProgressBar.Dark"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:layout_gravity="center"
         />
 

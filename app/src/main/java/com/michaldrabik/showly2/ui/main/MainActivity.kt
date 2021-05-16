@@ -304,13 +304,16 @@ class MainActivity :
         viewModel.setLanguage(language)
         fadeOut()
         welcomeViewMask.fadeOut()
-        postDelayed({
-          try {
-            ProcessPhoenix.triggerRebirth(applicationContext)
-          } catch (error: Throwable) {
-            Runtime.getRuntime().exit(0)
-          }
-        }, 300)
+        postDelayed(
+          {
+            try {
+              ProcessPhoenix.triggerRebirth(applicationContext)
+            } catch (error: Throwable) {
+              Runtime.getRuntime().exit(0)
+            }
+          },
+          300
+        )
       }
       onNoClick = {
         fadeOut()
