@@ -17,10 +17,6 @@ import kotlinx.android.synthetic.main.view_ratings_strip.view.*
 
 class RatingsStripView : LinearLayout {
 
-  companion object {
-    private const val EMPTY_SYMBOL = "---"
-  }
-
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
@@ -51,20 +47,22 @@ class RatingsStripView : LinearLayout {
       ratings: Ratings.Value?,
       valueView: TextView,
       progressView: View,
+      linkView: View,
     ) {
       val rating = ratings?.value
       val isLoading = ratings?.isLoading == true
       with(valueView) {
-        visibleIf(!isLoading, gone = false)
-        text = if (rating.isNullOrBlank()) EMPTY_SYMBOL else rating
+        visibleIf(!isLoading && !rating.isNullOrBlank(), gone = false)
+        text = rating
         setTextColor(if (rating != null) colorPrimary else colorSecondary)
       }
       progressView.visibleIf(isLoading)
+      linkView.visibleIf(!isLoading && rating.isNullOrBlank())
     }
 
-    bindValue(ratings.trakt, viewRatingsStripTraktValue, viewRatingsStripTraktProgress)
-    bindValue(ratings.imdb, viewRatingsStripImdbValue, viewRatingsStripImdbProgress)
-    bindValue(ratings.metascore, viewRatingsStripMetaValue, viewRatingsStripMetaProgress)
-    bindValue(ratings.rottenTomatoes, viewRatingsStripRottenValue, viewRatingsStripRottenProgress)
+    bindValue(ratings.trakt, viewRatingsStripTraktValue, viewRatingsStripTraktProgress, viewRatingsStripTraktLinkIcon)
+    bindValue(ratings.imdb, viewRatingsStripImdbValue, viewRatingsStripImdbProgress, viewRatingsStripImdbLinkIcon)
+    bindValue(ratings.metascore, viewRatingsStripMetaValue, viewRatingsStripMetaProgress, viewRatingsStripMetaLinkIcon)
+    bindValue(ratings.rottenTomatoes, viewRatingsStripRottenValue, viewRatingsStripRottenProgress, viewRatingsStripRottenLinkIcon)
   }
 }

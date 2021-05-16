@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
@@ -43,6 +44,17 @@
         android:layout_gravity="center"
         />
 
+
+      <ImageView
+        android:id="@+id/viewRatingsStripTraktLinkIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_link"
+        app:tint="?android:attr/textColorSecondary"
+        />
+
     </FrameLayout>
 
     <TextView
@@ -82,7 +94,6 @@
         android:fontFamily="sans-serif-medium"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="20sp"
-        tools:text="---"
         />
 
       <ProgressBar
@@ -91,6 +102,16 @@
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_gravity="center"
+        />
+
+      <ImageView
+        android:id="@+id/viewRatingsStripImdbLinkIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_link"
+        app:tint="?android:attr/textColorSecondary"
         />
 
     </FrameLayout>
@@ -143,6 +164,16 @@
         android:layout_gravity="center"
         />
 
+      <ImageView
+        android:id="@+id/viewRatingsStripMetaLinkIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_link"
+        app:tint="?android:attr/textColorSecondary"
+        />
+
     </FrameLayout>
 
     <TextView
@@ -189,6 +220,16 @@
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_gravity="center"
+        />
+
+      <ImageView
+        android:id="@+id/viewRatingsStripRottenLinkIcon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_link"
+        app:tint="?android:attr/textColorSecondary"
         />
 
     </FrameLayout>

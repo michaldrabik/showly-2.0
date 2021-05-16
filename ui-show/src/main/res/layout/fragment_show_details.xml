@@ -254,7 +254,7 @@
         android:id="@+id/showDetailsRatings"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginStart="@dimen/spaceTiny"
         android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceNormal"
