@@ -13,8 +13,9 @@ import javax.inject.Inject
 
 @AppScope
 class ShowsRatingsRepository @Inject constructor(
+  val external: ShowsExternalRatingsRepository,
   private val cloud: Cloud,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   private var showsCache: MutableList<TraktRating>? = null

@@ -77,6 +77,7 @@ import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
@@ -105,6 +106,8 @@ import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.ShowLink
 import com.michaldrabik.ui_show.helpers.ShowLink.IMDB
 import com.michaldrabik.ui_show.helpers.ShowLink.JUST_WATCH
+import com.michaldrabik.ui_show.helpers.ShowLink.METACRITIC
+import com.michaldrabik.ui_show.helpers.ShowLink.ROTTEN
 import com.michaldrabik.ui_show.helpers.ShowLink.TMDB
 import com.michaldrabik.ui_show.helpers.ShowLink.TRAKT
 import com.michaldrabik.ui_show.helpers.ShowLink.TVDB
@@ -481,7 +484,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           getString(R.string.textMinutesShort),
           renderGenres(show.genres)
         )
-        showDetailsRating.text = String.format(ENGLISH, getString(R.string.textVotes), show.rating, show.votes)
+//        showDetailsRating.text = String.format(ENGLISH, getString(R.string.textVotes), show.rating, show.votes)
         showDetailsCommentsButton.visible()
         showDetailsShareButton.run {
           isEnabled = show.ids.imdb.id.isNotBlank()
@@ -502,7 +505,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
             Analytics.logShowLinksClick(show)
           }
         }
-        showDetailsSeparator4.visible()
+        separator4.visible()
         showDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
         showDetailsCustomImagesLabel.onClick { showCustomImagesSheet(show.traktId, isPremium) }
         showDetailsAddButton.isEnabled = true
@@ -530,6 +533,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       nextEpisode?.let { renderNextEpisode(it) }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
+      ratings?.let { renderRatings(it, show) }
       seasons?.let {
         renderSeasons(it)
         renderRuntimeLeft(it)
@@ -596,6 +600,16 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       } else {
         showSnack(MessageEvent.info(R.string.textSignBeforeRate))
       }
+    }
+  }
+
+  private fun renderRatings(ratings: Ratings, show: Show?) {
+    showDetailsRatings.bind(ratings)
+    show?.let {
+      showDetailsRatings.onTraktClick = { openShowLink(TRAKT, it.traktId.toString()) }
+      showDetailsRatings.onImdbClick = { openShowLink(IMDB, it.ids.imdb.id) }
+      showDetailsRatings.onMetaClick = { openShowLink(METACRITIC, it.title) }
+      showDetailsRatings.onRottenClick = { openShowLink(ROTTEN, "${it.title} ${it.year}") }
     }
   }
 

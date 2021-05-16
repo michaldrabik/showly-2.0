@@ -376,7 +376,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           getString(R.string.textMinutesShort),
           renderGenres(movie.genres)
         )
-        movieDetailsRating.text = String.format(ENGLISH, getString(R.string.textMovieVotes), movie.rating, movie.votes)
+//        movieDetailsRating.text = String.format(ENGLISH, getString(R.string.textMovieVotes), movie.rating, movie.votes)
         movieDetailsCommentsButton.visible()
         movieDetailsShareButton.run {
           isEnabled = movie.ids.imdb.id.isNotBlank()

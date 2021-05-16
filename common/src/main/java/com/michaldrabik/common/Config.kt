@@ -50,7 +50,6 @@ object Config {
   val MOVIE_DETAILS_CACHE_DURATION by lazy { DAYS.toMillis(3) }
   val ACTORS_CACHE_DURATION by lazy { DAYS.toMillis(3) }
   val NEW_BADGE_DURATION by lazy { HOURS.toMillis(30) }
-  val RATINGS_CACHE_DURATION by lazy { DAYS.toMillis(1) }
 
   const val SHOW_WHATS_NEW = true
   const val WHATS_NEW_TEXT =

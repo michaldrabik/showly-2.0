@@ -1,4 +1,4 @@
-package com.michaldrabik.repository.movies.ratings
+package com.michaldrabik.repository.shows.ratings
 
 import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.common.di.AppScope
@@ -6,31 +6,31 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.mappers.Mappers
-import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Ratings
+import com.michaldrabik.ui_model.Show
 import javax.inject.Inject
 
 @AppScope
-class MoviesExternalRatingsRepository @Inject constructor(
+class ShowsExternalRatingsRepository @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
   private val mappers: Mappers,
 ) {
 
-  suspend fun loadRatings(movie: Movie): Ratings {
-    val localRatings = database.movieRatingsDao().getById(movie.traktId)
+  suspend fun loadRatings(show: Show): Ratings {
+    val localRatings = database.showRatingsDao().getById(show.traktId)
     localRatings?.let {
       if (nowUtcMillis() - it.updatedAt < ConfigVariant.RATINGS_CACHE_DURATION) {
         return mappers.ratings.fromDatabase(it)
       }
     }
 
-    val remoteRatings = cloud.omdbApi.fetchOmdbData(movie.ids.imdb.id)
+    val remoteRatings = cloud.omdbApi.fetchOmdbData(show.ids.imdb.id)
       .let { mappers.ratings.fromNetwork(it) }
-      .copy(trakt = Ratings.Value(String.format("%.1f", movie.rating), false))
+      .copy(trakt = Ratings.Value(String.format("%.1f", show.rating), false))
 
-    val dbRatings = mappers.ratings.toMovieDatabase(movie.ids.trakt, remoteRatings)
-    database.movieRatingsDao().upsert(dbRatings)
+    val dbRatings = mappers.ratings.toShowDatabase(show.ids.trakt, remoteRatings)
+    database.showRatingsDao().upsert(dbRatings)
 
     return remoteRatings
   }

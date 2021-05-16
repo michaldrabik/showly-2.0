@@ -8,4 +8,6 @@ object ConfigVariant {
   val SHOW_SYNC_COOLDOWN by lazy { MINUTES.toMillis(5) }
   val MOVIE_SYNC_COOLDOWN by lazy { MINUTES.toMillis(5) }
   val TRANSLATION_SYNC_COOLDOWN by lazy { MINUTES.toMillis(60) }
+
+  val RATINGS_CACHE_DURATION by lazy { MINUTES.toMillis(3) }
 }

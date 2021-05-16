@@ -7,6 +7,7 @@ import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
@@ -26,6 +27,7 @@ data class ShowDetailsUiModel(
   val listsCount: Int? = null,
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
+  val ratings: Ratings? = null,
   val removeFromTraktHistory: ActionEvent<Boolean>? = null,
   val removeFromTraktWatchlist: ActionEvent<Boolean>? = null,
   val showFromTraktLoading: Boolean? = null,
@@ -58,6 +60,7 @@ data class ShowDetailsUiModel(
       isPremium = newModel.isPremium ?: isPremium,
       isSignedIn = newModel.isSignedIn ?: isSignedIn,
       commentsDateFormat = newModel.commentsDateFormat ?: commentsDateFormat,
+      ratings = newModel.ratings ?: ratings,
       ratingState = newModel.ratingState?.copy(
         rateLoading = newModel.ratingState.rateLoading ?: ratingState?.rateLoading,
         rateAllowed = newModel.ratingState.rateAllowed ?: ratingState?.rateAllowed,

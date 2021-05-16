@@ -151,29 +151,29 @@
         tools:text="Returning Series"
         />
 
-      <ImageView
-        android:id="@+id/showDetailsStarIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/spaceTiny"
-        app:layout_constraintBottom_toBottomOf="@+id/showDetailsStatus"
-        app:layout_constraintStart_toEndOf="@+id/showDetailsStatus"
-        app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"
-        app:srcCompat="@drawable/ic_star"
-        app:tint="?attr/colorAccent"
-        />
+      <!--      <ImageView-->
+      <!--        android:id="@+id/showDetailsStarIcon"-->
+      <!--        android:layout_width="wrap_content"-->
+      <!--        android:layout_height="0dp"-->
+      <!--        android:layout_marginStart="@dimen/spaceTiny"-->
+      <!--        app:layout_constraintBottom_toBottomOf="@+id/showDetailsStatus"-->
+      <!--        app:layout_constraintStart_toEndOf="@+id/showDetailsStatus"-->
+      <!--        app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"-->
+      <!--        app:srcCompat="@drawable/ic_star"-->
+      <!--        app:tint="?attr/colorAccent"-->
+      <!--        />-->
 
-      <TextView
-        android:id="@+id/showDetailsRating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/showDetailsStatus"
-        app:layout_constraintStart_toEndOf="@+id/showDetailsStarIcon"
-        app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"
-        tools:text="7.62 (9239 votes)"
-        />
+      <!--      <TextView-->
+      <!--        android:id="@+id/showDetailsRating"-->
+      <!--        android:layout_width="wrap_content"-->
+      <!--        android:layout_height="wrap_content"-->
+      <!--        android:textColor="?android:attr/textColorSecondary"-->
+      <!--        android:textSize="13sp"-->
+      <!--        app:layout_constraintBottom_toBottomOf="@+id/showDetailsStatus"-->
+      <!--        app:layout_constraintStart_toEndOf="@+id/showDetailsStarIcon"-->
+      <!--        app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"-->
+      <!--        tools:text="7.62 (9239 votes)"-->
+      <!--        />-->
 
       <FrameLayout
         android:id="@+id/showDetailsButtonsLayout"
@@ -236,26 +236,6 @@
         app:layout_constraintTop_toBottomOf="@id/showDetailsButtonsLayout"
         />
 
-      <include
-        android:id="@+id/showDetailsEpisodeCard"
-        layout="@layout/fragment_show_details_next_episode"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/episodeNextViewHeight"
-        android:layout_marginLeft="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceTiny"
-        android:layout_marginRight="@dimen/spaceNormal"
-        android:layout_marginBottom="@dimen/spaceMedium"
-        android:visibility="gone"
-        app:layout_constrainedHeight="false"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsDescription"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/separator5"
-        app:layout_goneMarginBottom="0dp"
-        tools:layout_height="@dimen/episodeNextViewHeight"
-        tools:visibility="visible"
-        />
-
       <View
         android:id="@+id/separator5"
         android:layout_width="0dp"
@@ -263,13 +243,25 @@
         android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="@dimen/spaceNormal"
-        android:layout_marginBottom="@dimen/spaceMedium"
         android:background="?attr/colorSeparator"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeCard"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsRatings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsManageListsLabel"
-        app:layout_goneMarginTop="@dimen/spaceSmall"
+        />
+
+      <com.michaldrabik.ui_base.common.views.RatingsStripView
+        android:id="@+id/showDetailsRatings"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spaceMedium"
+        android:layout_marginTop="@dimen/spaceNormal"
+        android:layout_marginEnd="@dimen/spaceNormal"
+        android:layout_marginBottom="@dimen/spaceNormal"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/separator5"
         />
 
       <com.michaldrabik.ui_base.common.views.FoldableTextView
@@ -278,7 +270,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
-        android:layout_marginBottom="@dimen/spaceMicro"
+        android:layout_marginBottom="@dimen/spaceTiny"
         android:ellipsize="end"
         android:gravity="start"
         android:justificationMode="inter_word"
@@ -288,8 +280,7 @@
         app:layout_constraintBottom_toTopOf="@id/showDetailsActorsRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsEpisodeCard"
-        app:layout_goneMarginBottom="@dimen/spaceBig"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsRatings"
         tools:targetApi="o"
         tools:text="Description"
         />
@@ -303,12 +294,11 @@
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceMedium"
         android:background="?attr/colorSeparator"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsLabel"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsEpisodeCard"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsActorsRecycler"
-        app:layout_goneMarginBottom="@dimen/spaceBig"
         app:layout_goneMarginTop="@dimen/spaceBig"
         />
 
@@ -356,6 +346,25 @@
         app:layout_constraintTop_toBottomOf="@id/showDetailsDescription"
         />
 
+      <include
+        android:id="@+id/showDetailsEpisodeCard"
+        layout="@layout/fragment_show_details_next_episode"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/episodeNextViewHeight"
+        android:layout_marginLeft="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceTiny"
+        android:layout_marginRight="@dimen/spaceNormal"
+        android:layout_marginBottom="@dimen/spaceMedium"
+        android:visibility="gone"
+        app:layout_constrainedHeight="false"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/separator2"
+        tools:layout_height="@dimen/episodeNextViewHeight"
+        tools:visibility="gone"
+        />
+
       <TextView
         android:id="@+id/showDetailsSeasonsLabel"
         android:layout_width="wrap_content"
@@ -368,7 +377,8 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/showDetailsSeasonsRecycler"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator2"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsEpisodeCard"
+        app:layout_goneMarginTop="@dimen/spaceMicro"
         tools:visibility="visible"
         />
 
@@ -519,7 +529,7 @@
         style="@style/ShowDetails.ExtraButton"
         android:text="@string/textComments2"
         app:drawableTopCompat="@drawable/ic_comment"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsSeparator4"
+        app:layout_constraintBottom_toTopOf="@id/separator4"
         app:layout_constraintEnd_toStartOf="@+id/showDetailsLinksButton"
         app:layout_constraintStart_toEndOf="@+id/showDetailsRateButton"
         app:layout_constraintTop_toBottomOf="@id/separator3"
@@ -549,7 +559,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/showDetailsRelatedRecycler"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsSeparator4"
+        app:layout_constraintTop_toBottomOf="@id/separator4"
         />
 
       <com.michaldrabik.ui_show.views.ShowLinksView
@@ -593,7 +603,7 @@
         />
 
       <View
-        android:id="@+id/showDetailsSeparator4"
+        android:id="@+id/separator4"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="@dimen/spaceNormal"

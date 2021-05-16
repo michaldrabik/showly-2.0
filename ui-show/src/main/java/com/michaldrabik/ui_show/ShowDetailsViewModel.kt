@@ -27,6 +27,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.RatingState
+import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.SeasonBundle
 import com.michaldrabik.ui_model.Show
@@ -116,6 +117,7 @@ class ShowDetailsViewModel @Inject constructor(
 
         loadBackgroundImage(show)
         launch { loadNextEpisode(show) }
+        launch { loadRatings(show) }
         launch { loadActors(show) }
         launch {
           areSeasonsLoaded = false
@@ -220,6 +222,23 @@ class ShowDetailsViewModel @Inject constructor(
       }
     } catch (error: Throwable) {
       Logger.record(error, "Source" to "ShowDetailsViewModel::loadTranslation()")
+    }
+  }
+
+  private suspend fun loadRatings(show: Show) {
+    val traktRatings = Ratings(
+      trakt = Ratings.Value(String.format("%.1f", show.rating), false),
+      imdb = Ratings.Value(null, true),
+      metascore = Ratings.Value(null, true),
+      rottenTomatoes = Ratings.Value(null, true)
+    )
+    try {
+      uiState = ShowDetailsUiModel(ratings = traktRatings)
+      val ratings = ratingsCase.loadExternalRatings(show)
+      uiState = ShowDetailsUiModel(ratings = ratings)
+    } catch (error: Throwable) {
+      Timber.e(error)
+      uiState = ShowDetailsUiModel(ratings = traktRatings)
     }
   }
 

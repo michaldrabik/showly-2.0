@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class ShowDetailsRatingCase @Inject constructor(
   private val userTraktManager: UserTraktManager,
-  private val ratingsRepository: RatingsRepository
+  private val ratingsRepository: RatingsRepository,
 ) {
 
   suspend fun addRating(show: Show, rating: Int) {
@@ -27,5 +27,9 @@ class ShowDetailsRatingCase @Inject constructor(
     return ratingsRepository.shows.loadRating(token, show)
   }
 
-  fun loadRating(episode: Episode) = ratingsRepository.shows.loadRating(episode)
+  fun loadRating(episode: Episode) =
+    ratingsRepository.shows.loadRating(episode)
+
+  suspend fun loadExternalRatings(show: Show) =
+    ratingsRepository.shows.external.loadRatings(show)
 }

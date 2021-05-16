@@ -138,29 +138,29 @@
         tools:text="Post Production"
         />
 
-      <ImageView
-        android:id="@+id/movieDetailsStarIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/spaceTiny"
-        app:layout_constraintBottom_toBottomOf="@+id/movieDetailsStatus"
-        app:layout_constraintStart_toEndOf="@+id/movieDetailsStatus"
-        app:layout_constraintTop_toBottomOf="@+id/movieDetailsExtraInfo"
-        app:srcCompat="@drawable/ic_star"
-        app:tint="?attr/colorAccent"
-        />
+      <!--      <ImageView-->
+      <!--        android:id="@+id/movieDetailsStarIcon"-->
+      <!--        android:layout_width="wrap_content"-->
+      <!--        android:layout_height="0dp"-->
+      <!--        android:layout_marginStart="@dimen/spaceTiny"-->
+      <!--        app:layout_constraintBottom_toBottomOf="@+id/movieDetailsStatus"-->
+      <!--        app:layout_constraintStart_toEndOf="@+id/movieDetailsStatus"-->
+      <!--        app:layout_constraintTop_toBottomOf="@+id/movieDetailsExtraInfo"-->
+      <!--        app:srcCompat="@drawable/ic_star"-->
+      <!--        app:tint="?attr/colorAccent"-->
+      <!--        />-->
 
-      <TextView
-        android:id="@+id/movieDetailsRating"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@+id/movieDetailsStatus"
-        app:layout_constraintStart_toEndOf="@+id/movieDetailsStarIcon"
-        app:layout_constraintTop_toBottomOf="@+id/movieDetailsExtraInfo"
-        tools:text="7.62 (9239 votes)"
-        />
+      <!--      <TextView-->
+      <!--        android:id="@+id/movieDetailsRating"-->
+      <!--        android:layout_width="wrap_content"-->
+      <!--        android:layout_height="wrap_content"-->
+      <!--        android:textColor="?android:attr/textColorSecondary"-->
+      <!--        android:textSize="13sp"-->
+      <!--        app:layout_constraintBottom_toBottomOf="@+id/movieDetailsStatus"-->
+      <!--        app:layout_constraintStart_toEndOf="@+id/movieDetailsStarIcon"-->
+      <!--        app:layout_constraintTop_toBottomOf="@+id/movieDetailsExtraInfo"-->
+      <!--        tools:text="7.62 (9239 votes)"-->
+      <!--        />-->
 
       <FrameLayout
         android:id="@+id/movieDetailsButtonsLayout"
@@ -225,8 +225,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsManageListsLabel"
-        app:layout_goneMarginBottom="@dimen/spaceBig"
-        app:layout_goneMarginTop="@dimen/spaceBig"
         />
 
       <com.michaldrabik.ui_base.common.views.FoldableTextView
@@ -256,9 +254,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceMedium"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="@dimen/spaceNormal"
         app:layout_constraintBottom_toTopOf="@id/movieDetailsDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
