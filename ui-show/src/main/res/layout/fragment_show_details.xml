@@ -634,7 +634,7 @@
         android:text="@string/textSetCustomImages"
         android:textAllCaps="true"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="12sp"
+        android:textSize="13sp"
         android:visibility="gone"
         app:drawableStartCompat="@drawable/ic_custom_image"
         app:drawableTint="?android:attr/textColorPrimary"
