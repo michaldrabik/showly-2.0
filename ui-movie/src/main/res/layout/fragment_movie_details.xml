@@ -244,7 +244,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/movieDetailsRatings"
-        app:layout_goneMarginBottom="@dimen/spaceBig"
+        app:layout_goneMarginBottom="@dimen/spaceHuge"
         tools:targetApi="o"
         tools:text="Description"
         />
