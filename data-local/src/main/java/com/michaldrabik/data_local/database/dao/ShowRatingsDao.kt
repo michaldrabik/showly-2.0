@@ -12,13 +12,17 @@ interface ShowRatingsDao : BaseDao<ShowRatings> {
   suspend fun upsert(entity: ShowRatings) {
     val local = getById(entity.idTrakt)
     if (local != null) {
-      update(listOf(local.copy(
-        trakt = entity.trakt,
-        imdb = entity.imdb,
-        metascore = entity.metascore,
-        rottenTomatoes = entity.rottenTomatoes,
-        updatedAt = entity.updatedAt
-      )))
+      update(
+        listOf(
+          local.copy(
+            trakt = entity.trakt,
+            imdb = entity.imdb,
+            metascore = entity.metascore,
+            rottenTomatoes = entity.rottenTomatoes,
+            updatedAt = entity.updatedAt
+          )
+        )
+      )
       return
     }
     insert(listOf(entity))
