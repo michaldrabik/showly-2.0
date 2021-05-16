@@ -6,6 +6,7 @@
   android:id="@+id/showDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
+  tools:layout_marginTop="-500dp"
   tools:theme="@style/AppTheme"
   >
 
@@ -79,6 +80,17 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Game Of Thrones "
+        />
+
+      <ImageView
+        android:id="@+id/showDetailsShareButton"
+        android:layout_width="@dimen/backArrowSize"
+        android:layout_height="@dimen/backArrowSize"
+        android:background="?android:attr/selectableItemBackground"
+        android:padding="@dimen/backArrowPadding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_share"
         />
 
       <View
@@ -482,11 +494,11 @@
       <TextView
         android:id="@+id/showDetailsTrailerButton"
         style="@style/ShowDetails.ExtraButton"
-        android:layout_marginStart="@dimen/spaceNormal"
         android:text="@string/textTrailer"
         app:drawableTopCompat="@drawable/ic_play"
         app:layout_constraintBottom_toBottomOf="@id/showDetailsCommentsButton"
         app:layout_constraintEnd_toStartOf="@+id/showDetailsRateButton"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/showDetailsCommentsButton"
         />
@@ -497,7 +509,7 @@
         android:text="@string/textLink"
         app:drawableTopCompat="@drawable/ic_link"
         app:layout_constraintBottom_toBottomOf="@id/showDetailsCommentsButton"
-        app:layout_constraintEnd_toStartOf="@id/showDetailsShareButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/showDetailsCommentsButton"
         app:layout_constraintTop_toTopOf="@id/showDetailsCommentsButton"
         />
@@ -534,18 +546,6 @@
         app:layout_constraintEnd_toStartOf="@+id/showDetailsLinksButton"
         app:layout_constraintStart_toEndOf="@+id/showDetailsRateButton"
         app:layout_constraintTop_toBottomOf="@id/separator3"
-        />
-
-      <TextView
-        android:id="@+id/showDetailsShareButton"
-        style="@style/ShowDetails.ExtraButton"
-        android:layout_marginEnd="@dimen/spaceNormal"
-        android:text="@string/textShare"
-        app:drawableTopCompat="@drawable/ic_share"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsCommentsButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/showDetailsLinksButton"
-        app:layout_constraintTop_toTopOf="@id/showDetailsCommentsButton"
         />
 
       <TextView

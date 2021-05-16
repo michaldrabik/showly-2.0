@@ -80,6 +80,17 @@
         tools:text="Lord Of The Rings"
         />
 
+      <ImageView
+        android:id="@+id/movieDetailsShareButton"
+        android:layout_width="@dimen/backArrowSize"
+        android:layout_height="@dimen/backArrowSize"
+        android:background="?android:attr/selectableItemBackground"
+        android:padding="@dimen/backArrowPadding"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_share"
+        />
+
       <View
         android:id="@+id/separator1"
         android:layout_width="0dp"
@@ -328,11 +339,11 @@
       <TextView
         android:id="@+id/movieDetailsTrailerButton"
         style="@style/MovieDetails.ExtraButton"
-        android:layout_marginStart="@dimen/spaceNormal"
         android:text="@string/textMovieTrailer"
         app:drawableTopCompat="@drawable/ic_play"
         app:layout_constraintBottom_toBottomOf="@id/movieDetailsCommentsButton"
         app:layout_constraintEnd_toStartOf="@+id/movieDetailsRateButton"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/movieDetailsCommentsButton"
         />
@@ -343,7 +354,7 @@
         android:text="@string/textMovieLink"
         app:drawableTopCompat="@drawable/ic_link"
         app:layout_constraintBottom_toBottomOf="@id/movieDetailsCommentsButton"
-        app:layout_constraintEnd_toStartOf="@id/movieDetailsShareButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/movieDetailsCommentsButton"
         app:layout_constraintTop_toTopOf="@id/movieDetailsCommentsButton"
         />
@@ -380,18 +391,6 @@
         app:layout_constraintEnd_toStartOf="@+id/movieDetailsLinksButton"
         app:layout_constraintStart_toEndOf="@+id/movieDetailsRateButton"
         app:layout_constraintTop_toBottomOf="@id/separator2"
-        />
-
-      <TextView
-        android:id="@+id/movieDetailsShareButton"
-        style="@style/MovieDetails.ExtraButton"
-        android:layout_marginEnd="@dimen/spaceNormal"
-        android:text="@string/textMovieShare"
-        app:drawableTopCompat="@drawable/ic_share"
-        app:layout_constraintBottom_toBottomOf="@id/movieDetailsCommentsButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/movieDetailsLinksButton"
-        app:layout_constraintTop_toTopOf="@id/movieDetailsCommentsButton"
         />
 
       <TextView
