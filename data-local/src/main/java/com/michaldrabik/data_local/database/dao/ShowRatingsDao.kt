@@ -19,6 +19,7 @@ interface ShowRatingsDao : BaseDao<ShowRatings> {
             imdb = entity.imdb,
             metascore = entity.metascore,
             rottenTomatoes = entity.rottenTomatoes,
+            rottenTomatoesUrl = entity.rottenTomatoesUrl,
             updatedAt = entity.updatedAt
           )
         )

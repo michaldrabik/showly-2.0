@@ -428,6 +428,7 @@ object Migrations {
             "`imdb` TEXT, " +
             "`metascore` TEXT, " +
             "`rotten_tomatoes` TEXT, " +
+            "`rotten_tomatoes_url` TEXT, " +
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL, " +
             "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
@@ -442,6 +443,7 @@ object Migrations {
             "`imdb` TEXT, " +
             "`metascore` TEXT, " +
             "`rotten_tomatoes` TEXT, " +
+            "`rotten_tomatoes_url` TEXT, " +
             "`created_at` INTEGER NOT NULL, " +
             "`updated_at` INTEGER NOT NULL, " +
             "FOREIGN KEY(`id_trakt`) REFERENCES `shows`(`id_trakt`) ON DELETE CASCADE)"

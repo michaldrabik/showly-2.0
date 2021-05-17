@@ -15,6 +15,7 @@ class RatingsMapper @Inject constructor() {
       imdb = if (omdbResult.imdbRating == "N/A") null else Ratings.Value(omdbResult.imdbRating, false),
       metascore = if (omdbResult.Metascore == "N/A") null else Ratings.Value(omdbResult.Metascore, false),
       rottenTomatoes = Ratings.Value(omdbResult.Ratings?.find { it.Source == "Rotten Tomatoes" }?.Value, false),
+      rottenTomatoesUrl = if (omdbResult.tomatoURL == "N/A") null else omdbResult.tomatoURL
     )
 
   fun fromDatabase(entity: MovieRatings) =
@@ -22,6 +23,7 @@ class RatingsMapper @Inject constructor() {
       trakt = Ratings.Value(entity.trakt, false),
       imdb = Ratings.Value(entity.imdb, false),
       rottenTomatoes = Ratings.Value(entity.rottenTomatoes, false),
+      rottenTomatoesUrl = entity.rottenTomatoesUrl,
       metascore = Ratings.Value(entity.metascore, false)
     )
 
@@ -30,6 +32,7 @@ class RatingsMapper @Inject constructor() {
       trakt = Ratings.Value(entity.trakt, false),
       imdb = Ratings.Value(entity.imdb, false),
       rottenTomatoes = Ratings.Value(entity.rottenTomatoes, false),
+      rottenTomatoesUrl = entity.rottenTomatoesUrl,
       metascore = Ratings.Value(entity.metascore, false)
     )
 
@@ -43,6 +46,7 @@ class RatingsMapper @Inject constructor() {
     imdb = ratings.imdb?.value,
     metascore = ratings.metascore?.value,
     rottenTomatoes = ratings.rottenTomatoes?.value,
+    rottenTomatoesUrl = ratings.rottenTomatoesUrl,
     createdAt = nowUtcMillis(),
     updatedAt = nowUtcMillis(),
   )
@@ -57,6 +61,7 @@ class RatingsMapper @Inject constructor() {
     imdb = ratings.imdb?.value,
     metascore = ratings.metascore?.value,
     rottenTomatoes = ratings.rottenTomatoes?.value,
+    rottenTomatoesUrl = ratings.rottenTomatoesUrl,
     createdAt = nowUtcMillis(),
     updatedAt = nowUtcMillis(),
   )

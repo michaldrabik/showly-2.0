@@ -490,10 +490,17 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private fun renderRatings(ratings: Ratings, movie: Movie?) {
     movieDetailsRatings.bind(ratings)
     movie?.let {
-      movieDetailsRatings.onTraktClick = { openMovieLink(TRAKT, it.traktId.toString()) }
-      movieDetailsRatings.onImdbClick = { openMovieLink(IMDB, it.ids.imdb.id) }
-      movieDetailsRatings.onMetaClick = { openMovieLink(METACRITIC, it.title) }
-      movieDetailsRatings.onRottenClick = { openMovieLink(ROTTEN, "${it.title} ${it.year}") }
+      movieDetailsRatings.onTraktClick = { openMovieLink(TRAKT, movie.traktId.toString()) }
+      movieDetailsRatings.onImdbClick = { openMovieLink(IMDB, movie.ids.imdb.id) }
+      movieDetailsRatings.onMetaClick = { openMovieLink(METACRITIC, movie.title) }
+      movieDetailsRatings.onRottenClick = {
+        val url = it.rottenTomatoesUrl
+        if (!url.isNullOrBlank()) {
+          openWebUrl(url) ?: openMovieLink(ROTTEN, "${movie.title} ${movie.year}")
+        } else {
+          openMovieLink(ROTTEN, "${movie.title} ${movie.year}")
+        }
+      }
     }
   }
 
@@ -559,7 +566,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
   }
 
-  private fun openMovieLink(link: MovieLink, id: String, country: AppCountry = UNITED_STATES) {
+  private fun openMovieLink(
+    link: MovieLink,
+    id: String,
+    country: AppCountry = UNITED_STATES,
+  ) {
     if (link == IMDB) {
       openIMDbLink(IdImdb(id), "title")
     } else {

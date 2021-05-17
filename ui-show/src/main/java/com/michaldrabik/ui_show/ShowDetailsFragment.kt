@@ -606,10 +606,17 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun renderRatings(ratings: Ratings, show: Show?) {
     showDetailsRatings.bind(ratings)
     show?.let {
-      showDetailsRatings.onTraktClick = { openShowLink(TRAKT, it.traktId.toString()) }
-      showDetailsRatings.onImdbClick = { openShowLink(IMDB, it.ids.imdb.id) }
-      showDetailsRatings.onMetaClick = { openShowLink(METACRITIC, it.title) }
-      showDetailsRatings.onRottenClick = { openShowLink(ROTTEN, "${it.title} ${it.year}") }
+      showDetailsRatings.onTraktClick = { openShowLink(TRAKT, show.traktId.toString()) }
+      showDetailsRatings.onImdbClick = { openShowLink(IMDB, show.ids.imdb.id) }
+      showDetailsRatings.onMetaClick = { openShowLink(METACRITIC, show.title) }
+      showDetailsRatings.onRottenClick = {
+        val url = it.rottenTomatoesUrl
+        if (!url.isNullOrBlank()) {
+          openWebUrl(url) ?: openShowLink(ROTTEN, "${show.title} ${show.year}")
+        } else {
+          openShowLink(ROTTEN, "${show.title} ${show.year}")
+        }
+      }
     }
   }
 

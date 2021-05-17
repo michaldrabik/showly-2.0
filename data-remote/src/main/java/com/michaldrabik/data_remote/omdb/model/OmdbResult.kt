@@ -5,6 +5,7 @@ data class OmdbResult(
   val imdbRating: String?,
   val imdbVotes: String?,
   val Metascore: String?,
+  val tomatoURL: String?,
 )
 
 data class OmdbRating(

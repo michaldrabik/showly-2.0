@@ -8,6 +8,7 @@ class OmdbInterceptor : Interceptor {
   override fun intercept(chain: Interceptor.Chain): Response {
     val url = chain.request().url.newBuilder()
       .addQueryParameter("apikey", Config.OMDB_API_KEY)
+      .addQueryParameter("tomatoes", "true")
       .build()
     val request = chain.request().newBuilder()
       .url(url)

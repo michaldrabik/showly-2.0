@@ -21,13 +21,15 @@ class RatingsStripView : LinearLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  var onTraktClick: (() -> Unit)? = null
-  var onImdbClick: (() -> Unit)? = null
-  var onMetaClick: (() -> Unit)? = null
-  var onRottenClick: (() -> Unit)? = null
+  var onTraktClick: ((Ratings) -> Unit)? = null
+  var onImdbClick: ((Ratings) -> Unit)? = null
+  var onMetaClick: ((Ratings) -> Unit)? = null
+  var onRottenClick: ((Ratings) -> Unit)? = null
 
   private val colorPrimary by lazy { context.colorFromAttr(android.R.attr.textColorPrimary) }
   private val colorSecondary by lazy { context.colorFromAttr(android.R.attr.textColorSecondary) }
+
+  private lateinit var ratings: Ratings
 
   init {
     inflate(context, R.layout.view_ratings_strip, this)
@@ -35,10 +37,10 @@ class RatingsStripView : LinearLayout {
     orientation = HORIZONTAL
     gravity = Gravity.TOP
 
-    viewRatingsStripTrakt.onClick { onTraktClick?.invoke() }
-    viewRatingsStripImdb.onClick { onImdbClick?.invoke() }
-    viewRatingsStripMeta.onClick { onMetaClick?.invoke() }
-    viewRatingsStripRotten.onClick { onRottenClick?.invoke() }
+    viewRatingsStripTrakt.onClick { onTraktClick?.invoke(ratings) }
+    viewRatingsStripImdb.onClick { if (!ratings.isAnyLoading()) onImdbClick?.invoke(ratings) }
+    viewRatingsStripMeta.onClick { if (!ratings.isAnyLoading()) onMetaClick?.invoke(ratings) }
+    viewRatingsStripRotten.onClick { if (!ratings.isAnyLoading()) onRottenClick?.invoke(ratings) }
   }
 
   fun bind(ratings: Ratings) {
@@ -60,6 +62,7 @@ class RatingsStripView : LinearLayout {
       linkView.visibleIf(!isLoading && rating.isNullOrBlank())
     }
 
+    this.ratings = ratings
     bindValue(ratings.trakt, viewRatingsStripTraktValue, viewRatingsStripTraktProgress, viewRatingsStripTraktLinkIcon)
     bindValue(ratings.imdb, viewRatingsStripImdbValue, viewRatingsStripImdbProgress, viewRatingsStripImdbLinkIcon)
     bindValue(ratings.metascore, viewRatingsStripMetaValue, viewRatingsStripMetaProgress, viewRatingsStripMetaLinkIcon)

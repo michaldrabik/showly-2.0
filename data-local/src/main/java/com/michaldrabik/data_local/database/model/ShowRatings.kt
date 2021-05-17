@@ -25,6 +25,7 @@ data class ShowRatings(
   @ColumnInfo(name = "imdb") var imdb: String?,
   @ColumnInfo(name = "metascore") var metascore: String?,
   @ColumnInfo(name = "rotten_tomatoes") var rottenTomatoes: String?,
+  @ColumnInfo(name = "rotten_tomatoes_url") var rottenTomatoesUrl: String?,
   @ColumnInfo(name = "created_at") var createdAt: Long,
   @ColumnInfo(name = "updated_at") var updatedAt: Long,
 )
