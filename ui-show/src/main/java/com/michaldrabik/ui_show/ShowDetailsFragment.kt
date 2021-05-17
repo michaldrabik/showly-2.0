@@ -232,7 +232,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun setupStatusBar() {
     showDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
-      if (imagePadded) showDetailsMainLayout.updatePadding(top = insets.systemWindowInsetTop)
+      if (imagePadded) {
+        showDetailsMainLayout.updatePadding(top = insets.systemWindowInsetTop)
+      } else {
+        (showDetailsShareButton.layoutParams as MarginLayoutParams)
+          .updateMargins(top = insets.systemWindowInsetTop)
+      }
       arrayOf<View>(view, showDetailsBackArrow2, showDetailsEpisodesView, showDetailsCommentsView)
         .forEach { v ->
           (v.layoutParams as MarginLayoutParams).updateMargins(top = insets.systemWindowInsetTop)

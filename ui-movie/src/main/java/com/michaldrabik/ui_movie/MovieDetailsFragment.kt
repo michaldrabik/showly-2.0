@@ -198,7 +198,13 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   private fun setupStatusBar() {
     movieDetailsBackArrow.doOnApplyWindowInsets { view, insets, _, _ ->
-      if (imagePadded) movieDetailsMainLayout.updatePadding(top = insets.systemWindowInsetTop)
+      if (imagePadded) {
+        movieDetailsMainLayout
+          .updatePadding(top = insets.systemWindowInsetTop)
+      } else {
+        (movieDetailsShareButton.layoutParams as ViewGroup.MarginLayoutParams)
+          .updateMargins(top = insets.systemWindowInsetTop)
+      }
       arrayOf<View>(view, movieDetailsBackArrow2, movieDetailsCommentsView)
         .forEach { v ->
           (v.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = insets.systemWindowInsetTop)
