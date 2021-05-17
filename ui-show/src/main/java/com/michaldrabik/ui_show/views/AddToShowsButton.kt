@@ -36,7 +36,7 @@ class AddToShowsButton : FrameLayout {
 
   fun setState(state: State, animate: Boolean = false) {
     this.state = state
-    val duration = if (animate) 250L else 0
+    val duration = if (animate) 200L else 0
     if (animate) isEnabled = false
     when (state) {
       State.ADD -> {
