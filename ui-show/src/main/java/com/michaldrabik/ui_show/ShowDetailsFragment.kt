@@ -81,7 +81,6 @@ import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
-import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_QUICK_PROGRESS
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_WATCHED
@@ -209,15 +208,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       it.gone()
       showTip(SHOW_DETAILS_GALLERY)
     }
-    showDetailsTipQuickProgress.onClick {
-      it.gone()
-      showTip(SHOW_DETAILS_QUICK_PROGRESS)
-    }
     showDetailsAddButton.run {
       isEnabled = false
       onAddMyShowsClickListener = {
         viewModel.addFollowedShow(requireAppContext())
-        showDetailsTipQuickProgress.fadeIf(!isTipShown(SHOW_DETAILS_QUICK_PROGRESS))
       }
       onAddWatchLaterClickListener = { viewModel.addWatchlistShow(requireAppContext()) }
       onArchiveClickListener = { openArchiveConfirmationDialog() }

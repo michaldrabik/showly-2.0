@@ -214,17 +214,6 @@
 
       </FrameLayout>
 
-      <com.michaldrabik.ui_base.common.views.tips.TipView
-        android:id="@+id/showDetailsTipQuickProgress"
-        android:layout_width="@dimen/tutorialTipSize"
-        android:layout_height="@dimen/tutorialTipSize"
-        android:layout_marginEnd="@dimen/spaceNormal"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsButtonsLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:visibility="visible"
-        />
-
       <TextView
         android:id="@+id/showDetailsManageListsLabel"
         android:layout_width="wrap_content"
