@@ -11,7 +11,6 @@ import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.MovieView
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
 import com.michaldrabik.ui_base.utilities.extensions.bump
-import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -55,7 +54,7 @@ class ProgressMoviesMainItemView : MovieView<ProgressMovieItem> {
     val translationTitle = item.movieTranslation?.title
     progressMovieItemTitle.text =
       if (translationTitle.isNullOrBlank()) item.movie.title
-      else translationTitle.capitalizeWords()
+      else translationTitle
 
     val translationOverview = item.movieTranslation?.overview
     progressMovieItemSubtitle.text =
@@ -64,7 +63,7 @@ class ProgressMoviesMainItemView : MovieView<ProgressMovieItem> {
           if (item.movie.overview.isBlank()) context.getString(R.string.textNoDescription)
           else item.movie.overview
         }
-        else -> translationOverview.capitalizeWords()
+        else -> translationOverview
       }
 
     progressMovieItemPin.visibleIf(item.isPinned)

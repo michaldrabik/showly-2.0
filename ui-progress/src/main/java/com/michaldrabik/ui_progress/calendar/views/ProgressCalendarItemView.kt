@@ -51,7 +51,7 @@ class ProgressCalendarItemView : ShowView<ProgressItem> {
 
     progressCalendarItemTitle.text =
       if (item.showTranslation?.title.isNullOrBlank()) item.show.title
-      else item.showTranslation?.title?.capitalizeWords()
+      else item.showTranslation?.title
 
     progressCalendarItemDateText.text =
       item.upcomingEpisode.firstAired?.toLocalZone()?.let { item.dateFormat?.format(it)?.capitalizeWords() }

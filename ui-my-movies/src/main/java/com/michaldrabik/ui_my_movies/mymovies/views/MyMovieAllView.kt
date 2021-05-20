@@ -43,7 +43,7 @@ class MyMovieAllView : MovieView<MyMoviesItem> {
     myMovieAllProgress.visibleIf(item.isLoading)
     myMovieAllTitle.text =
       if (item.translation?.title.isNullOrBlank()) item.movie.title
-      else item.translation?.title?.capitalizeWords()
+      else item.translation?.title
 
     myMovieAllDescription.text =
       when {

@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
-import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -37,7 +36,7 @@ class ShowFanartView : ShowView<DiscoverListItem> {
     this.item = item
     showFanartTitle.text =
       if (item.translation?.title.isNullOrBlank()) item.show.title
-      else item.translation?.title?.capitalizeWords()
+      else item.translation?.title
     showFanartProgress.visibleIf(item.isLoading)
     showFanartBadge.visibleIf(item.isFollowed)
     showFanartBadgeLater.visibleIf(item.isWatchlist)

@@ -13,7 +13,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
-import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.ImageStatus
@@ -37,7 +36,7 @@ class ProgressMoviesWidgetViewsFactory(
   private val loadItemsCase: ProgressMoviesLoadItemsCase,
   private val sortOrderCase: ProgressMoviesSortOrderCase,
   private val imagesProvider: MovieImagesProvider,
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.Main
@@ -77,12 +76,12 @@ class ProgressMoviesWidgetViewsFactory(
   private fun createItemRemoteView(item: ProgressMovieItem): RemoteViews {
     val translatedTitle = item.movieTranslation?.title
     val title =
-      if (translatedTitle?.isBlank() == false) translatedTitle.capitalizeWords()
+      if (translatedTitle?.isBlank() == false) translatedTitle
       else item.movie.title
 
     val translatedDescription = item.movieTranslation?.overview
     val description =
-      if (translatedDescription?.isBlank() == false) translatedDescription.capitalizeWords()
+      if (translatedDescription?.isBlank() == false) translatedDescription
       else item.movie.overview
 
     val remoteView = RemoteViews(context.packageName, getItemLayout()).apply {

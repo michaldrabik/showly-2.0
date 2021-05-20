@@ -729,7 +729,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       showDetailsDescription.text = translation.overview
     }
     if (translation?.title?.isNotBlank() == true) {
-      showDetailsTitle.text = translation.title.capitalizeWords()
+      showDetailsTitle.text = translation.title
     }
   }
 

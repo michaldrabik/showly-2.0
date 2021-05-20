@@ -557,7 +557,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       movieDetailsDescription.text = translation.overview
     }
     if (translation?.title?.isNotBlank() == true) {
-      movieDetailsTitle.text = translation.title.capitalizeWords()
+      movieDetailsTitle.text = translation.title
     }
   }
 

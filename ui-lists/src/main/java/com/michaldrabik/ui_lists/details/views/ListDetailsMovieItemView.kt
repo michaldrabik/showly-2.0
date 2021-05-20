@@ -12,7 +12,6 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -81,7 +80,7 @@ class ListDetailsMovieItemView : ListDetailsItemView {
 
     listDetailsMovieTitle.text =
       if (item.translation?.title.isNullOrBlank()) movie.title
-      else item.translation?.title?.capitalizeWords()
+      else item.translation?.title
 
     listDetailsMovieDescription.text =
       when {

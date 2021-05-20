@@ -42,7 +42,7 @@ class ProgressMoviesCalendarItemView : MovieView<ProgressMovieItem> {
 
     progressMovieCalendarItemTitle.text =
       if (item.movieTranslation?.title.isNullOrBlank()) item.movie.title
-      else item.movieTranslation?.title?.capitalizeWords()
+      else item.movieTranslation?.title
 
     progressMovieCalendarItemSubtitle.text =
       when {
@@ -50,7 +50,7 @@ class ProgressMoviesCalendarItemView : MovieView<ProgressMovieItem> {
           if (item.movie.overview.isBlank()) context.getString(R.string.textNoDescription)
           else item.movie.overview
         }
-        else -> item.movieTranslation?.overview?.capitalizeWords()
+        else -> item.movieTranslation?.overview
       }
 
     if (item.movie.released != null) {

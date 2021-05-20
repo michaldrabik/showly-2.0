@@ -42,7 +42,7 @@ fun View.fadeIf(
   condition: Boolean,
   duration: Long = 250,
   startDelay: Long = 0,
-  withHardware: Boolean = false
+  withHardware: Boolean = false,
 ) = if (condition) {
   fadeIn(duration, startDelay, withHardware)
 } else {
@@ -53,7 +53,7 @@ fun View.fadeIn(
   duration: Long = 250,
   startDelay: Long = 0,
   withHardware: Boolean = false,
-  endAction: () -> Unit = {}
+  endAction: () -> Unit = {},
 ): ViewPropertyAnimator? {
   if (visibility == View.VISIBLE) {
     endAction()
@@ -74,7 +74,7 @@ fun View.fadeOut(
   duration: Long = 250,
   startDelay: Long = 0,
   withHardware: Boolean = false,
-  endAction: () -> Unit = {}
+  endAction: () -> Unit = {},
 ): ViewPropertyAnimator? {
   if (visibility == View.GONE) {
     endAction()

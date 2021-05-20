@@ -13,7 +13,6 @@ import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.DurationPrinter
 import com.michaldrabik.ui_base.utilities.extensions.addRipple
 import com.michaldrabik.ui_base.utilities.extensions.bump
-import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -70,7 +69,7 @@ class ProgressMainItemView : ShowView<ProgressItem> {
     val translationTitle = item.showTranslation?.title
     progressItemTitle.text =
       if (translationTitle.isNullOrBlank()) item.show.title
-      else translationTitle.capitalizeWords()
+      else translationTitle
 
     progressItemSubtitle.text = String.format(
       ENGLISH,

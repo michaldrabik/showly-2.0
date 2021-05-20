@@ -8,7 +8,6 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
-import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
@@ -43,7 +42,7 @@ class MyShowAllView : ShowView<MyShowsItem> {
     myShowAllProgress.visibleIf(item.isLoading)
     myShowAllTitle.text =
       if (item.translation?.title.isNullOrBlank()) item.show.title
-      else item.translation?.title?.capitalizeWords()
+      else item.translation?.title
 
     myShowAllDescription.text =
       if (item.translation?.overview.isNullOrBlank()) item.show.overview

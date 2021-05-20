@@ -43,7 +43,7 @@ class WatchlistMovieView : MovieView<WatchlistListItem> {
     watchlistMoviesProgress.visibleIf(item.isLoading)
     watchlistMoviesTitle.text =
       if (item.translation?.title.isNullOrBlank()) item.movie.title
-      else item.translation?.title?.capitalizeWords()
+      else item.translation?.title
 
     watchlistMoviesDescription.text =
       when {

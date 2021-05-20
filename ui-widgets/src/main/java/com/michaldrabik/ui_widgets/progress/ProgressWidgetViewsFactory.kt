@@ -15,7 +15,6 @@ import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.DurationPrinter
-import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.ImageStatus
@@ -95,7 +94,7 @@ class ProgressWidgetViewsFactory(
 
   private fun createItemRemoteView(item: ProgressItem): RemoteViews {
     val title =
-      if (item.showTranslation?.title?.isBlank() == false) item.showTranslation?.title?.capitalizeWords()
+      if (item.showTranslation?.title?.isBlank() == false) item.showTranslation?.title
       else item.show.title
     val subtitle = String.format(ENGLISH, "S.%02d E.%02d", item.episode.season, item.episode.number)
 

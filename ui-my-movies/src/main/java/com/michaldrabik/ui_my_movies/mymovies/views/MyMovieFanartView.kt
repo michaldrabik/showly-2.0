@@ -8,7 +8,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
-import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -39,7 +38,7 @@ class MyMovieFanartView : FrameLayout {
     myMovieFanartTitle.visible()
     myMovieFanartTitle.text =
       if (item.translation?.title.isNullOrBlank()) item.movie.title
-      else item.translation?.title?.capitalizeWords()
+      else item.translation?.title
     onClick { clickListener(item) }
     loadImage(item.image)
   }

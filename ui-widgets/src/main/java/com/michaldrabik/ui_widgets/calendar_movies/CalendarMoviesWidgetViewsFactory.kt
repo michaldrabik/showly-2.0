@@ -85,12 +85,12 @@ class CalendarMoviesWidgetViewsFactory(
   private fun createItemRemoteView(item: ProgressMovieItem): RemoteViews {
     val translatedTitle = item.movieTranslation?.title
     val title =
-      if (translatedTitle?.isBlank() == false) translatedTitle.capitalizeWords()
+      if (translatedTitle?.isBlank() == false) translatedTitle
       else item.movie.title
 
     val translatedDescription = item.movieTranslation?.overview
     val overview =
-      if (translatedDescription?.isBlank() == false) translatedDescription.capitalizeWords()
+      if (translatedDescription?.isBlank() == false) translatedDescription
       else item.movie.overview
 
     val date = if (item.movie.released != null) {

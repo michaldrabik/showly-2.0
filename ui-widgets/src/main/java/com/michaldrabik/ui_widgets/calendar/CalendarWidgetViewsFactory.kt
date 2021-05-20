@@ -87,7 +87,7 @@ class CalendarWidgetViewsFactory(
   private fun createItemRemoteView(item: ProgressItem): RemoteViews {
     val translatedTitle = item.showTranslation?.title
     val title =
-      if (translatedTitle?.isBlank() == false) translatedTitle.capitalizeWords()
+      if (translatedTitle?.isBlank() == false) translatedTitle
       else item.show.title
 
     val episodeBadgeText = String.format(

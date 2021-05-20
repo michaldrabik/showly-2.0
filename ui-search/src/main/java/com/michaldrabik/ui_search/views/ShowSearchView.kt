@@ -8,7 +8,6 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
-import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -41,7 +40,7 @@ class ShowSearchView : ShowView<SearchListItem> {
     val translationTitle = item.translation?.title
     showSearchTitle.text =
       if (translationTitle.isNullOrBlank()) item.title
-      else translationTitle.capitalizeWords()
+      else translationTitle
 
     val translationOverview = item.translation?.overview
     showSearchDescription.text =
