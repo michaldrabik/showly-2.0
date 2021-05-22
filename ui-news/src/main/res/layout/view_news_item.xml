@@ -81,7 +81,7 @@
       android:maxLines="10"
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorPrimary"
-      android:textSize="15sp"
+      android:textSize="14sp"
       app:layout_constraintBottom_toTopOf="@id/newsItemSubheader"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/newsItemImage"
