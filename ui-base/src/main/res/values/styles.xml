@@ -180,4 +180,34 @@
     <item name="android:tint">@color/colorGrayLight</item>
   </style>
 
+  <style name="CollectionItem" />
+
+  <style name="CollectionItem.Header" parent="CollectionItem">
+    <item name="android:ellipsize">end</item>
+    <item name="android:gravity">start</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:textAlignment">viewStart</item>
+    <item name="android:textColor">?attr/colorAccent</item>
+    <item name="android:textSize">12sp</item>
+  </style>
+
+  <style name="CollectionItem.Title" parent="CollectionItem">
+    <item name="android:ellipsize">end</item>
+    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="android:gravity">start</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:textAlignment">viewStart</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="android:textSize">18sp</item>
+  </style>
+
+  <style name="CollectionItem.Description" parent="CollectionItem">
+    <item name="android:ellipsize">end</item>
+    <item name="android:gravity">start</item>
+    <item name="android:maxLines">2</item>
+    <item name="android:textAlignment">viewStart</item>
+    <item name="android:textColor">?android:attr/textColorSecondary</item>
+    <item name="android:textSize">12sp</item>
+  </style>
+
 </resources>

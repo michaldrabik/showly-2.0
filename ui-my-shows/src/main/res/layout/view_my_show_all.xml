@@ -63,35 +63,11 @@
       />
 
     <TextView
-      android:id="@+id/myShowAllTitle"
-      android:layout_width="0dp"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/spaceMedium"
-      android:ellipsize="end"
-      android:gravity="start"
-      android:maxLines="1"
-      android:textAlignment="viewStart"
-      android:textColor="?android:attr/textColorPrimary"
-      android:textSize="18sp"
-      app:layout_constraintBottom_toTopOf="@id/myShowAllDescription"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@id/myShowAllImage"
-      app:layout_constraintTop_toBottomOf="@+id/myShowAllNetwork"
-      app:layout_constraintVertical_chainStyle="packed"
-      tools:text="Game of Thrones"
-      />
-
-    <TextView
       android:id="@+id/myShowAllNetwork"
+      style="@style/CollectionItem.Header"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceMedium"
-      android:ellipsize="end"
-      android:gravity="start"
-      android:maxLines="1"
-      android:textAlignment="viewStart"
-      android:textColor="?attr/colorAccent"
-      android:textSize="12sp"
       app:layout_constraintBottom_toTopOf="@+id/myShowAllTitle"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/myShowAllImage"
@@ -155,16 +131,25 @@
       />
 
     <TextView
-      android:id="@+id/myShowAllDescription"
+      android:id="@+id/myShowAllTitle"
+      style="@style/CollectionItem.Title"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceMedium"
-      android:ellipsize="end"
-      android:gravity="start"
-      android:maxLines="2"
-      android:textAlignment="viewStart"
-      android:textColor="?android:attr/textColorSecondary"
-      android:textSize="12sp"
+      app:layout_constraintBottom_toTopOf="@id/myShowAllDescription"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/myShowAllImage"
+      app:layout_constraintTop_toBottomOf="@+id/myShowAllNetwork"
+      app:layout_constraintVertical_chainStyle="packed"
+      tools:text="Game of Thrones"
+      />
+
+    <TextView
+      android:id="@+id/myShowAllDescription"
+      style="@style/CollectionItem.Description"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceMedium"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/myShowAllImage"
