@@ -92,7 +92,7 @@ class ListDetailsShowItemView : ListDetailsItemView {
       }
 
     listDetailsShowHeader.text =
-      if (show.year > 0) context.getString(R.string.textNetwork, show.network, show.year.toString())
+      if (show.year > 0) context.getString(R.string.textNetwork, show.year.toString(), show.network)
       else String.format("%s", show.network)
 
     listDetailsShowRating.text = String.format(ENGLISH, "%.1f", show.rating)
