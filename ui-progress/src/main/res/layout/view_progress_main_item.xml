@@ -82,17 +82,11 @@
 
     <TextView
       android:id="@+id/progressItemTitle"
+      style="@style/CollectionItem.Title"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceNormal"
       android:layout_marginEnd="@dimen/spaceMedium"
-      android:ellipsize="end"
-      android:gravity="start"
-      android:maxLines="1"
-      android:textAlignment="viewStart"
-      android:textColor="?android:attr/textColorPrimary"
-      android:textSize="18sp"
-      android:textStyle="bold"
       app:layout_constraintBottom_toTopOf="@id/progressItemSubtitle"
       app:layout_constraintEnd_toStartOf="@id/progressItemNewBadge"
       app:layout_constraintStart_toEndOf="@id/progressItemImage"
