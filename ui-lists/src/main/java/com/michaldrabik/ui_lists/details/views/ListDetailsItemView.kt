@@ -33,6 +33,8 @@ abstract class ListDetailsItemView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   private val cornerRadius by lazy { context.dimenToPx(R.dimen.listItemCorner) }
+  private val centerCropTransformation by lazy { CenterCrop() }
+  private val cornersTransformation by lazy { RoundedCorners(cornerRadius) }
 
   protected abstract val imageView: ImageView
   protected abstract val placeholderView: ImageView
@@ -76,7 +78,7 @@ abstract class ListDetailsItemView : FrameLayout {
 
     Glide.with(this)
       .load(url)
-      .transform(CenterCrop(), RoundedCorners(cornerRadius))
+      .transform(centerCropTransformation, cornersTransformation)
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
       .withSuccessListener { onImageLoadSuccess() }
       .withFailListener { onImageLoadFail(item) }
