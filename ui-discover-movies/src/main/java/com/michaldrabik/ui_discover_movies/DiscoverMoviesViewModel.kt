@@ -24,7 +24,7 @@ import javax.inject.Inject
 class DiscoverMoviesViewModel @Inject constructor(
   private val moviesCase: DiscoverMoviesCase,
   private val filtersCase: DiscoverFiltersCase,
-  private val imagesProvider: MovieImagesProvider
+  private val imagesProvider: MovieImagesProvider,
 ) : BaseViewModel<DiscoverMoviesUiModel>() {
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -35,7 +35,7 @@ class DiscoverMoviesViewModel @Inject constructor(
     resetScroll: Boolean = false,
     skipCache: Boolean = false,
     instantProgress: Boolean = false,
-    newFilters: DiscoverFilters? = null
+    newFilters: DiscoverFilters? = null,
   ) {
     if (pullToRefresh && nowUtcMillis() - lastPullToRefreshMs < Config.PULL_TO_REFRESH_COOLDOWN_MS) {
       uiState = DiscoverMoviesUiModel(showLoading = false)
@@ -86,13 +86,18 @@ class DiscoverMoviesViewModel @Inject constructor(
     }
 
     viewModelScope.launch {
-      updateItem(item.copy(isLoading = true))
+      val loadingJob = launch {
+        delay(750)
+        updateItem(item.copy(isLoading = true))
+      }
       try {
         val image = imagesProvider.loadRemoteImage(item.movie, item.image.type, force)
         updateItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
         updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type, MOVIE, TMDB)))
         rethrowCancellation(t)
+      } finally {
+        loadingJob.cancel()
       }
     }
   }

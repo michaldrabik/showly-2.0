@@ -24,7 +24,7 @@ import javax.inject.Inject
 class DiscoverViewModel @Inject constructor(
   private val showsCase: DiscoverShowsCase,
   private val filtersCase: DiscoverFiltersCase,
-  private val imagesProvider: ShowImagesProvider
+  private val imagesProvider: ShowImagesProvider,
 ) : BaseViewModel<DiscoverUiModel>() {
 
   @VisibleForTesting(otherwise = PRIVATE)
@@ -35,7 +35,7 @@ class DiscoverViewModel @Inject constructor(
     scrollToTop: Boolean = false,
     skipCache: Boolean = false,
     instantProgress: Boolean = false,
-    newFilters: DiscoverFilters? = null
+    newFilters: DiscoverFilters? = null,
   ) {
     if (pullToRefresh && nowUtcMillis() - lastPullToRefreshMs < Config.PULL_TO_REFRESH_COOLDOWN_MS) {
       uiState = DiscoverUiModel(showLoading = false)
@@ -79,20 +79,25 @@ class DiscoverViewModel @Inject constructor(
 
   fun loadMissingImage(item: DiscoverListItem, force: Boolean) {
 
-    fun updateShowsItem(newItem: DiscoverListItem) {
+    fun updateItem(newItem: DiscoverListItem) {
       val currentItems = uiState?.shows?.toMutableList()
       currentItems?.findReplace(newItem) { it.isSameAs(newItem) }
       uiState = DiscoverUiModel(shows = currentItems, scrollToTop = false)
     }
 
     viewModelScope.launch {
-      updateShowsItem(item.copy(isLoading = true))
+      val loadingJob = launch {
+        delay(750)
+        updateItem(item.copy(isLoading = true))
+      }
       try {
         val image = imagesProvider.loadRemoteImage(item.show, item.image.type, force)
-        updateShowsItem(item.copy(isLoading = false, image = image))
+        updateItem(item.copy(isLoading = false, image = image))
       } catch (t: Throwable) {
-        updateShowsItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type, MOVIE)))
+        updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type, MOVIE)))
         rethrowCancellation(t)
+      } finally {
+        loadingJob.cancel()
       }
     }
   }

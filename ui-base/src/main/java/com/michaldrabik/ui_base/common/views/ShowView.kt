@@ -36,6 +36,8 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
 
   private val cornerRadius by lazy { context.dimenToPx(R.dimen.showTileCorner) }
   private val gridPadding by lazy { context.dimenToPx(R.dimen.gridPadding) }
+  private val centerCropTransformation by lazy { CenterCrop() }
+  private val cornersTransformation by lazy { RoundedCorners(cornerRadius) }
 
   private val width by lazy { (screenWidth().toFloat() - (2.0 * gridPadding)) / MAIN_GRID_SPAN }
   private val height by lazy { width * ASPECT_RATIO }
@@ -72,7 +74,7 @@ abstract class ShowView<Item : ListItem> : FrameLayout {
 
     Glide.with(this)
       .load(url)
-      .transform(CenterCrop(), RoundedCorners(cornerRadius))
+      .transform(centerCropTransformation, cornersTransformation)
       .transition(withCrossFade(IMAGE_FADE_DURATION_MS))
       .withSuccessListener { onImageLoadSuccess() }
       .withFailListener { onImageLoadFail(item) }
