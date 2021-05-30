@@ -9,11 +9,19 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_model.StreamingService
 import com.michaldrabik.ui_streamings.R
 import kotlinx.android.synthetic.main.view_streaming.view.*
 
 class StreamingView : FrameLayout {
+
+  companion object {
+    private const val NETFLIX = "Netflix"
+    private const val GOOGLE_PLAY = "Google Play Movies"
+    private const val YOU_TUBE = "YouTube"
+  }
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -31,6 +39,15 @@ class StreamingView : FrameLayout {
   init {
     inflate(context, R.layout.view_streaming, this)
     layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+    setBackgroundResource(R.drawable.bg_streaming)
+    onClick {
+      when (streaming.name) {
+        NETFLIX -> openWebUrl("https://www.netflix.com/search/${streaming.mediaName}")
+        GOOGLE_PLAY -> openWebUrl("https://play.google.com/store/search?c=movies&gl=${streaming.countryCode}&q=${streaming.mediaName}")
+        YOU_TUBE -> openWebUrl("https://www.youtube.com/results?search_query=${streaming.mediaName} movie")
+        else -> openWebUrl(streaming.link)
+      }
+    }
   }
 
   fun bind(streaming: StreamingService) {

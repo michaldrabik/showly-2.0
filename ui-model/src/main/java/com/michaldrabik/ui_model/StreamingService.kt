@@ -6,6 +6,8 @@ data class StreamingService(
   val imagePath: String,
   val name: String,
   val options: List<Option>,
+  val mediaName: String,
+  val countryCode: String,
   val link: String,
 ) {
 

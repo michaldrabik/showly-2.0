@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.view.View
 import androidx.fragment.app.Fragment
 
 fun Context.openWebUrl(url: String): String? {
@@ -18,3 +19,5 @@ fun Context.openWebUrl(url: String): String? {
 }
 
 fun Fragment.openWebUrl(url: String) = requireContext().openWebUrl(url)
+
+fun View.openWebUrl(url: String) = context.openWebUrl(url)

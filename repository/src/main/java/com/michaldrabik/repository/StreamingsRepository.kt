@@ -24,22 +24,28 @@ class StreamingsRepository @Inject constructor(
 
   suspend fun loadStreamings(movie: Movie, countryCode: String): List<StreamingService> {
     val remoteItems = cloud.tmdbApi.fetchMovieWatchProviders(movie.ids.tmdb.id, countryCode) ?: return emptyList()
-    return processRemoteItems(remoteItems)
+    return processRemoteItems(remoteItems, movie.title, countryCode)
   }
 
   suspend fun loadStreamings(show: Show, countryCode: String): List<StreamingService> {
     val remoteItems = cloud.tmdbApi.fetchShowWatchProviders(show.ids.tmdb.id, countryCode) ?: return emptyList()
-    return processRemoteItems(remoteItems)
+    return processRemoteItems(remoteItems, show.title, countryCode)
   }
 
-  private fun processRemoteItems(remoteItems: TmdbStreamingCountry): List<StreamingService> {
+  private fun processRemoteItems(
+    remoteItems: TmdbStreamingCountry,
+    mediaName: String,
+    countryCode: String,
+  ): List<StreamingService> {
     val items = mutableListOf<StreamingService>()
     remoteItems.flatrate?.forEach { flatrate ->
       val item = StreamingService(
         imagePath = flatrate.logo_path,
         name = flatrate.provider_name,
         options = listOf(FLATRATE),
-        link = remoteItems.link
+        link = remoteItems.link,
+        mediaName = mediaName,
+        countryCode = countryCode
       )
       items.add(item)
     }
@@ -48,7 +54,9 @@ class StreamingsRepository @Inject constructor(
         imagePath = flatrate.logo_path,
         name = flatrate.provider_name,
         options = listOf(FREE),
-        link = remoteItems.link
+        link = remoteItems.link,
+        mediaName = mediaName,
+        countryCode = countryCode
       )
       items.add(item)
     }
@@ -57,7 +65,9 @@ class StreamingsRepository @Inject constructor(
         imagePath = flatrate.logo_path,
         name = flatrate.provider_name,
         options = listOf(BUY),
-        link = remoteItems.link
+        link = remoteItems.link,
+        mediaName = mediaName,
+        countryCode = countryCode
       )
       items.add(item)
     }
@@ -66,7 +76,9 @@ class StreamingsRepository @Inject constructor(
         imagePath = flatrate.logo_path,
         name = flatrate.provider_name,
         options = listOf(RENT),
-        link = remoteItems.link
+        link = remoteItems.link,
+        mediaName = mediaName,
+        countryCode = countryCode
       )
       items.add(item)
     }
@@ -75,7 +87,9 @@ class StreamingsRepository @Inject constructor(
         imagePath = flatrate.logo_path,
         name = flatrate.provider_name,
         options = listOf(ADS),
-        link = remoteItems.link
+        link = remoteItems.link,
+        mediaName = mediaName,
+        countryCode = countryCode
       )
       items.add(item)
     }
@@ -83,11 +97,14 @@ class StreamingsRepository @Inject constructor(
       .groupBy { it.name }
       .filter { it.value.isNotEmpty() }
       .map { entry ->
+        val entryValue = entry.value.first()
         StreamingService(
           name = entry.key,
-          imagePath = entry.value.first().imagePath,
+          imagePath = entryValue.imagePath,
           options = entry.value.flatMap { it.options },
-          link = entry.value.first().link
+          link = entryValue.link,
+          mediaName = entryValue.mediaName,
+          countryCode = countryCode
         )
       }
   }

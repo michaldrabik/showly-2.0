@@ -288,9 +288,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   }
 
   private fun setupStreamingsList() {
-    streamingAdapter = StreamingAdapter().apply {
-//      itemClickListener = { showFullActorView(it) }
-    }
+    streamingAdapter = StreamingAdapter()
     showDetailsStreamingsRecycler.apply {
       setHasFixedSize(true)
       adapter = streamingAdapter
