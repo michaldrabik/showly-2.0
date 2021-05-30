@@ -6,7 +6,7 @@
   android:id="@+id/showDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:layout_marginTop="-500dp"
+  tools:layout_marginTop="-0dp"
   tools:theme="@style/AppTheme"
   >
 
@@ -259,10 +259,28 @@
         android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceNormal"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsDescription"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsStreamingsRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/separator5"
+        />
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/showDetailsStreamingsRecycler"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/streamingTileHeight"
+        android:layout_marginTop="@dimen/spaceMicro"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:paddingStart="@dimen/spaceNormal"
+        android:paddingEnd="@dimen/spaceNormal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showDetailsRatings"
+        tools:visibility="invisible"
         />
 
       <com.michaldrabik.ui_base.common.views.FoldableTextView
@@ -270,6 +288,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
+        android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceTiny"
         android:ellipsize="end"
@@ -281,7 +300,8 @@
         app:layout_constraintBottom_toTopOf="@id/showDetailsActorsRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsRatings"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsStreamingsRecycler"
+        app:layout_goneMarginTop="0dp"
         app:layout_goneMarginBottom="@dimen/spaceHuge"
         tools:targetApi="o"
         tools:text="Description"

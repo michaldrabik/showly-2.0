@@ -42,6 +42,7 @@ import com.michaldrabik.ui_show.cases.ShowDetailsMainCase
 import com.michaldrabik.ui_show.cases.ShowDetailsMyShowsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsRatingCase
 import com.michaldrabik.ui_show.cases.ShowDetailsRelatedShowsCase
+import com.michaldrabik.ui_show.cases.ShowDetailsStreamingCase
 import com.michaldrabik.ui_show.cases.ShowDetailsTranslationCase
 import com.michaldrabik.ui_show.cases.ShowDetailsWatchlistCase
 import com.michaldrabik.ui_show.episodes.EpisodeListItem
@@ -69,6 +70,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val episodesCase: ShowDetailsEpisodesCase,
   private val commentsCase: ShowDetailsCommentsCase,
   private val listsCase: ShowDetailsListsCase,
+  private val streamingsCase: ShowDetailsStreamingCase,
   private val relatedShowsCase: ShowDetailsRelatedShowsCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
@@ -119,6 +121,7 @@ class ShowDetailsViewModel @Inject constructor(
         loadBackgroundImage(show)
         launch { loadNextEpisode(show) }
         launch { loadRatings(show) }
+        launch { loadStreamings(show) }
         launch { loadActors(show) }
         launch {
           areSeasonsLoaded = false
@@ -223,6 +226,19 @@ class ShowDetailsViewModel @Inject constructor(
       }
     } catch (error: Throwable) {
       Logger.record(error, "Source" to "ShowDetailsViewModel::loadTranslation()")
+    }
+  }
+
+  private fun loadStreamings(show: Show) {
+    viewModelScope.launch {
+      try {
+        val streamings = streamingsCase.loadStreamingServices(show)
+        delay(350)
+        uiState = ShowDetailsUiModel(streamings = streamings)
+      } catch (error: Error) {
+        uiState = ShowDetailsUiModel(streamings = emptyList())
+        Logger.record(error, "Source" to "${ShowDetailsViewModel::class.simpleName}::loadStreamings()")
+      }
     }
   }
 

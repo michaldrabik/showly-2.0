@@ -80,6 +80,7 @@ import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.StreamingService
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
@@ -119,6 +120,7 @@ import com.michaldrabik.ui_show.views.AddToShowsButton.State.ADD
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_ARCHIVE
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_MY_SHOWS
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_WATCHLIST
+import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
@@ -136,6 +138,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private var actorsAdapter: ActorsAdapter? = null
   private var relatedAdapter: RelatedShowAdapter? = null
   private var seasonsAdapter: SeasonsAdapter? = null
+  private var streamingAdapter: StreamingAdapter? = null
 
   private val imageHeight by lazy {
     if (resources.configuration.orientation == ORIENTATION_PORTRAIT) screenHeight()
@@ -163,6 +166,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     setupActorsList()
     setupRelatedList()
     setupSeasonsList()
+    setupStreamingsList()
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
@@ -280,6 +284,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       adapter = seasonsAdapter
       layoutManager = LinearLayoutManager(requireContext(), VERTICAL, false)
       itemAnimator = null
+    }
+  }
+
+  private fun setupStreamingsList() {
+    streamingAdapter = StreamingAdapter().apply {
+//      itemClickListener = { showFullActorView(it) }
+    }
+    showDetailsStreamingsRecycler.apply {
+      setHasFixedSize(true)
+      adapter = streamingAdapter
+      layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
+      addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
     }
   }
 
@@ -538,6 +554,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         renderRuntimeLeft(it)
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
+      streamings?.let { renderStreamings(it) }
       translation?.let { renderTranslation(it) }
       seasonTranslation?.let { item ->
         item.consume()?.let { showDetailsEpisodesView.bindEpisodes(it.episodes, animate = false) }
@@ -695,6 +712,14 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         showSnack(MessageEvent.info(R.string.textSeasonsEmpty))
       }
     }
+  }
+
+  private fun renderStreamings(streamings: List<StreamingService>) {
+    streamingAdapter?.setItems(streamings)
+    if (streamings.isNotEmpty()) {
+      showDetailsMainContent.layoutTransition = LayoutTransition()
+    }
+    showDetailsStreamingsRecycler.fadeIf(streamings.isNotEmpty(), withHardware = true)
   }
 
   private fun renderRuntimeLeft(seasonsItems: List<SeasonListItem>) {
@@ -913,6 +938,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     actorsAdapter = null
     relatedAdapter = null
     seasonsAdapter = null
+    streamingAdapter = null
     super.onDestroyView()
   }
 }

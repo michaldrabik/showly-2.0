@@ -9,6 +9,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.StreamingService
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.related.RelatedListItem
@@ -24,6 +25,7 @@ data class ShowDetailsUiModel(
   val relatedShows: List<RelatedListItem>? = null,
   val seasons: List<SeasonListItem>? = null,
   val comments: List<Comment>? = null,
+  val streamings: List<StreamingService>? = null,
   val listsCount: Int? = null,
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
@@ -49,6 +51,7 @@ data class ShowDetailsUiModel(
       actors = newModel.actors ?: actors,
       relatedShows = newModel.relatedShows ?: relatedShows,
       seasons = newModel.seasons ?: seasons,
+      streamings = newModel.streamings ?: streamings,
       comments = newModel.comments ?: comments,
       listsCount = newModel.listsCount ?: listsCount,
       followedState = newModel.followedState ?: followedState,

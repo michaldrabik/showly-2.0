@@ -11,7 +11,7 @@ class StreamingAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
   private val asyncDiffer = AsyncListDiffer(this, StreamingItemDiffCallback())
 
-  open fun setItems(newItems: List<StreamingService>) {
+  fun setItems(newItems: List<StreamingService>) {
     with(asyncDiffer) {
       submitList(newItems)
     }
