@@ -31,10 +31,12 @@ import com.michaldrabik.ui_movie.cases.MovieDetailsMainCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMyMoviesCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsRatingCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsRelatedCase
+import com.michaldrabik.ui_movie.cases.MovieDetailsStreamingCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsTranslationCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsWatchlistCase
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
@@ -52,6 +54,7 @@ class MovieDetailsViewModel @Inject constructor(
   private val myMoviesCase: MovieDetailsMyMoviesCase,
   private val watchlistCase: MovieDetailsWatchlistCase,
   private val listsCase: MovieDetailsListsCase,
+  private val streamingCase: MovieDetailsStreamingCase,
   private val settingsRepository: SettingsRepository,
   private val userManager: UserTraktManager,
   private val quickSyncManager: QuickSyncManager,
@@ -98,6 +101,7 @@ class MovieDetailsViewModel @Inject constructor(
         launch { loadRatings(movie) }
         launch { loadActors(movie) }
         launch { loadListsCount(movie) }
+        launch { loadStreamings(movie) }
         launch { loadRelatedMovies(movie) }
         launch { loadTranslation(movie) }
 
@@ -161,6 +165,19 @@ class MovieDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       val count = listsCase.countLists(movie ?: this@MovieDetailsViewModel.movie)
       uiState = MovieDetailsUiModel(listsCount = count)
+    }
+  }
+
+  private fun loadStreamings(movie: Movie) {
+    viewModelScope.launch {
+      try {
+        val streamings = streamingCase.loadStreamingServices(movie)
+        delay(350)
+        uiState = MovieDetailsUiModel(streamings = streamings)
+      } catch (error: Error) {
+        uiState = MovieDetailsUiModel(streamings = emptyList())
+        Logger.record(error, "Source" to "${MovieDetailsViewModel::class.simpleName}::loadStreamings()")
+      }
     }
   }
 

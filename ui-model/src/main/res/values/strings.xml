@@ -86,4 +86,10 @@
   <string name="textMovieStatusCanceled">Canceled</string>
   <string name="textMovieStatusRumored">Rumored</string>
   <string name="textMovieStatusUnknown" translatable="false" />
+
+  <string name="textStreamingFlatrate" translatable="false">Stream</string>
+  <string name="textStreamingAds" translatable="false">Ads</string>
+  <string name="textStreamingBuy" translatable="false">Buy</string>
+  <string name="textStreamingRent" translatable="false">Rent</string>
+  <string name="textStreamingFree" translatable="false">Free</string>
 </resources>

@@ -6,4 +6,5 @@ data class TmdbStreamingCountry(
   val free: List<TmdbStreamingService>?,
   val buy: List<TmdbStreamingService>?,
   val rent: List<TmdbStreamingService>?,
+  val ads: List<TmdbStreamingService>?,
 )

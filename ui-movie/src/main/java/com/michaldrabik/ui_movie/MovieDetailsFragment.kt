@@ -75,6 +75,7 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
+import com.michaldrabik.ui_model.StreamingService
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.actors.ActorsAdapter
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponentProvider
@@ -103,6 +104,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
+import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
 import kotlinx.android.synthetic.main.view_links_movie_menu.view.*
@@ -116,6 +118,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private val movieId by lazy { IdTrakt(requireArguments().getLong(ARG_MOVIE_ID, -1)) }
 
   private var actorsAdapter: ActorsAdapter? = null
+  private var streamingAdapter: StreamingAdapter? = null
   private var relatedAdapter: RelatedMovieAdapter? = null
 
   private val imageHeight by lazy {
@@ -142,6 +145,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     setupView()
     setupStatusBar()
     setupActorsList()
+    setupStreamingsList()
     setupRelatedList()
 
     viewModel.run {
@@ -219,6 +223,18 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsActorsRecycler.apply {
       setHasFixedSize(true)
       adapter = actorsAdapter
+      layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
+      addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
+    }
+  }
+
+  private fun setupStreamingsList() {
+    streamingAdapter = StreamingAdapter().apply {
+//      itemClickListener = { showFullActorView(it) }
+    }
+    movieDetailsStreamingsRecycler.apply {
+      setHasFixedSize(true)
+      adapter = streamingAdapter
       layoutManager = LinearLayoutManager(requireContext(), HORIZONTAL, false)
       addDivider(R.drawable.divider_horizontal_list, HORIZONTAL)
     }
@@ -425,6 +441,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       image?.let { renderImage(it) }
       actors?.let { renderActors(it) }
+      streamings?.let { renderStreamings(it) }
       translation?.let { renderTranslation(it) }
       relatedMovies?.let { renderRelatedMovies(it) }
       comments?.let {
@@ -543,6 +560,14 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsActorsRecycler.fadeIf(actors.isNotEmpty(), withHardware = true)
     movieDetailsActorsEmptyView.fadeIf(actors.isEmpty(), withHardware = true)
     movieDetailsActorsProgress.gone()
+  }
+
+  private fun renderStreamings(streamings: List<StreamingService>) {
+    streamingAdapter?.setItems(streamings)
+    if (streamings.isNotEmpty()) {
+      movieDetailsMainContent.layoutTransition = LayoutTransition()
+    }
+    movieDetailsStreamingsRecycler.fadeIf(streamings.isNotEmpty(), withHardware = true)
   }
 
   private fun renderRelatedMovies(items: List<RelatedListItem>) {
@@ -692,6 +717,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
   override fun onDestroyView() {
     actorsAdapter = null
+    streamingAdapter = null
     relatedAdapter = null
     super.onDestroyView()
   }
