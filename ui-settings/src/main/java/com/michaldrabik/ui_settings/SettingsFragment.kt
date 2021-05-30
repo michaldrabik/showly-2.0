@@ -84,6 +84,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsTwitterIcon.onClick { openWebLink(Config.TWITTER_URL) }
     settingsTraktIcon.onClick { openWebLink(Config.TRAKT_URL) }
     settingsTmdbIcon.onClick { openWebLink(Config.TMDB_URL) }
+    settingsJustWatchIcon.onClick { openWebLink(Config.JUST_WATCH_URL) }
     settingsRoot.doOnApplyWindowInsets { view, insets, padding, _ ->
       view.updatePadding(top = padding.top + insets.systemWindowInsetTop)
     }

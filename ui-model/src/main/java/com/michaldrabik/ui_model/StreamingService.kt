@@ -12,7 +12,7 @@ data class StreamingService(
 ) {
 
   enum class Option(@StringRes val resId: Int) {
-    FLATRATE(R.string.textStreamingFlatrate),
+    FLATRATE(R.string.textStreamingStream),
     BUY(R.string.textStreamingBuy),
     RENT(R.string.textStreamingRent),
     ADS(R.string.textStreamingAds),

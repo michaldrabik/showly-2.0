@@ -11,7 +11,7 @@
   android:overScrollMode="never"
   android:scrollbars="none"
   tools:background="@color/colorBackground"
-  tools:layout_marginTop="-700dp"
+  tools:layout_marginTop="-2200dp"
   tools:theme="@style/AppTheme"
   >
 
@@ -899,7 +899,7 @@
       android:layout_marginStart="@dimen/spaceTiny"
       android:layout_marginEnd="@dimen/spaceSmall"
       android:adjustViewBounds="true"
-      app:layout_constraintBottom_toTopOf="@id/settingsVersion"
+      app:layout_constraintBottom_toTopOf="@id/settingsJustWatchDisclaimer"
       app:layout_constraintEnd_toStartOf="@id/settingsTwitterIcon"
       app:layout_constraintStart_toEndOf="@id/settingsTraktIcon"
       app:layout_constraintTop_toBottomOf="@id/settingsDeleteCache"
@@ -912,9 +912,8 @@
       android:layout_height="40dp"
       android:layout_marginTop="@dimen/spaceNormal"
       android:layout_marginEnd="@dimen/spaceTiny"
-      android:layout_marginBottom="@dimen/spaceNormal"
       android:adjustViewBounds="true"
-      app:layout_constraintBottom_toTopOf="@id/settingsVersion"
+      app:layout_constraintBottom_toTopOf="@id/settingsJustWatchDisclaimer"
       app:layout_constraintEnd_toStartOf="@id/settingsTmdbIcon"
       app:layout_constraintHorizontal_chainStyle="packed"
       app:layout_constraintStart_toStartOf="parent"
@@ -928,11 +927,38 @@
       android:layout_height="40dp"
       android:layout_marginStart="@dimen/spaceTiny"
       android:adjustViewBounds="true"
-      app:layout_constraintBottom_toTopOf="@id/settingsVersion"
+      app:layout_constraintBottom_toTopOf="@id/settingsJustWatchDisclaimer"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/settingsTmdbIcon"
       app:layout_constraintTop_toBottomOf="@id/settingsDeleteCache"
       app:srcCompat="@drawable/ic_twitter"
+      />
+
+    <TextView
+      android:id="@+id/settingsJustWatchDisclaimer"
+      style="@style/Settings.Summary"
+      android:layout_marginTop="@dimen/spaceNormal"
+      android:layout_marginBottom="@dimen/spaceNormal"
+      android:text="@string/textSettingsStreamingsDisclaimer"
+      android:textColor="?android:attr/textColorSecondary"
+      app:layout_constraintBottom_toTopOf="@id/settingsVersion"
+      app:layout_constraintEnd_toStartOf="@id/settingsJustWatchIcon"
+      app:layout_constraintHorizontal_chainStyle="packed"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsTraktIcon"
+      />
+
+    <ImageView
+      android:id="@+id/settingsJustWatchIcon"
+      android:layout_width="wrap_content"
+      android:layout_height="10dp"
+      android:layout_marginStart="@dimen/spaceSmall"
+      android:adjustViewBounds="true"
+      app:layout_constraintBottom_toBottomOf="@id/settingsJustWatchDisclaimer"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/settingsJustWatchDisclaimer"
+      app:layout_constraintTop_toTopOf="@id/settingsJustWatchDisclaimer"
+      app:srcCompat="@drawable/ic_justwatch"
       />
 
     <TextView
@@ -942,8 +968,7 @@
       app:layout_constraintBottom_toTopOf="@id/settingsUserId"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsTraktIcon"
-      app:layout_goneMarginBottom="@dimen/spaceBig"
+      app:layout_constraintTop_toBottomOf="@id/settingsJustWatchDisclaimer"
       tools:text="Version: 1.1.3"
       />
 
