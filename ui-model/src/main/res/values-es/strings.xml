@@ -76,4 +76,9 @@
   <string name="textMovieStatusPlanned">Planificada</string>
   <string name="textMovieStatusCanceled">Cancelada</string>
   <string name="textMovieStatusRumored">Rumoreada</string>
+  <string name="textStreamingStream">Stream</string>
+  <string name="textStreamingAds">Anuncios</string>
+  <string name="textStreamingBuy">Comprar</string>
+  <string name="textStreamingRent">Alquilar</string>
+  <string name="textStreamingFree">Gratis</string>
 </resources>
