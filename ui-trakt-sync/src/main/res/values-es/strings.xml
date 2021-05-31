@@ -10,5 +10,5 @@
   <string name="textTraktSyncLastTimestamp">Última sincronización: %s</string>
   <string name="textSettingsTraktAuthorizeTitle">Autorización de Trakt.tv</string>
   <string name="textSettingsScheduleImportConfirmationTitle">Sincronización Instantánea Habilitada</string>
-  <string name="textSettingsScheduleImportConfirmationMessage">\nIt parece que la Sincronización Instantánea ya está activada.\n\n¿Aún deseas programar la sincronización automática?\n</string>
+  <string name="textSettingsScheduleImportConfirmationMessage">\nParece que la Sincronización Instantánea ya está activada.\n\n¿Aún deseas programar la sincronización automática?\n</string>
 </resources>
