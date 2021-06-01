@@ -68,4 +68,6 @@ class RatingsStripView : LinearLayout {
     bindValue(ratings.metascore, viewRatingsStripMetaValue, viewRatingsStripMetaProgress, viewRatingsStripMetaLinkIcon)
     bindValue(ratings.rottenTomatoes, viewRatingsStripRottenValue, viewRatingsStripRottenProgress, viewRatingsStripRottenLinkIcon)
   }
+
+  fun isBound() = this::ratings.isInitialized && !this.ratings.isAnyLoading()
 }

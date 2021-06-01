@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_movie
 
 import android.animation.LayoutTransition
+import android.animation.LayoutTransition.APPEARING
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -396,7 +397,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           getString(R.string.textMinutesShort),
           renderGenres(movie.genres)
         )
-//        movieDetailsRating.text = String.format(ENGLISH, getString(R.string.textMovieVotes), movie.rating, movie.votes)
         movieDetailsCommentsButton.visible()
         movieDetailsShareButton.run {
           isEnabled = movie.ids.imdb.id.isNotBlank()
@@ -509,6 +509,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   }
 
   private fun renderRatings(ratings: Ratings, movie: Movie?) {
+    if (movieDetailsRatings.isBound()) return
     movieDetailsRatings.bind(ratings)
     movie?.let {
       movieDetailsRatings.onTraktClick = { openMovieLink(TRAKT, movie.traktId.toString()) }
@@ -551,26 +552,27 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   }
 
   private fun renderActors(actors: List<Actor>) {
+    if (actorsAdapter?.itemCount != 0) return
     actorsAdapter?.setItems(actors)
-    if (actors.isEmpty()) {
-      movieDetailsMainContent.layoutTransition = LayoutTransition()
-    }
-    movieDetailsActorsRecycler.fadeIf(actors.isNotEmpty(), withHardware = true)
-    movieDetailsActorsEmptyView.fadeIf(actors.isEmpty(), withHardware = true)
+    movieDetailsActorsRecycler.visibleIf(actors.isNotEmpty())
+    movieDetailsActorsEmptyView.visibleIf(actors.isEmpty())
     movieDetailsActorsProgress.gone()
   }
 
   private fun renderStreamings(streamings: List<StreamingService>) {
+    if (streamingAdapter?.itemCount != 0) return
     streamingAdapter?.setItems(streamings)
     if (streamings.isNotEmpty()) {
-      movieDetailsMainContent.layoutTransition = LayoutTransition()
+      movieDetailsMainContent.layoutTransition = LayoutTransition().apply {
+        disableTransitionType(APPEARING)
+      }
     }
     movieDetailsStreamingsRecycler.fadeIf(streamings.isNotEmpty(), withHardware = true)
   }
 
   private fun renderRelatedMovies(items: List<RelatedListItem>) {
     relatedAdapter?.setItems(items)
-    movieDetailsRelatedRecycler.fadeIf(items.isNotEmpty(), withHardware = true)
+    movieDetailsRelatedRecycler.visibleIf(items.isNotEmpty())
     movieDetailsRelatedLabel.fadeIf(items.isNotEmpty(), withHardware = true)
     movieDetailsRelatedProgress.gone()
   }
@@ -618,7 +620,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       false
     }
     movieDetailsLinksMenu.run {
-      movieDetailsMainContent.layoutTransition = null
       fadeIn(125)
       viewLinkTrakt.visibleIf(ids.trakt.id != -1L)
       viewLinkTrakt.onClick {
