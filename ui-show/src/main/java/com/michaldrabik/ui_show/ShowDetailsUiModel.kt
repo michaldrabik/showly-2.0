@@ -3,7 +3,6 @@ package com.michaldrabik.ui_show
 import com.michaldrabik.ui_base.UiModel
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.utilities.ActionEvent
-import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
@@ -11,8 +10,6 @@ import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.StreamingService
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
-import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import org.threeten.bp.format.DateTimeFormatter
 
@@ -20,10 +17,6 @@ data class ShowDetailsUiModel(
   val show: Show? = null,
   val showLoading: Boolean? = null,
   val image: Image? = null,
-  val nextEpisode: NextEpisodeBundle? = null,
-  val actors: List<Actor>? = null,
-  val relatedShows: List<RelatedListItem>? = null,
-  val seasons: List<SeasonListItem>? = null,
   val comments: List<Comment>? = null,
   val streamings: List<StreamingService>? = null,
   val listsCount: Int? = null,
@@ -47,10 +40,6 @@ data class ShowDetailsUiModel(
       showLoading = newModel.showLoading ?: showLoading,
       showFromTraktLoading = newModel.showFromTraktLoading ?: showFromTraktLoading,
       image = newModel.image ?: image,
-      nextEpisode = newModel.nextEpisode ?: nextEpisode,
-      actors = newModel.actors ?: actors,
-      relatedShows = newModel.relatedShows ?: relatedShows,
-      seasons = newModel.seasons ?: seasons,
       streamings = newModel.streamings ?: streamings,
       comments = newModel.comments ?: comments,
       listsCount = newModel.listsCount ?: listsCount,

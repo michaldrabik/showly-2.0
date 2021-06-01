@@ -25,6 +25,7 @@
       android:id="@+id/showDetailsMainContent"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:animateLayoutChanges="true"
       android:clipChildren="false"
       android:clipToPadding="false"
       android:descendantFocusability="blocksDescendants"
@@ -162,30 +163,6 @@
         tools:text="Returning Series"
         />
 
-      <!--      <ImageView-->
-      <!--        android:id="@+id/showDetailsStarIcon"-->
-      <!--        android:layout_width="wrap_content"-->
-      <!--        android:layout_height="0dp"-->
-      <!--        android:layout_marginStart="@dimen/spaceTiny"-->
-      <!--        app:layout_constraintBottom_toBottomOf="@+id/showDetailsStatus"-->
-      <!--        app:layout_constraintStart_toEndOf="@+id/showDetailsStatus"-->
-      <!--        app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"-->
-      <!--        app:srcCompat="@drawable/ic_star"-->
-      <!--        app:tint="?attr/colorAccent"-->
-      <!--        />-->
-
-      <!--      <TextView-->
-      <!--        android:id="@+id/showDetailsRating"-->
-      <!--        android:layout_width="wrap_content"-->
-      <!--        android:layout_height="wrap_content"-->
-      <!--        android:textColor="?android:attr/textColorSecondary"-->
-      <!--        android:textSize="13sp"-->
-      <!--        app:layout_constraintBottom_toBottomOf="@+id/showDetailsStatus"-->
-      <!--        app:layout_constraintStart_toEndOf="@+id/showDetailsStarIcon"-->
-      <!--        app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"-->
-      <!--        tools:text="7.62 (9239 votes)"-->
-      <!--        />-->
-
       <FrameLayout
         android:id="@+id/showDetailsButtonsLayout"
         android:layout_width="0dp"
@@ -245,25 +222,34 @@
         android:layout_marginTop="14dp"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:background="?attr/colorSeparator"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsRatings"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsRatingsWrapper"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsManageListsLabel"
         />
 
-      <com.michaldrabik.ui_base.common.views.RatingsStripView
-        android:id="@+id/showDetailsRatings"
+      <FrameLayout
+        android:id="@+id/showDetailsRatingsWrapper"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceTiny"
         android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceNormal"
+        android:animateLayoutChanges="false"
         app:layout_constraintBottom_toTopOf="@id/showDetailsStreamingsRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/separator5"
-        />
+        >
+
+        <com.michaldrabik.ui_base.common.views.RatingsStripView
+          android:id="@+id/showDetailsRatings"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          />
+
+      </FrameLayout>
 
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/showDetailsStreamingsRecycler"
@@ -279,7 +265,7 @@
         app:layout_constraintBottom_toTopOf="@id/showDetailsDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/showDetailsRatings"
+        app:layout_constraintTop_toBottomOf="@+id/showDetailsRatingsWrapper"
         tools:visibility="invisible"
         />
 
@@ -301,8 +287,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsStreamingsRecycler"
-        app:layout_goneMarginTop="0dp"
         app:layout_goneMarginBottom="@dimen/spaceHuge"
+        app:layout_goneMarginTop="0dp"
         tools:targetApi="o"
         tools:text="Description"
         />

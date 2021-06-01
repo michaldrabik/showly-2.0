@@ -7,6 +7,7 @@ import android.widget.FrameLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -33,6 +34,7 @@ class StreamingView : FrameLayout {
   private val centerCropTransformation by lazy { CenterCrop() }
   private val cornersTransformation by lazy { RoundedCorners(cornerRadius) }
   private val cornersAppleTransformation by lazy { RoundedCorners(cornerAppleRadius) }
+  private val fadeTransition by lazy { DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS) }
 
   private lateinit var streaming: StreamingService
 
@@ -59,6 +61,7 @@ class StreamingView : FrameLayout {
     Glide.with(this)
       .load("${Config.TMDB_IMAGE_BASE_LOGO_URL}${streaming.imagePath}")
       .transform(centerCropTransformation, corners)
+      .transition(fadeTransition)
       .into(viewStreamingImage)
   }
 }

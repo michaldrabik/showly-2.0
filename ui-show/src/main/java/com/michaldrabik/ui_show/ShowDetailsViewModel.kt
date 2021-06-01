@@ -1,6 +1,8 @@
 package com.michaldrabik.ui_show
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
@@ -19,6 +21,7 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.replace
+import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.EpisodeBundle
@@ -54,7 +57,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
@@ -85,6 +87,16 @@ class ShowDetailsViewModel @Inject constructor(
   private var areSeasonsLoaded = false
   private var areSeasonsLocal = false
   private val seasonItems = mutableListOf<SeasonListItem>()
+
+  private val _seasonsLiveData = MutableLiveData<List<SeasonListItem>>()
+  private val _actorsLiveData = MutableLiveData<List<Actor>>()
+  private val _relatedLiveData = MutableLiveData<List<RelatedListItem>>()
+  private val _nextEpisodeLiveData = MutableLiveData<NextEpisodeBundle>()
+
+  val seasonsLiveData: LiveData<List<SeasonListItem>> get() = _seasonsLiveData
+  val actorsLiveData: LiveData<List<Actor>> get() = _actorsLiveData
+  val relatedLiveData: LiveData<List<RelatedListItem>> get() = _relatedLiveData
+  val nextEpisodeLiveData: LiveData<NextEpisodeBundle> get() = _nextEpisodeLiveData
 
   fun loadShowDetails(id: IdTrakt, context: Context) {
     viewModelScope.launch {
@@ -119,10 +131,14 @@ class ShowDetailsViewModel @Inject constructor(
         )
 
         loadBackgroundImage(show)
-        launch { loadNextEpisode(show) }
+        loadListsCount(show)
+        launch { loadRating(show, isSignedIn) }
         launch { loadRatings(show) }
         launch { loadStreamings(show) }
         launch { loadActors(show) }
+        launch { loadNextEpisode(show) }
+        launch { loadTranslation(show) }
+        launch { loadRelatedShows(show) }
         launch {
           areSeasonsLoaded = false
           loadSeasons(show, (context as OnlineStatusProvider).isOnline())
@@ -131,14 +147,11 @@ class ShowDetailsViewModel @Inject constructor(
           }
           areSeasonsLoaded = true
         }
-        launch { loadListsCount(show) }
-        launch { loadRelatedShows(show) }
-        launch { loadTranslation(show) }
-        if (isSignedIn) launch { loadRating(show) }
-      } catch (t: Throwable) {
+      } catch (error: Throwable) {
         progressJob.cancel()
         _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadShow)
-        Logger.record(t, "Source" to "ShowDetailsViewModel")
+        Logger.record(error, "Source" to "ShowDetailsViewModel")
+        rethrowCancellation(error)
       }
     }
   }
@@ -148,38 +161,40 @@ class ShowDetailsViewModel @Inject constructor(
       val episode = episodesCase.loadNextEpisode(show.ids.trakt)
       val dateFormat = dateFormatProvider.loadFullHourFormat()
       episode?.let {
-        delay(250)
         val nextEpisode = NextEpisodeBundle(Pair(show, it), dateFormat = dateFormat)
-        uiState = ShowDetailsUiModel(nextEpisode = nextEpisode)
+        _nextEpisodeLiveData.postValue(nextEpisode)
         val translation = translationCase.loadTranslation(episode, show)
         if (translation?.title?.isNotBlank() == true) {
           val translated = it.copy(title = translation.title)
           val nextEpisodeTranslated = NextEpisodeBundle(Pair(show, translated), dateFormat = dateFormat)
-          uiState = ShowDetailsUiModel(nextEpisode = nextEpisodeTranslated)
+          _nextEpisodeLiveData.postValue(nextEpisodeTranslated)
         }
       }
-    } catch (t: Throwable) {
-      Logger.record(t, "Source" to "ShowDetailsViewModel::loadNextEpisode()")
+    } catch (error: Throwable) {
+      Logger.record(error, "Source" to "ShowDetailsViewModel::loadNextEpisode()")
+      rethrowCancellation(error)
     }
   }
 
   fun loadBackgroundImage(show: Show? = null) {
     viewModelScope.launch {
-      uiState = try {
+      try {
         val backgroundImage = imagesProvider.loadRemoteImage(show ?: this@ShowDetailsViewModel.show, FANART)
-        ShowDetailsUiModel(image = backgroundImage)
-      } catch (t: Throwable) {
-        ShowDetailsUiModel(image = Image.createUnavailable(FANART))
+        uiState = ShowDetailsUiModel(image = backgroundImage)
+      } catch (error: Throwable) {
+        uiState = ShowDetailsUiModel(image = Image.createUnavailable(FANART))
+        rethrowCancellation(error)
       }
     }
   }
 
   private suspend fun loadActors(show: Show) {
-    uiState = try {
+    try {
       val actors = actorsCase.loadActors(show)
-      ShowDetailsUiModel(actors = actors)
-    } catch (t: Throwable) {
-      ShowDetailsUiModel(actors = emptyList())
+      _actorsLiveData.postValue(actors)
+    } catch (error: Throwable) {
+      _actorsLiveData.postValue(emptyList())
+      rethrowCancellation(error)
     }
   }
 
@@ -199,22 +214,23 @@ class ShowDetailsViewModel @Inject constructor(
       .sortedByDescending { it.season.number }
 
     val calculated = markWatchedEpisodes(seasonsItems)
-    uiState = ShowDetailsUiModel(seasons = calculated)
+    _seasonsLiveData.postValue(calculated)
     seasons
-  } catch (t: Throwable) {
-    uiState = ShowDetailsUiModel(seasons = emptyList())
+  } catch (error: Throwable) {
+    _seasonsLiveData.postValue(emptyList())
     emptyList()
   }
 
   private suspend fun loadRelatedShows(show: Show) {
-    uiState = try {
+    try {
       val relatedShows = relatedShowsCase.loadRelatedShows(show).map {
         val image = imagesProvider.findCachedImage(it, POSTER)
         RelatedListItem(it, image)
       }
-      ShowDetailsUiModel(relatedShows = relatedShows)
-    } catch (t: Throwable) {
-      ShowDetailsUiModel(relatedShows = emptyList())
+      _relatedLiveData.postValue(relatedShows)
+    } catch (error: Throwable) {
+      _relatedLiveData.postValue(emptyList())
+      rethrowCancellation(error)
     }
   }
 
@@ -226,19 +242,19 @@ class ShowDetailsViewModel @Inject constructor(
       }
     } catch (error: Throwable) {
       Logger.record(error, "Source" to "ShowDetailsViewModel::loadTranslation()")
+      rethrowCancellation(error)
     }
   }
 
-  private fun loadStreamings(show: Show) {
-    viewModelScope.launch {
-      try {
-        val streamings = streamingsCase.loadStreamingServices(show)
-        delay(350)
-        uiState = ShowDetailsUiModel(streamings = streamings)
-      } catch (error: Error) {
-        uiState = ShowDetailsUiModel(streamings = emptyList())
-        Logger.record(error, "Source" to "${ShowDetailsViewModel::class.simpleName}::loadStreamings()")
-      }
+  private suspend fun loadStreamings(show: Show) {
+    try {
+      val streamings = streamingsCase.loadStreamingServices(show)
+      delay(350)
+      uiState = ShowDetailsUiModel(streamings = streamings)
+    } catch (error: Error) {
+      uiState = ShowDetailsUiModel(streamings = emptyList())
+      Logger.record(error, "Source" to "${ShowDetailsViewModel::class.simpleName}::loadStreamings()")
+      rethrowCancellation(error)
     }
   }
 
@@ -254,8 +270,8 @@ class ShowDetailsViewModel @Inject constructor(
       val ratings = ratingsCase.loadExternalRatings(show)
       uiState = ShowDetailsUiModel(ratings = ratings)
     } catch (error: Throwable) {
-      Timber.e(error)
       uiState = ShowDetailsUiModel(ratings = traktRatings)
+      rethrowCancellation(error)
     }
   }
 
@@ -282,6 +298,7 @@ class ShowDetailsViewModel @Inject constructor(
         uiState = ShowDetailsUiModel(seasonTranslation = ActionEvent(updatedItem))
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "ShowDetailsViewModel::loadSeasonTranslation()")
+        rethrowCancellation(error)
       }
     }
   }
@@ -295,11 +312,12 @@ class ShowDetailsViewModel @Inject constructor(
 
   fun loadComments() {
     viewModelScope.launch {
-      uiState = try {
+      try {
         val comments = commentsCase.loadComments(show)
-        ShowDetailsUiModel(comments = comments)
-      } catch (t: Throwable) {
-        ShowDetailsUiModel(comments = emptyList())
+        uiState = ShowDetailsUiModel(comments = comments)
+      } catch (error: Throwable) {
+        uiState = ShowDetailsUiModel(comments = emptyList())
+        rethrowCancellation(error)
       }
     }
     Analytics.logShowCommentsClick(show)
@@ -328,9 +346,10 @@ class ShowDetailsViewModel @Inject constructor(
         }
 
         uiState = ShowDetailsUiModel(comments = currentComments)
-      } catch (t: Throwable) {
+      } catch (error: Throwable) {
         _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
         uiState = ShowDetailsUiModel(comments = currentComments)
+        rethrowCancellation(error)
       }
     }
   }
@@ -390,9 +409,9 @@ class ShowDetailsViewModel @Inject constructor(
   fun loadMissingImage(item: RelatedListItem, force: Boolean) {
 
     fun updateItem(new: RelatedListItem) {
-      val currentItems = uiState?.relatedShows?.toMutableList()
-      currentItems?.findReplace(new) { it.isSameAs(new) }
-      uiState = uiState?.copy(relatedShows = currentItems)
+      val currentItems = _relatedLiveData.value?.toMutableList() ?: mutableListOf()
+      currentItems.findReplace(new) { it.isSameAs(new) }
+      _relatedLiveData.postValue(currentItems)
     }
 
     viewModelScope.launch {
@@ -400,8 +419,9 @@ class ShowDetailsViewModel @Inject constructor(
       try {
         val image = imagesProvider.loadRemoteImage(item.show, item.image.type, force)
         updateItem(item.copy(isLoading = false, image = image))
-      } catch (t: Throwable) {
+      } catch (error: Throwable) {
         updateItem(item.copy(isLoading = false, image = Image.createUnavailable(item.image.type)))
+        rethrowCancellation(error)
       }
     }
   }
@@ -410,14 +430,15 @@ class ShowDetailsViewModel @Inject constructor(
     uiState = ShowDetailsUiModel(isPremium = settingsRepository.isPremium)
   }
 
-  private suspend fun loadRating(show: Show) {
+  private suspend fun loadRating(show: Show, isSignedIn: Boolean) {
+    if (!isSignedIn) return
     try {
       uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = true))
       val rating = ratingsCase.loadRating(show)
       uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = rating ?: TraktRating.EMPTY, rateLoading = false))
     } catch (error: Throwable) {
-      Timber.e(error)
       uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = false))
+      rethrowCancellation(error)
     }
   }
 
@@ -433,6 +454,7 @@ class ShowDetailsViewModel @Inject constructor(
       } catch (error: Throwable) {
         uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = false))
         _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+        rethrowCancellation(error)
       }
     }
   }
@@ -447,6 +469,7 @@ class ShowDetailsViewModel @Inject constructor(
       } catch (error: Throwable) {
         uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = false))
         _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+        rethrowCancellation(error)
       }
     }
   }
@@ -532,6 +555,7 @@ class ShowDetailsViewModel @Inject constructor(
       } catch (error: Throwable) {
         _messageLiveData.value = MessageEvent.error(R.string.errorTraktSyncGeneral)
         uiState = ShowDetailsUiModel(showFromTraktLoading = false)
+        rethrowCancellation(error)
       }
     }
   }
@@ -546,6 +570,7 @@ class ShowDetailsViewModel @Inject constructor(
       } catch (error: Throwable) {
         _messageLiveData.value = MessageEvent.error(R.string.errorTraktSyncGeneral)
         uiState = ShowDetailsUiModel(showFromTraktLoading = false)
+        rethrowCancellation(error)
       }
     }
   }
@@ -611,13 +636,13 @@ class ShowDetailsViewModel @Inject constructor(
         seasonItem.copy(episodes = episodes)
       }
       seasonItems.replace(items)
-      uiState = ShowDetailsUiModel(seasons = items)
+      _seasonsLiveData.postValue(items)
     }
   }
 
   private suspend fun refreshWatchedEpisodes() {
     val updatedSeasonItems = markWatchedEpisodes(seasonItems)
-    uiState = ShowDetailsUiModel(seasons = updatedSeasonItems)
+    _seasonsLiveData.postValue(updatedSeasonItems)
   }
 
   private suspend fun markWatchedEpisodes(seasonsList: List<SeasonListItem>): List<SeasonListItem> {
