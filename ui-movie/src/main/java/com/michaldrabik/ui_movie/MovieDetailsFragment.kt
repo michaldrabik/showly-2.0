@@ -1,7 +1,5 @@
 package com.michaldrabik.ui_movie
 
-import android.animation.LayoutTransition
-import android.animation.LayoutTransition.APPEARING
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -424,7 +422,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       movieLoading?.let {
         if (!movieDetailsCommentsView.isVisible) {
-          movieDetailsMainLayout.fadeIf(!it, withHardware = true)
+          movieDetailsMainLayout.fadeIf(!it, hardware = true)
           movieDetailsMainProgress.visibleIf(it)
         }
       }
@@ -462,7 +460,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       removeFromTraktHistory?.let { event ->
         event.consume()?.let {
-          movieDetailsAddButton.fadeIf(!it, withHardware = true)
+          movieDetailsAddButton.fadeIf(!it, hardware = true)
           movieDetailsRemoveTraktButton.run {
             fadeIf(it)
             onYesClickListener = { viewModel.removeFromTraktHistory() }
@@ -471,7 +469,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       removeFromTraktWatchlist?.let { event ->
         event.consume()?.let {
-          movieDetailsAddButton.fadeIf(!it, withHardware = true)
+          movieDetailsAddButton.fadeIf(!it, hardware = true)
           movieDetailsRemoveTraktButton.run {
             fadeIf(it)
             onYesClickListener = { viewModel.removeFromTraktWatchlist() }
@@ -562,18 +560,13 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private fun renderStreamings(streamings: List<StreamingService>) {
     if (streamingAdapter?.itemCount != 0) return
     streamingAdapter?.setItems(streamings)
-    if (streamings.isNotEmpty()) {
-      movieDetailsMainContent.layoutTransition = LayoutTransition().apply {
-        disableTransitionType(APPEARING)
-      }
-    }
-    movieDetailsStreamingsRecycler.fadeIf(streamings.isNotEmpty(), withHardware = true)
+    movieDetailsStreamingsRecycler.fadeIf(streamings.isNotEmpty(), hardware = true)
   }
 
   private fun renderRelatedMovies(items: List<RelatedListItem>) {
     relatedAdapter?.setItems(items)
     movieDetailsRelatedRecycler.visibleIf(items.isNotEmpty())
-    movieDetailsRelatedLabel.fadeIf(items.isNotEmpty(), withHardware = true)
+    movieDetailsRelatedLabel.fadeIf(items.isNotEmpty(), hardware = true)
     movieDetailsRelatedProgress.gone()
   }
 

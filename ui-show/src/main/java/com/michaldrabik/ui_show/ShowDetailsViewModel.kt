@@ -54,7 +54,6 @@ import com.michaldrabik.ui_show.quickSetup.QuickSetupListItem
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.util.Locale
@@ -249,7 +248,6 @@ class ShowDetailsViewModel @Inject constructor(
   private suspend fun loadStreamings(show: Show) {
     try {
       val streamings = streamingsCase.loadStreamingServices(show)
-      delay(350)
       uiState = ShowDetailsUiModel(streamings = streamings)
     } catch (error: Error) {
       uiState = ShowDetailsUiModel(streamings = emptyList())

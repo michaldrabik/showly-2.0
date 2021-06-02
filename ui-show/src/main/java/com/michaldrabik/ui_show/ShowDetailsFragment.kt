@@ -125,7 +125,6 @@ import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import kotlinx.android.synthetic.main.view_links_menu.view.*
 import org.threeten.bp.Duration
-import timber.log.Timber
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
@@ -505,7 +504,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           getString(R.string.textMinutesShort),
           renderGenres(show.genres)
         )
-//        showDetailsRating.text = String.format(ENGLISH, getString(R.string.textVotes), show.rating, show.votes)
         showDetailsCommentsButton.visible()
         showDetailsShareButton.run {
           isEnabled = show.ids.imdb.id.isNotBlank()
@@ -533,7 +531,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       showLoading?.let {
         if (!showDetailsEpisodesView.isVisible && !showDetailsCommentsView.isVisible) {
-          showDetailsMainLayout.fadeIf(!it, withHardware = true)
+          showDetailsMainLayout.fadeIf(!it, hardware = true)
           showDetailsMainProgress.visibleIf(it)
         }
       }
@@ -571,18 +569,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       removeFromTraktHistory?.let { event ->
         event.consume()?.let {
-          showDetailsAddButton.fadeIf(!it, withHardware = true)
+          showDetailsAddButton.fadeIf(!it, hardware = true)
           showDetailsRemoveTraktButton.run {
-            fadeIf(it, withHardware = true)
+            fadeIf(it, hardware = true)
             onYesClickListener = { viewModel.removeFromTraktHistory() }
           }
         }
       }
       removeFromTraktWatchlist?.let { event ->
         event.consume()?.let {
-          showDetailsAddButton.fadeIf(!it, withHardware = true)
+          showDetailsAddButton.fadeIf(!it, hardware = true)
           showDetailsRemoveTraktButton.run {
-            fadeIf(it, withHardware = true)
+            fadeIf(it, hardware = true)
             onYesClickListener = { viewModel.removeFromTraktWatchlist() }
           }
         }
@@ -671,7 +669,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         onClick {
           showEpisodeDetails(show, episode, null, isWatched = false, showButton = false)
         }
-        visible()
+        fadeIn(withHardware = true)
       }
 
       episode.firstAired?.let {
@@ -694,10 +692,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     seasonsAdapter?.setItems(seasonsItems)
     showDetailsEpisodesView.updateEpisodes(seasonsItems)
     showDetailsSeasonsProgress.gone()
-    showDetailsSeasonsRecycler.visibleIf(seasonsItems.isNotEmpty())
-    showDetailsSeasonsLabel.visibleIf(seasonsItems.isNotEmpty())
     showDetailsSeasonsEmptyView.visibleIf(seasonsItems.isEmpty())
-    showDetailsQuickProgress.visibleIf(seasonsItems.isNotEmpty())
+    showDetailsSeasonsRecycler.fadeIf(seasonsItems.isNotEmpty(), hardware = true)
+    showDetailsSeasonsLabel.fadeIf(seasonsItems.isNotEmpty(), hardware = true)
+    showDetailsQuickProgress.fadeIf(seasonsItems.isNotEmpty(), hardware = true)
     showDetailsQuickProgress.onClick {
       if (seasonsItems.any { !it.season.isSpecial() }) {
         openQuickSetupDialog(seasonsItems.map { it.season })
@@ -705,15 +703,12 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         showSnack(MessageEvent.info(R.string.textSeasonsEmpty))
       }
     }
-    renderRuntimeLeft(seasonsItems)
-    Timber.d("renderSeasons()")
   }
 
   private fun renderStreamings(streamings: List<StreamingService>) {
     if (streamingAdapter?.itemCount != 0) return
     streamingAdapter?.setItems(streamings)
-    showDetailsStreamingsRecycler.visibleIf(streamings.isNotEmpty())
-    Timber.d("renderStreamings()")
+    showDetailsStreamingsRecycler.fadeIf(streamings.isNotEmpty(), hardware = true)
   }
 
   private fun renderRuntimeLeft(seasonsItems: List<SeasonListItem>) {
@@ -733,7 +728,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       else -> getString(R.string.textRuntimeLeftHours, hours.toString(), minutes.toString())
     }
     showDetailsRuntimeLeft.text = runtimeText
-    showDetailsRuntimeLeft.visibleIf(seasonsItems.isNotEmpty() && runtimeLeft > 0)
+    showDetailsRuntimeLeft.fadeIf(seasonsItems.isNotEmpty() && runtimeLeft > 0, hardware = true)
   }
 
   private fun renderRelatedShows(items: List<RelatedListItem>) {

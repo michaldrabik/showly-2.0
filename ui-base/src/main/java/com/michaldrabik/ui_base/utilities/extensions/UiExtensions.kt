@@ -42,11 +42,11 @@ fun View.fadeIf(
   condition: Boolean,
   duration: Long = 250,
   startDelay: Long = 0,
-  withHardware: Boolean = false,
+  hardware: Boolean = false,
 ) = if (condition) {
-  fadeIn(duration, startDelay, withHardware)
+  fadeIn(duration, startDelay, hardware)
 } else {
-  fadeOut(duration, startDelay, withHardware)
+  fadeOut(duration, startDelay, hardware)
 }
 
 fun View.fadeIn(

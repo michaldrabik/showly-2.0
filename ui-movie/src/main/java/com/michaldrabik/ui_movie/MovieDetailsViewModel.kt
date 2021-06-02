@@ -36,7 +36,6 @@ import com.michaldrabik.ui_movie.cases.MovieDetailsTranslationCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsWatchlistCase
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
@@ -98,9 +97,9 @@ class MovieDetailsViewModel @Inject constructor(
         )
 
         loadBackgroundImage(movie)
+        loadListsCount(movie)
         launch { loadRatings(movie) }
         launch { loadActors(movie) }
-        launch { loadListsCount(movie) }
         launch { loadStreamings(movie) }
         launch { loadRelatedMovies(movie) }
         launch { loadTranslation(movie) }
@@ -168,16 +167,13 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  private fun loadStreamings(movie: Movie) {
-    viewModelScope.launch {
-      try {
-        val streamings = streamingCase.loadStreamingServices(movie)
-        delay(350)
-        uiState = MovieDetailsUiModel(streamings = streamings)
-      } catch (error: Error) {
-        uiState = MovieDetailsUiModel(streamings = emptyList())
-        Logger.record(error, "Source" to "${MovieDetailsViewModel::class.simpleName}::loadStreamings()")
-      }
+  private suspend fun loadStreamings(movie: Movie) {
+    try {
+      val streamings = streamingCase.loadStreamingServices(movie)
+      uiState = MovieDetailsUiModel(streamings = streamings)
+    } catch (error: Error) {
+      uiState = MovieDetailsUiModel(streamings = emptyList())
+      Logger.record(error, "Source" to "${MovieDetailsViewModel::class.simpleName}::loadStreamings()")
     }
   }
 

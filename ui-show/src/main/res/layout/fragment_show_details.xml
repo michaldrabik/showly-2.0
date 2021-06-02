@@ -25,7 +25,6 @@
       android:id="@+id/showDetailsMainContent"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:animateLayoutChanges="true"
       android:clipChildren="false"
       android:clipToPadding="false"
       android:descendantFocusability="blocksDescendants"
@@ -222,34 +221,25 @@
         android:layout_marginTop="14dp"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:background="?attr/colorSeparator"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsRatingsWrapper"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsRatings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsManageListsLabel"
         />
 
-      <FrameLayout
-        android:id="@+id/showDetailsRatingsWrapper"
+      <com.michaldrabik.ui_base.common.views.RatingsStripView
+        android:id="@+id/showDetailsRatings"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceTiny"
         android:layout_marginTop="@dimen/spaceNormal"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:layout_marginBottom="@dimen/spaceNormal"
-        android:animateLayoutChanges="false"
         app:layout_constraintBottom_toTopOf="@id/showDetailsStreamingsRecycler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/separator5"
-        >
-
-        <com.michaldrabik.ui_base.common.views.RatingsStripView
-          android:id="@+id/showDetailsRatings"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          />
-
-      </FrameLayout>
+        />
 
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/showDetailsStreamingsRecycler"
@@ -265,7 +255,7 @@
         app:layout_constraintBottom_toTopOf="@id/showDetailsDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/showDetailsRatingsWrapper"
+        app:layout_constraintTop_toBottomOf="@+id/showDetailsRatings"
         tools:visibility="invisible"
         />
 
