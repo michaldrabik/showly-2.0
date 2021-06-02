@@ -12,7 +12,7 @@
     android:id="@+id/viewStreamingContent"
     android:layout_width="match_parent"
     android:layout_height="@dimen/streamingTileHeight"
-    android:background="?android:attr/selectableItemBackground"
+    android:background="@drawable/bg_streaming_ripple"
     android:elevation="@dimen/elevationTiny"
     android:paddingStart="@dimen/spaceSmall"
     android:paddingTop="@dimen/spaceTiny"

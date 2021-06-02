@@ -7,7 +7,6 @@ import android.widget.FrameLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -20,6 +19,7 @@ class StreamingView : FrameLayout {
 
   companion object {
     private const val NETFLIX = "Netflix"
+    private const val NETFLIX_FREE = "Netflix Free"
     private const val GOOGLE_PLAY = "Google Play Movies"
     private const val YOU_TUBE = "YouTube"
   }
@@ -34,17 +34,15 @@ class StreamingView : FrameLayout {
   private val centerCropTransformation by lazy { CenterCrop() }
   private val cornersTransformation by lazy { RoundedCorners(cornerRadius) }
   private val cornersAppleTransformation by lazy { RoundedCorners(cornerAppleRadius) }
-  private val fadeTransition by lazy { DrawableTransitionOptions.withCrossFade(Config.IMAGE_FADE_DURATION_MS) }
 
   private lateinit var streaming: StreamingService
 
   init {
     inflate(context, R.layout.view_streaming, this)
     layoutParams = LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
-    setBackgroundResource(R.drawable.bg_streaming)
-    onClick {
+    viewStreamingContent.onClick {
       when (streaming.name) {
-        NETFLIX -> openWebUrl("https://www.netflix.com/search/${streaming.mediaName}")
+        NETFLIX, NETFLIX_FREE -> openWebUrl("https://www.netflix.com/search/${streaming.mediaName}")
         GOOGLE_PLAY -> openWebUrl("https://play.google.com/store/search?c=movies&gl=${streaming.countryCode}&q=${streaming.mediaName}")
         YOU_TUBE -> openWebUrl("https://www.youtube.com/results?search_query=${streaming.mediaName} movie")
         else -> openWebUrl(streaming.link)
@@ -61,7 +59,6 @@ class StreamingView : FrameLayout {
     Glide.with(this)
       .load("${Config.TMDB_IMAGE_BASE_LOGO_URL}${streaming.imagePath}")
       .transform(centerCropTransformation, corners)
-      .transition(fadeTransition)
       .into(viewStreamingImage)
   }
 }
