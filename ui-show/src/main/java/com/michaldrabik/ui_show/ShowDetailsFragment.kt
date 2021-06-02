@@ -169,11 +169,14 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      seasonsLiveData.observe(viewLifecycleOwner, {
-        renderSeasons(it)
-        renderRuntimeLeft(it)
-        (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
-      })
+      seasonsLiveData.observe(
+        viewLifecycleOwner,
+        {
+          renderSeasons(it)
+          renderRuntimeLeft(it)
+          (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
+        }
+      )
       nextEpisodeLiveData.observe(viewLifecycleOwner, { renderNextEpisode(it) })
       actorsLiveData.observe(viewLifecycleOwner, { renderActors(it) })
       relatedLiveData.observe(viewLifecycleOwner, { renderRelatedShows(it) })
