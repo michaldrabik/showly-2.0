@@ -560,7 +560,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
   private fun renderStreamings(streamings: List<StreamingService>) {
     if (streamingAdapter?.itemCount != 0) return
     streamingAdapter?.setItems(streamings)
-    movieDetailsStreamingsRecycler.fadeIf(streamings.isNotEmpty(), hardware = true)
+    if (streamings.isNotEmpty()) {
+      movieDetailsStreamingsRecycler.fadeIn(withHardware = true)
+    } else {
+      movieDetailsStreamingsRecycler.gone()
+    }
   }
 
   private fun renderRelatedMovies(items: List<RelatedListItem>) {

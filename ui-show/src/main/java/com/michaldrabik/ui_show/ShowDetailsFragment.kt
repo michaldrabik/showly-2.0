@@ -711,7 +711,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun renderStreamings(streamings: List<StreamingService>) {
     if (streamingAdapter?.itemCount != 0) return
     streamingAdapter?.setItems(streamings)
-    showDetailsStreamingsRecycler.fadeIf(streamings.isNotEmpty(), hardware = true)
+    if (streamings.isNotEmpty()) {
+      showDetailsStreamingsRecycler.fadeIn(withHardware = true)
+    } else {
+      showDetailsStreamingsRecycler.gone()
+    }
   }
 
   private fun renderRuntimeLeft(seasonsItems: List<SeasonListItem>) {
