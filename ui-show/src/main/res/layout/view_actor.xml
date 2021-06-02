@@ -12,7 +12,7 @@
     android:id="@+id/actorRoot"
     android:layout_width="@dimen/actorTileImageWidth"
     android:layout_height="@dimen/actorTileImageHeight"
-    android:foreground="?android:attr/selectableItemBackground"
+    android:foreground="@drawable/bg_media_view_ripple"
     >
 
     <ImageView

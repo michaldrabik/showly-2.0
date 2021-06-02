@@ -47,7 +47,7 @@ class ProgressWidgetViewsFactory(
 
   override val coroutineContext = Job() + Dispatchers.Main
 
-  private val imageCorner by lazy { context.dimenToPx(R.dimen.showTileCorner) }
+  private val imageCorner by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
   private val imageWidth by lazy { context.dimenToPx(R.dimen.widgetImageWidth) }
   private val imageHeight by lazy { context.dimenToPx(R.dimen.widgetImageHeight) }
   private val adapterItems by lazy { mutableListOf<ProgressItem>() }

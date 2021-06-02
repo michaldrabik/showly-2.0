@@ -32,7 +32,7 @@ abstract class ListDetailsItemView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  private val cornerRadius by lazy { context.dimenToPx(R.dimen.listItemCorner) }
+  private val cornerRadius by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
   private val centerCropTransformation by lazy { CenterCrop() }
   private val cornersTransformation by lazy { RoundedCorners(cornerRadius) }
 

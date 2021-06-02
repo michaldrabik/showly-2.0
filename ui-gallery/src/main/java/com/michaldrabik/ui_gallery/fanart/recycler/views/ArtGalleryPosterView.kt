@@ -28,7 +28,7 @@ class ArtGalleryPosterView : FrameLayout {
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
   }
 
-  private val cornerRadius by lazy { context.dimenToPx(R.dimen.showTileCorner) }
+  private val cornerRadius by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
   var onItemClickListener: (() -> Unit)? = null
 
   fun bind(image: Image) {

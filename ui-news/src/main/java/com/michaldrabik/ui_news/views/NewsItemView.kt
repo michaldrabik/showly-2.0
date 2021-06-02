@@ -40,7 +40,7 @@ class NewsItemView : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  private val cornerRadius by lazy { context.dimenToPx(R.dimen.listItemCorner) }
+  private val cornerRadius by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
 
   var itemClickListener: ((NewsListItem) -> Unit)? = null
 

@@ -4,5 +4,5 @@
   android:shape="rectangle"
   >
   <solid android:color="?attr/colorPrimaryBackground" />
-  <corners android:radius="@dimen/showTileCorner" />
+  <corners android:radius="@dimen/mediaTileCorner" />
 </shape>

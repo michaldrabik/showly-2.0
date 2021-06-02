@@ -15,7 +15,7 @@
     android:layout_margin="@dimen/gridSpacing"
     android:background="@drawable/bg_media_view_elevation"
     android:elevation="@dimen/elevationSmall"
-    android:foreground="?android:attr/selectableItemBackground"
+    android:foreground="@drawable/bg_media_view_ripple"
     >
 
     <ImageView

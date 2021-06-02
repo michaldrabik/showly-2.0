@@ -22,11 +22,9 @@
   <dimen name="gridSpacing">3dp</dimen>
   <dimen name="gridPadding">6dp</dimen>
 
-  <dimen name="showTileCorner">4dp</dimen>
+  <dimen name="mediaTileCorner">4dp</dimen>
   <dimen name="showTilePlaceholder">40dp</dimen>
-  <dimen name="movieTileCorner">4dp</dimen>
   <dimen name="movieTilePlaceholder">40dp</dimen>
-  <dimen name="listItemCorner">4dp</dimen>
 
   <dimen name="bottomSheetCorner">16dp</dimen>
   <dimen name="relatedTileMoviePlaceholder">22dp</dimen>
