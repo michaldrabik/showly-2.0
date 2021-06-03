@@ -76,4 +76,9 @@
   <string name="textMovieStatusPlanned">Pianificata</string>
   <string name="textMovieStatusCanceled">Cancellata</string>
   <string name="textMovieStatusRumored">Si Vocifera</string>
+  <string name="textStreamingStream">Streaming</string>
+  <string name="textStreamingAds">Pubblicità</string>
+  <string name="textStreamingBuy">Acquisto</string>
+  <string name="textStreamingRent">Noleggio</string>
+  <string name="textStreamingFree">Gratuito</string>
 </resources>

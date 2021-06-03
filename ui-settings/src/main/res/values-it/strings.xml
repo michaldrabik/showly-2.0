@@ -33,8 +33,8 @@
   <string name="textSettingsThemeWidgetsSummary">Seleziona il tema per i widget.</string>
   <string name="textSettingsWidgetsTransparencyTitle">Sfondo</string>
   <string name="textSettingsWidgetsTransparencySummary">Imposta il livello di trasparenza dello sfondo dei widget.</string>
-  <string name="textSettingsMyShowsCountryTitle">Regione JustWatch</string>
-  <string name="textSettingsMyShowsCountrySummary">Selezione la regione per i risultati di JustWatch.</string>
+  <string name="textSettingsMyShowsCountryTitle">Regione</string>
+  <string name="textSettingsMyShowsCountrySummary">Selezionare la regione da utilizzare con i dati dei servizi di streaming.</string>
   <string name="textSettingsMyShowsLanguageTitle">Lingua</string>
   <string name="textSettingsMyShowsLanguageSummary">Le descrizioni e i titoli verranno tradotti quando possibile. L\'app verrà riavviata.</string>
   <string name="textSettingsIncludeArchiveStatsTitle">Statistiche Archiviate</string>
@@ -65,6 +65,7 @@
   <string name="textSettingsWidgets">Widget</string>
   <string name="textSettingsWidgetsLabelsTitle">Titoli</string>
   <string name="textSettingsWidgetsLabelsSummary">Mostra i titoli semitrasparenti per le sezioni dei widget.</string>
+  <string name="textSettingsStreamingsDisclaimer">I dati dei servizi di streaming sono forniti da</string>
   <string name="textPremium">Showly Premium</string>
   <string name="textPremiumAd">Diventa un sostenitore e ottieni l\'accesso alle funzionalità bonus! Clicca per saperne di più.</string>
   <string name="textThemeDark">Scuro</string>

@@ -76,4 +76,9 @@
   <string name="textMovieStatusPlanned">Запланировано</string>
   <string name="textMovieStatusCanceled">Отменен</string>
   <string name="textMovieStatusRumored">Ходят слухи</string>
+  <string name="textStreamingStream">Стриминг</string>
+  <string name="textStreamingAds">Реклама</string>
+  <string name="textStreamingBuy">Покупка</string>
+  <string name="textStreamingRent">Аренда</string>
+  <string name="textStreamingFree">Бесплатно</string>
 </resources>

@@ -76,4 +76,9 @@
   <string name="textMovieStatusPlanned">مُخطط له</string>
   <string name="textMovieStatusCanceled">تم إلغاءه</string>
   <string name="textMovieStatusRumored">يُشاع</string>
+  <string name="textStreamingStream">بث</string>
+  <string name="textStreamingAds">إعلانات</string>
+  <string name="textStreamingBuy">شراء</string>
+  <string name="textStreamingRent">إيجار</string>
+  <string name="textStreamingFree">مجانًا</string>
 </resources>
