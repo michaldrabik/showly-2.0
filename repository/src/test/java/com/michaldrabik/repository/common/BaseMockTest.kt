@@ -17,6 +17,7 @@ import com.michaldrabik.repository.mappers.RatingsMapper
 import com.michaldrabik.repository.mappers.SeasonMapper
 import com.michaldrabik.repository.mappers.SettingsMapper
 import com.michaldrabik.repository.mappers.ShowMapper
+import com.michaldrabik.repository.mappers.StreamingsMapper
 import com.michaldrabik.repository.mappers.TranslationMapper
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -48,7 +49,8 @@ abstract class BaseMockTest {
     SettingsMapper(),
     TranslationMapper(idsMapper),
     CustomListMapper(),
-    RatingsMapper()
+    RatingsMapper(),
+    StreamingsMapper()
   )
 
   @Before
