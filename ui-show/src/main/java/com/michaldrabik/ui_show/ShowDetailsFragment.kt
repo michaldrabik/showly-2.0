@@ -79,7 +79,6 @@ import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_model.StreamingService
 import com.michaldrabik.ui_model.Tip.SHOW_DETAILS_GALLERY
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
@@ -110,6 +109,7 @@ import com.michaldrabik.ui_show.helpers.ShowLink.ROTTEN
 import com.michaldrabik.ui_show.helpers.ShowLink.TMDB
 import com.michaldrabik.ui_show.helpers.ShowLink.TRAKT
 import com.michaldrabik.ui_show.helpers.ShowLink.TVDB
+import com.michaldrabik.ui_show.helpers.StreamingsBundle
 import com.michaldrabik.ui_show.quickSetup.QuickSetupView
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.related.RelatedShowAdapter
@@ -179,6 +179,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       )
       nextEpisodeLiveData.observe(viewLifecycleOwner, { renderNextEpisode(it) })
       actorsLiveData.observe(viewLifecycleOwner, { renderActors(it) })
+      streamingsLiveData.observe(viewLifecycleOwner, { renderStreamings(it) })
       relatedLiveData.observe(viewLifecycleOwner, { renderRelatedShows(it) })
       messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
       if (!isInitialized) {
@@ -554,7 +555,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       image?.let { renderImage(it) }
       ratings?.let { renderRatings(it, show) }
-      streamings?.let { renderStreamings(it) }
       translation?.let { renderTranslation(it) }
       seasonTranslation?.let { item ->
         item.consume()?.let { showDetailsEpisodesView.bindEpisodes(it.episodes, animate = false) }
@@ -708,12 +708,17 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
-  private fun renderStreamings(streamings: List<StreamingService>) {
+  private fun renderStreamings(streamings: StreamingsBundle) {
     if (streamingAdapter?.itemCount != 0) return
-    streamingAdapter?.setItems(streamings)
-    if (streamings.isNotEmpty()) {
-      showDetailsStreamingsRecycler.fadeIn(withHardware = true)
-    } else {
+    val (items, isLocal) = streamings
+    streamingAdapter?.setItems(items)
+    if (items.isNotEmpty()) {
+      if (isLocal) {
+        showDetailsStreamingsRecycler.visible()
+      } else {
+        showDetailsStreamingsRecycler.fadeIn(withHardware = true)
+      }
+    } else if (!isLocal) {
       showDetailsStreamingsRecycler.gone()
     }
   }

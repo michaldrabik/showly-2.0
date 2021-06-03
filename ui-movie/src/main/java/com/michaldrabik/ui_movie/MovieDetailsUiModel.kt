@@ -9,8 +9,8 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
-import com.michaldrabik.ui_model.StreamingService
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_movie.helpers.StreamingsBundle
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import org.threeten.bp.format.DateTimeFormatter
 
@@ -25,7 +25,7 @@ data class MovieDetailsUiModel(
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
   val ratings: Ratings? = null,
-  val streamings: List<StreamingService>? = null,
+  val streamings: StreamingsBundle? = null,
   val removeFromTraktHistory: ActionEvent<Boolean>? = null,
   val removeFromTraktWatchlist: ActionEvent<Boolean>? = null,
   val showFromTraktLoading: Boolean? = null,

@@ -8,7 +8,6 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_model.StreamingService
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import org.threeten.bp.format.DateTimeFormatter
@@ -18,7 +17,6 @@ data class ShowDetailsUiModel(
   val showLoading: Boolean? = null,
   val image: Image? = null,
   val comments: List<Comment>? = null,
-  val streamings: List<StreamingService>? = null,
   val listsCount: Int? = null,
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
@@ -40,7 +38,6 @@ data class ShowDetailsUiModel(
       showLoading = newModel.showLoading ?: showLoading,
       showFromTraktLoading = newModel.showFromTraktLoading ?: showFromTraktLoading,
       image = newModel.image ?: image,
-      streamings = newModel.streamings ?: streamings,
       comments = newModel.comments ?: comments,
       listsCount = newModel.listsCount ?: listsCount,
       followedState = newModel.followedState ?: followedState,

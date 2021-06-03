@@ -34,6 +34,7 @@ import com.michaldrabik.ui_movie.cases.MovieDetailsRelatedCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsStreamingCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsTranslationCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsWatchlistCase
+import com.michaldrabik.ui_movie.helpers.StreamingsBundle
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -169,10 +170,13 @@ class MovieDetailsViewModel @Inject constructor(
 
   private suspend fun loadStreamings(movie: Movie) {
     try {
-      val streamings = streamingCase.loadStreamingServices(movie)
-      uiState = MovieDetailsUiModel(streamings = streamings)
+      val localStreamings = streamingCase.getLocalStreamingServices(movie)
+      uiState = MovieDetailsUiModel(streamings = StreamingsBundle(localStreamings, isLocal = true))
+
+      val remoteStreamings = streamingCase.loadStreamingServices(movie)
+      uiState = MovieDetailsUiModel(streamings = StreamingsBundle(remoteStreamings, isLocal = false))
     } catch (error: Error) {
-      uiState = MovieDetailsUiModel(streamings = emptyList())
+      uiState = MovieDetailsUiModel(streamings = StreamingsBundle(emptyList(), isLocal = false))
       Logger.record(error, "Source" to "${MovieDetailsViewModel::class.simpleName}::loadStreamings()")
     }
   }

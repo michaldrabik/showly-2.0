@@ -50,6 +50,7 @@ import com.michaldrabik.ui_show.cases.ShowDetailsTranslationCase
 import com.michaldrabik.ui_show.cases.ShowDetailsWatchlistCase
 import com.michaldrabik.ui_show.episodes.EpisodeListItem
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
+import com.michaldrabik.ui_show.helpers.StreamingsBundle
 import com.michaldrabik.ui_show.quickSetup.QuickSetupListItem
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
@@ -91,11 +92,13 @@ class ShowDetailsViewModel @Inject constructor(
   private val _actorsLiveData = MutableLiveData<List<Actor>>()
   private val _relatedLiveData = MutableLiveData<List<RelatedListItem>>()
   private val _nextEpisodeLiveData = MutableLiveData<NextEpisodeBundle>()
+  private val _streamingsBundle = MutableLiveData<StreamingsBundle>()
 
   val seasonsLiveData: LiveData<List<SeasonListItem>> get() = _seasonsLiveData
   val actorsLiveData: LiveData<List<Actor>> get() = _actorsLiveData
   val relatedLiveData: LiveData<List<RelatedListItem>> get() = _relatedLiveData
   val nextEpisodeLiveData: LiveData<NextEpisodeBundle> get() = _nextEpisodeLiveData
+  val streamingsLiveData: LiveData<StreamingsBundle> get() = _streamingsBundle
 
   fun loadShowDetails(id: IdTrakt, context: Context) {
     viewModelScope.launch {
@@ -247,12 +250,14 @@ class ShowDetailsViewModel @Inject constructor(
 
   private suspend fun loadStreamings(show: Show) {
     try {
-      val streamings = streamingsCase.loadStreamingServices(show)
-      uiState = ShowDetailsUiModel(streamings = streamings)
+      val localStreamings = streamingsCase.getLocalStreamingServices(show)
+      _streamingsBundle.postValue(StreamingsBundle(localStreamings, isLocal = true))
+
+      val remoteStreamings = streamingsCase.loadStreamingServices(show)
+      _streamingsBundle.postValue(StreamingsBundle(remoteStreamings, isLocal = false))
     } catch (error: Error) {
-      uiState = ShowDetailsUiModel(streamings = emptyList())
+      _streamingsBundle.postValue(StreamingsBundle(emptyList(), isLocal = false))
       Logger.record(error, "Source" to "${ShowDetailsViewModel::class.simpleName}::loadStreamings()")
-      rethrowCancellation(error)
     }
   }
 

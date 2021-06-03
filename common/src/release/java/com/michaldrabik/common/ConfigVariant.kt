@@ -11,4 +11,5 @@ object ConfigVariant {
   val TRANSLATION_SYNC_COOLDOWN by lazy { DAYS.toMillis(7) }
 
   val RATINGS_CACHE_DURATION by lazy { DAYS.toMillis(3) }
+  val STREAMINGS_CACHE_DURATION by lazy { DAYS.toMillis(3) }
 }

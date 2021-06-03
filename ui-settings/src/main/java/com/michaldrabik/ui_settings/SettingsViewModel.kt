@@ -15,6 +15,7 @@ import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_settings.cases.SettingsMainCase
+import com.michaldrabik.ui_settings.cases.SettingsStreamingsCase
 import com.michaldrabik.ui_settings.cases.SettingsThemesCase
 import com.michaldrabik.ui_settings.cases.SettingsTraktCase
 import com.michaldrabik.ui_settings.helpers.AppLanguage
@@ -31,6 +32,7 @@ class SettingsViewModel @Inject constructor(
   private val mainCase: SettingsMainCase,
   private val traktCase: SettingsTraktCase,
   private val themesCase: SettingsThemesCase,
+  private val streamingsCase: SettingsStreamingsCase,
 ) : BaseViewModel<SettingsUiModel>() {
 
   fun loadSettings() {
@@ -196,6 +198,7 @@ class SettingsViewModel @Inject constructor(
   fun setCountry(country: AppCountry) {
     viewModelScope.launch {
       mainCase.setCountry(country)
+      streamingsCase.deleteCache()
       refreshSettings()
     }
     Analytics.logSettingsCountry(country.code)

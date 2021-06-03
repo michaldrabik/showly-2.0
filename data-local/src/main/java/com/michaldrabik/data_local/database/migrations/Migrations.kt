@@ -3,7 +3,7 @@ package com.michaldrabik.data_local.database.migrations
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 27
+const val DATABASE_VERSION = 28
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 // TODO Split into separate files?
@@ -453,6 +453,48 @@ object Migrations {
     }
   }
 
+  private val MIGRATION_28 = object : Migration(27, 28) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
+        execSQL(
+          "CREATE TABLE IF NOT EXISTS `movies_streamings` (" +
+            "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+            "`id_trakt` INTEGER NOT NULL, " +
+            "`id_tmdb` INTEGER NOT NULL, " +
+            "`type` TEXT, " +
+            "`provider_id` INTEGER, " +
+            "`provider_name` TEXT, " +
+            "`display_priority` INTEGER, " +
+            "`logo_path` TEXT, " +
+            "`link` TEXT, " +
+            "`created_at` INTEGER NOT NULL, " +
+            "`updated_at` INTEGER NOT NULL, " +
+            "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+        )
+        execSQL("CREATE INDEX index_movies_streamings_id_trakt ON movies_streamings(id_trakt)")
+        execSQL("CREATE INDEX index_movies_streamings_id_tmdb ON movies_streamings(id_tmdb)")
+
+        execSQL(
+          "CREATE TABLE IF NOT EXISTS `shows_streamings` (" +
+            "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+            "`id_trakt` INTEGER NOT NULL, " +
+            "`id_tmdb` INTEGER NOT NULL, " +
+            "`type` TEXT, " +
+            "`provider_id` INTEGER, " +
+            "`provider_name` TEXT, " +
+            "`display_priority` INTEGER, " +
+            "`logo_path` TEXT, " +
+            "`link` TEXT, " +
+            "`created_at` INTEGER NOT NULL, " +
+            "`updated_at` INTEGER NOT NULL, " +
+            "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+        )
+        execSQL("CREATE INDEX index_shows_streamings_id_trakt ON shows_streamings(id_trakt)")
+        execSQL("CREATE INDEX index_shows_streamings_id_tmdb ON shows_streamings(id_tmdb)")
+      }
+    }
+  }
+
   val MIGRATIONS = listOf(
     MIGRATION_2,
     MIGRATION_3,
@@ -479,6 +521,7 @@ object Migrations {
     MIGRATION_24,
     MIGRATION_25,
     MIGRATION_26,
-    MIGRATION_27
+    MIGRATION_27,
+    MIGRATION_28
   )
 }

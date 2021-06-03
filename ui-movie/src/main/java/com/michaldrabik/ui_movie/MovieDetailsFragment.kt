@@ -74,7 +74,6 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
-import com.michaldrabik.ui_model.StreamingService
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.actors.ActorsAdapter
 import com.michaldrabik.ui_movie.di.UiMovieDetailsComponentProvider
@@ -84,6 +83,7 @@ import com.michaldrabik.ui_movie.helpers.MovieLink.JUST_WATCH
 import com.michaldrabik.ui_movie.helpers.MovieLink.METACRITIC
 import com.michaldrabik.ui_movie.helpers.MovieLink.ROTTEN
 import com.michaldrabik.ui_movie.helpers.MovieLink.TRAKT
+import com.michaldrabik.ui_movie.helpers.StreamingsBundle
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import com.michaldrabik.ui_movie.related.RelatedMovieAdapter
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
@@ -557,12 +557,17 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsActorsProgress.gone()
   }
 
-  private fun renderStreamings(streamings: List<StreamingService>) {
+  private fun renderStreamings(streamings: StreamingsBundle) {
     if (streamingAdapter?.itemCount != 0) return
-    streamingAdapter?.setItems(streamings)
-    if (streamings.isNotEmpty()) {
-      movieDetailsStreamingsRecycler.fadeIn(withHardware = true)
-    } else {
+    val (items, isLocal) = streamings
+    streamingAdapter?.setItems(items)
+    if (items.isNotEmpty()) {
+      if (isLocal) {
+        movieDetailsStreamingsRecycler.visible()
+      } else {
+        movieDetailsStreamingsRecycler.fadeIn(withHardware = true)
+      }
+    } else if (!isLocal) {
       movieDetailsStreamingsRecycler.gone()
     }
   }

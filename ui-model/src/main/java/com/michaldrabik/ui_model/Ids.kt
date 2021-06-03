@@ -12,11 +12,18 @@ data class Ids(
   val tvdb: IdTvdb,
   val imdb: IdImdb,
   val tmdb: IdTmdb,
-  val tvrage: IdTvRage
+  val tvrage: IdTvRage,
 ) : Parcelable {
 
   companion object {
-    val EMPTY = Ids(IdTrakt(), IdSlug(), IdTvdb(), IdImdb(), IdTmdb(), IdTvRage())
+    val EMPTY = Ids(
+      IdTrakt(),
+      IdSlug(),
+      IdTvdb(),
+      IdImdb(),
+      IdTmdb(),
+      IdTvRage()
+    )
   }
 }
 
