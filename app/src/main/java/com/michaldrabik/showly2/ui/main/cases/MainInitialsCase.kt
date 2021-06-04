@@ -116,7 +116,7 @@ class MainInitialsCase @Inject constructor(
         }
       )
     } catch (error: Throwable) {
-      Logger.record(error, "Source" to "${MainInitialsCase::class.simpleName}::initRatings()")
+      Logger.record(error, "Source" to "MainInitialsCase::initRatings()")
     }
   }
 
