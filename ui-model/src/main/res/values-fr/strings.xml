@@ -77,8 +77,8 @@
   <string name="textMovieStatusCanceled">Annulé</string>
   <string name="textMovieStatusRumored">Rumeur</string>
   <string name="textStreamingStream">Stream</string>
-  <string name="textStreamingAds">Les publicités</string>
-  <string name="textStreamingBuy">Acheter</string>
-  <string name="textStreamingRent">Louer</string>
+  <string name="textStreamingAds">Publicités</string>
+  <string name="textStreamingBuy">Achat</string>
+  <string name="textStreamingRent">Location</string>
   <string name="textStreamingFree">Gratuit</string>
 </resources>
