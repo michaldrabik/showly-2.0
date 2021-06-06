@@ -257,7 +257,6 @@ class ShowDetailsViewModel @Inject constructor(
       _streamingsBundle.postValue(StreamingsBundle(remoteStreamings, isLocal = false))
     } catch (error: Throwable) {
       _streamingsBundle.postValue(StreamingsBundle(emptyList(), isLocal = false))
-      Logger.record(error, "Source" to "${ShowDetailsViewModel::class.simpleName}::loadStreamings()")
       rethrowCancellation(error)
     }
   }

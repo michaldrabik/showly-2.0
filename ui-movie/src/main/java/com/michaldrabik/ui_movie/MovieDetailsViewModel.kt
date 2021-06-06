@@ -175,9 +175,9 @@ class MovieDetailsViewModel @Inject constructor(
 
       val remoteStreamings = streamingCase.loadStreamingServices(movie)
       uiState = MovieDetailsUiModel(streamings = StreamingsBundle(remoteStreamings, isLocal = false))
-    } catch (error: Error) {
+    } catch (error: Throwable) {
       uiState = MovieDetailsUiModel(streamings = StreamingsBundle(emptyList(), isLocal = false))
-      Logger.record(error, "Source" to "${MovieDetailsViewModel::class.simpleName}::loadStreamings()")
+      rethrowCancellation(error)
     }
   }
 
