@@ -10,17 +10,13 @@ import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
-import com.michaldrabik.ui_statistics_movies.di.UiStatisticsMoviesComponentProvider
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_statistics_movies.*
 
+@AndroidEntryPoint
 class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layout.fragment_statistics_movies) {
 
-  override val viewModel by viewModels<StatisticsMoviesViewModel> { viewModelFactory }
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiStatisticsMoviesComponentProvider).provideStatisticsMoviesComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
+  override val viewModel by viewModels<StatisticsMoviesViewModel>()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

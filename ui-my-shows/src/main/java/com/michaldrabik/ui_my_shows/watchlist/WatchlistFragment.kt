@@ -23,29 +23,25 @@ import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_my_shows.R
-import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.utilities.OnSortClickListener
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 import kotlinx.android.synthetic.main.fragment_watchlist.*
 
+@AndroidEntryPoint
 class WatchlistFragment :
   BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
   OnScrollResetListener,
   OnTraktSyncListener,
   OnSortClickListener {
 
-  override val viewModel by viewModels<WatchlistViewModel> { viewModelFactory }
+  override val viewModel by viewModels<WatchlistViewModel>()
 
   private var adapter: WatchlistAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiMyShowsComponentProvider).provideMyShowsComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

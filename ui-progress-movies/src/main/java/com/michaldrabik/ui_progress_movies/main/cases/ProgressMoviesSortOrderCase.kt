@@ -4,9 +4,11 @@ import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.SortOrder
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ProgressMoviesSortOrderCase @Inject constructor(
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) {
 
   suspend fun setSortOrder(sortOrder: SortOrder) {

@@ -12,9 +12,11 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SearchResult
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 import com.michaldrabik.data_remote.trakt.model.SearchResult as SearchResultNetwork
 
+@ViewModelScoped
 class SearchMainCase @Inject constructor(
   private val cloud: Cloud,
   private val mappers: Mappers,

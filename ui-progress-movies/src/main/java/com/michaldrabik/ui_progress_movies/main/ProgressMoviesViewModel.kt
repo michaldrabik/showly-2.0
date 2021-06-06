@@ -12,11 +12,13 @@ import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesLoadItemsCas
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesMainCase
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesPinnedItemsCase
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesSortOrderCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ProgressMoviesViewModel @Inject constructor(
   private val myMoviesCase: ProgressMoviesMainCase,
   private val loadItemsCase: ProgressMoviesLoadItemsCase,

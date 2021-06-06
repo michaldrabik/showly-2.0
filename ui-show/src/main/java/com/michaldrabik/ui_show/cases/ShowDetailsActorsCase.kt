@@ -7,9 +7,11 @@ import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Show
+import dagger.hilt.android.scopes.ViewModelScoped
 import java.util.Locale.ENGLISH
 import javax.inject.Inject
 
+@ViewModelScoped
 class ShowDetailsActorsCase @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,

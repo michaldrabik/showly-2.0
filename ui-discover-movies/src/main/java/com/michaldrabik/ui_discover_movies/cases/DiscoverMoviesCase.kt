@@ -15,11 +15,13 @@ import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
+@ViewModelScoped
 class DiscoverMoviesCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val imagesProvider: MovieImagesProvider,

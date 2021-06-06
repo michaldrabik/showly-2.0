@@ -47,16 +47,17 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
-import com.michaldrabik.ui_progress.di.UiProgressComponentProvider
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress.*
 
+@AndroidEntryPoint
 class ProgressFragment :
   BaseFragment<ProgressViewModel>(R.layout.fragment_progress),
   OnShowsMoviesSyncedListener,
   OnTabReselectedListener,
   OnTraktSyncListener {
 
-  override val viewModel by viewModels<ProgressViewModel> { viewModelFactory }
+  override val viewModel by viewModels<ProgressViewModel>()
 
   private var searchViewTranslation = 0F
   private var tabsTranslation = 0F
@@ -64,7 +65,6 @@ class ProgressFragment :
   private var currentPage = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiProgressComponentProvider).provideProgressComponent().inject(this)
     super.onCreate(savedInstanceState)
     savedInstanceState?.let {
       searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")

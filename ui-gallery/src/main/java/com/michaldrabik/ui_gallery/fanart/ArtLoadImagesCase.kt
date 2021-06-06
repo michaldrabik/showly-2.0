@@ -12,13 +12,15 @@ import com.michaldrabik.ui_model.ImageFamily.MOVIE
 import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageType
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class ArtLoadImagesCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val moviesRepository: MoviesRepository,
   private val showImagesProvider: ShowImagesProvider,
-  private val movieImagesProvider: MovieImagesProvider
+  private val movieImagesProvider: MovieImagesProvider,
 ) {
 
   suspend fun loadInitialImage(id: IdTrakt, family: ImageFamily, type: ImageType) =
@@ -38,7 +40,7 @@ class ArtLoadImagesCase @Inject constructor(
     id: IdTrakt,
     family: ImageFamily,
     type: ImageType,
-    initialImage: Image
+    initialImage: Image,
   ): List<Image> {
     val images = mutableListOf<Image>()
     if (initialImage.status == AVAILABLE) {

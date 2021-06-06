@@ -3,8 +3,10 @@ package com.michaldrabik.ui_my_shows.watchlist.cases
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class WatchlistRatingsCase @Inject constructor(
   private val ratingsRepository: RatingsRepository,
   private val userTraktManager: UserTraktManager

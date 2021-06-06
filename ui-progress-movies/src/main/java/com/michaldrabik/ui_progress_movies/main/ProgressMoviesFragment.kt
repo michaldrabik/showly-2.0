@@ -39,16 +39,17 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.R
-import com.michaldrabik.ui_progress_movies.di.UiProgressMoviesComponentProvider
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_movies.*
 
+@AndroidEntryPoint
 class ProgressMoviesFragment :
   BaseFragment<ProgressMoviesViewModel>(R.layout.fragment_progress_movies),
   OnShowsMoviesSyncedListener,
   OnTabReselectedListener,
   OnTraktSyncListener {
 
-  override val viewModel by viewModels<ProgressMoviesViewModel> { viewModelFactory }
+  override val viewModel by viewModels<ProgressMoviesViewModel>()
 
   private var searchViewTranslation = 0F
   private var tabsTranslation = 0F
@@ -56,7 +57,6 @@ class ProgressMoviesFragment :
   private var currentPage = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiProgressMoviesComponentProvider).provideProgressMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
     savedInstanceState?.let {
       searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")

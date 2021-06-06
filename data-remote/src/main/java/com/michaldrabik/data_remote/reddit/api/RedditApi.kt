@@ -1,11 +1,9 @@
 package com.michaldrabik.data_remote.reddit.api
 
 import com.michaldrabik.data_remote.Config
-import com.michaldrabik.data_remote.di.CloudScope
 import com.michaldrabik.data_remote.reddit.model.RedditItem
 import javax.inject.Inject
 
-@CloudScope
 class RedditApi @Inject constructor(
   private val authApi: RedditAuthApi,
   private val listingApi: RedditListingApi,

@@ -54,6 +54,7 @@ import com.michaldrabik.ui_show.helpers.StreamingsBundle
 import com.michaldrabik.ui_show.quickSetup.QuickSetupListItem
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -61,6 +62,7 @@ import java.util.Locale
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
 
+@HiltViewModel
 class ShowDetailsViewModel @Inject constructor(
   private val mainCase: ShowDetailsMainCase,
   private val actorsCase: ShowDetailsActorsCase,

@@ -1,7 +1,6 @@
 package com.michaldrabik.repository.shows.ratings
 
 import com.michaldrabik.common.ConfigVariant
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_remote.Cloud
@@ -10,8 +9,9 @@ import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Show
 import java.util.Locale
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class ShowsExternalRatingsRepository @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,

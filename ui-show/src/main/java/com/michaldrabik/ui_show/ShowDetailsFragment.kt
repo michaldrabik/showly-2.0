@@ -99,7 +99,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
 import com.michaldrabik.ui_show.actors.ActorsAdapter
-import com.michaldrabik.ui_show.di.UiShowDetailsComponentProvider
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.ShowLink
 import com.michaldrabik.ui_show.helpers.ShowLink.IMDB
@@ -120,6 +119,7 @@ import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_ARCHIVE
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_MY_SHOWS
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_WATCHLIST
 import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
@@ -128,9 +128,10 @@ import org.threeten.bp.Duration
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
+@AndroidEntryPoint
 class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment_show_details) {
 
-  override val viewModel by viewModels<ShowDetailsViewModel> { viewModelFactory }
+  override val viewModel by viewModels<ShowDetailsViewModel>()
 
   private val showId by lazy { IdTrakt(requireArguments().getLong(ARG_SHOW_ID, -1)) }
 
@@ -151,11 +152,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private val animationExitRight by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_right) }
   private val animationEnterLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_in_from_left) }
   private val animationExitLeft by lazy { AnimationUtils.loadAnimation(requireContext(), R.anim.anim_slide_out_from_left) }
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiShowDetailsComponentProvider).provideShowDetailsComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

@@ -7,9 +7,11 @@ import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
+import dagger.hilt.android.scopes.ViewModelScoped
 import timber.log.Timber
 import javax.inject.Inject
 
+@ViewModelScoped
 class MainMiscCase @Inject constructor(
   private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,

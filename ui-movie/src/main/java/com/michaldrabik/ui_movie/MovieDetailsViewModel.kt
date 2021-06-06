@@ -36,6 +36,7 @@ import com.michaldrabik.ui_movie.cases.MovieDetailsTranslationCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsWatchlistCase
 import com.michaldrabik.ui_movie.helpers.StreamingsBundle
 import com.michaldrabik.ui_movie.related.RelatedListItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -44,6 +45,7 @@ import java.util.Locale
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
 
+@HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
   private val mainCase: MovieDetailsMainCase,
   private val relatedCase: MovieDetailsRelatedCase,

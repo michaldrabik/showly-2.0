@@ -7,8 +7,10 @@ import com.michaldrabik.repository.movies.MovieStreamingsRepository
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.StreamingService
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class MovieDetailsStreamingCase @Inject constructor(
   private val streamingsRepository: MovieStreamingsRepository,
   private val settingsRepository: SettingsRepository,

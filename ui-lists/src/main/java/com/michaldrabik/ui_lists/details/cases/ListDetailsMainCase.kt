@@ -10,9 +10,11 @@ import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.CustomList
+import dagger.hilt.android.scopes.ViewModelScoped
 import retrofit2.HttpException
 import javax.inject.Inject
 
+@ViewModelScoped
 class ListDetailsMainCase @Inject constructor(
   private val database: AppDatabase,
   private val cloud: Cloud,

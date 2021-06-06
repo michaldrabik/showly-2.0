@@ -17,13 +17,14 @@ import com.michaldrabik.ui_base.utilities.extensions.shake
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_lists.R
-import com.michaldrabik.ui_lists.create.di.UiCreateListComponentProvider
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_create_list.*
 import kotlinx.android.synthetic.main.view_create_list.view.*
 
+@AndroidEntryPoint
 class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
 
   override val layoutResId = R.layout.view_create_list
@@ -32,18 +33,13 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireContext().applicationContext as UiCreateListComponentProvider).provideCreateListComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
-
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
     return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
   }
 
   override fun createViewModel() =
-    ViewModelProvider(this, viewModelFactory).get(CreateListViewModel::class.java)
+    ViewModelProvider(this).get(CreateListViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

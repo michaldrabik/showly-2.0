@@ -6,8 +6,10 @@ import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_statistics_movies.views.ratings.recycler.StatisticsMoviesRatingItem
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class StatisticsMoviesLoadRatingsCase @Inject constructor(
   private val userTraktManager: UserTraktManager,
   private val moviesRepository: MoviesRepository,

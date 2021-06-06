@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_base.episodes
 
 import androidx.room.withTransaction
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.EpisodesSyncLog
@@ -16,10 +15,11 @@ import com.michaldrabik.ui_model.SeasonBundle
 import com.michaldrabik.ui_model.Show
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
 import com.michaldrabik.data_local.database.model.Season as SeasonDb
 
-@AppScope
+@Singleton
 class EpisodesManager @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val database: AppDatabase,

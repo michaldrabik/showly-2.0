@@ -8,12 +8,14 @@ import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_model.NewsItem.Type
 import com.michaldrabik.ui_news.recycler.NewsListItem
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
 
+@ViewModelScoped
 class NewsLoadItemsCase @Inject constructor(
   private val newsRepository: NewsRepository,
   private val dateFormatProvider: DateFormatProvider,

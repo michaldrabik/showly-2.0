@@ -7,8 +7,10 @@ import com.michaldrabik.repository.shows.ShowStreamingsRepository
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.StreamingService
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class ShowDetailsStreamingCase @Inject constructor(
   private val streamingsRepository: ShowStreamingsRepository,
   private val settingsRepository: SettingsRepository,

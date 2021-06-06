@@ -7,10 +7,12 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_lists.manage.cases.ManageListsCase
 import com.michaldrabik.ui_lists.manage.recycler.ManageListsItem
 import com.michaldrabik.ui_model.IdTrakt
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ManageListsViewModel @Inject constructor(
   private val manageListsCase: ManageListsCase
 ) : BaseViewModel<ManageListsUiModel>() {

@@ -15,11 +15,13 @@ import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
 import com.michaldrabik.ui_progress.main.cases.ProgressPinnedItemsCase
 import com.michaldrabik.ui_progress.main.cases.ProgressSettingsCase
 import com.michaldrabik.ui_progress.main.cases.ProgressSortOrderCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ProgressViewModel @Inject constructor(
   private val loadItemsCase: ProgressLoadItemsCase,
   private val pinnedItemsCase: ProgressPinnedItemsCase,

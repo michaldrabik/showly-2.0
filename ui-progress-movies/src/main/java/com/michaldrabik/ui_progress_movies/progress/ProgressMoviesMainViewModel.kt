@@ -19,9 +19,11 @@ import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesUiModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ProgressMoviesMainViewModel @Inject constructor(
   private val imagesProvider: MovieImagesProvider,
   private val userTraktManager: UserTraktManager,

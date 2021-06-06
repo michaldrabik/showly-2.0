@@ -4,8 +4,10 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.repository.SettingsRepository
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class MainModesCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {

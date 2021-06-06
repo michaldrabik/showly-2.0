@@ -7,21 +7,26 @@ import com.michaldrabik.data_local.database.migrations.DATABASE_NAME
 import com.michaldrabik.data_local.database.migrations.Migrations.MIGRATIONS
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import timber.log.Timber
+import javax.inject.Singleton
 
-@Suppress("PrivatePropertyName")
 @Module
-class StorageModule(private val context: Context) {
+@InstallIn(SingletonComponent::class)
+class StorageModule {
 
   @Provides
-  fun provideContext(): Context = context.applicationContext
-
-  @Provides
-  @StorageScope
-  fun providesDatabase(context: Context): AppDatabase {
+  @Singleton
+  fun providesDatabase(@ApplicationContext context: Context): AppDatabase {
     Timber.d("Creating database...")
-    return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
-      .apply { MIGRATIONS.forEach { addMigrations(it) } }
-      .build()
+    return Room.databaseBuilder(
+      context.applicationContext,
+      AppDatabase::class.java,
+      DATABASE_NAME
+    ).apply {
+      MIGRATIONS.forEach { addMigrations(it) }
+    }.build()
   }
 }

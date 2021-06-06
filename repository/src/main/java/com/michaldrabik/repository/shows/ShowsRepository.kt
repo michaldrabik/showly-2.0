@@ -1,10 +1,10 @@
 package com.michaldrabik.repository.shows
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_model.Show
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class ShowsRepository @Inject constructor(
   val discoverShows: DiscoverShowsRepository,
   val myShows: MyShowsRepository,

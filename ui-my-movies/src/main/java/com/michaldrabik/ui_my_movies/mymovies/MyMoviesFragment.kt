@@ -22,26 +22,22 @@ import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_my_movies.R
-import com.michaldrabik.ui_my_movies.di.UiMyMoviesComponentProvider
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesFragment
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_movies.*
 
+@AndroidEntryPoint
 class MyMoviesFragment :
   BaseFragment<MyMoviesViewModel>(R.layout.fragment_my_movies),
   OnScrollResetListener,
   OnTraktSyncListener {
 
-  override val viewModel by viewModels<MyMoviesViewModel> { viewModelFactory }
+  override val viewModel by viewModels<MyMoviesViewModel>()
 
   private var adapter: MyMoviesAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiMyMoviesComponentProvider).provideMyMoviesComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

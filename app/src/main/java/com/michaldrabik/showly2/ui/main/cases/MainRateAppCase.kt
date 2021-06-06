@@ -2,10 +2,12 @@ package com.michaldrabik.showly2.ui.main.cases
 
 import android.content.SharedPreferences
 import com.michaldrabik.common.extensions.nowUtcMillis
+import dagger.hilt.android.scopes.ViewModelScoped
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Named
 
+@ViewModelScoped
 class MainRateAppCase @Inject constructor(
   @Named("miscPreferences") private var miscPreferences: SharedPreferences
 ) {

@@ -9,8 +9,10 @@ import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_model.Movie
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class MovieDetailsMyMoviesCase @Inject constructor(
   private val database: AppDatabase,
   private val cloud: Cloud,

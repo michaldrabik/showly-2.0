@@ -21,7 +21,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_gallery.R
-import com.michaldrabik.ui_gallery.custom.di.UiCustomImagesComponentProvider
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageStatus
@@ -35,9 +34,11 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PICK_MODE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_custom_images.*
 import kotlinx.android.synthetic.main.view_custom_images.view.*
 
+@AndroidEntryPoint
 class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>() {
 
   private val family by lazy { arguments?.getSerializable(ARG_FAMILY) as ImageFamily }
@@ -50,18 +51,13 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireContext().applicationContext as UiCustomImagesComponentProvider).provideCustomImagesComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
-
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
     return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
   }
 
   override fun createViewModel() =
-    ViewModelProvider(this, viewModelFactory).get(CustomImagesViewModel::class.java)
+    ViewModelProvider(this).get(CustomImagesViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

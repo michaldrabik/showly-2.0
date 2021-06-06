@@ -1,5 +1,6 @@
 package com.michaldrabik.showly2
 
+import android.app.Application
 import android.app.NotificationChannel
 import android.content.Context
 import android.net.ConnectivityManager
@@ -11,6 +12,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.showly2.utilities.NetworkMonitorCallbacks
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
@@ -23,14 +25,17 @@ import com.michaldrabik.ui_widgets.calendar_movies.CalendarMoviesWidgetProvider
 import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider
 import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider
 import com.yariksoffice.lingver.Lingver
+import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
+import javax.inject.Inject
 import com.michaldrabik.ui_base.fcm.NotificationChannel as AppNotificationChannel
 
+@HiltAndroidApp
 class App :
-  DiApp(),
+  Application(),
   OnlineStatusProvider,
   WidgetsProvider,
   OnTraktSyncListener {
@@ -39,6 +44,8 @@ class App :
   private var isSyncRunning = false
 
   private val appScope = MainScope()
+
+  @Inject lateinit var settingsRepository: SettingsRepository
 
   override fun onCreate() {
 

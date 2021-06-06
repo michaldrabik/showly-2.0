@@ -1,9 +1,9 @@
 package com.michaldrabik.repository.mappers
 
-import com.michaldrabik.common.di.AppScope
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class Mappers @Inject constructor(
   val ids: IdsMapper,
   val image: ImageMapper,

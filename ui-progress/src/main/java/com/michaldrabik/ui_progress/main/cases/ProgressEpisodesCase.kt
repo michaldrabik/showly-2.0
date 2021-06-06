@@ -5,8 +5,10 @@ import com.michaldrabik.ui_base.episodes.EpisodesManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_progress.ProgressItem
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class ProgressEpisodesCase @Inject constructor(
   private val episodesManager: EpisodesManager,
   private val quickSyncManager: QuickSyncManager,

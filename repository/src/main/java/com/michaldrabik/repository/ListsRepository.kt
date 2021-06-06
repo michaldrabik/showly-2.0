@@ -1,7 +1,6 @@
 package com.michaldrabik.repository
 
 import androidx.room.withTransaction
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.CustomListItem
@@ -9,8 +8,9 @@ import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.IdTrakt
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class ListsRepository @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers

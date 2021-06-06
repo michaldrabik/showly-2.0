@@ -21,9 +21,11 @@ import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrderList
 import com.michaldrabik.ui_model.Tip
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ListDetailsViewModel @Inject constructor(
   private val mainCase: ListDetailsMainCase,
   private val itemsCase: ListDetailsItemsCase,

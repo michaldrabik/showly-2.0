@@ -1,7 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
 apply from: '../versions.gradle'
 
 android {
@@ -29,8 +28,4 @@ android {
 
 dependencies {
   api "com.jakewharton.threetenabp:threetenabp:$versions.threeTenAbp"
-
-  implementation "com.google.dagger:dagger:$versions.dagger"
-  kapt "com.google.dagger:dagger-compiler:$versions.dagger"
-  kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
 }

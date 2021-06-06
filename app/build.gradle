@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'com.google.firebase.appdistribution'
 apply plugin: 'com.google.firebase.crashlytics'
 apply from: '../versions.gradle'
@@ -15,6 +16,15 @@ android {
 
   buildFeatures {
     buildConfig = true
+  }
+
+  hilt {
+    enableExperimentalClasspathAggregation = true
+  }
+
+  // If the Android Gradle plugin version used in the project is less than 7.0 then checkReleaseBuilds has to be set to false
+  lintOptions {
+    checkReleaseBuilds false
   }
 
   compileSdkVersion versions.compileSdk
@@ -89,14 +99,13 @@ dependencies {
   implementation project(':ui-news')
   implementation project(':ui-widgets')
 
+  implementation "com.google.dagger:hilt-android:$versions.hilt"
+  kapt "com.google.dagger:hilt-compiler:$versions.hilt"
+
   implementation "com.google.android.play:core:$versions.androidPlayCore"
   implementation "com.github.YarikSOffice:lingver:$versions.lingver"
 
-  implementation "com.google.dagger:dagger:$versions.dagger"
-  kapt "com.google.dagger:dagger-compiler:$versions.dagger"
-  kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
-
-  debugImplementation "com.amitshekhar.android:debug-db:$versions.debugDb"
+  debugImplementation "com.github.amitshekhariitbhu.Android-Debug-Database:debug-db:v$versions.debugDb"
 //  debugImplementation "com.squareup.leakcanary:leakcanary-android:$versions.leakCanary"
 
   testImplementation "junit:junit:$versions.junit"

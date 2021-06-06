@@ -6,8 +6,10 @@ import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.SortOrderList
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class ListDetailsSortCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers

@@ -2,45 +2,49 @@ package com.michaldrabik.showly2.di.module
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.michaldrabik.common.di.AppScope
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Named
+import javax.inject.Singleton
 
 @Module
-class PreferencesModule(private val context: Context) {
+@InstallIn(SingletonComponent::class)
+class PreferencesModule {
 
   @Provides
-  @AppScope
+  @Singleton
   @Named("tipsPreferences")
-  fun providesTutorialsPreferences(): SharedPreferences =
+  fun providesTutorialsPreferences(@ApplicationContext context: Context): SharedPreferences =
     context.applicationContext.getSharedPreferences(
       "PREFERENCES_TUTORIALS",
       Context.MODE_PRIVATE
     )
 
   @Provides
-  @AppScope
+  @Singleton
   @Named("watchlistPreferences")
-  fun providesProgressShowsPreferences(): SharedPreferences =
+  fun providesProgressShowsPreferences(@ApplicationContext context: Context): SharedPreferences =
     context.applicationContext.getSharedPreferences(
       "PREFERENCES_WATCHLIST",
       Context.MODE_PRIVATE
     )
 
   @Provides
-  @AppScope
+  @Singleton
   @Named("progressMoviesPreferences")
-  fun providesProgressMoviesPreferences(): SharedPreferences =
+  fun providesProgressMoviesPreferences(@ApplicationContext context: Context): SharedPreferences =
     context.applicationContext.getSharedPreferences(
       "PREFERENCES_PROGRESS_MOVIES",
       Context.MODE_PRIVATE
     )
 
   @Provides
-  @AppScope
+  @Singleton
   @Named("miscPreferences")
-  fun providesMiscPreferences(): SharedPreferences =
+  fun providesMiscPreferences(@ApplicationContext context: Context): SharedPreferences =
     context.applicationContext.getSharedPreferences(
       "PREFERENCES_MISC",
       Context.MODE_PRIVATE

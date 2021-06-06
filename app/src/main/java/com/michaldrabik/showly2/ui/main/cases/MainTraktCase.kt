@@ -5,8 +5,10 @@ import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncWorker
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class MainTraktCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val quickSyncManager: QuickSyncManager

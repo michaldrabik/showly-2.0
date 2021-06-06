@@ -1,10 +1,10 @@
 package com.michaldrabik.repository.movies
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_model.Movie
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class MoviesRepository @Inject constructor(
   val discoverMovies: DiscoverMoviesRepository,
   val relatedMovies: RelatedMoviesRepository,

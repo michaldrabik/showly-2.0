@@ -24,20 +24,16 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.TraktSyncSchedule
-import com.michaldrabik.ui_trakt_sync.di.UiTraktSyncComponentProvider
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_trakt_sync.*
 
+@AndroidEntryPoint
 class TraktSyncFragment :
   BaseFragment<TraktSyncViewModel>(R.layout.fragment_trakt_sync),
   OnTraktAuthorizeListener,
   EventObserver {
 
-  override val viewModel by viewModels<TraktSyncViewModel> { viewModelFactory }
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiTraktSyncComponentProvider).provideTraktSyncComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
+  override val viewModel by viewModels<TraktSyncViewModel>()
 
   override fun onResume() {
     super.onResume()

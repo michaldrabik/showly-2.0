@@ -11,18 +11,20 @@ import com.michaldrabik.ui_model.ImageFamily.MOVIE
 import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.POSTER
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class CustomImagesViewModel @Inject constructor(
   private val showImagesProvider: ShowImagesProvider,
-  private val movieImagesProvider: MovieImagesProvider
+  private val movieImagesProvider: MovieImagesProvider,
 ) : BaseViewModel<CustomImagesUiModel>() {
 
   fun loadPoster(
     showTraktId: IdTrakt,
     movieTraktId: IdTrakt,
-    family: ImageFamily
+    family: ImageFamily,
   ) {
     viewModelScope.launch {
       val image = when (family) {
@@ -39,7 +41,7 @@ class CustomImagesViewModel @Inject constructor(
   fun loadFanart(
     showTraktId: IdTrakt,
     movieTraktId: IdTrakt,
-    family: ImageFamily
+    family: ImageFamily,
   ) {
     viewModelScope.launch {
       val image = when (family) {
@@ -56,7 +58,7 @@ class CustomImagesViewModel @Inject constructor(
   fun deletePoster(
     showTraktId: IdTrakt,
     movieTraktId: IdTrakt,
-    family: ImageFamily
+    family: ImageFamily,
   ) {
     viewModelScope.launch {
       when (family) {
@@ -71,7 +73,7 @@ class CustomImagesViewModel @Inject constructor(
   fun deleteFanart(
     showTraktId: IdTrakt,
     movieTraktId: IdTrakt,
-    family: ImageFamily
+    family: ImageFamily,
   ) {
     viewModelScope.launch {
       when (family) {

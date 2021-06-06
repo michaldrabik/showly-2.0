@@ -6,12 +6,14 @@ import com.michaldrabik.repository.CommentsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Show
+import dagger.hilt.android.scopes.ViewModelScoped
 import okhttp3.internal.EMPTY_RESPONSE
 import retrofit2.HttpException
 import retrofit2.Response
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+@ViewModelScoped
 class ShowDetailsCommentsCase @Inject constructor(
   private val commentsRepository: CommentsRepository,
   private val userManager: UserTraktManager

@@ -8,12 +8,14 @@ import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.create.cases.CreateListCase
 import com.michaldrabik.ui_lists.create.cases.ListDetailsCase
 import com.michaldrabik.ui_model.CustomList
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class CreateListViewModel @Inject constructor(
   private val createListCase: CreateListCase,
-  private val listDetailsCase: ListDetailsCase
+  private val listDetailsCase: ListDetailsCase,
 ) : BaseViewModel<CreateListUiModel>() {
 
   fun loadDetails(id: Long) {

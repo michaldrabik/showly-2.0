@@ -12,12 +12,14 @@ import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
 
+@HiltViewModel
 class PostCommentViewModel @Inject constructor(
-  private val commentsRepository: CommentsRepository
+  private val commentsRepository: CommentsRepository,
 ) : BaseViewModel<PostCommentUiModel>() {
 
   fun postShowComment(showId: IdTrakt, commentText: String, isSpoiler: Boolean) {

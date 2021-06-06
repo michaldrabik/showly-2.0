@@ -15,26 +15,22 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.recycler.ProgressCalendarAdapter
-import com.michaldrabik.ui_progress.di.UiProgressComponentProvider
 import com.michaldrabik.ui_progress.main.ProgressFragment
 import com.michaldrabik.ui_progress.main.ProgressViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_calendar.*
 
+@AndroidEntryPoint
 class ProgressCalendarFragment :
   BaseFragment<ProgressCalendarViewModel>(R.layout.fragment_progress_calendar),
   OnScrollResetListener {
 
-  private val parentViewModel by viewModels<ProgressViewModel>({ requireParentFragment() }) { viewModelFactory }
-  override val viewModel by viewModels<ProgressCalendarViewModel> { viewModelFactory }
+  private val parentViewModel by viewModels<ProgressViewModel>({ requireParentFragment() })
+  override val viewModel by viewModels<ProgressCalendarViewModel>()
 
   private var adapter: ProgressCalendarAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiProgressComponentProvider).provideProgressComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

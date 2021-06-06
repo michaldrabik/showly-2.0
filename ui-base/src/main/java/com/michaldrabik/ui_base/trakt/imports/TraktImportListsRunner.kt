@@ -2,7 +2,6 @@ package com.michaldrabik.ui_base.trakt.imports
 
 import androidx.room.withTransaction
 import com.michaldrabik.common.Mode
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.CustomListItem
@@ -15,14 +14,15 @@ import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class TraktImportListsRunner @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val settingsRepository: SettingsRepository,
-  userTraktManager: UserTraktManager
+  userTraktManager: UserTraktManager,
 ) : TraktSyncRunner(userTraktManager) {
 
   override suspend fun run(): Int {
@@ -101,7 +101,7 @@ class TraktImportListsRunner @Inject constructor(
     listIdTrakt: Long,
     token: TraktAuthToken,
     moviesEnabled: Boolean,
-    nowUtcMillis: Long
+    nowUtcMillis: Long,
   ) {
     Timber.d("Importing list items...")
 

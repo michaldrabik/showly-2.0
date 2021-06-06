@@ -3,16 +3,16 @@
 package com.michaldrabik.repository
 
 import androidx.room.withTransaction
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.User
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.ui_model.error.TraktAuthError
 import javax.inject.Inject
+import javax.inject.Singleton
 import com.michaldrabik.data_remote.trakt.model.User as UserModel
 
-@AppScope
+@Singleton
 class UserTraktManager @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,

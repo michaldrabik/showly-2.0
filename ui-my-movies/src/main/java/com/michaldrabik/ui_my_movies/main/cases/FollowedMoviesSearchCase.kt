@@ -8,12 +8,14 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class FollowedMoviesSearchCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
-  private val imagesProvider: MovieImagesProvider
+  private val imagesProvider: MovieImagesProvider,
 ) {
 
   private val searchCache = mutableListOf<Movie>()

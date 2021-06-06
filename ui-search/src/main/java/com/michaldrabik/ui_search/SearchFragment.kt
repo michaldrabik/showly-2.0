@@ -32,17 +32,18 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.RecentSearch
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
-import com.michaldrabik.ui_search.di.UiSearchComponentProvider
 import com.michaldrabik.ui_search.recycler.SearchAdapter
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.recycler.suggestions.SuggestionAdapter
 import com.michaldrabik.ui_search.utilities.TextWatcherAdapter
 import com.michaldrabik.ui_search.views.RecentSearchView
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_search.*
 
+@AndroidEntryPoint
 class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), TextWatcherAdapter {
 
-  override val viewModel by viewModels<SearchViewModel> { viewModelFactory }
+  override val viewModel by viewModels<SearchViewModel>()
 
   private var adapter: SearchAdapter? = null
   private var suggestionsAdapter: SuggestionAdapter? = null
@@ -51,11 +52,6 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiSearchComponentProvider).provideSearchComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

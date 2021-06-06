@@ -1,6 +1,5 @@
 package com.michaldrabik.repository
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.database.AppDatabase
@@ -11,8 +10,9 @@ import com.michaldrabik.ui_model.NewsItem.Type.MOVIE
 import com.michaldrabik.ui_model.NewsItem.Type.SHOW
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class NewsRepository @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,

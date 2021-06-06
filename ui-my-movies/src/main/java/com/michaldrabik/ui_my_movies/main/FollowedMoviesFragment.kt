@@ -35,7 +35,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_my_movies.R
-import com.michaldrabik.ui_my_movies.di.UiMyMoviesComponentProvider
 import com.michaldrabik.ui_my_movies.mymovies.helpers.MyMoviesSearchResult
 import com.michaldrabik.ui_my_movies.mymovies.helpers.ResultType.EMPTY
 import com.michaldrabik.ui_my_movies.mymovies.helpers.ResultType.NO_RESULTS
@@ -44,18 +43,19 @@ import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
 import com.michaldrabik.ui_my_movies.mymovies.views.MyMovieFanartView
 import com.michaldrabik.ui_my_movies.utilities.OnSortClickListener
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_followed_movies.*
 
+@AndroidEntryPoint
 class FollowedMoviesFragment :
   BaseFragment<FollowedMoviesViewModel>(R.layout.fragment_followed_movies),
   OnTabReselectedListener,
   OnTraktSyncListener {
 
-  override val viewModel by viewModels<FollowedMoviesViewModel> { viewModelFactory }
+  override val viewModel by viewModels<FollowedMoviesViewModel>()
   private var currentPage = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiMyMoviesComponentProvider).provideMyMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
 
     savedInstanceState?.let {

@@ -3,7 +3,6 @@ package com.michaldrabik.repository
 import android.content.SharedPreferences
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.ConfigVariant
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.EpisodeTranslation
@@ -23,8 +22,9 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import javax.inject.Inject
 import javax.inject.Named
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class TranslationsRepository @Inject constructor(
   @Named("miscPreferences") private var miscPreferences: SharedPreferences,
   private val cloud: Cloud,

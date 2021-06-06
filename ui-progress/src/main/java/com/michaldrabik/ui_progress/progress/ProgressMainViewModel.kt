@@ -20,9 +20,11 @@ import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.main.ProgressUiModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ProgressMainViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
   private val userTraktManager: UserTraktManager,

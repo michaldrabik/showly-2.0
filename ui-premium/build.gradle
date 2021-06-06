@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 apply from: '../versions.gradle'
 
 android {
@@ -34,6 +35,9 @@ dependencies {
   implementation project(':ui-base')
   implementation project(':ui-navigation')
   implementation project(':repository')
+
+  implementation "com.google.dagger:hilt-android:$versions.hilt"
+  kapt "com.google.dagger:hilt-compiler:$versions.hilt"
 
   api "com.android.billingclient:billing-ktx:$versions.androidBilling"
 }

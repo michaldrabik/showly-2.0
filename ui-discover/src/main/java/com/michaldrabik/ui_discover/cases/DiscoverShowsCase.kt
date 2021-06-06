@@ -12,11 +12,13 @@ import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
 import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
+@ViewModelScoped
 class DiscoverShowsCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val imagesProvider: ShowImagesProvider,

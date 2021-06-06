@@ -20,15 +20,17 @@ import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsLoadShowsCase
 import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsRatingsCase
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class MyShowsViewModel @Inject constructor(
   private val loadShowsCase: MyShowsLoadShowsCase,
-  private val ratingsCase: MyShowsRatingsCase
+  private val ratingsCase: MyShowsRatingsCase,
 ) : BaseViewModel<MyShowsUiModel>() {
 
   fun loadShows(notifyListsUpdate: Boolean = false) {
@@ -165,7 +167,7 @@ class MyShowsViewModel @Inject constructor(
   private fun CoroutineScope.toListItemAsync(
     itemType: Type,
     show: Show,
-    type: ImageType = POSTER
+    type: ImageType = POSTER,
   ) = async {
     val image = loadShowsCase.findCachedImage(show, type)
     val translation = loadShowsCase.loadTranslation(show, true)

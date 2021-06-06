@@ -2,7 +2,6 @@ package com.michaldrabik.ui_base.trakt.quicksync
 
 import android.content.Context
 import com.michaldrabik.common.Mode
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.TraktSyncQueue
@@ -13,8 +12,9 @@ import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class QuickSyncManager @Inject constructor(
   private val userTraktManager: UserTraktManager,
   private val settingsRepository: SettingsRepository,

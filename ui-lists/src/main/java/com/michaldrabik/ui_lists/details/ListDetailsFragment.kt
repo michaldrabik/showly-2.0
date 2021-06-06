@@ -28,7 +28,6 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
-import com.michaldrabik.ui_lists.details.di.UiListDetailsComponentProvider
 import com.michaldrabik.ui_lists.details.helpers.ListItemDragListener
 import com.michaldrabik.ui_lists.details.helpers.ListItemSwipeListener
 import com.michaldrabik.ui_lists.details.helpers.ReorderListCallback
@@ -43,14 +42,16 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_details.*
 import kotlinx.android.synthetic.main.fragment_lists.*
 import kotlinx.android.synthetic.main.view_list_delete_confirm.view.*
 
+@AndroidEntryPoint
 class ListDetailsFragment :
   BaseFragment<ListDetailsViewModel>(R.layout.fragment_list_details), ListItemDragListener, ListItemSwipeListener {
 
-  override val viewModel by viewModels<ListDetailsViewModel> { viewModelFactory }
+  override val viewModel by viewModels<ListDetailsViewModel>()
 
   private val list by lazy { requireArguments().getParcelable<CustomList>(ARG_LIST)!! }
 
@@ -59,11 +60,6 @@ class ListDetailsFragment :
   private var layoutManager: LinearLayoutManager? = null
 
   private var isReorderMode = false
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiListDetailsComponentProvider).provideListDetailsComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

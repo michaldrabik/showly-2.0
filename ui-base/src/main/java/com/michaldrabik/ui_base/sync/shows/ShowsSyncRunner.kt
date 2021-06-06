@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_base.sync.shows
 
 import com.michaldrabik.common.ConfigVariant.SHOW_SYNC_COOLDOWN
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.EpisodesSyncLog
@@ -15,11 +14,12 @@ import com.michaldrabik.ui_model.ShowStatus.UNKNOWN
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * This class is responsible for fetching and syncing missing/updated episodes data for current progress shows.
  */
-@AppScope
+@Singleton
 class ShowsSyncRunner @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,

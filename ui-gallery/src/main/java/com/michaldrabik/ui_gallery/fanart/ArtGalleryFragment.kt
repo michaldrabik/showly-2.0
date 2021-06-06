@@ -28,7 +28,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_base.utilities.extensions.withSuccessListener
 import com.michaldrabik.ui_gallery.R
-import com.michaldrabik.ui_gallery.fanart.di.UiArtGalleryComponentProvider
 import com.michaldrabik.ui_gallery.fanart.recycler.ArtGalleryAdapter
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageFamily
@@ -41,17 +40,19 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_PICK_MODE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_art_gallery.*
 import kotlinx.android.synthetic.main.view_gallery_url_dialog.view.*
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
+@AndroidEntryPoint
 class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_art_gallery) {
 
   companion object {
     private const val IMAGE_URL_PATTERN = "(http)?s?:?(//[^\"']*\\.(?:jpg|jpeg|png))"
   }
 
-  override val viewModel by viewModels<ArtGalleryViewModel> { viewModelFactory }
+  override val viewModel by viewModels<ArtGalleryViewModel>()
 
   private val showId by lazy { IdTrakt(arguments?.getLong(ARG_SHOW_ID, -1) ?: -1) }
   private val movieId by lazy { IdTrakt(arguments?.getLong(ARG_MOVIE_ID, -1) ?: -1) }
@@ -60,11 +61,6 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
   private val isPickMode by lazy { arguments?.getBoolean(ARG_PICK_MODE, false) }
 
   private var galleryAdapter: ArtGalleryAdapter? = null
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiArtGalleryComponentProvider).provideArtGalleryComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

@@ -30,11 +30,12 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_model.NewsItem
-import com.michaldrabik.ui_news.di.UiNewsComponentProvider
 import com.michaldrabik.ui_news.recycler.NewsAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.view_news_filters.*
 
+@AndroidEntryPoint
 class NewsFragment :
   BaseFragment<NewsViewModel>(R.layout.fragment_news),
   OnTabReselectedListener {
@@ -43,7 +44,7 @@ class NewsFragment :
     private const val ARG_HEADER_POSITION = "ARG_HEADER_POSITION"
   }
 
-  override val viewModel by viewModels<NewsViewModel> { viewModelFactory }
+  override val viewModel by viewModels<NewsViewModel>()
 
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.newsSwipeRefreshEndOffset) }
 
@@ -55,7 +56,6 @@ class NewsFragment :
   private var headerTranslation = 0F
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiNewsComponentProvider).provideNewsComponent().inject(this)
     super.onCreate(savedInstanceState)
 
     savedInstanceState?.let {

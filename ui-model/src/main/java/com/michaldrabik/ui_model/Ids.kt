@@ -27,14 +27,20 @@ data class Ids(
   }
 }
 
-inline class IdTrakt(val id: Long = -1)
+@JvmInline
+value class IdTrakt(val id: Long = -1)
 
-inline class IdTvdb(val id: Long = -1)
+@JvmInline
+value class IdTvdb(val id: Long = -1)
 
-inline class IdImdb(val id: String = "")
+@JvmInline
+value class IdImdb(val id: String = "")
 
-inline class IdTmdb(val id: Long = -1)
+@JvmInline
+value class IdTmdb(val id: Long = -1)
 
-inline class IdTvRage(val id: Long = -1)
+@JvmInline
+value class IdTvRage(val id: Long = -1)
 
-inline class IdSlug(val id: String = "")
+@JvmInline
+value class IdSlug(val id: String = "")

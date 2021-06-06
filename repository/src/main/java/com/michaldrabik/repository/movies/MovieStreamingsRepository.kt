@@ -1,6 +1,5 @@
 package com.michaldrabik.repository.movies
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.StreamingsRepository
@@ -9,8 +8,9 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.StreamingService
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class MovieStreamingsRepository @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,

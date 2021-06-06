@@ -8,10 +8,12 @@ import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Movie as MovieDb
 import com.michaldrabik.data_local.database.model.Show as ShowDb
 
+@ViewModelScoped
 class SearchSuggestionsCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,

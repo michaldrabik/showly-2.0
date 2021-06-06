@@ -10,17 +10,13 @@ import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
-import com.michaldrabik.ui_statistics.di.UiStatisticsComponentProvider
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_statistics.*
 
+@AndroidEntryPoint
 class StatisticsFragment : BaseFragment<StatisticsViewModel>(R.layout.fragment_statistics) {
 
-  override val viewModel by viewModels<StatisticsViewModel> { viewModelFactory }
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiStatisticsComponentProvider).provideStatisticsComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
+  override val viewModel by viewModels<StatisticsViewModel>()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

@@ -5,8 +5,10 @@ import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_settings.helpers.AppTheme
 import com.michaldrabik.ui_settings.helpers.WidgetTransparency
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class SettingsThemesCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {

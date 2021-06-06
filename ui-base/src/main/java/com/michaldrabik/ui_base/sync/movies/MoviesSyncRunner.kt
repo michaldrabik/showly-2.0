@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_base.sync.movies
 
 import com.michaldrabik.common.ConfigVariant.MOVIE_SYNC_COOLDOWN
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.SettingsRepository
@@ -13,11 +12,12 @@ import com.michaldrabik.ui_model.MovieStatus.RUMORED
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * This class is responsible for fetching and syncing missing/updated movies data.
  */
-@AppScope
+@Singleton
 class MoviesSyncRunner @Inject constructor(
   private val database: AppDatabase,
   private val moviesRepository: MoviesRepository,

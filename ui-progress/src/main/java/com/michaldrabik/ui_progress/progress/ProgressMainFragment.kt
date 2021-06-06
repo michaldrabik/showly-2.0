@@ -29,28 +29,24 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
-import com.michaldrabik.ui_progress.di.UiProgressComponentProvider
 import com.michaldrabik.ui_progress.main.ProgressFragment
 import com.michaldrabik.ui_progress.main.ProgressViewModel
 import com.michaldrabik.ui_progress.progress.recycler.ProgressMainAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_main.*
 import kotlinx.android.synthetic.main.layout_progress_empty.*
 
+@AndroidEntryPoint
 class ProgressMainFragment :
   BaseFragment<ProgressMainViewModel>(R.layout.fragment_progress_main),
   OnScrollResetListener {
 
-  private val parentViewModel by viewModels<ProgressViewModel>({ requireParentFragment() }) { viewModelFactory }
-  override val viewModel by viewModels<ProgressMainViewModel> { viewModelFactory }
+  private val parentViewModel by viewModels<ProgressViewModel>({ requireParentFragment() })
+  override val viewModel by viewModels<ProgressMainViewModel>()
 
   private var adapter: ProgressMainAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiProgressComponentProvider).provideProgressComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

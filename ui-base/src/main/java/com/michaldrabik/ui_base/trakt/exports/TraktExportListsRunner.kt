@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_base.trakt.exports
 
 import com.michaldrabik.common.Mode
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_remote.Cloud
@@ -13,8 +12,9 @@ import com.michaldrabik.ui_base.trakt.TraktSyncRunner
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class TraktExportListsRunner @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,

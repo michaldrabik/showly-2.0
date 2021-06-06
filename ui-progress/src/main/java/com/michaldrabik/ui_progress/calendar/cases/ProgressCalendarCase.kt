@@ -15,7 +15,9 @@ import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalTime
 import org.threeten.bp.temporal.ChronoUnit.DAYS
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ProgressCalendarCase @Inject constructor() {
 
   fun prepareItems(items: List<ProgressItem>): List<ProgressItem> {

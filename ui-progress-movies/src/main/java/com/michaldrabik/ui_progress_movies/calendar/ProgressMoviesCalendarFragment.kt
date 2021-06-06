@@ -15,26 +15,22 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.calendar.recycler.ProgressMoviesCalendarAdapter
-import com.michaldrabik.ui_progress_movies.di.UiProgressMoviesComponentProvider
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesFragment
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_movies_calendar.*
 
+@AndroidEntryPoint
 class ProgressMoviesCalendarFragment :
   BaseFragment<ProgressMoviesCalendarViewModel>(R.layout.fragment_progress_movies_calendar),
   OnScrollResetListener {
 
-  private val parentViewModel by viewModels<ProgressMoviesViewModel>({ requireParentFragment() }) { viewModelFactory }
-  override val viewModel by viewModels<ProgressMoviesCalendarViewModel> { viewModelFactory }
+  private val parentViewModel by viewModels<ProgressMoviesViewModel>({ requireParentFragment() })
+  override val viewModel by viewModels<ProgressMoviesCalendarViewModel>()
 
   private var adapter: ProgressMoviesCalendarAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiProgressMoviesComponentProvider).provideProgressMoviesComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

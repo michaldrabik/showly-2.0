@@ -14,7 +14,9 @@ import com.michaldrabik.ui_progress_movies.calendar.cases.ProgressMoviesCalendar
 import com.michaldrabik.ui_progress_movies.calendar.cases.ProgressMoviesCalendarCase.Section.TOMORROW
 import org.threeten.bp.DayOfWeek
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ProgressMoviesCalendarCase @Inject constructor() {
 
   fun prepareItems(items: List<ProgressMovieItem>): List<ProgressMovieItem> {

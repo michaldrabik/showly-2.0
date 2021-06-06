@@ -7,14 +7,15 @@ import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesMainCase
-import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class ProgressMoviesWidgetCheckService : JobIntentService(), CoroutineScope {
 
   companion object {
@@ -37,8 +38,6 @@ class ProgressMoviesWidgetCheckService : JobIntentService(), CoroutineScope {
   @Inject lateinit var progressMoviesCase: ProgressMoviesMainCase
 
   override fun onHandleWork(intent: Intent) {
-    (application as UiWidgetsComponentProvider).provideWidgetsComponent().inject(this)
-
     val movieId = intent.getLongExtra(EXTRA_MOVIE_ID, -1)
     if (movieId == -1L) {
       val error = Throwable("${ProgressMoviesWidgetCheckService::class.simpleName} error. Invalid ID.")
@@ -53,7 +52,7 @@ class ProgressMoviesWidgetCheckService : JobIntentService(), CoroutineScope {
   }
 
   override fun onDestroy() {
-    coroutineContext.cancelChildren()
+    cancel()
     super.onDestroy()
   }
 }

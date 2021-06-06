@@ -14,9 +14,11 @@ import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistLoadShowsCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistRatingsCase
 import com.michaldrabik.ui_my_shows.watchlist.cases.WatchlistSortOrderCase
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistListItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class WatchlistViewModel @Inject constructor(
   private val sortOrderCase: WatchlistSortOrderCase,
   private val loadShowsCase: WatchlistLoadShowsCase,

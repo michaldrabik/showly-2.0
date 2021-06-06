@@ -7,10 +7,12 @@ import com.michaldrabik.ui_my_movies.mymovies.helpers.MyMoviesSearchResult
 import com.michaldrabik.ui_my_movies.mymovies.helpers.ResultType.EMPTY
 import com.michaldrabik.ui_my_movies.mymovies.helpers.ResultType.NO_RESULTS
 import com.michaldrabik.ui_my_movies.mymovies.helpers.ResultType.RESULTS
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class FollowedMoviesViewModel @Inject constructor(
   private val searchCase: FollowedMoviesSearchCase
 ) : BaseViewModel<FollowedMoviesUiModel>() {

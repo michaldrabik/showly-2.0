@@ -1,13 +1,13 @@
 package com.michaldrabik.repository
 
 import android.content.SharedPreferences
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import javax.inject.Inject
 import javax.inject.Named
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class PinnedItemsRepository @Inject constructor(
   @Named("watchlistPreferences") private val sharedPreferences: SharedPreferences,
   @Named("progressMoviesPreferences") private val sharedPreferencesMovies: SharedPreferences

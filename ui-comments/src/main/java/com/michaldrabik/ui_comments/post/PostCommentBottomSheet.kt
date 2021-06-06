@@ -18,7 +18,6 @@ import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_comments.R
-import com.michaldrabik.ui_comments.post.di.UiPostCommentComponentProvider
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
@@ -28,9 +27,11 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_post_comment.*
 import kotlinx.android.synthetic.main.view_post_comment.view.*
 
+@AndroidEntryPoint
 class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
 
   private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_SHOW_ID)) }
@@ -44,18 +45,13 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireContext().applicationContext as UiPostCommentComponentProvider).providePostCommentComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
-
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
     return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
   }
 
   override fun createViewModel() =
-    ViewModelProvider(this, viewModelFactory).get(PostCommentViewModel::class.java)
+    ViewModelProvider(this).get(PostCommentViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

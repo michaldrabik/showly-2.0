@@ -11,9 +11,11 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.calendar.cases.ProgressMoviesCalendarCase
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesUiModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ProgressMoviesCalendarViewModel @Inject constructor(
   private val calendarCase: ProgressMoviesCalendarCase,
   private val imagesProvider: MovieImagesProvider,

@@ -1,6 +1,5 @@
 package com.michaldrabik.repository.movies.ratings
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.mappers.Mappers
@@ -9,8 +8,9 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.TraktRating
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class MoviesRatingsRepository @Inject constructor(
   val external: MoviesExternalRatingsRepository,
   private val cloud: Cloud,

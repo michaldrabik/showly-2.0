@@ -17,8 +17,10 @@ import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class MyMoviesLoadCase @Inject constructor(
   private val imagesProvider: MovieImagesProvider,
   private val moviesRepository: MoviesRepository,

@@ -7,12 +7,14 @@ import com.michaldrabik.ui_my_shows.myshows.helpers.MyShowsSearchResult
 import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.EMPTY
 import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.NO_RESULTS
 import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.RESULTS
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class FollowedShowsViewModel @Inject constructor(
-  private val searchCase: FollowedShowsSearchCase
+  private val searchCase: FollowedShowsSearchCase,
 ) : BaseViewModel<FollowedShowsUiModel>() {
 
   private var searchJob: Job? = null

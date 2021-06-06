@@ -3,11 +3,13 @@ package com.michaldrabik.ui_my_shows.myshows.cases
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class MyShowsRatingsCase @Inject constructor(
   private val ratingsRepository: RatingsRepository,
-  private val userTraktManager: UserTraktManager
+  private val userTraktManager: UserTraktManager,
 ) {
 
   suspend fun loadRatings(items: List<MyShowsItem>): List<MyShowsItem> {

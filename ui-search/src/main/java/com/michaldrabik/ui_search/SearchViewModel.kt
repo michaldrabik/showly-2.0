@@ -18,12 +18,14 @@ import com.michaldrabik.ui_search.cases.SearchMainCase
 import com.michaldrabik.ui_search.cases.SearchRecentsCase
 import com.michaldrabik.ui_search.cases.SearchSuggestionsCase
 import com.michaldrabik.ui_search.recycler.SearchListItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
 
+@HiltViewModel
 class SearchViewModel @Inject constructor(
   private val searchMainCase: SearchMainCase,
   private val recentSearchesCase: SearchRecentsCase,

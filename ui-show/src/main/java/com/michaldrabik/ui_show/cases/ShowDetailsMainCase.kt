@@ -2,8 +2,10 @@ package com.michaldrabik.ui_show.cases
 
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_model.IdTrakt
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class ShowDetailsMainCase @Inject constructor(
   private val showsRepository: ShowsRepository
 ) {

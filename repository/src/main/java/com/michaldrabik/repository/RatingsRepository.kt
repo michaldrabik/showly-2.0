@@ -1,11 +1,11 @@
 package com.michaldrabik.repository
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.repository.movies.ratings.MoviesRatingsRepository
 import com.michaldrabik.repository.shows.ratings.ShowsRatingsRepository
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class RatingsRepository @Inject constructor(
   val shows: ShowsRatingsRepository,
   val movies: MoviesRatingsRepository,

@@ -26,28 +26,24 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.R
-import com.michaldrabik.ui_progress_movies.di.UiProgressMoviesComponentProvider
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesFragment
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesViewModel
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMainAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_movies_main.*
 import kotlinx.android.synthetic.main.layout_progress_movies_empty.*
 
+@AndroidEntryPoint
 class ProgressMoviesMainFragment :
   BaseFragment<ProgressMoviesMainViewModel>(R.layout.fragment_progress_movies_main),
   OnScrollResetListener {
 
-  private val parentViewModel by viewModels<ProgressMoviesViewModel>({ requireParentFragment() }) { viewModelFactory }
-  override val viewModel by viewModels<ProgressMoviesMainViewModel> { viewModelFactory }
+  private val parentViewModel by viewModels<ProgressMoviesViewModel>({ requireParentFragment() })
+  override val viewModel by viewModels<ProgressMoviesMainViewModel>()
 
   private var adapter: ProgressMainAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiProgressMoviesComponentProvider).provideProgressMoviesComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

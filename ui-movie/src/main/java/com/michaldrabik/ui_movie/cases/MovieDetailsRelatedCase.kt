@@ -2,8 +2,10 @@ package com.michaldrabik.ui_movie.cases
 
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_model.Movie
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class MovieDetailsRelatedCase @Inject constructor(
   private val moviesRepository: MoviesRepository
 ) {

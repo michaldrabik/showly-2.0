@@ -46,7 +46,6 @@ import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
-import com.michaldrabik.ui_lists.lists.di.UiListsComponentProvider
 import com.michaldrabik.ui_lists.lists.recycler.ListsAdapter
 import com.michaldrabik.ui_lists.lists.recycler.ListsItem
 import com.michaldrabik.ui_model.SortOrder
@@ -55,15 +54,17 @@ import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_lists.*
 
+@AndroidEntryPoint
 class ListsFragment :
   BaseFragment<ListsViewModel>(R.layout.fragment_lists),
   OnTraktSyncListener,
   OnTabReselectedListener,
   EventObserver {
 
-  override val viewModel by viewModels<ListsViewModel> { viewModelFactory }
+  override val viewModel by viewModels<ListsViewModel>()
 
   private var adapter: ListsAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
@@ -73,7 +74,6 @@ class ListsFragment :
   private var isFabHidden = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiListsComponentProvider).provideListsComponent().inject(this)
     super.onCreate(savedInstanceState)
 
     savedInstanceState?.let {

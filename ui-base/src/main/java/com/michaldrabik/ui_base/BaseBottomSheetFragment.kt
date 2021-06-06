@@ -8,13 +8,10 @@ import androidx.annotation.IdRes
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.michaldrabik.ui_base.di.DaggerViewModelFactory
 import com.michaldrabik.ui_base.utilities.NavigationHost
-import javax.inject.Inject
 
 abstract class BaseBottomSheetFragment<T : BaseViewModel<out UiModel>> : BottomSheetDialogFragment() {
 
-  @Inject lateinit var viewModelFactory: DaggerViewModelFactory
   protected lateinit var viewModel: T
 
   protected abstract val layoutResId: Int

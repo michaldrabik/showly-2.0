@@ -8,8 +8,10 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class FollowedShowsSearchCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,

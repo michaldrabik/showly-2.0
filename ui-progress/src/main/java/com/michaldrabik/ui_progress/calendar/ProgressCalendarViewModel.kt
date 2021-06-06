@@ -11,9 +11,11 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.calendar.cases.ProgressCalendarCase
 import com.michaldrabik.ui_progress.main.ProgressUiModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ProgressCalendarViewModel @Inject constructor(
   private val calendarCase: ProgressCalendarCase,
   private val imagesProvider: ShowImagesProvider,

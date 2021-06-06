@@ -7,8 +7,10 @@ import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_model.TraktSyncSchedule
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class SettingsTraktCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val ratingsRepository: RatingsRepository,

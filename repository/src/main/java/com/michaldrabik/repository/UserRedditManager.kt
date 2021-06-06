@@ -3,15 +3,15 @@
 package com.michaldrabik.repository
 
 import androidx.room.withTransaction
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.User
 import com.michaldrabik.data_remote.Cloud
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class UserRedditManager @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,

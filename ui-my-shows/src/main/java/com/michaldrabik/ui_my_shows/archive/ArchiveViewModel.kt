@@ -14,14 +14,16 @@ import com.michaldrabik.ui_my_shows.archive.cases.ArchiveLoadShowsCase
 import com.michaldrabik.ui_my_shows.archive.cases.ArchiveRatingsCase
 import com.michaldrabik.ui_my_shows.archive.cases.ArchiveSortOrderCase
 import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveListItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ArchiveViewModel @Inject constructor(
   private val sortOrderCase: ArchiveSortOrderCase,
   private val loadShowsCase: ArchiveLoadShowsCase,
   private val ratingsCase: ArchiveRatingsCase,
-  private val imagesProvider: ShowImagesProvider
+  private val imagesProvider: ShowImagesProvider,
 ) : BaseViewModel<ArchiveUiModel>() {
 
   fun loadShows(resetScroll: Boolean = false) {

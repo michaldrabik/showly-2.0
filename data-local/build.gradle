@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 apply from: '../versions.gradle'
 
 android {
@@ -29,8 +30,8 @@ dependencies {
   implementation "com.jakewharton.threetenabp:threetenabp:$versions.threeTenAbp"
   implementation "com.jakewharton.timber:timber:$versions.timber"
 
-  implementation "com.google.dagger:dagger:$versions.dagger"
-  kapt "com.google.dagger:dagger-compiler:$versions.dagger"
+  implementation "com.google.dagger:hilt-android:$versions.hilt"
+  kapt "com.google.dagger:hilt-compiler:$versions.hilt"
 
   testImplementation "junit:junit:$versions.junit"
   androidTestImplementation "com.google.truth:truth:$versions.truth"

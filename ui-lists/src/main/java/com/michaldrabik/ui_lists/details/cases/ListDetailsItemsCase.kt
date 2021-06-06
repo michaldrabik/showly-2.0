@@ -25,6 +25,7 @@ import com.michaldrabik.ui_model.SortOrderList.NEWEST
 import com.michaldrabik.ui_model.SortOrderList.RANK
 import com.michaldrabik.ui_model.SortOrderList.RATING
 import com.michaldrabik.ui_model.SortOrderList.TITLE
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -33,6 +34,7 @@ import org.threeten.bp.ZoneId
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
+@ViewModelScoped
 class ListDetailsItemsCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,

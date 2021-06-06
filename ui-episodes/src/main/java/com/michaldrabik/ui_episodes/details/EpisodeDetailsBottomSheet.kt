@@ -42,7 +42,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
 import com.michaldrabik.ui_comments.CommentView
 import com.michaldrabik.ui_episodes.R
-import com.michaldrabik.ui_episodes.details.di.UiEpisodeDetailsComponentProvider
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTmdb
@@ -58,10 +57,12 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_EPISODE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REPLY_USER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_episode_details.*
 import kotlinx.android.synthetic.main.view_episode_details.view.*
 import java.util.Locale.ENGLISH
 
+@AndroidEntryPoint
 class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewModel>() {
 
   companion object {
@@ -86,18 +87,13 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireContext().applicationContext as UiEpisodeDetailsComponentProvider).provideEpisodeDetailsComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
-
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
     return inflater.cloneInContext(contextThemeWrapper).inflate(R.layout.view_episode_details, container, false)
   }
 
   override fun createViewModel() =
-    ViewModelProvider(this, viewModelFactory).get(EpisodeDetailsViewModel::class.java)
+    ViewModelProvider(this).get(EpisodeDetailsViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

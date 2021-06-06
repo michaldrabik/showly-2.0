@@ -20,18 +20,20 @@ import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.TraktRating
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
+@HiltViewModel
 class EpisodeDetailsViewModel @Inject constructor(
   private val imagesProvider: EpisodeImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
   private val ratingsRepository: RatingsRepository,
   private val translationsRepository: TranslationsRepository,
   private val commentsRepository: CommentsRepository,
-  private val userTraktManager: UserTraktManager
+  private val userTraktManager: UserTraktManager,
 ) : BaseViewModel<EpisodeDetailsUiModel>() {
 
   init {

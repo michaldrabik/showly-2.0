@@ -10,11 +10,13 @@ import com.michaldrabik.ui_model.ImageFamily
 import com.michaldrabik.ui_model.ImageSource.CUSTOM
 import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ArtGalleryViewModel @Inject constructor(
-  private val imagesCase: ArtLoadImagesCase
+  private val imagesCase: ArtLoadImagesCase,
 ) : BaseViewModel<ArtGalleryUiModel>() {
 
   fun loadImages(id: IdTrakt, family: ImageFamily, type: ImageType) {

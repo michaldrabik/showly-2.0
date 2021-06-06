@@ -23,17 +23,18 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_lists.R
-import com.michaldrabik.ui_lists.manage.di.UiManageListsComponentProvider
 import com.michaldrabik.ui_lists.manage.recycler.ManageListsAdapter
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_lists.*
 import kotlinx.android.synthetic.main.view_manage_lists.*
 import kotlinx.android.synthetic.main.view_manage_lists.view.*
 
+@AndroidEntryPoint
 class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), EventObserver {
 
   override val layoutResId = R.layout.view_manage_lists
@@ -46,18 +47,13 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), 
 
   override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireContext().applicationContext as UiManageListsComponentProvider).provideManageListsComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
-
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
     return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
   }
 
   override fun createViewModel() =
-    ViewModelProvider(this, viewModelFactory).get(ManageListsViewModel::class.java)
+    ViewModelProvider(this).get(ManageListsViewModel::class.java)
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

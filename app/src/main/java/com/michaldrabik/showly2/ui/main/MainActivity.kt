@@ -21,9 +21,7 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.showly2.BuildConfig
-import com.michaldrabik.showly2.DiApp
 import com.michaldrabik.showly2.R
-import com.michaldrabik.showly2.di.DaggerViewModelFactory
 import com.michaldrabik.showly2.ui.BillingActivity
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
@@ -56,11 +54,12 @@ import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MODES
 import com.michaldrabik.ui_model.Tip.MENU_MY_SHOWS
 import com.michaldrabik.ui_settings.helpers.AppLanguage
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_bottom_menu.*
 import timber.log.Timber
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity :
   BillingActivity(),
   EventObserver,
@@ -74,8 +73,7 @@ class MainActivity :
     private const val ARG_NAVIGATION_VISIBLE = "ARG_NAVIGATION_VISIBLE"
   }
 
-  @Inject lateinit var viewModelFactory: DaggerViewModelFactory
-  private val viewModel by viewModels<MainViewModel> { viewModelFactory }
+  private val viewModel by viewModels<MainViewModel>()
 
   private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
@@ -88,7 +86,6 @@ class MainActivity :
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (application as DiApp).appComponent.inject(this)
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 

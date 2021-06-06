@@ -25,9 +25,11 @@ import com.michaldrabik.ui_progress.ProgressItem
 import org.threeten.bp.temporal.ChronoUnit.DAYS
 import java.util.Locale.ROOT
 import javax.inject.Inject
+import javax.inject.Singleton
 import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
 import com.michaldrabik.data_local.database.model.Season as SeasonDb
 
+@Singleton
 class ProgressLoadItemsCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,

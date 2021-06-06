@@ -12,9 +12,11 @@ import com.michaldrabik.ui_lists.lists.helpers.ListsItemImage
 import com.michaldrabik.ui_lists.lists.recycler.ListsItem
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class ListsViewModel @Inject constructor(
   private val mainCase: MainListsCase,
   private val sortCase: SortOrderListsCase,

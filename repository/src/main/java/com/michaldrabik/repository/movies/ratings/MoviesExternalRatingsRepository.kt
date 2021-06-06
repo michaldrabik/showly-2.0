@@ -1,7 +1,6 @@
 package com.michaldrabik.repository.movies.ratings
 
 import com.michaldrabik.common.ConfigVariant
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_remote.Cloud
@@ -10,8 +9,9 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Ratings
 import java.util.Locale
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class MoviesExternalRatingsRepository @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,

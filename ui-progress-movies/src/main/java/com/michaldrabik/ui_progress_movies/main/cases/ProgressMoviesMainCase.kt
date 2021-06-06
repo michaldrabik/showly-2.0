@@ -10,7 +10,9 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Movie
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ProgressMoviesMainCase @Inject constructor(
   private val database: AppDatabase,
   private val moviesRepository: MoviesRepository,

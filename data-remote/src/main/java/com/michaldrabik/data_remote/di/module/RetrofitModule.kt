@@ -6,20 +6,23 @@ import com.michaldrabik.data_remote.Config.REDDIT_BASE_URL
 import com.michaldrabik.data_remote.Config.REDDIT_OAUTH_BASE_URL
 import com.michaldrabik.data_remote.Config.TMDB_BASE_URL
 import com.michaldrabik.data_remote.Config.TRAKT_BASE_URL
-import com.michaldrabik.data_remote.di.CloudScope
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Named
+import javax.inject.Singleton
 
 @Module
+@InstallIn(SingletonComponent::class)
 object RetrofitModule {
 
   @Provides
-  @CloudScope
+  @Singleton
   @Named("retrofitTrakt")
   fun providesTraktRetrofit(
     @Named("okHttpTrakt") okHttpClient: OkHttpClient,
@@ -32,7 +35,7 @@ object RetrofitModule {
       .build()
 
   @Provides
-  @CloudScope
+  @Singleton
   @Named("retrofitTmdb")
   fun providesTmdbRetrofit(
     @Named("okHttpTmdb") okHttpClient: OkHttpClient,
@@ -45,7 +48,7 @@ object RetrofitModule {
       .build()
 
   @Provides
-  @CloudScope
+  @Singleton
   @Named("retrofitOmdb")
   fun providesOmdbRetrofit(
     @Named("okHttpOmdb") okHttpClient: OkHttpClient,
@@ -58,7 +61,7 @@ object RetrofitModule {
       .build()
 
   @Provides
-  @CloudScope
+  @Singleton
   @Named("retrofitAws")
   fun providesAwsRetrofit(
     @Named("okHttpAws") okHttpClient: OkHttpClient,
@@ -71,7 +74,7 @@ object RetrofitModule {
       .build()
 
   @Provides
-  @CloudScope
+  @Singleton
   @Named("retrofitRedditAuth")
   fun providesRedditRetrofit(
     @Named("okHttpReddit") okHttpClient: OkHttpClient,
@@ -84,7 +87,7 @@ object RetrofitModule {
       .build()
 
   @Provides
-  @CloudScope
+  @Singleton
   @Named("retrofitRedditListing")
   fun providesRedditRetrofitOAuth(
     @Named("okHttpReddit") okHttpClient: OkHttpClient,
@@ -97,10 +100,10 @@ object RetrofitModule {
       .build()
 
   @Provides
-  @CloudScope
+  @Singleton
   fun providesMoshiFactory(moshi: Moshi): MoshiConverterFactory = MoshiConverterFactory.create(moshi)
 
   @Provides
-  @CloudScope
+  @Singleton
   fun providesMoshi(): Moshi = Moshi.Builder().build()
 }

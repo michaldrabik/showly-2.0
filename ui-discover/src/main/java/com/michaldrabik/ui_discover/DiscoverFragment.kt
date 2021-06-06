@@ -32,21 +32,22 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
-import com.michaldrabik.ui_discover.di.UiDiscoverComponentProvider
 import com.michaldrabik.ui_discover.recycler.DiscoverAdapter
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_discover.*
 import kotlin.math.hypot
 import kotlin.random.Random
 
+@AndroidEntryPoint
 class DiscoverFragment :
   BaseFragment<DiscoverViewModel>(R.layout.fragment_discover),
   OnTabReselectedListener,
   OnTraktSyncListener {
 
-  override val viewModel by viewModels<DiscoverViewModel> { viewModelFactory }
+  override val viewModel by viewModels<DiscoverViewModel>()
 
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
@@ -58,7 +59,6 @@ class DiscoverFragment :
   private var tabsViewPosition = 0F
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiDiscoverComponentProvider).provideDiscoverComponent().inject(this)
     super.onCreate(savedInstanceState)
     savedInstanceState?.let {
       searchViewPosition = it.getFloat("ARG_SEARCH_POS", 0F)

@@ -2,6 +2,7 @@ apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
 apply plugin: "kotlin-android-extensions"
 apply plugin: "kotlin-kapt"
+apply plugin: 'dagger.hilt.android.plugin'
 apply from: '../versions.gradle'
 
 android {
@@ -45,14 +46,14 @@ android {
 
 dependencies {
   api "com.squareup.retrofit2:retrofit:$versions.retrofit"
-  implementation "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
-  implementation "com.squareup.okhttp3:logging-interceptor:$versions.okHttpLogInterceptor"
+  api "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
+  api "com.squareup.okhttp3:logging-interceptor:$versions.okHttpLogInterceptor"
 
   implementation "com.jakewharton.threetenabp:threetenabp:$versions.threeTenAbp"
   implementation "com.jakewharton.timber:timber:$versions.timber"
 
-  implementation "com.google.dagger:dagger:$versions.dagger"
-  kapt "com.google.dagger:dagger-compiler:$versions.dagger"
+  implementation "com.google.dagger:hilt-android:$versions.hilt"
+  kapt "com.google.dagger:hilt-compiler:$versions.hilt"
 
   implementation "com.google.firebase:firebase-crashlytics:$versions.firebaseCrashlytics"
 

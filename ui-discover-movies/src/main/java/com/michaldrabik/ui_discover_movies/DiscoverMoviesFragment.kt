@@ -28,20 +28,21 @@ import com.michaldrabik.ui_base.utilities.extensions.invisible
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
-import com.michaldrabik.ui_discover_movies.di.UiDiscoverMoviesComponentProvider
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMovieListItem
 import com.michaldrabik.ui_discover_movies.recycler.DiscoverMoviesAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_discover_movies.*
 import kotlin.math.hypot
 import kotlin.random.Random
 
+@AndroidEntryPoint
 class DiscoverMoviesFragment :
   BaseFragment<DiscoverMoviesViewModel>(R.layout.fragment_discover_movies),
   OnTabReselectedListener,
   OnTraktSyncListener {
 
-  override val viewModel by viewModels<DiscoverMoviesViewModel> { viewModelFactory }
+  override val viewModel by viewModels<DiscoverMoviesViewModel>()
 
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
@@ -53,7 +54,6 @@ class DiscoverMoviesFragment :
   private var tabsViewPosition = 0F
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiDiscoverMoviesComponentProvider).provideDiscoverMoviesComponent().inject(this)
     super.onCreate(savedInstanceState)
     savedInstanceState?.let {
       searchViewPosition = it.getFloat("ARG_SEARCH_POS", 0F)

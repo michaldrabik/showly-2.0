@@ -19,6 +19,7 @@ import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.ALL_MOVIES_ITEM
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.RECENT_MOVIE
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -26,6 +27,7 @@ import kotlinx.coroutines.launch
 import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
 
+@HiltViewModel
 class MyMoviesViewModel @Inject constructor(
   private val loadMoviesCase: MyMoviesLoadCase,
   private val ratingsCase: MyMoviesRatingsCase,

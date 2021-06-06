@@ -23,8 +23,10 @@ import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_settings.helpers.AppLanguage
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class SettingsMainCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val announcementManager: AnnouncementManager,

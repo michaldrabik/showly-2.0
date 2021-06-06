@@ -39,22 +39,18 @@ import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.TraktSyncSchedule.OFF
-import com.michaldrabik.ui_settings.di.UiSettingsComponentProvider
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import com.michaldrabik.ui_settings.helpers.AppTheme
 import com.michaldrabik.ui_settings.helpers.PlayStoreHelper
 import com.michaldrabik.ui_settings.helpers.WidgetTransparency
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_settings.*
 import com.michaldrabik.data_remote.Config as ConfigNetwork
 
+@AndroidEntryPoint
 class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_settings), OnTraktAuthorizeListener {
 
-  override val viewModel by viewModels<SettingsViewModel> { viewModelFactory }
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiSettingsComponentProvider).provideSettingsComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
+  override val viewModel by viewModels<SettingsViewModel>()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

@@ -1,6 +1,5 @@
 package com.michaldrabik.repository
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.data_remote.trakt.model.request.CommentRequest
 import com.michaldrabik.repository.mappers.Mappers
@@ -10,8 +9,9 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class CommentsRepository @Inject constructor(
   val cloud: Cloud,
   val mappers: Mappers,

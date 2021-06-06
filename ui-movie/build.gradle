@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 apply from: '../versions.gradle'
 
 android {
@@ -37,6 +38,9 @@ dependencies {
   implementation project(':ui-navigation')
   implementation project(':ui-comments')
   implementation project(':ui-streamings')
+
+  implementation "com.google.dagger:hilt-android:$versions.hilt"
+  kapt "com.google.dagger:hilt-compiler:$versions.hilt"
 
   implementation "me.relex:circleindicator:$versions.circleIndicator"
 }

@@ -6,7 +6,6 @@ import androidx.annotation.RequiresApi
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.nowUtcDay
 import com.michaldrabik.common.extensions.nowUtcMillis
@@ -36,14 +35,15 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class AnnouncementManager @Inject constructor(
   private val database: AppDatabase,
   private val settingsRepository: SettingsRepository,
   private val showsImagesProvider: ShowImagesProvider,
   private val moviesImagesProvider: MovieImagesProvider,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   companion object {
@@ -81,7 +81,7 @@ class AnnouncementManager @Inject constructor(
       episodes
         .filter { it.seasonNumber != 0 && !it.isWatched }
         .filter { it.firstAired != null && (it.firstAired!!.toMillis() + delay.delayMs) > now }
-        .minBy { it.firstAired!!.toMillis() }
+        .minByOrNull { it.firstAired!!.toMillis() }
         ?.let {
           scheduleAnnouncement(context.applicationContext, show, it, delay)
         }
@@ -124,7 +124,7 @@ class AnnouncementManager @Inject constructor(
     context: Context,
     showDb: Show,
     episodeDb: Episode,
-    delay: NotificationDelay
+    delay: NotificationDelay,
   ) {
     val show = mappers.show.fromDatabase(showDb)
 
@@ -166,7 +166,7 @@ class AnnouncementManager @Inject constructor(
   @RequiresApi(Build.VERSION_CODES.N)
   private suspend fun scheduleAnnouncement(
     context: Context,
-    movie: Movie
+    movie: Movie,
   ) {
     val data = Data.Builder().apply {
       putString(DATA_CHANNEL, NotificationChannel.MOVIES_ANNOUNCEMENTS.name)

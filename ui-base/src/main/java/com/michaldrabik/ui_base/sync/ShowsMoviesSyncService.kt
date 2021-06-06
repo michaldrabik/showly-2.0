@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
 import com.michaldrabik.ui_base.Logger
-import com.michaldrabik.ui_base.di.UiBaseComponentProvider
 import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.ShowsMoviesSyncComplete
 import com.michaldrabik.ui_base.sync.movies.MoviesSyncRunner
 import com.michaldrabik.ui_base.sync.shows.ShowsSyncRunner
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,6 +19,7 @@ import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class ShowsMoviesSyncService : JobIntentService(), CoroutineScope {
 
   companion object {
@@ -36,7 +37,6 @@ class ShowsMoviesSyncService : JobIntentService(), CoroutineScope {
 
   override fun onHandleWork(intent: Intent) {
     Timber.d("Sync service initialized")
-    (applicationContext as UiBaseComponentProvider).provideBaseComponent().inject(this)
 
     val showsAsync = async {
       try {
@@ -68,7 +68,6 @@ class ShowsMoviesSyncService : JobIntentService(), CoroutineScope {
 
   override fun onDestroy() {
     coroutineContext.cancel()
-    Timber.d("Sync service destroyed")
     super.onDestroy()
   }
 }

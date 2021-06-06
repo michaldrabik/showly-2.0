@@ -1,6 +1,5 @@
 package com.michaldrabik.repository.shows.ratings
 
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.mappers.Mappers
@@ -10,8 +9,9 @@ import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.TraktRating
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class ShowsRatingsRepository @Inject constructor(
   val external: ShowsExternalRatingsRepository,
   private val cloud: Cloud,

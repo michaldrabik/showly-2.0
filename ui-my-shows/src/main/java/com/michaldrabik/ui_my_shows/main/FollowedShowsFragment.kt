@@ -35,7 +35,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_my_shows.R
-import com.michaldrabik.ui_my_shows.di.UiMyShowsComponentProvider
 import com.michaldrabik.ui_my_shows.main.utilities.OnSortClickListener
 import com.michaldrabik.ui_my_shows.myshows.helpers.MyShowsSearchResult
 import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.EMPTY
@@ -44,18 +43,19 @@ import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.RESULTS
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import com.michaldrabik.ui_my_shows.myshows.views.MyShowFanartView
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_followed_shows.*
 
+@AndroidEntryPoint
 class FollowedShowsFragment :
   BaseFragment<FollowedShowsViewModel>(R.layout.fragment_followed_shows),
   OnTabReselectedListener,
   OnTraktSyncListener {
 
-  override val viewModel by viewModels<FollowedShowsViewModel> { viewModelFactory }
+  override val viewModel by viewModels<FollowedShowsViewModel>()
   private var currentPage = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiMyShowsComponentProvider).provideMyShowsComponent().inject(this)
     super.onCreate(savedInstanceState)
 
     savedInstanceState?.let {

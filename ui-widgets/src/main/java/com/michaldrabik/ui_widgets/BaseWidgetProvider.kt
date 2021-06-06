@@ -21,20 +21,18 @@ abstract class BaseWidgetProvider : AppWidgetProvider() {
 
   abstract fun getLayoutResId(): Int
 
-  protected fun getBackgroundResId(): Int {
-    val transparency = settingsRepository.widgetsTransparency
-    return when (transparency) {
+  protected fun getBackgroundResId() =
+    when (settingsRepository.widgetsTransparency) {
       75 -> R.drawable.bg_widget_75
       50 -> R.drawable.bg_widget_50
       25 -> R.drawable.bg_widget_25
       else -> R.drawable.bg_widget
     }
-  }
 
   override fun onUpdate(
     context: Context,
     appWidgetManager: AppWidgetManager,
-    appWidgetIds: IntArray?
+    appWidgetIds: IntArray?,
   ) {
     requireSettings()
     super.onUpdate(context, appWidgetManager, appWidgetIds)

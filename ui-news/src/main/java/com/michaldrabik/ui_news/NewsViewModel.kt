@@ -9,10 +9,12 @@ import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_model.NewsItem.Type.MOVIE
 import com.michaldrabik.ui_model.NewsItem.Type.SHOW
 import com.michaldrabik.ui_news.cases.NewsLoadItemsCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+@HiltViewModel
 class NewsViewModel @Inject constructor(
   private val loadNewsCase: NewsLoadItemsCase,
 ) : BaseViewModel<NewsUiModel>() {

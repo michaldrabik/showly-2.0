@@ -8,15 +8,15 @@ import com.michaldrabik.common.Config.DEFAULT_COUNTRY
 import com.michaldrabik.common.Config.DEFAULT_DATE_FORMAT
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.Mode
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Settings
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Named
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class SettingsRepository @Inject constructor(
   @Named("miscPreferences") private var miscPreferences: SharedPreferences,
   private val database: AppDatabase,

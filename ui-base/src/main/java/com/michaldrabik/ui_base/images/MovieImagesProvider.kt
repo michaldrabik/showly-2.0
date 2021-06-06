@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_base.images
 
 import com.michaldrabik.common.Mode
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.CustomImage
 import com.michaldrabik.data_remote.Cloud
@@ -25,8 +24,9 @@ import com.michaldrabik.ui_model.ImageType.FANART_WIDE
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class MovieImagesProvider @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,

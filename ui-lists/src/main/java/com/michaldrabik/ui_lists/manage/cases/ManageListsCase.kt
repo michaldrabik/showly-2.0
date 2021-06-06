@@ -6,13 +6,15 @@ import com.michaldrabik.repository.ListsRepository
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_lists.manage.recycler.ManageListsItem
 import com.michaldrabik.ui_model.IdTrakt
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
+@ViewModelScoped
 class ManageListsCase @Inject constructor(
   private val listsRepository: ListsRepository,
-  private val quickSyncManager: QuickSyncManager
+  private val quickSyncManager: QuickSyncManager,
 ) {
 
   suspend fun loadLists(itemId: IdTrakt, itemType: String) = coroutineScope {
@@ -31,7 +33,7 @@ class ManageListsCase @Inject constructor(
     context: Context,
     itemId: IdTrakt,
     itemType: String,
-    listItem: ManageListsItem
+    listItem: ManageListsItem,
   ) {
     listsRepository.addToList(listItem.list.id, itemId, itemType)
     quickSyncManager.scheduleAddToList(context, itemId.id, listItem.list.id, Mode.fromType(itemType))
@@ -41,7 +43,7 @@ class ManageListsCase @Inject constructor(
     context: Context,
     itemId: IdTrakt,
     itemType: String,
-    listItem: ManageListsItem
+    listItem: ManageListsItem,
   ) {
     listsRepository.removeFromList(listItem.list.id, itemId, itemType)
     quickSyncManager.scheduleRemoveFromList(context, itemId.id, listItem.list.id, Mode.fromType(itemType))

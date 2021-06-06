@@ -10,9 +10,11 @@ import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_show.helpers.SeasonsBundle
+import dagger.hilt.android.scopes.ViewModelScoped
 import timber.log.Timber
 import javax.inject.Inject
 
+@ViewModelScoped
 class ShowDetailsEpisodesCase @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,

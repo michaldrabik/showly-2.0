@@ -16,9 +16,10 @@ import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_widgets.BaseWidgetProvider
 import com.michaldrabik.ui_widgets.R
-import com.michaldrabik.ui_widgets.di.UiWidgetsComponentProvider
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
 
   companion object {
@@ -48,9 +49,8 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
   override fun onUpdate(
     context: Context,
     appWidgetManager: AppWidgetManager,
-    appWidgetIds: IntArray?
+    appWidgetIds: IntArray?,
   ) {
-    requireDependencies(context)
     super.onUpdate(context, appWidgetManager, appWidgetIds)
     appWidgetIds?.forEach { updateWidget(context, appWidgetManager, it) }
   }
@@ -110,9 +110,5 @@ class ProgressMoviesWidgetProvider : BaseWidgetProvider() {
       }
     }
     super.onReceive(context, intent)
-  }
-
-  private fun requireDependencies(context: Context) {
-    (context.applicationContext as UiWidgetsComponentProvider).provideWidgetsComponent().inject(this)
   }
 }

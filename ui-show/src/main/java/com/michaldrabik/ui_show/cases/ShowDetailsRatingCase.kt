@@ -5,8 +5,10 @@ import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.TraktRating
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class ShowDetailsRatingCase @Inject constructor(
   private val userTraktManager: UserTraktManager,
   private val ratingsRepository: RatingsRepository,

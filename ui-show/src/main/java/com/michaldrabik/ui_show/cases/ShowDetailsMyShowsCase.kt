@@ -13,10 +13,12 @@ import com.michaldrabik.ui_base.episodes.EpisodesManager
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
 import com.michaldrabik.data_local.database.model.Season as SeasonDb
 
+@ViewModelScoped
 class ShowDetailsMyShowsCase @Inject constructor(
   private val database: AppDatabase,
   private val cloud: Cloud,

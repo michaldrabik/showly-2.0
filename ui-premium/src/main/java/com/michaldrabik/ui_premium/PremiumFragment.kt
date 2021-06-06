@@ -12,13 +12,14 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_premium.di.UiPremiumComponentProvider
 import com.michaldrabik.ui_premium.views.PurchaseItemView
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_premium.*
 
+@AndroidEntryPoint
 class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium) {
 
-  override val viewModel by viewModels<PremiumViewModel> { viewModelFactory }
+  override val viewModel by viewModels<PremiumViewModel>()
 
   private val billingClient: BillingClient by lazy {
     BillingClient.newBuilder(requireAppContext())
@@ -31,11 +32,6 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
     PurchasesUpdatedListener { billingResult, purchases ->
       viewModel.handlePurchase(billingClient, billingResult, purchases ?: mutableListOf())
     }
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    (requireAppContext() as UiPremiumComponentProvider).providePremiumComponent().inject(this)
-    super.onCreate(savedInstanceState)
-  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)

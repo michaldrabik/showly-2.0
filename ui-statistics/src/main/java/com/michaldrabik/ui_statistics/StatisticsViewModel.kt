@@ -17,10 +17,12 @@ import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_statistics.cases.StatisticsLoadRatingsCase
 import com.michaldrabik.ui_statistics.views.mostWatched.StatisticsMostWatchedItem
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class StatisticsViewModel @Inject constructor(
   private val ratingsCase: StatisticsLoadRatingsCase,
   private val showsRepository: ShowsRepository,

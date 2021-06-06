@@ -16,6 +16,7 @@ import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_settings.helpers.AppLanguage
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope
@@ -23,6 +24,7 @@ import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Named
 
+@ViewModelScoped
 class MainInitialsCase @Inject constructor(
   private val userTraktManager: UserTraktManager,
   private val ratingsRepository: RatingsRepository,

@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_base.trakt.imports
 
 import androidx.room.withTransaction
-import com.michaldrabik.common.di.AppScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.Episode
@@ -25,8 +24,9 @@ import com.michaldrabik.ui_model.Show
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@AppScope
+@Singleton
 class TraktImportWatchedRunner @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,

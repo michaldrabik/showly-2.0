@@ -16,11 +16,13 @@ import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.SortOrder
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 
+@ViewModelScoped
 class MainListsCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,

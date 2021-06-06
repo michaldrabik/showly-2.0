@@ -6,10 +6,12 @@ import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_statistics_movies.cases.StatisticsMoviesLoadRatingsCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class StatisticsMoviesViewModel @Inject constructor(
   private val ratingsCase: StatisticsMoviesLoadRatingsCase,
   private val moviesRepository: MoviesRepository

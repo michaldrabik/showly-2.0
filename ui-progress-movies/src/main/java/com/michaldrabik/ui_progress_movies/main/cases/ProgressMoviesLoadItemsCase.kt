@@ -18,7 +18,9 @@ import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import org.threeten.bp.format.DateTimeFormatter
 import java.util.Locale.ROOT
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ProgressMoviesLoadItemsCase @Inject constructor(
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,

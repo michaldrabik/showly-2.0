@@ -20,11 +20,13 @@ import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import timber.log.Timber
 import javax.inject.Inject
 
+@HiltViewModel
 class PremiumViewModel @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) : BaseViewModel<PremiumUiModel>() {

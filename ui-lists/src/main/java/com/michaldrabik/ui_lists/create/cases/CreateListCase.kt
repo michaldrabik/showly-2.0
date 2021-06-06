@@ -11,10 +11,12 @@ import com.michaldrabik.ui_base.events.EventsManager
 import com.michaldrabik.ui_base.events.TraktListQuickSyncSuccess
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_model.CustomList
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.delay
 import retrofit2.HttpException
 import javax.inject.Inject
 
+@ViewModelScoped
 class CreateListCase @Inject constructor(
   private val cloud: Cloud,
   private val mappers: Mappers,

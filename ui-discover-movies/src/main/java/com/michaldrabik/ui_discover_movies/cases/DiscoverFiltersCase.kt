@@ -3,8 +3,10 @@ package com.michaldrabik.ui_discover_movies.cases
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_model.DiscoverFilters
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class DiscoverFiltersCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {

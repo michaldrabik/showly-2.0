@@ -6,8 +6,10 @@ import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_model.Show
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class ShowDetailsArchiveCase @Inject constructor(
   private val database: AppDatabase,
   private val showsRepository: ShowsRepository,

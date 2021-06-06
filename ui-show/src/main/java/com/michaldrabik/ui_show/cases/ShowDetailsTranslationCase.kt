@@ -7,8 +7,10 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.SeasonTranslation
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
+import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
+@ViewModelScoped
 class ShowDetailsTranslationCase @Inject constructor(
   private val translationsRepository: TranslationsRepository
 ) {
