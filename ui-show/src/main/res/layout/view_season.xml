@@ -42,7 +42,7 @@
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toEndOf="@id/seasonViewCheckbox"
       app:layout_constraintTop_toTopOf="parent"
-      tools:text="Temporada 00"
+      tools:text="Season 00"
       />
 
     <ImageView
@@ -74,16 +74,20 @@
       tools:text="20/20 (100%)"
       />
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.LinearProgressIndicator
       android:id="@+id/seasonViewProgress"
-      style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+      style="@style/Widget.MaterialComponents.LinearProgressIndicator"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/seasonViewProgressMargin"
+      app:indicatorColor="?attr/colorAccent"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toStartOf="@id/seasonViewProgressText"
       app:layout_constraintStart_toEndOf="@id/seasonViewTitle"
       app:layout_constraintTop_toTopOf="parent"
+      app:trackColor="?attr/colorProgressTrack"
+      app:trackCornerRadius="4dp"
+      app:trackThickness="4dp"
       />
 
   </androidx.constraintlayout.widget.ConstraintLayout>

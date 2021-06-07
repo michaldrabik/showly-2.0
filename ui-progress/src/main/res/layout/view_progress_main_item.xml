@@ -152,26 +152,32 @@
       android:layout_width="wrap_content"
       android:layout_height="0dp"
       android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceTiny"
       android:gravity="start|center_vertical"
       android:textColor="?android:attr/textColorSecondary"
       android:textSize="12sp"
-      app:layout_constraintBottom_toBottomOf="@id/progressItemProgress"
       app:layout_constraintStart_toEndOf="@id/progressItemImage"
       app:layout_constraintTop_toBottomOf="@id/progressItemSubtitle"
       tools:text="999/999"
       />
 
-    <ProgressBar
+    <com.google.android.material.progressindicator.LinearProgressIndicator
       android:id="@+id/progressItemProgress"
-      style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+      style="@style/Widget.MaterialComponents.LinearProgressIndicator"
       android:layout_width="0dp"
-      android:layout_height="22dp"
+      android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceSmall"
       android:layout_marginEnd="@dimen/spaceMedium"
-      app:layout_constraintBottom_toTopOf="@id/progressItemButtons"
+      android:translationY="1dp"
+      app:indicatorColor="?attr/colorAccent"
+      app:layout_constraintBottom_toBottomOf="@id/progressItemProgressText"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/progressItemProgressText"
-      app:layout_constraintTop_toBottomOf="@id/progressItemSubtitle"
+      app:layout_constraintTop_toTopOf="@id/progressItemProgressText"
+      app:trackColor="?attr/colorProgressTrack"
+      app:trackCornerRadius="4dp"
+      app:trackThickness="4dp"
+      tools:progress="50"
       />
 
     <LinearLayout

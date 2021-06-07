@@ -22,6 +22,7 @@
     <item name="textColorChip">@color/colorWhite</item>
     <item name="textColorChipSelected">@color/colorAccent</item>
     <item name="colorBackgroundChipSelected">?attr/colorSearchViewBackground</item>
+    <item name="colorProgressTrack">#3C3C3C</item>
 
     <item name="colorInfoSnackbar">@color/colorWhite</item>
     <item name="textColorInfoSnackbar">@color/colorBlack</item>

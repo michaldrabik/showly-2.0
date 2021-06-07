@@ -10,7 +10,6 @@ import android.widget.FrameLayout
 import androidx.core.widget.ImageViewCompat
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.expandTouch
-import com.michaldrabik.ui_base.utilities.extensions.setAnimatedProgress
 import com.michaldrabik.ui_show.R
 import kotlinx.android.synthetic.main.view_season.view.*
 import java.util.Locale.ENGLISH
@@ -34,7 +33,7 @@ class SeasonView : FrameLayout {
   fun bind(
     item: SeasonListItem,
     clickListener: (SeasonListItem) -> Unit,
-    itemCheckedListener: (SeasonListItem, Boolean) -> Unit
+    itemCheckedListener: (SeasonListItem, Boolean) -> Unit,
   ) {
     clear()
     setOnClickListener { clickListener(item) }
@@ -50,7 +49,7 @@ class SeasonView : FrameLayout {
     }
 
     seasonViewProgress.max = item.season.episodeCount
-    seasonViewProgress.setAnimatedProgress(item.episodes.count { it.isWatched })
+    seasonViewProgress.setProgressCompat(item.episodes.count { it.isWatched }, false)
     seasonViewProgressText.text = String.format(ENGLISH, "%d/%d (%d%%)", progressCount, item.episodes.size, percent)
 
     seasonViewCheckbox.isChecked = item.isWatched
