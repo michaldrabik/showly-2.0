@@ -1,5 +1,3 @@
-@file:Suppress("EXPERIMENTAL_FEATURE_WARNING")
-
 package com.michaldrabik.ui_model
 
 import android.os.Parcelable
