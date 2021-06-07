@@ -77,7 +77,7 @@
   <string name="textMovieStatusCanceled">İptal Edildi</string>
   <string name="textMovieStatusRumored">Söylenti</string>
   <string name="textStreamingStream">Yayın</string>
-  <string name="textStreamingAds">Reklamlar</string>
+  <string name="textStreamingAds">Reklamlı</string>
   <string name="textStreamingBuy">Satın Al</string>
   <string name="textStreamingRent">Kirala</string>
   <string name="textStreamingFree">Ücretsiz</string>
