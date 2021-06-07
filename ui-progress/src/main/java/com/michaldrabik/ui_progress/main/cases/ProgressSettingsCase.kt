@@ -10,4 +10,6 @@ class ProgressSettingsCase @Inject constructor(
 ) {
 
   suspend fun isUpcomingEnabled() = settingsRepository.load().progressUpcomingEnabled
+
+  fun getProgressType() = settingsRepository.progressPercentType
 }

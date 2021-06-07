@@ -56,9 +56,10 @@ class ProgressWidgetViewsFactory(
   private fun loadData() {
     runBlocking {
       val shows = showsRepository.myShows.loadAll()
+      val progressType = settingsRepository.progressPercentType
       val items = shows.map { show ->
         async {
-          val item = loadItemsCase.loadProgressItem(show)
+          val item = loadItemsCase.loadProgressItem(show, progressType)
           try {
             val image = imagesProvider.loadRemoteImage(show, POSTER)
             item.copy(image = image)
@@ -94,7 +95,7 @@ class ProgressWidgetViewsFactory(
 
   private fun createItemRemoteView(item: ProgressItem): RemoteViews {
     val title =
-      if (item.showTranslation?.title?.isBlank() == false) item.showTranslation?.title
+      if (item.translations?.show?.title?.isBlank() == false) item.translations?.show?.title
       else item.show.title
     val subtitle = String.format(ENGLISH, "S.%02d E.%02d", item.episode.season, item.episode.number)
 
@@ -108,7 +109,7 @@ class ProgressWidgetViewsFactory(
     val hasAired = item.episode.hasAired(item.season)
     val subtitle2 = when {
       item.episode.title.isBlank() -> context.getString(R.string.textTba)
-      item.episodeTranslation?.title?.isBlank() == false -> item.episodeTranslation?.title ?: context.getString(R.string.textTba)
+      item.translations?.episode?.title?.isBlank() == false -> item.translations?.episode?.title ?: context.getString(R.string.textTba)
       else -> item.episode.title
     }
 

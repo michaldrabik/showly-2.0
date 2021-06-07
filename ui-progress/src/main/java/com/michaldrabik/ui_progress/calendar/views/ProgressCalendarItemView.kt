@@ -50,8 +50,8 @@ class ProgressCalendarItemView : ShowView<ProgressItem> {
     clear()
 
     progressCalendarItemTitle.text =
-      if (item.showTranslation?.title.isNullOrBlank()) item.show.title
-      else item.showTranslation?.title
+      if (item.translations?.show?.title.isNullOrBlank()) item.show.title
+      else item.translations?.show?.title
 
     progressCalendarItemDateText.text =
       item.upcomingEpisode.firstAired?.toLocalZone()?.let { item.dateFormat?.format(it)?.capitalizeWords() }
@@ -63,7 +63,7 @@ class ProgressCalendarItemView : ShowView<ProgressItem> {
     } else {
       val episodeTitle = when {
         item.upcomingEpisode.title.isBlank() -> context.getString(R.string.textTba)
-        item.upcomingEpisodeTranslation?.title?.isBlank() == false -> item.upcomingEpisodeTranslation.title
+        item.translations?.upcomingEpisode?.title?.isBlank() == false -> item.translations.upcomingEpisode.title
         else -> item.upcomingEpisode.title
       }
       progressCalendarItemSubtitle2.text = episodeTitle
@@ -79,7 +79,7 @@ class ProgressCalendarItemView : ShowView<ProgressItem> {
   }
 
   private fun loadTranslation() {
-    if (item.showTranslation == null) {
+    if (item.translations?.show == null) {
       missingTranslationListener?.invoke(item)
     }
   }

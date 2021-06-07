@@ -13,6 +13,9 @@ import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.ProgressType
+import com.michaldrabik.ui_model.ProgressType.AIRED
+import com.michaldrabik.ui_model.ProgressType.ALL
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
@@ -20,8 +23,10 @@ import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
-import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_progress.ProgressItem
+import com.michaldrabik.ui_progress.helpers.TranslationsBundle
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import org.threeten.bp.temporal.ChronoUnit.DAYS
 import java.util.Locale.ROOT
 import javax.inject.Inject
@@ -41,14 +46,25 @@ class ProgressLoadItemsCase @Inject constructor(
 
   suspend fun loadMyShows() = showsRepository.myShows.loadAll()
 
-  suspend fun loadProgressItem(show: Show): ProgressItem {
-    val episodes = database.episodesDao().getAllByShowId(show.traktId)
-      .filter { it.seasonNumber != 0 }
-    val seasons = database.seasonsDao().getAllForShow(show.traktId)
-      .filter { it.seasonNumber != 0 }
+  suspend fun loadProgressItem(
+    show: Show,
+    progressType: ProgressType,
+  ): ProgressItem = coroutineScope {
+    val nowUtc = nowUtc()
 
-    val episodesCount = episodes.count()
+    val seasonsAsync = async { database.seasonsDao().getAllForShow(show.traktId) }
+    val episodesAsync = async { database.episodesDao().getAllByShowId(show.traktId) }
+
+    val (seasons, episodes) = Pair(
+      seasonsAsync.await().filter { it.seasonNumber != 0 },
+      episodesAsync.await().filter { it.seasonNumber != 0 }
+    )
+
+    val airedEpisodes = episodes
+      .filter { it.firstAired != null && nowUtc.toMillis() >= it.firstAired!!.toMillis() }
+
     val unwatchedEpisodes = episodes.filter { !it.isWatched }
+    val unwatchedAiredEpisodes = airedEpisodes.filter { !it.isWatched }
 
     val nextEpisode = unwatchedEpisodes
       .filter { it.firstAired != null }
@@ -59,7 +75,7 @@ class ProgressLoadItemsCase @Inject constructor(
       .filter { it.firstAired != null }
       .sortedBy { it.firstAired }
       .firstOrNull {
-        val now = nowUtc().toLocalZone()
+        val now = nowUtc.toLocalZone()
         val airtime = it.firstAired!!.toLocalZone()
         airtime.truncatedTo(DAYS) >= now.truncatedTo(DAYS)
       }
@@ -70,30 +86,37 @@ class ProgressLoadItemsCase @Inject constructor(
     val seasonUi = nextEpisode?.let { findSeason(seasons, it, episodes) } ?: Season.EMPTY
     val upcomingSeasonUi = upcomingEpisode?.let { findSeason(seasons, it, episodes) } ?: Season.EMPTY
 
-    var showTranslation: Translation? = null
-    var episodeTranslation: Translation? = null
-    var upcomingTranslation: Translation? = null
-
+    var translations: TranslationsBundle? = null
     val language = translationsRepository.getLanguage()
     if (language != Config.DEFAULT_LANGUAGE) {
-      showTranslation = translationsRepository.loadTranslation(show, language, true)
-      episodeTranslation = translationsRepository.loadTranslation(episodeUi, show.ids.trakt, language, true)
-      upcomingTranslation = translationsRepository.loadTranslation(upcomingEpisodeUi, show.ids.trakt, language, true)
+      translations = TranslationsBundle(
+        show = translationsRepository.loadTranslation(show, language, true),
+        episode = translationsRepository.loadTranslation(episodeUi, show.ids.trakt, language, true),
+        upcomingEpisode = translationsRepository.loadTranslation(upcomingEpisodeUi, show.ids.trakt, language, true)
+      )
     }
 
-    return ProgressItem(
-      show,
-      seasonUi,
-      upcomingSeasonUi,
-      episodeUi,
-      upcomingEpisodeUi,
-      Image.createUnavailable(ImageType.POSTER),
-      episodesCount,
-      episodesCount - unwatchedEpisodes.count(),
+    val episodesCount = when (progressType) {
+      AIRED -> airedEpisodes.count()
+      ALL -> episodes.count()
+    }
+
+    val watchedEpisodesCount = when (progressType) {
+      AIRED -> airedEpisodes.count() - unwatchedAiredEpisodes.count()
+      ALL -> episodes.count() - unwatchedEpisodes.count()
+    }
+
+    ProgressItem(
+      show = show,
+      season = seasonUi,
+      upcomingSeason = upcomingSeasonUi,
+      episode = episodeUi,
+      upcomingEpisode = upcomingEpisodeUi,
+      image = Image.createUnavailable(ImageType.POSTER),
+      episodesCount = episodesCount,
+      watchedEpisodesCount = watchedEpisodesCount,
       isPinned = pinnedItemsRepository.isItemPinned(show),
-      showTranslation = showTranslation,
-      episodeTranslation = episodeTranslation,
-      upcomingEpisodeTranslation = upcomingTranslation
+      translations = translations
     )
   }
 
@@ -123,8 +146,8 @@ class ProgressLoadItemsCase @Inject constructor(
       .sortedWith(
         when (sortOrder) {
           NAME -> compareBy {
-            val translatedTitle = if (it.showTranslation?.hasTitle == false) null else it.showTranslation?.title
-            (translatedTitle ?: it.show.titleNoThe).toUpperCase(ROOT)
+            val translatedTitle = if (it.translations?.show?.hasTitle == false) null else it.translations?.show?.title
+            (translatedTitle ?: it.show.titleNoThe).uppercase(ROOT)
           }
           RECENTLY_WATCHED -> compareByDescending { it.show.updatedAt }
           NEWEST -> compareByDescending { it.episode.firstAired?.toMillis() }
@@ -145,8 +168,8 @@ class ProgressLoadItemsCase @Inject constructor(
         if (searchQuery.isBlank()) true
         else it.show.title.contains(searchQuery, true) ||
           it.episode.title.contains(searchQuery, true) ||
-          it.showTranslation?.title?.contains(searchQuery, true) == true ||
-          it.episodeTranslation?.title?.contains(searchQuery, true) == true
+          it.translations?.show?.title?.contains(searchQuery, true) == true ||
+          it.translations?.show?.title?.contains(searchQuery, true) == true
       }
   }
 

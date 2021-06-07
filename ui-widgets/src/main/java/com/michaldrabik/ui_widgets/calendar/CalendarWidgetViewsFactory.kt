@@ -38,7 +38,7 @@ class CalendarWidgetViewsFactory(
   private val loadItemsCase: ProgressLoadItemsCase,
   private val calendarCase: ProgressCalendarCase,
   private val imagesProvider: ShowImagesProvider,
-  private val settingsRepository: SettingsRepository
+  private val settingsRepository: SettingsRepository,
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.Main
@@ -52,9 +52,10 @@ class CalendarWidgetViewsFactory(
     runBlocking {
       val shows = loadItemsCase.loadMyShows()
       val dateFormat = loadItemsCase.loadDateFormat()
+      val progressType = settingsRepository.progressPercentType
       val items = shows.map { show ->
         async {
-          val item = loadItemsCase.loadProgressItem(show)
+          val item = loadItemsCase.loadProgressItem(show, progressType)
           try {
             val image = imagesProvider.loadRemoteImage(show, ImageType.POSTER)
             item.copy(image = image, dateFormat = dateFormat)
@@ -85,7 +86,7 @@ class CalendarWidgetViewsFactory(
     }
 
   private fun createItemRemoteView(item: ProgressItem): RemoteViews {
-    val translatedTitle = item.showTranslation?.title
+    val translatedTitle = item.translations?.show?.title
     val title =
       if (translatedTitle?.isBlank() == false) translatedTitle
       else item.show.title
@@ -99,7 +100,7 @@ class CalendarWidgetViewsFactory(
 
     val episodeTitle = when {
       item.upcomingEpisode.title.isBlank() -> context.getString(R.string.textTba)
-      item.upcomingEpisodeTranslation?.title?.isBlank() == false -> item.upcomingEpisodeTranslation?.title
+      item.translations?.upcomingEpisode?.title?.isBlank() == false -> item.translations?.upcomingEpisode?.title
       else -> item.upcomingEpisode.title
     }
 

@@ -38,10 +38,11 @@ class ProgressViewModel @Inject constructor(
       val shows = loadItemsCase.loadMyShows()
       val dateFormat = loadItemsCase.loadDateFormat()
       val upcomingEnabled = settingsCase.isUpcomingEnabled()
+      val progressType = settingsCase.getProgressType()
 
       val items = shows.map { show ->
         async {
-          val item = loadItemsCase.loadProgressItem(show)
+          val item = loadItemsCase.loadProgressItem(show, progressType)
           val image = imagesProvider.findCachedImage(show, ImageType.POSTER)
           item.copy(image = image, dateFormat = dateFormat)
         }

@@ -11,7 +11,7 @@ fun nowUtc(): ZonedDateTime = ZonedDateTime.now(ZoneOffset.UTC)
 
 fun nowUtcDay(): LocalDate = LocalDate.now()
 
-fun nowUtcMillis(): Long = nowUtc().toInstant().toEpochMilli()
+fun nowUtcMillis(): Long = nowUtc().toMillis()
 
 fun dateFromMillis(millis: Long): ZonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(millis), ZoneId.of("UTC"))
 

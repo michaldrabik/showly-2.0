@@ -19,7 +19,7 @@ import javax.inject.Inject
 class ProgressCalendarViewModel @Inject constructor(
   private val calendarCase: ProgressCalendarCase,
   private val imagesProvider: ShowImagesProvider,
-  private val translationsRepository: TranslationsRepository
+  private val translationsRepository: TranslationsRepository,
 ) : BaseViewModel<ProgressCalendarUiModel>() {
 
   private val language by lazy { translationsRepository.getLanguage() }
@@ -44,11 +44,12 @@ class ProgressCalendarViewModel @Inject constructor(
   }
 
   fun findMissingTranslation(item: ProgressItem) {
-    if (item.showTranslation != null || language == Config.DEFAULT_LANGUAGE) return
+    if (item.translations?.show != null || language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {
         val translation = translationsRepository.loadTranslation(item.show, language)
-        updateItem(item.copy(showTranslation = translation))
+        val translations = item.translations?.copy(show = translation)
+        updateItem(item.copy(translations = translations))
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "${ProgressCalendarViewModel::class.simpleName}::findMissingTranslation()")
       }

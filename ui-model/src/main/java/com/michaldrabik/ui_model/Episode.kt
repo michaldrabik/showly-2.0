@@ -2,6 +2,7 @@ package com.michaldrabik.ui_model
 
 import android.os.Parcelable
 import com.michaldrabik.common.extensions.nowUtcMillis
+import com.michaldrabik.common.extensions.toMillis
 import kotlinx.android.parcel.Parcelize
 import org.threeten.bp.ZonedDateTime
 
@@ -16,7 +17,7 @@ data class Episode(
   val votes: Int,
   val commentCount: Int,
   val firstAired: ZonedDateTime?,
-  val runtime: Int
+  val runtime: Int,
 ) : Parcelable {
 
   companion object {
@@ -26,6 +27,6 @@ data class Episode(
   fun hasAired(season: Season) =
     when (firstAired) {
       null -> season.episodes.any { it.number > number && it.firstAired != null }
-      else -> nowUtcMillis() >= firstAired.toInstant().toEpochMilli()
+      else -> nowUtcMillis() >= firstAired.toMillis()
     }
 }

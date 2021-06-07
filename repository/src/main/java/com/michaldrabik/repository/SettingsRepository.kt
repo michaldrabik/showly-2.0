@@ -10,6 +10,7 @@ import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.Mode
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.ui_model.ProgressType
 import com.michaldrabik.ui_model.Settings
 import java.util.UUID
 import javax.inject.Inject
@@ -34,6 +35,7 @@ class SettingsRepository @Inject constructor(
     private const val KEY_THEME_WIDGET_TRANSPARENT = "KEY_THEME_WIDGET_TRANSPARENT"
     private const val KEY_PREMIUM = "KEY_PREMIUM"
     private const val KEY_DATE_FORMAT = "KEY_DATE_FORMAT"
+    private const val KEY_PROGRESS_PERCENT = "KEY_PROGRESS_PERCENT"
     private const val KEY_USER_ID = "KEY_USER_ID"
   }
 
@@ -103,6 +105,13 @@ class SettingsRepository @Inject constructor(
   var dateFormat: String
     get() = miscPreferences.getString(KEY_DATE_FORMAT, DEFAULT_DATE_FORMAT) ?: DEFAULT_DATE_FORMAT
     set(value) = miscPreferences.edit(true) { putString(KEY_DATE_FORMAT, value) }
+
+  var progressPercentType: ProgressType
+    get() {
+      val setting = miscPreferences.getString(KEY_PROGRESS_PERCENT, ProgressType.AIRED.name) ?: ProgressType.AIRED.name
+      return ProgressType.valueOf(setting)
+    }
+    set(value) = miscPreferences.edit(true) { putString(KEY_PROGRESS_PERCENT, value.name) }
 
   val userId
     get() = when (val id = miscPreferences.getString(KEY_USER_ID, null)) {

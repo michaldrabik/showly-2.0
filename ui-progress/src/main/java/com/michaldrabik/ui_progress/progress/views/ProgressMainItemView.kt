@@ -66,7 +66,7 @@ class ProgressMainItemView : ShowView<ProgressItem> {
     this.item = item
     clear()
 
-    val translationTitle = item.showTranslation?.title
+    val translationTitle = item.translations?.show?.title
     progressItemTitle.text =
       if (translationTitle.isNullOrBlank()) item.show.title
       else translationTitle
@@ -80,7 +80,7 @@ class ProgressMainItemView : ShowView<ProgressItem> {
 
     val episodeTitle = when {
       item.episode.title.isBlank() -> context.getString(R.string.textTba)
-      item.episodeTranslation?.title?.isBlank() == false -> item.episodeTranslation.title
+      item.translations?.episode?.title?.isBlank() == false -> item.translations.episode.title
       else -> item.episode.title
     }
     progressItemSubtitle2.text = episodeTitle
@@ -103,7 +103,7 @@ class ProgressMainItemView : ShowView<ProgressItem> {
   private fun bindCheckButton(
     item: ProgressItem,
     checkClickListener: ((ProgressItem) -> Unit)?,
-    detailsClickListener: ((ProgressItem) -> Unit)?
+    detailsClickListener: ((ProgressItem) -> Unit)?,
   ) {
     val hasAired = item.episode.hasAired(item.season)
     val color = if (hasAired) android.R.attr.textColorPrimary else android.R.attr.textColorSecondary
@@ -130,7 +130,7 @@ class ProgressMainItemView : ShowView<ProgressItem> {
   }
 
   private fun loadTranslation() {
-    if (item.showTranslation == null) {
+    if (item.translations?.show == null) {
       missingTranslationListener?.invoke(item)
     }
   }

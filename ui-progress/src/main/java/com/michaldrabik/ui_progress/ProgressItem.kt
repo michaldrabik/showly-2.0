@@ -10,7 +10,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_progress.helpers.TranslationsBundle
 import org.threeten.bp.format.DateTimeFormatter
 
 data class ProgressItem(
@@ -25,10 +25,8 @@ data class ProgressItem(
   override val isLoading: Boolean = false,
   val headerTextResId: Int? = null,
   val isPinned: Boolean = false,
-  val showTranslation: Translation? = null,
-  val episodeTranslation: Translation? = null,
-  val upcomingEpisodeTranslation: Translation? = null,
-  val dateFormat: DateTimeFormatter? = null
+  val translations: TranslationsBundle? = null,
+  val dateFormat: DateTimeFormatter? = null,
 ) : ListItem {
 
   fun isSameAs(other: ProgressItem) =
