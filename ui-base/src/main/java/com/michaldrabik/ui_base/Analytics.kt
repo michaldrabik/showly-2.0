@@ -167,7 +167,7 @@ object Analytics {
 
   fun logDiscoverFiltersApply(filters: DiscoverFilters) {
     firebaseAnalytics.logEvent("discover_filters_set") {
-      param("filters_feed_order", filters.feedOrder.name.toLowerCase(ROOT))
+      param("filters_feed_order", filters.feedOrder.name.lowercase(ROOT))
       param("filters_hide_anticipated", filters.hideAnticipated.toString())
       param("filters_genres", filters.genres.map { it.slug }.toTypedArray().contentToString())
     }
@@ -175,7 +175,7 @@ object Analytics {
 
   fun logDiscoverMoviesFiltersApply(filters: DiscoverFilters) {
     firebaseAnalytics.logEvent("discover_movies_filters_set") {
-      param("filters_feed_order", filters.feedOrder.name.toLowerCase(ROOT))
+      param("filters_feed_order", filters.feedOrder.name.lowercase(ROOT))
       param("filters_hide_anticipated", filters.hideAnticipated.toString())
       param("filters_genres", filters.genres.map { it.slug }.toTypedArray().contentToString())
     }
@@ -294,13 +294,13 @@ object Analytics {
 
   fun logSettingsWhenToNotify(value: String) {
     firebaseAnalytics.logEvent("settings_when_to_notify") {
-      param("value", value.toLowerCase(ROOT))
+      param("value", value.lowercase(ROOT))
     }
   }
 
   fun logSettingsLanguage(value: String) {
     firebaseAnalytics.logEvent("settings_language") {
-      param("value", value.toLowerCase(ROOT))
+      param("value", value.lowercase(ROOT))
     }
   }
 
@@ -324,26 +324,26 @@ object Analytics {
 
   fun logSettingsCountry(value: String) {
     firebaseAnalytics.logEvent("settings_country") {
-      param("value", value.toLowerCase(ROOT))
+      param("value", value.lowercase(ROOT))
     }
   }
 
   fun logSettingsDateFormat(value: String) {
     firebaseAnalytics.logEvent("settings_date_format") {
-      param("value", value.toLowerCase(ROOT))
+      param("value", value.lowercase(ROOT))
     }
   }
 
   fun logSettingsMyShowsSection(section: MyShowsSection, enabled: Boolean) {
     firebaseAnalytics.logEvent("settings_my_shows_section") {
-      param("section", section.name.toLowerCase(ROOT))
+      param("section", section.name.lowercase(ROOT))
       param("enabled", enabled.toString())
     }
   }
 
   fun logSettingsMyMoviesSection(section: MyMoviesSection, enabled: Boolean) {
     firebaseAnalytics.logEvent("settings_my_movies_section") {
-      param("section", section.name.toLowerCase(ROOT))
+      param("section", section.name.lowercase(ROOT))
       param("enabled", enabled.toString())
     }
   }

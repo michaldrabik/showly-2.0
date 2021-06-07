@@ -724,7 +724,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .filter { !it.season.isSpecial() }
       .flatMap { it.episodes }
       .filterNot { it.isWatched }
-      .sumBy { it.episode.runtime }
+      .sumOf { it.episode.runtime }
       .toLong()
 
     val duration = Duration.ofMinutes(runtimeLeft)

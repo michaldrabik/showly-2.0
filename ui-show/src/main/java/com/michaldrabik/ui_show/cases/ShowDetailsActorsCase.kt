@@ -32,7 +32,7 @@ class ShowDetailsActorsCase @Inject constructor(
     val remoteTraktActors = cloud.traktApi.fetchShowActors(show.traktId)
     val remoteTmdbActors = cloud.tmdbApi.fetchShowActors(tmdbId)
       .asSequence()
-      .distinctBy { (it.name + it.character).toLowerCase(ENGLISH) }
+      .distinctBy { (it.name + it.character).lowercase(ENGLISH) }
       .sortedWith(compareBy({ it.profile_path.isNullOrBlank() }, { it.order }))
       .take(30)
       .map { mappers.actor.fromNetwork(it) }

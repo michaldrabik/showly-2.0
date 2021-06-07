@@ -20,7 +20,7 @@ class ManageListsAdapter(
     ManageListsItemViewHolder(
       ManageListsItemView(parent.context).apply {
         itemCheckListener = { item, isChecked ->
-          this@ManageListsAdapter.itemCheckListener?.invoke(item, isChecked)
+          this@ManageListsAdapter.itemCheckListener.invoke(item, isChecked)
         }
       }
     )
