@@ -167,17 +167,16 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceSmall"
+      android:layout_marginTop="1dp"
       android:layout_marginEnd="@dimen/spaceMedium"
-      android:translationY="1dp"
       app:indicatorColor="?attr/colorAccent"
       app:layout_constraintBottom_toBottomOf="@id/progressItemProgressText"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toEndOf="@id/progressItemProgressText"
       app:layout_constraintTop_toTopOf="@id/progressItemProgressText"
       app:trackColor="?attr/colorProgressTrack"
-      app:trackCornerRadius="4dp"
+      app:trackCornerRadius="10dp"
       app:trackThickness="4dp"
-      tools:progress="50"
       />
 
     <LinearLayout
