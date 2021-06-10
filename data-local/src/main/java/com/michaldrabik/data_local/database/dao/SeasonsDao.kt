@@ -9,7 +9,7 @@ import com.michaldrabik.data_local.database.model.Season
 interface SeasonsDao : BaseDao<Season> {
 
   @Query("SELECT * FROM seasons WHERE id_show_trakt IN (:traktIds)")
-  suspend fun getAllForShows(traktIds: List<Long>): List<Season>
+  suspend fun getAllByShowsIds(traktIds: List<Long>): List<Season>
 
   @Query("SELECT * FROM seasons WHERE id_show_trakt IN (:traktIds) AND is_watched = 1")
   suspend fun getAllWatchedForShows(traktIds: List<Long>): List<Season>
@@ -22,9 +22,6 @@ interface SeasonsDao : BaseDao<Season> {
 
   @Query("SELECT * FROM seasons WHERE id_trakt = :traktId")
   suspend fun getById(traktId: Long): Season?
-
-  @Query("SELECT * FROM seasons WHERE id_show_trakt = :showTraktId")
-  suspend fun getAllForShow(showTraktId: Long): List<Season>
 
   @Transaction
   suspend fun upsert(items: List<Season>) {

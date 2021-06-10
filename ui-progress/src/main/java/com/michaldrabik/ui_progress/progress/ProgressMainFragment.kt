@@ -76,7 +76,7 @@ class ProgressMainFragment :
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = ProgressMainAdapter().apply {
-      itemClickListener = { (requireParentFragment() as ProgressFragment).openShowDetails(it) }
+      itemClickListener = { (requireParentFragment() as ProgressFragment).openShowDetails(it.show) }
       itemLongClickListener = { item, view -> openPopupMenu(item, view) }
       detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show, it.episode, it.season) }
       checkClickListener = {

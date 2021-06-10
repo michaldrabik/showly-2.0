@@ -52,7 +52,7 @@ class ProgressLoadItemsCase @Inject constructor(
   ): ProgressItem = coroutineScope {
     val nowUtc = nowUtc()
 
-    val seasonsAsync = async { database.seasonsDao().getAllForShow(show.traktId) }
+    val seasonsAsync = async { database.seasonsDao().getAllByShowId(show.traktId) }
     val episodesAsync = async { database.episodesDao().getAllByShowId(show.traktId) }
 
     val (seasons, episodes) = Pair(

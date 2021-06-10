@@ -46,6 +46,17 @@
     app:tint="?android:attr/textColorPrimary"
     />
 
+  <com.michaldrabik.ui_base.common.views.ScrollableImageView
+    android:id="@+id/progressRecentsIcon"
+    android:layout_width="wrap_content"
+    android:layout_height="36dp"
+    android:layout_gravity="end"
+    android:layout_marginTop="@dimen/progressSearchViewPadding"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    app:srcCompat="@drawable/ic_history"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
   <com.michaldrabik.ui_base.common.views.SearchView
     android:id="@+id/progressSearchView"
     android:layout_width="match_parent"

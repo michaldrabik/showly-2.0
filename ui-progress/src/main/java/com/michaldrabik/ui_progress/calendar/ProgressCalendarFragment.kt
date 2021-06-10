@@ -44,7 +44,7 @@ class ProgressCalendarFragment :
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = ProgressCalendarAdapter().apply {
-      itemClickListener = { (requireParentFragment() as ProgressFragment).openShowDetails(it) }
+      itemClickListener = { (requireParentFragment() as ProgressFragment).openShowDetails(it.show) }
       detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show, it.upcomingEpisode, it.upcomingSeason) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
       missingTranslationListener = { viewModel.findMissingTranslation(it) }
