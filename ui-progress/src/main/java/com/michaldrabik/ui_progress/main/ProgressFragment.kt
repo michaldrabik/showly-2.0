@@ -224,6 +224,11 @@ class ProgressFragment :
     }
   }
 
+  fun openTraktSync() {
+    hideNavigation()
+    navigateTo(R.id.actionProgressFragmentToTraktSyncFragment)
+  }
+
   fun openShowDetails(show: Show) {
     exitSearch()
     hideNavigation()
@@ -236,16 +241,6 @@ class ProgressFragment :
         progressRoot.fadeIn(50).add(animations)
       }
     }.add(animations)
-  }
-
-  private fun openSettings() {
-    hideNavigation()
-    navigateTo(R.id.actionProgressFragmentToSettingsFragment)
-  }
-
-  fun openTraktSync() {
-    hideNavigation()
-    navigateTo(R.id.actionProgressFragmentToTraktSyncFragment)
   }
 
   fun openEpisodeDetails(show: Show, episode: Episode, season: Season) {
@@ -284,6 +279,11 @@ class ProgressFragment :
         dialog.dismiss()
       }
       .show()
+  }
+
+  private fun openSettings() {
+    hideNavigation()
+    navigateTo(R.id.actionProgressFragmentToSettingsFragment)
   }
 
   private fun enterSearch() {
