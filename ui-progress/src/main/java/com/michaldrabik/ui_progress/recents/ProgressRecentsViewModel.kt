@@ -39,7 +39,8 @@ class ProgressRecentsViewModel @Inject constructor(
     }
   }
 
-  fun findMissingImage(item: RecentsListItem.Episode, force: Boolean) {
+  fun findMissingImage(item: RecentsListItem, force: Boolean) {
+    check(item is RecentsListItem.Episode)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -52,7 +53,8 @@ class ProgressRecentsViewModel @Inject constructor(
     }
   }
 
-  fun findMissingTranslation(item: RecentsListItem.Episode) {
+  fun findMissingTranslation(item: RecentsListItem) {
+    check(item is RecentsListItem.Episode)
     if (item.translations?.show != null || language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {

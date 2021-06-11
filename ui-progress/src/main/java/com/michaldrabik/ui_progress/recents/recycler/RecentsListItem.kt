@@ -23,7 +23,11 @@ sealed class RecentsListItem(
     val isWatched: Boolean,
     val translations: TranslationsBundle? = null,
     val dateFormat: DateTimeFormatter? = null,
-  ) : RecentsListItem(show, image, isLoading)
+  ) : RecentsListItem(show, image, isLoading) {
+
+    override fun isSameAs(other: ListItem) =
+      episode.ids.trakt == (other as? Episode)?.episode?.ids?.trakt
+  }
 
   data class Header(
     override val show: Show,
@@ -40,5 +44,8 @@ sealed class RecentsListItem(
           textResId = textResId
         )
     }
+
+    override fun isSameAs(other: ListItem) =
+      textResId == (other as? Header)?.textResId
   }
 }

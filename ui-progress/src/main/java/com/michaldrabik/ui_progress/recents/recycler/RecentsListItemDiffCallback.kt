@@ -27,15 +27,18 @@ class RecentsListItemDiffCallback : DiffUtil.ItemCallback<RecentsListItem>() {
     }
 
   private fun areItemsTheSame(oldItem: RecentsListItem.Episode, newItem: RecentsListItem.Episode) =
-    oldItem.episode == newItem.episode &&
-      oldItem.translations == newItem.translations
+    oldItem.episode.ids.trakt == newItem.episode.ids.trakt
 
   private fun areItemsTheSame(oldItem: RecentsListItem.Header, newItem: RecentsListItem.Header) =
     oldItem.textResId == newItem.textResId
 
   private fun areContentsTheSame(oldItem: RecentsListItem.Episode, newItem: RecentsListItem.Episode) =
     oldItem.episode == newItem.episode &&
-      oldItem.translations == newItem.translations
+      oldItem.show == newItem.show &&
+      oldItem.image == newItem.image &&
+      oldItem.isLoading == newItem.isLoading &&
+      oldItem.translations == newItem.translations &&
+      oldItem.isWatched == newItem.isWatched
 
   private fun areContentsTheSame(oldItem: RecentsListItem.Header, newItem: RecentsListItem.Header) =
     oldItem == newItem

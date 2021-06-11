@@ -27,7 +27,7 @@ class ProgressRecentsItemView : ShowView<RecentsListItem.Episode> {
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  var detailsClickListener: ((RecentsListItem) -> Unit)? = null
+  var detailsClickListener: ((RecentsListItem.Episode) -> Unit)? = null
 
   init {
     inflate(context, R.layout.view_progress_recents_item, this)

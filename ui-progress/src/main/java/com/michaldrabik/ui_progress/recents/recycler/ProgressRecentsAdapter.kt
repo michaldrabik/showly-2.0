@@ -16,7 +16,7 @@ class ProgressRecentsAdapter : BaseAdapter<RecentsListItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, RecentsListItemDiffCallback())
 
-  var detailsClickListener: ((RecentsListItem) -> Unit)? = null
+  var detailsClickListener: ((RecentsListItem.Episode) -> Unit)? = null
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
