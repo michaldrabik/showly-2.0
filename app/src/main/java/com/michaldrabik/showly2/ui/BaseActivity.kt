@@ -93,8 +93,8 @@ abstract class BaseActivity : AppCompatActivity() {
         }
         extras.clear()
         action()
-      } catch (e: Exception) {
-        Logger.record(e, "Source" to "BaseActivity::handleFcmShowPush()")
+      } catch (error: Throwable) {
+        Logger.record(error, "Source" to "BaseActivity::handleFcmShowPush()")
       }
     }
   }

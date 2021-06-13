@@ -41,13 +41,13 @@ class QuickSyncService : TraktNotificationsService(), CoroutineScope {
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     Timber.d("Service initialized.")
 
+    val theme = settingsRepository.theme
+    startForeground(SYNC_NOTIFICATION_PROGRESS_ID, createProgressNotification(theme).build())
+
     if (quickSyncRunner.isRunning || quickSyncListsRunner.isRunning) {
       Timber.d("Already running. Skipping...")
       return START_NOT_STICKY
     }
-
-    val theme = settingsRepository.theme
-    startForeground(SYNC_NOTIFICATION_PROGRESS_ID, createProgressNotification(theme).build())
 
     Timber.d("Sync started.")
     launch {
