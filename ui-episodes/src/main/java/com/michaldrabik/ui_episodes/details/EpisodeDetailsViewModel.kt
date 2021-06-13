@@ -14,6 +14,7 @@ import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_episodes.R
+import com.michaldrabik.ui_episodes.details.cases.EpisodeDetailsSeasonCase
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTmdb
@@ -28,6 +29,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EpisodeDetailsViewModel @Inject constructor(
+  private val seasonsCase: EpisodeDetailsSeasonCase,
   private val imagesProvider: EpisodeImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
   private val ratingsRepository: RatingsRepository,
@@ -49,6 +51,13 @@ class EpisodeDetailsViewModel @Inject constructor(
       } catch (t: Throwable) {
         uiState = EpisodeDetailsUiModel(imageLoading = false)
       }
+    }
+  }
+
+  fun loadSeason(showTraktId: IdTrakt, episode: Episode) {
+    viewModelScope.launch {
+      val episodes = seasonsCase.loadSeason(showTraktId, episode)
+      uiState = EpisodeDetailsUiModel(episodes = episodes)
     }
   }
 

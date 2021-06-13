@@ -3,6 +3,7 @@ package com.michaldrabik.ui_episodes.details
 import com.michaldrabik.ui_base.UiModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_model.Comment
+import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Translation
@@ -11,6 +12,7 @@ import org.threeten.bp.format.DateTimeFormatter
 data class EpisodeDetailsUiModel(
   val image: Image? = null,
   val imageLoading: Boolean? = null,
+  val episodes: List<Episode>? = null,
   val comments: List<Comment>? = null,
   val commentsLoading: Boolean? = null,
   val isSignedIn: Boolean? = null,
@@ -25,6 +27,7 @@ data class EpisodeDetailsUiModel(
     (newModel as EpisodeDetailsUiModel).copy(
       image = newModel.image ?: image,
       imageLoading = newModel.imageLoading ?: imageLoading,
+      episodes = newModel.episodes?.toList() ?: episodes,
       comments = newModel.comments?.toList() ?: comments,
       commentsLoading = newModel.commentsLoading ?: commentsLoading,
       translation = newModel.translation ?: translation,

@@ -18,6 +18,9 @@ interface EpisodesDao : BaseDao<Episode> {
   @Query("SELECT * FROM episodes WHERE id_show_trakt = :showTraktId")
   suspend fun getAllByShowId(showTraktId: Long): List<Episode>
 
+  @Query("SELECT * FROM episodes WHERE id_show_trakt = :showTraktId AND season_number = :seasonNumber")
+  suspend fun getAllByShowId(showTraktId: Long, seasonNumber: Int): List<Episode>
+
   @Query("SELECT * FROM episodes WHERE id_show_trakt IN (:showTraktIds)")
   suspend fun getAllByShowsIds(showTraktIds: List<Long>): List<Episode>
 
