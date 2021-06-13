@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import com.michaldrabik.ui_base.common.ListItem
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
 import org.threeten.bp.format.DateTimeFormatter
@@ -20,6 +21,7 @@ sealed class RecentsListItem(
     override val image: Image,
     override val isLoading: Boolean = false,
     val episode: EpisodeModel,
+    val season: Season,
     val isWatched: Boolean,
     val translations: TranslationsBundle? = null,
     val dateFormat: DateTimeFormatter? = null,

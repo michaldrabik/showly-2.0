@@ -34,6 +34,7 @@ class RecentsListItemDiffCallback : DiffUtil.ItemCallback<RecentsListItem>() {
 
   private fun areContentsTheSame(oldItem: RecentsListItem.Episode, newItem: RecentsListItem.Episode) =
     oldItem.episode == newItem.episode &&
+    oldItem.season == newItem.season &&
       oldItem.show == newItem.show &&
       oldItem.image == newItem.image &&
       oldItem.isLoading == newItem.isLoading &&

@@ -5,6 +5,7 @@ import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.Episode
+import com.michaldrabik.data_local.database.model.Season
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
@@ -31,6 +32,7 @@ class ProgressRecentsCase @Inject constructor(
   private val dateFormatProvider: DateFormatProvider,
 ) {
 
+  @Suppress("UNCHECKED_CAST")
   suspend fun loadRecentItems(): List<RecentsListItem> = coroutineScope {
     val now = nowUtc().toLocalZone()
     val language = translationsRepository.getLanguage()
@@ -38,7 +40,13 @@ class ProgressRecentsCase @Inject constructor(
     val shows = showsRepository.myShows.loadAll()
     val showsIds = shows.map { it.traktId }
 
-    val episodes = database.episodesDao().getAllByShowsIds(showsIds)
+    val (episodes, seasons) = awaitAll(
+      async { database.episodesDao().getAllByShowsIds(showsIds) },
+      async { database.seasonsDao().getAllByShowsIds(showsIds) }
+    )
+
+    val filteredSeasons = (seasons as List<Season>)
+    val filteredEpisodes = (episodes as List<Episode>)
       .filter {
         val dateDays = it.firstAired?.toLocalZone()?.truncatedTo(DAYS)
         val isHistory = dateDays?.isBefore(now.truncatedTo(DAYS)) == true
@@ -46,12 +54,17 @@ class ProgressRecentsCase @Inject constructor(
         it.seasonNumber != 0 && isHistory && isLast3Months
       }
 
-    val elements = episodes
+    val elements = filteredEpisodes
       .sortedWith(compareByDescending<Episode> { it.firstAired }.thenByDescending { it.episodeNumber })
       .map { episode ->
         async {
           val show = shows.first { it.traktId == episode.idShowTrakt }
+          val season = filteredSeasons.first { it.idShowTrakt == episode.idShowTrakt && it.seasonNumber == episode.seasonNumber }
+          val seasonEpisodes = episodes.filter { it.idShowTrakt == season.idShowTrakt && it.seasonNumber == season.seasonNumber }
+
           val episodeUi = mappers.episode.fromDatabase(episode)
+          val seasonUi = mappers.season.fromDatabase(season, seasonEpisodes)
+
           var translations: TranslationsBundle? = null
           if (language != Config.DEFAULT_LANGUAGE) {
             translations = TranslationsBundle(
@@ -63,6 +76,7 @@ class ProgressRecentsCase @Inject constructor(
             show = show,
             image = imagesProvider.findCachedImage(show, ImageType.POSTER),
             episode = episodeUi,
+            season = seasonUi,
             isWatched = episode.isWatched,
             dateFormat = dateFormatProvider.loadFullHourFormat(),
             translations = translations

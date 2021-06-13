@@ -11,7 +11,7 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
-import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.main.ProgressFragment
@@ -46,7 +46,7 @@ class ProgressRecentsFragment :
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = ProgressRecentsAdapter().apply {
       itemClickListener = { (requireParentFragment() as ProgressFragment).openShowDetails(it.show) }
-//      detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show, it.upcomingEpisode, it.upcomingSeason) }
+      detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show, it.episode, it.season) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
       missingTranslationListener = { viewModel.findMissingTranslation(it) }
     }
@@ -78,7 +78,7 @@ class ProgressRecentsFragment :
 
   private fun render(items: List<RecentsListItem>) {
     adapter?.setItems(items)
-    progressRecentsRecycler.visible()
+    progressRecentsRecycler.fadeIn(150, withHardware = true)
     progressRecentsEmptyView.visibleIf(items.isEmpty())
   }
 
