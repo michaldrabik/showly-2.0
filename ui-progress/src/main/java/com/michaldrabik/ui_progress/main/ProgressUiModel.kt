@@ -7,7 +7,7 @@ import com.michaldrabik.ui_progress.ProgressItem
 
 data class ProgressUiModel(
   val items: List<ProgressItem>? = null,
-  val isSearching: Boolean? = null,
+  val searchQuery: String? = null,
   val resetScroll: ActionEvent<Boolean>? = null,
   val sortOrder: SortOrder? = null,
   val isUpcomingEnabled: Boolean? = null,
@@ -16,7 +16,7 @@ data class ProgressUiModel(
   override fun update(newModel: UiModel) =
     (newModel as ProgressUiModel).copy(
       items = newModel.items?.toList() ?: items,
-      isSearching = newModel.isSearching ?: isSearching,
+      searchQuery = newModel.searchQuery ?: searchQuery,
       isUpcomingEnabled = newModel.isUpcomingEnabled ?: isUpcomingEnabled,
       resetScroll = newModel.resetScroll ?: resetScroll,
       sortOrder = newModel.sortOrder ?: sortOrder

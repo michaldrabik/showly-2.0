@@ -15,8 +15,6 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_model.RatingState
-import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.main.ProgressUiModel
@@ -59,7 +57,7 @@ class ProgressMainViewModel @Inject constructor(
 
     uiState = ProgressMainUiModel(
       items = pinnedItems,
-      isSearching = model.isSearching,
+      searchQuery = model.searchQuery,
       sortOrder = model.sortOrder,
       resetScroll = model.resetScroll
     )
@@ -95,15 +93,11 @@ class ProgressMainViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         val token = userTraktManager.checkAuthorization().token
-        uiState = ProgressMainUiModel(ratingState = RatingState(rateLoading = true))
         ratingsRepository.shows.addRating(token, episode, rating)
         _messageLiveData.value = MessageEvent.info(R.string.textRateSaved)
-        uiState = ProgressMainUiModel(ratingState = RatingState(userRating = TraktRating(episode.ids.trakt, rating)))
         Analytics.logEpisodeRated(showTraktId.id, episode, rating)
       } catch (error: Throwable) {
         _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
-      } finally {
-        uiState = ProgressMainUiModel(ratingState = RatingState(rateLoading = false))
       }
     }
   }

@@ -129,9 +129,7 @@
       android:id="@+id/progressItemSubtitle2"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/spaceTiny"
       android:layout_marginEnd="@dimen/spaceMedium"
-      android:layout_marginBottom="@dimen/spaceTiny"
       android:ellipsize="end"
       android:gravity="start"
       android:includeFontPadding="false"
@@ -139,11 +137,11 @@
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="14sp"
-      app:layout_constraintBottom_toTopOf="@id/progressItemProgress"
+      app:layout_constraintBottom_toBottomOf="@id/progressItemSubtitle"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0"
       app:layout_constraintStart_toEndOf="@id/progressItemSubtitle"
-      app:layout_constraintTop_toBottomOf="@id/progressItemTitle"
+      app:layout_constraintTop_toTopOf="@id/progressItemSubtitle"
       tools:text="Some Title of an Episode"
       />
 

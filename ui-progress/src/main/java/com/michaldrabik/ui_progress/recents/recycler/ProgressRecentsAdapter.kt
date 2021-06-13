@@ -17,6 +17,7 @@ class ProgressRecentsAdapter : BaseAdapter<RecentsListItem>() {
   override val asyncDiffer = AsyncListDiffer(this, RecentsListItemDiffCallback())
 
   var detailsClickListener: ((RecentsListItem.Episode) -> Unit)? = null
+  var checkClickListener: ((RecentsListItem.Episode) -> Unit)? = null
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
@@ -26,6 +27,7 @@ class ProgressRecentsAdapter : BaseAdapter<RecentsListItem>() {
           missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
           missingTranslationListener = { super.missingTranslationListener.invoke(it) }
           detailsClickListener = { this@ProgressRecentsAdapter.detailsClickListener?.invoke(it) }
+          checkClickListener = { this@ProgressRecentsAdapter.checkClickListener?.invoke(it) }
         }
       )
       VIEW_TYPE_HEADER -> BaseViewHolder(ProgressRecentsHeaderView(parent.context))

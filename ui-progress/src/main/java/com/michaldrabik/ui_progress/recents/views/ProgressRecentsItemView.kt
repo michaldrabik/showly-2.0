@@ -28,6 +28,7 @@ class ProgressRecentsItemView : ShowView<RecentsListItem.Episode> {
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   var detailsClickListener: ((RecentsListItem.Episode) -> Unit)? = null
+  var checkClickListener: ((RecentsListItem.Episode) -> Unit)? = null
 
   init {
     inflate(context, R.layout.view_progress_recents_item, this)
@@ -35,9 +36,10 @@ class ProgressRecentsItemView : ShowView<RecentsListItem.Episode> {
     addRipple()
 
     onClick { itemClickListener?.invoke(item) }
-
     progressRecentsItemInfoButton.expandTouch(100)
     progressRecentsItemInfoButton.onClick { detailsClickListener?.invoke(item) }
+    progressRecentsItemCheckButton.onClick { checkClickListener?.invoke(item) }
+
     imageLoadCompleteListener = { loadTranslation() }
   }
 

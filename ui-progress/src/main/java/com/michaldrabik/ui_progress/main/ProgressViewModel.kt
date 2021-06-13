@@ -6,6 +6,7 @@ import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress.ProgressItem
@@ -52,7 +53,7 @@ class ProgressViewModel @Inject constructor(
       val allItems = loadItemsCase.prepareItems(items, searchQuery, sortOrder)
       uiState = ProgressUiModel(
         items = allItems,
-        isSearching = searchQuery.isNotBlank(),
+        searchQuery = searchQuery,
         isUpcomingEnabled = upcomingEnabled,
         sortOrder = sortOrder,
         resetScroll = ActionEvent(resetScroll),
@@ -60,18 +61,18 @@ class ProgressViewModel @Inject constructor(
     }
   }
 
-  fun searchWatchlist(searchQuery: String) {
+  fun onSearchQuery(searchQuery: String) {
     this.searchQuery = searchQuery.trim()
     loadProgress()
   }
 
-  fun setWatchedEpisode(context: Context, item: ProgressItem) {
+  fun setWatchedEpisode(context: Context, bundle: EpisodeBundle) {
     viewModelScope.launch {
-      if (!item.episode.hasAired(item.season)) {
+      if (!bundle.episode.hasAired(bundle.season)) {
         _messageLiveData.value = MessageEvent.info(R.string.errorEpisodeNotAired)
         return@launch
       }
-      episodesCase.setEpisodeWatched(context, item)
+      episodesCase.setEpisodeWatched(context, bundle)
       loadProgress()
     }
   }

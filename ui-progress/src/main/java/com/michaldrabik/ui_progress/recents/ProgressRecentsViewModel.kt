@@ -5,12 +5,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
+import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
+import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.Image
+import com.michaldrabik.ui_progress.R
+import com.michaldrabik.ui_progress.main.ProgressUiModel
 import com.michaldrabik.ui_progress.recents.cases.ProgressRecentsCase
+import com.michaldrabik.ui_progress.recents.cases.ProgressRecentsRatingsCase
 import com.michaldrabik.ui_progress.recents.recycler.RecentsListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,11 +25,13 @@ import javax.inject.Inject
 @HiltViewModel
 class ProgressRecentsViewModel @Inject constructor(
   private val recentsCase: ProgressRecentsCase,
+  private val ratingsCase: ProgressRecentsRatingsCase,
   private val imagesProvider: ShowImagesProvider,
   private val translationsRepository: TranslationsRepository,
 ) : BaseViewModel<ProgressRecentsUiModel>() {
 
   private val language by lazy { translationsRepository.getLanguage() }
+  var isQuickRateEnabled = false
 
   private val _itemsLiveData = MutableLiveData<List<RecentsListItem>>()
   val itemsLiveData: LiveData<List<RecentsListItem>> get() = _itemsLiveData
@@ -32,10 +40,26 @@ class ProgressRecentsViewModel @Inject constructor(
     loadItems()
   }
 
-  private fun loadItems() {
+  fun handleParentAction(model: ProgressUiModel) {
+    loadItems(model.searchQuery ?: "")
+  }
+
+  private fun loadItems(searchQuery: String = "") {
     viewModelScope.launch {
-      val items = recentsCase.loadRecentItems()
+      val items = recentsCase.loadRecentItems(searchQuery)
       _itemsLiveData.postValue(items)
+    }
+  }
+
+  fun addRating(rating: Int, bundle: EpisodeBundle) {
+    viewModelScope.launch {
+      try {
+        ratingsCase.addRating(bundle.episode, rating)
+        _messageLiveData.value = MessageEvent.info(R.string.textRateSaved)
+        Analytics.logEpisodeRated(bundle.show.traktId, bundle.episode, rating)
+      } catch (error: Throwable) {
+        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+      }
     }
   }
 
@@ -71,5 +95,11 @@ class ProgressRecentsViewModel @Inject constructor(
     val currentItems = _itemsLiveData.value?.toMutableList() ?: mutableListOf()
     currentItems.findReplace(new) { it.isSameAs(new) }
     _itemsLiveData.postValue(currentItems)
+  }
+
+  fun checkQuickRateEnabled() {
+    viewModelScope.launch {
+      isQuickRateEnabled = ratingsCase.isQuickRateEnabled()
+    }
   }
 }

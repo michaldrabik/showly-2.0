@@ -33,7 +33,7 @@ class ProgressRecentsCase @Inject constructor(
 ) {
 
   @Suppress("UNCHECKED_CAST")
-  suspend fun loadRecentItems(): List<RecentsListItem> = coroutineScope {
+  suspend fun loadRecentItems(searchQuery: String): List<RecentsListItem> = coroutineScope {
     val now = nowUtc().toLocalZone()
     val language = translationsRepository.getLanguage()
 
@@ -84,8 +84,18 @@ class ProgressRecentsCase @Inject constructor(
         }
       }.awaitAll()
 
-    groupByTime(elements)
+    val queryElements = filterByQuery(searchQuery, elements)
+    groupByTime(queryElements)
   }
+
+  private fun filterByQuery(query: String, items: List<RecentsListItem.Episode>) =
+    items.filter {
+      if (query.isBlank()) true
+      else it.show.title.contains(query, true) ||
+        it.episode.title.contains(query, true) ||
+        it.translations?.show?.title?.contains(query, true) == true ||
+        it.translations?.episode?.title?.contains(query, true) == true
+    }
 
   private fun groupByTime(items: List<RecentsListItem.Episode>): List<RecentsListItem> {
     val now = nowUtc().toLocalZone().truncatedTo(DAYS)

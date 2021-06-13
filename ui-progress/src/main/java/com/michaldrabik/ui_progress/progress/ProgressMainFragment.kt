@@ -26,6 +26,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
@@ -83,7 +84,8 @@ class ProgressMainFragment :
         if (viewModel.isQuickRateEnabled) {
           openRateDialog(it)
         } else {
-          parentViewModel.setWatchedEpisode(requireAppContext(), it)
+          val bundle = EpisodeBundle(it.episode, it.season, it.show)
+          parentViewModel.setWatchedEpisode(requireAppContext(), bundle)
         }
       }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
@@ -141,7 +143,8 @@ class ProgressMainFragment :
       .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
       .setView(rateView)
       .setPositiveButton(R.string.textRate) { _, _ ->
-        parentViewModel.setWatchedEpisode(requireAppContext(), item)
+        val bundle = EpisodeBundle(item.episode, item.season, item.show)
+        parentViewModel.setWatchedEpisode(requireAppContext(), bundle)
         viewModel.addRating(rateView.getRating(), item.episode, item.show.ids.trakt)
       }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
@@ -155,7 +158,7 @@ class ProgressMainFragment :
       items?.let {
         val notifyChange = resetScroll?.consume() == true
         adapter?.setItems(it, notifyChange = notifyChange)
-        progressEmptyView.fadeIf(it.isEmpty() && isSearching == false)
+        progressEmptyView.fadeIf(it.isEmpty() && searchQuery.isNullOrBlank())
         progressMainRecycler.fadeIn()
         progressMainTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()

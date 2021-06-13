@@ -169,7 +169,7 @@ class ProgressLoadItemsCase @Inject constructor(
         else it.show.title.contains(searchQuery, true) ||
           it.episode.title.contains(searchQuery, true) ||
           it.translations?.show?.title?.contains(searchQuery, true) == true ||
-          it.translations?.show?.title?.contains(searchQuery, true) == true
+          it.translations?.episode?.title?.contains(searchQuery, true) == true
       }
   }
 

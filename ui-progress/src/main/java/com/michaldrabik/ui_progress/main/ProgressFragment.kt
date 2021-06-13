@@ -59,6 +59,10 @@ class ProgressFragment :
   OnTabReselectedListener,
   OnTraktSyncListener {
 
+  companion object {
+    private const val TRANSLATION_DURATION = 225L
+  }
+
   override val viewModel by viewModels<ProgressViewModel>()
 
   private var adapterMode = ProgressAdapter.MODE_CALENDAR
@@ -157,6 +161,7 @@ class ProgressFragment :
   }
 
   private fun toggleAdapter() {
+    exitSearch()
     with(progressPager) {
       when (adapterMode) {
         ProgressAdapter.MODE_CALENDAR -> {
@@ -172,6 +177,8 @@ class ProgressFragment :
       }
       currentItem = 1
     }
+    onScrollReset()
+    resetTranslations()
   }
 
   private fun setupPager() {
@@ -292,7 +299,7 @@ class ProgressFragment :
     exSearchViewText.gone()
     exSearchViewInput.run {
       setText("")
-      doAfterTextChanged { viewModel.searchWatchlist(it?.toString() ?: "") }
+      doAfterTextChanged { viewModel.onSearchQuery(it?.toString() ?: "") }
       visible()
       showKeyboard()
       requestFocus()
@@ -302,7 +309,7 @@ class ProgressFragment :
     hideNavigation(false)
   }
 
-  private fun exitSearch(showNavigation: Boolean = true) {
+  private fun exitSearch() {
     progressSearchView.isSearching = false
     exSearchViewText.visible()
     exSearchViewInput.run {
@@ -312,7 +319,7 @@ class ProgressFragment :
       clearFocus()
     }
     exSearchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
-    if (showNavigation) showNavigation()
+    showNavigation()
   }
 
   override fun onShowsMoviesSyncFinished() = viewModel.loadProgress()
@@ -326,30 +333,27 @@ class ProgressFragment :
   }
 
   override fun onTabReselected() {
-    progressSearchView.translationY = 0F
-    progressTabs.translationY = 0F
-    progressPagerModeTabs.translationY = 0F
-    progressSortIcon.translationY = 0F
-    progressRecentsIcon.translationY = 0F
+    resetTranslations(duration = 0)
     progressPager.nextPage()
-    childFragmentManager.fragments.forEach {
-      (it as? OnScrollResetListener)?.onScrollReset()
-    }
+    onScrollReset()
   }
 
-  fun resetTranslations() {
-    progressSearchView.animate().translationY(0F).start()
-    progressTabs.animate().translationY(0F).start()
-    progressPagerModeTabs.animate().translationY(0F).start()
-    progressSortIcon.animate().translationY(0F).start()
-    progressRecentsIcon.animate().translationY(0F).start()
+  fun resetTranslations(duration: Long = TRANSLATION_DURATION) {
+    progressSearchView.animate().translationY(0F).setDuration(duration).start()
+    progressTabs.animate().translationY(0F).setDuration(duration).start()
+    progressPagerModeTabs.animate().translationY(0F).setDuration(duration).start()
+    progressSortIcon.animate().translationY(0F).setDuration(duration).start()
+    progressRecentsIcon.animate().translationY(0F).setDuration(duration).start()
   }
+
+  private fun onScrollReset() =
+    childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
 
   private fun render(uiModel: ProgressUiModel) {
     uiModel.run {
       items?.let {
         progressPagerModeTabs.isEnabled = true
-        progressSearchView.isClickable = it.isNotEmpty() || isSearching == true
+        progressSearchView.isClickable = it.isNotEmpty() || !searchQuery.isNullOrBlank()
         progressSortIcon.visibleIf(it.isNotEmpty() && currentPage == 0)
         if (it.isNotEmpty() && sortOrder != null) {
           progressSortIcon.onClick { openSortOrderDialog(sortOrder) }
@@ -365,18 +369,8 @@ class ProgressFragment :
       progressSortIcon.fadeIf(position == 0, duration = 150)
       progressRecentsIcon.fadeIf(position == 1, duration = 150)
       if (progressTabs.translationY != 0F) {
-        val duration = 225L
-        progressSearchView.animate().translationY(0F).setDuration(duration).start()
-        progressTabs.animate().translationY(0F).setDuration(duration).start()
-        progressPagerModeTabs.animate().translationY(0F).setDuration(duration).start()
-        progressSortIcon.animate().translationY(0F).setDuration(duration).start()
-        progressRecentsIcon.animate().translationY(0F).setDuration(duration).start()
-        requireView().postDelayed(
-          {
-            childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
-          },
-          duration
-        )
+        resetTranslations()
+        requireView().postDelayed({ onScrollReset() }, TRANSLATION_DURATION)
       }
 
       currentPage = position
