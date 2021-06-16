@@ -2,7 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/progressRecentsRoot"
+  android:id="@+id/progressCalendarRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:clipChildren="false"
@@ -10,7 +10,7 @@
   >
 
   <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/progressRecentsRecycler"
+    android:id="@+id/progressCalendarRecycler"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
@@ -23,7 +23,7 @@
     />
 
   <include
-    android:id="@+id/progressRecentsEmptyView"
+    android:id="@+id/progressCalendarEmptyView"
     layout="@layout/layout_recents_empty"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

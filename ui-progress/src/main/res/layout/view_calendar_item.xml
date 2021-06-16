@@ -15,7 +15,7 @@
     >
 
     <ImageView
-      android:id="@+id/progressCalendarItemImage"
+      android:id="@+id/calendarItemImage"
       android:layout_width="@dimen/progressImageWidth"
       android:layout_height="@dimen/progressImageHeight"
       android:layout_marginStart="@dimen/spaceMedium"
@@ -29,7 +29,7 @@
       />
 
     <ImageView
-      android:id="@+id/progressCalendarItemPlaceholder"
+      android:id="@+id/calendarItemPlaceholder"
       android:layout_width="@dimen/progressImageWidth"
       android:layout_height="@dimen/progressImageHeight"
       android:layout_marginStart="@dimen/spaceMedium"
@@ -46,15 +46,15 @@
       />
 
     <TextView
-      android:id="@+id/progressCalendarItemTitle"
+      android:id="@+id/calendarItemTitle"
       style="@style/CollectionItem.Title"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceNormal"
       android:layout_marginEnd="@dimen/spaceMedium"
-      app:layout_constraintBottom_toTopOf="@id/progressCalendarItemSubtitle"
+      app:layout_constraintBottom_toTopOf="@id/calendarItemSubtitle"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@id/progressCalendarItemImage"
+      app:layout_constraintStart_toEndOf="@id/calendarItemImage"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_chainStyle="packed"
       app:layout_goneMarginEnd="@dimen/spaceMedium"
@@ -63,7 +63,7 @@
       />
 
     <TextView
-      android:id="@+id/progressCalendarItemSubtitle"
+      android:id="@+id/calendarItemSubtitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceNormal"
@@ -81,17 +81,17 @@
       android:paddingBottom="2dp"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="14sp"
-      app:layout_constraintBottom_toTopOf="@id/progressCalendarItemDateText"
-      app:layout_constraintEnd_toStartOf="@id/progressCalendarItemSubtitle2"
+      app:layout_constraintBottom_toTopOf="@id/calendarItemDateText"
+      app:layout_constraintEnd_toStartOf="@id/calendarItemSubtitle2"
       app:layout_constraintHorizontal_bias="0"
       app:layout_constraintHorizontal_chainStyle="packed"
-      app:layout_constraintStart_toEndOf="@id/progressCalendarItemImage"
-      app:layout_constraintTop_toBottomOf="@id/progressCalendarItemTitle"
+      app:layout_constraintStart_toEndOf="@id/calendarItemImage"
+      app:layout_constraintTop_toBottomOf="@id/calendarItemTitle"
       tools:text="S.01 E.01"
       />
 
     <TextView
-      android:id="@+id/progressCalendarItemSubtitle2"
+      android:id="@+id/calendarItemSubtitle2"
       android:layout_width="0dp"
       android:layout_height="0dp"
       android:layout_marginEnd="@dimen/spaceMedium"
@@ -102,16 +102,16 @@
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorPrimary"
       android:textSize="14sp"
-      app:layout_constraintBottom_toTopOf="@id/progressCalendarItemDateText"
+      app:layout_constraintBottom_toTopOf="@id/calendarItemDateText"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0"
-      app:layout_constraintStart_toEndOf="@id/progressCalendarItemSubtitle"
-      app:layout_constraintTop_toBottomOf="@id/progressCalendarItemTitle"
+      app:layout_constraintStart_toEndOf="@id/calendarItemSubtitle"
+      app:layout_constraintTop_toBottomOf="@id/calendarItemTitle"
       tools:text="Some Title of an Episode"
       />
 
     <TextView
-      android:id="@+id/progressCalendarItemDateText"
+      android:id="@+id/calendarItemDateText"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceNormal"
@@ -119,29 +119,61 @@
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorSecondary"
       android:textSize="12sp"
-      app:layout_constraintBottom_toTopOf="@id/progressCalendarItemInfoButton"
-      app:layout_constraintStart_toEndOf="@id/progressCalendarItemImage"
-      app:layout_constraintTop_toBottomOf="@id/progressCalendarItemSubtitle"
+      app:layout_constraintBottom_toTopOf="@id/calendarItemButtons"
+      app:layout_constraintStart_toEndOf="@id/calendarItemImage"
+      app:layout_constraintTop_toBottomOf="@id/calendarItemSubtitle"
       tools:text="Wednesday, 27 June 2019"
       />
 
-    <com.google.android.material.button.MaterialButton
-      android:id="@+id/progressCalendarItemInfoButton"
-      style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+    <LinearLayout
+      android:id="@+id/calendarItemButtons"
       android:layout_width="wrap_content"
-      android:layout_height="@dimen/progressItemButtonHeight"
-      android:layout_marginStart="@dimen/spaceTiny"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginTop="@dimen/spaceMicro"
       android:layout_marginEnd="@dimen/spaceMedium"
-      android:gravity="center"
-      android:text="@string/textEpisodeInfo"
-      android:textColor="?android:attr/textColorSecondary"
-      android:textSize="12sp"
+      android:clipChildren="false"
+      android:gravity="end|center_vertical"
+      android:orientation="horizontal"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/progressCalendarItemDateText"
-      app:rippleColor="?android:attr/textColorSecondary"
-      app:strokeWidth="0dp"
-      />
+      app:layout_constraintHorizontal_bias="1"
+      app:layout_constraintTop_toBottomOf="@id/calendarItemDateText"
+      >
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/calendarItemInfoButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/progressItemButtonHeight"
+        android:gravity="center"
+        android:text="@string/textEpisodeInfo"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="12sp"
+        app:rippleColor="?android:attr/textColorSecondary"
+        app:strokeWidth="0dp"
+        />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/calendarItemCheckButton"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="@dimen/progressItemCheckButtonWidth"
+        android:layout_height="@dimen/progressItemButtonHeight"
+        android:layout_marginStart="@dimen/spaceTiny"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:icon="@drawable/ic_check"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"
+        app:iconTint="?android:attr/textColorPrimary"
+        app:rippleColor="?android:attr/textColorPrimary"
+        app:strokeColor="?android:attr/textColorPrimary"
+        />
+
+    </LinearLayout>
 
   </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -41,6 +41,11 @@ abstract class BillingActivity : UpdateActivity() {
     })
   }
 
+  override fun onPause() {
+    billingClient.endConnection()
+    super.onPause()
+  }
+
   private fun checkOwnedPurchases(billingClient: BillingClient) {
     Timber.d("Checking subscriptions...")
     lifecycleScope.launchWhenCreated {

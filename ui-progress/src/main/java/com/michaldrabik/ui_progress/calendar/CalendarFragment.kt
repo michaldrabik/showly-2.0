@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_progress.recents
+package com.michaldrabik.ui_progress.calendar
 
 import android.os.Bundle
 import android.view.View
@@ -19,23 +19,22 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_progress.R
+import com.michaldrabik.ui_progress.calendar.recycler.CalendarAdapter
+import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import com.michaldrabik.ui_progress.main.ProgressFragment
 import com.michaldrabik.ui_progress.main.ProgressViewModel
-import com.michaldrabik.ui_progress.recents.recycler.ProgressRecentsAdapter
-import com.michaldrabik.ui_progress.recents.recycler.RecentsListItem
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_progress_calendar.*
-import kotlinx.android.synthetic.main.fragment_progress_recents.*
+import kotlinx.android.synthetic.main.fragment_calendar.*
 
 @AndroidEntryPoint
-class ProgressRecentsFragment :
-  BaseFragment<ProgressRecentsViewModel>(R.layout.fragment_progress_recents),
+class CalendarFragment :
+  BaseFragment<CalendarViewModel>(R.layout.fragment_calendar),
   OnScrollResetListener {
 
-  override val viewModel by viewModels<ProgressRecentsViewModel>()
+  override val viewModel by viewModels<CalendarViewModel>()
   private val parentViewModel by viewModels<ProgressViewModel>({ requireParentFragment() })
 
-  private var adapter: ProgressRecentsAdapter? = null
+  private var adapter: CalendarAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
 
@@ -54,7 +53,7 @@ class ProgressRecentsFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
-    adapter = ProgressRecentsAdapter().apply {
+    adapter = CalendarAdapter().apply {
       itemClickListener = { (requireParentFragment() as ProgressFragment).openShowDetails(it.show) }
       detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show, it.episode, it.season) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
@@ -68,9 +67,9 @@ class ProgressRecentsFragment :
         }
       }
     }
-    progressRecentsRecycler.apply {
-      adapter = this@ProgressRecentsFragment.adapter
-      layoutManager = this@ProgressRecentsFragment.layoutManager
+    progressCalendarRecycler.apply {
+      adapter = this@CalendarFragment.adapter
+      layoutManager = this@CalendarFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
     }
@@ -82,11 +81,11 @@ class ProgressRecentsFragment :
       else R.dimen.progressCalendarTabsViewPaddingNoModes
 
     if (statusBarHeight != 0) {
-      progressRecentsRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
+      progressCalendarRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
       return
     }
 
-    progressRecentsRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
+    progressCalendarRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
       statusBarHeight = insets.systemWindowInsetTop
       view.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
     }
@@ -109,13 +108,13 @@ class ProgressRecentsFragment :
       .show()
   }
 
-  private fun render(items: List<RecentsListItem>) {
+  private fun render(items: List<CalendarListItem>) {
     adapter?.setItems(items)
-    progressRecentsRecycler.fadeIn(150, withHardware = true)
-    progressRecentsEmptyView.visibleIf(items.isEmpty())
+    progressCalendarRecycler.fadeIn(150, withHardware = true)
+    progressCalendarEmptyView.visibleIf(items.isEmpty())
   }
 
-  override fun onScrollReset() = progressRecentsRecycler.smoothScrollToPosition(0)
+  override fun onScrollReset() = progressCalendarRecycler.smoothScrollToPosition(0)
 
   override fun onDestroyView() {
     adapter = null

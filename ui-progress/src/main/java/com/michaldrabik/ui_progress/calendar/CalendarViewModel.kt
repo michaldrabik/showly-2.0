@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_progress.recents
+package com.michaldrabik.ui_progress.calendar
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,39 +14,47 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_progress.R
+import com.michaldrabik.ui_progress.calendar.cases.CalendarRatingsCase
+import com.michaldrabik.ui_progress.calendar.cases.items.CalendarFutureCase
+import com.michaldrabik.ui_progress.calendar.cases.items.CalendarRecentsCase
+import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
+import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import com.michaldrabik.ui_progress.main.ProgressUiModel
-import com.michaldrabik.ui_progress.recents.cases.ProgressRecentsCase
-import com.michaldrabik.ui_progress.recents.cases.ProgressRecentsRatingsCase
-import com.michaldrabik.ui_progress.recents.recycler.RecentsListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProgressRecentsViewModel @Inject constructor(
-  private val recentsCase: ProgressRecentsCase,
-  private val ratingsCase: ProgressRecentsRatingsCase,
+class CalendarViewModel @Inject constructor(
+  private val recentsCase: CalendarRecentsCase,
+  private val futureCase: CalendarFutureCase,
+  private val ratingsCase: CalendarRatingsCase,
   private val imagesProvider: ShowImagesProvider,
   private val translationsRepository: TranslationsRepository,
-) : BaseViewModel<ProgressRecentsUiModel>() {
+) : BaseViewModel<CalendarUiModel>() {
 
   private val language by lazy { translationsRepository.getLanguage() }
   var isQuickRateEnabled = false
+  var mode = CalendarMode.PRESENT_FUTURE
 
-  private val _itemsLiveData = MutableLiveData<List<RecentsListItem>>()
-  val itemsLiveData: LiveData<List<RecentsListItem>> get() = _itemsLiveData
+  private val _itemsLiveData = MutableLiveData<List<CalendarListItem>>()
+  val itemsLiveData: LiveData<List<CalendarListItem>> get() = _itemsLiveData
 
   init {
     loadItems()
   }
 
   fun handleParentAction(model: ProgressUiModel) {
+    mode = model.calendarMode ?: CalendarMode.PRESENT_FUTURE
     loadItems(model.searchQuery ?: "")
   }
 
   private fun loadItems(searchQuery: String = "") {
     viewModelScope.launch {
-      val items = recentsCase.loadRecentItems(searchQuery)
+      val items = when (mode) {
+        CalendarMode.PRESENT_FUTURE -> futureCase.loadItems(searchQuery)
+        CalendarMode.RECENTS -> recentsCase.loadItems(searchQuery)
+      }
       _itemsLiveData.postValue(items)
     }
   }
@@ -63,8 +71,8 @@ class ProgressRecentsViewModel @Inject constructor(
     }
   }
 
-  fun findMissingImage(item: RecentsListItem, force: Boolean) {
-    check(item is RecentsListItem.Episode)
+  fun findMissingImage(item: CalendarListItem, force: Boolean) {
+    check(item is CalendarListItem.Episode)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -77,8 +85,8 @@ class ProgressRecentsViewModel @Inject constructor(
     }
   }
 
-  fun findMissingTranslation(item: RecentsListItem) {
-    check(item is RecentsListItem.Episode)
+  fun findMissingTranslation(item: CalendarListItem) {
+    check(item is CalendarListItem.Episode)
     if (item.translations?.show != null || language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {
@@ -86,12 +94,12 @@ class ProgressRecentsViewModel @Inject constructor(
         val translations = item.translations?.copy(show = translation)
         updateItem(item.copy(translations = translations))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "ProgressRecentsViewModel::findMissingTranslation()")
+        Logger.record(error, "Source" to "CalendarViewModel::findMissingTranslation()")
       }
     }
   }
 
-  private fun updateItem(new: RecentsListItem.Episode) {
+  private fun updateItem(new: CalendarListItem.Episode) {
     val currentItems = _itemsLiveData.value?.toMutableList() ?: mutableListOf()
     currentItems.findReplace(new) { it.isSameAs(new) }
     _itemsLiveData.postValue(currentItems)

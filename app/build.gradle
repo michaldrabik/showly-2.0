@@ -105,7 +105,7 @@ dependencies {
   implementation "com.github.YarikSOffice:lingver:$versions.lingver"
 
   debugImplementation "com.github.amitshekhariitbhu.Android-Debug-Database:debug-db:v$versions.debugDb"
-//  debugImplementation "com.squareup.leakcanary:leakcanary-android:$versions.leakCanary"
+  debugImplementation "com.squareup.leakcanary:leakcanary-android:$versions.leakCanary"
 
   testImplementation "junit:junit:$versions.junit"
   testImplementation "io.mockk:mockk:$versions.mockk"

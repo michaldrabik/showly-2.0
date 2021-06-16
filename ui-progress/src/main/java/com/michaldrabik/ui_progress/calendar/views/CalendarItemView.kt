@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_progress.recents.views
+package com.michaldrabik.ui_progress.calendar.views
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -16,47 +16,47 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_progress.R
-import com.michaldrabik.ui_progress.recents.recycler.RecentsListItem
-import kotlinx.android.synthetic.main.view_progress_recents_item.view.*
+import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
+import kotlinx.android.synthetic.main.view_calendar_item.view.*
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n")
-class ProgressRecentsItemView : ShowView<RecentsListItem.Episode> {
+class CalendarItemView : ShowView<CalendarListItem.Episode> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  var detailsClickListener: ((RecentsListItem.Episode) -> Unit)? = null
-  var checkClickListener: ((RecentsListItem.Episode) -> Unit)? = null
+  var detailsClickListener: ((CalendarListItem.Episode) -> Unit)? = null
+  var checkClickListener: ((CalendarListItem.Episode) -> Unit)? = null
 
   init {
-    inflate(context, R.layout.view_progress_recents_item, this)
+    inflate(context, R.layout.view_calendar_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     addRipple()
 
     onClick { itemClickListener?.invoke(item) }
-    progressRecentsItemInfoButton.expandTouch(100)
-    progressRecentsItemInfoButton.onClick { detailsClickListener?.invoke(item) }
-    progressRecentsItemCheckButton.onClick { checkClickListener?.invoke(item) }
+    calendarItemInfoButton.expandTouch(100)
+    calendarItemInfoButton.onClick { detailsClickListener?.invoke(item) }
+    calendarItemCheckButton.onClick { checkClickListener?.invoke(item) }
 
     imageLoadCompleteListener = { loadTranslation() }
   }
 
-  private lateinit var item: RecentsListItem.Episode
+  private lateinit var item: CalendarListItem.Episode
 
-  override val imageView: ImageView = progressRecentsItemImage
-  override val placeholderView: ImageView = progressRecentsItemPlaceholder
+  override val imageView: ImageView = calendarItemImage
+  override val placeholderView: ImageView = calendarItemPlaceholder
 
-  override fun bind(item: RecentsListItem.Episode) {
+  override fun bind(item: CalendarListItem.Episode) {
     this.item = item
     clear()
 
-    progressRecentsItemTitle.text =
+    calendarItemTitle.text =
       if (item.translations?.show?.title.isNullOrBlank()) item.show.title
       else item.translations?.show?.title
 
-    progressRecentsItemDateText.text =
+    calendarItemDateText.text =
       item.episode.firstAired?.toLocalZone()?.let { item.dateFormat?.format(it)?.capitalizeWords() }
 
     val episodeTitle = when {
@@ -64,15 +64,22 @@ class ProgressRecentsItemView : ShowView<RecentsListItem.Episode> {
       item.translations?.episode?.title?.isBlank() == false -> item.translations.episode.title
       else -> item.episode.title
     }
-    progressRecentsItemSubtitle2.text = episodeTitle
-    progressRecentsItemSubtitle.text = String.format(
-      ENGLISH,
-      context.getString(R.string.textSeasonEpisode),
-      item.episode.season,
-      item.episode.number
-    )
 
-    progressRecentsItemCheckButton.visibleIf(!item.isWatched)
+    val isNewSeason = item.episode.number == 1
+    if (isNewSeason) {
+      calendarItemSubtitle2.text = String.format(ENGLISH, context.getString(R.string.textSeason), item.episode.season)
+      calendarItemSubtitle.text = context.getString(R.string.textNewSeason)
+    } else {
+      calendarItemSubtitle2.text = episodeTitle
+      calendarItemSubtitle.text = String.format(
+        ENGLISH,
+        context.getString(R.string.textSeasonEpisode),
+        item.episode.season,
+        item.episode.number
+      )
+    }
+
+    calendarItemCheckButton.visibleIf(!item.isWatched)
 
     loadImage(item)
   }
@@ -84,7 +91,7 @@ class ProgressRecentsItemView : ShowView<RecentsListItem.Episode> {
   }
 
   private fun clear() {
-    progressRecentsItemPlaceholder.gone()
-    Glide.with(this).clear(progressRecentsItemImage)
+    calendarItemPlaceholder.gone()
+    Glide.with(this).clear(calendarItemImage)
   }
 }

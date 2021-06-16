@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_progress.recents.recycler
+package com.michaldrabik.ui_progress.calendar.recycler
 
 import androidx.annotation.StringRes
 import com.michaldrabik.ui_base.common.ListItem
@@ -6,11 +6,12 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
 import org.threeten.bp.format.DateTimeFormatter
 import com.michaldrabik.ui_model.Episode as EpisodeModel
 
-sealed class RecentsListItem(
+sealed class CalendarListItem(
   override val show: Show,
   override val image: Image,
   override val isLoading: Boolean = false,
@@ -25,7 +26,7 @@ sealed class RecentsListItem(
     val isWatched: Boolean,
     val translations: TranslationsBundle? = null,
     val dateFormat: DateTimeFormatter? = null,
-  ) : RecentsListItem(show, image, isLoading) {
+  ) : CalendarListItem(show, image, isLoading) {
 
     override fun isSameAs(other: ListItem) =
       episode.ids.trakt == (other as? Episode)?.episode?.ids?.trakt
@@ -36,14 +37,16 @@ sealed class RecentsListItem(
     override val image: Image,
     override val isLoading: Boolean = false,
     @StringRes val textResId: Int,
-  ) : RecentsListItem(show, image, isLoading) {
+    val calendarMode: CalendarMode,
+  ) : CalendarListItem(show, image, isLoading) {
 
     companion object {
-      fun create(@StringRes textResId: Int) =
+      fun create(@StringRes textResId: Int, mode: CalendarMode) =
         Header(
           show = Show.EMPTY,
           image = Image.createUnavailable(ImageType.POSTER),
-          textResId = textResId
+          textResId = textResId,
+          calendarMode = mode
         )
     }
 

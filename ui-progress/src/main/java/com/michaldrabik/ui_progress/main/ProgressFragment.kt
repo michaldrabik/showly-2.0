@@ -46,11 +46,11 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SEL
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import com.michaldrabik.ui_progress.R
+import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.main.adapters.ProgressAdapter
-import com.michaldrabik.ui_progress.main.adapters.ProgressCalendarAdapter
-import com.michaldrabik.ui_progress.main.adapters.ProgressRecentsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress.*
+import kotlinx.android.synthetic.main.fragment_progress_main.*
 
 @AndroidEntryPoint
 class ProgressFragment :
@@ -65,14 +65,12 @@ class ProgressFragment :
 
   override val viewModel by viewModels<ProgressViewModel>()
 
-  private var adapterMode = ProgressAdapter.MODE_CALENDAR
-  private var adapterCalendar: ProgressAdapter? = null
-  private var adapterRecents: ProgressAdapter? = null
+  private var adapter: ProgressAdapter? = null
 
   private var searchViewTranslation = 0F
   private var tabsTranslation = 0F
   private var sortIconTranslation = 0F
-  private var recentsIconTranslation = 0F
+  private var calendarIconTranslation = 0F
   private var currentPage = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,9 +79,8 @@ class ProgressFragment :
       searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
       tabsTranslation = it.getFloat("ARG_TABS_POSITION")
       sortIconTranslation = it.getFloat("ARG_SORT_ICON_POSITION")
-      recentsIconTranslation = it.getFloat("ARG_RECENTS_ICON_POSITION")
+      calendarIconTranslation = it.getFloat("ARG_RECENTS_ICON_POSITION")
       currentPage = it.getInt("ARG_PAGE")
-      adapterMode = it.getInt("ARG_ADAPTER_MODE")
     }
   }
 
@@ -104,9 +101,8 @@ class ProgressFragment :
     outState.putFloat("ARG_SEARCH_POSITION", progressSearchView?.translationY ?: 0F)
     outState.putFloat("ARG_TABS_POSITION", progressTabs?.translationY ?: 0F)
     outState.putFloat("ARG_SORT_ICON_POSITION", progressSortIcon?.translationY ?: 0F)
-    outState.putFloat("ARG_RECENTS_ICON_POSITION", progressRecentsIcon?.translationY ?: 0F)
+    outState.putFloat("ARG_RECENTS_ICON_POSITION", progressCalendarIcon?.translationY ?: 0F)
     outState.putInt("ARG_PAGE", progressPager?.currentItem ?: 0)
-    outState.putInt("ARG_ADAPTER_MODE", adapterMode)
   }
 
   override fun onResume() {
@@ -119,21 +115,26 @@ class ProgressFragment :
     tabsTranslation = progressTabs.translationY
     searchViewTranslation = progressSearchView.translationY
     sortIconTranslation = progressSortIcon.translationY
-    recentsIconTranslation = progressRecentsIcon.translationY
+    calendarIconTranslation = progressCalendarIcon.translationY
     super.onPause()
   }
 
   override fun onDestroyView() {
-    adapterCalendar = null
-    adapterRecents = null
     progressPager.removeOnPageChangeListener(pageChangeListener)
+    progressPager.adapter = null
+    adapter = null
     super.onDestroyView()
   }
 
   private fun setupView() {
     progressSortIcon.visibleIf(currentPage == 0)
-    progressRecentsIcon.visibleIf(currentPage == 1)
-    progressRecentsIcon.onClick { toggleAdapter() }
+    progressCalendarIcon.visibleIf(currentPage == 1)
+    progressCalendarIcon.onClick {
+      exitSearch()
+      onScrollReset()
+      resetTranslations()
+      viewModel.toggleCalendarMode()
+    }
     progressSearchView.run {
       hint = getString(R.string.textSearchFor)
       settingsIconVisible = true
@@ -157,46 +158,14 @@ class ProgressFragment :
     progressPagerModeTabs.translationY = tabsTranslation
     progressSearchView.translationY = searchViewTranslation
     progressSortIcon.translationY = sortIconTranslation
-    progressRecentsIcon.translationY = recentsIconTranslation
-  }
-
-  private fun toggleAdapter() {
-    exitSearch()
-    with(progressPager) {
-      when (adapterMode) {
-        ProgressAdapter.MODE_CALENDAR -> {
-          adapterMode = ProgressAdapter.MODE_RECENTS
-          adapter = adapterRecents
-          progressRecentsIcon.setImageResource(R.drawable.ic_calendar)
-        }
-        ProgressAdapter.MODE_RECENTS -> {
-          adapterMode = ProgressAdapter.MODE_CALENDAR
-          adapter = adapterCalendar
-          progressRecentsIcon.setImageResource(R.drawable.ic_history)
-        }
-      }
-      currentItem = 1
-    }
-    onScrollReset()
-    resetTranslations()
+    progressCalendarIcon.translationY = calendarIconTranslation
   }
 
   private fun setupPager() {
-    adapterCalendar = ProgressCalendarAdapter(childFragmentManager, requireAppContext())
-    adapterRecents = ProgressRecentsAdapter(childFragmentManager, requireAppContext())
+    adapter = ProgressAdapter(childFragmentManager, requireAppContext())
     progressPager.run {
+      adapter = this@ProgressFragment.adapter
       offscreenPageLimit = ProgressAdapter.PAGES_COUNT
-      when (adapterMode) {
-        ProgressAdapter.MODE_CALENDAR -> {
-          adapter = adapterCalendar
-          progressRecentsIcon.setImageResource(R.drawable.ic_history)
-        }
-        ProgressAdapter.MODE_RECENTS -> {
-          adapter = adapterRecents
-          progressRecentsIcon.setImageResource(R.drawable.ic_calendar)
-        }
-        else -> throw IllegalStateException()
-      }
       addOnPageChangeListener(pageChangeListener)
     }
     progressTabs.setupWithViewPager(progressPager)
@@ -214,7 +183,7 @@ class ProgressFragment :
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
       (progressSortIcon.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(progressTabsMargin))
-      (progressRecentsIcon.layoutParams as ViewGroup.MarginLayoutParams)
+      (progressCalendarIcon.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(progressTabsMargin))
     }
   }
@@ -339,7 +308,7 @@ class ProgressFragment :
     progressTabs.animate().translationY(0F).setDuration(duration).start()
     progressPagerModeTabs.animate().translationY(0F).setDuration(duration).start()
     progressSortIcon.animate().translationY(0F).setDuration(duration).start()
-    progressRecentsIcon.animate().translationY(0F).setDuration(duration).start()
+    progressCalendarIcon.animate().translationY(0F).setDuration(duration).start()
   }
 
   private fun onScrollReset() =
@@ -355,6 +324,12 @@ class ProgressFragment :
           progressSortIcon.onClick { openSortOrderDialog(sortOrder) }
         }
       }
+      calendarMode?.let { mode ->
+        when (mode) {
+          CalendarMode.PRESENT_FUTURE -> progressCalendarIcon.setImageResource(R.drawable.ic_history)
+          CalendarMode.RECENTS -> progressCalendarIcon.setImageResource(R.drawable.ic_calendar)
+        }
+      }
     }
   }
 
@@ -363,7 +338,7 @@ class ProgressFragment :
       if (currentPage == position) return
 
       progressSortIcon.fadeIf(position == 0, duration = 150)
-      progressRecentsIcon.fadeIf(position == 1, duration = 150)
+      progressCalendarIcon.fadeIf(position == 1, duration = 150)
       if (progressTabs.translationY != 0F) {
         resetTranslations()
         requireView().postDelayed({ onScrollReset() }, TRANSLATION_DURATION)

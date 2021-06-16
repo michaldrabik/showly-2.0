@@ -6,28 +6,29 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:orientation="horizontal"
+  android:paddingStart="@dimen/spaceMedium"
   android:paddingTop="@dimen/spaceNormal"
+  android:paddingEnd="@dimen/spaceMedium"
   android:paddingBottom="@dimen/spaceTiny"
   tools:parentTag="android.widget.LinearLayout"
   >
 
   <ImageView
-    android:id="@+id/progressRecentsHeaderIcon"
+    android:id="@+id/calendarHeaderIcon"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
-    android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/spaceMicro"
+    android:layout_marginEnd="@dimen/spaceSmall"
     app:srcCompat="@drawable/ic_history"
     app:tint="?android:attr/textColorPrimary"
     />
 
   <TextView
-    android:id="@+id/progressRecentsHeaderText"
+    android:id="@+id/calendarHeaderText"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
-    android:layout_marginStart="@dimen/spaceSmall"
     android:textColor="?android:attr/textColorPrimary"
     android:textSize="@dimen/progressHeaderTextSize"
     android:textStyle="bold"

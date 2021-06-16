@@ -16,11 +16,10 @@ import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
-import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_progress.ProgressItem
-import com.michaldrabik.ui_progress.calendar.cases.ProgressCalendarCase
+import com.michaldrabik.ui_progress.calendar.cases.items.CalendarFutureCase
 import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_SHOW_ID
 import com.michaldrabik.ui_widgets.R
@@ -36,7 +35,7 @@ import java.util.Locale
 class CalendarWidgetViewsFactory(
   private val context: Context,
   private val loadItemsCase: ProgressLoadItemsCase,
-  private val calendarCase: ProgressCalendarCase,
+  private val calendarCase: CalendarFutureCase,
   private val imagesProvider: ShowImagesProvider,
   private val settingsRepository: SettingsRepository,
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
@@ -65,8 +64,8 @@ class CalendarWidgetViewsFactory(
         }
       }.awaitAll()
 
-      val groupedItems = calendarCase.prepareItems(items)
-      adapterItems.replace(groupedItems)
+//      val groupedItems = calendarCase.prepareItems(items)
+//      adapterItems.replace(groupedItems)
     }
   }
 

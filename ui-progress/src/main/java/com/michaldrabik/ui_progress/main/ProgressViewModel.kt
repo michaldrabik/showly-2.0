@@ -11,6 +11,7 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
+import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.main.cases.ProgressEpisodesCase
 import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
 import com.michaldrabik.ui_progress.main.cases.ProgressPinnedItemsCase
@@ -33,6 +34,7 @@ class ProgressViewModel @Inject constructor(
 ) : BaseViewModel<ProgressUiModel>() {
 
   private var searchQuery = ""
+  private var calendarMode = CalendarMode.PRESENT_FUTURE
 
   fun loadProgress(resetScroll: Boolean = false) {
     viewModelScope.launch {
@@ -57,6 +59,7 @@ class ProgressViewModel @Inject constructor(
         isUpcomingEnabled = upcomingEnabled,
         sortOrder = sortOrder,
         resetScroll = ActionEvent(resetScroll),
+        calendarMode = calendarMode
       )
     }
   }
@@ -64,6 +67,14 @@ class ProgressViewModel @Inject constructor(
   fun onSearchQuery(searchQuery: String) {
     this.searchQuery = searchQuery.trim()
     loadProgress()
+  }
+
+  fun toggleCalendarMode() {
+    calendarMode = when (calendarMode) {
+      CalendarMode.PRESENT_FUTURE -> CalendarMode.RECENTS
+      CalendarMode.RECENTS -> CalendarMode.PRESENT_FUTURE
+    }
+    uiState = ProgressUiModel(calendarMode = calendarMode)
   }
 
   fun setWatchedEpisode(context: Context, bundle: EpisodeBundle) {
