@@ -30,22 +30,22 @@ import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
-import com.michaldrabik.ui_progress.main.ProgressFragment
-import com.michaldrabik.ui_progress.main.ProgressViewModel
-import com.michaldrabik.ui_progress.progress.recycler.ProgressMainAdapter
+import com.michaldrabik.ui_progress.main.ProgressMainFragment
+import com.michaldrabik.ui_progress.main.ProgressMainViewModel
+import com.michaldrabik.ui_progress.progress.recycler.ProgressAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_progress_main.*
+import kotlinx.android.synthetic.main.fragment_progress.*
 import kotlinx.android.synthetic.main.layout_progress_empty.*
 
 @AndroidEntryPoint
-class ProgressMainFragment :
-  BaseFragment<ProgressMainViewModel>(R.layout.fragment_progress_main),
+class ProgressFragment :
+  BaseFragment<ProgressViewModel>(R.layout.fragment_progress),
   OnScrollResetListener {
 
-  private val parentViewModel by viewModels<ProgressViewModel>({ requireParentFragment() })
-  override val viewModel by viewModels<ProgressMainViewModel>()
+  private val parentViewModel by viewModels<ProgressMainViewModel>({ requireParentFragment() })
+  override val viewModel by viewModels<ProgressViewModel>()
 
-  private var adapter: ProgressMainAdapter? = null
+  private var adapter: ProgressAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
 
@@ -64,11 +64,11 @@ class ProgressMainFragment :
   }
 
   private fun setupView() {
-    progressEmptyTraktButton.onClick { (parentFragment as ProgressFragment).openTraktSync() }
+    progressEmptyTraktButton.onClick { (parentFragment as ProgressMainFragment).openTraktSync() }
     progressEmptyDiscoverButton.onClick {
       (requireActivity() as NavigationHost).openDiscoverTab()
     }
-    progressMainTipItem.onClick {
+    progressTipItem.onClick {
       it.gone()
       showTip(Tip.WATCHLIST_ITEM_PIN)
     }
@@ -76,10 +76,10 @@ class ProgressMainFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
-    adapter = ProgressMainAdapter().apply {
-      itemClickListener = { (requireParentFragment() as ProgressFragment).openShowDetails(it.show) }
+    adapter = ProgressAdapter().apply {
+      itemClickListener = { (requireParentFragment() as ProgressMainFragment).openShowDetails(it.show) }
       itemLongClickListener = { item, view -> openPopupMenu(item, view) }
-      detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show, it.episode, it.season) }
+      detailsClickListener = { (requireParentFragment() as ProgressMainFragment).openEpisodeDetails(it.show, it.episode, it.season) }
       checkClickListener = {
         if (viewModel.isQuickRateEnabled) {
           openRateDialog(it)
@@ -91,13 +91,13 @@ class ProgressMainFragment :
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
       missingTranslationListener = { viewModel.findMissingTranslation(it) }
       listChangeListener = {
-        (requireParentFragment() as ProgressFragment).resetTranslations()
+        (requireParentFragment() as ProgressMainFragment).resetTranslations()
         layoutManager?.scrollToPosition(0)
       }
     }
-    progressMainRecycler.apply {
-      adapter = this@ProgressMainFragment.adapter
-      layoutManager = this@ProgressMainFragment.layoutManager
+    progressRecycler.apply {
+      adapter = this@ProgressFragment.adapter
+      layoutManager = this@ProgressFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
     }
@@ -106,10 +106,10 @@ class ProgressMainFragment :
   private fun setupStatusBar() {
     val recyclerPadding = if (moviesEnabled) R.dimen.progressTabsViewPadding else R.dimen.progressTabsViewPaddingNoModes
     if (statusBarHeight != 0) {
-      progressMainRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
+      progressRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
       return
     }
-    progressMainRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
+    progressRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
       statusBarHeight = insets.systemWindowInsetTop
       view.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
       (progressEmptyView.layoutParams as ViewGroup.MarginLayoutParams)
@@ -151,16 +151,16 @@ class ProgressMainFragment :
       .show()
   }
 
-  override fun onScrollReset() = progressMainRecycler.smoothScrollToPosition(0)
+  override fun onScrollReset() = progressRecycler.smoothScrollToPosition(0)
 
-  private fun render(uiModel: ProgressMainUiModel) {
+  private fun render(uiModel: ProgressUiModel) {
     uiModel.run {
       items?.let {
         val notifyChange = resetScroll?.consume() == true
         adapter?.setItems(it, notifyChange = notifyChange)
         progressEmptyView.fadeIf(it.isEmpty() && searchQuery.isNullOrBlank())
-        progressMainRecycler.fadeIn()
-        progressMainTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
+        progressRecycler.fadeIn()
+        progressTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
     }

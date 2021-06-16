@@ -8,7 +8,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 @ViewModelScoped
-class ProgressEpisodesCase @Inject constructor(
+class ProgressMainEpisodesCase @Inject constructor(
   private val episodesManager: EpisodesManager,
   private val quickSyncManager: QuickSyncManager,
 ) {

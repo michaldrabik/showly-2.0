@@ -7,7 +7,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ProgressSortOrderCase @Inject constructor(
+class ProgressMainSortOrderCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {
 

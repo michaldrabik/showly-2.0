@@ -20,7 +20,7 @@ import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.calendar.cases.items.CalendarFutureCase
-import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
+import com.michaldrabik.ui_progress.main.cases.ProgressMainLoadItemsCase
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_SHOW_ID
 import com.michaldrabik.ui_widgets.R
 import kotlinx.coroutines.CoroutineScope
@@ -34,7 +34,7 @@ import java.util.Locale
 
 class CalendarWidgetViewsFactory(
   private val context: Context,
-  private val loadItemsCase: ProgressLoadItemsCase,
+  private val loadItemsCase: ProgressMainLoadItemsCase,
   private val calendarCase: CalendarFutureCase,
   private val imagesProvider: ShowImagesProvider,
   private val settingsRepository: SettingsRepository,

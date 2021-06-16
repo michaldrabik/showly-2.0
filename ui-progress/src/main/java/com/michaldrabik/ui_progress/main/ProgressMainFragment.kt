@@ -47,14 +47,13 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
-import com.michaldrabik.ui_progress.main.adapters.ProgressAdapter
+import com.michaldrabik.ui_progress.main.adapters.ProgressMainAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_progress.*
 import kotlinx.android.synthetic.main.fragment_progress_main.*
 
 @AndroidEntryPoint
-class ProgressFragment :
-  BaseFragment<ProgressViewModel>(R.layout.fragment_progress),
+class ProgressMainFragment :
+  BaseFragment<ProgressMainViewModel>(R.layout.fragment_progress_main),
   OnShowsMoviesSyncedListener,
   OnTabReselectedListener,
   OnTraktSyncListener {
@@ -63,9 +62,9 @@ class ProgressFragment :
     private const val TRANSLATION_DURATION = 225L
   }
 
-  override val viewModel by viewModels<ProgressViewModel>()
+  override val viewModel by viewModels<ProgressMainViewModel>()
 
-  private var adapter: ProgressAdapter? = null
+  private var adapter: ProgressMainAdapter? = null
 
   private var searchViewTranslation = 0F
   private var tabsTranslation = 0F
@@ -98,11 +97,11 @@ class ProgressFragment :
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    outState.putFloat("ARG_SEARCH_POSITION", progressSearchView?.translationY ?: 0F)
-    outState.putFloat("ARG_TABS_POSITION", progressTabs?.translationY ?: 0F)
-    outState.putFloat("ARG_SORT_ICON_POSITION", progressSortIcon?.translationY ?: 0F)
-    outState.putFloat("ARG_RECENTS_ICON_POSITION", progressCalendarIcon?.translationY ?: 0F)
-    outState.putInt("ARG_PAGE", progressPager?.currentItem ?: 0)
+    outState.putFloat("ARG_SEARCH_POSITION", progressMainSearchView?.translationY ?: 0F)
+    outState.putFloat("ARG_TABS_POSITION", progressMainTabs?.translationY ?: 0F)
+    outState.putFloat("ARG_SORT_ICON_POSITION", progressMainSortIcon?.translationY ?: 0F)
+    outState.putFloat("ARG_RECENTS_ICON_POSITION", progressMainCalendarIcon?.translationY ?: 0F)
+    outState.putInt("ARG_PAGE", progressMainPager?.currentItem ?: 0)
   }
 
   override fun onResume() {
@@ -112,30 +111,30 @@ class ProgressFragment :
   }
 
   override fun onPause() {
-    tabsTranslation = progressTabs.translationY
-    searchViewTranslation = progressSearchView.translationY
-    sortIconTranslation = progressSortIcon.translationY
-    calendarIconTranslation = progressCalendarIcon.translationY
+    tabsTranslation = progressMainTabs.translationY
+    searchViewTranslation = progressMainSearchView.translationY
+    sortIconTranslation = progressMainSortIcon.translationY
+    calendarIconTranslation = progressMainCalendarIcon.translationY
     super.onPause()
   }
 
   override fun onDestroyView() {
-    progressPager.removeOnPageChangeListener(pageChangeListener)
-    progressPager.adapter = null
+    progressMainPager.removeOnPageChangeListener(pageChangeListener)
+    progressMainPager.adapter = null
     adapter = null
     super.onDestroyView()
   }
 
   private fun setupView() {
-    progressSortIcon.visibleIf(currentPage == 0)
-    progressCalendarIcon.visibleIf(currentPage == 1)
-    progressCalendarIcon.onClick {
+    progressMainSortIcon.visibleIf(currentPage == 0)
+    progressMainCalendarIcon.visibleIf(currentPage == 1)
+    progressMainCalendarIcon.onClick {
       exitSearch()
       onScrollReset()
       resetTranslations()
       viewModel.toggleCalendarMode()
     }
-    progressSearchView.run {
+    progressMainSearchView.run {
       hint = getString(R.string.textSearchFor)
       settingsIconVisible = true
       isClickable = false
@@ -143,47 +142,47 @@ class ProgressFragment :
       onSettingsClickListener = { openSettings() }
       if (isTraktSyncing()) setTraktProgress(true)
     }
-    progressPagerModeTabs.run {
+    progressMainPagerModeTabs.run {
       visibleIf(moviesEnabled)
       isEnabled = false
       onModeSelected = { mode = it }
       selectShows()
     }
-    progressSearchView.traktIconVisible = true
-    progressSearchView.onTraktClickListener = {
+    progressMainSearchView.traktIconVisible = true
+    progressMainSearchView.onTraktClickListener = {
       navigateTo(R.id.actionProgressFragmentToTraktSyncFragment)
     }
 
-    progressTabs.translationY = tabsTranslation
-    progressPagerModeTabs.translationY = tabsTranslation
-    progressSearchView.translationY = searchViewTranslation
-    progressSortIcon.translationY = sortIconTranslation
-    progressCalendarIcon.translationY = calendarIconTranslation
+    progressMainTabs.translationY = tabsTranslation
+    progressMainPagerModeTabs.translationY = tabsTranslation
+    progressMainSearchView.translationY = searchViewTranslation
+    progressMainSortIcon.translationY = sortIconTranslation
+    progressMainCalendarIcon.translationY = calendarIconTranslation
   }
 
   private fun setupPager() {
-    adapter = ProgressAdapter(childFragmentManager, requireAppContext())
-    progressPager.run {
-      adapter = this@ProgressFragment.adapter
-      offscreenPageLimit = ProgressAdapter.PAGES_COUNT
+    adapter = ProgressMainAdapter(childFragmentManager, requireAppContext())
+    progressMainPager.run {
+      adapter = this@ProgressMainFragment.adapter
+      offscreenPageLimit = ProgressMainAdapter.PAGES_COUNT
       addOnPageChangeListener(pageChangeListener)
     }
-    progressTabs.setupWithViewPager(progressPager)
+    progressMainTabs.setupWithViewPager(progressMainPager)
   }
 
   private fun setupStatusBar() {
-    progressRoot.doOnApplyWindowInsets { _, insets, _, _ ->
+    progressMainRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.systemWindowInsetTop
       val progressTabsMargin = if (moviesEnabled) R.dimen.progressSearchViewPadding else R.dimen.progressSearchViewPaddingNoModes
-      (progressSearchView.layoutParams as ViewGroup.MarginLayoutParams)
+      (progressMainSearchView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
-      (progressTabs.layoutParams as ViewGroup.MarginLayoutParams)
+      (progressMainTabs.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(progressTabsMargin))
-      (progressPagerModeTabs.layoutParams as ViewGroup.MarginLayoutParams)
+      (progressMainPagerModeTabs.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
-      (progressSortIcon.layoutParams as ViewGroup.MarginLayoutParams)
+      (progressMainSortIcon.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(progressTabsMargin))
-      (progressCalendarIcon.layoutParams as ViewGroup.MarginLayoutParams)
+      (progressMainCalendarIcon.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(progressTabsMargin))
     }
   }
@@ -191,7 +190,7 @@ class ProgressFragment :
   override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
-      if (progressSearchView.isSearching) {
+      if (progressMainSearchView.isSearching) {
         exitSearch()
       } else {
         isEnabled = false
@@ -208,13 +207,13 @@ class ProgressFragment :
   fun openShowDetails(show: Show) {
     exitSearch()
     hideNavigation()
-    progressRoot.fadeOut(150) {
+    progressMainRoot.fadeOut(150) {
       if (findNavControl()?.currentDestination?.id == R.id.progressFragment) {
         val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.traktId) }
         navigateTo(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
       } else {
         showNavigation()
-        progressRoot.fadeIn(50).add(animations)
+        progressMainRoot.fadeIn(50).add(animations)
       }
     }.add(animations)
   }
@@ -259,8 +258,8 @@ class ProgressFragment :
   }
 
   private fun enterSearch() {
-    if (progressSearchView.isSearching) return
-    progressSearchView.isSearching = true
+    if (progressMainSearchView.isSearching) return
+    progressMainSearchView.isSearching = true
     exSearchViewText.gone()
     exSearchViewInput.run {
       setText("")
@@ -275,7 +274,7 @@ class ProgressFragment :
   }
 
   private fun exitSearch() {
-    progressSearchView.isSearching = false
+    progressMainSearchView.isSearching = false
     exSearchViewText.visible()
     exSearchViewInput.run {
       setText("")
@@ -290,44 +289,44 @@ class ProgressFragment :
   override fun onShowsMoviesSyncFinished() = viewModel.loadProgress()
 
   override fun onTraktSyncProgress() =
-    progressSearchView.setTraktProgress(true)
+    progressMainSearchView.setTraktProgress(true)
 
   override fun onTraktSyncComplete() {
-    progressSearchView.setTraktProgress(false)
+    progressMainSearchView.setTraktProgress(false)
     viewModel.loadProgress()
   }
 
   override fun onTabReselected() {
     resetTranslations(duration = 0)
-    progressPager.nextPage()
+    progressMainPager.nextPage()
     onScrollReset()
   }
 
   fun resetTranslations(duration: Long = TRANSLATION_DURATION) {
-    progressSearchView.animate().translationY(0F).setDuration(duration).start()
-    progressTabs.animate().translationY(0F).setDuration(duration).start()
-    progressPagerModeTabs.animate().translationY(0F).setDuration(duration).start()
-    progressSortIcon.animate().translationY(0F).setDuration(duration).start()
-    progressCalendarIcon.animate().translationY(0F).setDuration(duration).start()
+    progressMainSearchView.animate().translationY(0F).setDuration(duration).start()
+    progressMainTabs.animate().translationY(0F).setDuration(duration).start()
+    progressMainPagerModeTabs.animate().translationY(0F).setDuration(duration).start()
+    progressMainSortIcon.animate().translationY(0F).setDuration(duration).start()
+    progressMainCalendarIcon.animate().translationY(0F).setDuration(duration).start()
   }
 
   private fun onScrollReset() =
     childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
 
-  private fun render(uiModel: ProgressUiModel) {
+  private fun render(uiModel: ProgressMainUiModel) {
     uiModel.run {
       items?.let {
-        progressPagerModeTabs.isEnabled = true
-        progressSearchView.isClickable = it.isNotEmpty() || !searchQuery.isNullOrBlank()
-        progressSortIcon.visibleIf(it.isNotEmpty() && currentPage == 0)
+        progressMainPagerModeTabs.isEnabled = true
+        progressMainSearchView.isClickable = it.isNotEmpty() || !searchQuery.isNullOrBlank()
+        progressMainSortIcon.visibleIf(it.isNotEmpty() && currentPage == 0)
         if (it.isNotEmpty() && sortOrder != null) {
-          progressSortIcon.onClick { openSortOrderDialog(sortOrder) }
+          progressMainSortIcon.onClick { openSortOrderDialog(sortOrder) }
         }
       }
       calendarMode?.let { mode ->
         when (mode) {
-          CalendarMode.PRESENT_FUTURE -> progressCalendarIcon.setImageResource(R.drawable.ic_history)
-          CalendarMode.RECENTS -> progressCalendarIcon.setImageResource(R.drawable.ic_calendar)
+          CalendarMode.PRESENT_FUTURE -> progressMainCalendarIcon.setImageResource(R.drawable.ic_history)
+          CalendarMode.RECENTS -> progressMainCalendarIcon.setImageResource(R.drawable.ic_calendar)
         }
       }
     }
@@ -337,9 +336,9 @@ class ProgressFragment :
     override fun onPageSelected(position: Int) {
       if (currentPage == position) return
 
-      progressSortIcon.fadeIf(position == 0, duration = 150)
-      progressCalendarIcon.fadeIf(position == 1, duration = 150)
-      if (progressTabs.translationY != 0F) {
+      progressMainSortIcon.fadeIf(position == 0, duration = 150)
+      progressMainCalendarIcon.fadeIf(position == 1, duration = 150)
+      if (progressMainTabs.translationY != 0F) {
         resetTranslations()
         requireView().postDelayed({ onScrollReset() }, TRANSLATION_DURATION)
       }

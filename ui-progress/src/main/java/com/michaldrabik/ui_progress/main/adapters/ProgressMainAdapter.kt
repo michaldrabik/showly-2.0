@@ -6,10 +6,10 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.CalendarFragment
-import com.michaldrabik.ui_progress.progress.ProgressMainFragment
+import com.michaldrabik.ui_progress.progress.ProgressFragment
 
 @Suppress("DEPRECATION")
-class ProgressAdapter(
+class ProgressMainAdapter(
   fragManager: FragmentManager,
   private val context: Context,
 ) : FragmentPagerAdapter(fragManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -19,7 +19,7 @@ class ProgressAdapter(
   }
 
   override fun getItem(position: Int): Fragment = when (position) {
-    0 -> ProgressMainFragment()
+    0 -> ProgressFragment()
     1 -> CalendarFragment()
     else -> throw IllegalStateException("Unknown position")
   }

@@ -6,7 +6,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 @ViewModelScoped
-class ProgressPinnedItemsCase @Inject constructor(
+class ProgressMainPinnedItemsCase @Inject constructor(
   private val pinnedItemsRepository: PinnedItemsRepository
 ) {
 

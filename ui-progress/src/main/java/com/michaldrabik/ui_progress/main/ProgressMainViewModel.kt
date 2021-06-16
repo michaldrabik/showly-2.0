@@ -12,11 +12,11 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
-import com.michaldrabik.ui_progress.main.cases.ProgressEpisodesCase
-import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
-import com.michaldrabik.ui_progress.main.cases.ProgressPinnedItemsCase
-import com.michaldrabik.ui_progress.main.cases.ProgressSettingsCase
-import com.michaldrabik.ui_progress.main.cases.ProgressSortOrderCase
+import com.michaldrabik.ui_progress.main.cases.ProgressMainEpisodesCase
+import com.michaldrabik.ui_progress.main.cases.ProgressMainLoadItemsCase
+import com.michaldrabik.ui_progress.main.cases.ProgressMainPinnedItemsCase
+import com.michaldrabik.ui_progress.main.cases.ProgressMainSettingsCase
+import com.michaldrabik.ui_progress.main.cases.ProgressMainSortOrderCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -24,14 +24,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProgressViewModel @Inject constructor(
-  private val loadItemsCase: ProgressLoadItemsCase,
-  private val pinnedItemsCase: ProgressPinnedItemsCase,
-  private val sortOrderCase: ProgressSortOrderCase,
-  private val episodesCase: ProgressEpisodesCase,
-  private val settingsCase: ProgressSettingsCase,
+class ProgressMainViewModel @Inject constructor(
+  private val loadItemsCase: ProgressMainLoadItemsCase,
+  private val pinnedItemsCase: ProgressMainPinnedItemsCase,
+  private val sortOrderCase: ProgressMainSortOrderCase,
+  private val episodesCase: ProgressMainEpisodesCase,
+  private val settingsCase: ProgressMainSettingsCase,
   private val imagesProvider: ShowImagesProvider,
-) : BaseViewModel<ProgressUiModel>() {
+) : BaseViewModel<ProgressMainUiModel>() {
 
   private var searchQuery = ""
   private var calendarMode = CalendarMode.PRESENT_FUTURE
@@ -53,7 +53,7 @@ class ProgressViewModel @Inject constructor(
 
       val sortOrder = sortOrderCase.loadSortOrder()
       val allItems = loadItemsCase.prepareItems(items, searchQuery, sortOrder)
-      uiState = ProgressUiModel(
+      uiState = ProgressMainUiModel(
         items = allItems,
         searchQuery = searchQuery,
         isUpcomingEnabled = upcomingEnabled,
@@ -74,7 +74,7 @@ class ProgressViewModel @Inject constructor(
       CalendarMode.PRESENT_FUTURE -> CalendarMode.RECENTS
       CalendarMode.RECENTS -> CalendarMode.PRESENT_FUTURE
     }
-    uiState = ProgressUiModel(calendarMode = calendarMode)
+    uiState = ProgressMainUiModel(calendarMode = calendarMode)
   }
 
   fun setWatchedEpisode(context: Context, bundle: EpisodeBundle) {

@@ -17,24 +17,24 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
-import com.michaldrabik.ui_progress.main.ProgressUiModel
+import com.michaldrabik.ui_progress.main.ProgressMainUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProgressMainViewModel @Inject constructor(
+class ProgressViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
   private val userTraktManager: UserTraktManager,
   private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
   private val translationsRepository: TranslationsRepository,
-) : BaseViewModel<ProgressMainUiModel>() {
+) : BaseViewModel<ProgressUiModel>() {
 
   private val language by lazy { translationsRepository.getLanguage() }
   var isQuickRateEnabled = false
 
-  fun handleParentAction(model: ProgressUiModel) {
+  fun handleParentAction(model: ProgressMainUiModel) {
     val allItems = model.items?.toMutableList() ?: mutableListOf()
 
     val headerIndex = allItems.indexOfFirst {
@@ -55,7 +55,7 @@ class ProgressMainViewModel @Inject constructor(
       }
       .sortedByDescending { !it.isHeader() && it.isPinned }
 
-    uiState = ProgressMainUiModel(
+    uiState = ProgressUiModel(
       items = pinnedItems,
       searchQuery = model.searchQuery,
       sortOrder = model.sortOrder,
@@ -84,7 +84,7 @@ class ProgressMainViewModel @Inject constructor(
         val translations = item.translations?.copy(show = translation)
         updateItem(item.copy(translations = translations))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "${ProgressMainViewModel::class.simpleName}::findMissingTranslation()")
+        Logger.record(error, "Source" to "${ProgressViewModel::class.simpleName}::findMissingTranslation()")
       }
     }
   }
@@ -114,6 +114,6 @@ class ProgressMainViewModel @Inject constructor(
   private fun updateItem(new: ProgressItem) {
     val currentItems = uiState?.items?.toMutableList()
     currentItems?.findReplace(new) { it.isSameAs(new) }
-    uiState = ProgressMainUiModel(items = currentItems)
+    uiState = ProgressUiModel(items = currentItems)
   }
 }

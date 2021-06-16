@@ -5,7 +5,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 @ViewModelScoped
-class ProgressSettingsCase @Inject constructor(
+class ProgressMainSettingsCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 

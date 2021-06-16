@@ -35,7 +35,7 @@ import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
 import com.michaldrabik.data_local.database.model.Season as SeasonDb
 
 @Singleton
-class ProgressLoadItemsCase @Inject constructor(
+class ProgressMainLoadItemsCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,

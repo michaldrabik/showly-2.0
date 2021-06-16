@@ -23,12 +23,12 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
-import kotlinx.android.synthetic.main.view_progress_main_item.view.*
+import kotlinx.android.synthetic.main.view_progress_item.view.*
 import java.util.Locale.ENGLISH
 import kotlin.math.roundToInt
 
 @SuppressLint("SetTextI18n")
-class ProgressMainItemView : ShowView<ProgressItem> {
+class ProgressItemView : ShowView<ProgressItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -39,7 +39,7 @@ class ProgressMainItemView : ShowView<ProgressItem> {
   var checkClickListener: ((ProgressItem) -> Unit)? = null
 
   init {
-    inflate(context, R.layout.view_progress_main_item, this)
+    inflate(context, R.layout.view_progress_item, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     addRipple()
     progressItemCheckButton.expandTouch(100)

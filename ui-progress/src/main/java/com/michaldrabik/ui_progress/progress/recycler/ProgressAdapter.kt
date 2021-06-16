@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.ProgressItemDiffCallback
-import com.michaldrabik.ui_progress.progress.views.ProgressMainHeaderView
-import com.michaldrabik.ui_progress.progress.views.ProgressMainItemView
+import com.michaldrabik.ui_progress.progress.views.ProgressHeaderView
+import com.michaldrabik.ui_progress.progress.views.ProgressItemView
 
-class ProgressMainAdapter : BaseAdapter<ProgressItem>() {
+class ProgressAdapter : BaseAdapter<ProgressItem>() {
 
   companion object {
     private const val VIEW_TYPE_ITEM = 1
@@ -26,26 +26,26 @@ class ProgressMainAdapter : BaseAdapter<ProgressItem>() {
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
       VIEW_TYPE_ITEM -> BaseViewHolder(
-        ProgressMainItemView(parent.context).apply {
+        ProgressItemView(parent.context).apply {
           itemClickListener = { super.itemClickListener.invoke(it) }
           itemLongClickListener = { item, view ->
-            this@ProgressMainAdapter.itemLongClickListener?.invoke(item, view)
+            this@ProgressAdapter.itemLongClickListener?.invoke(item, view)
           }
-          detailsClickListener = { this@ProgressMainAdapter.detailsClickListener?.invoke(it) }
-          checkClickListener = { this@ProgressMainAdapter.checkClickListener?.invoke(it) }
+          detailsClickListener = { this@ProgressAdapter.detailsClickListener?.invoke(it) }
+          checkClickListener = { this@ProgressAdapter.checkClickListener?.invoke(it) }
           missingImageListener = { item, force -> super.missingImageListener.invoke(item, force) }
           missingTranslationListener = { super.missingTranslationListener.invoke(it) }
         }
       )
-      VIEW_TYPE_HEADER -> BaseViewHolder(ProgressMainHeaderView(parent.context))
+      VIEW_TYPE_HEADER -> BaseViewHolder(ProgressHeaderView(parent.context))
       else -> throw IllegalStateException()
     }
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]
     when (holder.itemViewType) {
-      VIEW_TYPE_HEADER -> (holder.itemView as ProgressMainHeaderView).bind(item.headerTextResId!!)
-      VIEW_TYPE_ITEM -> (holder.itemView as ProgressMainItemView).bind(item)
+      VIEW_TYPE_HEADER -> (holder.itemView as ProgressHeaderView).bind(item.headerTextResId!!)
+      VIEW_TYPE_ITEM -> (holder.itemView as ProgressItemView).bind(item)
     }
   }
 

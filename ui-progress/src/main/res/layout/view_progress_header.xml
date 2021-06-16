@@ -8,7 +8,7 @@
   >
 
   <TextView
-    android:id="@+id/progressMainHeaderText"
+    android:id="@+id/progressHeaderText"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/spaceMedium"

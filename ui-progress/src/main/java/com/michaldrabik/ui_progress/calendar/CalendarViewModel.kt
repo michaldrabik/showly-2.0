@@ -19,7 +19,7 @@ import com.michaldrabik.ui_progress.calendar.cases.items.CalendarFutureCase
 import com.michaldrabik.ui_progress.calendar.cases.items.CalendarRecentsCase
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
-import com.michaldrabik.ui_progress.main.ProgressUiModel
+import com.michaldrabik.ui_progress.main.ProgressMainUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -40,11 +40,7 @@ class CalendarViewModel @Inject constructor(
   private val _itemsLiveData = MutableLiveData<List<CalendarListItem>>()
   val itemsLiveData: LiveData<List<CalendarListItem>> get() = _itemsLiveData
 
-  init {
-    loadItems()
-  }
-
-  fun handleParentAction(model: ProgressUiModel) {
+  fun handleParentAction(model: ProgressMainUiModel) {
     mode = model.calendarMode ?: CalendarMode.PRESENT_FUTURE
     loadItems(model.searchQuery ?: "")
   }

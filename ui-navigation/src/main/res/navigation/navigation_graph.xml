@@ -120,7 +120,7 @@
 
   <fragment
     android:id="@+id/progressFragment"
-    android:name="com.michaldrabik.ui_progress.main.ProgressFragment"
+    android:name="com.michaldrabik.ui_progress.main.ProgressMainFragment"
     android:label="fragmentProgressMain"
     >
     <action

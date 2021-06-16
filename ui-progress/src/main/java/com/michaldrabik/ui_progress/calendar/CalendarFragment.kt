@@ -21,8 +21,8 @@ import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarAdapter
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
-import com.michaldrabik.ui_progress.main.ProgressFragment
-import com.michaldrabik.ui_progress.main.ProgressViewModel
+import com.michaldrabik.ui_progress.main.ProgressMainFragment
+import com.michaldrabik.ui_progress.main.ProgressMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_calendar.*
 
@@ -32,7 +32,7 @@ class CalendarFragment :
   OnScrollResetListener {
 
   override val viewModel by viewModels<CalendarViewModel>()
-  private val parentViewModel by viewModels<ProgressViewModel>({ requireParentFragment() })
+  private val parentViewModel by viewModels<ProgressMainViewModel>({ requireParentFragment() })
 
   private var adapter: CalendarAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
@@ -54,8 +54,8 @@ class CalendarFragment :
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = CalendarAdapter().apply {
-      itemClickListener = { (requireParentFragment() as ProgressFragment).openShowDetails(it.show) }
-      detailsClickListener = { (requireParentFragment() as ProgressFragment).openEpisodeDetails(it.show, it.episode, it.season) }
+      itemClickListener = { (requireParentFragment() as ProgressMainFragment).openShowDetails(it.show) }
+      detailsClickListener = { (requireParentFragment() as ProgressMainFragment).openEpisodeDetails(it.show, it.episode, it.season) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
       missingTranslationListener = { viewModel.findMissingTranslation(it) }
       checkClickListener = {

@@ -8,21 +8,21 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import androidx.annotation.StringRes
 import com.michaldrabik.ui_progress.R
-import kotlinx.android.synthetic.main.view_progress_main_header.view.*
+import kotlinx.android.synthetic.main.view_progress_header.view.*
 
 @SuppressLint("SetTextI18n")
-class ProgressMainHeaderView : FrameLayout {
+class ProgressHeaderView : FrameLayout {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   init {
-    inflate(context, R.layout.view_progress_main_header, this)
+    inflate(context, R.layout.view_progress_header, this)
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
   }
 
   fun bind(@StringRes textResId: Int) {
-    progressMainHeaderText.setText(textResId)
+    progressHeaderText.setText(textResId)
   }
 }

@@ -20,8 +20,8 @@ import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.ImageStatus
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_progress.ProgressItem
-import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
-import com.michaldrabik.ui_progress.main.cases.ProgressSortOrderCase
+import com.michaldrabik.ui_progress.main.cases.ProgressMainLoadItemsCase
+import com.michaldrabik.ui_progress.main.cases.ProgressMainSortOrderCase
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_SHOW_ID
 import com.michaldrabik.ui_widgets.R
 import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider.Companion.EXTRA_EPISODE_ID
@@ -38,8 +38,8 @@ import kotlin.math.roundToInt
 
 class ProgressWidgetViewsFactory(
   private val context: Context,
-  private val loadItemsCase: ProgressLoadItemsCase,
-  private val sortOrderCase: ProgressSortOrderCase,
+  private val loadItemsCase: ProgressMainLoadItemsCase,
+  private val sortOrderCase: ProgressMainSortOrderCase,
   private val showsRepository: ShowsRepository,
   private val imagesProvider: ShowImagesProvider,
   private val settingsRepository: SettingsRepository,
