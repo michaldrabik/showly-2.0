@@ -19,6 +19,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_progress.R
+import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarAdapter
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
@@ -43,9 +44,12 @@ class CalendarFragment :
     setupRecycler()
     setupStatusBar()
 
-    parentViewModel.uiLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
+    with(parentViewModel) {
+      calendarModeLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
+      searchQueryLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
+    }
     with(viewModel) {
-      itemsLiveData.observe(viewLifecycleOwner, { render(it) })
+      itemsLiveData.observe(viewLifecycleOwner, { render(it.first, it.second) })
       messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
       checkQuickRateEnabled()
     }
@@ -108,10 +112,11 @@ class CalendarFragment :
       .show()
   }
 
-  private fun render(items: List<CalendarListItem>) {
+  private fun render(mode: CalendarMode, items: List<CalendarListItem>) {
     adapter?.setItems(items)
     progressCalendarRecycler.fadeIn(150, withHardware = true)
-    progressCalendarEmptyView.visibleIf(items.isEmpty())
+    progressCalendarEmptyFutureView.visibleIf(items.isEmpty() && mode == CalendarMode.PRESENT_FUTURE)
+    progressCalendarEmptyRecentsView.visibleIf(items.isEmpty() && mode == CalendarMode.RECENTS)
   }
 
   override fun onScrollReset() = progressCalendarRecycler.smoothScrollToPosition(0)

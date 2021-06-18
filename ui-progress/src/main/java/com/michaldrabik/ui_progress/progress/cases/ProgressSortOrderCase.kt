@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_progress.main.cases
+package com.michaldrabik.ui_progress.progress.cases
 
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_model.Settings
@@ -7,7 +7,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ProgressMainSortOrderCase @Inject constructor(
+class ProgressSortOrderCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {
 

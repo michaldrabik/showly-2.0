@@ -1,5 +1,7 @@
 package com.michaldrabik.ui_progress.progress
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.RatingsRepository
@@ -10,20 +12,27 @@ import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_progress.ProgressItem
+import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress.R
-import com.michaldrabik.ui_progress.main.ProgressMainUiModel
+import com.michaldrabik.ui_progress.progress.cases.ProgressItemsCase
+import com.michaldrabik.ui_progress.progress.cases.ProgressPinnedItemsCase
+import com.michaldrabik.ui_progress.progress.cases.ProgressSortOrderCase
+import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProgressViewModel @Inject constructor(
+  private val itemsCase: ProgressItemsCase,
+  private val pinnedItemsCase: ProgressPinnedItemsCase,
+  private val sortOrderCase: ProgressSortOrderCase,
   private val imagesProvider: ShowImagesProvider,
   private val userTraktManager: UserTraktManager,
   private val ratingsRepository: RatingsRepository,
@@ -34,36 +43,36 @@ class ProgressViewModel @Inject constructor(
   private val language by lazy { translationsRepository.getLanguage() }
   var isQuickRateEnabled = false
 
-  fun handleParentAction(model: ProgressMainUiModel) {
-    val allItems = model.items?.toMutableList() ?: mutableListOf()
+  private val _itemsLiveData = MutableLiveData<Pair<List<ProgressListItem>, Boolean>>()
+  val itemsLiveData: LiveData<Pair<List<ProgressListItem>, Boolean>> get() = _itemsLiveData
 
-    val headerIndex = allItems.indexOfFirst {
-      !it.isHeader() && !it.episode.hasAired(it.season) && !it.isPinned
-    }
-    if (headerIndex != -1) {
-      val item = allItems[headerIndex]
-      allItems.add(headerIndex, item.copy(headerTextResId = R.string.textWatchlistIncoming))
-    }
+  private val _sortLiveData = MutableLiveData<ActionEvent<SortOrder>>()
+  val sortLiveData: LiveData<ActionEvent<SortOrder>> get() = _sortLiveData
 
-    val pinnedItems = allItems
-      .filter {
-        if (model.isUpcomingEnabled == true) {
-          true
-        } else {
-          !it.isHeader() && (it.isPinned || it.episode.hasAired(it.season))
-        }
-      }
-      .sortedByDescending { !it.isHeader() && it.isPinned }
-
-    uiState = ProgressUiModel(
-      items = pinnedItems,
-      searchQuery = model.searchQuery,
-      sortOrder = model.sortOrder,
-      resetScroll = model.resetScroll
-    )
+  fun handleParentAction(searchQuery: String) {
+    loadItems(searchQuery)
   }
 
-  fun findMissingImage(item: ProgressItem, force: Boolean) {
+  private fun loadItems(
+    searchQuery: String = "",
+    resetScroll: Boolean = false,
+  ) {
+    viewModelScope.launch {
+      val items = itemsCase.loadItems(searchQuery)
+      _itemsLiveData.value = items to resetScroll
+    }
+  }
+
+  fun loadSortOrder() {
+    if (_itemsLiveData.value?.first?.isEmpty() == true) return
+    viewModelScope.launch {
+      val sortOrder = sortOrderCase.loadSortOrder()
+      _sortLiveData.value = ActionEvent(sortOrder)
+    }
+  }
+
+  fun findMissingImage(item: ProgressListItem, force: Boolean) {
+    check(item is ProgressListItem.Episode)
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -76,7 +85,8 @@ class ProgressViewModel @Inject constructor(
     }
   }
 
-  fun findMissingTranslation(item: ProgressItem) {
+  fun findMissingTranslation(item: ProgressListItem) {
+    check(item is ProgressListItem.Episode)
     if (item.translations?.show != null || language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {
@@ -84,7 +94,7 @@ class ProgressViewModel @Inject constructor(
         val translations = item.translations?.copy(show = translation)
         updateItem(item.copy(translations = translations))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "${ProgressViewModel::class.simpleName}::findMissingTranslation()")
+        Logger.record(error, "Source" to "ProgressViewModel::findMissingTranslation()")
       }
     }
   }
@@ -102,6 +112,22 @@ class ProgressViewModel @Inject constructor(
     }
   }
 
+  fun setSortOrder(sortOrder: SortOrder) {
+    viewModelScope.launch {
+      sortOrderCase.setSortOrder(sortOrder)
+      loadItems(resetScroll = true)
+    }
+  }
+
+  fun togglePinItem(item: ProgressListItem.Episode) {
+    if (item.isPinned) {
+      pinnedItemsCase.removePinnedItem(item.show)
+    } else {
+      pinnedItemsCase.addPinnedItem(item.show)
+    }
+    loadItems()
+  }
+
   fun checkQuickRateEnabled() {
     viewModelScope.launch {
       val isSignedIn = userTraktManager.isAuthorized()
@@ -111,9 +137,9 @@ class ProgressViewModel @Inject constructor(
     }
   }
 
-  private fun updateItem(new: ProgressItem) {
-    val currentItems = uiState?.items?.toMutableList()
-    currentItems?.findReplace(new) { it.isSameAs(new) }
-    uiState = ProgressUiModel(items = currentItems)
+  private fun updateItem(new: ProgressListItem) {
+    val currentItems = _itemsLiveData.value?.first?.toMutableList() ?: mutableListOf()
+    currentItems.findReplace(new) { it.isSameAs(new) }
+    _itemsLiveData.value = currentItems to false
   }
 }

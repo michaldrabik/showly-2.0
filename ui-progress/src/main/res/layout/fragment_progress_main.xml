@@ -53,6 +53,7 @@
     android:layout_gravity="end"
     android:layout_marginTop="@dimen/progressSearchViewPadding"
     android:layout_marginEnd="@dimen/spaceMedium"
+    android:visibility="gone"
     app:srcCompat="@drawable/ic_history"
     app:tint="?android:attr/textColorPrimary"
     />

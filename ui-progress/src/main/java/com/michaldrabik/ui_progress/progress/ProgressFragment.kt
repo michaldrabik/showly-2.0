@@ -18,28 +18,36 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
-import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.EpisodeBundle
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
+import com.michaldrabik.ui_model.SortOrder.NAME
+import com.michaldrabik.ui_model.SortOrder.NEWEST
+import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_model.Tip
-import com.michaldrabik.ui_progress.ProgressItem
 import com.michaldrabik.ui_progress.R
+import com.michaldrabik.ui_progress.helpers.OnSortClickListener
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
 import com.michaldrabik.ui_progress.progress.recycler.ProgressAdapter
+import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.fragment_progress.*
 import kotlinx.android.synthetic.main.layout_progress_empty.*
 
 @AndroidEntryPoint
 class ProgressFragment :
   BaseFragment<ProgressViewModel>(R.layout.fragment_progress),
+  OnSortClickListener,
   OnScrollResetListener {
 
   private val parentViewModel by viewModels<ProgressMainViewModel>({ requireParentFragment() })
@@ -55,9 +63,10 @@ class ProgressFragment :
     setupRecycler()
     setupStatusBar()
 
-    parentViewModel.uiLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
+    parentViewModel.searchQueryLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
     viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
+      itemsLiveData.observe(viewLifecycleOwner, { render(it.first, it.second) })
+      sortLiveData.observe(viewLifecycleOwner, { render(it) })
       messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
       checkQuickRateEnabled()
     }
@@ -77,14 +86,20 @@ class ProgressFragment :
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = ProgressAdapter().apply {
-      itemClickListener = { (requireParentFragment() as ProgressMainFragment).openShowDetails(it.show) }
-      itemLongClickListener = { item, view -> openPopupMenu(item, view) }
-      detailsClickListener = { (requireParentFragment() as ProgressMainFragment).openEpisodeDetails(it.show, it.episode, it.season) }
+      itemClickListener = {
+        (requireParentFragment() as ProgressMainFragment).openShowDetails(it.show)
+      }
+      itemLongClickListener = { item, view ->
+        openPopupMenu(item, view)
+      }
+      detailsClickListener = {
+        (requireParentFragment() as ProgressMainFragment).openEpisodeDetails(it.show, it.requireEpisode(), it.requireSeason())
+      }
       checkClickListener = {
         if (viewModel.isQuickRateEnabled) {
           openRateDialog(it)
         } else {
-          val bundle = EpisodeBundle(it.episode, it.season, it.show)
+          val bundle = EpisodeBundle(it.episode!!, it.season!!, it.show)
           parentViewModel.setWatchedEpisode(requireAppContext(), bundle)
         }
       }
@@ -117,7 +132,7 @@ class ProgressFragment :
     }
   }
 
-  private fun openPopupMenu(item: ProgressItem, view: View) {
+  private fun openPopupMenu(item: ProgressListItem.Episode, view: View) {
     val menu = PopupMenu(requireContext(), view, Gravity.CENTER)
     if (item.isPinned) {
       menu.inflate(R.menu.progress_item_menu_unpin)
@@ -126,14 +141,14 @@ class ProgressFragment :
     }
     menu.setOnMenuItemClickListener { menuItem ->
       if (menuItem.itemId == R.id.menuWatchlistItemPin) {
-        parentViewModel.togglePinItem(item)
+        viewModel.togglePinItem(item)
       }
       true
     }
     menu.show()
   }
 
-  private fun openRateDialog(item: ProgressItem) {
+  private fun openRateDialog(item: ProgressListItem.Episode) {
     val context = requireContext()
     val rateView = RateView(context).apply {
       setPadding(context.dimenToPx(R.dimen.spaceNormal))
@@ -143,28 +158,43 @@ class ProgressFragment :
       .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
       .setView(rateView)
       .setPositiveButton(R.string.textRate) { _, _ ->
-        val bundle = EpisodeBundle(item.episode, item.season, item.show)
+        val bundle = EpisodeBundle(item.requireEpisode(), item.requireSeason(), item.show)
         parentViewModel.setWatchedEpisode(requireAppContext(), bundle)
-        viewModel.addRating(rateView.getRating(), item.episode, item.show.ids.trakt)
+        viewModel.addRating(rateView.getRating(), item.requireEpisode(), item.show.ids.trakt)
       }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
       .show()
   }
 
-  override fun onScrollReset() = progressRecycler.smoothScrollToPosition(0)
+  private fun openSortOrderDialog(order: SortOrder) {
+    val options = listOf(NAME, NEWEST, RECENTLY_WATCHED, EPISODES_LEFT)
+    val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
 
-  private fun render(uiModel: ProgressUiModel) {
-    uiModel.run {
-      items?.let {
-        val notifyChange = resetScroll?.consume() == true
-        adapter?.setItems(it, notifyChange = notifyChange)
-        progressEmptyView.fadeIf(it.isEmpty() && searchQuery.isNullOrBlank())
-        progressRecycler.fadeIn()
-        progressTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
-        (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setTitle(R.string.textSortBy)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setSingleChoiceItems(optionsStrings, options.indexOf(order)) { dialog, index ->
+        viewModel.setSortOrder(options[index])
+        dialog.dismiss()
       }
-    }
+      .show()
   }
+
+  private fun render(items: List<ProgressListItem>, resetScroll: Boolean) {
+    adapter?.setItems(items, resetScroll)
+    progressRecycler.fadeIn(150, withHardware = true)
+    progressEmptyView.visibleIf(items.isEmpty())
+    progressTipItem.visibleIf(items.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
+    (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
+  }
+
+  private fun render(sortOrder: ActionEvent<SortOrder>) {
+    sortOrder.consume()?.let { openSortOrderDialog(it) }
+  }
+
+  override fun onSortClick() = viewModel.loadSortOrder()
+
+  override fun onScrollReset() = progressRecycler.smoothScrollToPosition(0)
 
   override fun setupBackPressed() = Unit
 

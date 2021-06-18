@@ -23,7 +23,7 @@
     />
 
   <include
-    android:id="@+id/progressCalendarEmptyView"
+    android:id="@+id/progressCalendarEmptyRecentsView"
     layout="@layout/layout_recents_empty"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -32,6 +32,17 @@
     android:layout_marginEnd="@dimen/spaceBig"
     android:visibility="gone"
     tools:visibility="visible"
+    />
+
+  <include
+    android:id="@+id/progressCalendarEmptyFutureView"
+    layout="@layout/layout_calendar_empty"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginEnd="@dimen/spaceBig"
+    android:visibility="gone"
     />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

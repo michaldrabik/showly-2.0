@@ -19,9 +19,9 @@ import com.michaldrabik.ui_progress.calendar.cases.items.CalendarFutureCase
 import com.michaldrabik.ui_progress.calendar.cases.items.CalendarRecentsCase
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
-import com.michaldrabik.ui_progress.main.ProgressMainUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,25 +33,33 @@ class CalendarViewModel @Inject constructor(
   private val translationsRepository: TranslationsRepository,
 ) : BaseViewModel<CalendarUiModel>() {
 
-  private val language by lazy { translationsRepository.getLanguage() }
   var isQuickRateEnabled = false
-  var mode = CalendarMode.PRESENT_FUTURE
 
-  private val _itemsLiveData = MutableLiveData<List<CalendarListItem>>()
-  val itemsLiveData: LiveData<List<CalendarListItem>> get() = _itemsLiveData
+  private val language by lazy { translationsRepository.getLanguage() }
+  private var mode = CalendarMode.PRESENT_FUTURE
+  private var searchQuery = ""
 
-  fun handleParentAction(model: ProgressMainUiModel) {
-    mode = model.calendarMode ?: CalendarMode.PRESENT_FUTURE
-    loadItems(model.searchQuery ?: "")
+  private val _itemsLiveData = MutableLiveData<Pair<CalendarMode, List<CalendarListItem>>>()
+  val itemsLiveData: LiveData<Pair<CalendarMode, List<CalendarListItem>>> get() = _itemsLiveData
+
+  fun handleParentAction(calendarMode: CalendarMode) {
+    this.mode = calendarMode
+    loadItems(searchQuery)
+  }
+
+  fun handleParentAction(searchQuery: String) {
+    this.searchQuery = searchQuery
+    loadItems(searchQuery)
   }
 
   private fun loadItems(searchQuery: String = "") {
     viewModelScope.launch {
+      Timber.d(Thread.currentThread().toString())
       val items = when (mode) {
         CalendarMode.PRESENT_FUTURE -> futureCase.loadItems(searchQuery)
         CalendarMode.RECENTS -> recentsCase.loadItems(searchQuery)
       }
-      _itemsLiveData.postValue(items)
+      _itemsLiveData.postValue(mode to items)
     }
   }
 
@@ -96,9 +104,9 @@ class CalendarViewModel @Inject constructor(
   }
 
   private fun updateItem(new: CalendarListItem.Episode) {
-    val currentItems = _itemsLiveData.value?.toMutableList() ?: mutableListOf()
+    val currentItems = _itemsLiveData.value?.second?.toMutableList() ?: mutableListOf()
     currentItems.findReplace(new) { it.isSameAs(new) }
-    _itemsLiveData.postValue(currentItems)
+    _itemsLiveData.postValue(mode to currentItems)
   }
 
   fun checkQuickRateEnabled() {

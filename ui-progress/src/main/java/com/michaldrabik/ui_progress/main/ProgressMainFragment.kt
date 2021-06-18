@@ -5,13 +5,11 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.core.content.ContextCompat
 import androidx.core.view.updateMargins
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
@@ -37,16 +35,12 @@ import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
-import com.michaldrabik.ui_model.SortOrder.NAME
-import com.michaldrabik.ui_model.SortOrder.NEWEST
-import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
+import com.michaldrabik.ui_progress.helpers.OnSortClickListener
 import com.michaldrabik.ui_progress.main.adapters.ProgressMainAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_main.*
@@ -90,7 +84,7 @@ class ProgressMainFragment :
     setupStatusBar()
 
     viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
+      calendarModeLiveData.observe(viewLifecycleOwner, { render(it) })
       messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
     }
   }
@@ -126,8 +120,10 @@ class ProgressMainFragment :
   }
 
   private fun setupView() {
-    progressMainSortIcon.visibleIf(currentPage == 0)
-    progressMainCalendarIcon.visibleIf(currentPage == 1)
+    with(progressMainSortIcon) {
+      visibleIf(currentPage == 0)
+      onClick { childFragmentManager.fragments.forEach { (it as? OnSortClickListener)?.onSortClick() } }
+    }
     progressMainCalendarIcon.onClick {
       exitSearch()
       onScrollReset()
@@ -144,7 +140,6 @@ class ProgressMainFragment :
     }
     progressMainPagerModeTabs.run {
       visibleIf(moviesEnabled)
-      isEnabled = false
       onModeSelected = { mode = it }
       selectShows()
     }
@@ -238,20 +233,6 @@ class ProgressMainFragment :
     navigateTo(R.id.actionProgressFragmentToEpisodeDetails, bundle)
   }
 
-  private fun openSortOrderDialog(order: SortOrder) {
-    val options = listOf(NAME, NEWEST, RECENTLY_WATCHED, EPISODES_LEFT)
-    val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
-
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setTitle(R.string.textSortBy)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setSingleChoiceItems(optionsStrings, options.indexOf(order)) { dialog, index ->
-        viewModel.setSortOrder(options[index])
-        dialog.dismiss()
-      }
-      .show()
-  }
-
   private fun openSettings() {
     hideNavigation()
     navigateTo(R.id.actionProgressFragmentToSettingsFragment)
@@ -313,22 +294,10 @@ class ProgressMainFragment :
   private fun onScrollReset() =
     childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
 
-  private fun render(uiModel: ProgressMainUiModel) {
-    uiModel.run {
-      items?.let {
-        progressMainPagerModeTabs.isEnabled = true
-        progressMainSearchView.isClickable = it.isNotEmpty() || !searchQuery.isNullOrBlank()
-        progressMainSortIcon.visibleIf(it.isNotEmpty() && currentPage == 0)
-        if (it.isNotEmpty() && sortOrder != null) {
-          progressMainSortIcon.onClick { openSortOrderDialog(sortOrder) }
-        }
-      }
-      calendarMode?.let { mode ->
-        when (mode) {
-          CalendarMode.PRESENT_FUTURE -> progressMainCalendarIcon.setImageResource(R.drawable.ic_history)
-          CalendarMode.RECENTS -> progressMainCalendarIcon.setImageResource(R.drawable.ic_calendar)
-        }
-      }
+  private fun render(calendarMode: CalendarMode) {
+    when (calendarMode) {
+      CalendarMode.PRESENT_FUTURE -> progressMainCalendarIcon.setImageResource(R.drawable.ic_history)
+      CalendarMode.RECENTS -> progressMainCalendarIcon.setImageResource(R.drawable.ic_calendar)
     }
   }
 

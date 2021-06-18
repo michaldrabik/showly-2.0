@@ -16,9 +16,10 @@ import com.michaldrabik.ui_progress.calendar.helpers.filters.CalendarFilter
 import com.michaldrabik.ui_progress.calendar.helpers.groupers.CalendarGrouper
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
 
 @Suppress("UNCHECKED_CAST")
 abstract class CalendarItemsCase constructor(
@@ -36,7 +37,7 @@ abstract class CalendarItemsCase constructor(
   abstract fun sortEpisodes(): Comparator<Episode>
   abstract fun isWatched(episode: Episode): Boolean
 
-  suspend fun loadItems(searchQuery: String): List<CalendarListItem> = coroutineScope {
+  suspend fun loadItems(searchQuery: String): List<CalendarListItem> = withContext(Dispatchers.IO) {
     val now = nowUtc().toLocalZone()
     val language = translationsRepository.getLanguage()
 
@@ -48,8 +49,8 @@ abstract class CalendarItemsCase constructor(
       async { database.seasonsDao().getAllByShowsIds(showsIds) }
     )
 
-    val filteredSeasons = (seasons as List<Season>)
-    val filteredEpisodes = (episodes as List<Episode>).filter { filter.filter(now, it) }
+    val filteredSeasons = (seasons as List<Season>).filter { it.seasonNumber != 0 }
+    val filteredEpisodes = (episodes as List<Episode>).filter { it.seasonNumber != 0 && filter.filter(now, it) }
 
     val elements = filteredEpisodes
       .sortedWith(sortEpisodes())
