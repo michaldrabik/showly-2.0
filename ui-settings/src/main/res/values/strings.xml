@@ -67,6 +67,8 @@
   <string name="textSettingsWidgetsLabelsTitle">Titles</string>
   <string name="textSettingsWidgetsLabelsSummary">Display translucent widgets titles.</string>
   <string name="textSettingsStreamingsDisclaimer">Streaming services data is provided by</string>
+  <string name="textSettingsStreamingServicesTitle">Streaming Services</string>
+  <string name="textSettingsStreamingServicesMessage">Display streaming services data.</string>
 
   <string name="textPremium">Showly Premium</string>
   <string name="textPremiumAd">Become a supporter and get access to bonus features! Click to see more.</string>
