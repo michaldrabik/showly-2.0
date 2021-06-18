@@ -84,7 +84,7 @@ class ProgressMainFragment :
     setupStatusBar()
 
     viewModel.run {
-      calendarModeLiveData.observe(viewLifecycleOwner, { render(it) })
+      uiLiveData.observe(viewLifecycleOwner, { render(it) })
       messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
     }
   }
@@ -124,11 +124,14 @@ class ProgressMainFragment :
       visibleIf(currentPage == 0)
       onClick { childFragmentManager.fragments.forEach { (it as? OnSortClickListener)?.onSortClick() } }
     }
-    progressMainCalendarIcon.onClick {
-      exitSearch()
-      onScrollReset()
-      resetTranslations()
-      viewModel.toggleCalendarMode()
+    with(progressMainCalendarIcon) {
+      visibleIf(currentPage == 1)
+      onClick {
+        exitSearch()
+        onScrollReset()
+        resetTranslations()
+        viewModel.toggleCalendarMode()
+      }
     }
     progressMainSearchView.run {
       hint = getString(R.string.textSearchFor)
@@ -294,8 +297,8 @@ class ProgressMainFragment :
   private fun onScrollReset() =
     childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
 
-  private fun render(calendarMode: CalendarMode) {
-    when (calendarMode) {
+  private fun render(model: ProgressMainUiModel) {
+    when (model.calendarMode) {
       CalendarMode.PRESENT_FUTURE -> progressMainCalendarIcon.setImageResource(R.drawable.ic_history)
       CalendarMode.RECENTS -> progressMainCalendarIcon.setImageResource(R.drawable.ic_calendar)
     }

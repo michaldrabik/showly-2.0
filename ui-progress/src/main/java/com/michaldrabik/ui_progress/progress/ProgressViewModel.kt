@@ -20,6 +20,7 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress.R
+import com.michaldrabik.ui_progress.main.ProgressMainUiModel
 import com.michaldrabik.ui_progress.progress.cases.ProgressItemsCase
 import com.michaldrabik.ui_progress.progress.cases.ProgressPinnedItemsCase
 import com.michaldrabik.ui_progress.progress.cases.ProgressSortOrderCase
@@ -41,6 +42,8 @@ class ProgressViewModel @Inject constructor(
 ) : BaseViewModel<ProgressUiModel>() {
 
   private val language by lazy { translationsRepository.getLanguage() }
+  private var searchQuery = ""
+  private var timestamp = 0L
   var isQuickRateEnabled = false
 
   private val _itemsLiveData = MutableLiveData<Pair<List<ProgressListItem>, Boolean>>()
@@ -49,14 +52,18 @@ class ProgressViewModel @Inject constructor(
   private val _sortLiveData = MutableLiveData<ActionEvent<SortOrder>>()
   val sortLiveData: LiveData<ActionEvent<SortOrder>> get() = _sortLiveData
 
-  fun handleParentAction(searchQuery: String) {
-    loadItems(searchQuery)
+  fun handleParentAction(model: ProgressMainUiModel) {
+    if (this.timestamp != model.timestamp) {
+      this.timestamp = model.timestamp ?: 0L
+      loadItems()
+    }
+    if (this.searchQuery != model.searchQuery) {
+      this.searchQuery = model.searchQuery ?: ""
+      loadItems()
+    }
   }
 
-  private fun loadItems(
-    searchQuery: String = "",
-    resetScroll: Boolean = false,
-  ) {
+  private fun loadItems(resetScroll: Boolean = false) {
     viewModelScope.launch {
       val items = itemsCase.loadItems(searchQuery)
       _itemsLiveData.value = items to resetScroll

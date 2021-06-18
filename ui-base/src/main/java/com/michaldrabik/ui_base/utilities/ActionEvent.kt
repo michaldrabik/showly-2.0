@@ -6,8 +6,6 @@ class ActionEvent<T>(
 
   private var isConsumed: Boolean = false
 
-  fun peek(): T = action
-
   fun consume(): T? =
     if (!isConsumed) {
       isConsumed = true

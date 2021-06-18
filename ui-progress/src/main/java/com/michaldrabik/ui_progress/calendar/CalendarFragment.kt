@@ -45,8 +45,7 @@ class CalendarFragment :
     setupStatusBar()
 
     with(parentViewModel) {
-      calendarModeLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
-      searchQueryLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
+      uiLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
     }
     with(viewModel) {
       itemsLiveData.observe(viewLifecycleOwner, { render(it.first, it.second) })

@@ -1,8 +1,6 @@
 package com.michaldrabik.ui_progress.main
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -19,25 +17,19 @@ class ProgressMainViewModel @Inject constructor(
   private val episodesCase: ProgressMainEpisodesCase,
 ) : BaseViewModel<ProgressMainUiModel>() {
 
-  private var searchQuery = ""
   private var calendarMode = CalendarMode.PRESENT_FUTURE
-
-  private val _searchQueryLiveData = MutableLiveData<String>()
-  private val _calendarModeLiveData = MutableLiveData<CalendarMode>()
-
-  val searchQueryLiveData: LiveData<String> get() = _searchQueryLiveData
-  val calendarModeLiveData: LiveData<CalendarMode> get() = _calendarModeLiveData
 
   fun loadProgress() {
     viewModelScope.launch {
-      _searchQueryLiveData.value = searchQuery
-      _calendarModeLiveData.value = calendarMode
+      uiState = ProgressMainUiModel(
+        timestamp = System.currentTimeMillis(),
+        calendarMode = calendarMode
+      )
     }
   }
 
   fun onSearchQuery(searchQuery: String) {
-    this.searchQuery = searchQuery.trim()
-    loadProgress()
+    uiState = ProgressMainUiModel(searchQuery = searchQuery)
   }
 
   fun toggleCalendarMode() {
@@ -45,7 +37,7 @@ class ProgressMainViewModel @Inject constructor(
       CalendarMode.PRESENT_FUTURE -> CalendarMode.RECENTS
       CalendarMode.RECENTS -> CalendarMode.PRESENT_FUTURE
     }
-    _calendarModeLiveData.value = calendarMode
+    uiState = ProgressMainUiModel(calendarMode = calendarMode)
   }
 
   fun setWatchedEpisode(context: Context, bundle: EpisodeBundle) {
@@ -55,7 +47,7 @@ class ProgressMainViewModel @Inject constructor(
         return@launch
       }
       episodesCase.setEpisodeWatched(context, bundle)
-      loadProgress()
+      uiState = ProgressMainUiModel(timestamp = System.currentTimeMillis())
     }
   }
 }

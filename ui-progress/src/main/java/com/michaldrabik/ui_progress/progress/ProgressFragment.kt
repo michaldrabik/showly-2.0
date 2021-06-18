@@ -63,8 +63,10 @@ class ProgressFragment :
     setupRecycler()
     setupStatusBar()
 
-    parentViewModel.searchQueryLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
-    viewModel.run {
+    with(parentViewModel) {
+      uiLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
+    }
+    with(viewModel) {
       itemsLiveData.observe(viewLifecycleOwner, { render(it.first, it.second) })
       sortLiveData.observe(viewLifecycleOwner, { render(it) })
       messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })

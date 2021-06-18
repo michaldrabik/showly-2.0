@@ -19,9 +19,9 @@ import com.michaldrabik.ui_progress.calendar.cases.items.CalendarFutureCase
 import com.michaldrabik.ui_progress.calendar.cases.items.CalendarRecentsCase
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
+import com.michaldrabik.ui_progress.main.ProgressMainUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,28 +33,32 @@ class CalendarViewModel @Inject constructor(
   private val translationsRepository: TranslationsRepository,
 ) : BaseViewModel<CalendarUiModel>() {
 
-  var isQuickRateEnabled = false
-
   private val language by lazy { translationsRepository.getLanguage() }
   private var mode = CalendarMode.PRESENT_FUTURE
   private var searchQuery = ""
+  private var timestamp = 0L
+  var isQuickRateEnabled = false
 
   private val _itemsLiveData = MutableLiveData<Pair<CalendarMode, List<CalendarListItem>>>()
   val itemsLiveData: LiveData<Pair<CalendarMode, List<CalendarListItem>>> get() = _itemsLiveData
 
-  fun handleParentAction(calendarMode: CalendarMode) {
-    this.mode = calendarMode
-    loadItems(searchQuery)
+  fun handleParentAction(model: ProgressMainUiModel) {
+    if (this.timestamp != model.timestamp) {
+      this.timestamp = model.timestamp ?: 0L
+      loadItems()
+    }
+    if (this.mode != model.calendarMode) {
+      this.mode = model.calendarMode ?: CalendarMode.PRESENT_FUTURE
+      loadItems()
+    }
+    if (this.searchQuery != model.searchQuery) {
+      this.searchQuery = model.searchQuery ?: ""
+      loadItems()
+    }
   }
 
-  fun handleParentAction(searchQuery: String) {
-    this.searchQuery = searchQuery
-    loadItems(searchQuery)
-  }
-
-  private fun loadItems(searchQuery: String = "") {
+  private fun loadItems() {
     viewModelScope.launch {
-      Timber.d(Thread.currentThread().toString())
       val items = when (mode) {
         CalendarMode.PRESENT_FUTURE -> futureCase.loadItems(searchQuery)
         CalendarMode.RECENTS -> recentsCase.loadItems(searchQuery)

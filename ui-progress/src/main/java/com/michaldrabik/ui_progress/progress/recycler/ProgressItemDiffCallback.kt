@@ -33,7 +33,7 @@ class ProgressItemDiffCallback : DiffUtil.ItemCallback<ProgressListItem>() {
     oldItem.textResId == newItem.textResId
 
   private fun areContentsTheSame(oldItem: ProgressListItem.Episode, newItem: ProgressListItem.Episode) =
-    oldItem.show == newItem.show &&
+    oldItem.show.traktId == newItem.show.traktId &&
       oldItem.episode == newItem.episode &&
       oldItem.season == newItem.season &&
       oldItem.image == newItem.image &&
@@ -45,5 +45,5 @@ class ProgressItemDiffCallback : DiffUtil.ItemCallback<ProgressListItem>() {
       oldItem.isPinned == newItem.isPinned
 
   private fun areContentsTheSame(oldItem: ProgressListItem.Header, newItem: ProgressListItem.Header) =
-    oldItem == newItem
+    oldItem.textResId== newItem.textResId
 }
