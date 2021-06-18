@@ -30,7 +30,6 @@ import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 import com.michaldrabik.ui_model.Episode.Companion as EpisodeUi
-import com.michaldrabik.ui_model.Season.Companion as SeasonUi
 
 @Suppress("UNCHECKED_CAST")
 @Singleton
@@ -44,6 +43,10 @@ class ProgressItemsCase @Inject constructor(
   private val pinnedItemsRepository: PinnedItemsRepository,
   private val dateFormatProvider: DateFormatProvider,
 ) {
+
+  companion object {
+    private const val UPCOMING_MONTHS_LIMIT = 3L
+  }
 
   suspend fun loadItems(searchQuery: String): List<ProgressListItem> = withContext(Dispatchers.IO) {
     val settings = settingsRepository.load()
@@ -73,23 +76,27 @@ class ProgressItemsCase @Inject constructor(
         val unwatchedEpisodes = filteredEpisodes.filter { !it.isWatched }
         val unwatchedAiredEpisodes = airedEpisodes.filter { !it.isWatched }
 
-        val nextEpisode = unwatchedEpisodes
+        val nextEpisode = unwatchedAiredEpisodes
           .filter { it.firstAired != null }
           .sortedWith(compareBy<Episode> { it.seasonNumber }.thenBy { it.episodeNumber })
           .firstOrNull()
 
-        val upcomingEpisode = unwatchedEpisodes
-          .filter { it.firstAired != null }
-          .sortedBy { it.firstAired }
-          .firstOrNull {
-            val now = nowUtc.toLocalZone()
-            val airtime = it.firstAired!!.toLocalZone()
-            airtime.truncatedTo(ChronoUnit.DAYS) >= now.truncatedTo(ChronoUnit.DAYS)
-          }
+        var upcomingEpisode: Episode? = null
+        if (nextEpisode == null) {
+          upcomingEpisode = unwatchedEpisodes
+            .filter { it.firstAired != null }
+            .sortedBy { it.firstAired }
+            .firstOrNull {
+              val now = nowUtc.toLocalZone().truncatedTo(ChronoUnit.DAYS)
+              val limit = now.plusMonths(UPCOMING_MONTHS_LIMIT)
+              val airtime = it.firstAired!!.toLocalZone().truncatedTo(ChronoUnit.DAYS)
+              airtime.isBefore(limit) && airtime >= now
+            }
+        }
 
-        val isUpcoming = nextEpisode == null
+        val isUpcoming = upcomingEpisode != null
         val episodeUi = nextEpisode?.let { mappers.episode.fromDatabase(it) }
-        val seasonUi = nextEpisode?.let { findSeason(filteredSeasons, it, episodes) }
+        val seasonUi = nextEpisode?.let { findSeason(filteredSeasons, it, filteredEpisodes) }
         val upcomingEpisodeUi = upcomingEpisode?.let { mappers.episode.fromDatabase(it) }
         val upcomingSeasonUi = upcomingEpisode?.let { findSeason(filteredSeasons, it, filteredEpisodes) }
 
@@ -145,14 +152,12 @@ class ProgressItemsCase @Inject constructor(
         it.translations?.episode?.title?.contains(query, true) == true
     }
 
-  fun prepareItems(
+  private fun prepareItems(
     input: List<ProgressListItem.Episode>,
     sortOrder: SortOrder,
   ): List<ProgressListItem> {
     val pinnedItems = input.filter { it.isPinned }
-
-    val groupedItems = input
-      .groupBy { it.episode?.hasAired(it.season ?: SeasonUi.EMPTY) }
+    val groupedItems = input.groupBy { !it.isUpcoming }
 
     val aired = ((groupedItems[true] ?: emptyList()) - pinnedItems)
       .sortedWith(
@@ -171,7 +176,7 @@ class ProgressItemsCase @Inject constructor(
       )
 
     val upcoming = ((groupedItems[false] ?: emptyList()) - pinnedItems)
-      .sortedBy { it.episode?.firstAired?.toInstant()?.toEpochMilli() }
+      .sortedBy { it.episode?.firstAired?.toMillis() }
 
     return when {
       upcoming.isEmpty() -> (pinnedItems + aired)
