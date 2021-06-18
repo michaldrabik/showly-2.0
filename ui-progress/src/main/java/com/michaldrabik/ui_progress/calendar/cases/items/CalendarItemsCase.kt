@@ -87,8 +87,7 @@ abstract class CalendarItemsCase constructor(
 
   private fun filterByQuery(query: String, items: List<CalendarListItem.Episode>) =
     items.filter {
-      if (query.isBlank()) true
-      else it.show.title.contains(query, true) ||
+      it.show.title.contains(query, true) ||
         it.episode.title.contains(query, true) ||
         it.translations?.show?.title?.contains(query, true) == true ||
         it.translations?.episode?.title?.contains(query, true) == true
