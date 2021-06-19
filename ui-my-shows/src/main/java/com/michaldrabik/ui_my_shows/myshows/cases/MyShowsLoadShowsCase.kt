@@ -99,7 +99,7 @@ class MyShowsLoadShowsCase @Inject constructor(
         val translatedTitle = if (it.translation?.hasTitle == false) null else it.translation?.title
         translatedTitle ?: it.show.titleNoThe
       }
-      NEWEST -> shows.sortedByDescending { it.show.year }
+      NEWEST -> shows.sortedWith(compareByDescending<MyShowsItem> { it.show.firstAired }.thenByDescending { it.show.year })
       RATING -> shows.sortedByDescending { it.show.rating }
       DATE_ADDED -> shows.sortedByDescending { it.show.createdAt }
       else -> error("Should not be used here.")
