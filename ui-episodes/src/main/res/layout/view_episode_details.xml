@@ -97,7 +97,7 @@
         android:layout_marginBottom="@dimen/spaceTiny"
         android:overScrollMode="never"
         android:translationX="-7dp"
-        android:visibility="gone"
+        android:visibility="invisible"
         tools:visibility="visible"
         />
 

@@ -29,7 +29,7 @@ class ProgressMoviesMainViewModel @Inject constructor(
   private val userTraktManager: UserTraktManager,
   private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
-  private val translationsRepository: TranslationsRepository
+  private val translationsRepository: TranslationsRepository,
 ) : BaseViewModel<ProgressMoviesMainUiModel>() {
 
   private val language by lazy { translationsRepository.getLanguage() }

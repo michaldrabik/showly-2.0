@@ -60,10 +60,15 @@
   <string name="textTomorrow">Tomorrow</string>
   <string name="textThisWeek">This Week</string>
   <string name="textNextWeek">Next Week</string>
+  <string name="textThisMonth">This Month</string>
   <string name="textNextMonth">Next Month</string>
   <string name="textThisYear">This Year</string>
   <string name="textNextYear">Next Year</string>
   <string name="textLater">Later</string>
+  <string name="textYesterday">Yesterday</string>
+  <string name="textLast7Days">Last 7 Days</string>
+  <string name="textLast30Days">Last 30 Days</string>
+  <string name="textLast90Days">Last 90 Days</string>
 
   <string name="textNewEpisodeAvailable">New episode is available now!</string>
   <string name="textNewEpisodeAvailableSoon">New episode will be available soon!</string>

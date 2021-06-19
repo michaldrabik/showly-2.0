@@ -44,7 +44,7 @@ class MyShowsLoadShowsCase @Inject constructor(
   suspend fun loadSeasonsForShows(traktIds: List<Long>, buffer: MutableList<Season> = mutableListOf()): List<Season> {
     val batch = traktIds.take(500)
     if (batch.isEmpty()) return buffer
-    val seasons = database.seasonsDao().getAllForShows(batch)
+    val seasons = database.seasonsDao().getAllByShowsIds(batch)
       .filter { it.seasonNumber != 0 }
     buffer.addAll(seasons)
     return loadSeasonsForShows(traktIds.filter { it !in batch }, buffer)

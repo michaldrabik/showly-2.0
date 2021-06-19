@@ -13,31 +13,24 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.repository.SettingsRepository
-import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.ImageStatus
-import com.michaldrabik.ui_model.ImageType
-import com.michaldrabik.ui_progress.ProgressItem
-import com.michaldrabik.ui_progress.calendar.cases.ProgressCalendarCase
-import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
+import com.michaldrabik.ui_progress.calendar.cases.items.CalendarFutureCase
+import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_SHOW_ID
 import com.michaldrabik.ui_widgets.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 import java.util.Locale
 
 class CalendarWidgetViewsFactory(
   private val context: Context,
-  private val loadItemsCase: ProgressLoadItemsCase,
-  private val calendarCase: ProgressCalendarCase,
-  private val imagesProvider: ShowImagesProvider,
+  private val calendarCase: CalendarFutureCase,
   private val settingsRepository: SettingsRepository,
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
@@ -46,46 +39,27 @@ class CalendarWidgetViewsFactory(
   private val imageCorner by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
   private val imageWidth by lazy { context.dimenToPx(R.dimen.widgetImageWidth) }
   private val imageHeight by lazy { context.dimenToPx(R.dimen.widgetImageHeight) }
-  private val adapterItems by lazy { mutableListOf<ProgressItem>() }
-
-  private fun loadData() {
-    runBlocking {
-      val shows = loadItemsCase.loadMyShows()
-      val dateFormat = loadItemsCase.loadDateFormat()
-      val progressType = settingsRepository.progressPercentType
-      val items = shows.map { show ->
-        async {
-          val item = loadItemsCase.loadProgressItem(show, progressType)
-          try {
-            val image = imagesProvider.loadRemoteImage(show, ImageType.POSTER)
-            item.copy(image = image, dateFormat = dateFormat)
-          } catch (error: Throwable) {
-            item
-          }
-        }
-      }.awaitAll()
-
-      val groupedItems = calendarCase.prepareItems(items)
-      adapterItems.replace(groupedItems)
-    }
-  }
+  private val adapterItems by lazy { mutableListOf<CalendarListItem>() }
 
   override fun onCreate() = loadData()
 
-  override fun getViewAt(position: Int): RemoteViews {
-    val item = adapterItems[position]
-    return when {
-      item.isHeader() -> createHeaderRemoteView(item)
-      else -> createItemRemoteView(item)
-    }
+  private fun loadData() = runBlocking {
+    val items = calendarCase.loadItems("")
+    adapterItems.replace(items)
   }
 
-  private fun createHeaderRemoteView(item: ProgressItem) =
-    RemoteViews(context.packageName, getHeaderLayout()).apply {
-      setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.headerTextResId!!))
+  override fun getViewAt(position: Int) =
+    when (val item = adapterItems[position]) {
+      is CalendarListItem.Episode -> createItemRemoteView(item)
+      is CalendarListItem.Header -> createHeaderRemoteView(item)
     }
 
-  private fun createItemRemoteView(item: ProgressItem): RemoteViews {
+  private fun createHeaderRemoteView(item: CalendarListItem.Header) =
+    RemoteViews(context.packageName, getHeaderLayout()).apply {
+      setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.textResId))
+    }
+
+  private fun createItemRemoteView(item: CalendarListItem.Episode): RemoteViews {
     val translatedTitle = item.translations?.show?.title
     val title =
       if (translatedTitle?.isBlank() == false) translatedTitle
@@ -94,17 +68,17 @@ class CalendarWidgetViewsFactory(
     val episodeBadgeText = String.format(
       Locale.ENGLISH,
       context.getString(R.string.textSeasonEpisode),
-      item.upcomingEpisode.season,
-      item.upcomingEpisode.number
+      item.episode.season,
+      item.episode.number
     )
 
     val episodeTitle = when {
-      item.upcomingEpisode.title.isBlank() -> context.getString(R.string.textTba)
-      item.translations?.upcomingEpisode?.title?.isBlank() == false -> item.translations?.upcomingEpisode?.title
-      else -> item.upcomingEpisode.title
+      item.episode.title.isBlank() -> context.getString(R.string.textTba)
+      item.translations?.episode?.title?.isBlank() == false -> item.translations?.episode?.title
+      else -> item.episode.title
     }
 
-    val date = item.upcomingEpisode.firstAired?.toLocalZone()?.let { item.dateFormat?.format(it)?.capitalizeWords() }
+    val date = item.episode.firstAired?.toLocalZone()?.let { item.dateFormat?.format(it)?.capitalizeWords() }
 
     val remoteView = RemoteViews(context.packageName, getItemLayout()).apply {
       setTextViewText(R.id.calendarWidgetItemTitle, title)

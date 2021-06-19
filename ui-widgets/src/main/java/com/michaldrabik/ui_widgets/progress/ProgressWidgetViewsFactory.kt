@@ -12,16 +12,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.repository.SettingsRepository
-import com.michaldrabik.repository.shows.ShowsRepository
-import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.DurationPrinter
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.ImageStatus
-import com.michaldrabik.ui_model.ImageType.POSTER
-import com.michaldrabik.ui_progress.ProgressItem
-import com.michaldrabik.ui_progress.main.cases.ProgressLoadItemsCase
-import com.michaldrabik.ui_progress.main.cases.ProgressSortOrderCase
+import com.michaldrabik.ui_model.Season
+import com.michaldrabik.ui_progress.progress.cases.ProgressItemsCase
+import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_SHOW_ID
 import com.michaldrabik.ui_widgets.R
 import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider.Companion.EXTRA_EPISODE_ID
@@ -29,8 +26,6 @@ import com.michaldrabik.ui_widgets.progress.ProgressWidgetProvider.Companion.EXT
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 import java.util.Locale.ENGLISH
@@ -38,10 +33,7 @@ import kotlin.math.roundToInt
 
 class ProgressWidgetViewsFactory(
   private val context: Context,
-  private val loadItemsCase: ProgressLoadItemsCase,
-  private val sortOrderCase: ProgressSortOrderCase,
-  private val showsRepository: ShowsRepository,
-  private val imagesProvider: ShowImagesProvider,
+  private val itemsCase: ProgressItemsCase,
   private val settingsRepository: SettingsRepository,
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
@@ -50,67 +42,40 @@ class ProgressWidgetViewsFactory(
   private val imageCorner by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
   private val imageWidth by lazy { context.dimenToPx(R.dimen.widgetImageWidth) }
   private val imageHeight by lazy { context.dimenToPx(R.dimen.widgetImageHeight) }
-  private val adapterItems by lazy { mutableListOf<ProgressItem>() }
+  private val adapterItems by lazy { mutableListOf<ProgressListItem>() }
   private val durationPrinter by lazy { DurationPrinter(context.applicationContext) }
 
-  private fun loadData() {
-    runBlocking {
-      val shows = showsRepository.myShows.loadAll()
-      val progressType = settingsRepository.progressPercentType
-      val items = shows.map { show ->
-        async {
-          val item = loadItemsCase.loadProgressItem(show, progressType)
-          try {
-            val image = imagesProvider.loadRemoteImage(show, POSTER)
-            item.copy(image = image)
-          } catch (error: Throwable) {
-            item
-          }
-        }
-      }.awaitAll()
-
-      val upcomingEnabled = settingsRepository.load().progressUpcomingEnabled
-      val sortOrder = sortOrderCase.loadSortOrder()
-      val allItems = loadItemsCase.prepareItems(items, "", sortOrder, upcomingEnabled).toMutableList()
-
-      val headerIndex = allItems.indexOfFirst { !it.isHeader() && !it.episode.hasAired(it.season) }
-      if (headerIndex != -1) {
-        val item = allItems[headerIndex]
-        allItems.add(headerIndex, item.copy(headerTextResId = R.string.textWatchlistIncoming))
-      }
-
-      adapterItems.replace(allItems)
-    }
+  private fun loadData() = runBlocking {
+    val items = itemsCase.loadItems("")
+    adapterItems.replace(items)
   }
 
   override fun onCreate() = loadData()
 
-  override fun getViewAt(position: Int): RemoteViews {
-    val item = adapterItems[position]
-    return when {
-      item.isHeader() -> createHeaderRemoteView(item)
-      else -> createItemRemoteView(item)
+  override fun getViewAt(position: Int) =
+    when (val item = adapterItems[position]) {
+      is ProgressListItem.Episode -> createItemRemoteView(item)
+      is ProgressListItem.Header -> createHeaderRemoteView(item)
     }
-  }
 
-  private fun createItemRemoteView(item: ProgressItem): RemoteViews {
+  private fun createItemRemoteView(item: ProgressListItem.Episode): RemoteViews {
     val title =
       if (item.translations?.show?.title?.isBlank() == false) item.translations?.show?.title
       else item.show.title
-    val subtitle = String.format(ENGLISH, "S.%02d E.%02d", item.episode.season, item.episode.number)
+    val subtitle = String.format(ENGLISH, "S.%02d E.%02d", item.episode?.season, item.episode?.number)
 
     var percent = 0
-    if (item.episodesCount != 0) {
-      percent = ((item.watchedEpisodesCount.toFloat() / item.episodesCount.toFloat()) * 100F).roundToInt()
+    if (item.totalCount != 0) {
+      percent = ((item.watchedCount.toFloat() / item.totalCount.toFloat()) * 100F).roundToInt()
     }
     val progressText =
-      String.format(ENGLISH, "%d/%d (%d%%)", item.watchedEpisodesCount, item.episodesCount, percent)
+      String.format(ENGLISH, "%d/%d (%d%%)", item.watchedCount, item.totalCount, percent)
     val imageUrl = item.image.fullFileUrl
-    val hasAired = item.episode.hasAired(item.season)
+    val hasAired = item.episode?.hasAired(item.season ?: Season.EMPTY) == true
     val subtitle2 = when {
-      item.episode.title.isBlank() -> context.getString(R.string.textTba)
+      item.episode?.title?.isBlank() == true -> context.getString(R.string.textTba)
       item.translations?.episode?.title?.isBlank() == false -> item.translations?.episode?.title ?: context.getString(R.string.textTba)
-      else -> item.episode.title
+      else -> item.episode?.title
     }
 
     val remoteView = RemoteViews(context.packageName, getItemLayout()).apply {
@@ -119,14 +84,14 @@ class ProgressWidgetViewsFactory(
       setTextViewText(R.id.progressWidgetItemSubtitle2, subtitle2)
       setTextViewText(R.id.progressWidgetItemProgressText, progressText)
       setViewVisibility(R.id.progressWidgetItemBadge, if (item.isNew()) VISIBLE else GONE)
-      setProgressBar(R.id.progressWidgetItemProgress, item.episodesCount, item.watchedEpisodesCount, false)
+      setProgressBar(R.id.progressWidgetItemProgress, item.totalCount, item.watchedCount, false)
       if (hasAired) {
         setViewVisibility(R.id.progressWidgetItemCheckButton, VISIBLE)
         setViewVisibility(R.id.progressWidgetItemDateButton, GONE)
       } else {
         setViewVisibility(R.id.progressWidgetItemCheckButton, GONE)
         setViewVisibility(R.id.progressWidgetItemDateButton, VISIBLE)
-        setTextViewText(R.id.progressWidgetItemDateButton, durationPrinter.print(item.episode.firstAired))
+        setTextViewText(R.id.progressWidgetItemDateButton, durationPrinter.print(item.episode?.firstAired))
       }
 
       val fillIntent = Intent().apply {
@@ -141,8 +106,8 @@ class ProgressWidgetViewsFactory(
       val checkFillIntent = Intent().apply {
         putExtras(
           Bundle().apply {
-            putExtra(EXTRA_EPISODE_ID, item.episode.ids.trakt.id)
-            putExtra(EXTRA_SEASON_ID, item.season.ids.trakt.id)
+            putExtra(EXTRA_EPISODE_ID, item.episode?.ids?.trakt?.id)
+            putExtra(EXTRA_SEASON_ID, item.season?.ids?.trakt?.id)
             putExtra(EXTRA_SHOW_ID, item.show.traktId)
           }
         )
@@ -177,9 +142,9 @@ class ProgressWidgetViewsFactory(
     return remoteView
   }
 
-  private fun createHeaderRemoteView(item: ProgressItem) =
+  private fun createHeaderRemoteView(item: ProgressListItem.Header) =
     RemoteViews(context.packageName, getHeaderLayout()).apply {
-      setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.headerTextResId!!))
+      setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.textResId))
     }
 
   private fun getItemLayout(): Int {

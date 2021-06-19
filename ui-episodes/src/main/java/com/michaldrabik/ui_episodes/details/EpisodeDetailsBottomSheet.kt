@@ -33,6 +33,7 @@ import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.invisible
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.setTextFade
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
@@ -69,7 +70,6 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     const val ARG_ID_TRAKT = "ARG_ID_TRAKT"
     const val ARG_ID_TMDB = "ARG_ID_TMDB"
     const val ARG_EPISODE = "ARG_EPISODE"
-    const val ARG_SEASON_EPISODES = "ARG_SEASON_EPISODES"
     const val ARG_IS_WATCHED = "ARG_IS_WATCHED"
     const val ARG_SHOW_BUTTON = "ARG_SHOW_BUTTON"
   }
@@ -77,7 +77,6 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_ID_TRAKT)) }
   private val showTmdbId by lazy { IdTmdb(requireArguments().getLong(ARG_ID_TMDB)) }
   private val episode by lazy { requireArguments().getParcelable<Episode>(ARG_EPISODE)!! }
-  private val seasonEpisodes by lazy { requireArguments().getIntArray(ARG_SEASON_EPISODES) }
   private val isWatched by lazy { requireArguments().getBoolean(ARG_IS_WATCHED) }
   private val showButton by lazy { requireArguments().getBoolean(ARG_SHOW_BUTTON) }
 
@@ -101,6 +100,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it) })
       messageLiveData.observe(viewLifecycleOwner, { renderSnackbar(it) })
+      loadSeason(showTraktId, episode)
       loadTranslation(showTraktId, episode)
       loadImage(showTmdbId, episode)
       loadRatings(episode)
@@ -122,41 +122,13 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         }
       }
       episodeDetailsRatingLayout.visibleIf(episode.votes > 0)
+      episodeDetailsTabs.invisible()
       episodeDetailsRating.text = String.format(ENGLISH, getString(R.string.textVotes), episode.rating, episode.votes)
       episodeDetailsCommentsButton.text = String.format(ENGLISH, getString(R.string.textLoadCommentsCount), episode.commentCount)
       episodeDetailsCommentsButton.onClick {
         viewModel.loadComments(showTraktId, episode.season, episode.number)
       }
       episodeDetailsPostCommentButton.onClick { openPostCommentSheet() }
-      setupTabs(view)
-    }
-  }
-
-  private fun setupTabs(view: View) {
-    if (seasonEpisodes?.isNotEmpty() == true) {
-      with(episodeDetailsTabs) {
-        visible()
-        seasonEpisodes?.forEach {
-          addTab(
-            newTab()
-              .setText("${episode.season}x${it.toString().padStart(2, '0')}")
-              .setTag(it)
-          )
-        }
-        val index = seasonEpisodes?.indexOf(episode.number) ?: 0
-        view.post {
-          getTabAt(index)?.select()
-          addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-              closeSheet()
-              setFragmentResult(REQUEST_EPISODE_DETAILS, bundleOf(ACTION_EPISODE_TAB_SELECTED to tab?.tag))
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
-            override fun onTabReselected(tab: TabLayout.Tab?) = Unit
-          })
-        }
-      }
     }
   }
 
@@ -225,6 +197,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         episodeDetailsButtons.visibleIf(!it)
         episodeDetailsCommentsProgress.visibleIf(it)
       }
+      episodes?.let { renderEpisodes(it) }
       comments?.let { comments ->
         episodeDetailsComments.removeAllViews()
         comments.forEach {
@@ -286,6 +259,28 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     }
   }
 
+  private fun renderEpisodes(episodes: List<Episode>) {
+    with(episodeDetailsTabs) {
+      removeAllTabs()
+      removeOnTabSelectedListener(tabSelectedListener)
+      episodes.forEach {
+        addTab(
+          newTab()
+            .setText("${episode.season}x${it.number.toString().padStart(2, '0')}")
+            .setTag(it.number)
+        )
+      }
+      val index = episodes.indexOfFirst { it.number == episode.number }
+      // Small trick to avoid UI tab change flick
+      getTabAt(index)?.select()
+      post {
+        getTabAt(index)?.select()
+        addOnTabSelectedListener(tabSelectedListener)
+      }
+      visibleIf(episodes.isNotEmpty())
+    }
+  }
+
   private fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
@@ -303,5 +298,16 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
       .setPositiveButton(R.string.textYes) { _, _ -> viewModel.deleteComment(comment) }
       .setNegativeButton(R.string.textNo) { _, _ -> }
       .show()
+  }
+
+  private val tabSelectedListener = object : TabLayout.OnTabSelectedListener {
+    override fun onTabSelected(tab: TabLayout.Tab?) {
+      episodeDetailsTabs?.removeOnTabSelectedListener(this)
+      closeSheet()
+      setFragmentResult(REQUEST_EPISODE_DETAILS, bundleOf(ACTION_EPISODE_TAB_SELECTED to tab?.tag))
+    }
+
+    override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
+    override fun onTabReselected(tab: TabLayout.Tab?) = Unit
   }
 }

@@ -344,9 +344,7 @@ class MainActivity :
   private fun doForFragments(action: (Fragment) -> Unit) {
     findNavControl()?.currentDestination?.id?.let {
       val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
-      navHost?.childFragmentManager?.primaryNavigationFragment?.let {
-        action(it)
-      }
+      navHost?.childFragmentManager?.primaryNavigationFragment?.let { action(it) }
     }
   }
 

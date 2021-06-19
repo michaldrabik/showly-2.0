@@ -5,5 +5,4 @@ import com.michaldrabik.ui_model.Translation
 data class TranslationsBundle(
   val show: Translation? = null,
   val episode: Translation? = null,
-  val upcomingEpisode: Translation? = null,
 )

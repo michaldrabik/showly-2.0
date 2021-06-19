@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/progressMainRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
@@ -9,40 +9,62 @@
   android:clipToPadding="false"
   >
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/progressMainRecycler"
+  <androidx.viewpager.widget.ViewPager
+    android:id="@+id/progressMainPager"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
-    android:clipToPadding="false"
     android:overScrollMode="never"
-    android:paddingTop="@dimen/progressTabsViewPadding"
-    android:paddingBottom="@dimen/bottomNavigationHeightPadded"
-    android:visibility="gone"
-    tools:visibility="visible"
     />
 
-  <com.michaldrabik.ui_base.common.views.tips.TipView
-    android:id="@+id/progressMainTipItem"
-    android:layout_width="@dimen/tutorialTipSize"
-    android:layout_height="@dimen/tutorialTipSize"
-    android:layout_marginStart="110dp"
-    android:layout_marginTop="254dp"
-    android:visibility="gone"
-    />
-
-  <include
-    android:id="@+id/progressEmptyView"
-    layout="@layout/layout_progress_empty"
+  <com.michaldrabik.ui_base.common.views.ModeTabsView
+    android:id="@+id/progressMainPagerModeTabs"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginStart="@dimen/spaceBig"
-    android:layout_marginTop="@dimen/spaceHuge"
-    android:layout_marginEnd="@dimen/spaceBig"
-    android:layout_marginBottom="@dimen/bottomNavigationHeight"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/collectionTabsMargin"
+    />
+
+  <com.michaldrabik.ui_base.common.views.ScrollableTabLayout
+    android:id="@+id/progressMainTabs"
+    style="@style/ScrollableTabsStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="36dp"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/progressSearchViewPadding"
+    android:translationX="@dimen/progressTabsViewTranslation"
+    app:tabTextAppearance="@style/ScrollableTabTextStyle"
+    />
+
+  <com.michaldrabik.ui_base.common.views.ScrollableImageView
+    android:id="@+id/progressMainSortIcon"
+    android:layout_width="wrap_content"
+    android:layout_height="36dp"
+    android:layout_gravity="end"
+    android:layout_marginTop="@dimen/progressSearchViewPadding"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    app:srcCompat="@drawable/ic_sort"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
+  <com.michaldrabik.ui_base.common.views.ScrollableImageView
+    android:id="@+id/progressMainCalendarIcon"
+    android:layout_width="wrap_content"
+    android:layout_height="36dp"
+    android:layout_gravity="end"
+    android:layout_marginTop="@dimen/progressSearchViewPadding"
+    android:layout_marginEnd="@dimen/spaceMedium"
     android:visibility="gone"
-    tools:visibility="visible"
+    app:srcCompat="@drawable/ic_history"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
+  <com.michaldrabik.ui_base.common.views.SearchView
+    android:id="@+id/progressMainSearchView"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/searchViewHeight"
+    android:layout_marginLeft="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/spaceSmall"
+    android:layout_marginRight="@dimen/spaceMedium"
     />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

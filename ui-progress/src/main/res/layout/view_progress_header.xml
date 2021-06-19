@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  tools:parentTag="android.widget.FrameLayout"
+  >
+
+  <TextView
+    android:id="@+id/progressHeaderText"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/spaceMedium"
+    android:layout_marginBottom="@dimen/spaceNormal"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="@dimen/progressHeaderTextSize"
+    android:textStyle="bold"
+    tools:text="Coming Soon"
+    />
+
+</merge>
