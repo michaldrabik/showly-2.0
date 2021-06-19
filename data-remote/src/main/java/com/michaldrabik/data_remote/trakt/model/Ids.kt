@@ -6,5 +6,5 @@ data class Ids(
   val tvdb: Long?,
   val imdb: String?,
   val tmdb: Long?,
-  val tvrage: Long?
+  val tvrage: Long?,
 )

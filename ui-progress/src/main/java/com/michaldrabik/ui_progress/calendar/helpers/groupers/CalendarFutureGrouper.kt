@@ -58,13 +58,16 @@ class CalendarFutureGrouper @Inject constructor() : CalendarGrouper {
       }
     }
 
-    return itemsMap.entries.fold(mutableListOf(), { acc, entry ->
-      acc.apply {
-        if (entry.value.isNotEmpty()) {
-          add(CalendarListItem.Header.create(entry.key, CalendarMode.PRESENT_FUTURE))
-          addAll(entry.value)
+    return itemsMap.entries.fold(
+      mutableListOf(),
+      { acc, entry ->
+        acc.apply {
+          if (entry.value.isNotEmpty()) {
+            add(CalendarListItem.Header.create(entry.key, CalendarMode.PRESENT_FUTURE))
+            addAll(entry.value)
+          }
         }
       }
-    })
+    )
   }
 }

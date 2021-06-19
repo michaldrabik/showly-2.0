@@ -44,5 +44,5 @@ class ProgressItemDiffCallback : DiffUtil.ItemCallback<ProgressListItem>() {
       oldItem.isPinned == newItem.isPinned
 
   private fun areContentsTheSame(oldItem: ProgressListItem.Header, newItem: ProgressListItem.Header) =
-    oldItem.textResId== newItem.textResId
+    oldItem.textResId == newItem.textResId
 }

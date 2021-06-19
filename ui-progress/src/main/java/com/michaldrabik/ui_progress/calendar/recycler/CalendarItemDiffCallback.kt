@@ -34,7 +34,7 @@ class CalendarItemDiffCallback : DiffUtil.ItemCallback<CalendarListItem>() {
 
   private fun areContentsTheSame(oldItem: CalendarListItem.Episode, newItem: CalendarListItem.Episode) =
     oldItem.episode == newItem.episode &&
-    oldItem.season == newItem.season &&
+      oldItem.season == newItem.season &&
       oldItem.show == newItem.show &&
       oldItem.image == newItem.image &&
       oldItem.isLoading == newItem.isLoading &&

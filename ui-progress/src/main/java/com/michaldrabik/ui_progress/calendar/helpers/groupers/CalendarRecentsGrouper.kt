@@ -40,13 +40,16 @@ class CalendarRecentsGrouper @Inject constructor() : CalendarGrouper {
         put(R.string.textLast90Days, last90Days)
       }
 
-    return itemsMap.entries.fold(mutableListOf(), { acc, entry ->
-      acc.apply {
-        if (entry.value.isNotEmpty()) {
-          add(CalendarListItem.Header.create(entry.key, CalendarMode.RECENTS))
-          addAll(entry.value)
+    return itemsMap.entries.fold(
+      mutableListOf(),
+      { acc, entry ->
+        acc.apply {
+          if (entry.value.isNotEmpty()) {
+            add(CalendarListItem.Header.create(entry.key, CalendarMode.RECENTS))
+            addAll(entry.value)
+          }
         }
       }
-    })
+    )
   }
 }
