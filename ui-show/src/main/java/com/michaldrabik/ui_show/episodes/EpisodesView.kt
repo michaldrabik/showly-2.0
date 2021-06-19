@@ -86,8 +86,8 @@ class EpisodesView : ConstraintLayout {
     }
   }
 
-  fun selectEpisode(episodeNumber: Int) {
-    val item = episodes.find { it.episode.number == episodeNumber }
+  fun selectEpisode(episode: Episode) {
+    val item = episodes.find { it.episode.number == episode.number }
     if (item != null) {
       itemClickListener.invoke(show, item.episode, season, item.isWatched)
     }

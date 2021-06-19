@@ -220,8 +220,7 @@ class ProgressMainFragment :
     setFragmentResultListener(REQUEST_EPISODE_DETAILS) { _, bundle ->
       when {
         bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
-          val episodeNumber = bundle.getInt(ACTION_EPISODE_TAB_SELECTED)
-          val selectedEpisode = season.episodes.first { it.number == episodeNumber }
+          val selectedEpisode = bundle.getParcelable<Episode>(ACTION_EPISODE_TAB_SELECTED)!!
           openEpisodeDetails(show, selectedEpisode, season)
         }
       }

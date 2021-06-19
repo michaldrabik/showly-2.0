@@ -371,8 +371,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
             viewModel.setWatchedEpisode(requireAppContext(), episode, season, watched)
           }
           bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
-            val episodeNumber = bundle.getInt(ACTION_EPISODE_TAB_SELECTED)
-            showDetailsEpisodesView.selectEpisode(episodeNumber)
+            val selectedEpisode = bundle.getParcelable<Episode>(ACTION_EPISODE_TAB_SELECTED)!!
+            showDetailsEpisodesView.selectEpisode(selectedEpisode)
           }
         }
       }

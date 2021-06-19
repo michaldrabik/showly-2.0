@@ -22,6 +22,7 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.TraktRating
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
@@ -57,6 +58,7 @@ class EpisodeDetailsViewModel @Inject constructor(
   fun loadSeason(showTraktId: IdTrakt, episode: Episode) {
     viewModelScope.launch {
       val episodes = seasonsCase.loadSeason(showTraktId, episode)
+      delay(100)
       uiState = EpisodeDetailsUiModel(episodes = episodes)
     }
   }

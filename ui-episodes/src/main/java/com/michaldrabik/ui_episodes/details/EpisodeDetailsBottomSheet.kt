@@ -267,7 +267,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         addTab(
           newTab()
             .setText("${episode.season}x${it.number.toString().padStart(2, '0')}")
-            .setTag(it.number)
+            .setTag(it)
         )
       }
       val index = episodes.indexOfFirst { it.number == episode.number }
@@ -277,7 +277,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         getTabAt(index)?.select()
         addOnTabSelectedListener(tabSelectedListener)
       }
-      visibleIf(episodes.isNotEmpty())
+      fadeIf(episodes.isNotEmpty(), startDelay = 100)
     }
   }
 
