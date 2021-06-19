@@ -75,7 +75,8 @@ class MainActivity :
 
   private val viewModel by viewModels<MainViewModel>()
 
-  private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
+  private val navigationHeightPad by lazy { dimenToPx(R.dimen.bottomNavigationHeightPadded) }
+  private val navigationHeight by lazy { dimenToPx(R.dimen.bottomNavigationHeight) }
   private val decelerateInterpolator by lazy { DecelerateInterpolator(2F) }
   private val tips by lazy {
     mapOf(
@@ -208,8 +209,9 @@ class MainActivity :
       isClickable = false
     }
     tips.values.forEach { it.gone() }
+    snackbarHost.translationY = navigationHeight.toFloat()
     bottomNavigationWrapper.animate()
-      .translationYBy(navigationHeight.toFloat())
+      .translationYBy(navigationHeightPad.toFloat())
       .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
       .setInterpolator(decelerateInterpolator)
       .start()
@@ -221,6 +223,7 @@ class MainActivity :
       isClickable = true
     }
     tips.entries.forEach { (tip, view) -> view.visibleIf(!isTipShown(tip)) }
+    snackbarHost.translationY = 0F
     bottomNavigationWrapper.animate()
       .translationY(0F)
       .setDuration(if (animate) NAVIGATION_TRANSITION_DURATION_MS else 0)
@@ -440,6 +443,5 @@ class MainActivity :
 
   override fun findNavControl() = findNavHostFragment()?.findNavController()
 
-  override fun provideSnackbarLayout(): ViewGroup =
-    if (bottomNavigationWrapper.translationY == 0F) snackbarHost else rootLayout
+  override fun provideSnackbarLayout(): ViewGroup = snackbarHost
 }
