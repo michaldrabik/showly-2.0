@@ -7,6 +7,7 @@ import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import com.michaldrabik.common.extensions.dateFromMillis
+import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcDay
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
@@ -59,7 +60,8 @@ class AnnouncementManager @Inject constructor(
   suspend fun refreshShowsAnnouncements(context: Context) {
     Timber.i("Refreshing shows announcements")
 
-    val now = nowUtcMillis()
+    val now = nowUtc()
+    val limit = now.plusMonths(6)
     WorkManager.getInstance(context.applicationContext).cancelAllWorkByTag(ANNOUNCEMENT_WORK_TAG)
 
     val settings = settingsRepository.load()
@@ -77,14 +79,10 @@ class AnnouncementManager @Inject constructor(
     val delay = settings.episodesNotificationsDelay
     myShows.forEach { show ->
       Timber.i("Processing ${show.title} (${show.idTrakt})")
-      val episodes = database.episodesDao().getAllByShowId(show.idTrakt)
-      episodes
-        .filter { it.seasonNumber != 0 && !it.isWatched }
-        .filter { it.firstAired != null && (it.firstAired!!.toMillis() + delay.delayMs) > now }
-        .minByOrNull { it.firstAired!!.toMillis() }
-        ?.let {
-          scheduleAnnouncement(context.applicationContext, show, it, delay)
-        }
+      val episode = database.episodesDao().getFirstUnwatched(show.idTrakt, now.toMillis(), limit.toMillis() + delay.delayMs)
+      episode?.let {
+        scheduleAnnouncement(context.applicationContext, show, it, delay)
+      }
     }
   }
 

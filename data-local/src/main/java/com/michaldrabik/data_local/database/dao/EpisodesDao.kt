@@ -30,6 +30,9 @@ interface EpisodesDao : BaseDao<Episode> {
   @Query("SELECT * from episodes where id_show_trakt = :showTraktId AND is_watched = 0 AND season_number != 0 AND first_aired > 0 AND first_aired <= :toTime ORDER BY season_number ASC, episode_number ASC LIMIT 1")
   suspend fun getFirstUnwatched(showTraktId: Long, toTime: Long): Episode?
 
+  @Query("SELECT * from episodes where id_show_trakt = :showTraktId AND is_watched = 0 AND season_number != 0 AND first_aired > :fromTime AND first_aired <= :toTime ORDER BY season_number ASC, episode_number ASC LIMIT 1")
+  suspend fun getFirstUnwatched(showTraktId: Long, fromTime: Long, toTime: Long): Episode?
+
   @Query("SELECT COUNT(id_trakt) FROM episodes WHERE id_show_trakt = :showTraktId AND first_aired < :fromTime AND season_number != 0")
   suspend fun getTotalCount(showTraktId: Long, fromTime: Long): Int
 
