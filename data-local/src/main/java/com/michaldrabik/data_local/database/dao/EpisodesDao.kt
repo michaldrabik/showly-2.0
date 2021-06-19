@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
+import androidx.room.Transaction
 import com.michaldrabik.data_local.database.model.Episode
 
 @Dao
@@ -11,6 +12,12 @@ interface EpisodesDao : BaseDao<Episode> {
 
   @Insert(onConflict = REPLACE)
   suspend fun upsert(episodes: List<Episode>)
+
+  @Transaction
+  suspend fun upsertChunked(items: List<Episode>) {
+    val chunks = items.chunked(500)
+    chunks.forEach { chunk -> upsert(chunk) }
+  }
 
   @Query("SELECT * FROM episodes WHERE id_season = :seasonTraktId")
   suspend fun getAllForSeason(seasonTraktId: Long): List<Episode>

@@ -13,6 +13,9 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.SeasonBundle
 import com.michaldrabik.ui_model.Show
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -145,44 +148,53 @@ class EpisodesManager @Inject constructor(
     }
   }
 
+  @Suppress("UNCHECKED_CAST")
   suspend fun invalidateSeasons(show: Show, newSeasons: List<Season>) {
-    if (newSeasons.isEmpty()) return
-
-    val localSeasons = database.seasonsDao().getAllByShowId(show.traktId)
-    val localEpisodes = database.episodesDao().getAllByShowId(show.traktId)
-
-    val seasonsToAdd = mutableListOf<SeasonDb>()
-    val episodesToAdd = mutableListOf<EpisodeDb>()
-
-    newSeasons.forEach { newSeason ->
-      val localSeason = localSeasons.find { it.seasonNumber == newSeason.number }
-      val seasonDb = mappers.season.toDatabase(
-        newSeason,
-        show.ids.trakt,
-        localSeason?.isWatched ?: false
+    if (newSeasons.isEmpty()) {
+      return
+    }
+    coroutineScope {
+      val (localSeasons, localEpisodes) = awaitAll(
+        async { database.seasonsDao().getAllByShowId(show.traktId) },
+        async { database.episodesDao().getAllByShowId(show.traktId) }
       )
-      seasonsToAdd.add(seasonDb)
+      localSeasons as List<SeasonDb>
+      localEpisodes as List<EpisodeDb>
 
-      newSeason.episodes.forEach { newEpisode ->
-        val localEpisode = localEpisodes.find { it.episodeNumber == newEpisode.number && it.seasonNumber == newEpisode.season }
-        val episodeDb = mappers.episode.toDatabase(
-          newEpisode,
+      val seasonsToAdd = mutableListOf<SeasonDb>()
+      val episodesToAdd = mutableListOf<EpisodeDb>()
+
+      newSeasons.forEach { newSeason ->
+        val localSeason = localSeasons.find { it.seasonNumber == newSeason.number }
+        val seasonDb = mappers.season.toDatabase(
           newSeason,
           show.ids.trakt,
-          localEpisode?.isWatched ?: false
+          localSeason?.isWatched ?: false
         )
-        episodesToAdd.add(episodeDb)
+        seasonsToAdd.add(seasonDb)
+
+        newSeason.episodes.forEach { newEpisode ->
+          val localEpisode = localEpisodes.find { it.episodeNumber == newEpisode.number && it.seasonNumber == newEpisode.season }
+          val episodeDb = mappers.episode.toDatabase(
+            newEpisode,
+            newSeason,
+            show.ids.trakt,
+            localEpisode?.isWatched ?: false
+          )
+          episodesToAdd.add(episodeDb)
+        }
       }
-    }
 
-    database.runTransaction {
-      episodesDao().deleteAllForShow(show.traktId)
-      seasonsDao().deleteAllForShow(show.traktId)
+      database.runTransaction {
+        episodesDao().deleteAllForShow(show.traktId)
+        seasonsDao().deleteAllForShow(show.traktId)
 
-      seasonsDao().upsert(seasonsToAdd)
-      episodesDao().upsert(episodesToAdd)
+        seasonsDao().upsert(seasonsToAdd)
+        episodesDao().upsertChunked(episodesToAdd)
 
-      episodesSyncLogDao().upsert(EpisodesSyncLog(show.traktId, nowUtcMillis()))
+        episodesSyncLogDao().upsert(EpisodesSyncLog(show.traktId, nowUtcMillis()))
+      }
+
       Timber.d("Episodes updated: ${episodesToAdd.size} Seasons updated: ${seasonsToAdd.size}")
     }
   }
