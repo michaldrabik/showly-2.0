@@ -37,9 +37,10 @@ abstract class CalendarItemsCase constructor(
   abstract fun sortEpisodes(): Comparator<Episode>
   abstract fun isWatched(episode: Episode): Boolean
 
-  suspend fun loadItems(searchQuery: String): List<CalendarListItem> = withContext(Dispatchers.IO) {
+  suspend fun loadItems(searchQuery: String): List<CalendarListItem> = withContext(Dispatchers.Default) {
     val now = nowUtc().toLocalZone()
     val language = translationsRepository.getLanguage()
+    val dateFormat = dateFormatProvider.loadFullHourFormat()
 
     val shows = showsRepository.myShows.loadAll()
     val showsIds = shows.map { it.traktId }
@@ -76,7 +77,7 @@ abstract class CalendarItemsCase constructor(
             episode = episodeUi,
             season = seasonUi,
             isWatched = isWatched(episode),
-            dateFormat = dateFormatProvider.loadFullHourFormat(),
+            dateFormat = dateFormat,
             translations = translations
           )
         }
