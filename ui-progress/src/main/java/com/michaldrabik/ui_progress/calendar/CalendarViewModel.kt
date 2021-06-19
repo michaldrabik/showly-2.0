@@ -35,7 +35,7 @@ class CalendarViewModel @Inject constructor(
 
   private val language by lazy { translationsRepository.getLanguage() }
   private var mode = CalendarMode.PRESENT_FUTURE
-  private var searchQuery = ""
+  private var searchQuery: String? = null
   private var timestamp = 0L
   var isQuickRateEnabled = false
 
@@ -43,7 +43,7 @@ class CalendarViewModel @Inject constructor(
   val itemsLiveData: LiveData<Pair<CalendarMode, List<CalendarListItem>>> get() = _itemsLiveData
 
   fun handleParentAction(model: ProgressMainUiModel) {
-    if (this.timestamp != model.timestamp) {
+    if (this.timestamp != model.timestamp && model.timestamp != 0L) {
       this.timestamp = model.timestamp ?: 0L
       loadItems()
     }
@@ -52,7 +52,7 @@ class CalendarViewModel @Inject constructor(
       loadItems()
     }
     if (this.searchQuery != model.searchQuery) {
-      this.searchQuery = model.searchQuery ?: ""
+      this.searchQuery = model.searchQuery
       loadItems()
     }
   }
@@ -60,8 +60,8 @@ class CalendarViewModel @Inject constructor(
   private fun loadItems() {
     viewModelScope.launch {
       val items = when (mode) {
-        CalendarMode.PRESENT_FUTURE -> futureCase.loadItems(searchQuery)
-        CalendarMode.RECENTS -> recentsCase.loadItems(searchQuery)
+        CalendarMode.PRESENT_FUTURE -> futureCase.loadItems(searchQuery ?: "")
+        CalendarMode.RECENTS -> recentsCase.loadItems(searchQuery ?: "")
       }
       _itemsLiveData.postValue(mode to items)
     }

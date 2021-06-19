@@ -86,6 +86,7 @@ class ProgressMainFragment :
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it) })
       messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
+      loadProgress()
     }
   }
 
@@ -101,7 +102,6 @@ class ProgressMainFragment :
   override fun onResume() {
     super.onResume()
     showNavigation()
-    viewModel.loadProgress()
   }
 
   override fun onPause() {

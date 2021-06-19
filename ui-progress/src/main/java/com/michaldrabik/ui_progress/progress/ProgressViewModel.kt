@@ -42,7 +42,7 @@ class ProgressViewModel @Inject constructor(
 ) : BaseViewModel<ProgressUiModel>() {
 
   private val language by lazy { translationsRepository.getLanguage() }
-  private var searchQuery = ""
+  private var searchQuery: String? = null
   private var timestamp = 0L
   var isQuickRateEnabled = false
 
@@ -53,19 +53,19 @@ class ProgressViewModel @Inject constructor(
   val sortLiveData: LiveData<ActionEvent<SortOrder>> get() = _sortLiveData
 
   fun handleParentAction(model: ProgressMainUiModel) {
-    if (this.timestamp != model.timestamp) {
+    if (this.timestamp != model.timestamp && model.timestamp != 0L) {
       this.timestamp = model.timestamp ?: 0L
       loadItems()
     }
     if (this.searchQuery != model.searchQuery) {
-      this.searchQuery = model.searchQuery ?: ""
-      loadItems()
+      this.searchQuery = model.searchQuery
+      loadItems(resetScroll = model.searchQuery != null)
     }
   }
 
   private fun loadItems(resetScroll: Boolean = false) {
     viewModelScope.launch {
-      val items = itemsCase.loadItems(searchQuery)
+      val items = itemsCase.loadItems(searchQuery ?: "")
       _itemsLiveData.value = items to resetScroll
     }
   }

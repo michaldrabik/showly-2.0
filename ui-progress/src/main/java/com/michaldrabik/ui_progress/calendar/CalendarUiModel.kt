@@ -1,10 +1,9 @@
 package com.michaldrabik.ui_progress.calendar
 
 import com.michaldrabik.ui_base.UiModel
-import com.michaldrabik.ui_progress.ProgressItem
 
 data class CalendarUiModel(
-  val items: List<ProgressItem>? = null,
+  val items: List<String>? = null,
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =

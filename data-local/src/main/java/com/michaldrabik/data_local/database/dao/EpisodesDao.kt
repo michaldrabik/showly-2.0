@@ -24,6 +24,24 @@ interface EpisodesDao : BaseDao<Episode> {
   @Query("SELECT * FROM episodes WHERE id_show_trakt IN (:showTraktIds)")
   suspend fun getAllByShowsIds(showTraktIds: List<Long>): List<Episode>
 
+  @Query("SELECT * from episodes where id_show_trakt = :showTraktId AND is_watched = 0 AND season_number != 0 AND first_aired > 0 ORDER BY season_number ASC, episode_number ASC LIMIT 1")
+  suspend fun getFirstUnwatched(showTraktId: Long): Episode?
+
+  @Query("SELECT * from episodes where id_show_trakt = :showTraktId AND is_watched = 0 AND season_number != 0 AND first_aired > 0 AND first_aired <= :toTime ORDER BY season_number ASC, episode_number ASC LIMIT 1")
+  suspend fun getFirstUnwatched(showTraktId: Long, toTime: Long): Episode?
+
+  @Query("SELECT COUNT(id_trakt) FROM episodes WHERE id_show_trakt = :showTraktId AND first_aired < :fromTime AND season_number != 0")
+  suspend fun getTotalCount(showTraktId: Long, fromTime: Long): Int
+
+  @Query("SELECT COUNT(id_trakt) FROM episodes WHERE id_show_trakt = :showTraktId AND season_number != 0")
+  suspend fun getTotalCount(showTraktId: Long): Int
+
+  @Query("SELECT COUNT(id_trakt) FROM episodes WHERE id_show_trakt = :showTraktId AND is_watched = 1 AND first_aired < :fromTime AND season_number != 0")
+  suspend fun getWatchedCount(showTraktId: Long, fromTime: Long): Int
+
+  @Query("SELECT COUNT(id_trakt) FROM episodes WHERE id_show_trakt = :showTraktId AND is_watched = 1 AND season_number != 0")
+  suspend fun getWatchedCount(showTraktId: Long): Int
+
   @Query("SELECT * FROM episodes WHERE id_show_trakt IN(:showsIds) AND is_watched = 1")
   suspend fun getAllWatchedForShows(showsIds: List<Long>): List<Episode>
 
