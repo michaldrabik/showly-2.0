@@ -20,7 +20,7 @@ import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListIt
 import kotlinx.android.synthetic.main.view_progress_movies_main_item.view.*
 
 @SuppressLint("SetTextI18n")
-class ProgressMoviesMainItemView : MovieView<ProgressMovieListItem.MovieItem> {
+class ProgressMoviesItemView : MovieView<ProgressMovieListItem.MovieItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

@@ -82,7 +82,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 if (isShow) R.id.actionProgressFragmentToShowDetailsFragment
                 else R.id.actionProgressFragmentToMovieDetailsFragment
               }
-              R.id.progressMoviesFragment -> {
+              R.id.progressMoviesMainFragment -> {
                 if (isShow) R.id.actionProgressMoviesFragmentToShowDetailsFragment
                 else R.id.actionProgressMoviesFragmentToMovieDetailsFragment
               }

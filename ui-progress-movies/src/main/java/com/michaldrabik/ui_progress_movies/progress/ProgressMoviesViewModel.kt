@@ -19,7 +19,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress_movies.R
-import com.michaldrabik.ui_progress_movies.main.ProgressMoviesUiModel
+import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiModel
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesItemsCase
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesPinnedCase
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesSortCase
@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProgressMoviesMainViewModel @Inject constructor(
+class ProgressMoviesViewModel @Inject constructor(
   private val itemsCase: ProgressMoviesItemsCase,
   private val sortCase: ProgressMoviesSortCase,
   private val pinnedCase: ProgressMoviesPinnedCase,
@@ -38,7 +38,7 @@ class ProgressMoviesMainViewModel @Inject constructor(
   private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
   private val translationsRepository: TranslationsRepository,
-) : BaseViewModel<ProgressMoviesMainUiModel>() {
+) : BaseViewModel<ProgressMoviesUiModel>() {
 
   private val language by lazy { translationsRepository.getLanguage() }
   private var searchQuery: String? = null
@@ -50,7 +50,7 @@ class ProgressMoviesMainViewModel @Inject constructor(
   val itemsLiveData: LiveData<Pair<List<ProgressMovieListItem.MovieItem>, ActionEvent<Boolean>>> get() = _itemsLiveData
   val sortLiveData: LiveData<ActionEvent<SortOrder>> get() = _sortLiveData
 
-  fun handleParentAction(model: ProgressMoviesUiModel) {
+  fun handleParentAction(model: ProgressMoviesMainUiModel) {
     if (this.searchQuery != model.searchQuery) {
       this.searchQuery = model.searchQuery
       loadItems(resetScroll = model.searchQuery.isNullOrBlank())
@@ -92,7 +92,7 @@ class ProgressMoviesMainViewModel @Inject constructor(
         val translation = translationsRepository.loadTranslation(item.movie, language)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "ProgressMoviesMainViewModel::findMissingTranslation()")
+        Logger.record(error, "Source" to "ProgressMoviesViewModel::findMissingTranslation()")
       }
     }
   }
