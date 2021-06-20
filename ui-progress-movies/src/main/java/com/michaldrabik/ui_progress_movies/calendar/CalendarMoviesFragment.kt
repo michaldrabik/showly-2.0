@@ -17,8 +17,8 @@ import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMoviesAdapter
-import com.michaldrabik.ui_progress_movies.main.ProgressMoviesFragment
-import com.michaldrabik.ui_progress_movies.main.ProgressMoviesViewModel
+import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainFragment
+import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_calendar_movies.*
 
@@ -27,7 +27,7 @@ class CalendarMoviesFragment :
   BaseFragment<CalendarMoviesViewModel>(R.layout.fragment_calendar_movies),
   OnScrollResetListener {
 
-  private val parentViewModel by viewModels<ProgressMoviesViewModel>({ requireParentFragment() })
+  private val parentViewModel by viewModels<ProgressMoviesMainViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<CalendarMoviesViewModel>()
 
   private var adapter: CalendarMoviesAdapter? = null
@@ -51,7 +51,7 @@ class CalendarMoviesFragment :
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = CalendarMoviesAdapter(
-      itemClickListener = { (requireParentFragment() as ProgressMoviesFragment).openMovieDetails(it.movie) },
+      itemClickListener = { (requireParentFragment() as ProgressMoviesMainFragment).openMovieDetails(it.movie) },
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
       missingTranslationListener = { item -> viewModel.findMissingTranslation(item) }
     )

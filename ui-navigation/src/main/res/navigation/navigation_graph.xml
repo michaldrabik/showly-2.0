@@ -16,7 +16,7 @@
 
   <action
     android:id="@+id/actionNavigateProgressMoviesFragment"
-    app:destination="@id/progressMoviesFragment"
+    app:destination="@id/progressMoviesMainFragment"
     app:launchSingleTop="true"
     app:popUpTo="@id/navigationGraph"
     app:popUpToInclusive="true"
@@ -159,8 +159,8 @@
   </fragment>
 
   <fragment
-    android:id="@+id/progressMoviesFragment"
-    android:name="com.michaldrabik.ui_progress_movies.main.ProgressMoviesFragment"
+    android:id="@+id/progressMoviesMainFragment"
+    android:name="com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainFragment"
     android:label="fragmentProgressMain"
     >
     <action

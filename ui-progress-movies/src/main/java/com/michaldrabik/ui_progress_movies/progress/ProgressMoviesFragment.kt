@@ -28,24 +28,24 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress_movies.R
-import com.michaldrabik.ui_progress_movies.main.ProgressMoviesFragment
-import com.michaldrabik.ui_progress_movies.main.ProgressMoviesViewModel
-import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMainAdapter
+import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainFragment
+import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainViewModel
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem
+import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_movies_main.*
 import kotlinx.android.synthetic.main.layout_progress_movies_empty.*
 
 @AndroidEntryPoint
-class ProgressMoviesMainFragment :
-  BaseFragment<ProgressMoviesMainViewModel>(R.layout.fragment_progress_movies_main),
+class ProgressMoviesFragment :
+  BaseFragment<ProgressMoviesViewModel>(R.layout.fragment_progress_movies_main),
   OnSortClickListener,
   OnScrollResetListener {
 
-  private val parentViewModel by viewModels<ProgressMoviesViewModel>({ requireParentFragment() })
-  override val viewModel by viewModels<ProgressMoviesMainViewModel>()
+  private val parentViewModel by viewModels<ProgressMoviesMainViewModel>({ requireParentFragment() })
+  override val viewModel by viewModels<ProgressMoviesViewModel>()
 
-  private var adapter: ProgressMainAdapter? = null
+  private var adapter: ProgressMoviesAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
 
@@ -65,7 +65,7 @@ class ProgressMoviesMainFragment :
   }
 
   private fun setupView() {
-    progressMoviesEmptyTraktButton.onClick { (parentFragment as ProgressMoviesFragment).openTraktSync() }
+    progressMoviesEmptyTraktButton.onClick { (parentFragment as ProgressMoviesMainFragment).openTraktSync() }
     progressMoviesEmptyDiscoverButton.onClick {
       (requireActivity() as NavigationHost).openDiscoverTab()
     }
@@ -73,13 +73,13 @@ class ProgressMoviesMainFragment :
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
-    adapter = ProgressMainAdapter(
-      itemClickListener = { (requireParentFragment() as ProgressMoviesFragment).openMovieDetails(it.movie) },
+    adapter = ProgressMoviesAdapter(
+      itemClickListener = { (requireParentFragment() as ProgressMoviesMainFragment).openMovieDetails(it.movie) },
       itemLongClickListener = { item, view -> openPopupMenu(item, view) },
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
       missingTranslationListener = { item -> viewModel.findMissingTranslation(item) },
       listChangeListener = {
-        (requireParentFragment() as ProgressMoviesFragment).resetTranslations()
+        (requireParentFragment() as ProgressMoviesMainFragment).resetTranslations()
         layoutManager?.scrollToPosition(0)
       },
       checkClickListener = {
@@ -91,8 +91,8 @@ class ProgressMoviesMainFragment :
       }
     )
     progressMoviesMainRecycler.apply {
-      adapter = this@ProgressMoviesMainFragment.adapter
-      layoutManager = this@ProgressMoviesMainFragment.layoutManager
+      adapter = this@ProgressMoviesFragment.adapter
+      layoutManager = this@ProgressMoviesFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
     }

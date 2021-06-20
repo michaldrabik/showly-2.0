@@ -10,13 +10,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProgressMoviesViewModel @Inject constructor(
+class ProgressMoviesMainViewModel @Inject constructor(
   private val moviesCase: ProgressMoviesMainCase,
-) : BaseViewModel<ProgressMoviesUiModel>() {
+) : BaseViewModel<ProgressMoviesMainUiModel>() {
 
   fun loadProgress() {
     viewModelScope.launch {
-      uiState = ProgressMoviesUiModel(searchQuery = "")
+      uiState = ProgressMoviesMainUiModel(searchQuery = "")
     }
   }
 
@@ -28,6 +28,6 @@ class ProgressMoviesViewModel @Inject constructor(
   }
 
   fun onSearchQuery(searchQuery: String) {
-    uiState = ProgressMoviesUiModel(searchQuery = searchQuery)
+    uiState = ProgressMoviesMainUiModel(searchQuery = searchQuery)
   }
 }

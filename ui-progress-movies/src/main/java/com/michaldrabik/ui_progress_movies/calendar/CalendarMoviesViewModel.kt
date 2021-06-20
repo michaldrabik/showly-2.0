@@ -15,7 +15,7 @@ import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesFu
 import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesRecentsCase
 import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
-import com.michaldrabik.ui_progress_movies.main.ProgressMoviesUiModel
+import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -37,7 +37,7 @@ class CalendarMoviesViewModel @Inject constructor(
   private val _itemsLiveData = MutableLiveData<Pair<CalendarMode, List<CalendarMovieListItem>>>()
   val itemsLiveData: LiveData<Pair<CalendarMode, List<CalendarMovieListItem>>> get() = _itemsLiveData
 
-  fun handleParentAction(model: ProgressMoviesUiModel) {
+  fun handleParentAction(model: ProgressMoviesMainUiModel) {
     if (this.searchQuery != model.searchQuery) {
       this.searchQuery = model.searchQuery
       loadItems()

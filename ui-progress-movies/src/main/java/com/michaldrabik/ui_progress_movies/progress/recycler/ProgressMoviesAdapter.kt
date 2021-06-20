@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseMovieAdapter
-import com.michaldrabik.ui_progress_movies.progress.views.ProgressMoviesMainItemView
+import com.michaldrabik.ui_progress_movies.progress.views.ProgressMoviesItemView
 
-class ProgressMainAdapter(
+class ProgressMoviesAdapter(
   itemClickListener: (ProgressMovieListItem.MovieItem) -> Unit,
   missingImageListener: (ProgressMovieListItem.MovieItem, Boolean) -> Unit,
   missingTranslationListener: (ProgressMovieListItem.MovieItem) -> Unit,
@@ -25,17 +25,17 @@ class ProgressMainAdapter(
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     BaseViewHolder(
-      ProgressMoviesMainItemView(parent.context).apply {
-        itemClickListener = this@ProgressMainAdapter.itemClickListener
-        itemLongClickListener = this@ProgressMainAdapter.itemLongClickListener
-        checkClickListener = this@ProgressMainAdapter.checkClickListener
-        missingImageListener = this@ProgressMainAdapter.missingImageListener
-        missingTranslationListener = this@ProgressMainAdapter.missingTranslationListener
+      ProgressMoviesItemView(parent.context).apply {
+        itemClickListener = this@ProgressMoviesAdapter.itemClickListener
+        itemLongClickListener = this@ProgressMoviesAdapter.itemLongClickListener
+        checkClickListener = this@ProgressMoviesAdapter.checkClickListener
+        missingImageListener = this@ProgressMoviesAdapter.missingImageListener
+        missingTranslationListener = this@ProgressMoviesAdapter.missingTranslationListener
       }
     )
 
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = asyncDiffer.currentList[position]
-    (holder.itemView as ProgressMoviesMainItemView).bind(item)
+    (holder.itemView as ProgressMoviesItemView).bind(item)
   }
 }

@@ -37,13 +37,13 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_movies.*
 
 @AndroidEntryPoint
-class ProgressMoviesFragment :
-  BaseFragment<ProgressMoviesViewModel>(R.layout.fragment_progress_movies),
+class ProgressMoviesMainFragment :
+  BaseFragment<ProgressMoviesMainViewModel>(R.layout.fragment_progress_movies),
   OnShowsMoviesSyncedListener,
   OnTabReselectedListener,
   OnTraktSyncListener {
 
-  override val viewModel by viewModels<ProgressMoviesViewModel>()
+  override val viewModel by viewModels<ProgressMoviesMainViewModel>()
 
   private var searchViewTranslation = 0F
   private var tabsTranslation = 0F
@@ -129,8 +129,8 @@ class ProgressMoviesFragment :
 
   private fun setupPager() {
     progressMoviesPager.run {
-      offscreenPageLimit = ProgressMoviesPagesAdapter.PAGES_COUNT
-      adapter = ProgressMoviesPagesAdapter(childFragmentManager, requireAppContext())
+      offscreenPageLimit = ProgressMoviesMainAdapter.PAGES_COUNT
+      adapter = ProgressMoviesMainAdapter(childFragmentManager, requireAppContext())
       addOnPageChangeListener(pageChangeListener)
     }
     progressMoviesTabs.setupWithViewPager(progressMoviesPager)
@@ -238,7 +238,7 @@ class ProgressMoviesFragment :
     progressMoviesSortIcon.animate().translationY(0F).start()
   }
 
-  private fun render(uiModel: ProgressMoviesUiModel) {
+  private fun render(uiModel: ProgressMoviesMainUiModel) {
     uiModel.run {
 //      items?.let {
 //        progressMoviesModeTabs.isEnabled = true

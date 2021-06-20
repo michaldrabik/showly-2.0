@@ -132,7 +132,7 @@ class MainActivity :
       val graph = navInflater.inflate(R.navigation.navigation_graph)
       graph.startDestination = when (viewModel.getMode()) {
         SHOWS -> R.id.progressFragment
-        MOVIES -> R.id.progressMoviesFragment
+        MOVIES -> R.id.progressMoviesMainFragment
         else -> throw IllegalStateException()
       }
       setGraph(graph)
