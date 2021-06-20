@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.ActionEvent
@@ -34,7 +35,6 @@ import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_progress.R
-import com.michaldrabik.ui_progress.helpers.OnSortClickListener
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
 import com.michaldrabik.ui_progress.progress.recycler.ProgressAdapter
@@ -182,8 +182,8 @@ class ProgressFragment :
       .show()
   }
 
-  private fun render(items: List<ProgressListItem>, resetScroll: Boolean) {
-    adapter?.setItems(items, resetScroll)
+  private fun render(items: List<ProgressListItem>, resetScroll: ActionEvent<Boolean>) {
+    adapter?.setItems(items, resetScroll.consume() == true)
     progressRecycler.fadeIn(150, withHardware = true)
     progressEmptyView.visibleIf(items.isEmpty())
     progressTipItem.visibleIf(items.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))

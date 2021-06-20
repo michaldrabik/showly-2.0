@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.michaldrabik.ui_progress_movies.R
-import com.michaldrabik.ui_progress_movies.calendar.ProgressMoviesCalendarFragment
+import com.michaldrabik.ui_progress_movies.calendar.CalendarMoviesFragment
 import com.michaldrabik.ui_progress_movies.progress.ProgressMoviesMainFragment
 
 class ProgressMoviesPagesAdapter(
@@ -23,7 +23,7 @@ class ProgressMoviesPagesAdapter(
 
   override fun getItem(position: Int): Fragment = when (position) {
     0 -> ProgressMoviesMainFragment()
-    1 -> ProgressMoviesCalendarFragment()
+    1 -> CalendarMoviesFragment()
     else -> throw IllegalStateException("Unknown position")
   }
 

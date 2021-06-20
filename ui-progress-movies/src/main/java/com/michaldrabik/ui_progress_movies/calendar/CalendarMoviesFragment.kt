@@ -14,21 +14,23 @@ import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_progress_movies.R
-import com.michaldrabik.ui_progress_movies.calendar.recycler.ProgressMoviesCalendarAdapter
+import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
+import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
+import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMoviesAdapter
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesFragment
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_progress_movies_calendar.*
+import kotlinx.android.synthetic.main.fragment_calendar_movies.*
 
 @AndroidEntryPoint
-class ProgressMoviesCalendarFragment :
-  BaseFragment<ProgressMoviesCalendarViewModel>(R.layout.fragment_progress_movies_calendar),
+class CalendarMoviesFragment :
+  BaseFragment<CalendarMoviesViewModel>(R.layout.fragment_calendar_movies),
   OnScrollResetListener {
 
   private val parentViewModel by viewModels<ProgressMoviesViewModel>({ requireParentFragment() })
-  override val viewModel by viewModels<ProgressMoviesCalendarViewModel>()
+  override val viewModel by viewModels<CalendarMoviesViewModel>()
 
-  private var adapter: ProgressMoviesCalendarAdapter? = null
+  private var adapter: CalendarMoviesAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
 
@@ -37,20 +39,25 @@ class ProgressMoviesCalendarFragment :
     setupRecycler()
     setupStatusBar()
 
-    parentViewModel.uiLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
-    viewModel.uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
+    with(parentViewModel) {
+      uiLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
+    }
+    with(viewModel) {
+      itemsLiveData.observe(viewLifecycleOwner, { render(it.first, it.second) })
+      checkQuickRateEnabled()
+    }
   }
 
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
-    adapter = ProgressMoviesCalendarAdapter(
-      itemClickListener = { (requireParentFragment() as ProgressMoviesFragment).openMovieDetails(it) },
+    adapter = CalendarMoviesAdapter(
+      itemClickListener = { (requireParentFragment() as ProgressMoviesFragment).openMovieDetails(it.movie) },
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
       missingTranslationListener = { item -> viewModel.findMissingTranslation(item) }
     )
     progressMoviesCalendarRecycler.apply {
-      adapter = this@ProgressMoviesCalendarFragment.adapter
-      layoutManager = this@ProgressMoviesCalendarFragment.layoutManager
+      adapter = this@CalendarMoviesFragment.adapter
+      layoutManager = this@CalendarMoviesFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
     }
@@ -69,14 +76,11 @@ class ProgressMoviesCalendarFragment :
 
   override fun onScrollReset() = progressMoviesCalendarRecycler.smoothScrollToPosition(0)
 
-  private fun render(uiModel: ProgressMoviesCalendarUiModel) {
-    uiModel.run {
-      items?.let {
-        adapter?.setItems(it)
-        progressMoviesCalendarRecycler.fadeIn()
-        progressMoviesCalendarEmptyView.visibleIf(it.isEmpty())
-      }
-    }
+  private fun render(mode: CalendarMode, items: List<CalendarMovieListItem>) {
+    adapter?.setItems(items)
+    progressMoviesCalendarRecycler.fadeIn(150, withHardware = true)
+    progressMoviesCalendarEmptyFutureView.visibleIf(items.isEmpty() && mode == CalendarMode.PRESENT_FUTURE)
+    progressMoviesCalendarEmptyRecentsView.visibleIf(items.isEmpty() && mode == CalendarMode.RECENTS)
   }
 
   override fun setupBackPressed() = Unit

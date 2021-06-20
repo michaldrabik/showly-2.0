@@ -12,31 +12,24 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.repository.SettingsRepository
-import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.ImageStatus
-import com.michaldrabik.ui_model.ImageType
-import com.michaldrabik.ui_progress_movies.ProgressMovieItem
-import com.michaldrabik.ui_progress_movies.calendar.cases.ProgressMoviesCalendarCase
-import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesLoadItemsCase
+import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesFutureCase
+import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_MOVIE_ID
 import com.michaldrabik.ui_widgets.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 
 class CalendarMoviesWidgetViewsFactory(
   private val context: Context,
-  private val loadItemsCase: ProgressMoviesLoadItemsCase,
-  private val calendarCase: ProgressMoviesCalendarCase,
-  private val imagesProvider: MovieImagesProvider,
-  private val settingsRepository: SettingsRepository
+  private val itemsCase: CalendarMoviesFutureCase,
+  private val settingsRepository: SettingsRepository,
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
   override val coroutineContext = Job() + Dispatchers.Main
@@ -44,51 +37,33 @@ class CalendarMoviesWidgetViewsFactory(
   private val imageCorner by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
   private val imageWidth by lazy { context.dimenToPx(R.dimen.widgetImageWidth) }
   private val imageHeight by lazy { context.dimenToPx(R.dimen.widgetImageHeight) }
-  private val adapterItems by lazy { mutableListOf<ProgressMovieItem>() }
+  private val adapterItems by lazy { mutableListOf<CalendarMovieListItem>() }
 
-  private fun loadData() {
-    runBlocking {
-      val movies = loadItemsCase.loadWatchlistMovies()
-      val dateFormat = loadItemsCase.loadDateFormat()
-      val items = movies.map { movie ->
-        async {
-          val item = loadItemsCase.loadProgressItem(movie)
-          try {
-            val image = imagesProvider.loadRemoteImage(movie, ImageType.POSTER)
-            item.copy(image = image, dateFormat = dateFormat)
-          } catch (error: Throwable) {
-            item
-          }
-        }
-      }.awaitAll()
-
-      val groupedItems = calendarCase.prepareItems(items)
-      adapterItems.replace(groupedItems)
-    }
+  private fun loadData() = runBlocking {
+    val items = itemsCase.loadItems("")
+    adapterItems.replace(items)
   }
 
   override fun onCreate() = loadData()
 
-  override fun getViewAt(position: Int): RemoteViews {
-    val item = adapterItems[position]
-    return when {
-      item.isHeader() -> createHeaderRemoteView(item)
-      else -> createItemRemoteView(item)
+  override fun getViewAt(position: Int) =
+    when (val item = adapterItems[position]) {
+      is CalendarMovieListItem.MovieItem -> createItemRemoteView(item)
+      is CalendarMovieListItem.Header -> createHeaderRemoteView(item)
     }
-  }
 
-  private fun createHeaderRemoteView(item: ProgressMovieItem) =
+  private fun createHeaderRemoteView(item: CalendarMovieListItem.Header) =
     RemoteViews(context.packageName, getHeaderLayout()).apply {
-      setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.headerTextResId!!))
+      setTextViewText(R.id.progressWidgetHeaderTitle, context.getString(item.textResId))
     }
 
-  private fun createItemRemoteView(item: ProgressMovieItem): RemoteViews {
-    val translatedTitle = item.movieTranslation?.title
+  private fun createItemRemoteView(item: CalendarMovieListItem.MovieItem): RemoteViews {
+    val translatedTitle = item.translation?.title
     val title =
       if (translatedTitle?.isBlank() == false) translatedTitle
       else item.movie.title
 
-    val translatedDescription = item.movieTranslation?.overview
+    val translatedDescription = item.translation?.overview
     val overview =
       if (translatedDescription?.isBlank() == false) translatedDescription
       else item.movie.overview

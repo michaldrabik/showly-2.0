@@ -5,15 +5,14 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.core.content.ContextCompat
 import androidx.core.view.updateMargins
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
+import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
@@ -31,13 +30,8 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
-import com.michaldrabik.ui_model.SortOrder.NAME
-import com.michaldrabik.ui_model.SortOrder.NEWEST
-import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
-import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.R
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_movies.*
@@ -75,6 +69,7 @@ class ProgressMoviesFragment :
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
       messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
+      loadProgress()
     }
   }
 
@@ -89,7 +84,6 @@ class ProgressMoviesFragment :
   override fun onResume() {
     super.onResume()
     showNavigation()
-    viewModel.loadProgress()
   }
 
   override fun onPause() {
@@ -105,7 +99,10 @@ class ProgressMoviesFragment :
   }
 
   private fun setupView() {
-    progressMoviesSortIcon.visibleIf(currentPage == 0)
+    with(progressMoviesSortIcon) {
+      visibleIf(currentPage == 0)
+      onClick { childFragmentManager.fragments.forEach { (it as? OnSortClickListener)?.onSortClick() } }
+    }
     progressMoviesSearchView.run {
       hint = getString(R.string.textSearchFor)
       settingsIconVisible = true
@@ -116,7 +113,6 @@ class ProgressMoviesFragment :
     }
     progressMoviesModeTabs.run {
       visibleIf(moviesEnabled)
-      isEnabled = false
       onModeSelected = { mode = it }
       selectMovies()
     }
@@ -166,11 +162,11 @@ class ProgressMoviesFragment :
     }
   }
 
-  fun openMovieDetails(item: ProgressMovieItem) {
+  fun openMovieDetails(movie: Movie) {
     exitSearch()
     hideNavigation()
     progressMoviesRoot.fadeOut(150) {
-      val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, item.movie.ids.trakt.id) }
+      val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, movie.ids.trakt.id) }
       navigateTo(R.id.actionProgressMoviesFragmentToMovieDetailsFragment, bundle)
     }.add(animations)
   }
@@ -185,27 +181,13 @@ class ProgressMoviesFragment :
     navigateTo(R.id.actionProgressMoviesFragmentToTraktSyncFragment)
   }
 
-  private fun openSortOrderDialog(order: SortOrder) {
-    val options = listOf(NAME, RATING, NEWEST, DATE_ADDED)
-    val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
-
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setTitle(R.string.textSortBy)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setSingleChoiceItems(optionsStrings, options.indexOf(order)) { dialog, index ->
-        viewModel.setSortOrder(options[index])
-        dialog.dismiss()
-      }
-      .show()
-  }
-
   private fun enterSearch() {
     if (progressMoviesSearchView.isSearching) return
     progressMoviesSearchView.isSearching = true
     exSearchViewText.gone()
     exSearchViewInput.run {
       setText("")
-      doAfterTextChanged { viewModel.searchQuery(it?.toString() ?: "") }
+      doAfterTextChanged { viewModel.onSearchQuery(it?.toString() ?: "") }
       visible()
       showKeyboard()
       requestFocus()
@@ -258,14 +240,14 @@ class ProgressMoviesFragment :
 
   private fun render(uiModel: ProgressMoviesUiModel) {
     uiModel.run {
-      items?.let {
-        progressMoviesModeTabs.isEnabled = true
-        progressMoviesSearchView.isClickable = it.isNotEmpty() || isSearching == true
-        progressMoviesSortIcon.visibleIf(it.isNotEmpty() && currentPage == 0)
-        if (it.isNotEmpty() && sortOrder != null) {
-          progressMoviesSortIcon.onClick { openSortOrderDialog(sortOrder) }
-        }
-      }
+//      items?.let {
+//        progressMoviesModeTabs.isEnabled = true
+//        progressMoviesSearchView.isClickable = it.isNotEmpty() || isSearching == true
+//        progressMoviesSortIcon.visibleIf(it.isNotEmpty() && currentPage == 0)
+//        if (it.isNotEmpty() && sortOrder != null) {
+//          progressMoviesSortIcon.onClick { openSortOrderDialog(sortOrder) }
+//        }
+//      }
     }
   }
 
