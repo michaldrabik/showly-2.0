@@ -46,8 +46,8 @@ class ProgressViewModel @Inject constructor(
   private var timestamp = 0L
   var isQuickRateEnabled = false
 
-  private val _itemsLiveData = MutableLiveData<Pair<List<ProgressListItem>, Boolean>>()
-  val itemsLiveData: LiveData<Pair<List<ProgressListItem>, Boolean>> get() = _itemsLiveData
+  private val _itemsLiveData = MutableLiveData<Pair<List<ProgressListItem>, ActionEvent<Boolean>>>()
+  val itemsLiveData: LiveData<Pair<List<ProgressListItem>, ActionEvent<Boolean>>> get() = _itemsLiveData
 
   private val _sortLiveData = MutableLiveData<ActionEvent<SortOrder>>()
   val sortLiveData: LiveData<ActionEvent<SortOrder>> get() = _sortLiveData
@@ -59,14 +59,14 @@ class ProgressViewModel @Inject constructor(
     }
     if (this.searchQuery != model.searchQuery) {
       this.searchQuery = model.searchQuery
-      loadItems(resetScroll = model.searchQuery != null)
+      loadItems(resetScroll = model.searchQuery.isNullOrBlank())
     }
   }
 
   private fun loadItems(resetScroll: Boolean = false) {
     viewModelScope.launch {
       val items = itemsCase.loadItems(searchQuery ?: "")
-      _itemsLiveData.value = items to resetScroll
+      _itemsLiveData.value = items to ActionEvent(resetScroll)
     }
   }
 
@@ -132,7 +132,7 @@ class ProgressViewModel @Inject constructor(
     } else {
       pinnedItemsCase.addPinnedItem(item.show)
     }
-    loadItems()
+    loadItems(resetScroll = item.isPinned)
   }
 
   fun checkQuickRateEnabled() {
@@ -147,6 +147,6 @@ class ProgressViewModel @Inject constructor(
   private fun updateItem(new: ProgressListItem) {
     val currentItems = _itemsLiveData.value?.first?.toMutableList() ?: mutableListOf()
     currentItems.findReplace(new) { it.isSameAs(new) }
-    _itemsLiveData.value = currentItems to false
+    _itemsLiveData.value = currentItems to ActionEvent(false)
   }
 }

@@ -5,18 +5,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseMovieAdapter
-import com.michaldrabik.ui_progress_movies.ProgressMovieItem
-import com.michaldrabik.ui_progress_movies.ProgressMovieItemDiffCallback
 import com.michaldrabik.ui_progress_movies.progress.views.ProgressMoviesMainItemView
 
 class ProgressMainAdapter(
-  itemClickListener: (ProgressMovieItem) -> Unit,
-  missingImageListener: (ProgressMovieItem, Boolean) -> Unit,
-  missingTranslationListener: (ProgressMovieItem) -> Unit,
+  itemClickListener: (ProgressMovieListItem.MovieItem) -> Unit,
+  missingImageListener: (ProgressMovieListItem.MovieItem, Boolean) -> Unit,
+  missingTranslationListener: (ProgressMovieListItem.MovieItem) -> Unit,
   listChangeListener: () -> Unit,
-  val checkClickListener: (ProgressMovieItem) -> Unit,
-  val itemLongClickListener: (ProgressMovieItem, View) -> Unit
-) : BaseMovieAdapter<ProgressMovieItem>(
+  val checkClickListener: (ProgressMovieListItem.MovieItem) -> Unit,
+  val itemLongClickListener: (ProgressMovieListItem.MovieItem, View) -> Unit,
+) : BaseMovieAdapter<ProgressMovieListItem.MovieItem>(
   itemClickListener = itemClickListener,
   missingImageListener = missingImageListener,
   missingTranslationListener = missingTranslationListener,

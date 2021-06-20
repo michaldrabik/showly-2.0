@@ -16,19 +16,22 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.onClick
-import com.michaldrabik.ui_progress_movies.ProgressMovieItem
+import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesFragment
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesViewModel
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMainAdapter
+import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_movies_main.*
 import kotlinx.android.synthetic.main.layout_progress_movies_empty.*
@@ -36,6 +39,7 @@ import kotlinx.android.synthetic.main.layout_progress_movies_empty.*
 @AndroidEntryPoint
 class ProgressMoviesMainFragment :
   BaseFragment<ProgressMoviesMainViewModel>(R.layout.fragment_progress_movies_main),
+  OnSortClickListener,
   OnScrollResetListener {
 
   private val parentViewModel by viewModels<ProgressMoviesViewModel>({ requireParentFragment() })
@@ -53,7 +57,8 @@ class ProgressMoviesMainFragment :
 
     parentViewModel.uiLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
     viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
+      itemsLiveData.observe(viewLifecycleOwner, { render(it.first, it.second) })
+      sortLiveData.observe(viewLifecycleOwner, { render(it) })
       messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
       checkQuickRateEnabled()
     }
@@ -69,7 +74,7 @@ class ProgressMoviesMainFragment :
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = ProgressMainAdapter(
-      itemClickListener = { (requireParentFragment() as ProgressMoviesFragment).openMovieDetails(it) },
+      itemClickListener = { (requireParentFragment() as ProgressMoviesFragment).openMovieDetails(it.movie) },
       itemLongClickListener = { item, view -> openPopupMenu(item, view) },
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
       missingTranslationListener = { item -> viewModel.findMissingTranslation(item) },
@@ -81,7 +86,7 @@ class ProgressMoviesMainFragment :
         if (viewModel.isQuickRateEnabled) {
           openRateDialog(it)
         } else {
-          parentViewModel.addWatchedMovie(requireAppContext(), it)
+          parentViewModel.addWatchedMovie(requireAppContext(), it.movie)
         }
       }
     )
@@ -106,7 +111,7 @@ class ProgressMoviesMainFragment :
     }
   }
 
-  private fun openPopupMenu(item: ProgressMovieItem, view: View) {
+  private fun openPopupMenu(item: ProgressMovieListItem.MovieItem, view: View) {
     val menu = PopupMenu(requireContext(), view, Gravity.CENTER)
     if (item.isPinned) {
       menu.inflate(R.menu.progress_movies_item_menu_unpin)
@@ -115,14 +120,14 @@ class ProgressMoviesMainFragment :
     }
     menu.setOnMenuItemClickListener { menuItem ->
       if (menuItem.itemId == R.id.menuProgressItemPin) {
-        parentViewModel.togglePinItem(item)
+        viewModel.togglePinItem(item)
       }
       true
     }
     menu.show()
   }
 
-  private fun openRateDialog(item: ProgressMovieItem) {
+  private fun openRateDialog(item: ProgressMovieListItem.MovieItem) {
     val context = requireContext()
     val rateView = RateView(context).apply {
       setPadding(context.dimenToPx(R.dimen.spaceNormal))
@@ -132,25 +137,40 @@ class ProgressMoviesMainFragment :
       .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
       .setView(rateView)
       .setPositiveButton(R.string.textRate) { _, _ ->
-        parentViewModel.addWatchedMovie(requireAppContext(), item)
+        parentViewModel.addWatchedMovie(requireAppContext(), item.movie)
         viewModel.addRating(rateView.getRating(), item.movie)
       }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
       .show()
   }
 
+  private fun openSortOrderDialog(order: SortOrder) {
+    val options = listOf(SortOrder.NAME, SortOrder.RATING, SortOrder.NEWEST, SortOrder.DATE_ADDED)
+    val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
+
+    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+      .setTitle(R.string.textSortBy)
+      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
+      .setSingleChoiceItems(optionsStrings, options.indexOf(order)) { dialog, index ->
+        viewModel.setSortOrder(options[index])
+        dialog.dismiss()
+      }
+      .show()
+  }
+
   override fun onScrollReset() = progressMoviesMainRecycler.smoothScrollToPosition(0)
 
-  private fun render(uiModel: ProgressMoviesMainUiModel) {
-    uiModel.run {
-      items?.let {
-        val notifyChange = resetScroll?.consume() == true
-        adapter?.setItems(it, notifyChange = notifyChange)
-        progressMoviesEmptyView.fadeIf(it.isEmpty() && isSearching == false)
-        progressMoviesMainRecycler.fadeIn()
-        (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
-      }
-    }
+  override fun onSortClick() = viewModel.loadSortOrder()
+
+  private fun render(items: List<ProgressMovieListItem.MovieItem>, resetScroll: ActionEvent<Boolean>) {
+    adapter?.setItems(items, notifyChange = resetScroll.consume() == true)
+    progressMoviesEmptyView.fadeIf(items.isEmpty())
+    progressMoviesMainRecycler.fadeIn()
+    (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
+  }
+
+  private fun render(sortOrder: ActionEvent<SortOrder>) {
+    sortOrder.consume()?.let { openSortOrderDialog(it) }
   }
 
   override fun setupBackPressed() = Unit

@@ -15,19 +15,19 @@ import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.R
+import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem
 import kotlinx.android.synthetic.main.view_progress_movies_main_item.view.*
 
 @SuppressLint("SetTextI18n")
-class ProgressMoviesMainItemView : MovieView<ProgressMovieItem> {
+class ProgressMoviesMainItemView : MovieView<ProgressMovieListItem.MovieItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-  var itemLongClickListener: ((ProgressMovieItem, View) -> Unit)? = null
-  var checkClickListener: ((ProgressMovieItem) -> Unit)? = null
+  var itemLongClickListener: ((ProgressMovieListItem.MovieItem, View) -> Unit)? = null
+  var checkClickListener: ((ProgressMovieListItem.MovieItem) -> Unit)? = null
 
   init {
     inflate(context, R.layout.view_progress_movies_main_item, this)
@@ -42,21 +42,21 @@ class ProgressMoviesMainItemView : MovieView<ProgressMovieItem> {
     imageLoadCompleteListener = { loadTranslation() }
   }
 
-  private lateinit var item: ProgressMovieItem
+  private lateinit var item: ProgressMovieListItem.MovieItem
 
   override val imageView: ImageView = progressMovieItemImage
   override val placeholderView: ImageView = progressMovieItemPlaceholder
 
-  override fun bind(item: ProgressMovieItem) {
+  override fun bind(item: ProgressMovieListItem.MovieItem) {
     this.item = item
     clear()
 
-    val translationTitle = item.movieTranslation?.title
+    val translationTitle = item.translation?.title
     progressMovieItemTitle.text =
       if (translationTitle.isNullOrBlank()) item.movie.title
       else translationTitle
 
-    val translationOverview = item.movieTranslation?.overview
+    val translationOverview = item.translation?.overview
     progressMovieItemSubtitle.text =
       when {
         translationOverview.isNullOrBlank() -> {
@@ -76,7 +76,7 @@ class ProgressMoviesMainItemView : MovieView<ProgressMovieItem> {
   }
 
   private fun loadTranslation() {
-    if (item.movieTranslation == null) {
+    if (item.translation == null) {
       missingTranslationListener?.invoke(item)
     }
   }

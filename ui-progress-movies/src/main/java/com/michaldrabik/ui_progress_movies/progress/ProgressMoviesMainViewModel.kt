@@ -1,5 +1,7 @@
 package com.michaldrabik.ui_progress_movies.progress
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.RatingsRepository
@@ -10,21 +12,27 @@ import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.RatingState
-import com.michaldrabik.ui_model.TraktRating
-import com.michaldrabik.ui_progress_movies.ProgressMovieItem
+import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesUiModel
+import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesItemsCase
+import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesPinnedCase
+import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesSortCase
+import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ProgressMoviesMainViewModel @Inject constructor(
+  private val itemsCase: ProgressMoviesItemsCase,
+  private val sortCase: ProgressMoviesSortCase,
+  private val pinnedCase: ProgressMoviesPinnedCase,
   private val imagesProvider: MovieImagesProvider,
   private val userTraktManager: UserTraktManager,
   private val ratingsRepository: RatingsRepository,
@@ -33,36 +41,38 @@ class ProgressMoviesMainViewModel @Inject constructor(
 ) : BaseViewModel<ProgressMoviesMainUiModel>() {
 
   private val language by lazy { translationsRepository.getLanguage() }
+  private var searchQuery: String? = null
   var isQuickRateEnabled = false
 
+  private val _itemsLiveData = MutableLiveData<Pair<List<ProgressMovieListItem.MovieItem>, ActionEvent<Boolean>>>()
+  private val _sortLiveData = MutableLiveData<ActionEvent<SortOrder>>()
+
+  val itemsLiveData: LiveData<Pair<List<ProgressMovieListItem.MovieItem>, ActionEvent<Boolean>>> get() = _itemsLiveData
+  val sortLiveData: LiveData<ActionEvent<SortOrder>> get() = _sortLiveData
+
   fun handleParentAction(model: ProgressMoviesUiModel) {
-    val allItems = model.items
-      ?.toMutableList()
-      ?.filter { it.movie.released == null || it.movie.hasAired() }
-      ?.sortedByDescending { !it.isHeader() && it.isPinned }
-      ?: mutableListOf()
-
-    uiState = ProgressMoviesMainUiModel(
-      items = allItems,
-      isSearching = model.isSearching,
-      sortOrder = model.sortOrder,
-      resetScroll = model.resetScroll
-    )
-  }
-
-  fun findMissingTranslation(item: ProgressMovieItem) {
-    if (item.movieTranslation != null || language == Config.DEFAULT_LANGUAGE) return
-    viewModelScope.launch {
-      try {
-        val translation = translationsRepository.loadTranslation(item.movie, language)
-        updateItem(item.copy(movieTranslation = translation))
-      } catch (error: Throwable) {
-        Logger.record(error, "Source" to "${ProgressMoviesMainViewModel::class.simpleName}::findMissingTranslation()")
-      }
+    if (this.searchQuery != model.searchQuery) {
+      this.searchQuery = model.searchQuery
+      loadItems(resetScroll = model.searchQuery.isNullOrBlank())
     }
   }
 
-  fun findMissingImage(item: ProgressMovieItem, force: Boolean) {
+  private fun loadItems(resetScroll: Boolean = false) {
+    viewModelScope.launch {
+      val items = itemsCase.loadItems(searchQuery ?: "")
+      _itemsLiveData.value = items to ActionEvent(resetScroll)
+    }
+  }
+
+  fun loadSortOrder() {
+    if (_itemsLiveData.value?.first?.isEmpty() == true) return
+    viewModelScope.launch {
+      val sortOrder = sortCase.loadSortOrder()
+      _sortLiveData.value = ActionEvent(sortOrder)
+    }
+  }
+
+  fun findMissingImage(item: ProgressMovieListItem.MovieItem, force: Boolean) {
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -75,19 +85,43 @@ class ProgressMoviesMainViewModel @Inject constructor(
     }
   }
 
+  fun findMissingTranslation(item: ProgressMovieListItem.MovieItem) {
+    if (item.translation != null || language == Config.DEFAULT_LANGUAGE) return
+    viewModelScope.launch {
+      try {
+        val translation = translationsRepository.loadTranslation(item.movie, language)
+        updateItem(item.copy(translation = translation))
+      } catch (error: Throwable) {
+        Logger.record(error, "Source" to "ProgressMoviesMainViewModel::findMissingTranslation()")
+      }
+    }
+  }
+
+  fun setSortOrder(sortOrder: SortOrder) {
+    viewModelScope.launch {
+      sortCase.setSortOrder(sortOrder)
+      loadItems(resetScroll = true)
+    }
+  }
+
+  fun togglePinItem(item: ProgressMovieListItem.MovieItem) {
+    if (item.isPinned) {
+      pinnedCase.removePinnedItem(item.movie)
+    } else {
+      pinnedCase.addPinnedItem(item.movie)
+    }
+    loadItems(resetScroll = item.isPinned)
+  }
+
   fun addRating(rating: Int, movie: Movie) {
     viewModelScope.launch {
       try {
         val token = userTraktManager.checkAuthorization().token
-        uiState = ProgressMoviesMainUiModel(ratingState = RatingState(rateLoading = true))
         ratingsRepository.movies.addRating(token, movie, rating)
         _messageLiveData.value = MessageEvent.info(R.string.textRateSaved)
-        uiState = ProgressMoviesMainUiModel(ratingState = RatingState(userRating = TraktRating(movie.ids.trakt, rating)))
         Analytics.logMovieRated(movie, rating)
       } catch (error: Throwable) {
         _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
-      } finally {
-        uiState = ProgressMoviesMainUiModel(ratingState = RatingState(rateLoading = false))
       }
     }
   }
@@ -101,9 +135,9 @@ class ProgressMoviesMainViewModel @Inject constructor(
     }
   }
 
-  private fun updateItem(new: ProgressMovieItem) {
-    val currentItems = uiState?.items?.toMutableList()
-    currentItems?.findReplace(new) { it.isSameAs(new) }
-    uiState = ProgressMoviesMainUiModel(items = currentItems)
+  private fun updateItem(new: ProgressMovieListItem.MovieItem) {
+    val currentItems = _itemsLiveData.value?.first?.toMutableList() ?: mutableListOf()
+    currentItems.findReplace(new) { it.isSameAs(new) }
+    _itemsLiveData.value = currentItems to ActionEvent(false)
   }
 }

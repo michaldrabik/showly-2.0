@@ -12,12 +12,12 @@ import com.michaldrabik.ui_base.utilities.extensions.addRipple
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
-import com.michaldrabik.ui_progress_movies.ProgressMovieItem
 import com.michaldrabik.ui_progress_movies.R
+import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
 import kotlinx.android.synthetic.main.view_progress_movies_calendar_item.view.*
 
 @SuppressLint("SetTextI18n")
-class ProgressMoviesCalendarItemView : MovieView<ProgressMovieItem> {
+class CalendarMoviesItemView : MovieView<CalendarMovieListItem.MovieItem> {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -31,26 +31,26 @@ class ProgressMoviesCalendarItemView : MovieView<ProgressMovieItem> {
     imageLoadCompleteListener = { loadTranslation() }
   }
 
-  private lateinit var item: ProgressMovieItem
+  private lateinit var item: CalendarMovieListItem.MovieItem
 
   override val imageView: ImageView = progressMovieCalendarItemImage
   override val placeholderView: ImageView = progressMovieCalendarItemPlaceholder
 
-  override fun bind(item: ProgressMovieItem) {
+  override fun bind(item: CalendarMovieListItem.MovieItem) {
     this.item = item
     clear()
 
     progressMovieCalendarItemTitle.text =
-      if (item.movieTranslation?.title.isNullOrBlank()) item.movie.title
-      else item.movieTranslation?.title
+      if (item.translation?.title.isNullOrBlank()) item.movie.title
+      else item.translation?.title
 
     progressMovieCalendarItemSubtitle.text =
       when {
-        item.movieTranslation?.overview.isNullOrBlank() -> {
+        item.translation?.overview.isNullOrBlank() -> {
           if (item.movie.overview.isBlank()) context.getString(R.string.textNoDescription)
           else item.movie.overview
         }
-        else -> item.movieTranslation?.overview
+        else -> item.translation?.overview
       }
 
     if (item.movie.released != null) {
@@ -63,7 +63,7 @@ class ProgressMoviesCalendarItemView : MovieView<ProgressMovieItem> {
   }
 
   private fun loadTranslation() {
-    if (item.movieTranslation == null) {
+    if (item.translation == null) {
       missingTranslationListener?.invoke(item)
     }
   }

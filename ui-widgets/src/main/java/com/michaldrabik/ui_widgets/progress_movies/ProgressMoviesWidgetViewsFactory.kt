@@ -12,30 +12,23 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.michaldrabik.repository.SettingsRepository
-import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.replace
 import com.michaldrabik.ui_model.ImageStatus
-import com.michaldrabik.ui_model.ImageType
-import com.michaldrabik.ui_progress_movies.ProgressMovieItem
-import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesLoadItemsCase
-import com.michaldrabik.ui_progress_movies.main.cases.ProgressMoviesSortOrderCase
+import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesItemsCase
+import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_MOVIE_ID
 import com.michaldrabik.ui_widgets.R
 import com.michaldrabik.ui_widgets.progress_movies.ProgressMoviesWidgetProvider.Companion.EXTRA_CHECK_MOVIE_ID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.runBlocking
 
 class ProgressMoviesWidgetViewsFactory(
   private val context: Context,
-  private val loadItemsCase: ProgressMoviesLoadItemsCase,
-  private val sortOrderCase: ProgressMoviesSortOrderCase,
-  private val imagesProvider: MovieImagesProvider,
+  private val loadItemsCase: ProgressMoviesItemsCase,
   private val settingsRepository: SettingsRepository,
 ) : RemoteViewsService.RemoteViewsFactory, CoroutineScope {
 
@@ -44,42 +37,24 @@ class ProgressMoviesWidgetViewsFactory(
   private val imageCorner by lazy { context.dimenToPx(R.dimen.mediaTileCorner) }
   private val imageWidth by lazy { context.dimenToPx(R.dimen.widgetImageWidth) }
   private val imageHeight by lazy { context.dimenToPx(R.dimen.widgetImageHeight) }
-  private val adapterItems by lazy { mutableListOf<ProgressMovieItem>() }
+  private val adapterItems by lazy { mutableListOf<ProgressMovieListItem.MovieItem>() }
 
-  private fun loadData() {
-    runBlocking {
-      val movies = loadItemsCase.loadWatchlistMovies()
-        .filter { it.released == null || it.hasAired() }
-      val items = movies.map { m ->
-        async {
-          val item = loadItemsCase.loadProgressItem(m)
-          try {
-            val image = imagesProvider.loadRemoteImage(m, ImageType.POSTER)
-            item.copy(image = image)
-          } catch (error: Throwable) {
-            item
-          }
-        }
-      }.awaitAll()
-
-      val sortOrder = sortOrderCase.loadSortOrder()
-      val allItems = loadItemsCase.prepareItems(items, "", sortOrder).toMutableList()
-
-      adapterItems.replace(allItems)
-    }
+  private fun loadData() = runBlocking {
+    val items = loadItemsCase.loadItems("")
+    adapterItems.replace(items)
   }
 
   override fun onCreate() = loadData()
 
   override fun getViewAt(position: Int) = createItemRemoteView(adapterItems[position])
 
-  private fun createItemRemoteView(item: ProgressMovieItem): RemoteViews {
-    val translatedTitle = item.movieTranslation?.title
+  private fun createItemRemoteView(item: ProgressMovieListItem.MovieItem): RemoteViews {
+    val translatedTitle = item.translation?.title
     val title =
       if (translatedTitle?.isBlank() == false) translatedTitle
       else item.movie.title
 
-    val translatedDescription = item.movieTranslation?.overview
+    val translatedDescription = item.translation?.overview
     val description =
       if (translatedDescription?.isBlank() == false) translatedDescription
       else item.movie.overview

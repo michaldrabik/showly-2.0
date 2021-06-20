@@ -23,8 +23,20 @@
     />
 
   <include
-    android:id="@+id/progressMoviesCalendarEmptyView"
-    layout="@layout/layout_calendar_movies_empty"
+    android:id="@+id/progressMoviesCalendarEmptyRecentsView"
+    layout="@layout/layout_calendar_movies_recents_empty"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginStart="@dimen/spaceBig"
+    android:layout_marginEnd="@dimen/spaceBig"
+    android:visibility="gone"
+    tools:visibility="visible"
+    />
+
+  <include
+    android:id="@+id/progressMoviesCalendarEmptyFutureView"
+    layout="@layout/layout_calendar_movies_future_empty"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
