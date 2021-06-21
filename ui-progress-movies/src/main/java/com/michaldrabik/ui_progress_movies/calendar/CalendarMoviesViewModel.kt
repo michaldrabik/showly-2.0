@@ -32,15 +32,26 @@ class CalendarMoviesViewModel @Inject constructor(
   private val language by lazy { translationsRepository.getLanguage() }
   private var mode = CalendarMode.PRESENT_FUTURE
   private var searchQuery: String? = null
+  private var timestamp = 0L
   var isQuickRateEnabled = false
 
   private val _itemsLiveData = MutableLiveData<Pair<CalendarMode, List<CalendarMovieListItem>>>()
   val itemsLiveData: LiveData<Pair<CalendarMode, List<CalendarMovieListItem>>> get() = _itemsLiveData
 
   fun handleParentAction(model: ProgressMoviesMainUiModel) {
-    if (this.searchQuery != model.searchQuery) {
-      this.searchQuery = model.searchQuery
-      loadItems()
+    when {
+      this.timestamp != model.timestamp && model.timestamp != 0L -> {
+        this.timestamp = model.timestamp ?: 0L
+        loadItems()
+      }
+      this.mode != model.calendarMode -> {
+        this.mode = model.calendarMode ?: CalendarMode.PRESENT_FUTURE
+        loadItems()
+      }
+      this.searchQuery != model.searchQuery -> {
+        this.searchQuery = model.searchQuery
+        loadItems()
+      }
     }
   }
 

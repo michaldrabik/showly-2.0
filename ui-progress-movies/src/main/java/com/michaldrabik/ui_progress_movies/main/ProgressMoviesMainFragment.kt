@@ -33,6 +33,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_progress_movies.R
+import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_movies.*
 
@@ -43,11 +44,16 @@ class ProgressMoviesMainFragment :
   OnTabReselectedListener,
   OnTraktSyncListener {
 
+  companion object {
+    private const val TRANSLATION_DURATION = 225L
+  }
+
   override val viewModel by viewModels<ProgressMoviesMainViewModel>()
 
   private var searchViewTranslation = 0F
   private var tabsTranslation = 0F
   private var sortIconTranslation = 0F
+  private var calendarIconTranslation = 0F
   private var currentPage = 0
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +62,7 @@ class ProgressMoviesMainFragment :
       searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
       tabsTranslation = it.getFloat("ARG_TABS_POSITION")
       sortIconTranslation = it.getFloat("ARG_ICON_POSITION")
+      calendarIconTranslation = it.getFloat("ARG_RECENTS_ICON_POSITION")
       currentPage = it.getInt("ARG_PAGE")
     }
   }
@@ -78,6 +85,7 @@ class ProgressMoviesMainFragment :
     outState.putFloat("ARG_SEARCH_POSITION", progressMoviesSearchView?.translationY ?: 0F)
     outState.putFloat("ARG_TABS_POSITION", progressMoviesTabs?.translationY ?: 0F)
     outState.putFloat("ARG_ICON_POSITION", progressMoviesSortIcon?.translationY ?: 0F)
+    outState.putFloat("ARG_RECENTS_ICON_POSITION", progressMoviesCalendarIcon?.translationY ?: 0F)
     outState.putInt("ARG_PAGE", progressMoviesPager?.currentItem ?: 0)
   }
 
@@ -90,6 +98,7 @@ class ProgressMoviesMainFragment :
     tabsTranslation = progressMoviesTabs.translationY
     searchViewTranslation = progressMoviesSearchView.translationY
     sortIconTranslation = progressMoviesSortIcon.translationY
+    calendarIconTranslation = progressMoviesCalendarIcon.translationY
     super.onPause()
   }
 
@@ -102,6 +111,15 @@ class ProgressMoviesMainFragment :
     with(progressMoviesSortIcon) {
       visibleIf(currentPage == 0)
       onClick { childFragmentManager.fragments.forEach { (it as? OnSortClickListener)?.onSortClick() } }
+    }
+    with(progressMoviesCalendarIcon) {
+      visibleIf(currentPage == 1)
+      onClick {
+        exitSearch()
+        onScrollReset()
+        resetTranslations()
+        viewModel.toggleCalendarMode()
+      }
     }
     progressMoviesSearchView.run {
       hint = getString(R.string.textSearchFor)
@@ -125,6 +143,7 @@ class ProgressMoviesMainFragment :
     progressMoviesModeTabs.translationY = tabsTranslation
     progressMoviesSearchView.translationY = searchViewTranslation
     progressMoviesSortIcon.translationY = sortIconTranslation
+    progressMoviesCalendarIcon.translationY = calendarIconTranslation
   }
 
   private fun setupPager() {
@@ -146,6 +165,8 @@ class ProgressMoviesMainFragment :
       (progressMoviesModeTabs.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
       (progressMoviesSortIcon.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchViewPadding))
+      (progressMoviesCalendarIcon.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchViewPadding))
     }
   }
@@ -221,33 +242,26 @@ class ProgressMoviesMainFragment :
   }
 
   override fun onTabReselected() {
-    progressMoviesSearchView.translationY = 0F
-    progressMoviesTabs.translationY = 0F
-    progressMoviesModeTabs.translationY = 0F
-    progressMoviesSortIcon.translationY = 0F
+    resetTranslations(duration = 0)
     progressMoviesPager.nextPage()
-    childFragmentManager.fragments.forEach {
-      (it as? OnScrollResetListener)?.onScrollReset()
-    }
+    onScrollReset()
   }
 
-  fun resetTranslations() {
-    progressMoviesSearchView.animate().translationY(0F).start()
-    progressMoviesTabs.animate().translationY(0F).start()
-    progressMoviesModeTabs.animate().translationY(0F).start()
-    progressMoviesSortIcon.animate().translationY(0F).start()
+  fun resetTranslations(duration: Long = TRANSLATION_DURATION) {
+    progressMoviesSearchView.animate().translationY(0F).setDuration(duration).start()
+    progressMoviesTabs.animate().translationY(0F).setDuration(duration).start()
+    progressMoviesModeTabs.animate().translationY(0F).setDuration(duration).start()
+    progressMoviesSortIcon.animate().translationY(0F).setDuration(duration).start()
+    progressMoviesCalendarIcon.animate().translationY(0F).setDuration(duration).start()
   }
+
+  private fun onScrollReset() =
+    childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
 
   private fun render(uiModel: ProgressMoviesMainUiModel) {
-    uiModel.run {
-//      items?.let {
-//        progressMoviesModeTabs.isEnabled = true
-//        progressMoviesSearchView.isClickable = it.isNotEmpty() || isSearching == true
-//        progressMoviesSortIcon.visibleIf(it.isNotEmpty() && currentPage == 0)
-//        if (it.isNotEmpty() && sortOrder != null) {
-//          progressMoviesSortIcon.onClick { openSortOrderDialog(sortOrder) }
-//        }
-//      }
+    when (uiModel.calendarMode) {
+      CalendarMode.PRESENT_FUTURE -> progressMoviesCalendarIcon.setImageResource(R.drawable.ic_history)
+      CalendarMode.RECENTS -> progressMoviesCalendarIcon.setImageResource(R.drawable.ic_calendar)
     }
   }
 
@@ -256,20 +270,10 @@ class ProgressMoviesMainFragment :
       if (currentPage == position) return
 
       progressMoviesSortIcon.fadeIf(position == 0, duration = 150)
+      progressMoviesCalendarIcon.fadeIf(position == 1, duration = 150)
       if (progressMoviesTabs.translationY != 0F) {
-        val duration = 225L
-        progressMoviesSearchView.animate().translationY(0F).setDuration(duration).start()
-        progressMoviesTabs.animate().translationY(0F).setDuration(duration).start()
-        progressMoviesModeTabs.animate().translationY(0F).setDuration(duration).start()
-        progressMoviesSortIcon.animate().translationY(0F).setDuration(duration).start()
-        requireView().postDelayed(
-          {
-            childFragmentManager.fragments.forEach {
-              (it as? OnScrollResetListener)?.onScrollReset()
-            }
-          },
-          duration
-        )
+        resetTranslations()
+        requireView().postDelayed({ onScrollReset() }, TRANSLATION_DURATION)
       }
 
       currentPage = position

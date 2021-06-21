@@ -43,17 +43,19 @@ class CalendarViewModel @Inject constructor(
   val itemsLiveData: LiveData<Pair<CalendarMode, List<CalendarListItem>>> get() = _itemsLiveData
 
   fun handleParentAction(model: ProgressMainUiModel) {
-    if (this.timestamp != model.timestamp && model.timestamp != 0L) {
-      this.timestamp = model.timestamp ?: 0L
-      loadItems()
-    }
-    if (this.mode != model.calendarMode) {
-      this.mode = model.calendarMode ?: CalendarMode.PRESENT_FUTURE
-      loadItems()
-    }
-    if (this.searchQuery != model.searchQuery) {
-      this.searchQuery = model.searchQuery
-      loadItems()
+    when {
+      this.timestamp != model.timestamp && model.timestamp != 0L -> {
+        this.timestamp = model.timestamp ?: 0L
+        loadItems()
+      }
+      this.mode != model.calendarMode -> {
+        this.mode = model.calendarMode ?: CalendarMode.PRESENT_FUTURE
+        loadItems()
+      }
+      this.searchQuery != model.searchQuery -> {
+        this.searchQuery = model.searchQuery
+        loadItems()
+      }
     }
   }
 

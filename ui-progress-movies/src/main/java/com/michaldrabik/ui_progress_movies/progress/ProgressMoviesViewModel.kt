@@ -42,6 +42,7 @@ class ProgressMoviesViewModel @Inject constructor(
 
   private val language by lazy { translationsRepository.getLanguage() }
   private var searchQuery: String? = null
+  private var timestamp = 0L
   var isQuickRateEnabled = false
 
   private val _itemsLiveData = MutableLiveData<Pair<List<ProgressMovieListItem.MovieItem>, ActionEvent<Boolean>>>()
@@ -51,9 +52,15 @@ class ProgressMoviesViewModel @Inject constructor(
   val sortLiveData: LiveData<ActionEvent<SortOrder>> get() = _sortLiveData
 
   fun handleParentAction(model: ProgressMoviesMainUiModel) {
-    if (this.searchQuery != model.searchQuery) {
-      this.searchQuery = model.searchQuery
-      loadItems(resetScroll = model.searchQuery.isNullOrBlank())
+    when {
+      this.timestamp != model.timestamp && model.timestamp != 0L -> {
+        this.timestamp = model.timestamp ?: 0L
+        loadItems()
+      }
+      this.searchQuery != model.searchQuery -> {
+        this.searchQuery = model.searchQuery
+        loadItems(resetScroll = model.searchQuery.isNullOrBlank())
+      }
     }
   }
 

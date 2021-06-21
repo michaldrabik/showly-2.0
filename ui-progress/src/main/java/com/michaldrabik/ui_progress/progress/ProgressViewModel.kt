@@ -53,13 +53,15 @@ class ProgressViewModel @Inject constructor(
   val sortLiveData: LiveData<ActionEvent<SortOrder>> get() = _sortLiveData
 
   fun handleParentAction(model: ProgressMainUiModel) {
-    if (this.timestamp != model.timestamp && model.timestamp != 0L) {
-      this.timestamp = model.timestamp ?: 0L
-      loadItems()
-    }
-    if (this.searchQuery != model.searchQuery) {
-      this.searchQuery = model.searchQuery
-      loadItems(resetScroll = model.searchQuery.isNullOrBlank())
+    when {
+      this.timestamp != model.timestamp && model.timestamp != 0L -> {
+        this.timestamp = model.timestamp ?: 0L
+        loadItems()
+      }
+      this.searchQuery != model.searchQuery -> {
+        this.searchQuery = model.searchQuery
+        loadItems(resetScroll = model.searchQuery.isNullOrBlank())
+      }
     }
   }
 
