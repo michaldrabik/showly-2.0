@@ -1,0 +1,10 @@
+* Progress list items will now use aired episodes count as total number.
+
+* Calendar will now display all upcoming episodes and not only the next one.
+
+* Added new Calendar section that will display recently aired episodes dating 3 months back.
+
+* Added option to not load streaming services information at all.
+
+Do you enjoy Showly app?
+Become Premium subscriber and gain access to cool bonus features! Check settings to learn more!

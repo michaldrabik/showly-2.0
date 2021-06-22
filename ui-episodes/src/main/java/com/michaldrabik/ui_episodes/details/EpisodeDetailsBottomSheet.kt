@@ -277,7 +277,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         getTabAt(index)?.select()
         addOnTabSelectedListener(tabSelectedListener)
       }
-      fadeIf(episodes.isNotEmpty(), startDelay = 100)
+      fadeIf(episodes.isNotEmpty(), duration = 200, startDelay = 100)
     }
   }
 

@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.ScrollView
-import com.michaldrabik.common.Config
 import com.michaldrabik.showly2.BuildConfig
 import com.michaldrabik.showly2.R
 import kotlinx.android.synthetic.main.view_whats_new.view.*
@@ -18,7 +17,12 @@ class WhatsNewView : ScrollView {
   init {
     inflate(context, R.layout.view_whats_new, this)
     layoutParams = LayoutParams(MATCH_PARENT, MATCH_PARENT)
+
+    val whatsNew = context.assets.open("release_notes.txt")
+      .bufferedReader()
+      .use { it.readText() }
+
+    viewWhatsNewMessage.text = whatsNew
     viewWhatsNewSubtitle.text = context.getString(R.string.textWhatsNewSubtitle, BuildConfig.VERSION_NAME)
-    viewWhatsNewMessage.text = Config.WHATS_NEW_TEXT
   }
 }
