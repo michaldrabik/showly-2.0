@@ -29,6 +29,7 @@ class SettingsRepository @Inject constructor(
     private const val KEY_COUNTRY = "KEY_COUNTRY"
     private const val KEY_MOVIES_ENABLED = "KEY_MOVIES_ENABLED"
     private const val KEY_NEWS_ENABLED = "KEY_NEWS_ENABLED"
+    private const val KEY_STREAMINGS_ENABLED = "KEY_STREAMINGS_ENABLED"
     private const val KEY_MODE = "KEY_MOVIES_MODE"
     private const val KEY_THEME = "KEY_THEME"
     private const val KEY_THEME_WIDGET = "KEY_THEME_WIDGET"
@@ -64,6 +65,10 @@ class SettingsRepository @Inject constructor(
   var isPremium: Boolean
     get() = miscPreferences.getBoolean(KEY_PREMIUM, false)
     set(value) = miscPreferences.edit(true) { putBoolean(KEY_PREMIUM, value) }
+
+  var streamingsEnabled: Boolean
+    get() = miscPreferences.getBoolean(KEY_STREAMINGS_ENABLED, true)
+    set(value) = miscPreferences.edit(true) { putBoolean(KEY_STREAMINGS_ENABLED, value) }
 
   var isMoviesEnabled: Boolean
     get() = miscPreferences.getBoolean(KEY_MOVIES_ENABLED, true)

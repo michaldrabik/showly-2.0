@@ -11,7 +11,7 @@
   android:overScrollMode="never"
   android:scrollbars="none"
   tools:background="@color/colorBackground"
-  tools:layout_marginTop="-2200dp"
+  tools:layout_marginTop="-700dp"
   tools:theme="@style/AppTheme"
   >
 
@@ -347,7 +347,7 @@
     <LinearLayout
       android:id="@+id/settingsNewsEnabled"
       style="@style/Settings.ItemLayoutNoRipple"
-      app:layout_constraintBottom_toTopOf="@+id/settingsIncludeSpecials"
+      app:layout_constraintBottom_toTopOf="@+id/settingsStreamings"
       app:layout_constraintEnd_toStartOf="@id/settingsNewsEnabledSwitch"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsMoviesEnabled"
@@ -529,7 +529,7 @@
       app:layout_constraintBottom_toTopOf="@+id/settingsIncludeArchivedStats"
       app:layout_constraintEnd_toStartOf="@id/settingsIncludeSpecialsSwitch"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsMoviesEnabled"
+      app:layout_constraintTop_toBottomOf="@id/settingsStreamings"
       >
 
       <TextView
@@ -553,6 +553,38 @@
       app:layout_constraintBottom_toBottomOf="@id/settingsIncludeSpecials"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/settingsIncludeSpecials"
+      />
+
+    <LinearLayout
+      android:id="@+id/settingsStreamings"
+      style="@style/Settings.ItemLayout"
+      app:layout_constraintBottom_toTopOf="@+id/settingsIncludeSpecials"
+      app:layout_constraintEnd_toStartOf="@id/settingsStreamingsSwitch"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/settingsNewsEnabled"
+      >
+
+      <TextView
+        style="@style/Settings.Title"
+        android:text="@string/textSettingsStreamingServicesTitle"
+        />
+
+      <TextView
+        style="@style/Settings.Summary"
+        android:text="@string/textSettingsStreamingServicesMessage"
+        />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+      android:id="@+id/settingsStreamingsSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:checked="true"
+      app:layout_constraintBottom_toBottomOf="@id/settingsStreamings"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/settingsStreamings"
       />
 
     <androidx.appcompat.widget.SwitchCompat

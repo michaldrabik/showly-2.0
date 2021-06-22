@@ -17,12 +17,18 @@ class ShowDetailsStreamingCase @Inject constructor(
 ) {
 
   suspend fun getLocalStreamingServices(show: Show): List<StreamingService> {
+    if (!settingsRepository.streamingsEnabled) {
+      return emptyList()
+    }
     val country = AppCountry.fromCode(settingsRepository.country)
     val localData = streamingsRepository.getLocalStreamings(show, country.code)
     return localData.first
   }
 
   suspend fun loadStreamingServices(show: Show): List<StreamingService> {
+    if (!settingsRepository.streamingsEnabled) {
+      return emptyList()
+    }
     val country = AppCountry.fromCode(settingsRepository.country)
     val (localItems, timestamp) = streamingsRepository.getLocalStreamings(show, country.code)
     if (timestamp != null && timestamp.plusSeconds(ConfigVariant.STREAMINGS_CACHE_DURATION / 1000).isAfter(nowUtc())) {

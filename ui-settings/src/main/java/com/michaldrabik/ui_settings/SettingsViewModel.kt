@@ -149,6 +149,14 @@ class SettingsViewModel @Inject constructor(
     Analytics.logSettingsNewsEnabled(enable)
   }
 
+  fun enableStreamings(enable: Boolean) {
+    viewModelScope.launch {
+      mainCase.enableStreamings(enable)
+      refreshSettings()
+    }
+    Analytics.logSettingsStreamingsEnabled(enable)
+  }
+
   fun enableWidgetsTitles(enable: Boolean, context: Context) {
     viewModelScope.launch {
       mainCase.enableWidgetsTitles(enable, context)
@@ -272,6 +280,7 @@ class SettingsViewModel @Inject constructor(
       dateFormat = mainCase.getDateFormat(),
       moviesEnabled = mainCase.isMoviesEnabled(),
       newsEnabled = mainCase.isNewsEnabled(),
+      streamingsEnabled = mainCase.isStreamingsEnabled(),
       isSignedInTrakt = traktCase.isTraktAuthorized(),
       isPremium = mainCase.isPremium(),
       traktUsername = traktCase.getTraktUsername(),

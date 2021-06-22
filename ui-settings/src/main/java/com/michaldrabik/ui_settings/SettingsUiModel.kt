@@ -23,6 +23,7 @@ data class SettingsUiModel(
   val userId: String? = null,
   val moviesEnabled: Boolean? = null,
   val newsEnabled: Boolean? = null,
+  val streamingsEnabled: Boolean? = null,
   val restartApp: Boolean? = null
 ) : UiModel() {
 
@@ -42,6 +43,7 @@ data class SettingsUiModel(
       userId = newModel.userId ?: userId,
       moviesEnabled = newModel.moviesEnabled ?: moviesEnabled,
       newsEnabled = newModel.newsEnabled ?: newsEnabled,
+      streamingsEnabled = newModel.streamingsEnabled ?: streamingsEnabled,
       restartApp = newModel.restartApp ?: restartApp
     )
 }

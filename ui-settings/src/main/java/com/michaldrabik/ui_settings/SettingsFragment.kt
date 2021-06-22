@@ -88,7 +88,14 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
   private fun render(uiModel: SettingsUiModel) {
     uiModel.run {
-      settings?.let { renderSettings(it, moviesEnabled ?: true, newsEnabled ?: false) }
+      settings?.let {
+        renderSettings(
+          it,
+          moviesEnabled ?: true,
+          newsEnabled ?: false,
+          streamingsEnabled ?: true
+        )
+      }
       language?.let { renderLanguage(it) }
       theme?.let { renderTheme(it) }
       themeWidgets?.let { renderWidgetsTheme(it) }
@@ -168,6 +175,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settings: Settings,
     moviesEnabled: Boolean,
     newsEnabled: Boolean,
+    streamingsEnabled: Boolean,
   ) {
     settingsContent.fadeIn(200)
     settingsRecentShowsAmount.onClick { showRecentShowsDialog(settings) }
@@ -230,6 +238,11 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     settingsNewsEnabledSwitch
       .setCheckedSilent(newsEnabled) { _, isChecked ->
         viewModel.enableNews(isChecked)
+      }
+
+    settingsStreamingsSwitch
+      .setCheckedSilent(streamingsEnabled) { _, isChecked ->
+        viewModel.enableStreamings(isChecked)
       }
 
     settingsWidgetsLabelsSwitch

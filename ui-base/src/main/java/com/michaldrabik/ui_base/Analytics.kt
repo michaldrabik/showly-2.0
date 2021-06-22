@@ -286,6 +286,12 @@ object Analytics {
     }
   }
 
+  fun logSettingsStreamingsEnabled(enabled: Boolean) {
+    firebaseAnalytics.logEvent("settings_streamings") {
+      param("enabled", enabled.toString())
+    }
+  }
+
   fun logSettingsWidgetsTitlesEnabled(enabled: Boolean) {
     firebaseAnalytics.logEvent("settings_widgets_titles") {
       param("enabled", enabled.toString())

@@ -144,6 +144,14 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
+  fun isStreamingsEnabled() = settingsRepository.streamingsEnabled
+
+  fun enableStreamings(enable: Boolean) {
+    settingsRepository.run {
+      streamingsEnabled = enable
+    }
+  }
+
   suspend fun enableWidgetsTitles(enable: Boolean, context: Context) {
     val settings = settingsRepository.load()
     settings.let {
