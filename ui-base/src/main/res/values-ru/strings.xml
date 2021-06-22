@@ -60,10 +60,15 @@
   <string name="textTomorrow">Завтра</string>
   <string name="textThisWeek">На этой неделе</string>
   <string name="textNextWeek">Следующая неделя</string>
+  <string name="textThisMonth">В этом месяце</string>
   <string name="textNextMonth">Следующий месяц</string>
   <string name="textThisYear">В этом году</string>
   <string name="textNextYear">В следующем году</string>
   <string name="textLater">Позже</string>
+  <string name="textYesterday">Вчера</string>
+  <string name="textLast7Days">Последние 7 дней</string>
+  <string name="textLast30Days">Последние 30 дней</string>
+  <string name="textLast90Days">Последние 90 дней</string>
   <string name="textNewEpisodeAvailable">Новый эпизод уже доступен!</string>
   <string name="textNewEpisodeAvailableSoon">Новый эпизод скоро будет доступен!</string>
   <string name="textNewSeasonAvailable">Новый сезон уже доступен!</string>
