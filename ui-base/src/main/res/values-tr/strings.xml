@@ -52,10 +52,15 @@
   <string name="textTomorrow">Yarın</string>
   <string name="textThisWeek">Bu Hafta</string>
   <string name="textNextWeek">Gelecek Hafta</string>
+  <string name="textThisMonth">Bu Ay</string>
   <string name="textNextMonth">Gelecek Ay</string>
   <string name="textThisYear">Bu Yıl</string>
   <string name="textNextYear">Gelecek Yıl</string>
   <string name="textLater">Daha sonra</string>
+  <string name="textYesterday">Dün</string>
+  <string name="textLast7Days">Son 7 Gün</string>
+  <string name="textLast30Days">Son 30 Gün</string>
+  <string name="textLast90Days">Son 90 Gün</string>
   <string name="textNewEpisodeAvailable">Yeni bölüm yayınlandı!</string>
   <string name="textNewEpisodeAvailableSoon">Yeni bölüm yakında yayınlanacak!</string>
   <string name="textNewSeasonAvailable">Yeni sezon yayınlandı!</string>

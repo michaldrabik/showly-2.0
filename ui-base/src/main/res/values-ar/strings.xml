@@ -68,10 +68,15 @@
   <string name="textTomorrow">غداً</string>
   <string name="textThisWeek">هذا الإسبوع</string>
   <string name="textNextWeek">الإسبوع القادم</string>
+  <string name="textThisMonth">هذا الشهر</string>
   <string name="textNextMonth">الشهر القادم</string>
   <string name="textThisYear">هذه السنة</string>
   <string name="textNextYear">السنة القادمة</string>
   <string name="textLater">لاحقاً</string>
+  <string name="textYesterday">أمس</string>
+  <string name="textLast7Days">آخر 7 أيام</string>
+  <string name="textLast30Days">آخر 30 يوم</string>
+  <string name="textLast90Days">آخر 90 يوم</string>
   <string name="textNewEpisodeAvailable">توفرت حلقة جديدة!</string>
   <string name="textNewEpisodeAvailableSoon">ستتوفر حلقة جديدة قريباً!</string>
   <string name="textNewSeasonAvailable">توفر موسم جديد!</string>

@@ -3,6 +3,7 @@
   <string name="tabCalendar">Календарь</string>
   <string name="tabProgress">Прогресс</string>
   <string name="textCalendarEmpty">Нет новых эпизодов.</string>
+  <string name="textRecentsEmpty">Недавно вышедших эпизодов нет.</string>
   <string name="textWatchlistIncoming">Предстоящие</string>
   <string name="textDiscoverShows">Найти сериалы</string>
   <string name="textEpisodeInfo">Подробнее</string>

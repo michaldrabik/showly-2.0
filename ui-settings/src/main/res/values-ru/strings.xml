@@ -66,6 +66,8 @@
   <string name="textSettingsWidgetsLabelsTitle">Названия</string>
   <string name="textSettingsWidgetsLabelsSummary">Отображение полупрозрачных заголовков виджетов.</string>
   <string name="textSettingsStreamingsDisclaimer">Данные сервисов вещания предоставляются</string>
+  <string name="textSettingsStreamingServicesTitle">Стриминговые сервисы</string>
+  <string name="textSettingsStreamingServicesMessage">Отображать данные потоковых служб.</string>
   <string name="textPremium">Showly Premium</string>
   <string name="textPremiumAd">Станьте спонсором и получите доступ к бонусным функциям! Нажмите, чтобы увидеть больше.</string>
   <string name="textThemeDark">Темная</string>

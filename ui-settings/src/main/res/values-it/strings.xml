@@ -66,6 +66,8 @@
   <string name="textSettingsWidgetsLabelsTitle">Titoli</string>
   <string name="textSettingsWidgetsLabelsSummary">Mostra i titoli semitrasparenti per le sezioni dei widget.</string>
   <string name="textSettingsStreamingsDisclaimer">I dati dei servizi di streaming sono forniti da</string>
+  <string name="textSettingsStreamingServicesTitle">Servizi di streaming</string>
+  <string name="textSettingsStreamingServicesMessage">Mostra dati sui servizi di streaming.</string>
   <string name="textPremium">Showly Premium</string>
   <string name="textPremiumAd">Diventa un sostenitore e ottieni l\'accesso alle funzionalità bonus! Clicca per saperne di più.</string>
   <string name="textThemeDark">Scuro</string>
