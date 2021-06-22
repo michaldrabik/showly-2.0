@@ -3,6 +3,7 @@
   <string name="tabCalendar">Kalender</string>
   <string name="tabProgress">Fortschritt</string>
   <string name="textCalendarEmpty">Es gibt keine neuen Folgen.</string>
+  <string name="textRecentsEmpty">Es gibt keine kürzlich ausgestrahlten Folgen.</string>
   <string name="textWatchlistIncoming">Demnächst</string>
   <string name="textDiscoverShows">Shows entdecken</string>
   <string name="textEpisodeInfo">Details</string>
