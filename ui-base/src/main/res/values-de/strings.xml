@@ -52,10 +52,15 @@
   <string name="textTomorrow">Morgen</string>
   <string name="textThisWeek">Diese Woche</string>
   <string name="textNextWeek">Nächste Woche</string>
+  <string name="textThisMonth">Diesen Monat</string>
   <string name="textNextMonth">Nächsten Monat</string>
   <string name="textThisYear">Dieses Jahr</string>
   <string name="textNextYear">Nächstes Jahr</string>
   <string name="textLater">Später</string>
+  <string name="textYesterday">Gestern</string>
+  <string name="textLast7Days">Letzten 7 Tage</string>
+  <string name="textLast30Days">Letzten 30 Tage</string>
+  <string name="textLast90Days">Letzten 90 Tage</string>
   <string name="textNewEpisodeAvailable">Neue Folge jetzt verfügbar!</string>
   <string name="textNewEpisodeAvailableSoon">Neue Folge bald verfügbar!</string>
   <string name="textNewSeasonAvailable">Neue Staffel jetzt verfügbar!</string>
