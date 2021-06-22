@@ -66,6 +66,8 @@
   <string name="textSettingsWidgetsLabelsTitle">العناوين</string>
   <string name="textSettingsWidgetsLabelsSummary">إظهار العناوين في التطبيقات المصغّرة.</string>
   <string name="textSettingsStreamingsDisclaimer">يتم توفير بيانات خدمات البث بواسطة</string>
+  <string name="textSettingsStreamingServicesTitle">خدمات البث</string>
+  <string name="textSettingsStreamingServicesMessage">إظهار بيانات خدمات البث.</string>
   <string name="textPremium">نسخة Showly المدفوعة</string>
   <string name="textPremiumAd">إدعم تطوير التطبيق واحصل على مميزات إضافية! انقر لرؤية المزيد.</string>
   <string name="textThemeDark">داكن</string>
