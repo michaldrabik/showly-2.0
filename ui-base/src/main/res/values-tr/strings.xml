@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textOk">TAMAM</string>
+  <string name="textOk">Tamam</string>
   <string name="textYes">Evet</string>
   <string name="textNo">Hayır</string>
   <string name="textApply">Uygula</string>
