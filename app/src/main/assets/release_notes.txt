@@ -6,5 +6,7 @@
 
 * Added option to not load streaming services information at all.
 
+* Bugfixes and small UI tweaks
+
 Do you enjoy Showly app?
 Become Premium subscriber and gain access to cool bonus features! Check settings to learn more!
