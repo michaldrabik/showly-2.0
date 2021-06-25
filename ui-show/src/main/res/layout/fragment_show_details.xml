@@ -271,7 +271,6 @@
         android:justificationMode="inter_word"
         android:textAlignment="viewStart"
         android:textColor="?android:attr/textColorPrimary"
-        android:textIsSelectable="true"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@id/showDetailsActorsRecycler"
         app:layout_constraintEnd_toEndOf="parent"
