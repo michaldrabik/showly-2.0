@@ -95,7 +95,10 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
   }
 
   private fun bindProgress(item: ProgressListItem.Episode) {
-    val percent = ((item.watchedCount.toFloat() / item.totalCount.toFloat()) * 100).roundToInt()
+    var percent = 0
+    if (item.totalCount != 0) {
+      percent = ((item.watchedCount.toFloat() / item.totalCount.toFloat()) * 100).roundToInt()
+    }
     progressItemProgress.max = item.totalCount
     progressItemProgress.progress = item.watchedCount
     progressItemProgressText.text = String.format(ENGLISH, "%d/%d (%d%%)", item.watchedCount, item.totalCount, percent)
