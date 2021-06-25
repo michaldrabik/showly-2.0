@@ -3,6 +3,7 @@ package com.michaldrabik.ui_progress.main
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_progress.R
@@ -47,7 +48,10 @@ class ProgressMainViewModel @Inject constructor(
         return@launch
       }
       episodesCase.setEpisodeWatched(context, bundle)
-      uiState = ProgressMainUiModel(timestamp = System.currentTimeMillis())
+      uiState = ProgressMainUiModel(
+        timestamp = System.currentTimeMillis(),
+        resetScroll = ActionEvent(true)
+      )
     }
   }
 }

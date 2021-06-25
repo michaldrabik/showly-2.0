@@ -56,7 +56,7 @@ class ProgressViewModel @Inject constructor(
     when {
       this.timestamp != model.timestamp && model.timestamp != 0L -> {
         this.timestamp = model.timestamp ?: 0L
-        loadItems()
+        loadItems(resetScroll = model.resetScroll?.consume() == true)
       }
       this.searchQuery != model.searchQuery -> {
         this.searchQuery = model.searchQuery
