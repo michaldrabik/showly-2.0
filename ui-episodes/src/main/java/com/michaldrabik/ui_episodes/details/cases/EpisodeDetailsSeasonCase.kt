@@ -13,7 +13,13 @@ class EpisodeDetailsSeasonCase @Inject constructor(
   private val mappers: Mappers,
 ) {
 
-  suspend fun loadSeason(showId: IdTrakt, episode: Episode) =
-    database.episodesDao().getAllByShowId(showId.id, episode.season)
-      .map { mappers.episode.fromDatabase(it) }
+  suspend fun loadSeason(showId: IdTrakt, episode: Episode, seasonEpisodes: IntArray?): List<Episode> {
+    if (seasonEpisodes == null) {
+      return database.episodesDao().getAllByShowId(showId.id, episode.season)
+        .map { mappers.episode.fromDatabase(it) }
+    }
+    return seasonEpisodes.map {
+      Episode.EMPTY.copy(season = episode.season, number = it)
+    }
+  }
 }

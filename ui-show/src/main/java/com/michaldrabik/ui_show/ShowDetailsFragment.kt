@@ -378,9 +378,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
     }
     val bundle = Bundle().apply {
+      val seasonEpisodes = season?.episodes?.map { it.number }?.toIntArray()
       putLong(EpisodeDetailsBottomSheet.ARG_ID_TRAKT, show.traktId)
       putLong(EpisodeDetailsBottomSheet.ARG_ID_TMDB, show.ids.tmdb.id)
       putParcelable(EpisodeDetailsBottomSheet.ARG_EPISODE, episode)
+      putIntArray(EpisodeDetailsBottomSheet.ARG_SEASON_EPISODES, seasonEpisodes)
       putBoolean(EpisodeDetailsBottomSheet.ARG_IS_WATCHED, isWatched)
       putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, showButton)
     }

@@ -70,6 +70,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     const val ARG_ID_TRAKT = "ARG_ID_TRAKT"
     const val ARG_ID_TMDB = "ARG_ID_TMDB"
     const val ARG_EPISODE = "ARG_EPISODE"
+    const val ARG_SEASON_EPISODES = "ARG_SEASON_EPISODES"
     const val ARG_IS_WATCHED = "ARG_IS_WATCHED"
     const val ARG_SHOW_BUTTON = "ARG_SHOW_BUTTON"
   }
@@ -77,6 +78,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_ID_TRAKT)) }
   private val showTmdbId by lazy { IdTmdb(requireArguments().getLong(ARG_ID_TMDB)) }
   private val episode by lazy { requireArguments().getParcelable<Episode>(ARG_EPISODE)!! }
+  private val seasonEpisodes by lazy { requireArguments().getIntArray(ARG_SEASON_EPISODES) }
   private val isWatched by lazy { requireArguments().getBoolean(ARG_IS_WATCHED) }
   private val showButton by lazy { requireArguments().getBoolean(ARG_SHOW_BUTTON) }
 
@@ -100,7 +102,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it) })
       messageLiveData.observe(viewLifecycleOwner, { renderSnackbar(it) })
-      loadSeason(showTraktId, episode)
+      loadSeason(showTraktId, episode, seasonEpisodes)
       loadTranslation(showTraktId, episode)
       loadImage(showTmdbId, episode)
       loadRatings(episode)

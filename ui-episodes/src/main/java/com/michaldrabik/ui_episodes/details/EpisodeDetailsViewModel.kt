@@ -55,10 +55,12 @@ class EpisodeDetailsViewModel @Inject constructor(
     }
   }
 
-  fun loadSeason(showTraktId: IdTrakt, episode: Episode) {
+  fun loadSeason(showTraktId: IdTrakt, episode: Episode, seasonEpisodes: IntArray?) {
     viewModelScope.launch {
-      val episodes = seasonsCase.loadSeason(showTraktId, episode)
-      delay(100)
+      val episodes = seasonsCase.loadSeason(showTraktId, episode, seasonEpisodes)
+      if (episodes.isNotEmpty()) {
+        delay(100)
+      }
       uiState = EpisodeDetailsUiModel(episodes = episodes)
     }
   }
