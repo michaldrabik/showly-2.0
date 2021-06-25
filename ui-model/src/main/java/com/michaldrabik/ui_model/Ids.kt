@@ -26,19 +26,25 @@ data class Ids(
 }
 
 @JvmInline
-value class IdTrakt(val id: Long = -1)
+@Parcelize
+value class IdTrakt(val id: Long = -1) : Parcelable
 
 @JvmInline
-value class IdTvdb(val id: Long = -1)
+@Parcelize
+value class IdTvdb(val id: Long = -1) : Parcelable
 
 @JvmInline
-value class IdImdb(val id: String = "")
+@Parcelize
+value class IdImdb(val id: String = "") : Parcelable
 
 @JvmInline
-value class IdTmdb(val id: Long = -1)
+@Parcelize
+value class IdTmdb(val id: Long = -1) : Parcelable
 
 @JvmInline
-value class IdTvRage(val id: Long = -1)
+@Parcelize
+value class IdTvRage(val id: Long = -1) : Parcelable
 
 @JvmInline
-value class IdSlug(val id: String = "")
+@Parcelize
+value class IdSlug(val id: String = "") : Parcelable
