@@ -217,6 +217,7 @@ class ProgressMainFragment :
   }
 
   fun openEpisodeDetails(show: Show, episode: Episode, season: Season) {
+    if (!checkNavigation(R.id.progressFragment)) return
     setFragmentResultListener(REQUEST_EPISODE_DETAILS) { _, bundle ->
       when {
         bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
@@ -231,6 +232,7 @@ class ProgressMainFragment :
       putParcelable(EpisodeDetailsBottomSheet.ARG_EPISODE, episode)
       putBoolean(EpisodeDetailsBottomSheet.ARG_IS_WATCHED, false)
       putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, false)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_TABS, true)
     }
     navigateTo(R.id.actionProgressFragmentToEpisodeDetails, bundle)
   }

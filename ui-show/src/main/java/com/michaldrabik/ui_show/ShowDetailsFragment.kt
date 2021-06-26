@@ -360,6 +360,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     season: Season?,
     isWatched: Boolean,
     showButton: Boolean = true,
+    showTabs: Boolean = true,
   ) {
     if (!checkNavigation(R.id.showDetailsFragment)) return
     if (season !== null) {
@@ -385,6 +386,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       putIntArray(EpisodeDetailsBottomSheet.ARG_SEASON_EPISODES, seasonEpisodes)
       putBoolean(EpisodeDetailsBottomSheet.ARG_IS_WATCHED, isWatched)
       putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_BUTTON, showButton)
+      putBoolean(EpisodeDetailsBottomSheet.ARG_SHOW_TABS, showTabs)
     }
     navigateTo(R.id.actionShowDetailsFragmentEpisodeDetails, bundle)
   }
@@ -664,7 +666,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
       with(showDetailsEpisodeCard) {
         onClick {
-          showEpisodeDetails(show, episode, null, isWatched = false, showButton = false)
+          showEpisodeDetails(show, episode, null, isWatched = false, showButton = false, showTabs = false)
         }
         fadeIn(withHardware = true)
       }

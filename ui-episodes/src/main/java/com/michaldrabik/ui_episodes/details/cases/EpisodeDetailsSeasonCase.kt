@@ -14,12 +14,13 @@ class EpisodeDetailsSeasonCase @Inject constructor(
 ) {
 
   suspend fun loadSeason(showId: IdTrakt, episode: Episode, seasonEpisodes: IntArray?): List<Episode> {
-    if (seasonEpisodes == null) {
-      return database.episodesDao().getAllByShowId(showId.id, episode.season)
-        .map { mappers.episode.fromDatabase(it) }
-    }
-    return seasonEpisodes.map {
+    val episodes = database.episodesDao().getAllByShowId(showId.id, episode.season)
+      .map { mappers.episode.fromDatabase(it) }
+
+    if (episodes.isNotEmpty()) return episodes
+
+    return seasonEpisodes?.map {
       Episode.EMPTY.copy(season = episode.season, number = it)
-    }
+    } ?: emptyList()
   }
 }

@@ -33,7 +33,8 @@ import com.michaldrabik.ui_base.utilities.MessageEvent.Type.INFO
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
-import com.michaldrabik.ui_base.utilities.extensions.invisible
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
+import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.setTextFade
 import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
@@ -73,6 +74,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
     const val ARG_SEASON_EPISODES = "ARG_SEASON_EPISODES"
     const val ARG_IS_WATCHED = "ARG_IS_WATCHED"
     const val ARG_SHOW_BUTTON = "ARG_SHOW_BUTTON"
+    const val ARG_SHOW_TABS = "ARG_SHOW_TABS"
   }
 
   private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_ID_TRAKT)) }
@@ -81,6 +83,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   private val seasonEpisodes by lazy { requireArguments().getIntArray(ARG_SEASON_EPISODES) }
   private val isWatched by lazy { requireArguments().getBoolean(ARG_IS_WATCHED) }
   private val showButton by lazy { requireArguments().getBoolean(ARG_SHOW_BUTTON) }
+  private val showTabs by lazy { requireArguments().getBoolean(ARG_SHOW_TABS) }
 
   private val cornerRadius by lazy { requireContext().dimenToPx(R.dimen.bottomSheetCorner).toFloat() }
 
@@ -124,7 +127,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         }
       }
       episodeDetailsRatingLayout.visibleIf(episode.votes > 0)
-      episodeDetailsTabs.invisible()
+      if (!showTabs) episodeDetailsTabs.gone()
       episodeDetailsRating.text = String.format(ENGLISH, getString(R.string.textVotes), episode.rating, episode.votes)
       episodeDetailsCommentsButton.text = String.format(ENGLISH, getString(R.string.textLoadCommentsCount), episode.commentCount)
       episodeDetailsCommentsButton.onClick {
@@ -279,7 +282,11 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         getTabAt(index)?.select()
         addOnTabSelectedListener(tabSelectedListener)
       }
-      fadeIf(episodes.isNotEmpty(), duration = 200, startDelay = 100)
+      if (showTabs && episodes.isNotEmpty()) {
+        fadeIn(duration = 200, startDelay = 100, withHardware = true)
+      } else {
+        gone()
+      }
     }
   }
 
