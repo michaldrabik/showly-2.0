@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.BaseFragment2
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
@@ -31,13 +31,14 @@ import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.updateTopMargin
 import com.michaldrabik.ui_model.NewsItem
 import com.michaldrabik.ui_news.recycler.NewsAdapter
+import com.michaldrabik.ui_news.recycler.NewsListItem
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.view_news_filters.*
 
 @AndroidEntryPoint
 class NewsFragment :
-  BaseFragment<NewsViewModel>(R.layout.fragment_news),
+  BaseFragment2<NewsViewModel>(R.layout.fragment_news),
   OnTabReselectedListener {
 
   companion object {
@@ -72,7 +73,8 @@ class NewsFragment :
     setupCustomTabs()
 
     viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it) })
+      itemsLiveData.observe(viewLifecycleOwner, { render(it) })
+      loadingLiveData.observe(viewLifecycleOwner, { render(it) })
       messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
     }
   }
@@ -201,19 +203,16 @@ class NewsFragment :
     navigateTo(R.id.actionNewsFragmentToSettingsFragment)
   }
 
-  private fun render(uiModel: NewsUiModel) {
-    with(uiModel) {
-      items?.let {
-        fragmentNewsRecycler.fadeIf(it.isNotEmpty())
-        fragmentNewsFiltersView.fadeIf(it.isNotEmpty())
-        fragmentNewsEmptyView.fadeIf(it.isEmpty())
-        adapter?.setItems(it)
-      }
-      isLoading?.let {
-        fragmentNewsSwipeRefresh.isRefreshing = it
-        fragmentNewsFiltersView.isEnabled = !it
-      }
-    }
+  private fun render(items: List<NewsListItem>) {
+    fragmentNewsRecycler.fadeIf(items.isNotEmpty())
+    fragmentNewsFiltersView.fadeIf(items.isNotEmpty())
+    fragmentNewsEmptyView.fadeIf(items.isEmpty())
+    adapter?.setItems(items)
+  }
+
+  private fun render(isLoading: Boolean) {
+    fragmentNewsSwipeRefresh.isRefreshing = isLoading
+    fragmentNewsFiltersView.isEnabled = !isLoading
   }
 
   private fun scrollToTop(smooth: Boolean = true) {
