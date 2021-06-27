@@ -30,27 +30,28 @@ class CalendarFutureGrouper @Inject constructor() : CalendarGrouper {
       }
 
     items.forEach { item ->
-      val dateDays = item.movie.released
+      val itemDays = item.movie.released
       when {
-        dateDays?.isEqual(nowDays) == true -> {
+        itemDays?.isEqual(nowDays) == true -> {
           itemsMap[R.string.textToday]?.add(item)
         }
-        dateDays?.isEqual(nowDays.plusDays(1)) == true -> {
+        itemDays?.isEqual(nowDays.plusDays(1)) == true -> {
           itemsMap[R.string.textTomorrow]?.add(item)
         }
-        dateDays?.isBefore(nowDays.with(next(DayOfWeek.MONDAY))) == true -> {
+        itemDays?.isBefore(nowDays.with(next(DayOfWeek.MONDAY))) == true -> {
           itemsMap[R.string.textThisWeek]?.add(item)
         }
-        dateDays?.isBefore(nowDays.plusWeeks(1).with(next(DayOfWeek.MONDAY))) == true -> {
+        itemDays?.isBefore(nowDays.plusWeeks(1).with(next(DayOfWeek.MONDAY))) == true -> {
           itemsMap[R.string.textNextWeek]?.add(item)
         }
-        dateDays?.month == nowDays.month && dateDays?.year == nowDays.year -> {
+        itemDays?.month == nowDays.month && itemDays?.year == nowDays.year -> {
           itemsMap[R.string.textThisMonth]?.add(item)
         }
-        dateDays?.monthValue == (nowDays.monthValue + 1) || (dateDays?.month == Month.JANUARY && nowDays.month == Month.DECEMBER) -> {
+        (itemDays?.monthValue == (nowDays.monthValue + 1) && itemDays.year == nowDays.year) ||
+          (itemDays?.month == Month.JANUARY && nowDays.month == Month.DECEMBER) -> {
           itemsMap[R.string.textNextMonth]?.add(item)
         }
-        dateDays?.year == nowDays.year -> {
+        itemDays?.year == nowDays.year -> {
           itemsMap[R.string.textThisYear]?.add(item)
         }
         else -> itemsMap[R.string.textLater]?.add(item)
