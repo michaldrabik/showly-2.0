@@ -16,13 +16,13 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ProgressType
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress.R
+import com.michaldrabik.ui_progress.helpers.ProgressItemsSorter
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
-import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 import com.michaldrabik.ui_model.Episode.Companion as EpisodeUi
@@ -32,6 +32,7 @@ import com.michaldrabik.ui_model.Episode.Companion as EpisodeUi
 class ProgressItemsCase @Inject constructor(
   private val database: AppDatabase,
   private val mappers: Mappers,
+  private val sorter: ProgressItemsSorter,
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
@@ -141,26 +142,17 @@ class ProgressItemsCase @Inject constructor(
     input: List<ProgressListItem.Episode>,
     sortOrder: SortOrder,
   ): List<ProgressListItem> {
-    val pinnedItems = input.filter { it.isPinned }
-    val groupedItems = input.groupBy { !it.isUpcoming }
+    val pinnedItems = input
+      .filter { it.isPinned }
+      .sortedWith(sorter.sort(sortOrder))
 
-    val aired = ((groupedItems[true] ?: emptyList()) - pinnedItems)
-      .sortedWith(
-        when (sortOrder) {
-          SortOrder.NAME -> compareBy {
-            val translatedTitle =
-              if (it.translations?.show?.hasTitle == false) null
-              else it.translations?.show?.title
-            (translatedTitle ?: it.show.titleNoThe).uppercase(Locale.ROOT)
-          }
-          SortOrder.RECENTLY_WATCHED -> compareByDescending { it.show.updatedAt }
-          SortOrder.NEWEST -> compareByDescending { it.episode?.firstAired?.toMillis() }
-          SortOrder.EPISODES_LEFT -> compareBy { it.totalCount - it.watchedCount }
-          else -> throw IllegalStateException("Invalid sort order")
-        }
-      )
+    val groupedItems = (input - pinnedItems)
+      .groupBy { !it.isUpcoming }
 
-    val upcoming = ((groupedItems[false] ?: emptyList()) - pinnedItems)
+    val aired = ((groupedItems[true] ?: emptyList()))
+      .sortedWith(sorter.sort(sortOrder))
+
+    val upcoming = ((groupedItems[false] ?: emptyList()))
       .sortedBy { it.episode?.firstAired?.toMillis() }
 
     return when {
