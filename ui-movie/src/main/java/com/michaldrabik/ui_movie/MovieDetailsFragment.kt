@@ -147,7 +147,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
       messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
       if (!isInitialized) {
-        loadDetails(movieId, requireAppContext())
+        loadDetails(movieId)
         isInitialized = true
       }
       loadPremium()
