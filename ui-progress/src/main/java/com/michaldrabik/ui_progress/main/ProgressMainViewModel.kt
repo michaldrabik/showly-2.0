@@ -50,7 +50,7 @@ class ProgressMainViewModel @Inject constructor(
       episodesCase.setEpisodeWatched(context, bundle)
       uiState = ProgressMainUiModel(
         timestamp = System.currentTimeMillis(),
-        resetScroll = ActionEvent(true)
+        resetScroll = ActionEvent(false)
       )
     }
   }
