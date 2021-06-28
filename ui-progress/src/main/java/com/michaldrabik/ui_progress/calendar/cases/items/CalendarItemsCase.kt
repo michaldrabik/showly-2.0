@@ -43,11 +43,21 @@ abstract class CalendarItemsCase constructor(
     val dateFormat = dateFormatProvider.loadFullHourFormat()
 
     val shows = showsRepository.myShows.loadAll()
-    val showsIds = shows.map { it.traktId }
+    val showsIds = shows.map { it.traktId }.chunked(500)
 
     val (episodes, seasons) = awaitAll(
-      async { database.episodesDao().getAllByShowsIds(showsIds) },
-      async { database.seasonsDao().getAllByShowsIds(showsIds) }
+      async {
+        showsIds.fold(mutableListOf<Episode>(), { acc, list ->
+          acc += database.episodesDao().getAllByShowsIds(list)
+          acc
+        })
+      },
+      async {
+        showsIds.fold(mutableListOf<Season>(), { acc, list ->
+          acc += database.seasonsDao().getAllByShowsIds(list)
+          acc
+        })
+      }
     )
 
     val filteredSeasons = (seasons as List<Season>).filter { it.seasonNumber != 0 }
