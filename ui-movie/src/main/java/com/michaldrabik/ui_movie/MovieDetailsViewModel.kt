@@ -106,11 +106,6 @@ class MovieDetailsViewModel @Inject constructor(
         launch { loadStreamings(movie) }
         launch { loadRelatedMovies(movie) }
         launch { loadTranslation(movie) }
-
-        if (followedState.isWatchlist) {
-          announcementManager.refreshMoviesAnnouncements(context)
-        }
-
         if (isSignedIn) launch { loadRating(movie) }
       } catch (t: Throwable) {
         progressJob.cancel()

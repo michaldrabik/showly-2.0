@@ -361,7 +361,9 @@ class MainActivity :
     runOnUiThread {
       when (event) {
         is ShowsMoviesSyncComplete -> {
-          doForFragments { (it as? OnShowsMoviesSyncedListener)?.onShowsMoviesSyncFinished() }
+          if (event.count > 0) {
+            doForFragments { (it as? OnShowsMoviesSyncedListener)?.onShowsMoviesSyncFinished() }
+          }
           viewModel.refreshAnnouncements(applicationContext)
         }
         is TraktSyncSuccess -> {

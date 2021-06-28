@@ -146,9 +146,6 @@ class ShowDetailsViewModel @Inject constructor(
         launch {
           areSeasonsLoaded = false
           loadSeasons(show, (context as OnlineStatusProvider).isOnline())
-          if (followedState.isMyShows) {
-            announcementManager.refreshShowsAnnouncements(context)
-          }
           areSeasonsLoaded = true
         }
       } catch (error: Throwable) {

@@ -1,8 +1,6 @@
 package com.michaldrabik.ui_base.notifications
 
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -117,7 +115,6 @@ class AnnouncementManager @Inject constructor(
       }
   }
 
-  @RequiresApi(Build.VERSION_CODES.N)
   private suspend fun scheduleAnnouncement(
     context: Context,
     showDb: Show,
@@ -161,7 +158,6 @@ class AnnouncementManager @Inject constructor(
     Timber.i("Notification set for ${show.title}: $logTime UTC")
   }
 
-  @RequiresApi(Build.VERSION_CODES.N)
   private suspend fun scheduleAnnouncement(
     context: Context,
     movie: Movie,

@@ -1,10 +1,7 @@
 package com.michaldrabik.ui_base.fcm
 
-import android.app.NotificationManager
-import android.os.Build
-import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationManagerCompat
 
-@RequiresApi(Build.VERSION_CODES.N)
 enum class NotificationChannel(
   val displayName: String,
   val description: String,
@@ -14,25 +11,25 @@ enum class NotificationChannel(
   GENERAL_INFO(
     "General Info",
     "General information and announcements",
-    NotificationManager.IMPORTANCE_HIGH,
+    NotificationManagerCompat.IMPORTANCE_HIGH,
     "general"
   ),
   SHOWS_INFO(
     "Shows Info",
     "Shows related information",
-    NotificationManager.IMPORTANCE_DEFAULT,
+    NotificationManagerCompat.IMPORTANCE_DEFAULT,
     "shows"
   ),
   EPISODES_ANNOUNCEMENTS(
     "Episodes Announcements",
     "Episodes and seasons announcements",
-    NotificationManager.IMPORTANCE_DEFAULT,
+    NotificationManagerCompat.IMPORTANCE_DEFAULT,
     "shows_announcements"
   ),
   MOVIES_ANNOUNCEMENTS(
     "Movies Announcements",
     "Movies announcements",
-    NotificationManager.IMPORTANCE_DEFAULT,
+    NotificationManagerCompat.IMPORTANCE_DEFAULT,
     "movies_announcements"
   )
 }
