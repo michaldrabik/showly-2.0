@@ -72,6 +72,9 @@ abstract class BaseActivity : AppCompatActivity() {
 
     findNavHostFragment()?.findNavController()?.run {
       try {
+        if (currentDestination?.id in arrayOf(R.id.settingsFragment, R.id.traktSyncFragment)) {
+          popBackStack()
+        }
         when (currentDestination?.id) {
           R.id.showDetailsFragment -> navigate(R.id.actionShowDetailsFragmentToSelf, bundle)
           R.id.movieDetailsFragment -> navigate(R.id.actionMovieDetailsFragmentToSelf, bundle)
@@ -86,7 +89,9 @@ abstract class BaseActivity : AppCompatActivity() {
                 if (isShow) R.id.actionProgressMoviesFragmentToShowDetailsFragment
                 else R.id.actionProgressMoviesFragmentToMovieDetailsFragment
               }
-              else -> error("Unknown actionId")
+              else -> {
+                error("Unknown actionId. Key $key, actionId: ${currentDestination?.id}")
+              }
             }
             navigate(actionId, bundle)
           }
