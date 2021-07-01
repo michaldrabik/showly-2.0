@@ -72,7 +72,12 @@ abstract class BaseActivity : AppCompatActivity() {
 
     findNavHostFragment()?.findNavController()?.run {
       try {
-        if (currentDestination?.id in arrayOf(R.id.settingsFragment, R.id.traktSyncFragment)) {
+        if (currentDestination?.id in arrayOf(
+            R.id.showDetailsFragment,
+            R.id.movieDetailsFragment,
+            R.id.settingsFragment,
+            R.id.traktSyncFragment)
+        ) {
           popBackStack()
         }
         when (currentDestination?.id) {
