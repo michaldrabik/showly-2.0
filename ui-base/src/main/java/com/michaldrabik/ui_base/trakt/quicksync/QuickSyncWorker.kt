@@ -21,9 +21,11 @@ class QuickSyncWorker(context: Context, workerParams: WorkerParameters) : Worker
       val workManager = WorkManager.getInstance(appContext.applicationContext)
 
       val request = OneTimeWorkRequestBuilder<QuickSyncWorker>()
-        .setConstraints(Constraints.Builder()
-          .setRequiredNetworkType(NetworkType.CONNECTED)
-          .build())
+        .setConstraints(
+          Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+        )
         .setInitialDelay(3, SECONDS)
         .addTag(TAG)
         .build()

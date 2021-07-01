@@ -27,9 +27,11 @@ class TraktSyncWorker(context: Context, workerParams: WorkerParameters) : Worker
       }
 
       val request = PeriodicWorkRequestBuilder<TraktSyncWorker>(schedule.duration, schedule.durationUnit)
-        .setConstraints(Constraints.Builder()
-          .setRequiredNetworkType(NetworkType.CONNECTED)
-          .build())
+        .setConstraints(
+          Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+        )
         .setInitialDelay(schedule.duration, schedule.durationUnit)
         .addTag(TAG)
         .build()
