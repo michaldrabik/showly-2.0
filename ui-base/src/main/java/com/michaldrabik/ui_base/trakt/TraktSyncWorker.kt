@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy.KEEP
+import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.Worker
@@ -26,7 +27,9 @@ class TraktSyncWorker(context: Context, workerParams: WorkerParameters) : Worker
       }
 
       val request = PeriodicWorkRequestBuilder<TraktSyncWorker>(schedule.duration, schedule.durationUnit)
-        .setConstraints(Constraints.NONE)
+        .setConstraints(Constraints.Builder()
+          .setRequiredNetworkType(NetworkType.CONNECTED)
+          .build())
         .setInitialDelay(schedule.duration, schedule.durationUnit)
         .addTag(TAG)
         .build()
