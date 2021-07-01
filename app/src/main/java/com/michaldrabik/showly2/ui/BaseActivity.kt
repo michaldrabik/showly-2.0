@@ -76,7 +76,8 @@ abstract class BaseActivity : AppCompatActivity() {
             R.id.showDetailsFragment,
             R.id.movieDetailsFragment,
             R.id.settingsFragment,
-            R.id.traktSyncFragment)
+            R.id.traktSyncFragment
+          )
         ) {
           popBackStack()
         }
