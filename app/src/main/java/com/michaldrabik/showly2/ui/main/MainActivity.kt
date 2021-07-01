@@ -364,7 +364,7 @@ class MainActivity :
           if (event.count > 0) {
             doForFragments { (it as? OnShowsMoviesSyncedListener)?.onShowsMoviesSyncFinished() }
           }
-          viewModel.refreshAnnouncements(applicationContext)
+          viewModel.refreshAnnouncements()
         }
         is TraktSyncSuccess -> {
           doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncComplete() }

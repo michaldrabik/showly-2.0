@@ -362,7 +362,7 @@ class MovieDetailsViewModel @Inject constructor(
       myMoviesCase.addToMyMovies(movie)
       quickSyncManager.scheduleMovies(context, listOf(movie.traktId))
       uiState = MovieDetailsUiModel(followedState = FollowedState.inMyMovies())
-      announcementManager.refreshMoviesAnnouncements(context)
+      announcementManager.refreshMoviesAnnouncements()
       Analytics.logMovieAddToMyMovies(movie)
     }
   }
@@ -372,12 +372,12 @@ class MovieDetailsViewModel @Inject constructor(
       watchlistCase.addToWatchlist(movie)
       quickSyncManager.scheduleMoviesWatchlist(context, listOf(movie.traktId))
       uiState = MovieDetailsUiModel(followedState = FollowedState.inWatchlist())
-      announcementManager.refreshMoviesAnnouncements(context)
+      announcementManager.refreshMoviesAnnouncements()
       Analytics.logMovieAddToWatchlistMovies(movie)
     }
   }
 
-  fun removeFromFollowed(context: Context) {
+  fun removeFromFollowed() {
     viewModelScope.launch {
       val isMyMovie = myMoviesCase.isMyMovie(movie)
       val isWatchlist = watchlistCase.isWatchlist(movie)
@@ -404,7 +404,7 @@ class MovieDetailsViewModel @Inject constructor(
         else -> error("Unexpected movie state")
       }
 
-      announcementManager.refreshMoviesAnnouncements(context)
+      announcementManager.refreshMoviesAnnouncements()
     }
   }
 

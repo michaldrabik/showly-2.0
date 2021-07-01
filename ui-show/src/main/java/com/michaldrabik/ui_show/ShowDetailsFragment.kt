@@ -222,11 +222,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsAddButton.run {
       isEnabled = false
       onAddMyShowsClickListener = {
-        viewModel.addFollowedShow(requireAppContext())
+        viewModel.addFollowedShow()
       }
       onAddWatchLaterClickListener = { viewModel.addWatchlistShow(requireAppContext()) }
       onArchiveClickListener = { openArchiveConfirmationDialog() }
-      onRemoveClickListener = { viewModel.removeFromFollowed(requireAppContext()) }
+      onRemoveClickListener = { viewModel.removeFromFollowed() }
     }
     showDetailsRemoveTraktButton.onNoClickListener = {
       showDetailsAddButton.fadeIn()
@@ -351,7 +351,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsBackArrow2.crossfadeTo(showDetailsBackArrow)
 
-    viewModel.refreshAnnouncements(requireAppContext())
+    viewModel.refreshAnnouncements()
   }
 
   private fun showEpisodeDetails(

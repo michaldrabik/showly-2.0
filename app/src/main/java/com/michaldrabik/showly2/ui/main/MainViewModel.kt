@@ -64,9 +64,9 @@ class MainViewModel @Inject constructor(
     }
   }
 
-  fun refreshAnnouncements(context: Context) {
+  fun refreshAnnouncements() {
     viewModelScope.launch {
-      miscCase.refreshAnnouncements(context)
+      miscCase.refreshAnnouncements()
     }
   }
 

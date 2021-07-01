@@ -476,7 +476,7 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun addFollowedShow(context: Context) {
+  fun addFollowedShow() {
     if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
       val seasons = seasonItems.map { it.season }
@@ -485,7 +485,7 @@ class ShowDetailsViewModel @Inject constructor(
 
       uiState = ShowDetailsUiModel(followedState = FollowedState.inMyShows())
 
-      announcementManager.refreshShowsAnnouncements(context)
+      announcementManager.refreshShowsAnnouncements()
       Analytics.logShowAddToMyShows(show)
     }
   }
@@ -511,7 +511,7 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun removeFromFollowed(context: Context) {
+  fun removeFromFollowed() {
     if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
       val isMyShows = myShowsCase.isMyShows(show)
@@ -542,7 +542,7 @@ class ShowDetailsViewModel @Inject constructor(
         else -> error("Unexpected show state")
       }
 
-      announcementManager.refreshShowsAnnouncements(context)
+      announcementManager.refreshShowsAnnouncements()
     }
   }
 
@@ -667,11 +667,11 @@ class ShowDetailsViewModel @Inject constructor(
     return items
   }
 
-  fun refreshAnnouncements(context: Context) {
+  fun refreshAnnouncements() {
     viewModelScope.launch {
       val isFollowed = myShowsCase.isMyShows(show)
       if (isFollowed) {
-        announcementManager.refreshShowsAnnouncements(context)
+        announcementManager.refreshShowsAnnouncements()
       }
     }
   }
