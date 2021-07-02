@@ -112,6 +112,7 @@ class ProgressMoviesMainFragment :
       visibleIf(currentPage == 0)
       onClick { childFragmentManager.fragments.forEach { (it as? OnSortClickListener)?.onSortClick() } }
     }
+
     with(progressMoviesCalendarIcon) {
       visibleIf(currentPage == 1)
       onClick {
@@ -121,22 +122,22 @@ class ProgressMoviesMainFragment :
         viewModel.toggleCalendarMode()
       }
     }
-    progressMoviesSearchView.run {
+
+    with(progressMoviesSearchView) {
       hint = getString(R.string.textSearchFor)
       settingsIconVisible = true
+      traktIconVisible = true
       isClickable = false
       onClick { enterSearch() }
       onSettingsClickListener = { openSettings() }
+      onTraktClickListener = { navigateTo(R.id.actionProgressMoviesFragmentToTraktSyncFragment) }
       if (isTraktSyncing()) setTraktProgress(true)
     }
-    progressMoviesModeTabs.run {
+
+    with(progressMoviesModeTabs) {
       visibleIf(moviesEnabled)
       onModeSelected = { mode = it }
       selectMovies()
-    }
-    progressMoviesSearchView.traktIconVisible = true
-    progressMoviesSearchView.onTraktClickListener = {
-      navigateTo(R.id.actionProgressMoviesFragmentToTraktSyncFragment)
     }
 
     progressMoviesTabs.translationY = tabsTranslation
