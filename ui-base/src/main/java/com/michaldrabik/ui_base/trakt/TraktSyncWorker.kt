@@ -17,11 +17,14 @@ class TraktSyncWorker(context: Context, workerParams: WorkerParameters) : Worker
   companion object {
     private const val TAG = "TRAKT_SYNC_WORK"
 
-    fun schedule(schedule: TraktSyncSchedule, appContext: Context) {
+    fun schedule(appContext: Context, schedule: TraktSyncSchedule, cancelExisting: Boolean) {
       val workManager = WorkManager.getInstance(appContext.applicationContext)
-      workManager.cancelUniqueWork(TAG)
+      if (cancelExisting) {
+        workManager.cancelUniqueWork(TAG)
+      }
 
       if (schedule == TraktSyncSchedule.OFF) {
+        cancelAll(appContext)
         Timber.i("Trakt sync scheduled: $schedule")
         return
       }

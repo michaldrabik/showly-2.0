@@ -16,6 +16,7 @@ import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_settings.helpers.AppLanguage
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -26,6 +27,7 @@ import javax.inject.Named
 
 @ViewModelScoped
 class MainInitialsCase @Inject constructor(
+  @ApplicationContext private val context: Context,
   private val userTraktManager: UserTraktManager,
   private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
@@ -59,7 +61,7 @@ class MainInitialsCase @Inject constructor(
     }
   }
 
-  fun setInitialCountry(context: Context) {
+  fun setInitialCountry() {
     var country = (context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager)?.simCountryIso
     if (country == null) {
       val locale = LocaleListCompat.getAdjustedDefault()

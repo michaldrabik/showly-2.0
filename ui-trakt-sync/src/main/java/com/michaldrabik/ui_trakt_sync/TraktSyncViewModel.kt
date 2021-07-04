@@ -37,7 +37,7 @@ class TraktSyncViewModel @Inject constructor(
   importWatchedRunner: TraktImportWatchedRunner,
   importWatchlistRunner: TraktImportWatchlistRunner,
   exportWatchedRunner: TraktImportWatchedRunner,
-  exportWatchlistRunner: TraktExportWatchlistRunner
+  exportWatchlistRunner: TraktExportWatchlistRunner,
 ) : BaseViewModel<TraktSyncUiModel>() {
 
   init {
@@ -96,7 +96,7 @@ class TraktSyncViewModel @Inject constructor(
         val new = it.copy(traktSyncSchedule = schedule)
         settingsRepository.update(new)
       }
-      TraktSyncWorker.schedule(schedule, context.applicationContext)
+      TraktSyncWorker.schedule(context.applicationContext, schedule, cancelExisting = true)
       uiState = TraktSyncUiModel(traktSyncSchedule = schedule)
     }
   }

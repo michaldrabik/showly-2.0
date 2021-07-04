@@ -115,8 +115,8 @@ class MainActivity :
   private fun setupViewModel() {
     viewModel.run {
       uiLiveData.observe(this@MainActivity) { render(it!!) }
-      initialize(applicationContext)
-      refreshTraktSyncSchedule(applicationContext)
+      initialize()
+      refreshTraktSyncSchedule()
     }
   }
 

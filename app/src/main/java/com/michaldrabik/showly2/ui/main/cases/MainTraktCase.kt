@@ -11,13 +11,13 @@ import javax.inject.Inject
 @ViewModelScoped
 class MainTraktCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
-  private val quickSyncManager: QuickSyncManager
+  private val quickSyncManager: QuickSyncManager,
 ) {
 
   suspend fun refreshTraktSyncSchedule(context: Context) {
     if (!settingsRepository.isInitialized()) return
     val schedule = settingsRepository.load().traktSyncSchedule
-    TraktSyncWorker.schedule(schedule, context.applicationContext)
+    TraktSyncWorker.schedule(context, schedule, cancelExisting = false)
   }
 
   suspend fun refreshTraktQuickSync(context: Context) {
