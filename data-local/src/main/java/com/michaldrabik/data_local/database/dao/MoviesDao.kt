@@ -14,6 +14,14 @@ interface MoviesDao : BaseDao<Movie> {
   @Query("SELECT * FROM movies WHERE id_trakt IN (:ids)")
   suspend fun getAll(ids: List<Long>): List<Movie>
 
+  @Transaction
+  suspend fun getAllChunked(ids: List<Long>): List<Movie> = ids
+    .chunked(500)
+    .fold(mutableListOf(), { acc, chunk ->
+      acc += getAll(chunk)
+      acc
+    })
+
   @Query("SELECT * FROM movies WHERE id_trakt == :traktId")
   suspend fun getById(traktId: Long): Movie?
 
