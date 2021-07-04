@@ -1,12 +1,8 @@
-* Progress list items will now use aired episodes count as total number.
+* Fixed some potential issues with scheduled Trakt Sync.
 
-* Calendar will now display all upcoming episodes and not only the next one.
+* Fixed issues with sorting pinned items.
 
-* Added new Calendar section that will display recently aired episodes dating 3 months back.
+* Notifications will now display episode number and tapping should open show/movie details.
 
-* Added option to not load streaming services information at all.
-
-* Bugfixes and small UI tweaks
-
-Do you enjoy Showly app?
-Become Premium subscriber and gain access to cool bonus features! Check settings to learn more!
+Do you enjoy Showly app and want to support the developer?
+Become a subscriber and gain access to cool bonus features! Check settings to learn more!
