@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textOk">حسناً</string>
+  <string name="textOk">حسنًا</string>
   <string name="textYes">نعم</string>
   <string name="textNo">لا</string>
   <string name="textApply">تطبيق</string>
@@ -8,7 +8,7 @@
   <string name="textClose">إغلاق</string>
   <string name="textNotNow">ليس الآن</string>
   <string name="textNew">جديد</string>
-  <string name="textSelect">إختر</string>
+  <string name="textSelect">اختر</string>
   <string name="textHot">شائع</string>
   <string name="textSubmit">إرسال</string>
   <string name="textEmptyResults">لا توجد نتائج…</string>
@@ -18,7 +18,7 @@
   <string name="textSpecials">الحلقات الخاصة</string>
   <string name="textEpisode">الحلقة %1$d</string>
   <string name="textSortBy">ترتيب حسب:</string>
-  <string name="textSpoilersWarning">هذا التعليق يحتوى على حرق للأحداث.\nإضغط للقراءة.</string>
+  <string name="textSpoilersWarning">هذا التعليق يحتوى على حرق للأحداث.\nاضغط للقراءة.</string>
   <string name="textCommentedOn">تعليق بواسطة %s</string>
   <string name="textNetwork">(%2$s) %1$s</string>
   <string name="textShows">مسلسلات</string>
@@ -27,13 +27,13 @@
   <string name="textMinutesShort">دقائق</string>
   <string name="textRemoveFromTrakt">حذف من Trakt.tv؟</string>
   <string name="textNoDescription">لا يتوفر وصف.</string>
-  <string name="textPleaseWait">فضلاً إنتظر…</string>
+  <string name="textPleaseWait">الرجاء الانتظار…</string>
   <string name="textRate">قيم</string>
-  <string name="textRateSaved">تم حفظ تقييمك.</string>
+  <string name="textRateSaved">حُفظ تقييمك.</string>
   <string name="textAiredAlready">تم عرضها</string>
   <string name="textAirsNow">تُعرض الآن</string>
   <plurals name="textDaysToAir">
-    <item quantity="zero">يُعرض بعد 0 أيام</item>
+    <item quantity="zero">سيُعرض بعد 0 يوم</item>
     <item quantity="one">تُعرض غداً</item>
     <item quantity="two">تُعرض بعد يومين</item>
     <item quantity="few">تُعرض بعد %d أيام</item>
@@ -41,7 +41,7 @@
     <item quantity="other">تُعرض بعد %d أيام</item>
   </plurals>
   <plurals name="textHoursToAir">
-    <item quantity="zero">تُعرض بعد 0 ساعة</item>
+    <item quantity="zero">سيُعرض بعد 0 ساعة</item>
     <item quantity="one">تُعرض بعد ساعة</item>
     <item quantity="two">تُعرض بعد ساعتين</item>
     <item quantity="few">تُعرض بعد %d ساعات</item>
@@ -49,7 +49,7 @@
     <item quantity="other">تُعرض بعد %d ساعات</item>
   </plurals>
   <plurals name="textMinutesToAir">
-    <item quantity="zero">تُعرض بعد 0 دقيقة</item>
+    <item quantity="zero">سيُعرض بعد 0 دقيقة</item>
     <item quantity="one">تُعرض الآن</item>
     <item quantity="two">تُعرص بعد دقيقتين</item>
     <item quantity="few">تُعرض بعد %d دقائق</item>
@@ -65,14 +65,14 @@
     <item quantity="other">تمت مزامنة %d عناصر بنجاح.</item>
   </plurals>
   <string name="textToday">اليوم</string>
-  <string name="textTomorrow">غداً</string>
-  <string name="textThisWeek">هذا الإسبوع</string>
-  <string name="textNextWeek">الإسبوع القادم</string>
+  <string name="textTomorrow">غدًا</string>
+  <string name="textThisWeek">هذا الأسبوع</string>
+  <string name="textNextWeek">الأسبوع القادم</string>
   <string name="textThisMonth">هذا الشهر</string>
   <string name="textNextMonth">الشهر القادم</string>
   <string name="textThisYear">هذه السنة</string>
   <string name="textNextYear">السنة القادمة</string>
-  <string name="textLater">لاحقاً</string>
+  <string name="textLater">لاحقًا</string>
   <string name="textYesterday">أمس</string>
   <string name="textLast7Days">آخر 7 أيام</string>
   <string name="textLast30Days">آخر 30 يوم</string>
