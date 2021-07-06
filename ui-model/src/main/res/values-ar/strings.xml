@@ -9,11 +9,11 @@
   <string name="textSortRecentlyWatched">شوهد مؤخرًا</string>
   <string name="textSortEpisodesLeft">عدد الحلقات المتبقية</string>
   <string name="textHeaderRecentlyAdded">أضيف مؤخراً</string>
-  <string name="textHeaderWatching">تتم مشاهدته حالياً</string>
+  <string name="textHeaderWatching">يُشاهد حاليًا</string>
   <string name="textHeaderFinished">تمت مشاهدته</string>
-  <string name="textHeaderReturning">قادم بموسم جديد &amp; يُعرض قريباً</string>
+  <string name="textHeaderReturning">قادم بموسم جديد &amp; سيُعرض قريبًا</string>
   <string name="textHeaderAll">الكل</string>
-  <string name="textSettingsShowsNotificationsWhenTitle">وقت إستلام الإشعار</string>
+  <string name="textSettingsShowsNotificationsWhenTitle">وقت استلام الإشعار</string>
   <string name="textSettingsShowsNotificationsWhenSummary">متى ترغب بتلقي إشعارات الحلقات الجديدة؟</string>
   <string name="textSettingsShowsNotificationsWhenAvailable">فور توفرها</string>
   <string name="textSettingsShowsNotificationsWhen1Hour">بعد توفرها بساعة</string>
@@ -25,8 +25,8 @@
   <string name="textSettingsShowsNotificationsWhen12HoursBefore">قبل توفرها ب 12 ساعة</string>
   <string name="textSettingsShowsNotificationsWhen12Hours">بعد توفرها ب 12 ساعة</string>
   <string name="textSettingsShowsNotificationsWhenNextDay">بعد توفرها بيوم</string>
-  <string name="textTipDiscover">انقر نقراً مزدوجاً على زر صفحة \'إكتشف\' لِفتح صفحة البحث بسرعة.</string>
-  <string name="textTipMyShows">انقر نقراً مزدوجاً على زر صفحة \'المجموعة\' للتبديل بين النوافذ بسرعة.</string>
+  <string name="textTipDiscover">اُنقر نقرًا مزدوجًا على زر صفحة \"اكتشف\" لِفتح صفحة البحث بسرعة.</string>
+  <string name="textTipMyShows">اُنقر نقرًا مزدوجًا على زر صفحة \"المجموعة\" للتنقل بين النوافذ بسرعة.</string>
   <string name="textTipShowDetailsGallery">انقر على صورة المسلسل لفتح معرض الصور.</string>
   <string name="textTipShowDetailsQuickProgress">اُنقر على أيقونة \"الأرشيف\" لنقل المسلسل إلى الأرشيف.</string>
   <string name="textTipDiscoverFilters">استخدم الفلاتر لفلترة محتويات صفحة \"اكتشف\".</string>
