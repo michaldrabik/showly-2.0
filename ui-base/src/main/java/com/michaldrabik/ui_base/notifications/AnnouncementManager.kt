@@ -67,8 +67,10 @@ class AnnouncementManager @Inject constructor(
     Timber.i("Refreshing shows announcements")
 
     val now = nowUtc()
+    val nowMillis = now.toMillis()
     val limit = now.plusMonths(6)
     WorkManager.getInstance(context).cancelAllWorkByTag(ANNOUNCEMENT_WORK_TAG)
+    Timber.i("Current time: ${logFormatter.format(now)} UTC")
 
     val settings = settingsRepository.load()
     if (!settings.episodesNotificationsEnabled) {
@@ -86,9 +88,21 @@ class AnnouncementManager @Inject constructor(
     val delay = settings.episodesNotificationsDelay
     myShows.forEach { show ->
       Timber.i("Processing ${show.title} (${show.idTrakt})")
-      val episode = database.episodesDao().getFirstUnwatched(show.idTrakt, now.toMillis(), limit.toMillis() + delay.delayMs)
-      episode?.let {
-        scheduleAnnouncement(show, it, delay, language)
+      val fromTime = if (delay.isBefore()) nowMillis else nowMillis - delay.delayMs
+      val episode = database.episodesDao().getFirstUnwatched(show.idTrakt, fromTime, limit.toMillis())
+      episode?.firstAired?.let { airDate ->
+        when {
+          delay.isBefore() -> {
+            if ((airDate.toMillis() - nowUtcMillis()) + delay.delayMs > 0) {
+              scheduleAnnouncement(show, episode, delay, language)
+            } else {
+              Timber.i("Time with delay included has already passed.")
+            }
+          }
+          else -> {
+            scheduleAnnouncement(show, episode, delay, language)
+          }
+        }
       }
     }
   }
