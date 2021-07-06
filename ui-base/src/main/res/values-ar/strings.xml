@@ -34,27 +34,27 @@
   <string name="textAirsNow">تُعرض الآن</string>
   <plurals name="textDaysToAir">
     <item quantity="zero">سيُعرض بعد 0 يوم</item>
-    <item quantity="one">تُعرض غداً</item>
-    <item quantity="two">تُعرض بعد يومين</item>
-    <item quantity="few">تُعرض بعد %d أيام</item>
-    <item quantity="many">تُعرض بعد %d أيام</item>
-    <item quantity="other">تُعرض بعد %d أيام</item>
+    <item quantity="one">سيُعرض غدًا</item>
+    <item quantity="two">سيُعرض بعد يومين</item>
+    <item quantity="few">سيُعرض بعد %d أيام</item>
+    <item quantity="many">سيُعرض بعد %d أيام</item>
+    <item quantity="other">سيُعرض بعد %d أيام</item>
   </plurals>
   <plurals name="textHoursToAir">
     <item quantity="zero">سيُعرض بعد 0 ساعة</item>
-    <item quantity="one">تُعرض بعد ساعة</item>
-    <item quantity="two">تُعرض بعد ساعتين</item>
-    <item quantity="few">تُعرض بعد %d ساعات</item>
-    <item quantity="many">تُعرض بعد %d ساعات</item>
-    <item quantity="other">تُعرض بعد %d ساعات</item>
+    <item quantity="one">سيُعرض بعد ساعة</item>
+    <item quantity="two">سيُعرض بعد ساعتين</item>
+    <item quantity="few">سيُعرض بعد %d ساعات</item>
+    <item quantity="many">سيُعرض بعد %d ساعة</item>
+    <item quantity="other">تُعرض بعد %d ساعة</item>
   </plurals>
   <plurals name="textMinutesToAir">
     <item quantity="zero">سيُعرض بعد 0 دقيقة</item>
-    <item quantity="one">تُعرض الآن</item>
-    <item quantity="two">تُعرص بعد دقيقتين</item>
-    <item quantity="few">تُعرض بعد %d دقائق</item>
-    <item quantity="many">تُعرض بعد %d دقائق</item>
-    <item quantity="other">تُعرض بعد %d دقائق</item>
+    <item quantity="one">سيُعرض الآن</item>
+    <item quantity="two">سيُعرض بعد دقيقتين</item>
+    <item quantity="few">سيُعرض بعد %d دقائق</item>
+    <item quantity="many">سيُعرض بعد %d دقيقة</item>
+    <item quantity="other">سيُعرض بعد %d دقيقة</item>
   </plurals>
   <plurals name="textTraktQuickSyncComplete">
     <item quantity="zero">لم تتم مزامنة أي عنصر.</item>
