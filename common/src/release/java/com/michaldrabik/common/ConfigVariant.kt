@@ -2,6 +2,7 @@ package com.michaldrabik.common
 
 import java.util.concurrent.TimeUnit.DAYS
 import java.util.concurrent.TimeUnit.HOURS
+import java.util.concurrent.TimeUnit.MINUTES
 
 object ConfigVariant {
   const val FIREBASE_SUFFIX = ""
