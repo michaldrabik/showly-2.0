@@ -68,7 +68,7 @@ class AnnouncementManager @Inject constructor(
 
     val now = nowUtc()
     val nowMillis = now.toMillis()
-    val limit = now.plusMonths(6)
+    val limit = now.plusMonths(3)
     WorkManager.getInstance(context).cancelAllWorkByTag(ANNOUNCEMENT_WORK_TAG)
     Timber.i("Current time: ${logFormatter.format(now)} UTC")
 
