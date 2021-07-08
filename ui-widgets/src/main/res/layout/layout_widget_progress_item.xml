@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:orientation="horizontal"
+  tools:ignore="SmallSp"
   tools:parentTag="android.widget.LinearLayout"
   >
 
   <FrameLayout
     android:layout_width="@dimen/widgetImageWidth"
     android:layout_height="@dimen/widgetImageHeight"
+    android:layout_gravity="center_vertical"
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginEnd="@dimen/spaceMedium"
@@ -31,10 +34,10 @@
       android:id="@+id/progressWidgetItemPlaceholder"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:padding="@dimen/spaceNormal"
+      android:padding="@dimen/spaceSmall"
       android:src="@drawable/ic_television"
-      android:tint="?attr/colorPlaceholderIcon"
       android:visibility="gone"
+      app:tint="?attr/colorPlaceholderIcon"
       tools:ignore="UseAppTint"
       tools:visibility="visible"
       />
@@ -43,21 +46,18 @@
 
   <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
     android:layout_marginEnd="@dimen/spaceMedium"
     android:gravity="center_vertical"
     >
 
     <TextView
       android:id="@+id/progressWidgetItemTitle"
+      style="@style/WidgetItem.Title"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginBottom="@dimen/spaceTiny"
-      android:ellipsize="end"
-      android:maxLines="1"
-      android:textColor="?android:attr/textColorPrimary"
-      android:textSize="16sp"
-      android:textStyle="bold"
       tools:ignore="RtlSymmetry"
       tools:text="Breaking Bad"
       />
@@ -66,8 +66,10 @@
       android:id="@+id/progressWidgetItemBadge"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_alignBaseline="@id/progressWidgetItemTitle"
-      android:layout_alignParentEnd="true"
+      android:layout_alignTop="@id/progressWidgetItemTitle"
+      android:layout_alignBottom="@id/progressWidgetItemTitle"
+      android:layout_marginStart="@dimen/spaceSmall"
+      android:layout_toEndOf="@id/progressWidgetItemTitle"
       android:gravity="center"
       android:text="@string/textNew"
       android:textAllCaps="true"
@@ -93,7 +95,7 @@
       android:paddingEnd="6dp"
       android:paddingBottom="2dp"
       android:textColor="?android:attr/textColorPrimary"
-      android:textSize="12sp"
+      android:textSize="10sp"
       tools:text="S.01 E.01"
       />
 
@@ -104,34 +106,37 @@
       android:layout_below="@id/progressWidgetItemTitle"
       android:layout_alignBaseline="@id/progressWidgetItemSubtitle"
       android:layout_marginStart="@dimen/spaceTiny"
+      android:layout_marginEnd="@dimen/spaceMedium"
       android:layout_marginBottom="@dimen/spaceTiny"
+      android:layout_toStartOf="@id/progressWidgetItemCheckButton"
       android:layout_toEndOf="@id/progressWidgetItemSubtitle"
       android:ellipsize="end"
       android:includeFontPadding="false"
       android:maxLines="1"
       android:textColor="?android:attr/textColorPrimary"
-      android:textSize="12sp"
+      android:textSize="10sp"
       tools:text="Some Title of an Episode"
       />
 
     <TextView
       android:id="@+id/progressWidgetItemProgressText"
+      style="@style/WidgetItem.Subtitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_below="@id/progressWidgetItemSubtitle"
       android:layout_marginTop="@dimen/spaceTiny"
       android:gravity="start|center_vertical"
-      android:textColor="?android:attr/textColorSecondary"
-      android:textSize="10sp"
+      android:maxLines="1"
       tools:text="999/999"
       />
 
     <ProgressBar
       android:id="@+id/progressWidgetItemProgress"
       style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-      android:layout_width="match_parent"
+      android:layout_width="100dp"
       android:layout_height="22dp"
       android:layout_below="@id/progressWidgetItemSubtitle"
+      android:layout_alignParentEnd="true"
       android:layout_marginStart="@dimen/spaceSmall"
       android:layout_toEndOf="@id/progressWidgetItemProgressText"
       android:progressBackgroundTint="?android:attr/textColorSecondary"
@@ -140,24 +145,21 @@
 
     <ImageButton
       android:id="@+id/progressWidgetItemCheckButton"
-      android:layout_width="60dp"
-      android:layout_height="24dp"
-      android:layout_below="@id/progressWidgetItemProgress"
+      style="@style/WidgetItem.CheckButton"
       android:layout_alignParentEnd="true"
-      android:background="@drawable/bg_widget_check_button"
-      android:src="@drawable/ic_check"
-      android:tint="?android:attr/textColorPrimary"
       />
 
     <TextView
       android:id="@+id/progressWidgetItemDateButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_below="@id/progressWidgetItemProgress"
+      android:layout_alignTop="@id/progressWidgetItemTitle"
+      android:layout_alignBottom="@id/progressWidgetItemTitle"
       android:layout_alignParentEnd="true"
+      android:gravity="center"
       android:textAllCaps="true"
       android:textColor="?android:attr/textColorSecondary"
-      android:textSize="12sp"
+      android:textSize="10sp"
       android:visibility="gone"
       tools:text="Airs in 99 days"
       tools:visibility="visible"

@@ -5,12 +5,14 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
+  tools:ignore="SmallSp"
   tools:parentTag="android.widget.LinearLayout"
   >
 
   <FrameLayout
     android:layout_width="@dimen/widgetImageWidth"
     android:layout_height="@dimen/widgetImageHeight"
+    android:layout_gravity="center_vertical"
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginEnd="@dimen/spaceMedium"
@@ -33,9 +35,8 @@
       android:layout_height="match_parent"
       android:padding="@dimen/spaceNormal"
       android:src="@drawable/ic_film"
-      android:tint="?attr/colorPlaceholderIcon"
       android:visibility="gone"
-      app:tint="?android:attr/textColorPrimary"
+      app:tint="?attr/colorPlaceholderIcon"
       tools:ignore="UseAppTint"
       tools:visibility="visible"
       />
@@ -44,49 +45,41 @@
 
   <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
     android:layout_marginEnd="@dimen/spaceMedium"
     android:gravity="center_vertical"
     >
 
     <TextView
       android:id="@+id/progressMoviesWidgetItemTitle"
+      style="@style/WidgetItem.Title"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="@dimen/spaceTiny"
-      android:ellipsize="end"
-      android:maxLines="1"
-      android:textColor="?android:attr/textColorPrimary"
-      android:textSize="16sp"
-      android:textStyle="bold"
+      android:layout_alignParentStart="true"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:layout_toStartOf="@id/progressMoviesWidgetItemCheckButton"
       tools:ignore="RtlSymmetry"
       tools:text="Breaking Bad"
       />
 
     <TextView
       android:id="@+id/progressMoviesWidgetItemSubtitle2"
+      style="@style/WidgetItem.Subtitle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_below="@id/progressMoviesWidgetItemTitle"
-      android:layout_marginBottom="@dimen/spaceTiny"
-      android:ellipsize="end"
-      android:includeFontPadding="false"
-      android:maxLines="2"
-      android:textColor="?android:attr/textColorSecondary"
-      android:textSize="12sp"
-      tools:text="@tools:sample/lorem/random"
+      android:layout_alignParentStart="true"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:layout_toStartOf="@id/progressMoviesWidgetItemCheckButton"
+      tools:text="asdasasdasd"
       />
 
     <ImageButton
       android:id="@+id/progressMoviesWidgetItemCheckButton"
-      android:layout_width="60dp"
-      android:layout_height="24dp"
-      android:layout_below="@id/progressMoviesWidgetItemSubtitle2"
+      style="@style/WidgetItem.CheckButton"
       android:layout_alignParentEnd="true"
-      android:layout_marginTop="@dimen/spaceTiny"
-      android:background="@drawable/bg_widget_check_button"
-      android:src="@drawable/ic_check"
-      android:tint="?android:attr/textColorPrimary"
+      android:layout_centerVertical="true"
       />
 
   </RelativeLayout>

@@ -1,8 +1,6 @@
-* Fixed some potential issues with scheduled Trakt Sync.
+* Reduced widgets items size to make them more compact
 
-* Fixed issues with sorting pinned items.
-
-* Notifications will now display episode number and tapping should open show/movie details.
+* Fixed issue that might prevent notification from showing up for some users.
 
 Do you enjoy Showly app and want to support the developer?
 Become a subscriber and gain access to cool bonus features! Check settings to learn more!

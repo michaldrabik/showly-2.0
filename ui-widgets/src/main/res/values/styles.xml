@@ -26,4 +26,29 @@
     <item name="colorBadgeBackground">#E1E6EC</item>
   </style>
 
+  <style name="WidgetItem" />
+
+  <style name="WidgetItem.CheckButton" parent="WidgetItem">
+    <item name="android:layout_width">50dp</item>
+    <item name="android:layout_height">24dp</item>
+    <item name="android:background">@drawable/bg_widget_check_button</item>
+    <item name="android:src">@drawable/ic_check_small</item>
+    <item name="tint">?android:attr/textColorPrimary</item>
+  </style>
+
+  <style name="WidgetItem.Title" parent="WidgetItem">
+    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="android:ellipsize">end</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:textColor">?android:attr/textColorPrimary</item>
+    <item name="android:textSize">14sp</item>
+  </style>
+
+  <style name="WidgetItem.Subtitle" parent="WidgetItem">
+    <item name="android:ellipsize">end</item>
+    <item name="android:maxLines">2</item>
+    <item name="android:textColor">?android:attr/textColorSecondary</item>
+    <item name="android:textSize">10sp</item>
+  </style>
+
 </resources>
