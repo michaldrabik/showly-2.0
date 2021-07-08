@@ -6,7 +6,9 @@ import android.content.SharedPreferences
 import android.telephony.TelephonyManager
 import androidx.core.content.edit
 import androidx.core.os.LocaleListCompat
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
@@ -21,6 +23,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope
+import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Named
@@ -121,6 +124,17 @@ class MainInitialsCase @Inject constructor(
       )
     } catch (error: Throwable) {
       Logger.record(error, "Source" to "MainInitialsCase::initRatings()")
+    }
+  }
+
+  fun loadRemoteConfig() {
+    Firebase.remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+      if (task.isSuccessful) {
+        val updated = task.result
+        Timber.d("Remote Config params updated: $updated")
+      } else {
+        Timber.e("Remote Config fetch failed!")
+      }
     }
   }
 

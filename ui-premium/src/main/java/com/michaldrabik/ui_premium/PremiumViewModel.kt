@@ -11,9 +11,13 @@ import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.Purchase.PurchaseState.PURCHASED
 import com.android.billingclient.api.SkuDetailsParams
 import com.android.billingclient.api.acknowledgePurchase
+import com.android.billingclient.api.queryPurchasesAsync
 import com.android.billingclient.api.querySkuDetails
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.Config.PREMIUM_LIFETIME_PROMO_INAPP
+import com.michaldrabik.common.Config.PREMIUM_LIFETIME_INAPP
+import com.michaldrabik.common.Config.PREMIUM_LIFETIME_INAPP_PROMO
 import com.michaldrabik.common.Config.PREMIUM_MONTHLY_SUBSCRIPTION
 import com.michaldrabik.common.Config.PREMIUM_YEARLY_SUBSCRIPTION
 import com.michaldrabik.repository.SettingsRepository
@@ -71,11 +75,13 @@ class PremiumViewModel @Inject constructor(
       uiState = PremiumUiModel(isLoading = true)
 
       try {
-        val subscriptions = billingClient.queryPurchases(SkuType.SUBS)
-        val inApps = billingClient.queryPurchases(SkuType.INAPP)
-        val purchases = (subscriptions.purchasesList ?: emptyList()) + (inApps.purchasesList ?: emptyList())
-        val eligibleProducts = mutableListOf(PREMIUM_MONTHLY_SUBSCRIPTION, PREMIUM_YEARLY_SUBSCRIPTION)
-        if (Config.PROMOS_ENABLED) eligibleProducts.add(PREMIUM_LIFETIME_PROMO_INAPP)
+        val subscriptions = billingClient.queryPurchasesAsync(SkuType.SUBS)
+        val inApps = billingClient.queryPurchasesAsync(SkuType.INAPP)
+        val purchases = subscriptions.purchasesList + inApps.purchasesList
+        val eligibleProducts = mutableListOf(PREMIUM_MONTHLY_SUBSCRIPTION, PREMIUM_YEARLY_SUBSCRIPTION, PREMIUM_LIFETIME_INAPP)
+        if (Config.PROMOS_ENABLED) {
+          eligibleProducts.add(PREMIUM_LIFETIME_INAPP_PROMO)
+        }
 
         if (purchases.any {
           val json = JSONObject(it.originalJson)
@@ -138,14 +144,24 @@ class PremiumViewModel @Inject constructor(
       try {
         uiState = PremiumUiModel(isLoading = true)
 
+        val inAppsEnabled = Firebase.remoteConfig.getBoolean("in_app_enabled")
+
         val paramsSubs = SkuDetailsParams.newBuilder()
           .setSkusList(listOf(PREMIUM_MONTHLY_SUBSCRIPTION, PREMIUM_YEARLY_SUBSCRIPTION))
           .setType(SkuType.SUBS)
           .build()
 
+        val paramsInApps = SkuDetailsParams.newBuilder()
+          .setSkusList(listOf(PREMIUM_LIFETIME_INAPP))
+          .setType(SkuType.INAPP)
+          .build()
+
         val subsDetails = billingClient.querySkuDetails(paramsSubs)
+        val inAppsDetails = billingClient.querySkuDetails(paramsInApps)
+
         val subsItems = subsDetails.skuDetailsList ?: emptyList()
-        uiState = PremiumUiModel(purchaseItems = subsItems, isLoading = false)
+        val inAppsItems = if (inAppsEnabled) inAppsDetails.skuDetailsList ?: emptyList() else emptyList()
+        uiState = PremiumUiModel(purchaseItems = subsItems + inAppsItems, isLoading = false)
       } catch (error: Throwable) {
         Timber.e(error)
         uiState = PremiumUiModel(purchaseItems = emptyList(), isLoading = false)

@@ -36,6 +36,7 @@ class MainViewModel @Inject constructor(
       checkInitialRun()
       initCase.initializeFcm()
       initCase.preloadRatings()
+      initCase.loadRemoteConfig()
     }
   }
 

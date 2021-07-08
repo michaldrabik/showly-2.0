@@ -1,12 +1,15 @@
 package com.michaldrabik.showly2.ui
 
+import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.queryPurchasesAsync
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.Config.PREMIUM_LIFETIME_PROMO_INAPP
+import com.michaldrabik.common.Config.PREMIUM_LIFETIME_INAPP
+import com.michaldrabik.common.Config.PREMIUM_LIFETIME_INAPP_PROMO
 import com.michaldrabik.common.Config.PREMIUM_MONTHLY_SUBSCRIPTION
 import com.michaldrabik.common.Config.PREMIUM_YEARLY_SUBSCRIPTION
 import com.michaldrabik.showly2.App
@@ -24,14 +27,14 @@ abstract class BillingActivity : UpdateActivity() {
 
   private val settingsRepository by lazy { (applicationContext as App).settingsRepository }
 
-  override fun onResume() {
-    super.onResume()
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
     if (!Config.SHOW_PREMIUM || !settingsRepository.isPremium) return
 
     billingClient.startConnection(object : BillingClientStateListener {
       override fun onBillingSetupFinished(billingResult: BillingResult) {
         if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-          checkOwnedPurchases(billingClient)
+          checkOwnedPurchases()
         }
       }
 
@@ -41,22 +44,22 @@ abstract class BillingActivity : UpdateActivity() {
     })
   }
 
-  override fun onPause() {
+  override fun onDestroy() {
     billingClient.endConnection()
-    super.onPause()
+    super.onDestroy()
   }
 
-  private fun checkOwnedPurchases(billingClient: BillingClient) {
+  private fun checkOwnedPurchases() {
     Timber.d("Checking subscriptions...")
     lifecycleScope.launchWhenCreated {
       try {
-        val subscriptions = billingClient.queryPurchases(BillingClient.SkuType.SUBS)
-        val inApps = billingClient.queryPurchases(BillingClient.SkuType.INAPP)
-        val purchases = (subscriptions.purchasesList ?: emptyList()) + (inApps.purchasesList ?: emptyList())
-        val eligibleProducts = mutableListOf(PREMIUM_MONTHLY_SUBSCRIPTION, PREMIUM_YEARLY_SUBSCRIPTION)
+        val subscriptions = billingClient.queryPurchasesAsync(BillingClient.SkuType.SUBS)
+        val inApps = billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP)
+        val purchases = subscriptions.purchasesList + inApps.purchasesList
+        val eligibleProducts = mutableListOf(PREMIUM_MONTHLY_SUBSCRIPTION, PREMIUM_YEARLY_SUBSCRIPTION, PREMIUM_LIFETIME_INAPP)
 
         if (Config.PROMOS_ENABLED) {
-          eligibleProducts.add(PREMIUM_LIFETIME_PROMO_INAPP)
+          eligibleProducts.add(PREMIUM_LIFETIME_INAPP_PROMO)
         }
 
         if (purchases.none {
@@ -72,6 +75,9 @@ abstract class BillingActivity : UpdateActivity() {
           } catch (error: Throwable) {
             Runtime.getRuntime().exit(0)
           }
+        } else {
+          Timber.d("Eligible for premium!")
+          billingClient.endConnection()
         }
       } catch (error: Throwable) {
         Timber.e(error)

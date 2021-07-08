@@ -8,10 +8,15 @@ import android.os.Build
 import android.os.StrictMode
 import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.jakewharton.threetenabp.AndroidThreeTen
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
+import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.showly2.utilities.NetworkMonitorCallbacks
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
@@ -104,6 +109,17 @@ class App :
       registerActivityLifecycleCallbacks(networkMonitorCallbacks)
     }
 
+    fun setupRemoteConfig() {
+      with(Firebase.remoteConfig) {
+        setConfigSettingsAsync(
+          remoteConfigSettings {
+            minimumFetchIntervalInSeconds = ConfigVariant.REMOTE_CONFIG_FETCH_INTERVAL
+          }
+        )
+        setDefaultsAsync(Config.REMOTE_CONFIG_DEFAULTS)
+      }
+    }
+
     super.onCreate()
 
     if (ProcessPhoenix.isPhoenixProcess(this)) return
@@ -122,6 +138,7 @@ class App :
     setupNotificationChannels()
     setupLanguage()
     setupTheme()
+    setupRemoteConfig()
   }
 
   override fun isOnline() = isAppOnline
