@@ -12,7 +12,7 @@
   <string name="textHot">شائع</string>
   <string name="textSubmit">إرسال</string>
   <string name="textEmptyResults">لا توجد نتائج…</string>
-  <string name="textSearchFor">بحث…</string>
+  <string name="textSearchFor">ابحث…</string>
   <string name="textTip">نصيحة:</string>
   <string name="textSeason">الموسم %1$d</string>
   <string name="textSpecials">الحلقات الخاصة</string>
@@ -30,8 +30,8 @@
   <string name="textPleaseWait">الرجاء الانتظار…</string>
   <string name="textRate">قيم</string>
   <string name="textRateSaved">حُفظ تقييمك.</string>
-  <string name="textAiredAlready">تم عرضها</string>
-  <string name="textAirsNow">تُعرض الآن</string>
+  <string name="textAiredAlready">بُثت</string>
+  <string name="textAirsNow">يُبث الآن</string>
   <plurals name="textDaysToAir">
     <item quantity="zero">سيُعرض بعد 0 يوم</item>
     <item quantity="one">سيُعرض غدًا</item>
