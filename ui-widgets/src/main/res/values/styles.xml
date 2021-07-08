@@ -10,6 +10,7 @@
     <item name="android:textColorPrimary">@color/colorWhite</item>
     <item name="android:textColorSecondary">@color/colorGrayLight</item>
     <item name="colorPlaceholderIcon">#6A6A6A</item>
+    <item name="colorPlaceholderStroke">#6A6A6A</item>
     <item name="colorAccent">#F44336</item>
     <item name="colorBadgeBackground">@color/colorGrayDark</item>
   </style>
@@ -22,6 +23,7 @@
     <item name="android:textColorPrimary">@color/colorBlue</item>
     <item name="android:textColorSecondary">@color/colorBlueLight</item>
     <item name="colorPlaceholderIcon">#4B6383</item>
+    <item name="colorPlaceholderStroke">#4B6383</item>
     <item name="colorAccent">#4B6383</item>
     <item name="colorBadgeBackground">#E1E6EC</item>
   </style>

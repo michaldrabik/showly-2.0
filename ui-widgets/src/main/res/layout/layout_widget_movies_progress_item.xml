@@ -17,7 +17,7 @@
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginEnd="@dimen/spaceMedium"
     android:layout_marginBottom="@dimen/spaceSmall"
-    android:background="@drawable/bg_media_view_elevation"
+    android:background="@drawable/bg_widget_media_view_elevation"
     android:elevation="@dimen/elevationSmall"
     >
 

@@ -18,7 +18,7 @@
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginEnd="@dimen/spaceMedium"
     android:layout_marginBottom="@dimen/spaceSmall"
-    android:background="@drawable/bg_media_view_elevation"
+    android:background="@drawable/bg_widget_media_view_elevation"
     android:elevation="@dimen/elevationTiny"
     >
 
@@ -135,13 +135,16 @@
       android:id="@+id/progressWidgetItemProgress"
       style="@style/Widget.AppCompat.ProgressBar.Horizontal"
       android:layout_width="100dp"
-      android:layout_height="22dp"
-      android:layout_below="@id/progressWidgetItemSubtitle"
+      android:layout_height="wrap_content"
+      android:layout_alignTop="@id/progressWidgetItemProgressText"
+      android:layout_alignBottom="@id/progressWidgetItemProgressText"
       android:layout_alignParentEnd="true"
       android:layout_marginStart="@dimen/spaceSmall"
       android:layout_toEndOf="@id/progressWidgetItemProgressText"
       android:progressBackgroundTint="?android:attr/textColorSecondary"
       android:progressTint="?attr/colorAccent"
+      android:scaleY="0.75"
+      android:translationY="1dp"
       />
 
     <ImageButton
