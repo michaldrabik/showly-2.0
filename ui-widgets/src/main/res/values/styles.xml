@@ -33,6 +33,7 @@
     <item name="android:layout_height">24dp</item>
     <item name="android:background">@drawable/bg_widget_check_button</item>
     <item name="android:src">@drawable/ic_check_small</item>
+    <item name="android:tint">?android:attr/textColorPrimary</item>
     <item name="tint">?android:attr/textColorPrimary</item>
   </style>
 
