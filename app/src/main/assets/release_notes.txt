@@ -2,5 +2,7 @@
 
 * Fixed issue that might prevent notification from showing up for some users.
 
+* Update Arabic language translation.
+
 Do you enjoy Showly app and want to support the developer?
 Become a subscriber and gain access to cool bonus features! Check settings to learn more!
