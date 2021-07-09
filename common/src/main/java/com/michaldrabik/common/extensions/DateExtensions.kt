@@ -1,11 +1,11 @@
 package com.michaldrabik.common.extensions
 
-import org.threeten.bp.Instant
-import org.threeten.bp.LocalDate
-import org.threeten.bp.ZoneId
-import org.threeten.bp.ZoneOffset
-import org.threeten.bp.ZonedDateTime
-import org.threeten.bp.format.DateTimeFormatter
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 fun nowUtc(): ZonedDateTime = ZonedDateTime.now(ZoneOffset.UTC)
 

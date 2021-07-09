@@ -6,8 +6,8 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
-import org.threeten.bp.ZoneOffset
-import org.threeten.bp.ZonedDateTime
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 
 data class ListDetailsItem(
   val id: Long,

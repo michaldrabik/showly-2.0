@@ -83,7 +83,7 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  fun enableAnnouncements(enable: Boolean, context: Context) {
+  fun enableAnnouncements(enable: Boolean) {
     viewModelScope.launch {
       mainCase.enableAnnouncements(enable)
       refreshSettings()
@@ -131,7 +131,7 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  fun enableMovies(enable: Boolean, context: Context) {
+  fun enableMovies(enable: Boolean) {
     viewModelScope.launch {
       mainCase.enableMovies(enable)
       delay(300)
@@ -165,7 +165,7 @@ class SettingsViewModel @Inject constructor(
     Analytics.logSettingsWidgetsTitlesEnabled(enable)
   }
 
-  fun setWhenToNotify(delay: NotificationDelay, context: Context) {
+  fun setWhenToNotify(delay: NotificationDelay) {
     viewModelScope.launch {
       mainCase.setWhenToNotify(delay)
       refreshSettings()

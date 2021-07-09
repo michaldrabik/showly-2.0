@@ -3,7 +3,7 @@ package com.michaldrabik.repository.mappers
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.MovieStatus
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Movie as MovieDb
 import com.michaldrabik.data_remote.trakt.model.Movie as MovieNetwork

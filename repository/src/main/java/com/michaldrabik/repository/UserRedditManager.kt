@@ -71,4 +71,5 @@ class UserRedditManager @Inject constructor(
   }
 }
 
-inline class RedditAuthToken(val token: String = "")
+@JvmInline
+value class RedditAuthToken(val token: String = "")

@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_model
 
 import com.michaldrabik.common.extensions.nowUtcDay
-import org.threeten.bp.LocalDate
+import java.time.LocalDate
 
 data class Movie(
   val ids: Ids,

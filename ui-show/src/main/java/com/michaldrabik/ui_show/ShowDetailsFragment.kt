@@ -124,7 +124,7 @@ import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import kotlinx.android.synthetic.main.view_links_menu.view.*
-import org.threeten.bp.Duration
+import java.time.Duration
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")

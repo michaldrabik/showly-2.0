@@ -14,7 +14,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Comment
 import kotlinx.android.synthetic.main.view_comments.view.*
-import org.threeten.bp.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter
 
 class CommentsView : ConstraintLayout {
 

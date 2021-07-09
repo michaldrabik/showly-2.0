@@ -5,10 +5,10 @@ import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
-import org.threeten.bp.DayOfWeek
-import org.threeten.bp.Month
-import org.threeten.bp.temporal.ChronoUnit.DAYS
-import org.threeten.bp.temporal.TemporalAdjusters.next
+import java.time.DayOfWeek
+import java.time.Month
+import java.time.temporal.ChronoUnit.DAYS
+import java.time.temporal.TemporalAdjusters.next
 import javax.inject.Inject
 import javax.inject.Singleton
 

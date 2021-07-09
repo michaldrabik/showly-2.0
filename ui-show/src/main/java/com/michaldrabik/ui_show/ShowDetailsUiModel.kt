@@ -10,7 +10,7 @@ import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_show.seasons.SeasonListItem
-import org.threeten.bp.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter
 
 data class ShowDetailsUiModel(
   val show: Show? = null,

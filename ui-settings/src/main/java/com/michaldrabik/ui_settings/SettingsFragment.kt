@@ -207,7 +207,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
     settingsShowsNotificationsSwitch
       .setCheckedSilent(settings.episodesNotificationsEnabled) { _, isChecked ->
-        viewModel.enableAnnouncements(isChecked, requireAppContext())
+        viewModel.enableAnnouncements(isChecked)
       }
 
     settingsWhenToNotifyValue.run {
@@ -232,7 +232,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
 
     settingsMoviesEnabledSwitch
       .setCheckedSilent(moviesEnabled) { _, isChecked ->
-        viewModel.enableMovies(isChecked, requireAppContext())
+        viewModel.enableMovies(isChecked)
       }
 
     settingsNewsEnabledSwitch
@@ -473,7 +473,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setSingleChoiceItems(options.map { getString(it.stringRes) }.toTypedArray(), default) { dialog, index ->
-        viewModel.setWhenToNotify(options[index], requireAppContext())
+        viewModel.setWhenToNotify(options[index])
         dialog.dismiss()
       }
       .show()

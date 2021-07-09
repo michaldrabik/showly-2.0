@@ -34,8 +34,8 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Translation
 import dagger.hilt.android.qualifiers.ApplicationContext
-import org.threeten.bp.ZonedDateTime
-import org.threeten.bp.format.DateTimeFormatter
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeUnit.MILLISECONDS

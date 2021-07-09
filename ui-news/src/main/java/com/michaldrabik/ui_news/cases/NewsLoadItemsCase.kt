@@ -12,7 +12,7 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import org.threeten.bp.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @ViewModelScoped

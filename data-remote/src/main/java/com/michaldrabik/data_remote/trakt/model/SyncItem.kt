@@ -1,7 +1,7 @@
 package com.michaldrabik.data_remote.trakt.model
 
-import org.threeten.bp.ZoneOffset.UTC
-import org.threeten.bp.ZonedDateTime
+import java.time.ZoneOffset.UTC
+import java.time.ZonedDateTime
 
 data class SyncItem(
   val show: Show?,

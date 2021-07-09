@@ -5,10 +5,10 @@ import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.SortOrderList
 import com.michaldrabik.ui_model.SortType
-import org.threeten.bp.Instant
-import org.threeten.bp.ZoneId
-import org.threeten.bp.ZonedDateTime
-import org.threeten.bp.format.DateTimeFormatter
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.CustomList as CustomListDb
 import com.michaldrabik.data_remote.trakt.model.CustomList as CustomListNetwork

@@ -6,6 +6,13 @@ apply plugin: 'dagger.hilt.android.plugin'
 apply from: '../versions.gradle'
 
 android {
+  kotlinOptions { jvmTarget = "1.8" }
+  compileOptions {
+    coreLibraryDesugaringEnabled true
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+  
   compileSdkVersion versions.compileSdk
 
   buildFeatures {
@@ -49,7 +56,6 @@ dependencies {
   api "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
   api "com.squareup.okhttp3:logging-interceptor:$versions.okHttpLogInterceptor"
 
-  implementation "com.jakewharton.threetenabp:threetenabp:$versions.threeTenAbp"
   implementation "com.jakewharton.timber:timber:$versions.timber"
 
   implementation "com.google.dagger:hilt-android:$versions.hilt"
@@ -58,4 +64,6 @@ dependencies {
   implementation "com.google.firebase:firebase-crashlytics:$versions.firebaseCrashlytics"
 
   testImplementation "junit:junit:$versions.junit"
+
+  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }

@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_progress.calendar.helpers.filters
 
 import com.michaldrabik.common.extensions.toLocalZone
-import org.threeten.bp.ZonedDateTime
-import org.threeten.bp.temporal.ChronoUnit.DAYS
+import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit.DAYS
 import javax.inject.Inject
 import javax.inject.Singleton
 import com.michaldrabik.data_local.database.model.Episode as EpisodeDb

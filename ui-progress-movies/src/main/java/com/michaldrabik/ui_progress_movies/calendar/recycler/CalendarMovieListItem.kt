@@ -7,7 +7,7 @@ import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
-import org.threeten.bp.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter
 
 sealed class CalendarMovieListItem(
   override val movie: Movie,

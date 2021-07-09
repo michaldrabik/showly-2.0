@@ -8,6 +8,7 @@ apply from: '../versions.gradle'
 android {
   kotlinOptions { jvmTarget = "1.8" }
   compileOptions {
+    coreLibraryDesugaringEnabled true
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
   }
@@ -45,4 +46,6 @@ dependencies {
   testImplementation "androidx.arch.core:core-testing:$versions.coreTesting"
   testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutinesTesting"
   androidTestImplementation "androidx.test:runner:$versions.testRunner"
+
+  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }

@@ -7,7 +7,7 @@ import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.TraktRating
-import org.threeten.bp.ZonedDateTime
+import java.time.ZonedDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_model
 
 import com.michaldrabik.common.extensions.nowUtc
-import org.threeten.bp.ZonedDateTime
+import java.time.ZonedDateTime
 
 data class TraktRating(
   val idTrakt: IdTrakt,

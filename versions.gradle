@@ -37,7 +37,6 @@ ext.versions = [
     okHttpLogInterceptor   : '4.9.0',
     retrofit               : '2.9.0',
     room                   : '2.3.0',
-    threeTenAbp            : '1.3.0',
     timber                 : '4.7.1',
     lingver                : '1.3.0',
     phoenix                : '2.0.0',

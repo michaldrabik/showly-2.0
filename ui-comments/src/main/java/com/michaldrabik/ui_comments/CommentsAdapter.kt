@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_model.Comment
-import org.threeten.bp.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter
 
 class CommentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

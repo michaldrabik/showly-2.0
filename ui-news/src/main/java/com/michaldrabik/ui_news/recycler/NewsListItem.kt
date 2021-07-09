@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_news.recycler
 
 import com.michaldrabik.ui_model.NewsItem
-import org.threeten.bp.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter
 
 data class NewsListItem(
   val item: NewsItem,

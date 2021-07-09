@@ -6,6 +6,7 @@ apply from: '../versions.gradle'
 android {
   kotlinOptions { jvmTarget = "1.8" }
   compileOptions {
+    coreLibraryDesugaringEnabled true
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
   }
@@ -29,4 +30,6 @@ android {
 dependencies {
   api "androidx.navigation:navigation-fragment-ktx:$versions.androidNavigation"
   api "androidx.navigation:navigation-ui-ktx:$versions.androidNavigation"
+
+  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }

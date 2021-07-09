@@ -2,7 +2,7 @@ package com.michaldrabik.repository.mappers
 
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.User
-import org.threeten.bp.ZonedDateTime
+import java.time.ZonedDateTime
 import javax.inject.Inject
 import com.michaldrabik.data_remote.trakt.model.Comment as CommentNetwork
 

@@ -2,7 +2,7 @@ package com.michaldrabik.ui_trakt_sync
 
 import com.michaldrabik.ui_base.UiModel
 import com.michaldrabik.ui_model.TraktSyncSchedule
-import org.threeten.bp.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter
 
 data class TraktSyncUiModel(
   val isProgress: Boolean? = null,

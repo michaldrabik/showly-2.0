@@ -107,7 +107,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
 import kotlinx.android.synthetic.main.view_links_movie_menu.view.*
+import java.util.*
 import java.util.Locale.ENGLISH
+import java.util.Locale.ROOT
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
 @AndroidEntryPoint
@@ -386,7 +388,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         movieDetailsExtraInfo.text = getString(
           R.string.textMovieExtraInfo,
           releaseDate,
-          country.toUpperCase(),
+          country.uppercase(ROOT),
           movie.runtime.toString(),
           getString(R.string.textMinutesShort),
           renderGenres(movie.genres)
