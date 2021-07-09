@@ -99,7 +99,7 @@ class PremiumViewModel @Inject constructor(
             unlockAndFinish()
           }
           eligiblePurchases.any { it.purchaseState == PENDING } -> {
-            uiState = PremiumUiModel(isPurchasePending = true, isLoading = false, )
+            uiState = PremiumUiModel(isPurchasePending = true, isLoading = false,)
           }
           else -> loadPurchases(billingClient)
         }
