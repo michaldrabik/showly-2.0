@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <dimen name="widgetImageHeight">56dp</dimen>
-  <dimen name="widgetImageWidth">37dp</dimen>
+  <dimen name="widgetImageHeight">60dp</dimen>
+  <dimen name="widgetImageWidth">40dp</dimen>
   <dimen name="widgetPaddingTop">26dp</dimen>
   <dimen name="widgetCorner">6dp</dimen>
 </resources>

@@ -86,7 +86,7 @@
       android:paddingBottom="2dp"
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorPrimary"
-      android:textSize="10sp"
+      android:textSize="11sp"
       tools:text="Wednesday, 27 June 2019"
       />
 

@@ -59,6 +59,7 @@
       android:layout_height="wrap_content"
       android:layout_alignParentStart="true"
       android:layout_marginEnd="@dimen/spaceMedium"
+      android:layout_marginBottom="@dimen/spaceMicro"
       android:layout_toStartOf="@id/progressMoviesWidgetItemCheckButton"
       tools:ignore="RtlSymmetry"
       tools:text="Breaking Bad"

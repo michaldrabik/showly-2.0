@@ -31,7 +31,7 @@
   <style name="WidgetItem" />
 
   <style name="WidgetItem.CheckButton" parent="WidgetItem">
-    <item name="android:layout_width">50dp</item>
+    <item name="android:layout_width">24dp</item>
     <item name="android:layout_height">24dp</item>
     <item name="android:background">@drawable/bg_widget_check_button</item>
     <item name="android:src">@drawable/ic_check_small</item>
@@ -44,14 +44,14 @@
     <item name="android:ellipsize">end</item>
     <item name="android:maxLines">1</item>
     <item name="android:textColor">?android:attr/textColorPrimary</item>
-    <item name="android:textSize">14sp</item>
+    <item name="android:textSize">15sp</item>
   </style>
 
   <style name="WidgetItem.Subtitle" parent="WidgetItem">
     <item name="android:ellipsize">end</item>
     <item name="android:maxLines">2</item>
     <item name="android:textColor">?android:attr/textColorSecondary</item>
-    <item name="android:textSize">10sp</item>
+    <item name="android:textSize">11sp</item>
   </style>
 
 </resources>

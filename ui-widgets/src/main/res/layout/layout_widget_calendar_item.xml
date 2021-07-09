@@ -75,7 +75,7 @@
       android:includeFontPadding="false"
       android:maxLines="1"
       android:textColor="?android:attr/textColorPrimary"
-      android:textSize="10sp"
+      android:textSize="12sp"
       tools:text="@tools:sample/lorem/random"
       />
 
@@ -95,7 +95,7 @@
       android:paddingEnd="6dp"
       android:paddingBottom="2dp"
       android:textColor="?android:attr/textColorPrimary"
-      android:textSize="10sp"
+      android:textSize="12sp"
       tools:text="S.01 E.01"
       />
 
@@ -107,7 +107,7 @@
       android:gravity="start|center_vertical"
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorSecondary"
-      android:textSize="10sp"
+      android:textSize="11sp"
       tools:text="Wednesday, 27 June 2019"
       />
 
