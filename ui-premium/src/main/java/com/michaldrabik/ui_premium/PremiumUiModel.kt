@@ -6,6 +6,7 @@ import com.michaldrabik.ui_base.utilities.ActionEvent
 
 data class PremiumUiModel(
   val isLoading: Boolean? = null,
+  val isPurchasePending: Boolean? = null,
   val purchaseItems: List<SkuDetails>? = null,
   val finishEvent: ActionEvent<Boolean>? = null
 ) : UiModel() {
@@ -13,6 +14,7 @@ data class PremiumUiModel(
   override fun update(newModel: UiModel) =
     (newModel as PremiumUiModel).copy(
       isLoading = newModel.isLoading ?: isLoading,
+      isPurchasePending = newModel.isPurchasePending ?: isPurchasePending,
       purchaseItems = newModel.purchaseItems ?: purchaseItems,
       finishEvent = newModel.finishEvent ?: finishEvent
     )
