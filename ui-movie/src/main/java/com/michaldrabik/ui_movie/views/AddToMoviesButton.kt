@@ -12,7 +12,6 @@ import com.michaldrabik.ui_movie.R
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_WATCHLIST
-import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.UPCOMING
 import kotlinx.android.synthetic.main.view_add_to_movies_button.view.*
 
 class AddToMoviesButton : FrameLayout {
@@ -78,12 +77,6 @@ class AddToMoviesButton : FrameLayout {
           fadeIn(duration, withHardware = true) { isEnabled = true }
         }
       }
-      UPCOMING -> {
-        addToMyMoviesButton.fadeIn(duration, withHardware = true)
-        addToMyMoviesButton.setText(R.string.textUpcoming)
-        watchlistButton.fadeIn(duration, withHardware = true)
-        inMyMoviesButton.fadeOut(duration, withHardware = true) { isEnabled = true }
-      }
     }
   }
 
@@ -96,7 +89,6 @@ class AddToMoviesButton : FrameLayout {
   enum class State {
     ADD,
     IN_MY_MOVIES,
-    IN_WATCHLIST,
-    UPCOMING
+    IN_WATCHLIST
   }
 }

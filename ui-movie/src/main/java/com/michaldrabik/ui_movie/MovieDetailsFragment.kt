@@ -88,7 +88,6 @@ import com.michaldrabik.ui_movie.related.RelatedMovieAdapter
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_WATCHLIST
-import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.UPCOMING
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
@@ -107,6 +106,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
 import kotlinx.android.synthetic.main.view_links_movie_menu.view.*
+import java.util.Locale
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
@@ -386,7 +386,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         movieDetailsExtraInfo.text = getString(
           R.string.textMovieExtraInfo,
           releaseDate,
-          country.toUpperCase(),
+          country.uppercase(Locale.getDefault()),
           movie.runtime.toString(),
           getString(R.string.textMinutesShort),
           renderGenres(movie.genres)
@@ -426,7 +426,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         when {
           it.isMyMovie -> movieDetailsAddButton.setState(IN_MY_MOVIES, it.withAnimation)
           it.isWatchlist -> movieDetailsAddButton.setState(IN_WATCHLIST, it.withAnimation)
-          it.isUpcoming -> movieDetailsAddButton.setState(UPCOMING, it.withAnimation)
           else -> movieDetailsAddButton.setState(ADD, it.withAnimation)
         }
         (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
