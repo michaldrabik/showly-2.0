@@ -93,7 +93,7 @@ class AnnouncementManager @Inject constructor(
       episode?.firstAired?.let { airDate ->
         when {
           delay.isBefore() -> {
-            if ((airDate.toMillis() - nowUtcMillis()) + delay.delayMs > 0) {
+            if (airDate.toMillis() + delay.delayMs >= nowMillis) {
               scheduleAnnouncement(show, episode, delay, language)
             } else {
               Timber.i("Time with delay included has already passed.")
