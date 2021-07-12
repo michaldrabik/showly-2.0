@@ -1,16 +1,13 @@
 package com.michaldrabik.ui_progress_movies.calendar.cases
 
-import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
-import com.michaldrabik.ui_model.Movie
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 @ViewModelScoped
 class CalendarMoviesRatingsCase @Inject constructor(
   private val userTraktManager: UserTraktManager,
-  private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
 ) {
 
@@ -19,10 +16,5 @@ class CalendarMoviesRatingsCase @Inject constructor(
     val isPremium = settingsRepository.isPremium
     val isQuickRate = settingsRepository.load().traktQuickRateEnabled
     return isPremium && isSignedIn && isQuickRate
-  }
-
-  suspend fun addRating(movie: Movie, rating: Int) {
-    val token = userTraktManager.checkAuthorization().token
-    ratingsRepository.movies.addRating(token, movie, rating)
   }
 }
