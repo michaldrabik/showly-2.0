@@ -13,9 +13,9 @@ fun ViewGroup.showSnackbar(
   textColor: Int,
   backgroundRes: Int,
   length: Int,
-  action: (() -> Unit)? = null
-) {
-  Snackbar.make(this, message, length).apply {
+  action: (() -> Unit)? = null,
+): Snackbar {
+  return Snackbar.make(this, message, length).apply {
     view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)?.let {
       it.maxLines = 5
     }
@@ -36,17 +36,17 @@ fun ViewGroup.showInfoSnackbar(
   message: String,
   actionText: Int = R.string.textOk,
   length: Int = LENGTH_SHORT,
-  action: (() -> Unit)? = null
-) {
+  action: (() -> Unit)? = null,
+): Snackbar {
   val textColor = context.colorFromAttr(R.attr.textColorInfoSnackbar)
-  showSnackbar(message, actionText, textColor, R.drawable.bg_snackbar_info, length, action)
+  return showSnackbar(message, actionText, textColor, R.drawable.bg_snackbar_info, length, action)
 }
 
 fun ViewGroup.showErrorSnackbar(
   message: String,
   actionText: Int = R.string.textOk,
-  action: () -> Unit = {}
-) {
+  action: () -> Unit = {},
+): Snackbar {
   val textColor = context.colorFromAttr(R.attr.textColorErrorSnackbar)
-  showSnackbar(message, actionText, textColor, R.drawable.bg_snackbar_error, LENGTH_INDEFINITE, action)
+  return showSnackbar(message, actionText, textColor, R.drawable.bg_snackbar_error, LENGTH_INDEFINITE, action)
 }

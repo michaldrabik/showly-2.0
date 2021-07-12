@@ -31,6 +31,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
@@ -44,6 +45,7 @@ import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
@@ -58,6 +60,7 @@ import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
+import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
@@ -145,7 +148,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
+      messageLiveData.observe(viewLifecycleOwner, { renderSnack(it) })
       if (!isInitialized) {
         loadDetails(movieId)
         isInitialized = true
@@ -471,6 +474,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
           }
         }
       }
+      isFinished?.let { event ->
+        event.consume()?.let {
+          if (it) requireActivity().onBackPressed()
+        }
+      }
     }
   }
 
@@ -581,6 +589,20 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     if (translation?.title?.isNotBlank() == true) {
       movieDetailsTitle.text = translation.title
     }
+  }
+
+  private fun renderSnack(event: MessageEvent) {
+    if (event.peek() == R.string.errorMalformedMovie) {
+      event.consume()?.let {
+        val host = (requireActivity() as SnackbarHost).provideSnackbarLayout()
+        val snack = host.showInfoSnackbar(getString(it), length = Snackbar.LENGTH_INDEFINITE) {
+          viewModel.removeMalformedMovie(movieId)
+        }
+        snackbars.add(snack)
+      }
+      return
+    }
+    showSnack(event)
   }
 
   private fun openIMDbLink(id: IdImdb, type: String) {

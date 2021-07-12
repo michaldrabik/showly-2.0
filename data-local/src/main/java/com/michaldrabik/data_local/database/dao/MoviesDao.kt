@@ -25,6 +25,9 @@ interface MoviesDao : BaseDao<Movie> {
   @Query("SELECT * FROM movies WHERE id_trakt == :traktId")
   suspend fun getById(traktId: Long): Movie?
 
+  @Query("DELETE FROM movies where id_trakt == :traktId")
+  suspend fun deleteById(traktId: Long)
+
   @Transaction
   suspend fun upsert(movies: List<Movie>) {
     val result = insert(movies)

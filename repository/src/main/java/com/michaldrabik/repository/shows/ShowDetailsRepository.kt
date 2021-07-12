@@ -12,7 +12,7 @@ import javax.inject.Inject
 class ShowDetailsRepository @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   suspend fun load(idTrakt: IdTrakt, force: Boolean = false): Show {
@@ -24,5 +24,13 @@ class ShowDetailsRepository @Inject constructor(
       return show
     }
     return mappers.show.fromDatabase(localShow)
+  }
+
+  suspend fun delete(idTrakt: IdTrakt) {
+    with(database) {
+      showsDao().deleteById(idTrakt.id)
+      seasonsDao().deleteAllForShow(idTrakt.id)
+      episodesDao().deleteAllForShow(idTrakt.id)
+    }
   }
 }

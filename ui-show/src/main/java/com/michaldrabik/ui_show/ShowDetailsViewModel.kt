@@ -58,6 +58,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
@@ -150,7 +151,12 @@ class ShowDetailsViewModel @Inject constructor(
         }
       } catch (error: Throwable) {
         progressJob.cancel()
-        _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadShow)
+        if (error is HttpException && error.code() == 404) {
+          // Malformed Trakt data or duplicate show.
+          _messageLiveData.value = MessageEvent.info(R.string.errorMalformedShow)
+        } else {
+          _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadShow)
+        }
         Logger.record(error, "Source" to "ShowDetailsViewModel")
         rethrowCancellation(error)
       }
@@ -573,6 +579,19 @@ class ShowDetailsViewModel @Inject constructor(
         _messageLiveData.value = MessageEvent.error(R.string.errorTraktSyncGeneral)
         uiState = ShowDetailsUiModel(showFromTraktLoading = false)
         rethrowCancellation(error)
+      }
+    }
+  }
+
+  fun removeMalformedShow(id: IdTrakt) {
+    viewModelScope.launch {
+      try {
+        mainCase.removeMalformedShow(id)
+      } catch (error: Throwable) {
+        Timber.e(error)
+        rethrowCancellation(error)
+      } finally {
+        uiState = ShowDetailsUiModel(isFinished = ActionEvent(true))
       }
     }
   }

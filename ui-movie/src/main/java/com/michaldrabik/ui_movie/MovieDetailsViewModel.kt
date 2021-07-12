@@ -106,10 +106,16 @@ class MovieDetailsViewModel @Inject constructor(
         launch { loadRelatedMovies(movie) }
         launch { loadTranslation(movie) }
         if (isSignedIn) launch { loadRating(movie) }
-      } catch (t: Throwable) {
+      } catch (error: Throwable) {
         progressJob.cancel()
-        _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadMovie)
-        Logger.record(t, "Source" to "MovieDetailsViewModel")
+        if (error is HttpException && error.code() == 404) {
+          // Malformed Trakt data or duplicate show.
+          _messageLiveData.value = MessageEvent.info(R.string.errorMalformedMovie)
+        } else {
+          _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadMovie)
+        }
+        Logger.record(error, "Source" to "MovieDetailsViewModel")
+        rethrowCancellation(error)
       }
     }
   }
@@ -119,7 +125,7 @@ class MovieDetailsViewModel @Inject constructor(
       uiState = try {
         val backgroundImage = imagesProvider.loadRemoteImage(movie ?: this@MovieDetailsViewModel.movie, ImageType.FANART)
         MovieDetailsUiModel(image = backgroundImage)
-      } catch (t: Throwable) {
+      } catch (error: Throwable) {
         MovieDetailsUiModel(image = Image.createUnavailable(ImageType.FANART))
       }
     }
@@ -300,8 +306,9 @@ class MovieDetailsViewModel @Inject constructor(
       val rating = ratingsCase.loadRating(movie)
       uiState = MovieDetailsUiModel(ratingState = RatingState(userRating = rating ?: TraktRating.EMPTY, rateLoading = false))
     } catch (error: Throwable) {
-      Timber.e(error)
       uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = false))
+      Timber.e(error)
+      rethrowCancellation(error)
     }
   }
 
@@ -317,8 +324,9 @@ class MovieDetailsViewModel @Inject constructor(
       val ratings = ratingsCase.loadExternalRatings(movie)
       uiState = MovieDetailsUiModel(ratings = ratings)
     } catch (error: Throwable) {
-      Timber.e(error)
       uiState = MovieDetailsUiModel(ratings = traktRatings)
+      Timber.e(error)
+      rethrowCancellation(error)
     }
   }
 
@@ -427,6 +435,19 @@ class MovieDetailsViewModel @Inject constructor(
       } catch (error: Throwable) {
         _messageLiveData.value = MessageEvent.error(R.string.errorTraktSyncGeneral)
         uiState = MovieDetailsUiModel(showFromTraktLoading = false)
+      }
+    }
+  }
+
+  fun removeMalformedMovie(id: IdTrakt) {
+    viewModelScope.launch {
+      try {
+        mainCase.removeMalformedMovie(id)
+      } catch (error: Throwable) {
+        Timber.e(error)
+        rethrowCancellation(error)
+      } finally {
+        uiState = MovieDetailsUiModel(isFinished = ActionEvent(true))
       }
     }
   }

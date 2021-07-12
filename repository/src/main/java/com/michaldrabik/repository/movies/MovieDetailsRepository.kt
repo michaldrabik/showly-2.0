@@ -13,7 +13,7 @@ import javax.inject.Inject
 class MovieDetailsRepository @Inject constructor(
   private val cloud: Cloud,
   private val database: AppDatabase,
-  private val mappers: Mappers
+  private val mappers: Mappers,
 ) {
 
   suspend fun load(idTrakt: IdTrakt, force: Boolean = false): Movie {
@@ -26,5 +26,11 @@ class MovieDetailsRepository @Inject constructor(
       return movie
     }
     return mappers.movie.fromDatabase(local)
+  }
+
+  suspend fun delete(idTrakt: IdTrakt) {
+    with(database) {
+      moviesDao().deleteById(idTrakt.id)
+    }
   }
 }

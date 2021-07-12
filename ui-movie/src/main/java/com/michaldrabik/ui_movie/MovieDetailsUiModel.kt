@@ -35,6 +35,7 @@ data class MovieDetailsUiModel(
   val commentsDateFormat: DateTimeFormatter? = null,
   val isSignedIn: Boolean? = null,
   val isPremium: Boolean? = null,
+  val isFinished: ActionEvent<Boolean>? = null,
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -57,6 +58,7 @@ data class MovieDetailsUiModel(
       commentsDateFormat = newModel.commentsDateFormat ?: commentsDateFormat,
       isPremium = newModel.isPremium ?: isPremium,
       isSignedIn = newModel.isSignedIn ?: isSignedIn,
+      isFinished = newModel.isFinished ?: isFinished,
       ratings = newModel.ratings ?: ratings,
       ratingState = newModel.ratingState?.copy(
         rateLoading = newModel.ratingState.rateLoading ?: ratingState?.rateLoading,
