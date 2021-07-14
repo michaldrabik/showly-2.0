@@ -19,7 +19,7 @@
   <string name="textEpisode">%1$d. Bölüm</string>
   <string name="textSortBy">Sırala:</string>
   <string name="textSpoilersWarning">Bu yorum spoiler içermektedir.\nOkumak için dokunun.</string>
-  <string name="textCommentedOn">%s tarafından yorum yapıldı</string>
+  <string name="textCommentedOn">Yorum yapan: %s</string>
   <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textShows">Diziler</string>
   <string name="textMovies">Filmler</string>
