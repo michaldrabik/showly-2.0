@@ -81,6 +81,8 @@
   <string name="errorSeasonsNotLoaded">Bitte warte bis die Staffelinformationen geladen sind.</string>
   <string name="errorEpisodeNotAired">Diese Folge wurde bisher noch nicht veröffentlicht.</string>
   <string name="errorCouldNotLoadDiscover">Wir können die Entdecken Seite aktuell nicht laden.\nBitte kontaktiere uns, wenn dieser Fehler weiterhin besteht.</string>
+  <string name="errorMalformedShow">Es sieht so aus als ob die Sendung nicht länger in der Trakt.tv Datenbank existiert oder doppelt ist.\n\n Tippe auf \"OK\" um sie aus der App zu entfernen.</string>
+  <string name="errorMalformedMovie">Es sieht so aus als ob dieser Film nicht länger in der Trakt.tv Datenbank existiert oder doppelt ist.\n\n Tippe auf \"OK\" um ihn auf der App zu entfernen.</string>
   <string name="errorCouldNotLoadShow">Wir können die Detail der Serie aktuell nicht laden.\nBitte kontaktiere uns, wenn dieser Fehler weiterhin passiert.</string>
   <string name="errorCouldNotLoadMovie">Wir können die Detail des Filmes aktuell nicht laden.\nBitte kontaktiere uns, wenn dieser Fehler weiterhin passiert.</string>
   <string name="errorCouldNotLoadSearchResults">Wir können die Suchergebnisse aktuell nicht laden.\nBitte schreib uns, wenn dieser Fehler weiterhin passiert.</string>
