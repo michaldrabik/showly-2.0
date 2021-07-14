@@ -81,6 +81,8 @@
   <string name="errorSeasonsNotLoaded">Lütfen sezon verilerinin yüklenmesini bekleyin.</string>
   <string name="errorEpisodeNotAired">Bu bölüm henüz yayınlanmadı.</string>
   <string name="errorCouldNotLoadDiscover">Şu anda keşfet sayfasını yükleyemiyoruz.\nBu durum devam ederse lütfen bizimle iletişime geçin.</string>
+  <string name="errorMalformedShow">Bu dizi artık Trakt.tv veritabanında yok veya çift girilmiş gibi görünüyor.\n\nUygulamadan da silmek için \'Tamam\'a dokunun.</string>
+  <string name="errorMalformedMovie">Bu film artık Trakt.tv veritabanında yok veya çift girilmiş gibi görünüyor.\n\nUygulamadan da silmek için \'Tamam\'a dokunun.</string>
   <string name="errorCouldNotLoadShow">Bu dizinin ayrıntılarını şu anda yükleyemiyoruz.\nBu durum devam ederse lütfen bizimle iletişime geçin.</string>
   <string name="errorCouldNotLoadMovie">Bu filmin ayrıntılarını şu anda yükleyemiyoruz.\nBu durum devam ederse lütfen bizimle iletişime geçin.</string>
   <string name="errorCouldNotLoadSearchResults">Şu anda arama sonuçlarını yükleyemiyoruz.\nBu durum devam ederse lütfen bizimle iletişime geçin.</string>
