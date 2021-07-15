@@ -18,15 +18,15 @@
   <string name="textSpecials">Özeller</string>
   <string name="textEpisode">%1$d. Bölüm</string>
   <string name="textSortBy">Sırala:</string>
-  <string name="textSpoilersWarning">Bu yorum spoiler içermektedir.\nOkumak için dokunun.</string>
-  <string name="textCommentedOn">%s tarafından yorum yapıldı</string>
+  <string name="textSpoilersWarning">Bu yorum sürpriz bozan içermektedir.\nOkumak için dokunun.</string>
+  <string name="textCommentedOn">Yorum yapan: %s</string>
   <string name="textNetwork">%1$s (%2$s)</string>
   <string name="textShows">Diziler</string>
   <string name="textMovies">Filmler</string>
   <string name="textLists">Listeler</string>
   <string name="textMinutesShort">dk</string>
   <string name="textRemoveFromTrakt">Trakt.tv\'den silinsin mi?</string>
-  <string name="textNoDescription">Genel bakış mevcut değil.</string>
+  <string name="textNoDescription">Tanıtım mevcut değil.</string>
   <string name="textPleaseWait">Lütfen bekleyin…</string>
   <string name="textRate">Oy Ver</string>
   <string name="textRateSaved">Oyunuz kaydedildi.</string>
@@ -81,6 +81,8 @@
   <string name="errorSeasonsNotLoaded">Lütfen sezon verilerinin yüklenmesini bekleyin.</string>
   <string name="errorEpisodeNotAired">Bu bölüm henüz yayınlanmadı.</string>
   <string name="errorCouldNotLoadDiscover">Şu anda keşfet sayfasını yükleyemiyoruz.\nBu durum devam ederse lütfen bizimle iletişime geçin.</string>
+  <string name="errorMalformedShow">Bu dizi artık Trakt.tv veritabanında yok veya çift girilmiş gibi görünüyor.\n\nUygulamadan da silmek için \'Tamam\'a dokunun.</string>
+  <string name="errorMalformedMovie">Bu film artık Trakt.tv veritabanında yok veya çift girilmiş gibi görünüyor.\n\nUygulamadan da silmek için \'Tamam\'a dokunun.</string>
   <string name="errorCouldNotLoadShow">Bu dizinin ayrıntılarını şu anda yükleyemiyoruz.\nBu durum devam ederse lütfen bizimle iletişime geçin.</string>
   <string name="errorCouldNotLoadMovie">Bu filmin ayrıntılarını şu anda yükleyemiyoruz.\nBu durum devam ederse lütfen bizimle iletişime geçin.</string>
   <string name="errorCouldNotLoadSearchResults">Şu anda arama sonuçlarını yükleyemiyoruz.\nBu durum devam ederse lütfen bizimle iletişime geçin.</string>

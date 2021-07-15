@@ -89,6 +89,8 @@
   <string name="errorSeasonsNotLoaded">Proszę poczekać na dane o sezonach.</string>
   <string name="errorEpisodeNotAired">Ten odcinek nie miał jeszcze premiery.</string>
   <string name="errorCouldNotLoadDiscover">W tej chwili nie można załadować świeżych danych.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
+  <string name="errorMalformedShow">Wygląda na to, że ten program nie istnieje już w bazie danych Trakt.tv lub jest duplikatem.\n\nNaciśnij \"OK\", aby usunąć go z aplikacji.</string>
+  <string name="errorMalformedMovie">Wygląda na to, że ten film nie istnieje już w bazie danych Trakt.tv lub jest duplikatem.\n\nNaciśnij \"OK\", aby usunąć go z aplikacji.</string>
   <string name="errorCouldNotLoadShow">W tej chwili nie można załadować informacji o serialu.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="errorCouldNotLoadMovie">W tej chwili nie można załadować informacji o filmie.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="errorCouldNotLoadSearchResults">W tej chwili nie można załadować wyników wyszukiwania.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>

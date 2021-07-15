@@ -97,6 +97,8 @@
   <string name="errorSeasonsNotLoaded">رجاءً إنتظر قليلاً حتى يكتمل تحميل بيانات المواسم.</string>
   <string name="errorEpisodeNotAired">لم تُعرض الحلقة حتى الآن.</string>
   <string name="errorCouldNotLoadDiscover">لم نستطع تحميل صفحة إكتشف.\nرجاءً تواصل معنا إذا استمرت هذه المشكلة بالحدوث.</string>
+  <string name="errorMalformedShow">يبدو أن هذا المسلسل لم يعد موجودًا في قاعدة بيانات موقع Trakt.tv، أو أنه مُكرر.\n\nأنقر على زر \"موافق\" لِحذفه مِن التطبيق.</string>
+  <string name="errorMalformedMovie">يبدو أن هذا الفيلم لم يعد موجودًا في قاعدة بيانات موقع Trakt.tv، أو أنه مُكرر.\n\nأنقر على زر \"موافق\" لِحذفه مِن التطبيق.</string>
   <string name="errorCouldNotLoadShow">لم نستطع تحميل معلومات هذا المسلسل.\nرجاءً تواصل معنا إذا إستمرت هذه المشكلة بالحدوث</string>
   <string name="errorCouldNotLoadMovie">لم نستطع تحميل معلومات هذا الفيلم.\nرجاءً تواصل معنا إذا إستمرت هذه المشكلة بالحدوث.</string>
   <string name="errorCouldNotLoadSearchResults">لم نستطع تحميل نتائج البحث.\nرجاءً تواصل معنا إذا استمرت هذه المشكلة بالحدوث.</string>
