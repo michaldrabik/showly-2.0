@@ -89,6 +89,8 @@
   <string name="errorSeasonsNotLoaded">Пожалуйста, дождитесь загрузки данных сезонов.</string>
   <string name="errorEpisodeNotAired">Этот эпизод еще не вышел.</string>
   <string name="errorCouldNotLoadDiscover">Мы не смогли загрузить Открытия данный момент.\nПожалуйста, свяжитесь с нами, если это произойдет снова.</string>
+  <string name="errorMalformedShow">Похоже, это шоу больше не существует в базе данных Trakt.tv или является дубликатом.\n\nНажмите \'OK\' для его удаления из приложения.</string>
+  <string name="errorMalformedMovie">Похоже, этот фильм больше не существует в базе данных Trakt.tv или является дубликатом.\n\nНажмите \'OK\' для его удаления из приложения.</string>
   <string name="errorCouldNotLoadShow">Мы не смогли загрузить детали этого сериала.\nПожалуйста, свяжитесь с нами, если это произойдет снова.</string>
   <string name="errorCouldNotLoadMovie">Мы не смогли загрузить детали этого фильма.\nПожалуйста, свяжитесь с нами, если это произойдет снова.</string>
   <string name="errorCouldNotLoadSearchResults">Мы не смогли загрузить результаты поиска.\nПожалуйста, свяжитесь с нами, если это произойдет снова.</string>
