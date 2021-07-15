@@ -21,7 +21,7 @@ import javax.inject.Singleton
 
 @Singleton
 class SettingsRepository @Inject constructor(
-  @Named("miscPreferences") private var miscPreferences: SharedPreferences,
+  @Named("miscPreferences") private var preferences: SharedPreferences,
   private val database: AppDatabase,
   private val mappers: Mappers,
 ) {
@@ -60,51 +60,51 @@ class SettingsRepository @Inject constructor(
   var mode: Mode
     get() {
       val default = Mode.SHOWS.name
-      return Mode.valueOf(miscPreferences.getString(MODE, default) ?: default)
+      return Mode.valueOf(preferences.getString(MODE, default) ?: default)
     }
-    set(value) = miscPreferences.edit(true) { putString(MODE, value.name) }
+    set(value) = preferences.edit(true) { putString(MODE, value.name) }
 
-  var isPremium by BooleanPreference(miscPreferences, PREMIUM)
-  var streamingsEnabled by BooleanPreference(miscPreferences, STREAMINGS_ENABLED, true)
-  var isMoviesEnabled by BooleanPreference(miscPreferences, MOVIES_ENABLED, true)
-  var isNewsEnabled by BooleanPreference(miscPreferences, NEWS_ENABLED)
-  var language by StringPreference(miscPreferences, LANGUAGE, DEFAULT_LANGUAGE)
-  var country by StringPreference(miscPreferences, COUNTRY, DEFAULT_COUNTRY)
-  var dateFormat by StringPreference(miscPreferences, DATE_FORMAT, DEFAULT_DATE_FORMAT)
+  var isPremium by BooleanPreference(preferences, PREMIUM)
+  var streamingsEnabled by BooleanPreference(preferences, STREAMINGS_ENABLED, true)
+  var isMoviesEnabled by BooleanPreference(preferences, MOVIES_ENABLED, true)
+  var isNewsEnabled by BooleanPreference(preferences, NEWS_ENABLED)
+  var language by StringPreference(preferences, LANGUAGE, DEFAULT_LANGUAGE)
+  var country by StringPreference(preferences, COUNTRY, DEFAULT_COUNTRY)
+  var dateFormat by StringPreference(preferences, DATE_FORMAT, DEFAULT_DATE_FORMAT)
 
   var theme: Int
     get() {
       if (!isPremium) return MODE_NIGHT_YES
-      return miscPreferences.getInt(THEME, MODE_NIGHT_YES)
+      return preferences.getInt(THEME, MODE_NIGHT_YES)
     }
-    set(value) = miscPreferences.edit(true) { putInt(THEME, value) }
+    set(value) = preferences.edit(true) { putInt(THEME, value) }
 
   var widgetsTheme: Int
     get() {
       if (!isPremium) return MODE_NIGHT_YES
-      return miscPreferences.getInt(THEME_WIDGET, MODE_NIGHT_YES)
+      return preferences.getInt(THEME_WIDGET, MODE_NIGHT_YES)
     }
-    set(value) = miscPreferences.edit(true) { putInt(THEME_WIDGET, value) }
+    set(value) = preferences.edit(true) { putInt(THEME_WIDGET, value) }
 
   var widgetsTransparency: Int
     get() {
       if (!isPremium) return 100
-      return miscPreferences.getInt(THEME_WIDGET_TRANSPARENT, 100)
+      return preferences.getInt(THEME_WIDGET_TRANSPARENT, 100)
     }
-    set(value) = miscPreferences.edit(true) { putInt(THEME_WIDGET_TRANSPARENT, value) }
+    set(value) = preferences.edit(true) { putInt(THEME_WIDGET_TRANSPARENT, value) }
 
   var progressPercentType: ProgressType
     get() {
-      val setting = miscPreferences.getString(PROGRESS_PERCENT, ProgressType.AIRED.name) ?: ProgressType.AIRED.name
+      val setting = preferences.getString(PROGRESS_PERCENT, ProgressType.AIRED.name) ?: ProgressType.AIRED.name
       return ProgressType.valueOf(setting)
     }
-    set(value) = miscPreferences.edit(true) { putString(PROGRESS_PERCENT, value.name) }
+    set(value) = preferences.edit(true) { putString(PROGRESS_PERCENT, value.name) }
 
   val userId
-    get() = when (val id = miscPreferences.getString(USER_ID, null)) {
+    get() = when (val id = preferences.getString(USER_ID, null)) {
       null -> {
         val uuid = UUID.randomUUID().toString().take(13)
-        miscPreferences.edit().putString(USER_ID, uuid).apply()
+        preferences.edit().putString(USER_ID, uuid).apply()
         uuid
       }
       else -> id
