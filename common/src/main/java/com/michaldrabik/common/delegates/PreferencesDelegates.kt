@@ -7,7 +7,7 @@ import kotlin.reflect.KProperty
 class StringPreference(
   private val sharedPreferences: SharedPreferences,
   private val key: String,
-  private val defaultValue: String
+  private val defaultValue: String,
 ) : ReadWriteProperty<Any, String> {
 
   override fun getValue(thisRef: Any, property: KProperty<*>): String =
@@ -23,7 +23,7 @@ class StringPreference(
 class BooleanPreference(
   private val sharedPreferences: SharedPreferences,
   private val key: String,
-  private val defaultValue: Boolean = false
+  private val defaultValue: Boolean = false,
 ) : ReadWriteProperty<Any, Boolean> {
 
   override fun getValue(thisRef: Any, property: KProperty<*>): Boolean =
@@ -32,20 +32,5 @@ class BooleanPreference(
   override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) =
     sharedPreferences.edit()
       .putBoolean(key, value)
-      .apply()
-}
-
-class IntPreference(
-  private val sharedPreferences: SharedPreferences,
-  private val key: String,
-  private val defaultValue: Int = -1
-) : ReadWriteProperty<Any, Int> {
-
-  override fun getValue(thisRef: Any, property: KProperty<*>): Int =
-    sharedPreferences.getInt(key, defaultValue)
-
-  override fun setValue(thisRef: Any, property: KProperty<*>, value: Int) =
-    sharedPreferences.edit()
-      .putInt(key, value)
       .apply()
 }
