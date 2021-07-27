@@ -67,8 +67,13 @@ abstract class CalendarItemsCase constructor(
       .sortedWith(sortEpisodes())
       .map { episode ->
         async {
-          val show = shows.first { it.traktId == episode.idShowTrakt }
-          val season = filteredSeasons.first { it.idShowTrakt == episode.idShowTrakt && it.seasonNumber == episode.seasonNumber }
+          val show = shows.firstOrNull { it.traktId == episode.idShowTrakt }
+          val season = filteredSeasons.firstOrNull { it.idShowTrakt == episode.idShowTrakt && it.seasonNumber == episode.seasonNumber }
+
+          if (show == null || season == null) {
+            return@async null
+          }
+
           val seasonEpisodes = episodes.filter { it.idShowTrakt == season.idShowTrakt && it.seasonNumber == season.seasonNumber }
 
           val episodeUi = mappers.episode.fromDatabase(episode)
@@ -91,7 +96,9 @@ abstract class CalendarItemsCase constructor(
             translations = translations
           )
         }
-      }.awaitAll()
+      }
+      .awaitAll()
+      .filterNotNull()
 
     val queryElements = filterByQuery(searchQuery, elements)
     grouper.groupByTime(queryElements)
