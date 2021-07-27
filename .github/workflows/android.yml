@@ -21,7 +21,7 @@ jobs:
       env:
         KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
     - name: Run ktlint
-      run: curl -sSLO https://oss.sonatype.org/content/repositories/snapshots/com/pinterest/ktlint/0.42.0-SNAPSHOT/ktlint-0.42.0-20210629.184437-19-all.jar && chmod a+x ktlint-0.42.0-20210629.184437-19-all.jar && java -jar ktlint-0.42.0-20210629.184437-19-all.jar
+      run: curl -sSLO https://oss.sonatype.org/content/repositories/snapshots/com/pinterest/ktlint/0.42.0-SNAPSHOT/ktlint-0.42.0-20210720.195816-23-all.jar && chmod a+x ktlint-0.42.0-20210720.195816-23-all.jar && java -jar ktlint-0.42.0-20210720.195816-23-all.jar
     - name: Run Unit Tests (app)
       run: ./gradlew :app:testDebugUnitTest
     - name: Run Unit Tests (ui-repository)
