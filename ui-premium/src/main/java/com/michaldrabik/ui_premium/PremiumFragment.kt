@@ -56,6 +56,9 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
       isLoading?.let {
         premiumProgress.visibleIf(it)
       }
+      isPurchasePending?.let {
+        premiumStatus.visibleIf(it)
+      }
       finishEvent?.let {
         it.consume()?.let {
           requireActivity().onBackPressed()

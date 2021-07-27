@@ -124,6 +124,7 @@ class ProgressMainFragment :
       visibleIf(currentPage == 0)
       onClick { childFragmentManager.fragments.forEach { (it as? OnSortClickListener)?.onSortClick() } }
     }
+
     with(progressMainCalendarIcon) {
       visibleIf(currentPage == 1)
       onClick {
@@ -133,22 +134,22 @@ class ProgressMainFragment :
         viewModel.toggleCalendarMode()
       }
     }
-    progressMainSearchView.run {
+
+    with(progressMainSearchView) {
       hint = getString(R.string.textSearchFor)
       settingsIconVisible = true
+      traktIconVisible = true
       isClickable = false
       onClick { enterSearch() }
       onSettingsClickListener = { openSettings() }
+      onTraktClickListener = { navigateTo(R.id.actionProgressFragmentToTraktSyncFragment) }
       if (isTraktSyncing()) setTraktProgress(true)
     }
-    progressMainPagerModeTabs.run {
+
+    with(progressMainPagerModeTabs) {
       visibleIf(moviesEnabled)
       onModeSelected = { mode = it }
       selectShows()
-    }
-    progressMainSearchView.traktIconVisible = true
-    progressMainSearchView.onTraktClickListener = {
-      navigateTo(R.id.actionProgressFragmentToTraktSyncFragment)
     }
 
     progressMainTabs.translationY = tabsTranslation

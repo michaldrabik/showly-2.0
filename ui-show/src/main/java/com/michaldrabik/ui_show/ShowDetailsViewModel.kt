@@ -58,6 +58,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
@@ -146,14 +147,16 @@ class ShowDetailsViewModel @Inject constructor(
         launch {
           areSeasonsLoaded = false
           loadSeasons(show, (context as OnlineStatusProvider).isOnline())
-          if (followedState.isMyShows) {
-            announcementManager.refreshShowsAnnouncements(context)
-          }
           areSeasonsLoaded = true
         }
       } catch (error: Throwable) {
         progressJob.cancel()
-        _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadShow)
+        if (error is HttpException && error.code() == 404) {
+          // Malformed Trakt data or duplicate show.
+          _messageLiveData.value = MessageEvent.info(R.string.errorMalformedShow)
+        } else {
+          _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadShow)
+        }
         Logger.record(error, "Source" to "ShowDetailsViewModel")
         rethrowCancellation(error)
       }
@@ -479,7 +482,7 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun addFollowedShow(context: Context) {
+  fun addFollowedShow() {
     if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
       val seasons = seasonItems.map { it.season }
@@ -488,7 +491,7 @@ class ShowDetailsViewModel @Inject constructor(
 
       uiState = ShowDetailsUiModel(followedState = FollowedState.inMyShows())
 
-      announcementManager.refreshShowsAnnouncements(context)
+      announcementManager.refreshShowsAnnouncements()
       Analytics.logShowAddToMyShows(show)
     }
   }
@@ -514,7 +517,7 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun removeFromFollowed(context: Context) {
+  fun removeFromFollowed() {
     if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
       val isMyShows = myShowsCase.isMyShows(show)
@@ -545,7 +548,7 @@ class ShowDetailsViewModel @Inject constructor(
         else -> error("Unexpected show state")
       }
 
-      announcementManager.refreshShowsAnnouncements(context)
+      announcementManager.refreshShowsAnnouncements()
     }
   }
 
@@ -576,6 +579,19 @@ class ShowDetailsViewModel @Inject constructor(
         _messageLiveData.value = MessageEvent.error(R.string.errorTraktSyncGeneral)
         uiState = ShowDetailsUiModel(showFromTraktLoading = false)
         rethrowCancellation(error)
+      }
+    }
+  }
+
+  fun removeMalformedShow(id: IdTrakt) {
+    viewModelScope.launch {
+      try {
+        mainCase.removeMalformedShow(id)
+      } catch (error: Throwable) {
+        Timber.e(error)
+        rethrowCancellation(error)
+      } finally {
+        uiState = ShowDetailsUiModel(isFinished = ActionEvent(true))
       }
     }
   }
@@ -670,11 +686,11 @@ class ShowDetailsViewModel @Inject constructor(
     return items
   }
 
-  fun refreshAnnouncements(context: Context) {
+  fun refreshAnnouncements() {
     viewModelScope.launch {
       val isFollowed = myShowsCase.isMyShows(show)
       if (isFollowed) {
-        announcementManager.refreshShowsAnnouncements(context)
+        announcementManager.refreshShowsAnnouncements()
       }
     }
   }

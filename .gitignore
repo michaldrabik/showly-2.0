@@ -7,7 +7,7 @@
 /captures
 .externalNativeBuild
 .cxx
-ktlint
+ktlint2.jar
 /app/google-services.json
 /app/keystore.properties
 /app/keystore

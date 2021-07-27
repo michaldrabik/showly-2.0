@@ -18,6 +18,8 @@ import kotlin.random.Random
 class AnnouncementWorker(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
 
   companion object {
+    const val DATA_SHOW_ID = "DATA_SHOW_ID"
+    const val DATA_MOVIE_ID = "DATA_MOVIE_ID"
     const val DATA_TITLE = "DATA_TITLE"
     const val DATA_CONTENT = "DATA_CONTENT"
     const val DATA_CHANNEL = "DATA_CHANNEL"
@@ -61,12 +63,25 @@ class AnnouncementWorker(context: Context, workerParams: WorkerParameters) : Wor
   }
 
   private fun createIntent(): PendingIntent {
+    var requestCode = 0L
     val targetClass = Class.forName(Config.HOST_ACTIVITY_NAME)
     val notifyIntent = Intent(applicationContext, targetClass).apply {
+      val showId = inputData.getLong(DATA_SHOW_ID, -1)
+      val movieId = inputData.getLong(DATA_MOVIE_ID, -1)
+      when {
+        showId != -1L -> {
+          putExtra("EXTRA_SHOW_ID", showId.toString())
+          requestCode = showId
+        }
+        movieId != -1L -> {
+          putExtra("EXTRA_MOVIE_ID", movieId.toString())
+          requestCode = movieId
+        }
+      }
       flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
     }
     return PendingIntent.getActivity(
-      applicationContext, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT
+      applicationContext, requestCode.toInt(), notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT
     )
   }
 }

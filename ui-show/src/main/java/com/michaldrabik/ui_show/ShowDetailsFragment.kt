@@ -32,6 +32,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
@@ -46,6 +47,7 @@ import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
@@ -60,6 +62,7 @@ import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
+import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
@@ -177,7 +180,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       actorsLiveData.observe(viewLifecycleOwner, { renderActors(it) })
       streamingsLiveData.observe(viewLifecycleOwner, { renderStreamings(it) })
       relatedLiveData.observe(viewLifecycleOwner, { renderRelatedShows(it) })
-      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
+      messageLiveData.observe(viewLifecycleOwner, { renderSnack(it) })
       if (!isInitialized) {
         loadShowDetails(showId, requireAppContext())
         isInitialized = true
@@ -222,11 +225,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsAddButton.run {
       isEnabled = false
       onAddMyShowsClickListener = {
-        viewModel.addFollowedShow(requireAppContext())
+        viewModel.addFollowedShow()
       }
       onAddWatchLaterClickListener = { viewModel.addWatchlistShow(requireAppContext()) }
       onArchiveClickListener = { openArchiveConfirmationDialog() }
-      onRemoveClickListener = { viewModel.removeFromFollowed(requireAppContext()) }
+      onRemoveClickListener = { viewModel.removeFromFollowed() }
     }
     showDetailsRemoveTraktButton.onNoClickListener = {
       showDetailsAddButton.fadeIn()
@@ -351,7 +354,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsBackArrow2.crossfadeTo(showDetailsBackArrow)
 
-    viewModel.refreshAnnouncements(requireAppContext())
+    viewModel.refreshAnnouncements()
   }
 
   private fun showEpisodeDetails(
@@ -584,6 +587,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           }
         }
       }
+      isFinished?.let { event ->
+        event.consume()?.let {
+          if (it) requireActivity().onBackPressed()
+        }
+      }
     }
   }
 
@@ -753,6 +761,20 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     if (translation?.title?.isNotBlank() == true) {
       showDetailsTitle.text = translation.title
     }
+  }
+
+  private fun renderSnack(event: MessageEvent) {
+    if (event.peek() == R.string.errorMalformedShow) {
+      event.consume()?.let {
+        val host = (requireActivity() as SnackbarHost).provideSnackbarLayout()
+        val snack = host.showInfoSnackbar(getString(it), length = Snackbar.LENGTH_INDEFINITE) {
+          viewModel.removeMalformedShow(showId)
+        }
+        snackbars.add(snack)
+      }
+      return
+    }
+    showSnack(event)
   }
 
   private fun openIMDbLink(id: IdImdb, type: String) {

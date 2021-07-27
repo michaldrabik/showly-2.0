@@ -31,6 +31,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
@@ -44,6 +45,7 @@ import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
@@ -58,6 +60,7 @@ import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
+import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
@@ -88,7 +91,6 @@ import com.michaldrabik.ui_movie.related.RelatedMovieAdapter
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_WATCHLIST
-import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.UPCOMING
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
@@ -107,6 +109,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
 import kotlinx.android.synthetic.main.view_links_movie_menu.view.*
+import java.util.Locale
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
@@ -145,9 +148,9 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
 
     viewModel.run {
       uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
+      messageLiveData.observe(viewLifecycleOwner, { renderSnack(it) })
       if (!isInitialized) {
-        loadDetails(movieId, requireAppContext())
+        loadDetails(movieId)
         isInitialized = true
       }
       loadPremium()
@@ -186,7 +189,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         viewModel.addFollowedMovie(requireAppContext())
       }
       onAddWatchLaterClickListener = { viewModel.addWatchlistMovie(requireAppContext()) }
-      onRemoveClickListener = { viewModel.removeFromFollowed(requireAppContext()) }
+      onRemoveClickListener = { viewModel.removeFromFollowed() }
     }
     movieDetailsRemoveTraktButton.onNoClickListener = {
       movieDetailsAddButton.fadeIn(withHardware = true)
@@ -386,7 +389,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         movieDetailsExtraInfo.text = getString(
           R.string.textMovieExtraInfo,
           releaseDate,
-          country.toUpperCase(),
+          country.uppercase(Locale.getDefault()),
           movie.runtime.toString(),
           getString(R.string.textMinutesShort),
           renderGenres(movie.genres)
@@ -426,7 +429,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         when {
           it.isMyMovie -> movieDetailsAddButton.setState(IN_MY_MOVIES, it.withAnimation)
           it.isWatchlist -> movieDetailsAddButton.setState(IN_WATCHLIST, it.withAnimation)
-          it.isUpcoming -> movieDetailsAddButton.setState(UPCOMING, it.withAnimation)
           else -> movieDetailsAddButton.setState(ADD, it.withAnimation)
         }
         (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
@@ -470,6 +472,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
             fadeIf(it)
             onYesClickListener = { viewModel.removeFromTraktWatchlist() }
           }
+        }
+      }
+      isFinished?.let { event ->
+        event.consume()?.let {
+          if (it) requireActivity().onBackPressed()
         }
       }
     }
@@ -582,6 +589,20 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     if (translation?.title?.isNotBlank() == true) {
       movieDetailsTitle.text = translation.title
     }
+  }
+
+  private fun renderSnack(event: MessageEvent) {
+    if (event.peek() == R.string.errorMalformedMovie) {
+      event.consume()?.let {
+        val host = (requireActivity() as SnackbarHost).provideSnackbarLayout()
+        val snack = host.showInfoSnackbar(getString(it), length = Snackbar.LENGTH_INDEFINITE) {
+          viewModel.removeMalformedMovie(movieId)
+        }
+        snackbars.add(snack)
+      }
+      return
+    }
+    showSnack(event)
   }
 
   private fun openIMDbLink(id: IdImdb, type: String) {

@@ -64,13 +64,13 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
-  suspend fun enableAnnouncements(enable: Boolean, context: Context) {
+  suspend fun enableAnnouncements(enable: Boolean) {
     val settings = settingsRepository.load()
     settings.let {
       val new = it.copy(episodesNotificationsEnabled = enable)
       settingsRepository.update(new)
-      announcementManager.refreshShowsAnnouncements(context.applicationContext)
-      announcementManager.refreshMoviesAnnouncements(context.applicationContext)
+      announcementManager.refreshShowsAnnouncements()
+      announcementManager.refreshMoviesAnnouncements()
     }
   }
 
@@ -127,13 +127,13 @@ class SettingsMainCase @Inject constructor(
 
   fun isMoviesEnabled() = settingsRepository.isMoviesEnabled
 
-  suspend fun enableMovies(enable: Boolean, context: Context) {
+  suspend fun enableMovies(enable: Boolean) {
     val newMode = if (!enable) Mode.SHOWS else settingsRepository.mode
     settingsRepository.run {
       isMoviesEnabled = enable
       mode = newMode
     }
-    announcementManager.refreshMoviesAnnouncements(context.applicationContext)
+    announcementManager.refreshMoviesAnnouncements()
   }
 
   fun isNewsEnabled() = settingsRepository.isNewsEnabled
@@ -164,12 +164,12 @@ class SettingsMainCase @Inject constructor(
     }
   }
 
-  suspend fun setWhenToNotify(delay: NotificationDelay, context: Context) {
+  suspend fun setWhenToNotify(delay: NotificationDelay) {
     val settings = settingsRepository.load()
     settings.let {
       val new = it.copy(episodesNotificationsDelay = delay)
       settingsRepository.update(new)
-      announcementManager.refreshShowsAnnouncements(context.applicationContext)
+      announcementManager.refreshShowsAnnouncements()
     }
   }
 

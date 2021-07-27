@@ -2,6 +2,7 @@ package com.michaldrabik.common
 
 import java.util.concurrent.TimeUnit.DAYS
 import java.util.concurrent.TimeUnit.HOURS
+import java.util.concurrent.TimeUnit.MINUTES
 
 object ConfigVariant {
   const val FIREBASE_SUFFIX = ""
@@ -12,4 +13,6 @@ object ConfigVariant {
 
   val RATINGS_CACHE_DURATION by lazy { DAYS.toMillis(3) }
   val STREAMINGS_CACHE_DURATION by lazy { DAYS.toMillis(3) }
+
+  val REMOTE_CONFIG_FETCH_INTERVAL by lazy { MINUTES.toSeconds(60) }
 }

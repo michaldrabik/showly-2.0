@@ -2,7 +2,7 @@ package com.michaldrabik.ui_base.events
 
 sealed class Event
 
-object ShowsMoviesSyncComplete : Event()
+data class ShowsMoviesSyncComplete(val count: Int) : Event()
 
 object TraktSyncStart : Event()
 

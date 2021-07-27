@@ -1,6 +1,5 @@
 package com.michaldrabik.showly2.ui.main.cases
 
-import android.content.Context
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.showly2.BuildConfig
@@ -20,9 +19,9 @@ class MainMiscCase @Inject constructor(
   private val announcementManager: AnnouncementManager,
 ) {
 
-  suspend fun refreshAnnouncements(context: Context) {
-    announcementManager.refreshShowsAnnouncements(context)
-    announcementManager.refreshMoviesAnnouncements(context)
+  suspend fun refreshAnnouncements() {
+    announcementManager.refreshShowsAnnouncements()
+    announcementManager.refreshMoviesAnnouncements()
   }
 
   fun moviesEnabled() = settingsRepository.isMoviesEnabled

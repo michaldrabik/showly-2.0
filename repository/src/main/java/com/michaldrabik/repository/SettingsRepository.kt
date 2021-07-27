@@ -8,6 +8,8 @@ import com.michaldrabik.common.Config.DEFAULT_COUNTRY
 import com.michaldrabik.common.Config.DEFAULT_DATE_FORMAT
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.Mode
+import com.michaldrabik.common.delegates.BooleanPreference
+import com.michaldrabik.common.delegates.StringPreference
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.ProgressType
@@ -19,25 +21,25 @@ import javax.inject.Singleton
 
 @Singleton
 class SettingsRepository @Inject constructor(
-  @Named("miscPreferences") private var miscPreferences: SharedPreferences,
+  @Named("miscPreferences") private var preferences: SharedPreferences,
   private val database: AppDatabase,
   private val mappers: Mappers,
 ) {
 
-  companion object {
-    const val KEY_LANGUAGE = "KEY_LANGUAGE"
-    private const val KEY_COUNTRY = "KEY_COUNTRY"
-    private const val KEY_MOVIES_ENABLED = "KEY_MOVIES_ENABLED"
-    private const val KEY_NEWS_ENABLED = "KEY_NEWS_ENABLED"
-    private const val KEY_STREAMINGS_ENABLED = "KEY_STREAMINGS_ENABLED"
-    private const val KEY_MODE = "KEY_MOVIES_MODE"
-    private const val KEY_THEME = "KEY_THEME"
-    private const val KEY_THEME_WIDGET = "KEY_THEME_WIDGET"
-    private const val KEY_THEME_WIDGET_TRANSPARENT = "KEY_THEME_WIDGET_TRANSPARENT"
-    private const val KEY_PREMIUM = "KEY_PREMIUM"
-    private const val KEY_DATE_FORMAT = "KEY_DATE_FORMAT"
-    private const val KEY_PROGRESS_PERCENT = "KEY_PROGRESS_PERCENT"
-    private const val KEY_USER_ID = "KEY_USER_ID"
+  companion object Key {
+    const val LANGUAGE = "KEY_LANGUAGE"
+    private const val COUNTRY = "KEY_COUNTRY"
+    private const val DATE_FORMAT = "KEY_DATE_FORMAT"
+    private const val MODE = "KEY_MOVIES_MODE"
+    private const val MOVIES_ENABLED = "KEY_MOVIES_ENABLED"
+    private const val NEWS_ENABLED = "KEY_NEWS_ENABLED"
+    private const val PREMIUM = "KEY_PREMIUM"
+    private const val PROGRESS_PERCENT = "KEY_PROGRESS_PERCENT"
+    private const val STREAMINGS_ENABLED = "KEY_STREAMINGS_ENABLED"
+    private const val THEME = "KEY_THEME"
+    private const val THEME_WIDGET = "KEY_THEME_WIDGET"
+    private const val THEME_WIDGET_TRANSPARENT = "KEY_THEME_WIDGET_TRANSPARENT"
+    private const val USER_ID = "KEY_USER_ID"
   }
 
   suspend fun isInitialized() =
@@ -58,71 +60,51 @@ class SettingsRepository @Inject constructor(
   var mode: Mode
     get() {
       val default = Mode.SHOWS.name
-      return Mode.valueOf(miscPreferences.getString(KEY_MODE, default) ?: default)
+      return Mode.valueOf(preferences.getString(MODE, default) ?: default)
     }
-    set(value) = miscPreferences.edit(true) { putString(KEY_MODE, value.name) }
+    set(value) = preferences.edit(true) { putString(MODE, value.name) }
 
-  var isPremium: Boolean
-    get() = miscPreferences.getBoolean(KEY_PREMIUM, false)
-    set(value) = miscPreferences.edit(true) { putBoolean(KEY_PREMIUM, value) }
-
-  var streamingsEnabled: Boolean
-    get() = miscPreferences.getBoolean(KEY_STREAMINGS_ENABLED, true)
-    set(value) = miscPreferences.edit(true) { putBoolean(KEY_STREAMINGS_ENABLED, value) }
-
-  var isMoviesEnabled: Boolean
-    get() = miscPreferences.getBoolean(KEY_MOVIES_ENABLED, true)
-    set(value) = miscPreferences.edit(true) { putBoolean(KEY_MOVIES_ENABLED, value) }
-
-  var isNewsEnabled: Boolean
-    get() = miscPreferences.getBoolean(KEY_NEWS_ENABLED, false)
-    set(value) = miscPreferences.edit(true) { putBoolean(KEY_NEWS_ENABLED, value) }
-
-  var language: String
-    get() = miscPreferences.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
-    set(value) = miscPreferences.edit(true) { putString(KEY_LANGUAGE, value) }
-
-  var country: String
-    get() = miscPreferences.getString(KEY_COUNTRY, DEFAULT_COUNTRY) ?: DEFAULT_COUNTRY
-    set(value) = miscPreferences.edit(true) { putString(KEY_COUNTRY, value) }
+  var isPremium by BooleanPreference(preferences, PREMIUM)
+  var streamingsEnabled by BooleanPreference(preferences, STREAMINGS_ENABLED, true)
+  var isMoviesEnabled by BooleanPreference(preferences, MOVIES_ENABLED, true)
+  var isNewsEnabled by BooleanPreference(preferences, NEWS_ENABLED)
+  var language by StringPreference(preferences, LANGUAGE, DEFAULT_LANGUAGE)
+  var country by StringPreference(preferences, COUNTRY, DEFAULT_COUNTRY)
+  var dateFormat by StringPreference(preferences, DATE_FORMAT, DEFAULT_DATE_FORMAT)
 
   var theme: Int
     get() {
       if (!isPremium) return MODE_NIGHT_YES
-      return miscPreferences.getInt(KEY_THEME, MODE_NIGHT_YES)
+      return preferences.getInt(THEME, MODE_NIGHT_YES)
     }
-    set(value) = miscPreferences.edit(true) { putInt(KEY_THEME, value) }
+    set(value) = preferences.edit(true) { putInt(THEME, value) }
 
   var widgetsTheme: Int
     get() {
       if (!isPremium) return MODE_NIGHT_YES
-      return miscPreferences.getInt(KEY_THEME_WIDGET, MODE_NIGHT_YES)
+      return preferences.getInt(THEME_WIDGET, MODE_NIGHT_YES)
     }
-    set(value) = miscPreferences.edit(true) { putInt(KEY_THEME_WIDGET, value) }
+    set(value) = preferences.edit(true) { putInt(THEME_WIDGET, value) }
 
   var widgetsTransparency: Int
     get() {
       if (!isPremium) return 100
-      return miscPreferences.getInt(KEY_THEME_WIDGET_TRANSPARENT, 100)
+      return preferences.getInt(THEME_WIDGET_TRANSPARENT, 100)
     }
-    set(value) = miscPreferences.edit(true) { putInt(KEY_THEME_WIDGET_TRANSPARENT, value) }
-
-  var dateFormat: String
-    get() = miscPreferences.getString(KEY_DATE_FORMAT, DEFAULT_DATE_FORMAT) ?: DEFAULT_DATE_FORMAT
-    set(value) = miscPreferences.edit(true) { putString(KEY_DATE_FORMAT, value) }
+    set(value) = preferences.edit(true) { putInt(THEME_WIDGET_TRANSPARENT, value) }
 
   var progressPercentType: ProgressType
     get() {
-      val setting = miscPreferences.getString(KEY_PROGRESS_PERCENT, ProgressType.AIRED.name) ?: ProgressType.AIRED.name
+      val setting = preferences.getString(PROGRESS_PERCENT, ProgressType.AIRED.name) ?: ProgressType.AIRED.name
       return ProgressType.valueOf(setting)
     }
-    set(value) = miscPreferences.edit(true) { putString(KEY_PROGRESS_PERCENT, value.name) }
+    set(value) = preferences.edit(true) { putString(PROGRESS_PERCENT, value.name) }
 
   val userId
-    get() = when (val id = miscPreferences.getString(KEY_USER_ID, null)) {
+    get() = when (val id = preferences.getString(USER_ID, null)) {
       null -> {
         val uuid = UUID.randomUUID().toString().take(13)
-        miscPreferences.edit().putString(KEY_USER_ID, uuid).apply()
+        preferences.edit().putString(USER_ID, uuid).apply()
         uuid
       }
       else -> id
@@ -139,17 +121,21 @@ class SettingsRepository @Inject constructor(
   }
 
   suspend fun clearLanguageLogs() {
-    database.withTransaction {
-      database.translationsSyncLogDao().deleteAll()
-      database.translationsMoviesSyncLogDao().deleteAll()
+    with(database) {
+      withTransaction {
+        translationsSyncLogDao().deleteAll()
+        translationsMoviesSyncLogDao().deleteAll()
+      }
     }
   }
 
   suspend fun clearUnusedTranslations(input: List<String>) {
-    database.withTransaction {
-      database.showTranslationsDao().deleteByLanguage(input)
-      database.movieTranslationsDao().deleteByLanguage(input)
-      database.episodeTranslationsDao().deleteByLanguage(input)
+    with(database) {
+      withTransaction {
+        showTranslationsDao().deleteByLanguage(input)
+        movieTranslationsDao().deleteByLanguage(input)
+        episodeTranslationsDao().deleteByLanguage(input)
+      }
     }
   }
 }

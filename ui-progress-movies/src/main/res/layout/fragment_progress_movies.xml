@@ -37,22 +37,24 @@
 
   <com.michaldrabik.ui_base.common.views.ScrollableImageView
     android:id="@+id/progressMoviesSortIcon"
-    android:layout_width="wrap_content"
+    android:layout_width="36dp"
     android:layout_height="36dp"
     android:layout_gravity="end"
     android:layout_marginTop="@dimen/progressMoviesSearchViewPadding"
     android:layout_marginEnd="@dimen/spaceMedium"
+    android:paddingStart="12dp"
     app:srcCompat="@drawable/ic_sort"
     app:tint="?android:attr/textColorPrimary"
     />
 
   <com.michaldrabik.ui_base.common.views.ScrollableImageView
     android:id="@+id/progressMoviesCalendarIcon"
-    android:layout_width="wrap_content"
+    android:layout_width="36dp"
     android:layout_height="36dp"
     android:layout_gravity="end"
     android:layout_marginTop="@dimen/progressMoviesSearchViewPadding"
     android:layout_marginEnd="@dimen/spaceMedium"
+    android:paddingStart="12dp"
     android:visibility="gone"
     app:srcCompat="@drawable/ic_history"
     app:tint="?android:attr/textColorPrimary"

@@ -61,9 +61,7 @@ class ShowsMoviesSyncService : JobIntentService(), CoroutineScope {
       count1 + count2
     }
 
-    if (syncCount > 0) {
-      EventsManager.sendEvent(ShowsMoviesSyncComplete)
-    }
+    EventsManager.sendEvent(ShowsMoviesSyncComplete(syncCount))
   }
 
   override fun onDestroy() {

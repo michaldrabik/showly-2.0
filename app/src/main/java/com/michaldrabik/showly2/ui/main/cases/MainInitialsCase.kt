@@ -6,7 +6,9 @@ import android.content.SharedPreferences
 import android.telephony.TelephonyManager
 import androidx.core.content.edit
 import androidx.core.os.LocaleListCompat
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
@@ -16,16 +18,19 @@ import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.fcm.NotificationChannel
 import com.michaldrabik.ui_settings.helpers.AppLanguage
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.supervisorScope
+import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Named
 
 @ViewModelScoped
 class MainInitialsCase @Inject constructor(
+  @ApplicationContext private val context: Context,
   private val userTraktManager: UserTraktManager,
   private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
@@ -59,7 +64,7 @@ class MainInitialsCase @Inject constructor(
     }
   }
 
-  fun setInitialCountry(context: Context) {
+  fun setInitialCountry() {
     var country = (context.getSystemService(Context.TELEPHONY_SERVICE) as? TelephonyManager)?.simCountryIso
     if (country == null) {
       val locale = LocaleListCompat.getAdjustedDefault()
@@ -119,6 +124,17 @@ class MainInitialsCase @Inject constructor(
       )
     } catch (error: Throwable) {
       Logger.record(error, "Source" to "MainInitialsCase::initRatings()")
+    }
+  }
+
+  fun loadRemoteConfig() {
+    Firebase.remoteConfig.fetchAndActivate().addOnCompleteListener { task ->
+      if (task.isSuccessful) {
+        val updated = task.result
+        Timber.d("Remote Config params updated: $updated")
+      } else {
+        Timber.e("Remote Config fetch failed!")
+      }
     }
   }
 

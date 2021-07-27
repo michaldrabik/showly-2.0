@@ -12,5 +12,4 @@ class ProgressMovieItemDiffCallback : DiffUtil.ItemCallback<ProgressMovieListIte
       oldItem.image == newItem.image &&
       oldItem.movie == newItem.movie &&
       oldItem.translation == newItem.translation
-
 }

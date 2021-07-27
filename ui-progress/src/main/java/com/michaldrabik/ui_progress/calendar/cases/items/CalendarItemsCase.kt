@@ -43,11 +43,21 @@ abstract class CalendarItemsCase constructor(
     val dateFormat = dateFormatProvider.loadFullHourFormat()
 
     val shows = showsRepository.myShows.loadAll()
-    val showsIds = shows.map { it.traktId }
+    val showsIds = shows.map { it.traktId }.chunked(500)
 
     val (episodes, seasons) = awaitAll(
-      async { database.episodesDao().getAllByShowsIds(showsIds) },
-      async { database.seasonsDao().getAllByShowsIds(showsIds) }
+      async {
+        showsIds.fold(mutableListOf<Episode>(), { acc, list ->
+          acc += database.episodesDao().getAllByShowsIds(list)
+          acc
+        })
+      },
+      async {
+        showsIds.fold(mutableListOf<Season>(), { acc, list ->
+          acc += database.seasonsDao().getAllByShowsIds(list)
+          acc
+        })
+      }
     )
 
     val filteredSeasons = (seasons as List<Season>).filter { it.seasonNumber != 0 }
@@ -57,8 +67,13 @@ abstract class CalendarItemsCase constructor(
       .sortedWith(sortEpisodes())
       .map { episode ->
         async {
-          val show = shows.first { it.traktId == episode.idShowTrakt }
-          val season = filteredSeasons.first { it.idShowTrakt == episode.idShowTrakt && it.seasonNumber == episode.seasonNumber }
+          val show = shows.firstOrNull { it.traktId == episode.idShowTrakt }
+          val season = filteredSeasons.firstOrNull { it.idShowTrakt == episode.idShowTrakt && it.seasonNumber == episode.seasonNumber }
+
+          if (show == null || season == null) {
+            return@async null
+          }
+
           val seasonEpisodes = episodes.filter { it.idShowTrakt == season.idShowTrakt && it.seasonNumber == season.seasonNumber }
 
           val episodeUi = mappers.episode.fromDatabase(episode)
@@ -81,7 +96,9 @@ abstract class CalendarItemsCase constructor(
             translations = translations
           )
         }
-      }.awaitAll()
+      }
+      .awaitAll()
+      .filterNotNull()
 
     val queryElements = filterByQuery(searchQuery, elements)
     grouper.groupByTime(queryElements)

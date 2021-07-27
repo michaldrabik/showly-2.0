@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import androidx.work.Constraints
 import androidx.work.ExistingWorkPolicy.REPLACE
+import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.Worker
@@ -20,7 +21,11 @@ class QuickSyncWorker(context: Context, workerParams: WorkerParameters) : Worker
       val workManager = WorkManager.getInstance(appContext.applicationContext)
 
       val request = OneTimeWorkRequestBuilder<QuickSyncWorker>()
-        .setConstraints(Constraints.NONE)
+        .setConstraints(
+          Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+        )
         .setInitialDelay(3, SECONDS)
         .addTag(TAG)
         .build()

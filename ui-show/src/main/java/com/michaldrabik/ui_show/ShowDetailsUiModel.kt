@@ -17,6 +17,7 @@ data class ShowDetailsUiModel(
   val showLoading: Boolean? = null,
   val image: Image? = null,
   val comments: List<Comment>? = null,
+  val commentsDateFormat: DateTimeFormatter? = null,
   val listsCount: Int? = null,
   val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
@@ -29,7 +30,7 @@ data class ShowDetailsUiModel(
   val country: AppCountry? = null,
   val isPremium: Boolean? = null,
   val isSignedIn: Boolean? = null,
-  val commentsDateFormat: DateTimeFormatter? = null,
+  val isFinished: ActionEvent<Boolean>? = null,
 ) : UiModel() {
 
   override fun update(newModel: UiModel) =
@@ -48,6 +49,7 @@ data class ShowDetailsUiModel(
       country = newModel.country ?: country,
       isPremium = newModel.isPremium ?: isPremium,
       isSignedIn = newModel.isSignedIn ?: isSignedIn,
+      isFinished = newModel.isFinished ?: isFinished,
       commentsDateFormat = newModel.commentsDateFormat ?: commentsDateFormat,
       ratings = newModel.ratings ?: ratings,
       ratingState = newModel.ratingState?.copy(

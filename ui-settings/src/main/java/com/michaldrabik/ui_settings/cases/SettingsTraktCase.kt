@@ -47,7 +47,7 @@ class SettingsTraktCase @Inject constructor(
       val new = it.copy(traktSyncSchedule = schedule)
       settingsRepository.update(new)
     }
-    TraktSyncWorker.schedule(schedule, context.applicationContext)
+    TraktSyncWorker.schedule(context.applicationContext, schedule, cancelExisting = true)
   }
 
   suspend fun authorizeTrakt(authData: Uri) {

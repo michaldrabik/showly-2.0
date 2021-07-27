@@ -6,7 +6,7 @@
   >
 
   <ProgressBar
-    android:layout_width="28dp"
+    android:layout_width="32dp"
     android:layout_height="@dimen/widgetImageHeight"
     android:layout_gravity="center"
     android:layout_marginTop="@dimen/spaceSmall"

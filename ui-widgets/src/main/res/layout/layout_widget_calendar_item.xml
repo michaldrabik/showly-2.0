@@ -5,17 +5,19 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
+  tools:ignore="SmallSp"
   tools:parentTag="android.widget.LinearLayout"
   >
 
   <FrameLayout
     android:layout_width="@dimen/widgetImageWidth"
     android:layout_height="@dimen/widgetImageHeight"
+    android:layout_gravity="center_vertical"
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginEnd="@dimen/spaceMedium"
     android:layout_marginBottom="@dimen/spaceSmall"
-    android:background="@drawable/bg_media_view_elevation"
+    android:background="@drawable/bg_widget_media_view_elevation"
     android:elevation="@dimen/elevationSmall"
     >
 
@@ -31,7 +33,7 @@
       android:id="@+id/calendarWidgetItemPlaceholder"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:padding="@dimen/spaceNormal"
+      android:padding="@dimen/spaceSmall"
       android:src="@drawable/ic_television"
       android:tint="?attr/colorPlaceholderIcon"
       android:visibility="gone"
@@ -51,14 +53,10 @@
 
     <TextView
       android:id="@+id/calendarWidgetItemTitle"
+      style="@style/WidgetItem.Title"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginBottom="@dimen/spaceTiny"
-      android:ellipsize="end"
-      android:maxLines="1"
-      android:textColor="?android:attr/textColorPrimary"
-      android:textSize="16sp"
-      android:textStyle="bold"
       tools:ignore="RtlSymmetry"
       tools:text="Breaking Bad"
       />
@@ -69,6 +67,7 @@
       android:layout_height="wrap_content"
       android:layout_below="@id/calendarWidgetItemTitle"
       android:layout_alignBaseline="@id/calendarWidgetItemBadge"
+      android:layout_marginStart="@dimen/spaceSmall"
       android:layout_marginTop="@dimen/spaceMicro"
       android:layout_marginBottom="@dimen/spaceTiny"
       android:layout_toEndOf="@id/calendarWidgetItemBadge"
@@ -85,8 +84,6 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_below="@id/calendarWidgetItemTitle"
-      android:layout_marginTop="@dimen/spaceMicro"
-      android:layout_marginEnd="6dp"
       android:layout_marginBottom="@dimen/spaceTiny"
       android:background="@drawable/bg_badge"
       android:elevation="@dimen/elevationTiny"
@@ -107,11 +104,10 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_below="@id/calendarWidgetItemBadge"
-      android:layout_marginTop="@dimen/spaceMicro"
       android:gravity="start|center_vertical"
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorSecondary"
-      android:textSize="12sp"
+      android:textSize="11sp"
       tools:text="Wednesday, 27 June 2019"
       />
 

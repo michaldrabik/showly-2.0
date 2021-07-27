@@ -115,8 +115,8 @@ class MainActivity :
   private fun setupViewModel() {
     viewModel.run {
       uiLiveData.observe(this@MainActivity) { render(it!!) }
-      initialize(applicationContext)
-      refreshTraktSyncSchedule(applicationContext)
+      initialize()
+      refreshTraktSyncSchedule()
     }
   }
 
@@ -361,8 +361,10 @@ class MainActivity :
     runOnUiThread {
       when (event) {
         is ShowsMoviesSyncComplete -> {
-          doForFragments { (it as? OnShowsMoviesSyncedListener)?.onShowsMoviesSyncFinished() }
-          viewModel.refreshAnnouncements(applicationContext)
+          if (event.count > 0) {
+            doForFragments { (it as? OnShowsMoviesSyncedListener)?.onShowsMoviesSyncFinished() }
+          }
+          viewModel.refreshAnnouncements()
         }
         is TraktSyncSuccess -> {
           doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncComplete() }

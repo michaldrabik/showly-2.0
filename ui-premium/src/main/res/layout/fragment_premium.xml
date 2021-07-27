@@ -97,6 +97,23 @@
       app:layout_constraintTop_toBottomOf="@id/premiumCrown"
       />
 
+    <TextView
+      android:id="@+id/premiumStatus"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="@dimen/spaceNormal"
+      android:layout_marginEnd="@dimen/spaceNormal"
+      android:gravity="center"
+      android:text="@string/textPurchasePending"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textSize="14sp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toTopOf="@id/premiumLightThemeTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/premiumTitle"
+      />
+
     <ImageView
       android:id="@+id/premiumLightThemeImage"
       style="@style/Premium.Image"

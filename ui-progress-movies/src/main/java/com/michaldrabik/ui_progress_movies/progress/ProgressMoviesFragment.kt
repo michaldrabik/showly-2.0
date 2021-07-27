@@ -21,6 +21,7 @@ import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.NavigationHost
+import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
@@ -165,7 +166,7 @@ class ProgressMoviesFragment :
   private fun render(items: List<ProgressMovieListItem.MovieItem>, resetScroll: ActionEvent<Boolean>) {
     adapter?.setItems(items, notifyChange = resetScroll.consume() == true)
     progressMoviesEmptyView.fadeIf(items.isEmpty())
-    progressMoviesMainRecycler.fadeIn()
+    progressMoviesMainRecycler.fadeIn(withHardware = true).add(animations)
     (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
   }
 

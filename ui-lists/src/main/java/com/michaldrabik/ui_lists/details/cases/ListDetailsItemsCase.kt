@@ -55,10 +55,12 @@ class ListDetailsItemsCase @Inject constructor(
     val listItems = listsRepository.loadItemsById(list.id)
 
     val showsAsync = async {
-      database.showsDao().getAll(listItems.filter { it.type == SHOWS.type }.map { it.idTrakt })
+      val ids = listItems.filter { it.type == SHOWS.type }.map { it.idTrakt }
+      database.showsDao().getAllChunked(ids)
     }
     val moviesAsync = async {
-      database.moviesDao().getAll(listItems.filter { it.type == MOVIES.type }.map { it.idTrakt })
+      val ids = listItems.filter { it.type == MOVIES.type }.map { it.idTrakt }
+      database.moviesDao().getAllChunked(ids)
     }
 
     val showsTranslationsAsync = async {

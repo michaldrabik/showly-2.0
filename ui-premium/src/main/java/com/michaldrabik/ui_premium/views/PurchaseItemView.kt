@@ -5,6 +5,8 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import androidx.core.content.ContextCompat
+import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.SkuDetails
 import com.google.android.material.card.MaterialCardView
 import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
@@ -36,7 +38,13 @@ class PurchaseItemView : MaterialCardView {
       bindForIndia(item)
       return
     }
+    when (item.type) {
+      BillingClient.SkuType.SUBS -> bindSubscription(item)
+      BillingClient.SkuType.INAPP -> bindInApp(item)
+    }
+  }
 
+  private fun bindSubscription(item: SkuDetails) {
     viewPurchaseItemTitle.text = item.title.substringBefore("(").trim()
     viewPurchaseItemDescription.text = "Try 7 days for free and then:"
     val period = when (item.subscriptionPeriod) {
@@ -49,6 +57,24 @@ class PurchaseItemView : MaterialCardView {
       "Cancel anytime during free period if you do not want to convert to a paid subscription. " +
       "Subscription will be automatically renewed and charged every $period."
     viewPurchaseItemPrice.text = "${item.price} / $period"
+  }
+
+  private fun bindInApp(item: SkuDetails) {
+    viewPurchaseItemTitle.text = item.title.substringBefore("(").trim()
+    viewPurchaseItemDescription.text = "Pay once, unlock forever!"
+    viewPurchaseItemDescriptionDetails.text =
+      "You will unlock all bonus features with a single payment and enjoy them forever."
+    viewPurchaseItemPrice.text = item.price
+
+    val colorBlack = ContextCompat.getColor(context, R.color.colorBlack)
+    val colorWhite = ContextCompat.getColor(context, R.color.colorWhite)
+
+    viewPurchaseItemTitle.setTextColor(colorBlack)
+    viewPurchaseItemDescription.setTextColor(colorBlack)
+    viewPurchaseItemDescriptionDetails.setTextColor(colorBlack)
+    viewPurchaseItemPrice.setTextColor(colorBlack)
+    viewPurchaseItemSeparator.setBackgroundColor(colorBlack)
+    setCardBackgroundColor(colorWhite)
   }
 
   /**

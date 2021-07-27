@@ -8,12 +8,17 @@ import com.android.billingclient.api.BillingClient.SkuType
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.Purchase.PurchaseState.PENDING
 import com.android.billingclient.api.Purchase.PurchaseState.PURCHASED
 import com.android.billingclient.api.SkuDetailsParams
 import com.android.billingclient.api.acknowledgePurchase
+import com.android.billingclient.api.queryPurchasesAsync
 import com.android.billingclient.api.querySkuDetails
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.michaldrabik.common.Config
-import com.michaldrabik.common.Config.PREMIUM_LIFETIME_PROMO_INAPP
+import com.michaldrabik.common.Config.PREMIUM_LIFETIME_INAPP
+import com.michaldrabik.common.Config.PREMIUM_LIFETIME_INAPP_PROMO
 import com.michaldrabik.common.Config.PREMIUM_MONTHLY_SUBSCRIPTION
 import com.michaldrabik.common.Config.PREMIUM_YEARLY_SUBSCRIPTION
 import com.michaldrabik.repository.SettingsRepository
@@ -71,23 +76,32 @@ class PremiumViewModel @Inject constructor(
       uiState = PremiumUiModel(isLoading = true)
 
       try {
-        val subscriptions = billingClient.queryPurchases(SkuType.SUBS)
-        val inApps = billingClient.queryPurchases(SkuType.INAPP)
-        val purchases = (subscriptions.purchasesList ?: emptyList()) + (inApps.purchasesList ?: emptyList())
-        val eligibleProducts = mutableListOf(PREMIUM_MONTHLY_SUBSCRIPTION, PREMIUM_YEARLY_SUBSCRIPTION)
-        if (Config.PROMOS_ENABLED) eligibleProducts.add(PREMIUM_LIFETIME_PROMO_INAPP)
+        val subscriptions = billingClient.queryPurchasesAsync(SkuType.SUBS)
+        val inApps = billingClient.queryPurchasesAsync(SkuType.INAPP)
+        val purchases = subscriptions.purchasesList + inApps.purchasesList
 
-        if (purchases.any {
+        val eligibleProducts = mutableListOf(PREMIUM_MONTHLY_SUBSCRIPTION, PREMIUM_YEARLY_SUBSCRIPTION, PREMIUM_LIFETIME_INAPP)
+        if (Config.PROMOS_ENABLED) {
+          eligibleProducts.add(PREMIUM_LIFETIME_INAPP_PROMO)
+        }
+        val eligiblePurchases = purchases.filter {
           val json = JSONObject(it.originalJson)
           val productId = json.optString("productId", "")
-          it.isAcknowledged && productId in eligibleProducts
+          productId in eligibleProducts
         }
-        ) {
-          settingsRepository.isPremium = true
-          _messageLiveData.value = MessageEvent.info(R.string.textPurchaseThanks)
-          uiState = PremiumUiModel(finishEvent = ActionEvent(true))
-        } else {
-          loadPurchases(billingClient)
+
+        when {
+          eligiblePurchases.any { it.isAcknowledged && it.purchaseState == PURCHASED } -> unlockAndFinish()
+          eligiblePurchases.any { !it.isAcknowledged && it.purchaseState == PURCHASED } -> {
+            val purchase = eligiblePurchases.first { !it.isAcknowledged && it.purchaseState == PURCHASED }
+            val params = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchase.purchaseToken)
+            billingClient.acknowledgePurchase(params.build())
+            unlockAndFinish()
+          }
+          eligiblePurchases.any { it.purchaseState == PENDING } -> {
+            uiState = PremiumUiModel(isPurchasePending = true, isLoading = false,)
+          }
+          else -> loadPurchases(billingClient)
         }
       } catch (error: Throwable) {
         Timber.e(error)
@@ -112,17 +126,11 @@ class PremiumViewModel @Inject constructor(
             if (purchase.purchaseState == PURCHASED && !purchase.isAcknowledged) {
               val params = AcknowledgePurchaseParams.newBuilder().setPurchaseToken(purchase.purchaseToken)
               billingClient.acknowledgePurchase(params.build())
-              settingsRepository.isPremium = true
-              _messageLiveData.value = MessageEvent.info(R.string.textPurchaseThanks)
-              uiState = PremiumUiModel(finishEvent = ActionEvent(true))
+              unlockAndFinish()
             }
           }
         }
-        BillingResponseCode.ITEM_ALREADY_OWNED -> {
-          settingsRepository.isPremium = true
-          _messageLiveData.value = MessageEvent.info(R.string.textPurchaseThanks)
-          uiState = PremiumUiModel(finishEvent = ActionEvent(true))
-        }
+        BillingResponseCode.ITEM_ALREADY_OWNED -> unlockAndFinish()
         BillingResponseCode.USER_CANCELED -> {
           uiState = PremiumUiModel(isLoading = false)
         }
@@ -138,19 +146,35 @@ class PremiumViewModel @Inject constructor(
       try {
         uiState = PremiumUiModel(isLoading = true)
 
+        val inAppsEnabled = Firebase.remoteConfig.getBoolean("in_app_enabled")
+
         val paramsSubs = SkuDetailsParams.newBuilder()
           .setSkusList(listOf(PREMIUM_MONTHLY_SUBSCRIPTION, PREMIUM_YEARLY_SUBSCRIPTION))
           .setType(SkuType.SUBS)
           .build()
 
+        val paramsInApps = SkuDetailsParams.newBuilder()
+          .setSkusList(listOf(PREMIUM_LIFETIME_INAPP))
+          .setType(SkuType.INAPP)
+          .build()
+
         val subsDetails = billingClient.querySkuDetails(paramsSubs)
+        val inAppsDetails = billingClient.querySkuDetails(paramsInApps)
+
         val subsItems = subsDetails.skuDetailsList ?: emptyList()
-        uiState = PremiumUiModel(purchaseItems = subsItems, isLoading = false)
+        val inAppsItems = if (inAppsEnabled) inAppsDetails.skuDetailsList ?: emptyList() else emptyList()
+        uiState = PremiumUiModel(purchaseItems = subsItems + inAppsItems, isLoading = false)
       } catch (error: Throwable) {
         Timber.e(error)
         uiState = PremiumUiModel(purchaseItems = emptyList(), isLoading = false)
         _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
       }
     }
+  }
+
+  private fun unlockAndFinish() {
+    settingsRepository.isPremium = true
+    _messageLiveData.value = MessageEvent.info(R.string.textPurchaseThanks)
+    uiState = PremiumUiModel(finishEvent = ActionEvent(true))
   }
 }

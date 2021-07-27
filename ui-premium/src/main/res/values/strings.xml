@@ -14,4 +14,5 @@
   <string name="textNewsDesc">Enable news section with the latest shows and movies articles, news and trailers. Powered by Reddit.</string>
 
   <string name="textPurchaseThanks">You are now Showly Supporter!\nThank you and enjoy the app!</string>
+  <string name="textPurchasePending" translatable="false">Your purchase is being processed by Google Play Store...</string>
 </resources>

@@ -21,6 +21,7 @@ import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.NavigationHost
+import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
@@ -184,7 +185,7 @@ class ProgressFragment :
 
   private fun render(items: List<ProgressListItem>, resetScroll: ActionEvent<Boolean>) {
     adapter?.setItems(items, resetScroll.consume() == true)
-    progressRecycler.fadeIn(150, withHardware = true)
+    progressRecycler.fadeIn(withHardware = true).add(animations)
     progressEmptyView.visibleIf(items.isEmpty())
     progressTipItem.visibleIf(items.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
     (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()

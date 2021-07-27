@@ -1,12 +1,8 @@
-* Progress list items will now use aired episodes count as total number.
+* Reduced widgets items size to make them more compact
 
-* Calendar will now display all upcoming episodes and not only the next one.
+* Fixed issue that might prevent notification from showing up for some users.
 
-* Added new Calendar section that will display recently aired episodes dating 3 months back.
+* Update Arabic language translation.
 
-* Added option to not load streaming services information at all.
-
-* Bugfixes and small UI tweaks
-
-Do you enjoy Showly app?
-Become Premium subscriber and gain access to cool bonus features! Check settings to learn more!
+Do you enjoy Showly app and want to support the developer?
+Become a subscriber and gain access to cool bonus features! Check settings to learn more!

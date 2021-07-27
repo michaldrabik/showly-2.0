@@ -77,6 +77,7 @@ class CalendarMoviesWidgetViewsFactory(
     val remoteView = RemoteViews(context.packageName, getItemLayout()).apply {
       setTextViewText(R.id.calendarMoviesWidgetItemTitle, title)
       setTextViewText(R.id.calendarMoviesWidgetItemOverview, overview)
+      setViewVisibility(R.id.calendarMoviesWidgetItemOverview, if (overview.isBlank()) GONE else VISIBLE)
       setTextViewText(R.id.calendarMoviesWidgetItemDate, date)
 
       val fillIntent = Intent().apply {

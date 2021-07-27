@@ -85,7 +85,7 @@ class SettingsViewModel @Inject constructor(
 
   fun enableAnnouncements(enable: Boolean, context: Context) {
     viewModelScope.launch {
-      mainCase.enableAnnouncements(enable, context)
+      mainCase.enableAnnouncements(enable)
       refreshSettings()
       Analytics.logSettingsAnnouncements(enable)
     }
@@ -133,7 +133,7 @@ class SettingsViewModel @Inject constructor(
 
   fun enableMovies(enable: Boolean, context: Context) {
     viewModelScope.launch {
-      mainCase.enableMovies(enable, context)
+      mainCase.enableMovies(enable)
       delay(300)
       refreshSettings(restartApp = true)
     }
@@ -167,7 +167,7 @@ class SettingsViewModel @Inject constructor(
 
   fun setWhenToNotify(delay: NotificationDelay, context: Context) {
     viewModelScope.launch {
-      mainCase.setWhenToNotify(delay, context)
+      mainCase.setWhenToNotify(delay)
       refreshSettings()
       Analytics.logSettingsWhenToNotify(delay.name)
     }

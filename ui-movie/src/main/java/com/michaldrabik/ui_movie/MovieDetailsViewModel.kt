@@ -67,7 +67,7 @@ class MovieDetailsViewModel @Inject constructor(
 
   private var movie by notNull<Movie>()
 
-  fun loadDetails(id: IdTrakt, context: Context) {
+  fun loadDetails(id: IdTrakt) {
     viewModelScope.launch {
       val progressJob = launchDelayed(700) {
         uiState = MovieDetailsUiModel(movieLoading = true)
@@ -82,7 +82,6 @@ class MovieDetailsViewModel @Inject constructor(
         val followedState = FollowedState(
           isMyMovie = isFollowed.await(),
           isWatchlist = isWatchlist.await(),
-          isUpcoming = movie.released != null && !movie.hasAired(),
           withAnimation = false
         )
 
@@ -106,16 +105,17 @@ class MovieDetailsViewModel @Inject constructor(
         launch { loadStreamings(movie) }
         launch { loadRelatedMovies(movie) }
         launch { loadTranslation(movie) }
-
-        if (followedState.isWatchlist) {
-          announcementManager.refreshMoviesAnnouncements(context)
-        }
-
         if (isSignedIn) launch { loadRating(movie) }
-      } catch (t: Throwable) {
+      } catch (error: Throwable) {
         progressJob.cancel()
-        _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadMovie)
-        Logger.record(t, "Source" to "MovieDetailsViewModel")
+        if (error is HttpException && error.code() == 404) {
+          // Malformed Trakt data or duplicate show.
+          _messageLiveData.value = MessageEvent.info(R.string.errorMalformedMovie)
+        } else {
+          _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadMovie)
+        }
+        Logger.record(error, "Source" to "MovieDetailsViewModel")
+        rethrowCancellation(error)
       }
     }
   }
@@ -125,7 +125,7 @@ class MovieDetailsViewModel @Inject constructor(
       uiState = try {
         val backgroundImage = imagesProvider.loadRemoteImage(movie ?: this@MovieDetailsViewModel.movie, ImageType.FANART)
         MovieDetailsUiModel(image = backgroundImage)
-      } catch (t: Throwable) {
+      } catch (error: Throwable) {
         MovieDetailsUiModel(image = Image.createUnavailable(ImageType.FANART))
       }
     }
@@ -306,8 +306,9 @@ class MovieDetailsViewModel @Inject constructor(
       val rating = ratingsCase.loadRating(movie)
       uiState = MovieDetailsUiModel(ratingState = RatingState(userRating = rating ?: TraktRating.EMPTY, rateLoading = false))
     } catch (error: Throwable) {
-      Timber.e(error)
       uiState = MovieDetailsUiModel(ratingState = RatingState(rateLoading = false))
+      Timber.e(error)
+      rethrowCancellation(error)
     }
   }
 
@@ -323,8 +324,9 @@ class MovieDetailsViewModel @Inject constructor(
       val ratings = ratingsCase.loadExternalRatings(movie)
       uiState = MovieDetailsUiModel(ratings = ratings)
     } catch (error: Throwable) {
-      Timber.e(error)
       uiState = MovieDetailsUiModel(ratings = traktRatings)
+      Timber.e(error)
+      rethrowCancellation(error)
     }
   }
 
@@ -359,15 +361,11 @@ class MovieDetailsViewModel @Inject constructor(
   }
 
   fun addFollowedMovie(context: Context) {
-    if (movie.hasNoDate() || (movie.released != null && !movie.hasAired())) {
-      _messageLiveData.value = MessageEvent.info(R.string.textMovieNotYetReleased)
-      return
-    }
     viewModelScope.launch {
       myMoviesCase.addToMyMovies(movie)
       quickSyncManager.scheduleMovies(context, listOf(movie.traktId))
       uiState = MovieDetailsUiModel(followedState = FollowedState.inMyMovies())
-      announcementManager.refreshMoviesAnnouncements(context)
+      announcementManager.refreshMoviesAnnouncements()
       Analytics.logMovieAddToMyMovies(movie)
     }
   }
@@ -377,12 +375,12 @@ class MovieDetailsViewModel @Inject constructor(
       watchlistCase.addToWatchlist(movie)
       quickSyncManager.scheduleMoviesWatchlist(context, listOf(movie.traktId))
       uiState = MovieDetailsUiModel(followedState = FollowedState.inWatchlist())
-      announcementManager.refreshMoviesAnnouncements(context)
+      announcementManager.refreshMoviesAnnouncements()
       Analytics.logMovieAddToWatchlistMovies(movie)
     }
   }
 
-  fun removeFromFollowed(context: Context) {
+  fun removeFromFollowed() {
     viewModelScope.launch {
       val isMyMovie = myMoviesCase.isMyMovie(movie)
       val isWatchlist = watchlistCase.isWatchlist(movie)
@@ -401,7 +399,7 @@ class MovieDetailsViewModel @Inject constructor(
       val traktQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
       val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled
 
-      val state = if (movie.hasAired()) FollowedState.notFollowed() else FollowedState.upcoming()
+      val state = FollowedState.idle()
       val event = ActionEvent(showRemoveTrakt)
       uiState = when {
         isMyMovie -> MovieDetailsUiModel(followedState = state, removeFromTraktHistory = event)
@@ -409,7 +407,7 @@ class MovieDetailsViewModel @Inject constructor(
         else -> error("Unexpected movie state")
       }
 
-      announcementManager.refreshMoviesAnnouncements(context)
+      announcementManager.refreshMoviesAnnouncements()
     }
   }
 
@@ -437,6 +435,19 @@ class MovieDetailsViewModel @Inject constructor(
       } catch (error: Throwable) {
         _messageLiveData.value = MessageEvent.error(R.string.errorTraktSyncGeneral)
         uiState = MovieDetailsUiModel(showFromTraktLoading = false)
+      }
+    }
+  }
+
+  fun removeMalformedMovie(id: IdTrakt) {
+    viewModelScope.launch {
+      try {
+        mainCase.removeMalformedMovie(id)
+      } catch (error: Throwable) {
+        Timber.e(error)
+        rethrowCancellation(error)
+      } finally {
+        uiState = MovieDetailsUiModel(isFinished = ActionEvent(true))
       }
     }
   }
