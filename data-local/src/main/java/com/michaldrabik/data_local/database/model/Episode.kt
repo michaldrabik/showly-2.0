@@ -42,5 +42,6 @@ data class Episode(
   @ColumnInfo(name = "rating") var rating: Float,
   @ColumnInfo(name = "runtime") var runtime: Int,
   @ColumnInfo(name = "votes_count") var votesCount: Int,
-  @ColumnInfo(name = "is_watched") var isWatched: Boolean
+  @ColumnInfo(name = "is_watched") var isWatched: Boolean,
+  @ColumnInfo(name = "last_watched_at") var lastWatchedAt: ZonedDateTime?
 )

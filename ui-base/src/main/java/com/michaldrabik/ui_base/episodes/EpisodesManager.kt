@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_base.episodes
 
 import androidx.room.withTransaction
+import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.EpisodesSyncLog
@@ -50,7 +51,8 @@ class EpisodesManager @Inject constructor(
 
       season.episodes.forEach { ep ->
         if (episodes.none { it.idTrakt == ep.ids.trakt.id }) {
-          val dbEpisode = mappers.episode.toDatabase(ep, season, show.ids.trakt, true)
+          val timestamp = nowUtc()
+          val dbEpisode = mappers.episode.toDatabase(ep, season, show.ids.trakt, true, timestamp)
           toAdd.add(dbEpisode)
         }
       }
@@ -102,7 +104,7 @@ class EpisodesManager @Inject constructor(
     database.runTransaction {
       val (episode, season, show) = episodeBundle
 
-      val dbEpisode = mappers.episode.toDatabase(episode, season, show.ids.trakt, true)
+      val dbEpisode = mappers.episode.toDatabase(episode, season, show.ids.trakt, true, nowUtc())
       val dbSeason = mappers.season.toDatabase(season, show.ids.trakt, false)
 
       val localSeason = database.seasonsDao().getById(season.ids.trakt.id)
@@ -120,7 +122,7 @@ class EpisodesManager @Inject constructor(
       val (episode, season, show) = episodeBundle
 
       val isShowFollowed = showsRepository.myShows.load(show.ids.trakt) != null
-      val dbEpisode = mappers.episode.toDatabase(episode, season, show.ids.trakt, true)
+      val dbEpisode = mappers.episode.toDatabase(episode, season, show.ids.trakt, true, null)
 
       when {
         isShowFollowed -> database.episodesDao().upsert(listOf(dbEpisode.copy(isWatched = false)))
@@ -179,7 +181,8 @@ class EpisodesManager @Inject constructor(
             newEpisode,
             newSeason,
             show.ids.trakt,
-            localEpisode?.isWatched ?: false
+            localEpisode?.isWatched ?: false,
+            localEpisode?.lastWatchedAt
           )
           episodesToAdd.add(episodeDb)
         }

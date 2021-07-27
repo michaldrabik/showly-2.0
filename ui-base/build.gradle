@@ -40,6 +40,7 @@ dependencies {
   api "androidx.appcompat:appcompat:$versions.androidAppCompat"
   api "androidx.core:core-ktx:$versions.androidKtx"
   api "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.androidLifecycle"
+  api "androidx.lifecycle:lifecycle-runtime-ktx:$versions.androidLifecycle"
   api "androidx.fragment:fragment-ktx:$versions.androidFragment"
   api "androidx.navigation:navigation-fragment-ktx:$versions.androidNavigation"
   api "androidx.recyclerview:recyclerview:$versions.androidRecycler"

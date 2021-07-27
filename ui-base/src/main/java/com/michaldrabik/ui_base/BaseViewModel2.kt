@@ -3,16 +3,12 @@ package com.michaldrabik.ui_base
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import kotlinx.coroutines.CancellationException
 import timber.log.Timber
 
 @Suppress("PropertyName")
 open class BaseViewModel2 : ViewModel() {
-
-  protected val _eventLiveData = MutableLiveData<ActionEvent<*>>()
-  val eventLiveData: LiveData<ActionEvent<*>> get() = _eventLiveData
 
   protected val _messageLiveData = MutableLiveData<MessageEvent>()
   val messageLiveData: LiveData<MessageEvent> get() = _messageLiveData

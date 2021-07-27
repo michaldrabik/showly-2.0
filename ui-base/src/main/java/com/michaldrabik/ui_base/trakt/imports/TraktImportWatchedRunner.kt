@@ -181,7 +181,7 @@ class TraktImportWatchedRunner @Inject constructor(
 
           val seasonDb = mappers.season.fromNetwork(season)
           val episodeDb = mappers.episode.fromNetwork(episode)
-          mappers.episode.toDatabase(episodeDb, seasonDb, IdTrakt(showId), isWatched)
+          mappers.episode.toDatabase(episodeDb, seasonDb, IdTrakt(showId), isWatched, null)
         } ?: emptyList()
     }
 

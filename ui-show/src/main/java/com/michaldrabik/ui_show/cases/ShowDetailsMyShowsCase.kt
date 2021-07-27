@@ -38,9 +38,11 @@ class ShowDetailsMyShowsCase @Inject constructor(
     episodes: List<Episode>
   ) {
     database.withTransaction {
-      showsRepository.myShows.insert(show.ids.trakt)
-      showsRepository.watchlistShows.delete(show.ids.trakt)
-      showsRepository.archiveShows.delete(show.ids.trakt)
+      with(showsRepository) {
+        myShows.insert(show.ids.trakt)
+        watchlistShows.delete(show.ids.trakt)
+        archiveShows.delete(show.ids.trakt)
+      }
 
       val localSeasons = database.seasonsDao().getAllByShowId(show.traktId)
       val localEpisodes = database.episodesDao().getAllByShowId(show.traktId)
@@ -56,7 +58,7 @@ class ShowDetailsMyShowsCase @Inject constructor(
       episodes.forEach { episode ->
         if (localEpisodes.none { it.idTrakt == episode.ids.trakt.id }) {
           val season = seasons.find { it.number == episode.season }!!
-          episodesToAdd.add(mappers.episode.toDatabase(episode, season, show.ids.trakt, false))
+          episodesToAdd.add(mappers.episode.toDatabase(episode, season, show.ids.trakt, false, null))
         }
       }
 

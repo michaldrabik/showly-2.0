@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_news
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.extensions.nowUtcMillis
@@ -25,6 +25,15 @@ class NewsViewModel @Inject constructor(
   private var previousRefresh = 0L
   private var currentTypes: List<NewsItem.Type> = listOf(SHOW, MOVIE)
 
+  private val itemsState = MutableLiveData<List<NewsListItem>>()
+  private val loadingState = MutableLiveData<Boolean>()
+
+  val uiLiveData = MediatorLiveData<NewsUiState>().apply {
+    value = NewsUiState()
+    addSource(itemsState) { value = value?.copy(items = it) }
+    addSource(loadingState) { value = value?.copy(isLoading = it) }
+  }
+
   init {
     loadItems()
   }
@@ -41,31 +50,31 @@ class NewsViewModel @Inject constructor(
     }
 
     if (forceRefresh && nowUtcMillis() - previousRefresh < TimeUnit.SECONDS.toMillis(30)) {
-      _loadingLiveData.value = false
+      loadingState.value = false
       return
     }
 
     viewModelScope.launch {
       val progressJob = launchDelayed(700) {
-        _loadingLiveData.value = true
+        loadingState.value = true
       }
       try {
         if (!forceRefresh) {
           val cachedItems = loadNewsCase.preloadItems(currentTypes)
-          _itemsLiveData.value = cachedItems
+          itemsState.value = cachedItems
         } else {
-          _loadingLiveData.value = true
+          loadingState.value = true
         }
 
         val items = loadNewsCase.loadItems(forceRefresh, currentTypes)
-        _itemsLiveData.value = items
-        _loadingLiveData.value = false
+        itemsState.value = items
+        loadingState.value = false
 
         if (forceRefresh) {
           previousRefresh = nowUtcMillis()
         }
       } catch (error: Throwable) {
-        _loadingLiveData.value = false
+        loadingState.value = false
         _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
         rethrowCancellation(error)
       } finally {
@@ -73,10 +82,4 @@ class NewsViewModel @Inject constructor(
       }
     }
   }
-
-  private val _itemsLiveData = MutableLiveData<List<NewsListItem>>()
-  private val _loadingLiveData = MutableLiveData<Boolean>()
-
-  val itemsLiveData: LiveData<List<NewsListItem>> get() = _itemsLiveData
-  val loadingLiveData: LiveData<Boolean> get() = _loadingLiveData
 }

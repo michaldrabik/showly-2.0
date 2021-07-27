@@ -46,7 +46,8 @@ class EpisodeMapper @Inject constructor(
     episode: Episode,
     season: Season,
     showId: IdTrakt,
-    isWatched: Boolean
+    isWatched: Boolean,
+    timestamp: ZonedDateTime?
   ) = EpisodeDb(
     episode.ids.trakt.id,
     season.ids.trakt.id,
@@ -63,7 +64,8 @@ class EpisodeMapper @Inject constructor(
     episode.rating,
     episode.runtime,
     episode.votes,
-    isWatched
+    isWatched,
+    timestamp
   )
 
   fun fromDatabase(episodeDb: EpisodeDb) =
