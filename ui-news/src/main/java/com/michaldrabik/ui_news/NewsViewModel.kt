@@ -1,7 +1,5 @@
 package com.michaldrabik.ui_news
 
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.ui_base.BaseViewModel2
@@ -13,7 +11,12 @@ import com.michaldrabik.ui_model.NewsItem.Type.SHOW
 import com.michaldrabik.ui_news.cases.NewsLoadItemsCase
 import com.michaldrabik.ui_news.recycler.NewsListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -25,14 +28,23 @@ class NewsViewModel @Inject constructor(
   private var previousRefresh = 0L
   private var currentTypes: List<NewsItem.Type> = listOf(SHOW, MOVIE)
 
-  private val itemsState = MutableLiveData<List<NewsListItem>>()
-  private val loadingState = MutableLiveData<Boolean>()
+  private val itemsState = MutableStateFlow(emptyList<NewsListItem>())
+  private val loadingState = MutableStateFlow(false)
 
-  val uiLiveData = MediatorLiveData<NewsUiState>().apply {
-    value = NewsUiState()
-    addSource(itemsState) { value = value?.copy(items = it) }
-    addSource(loadingState) { value = value?.copy(isLoading = it) }
-  }
+  val uiState = combine(
+    itemsState,
+    loadingState
+  ) { items, loading ->
+    Timber.d("Emitting state: ${items.size} $loading")
+    NewsUiState(
+      items = items,
+      isLoading = loading
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(5000),
+    initialValue = NewsUiState()
+  )
 
   init {
     loadItems()
@@ -49,6 +61,7 @@ class NewsViewModel @Inject constructor(
       }
     }
 
+    loadingState.value = true
     if (forceRefresh && nowUtcMillis() - previousRefresh < TimeUnit.SECONDS.toMillis(30)) {
       loadingState.value = false
       return

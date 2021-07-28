@@ -14,6 +14,9 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.browser.customtabs.CustomTabsServiceConnection
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
@@ -34,6 +37,8 @@ import com.michaldrabik.ui_news.recycler.NewsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_news.*
 import kotlinx.android.synthetic.main.view_news_filters.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class NewsFragment :
@@ -71,9 +76,10 @@ class NewsFragment :
     setupSwipeRefresh()
     setupCustomTabs()
 
-    with(viewModel) {
-      uiLiveData.observe(viewLifecycleOwner, { render(it) })
-      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewModel.uiState.collect { render(it) }
+      }
     }
   }
 
