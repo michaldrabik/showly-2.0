@@ -78,7 +78,10 @@ class NewsFragment :
 
     viewLifecycleOwner.lifecycleScope.launch {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
-        viewModel.uiState.collect { render(it) }
+        with(viewModel) {
+          uiState.collect { render(it) }
+          _messageState.collect { showSnack(it) }
+        }
       }
     }
   }

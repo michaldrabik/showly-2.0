@@ -42,7 +42,7 @@ class NewsViewModel @Inject constructor(
     )
   }.stateIn(
     scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(5000),
+    started = SharingStarted.WhileSubscribed(3000),
     initialValue = NewsUiState()
   )
 
@@ -87,8 +87,8 @@ class NewsViewModel @Inject constructor(
           previousRefresh = nowUtcMillis()
         }
       } catch (error: Throwable) {
+        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
         loadingState.value = false
-        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
         rethrowCancellation(error)
       } finally {
         progressJob.cancel()
