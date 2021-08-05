@@ -10,7 +10,7 @@ import timber.log.Timber
 @Suppress("PropertyName")
 open class BaseViewModel2 : ViewModel() {
 
-  val _messageState = MutableSharedFlow<MessageEvent>()
+  protected val _messageState = MutableSharedFlow<MessageEvent>()
   val messageState = _messageState.asSharedFlow()
 
   protected fun rethrowCancellation(t: Throwable) {

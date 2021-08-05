@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -35,7 +34,6 @@ class NewsViewModel @Inject constructor(
     itemsState,
     loadingState
   ) { items, loading ->
-    Timber.d("Emitting state: ${items.size} $loading")
     NewsUiState(
       items = items,
       isLoading = loading
@@ -61,10 +59,8 @@ class NewsViewModel @Inject constructor(
       }
     }
 
-    loadingState.value = true
-    if (forceRefresh && nowUtcMillis() - previousRefresh < TimeUnit.SECONDS.toMillis(30)) {
-      loadingState.value = false
-      return
+    if (forceRefresh) {
+      loadingState.value = true
     }
 
     viewModelScope.launch {
@@ -72,11 +68,16 @@ class NewsViewModel @Inject constructor(
         loadingState.value = true
       }
       try {
-        if (!forceRefresh) {
+        if (forceRefresh && nowUtcMillis() - previousRefresh < TimeUnit.SECONDS.toMillis(30)) {
+          loadingState.value = false
+          return@launch
+        }
+
+        if (forceRefresh) {
+          loadingState.value = true
+        } else {
           val cachedItems = loadNewsCase.preloadItems(currentTypes)
           itemsState.value = cachedItems
-        } else {
-          loadingState.value = true
         }
 
         val items = loadNewsCase.loadItems(forceRefresh, currentTypes)
