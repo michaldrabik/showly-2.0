@@ -42,7 +42,7 @@ fun Fragment.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelS
 fun Context.colorFromAttr(
   @AttrRes attrColor: Int,
   typedValue: TypedValue = TypedValue(),
-  resolveRefs: Boolean = true
+  resolveRefs: Boolean = true,
 ): Int {
   theme.resolveAttribute(attrColor, typedValue, resolveRefs)
   return typedValue.data
@@ -51,7 +51,7 @@ fun Context.colorFromAttr(
 fun Context.colorStateListFromAttr(
   @AttrRes attrColor: Int,
   typedValue: TypedValue = TypedValue(),
-  resolveRefs: Boolean = true
+  resolveRefs: Boolean = true,
 ): ColorStateList =
   ColorStateList.valueOf(colorFromAttr(attrColor, typedValue, resolveRefs))
 
