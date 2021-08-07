@@ -143,7 +143,7 @@ class TraktSyncViewModel @Inject constructor(
             authErrorState.value = true
           }
         }
-        else -> Timber.d("Unsupported sync event.")
+        else -> Timber.d("Unsupported sync event")
       }
     }
   }
@@ -157,7 +157,10 @@ class TraktSyncViewModel @Inject constructor(
     quickSyncEnabledState,
     dateFormatState,
     traktSyncTimestampState
-  ) { progressState, progressStatusState, authorizedState, authErrorState, traktSyncScheduleState, quickSyncEnabledState, dateFormatState, traktSyncTimestampState ->
+  ) {
+    progressState, progressStatusState, authorizedState, authErrorState, traktSyncScheduleState, quickSyncEnabledState, dateFormatState,
+    traktSyncTimestampState,
+    ->
     TraktSyncUiState(
       isProgress = progressState,
       progressStatus = progressStatusState,

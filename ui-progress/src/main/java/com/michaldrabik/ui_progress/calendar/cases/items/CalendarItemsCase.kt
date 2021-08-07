@@ -47,16 +47,22 @@ abstract class CalendarItemsCase constructor(
 
     val (episodes, seasons) = awaitAll(
       async {
-        showsIds.fold(mutableListOf<Episode>(), { acc, list ->
-          acc += database.episodesDao().getAllByShowsIds(list)
-          acc
-        })
+        showsIds.fold(
+          mutableListOf<Episode>(),
+          { acc, list ->
+            acc += database.episodesDao().getAllByShowsIds(list)
+            acc
+          }
+        )
       },
       async {
-        showsIds.fold(mutableListOf<Season>(), { acc, list ->
-          acc += database.seasonsDao().getAllByShowsIds(list)
-          acc
-        })
+        showsIds.fold(
+          mutableListOf<Season>(),
+          { acc, list ->
+            acc += database.seasonsDao().getAllByShowsIds(list)
+            acc
+          }
+        )
       }
     )
 
