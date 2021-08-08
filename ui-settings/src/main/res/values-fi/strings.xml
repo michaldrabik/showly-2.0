@@ -10,7 +10,7 @@
   <string name="textSettingsTraktAuthorizeSummarySignIn">Napauta kirjautuaksesi Trakt.tv-tilillesi.</string>
   <string name="textSettingsTraktAuthorizeSummarySignOut">Kirjautuneena. Kirjaudu ulos napauttamalla.</string>
   <string name="textSettingsTraktAuthorizeSummarySignOutUser">Kirjautuneena tunnuksella %1$s. Kirjaudu ulos napauttamalla.</string>
-  <string name="textSettingsTraktSyncTitle">Trakt.tv Sync</string>
+  <string name="textSettingsTraktSyncTitle">Trakt.tv-synkronointi</string>
   <string name="textSettingsTraktSyncSummary">Synkronoi tiedot Trakt.tv:n ja Showlyn välillä.</string>
   <string name="textSettingsTraktQuickSyncTitle">Trakt.tv-pikalähetys</string>
   <string name="textSettingsTraktQuickSyncSummary">Lähetä tiedot Trakt.tv-tilillesi heti kun ne lisätään sovellukseen.</string>
