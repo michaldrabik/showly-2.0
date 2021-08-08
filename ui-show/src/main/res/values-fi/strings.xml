@@ -24,7 +24,7 @@
   <string name="textRuntimeLeftMinutes">~%s m jäljellä</string>
   <string name="textWhatIsArchive">Arkisto?</string>
   <string name="textWhatIsArchiveFull">Mikä on arkisto?</string>
-  <string name="textArchiveDescription"><b>Arkisto</b> on lista sarjoista, jotka ovat jääneet kesken, ne on hylätty tai eivät enää kiinnosta.\n\n\Arkistoidut sarjat eivät enää näy <b>Katselutilanne</b>, <b>Etsi</b> ja <b>Omat sarjat</b> -osioissa, eikä niitä huomioida Trakt.tv-tuonnissa.</string>
+  <string name="textArchiveDescription"><b>Arkisto</b> on lista sarjoista, jotka ovat jääneet kesken, ne on hylätty tai eivät enää kiinnosta.\n\n\Arkistoidut sarjat eivät enää näy <b>katselutilanteessa</b>, <b>etsinnässä</b> ja <b>omissa sarjoissa</b>, eikä niitä huomioida Trakt.tv-tuonnissa.</string>
   <string name="textArchiveConfirmationTitle">Arkistoi sarja</string>
   <string name="textArchiveConfirmationMessage">\nHaluatko varmasti arkistoida sarjan?\n</string>
   <string name="textShowManageLists">Hallinnoi listoja</string>
