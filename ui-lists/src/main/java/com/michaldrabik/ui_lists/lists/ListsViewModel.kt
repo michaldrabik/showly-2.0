@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_lists.lists
 
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.BaseViewModel2
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.ActionEvent
@@ -13,6 +13,10 @@ import com.michaldrabik.ui_lists.lists.recycler.ListsItem
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,19 +26,24 @@ class ListsViewModel @Inject constructor(
   private val sortCase: SortOrderListsCase,
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
-) : BaseViewModel<ListsUiModel>() {
+) : BaseViewModel2() {
+
+  private val itemsState = MutableStateFlow<List<ListsItem>?>(null)
+  private val scrollState = MutableStateFlow(ActionEvent(false))
+  private val sortOrderState = MutableStateFlow<ActionEvent<SortOrder>?>(null)
 
   fun loadItems(resetScroll: Boolean, searchQuery: String? = null) {
     viewModelScope.launch {
       val items = mainCase.loadLists(searchQuery)
-      uiState = ListsUiModel(items = items, resetScroll = ActionEvent(resetScroll))
+      itemsState.value = items
+      scrollState.value = ActionEvent(resetScroll)
     }
   }
 
   fun loadSortOrder() {
     viewModelScope.launch {
       val sortOrder = sortCase.loadSortOrder()
-      uiState = ListsUiModel(sortOrderEvent = ActionEvent(sortOrder))
+      sortOrderState.value = ActionEvent(sortOrder)
     }
   }
 
@@ -71,8 +80,24 @@ class ListsViewModel @Inject constructor(
   }
 
   private fun updateItem(newItem: ListsItem) {
-    val currentItems = uiState?.items?.toMutableList()
-    currentItems?.findReplace(newItem) { it.list.id == newItem.list.id }
-    uiState = uiState?.copy(items = currentItems)
+    val currentItems = uiState.value.items?.toMutableList() ?: mutableListOf()
+    currentItems.findReplace(newItem) { it.list.id == newItem.list.id }
+    itemsState.value = currentItems
   }
+
+  val uiState = combine(
+    itemsState,
+    scrollState,
+    sortOrderState
+  ) { itemsState, scrollState, sortOrderState ->
+    ListsUiState(
+      items = itemsState,
+      resetScroll = scrollState,
+      sortOrder = sortOrderState
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(3000),
+    initialValue = ListsUiState()
+  )
 }

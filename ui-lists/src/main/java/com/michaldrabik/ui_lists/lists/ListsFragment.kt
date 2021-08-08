@@ -12,13 +12,16 @@ import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.BaseFragment2
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
@@ -56,10 +59,12 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_lists.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ListsFragment :
-  BaseFragment<ListsViewModel>(R.layout.fragment_lists),
+  BaseFragment2<ListsViewModel>(R.layout.fragment_lists),
   OnTraktSyncListener,
   OnTabReselectedListener,
   EventObserver {
@@ -89,9 +94,13 @@ class ListsFragment :
     setupStatusBar()
     setupRecycler()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it) })
-      loadItems(resetScroll = false)
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          loadItems(resetScroll = false)
+        }
+      }
     }
   }
 
@@ -252,8 +261,8 @@ class ListsFragment :
       .show()
   }
 
-  private fun render(uiModel: ListsUiModel) {
-    uiModel.run {
+  private fun render(uiState: ListsUiState) {
+    uiState.run {
       items?.let {
         val isSearching = fragmentListsSearchView.isSearching
         fragmentListsEmptyView.fadeIf(it.isEmpty() && !isSearching)
@@ -265,10 +274,10 @@ class ListsFragment :
           fragmentListsSearchView.isEnabled = it.isNotEmpty()
         }
 
-        val resetScroll = resetScroll?.consume() == true
+        val resetScroll = resetScroll.consume() == true
         adapter?.setItems(it, resetScroll)
       }
-      sortOrderEvent?.let { event ->
+      sortOrder?.let { event ->
         event.consume()?.let { showSortOrderDialog(it) }
       }
     }
