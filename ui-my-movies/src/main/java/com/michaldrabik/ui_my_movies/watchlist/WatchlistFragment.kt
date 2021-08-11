@@ -66,7 +66,10 @@ class WatchlistFragment :
       itemClickListener = { openMovieDetails(it.movie) },
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it) },
-      listChangeListener = { watchlistMoviesRecycler.scrollToPosition(0) }
+      listChangeListener = {
+        watchlistMoviesRecycler.scrollToPosition(0)
+        (requireParentFragment() as FollowedMoviesFragment).resetTranslations()
+      }
     )
     watchlistMoviesRecycler.apply {
       setHasFixedSize(true)
@@ -103,7 +106,7 @@ class WatchlistFragment :
 
   private fun render(uiState: WatchlistUiState) {
     uiState.run {
-      items?.let {
+      items.let {
         val notifyChange = resetScroll?.consume() == true
         adapter?.setItems(it, notifyChange = notifyChange)
         watchlistMoviesEmptyView.fadeIf(it.isEmpty())

@@ -236,10 +236,7 @@ class FollowedMoviesFragment :
     }
 
     if (result.type != EMPTY) {
-      followedMoviesSearchView.translationY = 0F
-      followedMoviesTabs.translationY = 0F
-      followedMoviesModeTabs.translationY = 0F
-      followedMoviesSortIcon.translationY = 0F
+      resetTranslations()
       childFragmentManager.fragments.forEach {
         (it as? OnScrollResetListener)?.onScrollReset()
       }
@@ -299,10 +296,7 @@ class FollowedMoviesFragment :
   }
 
   override fun onTabReselected() {
-    followedMoviesSearchView.translationY = 0F
-    followedMoviesTabs.translationY = 0F
-    followedMoviesModeTabs.translationY = 0F
-    followedMoviesSortIcon.translationY = 0F
+    resetTranslations()
     followedMoviesPager.nextPage()
     childFragmentManager.fragments.forEach {
       (it as? OnScrollResetListener)?.onScrollReset()
@@ -317,6 +311,13 @@ class FollowedMoviesFragment :
     childFragmentManager.fragments.forEach {
       (it as? OnTraktSyncListener)?.onTraktSyncComplete()
     }
+  }
+
+  fun resetTranslations() {
+    followedMoviesSearchView.translationY = 0F
+    followedMoviesTabs.translationY = 0F
+    followedMoviesModeTabs.translationY = 0F
+    followedMoviesSortIcon.translationY = 0F
   }
 
   private val pageChangeListener = object : ViewPager.OnPageChangeListener {

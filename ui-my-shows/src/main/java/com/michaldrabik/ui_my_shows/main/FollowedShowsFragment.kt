@@ -237,10 +237,7 @@ class FollowedShowsFragment :
     }
 
     if (result.type != EMPTY) {
-      followedShowsSearchView.translationY = 0F
-      followedShowsTabs.translationY = 0F
-      followedShowsModeTabs.translationY = 0F
-      followedShowsSortIcon.translationY = 0F
+      resetTranslations()
       childFragmentManager.fragments.forEach {
         (it as? OnScrollResetListener)?.onScrollReset()
       }
@@ -300,14 +297,18 @@ class FollowedShowsFragment :
   }
 
   override fun onTabReselected() {
-    followedShowsSearchView.translationY = 0F
-    followedShowsTabs.translationY = 0F
-    followedShowsModeTabs.translationY = 0F
-    followedShowsSortIcon.translationY = 0F
+    resetTranslations()
     followedShowsPager.nextPage()
     childFragmentManager.fragments.forEach {
       (it as? OnScrollResetListener)?.onScrollReset()
     }
+  }
+
+  fun resetTranslations() {
+    followedShowsSearchView.translationY = 0F
+    followedShowsTabs.translationY = 0F
+    followedShowsModeTabs.translationY = 0F
+    followedShowsSortIcon.translationY = 0F
   }
 
   override fun onTraktSyncProgress() =

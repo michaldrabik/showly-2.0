@@ -27,10 +27,10 @@ class WatchlistViewModel @Inject constructor(
   private val sortOrderCase: WatchlistSortOrderCase,
   private val loadShowsCase: WatchlistLoadShowsCase,
   private val ratingsCase: WatchlistRatingsCase,
-  private val imagesProvider: ShowImagesProvider
+  private val imagesProvider: ShowImagesProvider,
 ) : BaseViewModel2() {
 
-  private val itemsState = MutableStateFlow<List<WatchlistListItem>?>(null)
+  private val itemsState = MutableStateFlow<List<WatchlistListItem>>(emptyList())
   private val sortOrderState = MutableStateFlow<ActionEvent<SortOrder>?>(null)
   private val scrollState = MutableStateFlow<ActionEvent<Boolean>?>(null)
 
@@ -114,8 +114,8 @@ class WatchlistViewModel @Inject constructor(
   }
 
   private fun updateItem(new: WatchlistListItem) {
-    val currentItems = uiState.value.items?.toMutableList()
-    currentItems?.findReplace(new) { it.isSameAs(new) }
+    val currentItems = uiState.value.items.toMutableList()
+    currentItems.findReplace(new) { it.isSameAs(new) }
     itemsState.value = currentItems
   }
 }

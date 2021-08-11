@@ -5,12 +5,15 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.BaseFragment2
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -29,10 +32,12 @@ import com.michaldrabik.ui_my_shows.main.utilities.OnSortClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_archive.*
 import kotlinx.android.synthetic.main.fragment_watchlist.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ArchiveFragment :
-  BaseFragment<ArchiveViewModel>(R.layout.fragment_archive),
+  BaseFragment2<ArchiveViewModel>(R.layout.fragment_archive),
   OnScrollResetListener,
   OnTraktSyncListener,
   OnSortClickListener {
@@ -48,9 +53,13 @@ class ArchiveFragment :
     setupStatusBar()
     setupRecycler()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      loadShows()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          loadShows()
+        }
+      }
     }
   }
 
@@ -61,7 +70,10 @@ class ArchiveFragment :
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
       missingTranslationListener = { viewModel.loadMissingTranslation(it) }
       itemClickListener = { openShowDetails(it.show) }
-      listChangeListener = { archiveRecycler.scrollToPosition(0) }
+      listChangeListener = {
+        archiveRecycler.scrollToPosition(0)
+        (requireParentFragment() as FollowedShowsFragment).resetTranslations()
+      }
     }
     archiveRecycler.apply {
       setHasFixedSize(true)
@@ -98,9 +110,9 @@ class ArchiveFragment :
       .show()
   }
 
-  private fun render(uiModel: ArchiveUiModel) {
-    uiModel.run {
-      items?.let {
+  private fun render(uiState: ArchiveUiState) {
+    uiState.run {
+      items.let {
         val notifyChange = resetScroll?.consume() == true
         adapter?.setItems(it, notifyChange = notifyChange)
         archiveEmptyView.fadeIf(it.isEmpty())
