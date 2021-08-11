@@ -5,11 +5,14 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.BaseFragment2
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -26,10 +29,12 @@ import com.michaldrabik.ui_my_movies.utilities.OnSortClickListener
 import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_watchlist_movies.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class WatchlistFragment :
-  BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist_movies),
+  BaseFragment2<WatchlistViewModel>(R.layout.fragment_watchlist_movies),
   OnScrollResetListener,
   OnTraktSyncListener,
   OnSortClickListener {
@@ -45,11 +50,14 @@ class WatchlistFragment :
     setupStatusBar()
     setupRecycler()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      loadMovies()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          loadMovies()
+        }
+      }
     }
-    isInitialized = true
   }
 
   private fun setupRecycler() {
@@ -93,8 +101,8 @@ class WatchlistFragment :
       .show()
   }
 
-  private fun render(uiModel: WatchlistUiModel) {
-    uiModel.run {
+  private fun render(uiState: WatchlistUiState) {
+    uiState.run {
       items?.let {
         val notifyChange = resetScroll?.consume() == true
         adapter?.setItems(it, notifyChange = notifyChange)
