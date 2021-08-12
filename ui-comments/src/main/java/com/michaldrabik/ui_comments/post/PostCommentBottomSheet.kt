@@ -9,8 +9,11 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import com.michaldrabik.ui_base.BaseBottomSheetFragment
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.michaldrabik.ui_base.BaseBottomSheetFragment2
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -30,9 +33,11 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_post_comment.*
 import kotlinx.android.synthetic.main.view_post_comment.view.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
+class PostCommentBottomSheet : BaseBottomSheetFragment2<PostCommentViewModel>() {
 
   private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_SHOW_ID)) }
   private val movieTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_MOVIE_ID)) }
@@ -55,11 +60,16 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it) })
-      messageLiveData.observe(viewLifecycleOwner, { renderSnackbar(it) })
-    }
     setupView(view)
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { renderSnackbar(it) } }
+        }
+      }
+    }
   }
 
   @SuppressLint("SetTextI18n")
@@ -89,8 +99,8 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
   }
 
   @SuppressLint("SetTextI18n")
-  private fun render(uiModel: PostCommentUiModel) {
-    uiModel.run {
+  private fun render(uiState: PostCommentUiState) {
+    uiState.run {
       isLoading?.let {
         viewPostCommentButton.isEnabled = !it
         viewPostCommentInput.isEnabled = !it
@@ -99,7 +109,7 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
         viewPostCommentProgress.visibleIf(it)
         viewPostCommentButton.visibleIf(!it, gone = false)
       }
-      successEvent?.let {
+      isSuccess?.let {
         it.consume()?.let { commentBundle ->
           setFragmentResult(
             REQUEST_COMMENT,
