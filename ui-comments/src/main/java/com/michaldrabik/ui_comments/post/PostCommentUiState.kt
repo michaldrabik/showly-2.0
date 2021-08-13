@@ -4,6 +4,6 @@ import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_model.Comment
 
 data class PostCommentUiState(
-  val isLoading: Boolean? = null,
+  val isLoading: Boolean = false,
   val isSuccess: ActionEvent<Pair<String, Comment>>? = null,
 )

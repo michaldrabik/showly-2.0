@@ -101,12 +101,13 @@ class PostCommentBottomSheet : BaseBottomSheetFragment2<PostCommentViewModel>() 
   @SuppressLint("SetTextI18n")
   private fun render(uiState: PostCommentUiState) {
     uiState.run {
-      isLoading?.let {
-        viewPostCommentButton.isEnabled = !it
+      isLoading.let {
         viewPostCommentInput.isEnabled = !it
         viewPostCommentInputValue.isEnabled = !it
         viewPostCommentSpoilersCheck.isEnabled = !it
         viewPostCommentProgress.visibleIf(it)
+        val commentText = viewPostCommentInputValue.text.toString()
+        viewPostCommentButton.isEnabled = !it && isCommentValid(commentText)
         viewPostCommentButton.visibleIf(!it, gone = false)
       }
       isSuccess?.let {
@@ -132,4 +133,7 @@ class PostCommentBottomSheet : BaseBottomSheetFragment2<PostCommentViewModel>() 
       }
     }
   }
+
+  private fun isCommentValid(text: String) =
+    text.trim().isNotEmpty() && text.trim().split(" ").count { it.length > 1 } >= 5
 }
