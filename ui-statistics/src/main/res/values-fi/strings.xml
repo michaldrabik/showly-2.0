@@ -3,7 +3,7 @@
   <string name="textThisShowIsArchived">Sarja on arkistoitu</string>
   <string name="textStatistics">Tilastot</string>
   <string name="textStatisticsEmpty"><b>Omat sarjat</b> -osiossa on oltava ainakin\nyksi sarja ennen kuin tilastoja voidaan näyttää.</string>
-  <string name="textStatisticsMostWatchedShows">Katselluimmat sarjat</string>
+  <string name="textStatisticsMostWatchedShows">Katsotuimmat sarjat</string>
   <string name="textStatisticsTotalTimeSpent">Katseluun käytetty kokonaisaika</string>
   <string name="textStatisticsTotalTimeItIs">ja se on</string>
   <string name="textStatisticsTotalTimeSpentHours">%s tuntia</string>
