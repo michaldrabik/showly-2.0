@@ -7,7 +7,7 @@
   <string name="textCustomImagesTitle">Omat kuvat</string>
   <string name="textCustomImagesDesc">Aseta sarjoille ja elokuville suosikkijulisteesi ja fanitaiteesi. Valitse kuva galleriasta tai lataa se omasta URL-osoitteestasi.</string>
   <string name="textQuickRatingTitle">Pika-arviot</string>
-  <string name="textQuickRatingDesc">Älä koskaan unohda arvioida juuri katselemaasi elokuvaa tai sarjan jaksoa. Pika-arvio-toiminnolla kohteen arviointi onnistuu automaattisesti aina, kun merkitset sen katsotuksi.</string>
+  <string name="textQuickRatingDesc">Älä koskaan unohda arvioida juuri katselemaasi elokuvaa tai sarjan jaksoa. Pika-arvio-toiminnolla kohteen arviointi onnistuu automaattisesti aina, kun merkitset sen katselluksi.</string>
   <string name="textWidgetsTitle">Läpinäkyvät pienoisohjelmat</string>
   <string name="textWidgetsDesc">Aseta pienoisohjelmien taustan läpinäkyvyys aloitusnäyttöösi sopivaksi.</string>
   <string name="textNewsTitle">Uutisosio</string>
