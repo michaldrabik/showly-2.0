@@ -10,7 +10,7 @@
   <string name="textSortEpisodesLeft">Jaksoja jäljellä</string>
   <string name="textHeaderRecentlyAdded">Lisätty hiljattain</string>
   <string name="textHeaderWatching">Katselussa</string>
-  <string name="textHeaderFinished">Katsotut</string>
+  <string name="textHeaderFinished">Katsellut</string>
   <string name="textHeaderReturning">Jatkuvat ja tulevat</string>
   <string name="textHeaderAll">Kaikki</string>
   <string name="textSettingsShowsNotificationsWhenTitle">Milloin ilmoitetaan</string>
