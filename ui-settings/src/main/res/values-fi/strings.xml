@@ -21,8 +21,8 @@
   <string name="textSettingsGeneral">Yleiset &amp; käyttölittymä</string>
   <string name="textSettingsRecentShowsTitle">Hiljattain lisättyjä</string>
   <string name="textSettingsRecentShowsSummary">Kokoelmassa näytettävien, hiljattain lisättyjen kohteiden määrä.</string>
-  <string name="textSettingsUpcomingSectionTitle">Tulossa olevien osio</string>
-  <string name="textSettingsUpcomingSectionSummary">Ota katselutilanteen tulossa olevien osio käyttöön/poista se käytöstä.</string>
+  <string name="textSettingsUpcomingSectionTitle">Tulevien osio</string>
+  <string name="textSettingsUpcomingSectionSummary">Ota katselutilanteen tulevien osio käyttöön/poista se käytöstä.</string>
   <string name="textSettingsMyShowsSectionsTitle">Omien sarjojen osiot</string>
   <string name="textSettingsMyShowsSectionSummary">Ota omien sarjojen osioita käyttöön/poista niitä käytöstä.</string>
   <string name="textSettingsMyMoviesSectionsTitle">Omien elokuvien osiot</string>
