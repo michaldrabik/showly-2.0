@@ -5,16 +5,21 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import com.michaldrabik.ui_base.BaseFragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.michaldrabik.ui_base.BaseFragment2
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_statistics_movies.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layout.fragment_statistics_movies) {
+class StatisticsMoviesFragment : BaseFragment2<StatisticsMoviesViewModel>(R.layout.fragment_statistics_movies) {
 
   override val viewModel by viewModels<StatisticsMoviesViewModel>()
 
@@ -23,13 +28,17 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
     setupView()
     setupStatusBar()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      if (!isInitialized) {
-        loadMovies()
-        isInitialized = true
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          if (!isInitialized) {
+            loadMovies()
+            isInitialized = true
+          }
+          loadRatings()
+        }
       }
-      loadRatings()
     }
   }
 
@@ -46,8 +55,8 @@ class StatisticsMoviesFragment : BaseFragment<StatisticsMoviesViewModel>(R.layou
     }
   }
 
-  private fun render(uiModel: StatisticsMoviesUiModel) {
-    uiModel.run {
+  private fun render(uiState: StatisticsMoviesUiState) {
+    uiState.run {
       statisticsMoviesTotalTimeSpent.bind(totalTimeSpentMinutes ?: 0)
       statisticsMoviesTotalMovies.bind(totalWatchedMovies ?: 0)
       statisticsMoviesTopGenres.bind(topGenres ?: emptyList())

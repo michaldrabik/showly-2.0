@@ -27,10 +27,10 @@ class StatisticsMoviesTotalTimeSpentView : MaterialCardView {
     cardElevation = context.dimenToPx(R.dimen.elevationSmall).toFloat()
   }
 
-  fun bind(timeMinutes: Long) {
+  fun bind(timeMinutes: Int) {
     val formatter = NumberFormat.getNumberInstance(ENGLISH)
 
-    val hours = TimeUnit.MINUTES.toHours(timeMinutes)
+    val hours = TimeUnit.MINUTES.toHours(timeMinutes.toLong())
     val days = TimeUnit.HOURS.toDays(hours)
 
     viewMoviesTotalTimeSpentHoursValue.text =

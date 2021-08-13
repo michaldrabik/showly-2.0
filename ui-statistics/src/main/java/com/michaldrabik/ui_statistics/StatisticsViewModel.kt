@@ -9,16 +9,21 @@ import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
-import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.BaseViewModel2
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_statistics.cases.StatisticsLoadRatingsCase
 import com.michaldrabik.ui_statistics.views.mostWatched.StatisticsMostWatchedItem
+import com.michaldrabik.ui_statistics.views.ratings.recycler.StatisticsRatingItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,8 +35,43 @@ class StatisticsViewModel @Inject constructor(
   private val translationsRepository: TranslationsRepository,
   private val imagesProvider: ShowImagesProvider,
   private val database: AppDatabase,
-  private val mappers: Mappers
-) : BaseViewModel<StatisticsUiModel>() {
+  private val mappers: Mappers,
+) : BaseViewModel2() {
+
+  private val mostWatchedShowsState = MutableStateFlow<List<StatisticsMostWatchedItem>?>(null)
+  private val mostWatchedTotalCountState = MutableStateFlow<Int?>(null)
+  private val totalTimeSpentMinutesState = MutableStateFlow<Int?>(null)
+  private val totalWatchedEpisodesState = MutableStateFlow<Int?>(null)
+  private val totalWatchedEpisodesShowsState = MutableStateFlow<Int?>(null)
+  private val topGenresState = MutableStateFlow<List<Genre>?>(null)
+  private val ratingsState = MutableStateFlow<List<StatisticsRatingItem>?>(null)
+  private val archivedShowsState = MutableStateFlow(true)
+
+  val uiState = combine(
+    mostWatchedShowsState,
+    mostWatchedTotalCountState,
+    totalTimeSpentMinutesState,
+    totalWatchedEpisodesState,
+    totalWatchedEpisodesShowsState,
+    topGenresState,
+    ratingsState,
+    archivedShowsState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8 ->
+    StatisticsUiState(
+      mostWatchedShows = s1,
+      mostWatchedTotalCount = s2,
+      totalTimeSpentMinutes = s3,
+      totalWatchedEpisodes = s4,
+      totalWatchedEpisodesShows = s5,
+      topGenres = s6,
+      ratings = s7,
+      archivedShowsIncluded = s8
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(3000),
+    initialValue = StatisticsUiState()
+  )
 
   private var takeLimit = 5
 
@@ -39,7 +79,7 @@ class StatisticsViewModel @Inject constructor(
     takeLimit += limit
     viewModelScope.launch {
       val includeArchive = settingsRepository.load().archiveShowsIncludeStatistics
-      uiState = StatisticsUiModel(archivedShowsIncluded = includeArchive)
+      archivedShowsState.value = includeArchive
 
       val language = translationsRepository.getLanguage()
       val myShows = showsRepository.myShows.loadAll()
@@ -73,31 +113,29 @@ class StatisticsViewModel @Inject constructor(
         }
 
       delay(150) // Let transition finish peacefully.
-      uiState = StatisticsUiModel(
-        mostWatchedShows = mostWatchedShows,
-        mostWatchedTotalCount = allShowsIds.size,
-        totalTimeSpentMinutes = episodes.sumBy { it.runtime }.toLong(),
-        totalWatchedEpisodes = episodes.count().toLong(),
-        totalWatchedEpisodesShows = episodes.distinctBy { it.idShowTrakt }.count().toLong(),
-        topGenres = genres
-      )
+
+      mostWatchedShowsState.value = mostWatchedShows
+      mostWatchedTotalCountState.value = allShowsIds.size
+      totalTimeSpentMinutesState.value = episodes.sumOf { it.runtime }
+      totalWatchedEpisodesState.value = episodes.count()
+      totalWatchedEpisodesShowsState.value = episodes.distinctBy { it.idShowTrakt }.count()
+      topGenresState.value = genres
     }
   }
 
   fun loadRatings() {
     viewModelScope.launch {
-      uiState = try {
-        val ratings = ratingsCase.loadRatings()
-        StatisticsUiModel(ratings = ratings)
+      try {
+        ratingsState.value = ratingsCase.loadRatings()
       } catch (t: Throwable) {
-        StatisticsUiModel(ratings = emptyList())
+        ratingsState.value = emptyList()
       }
     }
   }
 
   private suspend fun batchEpisodes(
     showsIds: List<Long>,
-    allEpisodes: MutableList<Episode> = mutableListOf()
+    allEpisodes: MutableList<Episode> = mutableListOf(),
   ): List<Episode> {
     val batch = showsIds.take(500)
     if (batch.isEmpty()) return allEpisodes
@@ -110,7 +148,7 @@ class StatisticsViewModel @Inject constructor(
 
   private suspend fun batchSeasons(
     showsIds: List<Long>,
-    allSeasons: MutableList<Season> = mutableListOf()
+    allSeasons: MutableList<Season> = mutableListOf(),
   ): List<Season> {
     val batch = showsIds.take(500)
     if (batch.isEmpty()) return allSeasons

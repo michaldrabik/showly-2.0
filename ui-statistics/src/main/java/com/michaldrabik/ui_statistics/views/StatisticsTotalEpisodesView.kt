@@ -26,7 +26,7 @@ class StatisticsTotalEpisodesView : MaterialCardView {
     cardElevation = context.dimenToPx(R.dimen.elevationSmall).toFloat()
   }
 
-  fun bind(episodesCount: Long, episodesShowsCount: Long) {
+  fun bind(episodesCount: Int, episodesShowsCount: Int) {
     val formatter = NumberFormat.getNumberInstance(Locale.ENGLISH)
 
     viewTotalEpisodesValue.text = context.getString(
