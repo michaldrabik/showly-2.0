@@ -15,7 +15,7 @@
   <string name="textSettingsTraktQuickSyncTitle">Trakt.tv-pikalähetys</string>
   <string name="textSettingsTraktQuickSyncSummary">Lähetä tiedot Trakt.tv-tilillesi heti kun ne lisätään sovellukseen.</string>
   <string name="textSettingsTraktQuickRemoveTitle">Trakt.tv-pikapoisto</string>
-  <string name="textSettingsTraktQuickRemoveSummary">Lisää valinta tietojen poistoon Trak.tv-tililtäsi kun ne poistetaan sovelluksesta.</string>
+  <string name="textSettingsTraktQuickRemoveSummary">Lisää valinta tietojen poistoon Trakt.tv-tililtäsi kun ne poistetaan sovelluksesta.</string>
   <string name="textSettingsTraktQuickRateTitle">Trakt.tv-pika-arviointi</string>
   <string name="textSettingsTraktQuickRateSummary">Arvioi jaksot ja elokuvat aina kun merkitset ne katselutilanteessa katselluiksi.</string>
   <string name="textSettingsGeneral">Yleiset &amp; käyttölittymä</string>
