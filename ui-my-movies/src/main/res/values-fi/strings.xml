@@ -3,5 +3,5 @@
   <string name="menuMyMovies">Omat elokuvat</string>
   <string name="menuWatchlistMovies">Katselulista</string>
   <string name="textMyMoviesEmpty">Elokuvakoelmasi on tyhjä.\n\nSiirry <b>etsintään</b> lisätäksesi ensimmäisen elokuvasi.</string>
-  <string name="textWatchlistMoviesEmpty"><b>Katselulistasi</b> on tyhjä.\n\nSiirry <b>etsintään</b> lisätäksesi elokuvia, joita haluat tulevaisuudessa katsella.</string>
+  <string name="textWatchlistMoviesEmpty"><b>Katselulistasi</b> on tyhjä.\n\nSiirry <b>etsintään</b> lisätäksesi elokuvia, joita haluat katsella tulevaisuudessa.</string>
 </resources>
