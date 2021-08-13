@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textAddToMyMovies">Lisää omiin elokuviin</string>
-  <string name="textUpcoming">Tulossa oleva</string>
+  <string name="textUpcoming">Tulossa</string>
   <string name="textMovieWatchLater">Katsele myöhemmin</string>
   <string name="textInMyMovies">Lisätty omiin elokuviin</string>
   <string name="textInMoviesWatchlist">Lisätty katselulistalle</string>
