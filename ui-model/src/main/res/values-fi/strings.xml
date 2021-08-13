@@ -6,12 +6,12 @@
   <string name="textSortRated">Arvostetuimmat</string>
   <string name="textSortDateAdded">Lisätty hiljattain</string>
   <string name="textSortDateUpdated">Hiljattain päivitetyt</string>
-  <string name="textSortRecentlyWatched">Katseltu hiljattain</string>
+  <string name="textSortRecentlyWatched">Katsottu hiljattain</string>
   <string name="textSortEpisodesLeft">Jaksoja jäljellä</string>
   <string name="textHeaderRecentlyAdded">Lisätty hiljattain</string>
   <string name="textHeaderWatching">Katselussa</string>
-  <string name="textHeaderFinished">Katsellut</string>
-  <string name="textHeaderReturning">Palaavat &amp; tulossa olevat</string>
+  <string name="textHeaderFinished">Katsotut</string>
+  <string name="textHeaderReturning">Jatkuvat ja tulevat</string>
   <string name="textHeaderAll">Kaikki</string>
   <string name="textSettingsShowsNotificationsWhenTitle">Milloin ilmoitetaan</string>
   <string name="textSettingsShowsNotificationsWhenSummary">Milloin haluat vastaanottaa ilmoituksia jaksoista.</string>
@@ -64,8 +64,8 @@
   <string name="textTraktSyncOptionDailyButton">Ajoitettu suoritettavaksi kerran päivässä</string>
   <string name="textTraktSyncOption3DayButton">Ajoitettu suoritettavaksi 3 päivän välein</string>
   <string name="textTraktSyncOptionWeeklyButton">Ajoitettu suoritettavaksi kerran viikossa</string>
-  <string name="textShowStatusReturning">Palaava sarja</string>
-  <string name="textShowStatusUpcoming">Tulossa oleva</string>
+  <string name="textShowStatusReturning">Jatkuva sarja</string>
+  <string name="textShowStatusUpcoming">Tulossa</string>
   <string name="textShowStatusInProduction">Tuotannossa</string>
   <string name="textShowStatusPlanned">Suunniteltu</string>
   <string name="textShowStatusCanceled">Peruttu</string>
