@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="tabCalendar">Kalenteri</string>
+  <string name="tabProgress">Katselutilanne</string>
+  <string name="textCalendarEmpty">Uusia jaksoja ei ole tulossa.</string>
+  <string name="textRecentsEmpty">Hiljattain esitettyjä jaksoja ei ole.</string>
+  <string name="textWatchlistIncoming">Tulossa oleva</string>
+  <string name="textDiscoverShows">Etsi sarjoja</string>
+  <string name="textEpisodeInfo">Tiedot</string>
+  <string name="textTraktSynchronize">Tuo Trakt.tv-tililtäsi</string>
+  <string name="textProgressEmpty"><b>Katselutilanteesi</b> on tyhjä.\n\nSiirry <b>etsintään</b> lisätäksesi sarjoja tai tuodaksesi Trakt.tv-kokoelmasi.</string>
+  <string name="textNewSeason">Kauden aloitus</string>
+  <string name="textSeasonEpisode">K.%02d J.%02d</string>
+</resources>
