@@ -9,13 +9,16 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Mode
-import com.michaldrabik.ui_base.BaseBottomSheetFragment
+import com.michaldrabik.ui_base.BaseBottomSheetFragment2
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventObserver
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
@@ -33,9 +36,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_lists.*
 import kotlinx.android.synthetic.main.view_manage_lists.*
 import kotlinx.android.synthetic.main.view_manage_lists.view.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), EventObserver {
+class ManageListsBottomSheet : BaseBottomSheetFragment2<ManageListsViewModel>(), EventObserver {
 
   override val layoutResId = R.layout.view_manage_lists
 
@@ -59,9 +64,14 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), 
     super.onViewCreated(view, savedInstanceState)
     setupView()
     setupRecycler()
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it) })
-      loadLists(itemId, itemType)
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          loadLists(itemId, itemType)
+        }
+      }
     }
   }
 
@@ -92,7 +102,7 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), 
   }
 
   @SuppressLint("SetTextI18n")
-  private fun render(uiModel: ManageListsUiModel) {
+  private fun render(uiModel: ManageListsUiState) {
     uiModel.run {
       items?.let {
         adapter?.setItems(it)
