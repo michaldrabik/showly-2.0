@@ -2,8 +2,9 @@ package com.michaldrabik.ui_my_movies.mymovies
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
-import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.BaseViewModel2
 import com.michaldrabik.ui_base.Logger
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
@@ -23,6 +24,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.threeten.bp.format.DateTimeFormatter
 import javax.inject.Inject
@@ -31,7 +36,23 @@ import javax.inject.Inject
 class MyMoviesViewModel @Inject constructor(
   private val loadMoviesCase: MyMoviesLoadCase,
   private val ratingsCase: MyMoviesRatingsCase,
-) : BaseViewModel<MyMoviesUiModel>() {
+) : BaseViewModel2() {
+
+  private val itemsState = MutableStateFlow<List<MyMoviesItem>?>(null)
+  private val itemsUpdateState = MutableStateFlow<ActionEvent<Boolean>?>(null)
+
+  val uiState = combine(
+    itemsState,
+    itemsUpdateState
+  ) { itemsState, _ ->
+    MyMoviesUiState(
+      items = itemsState
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(3000),
+    initialValue = MyMoviesUiState()
+  )
 
   fun loadMovies(notifyListsUpdate: Boolean = false) {
     viewModelScope.launch {
@@ -58,7 +79,9 @@ class MyMoviesViewModel @Inject constructor(
         }
       }
 
-      uiState = MyMoviesUiModel(listItems = listItems, notifyListsUpdate = notifyListsUpdate)
+      itemsState.value = listItems
+      itemsUpdateState.value = ActionEvent(notifyListsUpdate)
+
       loadRatings(listItems)
     }
   }
@@ -68,7 +91,7 @@ class MyMoviesViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         val listItems = ratingsCase.loadRatings(items)
-        uiState = MyMoviesUiModel(listItems = listItems)
+        itemsState.value = listItems
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "${MyMoviesViewModel::class.simpleName}::loadRatings()")
       }
@@ -107,9 +130,9 @@ class MyMoviesViewModel @Inject constructor(
   }
 
   private fun updateItem(new: MyMoviesItem) {
-    val items = uiState?.listItems?.toMutableList() ?: mutableListOf()
-    items.findReplace(new) { it.isSameAs(new) }
-    uiState = uiState?.copy(listItems = items)
+    val items = uiState.value.items?.toMutableList()
+    items?.findReplace(new) { it.isSameAs(new) }
+    itemsState.value = items
   }
 
   private fun CoroutineScope.toListItemAsync(

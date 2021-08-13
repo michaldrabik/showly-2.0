@@ -5,12 +5,15 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.BaseFragment2
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -29,10 +32,12 @@ import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 import kotlinx.android.synthetic.main.fragment_watchlist.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MyShowsFragment :
-  BaseFragment<MyShowsViewModel>(R.layout.fragment_my_shows),
+  BaseFragment2<MyShowsViewModel>(R.layout.fragment_my_shows),
   OnScrollResetListener,
   OnTraktSyncListener {
 
@@ -63,9 +68,13 @@ class MyShowsFragment :
     setupStatusBar()
     setupRecycler()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      loadShows()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          loadShows()
+        }
+      }
     }
   }
 
@@ -127,10 +136,11 @@ class MyShowsFragment :
       .show()
   }
 
-  private fun render(uiModel: MyShowsUiModel) {
+  private fun render(uiModel: MyShowsUiState) {
     uiModel.run {
-      listItems?.let {
-        adapter?.notifyListsUpdate = notifyListsUpdate ?: false
+      items?.let {
+        val notifyUpdate = notifyListsUpdate?.consume() == true
+        adapter?.notifyListsUpdate = notifyUpdate
         adapter?.setItems(it)
         myShowsEmptyView.fadeIf(it.isEmpty())
         (parentFragment as FollowedShowsFragment).enableSearch(it.isNotEmpty())

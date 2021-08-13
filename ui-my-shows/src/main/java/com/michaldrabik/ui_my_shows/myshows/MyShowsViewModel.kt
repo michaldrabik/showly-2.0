@@ -2,8 +2,9 @@ package com.michaldrabik.ui_my_shows.myshows
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
-import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.BaseViewModel2
 import com.michaldrabik.ui_base.Logger
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
@@ -24,6 +25,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,7 +36,24 @@ import javax.inject.Inject
 class MyShowsViewModel @Inject constructor(
   private val loadShowsCase: MyShowsLoadShowsCase,
   private val ratingsCase: MyShowsRatingsCase,
-) : BaseViewModel<MyShowsUiModel>() {
+) : BaseViewModel2() {
+
+  private val itemsState = MutableStateFlow<List<MyShowsItem>?>(null)
+  private val itemsUpdateState = MutableStateFlow<ActionEvent<Boolean>?>(null)
+
+  val uiState = combine(
+    itemsState,
+    itemsUpdateState
+  ) { itemsState, itemsUpdateState ->
+    MyShowsUiState(
+      items = itemsState,
+      notifyListsUpdate = itemsUpdateState
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(3000),
+    initialValue = MyShowsUiState()
+  )
 
   fun loadShows(notifyListsUpdate: Boolean = false) {
     viewModelScope.launch {
@@ -83,7 +105,8 @@ class MyShowsViewModel @Inject constructor(
         }
       }
 
-      uiState = MyShowsUiModel(listItems = listItems, notifyListsUpdate = notifyListsUpdate)
+      itemsState.value = listItems
+      itemsUpdateState.value = ActionEvent(notifyListsUpdate)
 
       loadRatings(listItems)
     }
@@ -94,9 +117,9 @@ class MyShowsViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         val listItems = ratingsCase.loadRatings(items)
-        uiState = MyShowsUiModel(listItems = listItems)
+        itemsState.value = listItems
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "${MyShowsViewModel::class.simpleName}::loadRatings()")
+        Logger.record(error, "Source" to "MyShowsViewModel::loadRatings()")
       }
     }
   }
@@ -123,16 +146,16 @@ class MyShowsViewModel @Inject constructor(
   fun loadSectionMissingItem(item: MyShowsItem, itemSection: MyShowsItem.HorizontalSection, force: Boolean) {
 
     fun updateItem(newItem: MyShowsItem, newSection: MyShowsItem.HorizontalSection) {
-      val items = uiState?.listItems?.toMutableList() ?: mutableListOf()
-      val section = items.find { it.horizontalSection?.section == newSection.section }?.horizontalSection
+      val items = uiState.value.items?.toMutableList()
+      val section = items?.find { it.horizontalSection?.section == newSection.section }?.horizontalSection
 
       val sectionItems = section?.items?.toMutableList() ?: mutableListOf()
       sectionItems.findReplace(newItem) { it.isSameAs(newItem) }
 
       val newSecWithItems = section?.copy(items = sectionItems)
-      items.findReplace(newItem.copy(horizontalSection = newSecWithItems)) { it.horizontalSection?.section == newSection.section }
+      items?.findReplace(newItem.copy(horizontalSection = newSecWithItems)) { it.horizontalSection?.section == newSection.section }
 
-      uiState = uiState?.copy(listItems = items)
+      itemsState.value = items
     }
 
     viewModelScope.launch {
@@ -153,15 +176,15 @@ class MyShowsViewModel @Inject constructor(
         val translation = loadShowsCase.loadTranslation(item.show, false)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "${MyShowsViewModel::class.simpleName}::loadMissingTranslation()")
+        Logger.record(error, "Source" to "MyShowsViewModel::loadMissingTranslation()")
       }
     }
   }
 
   private fun updateItem(new: MyShowsItem) {
-    val items = uiState?.listItems?.toMutableList() ?: mutableListOf()
-    items.findReplace(new) { it.isSameAs(new) }
-    uiState = uiState?.copy(listItems = items)
+    val items = uiState.value.items?.toMutableList()
+    items?.findReplace(new) { it.isSameAs(new) }
+    itemsState.value = items
   }
 
   private fun CoroutineScope.toListItemAsync(
