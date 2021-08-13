@@ -3,8 +3,8 @@
   <string name="textAdd">Lisää omiin sarjoihin</string>
   <string name="textWatchLater">Katsele myöhemmin</string>
   <string name="textNextEpisode">Seuraava jakso:</string>
-  <string name="textInMyShows">Lisättiin omiin sarjoihin</string>
-  <string name="textInWatchlist">Lisättiin katselulistalle</string>
+  <string name="textInMyShows">Lisätty omiin sarjoihin</string>
+  <string name="textInWatchlist">Lisätty katselulistalle</string>
   <string name="textInArchive">Arkistoitu</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">Pikakatselutila</string>
