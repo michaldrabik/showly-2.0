@@ -93,7 +93,7 @@ class MyMoviesViewModel @Inject constructor(
         val listItems = ratingsCase.loadRatings(items)
         itemsState.value = listItems
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "${MyMoviesViewModel::class.simpleName}::loadRatings()")
+        Logger.record(error, "Source" to "MyMoviesViewModel::loadRatings()")
       }
     }
   }
@@ -124,7 +124,7 @@ class MyMoviesViewModel @Inject constructor(
         val translation = loadMoviesCase.loadTranslation(item.movie, false)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "${MyMoviesViewModel::class.simpleName}::loadMissingTranslation()")
+        Logger.record(error, "Source" to "MyMoviesViewModel::loadMissingTranslation()")
       }
     }
   }
