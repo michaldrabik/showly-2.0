@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textAddToMyMovies">Lisää omiin elokuviin</string>
-  <string name="textUpcoming">Tuleva</string>
+  <string name="textUpcoming">Tulossa oleva</string>
   <string name="textMovieWatchLater">Katsele myöhemmin</string>
-  <string name="textInMyMovies">Lisättiin omiin elokuviin</string>
-  <string name="textInMoviesWatchlist">Lisättiin katselulistalle</string>
+  <string name="textInMyMovies">Lisätty omiin elokuviin</string>
+  <string name="textInMoviesWatchlist">Lisätty katselulistalle</string>
   <string name="textMovieActorsEmpty">Näyttelijät eivät ole saatavilla</string>
   <string name="textMovieTrailer">Traileri</string>
   <string name="textMovieRate">Avioi</string>
