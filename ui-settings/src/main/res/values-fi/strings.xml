@@ -40,8 +40,8 @@
   <string name="textSettingsIncludeArchiveStatsTitle">Arkistoidut tilastot</string>
   <string name="textSettingsIncludeArchiveStatsSummary">Sisällytä arkistoitujen sarjojen tiedot tilastoihin.</string>
   <string name="textSettingsDateFormatTitle">Päivämäärän/ajan muoto</string>
-  <string name="textSettingsIncludeSpecialsTitle">Erityiskaudet</string>
-  <string name="textSettingsIncludeSpecialsSummary">Näytä erityiset tuotantokaudet sarjojen tiedoissa.</string>
+  <string name="textSettingsIncludeSpecialsTitle">Erikoiskaudet</string>
+  <string name="textSettingsIncludeSpecialsSummary">Näytä erikoistuotantokaudet sarjojen tiedoissa.</string>
   <string name="textSettingsNotifications">Ilmoitukset</string>
   <string name="textSettingsPushNotificationsTitle">Push-ilmoitukset</string>
   <string name="textSettingsPushNotificationsSummary">Vastaanota yleistä tietoa push-ilmoituksina.</string>
