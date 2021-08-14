@@ -3,7 +3,7 @@
   <string name="textPremium">Showly Premium</string>
   <string name="textPremiumAdFull">Tue Showlya ja auta sen kehitystä, niin saat käyttöösi hienoja lisätoimintoja!</string>
   <string name="textLightThemeTitle">Vaalea teema</string>
-  <string name="textLightThemeDesc">Liity voiman valoisalle puolelle sovelluksen ja pienoisohjelmien erityisellä vaalealla teemalla.</string>
+  <string name="textLightThemeDesc">Liity voiman valoisalle puolelle sovelluksen ja pienoisohjelmien vaalealla teemalla.</string>
   <string name="textCustomImagesTitle">Omat kuvat</string>
   <string name="textCustomImagesDesc">Aseta sarjoille ja elokuville suosikkijulisteesi ja fanitaiteesi. Valitse kuva galleriasta tai lataa se omasta URL-osoitteestasi.</string>
   <string name="textQuickRatingTitle">Pika-arviot</string>
