@@ -19,7 +19,7 @@
   <string name="textManageLists">Hallinnoi listoja</string>
   <string name="textManageListsShows">Hallinnoi sarjaan liitettyjä listoja.</string>
   <string name="textManageListsMovies">Hallinnoi elokuvaan liitettyjä listoja.</string>
-  <string name="errorCouldNotCreateList">Listan luonti Trakt.tv-tilillesi ei juuri nyt onnistunut.\nTarkista Internet-yhteytesi ja yritä uudelleen.</string>
-  <string name="errorCouldNotUpdateList">Listan päivitys Trakt.tv-tilillesi ei juuri nyt onnistunut.\nTarkista Internet-yhteytesi ja yritä uudelleen.</string>
-  <string name="errorCouldNotDeleteList">Listan poisto Trakt.tv-tililtäsi ei juuri nyt onnistunut.\nTarkista Internet-yhteytesi ja yritä uudelleen.</string>
+  <string name="errorCouldNotCreateList">Listan luonti Trakt.tv-kokoelmaasi ei juuri nyt onnistunut.\nTarkista Internet-yhteytesi ja yritä uudelleen.</string>
+  <string name="errorCouldNotUpdateList">Listan päivitys Trakt.tv-kokoelmaasi ei juuri nyt onnistunut.\nTarkista Internet-yhteytesi ja yritä uudelleen.</string>
+  <string name="errorCouldNotDeleteList">Listan poisto Trakt.tv-kokoelmastasi ei juuri nyt onnistunut.\nTarkista Internet-yhteytesi ja yritä uudelleen.</string>
 </resources>
