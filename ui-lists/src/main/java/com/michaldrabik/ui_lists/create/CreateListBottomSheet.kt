@@ -8,8 +8,11 @@ import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
-import com.michaldrabik.ui_base.BaseBottomSheetFragment
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.michaldrabik.ui_base.BaseBottomSheetFragment2
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -23,9 +26,11 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_create_list.*
 import kotlinx.android.synthetic.main.view_create_list.view.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
+class CreateListBottomSheet : BaseBottomSheetFragment2<CreateListViewModel>() {
 
   override val layoutResId = R.layout.view_create_list
 
@@ -44,11 +49,16 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView(view)
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it) })
-      messageLiveData.observe(viewLifecycleOwner, { renderSnackbar(it) })
-      if (isEditMode()) {
-        viewModel.loadDetails(list?.id!!)
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { renderSnackbar(it) } }
+          if (isEditMode()) {
+            viewModel.loadDetails(list?.id!!)
+          }
+        }
       }
     }
   }
@@ -80,8 +90,8 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
   }
 
   @SuppressLint("SetTextI18n")
-  private fun render(uiModel: CreateListUiModel) {
-    uiModel.run {
+  private fun render(uiState: CreateListUiState) {
+    uiState.run {
       listDetails?.let {
         viewCreateListNameValue.setText(it.name)
         viewCreateListDescriptionValue.setText(it.description)
@@ -98,7 +108,7 @@ class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
           }
         )
       }
-      listUpdatedEvent?.let {
+      onListUpdated?.let {
         it.consume()?.let {
           setFragmentResult(REQUEST_CREATE_LIST, bundleOf())
           dismiss()
