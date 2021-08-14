@@ -73,8 +73,8 @@
   <string name="textTraktSyncErrorFull">Trakt.tv-synkronointi epäonnistui. Tarkista Internet-yhteytesi ja yritä uudelleen tai ota meihin yhteyttä, jos tämä jatkuu.</string>
   <string name="textTraktQuickSyncError">Pikasynkronointi epäonnistui.</string>
   <string name="textTraktQuickSyncErrorFull">Pikasynkronointi epäonnistui. Yritämme uudelleen, kun avaat sovelluksen seuraavan kerran. Tarkista Internet-yhteytesi.</string>
-  <string name="menuPin">Kiinnitä ylös</string>
-  <string name="menuUnpin">Irrota ylhäältä</string>
+  <string name="menuPin">Kiinnitä listan ylälaitaan</string>
+  <string name="menuUnpin">Irrota listan ylälaidasta</string>
   <string name="errorGeneral">Hups… Jotain meni pieleen.\nOta meihin yhteyttä, jos tämä jatkuu.</string>
   <string name="errorAuthorization">Valtuutus epäonnistui. Ota meihin yhteyttä, jos tämä jatkuu.</string>
   <string name="errorTraktAuthorization">Trakt.tv-tilin valtuutus epäonnistui.\nKirjaudu sisään ja yritä uudelleen.</string>
