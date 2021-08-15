@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jakewharton.processphoenix.ProcessPhoenix
 import com.michaldrabik.common.Config
@@ -18,7 +21,7 @@ import com.michaldrabik.common.Config.MY_SHOWS_RECENTS_OPTIONS
 import com.michaldrabik.common.Config.SHOW_PREMIUM
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
-import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.BaseFragment2
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.dates.AppDateFormat
@@ -45,20 +48,27 @@ import com.michaldrabik.ui_settings.helpers.PlayStoreHelper
 import com.michaldrabik.ui_settings.helpers.WidgetTransparency
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_settings.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import com.michaldrabik.data_remote.Config as ConfigNetwork
 
 @AndroidEntryPoint
-class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_settings), OnTraktAuthorizeListener {
+class SettingsFragment : BaseFragment2<SettingsViewModel>(R.layout.fragment_settings), OnTraktAuthorizeListener {
 
   override val viewModel by viewModels<SettingsViewModel>()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner) { render(it!!) }
-      messageLiveData.observe(viewLifecycleOwner) { showSnack(it) }
-      loadSettings()
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { showSnack(it) } }
+          loadSettings()
+        }
+      }
     }
   }
 
@@ -86,24 +96,24 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
     }
   }
 
-  private fun render(uiModel: SettingsUiModel) {
-    uiModel.run {
+  private fun render(uiState: SettingsUiState) {
+    uiState.run {
       settings?.let {
         renderSettings(
           it,
-          moviesEnabled ?: true,
-          newsEnabled ?: false,
-          streamingsEnabled ?: true
+          moviesEnabled,
+          newsEnabled,
+          streamingsEnabled
         )
       }
-      language?.let { renderLanguage(it) }
-      theme?.let { renderTheme(it) }
+      renderLanguage(language)
+      renderTheme(theme)
+      renderWidgetsTransparency(widgetsTransparency)
       themeWidgets?.let { renderWidgetsTheme(it) }
-      widgetsTransparency?.let { renderWidgetsTransparency(it) }
       country?.let { renderCountry(it) }
       dateFormat?.let { renderDateFormat(it) }
-      isSigningIn?.let { settingsTraktAuthorizeProgress.visibleIf(it) }
-      isSignedInTrakt?.let { isSignedIn ->
+      isSigningIn.let { settingsTraktAuthorizeProgress.visibleIf(it) }
+      isSignedInTrakt.let { isSignedIn ->
         settingsTraktSync.visibleIf(isSignedIn)
         settingsTraktQuickSync.visibleIf(isSignedIn)
         settingsTraktQuickSyncSwitch.visibleIf(isSignedIn)
@@ -119,7 +129,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         val summaryText = when {
           isSignedIn -> {
             when {
-              traktUsername?.isNotEmpty() == true ->
+              traktUsername.isNotEmpty() ->
                 getString(R.string.textSettingsTraktAuthorizeSummarySignOutUser, traktUsername)
               else ->
                 getString(R.string.textSettingsTraktAuthorizeSummarySignOut)
@@ -129,7 +139,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         }
         settingsTraktAuthorizeSummary.text = summaryText
       }
-      isPremium?.let { isPremium ->
+      isPremium.let { isPremium ->
         settingsPremium.visibleIf(!isPremium && SHOW_PREMIUM)
         listOf(
           settingsTraktQuickRate,
@@ -167,7 +177,7 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
         }
       }
       userId?.let { settingsUserId.text = it }
-      restartApp?.let { if (it) restartApp() }
+      restartApp.let { if (it) restartApp() }
     }
   }
 
