@@ -4,8 +4,8 @@
   <string name="textTraktSyncStarted">Synkronointi aloitettu ja se jatkuu taustalla.</string>
   <string name="textTraktSyncStart">Synkronoi nyt</string>
   <string name="textTraktSyncSchedule">Ajoitus</string>
-  <string name="textTraktSyncFromTraktToShowly">Tuo Trakt.tv-tililtä Showlyyn</string>
-  <string name="textTraktSyncFromShowlyToTrakt">Vie Showlysta Trakt.tv-tilille</string>
+  <string name="textTraktSyncFromTraktToShowly">Tuo Trakt.tv-kokoelmasta Showlyyn</string>
+  <string name="textTraktSyncFromShowlyToTrakt">Vie Showlysta Trakt.tv-kokoelmaan</string>
   <string name="textTraktSyncDescription">Synkronoi katselutilanteesi ja -listasi Showlyn kanssa.\n\nNykyisestä kokoelmastasi ei poisteta mitään, vaan synkronointi käsittelee vain kokoelmistasi puuttuvia kohteita.</string>
   <string name="textTraktSyncLastTimestamp">Viimeisin synkronointi: %s</string>
   <string name="textSettingsTraktAuthorizeTitle">Trakt.tv-valtuutus</string>

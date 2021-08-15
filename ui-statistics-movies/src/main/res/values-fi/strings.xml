@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textStatisticsMovies">Tilastot</string>
-  <string name="textStatisticsMoviesEmpty"><b>Omat elokuvat</b> -osiossa on oltava ainakin\nyksi elokuva ennen kuin tilastoja voidaan näyttää.</string>
+  <string name="textStatisticsMoviesEmpty"><b>Omissa elokuvissa</b> on oltava ainakin\nyksi elokuva ennen kuin tilastoja voidaan näyttää.</string>
   <string name="textStatisticsMoviesTotalTimeSpent">Katseluun käytetty kokonaisaika</string>
   <string name="textStatisticsMoviesTotalTimeItIs">ja se on</string>
   <string name="textStatisticsMoviesTotalTimeSpentHours">%s tuntia</string>
