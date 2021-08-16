@@ -176,7 +176,7 @@ class SettingsFragment : BaseFragment2<SettingsViewModel>(R.layout.fragment_sett
           if (!isPremium) navigateTo(R.id.actionSettingsFragmentToPremium)
         }
       }
-      userId?.let { settingsUserId.text = it }
+      userId.let { settingsUserId.text = it }
       restartApp.let { if (it) restartApp() }
     }
   }
@@ -217,7 +217,7 @@ class SettingsFragment : BaseFragment2<SettingsViewModel>(R.layout.fragment_sett
 
     settingsShowsNotificationsSwitch
       .setCheckedSilent(settings.episodesNotificationsEnabled) { _, isChecked ->
-        viewModel.enableAnnouncements(isChecked, requireAppContext())
+        viewModel.enableAnnouncements(isChecked)
       }
 
     settingsWhenToNotifyValue.run {
@@ -242,7 +242,7 @@ class SettingsFragment : BaseFragment2<SettingsViewModel>(R.layout.fragment_sett
 
     settingsMoviesEnabledSwitch
       .setCheckedSilent(moviesEnabled) { _, isChecked ->
-        viewModel.enableMovies(isChecked, requireAppContext())
+        viewModel.enableMovies(isChecked)
       }
 
     settingsNewsEnabledSwitch
@@ -483,7 +483,7 @@ class SettingsFragment : BaseFragment2<SettingsViewModel>(R.layout.fragment_sett
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setSingleChoiceItems(options.map { getString(it.stringRes) }.toTypedArray(), default) { dialog, index ->
-        viewModel.setWhenToNotify(options[index], requireAppContext())
+        viewModel.setWhenToNotify(options[index])
         dialog.dismiss()
       }
       .show()

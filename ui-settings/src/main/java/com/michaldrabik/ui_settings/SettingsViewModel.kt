@@ -88,7 +88,7 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  fun enableAnnouncements(enable: Boolean, context: Context) {
+  fun enableAnnouncements(enable: Boolean) {
     viewModelScope.launch {
       mainCase.enableAnnouncements(enable)
       refreshSettings()
@@ -136,7 +136,7 @@ class SettingsViewModel @Inject constructor(
     }
   }
 
-  fun enableMovies(enable: Boolean, context: Context) {
+  fun enableMovies(enable: Boolean) {
     viewModelScope.launch {
       mainCase.enableMovies(enable)
       delay(300)
@@ -170,7 +170,7 @@ class SettingsViewModel @Inject constructor(
     Analytics.logSettingsWidgetsTitlesEnabled(enable)
   }
 
-  fun setWhenToNotify(delay: NotificationDelay, context: Context) {
+  fun setWhenToNotify(delay: NotificationDelay) {
     viewModelScope.launch {
       mainCase.setWhenToNotify(delay)
       refreshSettings()
@@ -288,7 +288,7 @@ class SettingsViewModel @Inject constructor(
     signedInTraktState.value = traktCase.isTraktAuthorized()
     premiumState.value = mainCase.isPremium()
     traktNameState.value = traktCase.getTraktUsername()
-    traktIdState.value = mainCase.getUserId()
+    userIdState.value = mainCase.getUserId()
     restartAppState.value = restartApp
   }
 
@@ -306,7 +306,7 @@ class SettingsViewModel @Inject constructor(
   private val signingInState = MutableStateFlow(false)
   private val premiumState = MutableStateFlow(false)
   private val traktNameState = MutableStateFlow("")
-  private val traktIdState = MutableStateFlow<String?>(null)
+  private val userIdState = MutableStateFlow("")
   private val restartAppState = MutableStateFlow(false)
 
   val uiState = combine(
@@ -323,7 +323,7 @@ class SettingsViewModel @Inject constructor(
     signedInTraktState,
     premiumState,
     traktNameState,
-    traktIdState,
+    userIdState,
     restartAppState,
     signingInState
   ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16 ->

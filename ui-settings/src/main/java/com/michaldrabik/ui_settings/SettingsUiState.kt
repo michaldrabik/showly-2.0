@@ -19,7 +19,7 @@ data class SettingsUiState(
   val isSigningIn: Boolean = false,
   val isPremium: Boolean = false,
   val traktUsername: String = "",
-  val userId: String? = null,
+  val userId: String = "",
   val moviesEnabled: Boolean = true,
   val newsEnabled: Boolean = false,
   val streamingsEnabled: Boolean = true,
