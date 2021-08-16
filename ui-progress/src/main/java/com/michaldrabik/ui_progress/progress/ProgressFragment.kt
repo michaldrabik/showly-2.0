@@ -10,16 +10,18 @@ import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.BaseFragment2
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
-import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -44,10 +46,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.fragment_progress.*
 import kotlinx.android.synthetic.main.layout_progress_empty.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProgressFragment :
-  BaseFragment<ProgressViewModel>(R.layout.fragment_progress),
+  BaseFragment2<ProgressViewModel>(R.layout.fragment_progress),
   OnSortClickListener,
   OnScrollResetListener {
 
@@ -67,11 +71,14 @@ class ProgressFragment :
     with(parentViewModel) {
       uiLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
     }
-    with(viewModel) {
-      itemsLiveData.observe(viewLifecycleOwner, { render(it.first, it.second) })
-      sortLiveData.observe(viewLifecycleOwner, { render(it) })
-      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
-      checkQuickRateEnabled()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { showSnack(it) } }
+          checkQuickRateEnabled()
+        }
+      }
     }
   }
 
@@ -183,16 +190,18 @@ class ProgressFragment :
       .show()
   }
 
-  private fun render(items: List<ProgressListItem>, resetScroll: ActionEvent<Boolean>) {
-    adapter?.setItems(items, resetScroll.consume() == true)
-    progressRecycler.fadeIn(withHardware = true).add(animations)
-    progressEmptyView.visibleIf(items.isEmpty())
-    progressTipItem.visibleIf(items.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
-    (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
-  }
-
-  private fun render(sortOrder: ActionEvent<SortOrder>) {
-    sortOrder.consume()?.let { openSortOrderDialog(it) }
+  private fun render(uiState: ProgressUiState) {
+    uiState.run {
+      items?.let {
+        val resetScroll = scrollReset?.consume() == true
+        adapter?.setItems(it, resetScroll)
+        progressEmptyView.visibleIf(it.isEmpty())
+        progressTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
+        progressRecycler.fadeIn(withHardware = true).add(animations)
+        (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
+      }
+      sortOrder?.let { event -> event.consume()?.let { openSortOrderDialog(it) } }
+    }
   }
 
   override fun onSortClick() = viewModel.loadSortOrder()

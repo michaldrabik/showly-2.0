@@ -1,7 +1,5 @@
 package com.michaldrabik.ui_progress.progress
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.RatingsRepository
@@ -9,7 +7,7 @@ import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.Analytics
-import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.BaseViewModel2
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.ActionEvent
@@ -26,6 +24,10 @@ import com.michaldrabik.ui_progress.progress.cases.ProgressPinnedItemsCase
 import com.michaldrabik.ui_progress.progress.cases.ProgressSortOrderCase
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,18 +41,32 @@ class ProgressViewModel @Inject constructor(
   private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
   private val translationsRepository: TranslationsRepository,
-) : BaseViewModel<ProgressUiModel>() {
+) : BaseViewModel2() {
+
+  private val itemsState = MutableStateFlow<List<ProgressListItem>?>(null)
+  private val scrollState = MutableStateFlow(ActionEvent(false))
+  private val sortOrderState = MutableStateFlow<ActionEvent<SortOrder>?>(null)
+
+  val uiState = combine(
+    itemsState,
+    scrollState,
+    sortOrderState
+  ) { s1, s2, s3 ->
+    ProgressUiState(
+      items = s1,
+      scrollReset = s2,
+      sortOrder = s3
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(3000),
+    initialValue = ProgressUiState()
+  )
 
   private val language by lazy { translationsRepository.getLanguage() }
   private var searchQuery: String? = null
   private var timestamp = 0L
   var isQuickRateEnabled = false
-
-  private val _itemsLiveData = MutableLiveData<Pair<List<ProgressListItem>, ActionEvent<Boolean>>>()
-  val itemsLiveData: LiveData<Pair<List<ProgressListItem>, ActionEvent<Boolean>>> get() = _itemsLiveData
-
-  private val _sortLiveData = MutableLiveData<ActionEvent<SortOrder>>()
-  val sortLiveData: LiveData<ActionEvent<SortOrder>> get() = _sortLiveData
 
   fun handleParentAction(model: ProgressMainUiModel) {
     when {
@@ -68,15 +84,16 @@ class ProgressViewModel @Inject constructor(
   private fun loadItems(resetScroll: Boolean = false) {
     viewModelScope.launch {
       val items = itemsCase.loadItems(searchQuery ?: "")
-      _itemsLiveData.value = items to ActionEvent(resetScroll)
+      itemsState.value = items
+      scrollState.value = ActionEvent(resetScroll)
     }
   }
 
   fun loadSortOrder() {
-    if (_itemsLiveData.value?.first?.isEmpty() == true) return
+    if (itemsState.value?.isEmpty() == true) return
     viewModelScope.launch {
       val sortOrder = sortOrderCase.loadSortOrder()
-      _sortLiveData.value = ActionEvent(sortOrder)
+      sortOrderState.value = ActionEvent(sortOrder)
     }
   }
 
@@ -113,10 +130,10 @@ class ProgressViewModel @Inject constructor(
       try {
         val token = userTraktManager.checkAuthorization().token
         ratingsRepository.shows.addRating(token, episode, rating)
-        _messageLiveData.value = MessageEvent.info(R.string.textRateSaved)
+        _messageState.emit(MessageEvent.info(R.string.textRateSaved))
         Analytics.logEpisodeRated(showTraktId.id, episode, rating)
       } catch (error: Throwable) {
-        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
       }
     }
   }
@@ -147,8 +164,9 @@ class ProgressViewModel @Inject constructor(
   }
 
   private fun updateItem(new: ProgressListItem) {
-    val currentItems = _itemsLiveData.value?.first?.toMutableList() ?: mutableListOf()
+    val currentItems = itemsState.value?.toMutableList() ?: mutableListOf()
     currentItems.findReplace(new) { it.isSameAs(new) }
-    _itemsLiveData.value = currentItems to ActionEvent(false)
+    itemsState.value = currentItems
+    scrollState.value = ActionEvent(false)
   }
 }
