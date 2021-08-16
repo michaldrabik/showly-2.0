@@ -6,11 +6,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.BaseFragment2
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -21,15 +24,16 @@ import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarAdapter
-import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_calendar.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CalendarFragment :
-  BaseFragment<CalendarViewModel>(R.layout.fragment_calendar),
+  BaseFragment2<CalendarViewModel>(R.layout.fragment_calendar),
   OnScrollResetListener {
 
   override val viewModel by viewModels<CalendarViewModel>()
@@ -47,10 +51,14 @@ class CalendarFragment :
     with(parentViewModel) {
       uiLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
     }
-    with(viewModel) {
-      itemsLiveData.observe(viewLifecycleOwner, { render(it.first, it.second) })
-      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
-      checkQuickRateEnabled()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { showSnack(it) } }
+          checkQuickRateEnabled()
+        }
+      }
     }
   }
 
@@ -111,11 +119,15 @@ class CalendarFragment :
       .show()
   }
 
-  private fun render(mode: CalendarMode, items: List<CalendarListItem>) {
-    adapter?.setItems(items)
-    progressCalendarRecycler.fadeIn(150, withHardware = true)
-    progressCalendarEmptyFutureView.visibleIf(items.isEmpty() && mode == CalendarMode.PRESENT_FUTURE)
-    progressCalendarEmptyRecentsView.visibleIf(items.isEmpty() && mode == CalendarMode.RECENTS)
+  private fun render(uiState: CalendarUiState) {
+    uiState.run {
+      items?.let {
+        adapter?.setItems(it)
+        progressCalendarRecycler.fadeIn(150, withHardware = true)
+        progressCalendarEmptyFutureView.visibleIf(items.isEmpty() && mode == CalendarMode.PRESENT_FUTURE)
+        progressCalendarEmptyRecentsView.visibleIf(items.isEmpty() && mode == CalendarMode.RECENTS)
+      }
+    }
   }
 
   override fun onScrollReset() = progressCalendarRecycler.smoothScrollToPosition(0)
