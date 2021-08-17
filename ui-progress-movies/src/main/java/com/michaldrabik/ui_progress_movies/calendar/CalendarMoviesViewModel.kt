@@ -1,11 +1,9 @@
 package com.michaldrabik.ui_progress_movies.calendar
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
-import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.BaseViewModel2
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -17,6 +15,10 @@ import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,16 +29,30 @@ class CalendarMoviesViewModel @Inject constructor(
   private val ratingsCase: CalendarMoviesRatingsCase,
   private val imagesProvider: MovieImagesProvider,
   private val translationsRepository: TranslationsRepository,
-) : BaseViewModel<CalendarMoviesUiModel>() {
+) : BaseViewModel2() {
+
+  private val itemsState = MutableStateFlow<List<CalendarMovieListItem>?>(null)
+  private val modeState = MutableStateFlow(CalendarMode.PRESENT_FUTURE)
+
+  val uiState = combine(
+    itemsState,
+    modeState
+  ) { s1, s2 ->
+    CalendarMoviesUiState(
+      items = s1,
+      mode = s2
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(3000),
+    initialValue = CalendarMoviesUiState()
+  )
 
   private val language by lazy { translationsRepository.getLanguage() }
   private var mode = CalendarMode.PRESENT_FUTURE
   private var searchQuery: String? = null
   private var timestamp = 0L
   var isQuickRateEnabled = false
-
-  private val _itemsLiveData = MutableLiveData<Pair<CalendarMode, List<CalendarMovieListItem>>>()
-  val itemsLiveData: LiveData<Pair<CalendarMode, List<CalendarMovieListItem>>> get() = _itemsLiveData
 
   fun handleParentAction(model: ProgressMoviesMainUiModel) {
     when {
@@ -61,7 +77,8 @@ class CalendarMoviesViewModel @Inject constructor(
         CalendarMode.PRESENT_FUTURE -> futureCase.loadItems(searchQuery ?: "")
         CalendarMode.RECENTS -> recentsCase.loadItems(searchQuery ?: "")
       }
-      _itemsLiveData.postValue(mode to items)
+      itemsState.value = items
+      modeState.value = mode
     }
   }
 
@@ -93,9 +110,10 @@ class CalendarMoviesViewModel @Inject constructor(
   }
 
   private fun updateItem(new: CalendarMovieListItem.MovieItem) {
-    val currentItems = _itemsLiveData.value?.second?.toMutableList() ?: mutableListOf()
+    val currentItems = itemsState.value?.toMutableList() ?: mutableListOf()
     currentItems.findReplace(new) { it.isSameAs(new) }
-    _itemsLiveData.postValue(mode to currentItems)
+    itemsState.value = currentItems
+    modeState.value = mode
   }
 
   fun checkQuickRateEnabled() {

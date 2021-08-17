@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.BaseFragment2
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -15,16 +18,17 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
-import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMoviesAdapter
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainFragment
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_calendar_movies.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CalendarMoviesFragment :
-  BaseFragment<CalendarMoviesViewModel>(R.layout.fragment_calendar_movies),
+  BaseFragment2<CalendarMoviesViewModel>(R.layout.fragment_calendar_movies),
   OnScrollResetListener {
 
   private val parentViewModel by viewModels<ProgressMoviesMainViewModel>({ requireParentFragment() })
@@ -42,9 +46,13 @@ class CalendarMoviesFragment :
     with(parentViewModel) {
       uiLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
     }
-    with(viewModel) {
-      itemsLiveData.observe(viewLifecycleOwner, { render(it.first, it.second) })
-      checkQuickRateEnabled()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          checkQuickRateEnabled()
+        }
+      }
     }
   }
 
@@ -76,11 +84,15 @@ class CalendarMoviesFragment :
 
   override fun onScrollReset() = progressMoviesCalendarRecycler.smoothScrollToPosition(0)
 
-  private fun render(mode: CalendarMode, items: List<CalendarMovieListItem>) {
-    adapter?.setItems(items)
-    progressMoviesCalendarRecycler.fadeIn(150, withHardware = true)
-    progressMoviesCalendarEmptyFutureView.visibleIf(items.isEmpty() && mode == CalendarMode.PRESENT_FUTURE)
-    progressMoviesCalendarEmptyRecentsView.visibleIf(items.isEmpty() && mode == CalendarMode.RECENTS)
+  private fun render(uiState: CalendarMoviesUiState) {
+    uiState.run {
+      items?.let {
+        adapter?.setItems(it)
+        progressMoviesCalendarRecycler.fadeIn(150, withHardware = true)
+        progressMoviesCalendarEmptyFutureView.visibleIf(items.isEmpty() && mode == CalendarMode.PRESENT_FUTURE)
+        progressMoviesCalendarEmptyRecentsView.visibleIf(items.isEmpty() && mode == CalendarMode.RECENTS)
+      }
+    }
   }
 
   override fun setupBackPressed() = Unit
