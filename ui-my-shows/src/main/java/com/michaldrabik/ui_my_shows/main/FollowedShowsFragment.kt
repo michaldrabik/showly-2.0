@@ -10,8 +10,11 @@ import android.widget.GridLayout
 import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager.widget.ViewPager
-import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.BaseFragment2
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
@@ -45,10 +48,12 @@ import com.michaldrabik.ui_my_shows.myshows.views.MyShowFanartView
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_followed_shows.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FollowedShowsFragment :
-  BaseFragment<FollowedShowsViewModel>(R.layout.fragment_followed_shows),
+  BaseFragment2<FollowedShowsViewModel>(R.layout.fragment_followed_shows),
   OnTabReselectedListener,
   OnTraktSyncListener {
 
@@ -71,9 +76,13 @@ class FollowedShowsFragment :
     setupPager()
     setupStatusBar()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      clearCache()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          clearCache()
+        }
+      }
     }
   }
 
@@ -204,8 +213,8 @@ class FollowedShowsFragment :
     if (showNavigation) showNavigation()
   }
 
-  private fun render(uiModel: FollowedShowsUiModel) {
-    uiModel.run {
+  private fun render(uiState: FollowedShowsUiState) {
+    uiState.run {
       searchResult?.let { renderSearchResults(it) }
     }
   }

@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_my_shows.main
 
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.BaseViewModel2
 import com.michaldrabik.ui_my_shows.main.cases.FollowedShowsSearchCase
 import com.michaldrabik.ui_my_shows.myshows.helpers.MyShowsSearchResult
 import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.EMPTY
@@ -9,13 +9,26 @@ import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.NO_RESULTS
 import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.RESULTS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FollowedShowsViewModel @Inject constructor(
   private val searchCase: FollowedShowsSearchCase,
-) : BaseViewModel<FollowedShowsUiModel>() {
+) : BaseViewModel2() {
+
+  private val searchResultState = MutableStateFlow<MyShowsSearchResult?>(null)
+
+  val uiState = combine(searchResultState) { s1 -> FollowedShowsUiState(searchResult = s1[0]) }
+    .stateIn(
+      scope = viewModelScope,
+      started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+      initialValue = FollowedShowsUiState()
+    )
 
   private var searchJob: Job? = null
 
@@ -26,7 +39,7 @@ class FollowedShowsViewModel @Inject constructor(
     if (query.trim().isBlank()) {
       searchJob?.cancel()
       val result = MyShowsSearchResult(emptyList(), EMPTY)
-      postSearchResult(result)
+      searchResultState.value = result
       return
     }
     searchJob?.cancel()
@@ -34,13 +47,8 @@ class FollowedShowsViewModel @Inject constructor(
       val results = searchCase.searchFollowed(query)
       val type = if (results.isEmpty()) NO_RESULTS else RESULTS
       val searchResult = MyShowsSearchResult(results, type)
-      postSearchResult(searchResult)
+      searchResultState.value = searchResult
     }
-  }
-
-  private fun postSearchResult(searchResult: MyShowsSearchResult) {
-    uiState = FollowedShowsUiModel(searchResult = searchResult)
-    uiState = FollowedShowsUiModel()
   }
 
   fun clearCache() = searchCase.clearCache()

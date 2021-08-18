@@ -1,6 +1,17 @@
 package com.michaldrabik.ui_base.utilities.extensions
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
+
+fun <T1, R> combine(
+  flow: Flow<T1>,
+  transform: suspend (T1) -> R,
+): Flow<R> = kotlinx.coroutines.flow.combine(
+  flow,
+  emptyFlow<Any>()
+) { t1, _ ->
+  transform(t1)
+}
 
 fun <T1, T2, T3, T4, T5, T6, R> combine(
   flow: Flow<T1>,

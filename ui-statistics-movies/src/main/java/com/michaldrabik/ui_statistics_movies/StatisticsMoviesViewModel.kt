@@ -41,7 +41,7 @@ class StatisticsMoviesViewModel @Inject constructor(
     )
   }.stateIn(
     scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(3000),
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
     initialValue = StatisticsMoviesUiState()
   )
 
