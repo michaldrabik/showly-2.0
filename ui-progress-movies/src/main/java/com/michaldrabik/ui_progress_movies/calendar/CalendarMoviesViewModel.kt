@@ -13,7 +13,7 @@ import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesFu
 import com.michaldrabik.ui_progress_movies.calendar.cases.items.CalendarMoviesRecentsCase
 import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress_movies.calendar.recycler.CalendarMovieListItem
-import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiModel
+import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -54,18 +54,18 @@ class CalendarMoviesViewModel @Inject constructor(
   private var timestamp = 0L
   var isQuickRateEnabled = false
 
-  fun handleParentAction(model: ProgressMoviesMainUiModel) {
+  fun onParentState(state: ProgressMoviesMainUiState) {
     when {
-      this.timestamp != model.timestamp && model.timestamp != 0L -> {
-        this.timestamp = model.timestamp ?: 0L
+      this.timestamp != state.timestamp && state.timestamp != 0L -> {
+        this.timestamp = state.timestamp ?: 0L
         loadItems()
       }
-      this.mode != model.calendarMode -> {
-        this.mode = model.calendarMode ?: CalendarMode.PRESENT_FUTURE
+      this.mode != state.calendarMode -> {
+        this.mode = state.calendarMode ?: CalendarMode.PRESENT_FUTURE
         loadItems()
       }
-      this.searchQuery != model.searchQuery -> {
-        this.searchQuery = model.searchQuery
+      this.searchQuery != state.searchQuery -> {
+        this.searchQuery = state.searchQuery
         loadItems()
       }
     }

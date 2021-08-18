@@ -17,7 +17,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress_movies.R
-import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiModel
+import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiState
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesItemsCase
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesPinnedCase
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesSortCase
@@ -67,15 +67,15 @@ class ProgressMoviesViewModel @Inject constructor(
   private var timestamp = 0L
   var isQuickRateEnabled = false
 
-  fun handleParentAction(model: ProgressMoviesMainUiModel) {
+  fun onParentState(state: ProgressMoviesMainUiState) {
     when {
-      this.timestamp != model.timestamp && model.timestamp != 0L -> {
-        this.timestamp = model.timestamp ?: 0L
+      this.timestamp != state.timestamp && state.timestamp != 0L -> {
+        this.timestamp = state.timestamp ?: 0L
         loadItems()
       }
-      this.searchQuery != model.searchQuery -> {
-        this.searchQuery = model.searchQuery
-        loadItems(resetScroll = model.searchQuery.isNullOrBlank())
+      this.searchQuery != state.searchQuery -> {
+        this.searchQuery = state.searchQuery
+        loadItems(resetScroll = state.searchQuery.isNullOrBlank())
       }
     }
   }

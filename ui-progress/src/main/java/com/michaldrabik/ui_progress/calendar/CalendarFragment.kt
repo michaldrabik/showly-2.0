@@ -48,11 +48,11 @@ class CalendarFragment :
     setupRecycler()
     setupStatusBar()
 
-    with(parentViewModel) {
-      uiLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
-    }
     viewLifecycleOwner.lifecycleScope.launch {
       repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(parentViewModel) {
+          launch { uiState.collect { viewModel.handleParentAction(it) } }
+        }
         with(viewModel) {
           launch { uiState.collect { render(it) } }
           launch { messageState.collect { showSnack(it) } }

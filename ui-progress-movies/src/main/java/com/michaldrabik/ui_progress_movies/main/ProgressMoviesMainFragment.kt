@@ -8,8 +8,11 @@ import androidx.activity.addCallback
 import androidx.core.view.updateMargins
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager.widget.ViewPager
-import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.BaseFragment2
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
@@ -36,10 +39,12 @@ import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_movies.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProgressMoviesMainFragment :
-  BaseFragment<ProgressMoviesMainViewModel>(R.layout.fragment_progress_movies),
+  BaseFragment2<ProgressMoviesMainViewModel>(R.layout.fragment_progress_movies),
   OnShowsMoviesSyncedListener,
   OnTabReselectedListener,
   OnTraktSyncListener {
@@ -73,10 +78,14 @@ class ProgressMoviesMainFragment :
     setupPager()
     setupStatusBar()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
-      loadProgress()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { showSnack(it) } }
+          loadProgress()
+        }
+      }
     }
   }
 
@@ -259,8 +268,8 @@ class ProgressMoviesMainFragment :
   private fun onScrollReset() =
     childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
 
-  private fun render(uiModel: ProgressMoviesMainUiModel) {
-    when (uiModel.calendarMode) {
+  private fun render(uiState: ProgressMoviesMainUiState) {
+    when (uiState.calendarMode) {
       CalendarMode.PRESENT_FUTURE -> progressMoviesCalendarIcon.setImageResource(R.drawable.ic_history)
       CalendarMode.RECENTS -> progressMoviesCalendarIcon.setImageResource(R.drawable.ic_calendar)
     }

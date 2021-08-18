@@ -18,7 +18,7 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress.R
-import com.michaldrabik.ui_progress.main.ProgressMainUiModel
+import com.michaldrabik.ui_progress.main.ProgressMainUiState
 import com.michaldrabik.ui_progress.progress.cases.ProgressItemsCase
 import com.michaldrabik.ui_progress.progress.cases.ProgressPinnedItemsCase
 import com.michaldrabik.ui_progress.progress.cases.ProgressSortOrderCase
@@ -68,15 +68,15 @@ class ProgressViewModel @Inject constructor(
   private var timestamp = 0L
   var isQuickRateEnabled = false
 
-  fun handleParentAction(model: ProgressMainUiModel) {
+  fun onParentState(state: ProgressMainUiState) {
     when {
-      this.timestamp != model.timestamp && model.timestamp != 0L -> {
-        this.timestamp = model.timestamp ?: 0L
-        loadItems(resetScroll = model.resetScroll?.consume() == true)
+      this.timestamp != state.timestamp && state.timestamp != 0L -> {
+        this.timestamp = state.timestamp ?: 0L
+        loadItems(resetScroll = state.resetScroll?.consume() == true)
       }
-      this.searchQuery != model.searchQuery -> {
-        this.searchQuery = model.searchQuery
-        loadItems(resetScroll = model.searchQuery.isNullOrBlank())
+      this.searchQuery != state.searchQuery -> {
+        this.searchQuery = state.searchQuery
+        loadItems(resetScroll = state.searchQuery.isNullOrBlank())
       }
     }
   }
