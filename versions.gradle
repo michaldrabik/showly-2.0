@@ -49,6 +49,6 @@ ext.versions = [
     truth                  : '1.1.2',
     mockk                  : '1.10.6',
     coreTesting            : '2.1.0',
-    coroutinesTesting      : '1.3.8',
+    coroutinesTesting      : '1.5.1',
     debugDb                : '1.0.6'
 ]
