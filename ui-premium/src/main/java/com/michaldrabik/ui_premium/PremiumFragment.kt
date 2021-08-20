@@ -4,20 +4,25 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.SkuDetails
-import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.BaseFragment2
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_premium.views.PurchaseItemView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_premium.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium) {
+class PremiumFragment : BaseFragment2<PremiumViewModel>(R.layout.fragment_premium) {
 
   override val viewModel by viewModels<PremiumViewModel>()
 
@@ -36,10 +41,14 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     setupView()
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner) { render(it!!) }
-      messageLiveData.observe(viewLifecycleOwner) { showSnack(it) }
-      loadBilling(billingClient)
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { showSnack(it) } }
+          loadBilling(billingClient)
+        }
+      }
     }
   }
 
@@ -50,16 +59,12 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
     }
   }
 
-  private fun render(uiModel: PremiumUiModel) {
-    uiModel.run {
+  private fun render(uiState: PremiumUiState) {
+    uiState.run {
+      premiumProgress.visibleIf(isLoading)
+      premiumStatus.visibleIf(isPurchasePending)
       purchaseItems?.let { renderPurchaseItems(it, isLoading) }
-      isLoading?.let {
-        premiumProgress.visibleIf(it)
-      }
-      isPurchasePending?.let {
-        premiumStatus.visibleIf(it)
-      }
-      finishEvent?.let {
+      onFinish?.let {
         it.consume()?.let {
           requireActivity().onBackPressed()
         }
@@ -67,9 +72,9 @@ class PremiumFragment : BaseFragment<PremiumViewModel>(R.layout.fragment_premium
     }
   }
 
-  private fun renderPurchaseItems(items: List<SkuDetails>, isLoading: Boolean?) {
+  private fun renderPurchaseItems(items: List<SkuDetails>, isLoading: Boolean) {
     premiumPurchaseItems.removeAllViews()
-    premiumPurchaseItems.visibleIf(items.isNotEmpty() && isLoading != null && !isLoading)
+    premiumPurchaseItems.visibleIf(items.isNotEmpty() && !isLoading)
 
     if (items.isEmpty()) return
     items.forEach { item ->

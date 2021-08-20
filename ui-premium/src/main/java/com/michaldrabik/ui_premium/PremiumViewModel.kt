@@ -10,6 +10,7 @@ import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.Purchase.PurchaseState.PENDING
 import com.android.billingclient.api.Purchase.PurchaseState.PURCHASED
+import com.android.billingclient.api.SkuDetails
 import com.android.billingclient.api.SkuDetailsParams
 import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.queryPurchasesAsync
@@ -22,10 +23,14 @@ import com.michaldrabik.common.Config.PREMIUM_LIFETIME_INAPP_PROMO
 import com.michaldrabik.common.Config.PREMIUM_MONTHLY_SUBSCRIPTION
 import com.michaldrabik.common.Config.PREMIUM_YEARLY_SUBSCRIPTION
 import com.michaldrabik.repository.SettingsRepository
-import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.BaseViewModel2
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.json.JSONObject
 import timber.log.Timber
@@ -34,12 +39,35 @@ import javax.inject.Inject
 @HiltViewModel
 class PremiumViewModel @Inject constructor(
   private val settingsRepository: SettingsRepository,
-) : BaseViewModel<PremiumUiModel>() {
+) : BaseViewModel2() {
+
+  private val purchaseItemsState = MutableStateFlow<List<SkuDetails>?>(null)
+  private val purchasePendingState = MutableStateFlow(false)
+  private val loadingState = MutableStateFlow(false)
+  private val finishEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
+
+  val uiState = combine(
+    purchaseItemsState,
+    purchasePendingState,
+    loadingState,
+    finishEvent
+  ) { s1, s2, s3, s4 ->
+    PremiumUiState(
+      purchaseItems = s1,
+      isPurchasePending = s2,
+      isLoading = s3,
+      onFinish = s4
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = PremiumUiState()
+  )
 
   private var connectionsCount = 0
 
   fun loadBilling(billingClient: BillingClient) {
-    uiState = PremiumUiModel(isLoading = true)
+    loadingState.value = true
     connectionsCount += 1
     billingClient.startConnection(object : BillingClientStateListener {
       override fun onBillingSetupFinished(billingResult: BillingResult) {
@@ -50,17 +78,17 @@ class PremiumViewModel @Inject constructor(
             checkOwnedPurchases(billingClient)
             connectionsCount = 0
           } else {
-            _messageLiveData.value = MessageEvent.error(R.string.errorSubscriptionsNotAvailable)
+            _messageState.tryEmit(MessageEvent.error(R.string.errorSubscriptionsNotAvailable))
           }
         } else {
-          _messageLiveData.value = MessageEvent.error(R.string.errorSubscriptionsNotAvailable)
+          _messageState.tryEmit(MessageEvent.error(R.string.errorSubscriptionsNotAvailable))
         }
       }
 
       override fun onBillingServiceDisconnected() {
         if (connectionsCount > 3) {
           Timber.e("BillingClient Disconnected. All retries failed.")
-          _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+          _messageState.tryEmit(MessageEvent.error(R.string.errorGeneral))
           connectionsCount = 0
         } else {
           Timber.w("BillingClient Disconnected. Retrying....")
@@ -73,7 +101,7 @@ class PremiumViewModel @Inject constructor(
   private fun checkOwnedPurchases(billingClient: BillingClient) {
     Timber.d("checkOwnedPurchases")
     viewModelScope.launch {
-      uiState = PremiumUiModel(isLoading = true)
+      loadingState.value = true
 
       try {
         val subscriptions = billingClient.queryPurchasesAsync(SkuType.SUBS)
@@ -99,14 +127,16 @@ class PremiumViewModel @Inject constructor(
             unlockAndFinish()
           }
           eligiblePurchases.any { it.purchaseState == PENDING } -> {
-            uiState = PremiumUiModel(isPurchasePending = true, isLoading = false,)
+            purchasePendingState.value = true
+            loadingState.value = false
           }
           else -> loadPurchases(billingClient)
         }
       } catch (error: Throwable) {
+        purchaseItemsState.value = emptyList()
+        loadingState.value = false
+        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
         Timber.e(error)
-        uiState = PremiumUiModel(purchaseItems = emptyList(), isLoading = false)
-        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
       }
     }
   }
@@ -117,8 +147,9 @@ class PremiumViewModel @Inject constructor(
     purchases: MutableList<Purchase>,
   ) {
     viewModelScope.launch {
-      uiState = PremiumUiModel(isLoading = true)
+      loadingState.value = true
       Timber.d("${billingResult.responseCode} ${purchases.size}")
+
       when (billingResult.responseCode) {
         BillingResponseCode.OK -> {
           if (purchases.isNotEmpty()) {
@@ -131,12 +162,8 @@ class PremiumViewModel @Inject constructor(
           }
         }
         BillingResponseCode.ITEM_ALREADY_OWNED -> unlockAndFinish()
-        BillingResponseCode.USER_CANCELED -> {
-          uiState = PremiumUiModel(isLoading = false)
-        }
-        else -> {
-          uiState = PremiumUiModel(isLoading = false)
-        }
+        BillingResponseCode.USER_CANCELED -> loadingState.value = false
+        else -> loadingState.value = false
       }
     }
   }
@@ -144,7 +171,7 @@ class PremiumViewModel @Inject constructor(
   private fun loadPurchases(billingClient: BillingClient) {
     viewModelScope.launch {
       try {
-        uiState = PremiumUiModel(isLoading = true)
+        loadingState.value = true
 
         val inAppsEnabled = Firebase.remoteConfig.getBoolean("in_app_enabled")
 
@@ -163,18 +190,21 @@ class PremiumViewModel @Inject constructor(
 
         val subsItems = subsDetails.skuDetailsList ?: emptyList()
         val inAppsItems = if (inAppsEnabled) inAppsDetails.skuDetailsList ?: emptyList() else emptyList()
-        uiState = PremiumUiModel(purchaseItems = subsItems + inAppsItems, isLoading = false)
+
+        purchaseItemsState.value = subsItems + inAppsItems
+        loadingState.value = false
       } catch (error: Throwable) {
         Timber.e(error)
-        uiState = PremiumUiModel(purchaseItems = emptyList(), isLoading = false)
-        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+        purchaseItemsState.value = emptyList()
+        loadingState.value = false
+        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
       }
     }
   }
 
-  private fun unlockAndFinish() {
+  private suspend fun unlockAndFinish() {
     settingsRepository.isPremium = true
-    _messageLiveData.value = MessageEvent.info(R.string.textPurchaseThanks)
-    uiState = PremiumUiModel(finishEvent = ActionEvent(true))
+    _messageState.emit(MessageEvent.info(R.string.textPurchaseThanks))
+    finishEvent.value = ActionEvent(true)
   }
 }
