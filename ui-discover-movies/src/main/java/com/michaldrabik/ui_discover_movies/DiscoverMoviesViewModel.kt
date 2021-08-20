@@ -53,7 +53,7 @@ class DiscoverMoviesViewModel @Inject constructor(
     )
   }.stateIn(
     scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(BaseViewModel2.SUBSCRIBE_STOP_TIMEOUT),
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
     initialValue = DiscoverMoviesUiState()
   )
 
