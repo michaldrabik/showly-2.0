@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_gallery.fanart
+package com.michaldrabik.ui_gallery.fanart.cases
 
 import com.michaldrabik.common.Config.FANART_GALLERY_IMAGES_LIMIT
 import com.michaldrabik.repository.movies.MoviesRepository
