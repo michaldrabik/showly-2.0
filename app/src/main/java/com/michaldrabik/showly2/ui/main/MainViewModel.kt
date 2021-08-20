@@ -10,12 +10,16 @@ import com.michaldrabik.showly2.ui.main.cases.MainModesCase
 import com.michaldrabik.showly2.ui.main.cases.MainRateAppCase
 import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTraktCase
-import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.BaseViewModel2
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,7 +33,30 @@ class MainViewModel @Inject constructor(
   private val miscCase: MainMiscCase,
   private val modesCase: MainModesCase,
   private val rateAppCase: MainRateAppCase,
-) : BaseViewModel<MainUiModel>() {
+) : BaseViewModel2() {
+
+  private val initialRunEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
+  private val initialLanguageEvent = MutableStateFlow<ActionEvent<AppLanguage>?>(null)
+  private val whatsNewEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
+  private val rateAppEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
+
+  val uiState = combine(
+    initialRunEvent,
+    initialLanguageEvent,
+    whatsNewEvent,
+    rateAppEvent
+  ) { s1, s2, s3, s4 ->
+    MainUiState(
+      isInitialRun = s1,
+      initialLanguage = s2,
+      showWhatsNew = s3,
+      showRateApp = s4
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = MainUiState()
+  )
 
   fun initialize() {
     viewModelScope.launch {
@@ -50,11 +77,9 @@ class MainViewModel @Inject constructor(
     val showWhatsNew = initCase.showWhatsNew(isInitialRun)
     val showRateApp = rateAppCase.shouldShowRateApp()
 
-    uiState = MainUiModel(
-      isInitialRun = ActionEvent(isInitialRun),
-      showWhatsNew = ActionEvent(showWhatsNew),
-      showRateApp = ActionEvent(showRateApp)
-    )
+    initialRunEvent.value = ActionEvent(isInitialRun)
+    whatsNewEvent.value = ActionEvent(showWhatsNew)
+    rateAppEvent.value = ActionEvent(showRateApp)
   }
 
   fun setLanguage(appLanguage: AppLanguage) =
@@ -65,7 +90,7 @@ class MainViewModel @Inject constructor(
 
     val initialLanguage = initCase.checkLanguageChange()
     if (initialLanguage != AppLanguage.ENGLISH) {
-      uiState = MainUiModel(initialLanguage = ActionEvent(initialLanguage))
+      initialLanguageEvent.value = ActionEvent(initialLanguage)
     }
   }
 

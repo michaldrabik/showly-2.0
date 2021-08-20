@@ -10,6 +10,9 @@ import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
@@ -57,6 +60,8 @@ import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.view_bottom_menu.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -113,10 +118,14 @@ class MainActivity :
   }
 
   private fun setupViewModel() {
-    viewModel.run {
-      uiLiveData.observe(this@MainActivity) { render(it!!) }
-      initialize()
-      refreshTraktSyncSchedule()
+    lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          initialize()
+          refreshTraktSyncSchedule()
+        }
+      }
     }
   }
 
@@ -257,8 +266,8 @@ class MainActivity :
 
   override fun moviesEnabled() = viewModel.moviesEnabled()
 
-  private fun render(uiModel: MainUiModel) {
-    uiModel.run {
+  private fun render(uiState: MainUiState) {
+    uiState.run {
       isInitialRun?.let {
         val event = it.consume()
         if (event == true) showWelcomeDialog(event)
