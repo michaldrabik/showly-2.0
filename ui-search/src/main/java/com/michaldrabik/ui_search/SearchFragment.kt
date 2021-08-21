@@ -7,9 +7,12 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
-import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.BaseFragment2
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
@@ -39,9 +42,11 @@ import com.michaldrabik.ui_search.utilities.TextWatcherAdapter
 import com.michaldrabik.ui_search.views.RecentSearchView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), TextWatcherAdapter {
+class SearchFragment : BaseFragment2<SearchViewModel>(R.layout.fragment_search), TextWatcherAdapter {
 
   override val viewModel by viewModels<SearchViewModel>()
 
@@ -65,9 +70,13 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
       isInitialized = true
     }
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { showSnack(it) } }
+        }
+      }
     }
   }
 
@@ -188,8 +197,8 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     }
   }
 
-  private fun render(uiModel: SearchUiModel) {
-    uiModel.run {
+  private fun render(uiState: SearchUiState) {
+    uiState.run {
       searchItems?.let {
         adapter?.setItems(it)
         if (searchItemsAnimate?.consume() == true) {
@@ -201,12 +210,12 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
         suggestionsAdapter?.setItems(it)
         suggestionsRecycler.visibleIf(it.isNotEmpty())
       }
-      isSearching?.let {
+      isSearching.let {
         searchSwipeRefresh.isRefreshing = it
         searchViewLayout.isEnabled = !it
       }
-      isEmpty?.let { searchEmptyView.fadeIf(it) }
-      isInitial?.let { searchInitialView.fadeIf(it) }
+      searchEmptyView.fadeIf(isEmpty)
+      searchInitialView.fadeIf(isInitial)
     }
   }
 

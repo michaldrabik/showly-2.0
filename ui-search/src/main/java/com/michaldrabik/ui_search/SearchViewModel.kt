@@ -3,15 +3,18 @@ package com.michaldrabik.ui_search
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.SEARCH_RECENTS_AMOUNT
-import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.BaseViewModel2
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.RecentSearch
 import com.michaldrabik.ui_model.SearchResult
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_search.cases.SearchMainCase
@@ -21,6 +24,9 @@ import com.michaldrabik.ui_search.recycler.SearchListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
@@ -31,8 +37,40 @@ class SearchViewModel @Inject constructor(
   private val recentSearchesCase: SearchRecentsCase,
   private val suggestionsCase: SearchSuggestionsCase,
   private val showsImagesProvider: ShowImagesProvider,
-  private val moviesImagesProvider: MovieImagesProvider
-) : BaseViewModel<SearchUiModel>() {
+  private val moviesImagesProvider: MovieImagesProvider,
+) : BaseViewModel2() {
+
+  private val searchItemsState = MutableStateFlow<List<SearchListItem>?>(null)
+  private val searchItemsAnimateEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
+  private val recentSearchItemsState = MutableStateFlow<List<RecentSearch>?>(null)
+  private val suggestionsItemsState = MutableStateFlow<List<SearchListItem>?>(null)
+  private val searchingState = MutableStateFlow(false)
+  private val emptyState = MutableStateFlow(false)
+  private val initialState = MutableStateFlow(false)
+
+  val uiState = combine(
+    searchItemsState,
+    searchItemsAnimateEvent,
+    recentSearchItemsState,
+    suggestionsItemsState,
+    searchingState,
+    emptyState,
+    initialState
+  ) { s1, s2, s3, s4, s5, s6, s7 ->
+    SearchUiState(
+      searchItems = s1,
+      searchItemsAnimate = s2,
+      recentSearchItems = s3,
+      suggestionsItems = s4,
+      isSearching = s5,
+      isEmpty = s6,
+      isInitial = s7
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = SearchUiState()
+  )
 
   private var isSearching = false
   private var suggestionsJob: Job? = null
@@ -46,14 +84,16 @@ class SearchViewModel @Inject constructor(
   fun loadRecentSearches() {
     viewModelScope.launch {
       val searches = recentSearchesCase.getRecentSearches(SEARCH_RECENTS_AMOUNT)
-      uiState = SearchUiModel(recentSearchItems = searches, isInitial = searches.isEmpty())
+      recentSearchItemsState.value = searches
+      initialState.value = searches.isEmpty()
     }
   }
 
   fun clearRecentSearches() {
     viewModelScope.launch {
       recentSearchesCase.clearRecentSearches()
-      uiState = SearchUiModel(recentSearchItems = emptyList(), isInitial = true)
+      recentSearchItemsState.value = emptyList()
+      initialState.value = true
     }
   }
 
@@ -63,7 +103,14 @@ class SearchViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         isSearching = true
-        uiState = SearchUiModel.createLoading()
+
+        searchItemsState.value = emptyList()
+        searchItemsAnimateEvent.value = ActionEvent(false)
+        recentSearchItemsState.value = emptyList()
+        searchingState.value = true
+        emptyState.value = false
+        initialState.value = false
+        suggestionsItemsState.value = emptyList()
 
         val results = searchMainCase.searchByQuery(trimmed)
         val myShowsIds = searchMainCase.loadMyShowsIds()
@@ -98,7 +145,13 @@ class SearchViewModel @Inject constructor(
         }
 
         recentSearchesCase.saveRecentSearch(trimmed)
-        uiState = SearchUiModel.createResults(items)
+
+        searchItemsState.value = items
+        searchItemsAnimateEvent.value = ActionEvent(true)
+        searchingState.value = false
+        emptyState.value = items.isEmpty()
+        initialState.value = false
+        suggestionsItemsState.value = emptyList()
       } catch (t: Throwable) {
         onError()
       } finally {
@@ -115,7 +168,7 @@ class SearchViewModel @Inject constructor(
   }
 
   fun clearSuggestions() {
-    uiState = SearchUiModel(suggestionsItems = emptyList())
+    suggestionsItemsState.value = emptyList()
   }
 
   fun loadSuggestions(query: String) {
@@ -154,18 +207,18 @@ class SearchViewModel @Inject constructor(
       }
 
       val results = items.sortedByDescending { it.votes }
-      uiState = SearchUiModel(suggestionsItems = results)
+      suggestionsItemsState.value = results
     }
   }
 
   fun loadMissingImage(item: SearchListItem, force: Boolean) {
 
     fun updateItem(new: SearchListItem) {
-      val currentItems = uiState?.searchItems?.toMutableList()
+      val currentItems = uiState.value.searchItems?.toMutableList()
       currentItems?.run {
         findReplace(new) { it.isSameAs(new) }
       }
-      uiState = uiState?.copy(searchItems = currentItems)
+      searchItemsState.value = currentItems
     }
 
     viewModelScope.launch {
@@ -211,14 +264,15 @@ class SearchViewModel @Inject constructor(
 
   private fun updateSuggestionsItem(new: SearchListItem) {
     val currentState = uiState
-    val currentItems = currentState?.suggestionsItems?.toMutableList()
+    val currentItems = currentState.value.suggestionsItems?.toMutableList()
     currentItems?.run { findReplace(new) { it.isSameAs(new) } }
-    uiState = currentState?.copy(suggestionsItems = currentItems)
+    suggestionsItemsState.value = currentItems
   }
 
-  private fun onError() {
-    uiState = SearchUiModel(isSearching = false, isEmpty = false)
-    _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadSearchResults)
+  private suspend fun onError() {
+    searchingState.value = false
+    emptyState.value = false
+    _messageState.emit(MessageEvent.error(R.string.errorCouldNotLoadSearchResults))
   }
 
   override fun onCleared() {
