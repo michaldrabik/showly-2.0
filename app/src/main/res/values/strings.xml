@@ -11,8 +11,9 @@
   <string name="textRateAppYesButton">Sure, why not?</string>
   <string name="textRateAppNoButton">Not now</string>
 
-  <string name="textDisclaimerTitle" translatable="false">Welcome to Showly!</string>
-  <string name="textDisclaimerText" translatable="false">Please note that you <b>CAN\'T</b> watch or download shows and movies with this app.\n\nPlease use apps like <b>Netflix</b> or <b>HBO GO</b> to stream and watch content.</string>
+  <string name="textDisclaimerTitle">Welcome!</string>
+  <string name="textDisclaimerText">Please note that you <b>CAN\'T</b> watch, stream or download shows and movies with this app.\n\nUse apps like <b>Netflix</b> to stream and watch content.</string>
+  <string name="textDisclaimerConfirmText">OK, I understand</string>
   <string name="textLanguagesChoose2" translatable="false">Language can always be changed later via Settings.</string>
   <string name="textLeaveEnglish" translatable="false">No, I prefer English</string>
 
