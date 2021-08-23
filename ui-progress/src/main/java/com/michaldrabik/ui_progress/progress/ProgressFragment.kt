@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.michaldrabik.ui_base.BaseFragment2
+import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
@@ -51,7 +51,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProgressFragment :
-  BaseFragment2<ProgressViewModel>(R.layout.fragment_progress),
+  BaseFragment<ProgressViewModel>(R.layout.fragment_progress),
   OnSortClickListener,
   OnScrollResetListener {
 

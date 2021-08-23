@@ -27,7 +27,7 @@ import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
 import com.michaldrabik.common.Config.INITIAL_RATING
 import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.toLocalZone
-import com.michaldrabik.ui_base.BaseBottomSheetFragment2
+import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.info
@@ -70,7 +70,7 @@ import kotlinx.coroutines.launch
 import java.util.Locale.ENGLISH
 
 @AndroidEntryPoint
-class EpisodeDetailsBottomSheet : BaseBottomSheetFragment2<EpisodeDetailsViewModel>() {
+class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewModel>() {
 
   companion object {
     const val ARG_ID_TRAKT = "ARG_ID_TRAKT"

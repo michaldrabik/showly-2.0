@@ -7,7 +7,7 @@ import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.Analytics
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.EpisodeImagesProvider
 import com.michaldrabik.ui_base.utilities.ActionEvent
@@ -44,7 +44,7 @@ class EpisodeDetailsViewModel @Inject constructor(
   private val translationsRepository: TranslationsRepository,
   private val commentsRepository: CommentsRepository,
   private val userTraktManager: UserTraktManager,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val imageState = MutableStateFlow<Image?>(null)
   private val imageLoadingState = MutableStateFlow(false)

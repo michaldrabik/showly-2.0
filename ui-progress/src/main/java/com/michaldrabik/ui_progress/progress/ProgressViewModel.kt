@@ -7,7 +7,7 @@ import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.Analytics
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.ActionEvent
@@ -41,7 +41,7 @@ class ProgressViewModel @Inject constructor(
   private val ratingsRepository: RatingsRepository,
   private val settingsRepository: SettingsRepository,
   private val translationsRepository: TranslationsRepository,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val itemsState = MutableStateFlow<List<ProgressListItem>?>(null)
   private val scrollState = MutableStateFlow(ActionEvent(false))

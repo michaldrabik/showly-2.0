@@ -10,7 +10,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.michaldrabik.ui_base.BaseFragment2
+import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CalendarMoviesFragment :
-  BaseFragment2<CalendarMoviesViewModel>(R.layout.fragment_calendar_movies),
+  BaseFragment<CalendarMoviesViewModel>(R.layout.fragment_calendar_movies),
   OnScrollResetListener {
 
   private val parentViewModel by viewModels<ProgressMoviesMainViewModel>({ requireParentFragment() })

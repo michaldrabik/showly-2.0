@@ -2,7 +2,7 @@ package com.michaldrabik.ui_my_shows.watchlist
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.ActionEvent
@@ -28,7 +28,7 @@ class WatchlistViewModel @Inject constructor(
   private val loadShowsCase: WatchlistLoadShowsCase,
   private val ratingsCase: WatchlistRatingsCase,
   private val imagesProvider: ShowImagesProvider,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val itemsState = MutableStateFlow<List<WatchlistListItem>>(emptyList())
   private val sortOrderState = MutableStateFlow<ActionEvent<SortOrder>?>(null)

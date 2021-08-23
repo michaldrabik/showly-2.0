@@ -18,7 +18,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
-import com.michaldrabik.ui_base.BaseFragment2
+import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -51,7 +51,7 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
 @AndroidEntryPoint
-class ArtGalleryFragment : BaseFragment2<ArtGalleryViewModel>(R.layout.fragment_art_gallery) {
+class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_art_gallery) {
 
   companion object {
     private const val IMAGE_URL_PATTERN = "(http)?s?:?(//[^\"']*\\.(?:jpg|jpeg|png))"

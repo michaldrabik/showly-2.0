@@ -2,7 +2,7 @@ package com.michaldrabik.ui_my_movies.mymovies
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -36,7 +36,7 @@ import javax.inject.Inject
 class MyMoviesViewModel @Inject constructor(
   private val loadMoviesCase: MyMoviesLoadCase,
   private val ratingsCase: MyMoviesRatingsCase,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val itemsState = MutableStateFlow<List<MyMoviesItem>?>(null)
   private val itemsUpdateState = MutableStateFlow<ActionEvent<Boolean>?>(null)

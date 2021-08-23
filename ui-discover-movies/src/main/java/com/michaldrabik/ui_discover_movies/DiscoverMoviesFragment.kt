@@ -16,7 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config
-import com.michaldrabik.ui_base.BaseFragment2
+import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.utilities.extensions.add
@@ -43,7 +43,7 @@ import kotlin.random.Random
 
 @AndroidEntryPoint
 class DiscoverMoviesFragment :
-  BaseFragment2<DiscoverMoviesViewModel>(R.layout.fragment_discover_movies),
+  BaseFragment<DiscoverMoviesViewModel>(R.layout.fragment_discover_movies),
   OnTabReselectedListener,
   OnTraktSyncListener {
 

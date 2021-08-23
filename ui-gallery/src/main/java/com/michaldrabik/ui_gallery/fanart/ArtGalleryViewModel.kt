@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_gallery.fanart
 
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_gallery.fanart.cases.ArtLoadImagesCase
 import com.michaldrabik.ui_model.IdTrakt
@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ArtGalleryViewModel @Inject constructor(
   private val imagesCase: ArtLoadImagesCase,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val imagesState = MutableStateFlow<List<Image>?>(null)
   private val typeState = MutableStateFlow(ImageType.FANART)

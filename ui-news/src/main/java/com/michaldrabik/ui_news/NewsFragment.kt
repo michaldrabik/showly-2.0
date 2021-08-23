@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.michaldrabik.ui_base.BaseFragment2
+import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
@@ -42,7 +42,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class NewsFragment :
-  BaseFragment2<NewsViewModel>(R.layout.fragment_news),
+  BaseFragment<NewsViewModel>(R.layout.fragment_news),
   OnTabReselectedListener {
 
   companion object {

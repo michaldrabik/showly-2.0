@@ -12,7 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.michaldrabik.ui_base.BaseBottomSheetFragment2
+import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CreateListBottomSheet : BaseBottomSheetFragment2<CreateListViewModel>() {
+class CreateListBottomSheet : BaseBottomSheetFragment<CreateListViewModel>() {
 
   override val layoutResId = R.layout.view_create_list
 

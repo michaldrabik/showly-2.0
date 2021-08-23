@@ -2,7 +2,7 @@ package com.michaldrabik.ui_progress.main
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_model.EpisodeBundle
@@ -20,7 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProgressMainViewModel @Inject constructor(
   private val episodesCase: ProgressMainEpisodesCase,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val timestampState = MutableStateFlow<Long?>(null)
   private val searchQueryState = MutableStateFlow<String?>(null)

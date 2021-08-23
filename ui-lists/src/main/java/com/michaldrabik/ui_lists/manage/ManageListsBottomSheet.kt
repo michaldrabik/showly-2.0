@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Mode
-import com.michaldrabik.ui_base.BaseBottomSheetFragment2
+import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventObserver
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
@@ -40,7 +40,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ManageListsBottomSheet : BaseBottomSheetFragment2<ManageListsViewModel>(), EventObserver {
+class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), EventObserver {
 
   override val layoutResId = R.layout.view_manage_lists
 

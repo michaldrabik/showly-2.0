@@ -9,7 +9,7 @@ import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_model.Genre
@@ -36,7 +36,7 @@ class StatisticsViewModel @Inject constructor(
   private val imagesProvider: ShowImagesProvider,
   private val database: AppDatabase,
   private val mappers: Mappers,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val mostWatchedShowsState = MutableStateFlow<List<StatisticsMostWatchedItem>?>(null)
   private val mostWatchedTotalCountState = MutableStateFlow<Int?>(null)

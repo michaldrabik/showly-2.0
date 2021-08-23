@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.Analytics
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
@@ -92,7 +92,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val announcementManager: AnnouncementManager,
   private val imagesProvider: ShowImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val showState = MutableStateFlow<Show?>(null)
   private val showLoadingState = MutableStateFlow(false)

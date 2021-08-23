@@ -16,7 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.michaldrabik.ui_base.BaseBottomSheetFragment2
+import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
@@ -44,7 +44,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CustomImagesBottomSheet : BaseBottomSheetFragment2<CustomImagesViewModel>() {
+class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>() {
 
   private val family by lazy { arguments?.getSerializable(ARG_FAMILY) as ImageFamily }
   private val showTraktId by lazy { IdTrakt(requireArguments().getLong(ARG_SHOW_ID)) }

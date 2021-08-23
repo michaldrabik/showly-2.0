@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config.MAIN_GRID_SPAN
-import com.michaldrabik.ui_base.BaseFragment2
+import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.utilities.extensions.add
@@ -48,7 +48,7 @@ import kotlin.random.Random
 
 @AndroidEntryPoint
 class DiscoverFragment :
-  BaseFragment2<DiscoverViewModel>(R.layout.fragment_discover),
+  BaseFragment<DiscoverViewModel>(R.layout.fragment_discover),
   OnTabReselectedListener,
   OnTraktSyncListener {
 

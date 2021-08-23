@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_gallery.custom
 
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.IdTrakt
@@ -23,7 +23,7 @@ import javax.inject.Inject
 class CustomImagesViewModel @Inject constructor(
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val posterImageState = MutableStateFlow<Image?>(null)
   private val fanartImageState = MutableStateFlow<Image?>(null)

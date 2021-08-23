@@ -23,7 +23,7 @@ import com.michaldrabik.ui_base.utilities.extensions.showErrorSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_model.Tip
 
-abstract class BaseFragment<T : BaseViewModel<out UiModel>>(@LayoutRes contentLayoutId: Int) :
+abstract class BaseFragment<T : BaseViewModel>(@LayoutRes contentLayoutId: Int) :
   Fragment(contentLayoutId),
   TipsHost {
 

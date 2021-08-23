@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_lists.create
 
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_lists.R
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class CreateListViewModel @Inject constructor(
   private val createListCase: CreateListCase,
   private val listDetailsCase: ListDetailsCase,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val detailsState = MutableStateFlow<CustomList?>(null)
   private val loadingState = MutableStateFlow(false)

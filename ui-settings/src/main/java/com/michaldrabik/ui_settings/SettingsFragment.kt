@@ -21,7 +21,7 @@ import com.michaldrabik.common.Config.MY_SHOWS_RECENTS_OPTIONS
 import com.michaldrabik.common.Config.SHOW_PREMIUM
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.common.extensions.toLocalZone
-import com.michaldrabik.ui_base.BaseFragment2
+import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
 import com.michaldrabik.ui_base.dates.AppDateFormat
@@ -53,7 +53,7 @@ import kotlinx.coroutines.launch
 import com.michaldrabik.data_remote.Config as ConfigNetwork
 
 @AndroidEntryPoint
-class SettingsFragment : BaseFragment2<SettingsViewModel>(R.layout.fragment_settings), OnTraktAuthorizeListener {
+class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_settings), OnTraktAuthorizeListener {
 
   override val viewModel by viewModels<SettingsViewModel>()
 

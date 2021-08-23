@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.michaldrabik.ui_base.BaseFragment2
+import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class WatchlistFragment :
-  BaseFragment2<WatchlistViewModel>(R.layout.fragment_watchlist_movies),
+  BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist_movies),
   OnScrollResetListener,
   OnTraktSyncListener,
   OnSortClickListener {

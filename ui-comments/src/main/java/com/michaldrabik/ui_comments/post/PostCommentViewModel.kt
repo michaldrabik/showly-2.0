@@ -2,7 +2,7 @@ package com.michaldrabik.ui_comments.post
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.repository.CommentsRepository
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_comments.R
@@ -25,7 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PostCommentViewModel @Inject constructor(
   private val commentsRepository: CommentsRepository,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val loadingState = MutableStateFlow(false)
   private val successState = MutableStateFlow<ActionEvent<Pair<String, Comment>>?>(null)

@@ -23,7 +23,7 @@ import com.michaldrabik.common.Config.PREMIUM_LIFETIME_INAPP_PROMO
 import com.michaldrabik.common.Config.PREMIUM_MONTHLY_SUBSCRIPTION
 import com.michaldrabik.common.Config.PREMIUM_YEARLY_SUBSCRIPTION
 import com.michaldrabik.repository.SettingsRepository
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,7 +39,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PremiumViewModel @Inject constructor(
   private val settingsRepository: SettingsRepository,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val purchaseItemsState = MutableStateFlow<List<SkuDetails>?>(null)
   private val purchasePendingState = MutableStateFlow(false)

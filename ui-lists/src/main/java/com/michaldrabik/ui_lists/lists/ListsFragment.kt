@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.michaldrabik.ui_base.BaseFragment2
+import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
@@ -64,7 +64,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ListsFragment :
-  BaseFragment2<ListsViewModel>(R.layout.fragment_lists),
+  BaseFragment<ListsViewModel>(R.layout.fragment_lists),
   OnTraktSyncListener,
   OnTabReselectedListener,
   EventObserver {

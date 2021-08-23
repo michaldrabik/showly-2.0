@@ -10,7 +10,7 @@ import com.michaldrabik.showly2.ui.main.cases.MainModesCase
 import com.michaldrabik.showly2.ui.main.cases.MainRateAppCase
 import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTraktCase
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_settings.helpers.AppLanguage
@@ -33,7 +33,7 @@ class MainViewModel @Inject constructor(
   private val miscCase: MainMiscCase,
   private val modesCase: MainModesCase,
   private val rateAppCase: MainRateAppCase,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val initialRunEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
   private val initialLanguageEvent = MutableStateFlow<ActionEvent<AppLanguage>?>(null)

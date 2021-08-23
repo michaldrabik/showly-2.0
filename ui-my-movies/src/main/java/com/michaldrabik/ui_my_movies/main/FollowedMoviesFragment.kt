@@ -14,7 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager.widget.ViewPager
-import com.michaldrabik.ui_base.BaseFragment2
+import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
@@ -53,7 +53,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FollowedMoviesFragment :
-  BaseFragment2<FollowedMoviesViewModel>(R.layout.fragment_followed_movies),
+  BaseFragment<FollowedMoviesViewModel>(R.layout.fragment_followed_movies),
   OnTabReselectedListener,
   OnTraktSyncListener {
 

@@ -5,7 +5,7 @@ import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.Analytics
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.AppDateFormat
@@ -40,7 +40,7 @@ class SettingsViewModel @Inject constructor(
   private val traktCase: SettingsTraktCase,
   private val themesCase: SettingsThemesCase,
   private val streamingsCase: SettingsStreamingsCase,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   fun loadSettings() {
     viewModelScope.launch {

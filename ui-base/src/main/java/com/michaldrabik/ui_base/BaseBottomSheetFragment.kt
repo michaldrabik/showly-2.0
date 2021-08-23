@@ -10,7 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.michaldrabik.ui_base.utilities.NavigationHost
 
-abstract class BaseBottomSheetFragment<T : BaseViewModel<out UiModel>> : BottomSheetDialogFragment() {
+abstract class BaseBottomSheetFragment<T : BaseViewModel> : BottomSheetDialogFragment() {
 
   protected lateinit var viewModel: T
 

@@ -3,7 +3,7 @@ package com.michaldrabik.ui_progress_movies.calendar
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -29,7 +29,7 @@ class CalendarMoviesViewModel @Inject constructor(
   private val ratingsCase: CalendarMoviesRatingsCase,
   private val imagesProvider: MovieImagesProvider,
   private val translationsRepository: TranslationsRepository,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val itemsState = MutableStateFlow<List<CalendarMovieListItem>?>(null)
   private val modeState = MutableStateFlow(CalendarMode.PRESENT_FUTURE)

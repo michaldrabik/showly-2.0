@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_my_movies.main
 
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_my_movies.main.cases.FollowedMoviesSearchCase
 import com.michaldrabik.ui_my_movies.mymovies.helpers.MyMoviesSearchResult
 import com.michaldrabik.ui_my_movies.mymovies.helpers.ResultType.EMPTY
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FollowedMoviesViewModel @Inject constructor(
   private val searchCase: FollowedMoviesSearchCase,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val searchResultState = MutableStateFlow<MyMoviesSearchResult?>(null)
 

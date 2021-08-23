@@ -2,7 +2,7 @@ package com.michaldrabik.ui_lists.manage
 
 import android.content.Context
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_lists.manage.cases.ManageListsCase
 import com.michaldrabik.ui_lists.manage.recycler.ManageListsItem
@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ManageListsViewModel @Inject constructor(
   private val manageListsCase: ManageListsCase,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val loadingState = MutableStateFlow(false)
   private val itemsState = MutableStateFlow<List<ManageListsItem>?>(null)

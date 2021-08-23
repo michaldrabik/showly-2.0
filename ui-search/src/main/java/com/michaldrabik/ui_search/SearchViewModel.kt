@@ -3,7 +3,7 @@ package com.michaldrabik.ui_search
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.SEARCH_RECENTS_AMOUNT
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -38,7 +38,7 @@ class SearchViewModel @Inject constructor(
   private val suggestionsCase: SearchSuggestionsCase,
   private val showsImagesProvider: ShowImagesProvider,
   private val moviesImagesProvider: MovieImagesProvider,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val searchItemsState = MutableStateFlow<List<SearchListItem>?>(null)
   private val searchItemsAnimateEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)

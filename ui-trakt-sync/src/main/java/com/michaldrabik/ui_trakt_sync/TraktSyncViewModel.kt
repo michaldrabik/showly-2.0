@@ -6,7 +6,7 @@ import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
-import com.michaldrabik.ui_base.BaseViewModel2
+import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.TraktSyncAuthError
@@ -44,7 +44,7 @@ class TraktSyncViewModel @Inject constructor(
   importWatchlistRunner: TraktImportWatchlistRunner,
   exportWatchedRunner: TraktImportWatchedRunner,
   exportWatchlistRunner: TraktExportWatchlistRunner,
-) : BaseViewModel2() {
+) : BaseViewModel() {
 
   private val progressState = MutableStateFlow(false)
   private val progressStatusState = MutableStateFlow("")

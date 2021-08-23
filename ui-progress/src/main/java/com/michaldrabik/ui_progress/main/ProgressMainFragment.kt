@@ -13,7 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager.widget.ViewPager
-import com.michaldrabik.ui_base.BaseFragment2
+import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
@@ -52,7 +52,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProgressMainFragment :
-  BaseFragment2<ProgressMainViewModel>(R.layout.fragment_progress_main),
+  BaseFragment<ProgressMainViewModel>(R.layout.fragment_progress_main),
   OnShowsMoviesSyncedListener,
   OnTabReselectedListener,
   OnTraktSyncListener {
