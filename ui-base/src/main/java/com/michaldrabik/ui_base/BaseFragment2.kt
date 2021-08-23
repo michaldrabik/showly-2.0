@@ -8,6 +8,7 @@ import androidx.activity.addCallback
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.LENGTH_INDEFINITE
 import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import com.michaldrabik.common.Mode
@@ -32,6 +33,7 @@ abstract class BaseFragment2<T : BaseViewModel2>(@LayoutRes contentLayoutId: Int
 
   protected val animations = mutableListOf<ViewPropertyAnimator?>()
   protected val animators = mutableListOf<Animator?>()
+  protected val snackbars = mutableListOf<Snackbar?>()
 
   protected var mode: Mode
     get() = (requireActivity() as NavigationHost).getMode()
@@ -100,6 +102,7 @@ abstract class BaseFragment2<T : BaseViewModel2>(@LayoutRes contentLayoutId: Int
   }
 
   override fun onDestroyView() {
+    snackbars.forEach { it?.dismiss() }
     clearAnimations()
     super.onDestroyView()
   }
