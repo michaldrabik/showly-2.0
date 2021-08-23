@@ -24,6 +24,9 @@ import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
@@ -41,7 +44,7 @@ import com.michaldrabik.common.Config.TMDB_IMAGE_BASE_ACTOR_FULL_URL
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_base.Analytics
-import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.BaseFragment2
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
@@ -127,12 +130,14 @@ import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import kotlinx.android.synthetic.main.view_links_menu.view.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.threeten.bp.Duration
 import java.util.Locale.ENGLISH
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
 @AndroidEntryPoint
-class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment_show_details) {
+class ShowDetailsFragment : BaseFragment2<ShowDetailsViewModel>(R.layout.fragment_show_details) {
 
   override val viewModel by viewModels<ShowDetailsViewModel>()
 
@@ -166,26 +171,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     setupSeasonsList()
     setupStreamingsList()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      seasonsLiveData.observe(
-        viewLifecycleOwner,
-        {
-          renderSeasons(it)
-          renderRuntimeLeft(it)
-          (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { renderSnack(it) } }
+          if (!isInitialized) {
+            loadDetails(showId)
+            isInitialized = true
+          }
+          loadPremium()
         }
-      )
-      nextEpisodeLiveData.observe(viewLifecycleOwner, { renderNextEpisode(it) })
-      actorsLiveData.observe(viewLifecycleOwner, { renderActors(it) })
-      streamingsLiveData.observe(viewLifecycleOwner, { renderStreamings(it) })
-      relatedLiveData.observe(viewLifecycleOwner, { renderRelatedShows(it) })
-      messageLiveData.observe(viewLifecycleOwner, { renderSnack(it) })
-      if (!isInitialized) {
-        loadShowDetails(showId, requireAppContext())
-        isInitialized = true
       }
-      loadPremium()
     }
   }
 
@@ -224,9 +221,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsAddButton.run {
       isEnabled = false
-      onAddMyShowsClickListener = {
-        viewModel.addFollowedShow()
-      }
+      onAddMyShowsClickListener = { viewModel.addFollowedShow() }
       onAddWatchLaterClickListener = { viewModel.addWatchlistShow(requireAppContext()) }
       onArchiveClickListener = { openArchiveConfirmationDialog() }
       onRemoveClickListener = { viewModel.removeFromFollowed() }
@@ -490,7 +485,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsActorFullName.fadeOut()
   }
 
-  private fun render(uiModel: ShowDetailsUiModel) {
+  private fun render(uiModel: ShowDetailsUiState) {
     uiModel.run {
       show?.let { show ->
         showDetailsTitle.text = show.title
@@ -532,7 +527,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         showDetailsCustomImagesLabel.onClick { showCustomImagesSheet(show.traktId, isPremium) }
         showDetailsAddButton.isEnabled = true
       }
-      showLoading?.let {
+      showLoading.let {
         if (!showDetailsEpisodesView.isVisible && !showDetailsCommentsView.isVisible) {
           showDetailsMainLayout.fadeIf(!it, hardware = true)
           showDetailsMainProgress.visibleIf(it)
@@ -553,16 +548,23 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         showDetailsManageListsLabel.text = text
       }
       image?.let { renderImage(it) }
+      seasons?.let {
+        renderSeasons(it)
+        renderRuntimeLeft(it)
+        (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
+      }
       ratings?.let { renderRatings(it, show) }
+      nextEpisode?.let { renderNextEpisode(it) }
+      actors?.let { renderActors(it) }
+      streamings?.let { renderStreamings(it) }
+      relatedShows?.let { renderRelatedShows(it) }
       translation?.let { renderTranslation(it) }
       seasonTranslation?.let { item ->
         item.consume()?.let { showDetailsEpisodesView.bindEpisodes(it.episodes, animate = false) }
       }
       comments?.let {
         showDetailsCommentsView.bind(it, commentsDateFormat)
-        if (isSignedIn == true) {
-          showDetailsCommentsView.showCommentButton()
-        }
+        if (isSignedIn) showDetailsCommentsView.showCommentButton()
       }
       ratingState?.let { renderRating(it) }
       showFromTraktLoading?.let {

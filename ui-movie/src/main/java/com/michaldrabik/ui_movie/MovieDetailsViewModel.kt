@@ -169,7 +169,6 @@ class MovieDetailsViewModel @Inject constructor(
       actorsState.value = actors
     } catch (error: Throwable) {
       actorsState.value = emptyList()
-      Timber.e(error)
       rethrowCancellation(error)
     }
   }
@@ -183,7 +182,6 @@ class MovieDetailsViewModel @Inject constructor(
       relatedState.value = related
     } catch (error: Throwable) {
       relatedState.value = emptyList()
-      Timber.e(error)
       rethrowCancellation(error)
     }
   }
@@ -194,7 +192,6 @@ class MovieDetailsViewModel @Inject constructor(
         translationState.value = it
       }
     } catch (error: Throwable) {
-      Timber.e(error)
       rethrowCancellation(error)
     }
   }
@@ -215,7 +212,6 @@ class MovieDetailsViewModel @Inject constructor(
       streamingsState.value = StreamingsState(remoteStreamings, isLocal = false)
     } catch (error: Throwable) {
       streamingsState.value = StreamingsState(emptyList(), isLocal = false)
-      Timber.e(error)
       rethrowCancellation(error)
     }
   }
@@ -351,19 +347,18 @@ class MovieDetailsViewModel @Inject constructor(
       movieRatingsState.value = ratings
     } catch (error: Throwable) {
       movieRatingsState.value = traktRatings
-      Timber.e(error)
       rethrowCancellation(error)
     }
   }
 
   private suspend fun loadRating(movie: Movie, isSignedIn: Boolean) {
+    if (!isSignedIn) return
     try {
       ratingState.value = RatingState(rateLoading = true, rateAllowed = isSignedIn)
       val rating = ratingsCase.loadRating(movie)
       ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn, userRating = rating ?: TraktRating.EMPTY)
     } catch (error: Throwable) {
       ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn)
-      Timber.e(error)
       rethrowCancellation(error)
     }
   }
@@ -380,6 +375,8 @@ class MovieDetailsViewModel @Inject constructor(
       } catch (error: Throwable) {
         ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
         _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        Timber.e(error)
+        rethrowCancellation(error)
       }
     }
   }
@@ -394,6 +391,8 @@ class MovieDetailsViewModel @Inject constructor(
       } catch (error: Throwable) {
         ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
         _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        Timber.e(error)
+        rethrowCancellation(error)
       }
     }
   }

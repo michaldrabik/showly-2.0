@@ -1,13 +1,12 @@
 package com.michaldrabik.ui_show
 
+import android.annotation.SuppressLint
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.Analytics
-import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.BaseViewModel2
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.OnlineStatusProvider
@@ -18,6 +17,7 @@ import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_base.utilities.extensions.replace
@@ -36,6 +36,7 @@ import com.michaldrabik.ui_model.SeasonBundle
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_show.ShowDetailsUiState.FollowedState2
 import com.michaldrabik.ui_show.cases.ShowDetailsActorsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsArchiveCase
 import com.michaldrabik.ui_show.cases.ShowDetailsCommentsCase
@@ -55,16 +56,23 @@ import com.michaldrabik.ui_show.quickSetup.QuickSetupListItem
 import com.michaldrabik.ui_show.related.RelatedListItem
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.threeten.bp.format.DateTimeFormatter
 import retrofit2.HttpException
 import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
 
+@SuppressLint("StaticFieldLeak")
 @HiltViewModel
 class ShowDetailsViewModel @Inject constructor(
+  @ApplicationContext private val context: Context,
   private val mainCase: ShowDetailsMainCase,
   private val actorsCase: ShowDetailsActorsCase,
   private val translationCase: ShowDetailsTranslationCase,
@@ -84,56 +92,68 @@ class ShowDetailsViewModel @Inject constructor(
   private val announcementManager: AnnouncementManager,
   private val imagesProvider: ShowImagesProvider,
   private val dateFormatProvider: DateFormatProvider,
-) : BaseViewModel<ShowDetailsUiModel>() {
+) : BaseViewModel2() {
+
+  private val showState = MutableStateFlow<Show?>(null)
+  private val showLoadingState = MutableStateFlow(false)
+  private val showRatingsState = MutableStateFlow<Ratings?>(null)
+  private val imageState = MutableStateFlow<Image?>(null)
+  private val actorsState = MutableStateFlow<List<Actor>?>(null)
+  private val seasonsState = MutableStateFlow<List<SeasonListItem>?>(null)
+  private val relatedState = MutableStateFlow<List<RelatedListItem>?>(null)
+  private val nextEpisodeState = MutableStateFlow<NextEpisodeBundle?>(null)
+  private val commentsState = MutableStateFlow<List<Comment>?>(null)
+  private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
+  private val followedState = MutableStateFlow<FollowedState2?>(null)
+  private val ratingState = MutableStateFlow<RatingState?>(null)
+  private val streamingsState = MutableStateFlow<StreamingsBundle?>(null)
+  private val traktLoadingState = MutableStateFlow(false)
+  private val translationState = MutableStateFlow<Translation?>(null)
+  private val countryState = MutableStateFlow<AppCountry?>(null)
+  private val signedInState = MutableStateFlow(false)
+  private val premiumState = MutableStateFlow(false)
+  private val listsCountState = MutableStateFlow(0)
+
+  private val seasonTranslationEvent = MutableStateFlow<ActionEvent<SeasonListItem>?>(null)
+  private val removeTraktHistoryEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
+  private val removeTraktWatchlistEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
+  private val finishedEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
 
   private var show by notNull<Show>()
   private var areSeasonsLoaded = false
   private var areSeasonsLocal = false
   private val seasonItems = mutableListOf<SeasonListItem>()
 
-  private val _seasonsLiveData = MutableLiveData<List<SeasonListItem>>()
-  private val _actorsLiveData = MutableLiveData<List<Actor>>()
-  private val _relatedLiveData = MutableLiveData<List<RelatedListItem>>()
-  private val _nextEpisodeLiveData = MutableLiveData<NextEpisodeBundle>()
-  private val _streamingsBundle = MutableLiveData<StreamingsBundle>()
-
-  val seasonsLiveData: LiveData<List<SeasonListItem>> get() = _seasonsLiveData
-  val actorsLiveData: LiveData<List<Actor>> get() = _actorsLiveData
-  val relatedLiveData: LiveData<List<RelatedListItem>> get() = _relatedLiveData
-  val nextEpisodeLiveData: LiveData<NextEpisodeBundle> get() = _nextEpisodeLiveData
-  val streamingsLiveData: LiveData<StreamingsBundle> get() = _streamingsBundle
-
-  fun loadShowDetails(id: IdTrakt, context: Context) {
+  fun loadDetails(id: IdTrakt) {
     viewModelScope.launch {
       val progressJob = launchDelayed(700) {
-        uiState = ShowDetailsUiModel(showLoading = true)
+        showLoadingState.value = true
       }
       try {
         show = mainCase.loadDetails(id)
         Analytics.logShowDetailsDisplay(show)
 
         val isSignedIn = userManager.isAuthorized()
-        val isFollowed = async { myShowsCase.isMyShows(show) }
+        val isMyShow = async { myShowsCase.isMyShows(show) }
         val isWatchLater = async { watchlistCase.isWatchlist(show) }
         val isArchived = async { archiveCase.isArchived(show) }
-        val followedState = FollowedState(
-          isMyShows = isFollowed.await(),
+        val isFollowed = FollowedState2(
+          isMyShows = isMyShow.await(),
           isWatchlist = isWatchLater.await(),
           isArchived = isArchived.await(),
           withAnimation = false
         )
 
         progressJob.cancel()
-        uiState = ShowDetailsUiModel(
-          show = show,
-          showLoading = false,
-          followedState = followedState,
-          ratingState = RatingState(rateAllowed = isSignedIn, rateLoading = false),
-          country = AppCountry.fromCode(settingsRepository.country),
-          isPremium = settingsRepository.isPremium,
-          isSignedIn = isSignedIn,
-          commentsDateFormat = dateFormatProvider.loadFullHourFormat()
-        )
+
+        showState.value = show
+        showLoadingState.value = false
+        followedState.value = isFollowed
+        ratingState.value = RatingState(rateAllowed = isSignedIn, rateLoading = false)
+        countryState.value = AppCountry.fromCode(settingsRepository.country)
+        premiumState.value = settingsRepository.isPremium
+        signedInState.value = isSignedIn
+        commentsDateFormatState.value = dateFormatProvider.loadFullHourFormat()
 
         loadBackgroundImage(show)
         loadListsCount(show)
@@ -153,11 +173,12 @@ class ShowDetailsViewModel @Inject constructor(
         progressJob.cancel()
         if (error is HttpException && error.code() == 404) {
           // Malformed Trakt data or duplicate show.
-          _messageLiveData.value = MessageEvent.info(R.string.errorMalformedShow)
+          _messageState.emit(MessageEvent.info(R.string.errorMalformedShow))
         } else {
-          _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadShow)
+          _messageState.emit(MessageEvent.error(R.string.errorCouldNotLoadShow))
         }
         Logger.record(error, "Source" to "ShowDetailsViewModel")
+        Timber.e(error)
         rethrowCancellation(error)
       }
     }
@@ -169,12 +190,12 @@ class ShowDetailsViewModel @Inject constructor(
       val dateFormat = dateFormatProvider.loadFullHourFormat()
       episode?.let {
         val nextEpisode = NextEpisodeBundle(Pair(show, it), dateFormat = dateFormat)
-        _nextEpisodeLiveData.postValue(nextEpisode)
+        nextEpisodeState.value = nextEpisode
         val translation = translationCase.loadTranslation(episode, show)
         if (translation?.title?.isNotBlank() == true) {
           val translated = it.copy(title = translation.title)
           val nextEpisodeTranslated = NextEpisodeBundle(Pair(show, translated), dateFormat = dateFormat)
-          _nextEpisodeLiveData.postValue(nextEpisodeTranslated)
+          nextEpisodeState.value = nextEpisodeTranslated
         }
       }
     } catch (error: Throwable) {
@@ -187,9 +208,10 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         val backgroundImage = imagesProvider.loadRemoteImage(show ?: this@ShowDetailsViewModel.show, FANART)
-        uiState = ShowDetailsUiModel(image = backgroundImage)
+        imageState.value = backgroundImage
       } catch (error: Throwable) {
-        uiState = ShowDetailsUiModel(image = Image.createUnavailable(FANART))
+        imageState.value = Image.createUnavailable(FANART)
+        Timber.e(error)
         rethrowCancellation(error)
       }
     }
@@ -198,9 +220,9 @@ class ShowDetailsViewModel @Inject constructor(
   private suspend fun loadActors(show: Show) {
     try {
       val actors = actorsCase.loadActors(show)
-      _actorsLiveData.postValue(actors)
+      actorsState.value = actors
     } catch (error: Throwable) {
-      _actorsLiveData.postValue(emptyList())
+      actorsState.value = emptyList()
       rethrowCancellation(error)
     }
   }
@@ -221,10 +243,10 @@ class ShowDetailsViewModel @Inject constructor(
       .sortedByDescending { it.season.number }
 
     val calculated = markWatchedEpisodes(seasonsItems)
-    _seasonsLiveData.postValue(calculated)
+    seasonsState.value = calculated
     seasons
   } catch (error: Throwable) {
-    _seasonsLiveData.postValue(emptyList())
+    seasonsState.value = emptyList()
     emptyList()
   }
 
@@ -234,18 +256,17 @@ class ShowDetailsViewModel @Inject constructor(
         val image = imagesProvider.findCachedImage(it, POSTER)
         RelatedListItem(it, image)
       }
-      _relatedLiveData.postValue(relatedShows)
+      relatedState.value = relatedShows
     } catch (error: Throwable) {
-      _relatedLiveData.postValue(emptyList())
+      relatedState.value = emptyList()
       rethrowCancellation(error)
     }
   }
 
   private suspend fun loadTranslation(show: Show) {
     try {
-      val translation = translationCase.loadTranslation(show)
-      translation?.let {
-        uiState = ShowDetailsUiModel(translation = it)
+      translationCase.loadTranslation(show)?.let {
+        translationState.value = it
       }
     } catch (error: Throwable) {
       Logger.record(error, "Source" to "ShowDetailsViewModel::loadTranslation()")
@@ -256,12 +277,12 @@ class ShowDetailsViewModel @Inject constructor(
   private suspend fun loadStreamings(show: Show) {
     try {
       val localStreamings = streamingsCase.getLocalStreamingServices(show)
-      _streamingsBundle.postValue(StreamingsBundle(localStreamings, isLocal = true))
+      streamingsState.value = StreamingsBundle(localStreamings, isLocal = true)
 
       val remoteStreamings = streamingsCase.loadStreamingServices(show)
-      _streamingsBundle.postValue(StreamingsBundle(remoteStreamings, isLocal = false))
+      streamingsState.value = StreamingsBundle(remoteStreamings, isLocal = false)
     } catch (error: Throwable) {
-      _streamingsBundle.postValue(StreamingsBundle(emptyList(), isLocal = false))
+      streamingsState.value = StreamingsBundle(emptyList(), isLocal = false)
       rethrowCancellation(error)
     }
   }
@@ -274,11 +295,11 @@ class ShowDetailsViewModel @Inject constructor(
       rottenTomatoes = Ratings.Value(null, true)
     )
     try {
-      uiState = ShowDetailsUiModel(ratings = traktRatings)
+      showRatingsState.value = traktRatings
       val ratings = ratingsCase.loadExternalRatings(show)
-      uiState = ShowDetailsUiModel(ratings = ratings)
+      showRatingsState.value = ratings
     } catch (error: Throwable) {
-      uiState = ShowDetailsUiModel(ratings = traktRatings)
+      showRatingsState.value = traktRatings
       rethrowCancellation(error)
     }
   }
@@ -303,9 +324,10 @@ class ShowDetailsViewModel @Inject constructor(
 
         val updatedItem = seasonItem.copy(episodes = episodes)
         seasonItems.findReplace(updatedItem) { it.id == updatedItem.id }
-        uiState = ShowDetailsUiModel(seasonTranslation = ActionEvent(updatedItem))
+        seasonTranslationEvent.value = ActionEvent(updatedItem)
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "ShowDetailsViewModel::loadSeasonTranslation()")
+        Timber.e(error)
         rethrowCancellation(error)
       }
     }
@@ -314,7 +336,7 @@ class ShowDetailsViewModel @Inject constructor(
   fun loadListsCount(show: Show? = null) {
     viewModelScope.launch {
       val count = listsCase.countLists(show ?: this@ShowDetailsViewModel.show)
-      uiState = ShowDetailsUiModel(listsCount = count)
+      listsCountState.value = count
     }
   }
 
@@ -322,9 +344,10 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         val comments = commentsCase.loadComments(show)
-        uiState = ShowDetailsUiModel(comments = comments)
+        commentsState.value = comments
       } catch (error: Throwable) {
-        uiState = ShowDetailsUiModel(comments = emptyList())
+        commentsState.value = emptyList()
+        Timber.e(error)
         rethrowCancellation(error)
       }
     }
@@ -332,7 +355,7 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   fun loadCommentReplies(comment: Comment) {
-    var currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
+    var currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
     if (currentComments.any { it.parentId == comment.id }) return
 
     viewModelScope.launch {
@@ -341,29 +364,30 @@ class ShowDetailsViewModel @Inject constructor(
         parent?.let { p ->
           val copy = p.copy(isLoading = true)
           currentComments.findReplace(copy) { it.id == p.id }
-          uiState = ShowDetailsUiModel(comments = currentComments)
+          commentsState.value = currentComments
         }
 
         val replies = commentsCase.loadReplies(comment)
 
-        currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
+        currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
         val parentIndex = currentComments.indexOfFirst { it.id == comment.id }
         if (parentIndex > -1) currentComments.addAll(parentIndex + 1, replies)
         parent?.let {
           currentComments.findReplace(parent.copy(isLoading = false, hasRepliesLoaded = true)) { it.id == comment.id }
         }
 
-        uiState = ShowDetailsUiModel(comments = currentComments)
+        commentsState.value = currentComments
       } catch (error: Throwable) {
-        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
-        uiState = ShowDetailsUiModel(comments = currentComments)
+        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        commentsState.value = currentComments
+        Timber.e(error)
         rethrowCancellation(error)
       }
     }
   }
 
   fun addNewComment(comment: Comment) {
-    val currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
+    val currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
     if (!comment.isReply()) {
       currentComments.add(0, comment)
     } else {
@@ -375,22 +399,22 @@ class ShowDetailsViewModel @Inject constructor(
         currentComments.findReplace(parent.copy(replies = repliesCount)) { it.id == comment.parentId }
       }
     }
-    uiState = ShowDetailsUiModel(comments = currentComments)
+    commentsState.value = currentComments
   }
 
   fun deleteComment(comment: Comment) {
-    var currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
+    var currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
     val target = currentComments.find { it.id == comment.id } ?: return
 
     viewModelScope.launch {
       try {
         val copy = target.copy(isLoading = true)
         currentComments.findReplace(copy) { it.id == target.id }
-        uiState = ShowDetailsUiModel(comments = currentComments)
+        commentsState.value = currentComments
 
         commentsCase.delete(target)
 
-        currentComments = uiState?.comments?.toMutableList() ?: mutableListOf()
+        currentComments = uiState.value.comments?.toMutableList() ?: mutableListOf()
         val targetIndex = currentComments.indexOfFirst { it.id == target.id }
         if (targetIndex > -1) {
           currentComments.removeAt(targetIndex)
@@ -401,15 +425,15 @@ class ShowDetailsViewModel @Inject constructor(
           }
         }
 
-        uiState = ShowDetailsUiModel(comments = currentComments)
-        _messageLiveData.value = MessageEvent.info(R.string.textCommentDeleted)
+        commentsState.value = currentComments
+        _messageState.emit(MessageEvent.info(R.string.textCommentDeleted))
       } catch (t: Throwable) {
         if (t is HttpException && t.code() == 409) {
-          _messageLiveData.value = MessageEvent.error(R.string.errorCommentDelete)
+          _messageState.emit(MessageEvent.error(R.string.errorCommentDelete))
         } else {
-          _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+          _messageState.emit(MessageEvent.error(R.string.errorGeneral))
         }
-        uiState = ShowDetailsUiModel(comments = currentComments)
+        commentsState.value = currentComments
       }
     }
   }
@@ -417,9 +441,9 @@ class ShowDetailsViewModel @Inject constructor(
   fun loadMissingImage(item: RelatedListItem, force: Boolean) {
 
     fun updateItem(new: RelatedListItem) {
-      val currentItems = _relatedLiveData.value?.toMutableList() ?: mutableListOf()
+      val currentItems = uiState.value.relatedShows?.toMutableList() ?: mutableListOf()
       currentItems.findReplace(new) { it.isSameAs(new) }
-      _relatedLiveData.postValue(currentItems)
+      relatedState.value = currentItems
     }
 
     viewModelScope.launch {
@@ -435,17 +459,17 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   fun loadPremium() {
-    uiState = ShowDetailsUiModel(isPremium = settingsRepository.isPremium)
+    premiumState.value = settingsRepository.isPremium
   }
 
   private suspend fun loadRating(show: Show, isSignedIn: Boolean) {
     if (!isSignedIn) return
     try {
-      uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = true))
+      ratingState.value = RatingState(rateLoading = true, rateAllowed = isSignedIn)
       val rating = ratingsCase.loadRating(show)
-      uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = rating ?: TraktRating.EMPTY, rateLoading = false))
+      ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn, userRating = rating ?: TraktRating.EMPTY)
     } catch (error: Throwable) {
-      uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = false))
+      ratingState.value = RatingState(rateLoading = false, rateAllowed = isSignedIn)
       rethrowCancellation(error)
     }
   }
@@ -453,15 +477,16 @@ class ShowDetailsViewModel @Inject constructor(
   fun addRating(rating: Int) {
     viewModelScope.launch {
       try {
-        uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = true))
+        ratingState.value = RatingState(rateLoading = true, rateAllowed = true)
         ratingsCase.addRating(show, rating)
         val userRating = TraktRating(show.ids.trakt, rating)
-        uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = userRating, rateLoading = false))
-        _messageLiveData.value = MessageEvent.info(R.string.textRateSaved)
+        ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = userRating)
+        _messageState.emit(MessageEvent.info(R.string.textRateSaved))
         Analytics.logShowRated(show, rating)
       } catch (error: Throwable) {
-        uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = false))
-        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+        ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
+        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        Timber.e(error)
         rethrowCancellation(error)
       }
     }
@@ -470,56 +495,58 @@ class ShowDetailsViewModel @Inject constructor(
   fun deleteRating() {
     viewModelScope.launch {
       try {
-        uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = true))
+        ratingState.value = RatingState(rateLoading = true, rateAllowed = true)
         ratingsCase.deleteRating(show)
-        uiState = ShowDetailsUiModel(ratingState = RatingState(userRating = TraktRating.EMPTY, rateLoading = false))
-        _messageLiveData.value = MessageEvent.info(R.string.textShowRatingDeleted)
+        ratingState.value = RatingState(rateLoading = false, rateAllowed = true, userRating = TraktRating.EMPTY)
+        _messageState.emit(MessageEvent.info(R.string.textShowRatingDeleted))
       } catch (error: Throwable) {
-        uiState = ShowDetailsUiModel(ratingState = RatingState(rateLoading = false))
-        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+        ratingState.value = RatingState(rateLoading = false, rateAllowed = true)
+        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        Timber.e(error)
         rethrowCancellation(error)
       }
     }
   }
 
   fun addFollowedShow() {
-    if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
+      if (!checkSeasonsLoaded()) return@launch
+
       val seasons = seasonItems.map { it.season }
       val episodes = seasonItems.flatMap { it.episodes.map { e -> e.episode } }
+
       myShowsCase.addToMyShows(show, seasons, episodes)
-
-      uiState = ShowDetailsUiModel(followedState = FollowedState.inMyShows())
-
+      followedState.value = FollowedState2.inMyShows()
       announcementManager.refreshShowsAnnouncements()
       Analytics.logShowAddToMyShows(show)
     }
   }
 
   fun addWatchlistShow(context: Context) {
-    if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
+      if (!checkSeasonsLoaded()) return@launch
+
       watchlistCase.addToWatchlist(show)
       quickSyncManager.scheduleShowsWatchlist(context, listOf(show.traktId))
-
-      uiState = ShowDetailsUiModel(followedState = FollowedState.inWatchlist())
-
+      followedState.value = FollowedState2.inWatchlist()
       Analytics.logShowAddToWatchlistShows(show)
     }
   }
 
   fun addArchiveShow() {
-    if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
+      if (!checkSeasonsLoaded()) return@launch
+
       archiveCase.addToArchive(show, removeLocalData = !areSeasonsLocal)
-      uiState = ShowDetailsUiModel(followedState = FollowedState.inArchive())
+      followedState.value = FollowedState2.inArchive()
       Analytics.logShowAddToArchive(show)
     }
   }
 
   fun removeFromFollowed() {
-    if (!checkSeasonsLoaded()) return
     viewModelScope.launch {
+      if (!checkSeasonsLoaded()) return@launch
+
       val isMyShows = myShowsCase.isMyShows(show)
       val isWatchlist = watchlistCase.isWatchlist(show)
       val isArchived = archiveCase.isArchived(show)
@@ -540,12 +567,18 @@ class ShowDetailsViewModel @Inject constructor(
       val traktQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
       val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal
 
-      val state = FollowedState.notFollowed()
+      val state = FollowedState2.notFollowed()
       val event = ActionEvent(showRemoveTrakt)
-      uiState = when {
-        isMyShows || isArchived -> ShowDetailsUiModel(followedState = state, removeFromTraktHistory = event)
-        isWatchlist -> ShowDetailsUiModel(followedState = state, removeFromTraktWatchlist = event)
-        else -> error("Unexpected show state")
+      when {
+        isMyShows || isArchived -> {
+          followedState.value = state
+          removeTraktHistoryEvent.value = event
+        }
+        isWatchlist -> {
+          followedState.value = state
+          removeTraktWatchlistEvent.value = event
+        }
+        else -> error("Unexpected show state.")
       }
 
       announcementManager.refreshShowsAnnouncements()
@@ -555,14 +588,16 @@ class ShowDetailsViewModel @Inject constructor(
   fun removeFromTraktHistory() {
     viewModelScope.launch {
       try {
-        uiState = ShowDetailsUiModel(showFromTraktLoading = true)
+        traktLoadingState.value = true
         myShowsCase.removeTraktHistory(show)
         refreshWatchedEpisodes()
-        _messageLiveData.value = MessageEvent.info(R.string.textTraktSyncRemovedFromTrakt)
-        uiState = ShowDetailsUiModel(showFromTraktLoading = false, removeFromTraktHistory = ActionEvent(false))
+        _messageState.emit(MessageEvent.info(R.string.textTraktSyncRemovedFromTrakt))
+        traktLoadingState.value = false
+        removeTraktHistoryEvent.value = ActionEvent(false)
       } catch (error: Throwable) {
-        _messageLiveData.value = MessageEvent.error(R.string.errorTraktSyncGeneral)
-        uiState = ShowDetailsUiModel(showFromTraktLoading = false)
+        _messageState.emit(MessageEvent.error(R.string.errorTraktSyncGeneral))
+        traktLoadingState.value = false
+        Timber.e(error)
         rethrowCancellation(error)
       }
     }
@@ -571,13 +606,15 @@ class ShowDetailsViewModel @Inject constructor(
   fun removeFromTraktWatchlist() {
     viewModelScope.launch {
       try {
-        uiState = ShowDetailsUiModel(showFromTraktLoading = true)
+        traktLoadingState.value = true
         watchlistCase.removeTraktWatchlist(show)
-        _messageLiveData.value = MessageEvent.info(R.string.textTraktSyncRemovedFromTrakt)
-        uiState = ShowDetailsUiModel(showFromTraktLoading = false, removeFromTraktWatchlist = ActionEvent(false))
+        _messageState.emit(MessageEvent.info(R.string.textTraktSyncRemovedFromTrakt))
+        traktLoadingState.value = false
+        removeTraktWatchlistEvent.value = ActionEvent(false)
       } catch (error: Throwable) {
-        _messageLiveData.value = MessageEvent.error(R.string.errorTraktSyncGeneral)
-        uiState = ShowDetailsUiModel(showFromTraktLoading = false)
+        _messageState.emit(MessageEvent.error(R.string.errorTraktSyncGeneral))
+        traktLoadingState.value = false
+        Timber.e(error)
         rethrowCancellation(error)
       }
     }
@@ -591,7 +628,7 @@ class ShowDetailsViewModel @Inject constructor(
         Timber.e(error)
         rethrowCancellation(error)
       } finally {
-        uiState = ShowDetailsUiModel(isFinished = ActionEvent(true))
+        finishedEvent.value = ActionEvent(true)
       }
     }
   }
@@ -639,9 +676,9 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  private fun checkSeasonsLoaded(): Boolean {
+  private suspend fun checkSeasonsLoaded(): Boolean {
     if (!areSeasonsLoaded) {
-      _messageLiveData.value = MessageEvent.info(R.string.errorSeasonsNotLoaded)
+      _messageState.emit(MessageEvent.info(R.string.errorSeasonsNotLoaded))
       return false
     }
     return true
@@ -657,13 +694,13 @@ class ShowDetailsViewModel @Inject constructor(
         seasonItem.copy(episodes = episodes)
       }
       seasonItems.replace(items)
-      _seasonsLiveData.postValue(items)
+      seasonsState.value = items
     }
   }
 
   private suspend fun refreshWatchedEpisodes() {
     val updatedSeasonItems = markWatchedEpisodes(seasonItems)
-    _seasonsLiveData.postValue(updatedSeasonItems)
+    seasonsState.value = updatedSeasonItems
   }
 
   private suspend fun markWatchedEpisodes(seasonsList: List<SeasonListItem>): List<SeasonListItem> {
@@ -696,12 +733,9 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   fun setQuickProgress(context: Context, item: QuickSetupListItem?) {
-    if (item == null) return
-    if (!areSeasonsLoaded) {
-      _messageLiveData.value = MessageEvent.info(R.string.errorSeasonsNotLoaded)
-      return
-    }
     viewModelScope.launch {
+      if (item == null || !checkSeasonsLoaded()) return@launch
+
       episodesManager.setAllUnwatched(show, skipSpecials = true)
       val seasons = seasonItems.map { it.season }
       seasons
@@ -717,8 +751,64 @@ class ShowDetailsViewModel @Inject constructor(
           setWatchedEpisode(context, episode, season, true)
         }
 
-      _messageLiveData.value = MessageEvent.info(R.string.textShowQuickProgressDone)
+      _messageState.emit(MessageEvent.info(R.string.textShowQuickProgressDone))
       Analytics.logShowQuickProgress(show)
     }
   }
+
+  val uiState = combine(
+    showState,
+    showLoadingState,
+    showRatingsState,
+    imageState,
+    seasonsState,
+    actorsState,
+    relatedState,
+    nextEpisodeState,
+    commentsState,
+    commentsDateFormatState,
+    followedState,
+    ratingState,
+    streamingsState,
+    traktLoadingState,
+    translationState,
+    countryState,
+    signedInState,
+    premiumState,
+    listsCountState,
+    seasonTranslationEvent,
+    removeTraktHistoryEvent,
+    removeTraktWatchlistEvent,
+    finishedEvent
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21, s22, s23 ->
+    ShowDetailsUiState(
+      show = s1,
+      showLoading = s2,
+      ratings = s3,
+      image = s4,
+      seasons = s5,
+      actors = s6,
+      relatedShows = s7,
+      nextEpisode = s8,
+      comments = s9,
+      commentsDateFormat = s10,
+      followedState = s11,
+      ratingState = s12,
+      streamings = s13,
+      showFromTraktLoading = s14,
+      translation = s15,
+      country = s16,
+      isSignedIn = s17,
+      isPremium = s18,
+      listsCount = s19,
+      seasonTranslation = s20,
+      removeFromTraktHistory = s21,
+      removeFromTraktWatchlist = s22,
+      isFinished = s23
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = ShowDetailsUiState()
+  )
 }

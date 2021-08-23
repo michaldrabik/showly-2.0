@@ -17,10 +17,12 @@ open class BaseViewModel2 : ViewModel() {
   protected val _messageState = MutableSharedFlow<MessageEvent>()
   val messageState = _messageState.asSharedFlow()
 
-  protected fun rethrowCancellation(t: Throwable) {
-    if (t is CancellationException) {
+  protected fun rethrowCancellation(error: Throwable) {
+    if (error is CancellationException) {
       Timber.d("Rethrowing CancellationException")
-      throw t
+      throw error
+    } else {
+      Timber.e(error)
     }
   }
 }

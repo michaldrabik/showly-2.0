@@ -155,7 +155,7 @@ class MovieDetailsFragment : BaseFragment2<MovieDetailsViewModel>(R.layout.fragm
       repeatOnLifecycle(Lifecycle.State.STARTED) {
         with(viewModel) {
           launch { uiState.collect { render(it) } }
-          launch { messageState.collect { showSnack(it) } }
+          launch { messageState.collect { renderSnack(it) } }
           if (!isInitialized) {
             loadDetails(movieId)
             isInitialized = true
