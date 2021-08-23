@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textSearchInitial1">Mitä etsit?</string>
+  <string name="textSearchInitial2">Haun voimanlähteenä Trakt.tv</string>
+  <string name="textClear">Tyhjennä viimeaikaiset haut</string>
+</resources>

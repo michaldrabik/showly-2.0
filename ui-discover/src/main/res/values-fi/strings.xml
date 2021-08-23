@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textGenres">Tyylilajit:</string>
+  <string name="textSortOrder">Syöte:</string>
+  <string name="textDiscoverFilterAnticipated">Piilota odotetut sarjat</string>
+  <string name="textDiscoverFilterCollection">Piilota kokoelma</string>
+</resources>

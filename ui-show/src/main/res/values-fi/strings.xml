@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textAdd">Lisää omiin sarjoihin</string>
+  <string name="textWatchLater">Katsele myöhemmin</string>
+  <string name="textNextEpisode">Seuraava jakso:</string>
+  <string name="textInMyShows">Lisätty omiin sarjoihin</string>
+  <string name="textInWatchlist">Lisätty katselulistalle</string>
+  <string name="textInArchive">Arkistoitu</string>
+  <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
+  <string name="textShowQuickProgressTitle">Pikakatselutila</string>
+  <string name="textShowQuickProgressSubTitle">Valitse viimeisin katseltu jakso saattaaksesi katselutila ajan tasalle nopeasti.</string>
+  <string name="textShowQuickProgressDone">Katselutilanteesi päivitettiin.</string>
+  <string name="textEpisodeDate">Jakso %1$d | %2$s</string>
+  <string name="textEpisodeTitle">K.%02d J.%02d - \'%s\'</string>
+  <string name="textTraktSyncRemovedFromTrakt">Trakt.tv synkronoitiin.</string>
+  <string name="textActorsEmpty">Näyttelijät eivät ole saatavilla</string>
+  <string name="textSeasons">Kaudet:</string>
+  <string name="textSeasonsEmpty">Tuotantokausia ei ole.</string>
+  <string name="textTrailer">Traileri</string>
+  <string name="textLink">Linkki</string>
+  <string name="textShare">Jaa</string>
+  <string name="textYouMayAlsoLike">Saattaisit pitää myös näistä:</string>
+  <string name="textRuntimeLeftHours">~%s h %s m jäljellä</string>
+  <string name="textRuntimeLeftMinutes">~%s m jäljellä</string>
+  <string name="textWhatIsArchive">Arkisto?</string>
+  <string name="textWhatIsArchiveFull">Mikä on arkisto?</string>
+  <string name="textArchiveDescription"><b>Arkisto</b> on lista sarjoista, jotka ovat jääneet kesken, ne on hylätty tai eivät enää kiinnosta.\n\n\Arkistoidut sarjat eivät enää näy <b>katselutilanteessa</b>, <b>etsinnässä</b> eivätkä <b>omissa sarjoissa</b>, eikä niitä huomioida Trakt.tv-tuonnissa.</string>
+  <string name="textArchiveConfirmationTitle">Arkistoi sarja</string>
+  <string name="textArchiveConfirmationMessage">\nHaluatko varmasti arkistoida sarjan?\n</string>
+  <string name="textShowManageLists">Hallinnoi listoja</string>
+  <string name="textShowManageListsCount">Hallinnoi listoja (%d)</string>
+</resources>

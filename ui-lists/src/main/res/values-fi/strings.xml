@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuLists">Listat</string>
+  <string name="menuList">Lista</string>
+  <string name="textFilters">Suodattimet:</string>
+  <string name="textListsEmpty">Listakokoelmasi on tyhjä.</string>
+  <string name="textListEmpty">Listasi on tyhjä.</string>
+  <string name="textCreateList">Luo lista</string>
+  <string name="textCreateListDescription">Luo uusi mukautettu lista.</string>
+  <string name="textName">Nimi</string>
+  <string name="textDescription">Kuvaus (valinnainen)</string>
+  <string name="textDeleteList">Poista lista</string>
+  <string name="textEditList">Muokkaa listaa</string>
+  <string name="textEditListDescription">Päivitä listasi tietoja.</string>
+  <string name="textConfirmDeleteListTitle">Poista lista</string>
+  <string name="textConfirmDeleteListSubtitle">Haluatko varmasti poistaa listan?</string>
+  <string name="textChangeRanks">Muuta sijoituksia</string>
+  <string name="textChangeRanksSubtitle">Muuta listan kohteen sijoitusta vetämällä ja pudottamalla</string>
+  <string name="textManageLists">Hallinnoi listoja</string>
+  <string name="textManageListsShows">Hallinnoi sarjaan liitettyjä listoja.</string>
+  <string name="textManageListsMovies">Hallinnoi elokuvaan liitettyjä listoja.</string>
+  <string name="errorCouldNotCreateList">Listan luonti Trakt.tv-kokoelmaasi ei juuri nyt onnistunut.\nTarkista Internet-yhteytesi ja yritä uudelleen.</string>
+  <string name="errorCouldNotUpdateList">Listan päivitys Trakt.tv-kokoelmaasi ei juuri nyt onnistunut.\nTarkista Internet-yhteytesi ja yritä uudelleen.</string>
+  <string name="errorCouldNotDeleteList">Listan poisto Trakt.tv-kokoelmastasi ei juuri nyt onnistunut.\nTarkista Internet-yhteytesi ja yritä uudelleen.</string>
+</resources>
