@@ -17,7 +17,7 @@ import org.threeten.bp.format.DateTimeFormatter
 
 data class ShowDetailsUiState(
   val show: Show? = null,
-  val showLoading: Boolean = false,
+  val showLoading: Boolean? = null,
   val image: Image? = null,
   val seasons: List<SeasonListItem>? = null,
   val actors: List<Actor>? = null,

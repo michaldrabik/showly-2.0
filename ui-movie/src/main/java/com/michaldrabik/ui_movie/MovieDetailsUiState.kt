@@ -15,7 +15,7 @@ import org.threeten.bp.format.DateTimeFormatter
 
 data class MovieDetailsUiState(
   val movie: Movie? = null,
-  val movieLoading: Boolean = false,
+  val movieLoading: Boolean? = null,
   val image: Image? = null,
   val actors: List<Actor>? = null,
   val relatedMovies: List<RelatedListItem>? = null,

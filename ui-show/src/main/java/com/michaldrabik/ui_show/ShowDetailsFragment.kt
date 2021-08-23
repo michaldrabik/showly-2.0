@@ -527,7 +527,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         showDetailsCustomImagesLabel.onClick { showCustomImagesSheet(show.traktId, isPremium) }
         showDetailsAddButton.isEnabled = true
       }
-      showLoading.let {
+      showLoading?.let {
         if (!showDetailsEpisodesView.isVisible && !showDetailsCommentsView.isVisible) {
           showDetailsMainLayout.fadeIf(!it, hardware = true)
           showDetailsMainProgress.visibleIf(it)

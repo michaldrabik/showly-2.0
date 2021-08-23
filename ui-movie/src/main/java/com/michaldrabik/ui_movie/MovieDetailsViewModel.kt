@@ -74,7 +74,7 @@ class MovieDetailsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   private val movieState = MutableStateFlow<Movie?>(null)
-  private val movieLoadingState = MutableStateFlow(false)
+  private val movieLoadingState = MutableStateFlow<Boolean?>(null)
   private val movieRatingsState = MutableStateFlow<Ratings?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
   private val actorsState = MutableStateFlow<List<Actor>?>(null)

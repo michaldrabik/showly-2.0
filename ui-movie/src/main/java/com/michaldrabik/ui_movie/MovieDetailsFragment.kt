@@ -428,7 +428,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         movieDetailsCustomImagesLabel.onClick { showCustomImagesSheet(movie.traktId, isPremium) }
         movieDetailsAddButton.isEnabled = true
       }
-      movieLoading.let {
+      movieLoading?.let {
         if (!movieDetailsCommentsView.isVisible) {
           movieDetailsMainLayout.fadeIf(!it, hardware = true)
           movieDetailsMainProgress.visibleIf(it)

@@ -95,7 +95,7 @@ class ShowDetailsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   private val showState = MutableStateFlow<Show?>(null)
-  private val showLoadingState = MutableStateFlow(false)
+  private val showLoadingState = MutableStateFlow<Boolean?>(null)
   private val showRatingsState = MutableStateFlow<Ratings?>(null)
   private val imageState = MutableStateFlow<Image?>(null)
   private val actorsState = MutableStateFlow<List<Actor>?>(null)
