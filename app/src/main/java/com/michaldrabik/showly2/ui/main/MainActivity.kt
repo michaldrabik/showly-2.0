@@ -269,8 +269,9 @@ class MainActivity :
   private fun render(uiState: MainUiState) {
     uiState.run {
       isInitialRun?.let {
-        val event = it.consume()
-        if (event == true) showWelcomeDialog(event)
+        if (it.consume() == true) {
+          viewModel.checkInitialLanguage()
+        }
       }
       showWhatsNew?.let {
         if (it.consume() == true) showWhatsNewDialog()
@@ -283,20 +284,23 @@ class MainActivity :
       }
       initialLanguage?.let { event ->
         event.consume()?.let {
-          showWelcomeLanguageDialog(it)
+          showWelcomeDialog(it)
         }
       }
     }
   }
 
-  private fun showWelcomeDialog(isInitialRun: Boolean) {
+  private fun showWelcomeDialog(language: AppLanguage) {
     openTab(R.id.menuDiscover)
     with(welcomeView) {
+      setLanguage(language)
       fadeIn()
       onOkClickListener = {
         fadeOut()
         welcomeViewMask.gone()
-        viewModel.checkLanguageChange(isInitialRun)
+        if (language != AppLanguage.ENGLISH) {
+          showWelcomeLanguageDialog(language)
+        }
       }
     }
     with(welcomeViewMask) {

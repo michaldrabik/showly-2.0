@@ -85,13 +85,9 @@ class MainViewModel @Inject constructor(
   fun setLanguage(appLanguage: AppLanguage) =
     initCase.setLanguage(appLanguage)
 
-  fun checkLanguageChange(isInitialRun: Boolean) {
-    if (!isInitialRun) return
-
-    val initialLanguage = initCase.checkLanguageChange()
-    if (initialLanguage != AppLanguage.ENGLISH) {
-      initialLanguageEvent.value = ActionEvent(initialLanguage)
-    }
+  fun checkInitialLanguage() {
+    val initialLanguage = initCase.checkInitialLanguage()
+    initialLanguageEvent.value = ActionEvent(initialLanguage)
   }
 
   fun refreshAnnouncements() {

@@ -19,38 +19,36 @@
     android:paddingBottom="@dimen/spaceSmall"
     >
 
-    <ImageView
-      android:id="@+id/viewWelcomeNoteIcon"
-      android:layout_width="60dp"
-      android:layout_height="60dp"
-      app:elevation="@dimen/elevationNormal"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:srcCompat="@mipmap/ic_launcher_round"
-      />
-
     <TextView
       android:id="@+id/viewWelcomeNoteTitle"
-      android:layout_width="0dp"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="@dimen/spaceMedium"
       android:text="@string/textDisclaimerTitle"
       android:textColor="?android:attr/textColorPrimary"
-      android:textSize="22sp"
+      android:textSize="28sp"
       android:textStyle="bold"
-      app:layout_constraintBottom_toBottomOf="@id/viewWelcomeNoteIcon"
+      app:layout_constraintBottom_toTopOf="@id/viewWelcomeEyeIcon"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@id/viewWelcomeNoteIcon"
-      app:layout_constraintTop_toTopOf="@id/viewWelcomeNoteIcon"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
+    <ImageView
+      android:id="@+id/viewWelcomeEyeIcon"
+      android:layout_width="80dp"
+      android:layout_height="80dp"
+      android:layout_margin="@dimen/spaceBig"
+      app:layout_constraintBottom_toTopOf="@id/viewWelcomeNoteMessage"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/viewWelcomeNoteTitle"
+      app:srcCompat="@drawable/ic_eye_off"
       />
 
     <TextView
       android:id="@+id/viewWelcomeNoteMessage"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/spaceNormal"
       android:layout_marginBottom="@dimen/spaceNormal"
       android:text="@string/textDisclaimerText"
       android:textColor="?android:attr/textColorPrimary"
@@ -58,7 +56,7 @@
       app:layout_constraintBottom_toTopOf="@id/viewWelcomeNoteYesButton"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/viewWelcomeNoteIcon"
+      app:layout_constraintTop_toBottomOf="@id/viewWelcomeEyeIcon"
       />
 
     <com.google.android.material.button.MaterialButton
@@ -67,7 +65,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="@dimen/spaceSmall"
-      android:text="@string/textOk"
+      android:text="@string/textDisclaimerConfirmText"
       android:textColor="?android:attr/textColorPrimary"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
