@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.appdistribution'
 apply plugin: 'com.google.firebase.crashlytics'
 apply from: '../versions.gradle'
@@ -114,5 +115,3 @@ dependencies {
   testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutinesTesting"
   androidTestImplementation "androidx.test:runner:$versions.testRunner"
 }
-
-apply plugin: 'com.google.gms.google-services'
