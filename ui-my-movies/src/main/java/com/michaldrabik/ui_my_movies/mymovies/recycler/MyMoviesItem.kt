@@ -7,7 +7,7 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.Translation
-import org.threeten.bp.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter
 
 data class MyMoviesItem(
   val type: Type,

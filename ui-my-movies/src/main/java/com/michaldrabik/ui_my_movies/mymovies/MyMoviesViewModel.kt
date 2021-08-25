@@ -29,7 +29,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import org.threeten.bp.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @HiltViewModel

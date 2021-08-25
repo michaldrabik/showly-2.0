@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.common.extensions.toMillis
 import kotlinx.android.parcel.Parcelize
-import org.threeten.bp.ZonedDateTime
+import java.time.ZonedDateTime
 
 @Parcelize
 data class Episode(

@@ -3,8 +3,8 @@ package com.michaldrabik.ui_base.utilities
 import android.content.Context
 import com.michaldrabik.common.extensions.nowUtc
 import com.michaldrabik.ui_base.R
-import org.threeten.bp.Duration
-import org.threeten.bp.ZonedDateTime
+import java.time.Duration
+import java.time.ZonedDateTime
 
 class DurationPrinter(private val context: Context) {
 

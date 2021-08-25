@@ -13,7 +13,6 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.jakewharton.processphoenix.ProcessPhoenix
-import com.jakewharton.threetenabp.AndroidThreeTen
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.ConfigVariant
@@ -123,7 +122,6 @@ class App :
     super.onCreate()
 
     if (ProcessPhoenix.isPhoenixProcess(this)) return
-    AndroidThreeTen.init(this)
 
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())

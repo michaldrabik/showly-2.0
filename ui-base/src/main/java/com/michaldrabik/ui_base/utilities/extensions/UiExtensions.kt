@@ -148,6 +148,6 @@ fun String.capitalizeWords(): String {
   return this
     .split(" ")
     .joinToString(separator = " ") {
-      it.capitalize(Locale.getDefault())
+      it.replaceFirstChar { string -> if (string.isLowerCase()) string.titlecase(Locale.getDefault()) else string.toString() }
     }
 }

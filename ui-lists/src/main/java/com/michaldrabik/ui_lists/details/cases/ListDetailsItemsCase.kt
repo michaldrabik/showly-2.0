@@ -29,9 +29,9 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import org.threeten.bp.Instant
-import org.threeten.bp.ZoneId
-import org.threeten.bp.ZonedDateTime
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @ViewModelScoped

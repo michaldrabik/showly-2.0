@@ -11,7 +11,7 @@ import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.StreamingService
 import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.related.RelatedListItem
-import org.threeten.bp.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter
 
 data class MovieDetailsUiState(
   val movie: Movie? = null,

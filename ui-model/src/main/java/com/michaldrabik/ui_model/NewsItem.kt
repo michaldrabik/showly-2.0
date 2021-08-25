@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_model
 
-import org.threeten.bp.ZonedDateTime
+import java.time.ZonedDateTime
 
 data class NewsItem(
   val id: String,

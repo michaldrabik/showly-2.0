@@ -71,7 +71,7 @@ class NewsItemView : FrameLayout {
       else -> Html.fromHtml(item.item.title)
     }
 
-    val relativeTime = DateUtils.getRelativeTimeSpanString(item.item.datedAt.toMillis()).toString().toLowerCase(Locale.ROOT)
+    val relativeTime = DateUtils.getRelativeTimeSpanString(item.item.datedAt.toMillis()).toString().lowercase(Locale.ROOT)
     newsItemHeader.text = item.dateFormat.format(item.item.datedAt.toLocalZone()).capitalizeWords()
     newsItemSubheader.text = "~ $relativeTime"
 

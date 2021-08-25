@@ -102,8 +102,8 @@ class ManageListsBottomSheet : BaseBottomSheetFragment<ManageListsViewModel>(), 
   }
 
   @SuppressLint("SetTextI18n")
-  private fun render(uiModel: ManageListsUiState) {
-    uiModel.run {
+  private fun render(uiState: ManageListsUiState) {
+    uiState.run {
       items?.let {
         adapter?.setItems(it)
         viewManageListsEmptyView.visibleIf(it.isEmpty())

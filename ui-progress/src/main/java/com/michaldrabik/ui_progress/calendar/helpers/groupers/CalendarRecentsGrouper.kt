@@ -5,7 +5,7 @@ import com.michaldrabik.common.extensions.toLocalZone
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
-import org.threeten.bp.temporal.ChronoUnit.DAYS
+import java.time.temporal.ChronoUnit.DAYS
 import javax.inject.Inject
 import javax.inject.Singleton
 

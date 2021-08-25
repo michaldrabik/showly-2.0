@@ -136,8 +136,8 @@ class MyShowsFragment :
       .show()
   }
 
-  private fun render(uiModel: MyShowsUiState) {
-    uiModel.run {
+  private fun render(uiState: MyShowsUiState) {
+    uiState.run {
       items?.let {
         val notifyUpdate = notifyListsUpdate?.consume() == true
         adapter?.notifyListsUpdate = notifyUpdate

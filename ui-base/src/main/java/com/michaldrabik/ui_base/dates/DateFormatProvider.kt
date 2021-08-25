@@ -8,7 +8,7 @@ import com.michaldrabik.ui_base.dates.AppDateFormat.MISC_24
 import com.michaldrabik.ui_base.dates.AppDateFormat.TRAKT_12
 import com.michaldrabik.ui_base.dates.AppDateFormat.TRAKT_24
 import com.michaldrabik.ui_base.dates.AppDateFormat.valueOf
-import org.threeten.bp.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 import javax.inject.Singleton
 

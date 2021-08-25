@@ -6,7 +6,7 @@ import com.michaldrabik.repository.StreamingsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.StreamingService
-import org.threeten.bp.ZonedDateTime
+import java.time.ZonedDateTime
 import javax.inject.Inject
 import javax.inject.Singleton
 

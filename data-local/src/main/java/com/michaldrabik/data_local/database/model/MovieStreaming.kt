@@ -7,7 +7,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.michaldrabik.data_local.database.converters.DateConverter
-import org.threeten.bp.ZonedDateTime
+import java.time.ZonedDateTime
 
 @Entity(
   tableName = "movies_streamings",

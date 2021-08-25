@@ -2,7 +2,7 @@ package com.michaldrabik.ui_model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import org.threeten.bp.ZonedDateTime
+import java.time.ZonedDateTime
 
 @Parcelize
 data class Comment(

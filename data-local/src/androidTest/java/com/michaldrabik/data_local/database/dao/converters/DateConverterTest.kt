@@ -2,16 +2,14 @@
 
 package com.michaldrabik.data_local.database.dao.converters
 
-import androidx.test.core.app.ApplicationProvider
-import androidx.test.runner.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
-import com.jakewharton.threetenabp.AndroidThreeTen
+import androidx.test.runner.AndroidJUnit4
 import com.michaldrabik.data_local.database.converters.DateConverter
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.threeten.bp.ZoneId
-import org.threeten.bp.ZonedDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 @RunWith(AndroidJUnit4::class)
 class DateConverterTest {
@@ -20,7 +18,6 @@ class DateConverterTest {
 
   @Before
   fun setUp() {
-    AndroidThreeTen.init(ApplicationProvider.getApplicationContext())
   }
 
   @Test

@@ -8,7 +8,7 @@ import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
-import org.threeten.bp.format.DateTimeFormatter
+import java.time.format.DateTimeFormatter
 import com.michaldrabik.ui_model.Episode as EpisodeModel
 
 sealed class CalendarListItem(

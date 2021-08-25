@@ -7,7 +7,7 @@ import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.IdTvdb
 import com.michaldrabik.ui_model.Ids
 import com.michaldrabik.ui_model.Season
-import org.threeten.bp.ZonedDateTime
+import java.time.ZonedDateTime
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
 import com.michaldrabik.data_remote.trakt.model.Episode as EpisodeNetwork
