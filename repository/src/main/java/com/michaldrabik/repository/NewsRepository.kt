@@ -20,7 +20,7 @@ class NewsRepository @Inject constructor(
 ) {
 
   companion object {
-    const val VALID_CACHE_MINUTES = 180L
+    const val VALID_CACHE_MINUTES = 360L
   }
 
   suspend fun getCachedNews(type: NewsItem.Type) =
