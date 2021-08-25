@@ -38,9 +38,11 @@ class ShowDetailsMyShowsCase @Inject constructor(
     episodes: List<Episode>
   ) {
     database.withTransaction {
-      showsRepository.myShows.insert(show.ids.trakt)
-      showsRepository.watchlistShows.delete(show.ids.trakt)
-      showsRepository.archiveShows.delete(show.ids.trakt)
+      with(showsRepository) {
+        myShows.insert(show.ids.trakt)
+        watchlistShows.delete(show.ids.trakt)
+        archiveShows.delete(show.ids.trakt)
+      }
 
       val localSeasons = database.seasonsDao().getAllByShowId(show.traktId)
       val localEpisodes = database.episodesDao().getAllByShowId(show.traktId)

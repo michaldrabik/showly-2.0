@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 class MessageEvent(
   @StringRes private val messageResId: Int,
   val type: Type,
-  val indefinite: Boolean = false
+  val indefinite: Boolean = false,
 ) {
 
   companion object {
@@ -22,6 +22,8 @@ class MessageEvent(
     } else {
       null
     }
+
+  fun peek(): Int = messageResId
 
   enum class Type {
     INFO,

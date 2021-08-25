@@ -10,6 +10,9 @@ import androidx.core.os.bundleOf
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
@@ -46,6 +49,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_details.*
 import kotlinx.android.synthetic.main.fragment_lists.*
 import kotlinx.android.synthetic.main.view_list_delete_confirm.view.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ListDetailsFragment :
@@ -66,10 +71,14 @@ class ListDetailsFragment :
     setupView()
     setupRecycler()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it) })
-      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
-      loadDetails(list.id)
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { showSnack(it) } }
+          loadDetails(list.id)
+        }
+      }
     }
   }
 
@@ -226,27 +235,27 @@ class ListDetailsFragment :
     viewModel.setReorderMode(list.id, isReorderMode)
   }
 
-  private fun render(uiModel: ListDetailsUiModel) {
-    uiModel.run {
-      details?.let { details ->
+  private fun render(uiState: ListDetailsUiState) {
+    uiState.run {
+      listDetails?.let { details ->
         with(fragmentListDetailsToolbar) {
           title = details.name
           subtitle = details.description
         }
-        val isQuickRemoveEnabled = isQuickRemoveEnabled == true
+        val isQuickRemoveEnabled = isQuickRemoveEnabled
         fragmentListDetailsSortButton.onClick { showSortOrderDialog(details.sortByLocal, details.filterTypeLocal) }
         fragmentListDetailsMoreButton.onClick { openPopupMenu(isQuickRemoveEnabled) }
       }
-      items?.let {
-        val isRealEmpty = it.isEmpty() && details?.filterTypeLocal?.containsAll(Mode.getAll()) == true
+      listItems?.let {
+        val isRealEmpty = it.isEmpty() && listDetails?.filterTypeLocal?.containsAll(Mode.getAll()) == true
         fragmentListDetailsEmptyView.fadeIf(it.isEmpty())
         fragmentListDetailsManageButton.visibleIf(!isRealEmpty)
         fragmentListDetailsSortButton.visibleIf(!isRealEmpty)
         val scrollTop = resetScroll?.consume() == true
         adapter?.setItems(it, scrollTop)
       }
-      isManageMode?.let { isEnabled ->
-        if (items?.isEmpty() == true && details?.filterTypeLocal?.containsAll(Mode.getAll()) == true) {
+      isManageMode.let { isEnabled ->
+        if (listItems?.isEmpty() == true && listDetails?.filterTypeLocal?.containsAll(Mode.getAll()) == true) {
           return@let
         }
 
@@ -258,11 +267,11 @@ class ListDetailsFragment :
           fragmentListDetailsToolbar.title = getString(R.string.textChangeRanks)
           fragmentListDetailsToolbar.subtitle = getString(R.string.textChangeRanksSubtitle)
         } else {
-          fragmentListDetailsToolbar.title = details?.name ?: list.name
-          fragmentListDetailsToolbar.subtitle = details?.description
+          fragmentListDetailsToolbar.title = listDetails?.name ?: list.name
+          fragmentListDetailsToolbar.subtitle = listDetails?.description
         }
       }
-      isLoading?.let {
+      isLoading.let {
         fragmentListDetailsLoadingView.visibleIf(it)
         if (it) disableUi() else enableUi()
       }

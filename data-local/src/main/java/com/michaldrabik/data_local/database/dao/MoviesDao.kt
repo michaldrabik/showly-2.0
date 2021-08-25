@@ -17,13 +17,19 @@ interface MoviesDao : BaseDao<Movie> {
   @Transaction
   suspend fun getAllChunked(ids: List<Long>): List<Movie> = ids
     .chunked(500)
-    .fold(mutableListOf(), { acc, chunk ->
-      acc += getAll(chunk)
-      acc
-    })
+    .fold(
+      mutableListOf(),
+      { acc, chunk ->
+        acc += getAll(chunk)
+        acc
+      }
+    )
 
   @Query("SELECT * FROM movies WHERE id_trakt == :traktId")
   suspend fun getById(traktId: Long): Movie?
+
+  @Query("DELETE FROM movies where id_trakt == :traktId")
+  suspend fun deleteById(traktId: Long)
 
   @Transaction
   suspend fun upsert(movies: List<Movie>) {

@@ -12,6 +12,10 @@ import com.michaldrabik.ui_model.ImageFamily.SHOW
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.ImageType.POSTER
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +23,24 @@ import javax.inject.Inject
 class CustomImagesViewModel @Inject constructor(
   private val showImagesProvider: ShowImagesProvider,
   private val movieImagesProvider: MovieImagesProvider,
-) : BaseViewModel<CustomImagesUiModel>() {
+) : BaseViewModel() {
+
+  private val posterImageState = MutableStateFlow<Image?>(null)
+  private val fanartImageState = MutableStateFlow<Image?>(null)
+
+  val uiState = combine(
+    posterImageState,
+    fanartImageState
+  ) { posterImageState, fanartImageState ->
+    CustomImagesUiState(
+      posterImage = posterImageState,
+      fanartImage = fanartImageState
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = CustomImagesUiState()
+  )
 
   fun loadPoster(
     showTraktId: IdTrakt,
@@ -32,9 +53,7 @@ class CustomImagesViewModel @Inject constructor(
         MOVIE -> movieImagesProvider.findCustomImage(movieTraktId.id, POSTER)
         else -> error("Invalid type")
       }
-      image?.let {
-        uiState = CustomImagesUiModel(posterImage = it)
-      }
+      posterImageState.value = image
     }
   }
 
@@ -49,9 +68,7 @@ class CustomImagesViewModel @Inject constructor(
         MOVIE -> movieImagesProvider.findCustomImage(movieTraktId.id, FANART)
         else -> error("Invalid type")
       }
-      image?.let {
-        uiState = CustomImagesUiModel(fanartImage = it)
-      }
+      fanartImageState.value = image
     }
   }
 
@@ -66,7 +83,7 @@ class CustomImagesViewModel @Inject constructor(
         MOVIE -> movieImagesProvider.deleteCustomImage(movieTraktId, family, POSTER)
         else -> error("Invalid type")
       }
-      uiState = CustomImagesUiModel(posterImage = Image.createUnavailable(POSTER, family))
+      posterImageState.value = Image.createUnavailable(POSTER, family)
     }
   }
 
@@ -81,7 +98,7 @@ class CustomImagesViewModel @Inject constructor(
         MOVIE -> movieImagesProvider.deleteCustomImage(movieTraktId, family, FANART)
         else -> error("Invalid type")
       }
-      uiState = CustomImagesUiModel(fanartImage = Image.createUnavailable(FANART, family))
+      fanartImageState.value = Image.createUnavailable(FANART, family)
     }
   }
 }

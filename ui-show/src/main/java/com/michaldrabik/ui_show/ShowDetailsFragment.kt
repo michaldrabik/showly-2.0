@@ -24,6 +24,9 @@ import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
@@ -32,6 +35,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
@@ -46,6 +50,7 @@ import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
@@ -60,6 +65,7 @@ import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
+import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
@@ -124,6 +130,8 @@ import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import kotlinx.android.synthetic.main.view_links_menu.view.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.time.Duration
 import java.util.Locale.ENGLISH
 
@@ -163,26 +171,18 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     setupSeasonsList()
     setupStreamingsList()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      seasonsLiveData.observe(
-        viewLifecycleOwner,
-        {
-          renderSeasons(it)
-          renderRuntimeLeft(it)
-          (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { renderSnack(it) } }
+          if (!isInitialized) {
+            loadDetails(showId)
+            isInitialized = true
+          }
+          loadPremium()
         }
-      )
-      nextEpisodeLiveData.observe(viewLifecycleOwner, { renderNextEpisode(it) })
-      actorsLiveData.observe(viewLifecycleOwner, { renderActors(it) })
-      streamingsLiveData.observe(viewLifecycleOwner, { renderStreamings(it) })
-      relatedLiveData.observe(viewLifecycleOwner, { renderRelatedShows(it) })
-      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
-      if (!isInitialized) {
-        loadShowDetails(showId, requireAppContext())
-        isInitialized = true
       }
-      loadPremium()
     }
   }
 
@@ -221,9 +221,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsAddButton.run {
       isEnabled = false
-      onAddMyShowsClickListener = {
-        viewModel.addFollowedShow()
-      }
+      onAddMyShowsClickListener = { viewModel.addFollowedShow() }
       onAddWatchLaterClickListener = { viewModel.addWatchlistShow(requireAppContext()) }
       onArchiveClickListener = { openArchiveConfirmationDialog() }
       onRemoveClickListener = { viewModel.removeFromFollowed() }
@@ -487,7 +485,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsActorFullName.fadeOut()
   }
 
-  private fun render(uiModel: ShowDetailsUiModel) {
+  private fun render(uiModel: ShowDetailsUiState) {
     uiModel.run {
       show?.let { show ->
         showDetailsTitle.text = show.title
@@ -550,16 +548,23 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         showDetailsManageListsLabel.text = text
       }
       image?.let { renderImage(it) }
+      seasons?.let {
+        renderSeasons(it)
+        renderRuntimeLeft(it)
+        (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
+      }
       ratings?.let { renderRatings(it, show) }
+      nextEpisode?.let { renderNextEpisode(it) }
+      actors?.let { renderActors(it) }
+      streamings?.let { renderStreamings(it) }
+      relatedShows?.let { renderRelatedShows(it) }
       translation?.let { renderTranslation(it) }
       seasonTranslation?.let { item ->
         item.consume()?.let { showDetailsEpisodesView.bindEpisodes(it.episodes, animate = false) }
       }
       comments?.let {
         showDetailsCommentsView.bind(it, commentsDateFormat)
-        if (isSignedIn == true) {
-          showDetailsCommentsView.showCommentButton()
-        }
+        if (isSignedIn) showDetailsCommentsView.showCommentButton()
       }
       ratingState?.let { renderRating(it) }
       showFromTraktLoading?.let {
@@ -582,6 +587,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
             fadeIf(it, hardware = true)
             onYesClickListener = { viewModel.removeFromTraktWatchlist() }
           }
+        }
+      }
+      isFinished?.let { event ->
+        event.consume()?.let {
+          if (it) requireActivity().onBackPressed()
         }
       }
     }
@@ -753,6 +763,20 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     if (translation?.title?.isNotBlank() == true) {
       showDetailsTitle.text = translation.title
     }
+  }
+
+  private fun renderSnack(event: MessageEvent) {
+    if (event.peek() == R.string.errorMalformedShow) {
+      event.consume()?.let {
+        val host = (requireActivity() as SnackbarHost).provideSnackbarLayout()
+        val snack = host.showInfoSnackbar(getString(it), length = Snackbar.LENGTH_INDEFINITE) {
+          viewModel.removeMalformedShow(showId)
+        }
+        snackbars.add(snack)
+      }
+      return
+    }
+    showSnack(event)
   }
 
   private fun openIMDbLink(id: IdImdb, type: String) {

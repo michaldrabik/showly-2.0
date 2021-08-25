@@ -14,6 +14,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.MessageEvent
@@ -43,6 +46,8 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_art_gallery.*
 import kotlinx.android.synthetic.main.view_gallery_url_dialog.view.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @SuppressLint("SetTextI18n", "DefaultLocale", "SourceLockedOrientationActivity")
 @AndroidEntryPoint
@@ -70,10 +75,14 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
     setupView()
     setupStatusBar()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      val id = if (family == SHOW) showId else movieId
-      loadImages(id, family, type)
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          val id = if (family == SHOW) showId else movieId
+          loadImages(id, family, type)
+        }
+      }
     }
   }
 
@@ -174,12 +183,12 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
     }
   }
 
-  private fun render(uiModel: ArtGalleryUiModel) {
-    uiModel.run {
+  private fun render(uiState: ArtGalleryUiState) {
+    uiState.run {
       images?.let {
         val size = galleryAdapter?.itemCount
 
-        galleryAdapter?.setItems(it, type!!)
+        galleryAdapter?.setItems(it, type)
         artGalleryEmptyView.visibleIf(it.isEmpty())
         artGallerySelectButton.visibleIf(it.isNotEmpty() && isPickMode == true)
         artGalleryUrlButton.visibleIf(isPickMode == true)
@@ -192,9 +201,7 @@ class ArtGalleryFragment : BaseFragment<ArtGalleryViewModel>(R.layout.fragment_a
           requireActivity().onBackPressed()
         }
       }
-      isLoading?.let {
-        artGalleryImagesProgress.visibleIf(it)
-      }
+      artGalleryImagesProgress.visibleIf(isLoading)
     }
   }
 

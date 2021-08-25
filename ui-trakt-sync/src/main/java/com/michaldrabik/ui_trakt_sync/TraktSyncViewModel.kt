@@ -21,10 +21,16 @@ import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchedRunner
 import com.michaldrabik.ui_base.trakt.imports.TraktImportWatchlistRunner
 import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.error
 import com.michaldrabik.ui_base.utilities.MessageEvent.Companion.info
+import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.threeten.bp.format.DateTimeFormatter
 import retrofit2.HttpException
+import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -38,7 +44,16 @@ class TraktSyncViewModel @Inject constructor(
   importWatchlistRunner: TraktImportWatchlistRunner,
   exportWatchedRunner: TraktImportWatchedRunner,
   exportWatchlistRunner: TraktExportWatchlistRunner,
-) : BaseViewModel<TraktSyncUiModel>() {
+) : BaseViewModel() {
+
+  private val progressState = MutableStateFlow(false)
+  private val progressStatusState = MutableStateFlow("")
+  private val authorizedState = MutableStateFlow(false)
+  private val authErrorState = MutableStateFlow(false)
+  private val traktSyncScheduleState = MutableStateFlow(TraktSyncSchedule.OFF)
+  private val quickSyncEnabledState = MutableStateFlow(false)
+  private val dateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
+  private val traktSyncTimestampState = MutableStateFlow(0L)
 
   init {
     val runners = listOf(
@@ -48,23 +63,19 @@ class TraktSyncViewModel @Inject constructor(
       exportWatchlistRunner
     )
     if (runners.any { it.isRunning }) {
-      uiState = TraktSyncUiModel(isProgress = true)
+      progressState.value = true
     }
   }
 
   fun invalidate() {
     viewModelScope.launch {
-      val isAuthorized = userManager.isAuthorized()
       val settings = settingsRepository.load()
-      val timestamp = miscPreferences.getLong(TraktSyncService.KEY_LAST_SYNC_TIMESTAMP, 0)
 
-      uiState = TraktSyncUiModel(
-        isAuthorized = isAuthorized,
-        traktSyncSchedule = settings.traktSyncSchedule,
-        quickSyncEnabled = settings.traktQuickSyncEnabled,
-        lastTraktSyncTimestamp = timestamp,
-        dateFormat = dateFormatProvider.loadFullHourFormat()
-      )
+      authorizedState.value = userManager.isAuthorized()
+      traktSyncScheduleState.value = settings.traktSyncSchedule
+      quickSyncEnabledState.value = settings.traktQuickSyncEnabled
+      dateFormatState.value = dateFormatProvider.loadFullHourFormat()
+      traktSyncTimestampState.value = miscPreferences.getLong(TraktSyncService.KEY_LAST_SYNC_TIMESTAMP, 0)
     }
   }
 
@@ -77,14 +88,14 @@ class TraktSyncViewModel @Inject constructor(
           throw IllegalStateException("Invalid Trakt authorization code.")
         }
         userManager.authorize(code)
-        _messageLiveData.value = info(R.string.textTraktLoginSuccess)
+        _messageState.emit(info(R.string.textTraktLoginSuccess))
         invalidate()
       } catch (error: Throwable) {
         val message = when {
           error is HttpException && error.code() == 423 -> R.string.errorTraktLocked
           else -> R.string.errorAuthorization
         }
-        _messageLiveData.value = error(message)
+        _messageState.emit(error(message))
       }
     }
   }
@@ -97,7 +108,7 @@ class TraktSyncViewModel @Inject constructor(
         settingsRepository.update(new)
       }
       TraktSyncWorker.schedule(context.applicationContext, schedule, cancelExisting = true)
-      uiState = TraktSyncUiModel(traktSyncSchedule = schedule)
+      traktSyncScheduleState.value = schedule
     }
   }
 
@@ -105,28 +116,64 @@ class TraktSyncViewModel @Inject constructor(
     viewModelScope.launch {
       when (event) {
         is TraktSyncStart -> {
-          _messageLiveData.value = info(R.string.textTraktSyncStarted)
-          uiState = TraktSyncUiModel(isProgress = true, progressStatus = "")
+          _messageState.emit(info(R.string.textTraktSyncStarted))
+          progressState.value = true
+          progressStatusState.value = ""
         }
         is TraktSyncProgress -> {
-          uiState = TraktSyncUiModel(isProgress = true, progressStatus = event.status)
+          progressState.value = true
+          progressStatusState.value = event.status
         }
         is TraktSyncSuccess -> {
-          uiState = TraktSyncUiModel(isProgress = false, progressStatus = "")
-          _messageLiveData.value = info(R.string.textTraktSyncComplete)
+          progressState.value = false
+          progressStatusState.value = ""
+          _messageState.emit(info(R.string.textTraktSyncComplete))
         }
         is TraktSyncError -> {
-          uiState = TraktSyncUiModel(isProgress = false, progressStatus = "")
-          _messageLiveData.value = info(R.string.textTraktSyncError)
+          progressState.value = false
+          progressStatusState.value = ""
+          _messageState.emit(info(R.string.textTraktSyncError))
         }
         is TraktSyncAuthError -> {
           viewModelScope.launch {
             userManager.revokeToken()
-            _messageLiveData.value = error(R.string.errorTraktAuthorization)
-            uiState = TraktSyncUiModel(isProgress = false, authError = true, progressStatus = "")
+            _messageState.emit(error(R.string.errorTraktAuthorization))
+            progressState.value = false
+            progressStatusState.value = ""
+            authErrorState.value = true
           }
         }
+        else -> Timber.d("Unsupported sync event")
       }
     }
   }
+
+  val uiState = combine(
+    progressState,
+    progressStatusState,
+    authorizedState,
+    authErrorState,
+    traktSyncScheduleState,
+    quickSyncEnabledState,
+    dateFormatState,
+    traktSyncTimestampState
+  ) {
+    progressState, progressStatusState, authorizedState, authErrorState, traktSyncScheduleState, quickSyncEnabledState, dateFormatState,
+    traktSyncTimestampState,
+    ->
+    TraktSyncUiState(
+      isProgress = progressState,
+      progressStatus = progressStatusState,
+      isAuthorized = authorizedState,
+      authError = authErrorState,
+      traktSyncSchedule = traktSyncScheduleState,
+      quickSyncEnabled = quickSyncEnabledState,
+      dateFormat = dateFormatState,
+      lastTraktSyncTimestamp = traktSyncTimestampState
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = TraktSyncUiState()
+  )
 }

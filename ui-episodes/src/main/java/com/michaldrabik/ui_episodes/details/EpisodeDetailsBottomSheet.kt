@@ -13,7 +13,10 @@ import androidx.core.os.bundleOf
 import androidx.core.view.setPadding
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
@@ -62,6 +65,8 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAIL
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_episode_details.*
 import kotlinx.android.synthetic.main.view_episode_details.view.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.util.Locale.ENGLISH
 
 @AndroidEntryPoint
@@ -101,16 +106,19 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it) })
-      messageLiveData.observe(viewLifecycleOwner, { renderSnackbar(it) })
-      loadSeason(showTraktId, episode, seasonEpisodes)
-      loadTranslation(showTraktId, episode)
-      loadImage(showTmdbId, episode)
-      loadRatings(episode)
-    }
     setupView(view)
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { renderSnackbar(it) } }
+          loadSeason(showTraktId, episode, seasonEpisodes)
+          loadTranslation(showTraktId, episode)
+          loadImage(showTmdbId, episode)
+          loadRatings(episode)
+        }
+      }
+    }
   }
 
   private fun setupView(view: View) {
@@ -177,8 +185,8 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
   }
 
   @SuppressLint("SetTextI18n")
-  private fun render(uiModel: EpisodeDetailsUiModel) {
-    uiModel.run {
+  private fun render(uiState: EpisodeDetailsUiState) {
+    uiState.run {
       dateFormat?.let {
         val millis = episode.firstAired?.toInstant()?.toEpochMilli() ?: -1
         val date = if (millis == -1L) {
@@ -189,7 +197,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         val name = String.format(ENGLISH, requireContext().getString(R.string.textSeasonEpisodeDate), episode.season, episode.number, date)
         episodeDetailsName.text = name
       }
-      imageLoading?.let { episodeDetailsProgress.visibleIf(it) }
+      isImageLoading.let { episodeDetailsProgress.visibleIf(it) }
       image?.let {
         Glide.with(this@EpisodeDetailsBottomSheet)
           .load(it.fullFileUrlEpisode)
@@ -198,7 +206,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
           .withFailListener { episodeDetailsImagePlaceholder.visible() }
           .into(episodeDetailsImage)
       }
-      commentsLoading?.let {
+      isCommentsLoading.let {
         episodeDetailsButtons.visibleIf(!it)
         episodeDetailsCommentsProgress.visibleIf(it)
       }
@@ -223,7 +231,7 @@ class EpisodeDetailsBottomSheet : BaseBottomSheetFragment<EpisodeDetailsViewMode
         episodeDetailsCommentsLabel.fadeIf(comments.isNotEmpty())
         episodeDetailsComments.fadeIf(comments.isNotEmpty())
         episodeDetailsCommentsEmpty.fadeIf(comments.isEmpty())
-        episodeDetailsPostCommentButton.fadeIf(isSignedIn == true)
+        episodeDetailsPostCommentButton.fadeIf(isSignedIn)
         episodeDetailsCommentsButton.isEnabled = false
         episodeDetailsCommentsButton.text = String.format(ENGLISH, getString(R.string.textLoadCommentsCount), comments.size)
       }

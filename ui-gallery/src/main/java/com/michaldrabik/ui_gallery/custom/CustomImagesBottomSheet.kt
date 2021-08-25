@@ -9,7 +9,10 @@ import android.widget.ImageView
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -37,6 +40,8 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_custom_images.*
 import kotlinx.android.synthetic.main.view_custom_images.view.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>() {
@@ -61,12 +66,17 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it) })
-      loadPoster(showTraktId, movieTraktId, family)
-      loadFanart(showTraktId, movieTraktId, family)
-    }
     setupView(view)
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          loadPoster(showTraktId, movieTraktId, family)
+          loadFanart(showTraktId, movieTraktId, family)
+        }
+      }
+    }
   }
 
   private fun setupView(view: View) {
@@ -91,7 +101,7 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
   }
 
   @SuppressLint("SetTextI18n")
-  private fun render(uiModel: CustomImagesUiModel) {
+  private fun render(uiState: CustomImagesUiState) {
 
     fun loadImage(url: String, imageView: ImageView, progressView: View, deleteView: View) {
       progressView.visible()
@@ -110,7 +120,7 @@ class CustomImagesBottomSheet : BaseBottomSheetFragment<CustomImagesViewModel>()
         .into(imageView)
     }
 
-    uiModel.run {
+    uiState.run {
       posterImage?.let {
         if (it.status == ImageStatus.UNAVAILABLE) {
           Glide.with(requireContext()).clear(viewCustomImagesPosterImage)

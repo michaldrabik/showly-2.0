@@ -9,7 +9,10 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.setFragmentResult
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.michaldrabik.ui_base.BaseBottomSheetFragment
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent.Type
@@ -30,6 +33,8 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.view_post_comment.*
 import kotlinx.android.synthetic.main.view_post_comment.view.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
@@ -55,11 +60,16 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it) })
-      messageLiveData.observe(viewLifecycleOwner, { renderSnackbar(it) })
-    }
     setupView(view)
+
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { renderSnackbar(it) } }
+        }
+      }
+    }
   }
 
   @SuppressLint("SetTextI18n")
@@ -89,17 +99,18 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
   }
 
   @SuppressLint("SetTextI18n")
-  private fun render(uiModel: PostCommentUiModel) {
-    uiModel.run {
-      isLoading?.let {
-        viewPostCommentButton.isEnabled = !it
+  private fun render(uiState: PostCommentUiState) {
+    uiState.run {
+      isLoading.let {
         viewPostCommentInput.isEnabled = !it
         viewPostCommentInputValue.isEnabled = !it
         viewPostCommentSpoilersCheck.isEnabled = !it
         viewPostCommentProgress.visibleIf(it)
+        val commentText = viewPostCommentInputValue.text.toString()
+        viewPostCommentButton.isEnabled = !it && isCommentValid(commentText)
         viewPostCommentButton.visibleIf(!it, gone = false)
       }
-      successEvent?.let {
+      isSuccess?.let {
         it.consume()?.let { commentBundle ->
           setFragmentResult(
             REQUEST_COMMENT,
@@ -122,4 +133,7 @@ class PostCommentBottomSheet : BaseBottomSheetFragment<PostCommentViewModel>() {
       }
     }
   }
+
+  private fun isCommentValid(text: String) =
+    text.trim().isNotEmpty() && text.trim().split(" ").count { it.length > 1 } >= 5
 }

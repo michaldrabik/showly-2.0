@@ -10,6 +10,9 @@ import android.widget.GridLayout
 import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager.widget.ViewPager
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
@@ -45,6 +48,8 @@ import com.michaldrabik.ui_my_shows.myshows.views.MyShowFanartView
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_followed_shows.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FollowedShowsFragment :
@@ -71,9 +76,13 @@ class FollowedShowsFragment :
     setupPager()
     setupStatusBar()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      clearCache()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          clearCache()
+        }
+      }
     }
   }
 
@@ -204,8 +213,8 @@ class FollowedShowsFragment :
     if (showNavigation) showNavigation()
   }
 
-  private fun render(uiModel: FollowedShowsUiModel) {
-    uiModel.run {
+  private fun render(uiState: FollowedShowsUiState) {
+    uiState.run {
       searchResult?.let { renderSearchResults(it) }
     }
   }
@@ -237,10 +246,7 @@ class FollowedShowsFragment :
     }
 
     if (result.type != EMPTY) {
-      followedShowsSearchView.translationY = 0F
-      followedShowsTabs.translationY = 0F
-      followedShowsModeTabs.translationY = 0F
-      followedShowsSortIcon.translationY = 0F
+      resetTranslations()
       childFragmentManager.fragments.forEach {
         (it as? OnScrollResetListener)?.onScrollReset()
       }
@@ -300,14 +306,18 @@ class FollowedShowsFragment :
   }
 
   override fun onTabReselected() {
-    followedShowsSearchView.translationY = 0F
-    followedShowsTabs.translationY = 0F
-    followedShowsModeTabs.translationY = 0F
-    followedShowsSortIcon.translationY = 0F
+    resetTranslations()
     followedShowsPager.nextPage()
     childFragmentManager.fragments.forEach {
       (it as? OnScrollResetListener)?.onScrollReset()
     }
+  }
+
+  fun resetTranslations() {
+    followedShowsSearchView.translationY = 0F
+    followedShowsTabs.translationY = 0F
+    followedShowsModeTabs.translationY = 0F
+    followedShowsSortIcon.translationY = 0F
   }
 
   override fun onTraktSyncProgress() =

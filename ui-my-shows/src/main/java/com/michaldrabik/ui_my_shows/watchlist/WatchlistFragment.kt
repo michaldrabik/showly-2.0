@@ -5,6 +5,9 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
@@ -29,6 +32,8 @@ import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 import kotlinx.android.synthetic.main.fragment_watchlist.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class WatchlistFragment :
@@ -48,9 +53,13 @@ class WatchlistFragment :
     setupStatusBar()
     setupRecycler()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      loadShows()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          loadShows()
+        }
+      }
     }
   }
 
@@ -61,7 +70,10 @@ class WatchlistFragment :
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
       missingTranslationListener = { viewModel.loadMissingTranslation(it) }
       itemClickListener = { openShowDetails(it.show) }
-      listChangeListener = { watchlistRecycler.scrollToPosition(0) }
+      listChangeListener = {
+        watchlistRecycler.scrollToPosition(0)
+        (requireParentFragment() as FollowedShowsFragment).resetTranslations()
+      }
     }
     watchlistRecycler.apply {
       setHasFixedSize(true)
@@ -98,9 +110,9 @@ class WatchlistFragment :
       .show()
   }
 
-  private fun render(uiModel: WatchlistUiModel) {
-    uiModel.run {
-      items?.let {
+  private fun render(uiState: WatchlistUiState) {
+    uiState.run {
+      items.let {
         val notifyChange = resetScroll?.consume() == true
         adapter?.setItems(it, notifyChange = notifyChange)
         watchlistEmptyView.fadeIf(it.isEmpty())

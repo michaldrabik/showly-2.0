@@ -1,3 +1,7 @@
+![Version](https://img.shields.io/github/v/tag/michaldrabik/showly-2.0?label=version)
+![Build](https://img.shields.io/github/workflow/status/michaldrabik/showly-2.0/Master%20Flow)
+![Twitter](https://img.shields.io/twitter/follow/AppShowly?style=social)
+
 # Showly 2.0
 <img src="https://i.ibb.co/ChBN7Lg/ic-launcher.png" align="left" width="180" hspace="10" vspace="10" />
 

@@ -10,6 +10,9 @@ import android.widget.GridLayout
 import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager.widget.ViewPager
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
@@ -45,6 +48,8 @@ import com.michaldrabik.ui_my_movies.utilities.OnSortClickListener
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_followed_movies.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FollowedMoviesFragment :
@@ -71,9 +76,13 @@ class FollowedMoviesFragment :
     setupPager()
     setupStatusBar()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      clearCache()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          clearCache()
+        }
+      }
     }
   }
 
@@ -203,8 +212,8 @@ class FollowedMoviesFragment :
     if (showNavigation) showNavigation()
   }
 
-  private fun render(uiModel: FollowedMoviesUiModel) {
-    uiModel.run {
+  private fun render(uiState: FollowedMoviesUiState) {
+    uiState.run {
       searchResult?.let { renderSearchResults(it) }
     }
   }
@@ -236,10 +245,7 @@ class FollowedMoviesFragment :
     }
 
     if (result.type != EMPTY) {
-      followedMoviesSearchView.translationY = 0F
-      followedMoviesTabs.translationY = 0F
-      followedMoviesModeTabs.translationY = 0F
-      followedMoviesSortIcon.translationY = 0F
+      resetTranslations()
       childFragmentManager.fragments.forEach {
         (it as? OnScrollResetListener)?.onScrollReset()
       }
@@ -299,10 +305,7 @@ class FollowedMoviesFragment :
   }
 
   override fun onTabReselected() {
-    followedMoviesSearchView.translationY = 0F
-    followedMoviesTabs.translationY = 0F
-    followedMoviesModeTabs.translationY = 0F
-    followedMoviesSortIcon.translationY = 0F
+    resetTranslations()
     followedMoviesPager.nextPage()
     childFragmentManager.fragments.forEach {
       (it as? OnScrollResetListener)?.onScrollReset()
@@ -317,6 +320,13 @@ class FollowedMoviesFragment :
     childFragmentManager.fragments.forEach {
       (it as? OnTraktSyncListener)?.onTraktSyncComplete()
     }
+  }
+
+  fun resetTranslations() {
+    followedMoviesSearchView.translationY = 0F
+    followedMoviesTabs.translationY = 0F
+    followedMoviesModeTabs.translationY = 0F
+    followedMoviesSortIcon.translationY = 0F
   }
 
   private val pageChangeListener = object : ViewPager.OnPageChangeListener {

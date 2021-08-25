@@ -9,13 +9,26 @@ import com.michaldrabik.ui_my_movies.mymovies.helpers.ResultType.NO_RESULTS
 import com.michaldrabik.ui_my_movies.mymovies.helpers.ResultType.RESULTS
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FollowedMoviesViewModel @Inject constructor(
-  private val searchCase: FollowedMoviesSearchCase
-) : BaseViewModel<FollowedMoviesUiModel>() {
+  private val searchCase: FollowedMoviesSearchCase,
+) : BaseViewModel() {
+
+  private val searchResultState = MutableStateFlow<MyMoviesSearchResult?>(null)
+
+  val uiState = combine(searchResultState) { s1 -> FollowedMoviesUiState(searchResult = s1[0]) }
+    .stateIn(
+      scope = viewModelScope,
+      started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+      initialValue = FollowedMoviesUiState()
+    )
 
   private var searchJob: Job? = null
 
@@ -26,7 +39,7 @@ class FollowedMoviesViewModel @Inject constructor(
     if (query.trim().isBlank()) {
       searchJob?.cancel()
       val result = MyMoviesSearchResult(emptyList(), EMPTY)
-      postSearchResult(result)
+      searchResultState.value = result
       return
     }
     searchJob?.cancel()
@@ -34,13 +47,8 @@ class FollowedMoviesViewModel @Inject constructor(
       val results = searchCase.searchFollowed(query)
       val type = if (results.isEmpty()) NO_RESULTS else RESULTS
       val searchResult = MyMoviesSearchResult(results, type)
-      postSearchResult(searchResult)
+      searchResultState.value = searchResult
     }
-  }
-
-  private fun postSearchResult(searchResult: MyMoviesSearchResult) {
-    uiState = FollowedMoviesUiModel(searchResult = searchResult)
-    uiState = FollowedMoviesUiModel()
   }
 
   fun clearCache() = searchCase.clearCache()

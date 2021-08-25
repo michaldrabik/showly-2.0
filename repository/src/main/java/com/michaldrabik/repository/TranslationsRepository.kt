@@ -11,7 +11,7 @@ import com.michaldrabik.data_local.database.model.ShowTranslation
 import com.michaldrabik.data_local.database.model.TranslationsMoviesSyncLog
 import com.michaldrabik.data_local.database.model.TranslationsSyncLog
 import com.michaldrabik.data_remote.Cloud
-import com.michaldrabik.repository.SettingsRepository.Companion.KEY_LANGUAGE
+import com.michaldrabik.repository.SettingsRepository.Key.LANGUAGE
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
@@ -32,7 +32,7 @@ class TranslationsRepository @Inject constructor(
   private val mappers: Mappers,
 ) {
 
-  fun getLanguage() = miscPreferences.getString(KEY_LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
+  fun getLanguage() = miscPreferences.getString(LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
 
   suspend fun loadAllShowsLocal(language: String = DEFAULT_LANGUAGE): Map<Long, Translation> {
     val local = database.showTranslationsDao().getAll(language)

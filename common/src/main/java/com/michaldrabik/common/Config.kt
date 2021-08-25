@@ -38,7 +38,7 @@ object Config {
 
   const val SHOW_TIPS_DEBUG = false
   const val SHOW_PREMIUM = true
-  const val PROMOS_ENABLED = false
+  const val PROMOS_ENABLED = true
 
   const val PREMIUM_MONTHLY_SUBSCRIPTION = "showly_premium_1_month"
   const val PREMIUM_YEARLY_SUBSCRIPTION = "showly_premium_1_year"

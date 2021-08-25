@@ -3,7 +3,7 @@ package com.michaldrabik.ui_discover
 import BaseMockTest
 import TestData
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import com.google.common.truth.Truth.assertThat
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -14,12 +14,14 @@ import com.michaldrabik.ui_model.DiscoverFilters
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.just
-import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
@@ -37,9 +39,6 @@ class DiscoverViewModelTest : BaseMockTest() {
   @MockK lateinit var filtersCase: DiscoverFiltersCase
   @MockK lateinit var imagesProvider: ShowImagesProvider
 
-  @MockK lateinit var mockUiObserver: Observer<DiscoverUiModel>
-  @MockK lateinit var mockMessageObserver: Observer<MessageEvent>
-
   private lateinit var SUT: DiscoverViewModel
 
   @Before
@@ -52,24 +51,20 @@ class DiscoverViewModelTest : BaseMockTest() {
     coEvery { showsCase.loadCachedShows(any()) } returns emptyList()
     coEvery { showsCase.loadRemoteShows(any()) } returns emptyList()
 
-    every { mockUiObserver.onChanged(any()) } just Runs
-    every { mockMessageObserver.onChanged(any()) } just Runs
-
     SUT = DiscoverViewModel(showsCase, filtersCase, imagesProvider)
-    SUT.uiLiveData.observeForever(mockUiObserver)
-    SUT.messageLiveData.observeForever(mockMessageObserver)
   }
 
   @After
   fun tearDown() {
+    SUT.viewModelScope.cancel()
     Dispatchers.resetMain() // reset main dispatcher to the original Main dispatcher
     testDispatcher.cleanupTestCoroutines()
   }
 
   @Test
-  internal fun `Should not pull to refresh data too often`() {
+  internal fun `Should not pull to refresh data too often`() = runBlockingTest {
     SUT.lastPullToRefreshMs = nowUtcMillis() - TimeUnit.SECONDS.toMillis(5)
-    SUT.loadDiscoverShows(true)
+    SUT.loadItems(pullToRefresh = true)
 
     coVerify(exactly = 0) { showsCase.loadCachedShows(any()) }
     coVerify(exactly = 0) { showsCase.loadRemoteShows(any()) }
@@ -79,7 +74,7 @@ class DiscoverViewModelTest : BaseMockTest() {
   internal fun `Should load cached data and not load remote data if cache is valid`() {
     coEvery { showsCase.isCacheValid() } returns true
 
-    SUT.loadDiscoverShows()
+    SUT.loadItems()
 
     coVerify(exactly = 1) { showsCase.loadCachedShows(any()) }
     coVerify(exactly = 0) { showsCase.loadRemoteShows(any()) }
@@ -89,7 +84,7 @@ class DiscoverViewModelTest : BaseMockTest() {
   internal fun `Should load cached data and load remote data if cache is no longer valid`() {
     coEvery { showsCase.isCacheValid() } returns false
 
-    SUT.loadDiscoverShows()
+    SUT.loadItems()
 
     coVerify(exactly = 1) { showsCase.loadCachedShows(any()) }
     coVerify(exactly = 1) { showsCase.loadRemoteShows(any()) }
@@ -99,7 +94,7 @@ class DiscoverViewModelTest : BaseMockTest() {
   internal fun `Should load remote data only if pull to refresh`() {
     coEvery { showsCase.isCacheValid() } returns true
 
-    SUT.loadDiscoverShows(pullToRefresh = true)
+    SUT.loadItems(pullToRefresh = true)
 
     coVerify(exactly = 0) { showsCase.loadCachedShows(any()) }
     coVerify(exactly = 1) { showsCase.loadRemoteShows(any()) }
@@ -109,7 +104,7 @@ class DiscoverViewModelTest : BaseMockTest() {
   internal fun `Should load remote data only if skipping cache`() {
     coEvery { showsCase.isCacheValid() } returns true
 
-    SUT.loadDiscoverShows(skipCache = true)
+    SUT.loadItems(skipCache = true)
 
     coVerify(exactly = 0) { showsCase.loadCachedShows(any()) }
     coVerify(exactly = 1) { showsCase.loadRemoteShows(any()) }
@@ -117,7 +112,7 @@ class DiscoverViewModelTest : BaseMockTest() {
 
   @Test
   internal fun `Should not load cached data if skipping cache`() {
-    SUT.loadDiscoverShows(skipCache = true)
+    SUT.loadItems(skipCache = true)
     coVerify(exactly = 0) { showsCase.loadCachedShows(any()) }
   }
 
@@ -125,7 +120,7 @@ class DiscoverViewModelTest : BaseMockTest() {
   internal fun `Should update last PTR stamp if PTR`() {
     coEvery { showsCase.isCacheValid() } returns false
 
-    SUT.loadDiscoverShows(pullToRefresh = true)
+    SUT.loadItems(pullToRefresh = true)
     assertThat(SUT.lastPullToRefreshMs).isGreaterThan(0)
   }
 
@@ -133,102 +128,132 @@ class DiscoverViewModelTest : BaseMockTest() {
   internal fun `Should not update last PTR stamp if was not PTR`() {
     coEvery { showsCase.isCacheValid() } returns false
 
-    SUT.loadDiscoverShows(pullToRefresh = false)
+    SUT.loadItems(pullToRefresh = false)
     assertThat(SUT.lastPullToRefreshMs).isEqualTo(0)
   }
 
   @Test
-  internal fun `Should hide loading state when PTR is run too often`() {
+  internal fun `Should hide loading state when PTR is run too often`() = runBlockingTest {
+    val stateResult = mutableListOf<DiscoverUiState>()
+    val messagesResult = mutableListOf<MessageEvent>()
+
+    val job = launch { SUT.uiState.toList(stateResult) }
+    val job2 = launch { SUT.messageState.toList(messagesResult) }
+
     SUT.lastPullToRefreshMs = nowUtcMillis() - TimeUnit.SECONDS.toMillis(5)
-    SUT.loadDiscoverShows(true)
+    SUT.loadItems(pullToRefresh = true)
 
-    val uiState = mutableListOf<DiscoverUiModel>()
-    verify { mockUiObserver.onChanged(capture(uiState)) }
-    assertThat(uiState.first().showLoading).isFalse()
+    assertThat(stateResult[0].isLoading).isFalse()
+    assertThat(stateResult[1].isLoading).isTrue()
+    assertThat(stateResult[2].isLoading).isFalse()
+    assertThat(messagesResult).isEmpty()
 
-    verify(exactly = 0) { mockMessageObserver.onChanged(any()) }
+    job.cancel()
+    job2.cancel()
   }
 
   @Test
-  internal fun `Should show loading state instantly if pull to refresh`() {
-    SUT.loadDiscoverShows(true)
+  internal fun `Should show loading state instantly if pull to refresh`() = runBlockingTest {
+    val stateResult = mutableListOf<DiscoverUiState>()
+    val messagesResult = mutableListOf<MessageEvent>()
 
-    val uiState = mutableListOf<DiscoverUiModel>()
-    verify { mockUiObserver.onChanged(capture(uiState)) }
-    assertThat(uiState.first().showLoading).isTrue()
-    assertThat(uiState.last().showLoading).isFalse()
+    val job = launch { SUT.uiState.toList(stateResult) }
+    val job2 = launch { SUT.messageState.toList(messagesResult) }
 
-    verify(exactly = 0) { mockMessageObserver.onChanged(any()) }
+    SUT.loadItems(pullToRefresh = true)
+
+    assertThat(stateResult[0].isLoading).isFalse()
+    assertThat(stateResult[1].isLoading).isTrue()
+    assertThat(stateResult[2].isLoading).isTrue()
+    assertThat(messagesResult).isEmpty()
+
+    job.cancel()
+    job2.cancel()
   }
 
   @Test
-  internal fun `Should not post cached results if pull to refresh`() {
+  internal fun `Should not emit cached results if pull to refresh`() = runBlockingTest {
+    val stateResult = mutableListOf<DiscoverUiState>()
+    val messagesResult = mutableListOf<MessageEvent>()
+
+    val job = launch { SUT.uiState.toList(stateResult) }
+    val job2 = launch { SUT.messageState.toList(messagesResult) }
+
     val cachedItem = TestData.DISCOVER_LIST_ITEM
     coEvery { showsCase.loadCachedShows(any()) } returns listOf(cachedItem)
 
-    SUT.loadDiscoverShows(pullToRefresh = true)
+    SUT.loadItems(pullToRefresh = true)
 
-    val uiState = mutableListOf<DiscoverUiModel>()
-    verify { mockUiObserver.onChanged(capture(uiState)) }
+    stateResult.forEach {
+      assertThat(it.items.isNullOrEmpty()).isTrue()
+    }
+    assertThat(messagesResult).isEmpty()
 
-    assertThat(uiState.any { it.shows != null }).isTrue()
-    uiState
-      .filter { it.shows != null }
-      .forEach { state ->
-        assertThat(state.shows).containsNoneIn(listOf(cachedItem))
-      }
-
-    verify(exactly = 0) { mockMessageObserver.onChanged(any()) }
+    job.cancel()
+    job2.cancel()
   }
 
   @Test
-  internal fun `Should not post cached results if skipping cache`() {
+  internal fun `Should not post cached results if skipping cache`() = runBlockingTest {
+    val stateResult = mutableListOf<DiscoverUiState>()
+    val messagesResult = mutableListOf<MessageEvent>()
+
+    val job = launch { SUT.uiState.toList(stateResult) }
+    val job2 = launch { SUT.messageState.toList(messagesResult) }
+
     val cachedItem = TestData.DISCOVER_LIST_ITEM
     coEvery { showsCase.loadCachedShows(any()) } returns listOf(cachedItem)
 
-    SUT.loadDiscoverShows(skipCache = true)
+    SUT.loadItems(skipCache = true)
 
-    val uiState = mutableListOf<DiscoverUiModel>()
-    verify { mockUiObserver.onChanged(capture(uiState)) }
+    stateResult.forEach {
+      assertThat(it.items.isNullOrEmpty()).isTrue()
+    }
+    assertThat(messagesResult).isEmpty()
 
-    assertThat(uiState.any { it.shows != null }).isTrue()
-    uiState
-      .filter { it.shows != null }
-      .forEach { state ->
-        assertThat(state.shows).containsNoneIn(listOf(cachedItem))
-      }
-
-    verify(exactly = 0) { mockMessageObserver.onChanged(any()) }
+    job.cancel()
+    job2.cancel()
   }
 
   @Test
-  internal fun `Should not post cached results and then fresh remote results`() {
+  internal fun `Should post cached results and then fresh remote results`() = runBlockingTest {
+    val stateResult = mutableListOf<DiscoverUiState>()
+    val messagesResult = mutableListOf<MessageEvent>()
+
+    val job = launch { SUT.uiState.toList(stateResult) }
+    val job2 = launch { SUT.messageState.toList(messagesResult) }
+
     val cachedItem = TestData.DISCOVER_LIST_ITEM
     val remoteItem = cachedItem.copy(isFollowed = true)
     coEvery { showsCase.loadCachedShows(any()) } returns listOf(cachedItem)
     coEvery { showsCase.loadRemoteShows(any()) } returns listOf(remoteItem)
     coEvery { showsCase.isCacheValid() } returns false
 
-    SUT.loadDiscoverShows()
+    SUT.loadItems()
 
-    val uiStates = mutableListOf<DiscoverUiModel>()
-    verify { mockUiObserver.onChanged(capture(uiStates)) }
+    assertThat(stateResult.any { it.items?.contains(cachedItem) == true }).isTrue()
+    assertThat(stateResult.last().items?.contains(remoteItem)).isTrue()
+    assertThat(messagesResult).isEmpty()
 
-    assertThat(uiStates[2].shows!!.contains(cachedItem)).isTrue()
-    assertThat(uiStates[3].shows!!.contains(remoteItem)).isTrue()
-
-    verify(exactly = 0) { mockMessageObserver.onChanged(any()) }
+    job.cancel()
+    job2.cancel()
   }
 
   @Test
-  internal fun `Should post error message on error`() {
+  internal fun `Should post error message on error`() = runBlockingTest {
+    val stateResult = mutableListOf<DiscoverUiState>()
+    val messagesResult = mutableListOf<MessageEvent>()
+
+    val job = launch { SUT.uiState.toList(stateResult) }
+    val job2 = launch { SUT.messageState.toList(messagesResult) }
+
     coEvery { showsCase.loadCachedShows(any()) } throws Error()
 
-    SUT.loadDiscoverShows()
+    SUT.loadItems()
 
-    val messageStates = mutableListOf<MessageEvent>()
-    verify(exactly = 1) { mockMessageObserver.onChanged(capture(messageStates)) }
-    assertThat(messageStates).hasSize(1)
-    assertThat(messageStates.first().consume()).isEqualTo(R.string.errorCouldNotLoadDiscover)
+    assertThat(messagesResult.last().consume()).isEqualTo(R.string.errorCouldNotLoadDiscover)
+
+    job.cancel()
+    job2.cancel()
   }
 }

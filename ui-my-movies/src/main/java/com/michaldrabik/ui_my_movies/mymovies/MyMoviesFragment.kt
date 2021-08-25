@@ -5,6 +5,9 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -26,6 +29,8 @@ import com.michaldrabik.ui_my_movies.main.FollowedMoviesFragment
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_movies.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MyMoviesFragment :
@@ -44,9 +49,13 @@ class MyMoviesFragment :
     setupStatusBar()
     setupRecycler()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      loadMovies()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          loadMovies()
+        }
+      }
     }
   }
 
@@ -91,9 +100,9 @@ class MyMoviesFragment :
       .show()
   }
 
-  private fun render(uiModel: MyMoviesUiModel) {
-    uiModel.run {
-      listItems?.let {
+  private fun render(uiState: MyMoviesUiState) {
+    uiState.run {
+      items?.let {
         adapter?.setItems(it)
         myMoviesEmptyView.fadeIf(it.isEmpty())
         (parentFragment as FollowedMoviesFragment).enableSearch(it.isNotEmpty())

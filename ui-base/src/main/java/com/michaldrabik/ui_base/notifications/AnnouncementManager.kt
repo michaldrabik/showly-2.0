@@ -34,9 +34,9 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.NotificationDelay
 import com.michaldrabik.ui_model.Translation
 import dagger.hilt.android.qualifiers.ApplicationContext
+import timber.log.Timber
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import javax.inject.Inject
@@ -93,7 +93,7 @@ class AnnouncementManager @Inject constructor(
       episode?.firstAired?.let { airDate ->
         when {
           delay.isBefore() -> {
-            if ((airDate.toMillis() - nowUtcMillis()) + delay.delayMs > 0) {
+            if (airDate.toMillis() + delay.delayMs >= nowMillis) {
               scheduleAnnouncement(show, episode, delay, language)
             } else {
               Timber.i("Time with delay included has already passed.")

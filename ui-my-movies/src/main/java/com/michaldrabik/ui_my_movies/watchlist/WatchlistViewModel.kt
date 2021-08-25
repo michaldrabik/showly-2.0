@@ -15,6 +15,10 @@ import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistRatingsCase
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistSortOrderCase
 import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,8 +27,28 @@ class WatchlistViewModel @Inject constructor(
   private val sortOrderCase: WatchlistSortOrderCase,
   private val ratingsCase: WatchlistRatingsCase,
   private val loadMoviesCase: WatchlistLoadMoviesCase,
-  private val imagesProvider: MovieImagesProvider
-) : BaseViewModel<WatchlistUiModel>() {
+  private val imagesProvider: MovieImagesProvider,
+) : BaseViewModel() {
+
+  private val itemsState = MutableStateFlow<List<WatchlistListItem>>(emptyList())
+  private val sortOrderState = MutableStateFlow<ActionEvent<SortOrder>?>(null)
+  private val scrollState = MutableStateFlow<ActionEvent<Boolean>?>(null)
+
+  val uiState = combine(
+    itemsState,
+    sortOrderState,
+    scrollState
+  ) { itemsState, sortOrderState, scrollState ->
+    WatchlistUiState(
+      items = itemsState,
+      sortOrder = sortOrderState,
+      resetScroll = scrollState
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = WatchlistUiState()
+  )
 
   fun loadMovies(resetScroll: Boolean = false) {
     viewModelScope.launch {
@@ -33,7 +57,8 @@ class WatchlistViewModel @Inject constructor(
         val image = imagesProvider.findCachedImage(it.first, POSTER)
         WatchlistListItem(it.first, image, false, it.second, null, dateFormat)
       }
-      uiState = WatchlistUiModel(items = items, resetScroll = ActionEvent(resetScroll))
+      itemsState.value = items
+      scrollState.value = ActionEvent(resetScroll)
       loadRatings(items, resetScroll)
     }
   }
@@ -43,7 +68,8 @@ class WatchlistViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         val listItems = ratingsCase.loadRatings(items)
-        uiState = WatchlistUiModel(items = listItems, resetScroll = ActionEvent(resetScroll))
+        itemsState.value = listItems
+        scrollState.value = ActionEvent(resetScroll)
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "WatchlistViewModel::loadRatings()")
       }
@@ -53,7 +79,7 @@ class WatchlistViewModel @Inject constructor(
   fun loadSortOrder() {
     viewModelScope.launch {
       val sortOrder = sortOrderCase.loadSortOrder()
-      uiState = WatchlistUiModel(sortOrder = ActionEvent(sortOrder))
+      sortOrderState.value = ActionEvent(sortOrder)
     }
   }
 
@@ -89,8 +115,8 @@ class WatchlistViewModel @Inject constructor(
   }
 
   private fun updateItem(new: WatchlistListItem) {
-    val currentItems = uiState?.items?.toMutableList()
-    currentItems?.findReplace(new) { it.isSameAs(new) }
-    uiState = uiState?.copy(items = currentItems)
+    val currentItems = uiState.value.items.toMutableList()
+    currentItems.findReplace(new) { it.isSameAs(new) }
+    itemsState.value = currentItems
   }
 }

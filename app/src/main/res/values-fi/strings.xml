@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="menuProgress">Katselutilanne</string>
+  <string name="menuDiscover">Etsi</string>
+  <string name="menuCollection">Kokoelma</string>
+  <string name="menuNews">Uutiset</string>
+  <string name="textRateAppTitle">Nautitko Showly 2.0:sta?</string>
+  <string name="textRateAppMessage">Haluaisitko arvioida sovelluksen?\nTämä kestää vain muutaman sekunnin. Kiitos!\n\n<i>Sovellusta ei suljeta.</i></string>
+  <string name="textRateAppYesButton">Toki, miksipä en?</string>
+  <string name="textRateAppNoButton">En nyt</string>
+  <string name="textDisclaimerTitle">Tervetuloa!</string>
+  <string name="textDisclaimerText">Huomioi, että tällä sovelluksella <b>ET VOI</b> katsella, suoratoistaa tai ladata sarjoja ja elokuvia.\n\nKäytä suoratoistoon ja katseluun <b>Netflixin</b> kaltaisia sovelluksia.</string>
+  <string name="textDisclaimerConfirmText">OK, ymmärrän</string>
+  <string name="textWhatsNewTitle">Mitä uutta</string>
+  <string name="textWhatsNewSubtitle">Versio %s</string>
+  <string name="shortcutDiscover">Etsi</string>
+  <string name="shortcutCollection">Kokoelma</string>
+  <string name="shortcutSearch">Haku</string>
+  <string name="shortcutProgress">Katselutilanne</string>
+</resources>

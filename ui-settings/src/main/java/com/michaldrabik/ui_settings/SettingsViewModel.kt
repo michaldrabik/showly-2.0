@@ -10,9 +10,11 @@ import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.dates.AppDateFormat
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.NotificationDelay
+import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import com.michaldrabik.ui_settings.cases.SettingsMainCase
 import com.michaldrabik.ui_settings.cases.SettingsStreamingsCase
@@ -24,6 +26,9 @@ import com.michaldrabik.ui_settings.helpers.WidgetTransparency
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
@@ -35,7 +40,7 @@ class SettingsViewModel @Inject constructor(
   private val traktCase: SettingsTraktCase,
   private val themesCase: SettingsThemesCase,
   private val streamingsCase: SettingsStreamingsCase,
-) : BaseViewModel<SettingsUiModel>() {
+) : BaseViewModel() {
 
   fun loadSettings() {
     viewModelScope.launch {
@@ -233,9 +238,9 @@ class SettingsViewModel @Inject constructor(
     if (authData == null) return
     viewModelScope.launch {
       try {
-        uiState = SettingsUiModel(isSigningIn = true)
+        signingInState.value = true
         traktCase.authorizeTrakt(authData)
-        _messageLiveData.value = MessageEvent.info(R.string.textTraktLoginSuccess)
+        _messageState.emit(MessageEvent.info(R.string.textTraktLoginSuccess))
         refreshSettings()
         Analytics.logTraktLogin()
       } catch (error: Throwable) {
@@ -243,10 +248,10 @@ class SettingsViewModel @Inject constructor(
           error is HttpException && error.code() == 423 -> R.string.errorTraktLocked
           else -> R.string.errorAuthorization
         }
-        _messageLiveData.value = MessageEvent.error(message)
+        _messageState.emit(MessageEvent.error(message))
         Logger.record(error, "Source" to "SettingsViewModel::authorizeTrakt()")
       } finally {
-        uiState = SettingsUiModel(isSigningIn = false)
+        signingInState.value = false
       }
     }
   }
@@ -254,7 +259,7 @@ class SettingsViewModel @Inject constructor(
   fun logoutTrakt(context: Context) {
     viewModelScope.launch {
       traktCase.logoutTrakt(context)
-      _messageLiveData.value = MessageEvent.info(R.string.textTraktLogoutSuccess)
+      _messageState.emit(MessageEvent.info(R.string.textTraktLogoutSuccess))
       refreshSettings()
       Analytics.logTraktLogout()
     }
@@ -265,27 +270,84 @@ class SettingsViewModel @Inject constructor(
       withContext(IO) { Glide.get(context).clearDiskCache() }
       Glide.get(context).clearMemory()
       mainCase.deleteImagesCache()
-      _messageLiveData.value = MessageEvent.info(R.string.textImagesCacheCleared)
+      _messageState.emit(MessageEvent.info(R.string.textImagesCacheCleared))
     }
   }
 
   private suspend fun refreshSettings(restartApp: Boolean = false) {
-    uiState = SettingsUiModel(
-      settings = mainCase.getSettings(),
-      language = mainCase.getLanguage(),
-      theme = themesCase.getTheme(),
-      themeWidgets = themesCase.getWidgetsTheme(),
-      widgetsTransparency = themesCase.getWidgetsTransparency(),
-      country = mainCase.getCountry(),
-      dateFormat = mainCase.getDateFormat(),
-      moviesEnabled = mainCase.isMoviesEnabled(),
-      newsEnabled = mainCase.isNewsEnabled(),
-      streamingsEnabled = mainCase.isStreamingsEnabled(),
-      isSignedInTrakt = traktCase.isTraktAuthorized(),
-      isPremium = mainCase.isPremium(),
-      traktUsername = traktCase.getTraktUsername(),
-      userId = mainCase.getUserId(),
-      restartApp = restartApp
-    )
+    settingsState.value = mainCase.getSettings()
+    languageState.value = mainCase.getLanguage()
+    themeState.value = themesCase.getTheme()
+    widgetThemeState.value = themesCase.getWidgetsTheme()
+    widgetTransparencyState.value = themesCase.getWidgetsTransparency()
+    countryState.value = mainCase.getCountry()
+    dateFormatState.value = mainCase.getDateFormat()
+    moviesEnabledState.value = mainCase.isMoviesEnabled()
+    newsEnabledState.value = mainCase.isNewsEnabled()
+    streamingsEnabledState.value = mainCase.isStreamingsEnabled()
+    signedInTraktState.value = traktCase.isTraktAuthorized()
+    premiumState.value = mainCase.isPremium()
+    traktNameState.value = traktCase.getTraktUsername()
+    userIdState.value = mainCase.getUserId()
+    restartAppState.value = restartApp
   }
+
+  private val settingsState = MutableStateFlow<Settings?>(null)
+  private val languageState = MutableStateFlow(AppLanguage.ENGLISH)
+  private val themeState = MutableStateFlow(AppTheme.DARK)
+  private val widgetThemeState = MutableStateFlow(AppTheme.DARK)
+  private val widgetTransparencyState = MutableStateFlow(WidgetTransparency.SOLID)
+  private val countryState = MutableStateFlow<AppCountry?>(null)
+  private val dateFormatState = MutableStateFlow<AppDateFormat?>(null)
+  private val moviesEnabledState = MutableStateFlow(true)
+  private val newsEnabledState = MutableStateFlow(false)
+  private val streamingsEnabledState = MutableStateFlow(true)
+  private val signedInTraktState = MutableStateFlow(false)
+  private val signingInState = MutableStateFlow(false)
+  private val premiumState = MutableStateFlow(false)
+  private val traktNameState = MutableStateFlow("")
+  private val userIdState = MutableStateFlow("")
+  private val restartAppState = MutableStateFlow(false)
+
+  val uiState = combine(
+    settingsState,
+    languageState,
+    themeState,
+    widgetThemeState,
+    widgetTransparencyState,
+    countryState,
+    dateFormatState,
+    moviesEnabledState,
+    newsEnabledState,
+    streamingsEnabledState,
+    signedInTraktState,
+    premiumState,
+    traktNameState,
+    userIdState,
+    restartAppState,
+    signingInState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16 ->
+    SettingsUiState(
+      settings = s1,
+      language = s2,
+      theme = s3,
+      themeWidgets = s4,
+      widgetsTransparency = s5,
+      country = s6,
+      dateFormat = s7,
+      moviesEnabled = s8,
+      newsEnabled = s9,
+      streamingsEnabled = s10,
+      isSignedInTrakt = s11,
+      isPremium = s12,
+      traktUsername = s13,
+      userId = s14,
+      restartApp = s15,
+      isSigningIn = s16
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = SettingsUiState()
+  )
 }

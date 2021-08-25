@@ -88,7 +88,7 @@ class MainInitialsCase @Inject constructor(
     settingsRepository.language = appLanguage.code
   }
 
-  fun checkLanguageChange(): AppLanguage {
+  fun checkInitialLanguage(): AppLanguage {
     val locale = LocaleListCompat.getAdjustedDefault()
     if (locale.size() == 1 && !locale[0].language.equals(Locale("en").language)) {
       AppLanguage.values().forEach { appLanguage ->

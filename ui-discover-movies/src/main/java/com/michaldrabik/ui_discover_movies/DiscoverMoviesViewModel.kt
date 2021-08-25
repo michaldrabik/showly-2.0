@@ -6,6 +6,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
+import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_discover_movies.cases.DiscoverFiltersCase
@@ -18,6 +19,10 @@ import com.michaldrabik.ui_model.ImageSource.TMDB
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -27,7 +32,30 @@ class DiscoverMoviesViewModel @Inject constructor(
   private val moviesCase: DiscoverMoviesCase,
   private val filtersCase: DiscoverFiltersCase,
   private val imagesProvider: MovieImagesProvider,
-) : BaseViewModel<DiscoverMoviesUiModel>() {
+) : BaseViewModel() {
+
+  private val itemsState = MutableStateFlow<List<DiscoverMovieListItem>?>(null)
+  private val loadingState = MutableStateFlow(false)
+  private val filtersState = MutableStateFlow<DiscoverFilters?>(null)
+  private val scrollState = MutableStateFlow(ActionEvent(false))
+
+  val uiState = combine(
+    itemsState,
+    loadingState,
+    filtersState,
+    scrollState
+  ) { s1, s2, s3, s4 ->
+    DiscoverMoviesUiState(
+      items = s1,
+      isLoading = s2,
+      filters = s3,
+      resetScroll = s4
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = DiscoverMoviesUiState()
+  )
 
   @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
   var lastPullToRefreshMs = 0L
@@ -39,32 +67,38 @@ class DiscoverMoviesViewModel @Inject constructor(
     instantProgress: Boolean = false,
     newFilters: DiscoverFilters? = null,
   ) {
+    loadingState.value = true
+
     if (pullToRefresh && nowUtcMillis() - lastPullToRefreshMs < Config.PULL_TO_REFRESH_COOLDOWN_MS) {
-      uiState = DiscoverMoviesUiModel(showLoading = false)
+      loadingState.value = false
       return
     }
 
-    uiState = DiscoverMoviesUiModel(showLoading = pullToRefresh)
+    loadingState.value = pullToRefresh
 
     viewModelScope.launch {
       val progressJob = launch {
         delay(if (pullToRefresh || instantProgress) 0 else 750)
-        uiState = DiscoverMoviesUiModel(showLoading = true)
+        loadingState.value = true
       }
 
       try {
         newFilters?.let { filtersCase.saveFilters(it) }
         val filters = filtersCase.loadFilters()
-        uiState = DiscoverMoviesUiModel(filters = filters)
+        filtersState.value = filters
 
         if (!pullToRefresh && !skipCache) {
           val movies = moviesCase.loadCachedMovies(filters)
-          uiState = DiscoverMoviesUiModel(movies = movies, filters = filters, resetScroll = resetScroll)
+          itemsState.value = movies
+          filtersState.value = filters
+          scrollState.value = ActionEvent(resetScroll)
         }
 
         if (pullToRefresh || skipCache || !moviesCase.isCacheValid()) {
           val movies = moviesCase.loadRemoteMovies(filters)
-          uiState = DiscoverMoviesUiModel(movies = movies, filters = filters, resetScroll = resetScroll)
+          itemsState.value = movies
+          filtersState.value = filters
+          scrollState.value = ActionEvent(resetScroll)
         }
 
         if (pullToRefresh) {
@@ -73,7 +107,7 @@ class DiscoverMoviesViewModel @Inject constructor(
       } catch (error: Throwable) {
         onError(error)
       } finally {
-        uiState = DiscoverMoviesUiModel(showLoading = false)
+        loadingState.value = false
         progressJob.cancel()
       }
     }
@@ -82,9 +116,10 @@ class DiscoverMoviesViewModel @Inject constructor(
   fun loadMissingImage(item: DiscoverMovieListItem, force: Boolean) {
 
     fun updateItem(newItem: DiscoverMovieListItem) {
-      val currentItems = uiState?.movies?.toMutableList()
+      val currentItems = uiState.value.items?.toMutableList()
       currentItems?.findReplace(newItem) { it.isSameAs(newItem) }
-      uiState = DiscoverMoviesUiModel(movies = currentItems, resetScroll = false)
+      itemsState.value = currentItems
+      scrollState.value = ActionEvent(false)
     }
 
     viewModelScope.launch {
@@ -104,9 +139,9 @@ class DiscoverMoviesViewModel @Inject constructor(
     }
   }
 
-  private fun onError(error: Throwable) {
+  private suspend fun onError(error: Throwable) {
     if (error !is CancellationException) {
-      _messageLiveData.value = MessageEvent.error(R.string.errorCouldNotLoadDiscover)
+      _messageState.emit(MessageEvent.error(R.string.errorCouldNotLoadDiscover))
       Timber.e(error)
     }
     rethrowCancellation(error)

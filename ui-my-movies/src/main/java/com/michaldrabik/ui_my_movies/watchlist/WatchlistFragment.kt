@@ -5,6 +5,9 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -26,6 +29,8 @@ import com.michaldrabik.ui_my_movies.utilities.OnSortClickListener
 import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_watchlist_movies.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class WatchlistFragment :
@@ -45,11 +50,14 @@ class WatchlistFragment :
     setupStatusBar()
     setupRecycler()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      loadMovies()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          loadMovies()
+        }
+      }
     }
-    isInitialized = true
   }
 
   private fun setupRecycler() {
@@ -58,7 +66,10 @@ class WatchlistFragment :
       itemClickListener = { openMovieDetails(it.movie) },
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) },
       missingTranslationListener = { viewModel.loadMissingTranslation(it) },
-      listChangeListener = { watchlistMoviesRecycler.scrollToPosition(0) }
+      listChangeListener = {
+        watchlistMoviesRecycler.scrollToPosition(0)
+        (requireParentFragment() as FollowedMoviesFragment).resetTranslations()
+      }
     )
     watchlistMoviesRecycler.apply {
       setHasFixedSize(true)
@@ -93,9 +104,9 @@ class WatchlistFragment :
       .show()
   }
 
-  private fun render(uiModel: WatchlistUiModel) {
-    uiModel.run {
-      items?.let {
+  private fun render(uiState: WatchlistUiState) {
+    uiState.run {
+      items.let {
         val notifyChange = resetScroll?.consume() == true
         adapter?.setItems(it, notifyChange = notifyChange)
         watchlistMoviesEmptyView.fadeIf(it.isEmpty())

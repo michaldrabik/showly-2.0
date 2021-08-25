@@ -1,33 +1,28 @@
 package com.michaldrabik.ui_base
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import timber.log.Timber
 
 @Suppress("PropertyName")
-open class BaseViewModel<UM : UiModel> : ViewModel() {
+open class BaseViewModel : ViewModel() {
 
-  private val _uiLiveData = MutableLiveData<UM>()
-  val uiLiveData: LiveData<UM> get() = _uiLiveData
+  protected companion object {
+    const val SUBSCRIBE_STOP_TIMEOUT = 3000L
+  }
 
-  protected val _messageLiveData = MutableLiveData<MessageEvent>()
-  val messageLiveData: LiveData<MessageEvent> get() = _messageLiveData
+  protected val _messageState = MutableSharedFlow<MessageEvent>()
+  val messageState = _messageState.asSharedFlow()
 
-  @Suppress("UNCHECKED_CAST")
-  protected var uiState: UM?
-    get() = _uiLiveData.value
-    set(value) = when (value) {
-      null -> _uiLiveData.value = value
-      else -> _uiLiveData.value = _uiLiveData.value?.update(value) as? UM ?: value
-    }
-
-  protected fun rethrowCancellation(t: Throwable) {
-    if (t is CancellationException) {
+  protected fun rethrowCancellation(error: Throwable) {
+    if (error is CancellationException) {
       Timber.d("Rethrowing CancellationException")
-      throw t
+      throw error
+    } else {
+      Timber.e(error)
     }
   }
 }

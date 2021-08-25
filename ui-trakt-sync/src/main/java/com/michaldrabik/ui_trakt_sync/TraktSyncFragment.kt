@@ -7,6 +7,9 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.common.extensions.dateFromMillis
 import com.michaldrabik.common.extensions.toLocalZone
@@ -26,6 +29,8 @@ import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.TraktSyncSchedule
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_trakt_sync.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class TraktSyncFragment :
@@ -45,10 +50,14 @@ class TraktSyncFragment :
     setupView()
     setupStatusBar()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
-      invalidate()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { showSnack(it) } }
+          invalidate()
+        }
+      }
     }
   }
 
@@ -113,9 +122,10 @@ class TraktSyncFragment :
 
   override fun onAuthorizationResult(authData: Uri?) = viewModel.authorizeTrakt(authData)
 
-  private fun render(uiModel: TraktSyncUiModel) {
+  private fun render(uiModel: TraktSyncUiState) {
     uiModel.run {
-      isProgress?.let {
+      if (authError) findNavControl()?.popBackStack()
+      isProgress.let {
         traktSyncButton.visibleIf(!it, false)
         traktSyncProgress.visibleIf(it)
         traktSyncImportCheckbox.visibleIf(!it)
@@ -123,30 +133,24 @@ class TraktSyncFragment :
         traktSyncScheduleButton.visibleIf(!it)
         traktLastSyncTimestamp.visibleIf(!it)
       }
-      progressStatus?.let { traktSyncStatus.text = it }
-      authError?.let { findNavControl()?.popBackStack() }
-      traktSyncSchedule?.let { traktSyncScheduleButton.setText(it.buttonStringRes) }
-      lastTraktSyncTimestamp?.let {
-        if (it != 0L) {
-          val date = dateFormat?.format(dateFromMillis(it).toLocalZone())?.capitalizeWords()
-          traktLastSyncTimestamp.text = getString(R.string.textTraktSyncLastTimestamp, date)
-        }
+      traktSyncStatus.text = progressStatus
+      traktSyncScheduleButton.setText(traktSyncSchedule.buttonStringRes)
+
+      if (lastTraktSyncTimestamp != 0L) {
+        val date = dateFormat?.format(dateFromMillis(lastTraktSyncTimestamp).toLocalZone())?.capitalizeWords()
+        traktLastSyncTimestamp.text = getString(R.string.textTraktSyncLastTimestamp, date)
       }
-      isAuthorized?.let {
-        when {
-          it -> {
-            traktSyncButton.text = getString(R.string.textTraktSyncStart)
-            traktSyncButton.onClick { startImport() }
-            traktSyncScheduleButton.onClick { checkScheduleImport(traktSyncSchedule, quickSyncEnabled) }
-          }
-          else -> {
-            traktSyncButton.text = getString(R.string.textSettingsTraktAuthorizeTitle)
-            traktSyncButton.onClick {
-              openWebUrl(Config.TRAKT_AUTHORIZE_URL) ?: showSnack(MessageEvent.error(R.string.errorCouldNotFindApp))
-            }
-            traktSyncScheduleButton.gone()
-          }
+
+      if (isAuthorized) {
+        traktSyncButton.text = getString(R.string.textTraktSyncStart)
+        traktSyncButton.onClick { startImport() }
+        traktSyncScheduleButton.onClick { checkScheduleImport(traktSyncSchedule, quickSyncEnabled) }
+      } else {
+        traktSyncButton.text = getString(R.string.textSettingsTraktAuthorizeTitle)
+        traktSyncButton.onClick {
+          openWebUrl(Config.TRAKT_AUTHORIZE_URL) ?: showSnack(MessageEvent.error(R.string.errorCouldNotFindApp))
         }
+        traktSyncScheduleButton.gone()
       }
     }
   }

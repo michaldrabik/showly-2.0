@@ -24,6 +24,9 @@ import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.bumptech.glide.Glide
@@ -31,6 +34,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.platform.MaterialContainerTransform
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.IMAGE_FADE_DURATION_MS
@@ -44,6 +48,7 @@ import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
 import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
@@ -58,6 +63,7 @@ import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
 import com.michaldrabik.ui_base.utilities.extensions.screenWidth
 import com.michaldrabik.ui_base.utilities.extensions.setTextIfEmpty
+import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withFailListener
@@ -75,6 +81,7 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.Ratings
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_movie.MovieDetailsUiState.StreamingsState
 import com.michaldrabik.ui_movie.actors.ActorsAdapter
 import com.michaldrabik.ui_movie.helpers.MovieLink
 import com.michaldrabik.ui_movie.helpers.MovieLink.IMDB
@@ -82,13 +89,11 @@ import com.michaldrabik.ui_movie.helpers.MovieLink.JUST_WATCH
 import com.michaldrabik.ui_movie.helpers.MovieLink.METACRITIC
 import com.michaldrabik.ui_movie.helpers.MovieLink.ROTTEN
 import com.michaldrabik.ui_movie.helpers.MovieLink.TRAKT
-import com.michaldrabik.ui_movie.helpers.StreamingsBundle
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import com.michaldrabik.ui_movie.related.RelatedMovieAdapter
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_WATCHLIST
-import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.UPCOMING
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
@@ -107,7 +112,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
 import kotlinx.android.synthetic.main.view_links_movie_menu.view.*
-import java.util.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import java.util.Locale.ENGLISH
 import java.util.Locale.ROOT
 
@@ -145,14 +151,18 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     setupStreamingsList()
     setupRelatedList()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
-      if (!isInitialized) {
-        loadDetails(movieId)
-        isInitialized = true
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { renderSnack(it) } }
+          if (!isInitialized) {
+            loadDetails(movieId)
+            isInitialized = true
+          }
+          loadPremium()
+        }
       }
-      loadPremium()
     }
   }
 
@@ -370,8 +380,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     navigateTo(R.id.actionMovieDetailsFragmentToPostComment, bundle)
   }
 
-  private fun render(uiModel: MovieDetailsUiModel) {
-    uiModel.run {
+  private fun render(uiState: MovieDetailsUiState) {
+    uiState.run {
       movie?.let { movie ->
         movieDetailsTitle.text = movie.title
         movieDetailsDescription.setTextIfEmpty(if (movie.overview.isNotBlank()) movie.overview else getString(R.string.textNoDescription))
@@ -409,7 +419,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         }
         movieDetailsLinksButton.run {
           onClick {
-            openLinksMenu(movie, uiModel.country ?: UNITED_STATES)
+            openLinksMenu(movie, uiState.country ?: UNITED_STATES)
             Analytics.logMovieLinksClick(movie)
           }
         }
@@ -428,7 +438,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         when {
           it.isMyMovie -> movieDetailsAddButton.setState(IN_MY_MOVIES, it.withAnimation)
           it.isWatchlist -> movieDetailsAddButton.setState(IN_WATCHLIST, it.withAnimation)
-          it.isUpcoming -> movieDetailsAddButton.setState(UPCOMING, it.withAnimation)
           else -> movieDetailsAddButton.setState(ADD, it.withAnimation)
         }
         (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
@@ -440,7 +449,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       relatedMovies?.let { renderRelatedMovies(it) }
       comments?.let {
         movieDetailsCommentsView.bind(it, commentsDateFormat)
-        if (isSignedIn == true) {
+        if (isSignedIn) {
           movieDetailsCommentsView.showCommentButton()
         }
       }
@@ -472,6 +481,11 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
             fadeIf(it)
             onYesClickListener = { viewModel.removeFromTraktWatchlist() }
           }
+        }
+      }
+      isFinished?.let { event ->
+        event.consume()?.let {
+          if (it) requireActivity().onBackPressed()
         }
       }
     }
@@ -555,7 +569,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsActorsProgress.gone()
   }
 
-  private fun renderStreamings(streamings: StreamingsBundle) {
+  private fun renderStreamings(streamings: StreamingsState) {
     if (streamingAdapter?.itemCount != 0) return
     val (items, isLocal) = streamings
     streamingAdapter?.setItems(items)
@@ -584,6 +598,20 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     if (translation?.title?.isNotBlank() == true) {
       movieDetailsTitle.text = translation.title
     }
+  }
+
+  private fun renderSnack(event: MessageEvent) {
+    if (event.peek() == R.string.errorMalformedMovie) {
+      event.consume()?.let {
+        val host = (requireActivity() as SnackbarHost).provideSnackbarLayout()
+        val snack = host.showInfoSnackbar(getString(it), length = Snackbar.LENGTH_INDEFINITE) {
+          viewModel.removeMalformedMovie(movieId)
+        }
+        snackbars.add(snack)
+      }
+      return
+    }
+    showSnack(event)
   }
 
   private fun openIMDbLink(id: IdImdb, type: String) {

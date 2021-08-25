@@ -1,7 +1,5 @@
 package com.michaldrabik.ui_progress.calendar
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.repository.TranslationsRepository
@@ -19,8 +17,12 @@ import com.michaldrabik.ui_progress.calendar.cases.items.CalendarFutureCase
 import com.michaldrabik.ui_progress.calendar.cases.items.CalendarRecentsCase
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarListItem
-import com.michaldrabik.ui_progress.main.ProgressMainUiModel
+import com.michaldrabik.ui_progress.main.ProgressMainUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -31,7 +33,24 @@ class CalendarViewModel @Inject constructor(
   private val ratingsCase: CalendarRatingsCase,
   private val imagesProvider: ShowImagesProvider,
   private val translationsRepository: TranslationsRepository,
-) : BaseViewModel<CalendarUiModel>() {
+) : BaseViewModel() {
+
+  private val itemsState = MutableStateFlow<List<CalendarListItem>?>(null)
+  private val modeState = MutableStateFlow(CalendarMode.PRESENT_FUTURE)
+
+  val uiState = combine(
+    itemsState,
+    modeState
+  ) { s1, s2 ->
+    CalendarUiState(
+      items = s1,
+      mode = s2
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = CalendarUiState()
+  )
 
   private val language by lazy { translationsRepository.getLanguage() }
   private var mode = CalendarMode.PRESENT_FUTURE
@@ -39,21 +58,18 @@ class CalendarViewModel @Inject constructor(
   private var timestamp = 0L
   var isQuickRateEnabled = false
 
-  private val _itemsLiveData = MutableLiveData<Pair<CalendarMode, List<CalendarListItem>>>()
-  val itemsLiveData: LiveData<Pair<CalendarMode, List<CalendarListItem>>> get() = _itemsLiveData
-
-  fun handleParentAction(model: ProgressMainUiModel) {
+  fun handleParentAction(state: ProgressMainUiState) {
     when {
-      this.timestamp != model.timestamp && model.timestamp != 0L -> {
-        this.timestamp = model.timestamp ?: 0L
+      this.timestamp != state.timestamp && state.timestamp != 0L -> {
+        this.timestamp = state.timestamp ?: 0L
         loadItems()
       }
-      this.mode != model.calendarMode -> {
-        this.mode = model.calendarMode ?: CalendarMode.PRESENT_FUTURE
+      this.mode != state.calendarMode -> {
+        this.mode = state.calendarMode ?: CalendarMode.PRESENT_FUTURE
         loadItems()
       }
-      this.searchQuery != model.searchQuery -> {
-        this.searchQuery = model.searchQuery
+      this.searchQuery != state.searchQuery -> {
+        this.searchQuery = state.searchQuery
         loadItems()
       }
     }
@@ -65,7 +81,8 @@ class CalendarViewModel @Inject constructor(
         CalendarMode.PRESENT_FUTURE -> futureCase.loadItems(searchQuery ?: "")
         CalendarMode.RECENTS -> recentsCase.loadItems(searchQuery ?: "")
       }
-      _itemsLiveData.postValue(mode to items)
+      itemsState.value = items
+      modeState.value = mode
     }
   }
 
@@ -73,10 +90,10 @@ class CalendarViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         ratingsCase.addRating(bundle.episode, rating)
-        _messageLiveData.value = MessageEvent.info(R.string.textRateSaved)
+        _messageState.emit(MessageEvent.info(R.string.textRateSaved))
         Analytics.logEpisodeRated(bundle.show.traktId, bundle.episode, rating)
       } catch (error: Throwable) {
-        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
       }
     }
   }
@@ -110,9 +127,10 @@ class CalendarViewModel @Inject constructor(
   }
 
   private fun updateItem(new: CalendarListItem.Episode) {
-    val currentItems = _itemsLiveData.value?.second?.toMutableList() ?: mutableListOf()
+    val currentItems = itemsState.value?.toMutableList() ?: mutableListOf()
     currentItems.findReplace(new) { it.isSameAs(new) }
-    _itemsLiveData.postValue(mode to currentItems)
+    itemsState.value = currentItems
+    modeState.value = mode
   }
 
   fun checkQuickRateEnabled() {

@@ -8,6 +8,9 @@
   <string name="textRateAppMessage">Möchten Sie die App bewerten?\nEs dauert nur wenige Sekunden. Danke!\n\n<i>Die App wird nicht geschlossen.</i></string>
   <string name="textRateAppYesButton">Sicher, wieso nicht?</string>
   <string name="textRateAppNoButton">Nicht jetzt</string>
+  <string name="textDisclaimerTitle">Willkommen!</string>
+  <string name="textDisclaimerText">Bitte beachte, dass du mit dieser App <b>keine</b> Shows und Filme ansehen, streamen oder herunterladen kannst.\n\nVerwenden Sie Apps wie <b>Netflix</b>, um Inhalte zu streamen und anzusehen.</string>
+  <string name="textDisclaimerConfirmText">OK, ich verstehe</string>
   <string name="textWhatsNewTitle">Was gibts Neues?</string>
   <string name="textWhatsNewSubtitle">Version %s</string>
   <string name="shortcutDiscover">Entdecken</string>

@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.appdistribution'
 apply plugin: 'com.google.firebase.crashlytics'
 apply from: '../versions.gradle'
@@ -117,5 +118,3 @@ dependencies {
 
   coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }
-
-apply plugin: 'com.google.gms.google-services'

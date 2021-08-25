@@ -81,6 +81,8 @@
   <string name="errorSeasonsNotLoaded">Por favor, aguarde até que os dados da temporada sejam carregados.</string>
   <string name="errorEpisodeNotAired">Este episódio ainda não foi exibido.</string>
   <string name="errorCouldNotLoadDiscover">Não foi possível carregar a página descoberta no momento.\nEntre em contato conosco se isso continuar acontecendo.</string>
+  <string name="errorMalformedShow">Parece que esta série não existe mais no banco de dados do Trakt.tv ou é uma duplicação.\n\nToque em \'OK\' para removê-la do aplicativo.</string>
+  <string name="errorMalformedMovie">Parece que esse filme não existe mais no banco de dados do Trakt.tv ou é uma duplicação.\n\nToque em \'OK\' para removê-lo do aplicativo.</string>
   <string name="errorCouldNotLoadShow">Não foi possível carregar os detalhes desta série no momento.\nPor favor, entre em contato conosco se isto continuar acontecendo.</string>
   <string name="errorCouldNotLoadMovie">Não foi possível carregar os detalhes deste filme no momento.\nPor favor, entre em contato conosco se isto continuar acontecendo.</string>
   <string name="errorCouldNotLoadSearchResults">Não foi possível carregar os resultados da pesquisa no momento.\nEntre em contato conosco se isso continuar acontecendo.</string>

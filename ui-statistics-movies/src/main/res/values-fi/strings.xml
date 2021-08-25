@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="textStatisticsMovies">Tilastot</string>
+  <string name="textStatisticsMoviesEmpty"><b>Omissa elokuvissa</b> on oltava ainakin\nyksi elokuva ennen kuin tilastoja voidaan näyttää.</string>
+  <string name="textStatisticsMoviesTotalTimeSpent">Katseluun käytetty kokonaisaika</string>
+  <string name="textStatisticsMoviesTotalTimeItIs">ja se on</string>
+  <string name="textStatisticsMoviesTotalTimeSpentHours">%s tuntia</string>
+  <string name="textStatisticsMoviesTotalTimeSpentMinutes">%s minuuttia</string>
+  <string name="textStatisticsMoviesTotalTimeSpentDays">joka on noin %s päivää.</string>
+  <string name="textStatisticsMoviesTotalMovies">Elokuvia katseltu kaikkiaan</string>
+  <string name="textStatisticsMoviesTotalMoviesCount">%s elokuvaa</string>
+  <string name="textStatisticsMoviesTopGenre">Suosituimmat tyylilajit</string>
+  <string name="textStatisticsMoviesTopGenreSubValue">näyttävät olevan juttusi. Napauta nähdäksesi lisää.</string>
+  <string name="textStatisticsMoviesTopGenreSubValue2">näyttävät olevan juttusi.</string>
+  <string name="textStatisticsMoviesRatings">Hiljattain arvioitu</string>
+</resources>

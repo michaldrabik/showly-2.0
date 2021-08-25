@@ -3,6 +3,7 @@ package com.michaldrabik.ui_base.utilities.extensions
 import android.app.NotificationManager
 import android.content.Context
 import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Rect
 import android.os.Build
@@ -27,6 +28,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 fun Context.notificationManager() = (applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
 
@@ -42,7 +44,7 @@ fun Fragment.dimenToPx(@DimenRes dimenResId: Int) = resources.getDimensionPixelS
 fun Context.colorFromAttr(
   @AttrRes attrColor: Int,
   typedValue: TypedValue = TypedValue(),
-  resolveRefs: Boolean = true
+  resolveRefs: Boolean = true,
 ): Int {
   theme.resolveAttribute(attrColor, typedValue, resolveRefs)
   return typedValue.data
@@ -51,9 +53,17 @@ fun Context.colorFromAttr(
 fun Context.colorStateListFromAttr(
   @AttrRes attrColor: Int,
   typedValue: TypedValue = TypedValue(),
-  resolveRefs: Boolean = true
+  resolveRefs: Boolean = true,
 ): ColorStateList =
   ColorStateList.valueOf(colorFromAttr(attrColor, typedValue, resolveRefs))
+
+fun Context.getLocaleStringResource(requestedLocale: Locale?, resourceId: Int): String {
+  val result: String
+  val config = Configuration(resources.configuration)
+  config.setLocale(requestedLocale)
+  result = createConfigurationContext(config).getText(resourceId).toString()
+  return result
+}
 
 fun screenWidth() = Resources.getSystem().displayMetrics.widthPixels
 

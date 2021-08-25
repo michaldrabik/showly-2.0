@@ -93,6 +93,8 @@
   <string name="errorSeasonsNotLoaded">Please wait for seasons data to load.</string>
   <string name="errorEpisodeNotAired">This episode hasn\'t been aired yet.</string>
   <string name="errorCouldNotLoadDiscover">We could not load discover page at this moment.\nPlease contact us if this keeps happening.</string>
+  <string name="errorMalformedShow">It looks like this show no longer exists in Trakt.tv database or is a duplicate.\n\nTap \'OK\' to remove it from the app.</string>
+  <string name="errorMalformedMovie">It looks like this movie no longer exists in Trakt.tv database or is a duplicate.\n\nTap \'OK\' to remove it from the app.</string>
   <string name="errorCouldNotLoadShow">We could not load this show\'s details at this moment.\nPlease contact us if this keeps happening.</string>
   <string name="errorCouldNotLoadMovie">We could not load this movie\'s details at this moment.\nPlease contact us if this keeps happening.</string>
   <string name="errorCouldNotLoadSearchResults">We could not load search results at this moment.\nPlease contact us if this keeps happening.</string>

@@ -15,6 +15,10 @@ import com.michaldrabik.ui_my_shows.archive.cases.ArchiveRatingsCase
 import com.michaldrabik.ui_my_shows.archive.cases.ArchiveSortOrderCase
 import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,7 +28,27 @@ class ArchiveViewModel @Inject constructor(
   private val loadShowsCase: ArchiveLoadShowsCase,
   private val ratingsCase: ArchiveRatingsCase,
   private val imagesProvider: ShowImagesProvider,
-) : BaseViewModel<ArchiveUiModel>() {
+) : BaseViewModel() {
+
+  private val itemsState = MutableStateFlow<List<ArchiveListItem>>(emptyList())
+  private val sortOrderState = MutableStateFlow<ActionEvent<SortOrder>?>(null)
+  private val scrollState = MutableStateFlow<ActionEvent<Boolean>?>(null)
+
+  val uiState = combine(
+    itemsState,
+    sortOrderState,
+    scrollState
+  ) { itemsState, sortOrderState, scrollState ->
+    ArchiveUiState(
+      items = itemsState,
+      sortOrder = sortOrderState,
+      resetScroll = scrollState
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = ArchiveUiState()
+  )
 
   fun loadShows(resetScroll: Boolean = false) {
     viewModelScope.launch {
@@ -32,7 +56,8 @@ class ArchiveViewModel @Inject constructor(
         val image = imagesProvider.findCachedImage(it.first, POSTER)
         ArchiveListItem(it.first, image, false, it.second)
       }
-      uiState = ArchiveUiModel(items = items, resetScroll = ActionEvent(resetScroll))
+      itemsState.value = items
+      scrollState.value = ActionEvent(resetScroll)
       loadRatings(items, resetScroll)
     }
   }
@@ -42,7 +67,8 @@ class ArchiveViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         val listItems = ratingsCase.loadRatings(items)
-        uiState = ArchiveUiModel(items = listItems, resetScroll = ActionEvent(resetScroll))
+        itemsState.value = listItems
+        scrollState.value = ActionEvent(resetScroll)
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "ArchiveViewModel::loadRatings()")
       }
@@ -52,7 +78,7 @@ class ArchiveViewModel @Inject constructor(
   fun loadSortOrder() {
     viewModelScope.launch {
       val sortOrder = sortOrderCase.loadSortOrder()
-      uiState = ArchiveUiModel(sortOrder = ActionEvent(sortOrder))
+      sortOrderState.value = ActionEvent(sortOrder)
     }
   }
 
@@ -88,8 +114,8 @@ class ArchiveViewModel @Inject constructor(
   }
 
   private fun updateItem(new: ArchiveListItem) {
-    val currentItems = uiState?.items?.toMutableList()
-    currentItems?.findReplace(new) { it.isSameAs(new) }
-    uiState = uiState?.copy(items = currentItems)
+    val currentItems = uiState.value.items.toMutableList()
+    currentItems.findReplace(new) { it.isSameAs(new) }
+    itemsState.value = currentItems
   }
 }

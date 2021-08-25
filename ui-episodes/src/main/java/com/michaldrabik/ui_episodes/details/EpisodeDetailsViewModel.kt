@@ -12,6 +12,7 @@ import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.EpisodeImagesProvider
 import com.michaldrabik.ui_base.utilities.ActionEvent
 import com.michaldrabik.ui_base.utilities.MessageEvent
+import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_episodes.R
 import com.michaldrabik.ui_episodes.details.cases.EpisodeDetailsSeasonCase
@@ -19,11 +20,17 @@ import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
+import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.RatingState
 import com.michaldrabik.ui_model.TraktRating
+import com.michaldrabik.ui_model.Translation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import org.threeten.bp.format.DateTimeFormatter
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
@@ -37,20 +44,65 @@ class EpisodeDetailsViewModel @Inject constructor(
   private val translationsRepository: TranslationsRepository,
   private val commentsRepository: CommentsRepository,
   private val userTraktManager: UserTraktManager,
-) : BaseViewModel<EpisodeDetailsUiModel>() {
+) : BaseViewModel() {
+
+  private val imageState = MutableStateFlow<Image?>(null)
+  private val imageLoadingState = MutableStateFlow(false)
+  private val episodesState = MutableStateFlow<List<Episode>?>(null)
+  private val commentsState = MutableStateFlow<List<Comment>?>(null)
+  private val commentsLoadingState = MutableStateFlow(false)
+  private val signedInState = MutableStateFlow(false)
+  private val ratingState = MutableStateFlow<RatingState?>(null)
+  private val ratingChangeEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
+  private val translationEvent = MutableStateFlow<ActionEvent<Translation>?>(null)
+  private val dateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
+  private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
+
+  val uiState = combine(
+    imageState,
+    imageLoadingState,
+    episodesState,
+    commentsState,
+    commentsLoadingState,
+    signedInState,
+    ratingState,
+    ratingChangeEvent,
+    translationEvent,
+    dateFormatState,
+    commentsDateFormatState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ->
+    EpisodeDetailsUiState(
+      image = s1,
+      isImageLoading = s2,
+      episodes = s3,
+      comments = s4,
+      isCommentsLoading = s5,
+      isSignedIn = s6,
+      ratingState = s7,
+      ratingChanged = s8,
+      translation = s9,
+      dateFormat = s10,
+      commentsDateFormat = s11
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = EpisodeDetailsUiState()
+  )
 
   init {
-    uiState = EpisodeDetailsUiModel(dateFormat = dateFormatProvider.loadFullHourFormat())
+    dateFormatState.value = dateFormatProvider.loadFullHourFormat()
   }
 
   fun loadImage(showId: IdTmdb, episode: Episode) {
     viewModelScope.launch {
       try {
-        uiState = EpisodeDetailsUiModel(imageLoading = true)
+        imageLoadingState.value = true
         val episodeImage = imagesProvider.loadRemoteImage(showId, episode)
-        uiState = EpisodeDetailsUiModel(image = episodeImage, imageLoading = false)
+        imageState.value = episodeImage
+        imageLoadingState.value = false
       } catch (t: Throwable) {
-        uiState = EpisodeDetailsUiModel(imageLoading = false)
+        imageLoadingState.value = false
       }
     }
   }
@@ -61,7 +113,7 @@ class EpisodeDetailsViewModel @Inject constructor(
       if (episodes.isNotEmpty()) {
         delay(100)
       }
-      uiState = EpisodeDetailsUiModel(episodes = episodes)
+      episodesState.value = episodes
     }
   }
 
@@ -72,7 +124,7 @@ class EpisodeDetailsViewModel @Inject constructor(
         if (language == Config.DEFAULT_LANGUAGE) return@launch
         val translation = translationsRepository.loadTranslation(episode, showTraktId, language)
         translation?.let {
-          uiState = EpisodeDetailsUiModel(translation = ActionEvent(it))
+          translationEvent.value = ActionEvent(it)
         }
       } catch (error: Throwable) {
         Timber.e(error)
@@ -83,7 +135,7 @@ class EpisodeDetailsViewModel @Inject constructor(
   fun loadComments(idTrakt: IdTrakt, season: Int, episode: Int) {
     viewModelScope.launch {
       try {
-        uiState = EpisodeDetailsUiModel(commentsLoading = true)
+        commentsLoadingState.value = true
 
         val isSignedIn = userTraktManager.isAuthorized()
         val username = userTraktManager.getUsername()
@@ -96,21 +148,19 @@ class EpisodeDetailsViewModel @Inject constructor(
           }
           .partition { it.isMe }
 
-        uiState = EpisodeDetailsUiModel(
-          isSignedIn = isSignedIn,
-          comments = comments.first + comments.second,
-          commentsLoading = false,
-          commentsDateFormat = dateFormatProvider.loadFullHourFormat()
-        )
+        signedInState.value = isSignedIn
+        commentsState.value = comments.first + comments.second
+        commentsLoadingState.value = false
+        commentsDateFormatState.value = dateFormatProvider.loadFullHourFormat()
       } catch (t: Throwable) {
         Timber.w("Failed to load comments. ${t.message}")
-        uiState = EpisodeDetailsUiModel(commentsLoading = false)
+        commentsLoadingState.value = false
       }
     }
   }
 
   fun loadCommentReplies(comment: Comment) {
-    var current = uiState?.comments?.toMutableList() ?: mutableListOf()
+    var current = uiState.value.comments?.toMutableList() ?: mutableListOf()
     if (current.any { it.parentId == comment.id }) return
 
     viewModelScope.launch {
@@ -119,7 +169,7 @@ class EpisodeDetailsViewModel @Inject constructor(
         parent?.let { p ->
           val copy = p.copy(isLoading = true)
           current.findReplace(copy) { it.id == p.id }
-          uiState = EpisodeDetailsUiModel(comments = current)
+          commentsState.value = current
         }
 
         val isSignedIn = userTraktManager.isAuthorized()
@@ -132,22 +182,21 @@ class EpisodeDetailsViewModel @Inject constructor(
             )
           }
 
-        current = uiState?.comments?.toMutableList() ?: mutableListOf()
+        current = uiState.value.comments?.toMutableList() ?: mutableListOf()
         val parentIndex = current.indexOfFirst { it.id == comment.id }
         if (parentIndex > -1) current.addAll(parentIndex + 1, replies)
         parent?.let {
           current.findReplace(parent.copy(isLoading = false, replies = 0)) { it.id == comment.id }
         }
-
-        uiState = EpisodeDetailsUiModel(comments = current)
+        commentsState.value = current
       } catch (t: Throwable) {
-        uiState = EpisodeDetailsUiModel(comments = current)
+        commentsState.value = current
       }
     }
   }
 
   fun addNewComment(comment: Comment) {
-    val current = uiState?.comments?.toMutableList() ?: mutableListOf()
+    val current = uiState.value.comments?.toMutableList() ?: mutableListOf()
     if (!comment.isReply()) {
       current.add(0, comment)
     } else {
@@ -159,22 +208,22 @@ class EpisodeDetailsViewModel @Inject constructor(
         current.findReplace(parent.copy(replies = repliesCount)) { it.id == comment.parentId }
       }
     }
-    uiState = EpisodeDetailsUiModel(comments = current)
+    commentsState.value = current
   }
 
   fun deleteComment(comment: Comment) {
-    var current = uiState?.comments?.toMutableList() ?: mutableListOf()
+    var current = uiState.value.comments?.toMutableList() ?: mutableListOf()
     val target = current.find { it.id == comment.id } ?: return
 
     viewModelScope.launch {
       try {
         val copy = target.copy(isLoading = true)
         current.findReplace(copy) { it.id == target.id }
-        uiState = EpisodeDetailsUiModel(comments = current)
+        commentsState.value = current
 
         commentsRepository.deleteComment(target.id)
 
-        current = uiState?.comments?.toMutableList() ?: mutableListOf()
+        current = uiState.value.comments?.toMutableList() ?: mutableListOf()
         val targetIndex = current.indexOfFirst { it.id == target.id }
         if (targetIndex > -1) {
           current.removeAt(targetIndex)
@@ -185,15 +234,15 @@ class EpisodeDetailsViewModel @Inject constructor(
           }
         }
 
-        uiState = EpisodeDetailsUiModel(comments = current)
-        _messageLiveData.value = MessageEvent.info(R.string.textCommentDeleted)
+        commentsState.value = current
+        _messageState.emit(MessageEvent.info(R.string.textCommentDeleted))
       } catch (t: Throwable) {
         if (t is HttpException && t.code() == 409) {
-          _messageLiveData.value = MessageEvent.error(R.string.errorCommentDelete)
+          _messageState.emit(MessageEvent.error(R.string.errorCommentDelete))
         } else {
-          _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+          _messageState.emit(MessageEvent.error(R.string.errorGeneral))
         }
-        uiState = EpisodeDetailsUiModel(comments = current)
+        commentsState.value = current
       }
     }
   }
@@ -202,15 +251,15 @@ class EpisodeDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         if (!userTraktManager.isAuthorized()) {
-          uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateAllowed = false, rateLoading = false))
+          ratingState.value = RatingState(rateAllowed = false, rateLoading = false)
           return@launch
         }
-        uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateAllowed = true, rateLoading = true))
+        ratingState.value = RatingState(rateAllowed = true, rateLoading = true)
         val token = userTraktManager.checkAuthorization()
         val rating = ratingsRepository.shows.loadRating(token.token, episode)
-        uiState = EpisodeDetailsUiModel(ratingState = RatingState(userRating = rating, rateLoading = false))
+        ratingState.value = RatingState(rateAllowed = true, rateLoading = false, userRating = rating)
       } catch (error: Throwable) {
-        uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateLoading = false))
+        ratingState.value = RatingState(rateAllowed = false, rateLoading = false)
       }
     }
   }
@@ -219,18 +268,18 @@ class EpisodeDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       try {
         val token = userTraktManager.checkAuthorization().token
-        uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateLoading = true))
+        ratingState.value = RatingState(rateAllowed = true, rateLoading = true)
+
         ratingsRepository.shows.addRating(token, episode, rating)
-        _messageLiveData.value = MessageEvent.info(R.string.textRateSaved)
-        uiState = EpisodeDetailsUiModel(
-          ratingState = RatingState(userRating = TraktRating(episode.ids.trakt, rating)),
-          ratingChanged = ActionEvent(true)
-        )
+
+        _messageState.emit(MessageEvent.info(R.string.textRateSaved))
+        ratingState.value = RatingState(rateAllowed = true, rateLoading = false, userRating = TraktRating(episode.ids.trakt, rating))
+        ratingChangeEvent.value = ActionEvent(true)
+
         Analytics.logEpisodeRated(showTraktId.id, episode, rating)
       } catch (error: Throwable) {
-        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
-      } finally {
-        uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateLoading = false))
+        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
+        ratingState.value = RatingState(rateAllowed = true, rateLoading = false)
       }
     }
   }
@@ -238,18 +287,15 @@ class EpisodeDetailsViewModel @Inject constructor(
   fun deleteRating(episode: Episode) {
     viewModelScope.launch {
       try {
-        uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateLoading = true))
+        ratingState.value = RatingState(rateAllowed = true, rateLoading = true)
         val token = userTraktManager.checkAuthorization().token
         ratingsRepository.shows.deleteRating(token, episode)
-        uiState = EpisodeDetailsUiModel(
-          ratingState = RatingState(userRating = TraktRating.EMPTY, rateLoading = false),
-          ratingChanged = ActionEvent(true)
-
-        )
-        _messageLiveData.value = MessageEvent.info(R.string.textShowRatingDeleted)
+        ratingState.value = RatingState(rateAllowed = true, rateLoading = false, userRating = TraktRating.EMPTY)
+        ratingChangeEvent.value = ActionEvent(true)
+        _messageState.emit(MessageEvent.info(R.string.textShowRatingDeleted))
       } catch (error: Throwable) {
-        uiState = EpisodeDetailsUiModel(ratingState = RatingState(rateLoading = false))
-        _messageLiveData.value = MessageEvent.error(R.string.errorGeneral)
+        ratingState.value = RatingState(rateAllowed = true, rateLoading = false)
+        _messageState.emit(MessageEvent.error(R.string.errorGeneral))
       }
     }
   }

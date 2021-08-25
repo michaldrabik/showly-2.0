@@ -10,6 +10,9 @@ import androidx.core.view.isVisible
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.common.Config
@@ -33,6 +36,8 @@ import com.michaldrabik.ui_discover_movies.recycler.DiscoverMoviesAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_discover_movies.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlin.math.hypot
 import kotlin.random.Random
 
@@ -79,10 +84,14 @@ class DiscoverMoviesFragment :
     setupRecycler()
     setupSwipeRefresh()
 
-    viewModel.run {
-      uiLiveData.observe(viewLifecycleOwner, { render(it!!) })
-      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
-      loadMovies()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { showSnack(it) } }
+          loadMovies()
+        }
+      }
     }
   }
 
@@ -231,14 +240,15 @@ class DiscoverMoviesFragment :
     }
   }
 
-  private fun render(uiModel: DiscoverMoviesUiModel) {
+  private fun render(uiModel: DiscoverMoviesUiState) {
     uiModel.run {
-      movies?.let {
-        adapter?.setItems(it, resetScroll == true)
+      items?.let {
+        val resetScroll = resetScroll?.consume() == true
+        adapter?.setItems(it, resetScroll)
         layoutManager?.withSpanSizeLookup { pos -> adapter?.getItems()?.get(pos)?.image?.type?.spanSize!! }
         discoverMoviesRecycler.fadeIn()
       }
-      showLoading?.let {
+      isLoading?.let {
         discoverMoviesSearchView.isClickable = !it
         discoverMoviesSearchView.sortIconClickable = !it
         discoverMoviesSearchView.isEnabled = !it

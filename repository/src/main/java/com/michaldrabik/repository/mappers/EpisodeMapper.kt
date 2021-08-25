@@ -47,7 +47,7 @@ class EpisodeMapper @Inject constructor(
     season: Season,
     showId: IdTrakt,
     isWatched: Boolean
-  ) = EpisodeDb(
+  ): EpisodeDb = EpisodeDb(
     episode.ids.trakt.id,
     season.ids.trakt.id,
     showId.id,

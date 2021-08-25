@@ -6,16 +6,44 @@ import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_model.Genre
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_statistics_movies.cases.StatisticsMoviesLoadRatingsCase
+import com.michaldrabik.ui_statistics_movies.views.ratings.recycler.StatisticsMoviesRatingItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class StatisticsMoviesViewModel @Inject constructor(
   private val ratingsCase: StatisticsMoviesLoadRatingsCase,
-  private val moviesRepository: MoviesRepository
-) : BaseViewModel<StatisticsMoviesUiModel>() {
+  private val moviesRepository: MoviesRepository,
+) : BaseViewModel() {
+
+  private val totalTimeSpentState = MutableStateFlow<Int?>(null)
+  private val totalWatchedMoviesState = MutableStateFlow<Int?>(null)
+  private val topGenresState = MutableStateFlow<List<Genre>?>(null)
+  private val ratingsState = MutableStateFlow<List<StatisticsMoviesRatingItem>?>(null)
+
+  val uiState = combine(
+    totalWatchedMoviesState,
+    totalTimeSpentState,
+    topGenresState,
+    ratingsState,
+  ) { s1, s2, s3, s4 ->
+    StatisticsMoviesUiState(
+      totalWatchedMovies = s1,
+      totalTimeSpentMinutes = s2,
+      topGenres = s3,
+      ratings = s4,
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = StatisticsMoviesUiState()
+  )
 
   fun loadMovies() {
     viewModelScope.launch {
@@ -23,21 +51,21 @@ class StatisticsMoviesViewModel @Inject constructor(
       val genres = extractTopGenres(myMovies)
 
       delay(150) // Let transition finish peacefully.
-      uiState = StatisticsMoviesUiModel(
-        totalTimeSpentMinutes = myMovies.sumBy { it.runtime }.toLong(),
-        totalWatchedMovies = myMovies.count(),
-        topGenres = genres
-      )
+
+      totalWatchedMoviesState.value = myMovies.count()
+      totalTimeSpentState.value = myMovies.sumOf { it.runtime }
+      topGenresState.value = genres
     }
   }
 
   fun loadRatings() {
     viewModelScope.launch {
-      uiState = try {
-        val ratings = ratingsCase.loadRatings()
-        StatisticsMoviesUiModel(ratings = ratings)
-      } catch (t: Throwable) {
-        StatisticsMoviesUiModel(ratings = emptyList())
+      viewModelScope.launch {
+        try {
+          ratingsState.value = ratingsCase.loadRatings()
+        } catch (t: Throwable) {
+          ratingsState.value = emptyList()
+        }
       }
     }
   }

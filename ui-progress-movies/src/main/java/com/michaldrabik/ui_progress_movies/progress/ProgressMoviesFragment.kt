@@ -10,6 +10,9 @@ import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -36,6 +39,8 @@ import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMoviesAdapt
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_movies_main.*
 import kotlinx.android.synthetic.main.layout_progress_movies_empty.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProgressMoviesFragment :
@@ -56,12 +61,17 @@ class ProgressMoviesFragment :
     setupRecycler()
     setupStatusBar()
 
-    parentViewModel.uiLiveData.observe(viewLifecycleOwner, { viewModel.handleParentAction(it) })
-    viewModel.run {
-      itemsLiveData.observe(viewLifecycleOwner, { render(it.first, it.second) })
-      sortLiveData.observe(viewLifecycleOwner, { render(it) })
-      messageLiveData.observe(viewLifecycleOwner, { showSnack(it) })
-      checkQuickRateEnabled()
+    viewLifecycleOwner.lifecycleScope.launch {
+      repeatOnLifecycle(Lifecycle.State.STARTED) {
+        with(parentViewModel) {
+          launch { uiState.collect { viewModel.onParentState(it) } }
+        }
+        with(viewModel) {
+          launch { uiState.collect { render(it) } }
+          launch { messageState.collect { showSnack(it) } }
+          checkQuickRateEnabled()
+        }
+      }
     }
   }
 
@@ -172,6 +182,19 @@ class ProgressMoviesFragment :
 
   private fun render(sortOrder: ActionEvent<SortOrder>) {
     sortOrder.consume()?.let { openSortOrderDialog(it) }
+  }
+
+  private fun render(uiState: ProgressMoviesUiState) {
+    uiState.run {
+      items?.let {
+        val resetScroll = scrollReset?.consume() == true
+        adapter?.setItems(it, resetScroll)
+        progressMoviesEmptyView.fadeIf(items.isEmpty())
+        progressMoviesMainRecycler.fadeIn(withHardware = true).add(animations)
+        (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
+      }
+      sortOrder?.let { event -> event.consume()?.let { openSortOrderDialog(it) } }
+    }
   }
 
   override fun setupBackPressed() = Unit
