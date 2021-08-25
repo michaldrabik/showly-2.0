@@ -65,5 +65,5 @@ dependencies {
 
   api "com.jakewharton.timber:timber:$versions.timber"
 
-  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+  coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$versions.androidDesugarLibs"
 }

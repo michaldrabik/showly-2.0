@@ -40,5 +40,5 @@ dependencies {
   implementation "com.google.dagger:hilt-android:$versions.hilt"
   kapt "com.google.dagger:hilt-compiler:$versions.hilt"
 
-  coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+  coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$versions.androidDesugarLibs"
 }

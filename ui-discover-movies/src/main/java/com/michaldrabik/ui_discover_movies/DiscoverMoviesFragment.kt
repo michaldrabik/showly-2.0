@@ -240,8 +240,8 @@ class DiscoverMoviesFragment :
     }
   }
 
-  private fun render(uiModel: DiscoverMoviesUiState) {
-    uiModel.run {
+  private fun render(uiState: DiscoverMoviesUiState) {
+    uiState.run {
       items?.let {
         val resetScroll = resetScroll?.consume() == true
         adapter?.setItems(it, resetScroll)

@@ -485,8 +485,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsActorFullName.fadeOut()
   }
 
-  private fun render(uiModel: ShowDetailsUiState) {
-    uiModel.run {
+  private fun render(uiState: ShowDetailsUiState) {
+    uiState.run {
       show?.let { show ->
         showDetailsTitle.text = show.title
         showDetailsDescription.setTextIfEmpty(show.overview)
@@ -518,7 +518,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
         showDetailsLinksButton.run {
           onClick {
-            openLinksMenu(show, uiModel.country ?: UNITED_STATES)
+            openLinksMenu(show, uiState.country ?: UNITED_STATES)
             Analytics.logShowLinksClick(show)
           }
         }

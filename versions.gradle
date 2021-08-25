@@ -8,7 +8,6 @@ ext.versions = [
     kotlin                 : '1.5.21',
     kotlinCoroutines       : '1.5.0',
     gradleBuildTools       : '4.2.2',
-
     androidAppCompat       : '1.3.1',
     androidBilling         : '4.0.0',
     androidConstraintLayout: '2.1.0',
@@ -26,6 +25,7 @@ ext.versions = [
     androidPlayCore        : '1.10.0',
     androidWork            : '2.6.0-rc01',
     androidBrowser         : '1.3.0',
+    androidDesugarLibs     : '1.1.5',
     hilt                   : '2.36',
     circleIndicator        : '2.1.6',
     dagger                 : '2.36',

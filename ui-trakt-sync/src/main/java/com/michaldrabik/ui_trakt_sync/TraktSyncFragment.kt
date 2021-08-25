@@ -122,8 +122,8 @@ class TraktSyncFragment :
 
   override fun onAuthorizationResult(authData: Uri?) = viewModel.authorizeTrakt(authData)
 
-  private fun render(uiModel: TraktSyncUiState) {
-    uiModel.run {
+  private fun render(uiState: TraktSyncUiState) {
+    uiState.run {
       if (authError) findNavControl()?.popBackStack()
       isProgress.let {
         traktSyncButton.visibleIf(!it, false)
