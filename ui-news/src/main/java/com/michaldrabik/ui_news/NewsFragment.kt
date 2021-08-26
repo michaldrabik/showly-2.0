@@ -215,7 +215,7 @@ class NewsFragment :
       adapter?.setItems(items)
       fragmentNewsRecycler.fadeIf(items.isNotEmpty())
       fragmentNewsFiltersView.fadeIf(items.isNotEmpty())
-      fragmentNewsEmptyView.fadeIf(items.isEmpty())
+      fragmentNewsEmptyView.fadeIf(items.isEmpty() && !isLoading)
 
       fragmentNewsSwipeRefresh.isRefreshing = isLoading
       fragmentNewsFiltersView.isEnabled = !isLoading
