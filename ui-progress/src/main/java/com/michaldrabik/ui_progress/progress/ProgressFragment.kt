@@ -195,7 +195,7 @@ class ProgressFragment :
       items?.let {
         val resetScroll = scrollReset?.consume() == true
         adapter?.setItems(it, resetScroll)
-        progressEmptyView.visibleIf(it.isEmpty())
+        progressEmptyView.visibleIf(it.isEmpty() && !isLoading)
         progressTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
         progressRecycler.fadeIn(withHardware = true).add(animations)
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()

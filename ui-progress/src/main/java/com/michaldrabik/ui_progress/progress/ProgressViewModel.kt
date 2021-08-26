@@ -44,18 +44,21 @@ class ProgressViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   private val itemsState = MutableStateFlow<List<ProgressListItem>?>(null)
+  private val loadingState = MutableStateFlow(false)
   private val scrollState = MutableStateFlow(ActionEvent(false))
   private val sortOrderState = MutableStateFlow<ActionEvent<SortOrder>?>(null)
 
   val uiState = combine(
     itemsState,
     scrollState,
-    sortOrderState
-  ) { s1, s2, s3 ->
+    sortOrderState,
+    loadingState
+  ) { s1, s2, s3, s4 ->
     ProgressUiState(
       items = s1,
       scrollReset = s2,
-      sortOrder = s3
+      sortOrder = s3,
+      isLoading = s4
     )
   }.stateIn(
     scope = viewModelScope,
@@ -83,8 +86,10 @@ class ProgressViewModel @Inject constructor(
 
   private fun loadItems(resetScroll: Boolean = false) {
     viewModelScope.launch {
+      loadingState.value = true
       val items = itemsCase.loadItems(searchQuery ?: "")
       itemsState.value = items
+      loadingState.value = false
       scrollState.value = ActionEvent(resetScroll)
     }
   }
