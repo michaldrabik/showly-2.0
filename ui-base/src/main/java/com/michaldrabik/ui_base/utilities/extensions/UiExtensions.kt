@@ -92,8 +92,9 @@ fun View.fadeOut(
   return animation.also { it.start() }
 }
 
-fun ViewPropertyAnimator?.add(animations: MutableList<ViewPropertyAnimator?>) {
+fun ViewPropertyAnimator?.add(animations: MutableList<ViewPropertyAnimator?>): ViewPropertyAnimator? {
   animations.add(this)
+  return this
 }
 
 fun Animator?.add(animators: MutableList<Animator?>) {

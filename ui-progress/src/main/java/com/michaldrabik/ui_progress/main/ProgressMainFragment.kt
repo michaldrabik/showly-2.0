@@ -298,11 +298,12 @@ class ProgressMainFragment :
   }
 
   fun resetTranslations(duration: Long = TRANSLATION_DURATION) {
-    progressMainSearchView.animate().translationY(0F).setDuration(duration).start()
-    progressMainTabs.animate().translationY(0F).setDuration(duration).start()
-    progressMainPagerModeTabs.animate().translationY(0F).setDuration(duration).start()
-    progressMainSortIcon.animate().translationY(0F).setDuration(duration).start()
-    progressMainCalendarIcon.animate().translationY(0F).setDuration(duration).start()
+    if (view == null) return
+    progressMainSearchView.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+    progressMainTabs.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+    progressMainPagerModeTabs.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+    progressMainSortIcon.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+    progressMainCalendarIcon.animate().translationY(0F).setDuration(duration).add(animations)?.start()
   }
 
   private fun onScrollReset() =
