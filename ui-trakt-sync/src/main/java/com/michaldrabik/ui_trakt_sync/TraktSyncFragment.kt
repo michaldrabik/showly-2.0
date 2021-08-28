@@ -113,14 +113,17 @@ class TraktSyncFragment :
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
       .setSingleChoiceItems(optionsStrings, options.indexOf(currentSchedule)) { dialog, index ->
         val schedule = options[index]
-        viewModel.saveTraktSyncSchedule(schedule, requireAppContext())
+        viewModel.saveTraktSyncSchedule(schedule)
         showSnack(MessageEvent.info(schedule.confirmationStringRes))
         dialog.dismiss()
       }
       .show()
   }
 
-  override fun onAuthorizationResult(authData: Uri?) = viewModel.authorizeTrakt(authData)
+  override fun onAuthorizationResult(authData: Uri?) {
+    val code = authData?.getQueryParameter("code")
+    viewModel.authorizeTrakt(code)
+  }
 
   private fun render(uiState: TraktSyncUiState) {
     uiState.run {

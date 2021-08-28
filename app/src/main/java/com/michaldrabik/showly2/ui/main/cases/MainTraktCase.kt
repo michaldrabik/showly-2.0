@@ -1,6 +1,6 @@
 package com.michaldrabik.showly2.ui.main.cases
 
-import android.content.Context
+import androidx.work.WorkManager
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.trakt.TraktSyncWorker
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
@@ -12,17 +12,18 @@ import javax.inject.Inject
 class MainTraktCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val quickSyncManager: QuickSyncManager,
+  private val workManager: WorkManager,
 ) {
 
-  suspend fun refreshTraktSyncSchedule(context: Context) {
+  suspend fun refreshTraktSyncSchedule() {
     if (!settingsRepository.isInitialized()) return
     val schedule = settingsRepository.load().traktSyncSchedule
-    TraktSyncWorker.schedule(context, schedule, cancelExisting = false)
+    TraktSyncWorker.schedule(workManager, schedule, cancelExisting = false)
   }
 
-  suspend fun refreshTraktQuickSync(context: Context) {
+  suspend fun refreshTraktQuickSync() {
     if (quickSyncManager.isAnyScheduled()) {
-      QuickSyncWorker.schedule(context)
+      QuickSyncWorker.schedule(workManager)
     }
   }
 }

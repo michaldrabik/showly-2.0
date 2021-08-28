@@ -165,7 +165,7 @@ class ListDetailsItemsCase @Inject constructor(
   ) {
     listsRepository.removeFromList(listId, itemTraktId, itemType.type)
     if (settingsRepository.load().traktQuickRemoveEnabled) {
-      quickSyncManager.scheduleRemoveFromList(context, itemTraktId.id, listId, itemType)
+      quickSyncManager.scheduleRemoveFromList(itemTraktId.id, listId, itemType)
     }
   }
 }

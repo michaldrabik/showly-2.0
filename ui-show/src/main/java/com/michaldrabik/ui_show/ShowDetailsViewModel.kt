@@ -527,7 +527,7 @@ class ShowDetailsViewModel @Inject constructor(
       if (!checkSeasonsLoaded()) return@launch
 
       watchlistCase.addToWatchlist(show)
-      quickSyncManager.scheduleShowsWatchlist(context, listOf(show.traktId))
+      quickSyncManager.scheduleShowsWatchlist(listOf(show.traktId))
       followedState.value = FollowedState2.inWatchlist()
       Analytics.logShowAddToWatchlistShows(show)
     }
@@ -645,7 +645,7 @@ class ShowDetailsViewModel @Inject constructor(
         isChecked -> {
           episodesManager.setEpisodeWatched(bundle)
           if (myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || archiveCase.isArchived(show)) {
-            quickSyncManager.scheduleEpisodes(context, listOf(episode.ids.trakt.id))
+            quickSyncManager.scheduleEpisodes(listOf(episode.ids.trakt.id))
           }
         }
         else -> {
@@ -664,7 +664,7 @@ class ShowDetailsViewModel @Inject constructor(
         isChecked -> {
           val episodesAdded = episodesManager.setSeasonWatched(bundle)
           if (myShowsCase.isMyShows(show) || watchlistCase.isWatchlist(show) || archiveCase.isArchived(show)) {
-            quickSyncManager.scheduleEpisodes(context, episodesAdded.map { it.ids.trakt.id })
+            quickSyncManager.scheduleEpisodes(episodesAdded.map { it.ids.trakt.id })
           }
         }
         else -> {

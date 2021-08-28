@@ -36,7 +36,7 @@ class ManageListsCase @Inject constructor(
     listItem: ManageListsItem,
   ) {
     listsRepository.addToList(listItem.list.id, itemId, itemType)
-    quickSyncManager.scheduleAddToList(context, itemId.id, listItem.list.id, Mode.fromType(itemType))
+    quickSyncManager.scheduleAddToList(itemId.id, listItem.list.id, Mode.fromType(itemType))
   }
 
   suspend fun removeFromList(
@@ -46,6 +46,6 @@ class ManageListsCase @Inject constructor(
     listItem: ManageListsItem,
   ) {
     listsRepository.removeFromList(listItem.list.id, itemId, itemType)
-    quickSyncManager.scheduleRemoveFromList(context, itemId.id, listItem.list.id, Mode.fromType(itemType))
+    quickSyncManager.scheduleRemoveFromList(itemId.id, listItem.list.id, Mode.fromType(itemType))
   }
 }

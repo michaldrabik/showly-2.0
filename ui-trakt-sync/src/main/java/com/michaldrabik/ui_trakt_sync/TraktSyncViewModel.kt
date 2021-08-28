@@ -1,9 +1,8 @@
 package com.michaldrabik.ui_trakt_sync
 
-import android.content.Context
 import android.content.SharedPreferences
-import android.net.Uri
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkManager
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.BaseViewModel
@@ -38,6 +37,7 @@ import javax.inject.Named
 class TraktSyncViewModel @Inject constructor(
   @Named("miscPreferences") private var miscPreferences: SharedPreferences,
   private val userManager: UserTraktManager,
+  private val workManager: WorkManager,
   private val settingsRepository: SettingsRepository,
   private val dateFormatProvider: DateFormatProvider,
   importWatchedRunner: TraktImportWatchedRunner,
@@ -79,11 +79,9 @@ class TraktSyncViewModel @Inject constructor(
     }
   }
 
-  fun authorizeTrakt(authData: Uri?) {
-    if (authData == null) return
+  fun authorizeTrakt(code: String?) {
     viewModelScope.launch {
       try {
-        val code = authData.getQueryParameter("code")
         if (code.isNullOrBlank()) {
           throw IllegalStateException("Invalid Trakt authorization code.")
         }
@@ -100,14 +98,14 @@ class TraktSyncViewModel @Inject constructor(
     }
   }
 
-  fun saveTraktSyncSchedule(schedule: TraktSyncSchedule, context: Context) {
+  fun saveTraktSyncSchedule(schedule: TraktSyncSchedule) {
     viewModelScope.launch {
       val settings = settingsRepository.load()
       settings.let {
         val new = it.copy(traktSyncSchedule = schedule)
         settingsRepository.update(new)
       }
-      TraktSyncWorker.schedule(context.applicationContext, schedule, cancelExisting = true)
+      TraktSyncWorker.schedule(workManager, schedule, cancelExisting = true)
       traktSyncScheduleState.value = schedule
     }
   }
@@ -116,9 +114,9 @@ class TraktSyncViewModel @Inject constructor(
     viewModelScope.launch {
       when (event) {
         is TraktSyncStart -> {
-          _messageState.emit(info(R.string.textTraktSyncStarted))
           progressState.value = true
           progressStatusState.value = ""
+          _messageState.emit(info(R.string.textTraktSyncStarted))
         }
         is TraktSyncProgress -> {
           progressState.value = true
@@ -137,10 +135,10 @@ class TraktSyncViewModel @Inject constructor(
         is TraktSyncAuthError -> {
           viewModelScope.launch {
             userManager.revokeToken()
-            _messageState.emit(error(R.string.errorTraktAuthorization))
             progressState.value = false
             progressStatusState.value = ""
             authErrorState.value = true
+            _messageState.emit(error(R.string.errorTraktAuthorization))
           }
         }
         else -> Timber.d("Unsupported sync event")

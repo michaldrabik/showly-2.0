@@ -400,7 +400,7 @@ class MovieDetailsViewModel @Inject constructor(
   fun addFollowedMovie(context: Context) {
     viewModelScope.launch {
       myMoviesCase.addToMyMovies(movie)
-      quickSyncManager.scheduleMovies(context, listOf(movie.traktId))
+      quickSyncManager.scheduleMovies(listOf(movie.traktId))
       followedState.value = FollowedState.inMyMovies()
       announcementManager.refreshMoviesAnnouncements()
       Analytics.logMovieAddToMyMovies(movie)
@@ -410,7 +410,7 @@ class MovieDetailsViewModel @Inject constructor(
   fun addWatchlistMovie(context: Context) {
     viewModelScope.launch {
       watchlistCase.addToWatchlist(movie)
-      quickSyncManager.scheduleMoviesWatchlist(context, listOf(movie.traktId))
+      quickSyncManager.scheduleMoviesWatchlist(listOf(movie.traktId))
       followedState.value = FollowedState.inWatchlist()
       announcementManager.refreshMoviesAnnouncements()
       Analytics.logMovieAddToWatchlistMovies(movie)

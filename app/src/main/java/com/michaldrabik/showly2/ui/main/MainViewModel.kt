@@ -99,8 +99,8 @@ class MainViewModel @Inject constructor(
   fun refreshTraktSyncSchedule() {
     viewModelScope.launch {
       traktCase.run {
-        refreshTraktSyncSchedule(appContext)
-        refreshTraktQuickSync(appContext)
+        refreshTraktSyncSchedule()
+        refreshTraktQuickSync()
       }
     }
   }

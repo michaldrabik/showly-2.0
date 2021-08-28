@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_base.trakt.quicksync
 
-import android.content.Context
+import androidx.work.WorkManager
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
@@ -18,10 +18,11 @@ import javax.inject.Singleton
 class QuickSyncManager @Inject constructor(
   private val userTraktManager: UserTraktManager,
   private val settingsRepository: SettingsRepository,
-  private val database: AppDatabase
+  private val database: AppDatabase,
+  private val workManager: WorkManager
 ) {
 
-  suspend fun scheduleEpisodes(context: Context, episodesIds: List<Long>) {
+  suspend fun scheduleEpisodes(episodesIds: List<Long>) {
     val settings = settingsRepository.load()
     if (!settings.traktQuickSyncEnabled) {
       Timber.d("Quick Sync is disabled. Skipping...")
@@ -37,10 +38,10 @@ class QuickSyncManager @Inject constructor(
     database.traktSyncQueueDao().insert(items)
     Timber.d("Episodes added into sync queue. Count: ${items.size}")
 
-    QuickSyncWorker.schedule(context)
+    QuickSyncWorker.schedule(workManager)
   }
 
-  suspend fun scheduleMovies(context: Context, moviesIds: List<Long>) {
+  suspend fun scheduleMovies(moviesIds: List<Long>) {
     val settings = settingsRepository.load()
     if (!settings.traktQuickSyncEnabled) {
       Timber.d("Quick Sync is disabled. Skipping...")
@@ -56,10 +57,10 @@ class QuickSyncManager @Inject constructor(
     database.traktSyncQueueDao().insert(items)
     Timber.d("Movies added into sync queue. Count: ${items.size}")
 
-    QuickSyncWorker.schedule(context)
+    QuickSyncWorker.schedule(workManager)
   }
 
-  suspend fun scheduleShowsWatchlist(context: Context, showsIds: List<Long>) {
+  suspend fun scheduleShowsWatchlist(showsIds: List<Long>) {
     val settings = settingsRepository.load()
     if (!settings.traktQuickSyncEnabled) {
       Timber.d("Quick Sync is disabled. Skipping...")
@@ -75,10 +76,10 @@ class QuickSyncManager @Inject constructor(
     database.traktSyncQueueDao().insert(items)
     Timber.d("Shows added into sync queue. Count: ${items.size}")
 
-    QuickSyncWorker.schedule(context)
+    QuickSyncWorker.schedule(workManager)
   }
 
-  suspend fun scheduleMoviesWatchlist(context: Context, moviesIds: List<Long>) {
+  suspend fun scheduleMoviesWatchlist(moviesIds: List<Long>) {
     val settings = settingsRepository.load()
     if (!settings.traktQuickSyncEnabled) {
       Timber.d("Quick Sync is disabled. Skipping...")
@@ -94,10 +95,10 @@ class QuickSyncManager @Inject constructor(
     database.traktSyncQueueDao().insert(items)
     Timber.d("Movies added into sync queue. Count: ${items.size}")
 
-    QuickSyncWorker.schedule(context)
+    QuickSyncWorker.schedule(workManager)
   }
 
-  suspend fun scheduleAddToList(context: Context, idTrakt: Long, idList: Long, type: Mode) {
+  suspend fun scheduleAddToList(idTrakt: Long, idList: Long, type: Mode) {
     val settings = settingsRepository.load()
     if (!settings.traktQuickSyncEnabled) {
       Timber.d("Quick Sync is disabled. Skipping...")
@@ -128,10 +129,10 @@ class QuickSyncManager @Inject constructor(
       }
     }
 
-    QuickSyncWorker.schedule(context)
+    QuickSyncWorker.schedule(workManager)
   }
 
-  suspend fun scheduleRemoveFromList(context: Context, idTrakt: Long, idList: Long, type: Mode) {
+  suspend fun scheduleRemoveFromList(idTrakt: Long, idList: Long, type: Mode) {
     val settings = settingsRepository.load()
     if (!settings.traktQuickSyncEnabled) {
       Timber.d("Quick Sync/Remove is disabled. Skipping...")
@@ -162,7 +163,7 @@ class QuickSyncManager @Inject constructor(
       }
     }
 
-    QuickSyncWorker.schedule(context)
+    QuickSyncWorker.schedule(workManager)
   }
 
   suspend fun clearEpisodes(episodesIds: List<Long>) {

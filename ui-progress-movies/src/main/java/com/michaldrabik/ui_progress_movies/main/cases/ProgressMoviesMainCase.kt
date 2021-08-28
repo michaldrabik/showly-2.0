@@ -26,7 +26,7 @@ class ProgressMoviesMainCase @Inject constructor(
       moviesRepository.watchlistMovies.delete(movie.ids.trakt)
     }
     pinnedItemsRepository.removePinnedItem(movie)
-    quickSyncManager.scheduleMovies(context, listOf(movie.ids.trakt.id))
+    quickSyncManager.scheduleMovies(listOf(movie.ids.trakt.id))
   }
 
   suspend fun addToMyMovies(context: Context, movieId: IdTrakt) {

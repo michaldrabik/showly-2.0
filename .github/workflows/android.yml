@@ -20,16 +20,22 @@ jobs:
         run: ./.github/scripts/decrypt_secrets.sh
         env:
           KEYSTORE_PASSPHRASE: ${{ secrets.KEYSTORE_PASSPHRASE }}
+
       - name: Run ktlint
         run: curl -sSLO https://github.com/pinterest/ktlint/releases/download/0.42.1/ktlint && chmod a+x ktlint && ./ktlint
+
       - name: Run Unit Tests (app)
         run: ./gradlew :app:testDebugUnitTest
       - name: Run Unit Tests (ui-repository)
         run: ./gradlew :repository:testDebugUnitTest
       - name: Run Unit Tests (ui-discover)
         run: ./gradlew :ui-discover:testDebugUnitTest
+      - name: Run Unit Tests (ui-trakt-sync)
+        run: ./gradlew :ui-trakt-sync:testDebugUnitTest
+
       - name: Build APK
         run: ./gradlew app:assembleRelease
+
       - name: Distribute APK
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:

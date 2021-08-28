@@ -17,9 +17,7 @@ class QuickSyncWorker(context: Context, workerParams: WorkerParameters) : Worker
   companion object {
     private const val TAG = "TRAKT_QUICK_SYNC_WORK"
 
-    fun schedule(appContext: Context) {
-      val workManager = WorkManager.getInstance(appContext.applicationContext)
-
+    fun schedule(workManager: WorkManager) {
       val request = OneTimeWorkRequestBuilder<QuickSyncWorker>()
         .setConstraints(
           Constraints.Builder()

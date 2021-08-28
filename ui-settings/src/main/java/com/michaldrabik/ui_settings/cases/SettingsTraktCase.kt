@@ -2,6 +2,7 @@ package com.michaldrabik.ui_settings.cases
 
 import android.content.Context
 import android.net.Uri
+import androidx.work.WorkManager
 import com.michaldrabik.repository.RatingsRepository
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
@@ -14,7 +15,8 @@ import javax.inject.Inject
 class SettingsTraktCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
   private val ratingsRepository: RatingsRepository,
-  private val userManager: UserTraktManager
+  private val userManager: UserTraktManager,
+  private val workManager: WorkManager
 ) {
 
   suspend fun enableTraktQuickSync(enable: Boolean) {
@@ -47,7 +49,7 @@ class SettingsTraktCase @Inject constructor(
       val new = it.copy(traktSyncSchedule = schedule)
       settingsRepository.update(new)
     }
-    TraktSyncWorker.schedule(context.applicationContext, schedule, cancelExisting = true)
+    TraktSyncWorker.schedule(workManager, schedule, cancelExisting = true)
   }
 
   suspend fun authorizeTrakt(authData: Uri) {
@@ -77,7 +79,7 @@ class SettingsTraktCase @Inject constructor(
     userManager.clearTraktLogs()
     ratingsRepository.clear()
     disableTraktFeatures(context)
-    TraktSyncWorker.cancelAll(context)
+    TraktSyncWorker.cancelAll(workManager)
   }
 
   suspend fun isTraktAuthorized() = userManager.isAuthorized()
