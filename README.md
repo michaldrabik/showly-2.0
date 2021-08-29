@@ -49,15 +49,29 @@ redditClientId="your reddit client id"
 
 ## Issues & Contributions
 
-Feel free to post ideas and problems as Github Issues.
+Feel free to post problems with the app as Github [Issues](https://github.com/michaldrabik/showly-2.0/issues).
+
+Features ideas should be posted as new GIthub [Discussion](https://github.com/michaldrabik/showly-2.0/discussions).
 
 Pull requests are welcome. Remember about leaving a comment in the relevant issue if you are working on something.
 
 ### Language Translations
 
-I'm always looking for help with translating app into more languages.<br>
+We're always looking for help with translating app into more languages.<br>
 If you are interested in helping now or in the future, please visit our CrowdIn project and join:<br>
 https://crwd.in/showly-android-app
+
+## FAQ
+
+**1. Can I watch/stream/download shows and movies with Showly app?**
+
+  No, that is not possible. Showly is a progress tracking type of app - not a streaming service.
+
+**2. Show/Episode/Movie I'm looking for seems to be missing. What can I do?**
+
+  Showly uses [Trakt.tv](https://trakt.tv) as its main data source.
+  If something is missing please use "Import Show" / "Import Movie" option located at the bottom of Trakt.tv website.
+  It's also possible to contact Trakt.tv support about any related issue.
 
 ## Contact
 
