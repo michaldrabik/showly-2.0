@@ -5,6 +5,7 @@ import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.CustomListItem
 import com.michaldrabik.repository.ListsRepository
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
@@ -19,11 +20,7 @@ import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.SortOrderList
-import com.michaldrabik.ui_model.SortOrderList.DATE_ADDED
-import com.michaldrabik.ui_model.SortOrderList.NEWEST
-import com.michaldrabik.ui_model.SortOrderList.RANK
-import com.michaldrabik.ui_model.SortOrderList.RATING
-import com.michaldrabik.ui_model.SortOrderList.TITLE
+import com.michaldrabik.ui_model.SortOrderList.*
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -75,13 +72,18 @@ class ListDetailsItemsCase @Inject constructor(
     val (showsTranslations, moviesTranslations) = Pair(showsTranslationsAsync.await(), moviesTranslationsAsync.await())
 
     val isRankSort = list.sortByLocal == RANK
+    val itemsToDelete = mutableListOf<CustomListItem>()
     val items = listItems.map { listItem ->
       async {
         val isDragEnabled = false
         val listedAt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(listItem.listedAt), ZoneId.of("UTC"))
         when (listItem.type) {
           SHOWS.type -> {
-            val listShow = shows.firstOrNull { it.idTrakt == listItem.idTrakt } ?: return@async null
+            val listShow = shows.firstOrNull { it.idTrakt == listItem.idTrakt }
+            if (listShow == null) {
+              itemsToDelete.add(listItem)
+              return@async null
+            }
             val show = mappers.show.fromDatabase(listShow)
             val image = showImagesProvider.findCachedImage(show, ImageType.POSTER)
             val translation = showsTranslations[show.traktId]
@@ -102,7 +104,11 @@ class ListDetailsItemsCase @Inject constructor(
             )
           }
           MOVIES.type -> {
-            val listMovie = movies.firstOrNull { it.idTrakt == listItem.idTrakt } ?: return@async null
+            val listMovie = movies.firstOrNull { it.idTrakt == listItem.idTrakt }
+            if (listMovie == null) {
+              itemsToDelete.add(listItem)
+              return@async null
+            }
             val movie = mappers.movie.fromDatabase(listMovie)
             val image = movieImagesProvider.findCachedImage(movie, ImageType.POSTER)
             val translation = moviesTranslations[movie.traktId]
@@ -126,6 +132,10 @@ class ListDetailsItemsCase @Inject constructor(
         }
       }
     }.awaitAll()
+
+    itemsToDelete.forEach {
+      listsRepository.removeFromList(list.id, IdTrakt(it.idTrakt), it.type)
+    }
 
     sortItems(items.filterNotNull(), list.sortByLocal, list.filterTypeLocal)
   }
@@ -156,6 +166,10 @@ class ListDetailsItemsCase @Inject constructor(
         }
       }
       .map { it.copy(isRankDisplayed = sort == RANK) }
+  }
+
+  private fun removeMalformedItems(items: List<CustomListItem>) {
+
   }
 
   suspend fun deleteListItem(
