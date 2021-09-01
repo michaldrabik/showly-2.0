@@ -26,22 +26,6 @@ class CreateListViewModel @Inject constructor(
   private val loadingState = MutableStateFlow(false)
   private val listUpdateState = MutableStateFlow<Event<CustomList>?>(null)
 
-  val uiState = combine(
-    detailsState,
-    loadingState,
-    listUpdateState
-  ) { s1, s2, s3 ->
-    CreateListUiState(
-      listDetails = s1,
-      isLoading = s2,
-      onListUpdated = s3
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = CreateListUiState()
-  )
-
   fun loadDetails(id: Long) {
     viewModelScope.launch {
       loadingState.value = true
@@ -79,4 +63,20 @@ class CreateListViewModel @Inject constructor(
       }
     }
   }
+
+  val uiState = combine(
+    detailsState,
+    loadingState,
+    listUpdateState
+  ) { s1, s2, s3 ->
+    CreateListUiState(
+      listDetails = s1,
+      isLoading = s2,
+      onListUpdated = s3
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = CreateListUiState()
+  )
 }

@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_lists.details.cases
 
-import android.content.Context
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.Mode.MOVIES
@@ -82,7 +81,8 @@ class ListDetailsItemsCase @Inject constructor(
         val listedAt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(listItem.listedAt), ZoneId.of("UTC"))
         when (listItem.type) {
           SHOWS.type -> {
-            val show = mappers.show.fromDatabase(shows.first { it.idTrakt == listItem.idTrakt })
+            val listShow = shows.firstOrNull { it.idTrakt == listItem.idTrakt } ?: return@async null
+            val show = mappers.show.fromDatabase(listShow)
             val image = showImagesProvider.findCachedImage(show, ImageType.POSTER)
             val translation = showsTranslations[show.traktId]
             ListDetailsItem(
@@ -102,7 +102,8 @@ class ListDetailsItemsCase @Inject constructor(
             )
           }
           MOVIES.type -> {
-            val movie = mappers.movie.fromDatabase(movies.first { it.idTrakt == listItem.idTrakt })
+            val listMovie = movies.firstOrNull { it.idTrakt == listItem.idTrakt } ?: return@async null
+            val movie = mappers.movie.fromDatabase(listMovie)
             val image = movieImagesProvider.findCachedImage(movie, ImageType.POSTER)
             val translation = moviesTranslations[movie.traktId]
             ListDetailsItem(
@@ -126,7 +127,7 @@ class ListDetailsItemsCase @Inject constructor(
       }
     }.awaitAll()
 
-    sortItems(items, list.sortByLocal, list.filterTypeLocal)
+    sortItems(items.filterNotNull(), list.sortByLocal, list.filterTypeLocal)
   }
 
   fun sortItems(
@@ -158,7 +159,6 @@ class ListDetailsItemsCase @Inject constructor(
   }
 
   suspend fun deleteListItem(
-    context: Context,
     listId: Long,
     itemTraktId: IdTrakt,
     itemType: Mode,
