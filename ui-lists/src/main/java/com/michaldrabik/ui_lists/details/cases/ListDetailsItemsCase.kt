@@ -168,10 +168,6 @@ class ListDetailsItemsCase @Inject constructor(
       .map { it.copy(isRankDisplayed = sort == RANK) }
   }
 
-  private fun removeMalformedItems(items: List<CustomListItem>) {
-
-  }
-
   suspend fun deleteListItem(
     listId: Long,
     itemTraktId: IdTrakt,
