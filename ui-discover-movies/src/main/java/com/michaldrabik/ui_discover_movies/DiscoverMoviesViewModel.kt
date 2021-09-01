@@ -6,7 +6,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_discover_movies.cases.DiscoverFiltersCase
@@ -37,7 +37,7 @@ class DiscoverMoviesViewModel @Inject constructor(
   private val itemsState = MutableStateFlow<List<DiscoverMovieListItem>?>(null)
   private val loadingState = MutableStateFlow(false)
   private val filtersState = MutableStateFlow<DiscoverFilters?>(null)
-  private val scrollState = MutableStateFlow(ActionEvent(false))
+  private val scrollState = MutableStateFlow(Event(false))
 
   val uiState = combine(
     itemsState,
@@ -91,14 +91,14 @@ class DiscoverMoviesViewModel @Inject constructor(
           val movies = moviesCase.loadCachedMovies(filters)
           itemsState.value = movies
           filtersState.value = filters
-          scrollState.value = ActionEvent(resetScroll)
+          scrollState.value = Event(resetScroll)
         }
 
         if (pullToRefresh || skipCache || !moviesCase.isCacheValid()) {
           val movies = moviesCase.loadRemoteMovies(filters)
           itemsState.value = movies
           filtersState.value = filters
-          scrollState.value = ActionEvent(resetScroll)
+          scrollState.value = Event(resetScroll)
         }
 
         if (pullToRefresh) {
@@ -119,7 +119,7 @@ class DiscoverMoviesViewModel @Inject constructor(
       val currentItems = uiState.value.items?.toMutableList()
       currentItems?.findReplace(newItem) { it.isSameAs(newItem) }
       itemsState.value = currentItems
-      scrollState.value = ActionEvent(false)
+      scrollState.value = Event(false)
     }
 
     viewModelScope.launch {

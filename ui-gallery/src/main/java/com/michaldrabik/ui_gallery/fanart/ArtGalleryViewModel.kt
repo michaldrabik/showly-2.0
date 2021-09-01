@@ -2,7 +2,7 @@ package com.michaldrabik.ui_gallery.fanart
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_gallery.fanart.cases.ArtLoadImagesCase
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Ids
@@ -26,7 +26,7 @@ class ArtGalleryViewModel @Inject constructor(
 
   private val imagesState = MutableStateFlow<List<Image>?>(null)
   private val typeState = MutableStateFlow(ImageType.FANART)
-  private val pickedImageState = MutableStateFlow<ActionEvent<Image>?>(null)
+  private val pickedImageState = MutableStateFlow<Event<Image>?>(null)
   private val loadingState = MutableStateFlow(false)
 
   val uiState = combine(
@@ -69,7 +69,7 @@ class ArtGalleryViewModel @Inject constructor(
   fun saveCustomImage(id: IdTrakt, image: Image, family: ImageFamily, type: ImageType) {
     viewModelScope.launch {
       imagesCase.saveCustomImage(id, image, family, type)
-      pickedImageState.value = ActionEvent(image)
+      pickedImageState.value = Event(image)
     }
   }
 

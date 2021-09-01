@@ -22,7 +22,7 @@ import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -173,14 +173,14 @@ class ProgressMoviesFragment :
 
   override fun onSortClick() = viewModel.loadSortOrder()
 
-  private fun render(items: List<ProgressMovieListItem.MovieItem>, resetScroll: ActionEvent<Boolean>) {
+  private fun render(items: List<ProgressMovieListItem.MovieItem>, resetScroll: Event<Boolean>) {
     adapter?.setItems(items, notifyChange = resetScroll.consume() == true)
     progressMoviesEmptyView.fadeIf(items.isEmpty())
     progressMoviesMainRecycler.fadeIn(withHardware = true).add(animations)
     (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
   }
 
-  private fun render(sortOrder: ActionEvent<SortOrder>) {
+  private fun render(sortOrder: Event<SortOrder>) {
     sortOrder.consume()?.let { openSortOrderDialog(it) }
   }
 

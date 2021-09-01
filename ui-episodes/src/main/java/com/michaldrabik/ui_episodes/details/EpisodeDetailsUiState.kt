@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_episodes.details
 
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Image
@@ -16,8 +16,8 @@ data class EpisodeDetailsUiState(
   val isCommentsLoading: Boolean = false,
   val isSignedIn: Boolean = false,
   val ratingState: RatingState? = null,
-  val ratingChanged: ActionEvent<Boolean>? = null,
-  val translation: ActionEvent<Translation>? = null,
+  val ratingChanged: Event<Boolean>? = null,
+  val translation: Event<Translation>? = null,
   val dateFormat: DateTimeFormatter? = null,
   val commentsDateFormat: DateTimeFormatter? = null,
 )

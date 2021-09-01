@@ -8,7 +8,7 @@ import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -43,10 +43,10 @@ class ListDetailsViewModel @Inject constructor(
 
   private val listDetailsState = MutableStateFlow<CustomList?>(null)
   private val listItemsState = MutableStateFlow<List<ListDetailsItem>?>(null)
-  private val listDeleteState = MutableStateFlow<ActionEvent<Boolean>?>(null)
+  private val listDeleteState = MutableStateFlow<Event<Boolean>?>(null)
   private val manageModeState = MutableStateFlow(false)
   private val quickRemoveState = MutableStateFlow(false)
-  private val scrollState = MutableStateFlow<ActionEvent<Boolean>?>(null)
+  private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
   private val loadingState = MutableStateFlow(false)
 
   fun loadDetails(id: Long) {
@@ -106,13 +106,13 @@ class ListDetailsViewModel @Inject constructor(
         val listItems = itemsCase.loadItems(list).map { it.copy(isManageMode = true) }
         listItemsState.value = listItems
         manageModeState.value = true
-        scrollState.value = ActionEvent(false)
+        scrollState.value = Event(false)
       } else {
         val list = mainCase.loadDetails(listId)
         val listItems = itemsCase.loadItems(list).map { it.copy(isManageMode = false) }
         listItemsState.value = listItems
         manageModeState.value = false
-        scrollState.value = ActionEvent(false)
+        scrollState.value = Event(false)
       }
     }
   }
@@ -133,7 +133,7 @@ class ListDetailsViewModel @Inject constructor(
 
       listDetailsState.value = list
       listItemsState.value = sortedItems
-      scrollState.value = ActionEvent(true)
+      scrollState.value = Event(true)
     }
   }
 
@@ -146,7 +146,7 @@ class ListDetailsViewModel @Inject constructor(
 
       listDetailsState.value = list
       listItemsState.value = sortedItems
-      scrollState.value = ActionEvent(true)
+      scrollState.value = Event(true)
     }
   }
 
@@ -158,7 +158,7 @@ class ListDetailsViewModel @Inject constructor(
         }
         mainCase.deleteList(listId, removeFromTrakt)
         loadingState.value = false
-        listDeleteState.value = ActionEvent(true)
+        listDeleteState.value = Event(true)
       } catch (error: Throwable) {
         loadingState.value = false
         _messageState.emit(MessageEvent.error(R.string.errorCouldNotDeleteList))

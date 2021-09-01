@@ -7,7 +7,7 @@ import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -41,7 +41,7 @@ class SearchViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   private val searchItemsState = MutableStateFlow<List<SearchListItem>?>(null)
-  private val searchItemsAnimateEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
+  private val searchItemsAnimateEvent = MutableStateFlow<Event<Boolean>?>(null)
   private val recentSearchItemsState = MutableStateFlow<List<RecentSearch>?>(null)
   private val suggestionsItemsState = MutableStateFlow<List<SearchListItem>?>(null)
   private val searchingState = MutableStateFlow(false)
@@ -105,7 +105,7 @@ class SearchViewModel @Inject constructor(
         isSearching = true
 
         searchItemsState.value = emptyList()
-        searchItemsAnimateEvent.value = ActionEvent(false)
+        searchItemsAnimateEvent.value = Event(false)
         recentSearchItemsState.value = emptyList()
         searchingState.value = true
         emptyState.value = false
@@ -147,7 +147,7 @@ class SearchViewModel @Inject constructor(
         recentSearchesCase.saveRecentSearch(trimmed)
 
         searchItemsState.value = items
-        searchItemsAnimateEvent.value = ActionEvent(true)
+        searchItemsAnimateEvent.value = Event(true)
         searchingState.value = false
         emptyState.value = items.isEmpty()
         initialState.value = false

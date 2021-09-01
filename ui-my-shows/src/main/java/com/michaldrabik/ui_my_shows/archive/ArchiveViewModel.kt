@@ -5,7 +5,7 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.ShowImagesProvider
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
@@ -31,8 +31,8 @@ class ArchiveViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   private val itemsState = MutableStateFlow<List<ArchiveListItem>>(emptyList())
-  private val sortOrderState = MutableStateFlow<ActionEvent<SortOrder>?>(null)
-  private val scrollState = MutableStateFlow<ActionEvent<Boolean>?>(null)
+  private val sortOrderState = MutableStateFlow<Event<SortOrder>?>(null)
+  private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
 
   val uiState = combine(
     itemsState,
@@ -57,7 +57,7 @@ class ArchiveViewModel @Inject constructor(
         ArchiveListItem(it.first, image, false, it.second)
       }
       itemsState.value = items
-      scrollState.value = ActionEvent(resetScroll)
+      scrollState.value = Event(resetScroll)
       loadRatings(items, resetScroll)
     }
   }
@@ -68,7 +68,7 @@ class ArchiveViewModel @Inject constructor(
       try {
         val listItems = ratingsCase.loadRatings(items)
         itemsState.value = listItems
-        scrollState.value = ActionEvent(resetScroll)
+        scrollState.value = Event(resetScroll)
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "ArchiveViewModel::loadRatings()")
       }
@@ -78,7 +78,7 @@ class ArchiveViewModel @Inject constructor(
   fun loadSortOrder() {
     viewModelScope.launch {
       val sortOrder = sortOrderCase.loadSortOrder()
-      sortOrderState.value = ActionEvent(sortOrder)
+      sortOrderState.value = Event(sortOrder)
     }
   }
 

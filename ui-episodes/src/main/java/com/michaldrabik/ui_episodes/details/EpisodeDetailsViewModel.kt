@@ -10,7 +10,7 @@ import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.EpisodeImagesProvider
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -53,8 +53,8 @@ class EpisodeDetailsViewModel @Inject constructor(
   private val commentsLoadingState = MutableStateFlow(false)
   private val signedInState = MutableStateFlow(false)
   private val ratingState = MutableStateFlow<RatingState?>(null)
-  private val ratingChangeEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
-  private val translationEvent = MutableStateFlow<ActionEvent<Translation>?>(null)
+  private val ratingChangeEvent = MutableStateFlow<Event<Boolean>?>(null)
+  private val translationEvent = MutableStateFlow<Event<Translation>?>(null)
   private val dateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
   private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
 
@@ -124,7 +124,7 @@ class EpisodeDetailsViewModel @Inject constructor(
         if (language == Config.DEFAULT_LANGUAGE) return@launch
         val translation = translationsRepository.loadTranslation(episode, showTraktId, language)
         translation?.let {
-          translationEvent.value = ActionEvent(it)
+          translationEvent.value = Event(it)
         }
       } catch (error: Throwable) {
         Timber.e(error)
@@ -274,7 +274,7 @@ class EpisodeDetailsViewModel @Inject constructor(
 
         _messageState.emit(MessageEvent.info(R.string.textRateSaved))
         ratingState.value = RatingState(rateAllowed = true, rateLoading = false, userRating = TraktRating(episode.ids.trakt, rating))
-        ratingChangeEvent.value = ActionEvent(true)
+        ratingChangeEvent.value = Event(true)
 
         Analytics.logEpisodeRated(showTraktId.id, episode, rating)
       } catch (error: Throwable) {
@@ -291,7 +291,7 @@ class EpisodeDetailsViewModel @Inject constructor(
         val token = userTraktManager.checkAuthorization().token
         ratingsRepository.shows.deleteRating(token, episode)
         ratingState.value = RatingState(rateAllowed = true, rateLoading = false, userRating = TraktRating.EMPTY)
-        ratingChangeEvent.value = ActionEvent(true)
+        ratingChangeEvent.value = Event(true)
         _messageState.emit(MessageEvent.info(R.string.textShowRatingDeleted))
       } catch (error: Throwable) {
         ratingState.value = RatingState(rateAllowed = true, rateLoading = false)

@@ -1,6 +1,6 @@
 package com.michaldrabik.ui_base.utilities
 
-class ActionEvent<T>(
+class Event<T>(
   private val action: T,
 ) {
 

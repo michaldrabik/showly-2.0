@@ -3,7 +3,7 @@ package com.michaldrabik.ui_progress.main
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_progress.R
@@ -25,7 +25,7 @@ class ProgressMainViewModel @Inject constructor(
   private val timestampState = MutableStateFlow<Long?>(null)
   private val searchQueryState = MutableStateFlow<String?>(null)
   private val calendarModeState = MutableStateFlow<CalendarMode?>(null)
-  private val scrollState = MutableStateFlow<ActionEvent<Boolean>?>(null)
+  private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
 
   val uiState = combine(
     timestampState,
@@ -74,7 +74,7 @@ class ProgressMainViewModel @Inject constructor(
       }
       episodesCase.setEpisodeWatched(context, bundle)
       timestampState.value = System.currentTimeMillis()
-      scrollState.value = ActionEvent(false)
+      scrollState.value = Event(false)
     }
   }
 }

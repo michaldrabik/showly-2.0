@@ -10,7 +10,7 @@ import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
@@ -43,8 +43,8 @@ class ProgressMoviesViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   private val itemsState = MutableStateFlow<List<ProgressMovieListItem.MovieItem>?>(null)
-  private val scrollState = MutableStateFlow(ActionEvent(false))
-  private val sortOrderState = MutableStateFlow<ActionEvent<SortOrder>?>(null)
+  private val scrollState = MutableStateFlow(Event(false))
+  private val sortOrderState = MutableStateFlow<Event<SortOrder>?>(null)
 
   val uiState = combine(
     itemsState,
@@ -84,7 +84,7 @@ class ProgressMoviesViewModel @Inject constructor(
     viewModelScope.launch {
       val items = itemsCase.loadItems(searchQuery ?: "")
       itemsState.value = items
-      scrollState.value = ActionEvent(resetScroll)
+      scrollState.value = Event(resetScroll)
     }
   }
 
@@ -92,7 +92,7 @@ class ProgressMoviesViewModel @Inject constructor(
     if (itemsState.value?.isEmpty() == true) return
     viewModelScope.launch {
       val sortOrder = sortCase.loadSortOrder()
-      sortOrderState.value = ActionEvent(sortOrder)
+      sortOrderState.value = Event(sortOrder)
     }
   }
 
@@ -163,6 +163,6 @@ class ProgressMoviesViewModel @Inject constructor(
     val currentItems = itemsState.value?.toMutableList() ?: mutableListOf()
     currentItems.findReplace(new) { it.isSameAs(new) }
     itemsState.value = currentItems
-    scrollState.value = ActionEvent(false)
+    scrollState.value = Event(false)
   }
 }

@@ -12,7 +12,7 @@ import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -92,9 +92,9 @@ class MovieDetailsViewModel @Inject constructor(
   private val premiumState = MutableStateFlow(false)
   private val listsCountState = MutableStateFlow(0)
 
-  private val removeTraktHistoryEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
-  private val removeTraktWatchlistEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
-  private val finishedEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
+  private val removeTraktHistoryEvent = MutableStateFlow<Event<Boolean>?>(null)
+  private val removeTraktWatchlistEvent = MutableStateFlow<Event<Boolean>?>(null)
+  private val finishedEvent = MutableStateFlow<Event<Boolean>?>(null)
 
   private var movie by notNull<Movie>()
 
@@ -437,7 +437,7 @@ class MovieDetailsViewModel @Inject constructor(
       val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled
 
       val state = FollowedState.idle()
-      val event = ActionEvent(showRemoveTrakt)
+      val event = Event(showRemoveTrakt)
       when {
         isMyMovie -> {
           followedState.value = state
@@ -461,7 +461,7 @@ class MovieDetailsViewModel @Inject constructor(
         myMoviesCase.removeTraktHistory(movie)
 
         traktLoadingState.value = false
-        removeTraktHistoryEvent.value = ActionEvent(false)
+        removeTraktHistoryEvent.value = Event(false)
         _messageState.emit(MessageEvent.info(R.string.textTraktSyncMovieRemovedFromTrakt))
       } catch (error: Throwable) {
         _messageState.emit(MessageEvent.error(R.string.errorTraktSyncGeneral))
@@ -479,7 +479,7 @@ class MovieDetailsViewModel @Inject constructor(
         watchlistCase.removeTraktWatchlist(movie)
 
         traktLoadingState.value = false
-        removeTraktWatchlistEvent.value = ActionEvent(false)
+        removeTraktWatchlistEvent.value = Event(false)
         _messageState.emit(MessageEvent.info(R.string.textTraktSyncMovieRemovedFromTrakt))
       } catch (error: Throwable) {
         _messageState.emit(MessageEvent.error(R.string.errorTraktSyncGeneral))
@@ -498,7 +498,7 @@ class MovieDetailsViewModel @Inject constructor(
         Timber.e(error)
         rethrowCancellation(error)
       } finally {
-        finishedEvent.value = ActionEvent(true)
+        finishedEvent.value = Event(true)
       }
     }
   }

@@ -11,7 +11,7 @@ import com.michaldrabik.showly2.ui.main.cases.MainRateAppCase
 import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTraktCase
 import com.michaldrabik.ui_base.BaseViewModel
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,10 +35,10 @@ class MainViewModel @Inject constructor(
   private val rateAppCase: MainRateAppCase,
 ) : BaseViewModel() {
 
-  private val initialRunEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
-  private val initialLanguageEvent = MutableStateFlow<ActionEvent<AppLanguage>?>(null)
-  private val whatsNewEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
-  private val rateAppEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
+  private val initialRunEvent = MutableStateFlow<Event<Boolean>?>(null)
+  private val initialLanguageEvent = MutableStateFlow<Event<AppLanguage>?>(null)
+  private val whatsNewEvent = MutableStateFlow<Event<Boolean>?>(null)
+  private val rateAppEvent = MutableStateFlow<Event<Boolean>?>(null)
 
   val uiState = combine(
     initialRunEvent,
@@ -77,9 +77,9 @@ class MainViewModel @Inject constructor(
     val showWhatsNew = initCase.showWhatsNew(isInitialRun)
     val showRateApp = rateAppCase.shouldShowRateApp()
 
-    initialRunEvent.value = ActionEvent(isInitialRun)
-    whatsNewEvent.value = ActionEvent(showWhatsNew)
-    rateAppEvent.value = ActionEvent(showRateApp)
+    initialRunEvent.value = Event(isInitialRun)
+    whatsNewEvent.value = Event(showWhatsNew)
+    rateAppEvent.value = Event(showRateApp)
   }
 
   fun setLanguage(appLanguage: AppLanguage) =
@@ -87,7 +87,7 @@ class MainViewModel @Inject constructor(
 
   fun checkInitialLanguage() {
     val initialLanguage = initCase.checkInitialLanguage()
-    initialLanguageEvent.value = ActionEvent(initialLanguage)
+    initialLanguageEvent.value = Event(initialLanguage)
   }
 
   fun refreshAnnouncements() {

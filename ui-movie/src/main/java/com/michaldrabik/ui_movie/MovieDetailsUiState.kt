@@ -1,7 +1,7 @@
 package com.michaldrabik.ui_movie
 
 import com.michaldrabik.ui_base.common.AppCountry
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_model.Actor
 import com.michaldrabik.ui_model.Comment
 import com.michaldrabik.ui_model.Image
@@ -25,8 +25,8 @@ data class MovieDetailsUiState(
   val ratingState: RatingState? = null,
   val ratings: Ratings? = null,
   val streamings: StreamingsState? = null,
-  val removeFromTraktHistory: ActionEvent<Boolean>? = null,
-  val removeFromTraktWatchlist: ActionEvent<Boolean>? = null,
+  val removeFromTraktHistory: Event<Boolean>? = null,
+  val removeFromTraktWatchlist: Event<Boolean>? = null,
   val showFromTraktLoading: Boolean? = null,
   val translation: Translation? = null,
   val country: AppCountry? = null,
@@ -34,7 +34,7 @@ data class MovieDetailsUiState(
   val commentsDateFormat: DateTimeFormatter? = null,
   val isSignedIn: Boolean = false,
   val isPremium: Boolean = false,
-  val isFinished: ActionEvent<Boolean>? = null,
+  val isFinished: Event<Boolean>? = null,
 ) {
 
   data class StreamingsState(

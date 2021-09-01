@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
@@ -39,7 +39,7 @@ class MyShowsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   private val itemsState = MutableStateFlow<List<MyShowsItem>?>(null)
-  private val itemsUpdateState = MutableStateFlow<ActionEvent<Boolean>?>(null)
+  private val itemsUpdateState = MutableStateFlow<Event<Boolean>?>(null)
 
   val uiState = combine(
     itemsState,
@@ -106,7 +106,7 @@ class MyShowsViewModel @Inject constructor(
       }
 
       itemsState.value = listItems
-      itemsUpdateState.value = ActionEvent(notifyListsUpdate)
+      itemsUpdateState.value = Event(notifyListsUpdate)
 
       loadRatings(listItems)
     }

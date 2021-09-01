@@ -3,7 +3,7 @@ package com.michaldrabik.ui_comments.post
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.repository.CommentsRepository
 import com.michaldrabik.ui_base.BaseViewModel
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_comments.R
 import com.michaldrabik.ui_model.Comment
@@ -28,7 +28,7 @@ class PostCommentViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   private val loadingState = MutableStateFlow(false)
-  private val successState = MutableStateFlow<ActionEvent<Pair<String, Comment>>?>(null)
+  private val successState = MutableStateFlow<Event<Pair<String, Comment>>?>(null)
 
   val uiState = combine(
     loadingState,
@@ -53,7 +53,7 @@ class PostCommentViewModel @Inject constructor(
         val comment = commentsRepository
           .postComment(show, commentText, isSpoiler)
           .copy(isMe = true, isSignedIn = true)
-        successState.value = ActionEvent(Pair(ACTION_NEW_COMMENT, comment))
+        successState.value = Event(Pair(ACTION_NEW_COMMENT, comment))
       } catch (error: Throwable) {
         handleError(error)
         rethrowCancellation(error)
@@ -70,7 +70,7 @@ class PostCommentViewModel @Inject constructor(
         val comment = commentsRepository
           .postComment(movie, commentText, isSpoiler)
           .copy(isMe = true, isSignedIn = true)
-        successState.value = ActionEvent(Pair(ACTION_NEW_COMMENT, comment))
+        successState.value = Event(Pair(ACTION_NEW_COMMENT, comment))
       } catch (error: Throwable) {
         handleError(error)
         rethrowCancellation(error)
@@ -87,7 +87,7 @@ class PostCommentViewModel @Inject constructor(
         val comment = commentsRepository
           .postComment(episode, commentText, isSpoiler)
           .copy(isMe = true, isSignedIn = true)
-        successState.value = ActionEvent(Pair(ACTION_NEW_COMMENT, comment))
+        successState.value = Event(Pair(ACTION_NEW_COMMENT, comment))
       } catch (error: Throwable) {
         handleError(error)
         rethrowCancellation(error)
@@ -103,7 +103,7 @@ class PostCommentViewModel @Inject constructor(
         val comment = commentsRepository
           .postReply(commentId.id, commentText, isSpoiler)
           .copy(isMe = true, isSignedIn = true)
-        successState.value = ActionEvent(Pair(ACTION_NEW_COMMENT, comment))
+        successState.value = Event(Pair(ACTION_NEW_COMMENT, comment))
       } catch (error: Throwable) {
         handleError(error)
         rethrowCancellation(error)

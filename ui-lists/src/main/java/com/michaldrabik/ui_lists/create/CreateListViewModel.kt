@@ -2,7 +2,7 @@ package com.michaldrabik.ui_lists.create
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_lists.R
 import com.michaldrabik.ui_lists.create.cases.CreateListCase
@@ -24,7 +24,7 @@ class CreateListViewModel @Inject constructor(
 
   private val detailsState = MutableStateFlow<CustomList?>(null)
   private val loadingState = MutableStateFlow(false)
-  private val listUpdateState = MutableStateFlow<ActionEvent<CustomList>?>(null)
+  private val listUpdateState = MutableStateFlow<Event<CustomList>?>(null)
 
   val uiState = combine(
     detailsState,
@@ -56,7 +56,7 @@ class CreateListViewModel @Inject constructor(
       try {
         loadingState.value = true
         val list = createListCase.createList(name, description)
-        listUpdateState.value = ActionEvent(list)
+        listUpdateState.value = Event(list)
       } catch (error: Throwable) {
         _messageState.emit(MessageEvent.error(R.string.errorCouldNotCreateList))
         loadingState.value = false
@@ -71,7 +71,7 @@ class CreateListViewModel @Inject constructor(
         loadingState.value = true
         detailsState.value = list
         val updatedList = createListCase.updateList(list)
-        listUpdateState.value = ActionEvent(updatedList)
+        listUpdateState.value = Event(updatedList)
       } catch (error: Throwable) {
         _messageState.emit(MessageEvent.error(R.string.errorCouldNotUpdateList))
         detailsState.value = list

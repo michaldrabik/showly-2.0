@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_lists.lists.cases.MainListsCase
 import com.michaldrabik.ui_lists.lists.cases.SortOrderListsCase
@@ -29,21 +29,21 @@ class ListsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   private val itemsState = MutableStateFlow<List<ListsItem>?>(null)
-  private val scrollState = MutableStateFlow(ActionEvent(false))
-  private val sortOrderState = MutableStateFlow<ActionEvent<SortOrder>?>(null)
+  private val scrollState = MutableStateFlow(Event(false))
+  private val sortOrderState = MutableStateFlow<Event<SortOrder>?>(null)
 
   fun loadItems(resetScroll: Boolean, searchQuery: String? = null) {
     viewModelScope.launch {
       val items = mainCase.loadLists(searchQuery)
       itemsState.value = items
-      scrollState.value = ActionEvent(resetScroll)
+      scrollState.value = Event(resetScroll)
     }
   }
 
   fun loadSortOrder() {
     viewModelScope.launch {
       val sortOrder = sortCase.loadSortOrder()
-      sortOrderState.value = ActionEvent(sortOrder)
+      sortOrderState.value = Event(sortOrder)
     }
   }
 

@@ -15,7 +15,7 @@ import com.michaldrabik.ui_base.episodes.EpisodesManager
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.notifications.AnnouncementManager
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
@@ -114,10 +114,10 @@ class ShowDetailsViewModel @Inject constructor(
   private val premiumState = MutableStateFlow(false)
   private val listsCountState = MutableStateFlow(0)
 
-  private val seasonTranslationEvent = MutableStateFlow<ActionEvent<SeasonListItem>?>(null)
-  private val removeTraktHistoryEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
-  private val removeTraktWatchlistEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
-  private val finishedEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
+  private val seasonTranslationEvent = MutableStateFlow<Event<SeasonListItem>?>(null)
+  private val removeTraktHistoryEvent = MutableStateFlow<Event<Boolean>?>(null)
+  private val removeTraktWatchlistEvent = MutableStateFlow<Event<Boolean>?>(null)
+  private val finishedEvent = MutableStateFlow<Event<Boolean>?>(null)
 
   private var show by notNull<Show>()
   private var areSeasonsLoaded = false
@@ -324,7 +324,7 @@ class ShowDetailsViewModel @Inject constructor(
 
         val updatedItem = seasonItem.copy(episodes = episodes)
         seasonItems.findReplace(updatedItem) { it.id == updatedItem.id }
-        seasonTranslationEvent.value = ActionEvent(updatedItem)
+        seasonTranslationEvent.value = Event(updatedItem)
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "ShowDetailsViewModel::loadSeasonTranslation()")
         Timber.e(error)
@@ -568,7 +568,7 @@ class ShowDetailsViewModel @Inject constructor(
       val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal
 
       val state = FollowedState2.notFollowed()
-      val event = ActionEvent(showRemoveTrakt)
+      val event = Event(showRemoveTrakt)
       when {
         isMyShows || isArchived -> {
           followedState.value = state
@@ -593,7 +593,7 @@ class ShowDetailsViewModel @Inject constructor(
         refreshWatchedEpisodes()
         _messageState.emit(MessageEvent.info(R.string.textTraktSyncRemovedFromTrakt))
         traktLoadingState.value = false
-        removeTraktHistoryEvent.value = ActionEvent(false)
+        removeTraktHistoryEvent.value = Event(false)
       } catch (error: Throwable) {
         _messageState.emit(MessageEvent.error(R.string.errorTraktSyncGeneral))
         traktLoadingState.value = false
@@ -610,7 +610,7 @@ class ShowDetailsViewModel @Inject constructor(
         watchlistCase.removeTraktWatchlist(show)
         _messageState.emit(MessageEvent.info(R.string.textTraktSyncRemovedFromTrakt))
         traktLoadingState.value = false
-        removeTraktWatchlistEvent.value = ActionEvent(false)
+        removeTraktWatchlistEvent.value = Event(false)
       } catch (error: Throwable) {
         _messageState.emit(MessageEvent.error(R.string.errorTraktSyncGeneral))
         traktLoadingState.value = false
@@ -628,7 +628,7 @@ class ShowDetailsViewModel @Inject constructor(
         Timber.e(error)
         rethrowCancellation(error)
       } finally {
-        finishedEvent.value = ActionEvent(true)
+        finishedEvent.value = Event(true)
       }
     }
   }

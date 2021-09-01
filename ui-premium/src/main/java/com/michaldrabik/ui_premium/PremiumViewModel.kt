@@ -24,7 +24,7 @@ import com.michaldrabik.common.Config.PREMIUM_MONTHLY_SUBSCRIPTION
 import com.michaldrabik.common.Config.PREMIUM_YEARLY_SUBSCRIPTION
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_base.BaseViewModel
-import com.michaldrabik.ui_base.utilities.ActionEvent
+import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,7 +44,7 @@ class PremiumViewModel @Inject constructor(
   private val purchaseItemsState = MutableStateFlow<List<SkuDetails>?>(null)
   private val purchasePendingState = MutableStateFlow(false)
   private val loadingState = MutableStateFlow(false)
-  private val finishEvent = MutableStateFlow<ActionEvent<Boolean>?>(null)
+  private val finishEvent = MutableStateFlow<Event<Boolean>?>(null)
 
   val uiState = combine(
     purchaseItemsState,
@@ -205,6 +205,6 @@ class PremiumViewModel @Inject constructor(
   private suspend fun unlockAndFinish() {
     settingsRepository.isPremium = true
     _messageState.emit(MessageEvent.info(R.string.textPurchaseThanks))
-    finishEvent.value = ActionEvent(true)
+    finishEvent.value = Event(true)
   }
 }
