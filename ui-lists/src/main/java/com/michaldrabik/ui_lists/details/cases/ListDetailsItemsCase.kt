@@ -20,7 +20,11 @@ import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.SortOrderList
-import com.michaldrabik.ui_model.SortOrderList.*
+import com.michaldrabik.ui_model.SortOrderList.DATE_ADDED
+import com.michaldrabik.ui_model.SortOrderList.NEWEST
+import com.michaldrabik.ui_model.SortOrderList.RANK
+import com.michaldrabik.ui_model.SortOrderList.RATING
+import com.michaldrabik.ui_model.SortOrderList.TITLE
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
