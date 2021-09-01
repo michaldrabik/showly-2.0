@@ -211,6 +211,7 @@ class ProgressFragment :
   override fun setupBackPressed() = Unit
 
   override fun onDestroyView() {
+    adapter?.listChangeListener = null
     adapter = null
     layoutManager = null
     super.onDestroyView()

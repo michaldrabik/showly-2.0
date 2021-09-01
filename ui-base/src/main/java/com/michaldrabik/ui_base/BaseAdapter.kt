@@ -12,7 +12,7 @@ abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.
   var missingImageListener: (Item, Boolean) -> Unit = { _, _ -> }
   var missingTranslationListener: (Item) -> Unit = { _ -> }
   var itemClickListener: (Item) -> Unit = { }
-  var listChangeListener: () -> Unit = { }
+  var listChangeListener: (() -> Unit)? = null
 
   private var notifyChange = false
 
@@ -36,7 +36,7 @@ abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.
     currentList: MutableList<Item>,
   ) {
     if (notifyChange) {
-      listChangeListener()
+      listChangeListener?.invoke()
     }
   }
 
