@@ -32,6 +32,7 @@ import kotlinx.coroutines.coroutineScope
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.util.Collections
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -76,7 +77,7 @@ class ListDetailsItemsCase @Inject constructor(
     val (showsTranslations, moviesTranslations) = Pair(showsTranslationsAsync.await(), moviesTranslationsAsync.await())
 
     val isRankSort = list.sortByLocal == RANK
-    val itemsToDelete = mutableListOf<CustomListItem>()
+    val itemsToDelete = Collections.synchronizedList(mutableListOf<CustomListItem>())
     val items = listItems.map { listItem ->
       async {
         val isDragEnabled = false
