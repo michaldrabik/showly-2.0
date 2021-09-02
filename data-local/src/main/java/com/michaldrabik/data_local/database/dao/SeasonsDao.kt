@@ -8,8 +8,18 @@ import com.michaldrabik.data_local.database.model.Season
 @Dao
 interface SeasonsDao : BaseDao<Season> {
 
+  @Transaction
+  suspend fun getAllByShowsIds(traktIds: List<Long>): List<Season> {
+    val result = mutableListOf<Season>()
+    val chunks = traktIds.chunked(50)
+    chunks.forEach { chunk ->
+      result += getAllByShowsIdsChunk(chunk)
+    }
+    return result
+  }
+
   @Query("SELECT * FROM seasons WHERE id_show_trakt IN (:traktIds)")
-  suspend fun getAllByShowsIds(traktIds: List<Long>): List<Season>
+  suspend fun getAllByShowsIdsChunk(traktIds: List<Long>): List<Season>
 
   @Query("SELECT * FROM seasons WHERE id_show_trakt IN (:traktIds) AND is_watched = 1")
   suspend fun getAllWatchedForShows(traktIds: List<Long>): List<Season>

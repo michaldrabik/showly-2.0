@@ -29,11 +29,18 @@ interface EpisodesDao : BaseDao<Episode> {
   @Query("SELECT * FROM episodes WHERE id_show_trakt = :showTraktId AND season_number = :seasonNumber")
   suspend fun getAllByShowId(showTraktId: Long, seasonNumber: Int): List<Episode>
 
-  @Query("SELECT * FROM episodes WHERE id_show_trakt IN (:showTraktIds)")
-  suspend fun getAllByShowsIds(showTraktIds: List<Long>): List<Episode>
+  @Transaction
+  suspend fun getAllByShowsIds(showTraktIds: List<Long>): List<Episode> {
+    val result = mutableListOf<Episode>()
+    val chunks = showTraktIds.chunked(50)
+    chunks.forEach { chunk ->
+      result += getAllByShowsIdsChunk(chunk)
+    }
+    return result
+  }
 
-  @Query("SELECT * from episodes where id_show_trakt = :showTraktId AND is_watched = 0 AND season_number != 0 ORDER BY season_number ASC, episode_number ASC LIMIT 1")
-  suspend fun getFirstUnwatched(showTraktId: Long): Episode?
+  @Query("SELECT * FROM episodes WHERE id_show_trakt IN (:showTraktIds)")
+  suspend fun getAllByShowsIdsChunk(showTraktIds: List<Long>): List<Episode>
 
   @Query("SELECT * from episodes where id_show_trakt = :showTraktId AND is_watched = 0 AND season_number != 0 AND first_aired <= :toTime ORDER BY season_number ASC, episode_number ASC LIMIT 1")
   suspend fun getFirstUnwatched(showTraktId: Long, toTime: Long): Episode?

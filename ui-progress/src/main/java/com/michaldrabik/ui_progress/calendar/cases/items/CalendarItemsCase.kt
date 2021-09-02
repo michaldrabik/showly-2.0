@@ -43,7 +43,7 @@ abstract class CalendarItemsCase constructor(
     val dateFormat = dateFormatProvider.loadFullHourFormat()
 
     val shows = showsRepository.myShows.loadAll()
-    val showsIds = shows.map { it.traktId }.chunked(500)
+    val showsIds = shows.map { it.traktId }.chunked(250)
 
     val (episodes, seasons) = awaitAll(
       async {
