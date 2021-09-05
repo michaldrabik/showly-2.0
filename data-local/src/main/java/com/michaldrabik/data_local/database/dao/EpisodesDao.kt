@@ -39,6 +39,7 @@ interface EpisodesDao : BaseDao<Episode> {
     return result
   }
 
+  @Transaction
   @Query("SELECT * FROM episodes WHERE id_show_trakt IN (:showTraktIds)")
   suspend fun getAllByShowsIdsChunk(showTraktIds: List<Long>): List<Episode>
 
