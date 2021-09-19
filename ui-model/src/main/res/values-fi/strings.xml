@@ -29,7 +29,7 @@
   <string name="textTipMyShows">Napauta Kokoelma-valikkopainiketta uudelleen siirtyäksesi alueiden välillä nopeasti.</string>
   <string name="textTipShowDetailsGallery">Avaa galleria napauttamalla sarjan kuvaa.</string>
   <string name="textTipShowDetailsQuickProgress">Napauta Arkisto-kuvaketta arkistoidaksesi sarjan.</string>
-  <string name="textTipDiscoverFilters">Käytä suodatusnäkymää tarkentaaksesi ersintäsyötettä.</string>
+  <string name="textTipDiscoverFilters">Käytä suodatusnäkymää tarkentaaksesi etsinnän syötettä.</string>
   <string name="textTipWatchlistPinItem">Kiinnitä kohde listan ylälaitaan painamalla sitä pitkään.</string>
   <string name="textTipBottomModeMenu">Vaihda aluetta nopeasti pyyhkäisemällä alareunan valikkoa vasemmalle tai oikealle.</string>
   <string name="textTipListSwipeToDelete">Poista kohde listalta pyyhkäisemällä se sivuun.</string>
