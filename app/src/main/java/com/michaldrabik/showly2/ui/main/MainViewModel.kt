@@ -1,7 +1,6 @@
 package com.michaldrabik.showly2.ui.main
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Mode
 import com.michaldrabik.showly2.ui.main.cases.MainDeepLinksCase
@@ -19,7 +18,6 @@ import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
@@ -30,7 +28,6 @@ import javax.inject.Inject
 @SuppressLint("StaticFieldLeak")
 @HiltViewModel
 class MainViewModel @Inject constructor(
-  @ApplicationContext private val appContext: Context,
   private val initCase: MainInitialsCase,
   private val tipsCase: MainTipsCase,
   private val traktCase: MainTraktCase,
