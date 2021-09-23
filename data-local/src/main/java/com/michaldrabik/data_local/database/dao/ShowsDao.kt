@@ -28,6 +28,9 @@ interface ShowsDao : BaseDao<Show> {
   @Query("SELECT * FROM shows WHERE id_trakt == :traktId")
   suspend fun getById(traktId: Long): Show?
 
+  @Query("SELECT * FROM shows WHERE id_imdb == :imdbId")
+  suspend fun getById(imdbId: String): Show?
+
   @Query("DELETE FROM shows where id_trakt == :traktId")
   suspend fun deleteById(traktId: Long)
 

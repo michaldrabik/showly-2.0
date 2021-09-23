@@ -52,6 +52,7 @@ import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MODES
@@ -115,6 +116,7 @@ class MainActivity :
     handleAppShortcut(intent)
     handleNotification(intent?.extras) { hideNavigation(false) }
     handleTraktAuthorization(intent?.data)
+    handleDeepLink(intent)
   }
 
   private fun setupViewModel() {
@@ -287,6 +289,12 @@ class MainActivity :
           showWelcomeDialog(it)
         }
       }
+      openLink?.let { event ->
+        event.consume()?.let { bundle ->
+          bundle.show?.let { handleDeepLink(it) }
+          bundle.movie?.let { handleDeepLink(it) }
+        }
+      }
     }
   }
 
@@ -416,6 +424,15 @@ class MainActivity :
         findNavControl()?.navigate(action)
       }
     }
+  }
+
+  private fun handleDeepLink(intent: Intent?) {
+    val path = intent?.data?.pathSegments ?: emptyList()
+    if (path.size < 2 || !path[1].startsWith("tt")) {
+      Timber.d("IMDB link received but invalid payload")
+      return
+    }
+    viewModel.openImdbLink(IdImdb(path[1]))
   }
 
   private fun showWhatsNewDialog() {

@@ -4,14 +4,18 @@ import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Mode
+import com.michaldrabik.showly2.ui.main.cases.MainDeepLinksCase
 import com.michaldrabik.showly2.ui.main.cases.MainInitialsCase
 import com.michaldrabik.showly2.ui.main.cases.MainMiscCase
 import com.michaldrabik.showly2.ui.main.cases.MainModesCase
 import com.michaldrabik.showly2.ui.main.cases.MainRateAppCase
 import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTraktCase
+import com.michaldrabik.showly2.ui.main.helpers.DeepLinkBundle
 import com.michaldrabik.ui_base.BaseViewModel
+import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.utilities.Event
+import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,24 +37,28 @@ class MainViewModel @Inject constructor(
   private val miscCase: MainMiscCase,
   private val modesCase: MainModesCase,
   private val rateAppCase: MainRateAppCase,
+  private val linksCase: MainDeepLinksCase,
 ) : BaseViewModel() {
 
   private val initialRunEvent = MutableStateFlow<Event<Boolean>?>(null)
   private val initialLanguageEvent = MutableStateFlow<Event<AppLanguage>?>(null)
   private val whatsNewEvent = MutableStateFlow<Event<Boolean>?>(null)
   private val rateAppEvent = MutableStateFlow<Event<Boolean>?>(null)
+  private val openLinkEvent = MutableStateFlow<Event<DeepLinkBundle>?>(null)
 
   val uiState = combine(
     initialRunEvent,
     initialLanguageEvent,
     whatsNewEvent,
-    rateAppEvent
-  ) { s1, s2, s3, s4 ->
+    rateAppEvent,
+    openLinkEvent
+  ) { s1, s2, s3, s4, s5 ->
     MainUiState(
       isInitialRun = s1,
       initialLanguage = s2,
       showWhatsNew = s3,
-      showRateApp = s4
+      showRateApp = s4,
+      openLink = s5
     )
   }.stateIn(
     scope = viewModelScope,
@@ -115,6 +123,18 @@ class MainViewModel @Inject constructor(
   fun newsEnabled(): Boolean = miscCase.newsEnabled()
 
   fun completeAppRate() = rateAppCase.complete()
+
+  fun openImdbLink(imdbId: IdImdb) {
+    viewModelScope.launch {
+      try {
+        val result = linksCase.findById(imdbId)
+        openLinkEvent.value = Event(result)
+      } catch (error: Throwable) {
+        Logger.record(error, "Source" to "MainViewModel::openImdbLink:${imdbId.id}")
+        rethrowCancellation(error)
+      }
+    }
+  }
 
   override fun onCleared() {
     miscCase.clear()

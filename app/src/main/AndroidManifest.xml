@@ -49,6 +49,22 @@
           />
       </intent-filter>
 
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+
+        <data
+          android:pathPrefix="/title/tt"
+          android:scheme="https"
+          />
+
+        <data android:host="imdb.com" />
+        <data android:host="www.imdb.com" />
+        <data android:host="m.imdb.com" />
+      </intent-filter>
+
       <meta-data
         android:name="android.app.shortcuts"
         android:resource="@xml/shortcuts"

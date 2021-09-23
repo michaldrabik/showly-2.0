@@ -87,6 +87,9 @@ interface TraktService {
   @GET("shows/{traktId}/next_episode?extended=full")
   suspend fun fetchNextEpisode(@Path("traktId") traktId: Long): Response<Episode>
 
+  @GET("search/{idType}/{id}?extended=full")
+  suspend fun fetchSearchId(@Path("idType") idType: String, id: String): List<SearchResult>
+
   @GET("search/show?extended=full&limit=${Config.TRAKT_SEARCH_LIMIT}")
   suspend fun fetchSearchResults(@Query("query") queryText: String): List<SearchResult>
 

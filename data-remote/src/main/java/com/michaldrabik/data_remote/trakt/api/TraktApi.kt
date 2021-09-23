@@ -55,6 +55,9 @@ class TraktApi(private val service: TraktService) {
     if (withMovies) service.fetchSearchResultsMovies(query)
     else service.fetchSearchResults(query)
 
+  suspend fun fetchSearchId(idType: String, id: String) =
+    service.fetchSearchId(idType, id)
+
   suspend fun fetchSeasons(traktId: Long) =
     service.fetchSeasons(traktId)
       .sortedByDescending { it.number }
