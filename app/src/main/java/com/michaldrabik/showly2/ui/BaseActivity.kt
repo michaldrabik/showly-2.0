@@ -87,7 +87,7 @@ abstract class BaseActivity : AppCompatActivity() {
           else -> {
             bottomNavigationView.selectedItemId = R.id.menuProgress
             val actionId = when (currentDestination?.id) {
-              R.id.progressFragment -> {
+              R.id.progressMainFragment -> {
                 if (isShow) R.id.actionProgressFragmentToShowDetailsFragment
                 else R.id.actionProgressFragmentToMovieDetailsFragment
               }

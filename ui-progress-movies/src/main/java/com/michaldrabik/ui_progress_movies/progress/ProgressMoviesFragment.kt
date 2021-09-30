@@ -22,7 +22,6 @@ import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.views.RateView
-import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -37,14 +36,14 @@ import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainViewModel
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMoviesAdapter
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_progress_movies_main.*
+import kotlinx.android.synthetic.main.fragment_progress_movies.*
 import kotlinx.android.synthetic.main.layout_progress_movies_empty.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProgressMoviesFragment :
-  BaseFragment<ProgressMoviesViewModel>(R.layout.fragment_progress_movies_main),
+  BaseFragment<ProgressMoviesViewModel>(R.layout.fragment_progress_movies),
   OnSortClickListener,
   OnScrollResetListener {
 
@@ -172,17 +171,6 @@ class ProgressMoviesFragment :
   override fun onScrollReset() = progressMoviesMainRecycler.smoothScrollToPosition(0)
 
   override fun onSortClick() = viewModel.loadSortOrder()
-
-  private fun render(items: List<ProgressMovieListItem.MovieItem>, resetScroll: Event<Boolean>) {
-    adapter?.setItems(items, notifyChange = resetScroll.consume() == true)
-    progressMoviesEmptyView.fadeIf(items.isEmpty())
-    progressMoviesMainRecycler.fadeIn(withHardware = true).add(animations)
-    (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
-  }
-
-  private fun render(sortOrder: Event<SortOrder>) {
-    sortOrder.consume()?.let { openSortOrderDialog(it) }
-  }
 
   private fun render(uiState: ProgressMoviesUiState) {
     uiState.run {

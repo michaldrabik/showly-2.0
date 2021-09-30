@@ -8,7 +8,7 @@
 
   <action
     android:id="@+id/actionNavigateProgressFragment"
-    app:destination="@id/progressFragment"
+    app:destination="@id/progressMainFragment"
     app:launchSingleTop="true"
     app:popUpTo="@id/navigationGraph"
     app:popUpToInclusive="true"
@@ -119,7 +119,7 @@
   </fragment>
 
   <fragment
-    android:id="@+id/progressFragment"
+    android:id="@+id/progressMainFragment"
     android:name="com.michaldrabik.ui_progress.main.ProgressMainFragment"
     android:label="fragmentProgressMain"
     >

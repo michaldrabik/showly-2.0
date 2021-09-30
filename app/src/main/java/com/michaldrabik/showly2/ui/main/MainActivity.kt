@@ -29,6 +29,7 @@ import com.michaldrabik.showly2.ui.BillingActivity
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver
+import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver.*
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
@@ -53,7 +54,6 @@ import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
-import com.michaldrabik.ui_model.IdImdb
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
 import com.michaldrabik.ui_model.Tip.MENU_MODES
@@ -147,7 +147,7 @@ class MainActivity :
     findNavControl()?.run {
       val graph = navInflater.inflate(R.navigation.navigation_graph)
       graph.startDestination = when (viewModel.getMode()) {
-        SHOWS -> R.id.progressFragment
+        SHOWS -> R.id.progressMainFragment
         MOVIES -> R.id.progressMoviesMainFragment
         else -> throw IllegalStateException()
       }
@@ -438,12 +438,10 @@ class MainActivity :
   }
 
   private fun handleDeepLink(intent: Intent?) {
-    val path = intent?.data?.pathSegments ?: emptyList()
-    if (path.size < 2 || !path[1].startsWith("tt")) {
-      Timber.d("IMDB link received but invalid payload")
-      return
+    when (val source = deepLinkResolver.findSource(intent)) {
+      is ImdbSource -> viewModel.openImdbLink(source.id)
+      else -> Timber.d("Unknown deep link source")
     }
-    viewModel.openImdbLink(IdImdb(path[1]))
   }
 
   private fun showWhatsNewDialog() {
