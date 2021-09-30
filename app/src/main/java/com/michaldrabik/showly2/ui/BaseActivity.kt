@@ -3,15 +3,12 @@ package com.michaldrabik.showly2.ui
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.fcm.FcmExtra
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.common.OnTraktAuthorizeListener
-import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_widgets.BaseWidgetProvider.Companion.EXTRA_MOVIE_ID
@@ -109,76 +106,6 @@ abstract class BaseActivity : AppCompatActivity() {
         action()
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "BaseActivity::handleFcmShowPush()")
-      }
-    }
-  }
-
-  protected fun handleDeepLink(show: Show) {
-    findNavHostFragment()?.findNavController()?.run {
-      try {
-        if (currentDestination?.id in arrayOf(
-            R.id.movieDetailsFragment,
-            R.id.settingsFragment,
-            R.id.traktSyncFragment
-          )
-        ) {
-          popBackStack()
-        }
-
-        val navBundle = bundleOf(ARG_SHOW_ID to show.traktId)
-        when (currentDestination?.id) {
-          R.id.showDetailsFragment -> navigate(R.id.actionShowDetailsFragmentToSelf, navBundle)
-          else -> {
-            if (currentDestination?.id !in arrayOf(R.id.progressFragment, R.id.progressMoviesMainFragment)) {
-              bottomNavigationView.selectedItemId = R.id.menuProgress
-            }
-            val actionId = when (currentDestination?.id) {
-              R.id.progressFragment -> R.id.actionProgressFragmentToShowDetailsFragment
-              R.id.progressMoviesMainFragment -> R.id.actionProgressMoviesFragmentToShowDetailsFragment
-              else -> {
-                error("Unknown actionId. ActionId: ${currentDestination?.id}")
-              }
-            }
-            navigate(actionId, navBundle)
-          }
-        }
-      } catch (error: Throwable) {
-        Logger.record(error, "Source" to "BaseActivity::handleDeepLink(show)")
-      }
-    }
-  }
-
-  protected fun handleDeepLink(movie: Movie) {
-    findNavHostFragment()?.findNavController()?.run {
-      try {
-        if (currentDestination?.id in arrayOf(
-            R.id.showDetailsFragment,
-            R.id.settingsFragment,
-            R.id.traktSyncFragment
-          )
-        ) {
-          popBackStack()
-        }
-
-        val navBundle = bundleOf(ARG_MOVIE_ID to movie.traktId)
-        when (currentDestination?.id) {
-          R.id.movieDetailsFragment -> navigate(R.id.actionMovieDetailsFragmentToSelf, navBundle)
-          else -> {
-            if (currentDestination?.id !in arrayOf(R.id.progressFragment, R.id.progressMoviesMainFragment)) {
-              bottomNavigationView.selectedItemId = R.id.menuProgress
-            }
-            val actionId = when (currentDestination?.id) {
-              R.id.progressFragment -> R.id.actionProgressFragmentToMovieDetailsFragment
-              R.id.progressMoviesMainFragment -> R.id.actionProgressMoviesFragmentToMovieDetailsFragment
-              else -> {
-                error("Unknown actionId. ActionId: ${currentDestination?.id}")
-              }
-            }
-            navigate(actionId, navBundle)
-          }
-        }
-      } catch (error: Throwable) {
-        Logger.record(error, "Source" to "BaseActivity::handleDeepLink(movie)")
       }
     }
   }

@@ -28,6 +28,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.BillingActivity
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
+import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
@@ -64,6 +65,7 @@ import kotlinx.android.synthetic.main.view_bottom_menu.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity :
@@ -91,6 +93,9 @@ class MainActivity :
       MENU_MODES to tutorialTipModeMenu
     )
   }
+
+  @Inject
+  lateinit var deepLinkResolver: DeepLinkResolver
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -291,8 +296,14 @@ class MainActivity :
       }
       openLink?.let { event ->
         event.consume()?.let { bundle ->
-          bundle.show?.let { handleDeepLink(it) }
-          bundle.movie?.let { handleDeepLink(it) }
+          findNavHostFragment()?.findNavController()?.let { nav ->
+            bundle.show?.let {
+              deepLinkResolver.resolveDestination(nav, bottomNavigationView, it)
+            }
+            bundle.movie?.let {
+              deepLinkResolver.resolveDestination(nav, bottomNavigationView, it)
+            }
+          }
         }
       }
     }
