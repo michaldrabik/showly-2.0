@@ -29,7 +29,6 @@ import com.michaldrabik.showly2.ui.BillingActivity
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
 import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver
-import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver.*
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
@@ -140,6 +139,7 @@ class MainActivity :
       isModeMenuEnabled = moviesEnabled()
       onModeSelected = { setMode(it) }
     }
+    viewMask.onClick { /* NOOP */ }
   }
 
   private fun setupNavigation() {
@@ -274,6 +274,10 @@ class MainActivity :
 
   private fun render(uiState: MainUiState) {
     uiState.run {
+      isLoading.let {
+        viewMask.visibleIf(it)
+        mainProgress.visibleIf(it)
+      }
       isInitialRun?.let {
         if (it.consume() == true) {
           viewModel.checkInitialLanguage()
@@ -305,10 +309,6 @@ class MainActivity :
           }
         }
       }
-      isLoading.let {
-        viewMask.visibleIf(it)
-        mainProgress.visibleIf(it)
-      }
     }
   }
 
@@ -325,10 +325,7 @@ class MainActivity :
         }
       }
     }
-    with(viewMask) {
-      fadeIn()
-      onClick { /* NOOP */ }
-    }
+    viewMask.visible()
   }
 
   private fun showWelcomeLanguageDialog(language: AppLanguage) {
