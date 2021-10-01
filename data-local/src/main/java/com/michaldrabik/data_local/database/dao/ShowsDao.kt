@@ -31,6 +31,9 @@ interface ShowsDao : BaseDao<Show> {
   @Query("SELECT * FROM shows WHERE id_tmdb == :tmdbId")
   suspend fun getByTmdbId(tmdbId: Long): Show?
 
+  @Query("SELECT * FROM shows WHERE id_slug == :slug")
+  suspend fun getBySlug(slug: String): Show?
+
   @Query("SELECT * FROM shows WHERE id_imdb == :imdbId")
   suspend fun getById(imdbId: String): Show?
 

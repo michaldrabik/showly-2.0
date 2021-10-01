@@ -27,7 +27,11 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun fetchShow(traktId: Long) = service.fetchShow(traktId)
 
+  suspend fun fetchShow(traktSlug: String) = service.fetchShow(traktSlug)
+
   suspend fun fetchMovie(traktId: Long) = service.fetchMovie(traktId)
+
+  suspend fun fetchMovie(traktSlug: String) = service.fetchMovie(traktSlug)
 
   suspend fun fetchPopularShows(genres: String) = service.fetchPopularShows(genres)
 

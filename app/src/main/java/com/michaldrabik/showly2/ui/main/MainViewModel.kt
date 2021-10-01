@@ -132,10 +132,10 @@ class MainViewModel @Inject constructor(
         loadingState.value = true
       }
       try {
-        val result = when(source) {
+        val result = when (source) {
           is DeepLinkResolver.ImdbSource -> linksCase.findById(source.id)
           is DeepLinkResolver.TmdbSource -> linksCase.findById(source.id, source.type)
-          else -> DeepLinkBundle.EMPTY
+          is DeepLinkResolver.TraktSource -> linksCase.findById(source.id, source.type)
         }
         loadingState.value = false
         openLinkEvent.value = Event(result)

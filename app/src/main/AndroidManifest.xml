@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
   package="com.michaldrabik.showly2"
   >
@@ -72,18 +71,29 @@
         <category android:name="android.intent.category.DEFAULT" />
         <category android:name="android.intent.category.BROWSABLE" />
 
-        <data
-          android:pathPrefix="/tv/"
-          android:scheme="https"
-          />
 
-        <data
-          android:pathPrefix="/movie/"
-          android:scheme="https"
-          />
+        <data android:scheme="https" />
+
+        <data android:pathPrefix="/tv/" />
+        <data android:pathPrefix="/movie/" />
 
         <data android:host="themoviedb.org" />
         <data android:host="www.themoviedb.org" />
+      </intent-filter>
+
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+
+        <data android:scheme="https" />
+
+        <data android:host="trakt.tv" />
+        <data android:host="www.trakt.tv" />
+
+        <data android:pathPrefix="/shows/" />
+        <data android:pathPrefix="/movies/" />
       </intent-filter>
 
       <meta-data
