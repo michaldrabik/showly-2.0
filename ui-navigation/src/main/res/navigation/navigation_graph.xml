@@ -482,25 +482,6 @@
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
-    <!--    <action-->
-    <!--      android:id="@+id/actionListsFragmentToDetailsFragment"-->
-    <!--      app:destination="@id/listDetailsFragment"-->
-    <!--      app:enterAnim="@anim/anim_fade_in"-->
-    <!--      app:launchSingleTop="true"-->
-    <!--      app:popExitAnim="@anim/anim_fade_out"-->
-    <!--      />-->
-    <!--    <action-->
-    <!--      android:id="@+id/actionListsFragmentToSettingsFragment"-->
-    <!--      app:destination="@id/settingsFragment"-->
-    <!--      app:enterAnim="@anim/anim_fade_in"-->
-    <!--      app:launchSingleTop="true"-->
-    <!--      app:popExitAnim="@anim/anim_fade_out"-->
-    <!--      />-->
-    <!--    <action-->
-    <!--      android:id="@+id/actionListsFragmentToCreateListDialog"-->
-    <!--      app:destination="@id/createListDialog"-->
-    <!--      app:launchSingleTop="true"-->
-    <!--      />-->
   </fragment>
 
   <fragment

@@ -11,16 +11,18 @@ import com.michaldrabik.showly2.ui.main.cases.MainRateAppCase
 import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTraktCase
 import com.michaldrabik.showly2.utilities.deeplink.DeepLinkBundle
+import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.utilities.Event
-import com.michaldrabik.ui_model.IdImdb
+import com.michaldrabik.ui_base.utilities.extensions.combine
+import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -37,6 +39,7 @@ class MainViewModel @Inject constructor(
   private val linksCase: MainDeepLinksCase,
 ) : BaseViewModel() {
 
+  private val loadingState = MutableStateFlow(false)
   private val initialRunEvent = MutableStateFlow<Event<Boolean>?>(null)
   private val initialLanguageEvent = MutableStateFlow<Event<AppLanguage>?>(null)
   private val whatsNewEvent = MutableStateFlow<Event<Boolean>?>(null)
@@ -48,14 +51,16 @@ class MainViewModel @Inject constructor(
     initialLanguageEvent,
     whatsNewEvent,
     rateAppEvent,
-    openLinkEvent
-  ) { s1, s2, s3, s4, s5 ->
+    openLinkEvent,
+    loadingState
+  ) { s1, s2, s3, s4, s5, s6 ->
     MainUiState(
       isInitialRun = s1,
       initialLanguage = s2,
       showWhatsNew = s3,
       showRateApp = s4,
-      openLink = s5
+      openLink = s5,
+      isLoading = s6
     )
   }.stateIn(
     scope = viewModelScope,
@@ -121,14 +126,24 @@ class MainViewModel @Inject constructor(
 
   fun completeAppRate() = rateAppCase.complete()
 
-  fun openImdbLink(imdbId: IdImdb) {
+  fun openDeepLink(source: DeepLinkResolver.Source) {
     viewModelScope.launch {
+      val progressJob = launchDelayed(750) {
+        loadingState.value = true
+      }
       try {
-        val result = linksCase.findById(imdbId)
+        val result = when(source) {
+          is DeepLinkResolver.ImdbSource -> linksCase.findById(source.id)
+          is DeepLinkResolver.TmdbSource -> linksCase.findById(source.id, source.type)
+          else -> DeepLinkBundle.EMPTY
+        }
+        loadingState.value = false
         openLinkEvent.value = Event(result)
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "MainViewModel::openImdbLink:${imdbId.id}")
+        Logger.record(error, "Source" to "MainViewModel::openDeepLink:$source")
         rethrowCancellation(error)
+      } finally {
+        progressJob.cancelAndJoin()
       }
     }
   }

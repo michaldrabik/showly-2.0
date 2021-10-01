@@ -94,8 +94,7 @@ class MainActivity :
     )
   }
 
-  @Inject
-  lateinit var deepLinkResolver: DeepLinkResolver
+  @Inject lateinit var deepLinkResolver: DeepLinkResolver
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -306,6 +305,10 @@ class MainActivity :
           }
         }
       }
+      isLoading.let {
+        viewMask.visibleIf(it)
+        mainProgress.visibleIf(it)
+      }
     }
   }
 
@@ -316,13 +319,13 @@ class MainActivity :
       fadeIn()
       onOkClickListener = {
         fadeOut()
-        welcomeViewMask.gone()
+        viewMask.gone()
         if (language != AppLanguage.ENGLISH) {
           showWelcomeLanguageDialog(language)
         }
       }
     }
-    with(welcomeViewMask) {
+    with(viewMask) {
       fadeIn()
       onClick { /* NOOP */ }
     }
@@ -335,7 +338,7 @@ class MainActivity :
       onYesClick = {
         viewModel.setLanguage(language)
         fadeOut()
-        welcomeViewMask.fadeOut()
+        viewMask.fadeOut()
         postDelayed(
           {
             try {
@@ -349,10 +352,10 @@ class MainActivity :
       }
       onNoClick = {
         fadeOut()
-        welcomeViewMask.fadeOut()
+        viewMask.fadeOut()
       }
     }
-    welcomeViewMask.visible()
+    viewMask.visible()
   }
 
   private fun launchInAppReview() {
@@ -437,13 +440,6 @@ class MainActivity :
     }
   }
 
-  private fun handleDeepLink(intent: Intent?) {
-    when (val source = deepLinkResolver.findSource(intent)) {
-      is ImdbSource -> viewModel.openImdbLink(source.id)
-      else -> Timber.d("Unknown deep link source")
-    }
-  }
-
   private fun showWhatsNewDialog() {
     MaterialAlertDialogBuilder(this, R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(this, R.drawable.bg_dialog))
@@ -479,6 +475,12 @@ class MainActivity :
         BuildConfig.VERSION_CODE.toLong()
       )
       appUpdateManager.completeUpdate()
+    }
+  }
+
+  private fun handleDeepLink(intent: Intent?) {
+    deepLinkResolver.findSource(intent)?.let {
+      viewModel.openDeepLink(it)
     }
   }
 

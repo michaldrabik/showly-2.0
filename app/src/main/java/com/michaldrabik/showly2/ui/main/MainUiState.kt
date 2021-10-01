@@ -5,6 +5,7 @@ import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 
 data class MainUiState(
+  val isLoading: Boolean = false,
   val isInitialRun: Event<Boolean>? = null,
   val showWhatsNew: Event<Boolean>? = null,
   val initialLanguage: Event<AppLanguage>? = null,

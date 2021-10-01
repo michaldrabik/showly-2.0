@@ -6,6 +6,7 @@ import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.IdImdb
+import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Show
 import javax.inject.Inject
@@ -29,6 +30,14 @@ class ShowDetailsRepository @Inject constructor(
 
   suspend fun find(idImdb: IdImdb): Show? {
     val localShow = database.showsDao().getById(idImdb.id)
+    if (localShow != null) {
+      return mappers.show.fromDatabase(localShow)
+    }
+    return null
+  }
+
+  suspend fun find(idTmdb: IdTmdb): Show? {
+    val localShow = database.showsDao().getByTmdbId(idTmdb.id)
     if (localShow != null) {
       return mappers.show.fromDatabase(localShow)
     }

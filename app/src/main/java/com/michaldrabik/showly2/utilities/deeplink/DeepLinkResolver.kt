@@ -2,6 +2,7 @@ package com.michaldrabik.showly2.utilities.deeplink
 
 import android.content.Intent
 import androidx.core.os.bundleOf
+import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.michaldrabik.showly2.R
@@ -18,16 +19,27 @@ import javax.inject.Singleton
 @Singleton
 class DeepLinkResolver @Inject constructor() {
 
-  private val tempDestinations = arrayOf(
-    R.id.showDetailsFragment,
-    R.id.movieDetailsFragment,
-    R.id.settingsFragment,
-    R.id.traktSyncFragment
+  companion object {
+    const val SOURCE_IMDB = "imdb"
+    const val SOURCE_TMDB = "tmdb"
+
+    const val TMDB_TYPE_TV = "tv"
+    const val TMDB_TYPE_MOVIE = "movie"
+  }
+
+  private val progressDestinations = arrayOf(
+    R.id.progressMainFragment,
+    R.id.progressMoviesMainFragment,
   )
 
   private val mainDestinations = arrayOf(
-    R.id.progressMainFragment,
-    R.id.progressMoviesMainFragment
+    *progressDestinations,
+    R.id.discoverFragment,
+    R.id.discoverMoviesFragment,
+    R.id.followedShowsFragment,
+    R.id.followedMoviesFragment,
+    R.id.listsFragment,
+    R.id.newsFragment,
   )
 
   fun resolveDestination(
@@ -75,20 +87,30 @@ class DeepLinkResolver @Inject constructor() {
     if (path.size >= 2 && path[1].startsWith("tt") && path[1].length > 2) {
       return ImdbSource(IdImdb(path[1]))
     }
+    if (path.size >= 2 && (path[0] == TMDB_TYPE_TV || path[0] == TMDB_TYPE_MOVIE) && path[1].length > 1) {
+      val id = path[1].substringBefore("-").trim()
+      val type = path[0]
+      return if (id.isDigitsOnly()) {
+        TmdbSource(IdTmdb(id.toLong()), type)
+      } else {
+        null
+      }
+    }
     return null
   }
 
   private fun resetNavigation(navController: NavController, navigationView: BottomNavigationView) {
-    while (navController.currentDestination?.id in tempDestinations) {
+    while (navController.currentDestination?.id !in mainDestinations) {
       navController.popBackStack()
     }
-    if (navController.currentDestination?.id !in mainDestinations) {
+
+    if (navController.currentDestination?.id !in progressDestinations) {
       navigationView.selectedItemId = R.id.menuProgress
     }
   }
 
   sealed class Source
   data class ImdbSource(val id: IdImdb) : Source()
-  data class TmdbSource(val id: IdTmdb) : Source()
+  data class TmdbSource(val id: IdTmdb, val type: String) : Source()
   data class TraktSource(val id: IdTrakt) : Source()
 }

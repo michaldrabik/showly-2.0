@@ -28,6 +28,9 @@ interface MoviesDao : BaseDao<Movie> {
   @Query("SELECT * FROM movies WHERE id_trakt == :traktId")
   suspend fun getById(traktId: Long): Movie?
 
+  @Query("SELECT * FROM movies WHERE id_tmdb == :tmdbId")
+  suspend fun getByTmdbId(tmdbId: Long): Movie?
+
   @Query("SELECT * FROM movies WHERE id_imdb == :imdbId")
   suspend fun getById(imdbId: String): Movie?
 
