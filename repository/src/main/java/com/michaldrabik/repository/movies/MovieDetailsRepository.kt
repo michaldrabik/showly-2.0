@@ -6,6 +6,9 @@ import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.MoviesSyncLog
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.mappers.Mappers
+import com.michaldrabik.ui_model.IdImdb
+import com.michaldrabik.ui_model.IdSlug
+import com.michaldrabik.ui_model.IdTmdb
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Movie
 import javax.inject.Inject
@@ -26,6 +29,30 @@ class MovieDetailsRepository @Inject constructor(
       return movie
     }
     return mappers.movie.fromDatabase(local)
+  }
+
+  suspend fun find(idImdb: IdImdb): Movie? {
+    val localMovie = database.moviesDao().getById(idImdb.id)
+    if (localMovie != null) {
+      return mappers.movie.fromDatabase(localMovie)
+    }
+    return null
+  }
+
+  suspend fun find(idTmdb: IdTmdb): Movie? {
+    val localMovie = database.moviesDao().getByTmdbId(idTmdb.id)
+    if (localMovie != null) {
+      return mappers.movie.fromDatabase(localMovie)
+    }
+    return null
+  }
+
+  suspend fun find(idSlug: IdSlug): Movie? {
+    val localMovie = database.moviesDao().getBySlug(idSlug.id)
+    if (localMovie != null) {
+      return mappers.movie.fromDatabase(localMovie)
+    }
+    return null
   }
 
   suspend fun delete(idTrakt: IdTrakt) {

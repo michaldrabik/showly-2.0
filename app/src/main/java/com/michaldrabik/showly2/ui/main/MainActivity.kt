@@ -28,6 +28,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.BillingActivity
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
+import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
@@ -63,6 +64,7 @@ import kotlinx.android.synthetic.main.view_bottom_menu.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity :
@@ -91,6 +93,8 @@ class MainActivity :
     )
   }
 
+  @Inject lateinit var deepLinkResolver: DeepLinkResolver
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
@@ -115,6 +119,7 @@ class MainActivity :
     handleAppShortcut(intent)
     handleNotification(intent?.extras) { hideNavigation(false) }
     handleTraktAuthorization(intent?.data)
+    handleDeepLink(intent)
   }
 
   private fun setupViewModel() {
@@ -134,13 +139,14 @@ class MainActivity :
       isModeMenuEnabled = moviesEnabled()
       onModeSelected = { setMode(it) }
     }
+    viewMask.onClick { /* NOOP */ }
   }
 
   private fun setupNavigation() {
     findNavControl()?.run {
       val graph = navInflater.inflate(R.navigation.navigation_graph)
       graph.startDestination = when (viewModel.getMode()) {
-        SHOWS -> R.id.progressFragment
+        SHOWS -> R.id.progressMainFragment
         MOVIES -> R.id.progressMoviesMainFragment
         else -> throw IllegalStateException()
       }
@@ -268,6 +274,10 @@ class MainActivity :
 
   private fun render(uiState: MainUiState) {
     uiState.run {
+      isLoading.let {
+        viewMask.visibleIf(it)
+        mainProgress.visibleIf(it)
+      }
       isInitialRun?.let {
         if (it.consume() == true) {
           viewModel.checkInitialLanguage()
@@ -287,6 +297,18 @@ class MainActivity :
           showWelcomeDialog(it)
         }
       }
+      openLink?.let { event ->
+        event.consume()?.let { bundle ->
+          findNavHostFragment()?.findNavController()?.let { nav ->
+            bundle.show?.let {
+              deepLinkResolver.resolveDestination(nav, bottomNavigationView, it)
+            }
+            bundle.movie?.let {
+              deepLinkResolver.resolveDestination(nav, bottomNavigationView, it)
+            }
+          }
+        }
+      }
     }
   }
 
@@ -297,16 +319,13 @@ class MainActivity :
       fadeIn()
       onOkClickListener = {
         fadeOut()
-        welcomeViewMask.gone()
+        viewMask.gone()
         if (language != AppLanguage.ENGLISH) {
           showWelcomeLanguageDialog(language)
         }
       }
     }
-    with(welcomeViewMask) {
-      fadeIn()
-      onClick { /* NOOP */ }
-    }
+    viewMask.visible()
   }
 
   private fun showWelcomeLanguageDialog(language: AppLanguage) {
@@ -316,7 +335,7 @@ class MainActivity :
       onYesClick = {
         viewModel.setLanguage(language)
         fadeOut()
-        welcomeViewMask.fadeOut()
+        viewMask.fadeOut()
         postDelayed(
           {
             try {
@@ -330,10 +349,10 @@ class MainActivity :
       }
       onNoClick = {
         fadeOut()
-        welcomeViewMask.fadeOut()
+        viewMask.fadeOut()
       }
     }
-    welcomeViewMask.visible()
+    viewMask.visible()
   }
 
   private fun launchInAppReview() {
@@ -453,6 +472,12 @@ class MainActivity :
         BuildConfig.VERSION_CODE.toLong()
       )
       appUpdateManager.completeUpdate()
+    }
+  }
+
+  private fun handleDeepLink(intent: Intent?) {
+    deepLinkResolver.findSource(intent)?.let {
+      viewModel.openDeepLink(it)
     }
   }
 

@@ -8,7 +8,7 @@
 
   <action
     android:id="@+id/actionNavigateProgressFragment"
-    app:destination="@id/progressFragment"
+    app:destination="@id/progressMainFragment"
     app:launchSingleTop="true"
     app:popUpTo="@id/navigationGraph"
     app:popUpToInclusive="true"
@@ -119,7 +119,7 @@
   </fragment>
 
   <fragment
-    android:id="@+id/progressFragment"
+    android:id="@+id/progressMainFragment"
     android:name="com.michaldrabik.ui_progress.main.ProgressMainFragment"
     android:label="fragmentProgressMain"
     >
@@ -482,25 +482,6 @@
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
-    <!--    <action-->
-    <!--      android:id="@+id/actionListsFragmentToDetailsFragment"-->
-    <!--      app:destination="@id/listDetailsFragment"-->
-    <!--      app:enterAnim="@anim/anim_fade_in"-->
-    <!--      app:launchSingleTop="true"-->
-    <!--      app:popExitAnim="@anim/anim_fade_out"-->
-    <!--      />-->
-    <!--    <action-->
-    <!--      android:id="@+id/actionListsFragmentToSettingsFragment"-->
-    <!--      app:destination="@id/settingsFragment"-->
-    <!--      app:enterAnim="@anim/anim_fade_in"-->
-    <!--      app:launchSingleTop="true"-->
-    <!--      app:popExitAnim="@anim/anim_fade_out"-->
-    <!--      />-->
-    <!--    <action-->
-    <!--      android:id="@+id/actionListsFragmentToCreateListDialog"-->
-    <!--      app:destination="@id/createListDialog"-->
-    <!--      app:launchSingleTop="true"-->
-    <!--      />-->
   </fragment>
 
   <fragment
