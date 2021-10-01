@@ -5,7 +5,7 @@ import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.movies.MovieDetailsRepository
 import com.michaldrabik.repository.shows.ShowDetailsRepository
-import com.michaldrabik.showly2.ui.main.helpers.DeepLinkBundle
+import com.michaldrabik.showly2.utilities.deeplink.DeepLinkBundle
 import com.michaldrabik.ui_model.IdImdb
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject

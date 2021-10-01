@@ -1,4 +1,4 @@
-package com.michaldrabik.showly2.ui.main.helpers
+package com.michaldrabik.showly2.utilities.deeplink
 
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.Show

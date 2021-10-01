@@ -1,6 +1,6 @@
 package com.michaldrabik.showly2.ui.main
 
-import com.michaldrabik.showly2.ui.main.helpers.DeepLinkBundle
+import com.michaldrabik.showly2.utilities.deeplink.DeepLinkBundle
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_settings.helpers.AppLanguage
 

@@ -10,7 +10,7 @@ import com.michaldrabik.showly2.ui.main.cases.MainModesCase
 import com.michaldrabik.showly2.ui.main.cases.MainRateAppCase
 import com.michaldrabik.showly2.ui.main.cases.MainTipsCase
 import com.michaldrabik.showly2.ui.main.cases.MainTraktCase
-import com.michaldrabik.showly2.ui.main.helpers.DeepLinkBundle
+import com.michaldrabik.showly2.utilities.deeplink.DeepLinkBundle
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.utilities.Event
