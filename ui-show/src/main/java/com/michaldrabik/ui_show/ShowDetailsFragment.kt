@@ -121,7 +121,7 @@ import com.michaldrabik.ui_show.related.RelatedShowAdapter
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import com.michaldrabik.ui_show.seasons.SeasonsAdapter
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.ADD
-import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_ARCHIVE
+import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_HIDDEN
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_MY_SHOWS
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_WATCHLIST
 import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
@@ -223,7 +223,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       isEnabled = false
       onAddMyShowsClickListener = { viewModel.addFollowedShow() }
       onAddWatchLaterClickListener = { viewModel.addWatchlistShow(requireAppContext()) }
-      onArchiveClickListener = { openArchiveConfirmationDialog() }
       onRemoveClickListener = { viewModel.removeFromFollowed() }
     }
     showDetailsRemoveTraktButton.onNoClickListener = {
@@ -231,6 +230,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       showDetailsRemoveTraktButton.fadeOut()
     }
     showDetailsManageListsLabel.onClick { openListsDialog() }
+    showDetailsHideLabel.onClick { openArchiveConfirmationDialog() }
   }
 
   private fun setupStatusBar() {
@@ -537,9 +537,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         when {
           it.isMyShows -> showDetailsAddButton.setState(IN_MY_SHOWS, it.withAnimation)
           it.isWatchlist -> showDetailsAddButton.setState(IN_WATCHLIST, it.withAnimation)
-          it.isArchived -> showDetailsAddButton.setState(IN_ARCHIVE, it.withAnimation)
+          it.isHidden -> showDetailsAddButton.setState(IN_HIDDEN, it.withAnimation)
           else -> showDetailsAddButton.setState(ADD, it.withAnimation)
         }
+        showDetailsHideLabel.visibleIf(!it.isHidden)
       }
       listsCount?.let {
         val text =
@@ -891,19 +892,19 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
   private fun openArchiveConfirmationDialog() {
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setTitle(R.string.textArchiveConfirmationTitle)
-      .setMessage(R.string.textArchiveConfirmationMessage)
-      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.addArchiveShow() }
+      .setTitle(R.string.textHiddenConfirmationTitle)
+      .setMessage(R.string.textHiddenConfirmationMessage)
+      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.addHiddenShow() }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
-      .setNeutralButton(R.string.textWhatIsArchive) { _, _ -> openArchiveDescriptionDialog() }
+      .setNeutralButton(R.string.textHideTitle) { _, _ -> openArchiveDescriptionDialog() }
       .show()
   }
 
   private fun openArchiveDescriptionDialog() {
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
       .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setTitle(R.string.textWhatIsArchiveFull)
-      .setMessage(R.string.textArchiveDescription)
+      .setTitle(R.string.textHideFull)
+      .setMessage(R.string.textHiddenDescription)
       .setPositiveButton(R.string.textOk) { _, _ -> openArchiveConfirmationDialog() }
       .show()
   }

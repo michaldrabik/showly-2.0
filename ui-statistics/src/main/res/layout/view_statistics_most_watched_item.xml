@@ -46,7 +46,7 @@
       />
 
     <ImageView
-      android:id="@+id/viewMostWatchedItemArchivedIcon"
+      android:id="@+id/viewMostWatchedItemHiddenIcon"
       android:layout_width="18dp"
       android:layout_height="0dp"
       android:layout_marginStart="@dimen/spaceTiny"
@@ -55,7 +55,7 @@
       app:layout_constraintBottom_toBottomOf="@id/viewMostWatchedItemTitle"
       app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemTitle"
       app:layout_constraintTop_toTopOf="@id/viewMostWatchedItemTitle"
-      app:srcCompat="@drawable/ic_archive"
+      app:srcCompat="@drawable/ic_eye_no"
       app:tint="?android:attr/textColorSecondary"
       tools:visibility="visible"
       />

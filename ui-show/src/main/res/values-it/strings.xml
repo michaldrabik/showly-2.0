@@ -5,7 +5,7 @@
   <string name="textNextEpisode">Prossimo Episodio:</string>
   <string name="textInMyShows">Serie TV aggiunta</string>
   <string name="textInWatchlist">Aggiunta alla lista da vedere</string>
-  <string name="textInArchive">Archiviata</string>
+  <string name="textInHidden">Archiviata</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">Progresso Rapido</string>
   <string name="textShowQuickProgressSubTitle">Seleziona l\'ultimo episodio che hai visto per aggiornare velocemente i tuoi progressi.</string>
@@ -22,11 +22,11 @@
   <string name="textYouMayAlsoLike">Potrebbe piacerti anche:</string>
   <string name="textRuntimeLeftHours">~%sh %sm rimasti</string>
   <string name="textRuntimeLeftMinutes">~%sm rimasti</string>
-  <string name="textWhatIsArchive">Archiviare?</string>
-  <string name="textWhatIsArchiveFull">Cos\'è l\'Archivio?</string>
-  <string name="textArchiveDescription">La pagina <b>Archivio</b> è una lista delle serie TV che hai mollato, abbandonato o in cui non sei più interessato.\n\nLe serie TV archiviate non appariranno più nelle sezioni <b>Progressi</b>, <b>Scopri</b> and <b>Le Mie Serie TV</b> e non verranno considerate durante l\'importazione da Trakt.tv.</string>
-  <string name="textArchiveConfirmationTitle">Archivia Serie TV</string>
-  <string name="textArchiveConfirmationMessage">\nSei sicuro di voler archiviare questa serie tv?\n</string>
+  <string name="textHideTitle">Archiviare?</string>
+  <string name="textHideFull">Cos\'è l\'Archivio?</string>
+  <string name="textHiddenDescription">La pagina <b>Archivio</b> è una lista delle serie TV che hai mollato, abbandonato o in cui non sei più interessato.\n\nLe serie TV archiviate non appariranno più nelle sezioni <b>Progressi</b>, <b>Scopri</b> and <b>Le Mie Serie TV</b> e non verranno considerate durante l\'importazione da Trakt.tv.</string>
+  <string name="textHiddenConfirmationTitle">Archivia Serie TV</string>
+  <string name="textHiddenConfirmationMessage">\nSei sicuro di voler archiviare questa serie tv?\n</string>
   <string name="textShowManageLists">Gestisci liste</string>
   <string name="textShowManageListsCount">Gestisci liste (%d)</string>
 </resources>

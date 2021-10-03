@@ -37,8 +37,8 @@
   <string name="textSettingsMyShowsCountrySummary">حدد المنطقة لاستخدامها مع بيانات خدمات البث.</string>
   <string name="textSettingsMyShowsLanguageTitle">اللغة</string>
   <string name="textSettingsMyShowsLanguageSummary">سيتم إعادة تشغيل التطبيق، وسيتم عرض عنوان وقصة اي فيلم او مسلسل او حلقة بالعربية إذا توفرت.</string>
-  <string name="textSettingsIncludeArchiveStatsTitle">إحصائيات الأرشيف</string>
-  <string name="textSettingsIncludeArchiveStatsSummary">عرض المسلسلات المؤرشفة في صفحة الإحصائيات.</string>
+  <string name="textSettingsIncludeHiddenStatsTitle">إحصائيات الأرشيف</string>
+  <string name="textSettingsIncludeHiddenStatsSummary">عرض المسلسلات المؤرشفة في صفحة الإحصائيات.</string>
   <string name="textSettingsDateFormatTitle">تنسيق التاريخ والوقت</string>
   <string name="textSettingsIncludeSpecialsTitle">الحلقات الخاصة</string>
   <string name="textSettingsIncludeSpecialsSummary">عرض \'الحلقات الخاصة\' في صفحة تفاصيل المسلسل</string>

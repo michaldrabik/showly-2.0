@@ -11,7 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/spaceTiny"
-    android:text="@string/menuArchive"
+    android:text="@string/menuHidden"
     android:textAllCaps="true"
     android:textColor="?android:attr/textColorPrimary"
     android:textSize="20sp"
@@ -21,7 +21,7 @@
   <TextView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="@string/textArchiveEmpty"
+    android:text="@string/textHiddenEmpty"
     android:textColor="?android:attr/textColorSecondary"
     android:textSize="14sp"
     />

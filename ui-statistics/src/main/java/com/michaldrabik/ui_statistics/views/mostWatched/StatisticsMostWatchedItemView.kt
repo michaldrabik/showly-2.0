@@ -26,7 +26,7 @@ class StatisticsMostWatchedItemView : ShowView<StatisticsMostWatchedItem> {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
 
     viewMostWatchedItem.onClick { itemClickListener?.invoke(item) }
-    viewMostWatchedItemArchivedIcon.onClick {
+    viewMostWatchedItemHiddenIcon.onClick {
       showInfoSnackbar(context.getString(R.string.textThisShowIsArchived))
     }
   }
@@ -46,7 +46,7 @@ class StatisticsMostWatchedItemView : ShowView<StatisticsMostWatchedItem> {
     viewMostWatchedItemHoursValue.text = "${item.episodes.sumBy { it.runtime } / 60}"
     viewMostWatchedItemEpisodesValue.text = "${item.episodes.size}"
     viewMostWatchedItemSeasonsValue.text = "${item.seasonsCount}"
-    viewMostWatchedItemArchivedIcon.visibleIf(item.isArchived)
+    viewMostWatchedItemHiddenIcon.visibleIf(item.isArchived)
     loadImage(item)
   }
 

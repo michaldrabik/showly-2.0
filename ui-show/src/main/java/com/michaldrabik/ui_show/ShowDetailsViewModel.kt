@@ -140,7 +140,7 @@ class ShowDetailsViewModel @Inject constructor(
         val isFollowed = FollowedState2(
           isMyShows = isMyShow.await(),
           isWatchlist = isWatchLater.await(),
-          isArchived = isArchived.await(),
+          isHidden = isArchived.await(),
           withAnimation = false
         )
 
@@ -533,12 +533,12 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun addArchiveShow() {
+  fun addHiddenShow() {
     viewModelScope.launch {
       if (!checkSeasonsLoaded()) return@launch
 
       archiveCase.addToArchive(show, removeLocalData = !areSeasonsLocal)
-      followedState.value = FollowedState2.inArchive()
+      followedState.value = FollowedState2.inHidden()
       Analytics.logShowAddToArchive(show)
     }
   }

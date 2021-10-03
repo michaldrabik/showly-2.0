@@ -5,7 +5,7 @@
   <string name="textNextEpisode">Sonraki Bölüm:</string>
   <string name="textInMyShows">Dizilerime eklendi</string>
   <string name="textInWatchlist">İstek listesine eklendi</string>
-  <string name="textInArchive">Arşivlendi</string>
+  <string name="textInHidden">Arşivlendi</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">Hızlı İlerleme</string>
   <string name="textShowQuickProgressSubTitle">İlerlemenizi hızlı bir şekilde güncellemek için en son izlediğiniz bölümü seçin.</string>
@@ -22,11 +22,11 @@
   <string name="textYouMayAlsoLike">Bunlar da hoşunuza gidebilir:</string>
   <string name="textRuntimeLeftHours">~%s sa %s dk kaldı</string>
   <string name="textRuntimeLeftMinutes">~%s dk kaldı</string>
-  <string name="textWhatIsArchive">Arşivlensin mi?</string>
-  <string name="textWhatIsArchiveFull">Arşiv Nedir?</string>
-  <string name="textArchiveDescription"><b>Arşiv</b>, izlemesi bırakılan, terk edilen veya artık ilgilenmediğiniz dizilerin bir listesidir.\n\nArşivlenmiş diziler artık <b>İlerleme</b>, <b>Keşfet</b> ve <b>Dizilerim</b> bölümlerinde gözükmeyecektir ve ayrıca Trakt.tv içe aktarımı sırasında atlanacaktır.</string>
-  <string name="textArchiveConfirmationTitle">Diziyi Arşivle</string>
-  <string name="textArchiveConfirmationMessage">\nBu diziyi arşivlemek istediğinizden emin misiniz?\n</string>
+  <string name="textHideTitle">Arşivlensin mi?</string>
+  <string name="textHideFull">Arşiv Nedir?</string>
+  <string name="textHiddenDescription"><b>Arşiv</b>, izlemesi bırakılan, terk edilen veya artık ilgilenmediğiniz dizilerin bir listesidir.\n\nArşivlenmiş diziler artık <b>İlerleme</b>, <b>Keşfet</b> ve <b>Dizilerim</b> bölümlerinde gözükmeyecektir ve ayrıca Trakt.tv içe aktarımı sırasında atlanacaktır.</string>
+  <string name="textHiddenConfirmationTitle">Diziyi Arşivle</string>
+  <string name="textHiddenConfirmationMessage">\nBu diziyi arşivlemek istediğinizden emin misiniz?\n</string>
   <string name="textShowManageLists">Listeleri Yönet</string>
   <string name="textShowManageListsCount">Listeleri Yönet (%d)</string>
 </resources>

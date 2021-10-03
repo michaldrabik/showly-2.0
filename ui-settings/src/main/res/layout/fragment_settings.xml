@@ -513,12 +513,12 @@
 
       <TextView
         style="@style/Settings.Title"
-        android:text="@string/textSettingsIncludeArchiveStatsTitle"
+        android:text="@string/textSettingsIncludeHiddenStatsTitle"
         />
 
       <TextView
         style="@style/Settings.Summary"
-        android:text="@string/textSettingsIncludeArchiveStatsSummary"
+        android:text="@string/textSettingsIncludeHiddenStatsSummary"
         />
 
     </LinearLayout>

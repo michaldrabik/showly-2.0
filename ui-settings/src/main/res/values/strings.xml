@@ -38,8 +38,8 @@
   <string name="textSettingsMyShowsCountrySummary">Select region to use with streaming services data.</string>
   <string name="textSettingsMyShowsLanguageTitle">Language</string>
   <string name="textSettingsMyShowsLanguageSummary">Descriptions and titles will be translated when available. App will restart.</string>
-  <string name="textSettingsIncludeArchiveStatsTitle">Archived Statistics</string>
-  <string name="textSettingsIncludeArchiveStatsSummary">Include archived shows data in the statistics.</string>
+  <string name="textSettingsIncludeHiddenStatsTitle">Hidden Items Statistics</string>
+  <string name="textSettingsIncludeHiddenStatsSummary">Include hidden items data in the statistics.</string>
   <string name="textSettingsDateFormatTitle">Date / Time Format</string>
   <string name="textSettingsIncludeSpecialsTitle">Special Seasons</string>
   <string name="textSettingsIncludeSpecialsSummary">Display \'Special\' seasons in show\'s details screen.</string>

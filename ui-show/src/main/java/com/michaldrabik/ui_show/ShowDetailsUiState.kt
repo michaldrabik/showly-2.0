@@ -44,15 +44,15 @@ data class ShowDetailsUiState(
   data class FollowedState2(
     val isMyShows: Boolean,
     val isWatchlist: Boolean,
-    val isArchived: Boolean,
+    val isHidden: Boolean,
     val withAnimation: Boolean,
   ) {
 
     companion object {
-      fun inMyShows() = FollowedState2(isMyShows = true, isWatchlist = false, isArchived = false, withAnimation = true)
-      fun inWatchlist() = FollowedState2(isMyShows = false, isWatchlist = true, isArchived = false, withAnimation = true)
-      fun inArchive() = FollowedState2(isMyShows = false, isWatchlist = false, isArchived = true, withAnimation = true)
-      fun notFollowed() = FollowedState2(isMyShows = false, isWatchlist = false, isArchived = false, withAnimation = true)
+      fun inMyShows() = FollowedState2(isMyShows = true, isWatchlist = false, isHidden = false, withAnimation = true)
+      fun inWatchlist() = FollowedState2(isMyShows = false, isWatchlist = true, isHidden = false, withAnimation = true)
+      fun inHidden() = FollowedState2(isMyShows = false, isWatchlist = false, isHidden = true, withAnimation = true)
+      fun notFollowed() = FollowedState2(isMyShows = false, isWatchlist = false, isHidden = false, withAnimation = true)
     }
   }
 }

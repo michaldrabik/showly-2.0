@@ -2,9 +2,9 @@
 <resources>
   <string name="menuMyShows">My Shows</string>
   <string name="menuWatchlist">Watchlist</string>
-  <string name="menuArchive">Archive</string>
+  <string name="menuHidden">Hidden</string>
 
   <string name="textMyShowsEmpty">Your shows collection is currently empty.\n\nVisit <b>Discover</b> tab to add your first show.</string>
   <string name="textWatchlistEmpty">Your <b>Watchlist</b> is currently empty.\n\nVisit <b>Discover</b> tab to add shows you might want to watch in the future.</string>
-  <string name="textArchiveEmpty">Your <b>Archive</b> is currently empty.\n\n<b>Archive</b> is a list of shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Progress</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
+  <string name="textHiddenEmpty">Your <b>Hidden</b> list is currently empty.\n\n<b>Hidden</b> is a list of items that you are not interested in.\n\nHidden items will no longer appear in <b>Progress</b> and <b>Discover</b> sections.</string>
 </resources>
