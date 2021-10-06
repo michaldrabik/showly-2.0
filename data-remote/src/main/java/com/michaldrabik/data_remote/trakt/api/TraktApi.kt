@@ -142,10 +142,20 @@ class TraktApi(private val service: TraktService) {
     service.fetchMyProfile("Bearer $token")
 
   suspend fun fetchHiddenShows(token: String) =
-    service.fetchHiddenShows("Bearer $token", pageLimit = 100)
+    service.fetchHiddenShows("Bearer $token", pageLimit = 250)
+
+  suspend fun postHiddenItems(
+    token: String,
+    showsIds: List<Long> = emptyList(),
+    moviesIds: List<Long> = emptyList()
+  ) {
+    val payloadShows = showsIds.map { SyncExportItem.create(it, null) }
+    val payloadMovies = moviesIds.map { SyncExportItem.create(it, null) }
+    service.postHiddenShows("Bearer $token", SyncExportRequest(shows = payloadShows, movies = payloadMovies))
+  }
 
   suspend fun fetchHiddenMovies(token: String) =
-    service.fetchHiddenMovies("Bearer $token", pageLimit = 100)
+    service.fetchHiddenMovies("Bearer $token", pageLimit = 250)
 
   suspend fun fetchSyncWatchedShows(token: String, extended: String? = null) =
     service.fetchSyncWatched("Bearer $token", "shows", extended)

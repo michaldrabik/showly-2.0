@@ -87,6 +87,17 @@ class TraktExportWatchedRunner @Inject constructor(
 
     Timber.d("Exporting ${localEpisodes.size} episodes & ${movies.size} movies...")
     cloud.traktApi.postSyncWatched(token.token, request)
+
+    exportHidden(token)
+  }
+
+  private suspend fun exportHidden(token: TraktAuthToken) {
+    Timber.d("Exporting hidden items...")
+    val localShowsIds = database.archiveShowsDao().getAll().map { it.idTrakt }
+    if (localShowsIds.isNotEmpty()) {
+      Timber.d("Exporting ${localShowsIds.size} hidden shows...")
+      cloud.traktApi.postHiddenItems(token.token, showsIds = localShowsIds)
+    }
   }
 
   private suspend fun batchEpisodes(

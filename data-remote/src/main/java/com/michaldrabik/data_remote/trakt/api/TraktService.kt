@@ -197,13 +197,19 @@ interface TraktService {
 
   // Sync
 
-  @GET("users/hidden/progress_watched?type=show")
+  @GET("users/hidden/progress_watched?type=show&extended=full")
   suspend fun fetchHiddenShows(
     @Header("Authorization") authToken: String,
     @Query("limit") pageLimit: Int
   ): List<HiddenItem>
 
-  @GET("users/hidden/progress_watched?type=movie")
+  @POST("users/hidden/progress_watched")
+  suspend fun postHiddenShows(
+    @Header("Authorization") authToken: String,
+    @Body request: SyncExportRequest
+  ): SyncExportResult
+
+  @GET("users/hidden/progress_watched?type=movie&extended=full")
   suspend fun fetchHiddenMovies(
     @Header("Authorization") authToken: String,
     @Query("limit") pageLimit: Int
