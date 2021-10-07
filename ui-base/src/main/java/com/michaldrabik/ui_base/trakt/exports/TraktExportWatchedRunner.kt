@@ -93,10 +93,11 @@ class TraktExportWatchedRunner @Inject constructor(
 
   private suspend fun exportHidden(token: TraktAuthToken) {
     Timber.d("Exporting hidden items...")
-    val localShowsIds = database.archiveShowsDao().getAll().map { it.idTrakt }
+    val localShowsIds = database.archiveShowsDao().getAll()
+      .map { SyncExportItem.create(it.idTrakt, hiddenAt = dateIsoStringFromMillis(it.updatedAt)) }
     if (localShowsIds.isNotEmpty()) {
       Timber.d("Exporting ${localShowsIds.size} hidden shows...")
-      cloud.traktApi.postHiddenItems(token.token, showsIds = localShowsIds)
+      cloud.traktApi.postHiddenItems(token.token, shows = localShowsIds)
     }
   }
 

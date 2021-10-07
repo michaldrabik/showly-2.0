@@ -3,6 +3,8 @@ package com.michaldrabik.ui_show
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.Mode
+import com.michaldrabik.data_local.database.model.TraktSyncQueue.Operation
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.Analytics
@@ -36,7 +38,7 @@ import com.michaldrabik.ui_model.SeasonBundle
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.TraktRating
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_show.ShowDetailsUiState.FollowedState2
+import com.michaldrabik.ui_show.ShowDetailsUiState.FollowedState
 import com.michaldrabik.ui_show.cases.ShowDetailsActorsCase
 import com.michaldrabik.ui_show.cases.ShowDetailsArchiveCase
 import com.michaldrabik.ui_show.cases.ShowDetailsCommentsCase
@@ -104,7 +106,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val nextEpisodeState = MutableStateFlow<NextEpisodeBundle?>(null)
   private val commentsState = MutableStateFlow<List<Comment>?>(null)
   private val commentsDateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
-  private val followedState = MutableStateFlow<FollowedState2?>(null)
+  private val followedState = MutableStateFlow<FollowedState?>(null)
   private val ratingState = MutableStateFlow<RatingState?>(null)
   private val streamingsState = MutableStateFlow<StreamingsBundle?>(null)
   private val traktLoadingState = MutableStateFlow(false)
@@ -117,6 +119,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val seasonTranslationEvent = MutableStateFlow<Event<SeasonListItem>?>(null)
   private val removeTraktHistoryEvent = MutableStateFlow<Event<Boolean>?>(null)
   private val removeTraktWatchlistEvent = MutableStateFlow<Event<Boolean>?>(null)
+  private val removeTraktHiddenEvent = MutableStateFlow<Event<Boolean>?>(null)
   private val finishedEvent = MutableStateFlow<Event<Boolean>?>(null)
 
   private var show by notNull<Show>()
@@ -137,7 +140,7 @@ class ShowDetailsViewModel @Inject constructor(
         val isMyShow = async { myShowsCase.isMyShows(show) }
         val isWatchLater = async { watchlistCase.isWatchlist(show) }
         val isArchived = async { archiveCase.isArchived(show) }
-        val isFollowed = FollowedState2(
+        val isFollowed = FollowedState(
           isMyShows = isMyShow.await(),
           isWatchlist = isWatchLater.await(),
           isHidden = isArchived.await(),
@@ -516,19 +519,19 @@ class ShowDetailsViewModel @Inject constructor(
       val episodes = seasonItems.flatMap { it.episodes.map { e -> e.episode } }
 
       myShowsCase.addToMyShows(show, seasons, episodes)
-      followedState.value = FollowedState2.inMyShows()
+      followedState.value = FollowedState.inMyShows()
       announcementManager.refreshShowsAnnouncements()
       Analytics.logShowAddToMyShows(show)
     }
   }
 
-  fun addWatchlistShow(context: Context) {
+  fun addWatchlistShow() {
     viewModelScope.launch {
       if (!checkSeasonsLoaded()) return@launch
 
       watchlistCase.addToWatchlist(show)
       quickSyncManager.scheduleShowsWatchlist(listOf(show.traktId))
-      followedState.value = FollowedState2.inWatchlist()
+      followedState.value = FollowedState.inWatchlist()
       Analytics.logShowAddToWatchlistShows(show)
     }
   }
@@ -538,7 +541,8 @@ class ShowDetailsViewModel @Inject constructor(
       if (!checkSeasonsLoaded()) return@launch
 
       archiveCase.addToArchive(show, removeLocalData = !areSeasonsLocal)
-      followedState.value = FollowedState2.inHidden()
+      quickSyncManager.scheduleHidden(show.traktId, Mode.SHOWS, Operation.ADD)
+      followedState.value = FollowedState.inHidden()
       Analytics.logShowAddToArchive(show)
     }
   }
@@ -561,22 +565,27 @@ class ShowDetailsViewModel @Inject constructor(
         }
         isArchived -> {
           archiveCase.removeFromArchive(show)
+          quickSyncManager.clearHiddenShows(listOf(show.traktId))
         }
       }
 
       val traktQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
       val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal
 
-      val state = FollowedState2.notFollowed()
+      val state = FollowedState.notFollowed()
       val event = Event(showRemoveTrakt)
       when {
-        isMyShows || isArchived -> {
+        isMyShows -> {
           followedState.value = state
           removeTraktHistoryEvent.value = event
         }
         isWatchlist -> {
           followedState.value = state
           removeTraktWatchlistEvent.value = event
+        }
+        isArchived -> {
+          followedState.value = state
+          removeTraktHiddenEvent.value = event
         }
         else -> error("Unexpected show state.")
       }
@@ -620,6 +629,23 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
+  fun removeFromTraktHidden() {
+    viewModelScope.launch {
+      try {
+        traktLoadingState.value = true
+        archiveCase.removeTraktArchive(show)
+        _messageState.emit(MessageEvent.info(R.string.textTraktSyncRemovedFromTrakt))
+        traktLoadingState.value = false
+        removeTraktHiddenEvent.value = Event(false)
+      } catch (error: Throwable) {
+        _messageState.emit(MessageEvent.error(R.string.errorTraktSyncGeneral))
+        traktLoadingState.value = false
+        Timber.e(error)
+        rethrowCancellation(error)
+      }
+    }
+  }
+
   fun removeMalformedShow(id: IdTrakt) {
     viewModelScope.launch {
       try {
@@ -634,7 +660,6 @@ class ShowDetailsViewModel @Inject constructor(
   }
 
   fun setWatchedEpisode(
-    context: Context,
     episode: Episode,
     season: Season,
     isChecked: Boolean,
@@ -657,7 +682,7 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun setWatchedSeason(context: Context, season: Season, isChecked: Boolean) {
+  fun setWatchedSeason(season: Season, isChecked: Boolean) {
     viewModelScope.launch {
       val bundle = SeasonBundle(season, show)
       when {
@@ -732,7 +757,7 @@ class ShowDetailsViewModel @Inject constructor(
     }
   }
 
-  fun setQuickProgress(context: Context, item: QuickSetupListItem?) {
+  fun setQuickProgress(item: QuickSetupListItem?) {
     viewModelScope.launch {
       if (item == null || !checkSeasonsLoaded()) return@launch
 
@@ -741,14 +766,14 @@ class ShowDetailsViewModel @Inject constructor(
       seasons
         .filter { !it.isSpecial() && it.number < item.season.number }
         .forEach { season ->
-          setWatchedSeason(context, season, true)
+          setWatchedSeason(season, true)
         }
 
       val season = seasons.find { it.number == item.season.number }
       season?.episodes
         ?.filter { it.number <= item.episode.number }
         ?.forEach { episode ->
-          setWatchedEpisode(context, episode, season, true)
+          setWatchedEpisode(episode, season, true)
         }
 
       _messageState.emit(MessageEvent.info(R.string.textShowQuickProgressDone))
@@ -779,8 +804,9 @@ class ShowDetailsViewModel @Inject constructor(
     seasonTranslationEvent,
     removeTraktHistoryEvent,
     removeTraktWatchlistEvent,
+    removeTraktHiddenEvent,
     finishedEvent
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21, s22, s23 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21, s22, s23, s24 ->
     ShowDetailsUiState(
       show = s1,
       showLoading = s2,
@@ -804,7 +830,8 @@ class ShowDetailsViewModel @Inject constructor(
       seasonTranslation = s20,
       removeFromTraktHistory = s21,
       removeFromTraktWatchlist = s22,
-      isFinished = s23
+      removeFromTraktHidden = s23,
+      isFinished = s24
     )
   }.stateIn(
     scope = viewModelScope,

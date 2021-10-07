@@ -301,6 +301,12 @@ interface TraktService {
     @Body request: SyncExportRequest
   ): SyncExportResult
 
+  @POST("users/hidden/progress_watched/remove")
+  suspend fun deleteHidden(
+    @Header("Authorization") authToken: String,
+    @Body request: SyncExportRequest
+  ): SyncExportResult
+
   @POST("sync/history/remove")
   suspend fun deleteHistory(
     @Header("Authorization") authToken: String,

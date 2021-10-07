@@ -4,6 +4,8 @@ import androidx.room.withTransaction
 import com.michaldrabik.common.extensions.dateIsoStringFromMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.EPISODE
+import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.HIDDEN_MOVIE
+import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.HIDDEN_SHOW
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.MOVIE
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.MOVIE_WATCHLIST
 import com.michaldrabik.data_local.database.model.TraktSyncQueue.Type.SHOW_WATCHLIST
@@ -41,10 +43,11 @@ class QuickSyncRunner @Inject constructor(
 
     val historyCount = exportHistoryItems(authToken, moviesEnabled)
     val watchlistCount = exportWatchlistItems(authToken, moviesEnabled)
+    val hiddenCount = exportHiddenItems(authToken, moviesEnabled)
 
     isRunning = false
     Timber.d("Finished with success.")
-    return historyCount + watchlistCount
+    return historyCount + watchlistCount + hiddenCount
   }
 
   private suspend fun exportHistoryItems(
@@ -58,6 +61,8 @@ class QuickSyncRunner @Inject constructor(
       Timber.d("Nothing to export. Cancelling..")
       return count
     }
+
+    Timber.d("Exporting history items...")
 
     val exportEpisodes = items.filter { it.type == EPISODE.slug }.distinctBy { it.idTrakt }
     val exportMovies = items.filter { it.type == MOVIE.slug }.distinctBy { it.idTrakt }
@@ -98,6 +103,8 @@ class QuickSyncRunner @Inject constructor(
       return count
     }
 
+    Timber.d("Exporting watchlist items...")
+
     val exportShows = items.filter { it.type == SHOW_WATCHLIST.slug }.distinctBy { it.idTrakt }
     val exportMovies = items.filter { it.type == MOVIE_WATCHLIST.slug }.distinctBy { it.idTrakt }
 
@@ -120,6 +127,47 @@ class QuickSyncRunner @Inject constructor(
     if (newItems.isNotEmpty()) {
       delay(DELAY)
       return exportWatchlistItems(token, moviesEnabled, currentCount)
+    }
+
+    return currentCount
+  }
+
+  private suspend fun exportHiddenItems(
+    token: TraktAuthToken,
+    moviesEnabled: Boolean,
+    count: Int = 0
+  ): Int {
+    val types = if (moviesEnabled) listOf(HIDDEN_SHOW, HIDDEN_MOVIE) else listOf(HIDDEN_SHOW)
+    val items = database.traktSyncQueueDao().getAll(types.map { it.slug }).take(BATCH_LIMIT)
+    if (items.isEmpty()) {
+      Timber.d("Nothing to export. Cancelling..")
+      return count
+    }
+
+    Timber.d("Exporting hidden items...")
+
+    val exportShows = items.filter { it.type == HIDDEN_SHOW.slug }.distinctBy { it.idTrakt }
+    val exportMovies = items.filter { it.type == HIDDEN_MOVIE.slug }.distinctBy { it.idTrakt }
+
+    cloud.traktApi.postHiddenItems(
+      token.token,
+      shows = exportShows.map { SyncExportItem.create(it.idTrakt, hiddenAt = dateIsoStringFromMillis(it.updatedAt)) },
+      movies = exportMovies.map { SyncExportItem.create(it.idTrakt, hiddenAt = dateIsoStringFromMillis(it.updatedAt)) }
+    )
+
+    database.withTransaction {
+      val ids = items.map { it.idTrakt }
+      database.traktSyncQueueDao().deleteAll(ids, HIDDEN_SHOW.slug)
+      database.traktSyncQueueDao().deleteAll(ids, HIDDEN_MOVIE.slug)
+    }
+
+    val currentCount = count + exportShows.count() + exportMovies.count()
+
+    // Check for more items
+    val newItems = database.traktSyncQueueDao().getAll(types.map { it.slug })
+    if (newItems.isNotEmpty()) {
+      delay(DELAY)
+      return exportHiddenItems(token, moviesEnabled, currentCount)
     }
 
     return currentCount

@@ -105,7 +105,7 @@ class TraktImportWatchedRunner @Inject constructor(
       hiddenShow.show?.let {
         val show = mappers.show.fromNetwork(it)
         val dbShow = mappers.show.toDatabase(show)
-        val archiveShow = ArchiveShow.fromTraktId(show.traktId, nowUtcMillis())
+        val archiveShow = ArchiveShow.fromTraktId(show.traktId, hiddenShow.hiddenAtMillis())
         database.runTransaction {
           showsDao().upsert(listOf(dbShow))
           archiveShowsDao().insert(archiveShow)

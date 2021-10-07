@@ -146,12 +146,10 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun postHiddenItems(
     token: String,
-    showsIds: List<Long> = emptyList(),
-    moviesIds: List<Long> = emptyList()
+    shows: List<SyncExportItem> = emptyList(),
+    movies: List<SyncExportItem> = emptyList()
   ) {
-    val payloadShows = showsIds.map { SyncExportItem.create(it, null) }
-    val payloadMovies = moviesIds.map { SyncExportItem.create(it, null) }
-    service.postHiddenShows("Bearer $token", SyncExportRequest(shows = payloadShows, movies = payloadMovies))
+    service.postHiddenShows("Bearer $token", SyncExportRequest(shows = shows, movies = movies))
   }
 
   suspend fun fetchHiddenMovies(token: String) =
@@ -253,6 +251,9 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun postDeleteWatchlist(token: String, request: SyncExportRequest) =
     service.deleteWatchlist("Bearer $token", request)
+
+  suspend fun postDeleteHidden(token: String, request: SyncExportRequest) =
+    service.deleteHidden("Bearer $token", request)
 
   suspend fun deleteRating(token: String, show: Show) {
     val requestValue = RatingRequestValue(0, show.ids)

@@ -55,6 +55,20 @@ data class TraktSyncQueue(
       createdAt: Long,
       updatedAt: Long
     ) = TraktSyncQueue(0, idTrakt, idList, Type.LIST_ITEM_MOVIE.slug, operation.slug, createdAt, updatedAt)
+
+    fun createHiddenShow(
+      idTrakt: Long,
+      operation: Operation,
+      createdAt: Long,
+      updatedAt: Long
+    ) = TraktSyncQueue(0, idTrakt, null, Type.HIDDEN_SHOW.slug, operation.slug, createdAt, updatedAt)
+
+    fun createHiddenMovie(
+      idTrakt: Long,
+      operation: Operation,
+      createdAt: Long,
+      updatedAt: Long
+    ) = TraktSyncQueue(0, idTrakt, null, Type.HIDDEN_MOVIE.slug, operation.slug, createdAt, updatedAt)
   }
 
   enum class Type(val slug: String) {
@@ -64,6 +78,8 @@ data class TraktSyncQueue(
     MOVIE_WATCHLIST("movie_watchlist"),
     LIST_ITEM_SHOW("list_item_show"),
     LIST_ITEM_MOVIE("list_item_movie"),
+    HIDDEN_SHOW("hidden_show"),
+    HIDDEN_MOVIE("hidden_movie")
   }
 
   enum class Operation(val slug: String) {

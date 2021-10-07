@@ -27,11 +27,12 @@ data class ShowDetailsUiState(
   val comments: List<Comment>? = null,
   val commentsDateFormat: DateTimeFormatter? = null,
   val listsCount: Int? = null,
-  val followedState: FollowedState2? = null,
+  val followedState: FollowedState? = null,
   val ratingState: RatingState? = null,
   val ratings: Ratings? = null,
   val removeFromTraktHistory: Event<Boolean>? = null,
   val removeFromTraktWatchlist: Event<Boolean>? = null,
+  val removeFromTraktHidden: Event<Boolean>? = null,
   val showFromTraktLoading: Boolean? = null,
   val translation: Translation? = null,
   val seasonTranslation: Event<SeasonListItem>? = null,
@@ -41,7 +42,7 @@ data class ShowDetailsUiState(
   val isFinished: Event<Boolean>? = null,
 ) {
 
-  data class FollowedState2(
+  data class FollowedState(
     val isMyShows: Boolean,
     val isWatchlist: Boolean,
     val isHidden: Boolean,
@@ -49,10 +50,10 @@ data class ShowDetailsUiState(
   ) {
 
     companion object {
-      fun inMyShows() = FollowedState2(isMyShows = true, isWatchlist = false, isHidden = false, withAnimation = true)
-      fun inWatchlist() = FollowedState2(isMyShows = false, isWatchlist = true, isHidden = false, withAnimation = true)
-      fun inHidden() = FollowedState2(isMyShows = false, isWatchlist = false, isHidden = true, withAnimation = true)
-      fun notFollowed() = FollowedState2(isMyShows = false, isWatchlist = false, isHidden = false, withAnimation = true)
+      fun inMyShows() = FollowedState(isMyShows = true, isWatchlist = false, isHidden = false, withAnimation = true)
+      fun inWatchlist() = FollowedState(isMyShows = false, isWatchlist = true, isHidden = false, withAnimation = true)
+      fun inHidden() = FollowedState(isMyShows = false, isWatchlist = false, isHidden = true, withAnimation = true)
+      fun notFollowed() = FollowedState(isMyShows = false, isWatchlist = false, isHidden = false, withAnimation = true)
     }
   }
 }

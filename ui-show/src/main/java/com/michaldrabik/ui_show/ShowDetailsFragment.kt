@@ -222,12 +222,13 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsAddButton.run {
       isEnabled = false
       onAddMyShowsClickListener = { viewModel.addFollowedShow() }
-      onAddWatchLaterClickListener = { viewModel.addWatchlistShow(requireAppContext()) }
+      onAddWatchLaterClickListener = { viewModel.addWatchlistShow() }
       onRemoveClickListener = { viewModel.removeFromFollowed() }
     }
     showDetailsRemoveTraktButton.onNoClickListener = {
       showDetailsAddButton.fadeIn()
       showDetailsRemoveTraktButton.fadeOut()
+      showDetailsHideLabel.fadeIn()
     }
     showDetailsManageListsLabel.onClick { openListsDialog() }
     showDetailsHideLabel.onClick { openArchiveConfirmationDialog() }
@@ -282,7 +283,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     seasonsAdapter = SeasonsAdapter().apply {
       itemClickListener = { showEpisodesView(it) }
       itemCheckedListener = { item: SeasonListItem, isChecked: Boolean ->
-        viewModel.setWatchedSeason(requireAppContext(), item.season, isChecked)
+        viewModel.setWatchedSeason(item.season, isChecked)
       }
     }
     showDetailsSeasonsRecycler.apply {
@@ -311,10 +312,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       startAnimation(animationEnterRight)
       itemCheckedListener = { episode, season, isChecked ->
-        viewModel.setWatchedEpisode(requireAppContext(), episode, season, isChecked)
+        viewModel.setWatchedEpisode(episode, season, isChecked)
       }
       seasonCheckedListener = { season, isChecked ->
-        viewModel.setWatchedSeason(requireAppContext(), season, isChecked)
+        viewModel.setWatchedSeason(season, isChecked)
       }
     }
     showDetailsMainLayout.run {
@@ -367,7 +368,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           bundle.containsKey(ACTION_RATING_CHANGED) -> viewModel.refreshEpisodesRatings()
           bundle.containsKey(ACTION_EPISODE_WATCHED) -> {
             val watched = bundle.getBoolean(ACTION_EPISODE_WATCHED)
-            viewModel.setWatchedEpisode(requireAppContext(), episode, season, watched)
+            viewModel.setWatchedEpisode(episode, season, watched)
           }
           bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
             val selectedEpisode = bundle.getParcelable<Episode>(ACTION_EPISODE_TAB_SELECTED)!!
@@ -571,6 +572,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       showFromTraktLoading?.let {
         showDetailsRemoveTraktButton.isLoading = it
         showDetailsAddButton.isEnabled = !it
+        showDetailsHideLabel.isEnabled = !it
       }
       removeFromTraktHistory?.let { event ->
         event.consume()?.let {
@@ -588,6 +590,16 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
             fadeIf(it, hardware = true)
             onYesClickListener = { viewModel.removeFromTraktWatchlist() }
           }
+        }
+      }
+      removeFromTraktHidden?.let { event ->
+        event.consume()?.let {
+          showDetailsAddButton.fadeIf(!it, hardware = true)
+          showDetailsRemoveTraktButton.run {
+            fadeIf(it, hardware = true)
+            onYesClickListener = { viewModel.removeFromTraktHidden() }
+          }
+          showDetailsHideLabel.visibleIf(!it)
         }
       }
       isFinished?.let { event ->
@@ -883,7 +895,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
       .setView(view)
       .setPositiveButton(R.string.textSelect) { _, _ ->
-        viewModel.setQuickProgress(requireAppContext(), view.getSelectedItem())
+        viewModel.setQuickProgress(view.getSelectedItem())
       }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
       .show()
