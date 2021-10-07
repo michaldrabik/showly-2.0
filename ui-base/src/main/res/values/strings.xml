@@ -27,7 +27,6 @@
   <string name="textLists">Lists</string>
   <string name="textMinutesShort">min</string>
   <string name="textActorRole" translatable="false">%s\n(%s)</string>
-  <string name="textRemoveFromTrakt">Remove from Trakt.tv?</string>
   <string name="textNoDescription">Overview not available.</string>
   <string name="textPleaseWait">Please wait…</string>
   <string name="textRate">Rate</string>
@@ -83,6 +82,13 @@
   <string name="textTraktSyncErrorFull">Trakt.tv sync failed. Please check your internet connection and try again or contact us if this keeps happening.</string>
   <string name="textTraktQuickSyncError">Instant Sync failed.</string>
   <string name="textTraktQuickSyncErrorFull">Instant Sync failed. We will try again next time you open the app. Please check your internet connection.</string>
+
+  <string name="textRemoveFromTrakt">Remove from Trakt.tv?</string>
+  <string name="textRemoveFromTraktHidden">Would you like to remove this item from your Trakt.tv account \'Hidden Items\'?</string>
+  <string name="textRemoveFromTraktWatchlistShow">Would you like to remove this show from your Trakt.tv account \'Watchlist\'?</string>
+  <string name="textRemoveFromTraktProgressShow">Would you like to remove this show from your Trakt.tv account \'Progress\'?</string>
+  <string name="textRemoveFromTraktWatchlistMovie">Would you like to remove this movie from your Trakt.tv account \'Watchlist\'?</string>
+  <string name="textRemoveFromTraktProgressMovie">Would you like to remove this movie from your Trakt.tv account \'History\'?</string>
 
   <string name="menuPin">Pin to top</string>
   <string name="menuUnpin">Unpin from top</string>

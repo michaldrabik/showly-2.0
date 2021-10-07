@@ -593,13 +593,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         }
       }
       removeFromTraktHidden?.let { event ->
-        event.consume()?.let {
-          showDetailsAddButton.fadeIf(!it, hardware = true)
-          showDetailsRemoveTraktButton.run {
-            fadeIf(it, hardware = true)
-            onYesClickListener = { viewModel.removeFromTraktHidden() }
+        event.consume()?.let { isQuickRemoveEnabled ->
+          if (isQuickRemoveEnabled) {
+            val args = bundleOf(ARG_ID to showId.id, ARG_TYPE to Mode.SHOWS)
+            navigateTo(R.id.actionShowDetailsFragmentToRemoveTraktHidden, args)
           }
-          showDetailsHideLabel.visibleIf(!it)
         }
       }
       isFinished?.let { event ->

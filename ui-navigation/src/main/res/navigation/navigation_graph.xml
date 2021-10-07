@@ -240,6 +240,11 @@
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToRemoveTraktHidden"
+      app:destination="@id/removeTraktHiddenDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -545,5 +550,11 @@
       app:launchSingleTop="true"
       />
   </dialog>
+
+  <dialog
+    android:id="@+id/removeTraktHiddenDialog"
+    android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt_hidden.RemoveTraktHiddenBottomSheet"
+    android:label="dialogRemoveTraktHidden"
+    />
 
 </navigation>
