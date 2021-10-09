@@ -104,6 +104,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT_HIDDEN
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.ShowLink
@@ -595,6 +596,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       removeFromTraktHidden?.let { event ->
         event.consume()?.let { isQuickRemoveEnabled ->
           if (isQuickRemoveEnabled) {
+            setFragmentResultListener(REQUEST_REMOVE_TRAKT_HIDDEN) { _, _ ->
+              val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, 1, 1)
+              (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
+            }
             val args = bundleOf(ARG_ID to showId.id, ARG_TYPE to Mode.SHOWS)
             navigateTo(R.id.actionShowDetailsFragmentToRemoveTraktHidden, args)
           }

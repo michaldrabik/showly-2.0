@@ -82,11 +82,24 @@
     app:rippleColor="?android:attr/textColorPrimary"
     />
 
+  <ProgressBar
+    android:id="@+id/viewRemoveTraktHiddenProgress"
+    style="@style/ProgressBar.Accent"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/viewRemoveTraktHiddenButtonYes"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/viewRemoveTraktHiddenButtonYes"
+    />
+
   <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:id="@+id/viewRemoveTraktHiddenSnackHost"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:layout_constraintBottom_toTopOf="@id/viewRemoveTraktHiddenButtonYes"
+    android:translationZ="10dp"
+    app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     />

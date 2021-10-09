@@ -11,7 +11,7 @@ import timber.log.Timber
 open class BaseViewModel : ViewModel() {
 
   protected companion object {
-    const val SUBSCRIBE_STOP_TIMEOUT = 3000L
+    const val SUBSCRIBE_STOP_TIMEOUT = 5000L
   }
 
   protected val _messageState = MutableSharedFlow<MessageEvent>()
