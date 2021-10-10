@@ -49,14 +49,14 @@
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/viewRemoveTraktHiddenButtonNo"
-    style="@style/Widget.MaterialComponents.Button.TextButton"
+    style="@style/ShowlyOutlinedButton"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/spaceMedium"
     android:layout_marginEnd="@dimen/spaceSmall"
     android:gravity="center"
     android:text="@string/textNo"
-    android:textColor="?attr/textColorOnSurface"
+    android:textColor="?android:attr/textColorSecondary"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toStartOf="@id/viewRemoveTraktHiddenButtonYes"
     app:layout_constraintStart_toStartOf="parent"

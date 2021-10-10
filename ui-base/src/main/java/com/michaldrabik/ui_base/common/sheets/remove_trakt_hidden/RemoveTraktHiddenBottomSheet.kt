@@ -36,7 +36,7 @@ class RemoveTraktHiddenBottomSheet : BaseBottomSheetFragment<RemoveTraktHiddenVi
   private val itemId by lazy { requireArguments().getLong(ARG_ID) }
   private val itemType by lazy { requireArguments().getSerializable(ARG_TYPE) as Mode }
 
-//  override fun getTheme(): Int = R.style.CustomBottomSheetDialog
+  override fun getTheme(): Int = R.style.CustomBottomSheetDialog
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
     val contextThemeWrapper = ContextThemeWrapper(activity, R.style.AppTheme)
