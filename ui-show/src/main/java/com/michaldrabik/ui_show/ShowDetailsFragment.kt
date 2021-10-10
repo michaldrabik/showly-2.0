@@ -224,7 +224,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsAddButton.run {
       isEnabled = false
       onAddMyShowsClickListener = { viewModel.addFollowedShow() }
-      onAddWatchLaterClickListener = { viewModel.addWatchlistShow() }
+      onAddWatchlistClickListener = { viewModel.addWatchlistShow() }
       onRemoveClickListener = { viewModel.removeFromFollowed() }
     }
     showDetailsRemoveTraktButton.onNoClickListener = {

@@ -18,28 +18,39 @@ class AddToShowsButton : FrameLayout {
   constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
   var onAddMyShowsClickListener: (() -> Unit)? = null
-  var onAddWatchLaterClickListener: (() -> Unit)? = null
+  var onAddWatchlistClickListener: (() -> Unit)? = null
   var onRemoveClickListener: (() -> Unit)? = null
 
   private var state: State = State.ADD
+  private var isAnimating = false
 
   init {
     inflate(context, R.layout.view_add_to_shows_button, this)
 
-    addToMyShowsButton.onClick { onAddMyShowsClickListener?.invoke() }
-    watchlistButton.onClick { onAddWatchLaterClickListener?.invoke() }
-    addedToButton.onClick { onRemoveClickListener?.invoke() }
+    addToMyShowsButton.onClick {
+      if (!isAnimating) onAddMyShowsClickListener?.invoke()
+    }
+    watchlistButton.onClick {
+      if (!isAnimating) onAddWatchlistClickListener?.invoke()
+    }
+    addedToButton.onClick {
+      if (!isAnimating) onRemoveClickListener?.invoke()
+    }
   }
 
   fun setState(state: State, animate: Boolean = false) {
+    if (state == this.state) return
     this.state = state
-    val duration = if (animate) 200L else 0
-    if (animate) isEnabled = false
+
+    val duration = if (animate) 175L else 0
+    val startDelay = if (animate) 200L else 0
+    if (animate) isAnimating = true
+
     when (state) {
       State.ADD -> {
-        addToMyShowsButton.fadeIn(duration, withHardware = true)
-        watchlistButton.fadeIn(duration, withHardware = true)
-        addedToButton.fadeOut(duration, withHardware = true) { isEnabled = true }
+        addedToButton.fadeOut(duration, withHardware = true)
+        addToMyShowsButton.fadeIn(duration, startDelay = startDelay, withHardware = true)
+        watchlistButton.fadeIn(duration, startDelay = startDelay, withHardware = true) { isAnimating = false }
       }
       State.IN_MY_SHOWS -> {
         val color = context.colorFromAttr(R.attr.colorAccent)
@@ -54,7 +65,7 @@ class AddToShowsButton : FrameLayout {
           iconTint = colorState
           strokeColor = colorState
           rippleColor = colorState
-          fadeIn(duration, withHardware = true) { isEnabled = true }
+          fadeIn(duration, startDelay = startDelay, withHardware = true) { isAnimating = false }
         }
       }
       State.IN_WATCHLIST -> {
@@ -70,7 +81,7 @@ class AddToShowsButton : FrameLayout {
           iconTint = colorState
           strokeColor = colorState
           rippleColor = colorState
-          fadeIn(duration, withHardware = true) { isEnabled = true }
+          fadeIn(duration, startDelay = startDelay, withHardware = true) { isAnimating = false }
         }
       }
       State.IN_HIDDEN -> {
@@ -85,7 +96,7 @@ class AddToShowsButton : FrameLayout {
           iconTint = colorState
           strokeColor = colorState
           rippleColor = colorState
-          fadeIn(duration, withHardware = true) { isEnabled = true }
+          fadeIn(duration, startDelay = startDelay, withHardware = true) { isAnimating = false }
         }
       }
     }
@@ -93,8 +104,11 @@ class AddToShowsButton : FrameLayout {
 
   override fun setEnabled(enabled: Boolean) {
     addToMyShowsButton.isEnabled = enabled
+    addToMyShowsButton.isClickable = enabled
     watchlistButton.isEnabled = enabled
+    watchlistButton.isClickable = enabled
     addedToButton.isEnabled = enabled
+    addedToButton.isClickable = enabled
   }
 
   enum class State {
