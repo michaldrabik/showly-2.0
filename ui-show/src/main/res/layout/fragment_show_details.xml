@@ -180,14 +180,6 @@
           android:layout_height="wrap_content"
           />
 
-        <com.michaldrabik.ui_base.common.views.RemoveFromTraktButton
-          android:id="@+id/showDetailsRemoveTraktButton"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:visibility="gone"
-          tools:visibility="visible"
-          />
-
       </FrameLayout>
 
       <TextView

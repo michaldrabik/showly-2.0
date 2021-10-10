@@ -33,7 +33,6 @@ data class ShowDetailsUiState(
   val removeFromTraktHistory: Event<Boolean>? = null,
   val removeFromTraktWatchlist: Event<Boolean>? = null,
   val removeFromTraktHidden: Event<Boolean>? = null,
-  val showFromTraktLoading: Boolean? = null,
   val translation: Translation? = null,
   val seasonTranslation: Event<SeasonListItem>? = null,
   val country: AppCountry? = null,

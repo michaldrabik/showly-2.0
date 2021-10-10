@@ -109,7 +109,6 @@ class ShowDetailsViewModel @Inject constructor(
   private val followedState = MutableStateFlow<FollowedState?>(null)
   private val ratingState = MutableStateFlow<RatingState?>(null)
   private val streamingsState = MutableStateFlow<StreamingsBundle?>(null)
-  private val traktLoadingState = MutableStateFlow(false)
   private val translationState = MutableStateFlow<Translation?>(null)
   private val countryState = MutableStateFlow<AppCountry?>(null)
   private val signedInState = MutableStateFlow(false)
@@ -749,7 +748,6 @@ class ShowDetailsViewModel @Inject constructor(
     followedState,
     ratingState,
     streamingsState,
-    traktLoadingState,
     translationState,
     countryState,
     signedInState,
@@ -760,7 +758,7 @@ class ShowDetailsViewModel @Inject constructor(
     removeTraktWatchlistEvent,
     removeTraktHiddenEvent,
     finishedEvent
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21, s22, s23, s24 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21, s22, s23 ->
     ShowDetailsUiState(
       show = s1,
       showLoading = s2,
@@ -775,17 +773,16 @@ class ShowDetailsViewModel @Inject constructor(
       followedState = s11,
       ratingState = s12,
       streamings = s13,
-      showFromTraktLoading = s14,
-      translation = s15,
-      country = s16,
-      isSignedIn = s17,
-      isPremium = s18,
-      listsCount = s19,
-      seasonTranslation = s20,
-      removeFromTraktHistory = s21,
-      removeFromTraktWatchlist = s22,
-      removeFromTraktHidden = s23,
-      isFinished = s24
+      translation = s14,
+      country = s15,
+      isSignedIn = s16,
+      isPremium = s17,
+      listsCount = s18,
+      seasonTranslation = s19,
+      removeFromTraktHistory = s20,
+      removeFromTraktWatchlist = s21,
+      removeFromTraktHidden = s22,
+      isFinished = s23
     )
   }.stateIn(
     scope = viewModelScope,

@@ -227,11 +227,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       onAddWatchlistClickListener = { viewModel.addWatchlistShow() }
       onRemoveClickListener = { viewModel.removeFromFollowed() }
     }
-    showDetailsRemoveTraktButton.onNoClickListener = {
-      showDetailsAddButton.fadeIn()
-      showDetailsRemoveTraktButton.fadeOut()
-      showDetailsHideLabel.fadeIn()
-    }
     showDetailsManageListsLabel.onClick { openListsDialog() }
     showDetailsHideLabel.onClick { openArchiveConfirmationDialog() }
   }
@@ -571,11 +566,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         if (isSignedIn) showDetailsCommentsView.showCommentButton()
       }
       ratingState?.let { renderRating(it) }
-      showFromTraktLoading?.let {
-        showDetailsRemoveTraktButton.isLoading = it
-        showDetailsAddButton.isEnabled = !it
-        showDetailsHideLabel.isEnabled = !it
-      }
       removeFromTraktHistory?.let { event ->
         event.consume()?.let {
           openRemoveTraktSheet(R.id.actionShowDetailsFragmentToRemoveTraktProgress)
