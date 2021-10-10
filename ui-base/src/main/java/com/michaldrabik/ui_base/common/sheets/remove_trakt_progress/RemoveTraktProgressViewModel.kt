@@ -1,10 +1,10 @@
-package com.michaldrabik.ui_base.common.sheets.remove_trakt_hidden
+package com.michaldrabik.ui_base.common.sheets.remove_trakt_progress
 
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.R
-import com.michaldrabik.ui_base.common.sheets.remove_trakt_hidden.cases.RemoveTraktHiddenCase
+import com.michaldrabik.ui_base.common.sheets.remove_trakt_progress.cases.RemoveTraktProgressCase
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_model.IdTrakt
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,8 +16,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RemoveTraktHiddenViewModel @Inject constructor(
-  private val removeTraktHiddenCase: RemoveTraktHiddenCase
+class RemoveTraktProgressViewModel @Inject constructor(
+  private val removeTraktProgressCase: RemoveTraktProgressCase
 ) : BaseViewModel() {
 
   private val loadingState = MutableStateFlow(false)
@@ -28,8 +28,8 @@ class RemoveTraktHiddenViewModel @Inject constructor(
       try {
         loadingState.value = true
         when (mode) {
-          Mode.SHOWS -> removeTraktHiddenCase.removeTraktHidden(idTrakt, mode)
-          Mode.MOVIES -> removeTraktHiddenCase.removeTraktHidden(idTrakt, mode)
+          Mode.SHOWS -> removeTraktProgressCase.removeTraktProgress(idTrakt, mode)
+          Mode.MOVIES -> removeTraktProgressCase.removeTraktProgress(idTrakt, mode)
         }
         finishedState.value = true
       } catch (error: Throwable) {
@@ -43,13 +43,13 @@ class RemoveTraktHiddenViewModel @Inject constructor(
     loadingState,
     finishedState
   ) { s1, s2 ->
-    RemoveTraktHiddenUiState(
+    RemoveTraktProgressUiState(
       isLoading = s1,
       isFinished = s2
     )
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = RemoveTraktHiddenUiState()
+    initialValue = RemoveTraktProgressUiState()
   )
 }

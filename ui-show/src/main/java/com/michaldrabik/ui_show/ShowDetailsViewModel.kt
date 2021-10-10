@@ -573,76 +573,24 @@ class ShowDetailsViewModel @Inject constructor(
       val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal
 
       val state = FollowedState.notFollowed()
-      val event = Event(showRemoveTrakt)
+      val event = Event(true)
       when {
         isMyShows -> {
           followedState.value = state
-          removeTraktHistoryEvent.value = event
+          if (showRemoveTrakt) removeTraktHistoryEvent.value = event
         }
         isWatchlist -> {
           followedState.value = state
-          removeTraktWatchlistEvent.value = event
+          if (showRemoveTrakt) removeTraktWatchlistEvent.value = event
         }
         isArchived -> {
           followedState.value = state
-          removeTraktHiddenEvent.value = event
+          if (showRemoveTrakt) removeTraktHiddenEvent.value = event
         }
         else -> error("Unexpected show state.")
       }
 
       announcementManager.refreshShowsAnnouncements()
-    }
-  }
-
-  fun removeFromTraktHistory() {
-    viewModelScope.launch {
-      try {
-        traktLoadingState.value = true
-        myShowsCase.removeTraktHistory(show)
-        refreshWatchedEpisodes()
-        _messageState.emit(MessageEvent.info(R.string.textTraktSyncRemovedFromTrakt))
-        traktLoadingState.value = false
-        removeTraktHistoryEvent.value = Event(false)
-      } catch (error: Throwable) {
-        _messageState.emit(MessageEvent.error(R.string.errorTraktSyncGeneral))
-        traktLoadingState.value = false
-        Timber.e(error)
-        rethrowCancellation(error)
-      }
-    }
-  }
-
-  fun removeFromTraktWatchlist() {
-    viewModelScope.launch {
-      try {
-        traktLoadingState.value = true
-        watchlistCase.removeTraktWatchlist(show)
-        _messageState.emit(MessageEvent.info(R.string.textTraktSyncRemovedFromTrakt))
-        traktLoadingState.value = false
-        removeTraktWatchlistEvent.value = Event(false)
-      } catch (error: Throwable) {
-        _messageState.emit(MessageEvent.error(R.string.errorTraktSyncGeneral))
-        traktLoadingState.value = false
-        Timber.e(error)
-        rethrowCancellation(error)
-      }
-    }
-  }
-
-  fun removeFromTraktHidden() {
-    viewModelScope.launch {
-      try {
-        traktLoadingState.value = true
-        archiveCase.removeTraktArchive(show)
-        _messageState.emit(MessageEvent.info(R.string.textTraktSyncRemovedFromTrakt))
-        traktLoadingState.value = false
-        removeTraktHiddenEvent.value = Event(false)
-      } catch (error: Throwable) {
-        _messageState.emit(MessageEvent.error(R.string.errorTraktSyncGeneral))
-        traktLoadingState.value = false
-        Timber.e(error)
-        rethrowCancellation(error)
-      }
     }
   }
 
@@ -728,6 +676,12 @@ class ShowDetailsViewModel @Inject constructor(
     seasonsState.value = updatedSeasonItems
   }
 
+  fun launchRefreshWatchedEpisodes() {
+    viewModelScope.launch {
+      refreshWatchedEpisodes()
+    }
+  }
+
   private suspend fun markWatchedEpisodes(seasonsList: List<SeasonListItem>): List<SeasonListItem> {
     val items = mutableListOf<SeasonListItem>()
 
@@ -761,7 +715,7 @@ class ShowDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       if (item == null || !checkSeasonsLoaded()) return@launch
 
-      episodesManager.setAllUnwatched(show, skipSpecials = true)
+      episodesManager.setAllUnwatched(show.ids.trakt, skipSpecials = true)
       val seasons = seasonItems.map { it.season }
       seasons
         .filter { !it.isSpecial() && it.number < item.season.number }

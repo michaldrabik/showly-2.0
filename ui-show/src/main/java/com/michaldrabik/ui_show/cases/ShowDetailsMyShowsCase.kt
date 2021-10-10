@@ -2,14 +2,9 @@ package com.michaldrabik.ui_show.cases
 
 import androidx.room.withTransaction
 import com.michaldrabik.data_local.database.AppDatabase
-import com.michaldrabik.data_remote.Cloud
-import com.michaldrabik.data_remote.trakt.model.SyncExportItem
-import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.repository.PinnedItemsRepository
-import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
-import com.michaldrabik.ui_base.episodes.EpisodesManager
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
@@ -21,12 +16,9 @@ import com.michaldrabik.data_local.database.model.Season as SeasonDb
 @ViewModelScoped
 class ShowDetailsMyShowsCase @Inject constructor(
   private val database: AppDatabase,
-  private val cloud: Cloud,
   private val mappers: Mappers,
   private val showsRepository: ShowsRepository,
-  private val pinnedItemsRepository: PinnedItemsRepository,
-  private val episodesManager: EpisodesManager,
-  private val userManager: UserTraktManager
+  private val pinnedItemsRepository: PinnedItemsRepository
 ) {
 
   suspend fun isMyShows(show: Show) =
@@ -86,12 +78,5 @@ class ShowDetailsMyShowsCase @Inject constructor(
 
       pinnedItemsRepository.removePinnedItem(show)
     }
-  }
-
-  suspend fun removeTraktHistory(show: Show) {
-    val token = userManager.checkAuthorization()
-    val request = SyncExportRequest(shows = listOf(SyncExportItem.create(show.traktId)))
-    cloud.traktApi.postDeleteProgress(token.token, request)
-    episodesManager.setAllUnwatched(show)
   }
 }

@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_base.common.sheets.remove_trakt_hidden
+package com.michaldrabik.ui_base.common.sheets.remove_trakt_progress
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -24,14 +24,14 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.view_remove_trakt_hidden.*
-import kotlinx.android.synthetic.main.view_remove_trakt_hidden.view.*
+import kotlinx.android.synthetic.main.view_remove_trakt_progress.*
+import kotlinx.android.synthetic.main.view_remove_trakt_progress.view.*
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class RemoveTraktHiddenBottomSheet : BaseBottomSheetFragment<RemoveTraktHiddenViewModel>() {
+class RemoveTraktProgressBottomSheet : BaseBottomSheetFragment<RemoveTraktProgressViewModel>() {
 
-  override val layoutResId = R.layout.view_remove_trakt_hidden
+  override val layoutResId = R.layout.view_remove_trakt_progress
 
   private val itemId by lazy { requireArguments().getLong(ARG_ID) }
   private val itemType by lazy { requireArguments().getSerializable(ARG_TYPE) as Mode }
@@ -43,7 +43,7 @@ class RemoveTraktHiddenBottomSheet : BaseBottomSheetFragment<RemoveTraktHiddenVi
     return inflater.cloneInContext(contextThemeWrapper).inflate(layoutResId, container, false)
   }
 
-  override fun createViewModel() = ViewModelProvider(this)[RemoveTraktHiddenViewModel::class.java]
+  override fun createViewModel() = ViewModelProvider(this)[RemoveTraktProgressViewModel::class.java]
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -58,22 +58,22 @@ class RemoveTraktHiddenBottomSheet : BaseBottomSheetFragment<RemoveTraktHiddenVi
   @SuppressLint("SetTextI18n")
   private fun setupView(view: View) {
     view.run {
-      viewRemoveTraktHiddenButtonNo.onClick { dismiss() }
-      viewRemoveTraktHiddenButtonYes.onClick {
+      viewRemoveTraktProgressButtonNo.onClick { dismiss() }
+      viewRemoveTraktProgressButtonYes.onClick {
         viewModel.removeFromTrakt(IdTrakt(itemId), itemType)
       }
     }
   }
 
   @SuppressLint("SetTextI18n")
-  private fun render(uiState: RemoveTraktHiddenUiState) {
+  private fun render(uiState: RemoveTraktProgressUiState) {
     uiState.run {
       isLoading?.let {
-        viewRemoveTraktHiddenProgress.visibleIf(it)
-        viewRemoveTraktHiddenButtonNo.visibleIf(!it, gone = false)
-        viewRemoveTraktHiddenButtonNo.isClickable = !it
-        viewRemoveTraktHiddenButtonYes.visibleIf(!it, gone = false)
-        viewRemoveTraktHiddenButtonYes.isClickable = !it
+        viewRemoveTraktProgressProgress.visibleIf(it)
+        viewRemoveTraktProgressButtonNo.visibleIf(!it, gone = false)
+        viewRemoveTraktProgressButtonNo.isClickable = !it
+        viewRemoveTraktProgressButtonYes.visibleIf(!it, gone = false)
+        viewRemoveTraktProgressButtonYes.isClickable = !it
       }
       isFinished?.let {
         if (it) {
@@ -87,8 +87,8 @@ class RemoveTraktHiddenBottomSheet : BaseBottomSheetFragment<RemoveTraktHiddenVi
   private fun renderSnackbar(message: MessageEvent) {
     message.consume()?.let {
       when (message.type) {
-        Type.INFO -> viewRemoveTraktHiddenSnackHost.showInfoSnackbar(getString(it))
-        Type.ERROR -> viewRemoveTraktHiddenSnackHost.showErrorSnackbar(getString(it))
+        Type.INFO -> viewRemoveTraktProgressSnackHost.showInfoSnackbar(getString(it))
+        Type.ERROR -> viewRemoveTraktProgressSnackHost.showErrorSnackbar(getString(it))
       }
     }
   }

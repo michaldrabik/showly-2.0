@@ -131,10 +131,10 @@ class EpisodesManager @Inject constructor(
     }
   }
 
-  suspend fun setAllUnwatched(show: Show, skipSpecials: Boolean = false) {
+  suspend fun setAllUnwatched(showId: IdTrakt, skipSpecials: Boolean = false) {
     database.runTransaction {
-      val watchedEpisodes = episodesDao().getAllByShowId(show.traktId)
-      val watchedSeasons = seasonsDao().getAllByShowId(show.traktId)
+      val watchedEpisodes = episodesDao().getAllByShowId(showId.id)
+      val watchedSeasons = seasonsDao().getAllByShowId(showId.id)
 
       val updateEpisodes = watchedEpisodes
         .filter { if (skipSpecials) it.seasonNumber > 0 else true }

@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
+import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -104,7 +105,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
-import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT_HIDDEN
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.ShowLink
@@ -577,32 +578,17 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       removeFromTraktHistory?.let { event ->
         event.consume()?.let {
-          showDetailsAddButton.fadeIf(!it, hardware = true)
-          showDetailsRemoveTraktButton.run {
-            fadeIf(it, hardware = true)
-            onYesClickListener = { viewModel.removeFromTraktHistory() }
-          }
+          openRemoveTraktSheet(R.id.actionShowDetailsFragmentToRemoveTraktProgress)
         }
       }
       removeFromTraktWatchlist?.let { event ->
         event.consume()?.let {
-          showDetailsAddButton.fadeIf(!it, hardware = true)
-          showDetailsRemoveTraktButton.run {
-            fadeIf(it, hardware = true)
-            onYesClickListener = { viewModel.removeFromTraktWatchlist() }
-          }
+          openRemoveTraktSheet(R.id.actionShowDetailsFragmentToRemoveTraktWatchlist)
         }
       }
       removeFromTraktHidden?.let { event ->
-        event.consume()?.let { isQuickRemoveEnabled ->
-          if (isQuickRemoveEnabled) {
-            setFragmentResultListener(REQUEST_REMOVE_TRAKT_HIDDEN) { _, _ ->
-              val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, 1, 1)
-              (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
-            }
-            val args = bundleOf(ARG_ID to showId.id, ARG_TYPE to Mode.SHOWS)
-            navigateTo(R.id.actionShowDetailsFragmentToRemoveTraktHidden, args)
-          }
+        event.consume()?.let {
+          openRemoveTraktSheet(R.id.actionShowDetailsFragmentToRemoveTraktHidden)
         }
       }
       isFinished?.let { event ->
@@ -855,6 +841,19 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         fadeOut(125)
       }
     }
+  }
+
+  private fun openRemoveTraktSheet(@IdRes action: Int) {
+    setFragmentResultListener(REQUEST_REMOVE_TRAKT) { _, _ ->
+      val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, 1, 1)
+      (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
+
+      if (action == R.id.actionShowDetailsFragmentToRemoveTraktProgress) {
+        viewModel.launchRefreshWatchedEpisodes()
+      }
+    }
+    val args = bundleOf(ARG_ID to showId.id, ARG_TYPE to Mode.SHOWS)
+    navigateTo(action, args)
   }
 
   private fun openShareSheet(show: Show) {

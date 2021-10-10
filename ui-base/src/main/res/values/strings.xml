@@ -85,10 +85,8 @@
 
   <string name="textRemoveFromTrakt">Remove from Trakt.tv?</string>
   <string name="textRemoveFromTraktHidden">Would you like to remove this item from your Trakt.tv account \'Hidden Items\'?</string>
-  <string name="textRemoveFromTraktWatchlistShow">Would you like to remove this show from your Trakt.tv account \'Watchlist\'?</string>
-  <string name="textRemoveFromTraktProgressShow">Would you like to remove this show from your Trakt.tv account \'Progress\'?</string>
-  <string name="textRemoveFromTraktWatchlistMovie">Would you like to remove this movie from your Trakt.tv account \'Watchlist\'?</string>
-  <string name="textRemoveFromTraktProgressMovie">Would you like to remove this movie from your Trakt.tv account \'History\'?</string>
+  <string name="textRemoveFromTraktWatchlist">Would you like to remove this item from your Trakt.tv account \'Watchlist\'?</string>
+  <string name="textRemoveFromTraktProgress">Would you like to remove this item from your Trakt.tv account \'Progress\'?</string>
 
   <string name="menuPin">Pin to top</string>
   <string name="menuUnpin">Unpin from top</string>
