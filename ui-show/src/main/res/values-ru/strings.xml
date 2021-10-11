@@ -21,11 +21,6 @@
   <string name="textYouMayAlsoLike">Вам также может понравиться:</string>
   <string name="textRuntimeLeftHours">~%sч %sм осталось</string>
   <string name="textRuntimeLeftMinutes">~%sм осталось</string>
-  <string name="textHideTitle">Архив?</string>
-  <string name="textHideFull">Что такое архив?</string>
-  <string name="textHiddenDescription"><b>Архив</b> это список сериалов, просмотр которых был брошен или которые вас больше не интересуют.\n\nАрхивные сериалы больше не будут отображаться в секциях <b>Прогресс</b>, <b>Открытия</b> и <b>Мои сериалы</b>, а также будут пропущены во время импорта в Trakt.tv.</string>
-  <string name="textHiddenConfirmationTitle">Архивировать сериал</string>
-  <string name="textHiddenConfirmationMessage">\nВы уверены, что хотите заархивировать этот сериал?\n</string>
   <string name="textShowManageLists">Управление списками</string>
   <string name="textShowManageListsCount">Управление списками (%d)</string>
 </resources>

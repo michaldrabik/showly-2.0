@@ -228,7 +228,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       onRemoveClickListener = { viewModel.removeFromFollowed() }
     }
     showDetailsManageListsLabel.onClick { openListsDialog() }
-    showDetailsHideLabel.onClick { openArchiveConfirmationDialog() }
+    showDetailsHideLabel.onClick { viewModel.addHiddenShow() }
   }
 
   private fun setupStatusBar() {
@@ -878,26 +878,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         viewModel.setQuickProgress(view.getSelectedItem())
       }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
-      .show()
-  }
-
-  private fun openArchiveConfirmationDialog() {
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setTitle(R.string.textHiddenConfirmationTitle)
-      .setMessage(R.string.textHiddenConfirmationMessage)
-      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.addHiddenShow() }
-      .setNegativeButton(R.string.textCancel) { _, _ -> }
-      .setNeutralButton(R.string.textHideTitle) { _, _ -> openArchiveDescriptionDialog() }
-      .show()
-  }
-
-  private fun openArchiveDescriptionDialog() {
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setTitle(R.string.textHideFull)
-      .setMessage(R.string.textHiddenDescription)
-      .setPositiveButton(R.string.textOk) { _, _ -> openArchiveConfirmationDialog() }
       .show()
   }
 

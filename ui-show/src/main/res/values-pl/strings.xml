@@ -21,11 +21,6 @@
   <string name="textYouMayAlsoLike">Zobacz również:</string>
   <string name="textRuntimeLeftHours">~%sg %sm do obejrzenia</string>
   <string name="textRuntimeLeftMinutes">~%sm do obejrzenia</string>
-  <string name="textHideTitle">Archiwum?</string>
-  <string name="textHideFull">Czym jest Archiwum?</string>
-  <string name="textHiddenDescription"><b>Archiwum</b> jest listą porzuconych seriali które już cię nie interesują.\n\nZarchiwizowane seriale nie będą się wyświetlać w sekcjach <b>Postęp</b>, <b>Odkrywaj</b> i <b>Moje Seriale</b> oraz będą pominięte podczas importu z Trakt.tv.</string>
-  <string name="textHiddenConfirmationTitle">Dodaj do Archiwum</string>
-  <string name="textHiddenConfirmationMessage">\nCzy na pewno chcesz przenieść serial do Archiwum?\n</string>
   <string name="textShowManageLists">Zarządzaj listami</string>
   <string name="textShowManageListsCount">Zarządzaj listami (%d)</string>
 </resources>

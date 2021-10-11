@@ -21,11 +21,6 @@
   <string name="textYouMayAlsoLike">Vielleicht magst du auch:</string>
   <string name="textRuntimeLeftHours">Noch ~%sh %sm</string>
   <string name="textRuntimeLeftMinutes">Noch ~%sm</string>
-  <string name="textHideTitle">Archivieren?</string>
-  <string name="textHideFull">Was ist das Archiv?</string>
-  <string name="textHiddenDescription">Das <b>Archiv</b> ist eine Liste aller Serien, die du nicht mehr gucken möchtest.\n\nArchivierte Serien werden nicht mehr unter <b>Fortschritt</b>, <b>Entdecken</b> und <b>meine Serien</b> angezeigt und werden beim importieren zu Trakt.tv übersprungen.</string>
-  <string name="textHiddenConfirmationTitle">Archivierte Serien</string>
-  <string name="textHiddenConfirmationMessage">\nBist du sicher, dass du diese Serie archivieren möchtest?\n</string>
   <string name="textShowManageLists">Listen verwalten</string>
   <string name="textShowManageListsCount">Listen verwalten (%d)</string>
 </resources>

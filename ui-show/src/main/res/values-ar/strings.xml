@@ -21,11 +21,6 @@
   <string name="textYouMayAlsoLike">قد يعجبك أيضاً:</string>
   <string name="textRuntimeLeftHours">المتبقي ~%sh و %sm</string>
   <string name="textRuntimeLeftMinutes">المتبقي ~%sm</string>
-  <string name="textHideTitle">الأرشيف؟</string>
-  <string name="textHideFull">ما هو الأرشيف؟</string>
-  <string name="textHiddenDescription"><b>الأرشيف</b> عبارة عن قائمة بالمسلسلات التي لم تعد ترغب بمتابعتها بعد الآن\n\nالمسلسلات في قائمة الأرشيف لن تظهر في أقسام <b>مستوى التقدم</b>، <b>إكتشف</b> و <b>مسلسلاتي</b> وسيتم تخطيها أثناء المزامنة إلى Trakt.tv.</string>
-  <string name="textHiddenConfirmationTitle">أرشفة مسلسل</string>
-  <string name="textHiddenConfirmationMessage">\nأمتأكد أنك تريد أرشفة هذا المسلسل؟\n</string>
   <string name="textShowManageLists">إدارة القوائم</string>
   <string name="textShowManageListsCount">إدارة القوائم (%d)</string>
 </resources>

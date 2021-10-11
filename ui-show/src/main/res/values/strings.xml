@@ -24,14 +24,6 @@
   <string name="textRuntimeLeftHours">~%sh %sm remaining</string>
   <string name="textRuntimeLeftMinutes">~%sm remaining</string>
 
-  <string name="textHideTitle">Hide?</string>
-  <string name="textHideFull">Hidden Items</string>
-  <string name="textHiddenDescription"><b>Hidden</b> is a list of items that you are not interested in.\n\nHidden items will no longer appear in <b>Progress</b> and <b>Discover</b> sections.</string>
-  <string name="textHiddenConfirmationTitle">Hide Show</string>
-  <string name="textHiddenConfirmationMessage">\nAre you sure you want to hide this show?\n</string>
-
   <string name="textShowManageLists">Manage Lists</string>
   <string name="textShowManageListsCount">Manage Lists (%d)</string>
-
-  <string name="textShowAddToHidden">Hide</string>
 </resources>

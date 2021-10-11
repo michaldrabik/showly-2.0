@@ -21,11 +21,6 @@
   <string name="textYouMayAlsoLike">Talvez goste também:</string>
   <string name="textRuntimeLeftHours">~%sh %sm restantes</string>
   <string name="textRuntimeLeftMinutes">%sm restando</string>
-  <string name="textHideTitle">Arquivar?</string>
-  <string name="textHideFull">Qual é o arquivo?</string>
-  <string name="textHiddenDescription"><b>Arquivo</b> é uma lista de séries que foram dropadas, abandonadas ou que já não estão na lista de interesses.\n\nSéries arquivadas não aparecerão mais em <b>Progresso</b>, <b>Explorar</b> e <b>Minhas Séries</b> e também serão ignoradas durante a importação Trakt.tv.</string>
-  <string name="textHiddenConfirmationTitle">Séries arquivadas</string>
-  <string name="textHiddenConfirmationMessage">\nTem certeza de que deseja arquivar esta série?\n</string>
   <string name="textShowManageLists">Gerenciar Listas</string>
   <string name="textShowManageListsCount">Gerenciar Listas (%d)</string>
 </resources>
