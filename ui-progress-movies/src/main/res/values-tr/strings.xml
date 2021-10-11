@@ -7,9 +7,4 @@
   <string name="textDiscoverMovies">Filmleri Keşfet</string>
   <string name="textMoviesTraktSynchronize">Trakt.tv hizmetinden aktar</string>
   <string name="textMoviesProgressEmpty"><b>İlerlemeniz</b> şu anda boştur.\n\nFilmler eklemek için <b>Keşfet</b> sekmesini ziyaret edin veya Trakt.tv koleksiyonunuzdan aktarın.</string>
-  <string name="textMoviesWatchlistToday">Bugün</string>
-  <string name="textMoviesWatchlistTomorrow">Yarın</string>
-  <string name="textMoviesWatchlistThisWeek">Bu Hafta</string>
-  <string name="textMoviesWatchlistNextWeek">Gelecek Hafta</string>
-  <string name="textMoviesWatchlistLater">Daha sonra</string>
 </resources>

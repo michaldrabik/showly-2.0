@@ -17,7 +17,7 @@ class RelatedShowsRepository @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  suspend fun loadAll(show: Show): List<Show> {
+  suspend fun loadAll(show: Show, hiddenShowsCount: Int): List<Show> {
     val relatedShows = database.relatedShowsDao().getAllById(show.traktId)
     val latest = relatedShows.maxByOrNull { it.updatedAt }
 
@@ -27,7 +27,7 @@ class RelatedShowsRepository @Inject constructor(
         .map { mappers.show.fromDatabase(it) }
     }
 
-    val remoteShows = cloud.traktApi.fetchRelatedShows(show.traktId)
+    val remoteShows = cloud.traktApi.fetchRelatedShows(show.traktId, hiddenShowsCount)
       .map { mappers.show.fromNetwork(it) }
 
     cacheRelatedShows(remoteShows, show.ids.trakt)

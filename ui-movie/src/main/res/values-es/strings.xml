@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textAddToMyMovies">Añadir a mis películas</string>
-  <string name="textUpcoming">Próximamente</string>
   <string name="textMovieWatchLater">Ver Después</string>
   <string name="textInMyMovies">Añadido a mis películas</string>
   <string name="textInMoviesWatchlist">Añadido a pendientes</string>
@@ -10,11 +9,8 @@
   <string name="textMovieRate">Calificar</string>
   <string name="textMovieLink">Enlace</string>
   <string name="textMovieComments2">Comentarios</string>
-  <string name="textMovieShare">Compartir</string>
   <string name="textMovieYouMayAlsoLike">También te puede interesar:</string>
-  <string name="textMovieVotes">%.1f (%d votos)</string>
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
-  <string name="textMovieNotYetReleased">Esta película aún no ha sido estrenada.</string>
   <string name="textMovieManageLists">Gestionar Listas</string>
   <string name="textMovieManageListsCount">Gestionar Listas (%d)</string>
   <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv se sincronizó correctamente.</string>

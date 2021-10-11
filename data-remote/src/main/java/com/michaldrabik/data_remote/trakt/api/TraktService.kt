@@ -84,8 +84,8 @@ interface TraktService {
     @Query("genres") genres: String
   ): List<MovieResult>
 
-  @GET("shows/{traktId}/related?extended=full&limit=${Config.TRAKT_RELATED_SHOWS_LIMIT}")
-  suspend fun fetchRelatedShows(@Path("traktId") traktId: Long): List<Show>
+  @GET("shows/{traktId}/related?extended=full")
+  suspend fun fetchRelatedShows(@Path("traktId") traktId: Long, @Query("limit") limit: Int): List<Show>
 
   @GET("movies/{traktId}/related?extended=full&limit=${Config.TRAKT_RELATED_MOVIES_LIMIT}")
   suspend fun fetchRelatedMovies(@Path("traktId") traktId: Long): List<Movie>

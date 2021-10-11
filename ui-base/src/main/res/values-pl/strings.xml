@@ -25,6 +25,7 @@
   <string name="textMovies">Filmy</string>
   <string name="textLists">Listy</string>
   <string name="textMinutesShort">min</string>
+  <string name="textRemoveFromTrakt">Usunąć z Trakt.tv?</string>
   <string name="textNoDescription">Opis niedostępny.</string>
   <string name="textPleaseWait">Proszę czekać…</string>
   <string name="textRate">Oceń</string>

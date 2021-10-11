@@ -1,5 +1,6 @@
 package com.michaldrabik.data_remote.trakt.api
 
+import com.michaldrabik.data_remote.Config
 import com.michaldrabik.data_remote.Config.TRAKT_CLIENT_ID
 import com.michaldrabik.data_remote.Config.TRAKT_CLIENT_SECRET
 import com.michaldrabik.data_remote.Config.TRAKT_REDIRECT_URL
@@ -45,7 +46,8 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun fetchAnticipatedMovies(genres: String) = service.fetchAnticipatedMovies(genres).map { it.movie!! }
 
-  suspend fun fetchRelatedShows(traktId: Long) = service.fetchRelatedShows(traktId)
+  suspend fun fetchRelatedShows(traktId: Long, addToLimit: Int) =
+    service.fetchRelatedShows(traktId, Config.TRAKT_RELATED_SHOWS_LIMIT + addToLimit)
 
   suspend fun fetchRelatedMovies(traktId: Long) = service.fetchRelatedMovies(traktId)
 

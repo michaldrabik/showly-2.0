@@ -5,7 +5,6 @@
   <dimen name="statisticsTopPadding">60dp</dimen>
   <dimen name="statisticsMostWatchedItemImageHeight">100dp</dimen>
   <dimen name="statisticsMostWatchedItemImageWidth">67dp</dimen>
-  <dimen name="statisticsBottomPadding">62dp</dimen>
   <dimen name="statisticsRatingItemHeight">100dp</dimen>
   <dimen name="statisticsRatingItemWidth">67dp</dimen>
 </resources>

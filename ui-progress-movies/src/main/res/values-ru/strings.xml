@@ -7,9 +7,4 @@
   <string name="textDiscoverMovies">Найти фильмы</string>
   <string name="textMoviesTraktSynchronize">Импортировать из Trakt.tv</string>
   <string name="textMoviesProgressEmpty">Ваш <b>Прогресс</b> в настоящее время пуст.\n\nПосетите вкладку <b>Открытия</b>, чтобы добавить сериалы или импортировать вашу коллекцию Trakt.tv.</string>
-  <string name="textMoviesWatchlistToday">Сегодня</string>
-  <string name="textMoviesWatchlistTomorrow">Завтра</string>
-  <string name="textMoviesWatchlistThisWeek">На этой неделе</string>
-  <string name="textMoviesWatchlistNextWeek">Следующая неделя</string>
-  <string name="textMoviesWatchlistLater">Позже</string>
 </resources>
