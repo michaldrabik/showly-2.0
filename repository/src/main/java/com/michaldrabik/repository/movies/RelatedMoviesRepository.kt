@@ -27,7 +27,7 @@ class RelatedMoviesRepository @Inject constructor(
         .map { mappers.movie.fromDatabase(it) }
     }
 
-    val remote = cloud.traktApi.fetchRelatedMovies(movie.ids.trakt.id)
+    val remote = cloud.traktApi.fetchRelatedMovies(movie.ids.trakt.id, 0)
       .map { mappers.movie.fromNetwork(it) }
 
     cacheRelated(remote, movie.ids.trakt)

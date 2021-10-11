@@ -49,7 +49,8 @@ class TraktApi(private val service: TraktService) {
   suspend fun fetchRelatedShows(traktId: Long, addToLimit: Int) =
     service.fetchRelatedShows(traktId, Config.TRAKT_RELATED_SHOWS_LIMIT + addToLimit)
 
-  suspend fun fetchRelatedMovies(traktId: Long) = service.fetchRelatedMovies(traktId)
+  suspend fun fetchRelatedMovies(traktId: Long, addToLimit: Int) =
+    service.fetchRelatedMovies(traktId, Config.TRAKT_RELATED_MOVIES_LIMIT + addToLimit)
 
   suspend fun fetchNextEpisode(traktId: Long): Episode? {
     val response = service.fetchNextEpisode(traktId)
