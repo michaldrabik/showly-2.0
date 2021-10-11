@@ -142,14 +142,14 @@
         android:layout_marginBottom="@dimen/spaceSmall"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsButtonsLayout"
+        app:layout_constraintBottom_toTopOf="@id/movieDetailsAddButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/movieDetailsExtraInfo"
         tools:text="Post Production"
         />
 
-      <FrameLayout
-        android:id="@+id/movieDetailsButtonsLayout"
+      <com.michaldrabik.ui_movie.views.AddToMoviesButton
+        android:id="@+id/movieDetailsAddButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
@@ -158,23 +158,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsStatus"
-        >
-
-        <com.michaldrabik.ui_movie.views.AddToMoviesButton
-          android:id="@+id/movieDetailsAddButton"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          />
-
-        <com.michaldrabik.ui_base.common.views.RemoveFromTraktButton
-          android:id="@+id/movieDetailsRemoveTraktButton"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:visibility="gone"
-          tools:visibility="visible"
-          />
-
-      </FrameLayout>
+        />
 
       <TextView
         android:id="@+id/movieDetailsManageListsLabel"
@@ -196,7 +180,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsButtonsLayout"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsAddButton"
         />
 
       <View
@@ -393,7 +377,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginTop="@dimen/spaceMedium"
         android:text="@string/textMovieYouMayAlsoLike"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="16sp"
@@ -418,7 +402,7 @@
         android:id="@+id/movieDetailsRelatedRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginTop="@dimen/spaceMedium"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:overScrollMode="never"

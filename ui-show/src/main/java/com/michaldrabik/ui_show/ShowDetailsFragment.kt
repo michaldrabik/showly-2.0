@@ -823,7 +823,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun openRemoveTraktSheet(@IdRes action: Int) {
     setFragmentResultListener(REQUEST_REMOVE_TRAKT) { _, _ ->
-      val text = resources.getQuantityString(R.plurals.textTraktQuickSyncComplete, 1, 1)
+      val text = resources.getString(R.string.textTraktSyncRemovedFromTrakt)
       (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
 
       if (action == R.id.actionShowDetailsFragmentToRemoveTraktProgress) {

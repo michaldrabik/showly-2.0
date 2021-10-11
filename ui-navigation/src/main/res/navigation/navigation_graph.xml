@@ -299,6 +299,16 @@
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToRemoveTraktWatchlist"
+      app:destination="@id/removeTraktWatchlistDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToRemoveTraktProgress"
+      app:destination="@id/removeTraktProgressDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment

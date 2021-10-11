@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.michaldrabik.ui_movie" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.michaldrabik.ui_movie"
+  >
+
+  <application android:theme="@style/AppTheme" />
+
+</manifest>

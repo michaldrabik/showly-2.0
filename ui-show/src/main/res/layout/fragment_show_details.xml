@@ -6,7 +6,7 @@
   android:id="@+id/showDetailsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:layout_marginTop="-0dp"
+  tools:layout_marginTop="-500dp"
   tools:theme="@style/AppTheme"
   >
 
@@ -156,14 +156,14 @@
         android:layout_marginBottom="@dimen/spaceSmall"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsButtonsLayout"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsAddButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"
         tools:text="Returning Series"
         />
 
-      <FrameLayout
-        android:id="@+id/showDetailsButtonsLayout"
+      <com.michaldrabik.ui_show.views.AddToShowsButton
+        android:id="@+id/showDetailsAddButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
@@ -172,15 +172,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsStatus"
-        >
-
-        <com.michaldrabik.ui_show.views.AddToShowsButton
-          android:id="@+id/showDetailsAddButton"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          />
-
-      </FrameLayout>
+        />
 
       <TextView
         android:id="@+id/showDetailsManageListsLabel"
@@ -204,7 +196,7 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsButtonsLayout"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsAddButton"
         />
 
       <TextView
@@ -551,7 +543,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginTop="@dimen/spaceMedium"
         android:text="@string/textYouMayAlsoLike"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="16sp"
@@ -574,7 +566,7 @@
         android:id="@+id/showDetailsRelatedRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginTop="@dimen/spaceMedium"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:overScrollMode="never"
