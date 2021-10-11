@@ -116,9 +116,7 @@ class ShowDetailsViewModel @Inject constructor(
   private val listsCountState = MutableStateFlow(0)
 
   private val seasonTranslationEvent = MutableStateFlow<Event<SeasonListItem>?>(null)
-  private val removeTraktHistoryEvent = MutableStateFlow<Event<Boolean>?>(null)
-  private val removeTraktWatchlistEvent = MutableStateFlow<Event<Boolean>?>(null)
-  private val removeTraktHiddenEvent = MutableStateFlow<Event<Boolean>?>(null)
+  private val removeTraktEvent = MutableStateFlow<Event<Int>?>(null)
   private val finishedEvent = MutableStateFlow<Event<Boolean>?>(null)
 
   private var show by notNull<Show>()
@@ -572,19 +570,24 @@ class ShowDetailsViewModel @Inject constructor(
       val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal
 
       val state = FollowedState.notFollowed()
-      val event = Event(true)
       when {
         isMyShows -> {
           followedState.value = state
-          if (showRemoveTrakt) removeTraktHistoryEvent.value = event
+          if (showRemoveTrakt) {
+            removeTraktEvent.value = Event(R.id.actionShowDetailsFragmentToRemoveTraktProgress)
+          }
         }
         isWatchlist -> {
           followedState.value = state
-          if (showRemoveTrakt) removeTraktWatchlistEvent.value = event
+          if (showRemoveTrakt) {
+            removeTraktEvent.value = Event(R.id.actionShowDetailsFragmentToRemoveTraktWatchlist)
+          }
         }
         isArchived -> {
           followedState.value = state
-          if (showRemoveTrakt) removeTraktHiddenEvent.value = event
+          if (showRemoveTrakt) {
+            removeTraktEvent.value = Event(R.id.actionShowDetailsFragmentToRemoveTraktHidden)
+          }
         }
         else -> error("Unexpected show state.")
       }
@@ -754,11 +757,9 @@ class ShowDetailsViewModel @Inject constructor(
     premiumState,
     listsCountState,
     seasonTranslationEvent,
-    removeTraktHistoryEvent,
-    removeTraktWatchlistEvent,
-    removeTraktHiddenEvent,
+    removeTraktEvent,
     finishedEvent
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21, s22, s23 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21 ->
     ShowDetailsUiState(
       show = s1,
       showLoading = s2,
@@ -779,10 +780,8 @@ class ShowDetailsViewModel @Inject constructor(
       isPremium = s17,
       listsCount = s18,
       seasonTranslation = s19,
-      removeFromTraktHistory = s20,
-      removeFromTraktWatchlist = s21,
-      removeFromTraktHidden = s22,
-      isFinished = s23
+      removeFromTrakt = s20,
+      isFinished = s21
     )
   }.stateIn(
     scope = viewModelScope,

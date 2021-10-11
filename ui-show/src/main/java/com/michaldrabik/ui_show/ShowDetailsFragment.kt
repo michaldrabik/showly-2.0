@@ -566,20 +566,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         if (isSignedIn) showDetailsCommentsView.showCommentButton()
       }
       ratingState?.let { renderRating(it) }
-      removeFromTraktHistory?.let { event ->
-        event.consume()?.let {
-          openRemoveTraktSheet(R.id.actionShowDetailsFragmentToRemoveTraktProgress)
-        }
-      }
-      removeFromTraktWatchlist?.let { event ->
-        event.consume()?.let {
-          openRemoveTraktSheet(R.id.actionShowDetailsFragmentToRemoveTraktWatchlist)
-        }
-      }
-      removeFromTraktHidden?.let { event ->
-        event.consume()?.let {
-          openRemoveTraktSheet(R.id.actionShowDetailsFragmentToRemoveTraktHidden)
-        }
+      removeFromTrakt?.let { event ->
+        event.consume()?.let { openRemoveTraktSheet(it) }
       }
       isFinished?.let { event ->
         event.consume()?.let {
