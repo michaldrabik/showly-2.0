@@ -3,6 +3,7 @@ package com.michaldrabik.ui_show.views
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import androidx.core.view.isVisible
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
@@ -85,18 +86,21 @@ class AddToShowsButton : FrameLayout {
         }
       }
       State.IN_HIDDEN -> {
+        val delay = if (addToMyShowsButton.isVisible) startDelay else 0
         addToMyShowsButton.fadeOut(duration, withHardware = true)
         watchlistButton.fadeOut(duration, withHardware = true)
-        addedToButton.run {
-          val color = context.colorFromAttr(android.R.attr.textColorSecondary)
-          val colorState = context.colorStateListFromAttr(android.R.attr.textColorSecondary)
-          setIconResource(R.drawable.ic_eye_no)
-          setText(R.string.textInHidden)
-          setTextColor(color)
-          iconTint = colorState
-          strokeColor = colorState
-          rippleColor = colorState
-          fadeIn(duration, startDelay = startDelay, withHardware = true) { isAnimating = false }
+        with(addedToButton) {
+          fadeOut(duration, withHardware = true) {
+            val color = context.colorFromAttr(android.R.attr.textColorSecondary)
+            val colorState = context.colorStateListFromAttr(android.R.attr.textColorSecondary)
+            setIconResource(R.drawable.ic_eye_no)
+            setText(R.string.textInHidden)
+            setTextColor(color)
+            iconTint = colorState
+            strokeColor = colorState
+            rippleColor = colorState
+            fadeIn(duration, startDelay = delay, withHardware = true) { isAnimating = false }
+          }
         }
       }
     }
