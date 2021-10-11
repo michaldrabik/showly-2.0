@@ -40,7 +40,7 @@ storePassword=github
 ```
 traktClientId="your trakt client id"
 traktClientSecret="your trakt client secret"
-tmdbApiKey="your tmdb api key"
+tmdbApiKey="your tmdb api key (v4)"
 omdbApiKey="your omdb api key"
 redditClientId="your reddit client id"
 ```
