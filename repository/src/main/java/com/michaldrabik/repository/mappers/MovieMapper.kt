@@ -28,6 +28,7 @@ class MovieMapper @Inject constructor(
     movie.votes ?: -1,
     movie.comment_count ?: -1,
     movie.genres ?: emptyList(),
+    nowUtcMillis(),
     nowUtcMillis()
   )
 
@@ -65,7 +66,8 @@ class MovieMapper @Inject constructor(
     movie.votes,
     movie.commentCount,
     movie.genres.split(","),
-    movie.updatedAt
+    movie.updatedAt,
+    movie.createdAt
   )
 
   fun toDatabase(movie: Movie) = MovieDb(
@@ -87,6 +89,7 @@ class MovieMapper @Inject constructor(
     movie.votes,
     movie.commentCount,
     movie.genres.joinToString(","),
-    nowUtcMillis()
+    nowUtcMillis(),
+    movie.createdAt
   )
 }

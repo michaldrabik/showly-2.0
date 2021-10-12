@@ -5,5 +5,4 @@
   <string name="menuHidden">Arquivos</string>
   <string name="textMyShowsEmpty">Sua coleção de séries está vazia no momento.\n\nVisite a guia <b>Explorar</b> para adicionar sua primeira série.</string>
   <string name="textWatchlistEmpty">Seus <b>Interesses</b> está vazia no momento.\n\nAcesse a guia <b>Explorar</b> para adicionar séries que você pode querer assistir no futuro.</string>
-  <string name="textHiddenEmpty">Seu <b>Arquivo</b> está vazio no momento.\n\n<b>Arquivo</b> é uma lista de séries que foram dropadas, abandonadas ou que já não estão na lista de interesses.\n\nSéries arquivadas não aparecerão mais em <b>Progresso</b>, <b>Explorar</b> e <b>Minhas Séries</b> e também serão ignoradas durante a importação Trakt.tv.</string>
 </resources>

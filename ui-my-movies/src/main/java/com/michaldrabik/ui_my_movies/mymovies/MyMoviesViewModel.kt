@@ -131,7 +131,7 @@ class MyMoviesViewModel @Inject constructor(
 
   private fun updateItem(new: MyMoviesItem) {
     val items = uiState.value.items?.toMutableList()
-    items?.findReplace(new) { it.isSameAs(new) }
+    items?.findReplace(new) { it isSameAs new }
     itemsState.value = items
   }
 

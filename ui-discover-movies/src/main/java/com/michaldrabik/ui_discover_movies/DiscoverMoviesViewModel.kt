@@ -117,7 +117,7 @@ class DiscoverMoviesViewModel @Inject constructor(
 
     fun updateItem(newItem: DiscoverMovieListItem) {
       val currentItems = uiState.value.items?.toMutableList()
-      currentItems?.findReplace(newItem) { it.isSameAs(newItem) }
+      currentItems?.findReplace(newItem) { it isSameAs newItem }
       itemsState.value = currentItems
       scrollState.value = Event(false)
     }

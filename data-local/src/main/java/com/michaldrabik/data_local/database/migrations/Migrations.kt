@@ -497,15 +497,25 @@ object Migrations {
 
   private val MIGRATION_29 = object : Migration(28, 29) {
     override fun migrate(database: SupportSQLiteDatabase) {
-      database.execSQL(
-        "CREATE TABLE IF NOT EXISTS `movies_archive` (" +
-          "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-          "`id_trakt` INTEGER NOT NULL, " +
-          "`created_at` INTEGER NOT NULL, " +
-          "`updated_at` INTEGER NOT NULL, " +
-          "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
-      )
-      database.execSQL("CREATE UNIQUE INDEX index_movies_archive_id_trakt ON movies_archive(id_trakt)")
+      with(database) {
+        execSQL("ALTER TABLE movies ADD COLUMN created_at INTEGER NOT NULL DEFAULT -1")
+        val cursor = database.query("SELECT id_trakt, updated_at FROM movies")
+        while (cursor.moveToNext()) {
+          val id = cursor.getLong(cursor.getColumnIndexOrThrow("id_trakt"))
+          val updatedAt = cursor.getLong(cursor.getColumnIndexOrThrow("updated_at"))
+          execSQL("UPDATE movies SET created_at = $updatedAt WHERE id_trakt == $id")
+        }
+
+        execSQL(
+          "CREATE TABLE IF NOT EXISTS `movies_archive` (" +
+            "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+            "`id_trakt` INTEGER NOT NULL, " +
+            "`created_at` INTEGER NOT NULL, " +
+            "`updated_at` INTEGER NOT NULL, " +
+            "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+        )
+        execSQL("CREATE UNIQUE INDEX index_movies_archive_id_trakt ON movies_archive(id_trakt)")
+      }
     }
   }
 

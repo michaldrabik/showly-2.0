@@ -313,7 +313,7 @@ class MovieDetailsViewModel @Inject constructor(
 
     fun updateItem(new: RelatedListItem) {
       val currentItems = uiState.value.relatedMovies?.toMutableList()
-      currentItems?.findReplace(new) { it.isSameAs(new) }
+      currentItems?.findReplace(new) { it isSameAs new }
       relatedState.value = currentItems
     }
 

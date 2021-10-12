@@ -5,5 +5,4 @@
   <string name="menuHidden">Arkisto</string>
   <string name="textMyShowsEmpty">Sarjakokoelmasi on tyhjä.\n\nSiirry <b>etsintään</b> lisätäksesi ensimmäisen sarjasi.</string>
   <string name="textWatchlistEmpty"><b>Katselulistasi</b> on tyhjä.\n\nSiirry <b>etsintään</b> lisätäksesi sarjoja, joita haluat katsella tulevaisuudessa.</string>
-  <string name="textHiddenEmpty"><b>Arkistosi</b> on tyhjä.\n\n<b>Arkisto</b> on lista sarjoista, jotka ovat jääneet kesken, ne on hylätty tai eivät enää kiinnosta.\n\n\Arkistoidut sarjat eivät enää näy <b>katselutilanteessa</b>, <b>etsinnässä</b> eivätkä <b>omissa sarjoissa</b>, eikä niitä huomioida Trakt.tv-tuonnissa.</string>
 </resources>

@@ -8,5 +8,5 @@ interface MovieListItem {
   val image: Image
   val isLoading: Boolean
 
-  fun isSameAs(other: MovieListItem) = movie.ids.trakt == other.movie.ids.trakt
+  infix fun isSameAs(other: MovieListItem) = movie.ids.trakt == other.movie.ids.trakt
 }

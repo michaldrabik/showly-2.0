@@ -10,9 +10,6 @@ import android.widget.GridLayout
 import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager.widget.ViewPager
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
@@ -30,6 +27,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
@@ -49,7 +47,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_followed_shows.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FollowedShowsFragment :
@@ -76,14 +73,10 @@ class FollowedShowsFragment :
     setupPager()
     setupStatusBar()
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          clearCache()
-        }
-      }
-    }
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      afterBlock = { viewModel.clearCache() }
+    )
   }
 
   override fun onResume() {

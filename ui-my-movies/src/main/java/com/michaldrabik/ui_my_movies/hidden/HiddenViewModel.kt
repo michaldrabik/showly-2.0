@@ -1,7 +1,7 @@
-package com.michaldrabik.ui_my_movies.watchlist
+package com.michaldrabik.ui_my_movies.hidden
 
 import androidx.lifecycle.viewModelScope
-import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
+import com.michaldrabik.common.Config
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
@@ -10,10 +10,10 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistLoadMoviesCase
-import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistRatingsCase
-import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistSortOrderCase
-import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistListItem
+import com.michaldrabik.ui_my_movies.hidden.cases.HiddenLoadMoviesCase
+import com.michaldrabik.ui_my_movies.hidden.cases.HiddenRatingsCase
+import com.michaldrabik.ui_my_movies.hidden.cases.HiddenSortOrderCase
+import com.michaldrabik.ui_my_movies.hidden.recycler.HiddenListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,14 +23,14 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WatchlistViewModel @Inject constructor(
-  private val sortOrderCase: WatchlistSortOrderCase,
-  private val ratingsCase: WatchlistRatingsCase,
-  private val loadMoviesCase: WatchlistLoadMoviesCase,
+class HiddenViewModel @Inject constructor(
+  private val sortOrderCase: HiddenSortOrderCase,
+  private val loadMoviesCase: HiddenLoadMoviesCase,
+  private val ratingsCase: HiddenRatingsCase,
   private val imagesProvider: MovieImagesProvider,
 ) : BaseViewModel() {
 
-  private val itemsState = MutableStateFlow<List<WatchlistListItem>>(emptyList())
+  private val itemsState = MutableStateFlow<List<HiddenListItem>>(emptyList())
   private val sortOrderState = MutableStateFlow<Event<SortOrder>?>(null)
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
 
@@ -39,7 +39,7 @@ class WatchlistViewModel @Inject constructor(
     sortOrderState,
     scrollState
   ) { itemsState, sortOrderState, scrollState ->
-    WatchlistUiState(
+    HiddenUiState(
       items = itemsState,
       sortOrder = sortOrderState,
       resetScroll = scrollState
@@ -47,15 +47,14 @@ class WatchlistViewModel @Inject constructor(
   }.stateIn(
     scope = viewModelScope,
     started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = WatchlistUiState()
+    initialValue = HiddenUiState()
   )
 
   fun loadMovies(resetScroll: Boolean = false) {
     viewModelScope.launch {
-      val dateFormat = loadMoviesCase.loadDateFormat()
       val items = loadMoviesCase.loadMovies().map {
         val image = imagesProvider.findCachedImage(it.first, POSTER)
-        WatchlistListItem(it.first, image, false, it.second, null, dateFormat)
+        HiddenListItem(it.first, image, false, it.second)
       }
       itemsState.value = items
       scrollState.value = Event(resetScroll)
@@ -63,7 +62,7 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  private fun loadRatings(items: List<WatchlistListItem>, resetScroll: Boolean) {
+  private fun loadRatings(items: List<HiddenListItem>, resetScroll: Boolean) {
     if (items.isEmpty()) return
     viewModelScope.launch {
       try {
@@ -71,7 +70,7 @@ class WatchlistViewModel @Inject constructor(
         itemsState.value = listItems
         scrollState.value = Event(resetScroll)
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "WatchlistViewModel::loadRatings()")
+        Logger.record(error, "Source" to "HiddenViewModel::loadRatings()")
       }
     }
   }
@@ -83,7 +82,7 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingImage(item: WatchlistListItem, force: Boolean) {
+  fun loadMissingImage(item: HiddenListItem, force: Boolean) {
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
       try {
@@ -95,14 +94,14 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  fun loadMissingTranslation(item: WatchlistListItem) {
-    if (item.translation != null || loadMoviesCase.language == DEFAULT_LANGUAGE) return
+  fun loadMissingTranslation(item: HiddenListItem) {
+    if (item.translation != null || loadMoviesCase.language == Config.DEFAULT_LANGUAGE) return
     viewModelScope.launch {
       try {
         val translation = loadMoviesCase.loadTranslation(item.movie, false)
         updateItem(item.copy(translation = translation))
       } catch (error: Throwable) {
-        Logger.record(error, "Source" to "WatchlistViewModel::loadMissingTranslation()")
+        Logger.record(error, "Source" to "HiddenViewModel::loadMissingTranslation()")
       }
     }
   }
@@ -114,9 +113,9 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  private fun updateItem(new: WatchlistListItem) {
+  private fun updateItem(new: HiddenListItem) {
     val currentItems = uiState.value.items.toMutableList()
-    currentItems.findReplace(new) { it isSameAs new }
+    currentItems.findReplace(new) { it isSameAs (new) }
     itemsState.value = currentItems
   }
 }

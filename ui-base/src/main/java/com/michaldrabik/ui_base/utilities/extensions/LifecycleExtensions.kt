@@ -6,12 +6,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 
-fun Fragment.launchAndRepeatStarted(vararg block: suspend () -> Unit) {
+fun Fragment.launchAndRepeatStarted(
+  vararg launchBlock: suspend () -> Unit,
+  afterBlock: (() -> Unit)? = null
+) {
   viewLifecycleOwner.lifecycleScope.launch {
     repeatOnLifecycle(Lifecycle.State.STARTED) {
-      block.forEach {
+      launchBlock.forEach {
         launch { it.invoke() }
       }
+      afterBlock?.invoke()
     }
   }
 }

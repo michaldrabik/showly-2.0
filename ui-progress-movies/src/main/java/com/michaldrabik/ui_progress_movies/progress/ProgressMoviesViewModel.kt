@@ -161,7 +161,7 @@ class ProgressMoviesViewModel @Inject constructor(
 
   private fun updateItem(new: ProgressMovieListItem.MovieItem) {
     val currentItems = itemsState.value?.toMutableList() ?: mutableListOf()
-    currentItems.findReplace(new) { it.isSameAs(new) }
+    currentItems.findReplace(new) { it isSameAs new }
     itemsState.value = currentItems
     scrollState.value = Event(false)
   }

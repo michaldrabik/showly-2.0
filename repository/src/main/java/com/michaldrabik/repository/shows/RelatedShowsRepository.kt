@@ -10,6 +10,7 @@ import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Show
 import javax.inject.Inject
+import kotlin.math.min
 
 class RelatedShowsRepository @Inject constructor(
   private val cloud: Cloud,
@@ -27,7 +28,7 @@ class RelatedShowsRepository @Inject constructor(
         .map { mappers.show.fromDatabase(it) }
     }
 
-    val remoteShows = cloud.traktApi.fetchRelatedShows(show.traktId, hiddenCount)
+    val remoteShows = cloud.traktApi.fetchRelatedShows(show.traktId, min(hiddenCount, 10))
       .map { mappers.show.fromNetwork(it) }
 
     cacheRelatedShows(remoteShows, show.ids.trakt)
