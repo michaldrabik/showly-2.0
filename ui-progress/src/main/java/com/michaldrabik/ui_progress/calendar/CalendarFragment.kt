@@ -74,7 +74,7 @@ class CalendarFragment :
         if (viewModel.isQuickRateEnabled) {
           openRateDialog(bundle)
         } else {
-          parentViewModel.setWatchedEpisode(requireAppContext(), bundle)
+          parentViewModel.setWatchedEpisode(bundle)
         }
       }
     }
@@ -112,7 +112,7 @@ class CalendarFragment :
       .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
       .setView(rateView)
       .setPositiveButton(R.string.textRate) { _, _ ->
-        parentViewModel.setWatchedEpisode(requireAppContext(), bundle)
+        parentViewModel.setWatchedEpisode(bundle)
         viewModel.addRating(rateView.getRating(), bundle)
       }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
