@@ -3,6 +3,7 @@ package com.michaldrabik.data_local.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.michaldrabik.data_local.database.dao.ActorsDao
+import com.michaldrabik.data_local.database.dao.ArchiveMoviesDao
 import com.michaldrabik.data_local.database.dao.ArchiveShowsDao
 import com.michaldrabik.data_local.database.dao.CustomImagesDao
 import com.michaldrabik.data_local.database.dao.CustomListsDao
@@ -40,6 +41,7 @@ import com.michaldrabik.data_local.database.dao.WatchlistMoviesDao
 import com.michaldrabik.data_local.database.dao.WatchlistShowsDao
 import com.michaldrabik.data_local.database.migrations.DATABASE_VERSION
 import com.michaldrabik.data_local.database.model.Actor
+import com.michaldrabik.data_local.database.model.ArchiveMovie
 import com.michaldrabik.data_local.database.model.ArchiveShow
 import com.michaldrabik.data_local.database.model.CustomImage
 import com.michaldrabik.data_local.database.model.CustomList
@@ -88,6 +90,7 @@ import com.michaldrabik.data_local.database.model.WatchlistShow
     WatchlistShow::class,
     WatchlistMovie::class,
     ArchiveShow::class,
+    ArchiveMovie::class,
     RelatedShow::class,
     RelatedMovie::class,
     ShowImage::class,
@@ -137,6 +140,8 @@ abstract class AppDatabase : RoomDatabase() {
   abstract fun watchlistMoviesDao(): WatchlistMoviesDao
 
   abstract fun archiveShowsDao(): ArchiveShowsDao
+
+  abstract fun archiveMoviesDao(): ArchiveMoviesDao
 
   abstract fun relatedShowsDao(): RelatedShowsDao
 
