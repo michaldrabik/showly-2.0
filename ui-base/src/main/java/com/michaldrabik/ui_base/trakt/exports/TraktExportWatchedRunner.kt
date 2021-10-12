@@ -97,7 +97,7 @@ class TraktExportWatchedRunner @Inject constructor(
       .map { SyncExportItem.create(it.idTrakt, hiddenAt = dateIsoStringFromMillis(it.updatedAt)) }
     if (localShowsIds.isNotEmpty()) {
       Timber.d("Exporting ${localShowsIds.size} hidden shows...")
-      cloud.traktApi.postHiddenItems(token.token, shows = localShowsIds)
+      cloud.traktApi.postHiddenShows(token.token, shows = localShowsIds)
     }
   }
 

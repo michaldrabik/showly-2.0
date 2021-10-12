@@ -209,6 +209,12 @@ interface TraktService {
     @Body request: SyncExportRequest
   ): SyncExportResult
 
+  @POST("users/hidden/calendar")
+  suspend fun postHiddenMovies(
+    @Header("Authorization") authToken: String,
+    @Body request: SyncExportRequest
+  ): SyncExportResult
+
   @GET("users/hidden/progress_watched?type=movie&extended=full")
   suspend fun fetchHiddenMovies(
     @Header("Authorization") authToken: String,
@@ -301,9 +307,10 @@ interface TraktService {
     @Body request: SyncExportRequest
   ): SyncExportResult
 
-  @POST("users/hidden/progress_watched/remove")
+  @POST("users/hidden/{section}/remove")
   suspend fun deleteHidden(
     @Header("Authorization") authToken: String,
+    @Path("section") section: String,
     @Body request: SyncExportRequest
   ): SyncExportResult
 

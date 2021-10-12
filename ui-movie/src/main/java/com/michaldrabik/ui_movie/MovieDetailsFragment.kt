@@ -25,9 +25,6 @@ import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.bumptech.glide.Glide
@@ -59,6 +56,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
@@ -93,6 +91,7 @@ import com.michaldrabik.ui_movie.helpers.MovieLink.TRAKT
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import com.michaldrabik.ui_movie.related.RelatedMovieAdapter
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
+import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_HIDDEN
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_WATCHLIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs
@@ -115,7 +114,6 @@ import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
 import kotlinx.android.synthetic.main.view_links_movie_menu.view.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import java.util.Locale.ENGLISH
 import java.util.Locale.ROOT
 
@@ -153,19 +151,17 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     setupStreamingsList()
     setupRelatedList()
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          launch { messageState.collect { renderSnack(it) } }
-          if (!isInitialized) {
-            loadDetails(movieId)
-            isInitialized = true
-          }
-          loadPremium()
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      { viewModel.messageState.collect { renderSnack(it) } },
+      afterBlock = {
+        if (!isInitialized) {
+          viewModel.loadDetails(movieId)
+          isInitialized = true
         }
+        viewModel.loadPremium()
       }
-    }
+    )
   }
 
   private fun setupView() {
@@ -203,6 +199,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       onRemoveClickListener = { viewModel.removeFromFollowed() }
     }
     movieDetailsManageListsLabel.onClick { openListsDialog() }
+    movieDetailsHideLabel.onClick { viewModel.addHiddenMovie() }
   }
 
   private fun setupStatusBar() {
@@ -436,8 +433,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         when {
           it.isMyMovie -> movieDetailsAddButton.setState(IN_MY_MOVIES, it.withAnimation)
           it.isWatchlist -> movieDetailsAddButton.setState(IN_WATCHLIST, it.withAnimation)
+          it.isHidden -> movieDetailsAddButton.setState(IN_HIDDEN, it.withAnimation)
           else -> movieDetailsAddButton.setState(ADD, it.withAnimation)
         }
+        movieDetailsHideLabel.visibleIf(!it.isHidden)
         (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
       }
       image?.let { renderImage(it) }

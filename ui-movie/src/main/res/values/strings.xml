@@ -4,6 +4,7 @@
   <string name="textMovieWatchLater">See Later</string>
   <string name="textInMyMovies">Added to my movies</string>
   <string name="textInMoviesWatchlist">Added to watchlist</string>
+  <string name="textInHidden">Hidden</string>
 
   <string name="textMovieActorsEmpty">Actors are not available</string>
   <string name="textMovieTrailer">Trailer</string>

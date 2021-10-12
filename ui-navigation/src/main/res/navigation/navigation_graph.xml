@@ -309,6 +309,11 @@
       app:destination="@id/removeTraktProgressDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToRemoveTraktHidden"
+      app:destination="@id/removeTraktHiddenDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment

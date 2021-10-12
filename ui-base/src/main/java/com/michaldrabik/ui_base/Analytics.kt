@@ -65,6 +65,13 @@ object Analytics {
     }
   }
 
+  fun logMovieAddToArchive(movie: Movie) {
+    firebaseAnalytics.logEvent("movie_add_to_archive") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
+    }
+  }
+
   fun logShowTrailerClick(show: Show) {
     firebaseAnalytics.logEvent("show_click_trailer") {
       param("show_id_trakt", show.traktId)

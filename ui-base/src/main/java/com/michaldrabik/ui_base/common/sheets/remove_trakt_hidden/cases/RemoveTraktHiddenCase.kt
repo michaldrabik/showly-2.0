@@ -19,11 +19,15 @@ class RemoveTraktHiddenCase @Inject constructor(
     val token = userManager.checkAuthorization()
     val item = SyncExportItem.create(traktId.id)
 
-    val request = when (mode) {
-      Mode.SHOWS -> SyncExportRequest(shows = listOf(item))
-      Mode.MOVIES -> SyncExportRequest(movies = listOf(item))
+    when (mode) {
+      Mode.SHOWS -> {
+        val request = SyncExportRequest(shows = listOf(item))
+        cloud.traktApi.deleteHiddenShow(token.token, request)
+      }
+      Mode.MOVIES -> {
+        val request = SyncExportRequest(movies = listOf(item))
+        cloud.traktApi.deleteHiddenMovie(token.token, request)
+      }
     }
-
-    cloud.traktApi.postDeleteHidden(token.token, request)
   }
 }

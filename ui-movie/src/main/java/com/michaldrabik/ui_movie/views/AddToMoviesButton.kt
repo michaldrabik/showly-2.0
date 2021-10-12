@@ -3,6 +3,7 @@ package com.michaldrabik.ui_movie.views
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import androidx.core.view.isVisible
 import com.michaldrabik.ui_base.utilities.extensions.colorFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.colorStateListFromAttr
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
@@ -36,7 +37,7 @@ class AddToMoviesButton : FrameLayout {
     watchlistButton.onClick {
       if (!isAnimating) onAddWatchLaterClickListener?.invoke()
     }
-    inMyMoviesButton.onClick {
+    addedToButton.onClick {
       if (!isAnimating) onRemoveClickListener?.invoke()
     }
   }
@@ -52,7 +53,7 @@ class AddToMoviesButton : FrameLayout {
     when (state) {
       ADD -> {
         addToMyMoviesButton.setText(R.string.textAddToMyMovies)
-        inMyMoviesButton.fadeOut(duration, withHardware = true)
+        addedToButton.fadeOut(duration, withHardware = true)
         addToMyMoviesButton.fadeIn(duration, startDelay = startDelay, withHardware = true)
         watchlistButton.fadeIn(duration, startDelay = startDelay, withHardware = true) { isAnimating = false }
       }
@@ -62,7 +63,7 @@ class AddToMoviesButton : FrameLayout {
 
         addToMyMoviesButton.fadeOut(duration, withHardware = true)
         watchlistButton.fadeOut(duration, withHardware = true)
-        inMyMoviesButton.run {
+        addedToButton.run {
           setIconResource(R.drawable.ic_bookmark_full)
           setText(R.string.textInMyMovies)
           setTextColor(color)
@@ -78,7 +79,7 @@ class AddToMoviesButton : FrameLayout {
 
         addToMyMoviesButton.fadeOut(duration, withHardware = true)
         watchlistButton.fadeOut(duration, withHardware = true)
-        inMyMoviesButton.run {
+        addedToButton.run {
           setIconResource(R.drawable.ic_bookmark_full)
           setText(R.string.textInMoviesWatchlist)
           setTextColor(color)
@@ -86,6 +87,24 @@ class AddToMoviesButton : FrameLayout {
           strokeColor = colorState
           rippleColor = colorState
           fadeIn(duration, startDelay = startDelay, withHardware = true) { isAnimating = false }
+        }
+      }
+      State.IN_HIDDEN -> {
+        val delay = if (addToMyMoviesButton.isVisible) startDelay else 0
+        addToMyMoviesButton.fadeOut(duration, withHardware = true)
+        watchlistButton.fadeOut(duration, withHardware = true)
+        with(addedToButton) {
+          fadeOut(duration, withHardware = true) {
+            val color = context.colorFromAttr(android.R.attr.textColorSecondary)
+            val colorState = context.colorStateListFromAttr(android.R.attr.textColorSecondary)
+            setIconResource(R.drawable.ic_eye_no)
+            setText(R.string.textInHidden)
+            setTextColor(color)
+            iconTint = colorState
+            strokeColor = colorState
+            rippleColor = colorState
+            fadeIn(duration, startDelay = delay, withHardware = true) { isAnimating = false }
+          }
         }
       }
     }
@@ -96,13 +115,14 @@ class AddToMoviesButton : FrameLayout {
     addToMyMoviesButton.isClickable = enabled
     watchlistButton.isEnabled = enabled
     watchlistButton.isClickable = enabled
-    inMyMoviesButton.isEnabled = enabled
-    inMyMoviesButton.isClickable = enabled
+    addedToButton.isEnabled = enabled
+    addedToButton.isClickable = enabled
   }
 
   enum class State {
     ADD,
     IN_MY_MOVIES,
-    IN_WATCHLIST
+    IN_WATCHLIST,
+    IN_HIDDEN
   }
 }

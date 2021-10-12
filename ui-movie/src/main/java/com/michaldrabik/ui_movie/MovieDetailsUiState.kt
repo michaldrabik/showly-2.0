@@ -43,13 +43,15 @@ data class MovieDetailsUiState(
   data class FollowedState(
     val isMyMovie: Boolean,
     val isWatchlist: Boolean,
+    val isHidden: Boolean,
     val withAnimation: Boolean,
   ) {
 
     companion object {
-      fun idle() = FollowedState(isMyMovie = false, isWatchlist = false, withAnimation = true)
-      fun inMyMovies() = FollowedState(isMyMovie = true, isWatchlist = false, withAnimation = true)
-      fun inWatchlist() = FollowedState(isMyMovie = false, isWatchlist = true, withAnimation = true)
+      fun idle() = FollowedState(isMyMovie = false, isWatchlist = false, isHidden = false, withAnimation = true)
+      fun inMyMovies() = FollowedState(isMyMovie = true, isWatchlist = false, isHidden = false, withAnimation = true)
+      fun inHidden() = FollowedState(isMyMovie = false, isWatchlist = false, isHidden = true, withAnimation = true)
+      fun inWatchlist() = FollowedState(isMyMovie = false, isWatchlist = true, isHidden = false, withAnimation = true)
     }
   }
 }

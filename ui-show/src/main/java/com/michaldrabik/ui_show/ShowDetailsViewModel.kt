@@ -569,7 +569,7 @@ class ShowDetailsViewModel @Inject constructor(
       val traktQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
       val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled && !areSeasonsLocal
 
-      val state = FollowedState.notFollowed()
+      val state = FollowedState.idle()
       when {
         isMyShows -> {
           followedState.value = state

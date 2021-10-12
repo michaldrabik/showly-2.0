@@ -16,6 +16,7 @@ import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
+import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject
@@ -149,16 +150,27 @@ class QuickSyncRunner @Inject constructor(
     val exportShows = items.filter { it.type == HIDDEN_SHOW.slug }.distinctBy { it.idTrakt }
     val exportMovies = items.filter { it.type == HIDDEN_MOVIE.slug }.distinctBy { it.idTrakt }
 
-    cloud.traktApi.postHiddenItems(
-      token.token,
-      shows = exportShows.map { SyncExportItem.create(it.idTrakt, hiddenAt = dateIsoStringFromMillis(it.updatedAt)) },
-      movies = exportMovies.map { SyncExportItem.create(it.idTrakt, hiddenAt = dateIsoStringFromMillis(it.updatedAt)) }
-    )
+    if (exportShows.isNotEmpty()) {
+      cloud.traktApi.postHiddenShows(
+        token.token,
+        shows = exportShows.map { SyncExportItem.create(it.idTrakt, hiddenAt = dateIsoStringFromMillis(it.updatedAt)) }
+      )
+      delay(1500)
+    }
 
-    database.withTransaction {
+    if (exportMovies.isNotEmpty()) {
+      cloud.traktApi.postHiddenMovies(
+        token.token,
+        movies = exportMovies.map { SyncExportItem.create(it.idTrakt, hiddenAt = dateIsoStringFromMillis(it.updatedAt)) }
+      )
+    }
+
+    database.runTransaction {
       val ids = items.map { it.idTrakt }
-      database.traktSyncQueueDao().deleteAll(ids, HIDDEN_SHOW.slug)
-      database.traktSyncQueueDao().deleteAll(ids, HIDDEN_MOVIE.slug)
+      with(traktSyncQueueDao()) {
+        deleteAll(ids, HIDDEN_SHOW.slug)
+        deleteAll(ids, HIDDEN_MOVIE.slug)
+      }
     }
 
     val currentCount = count + exportShows.count() + exportMovies.count()

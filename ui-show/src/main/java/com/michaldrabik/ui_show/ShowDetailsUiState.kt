@@ -47,10 +47,10 @@ data class ShowDetailsUiState(
   ) {
 
     companion object {
+      fun idle() = FollowedState(isMyShows = false, isWatchlist = false, isHidden = false, withAnimation = true)
       fun inMyShows() = FollowedState(isMyShows = true, isWatchlist = false, isHidden = false, withAnimation = true)
       fun inWatchlist() = FollowedState(isMyShows = false, isWatchlist = true, isHidden = false, withAnimation = true)
       fun inHidden() = FollowedState(isMyShows = false, isWatchlist = false, isHidden = true, withAnimation = true)
-      fun notFollowed() = FollowedState(isMyShows = false, isWatchlist = false, isHidden = false, withAnimation = true)
     }
   }
 }
