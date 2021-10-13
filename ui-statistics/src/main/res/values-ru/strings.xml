@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textThisShowIsArchived">Это архивированное шоу</string>
   <string name="textStatistics">Статистика</string>
   <string name="textStatisticsEmpty">По крайней мере один фильм должен присутствовать в <b>Мои фильмы</b>\nперед отображением статистики.</string>
   <string name="textStatisticsMostWatchedShows">Самые просматриваемые сериалы</string>
@@ -20,5 +19,4 @@
   <string name="textStatisticsHours">Часов</string>
   <string name="textStatisticsEpisodes">Эпизоды</string>
   <string name="textStatisticsSeasons">Сезоны</string>
-  <string name="textArchivedShowsExcluded">Архивные сериалы исключены</string>
 </resources>

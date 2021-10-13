@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textThisShowIsArchived">Bu arşivlenmiş bir dizidir</string>
   <string name="textStatistics">İstatistikler</string>
   <string name="textStatisticsEmpty">İstatistiklerin görüntülenebilmesi için <b>Dizilerim</b>\nbölümünde en az bir dizinin bulunması gerekir.</string>
   <string name="textStatisticsMostWatchedShows">En Çok Görüntülenen Diziler</string>
@@ -20,5 +19,4 @@
   <string name="textStatisticsHours">Saat</string>
   <string name="textStatisticsEpisodes">Bölüm</string>
   <string name="textStatisticsSeasons">Sezon</string>
-  <string name="textArchivedShowsExcluded">Arşivlenmiş diziler hariç tutuldu</string>
 </resources>

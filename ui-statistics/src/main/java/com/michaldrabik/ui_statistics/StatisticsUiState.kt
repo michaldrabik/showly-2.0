@@ -12,5 +12,4 @@ data class StatisticsUiState(
   val totalWatchedEpisodesShows: Int? = null,
   val topGenres: List<Genre>? = null,
   val ratings: List<StatisticsRatingItem>? = null,
-  val archivedShowsIncluded: Boolean? = null,
 )

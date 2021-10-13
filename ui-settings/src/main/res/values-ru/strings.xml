@@ -37,8 +37,6 @@
   <string name="textSettingsMyShowsCountrySummary">Выберите регион для использования с данными потоковых сервисов.</string>
   <string name="textSettingsMyShowsLanguageTitle">Язык</string>
   <string name="textSettingsMyShowsLanguageSummary">Описания и названия будут переведены, когда будут доступны. Приложение будет перезапущено.</string>
-  <string name="textSettingsIncludeHiddenStatsTitle">Архивная статистика</string>
-  <string name="textSettingsIncludeHiddenStatsSummary">Включать данные архива в статистику.</string>
   <string name="textSettingsDateFormatTitle">Формат даты/времени</string>
   <string name="textSettingsIncludeSpecialsTitle">Специальные сезоны</string>
   <string name="textSettingsIncludeSpecialsSummary">Отображать \"Специальные\" сезоны в экране деталей сериала.</string>

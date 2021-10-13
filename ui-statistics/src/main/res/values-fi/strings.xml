@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textThisShowIsArchived">Sarja on arkistoitu</string>
   <string name="textStatistics">Tilastot</string>
   <string name="textStatisticsEmpty"><b>Omissa sarjoissa</b> on oltava ainakin\nyksi sarja ennen kuin tilastoja voidaan näyttää.</string>
   <string name="textStatisticsMostWatchedShows">Katselluimmat sarjat</string>
@@ -20,5 +19,4 @@
   <string name="textStatisticsHours">tuntia</string>
   <string name="textStatisticsEpisodes">jaksoa</string>
   <string name="textStatisticsSeasons">kautta</string>
-  <string name="textArchivedShowsExcluded">Poislukien arkistoidut sarjat</string>
 </resources>

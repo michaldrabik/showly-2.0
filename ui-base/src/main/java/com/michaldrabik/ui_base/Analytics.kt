@@ -263,12 +263,6 @@ object Analytics {
     }
   }
 
-  fun logSettingsArchivedStats(enabled: Boolean) {
-    firebaseAnalytics.logEvent("settings_archived_stats") {
-      param("enabled", enabled.toString())
-    }
-  }
-
   fun logSettingsSpecialSeasons(enabled: Boolean) {
     firebaseAnalytics.logEvent("settings_special_seasons") {
       param("enabled", enabled.toString())

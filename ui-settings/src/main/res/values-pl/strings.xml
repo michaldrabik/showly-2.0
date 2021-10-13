@@ -37,8 +37,6 @@
   <string name="textSettingsMyShowsCountrySummary">Wybierz region dla danych serwisów streamingowych.</string>
   <string name="textSettingsMyShowsLanguageTitle">Język</string>
   <string name="textSettingsMyShowsLanguageSummary">Opisy będą tłumaczone na bieżąco w miarę dostępności. Aplikacja zostanie ponownie uruchomiona.</string>
-  <string name="textSettingsIncludeHiddenStatsTitle">Statystyki Archiwum</string>
-  <string name="textSettingsIncludeHiddenStatsSummary">Uwzględniaj seriale z Archiwum w statystykach.</string>
   <string name="textSettingsDateFormatTitle">Format Daty i Czasu</string>
   <string name="textSettingsIncludeSpecialsTitle">Sezony Specjalne</string>
   <string name="textSettingsIncludeSpecialsSummary">Pokaż \'Specjalne\' sezony na ekranie informacji o serialu.</string>
