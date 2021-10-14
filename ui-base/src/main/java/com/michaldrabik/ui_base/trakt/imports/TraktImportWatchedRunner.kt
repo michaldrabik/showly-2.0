@@ -3,6 +3,7 @@ package com.michaldrabik.ui_base.trakt.imports
 import androidx.room.withTransaction
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.ArchiveMovie
 import com.michaldrabik.data_local.database.model.ArchiveShow
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.MyMovie
@@ -203,17 +204,30 @@ class TraktImportWatchedRunner @Inject constructor(
   private suspend fun importWatchedMovies(token: String): Int {
     Timber.d("Importing watched movies...")
 
-    val hiddenIds = cloud.traktApi.fetchHiddenMovies(token)
-      .filter { it.movie != null }
-      .map { it.movie!!.ids?.trakt }
-
     val syncResults = cloud.traktApi.fetchSyncWatchedMovies(token, "full")
       .filter { it.movie != null }
-      .filter { it.movie?.ids?.trakt !in hiddenIds }
       .distinctBy { it.movie?.ids?.trakt }
+
+    Timber.d("Importing hidden movies...")
+
+    val hiddenMovies = cloud.traktApi.fetchHiddenMovies(token)
+    hiddenMovies.forEach { hiddenMovie ->
+      hiddenMovie.movie?.let {
+        val movie = mappers.movie.fromNetwork(it)
+        val dbMovie = mappers.movie.toDatabase(movie)
+        val archiveMovie = ArchiveMovie.fromTraktId(movie.traktId, hiddenMovie.hiddenAtMillis())
+        database.runTransaction {
+          moviesDao().upsert(listOf(dbMovie))
+          archiveMoviesDao().insert(archiveMovie)
+          myMoviesDao().deleteById(movie.traktId)
+          watchlistMoviesDao().deleteById(movie.traktId)
+        }
+      }
+    }
 
     val myMoviesIds = database.myMoviesDao().getAllTraktIds()
     val watchlistMoviesIds = database.watchlistMoviesDao().getAllTraktIds()
+    val hiddenMoviesIds = database.archiveMoviesDao().getAllTraktIds()
 
     syncResults
       .forEachIndexed { index, result ->
@@ -225,7 +239,7 @@ class TraktImportWatchedRunner @Inject constructor(
           val movieId = result.movie!!.ids!!.trakt!!
 
           database.withTransaction {
-            if (movieId !in myMoviesIds) {
+            if (movieId !in myMoviesIds && movieId !in hiddenMoviesIds) {
               val movie = mappers.movie.fromNetwork(result.movie!!)
               val movieDb = mappers.movie.toDatabase(movie)
 

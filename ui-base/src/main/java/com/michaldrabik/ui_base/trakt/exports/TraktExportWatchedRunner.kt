@@ -5,6 +5,7 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Movie
+import com.michaldrabik.data_local.database.model.Show
 import com.michaldrabik.data_remote.Cloud
 import com.michaldrabik.data_remote.trakt.model.SyncExportItem
 import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
@@ -13,6 +14,9 @@ import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TraktAuthToken
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import javax.inject.Inject
@@ -91,13 +95,29 @@ class TraktExportWatchedRunner @Inject constructor(
     exportHidden(token)
   }
 
-  private suspend fun exportHidden(token: TraktAuthToken) {
+  private suspend fun exportHidden(token: TraktAuthToken) = coroutineScope {
     Timber.d("Exporting hidden items...")
-    val localShowsIds = database.archiveShowsDao().getAll()
-      .map { SyncExportItem.create(it.idTrakt, hiddenAt = dateIsoStringFromMillis(it.updatedAt)) }
-    if (localShowsIds.isNotEmpty()) {
-      Timber.d("Exporting ${localShowsIds.size} hidden shows...")
-      cloud.traktApi.postHiddenShows(token.token, shows = localShowsIds)
+
+    val showsAsync = async { database.archiveShowsDao().getAll() }
+    val moviesAsync = async { database.archiveMoviesDao().getAll() }
+    val (localShows, localMovies) = awaitAll(showsAsync, moviesAsync)
+
+    val showsItems = localShows.map {
+      (it as Show).let { show -> SyncExportItem.create(show.idTrakt, hiddenAt = dateIsoStringFromMillis(show.updatedAt)) }
+    }
+    val moviesItems = localMovies.map {
+      (it as Movie).let { movie -> SyncExportItem.create(movie.idTrakt, hiddenAt = dateIsoStringFromMillis(movie.updatedAt)) }
+    }
+
+    if (localShows.isNotEmpty()) {
+      Timber.d("Exporting ${localShows.size} hidden shows...")
+      cloud.traktApi.postHiddenShows(token.token, shows = showsItems)
+      delay(1500)
+    }
+
+    if (localMovies.isNotEmpty()) {
+      Timber.d("Exporting ${localMovies.size} hidden movies...")
+      cloud.traktApi.postHiddenMovies(token.token, movies = moviesItems)
     }
   }
 

@@ -215,7 +215,7 @@ interface TraktService {
     @Body request: SyncExportRequest
   ): SyncExportResult
 
-  @GET("users/hidden/progress_watched?type=movie&extended=full")
+  @GET("users/hidden/calendar?type=movie&extended=full")
   suspend fun fetchHiddenMovies(
     @Header("Authorization") authToken: String,
     @Query("limit") pageLimit: Int
