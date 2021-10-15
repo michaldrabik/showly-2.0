@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textAddToMyMovies">Добавить в мои фильмы</string>
-  <string name="textUpcoming">Предстоящие</string>
   <string name="textMovieWatchLater">Смотреть позже</string>
   <string name="textInMyMovies">Добавлено в мои фильмы</string>
   <string name="textInMoviesWatchlist">Добавлено в Буду смотреть</string>
+  <string name="textInHidden">Hidden</string>
   <string name="textMovieActorsEmpty">Актеры недоступны</string>
   <string name="textMovieTrailer">Трейлер</string>
   <string name="textMovieRate">Оценить</string>
   <string name="textMovieLink">Ссылка</string>
   <string name="textMovieComments2">Мнения</string>
-  <string name="textMovieShare">Поделиться</string>
   <string name="textMovieYouMayAlsoLike">Вам также может понравиться:</string>
-  <string name="textMovieVotes">%.1f (%d голосов)</string>
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
-  <string name="textMovieNotYetReleased">Этот фильм еще не вышел.</string>
   <string name="textMovieManageLists">Управление списками</string>
   <string name="textMovieManageListsCount">Управление списками (%d)</string>
   <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv успешно синхронизирован.</string>
