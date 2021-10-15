@@ -2,8 +2,7 @@
 <resources>
   <string name="menuMyShows">Le Mie Serie TV</string>
   <string name="menuWatchlist">Da Vedere</string>
-  <string name="menuArchive">Archivio</string>
+  <string name="menuHidden">Archivio</string>
   <string name="textMyShowsEmpty">La tua raccolta di serie TV è vuota.\n\nVisita la pagina <b>Scopri</b> per aggiungere la tua prima serie TV.</string>
   <string name="textWatchlistEmpty">La tua lista <b>Da Vedere</b> è vuota.\n\nVisita la pagina <b>Scopri</b> per aggiungere le serie TV che hai intenzione di vedere più avanti.</string>
-  <string name="textArchiveEmpty">Il tuo <b>Archivio</b> è vuoto.\n\nLa pagina <b>Archivio</b> è una lista delle serie TV che hai mollato, abbandonato o in cui non sei più interessato.\n\nLe serie TV archiviate non appariranno più nelle sezioni <b>Progressi</b>, <b>Scopri</b> and <b>Le Mie Serie TV</b> e non verranno considerate durante l\'importazione da Trakt.tv.</string>
 </resources>

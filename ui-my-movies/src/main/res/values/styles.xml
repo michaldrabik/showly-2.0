@@ -18,14 +18,4 @@
     <item name="android:maxLines">1</item>
   </style>
 
-  <style name="MyMovies.RecyclerHorizontal" parent="MyMovies">
-    <item name="android:layout_width">match_parent</item>
-    <item name="android:layout_height">@dimen/myMoviesPosterHeight</item>
-    <item name="android:clipToPadding">false</item>
-    <item name="android:overScrollMode">never</item>
-    <item name="android:paddingStart">@dimen/spaceMedium</item>
-    <item name="android:paddingEnd">@dimen/spaceMedium</item>
-    <item name="android:nestedScrollingEnabled">false</item>
-  </style>
-
 </resources>

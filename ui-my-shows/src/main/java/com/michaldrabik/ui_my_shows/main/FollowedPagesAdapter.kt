@@ -33,7 +33,7 @@ class FollowedPagesAdapter(
     when (position) {
       0 -> context.getString(R.string.menuMyShows)
       1 -> context.getString(R.string.menuWatchlist)
-      2 -> context.getString(R.string.menuArchive)
+      2 -> context.getString(R.string.menuHidden)
       else -> throw IllegalStateException()
     }
 }

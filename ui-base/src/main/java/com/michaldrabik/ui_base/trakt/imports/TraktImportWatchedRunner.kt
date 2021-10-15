@@ -3,6 +3,8 @@ package com.michaldrabik.ui_base.trakt.imports
 import androidx.room.withTransaction
 import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
+import com.michaldrabik.data_local.database.model.ArchiveMovie
+import com.michaldrabik.data_local.database.model.ArchiveShow
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.MyMovie
 import com.michaldrabik.data_local.database.model.MyShow
@@ -17,6 +19,7 @@ import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.trakt.TraktSyncRunner
+import com.michaldrabik.ui_base.utilities.extensions.runTransaction
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageType.FANART
 import com.michaldrabik.ui_model.Movie
@@ -93,19 +96,29 @@ class TraktImportWatchedRunner @Inject constructor(
 
   private suspend fun importWatchedShows(token: String): Int {
     Timber.d("Importing watched shows...")
-
-    val hiddenShowsIds = cloud.traktApi.fetchHiddenShows(token)
-      .filter { it.show != null }
-      .map { it.show!!.ids?.trakt }
-
     val syncResults = cloud.traktApi.fetchSyncWatchedShows(token, "full")
       .filter { it.show != null }
-      .filter { it.show?.ids?.trakt !in hiddenShowsIds }
       .distinctBy { it.show?.ids?.trakt }
+
+    Timber.d("Importing hidden shows...")
+    val hiddenShows = cloud.traktApi.fetchHiddenShows(token)
+    hiddenShows.forEach { hiddenShow ->
+      hiddenShow.show?.let {
+        val show = mappers.show.fromNetwork(it)
+        val dbShow = mappers.show.toDatabase(show)
+        val archiveShow = ArchiveShow.fromTraktId(show.traktId, hiddenShow.hiddenAtMillis())
+        database.runTransaction {
+          showsDao().upsert(listOf(dbShow))
+          archiveShowsDao().insert(archiveShow)
+          myShowsDao().deleteById(show.traktId)
+          watchlistShowsDao().deleteById(show.traktId)
+        }
+      }
+    }
 
     val myShowsIds = database.myShowsDao().getAllTraktIds()
     val watchlistShowsIds = database.watchlistShowsDao().getAllTraktIds()
-    val archiveShowsIds = database.archiveShowsDao().getAllTraktIds()
+    val hiddenShowsIds = database.archiveShowsDao().getAllTraktIds()
     val traktSyncLogs = database.traktSyncLogDao().getAllShows()
 
     syncResults
@@ -126,7 +139,7 @@ class TraktImportWatchedRunner @Inject constructor(
           val (seasons, episodes) = loadSeasons(showId, result)
 
           database.withTransaction {
-            if (showId !in myShowsIds && showId !in archiveShowsIds) {
+            if (showId !in myShowsIds && showId !in hiddenShowsIds) {
               val show = mappers.show.fromNetwork(result.show!!)
               val showDb = mappers.show.toDatabase(show)
 
@@ -191,17 +204,30 @@ class TraktImportWatchedRunner @Inject constructor(
   private suspend fun importWatchedMovies(token: String): Int {
     Timber.d("Importing watched movies...")
 
-    val hiddenIds = cloud.traktApi.fetchHiddenMovies(token)
-      .filter { it.movie != null }
-      .map { it.movie!!.ids?.trakt }
-
     val syncResults = cloud.traktApi.fetchSyncWatchedMovies(token, "full")
       .filter { it.movie != null }
-      .filter { it.movie?.ids?.trakt !in hiddenIds }
       .distinctBy { it.movie?.ids?.trakt }
+
+    Timber.d("Importing hidden movies...")
+
+    val hiddenMovies = cloud.traktApi.fetchHiddenMovies(token)
+    hiddenMovies.forEach { hiddenMovie ->
+      hiddenMovie.movie?.let {
+        val movie = mappers.movie.fromNetwork(it)
+        val dbMovie = mappers.movie.toDatabase(movie)
+        val archiveMovie = ArchiveMovie.fromTraktId(movie.traktId, hiddenMovie.hiddenAtMillis())
+        database.runTransaction {
+          moviesDao().upsert(listOf(dbMovie))
+          archiveMoviesDao().insert(archiveMovie)
+          myMoviesDao().deleteById(movie.traktId)
+          watchlistMoviesDao().deleteById(movie.traktId)
+        }
+      }
+    }
 
     val myMoviesIds = database.myMoviesDao().getAllTraktIds()
     val watchlistMoviesIds = database.watchlistMoviesDao().getAllTraktIds()
+    val hiddenMoviesIds = database.archiveMoviesDao().getAllTraktIds()
 
     syncResults
       .forEachIndexed { index, result ->
@@ -213,7 +239,7 @@ class TraktImportWatchedRunner @Inject constructor(
           val movieId = result.movie!!.ids!!.trakt!!
 
           database.withTransaction {
-            if (movieId !in myMoviesIds) {
+            if (movieId !in myMoviesIds && movieId !in hiddenMoviesIds) {
               val movie = mappers.movie.fromNetwork(result.movie!!)
               val movieDb = mappers.movie.toDatabase(movie)
 

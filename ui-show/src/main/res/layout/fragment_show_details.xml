@@ -156,14 +156,14 @@
         android:layout_marginBottom="@dimen/spaceSmall"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@id/showDetailsButtonsLayout"
+        app:layout_constraintBottom_toTopOf="@id/showDetailsAddButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showDetailsExtraInfo"
         tools:text="Returning Series"
         />
 
-      <FrameLayout
-        android:id="@+id/showDetailsButtonsLayout"
+      <com.michaldrabik.ui_show.views.AddToShowsButton
+        android:id="@+id/showDetailsAddButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
@@ -172,30 +172,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showDetailsStatus"
-        >
-
-        <com.michaldrabik.ui_show.views.AddToShowsButton
-          android:id="@+id/showDetailsAddButton"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          />
-
-        <com.michaldrabik.ui_base.common.views.RemoveFromTraktButton
-          android:id="@+id/showDetailsRemoveTraktButton"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:visibility="gone"
-          tools:visibility="visible"
-          />
-
-      </FrameLayout>
+        />
 
       <TextView
         android:id="@+id/showDetailsManageListsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginTop="@dimen/spaceMedium"
+        android:layout_marginBottom="18dp"
         android:drawablePadding="@dimen/spaceSmall"
         android:fontFamily="sans-serif-medium"
         android:gravity="start|center_vertical"
@@ -207,10 +192,32 @@
         app:drawableStartCompat="@drawable/ic_lists"
         app:drawableTint="?android:attr/textColorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/separator5"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/showDetailsHideLabel"
         app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/showDetailsButtonsLayout"
+        app:layout_constraintTop_toBottomOf="@id/showDetailsAddButton"
+        />
+
+      <TextView
+        android:id="@+id/showDetailsHideLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:drawablePadding="6dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="start|center_vertical"
+        android:text="@string/textHide"
+        android:textAlignment="viewStart"
+        android:textAllCaps="true"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="13sp"
+        app:drawableStartCompat="@drawable/ic_eye_no"
+        app:drawableTint="?android:attr/textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="@id/showDetailsManageListsLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/showDetailsManageListsLabel"
+        app:layout_constraintTop_toTopOf="@id/showDetailsManageListsLabel"
         />
 
       <View
@@ -218,7 +225,6 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="14dp"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:background="?attr/colorSeparator"
         app:layout_constraintBottom_toTopOf="@id/showDetailsRatings"
@@ -537,7 +543,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginTop="@dimen/spaceMedium"
         android:text="@string/textYouMayAlsoLike"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="16sp"
@@ -560,7 +566,7 @@
         android:id="@+id/showDetailsRelatedRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginTop="@dimen/spaceMedium"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:overScrollMode="never"

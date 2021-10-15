@@ -19,7 +19,8 @@ data class Movie(
   val votes: Long,
   val commentCount: Long,
   val genres: List<String>,
-  val updatedAt: Long
+  val updatedAt: Long,
+  val createdAt: Long
 ) {
 
   val traktId = ids.trakt.id
@@ -57,6 +58,7 @@ data class Movie(
       -1L,
       -1L,
       emptyList(),
+      -1L,
       -1L
     )
   }

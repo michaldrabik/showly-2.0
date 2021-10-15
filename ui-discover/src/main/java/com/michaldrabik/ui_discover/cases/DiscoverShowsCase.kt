@@ -44,21 +44,22 @@ class DiscoverShowsCase @Inject constructor(
     )
   }
 
-  suspend fun loadRemoteShows(filters: DiscoverFilters): List<DiscoverListItem> {
+  suspend fun loadRemoteShows(filters: DiscoverFilters) = coroutineScope {
     val showAnticipated = !filters.hideAnticipated
     val showCollection = !filters.hideCollection
     val genres = filters.genres.toList()
 
-    val myShowsIds = showsRepository.myShows.loadAllIds()
-    val watchlistShowsIds = showsRepository.watchlistShows.loadAllIds()
-    val archiveShowsIds = showsRepository.archiveShows.loadAllIds()
-    val collectionSize = myShowsIds.size + watchlistShowsIds.size + archiveShowsIds.size
+    val myAsync = async { showsRepository.myShows.loadAllIds() }
+    val watchlistSync = async { showsRepository.watchlistShows.loadAllIds() }
+    val archiveAsync = async { showsRepository.archiveShows.loadAllIds() }
+    val (myIds, watchlistIds, archiveIds) = awaitAll(myAsync, watchlistSync, archiveAsync)
+    val collectionSize = myIds.size + watchlistIds.size + archiveIds.size
 
     val remoteShows = showsRepository.discoverShows.loadAllRemote(showAnticipated, showCollection, collectionSize, genres)
     val language = translationsRepository.getLanguage()
 
     showsRepository.discoverShows.cacheDiscoverShows(remoteShows)
-    return prepareItems(remoteShows, myShowsIds, watchlistShowsIds, archiveShowsIds, filters, language)
+    prepareItems(remoteShows, myIds, watchlistIds, archiveIds, filters, language)
   }
 
   private suspend fun prepareItems(

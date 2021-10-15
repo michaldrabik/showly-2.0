@@ -110,7 +110,7 @@ class ProgressFragment :
           openRateDialog(it)
         } else {
           val bundle = EpisodeBundle(it.episode!!, it.season!!, it.show)
-          parentViewModel.setWatchedEpisode(requireAppContext(), bundle)
+          parentViewModel.setWatchedEpisode(bundle)
         }
       }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
@@ -169,7 +169,7 @@ class ProgressFragment :
       .setView(rateView)
       .setPositiveButton(R.string.textRate) { _, _ ->
         val bundle = EpisodeBundle(item.requireEpisode(), item.requireSeason(), item.show)
-        parentViewModel.setWatchedEpisode(requireAppContext(), bundle)
+        parentViewModel.setWatchedEpisode(bundle)
         viewModel.addRating(rateView.getRating(), item.requireEpisode(), item.show.ids.trakt)
       }
       .setNegativeButton(R.string.textCancel) { _, _ -> }

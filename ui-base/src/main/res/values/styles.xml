@@ -211,4 +211,8 @@
     <item name="android:textSize">12sp</item>
   </style>
 
+  <style name="ShowlyOutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <item name="strokeColor">@color/colorGrayLight</item>
+  </style>
+
 </resources>

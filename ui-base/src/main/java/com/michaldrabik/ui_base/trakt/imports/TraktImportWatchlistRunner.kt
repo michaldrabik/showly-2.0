@@ -123,6 +123,7 @@ class TraktImportWatchlistRunner @Inject constructor(
     val localMoviesIds =
       database.watchlistMoviesDao().getAllTraktIds()
         .plus(database.myMoviesDao().getAllTraktIds())
+        .plus(database.archiveMoviesDao().getAllTraktIds())
         .distinct()
 
     syncResults

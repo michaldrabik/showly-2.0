@@ -5,7 +5,7 @@
   <string name="textNextEpisode">Siguiente Episodio:</string>
   <string name="textInMyShows">Añadido a mis series</string>
   <string name="textInWatchlist">Añadido a pendientes</string>
-  <string name="textInArchive">Archivado</string>
+  <string name="textInHidden">Archivado</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">Progreso Rápido</string>
   <string name="textShowQuickProgressSubTitle">Selecciona el último episodio visto para actualizar rápidamente tu progreso.</string>
@@ -18,15 +18,9 @@
   <string name="textSeasonsEmpty">Temporadas no disponibles.</string>
   <string name="textTrailer">Tráiler</string>
   <string name="textLink">Enlace</string>
-  <string name="textShare">Compartir</string>
   <string name="textYouMayAlsoLike">También te puede interesar:</string>
   <string name="textRuntimeLeftHours">~%sh %sm restantes</string>
   <string name="textRuntimeLeftMinutes">~%sm restantes</string>
-  <string name="textWhatIsArchive">¿Archivar?</string>
-  <string name="textWhatIsArchiveFull">¿Qué es Archivar?</string>
-  <string name="textArchiveDescription"><b>Archivo</b> es una lista de series que se han descartado, abandonado o que ya no te interesan.\n\nLas series archivadas ya no aparecerán en las secciones <b>Progreso</b>, <b>Descubrir</b> y <b>Mis Series</b> y también se omitirán durante la importación de Trakt.tv.</string>
-  <string name="textArchiveConfirmationTitle">Archivar Serie</string>
-  <string name="textArchiveConfirmationMessage">\n¿Estás seguro/a de que quieres archivar esta serie?\n</string>
   <string name="textShowManageLists">Gestionar Listas</string>
   <string name="textShowManageListsCount">Gestionar Listas (%d)</string>
 </resources>

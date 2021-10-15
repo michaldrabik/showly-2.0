@@ -1,8 +1,6 @@
 package com.michaldrabik.ui_movie.cases
 
 import com.michaldrabik.data_remote.Cloud
-import com.michaldrabik.data_remote.trakt.model.SyncExportItem
-import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_model.Movie
@@ -24,10 +22,4 @@ class MovieDetailsWatchlistCase @Inject constructor(
 
   suspend fun removeFromWatchlist(movie: Movie) =
     moviesRepository.watchlistMovies.delete(movie.ids.trakt)
-
-  suspend fun removeTraktWatchlist(movie: Movie) {
-    val token = userManager.checkAuthorization()
-    val request = SyncExportRequest(movies = listOf(SyncExportItem.create(movie.traktId)))
-    cloud.traktApi.postDeleteWatchlist(token.token, request)
-  }
 }

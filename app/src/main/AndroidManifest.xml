@@ -26,6 +26,7 @@
     <activity
       android:name=".ui.main.MainActivity"
       android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
+      android:exported="true"
       android:launchMode="singleInstance"
       android:screenOrientation="portrait"
       tools:ignore="LockedOrientationActivity"

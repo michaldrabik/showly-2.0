@@ -9,8 +9,6 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.onClick
-import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
-import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_statistics.R
 import kotlinx.android.synthetic.main.view_statistics_most_watched_item.view.*
 
@@ -26,9 +24,6 @@ class StatisticsMostWatchedItemView : ShowView<StatisticsMostWatchedItem> {
     layoutParams = LayoutParams(MATCH_PARENT, WRAP_CONTENT)
 
     viewMostWatchedItem.onClick { itemClickListener?.invoke(item) }
-    viewMostWatchedItemArchivedIcon.onClick {
-      showInfoSnackbar(context.getString(R.string.textThisShowIsArchived))
-    }
   }
 
   override val imageView: ImageView = viewMostWatchedItemImage
@@ -46,7 +41,6 @@ class StatisticsMostWatchedItemView : ShowView<StatisticsMostWatchedItem> {
     viewMostWatchedItemHoursValue.text = "${item.episodes.sumBy { it.runtime } / 60}"
     viewMostWatchedItemEpisodesValue.text = "${item.episodes.size}"
     viewMostWatchedItemSeasonsValue.text = "${item.seasonsCount}"
-    viewMostWatchedItemArchivedIcon.visibleIf(item.isArchived)
     loadImage(item)
   }
 

@@ -28,7 +28,6 @@
   <string name="textTipDiscover">Toca dos veces el botón de menú \'Descubrir\' para abrir rápidamente la pantalla de búsqueda.</string>
   <string name="textTipMyShows">Toca dos veces el botón de menú \'Colección\' para cambiar rápidamente entre pestañas.</string>
   <string name="textTipShowDetailsGallery">Toca la imagen de la serie para abrir la galería.</string>
-  <string name="textTipShowDetailsQuickProgress">Toca el icono \'Archivar\' para mover la serie al archivo.</string>
   <string name="textTipDiscoverFilters">Usa la vista de filtros para mejorar tu feed de Descubrir.</string>
   <string name="textTipWatchlistPinItem">Mantén pulsado el elemento de la lista para fijarlo en la parte superior.</string>
   <string name="textTipBottomModeMenu">Desliza el menú inferior izquierda o derecha para cambiar el modo rápidamente.</string>

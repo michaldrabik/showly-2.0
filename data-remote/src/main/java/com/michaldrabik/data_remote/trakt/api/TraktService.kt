@@ -84,11 +84,11 @@ interface TraktService {
     @Query("genres") genres: String
   ): List<MovieResult>
 
-  @GET("shows/{traktId}/related?extended=full&limit=${Config.TRAKT_RELATED_SHOWS_LIMIT}")
-  suspend fun fetchRelatedShows(@Path("traktId") traktId: Long): List<Show>
+  @GET("shows/{traktId}/related?extended=full")
+  suspend fun fetchRelatedShows(@Path("traktId") traktId: Long, @Query("limit") limit: Int): List<Show>
 
-  @GET("movies/{traktId}/related?extended=full&limit=${Config.TRAKT_RELATED_MOVIES_LIMIT}")
-  suspend fun fetchRelatedMovies(@Path("traktId") traktId: Long): List<Movie>
+  @GET("movies/{traktId}/related?extended=full")
+  suspend fun fetchRelatedMovies(@Path("traktId") traktId: Long, @Query("limit") limit: Int): List<Movie>
 
   @GET("shows/{traktId}/next_episode?extended=full")
   suspend fun fetchNextEpisode(@Path("traktId") traktId: Long): Response<Episode>
@@ -197,13 +197,25 @@ interface TraktService {
 
   // Sync
 
-  @GET("users/hidden/progress_watched?type=show")
+  @GET("users/hidden/progress_watched?type=show&extended=full")
   suspend fun fetchHiddenShows(
     @Header("Authorization") authToken: String,
     @Query("limit") pageLimit: Int
   ): List<HiddenItem>
 
-  @GET("users/hidden/progress_watched?type=movie")
+  @POST("users/hidden/progress_watched")
+  suspend fun postHiddenShows(
+    @Header("Authorization") authToken: String,
+    @Body request: SyncExportRequest
+  ): SyncExportResult
+
+  @POST("users/hidden/calendar")
+  suspend fun postHiddenMovies(
+    @Header("Authorization") authToken: String,
+    @Body request: SyncExportRequest
+  ): SyncExportResult
+
+  @GET("users/hidden/calendar?type=movie&extended=full")
   suspend fun fetchHiddenMovies(
     @Header("Authorization") authToken: String,
     @Query("limit") pageLimit: Int
@@ -292,6 +304,13 @@ interface TraktService {
   @POST("sync/watchlist/remove")
   suspend fun deleteWatchlist(
     @Header("Authorization") authToken: String,
+    @Body request: SyncExportRequest
+  ): SyncExportResult
+
+  @POST("users/hidden/{section}/remove")
+  suspend fun deleteHidden(
+    @Header("Authorization") authToken: String,
+    @Path("section") section: String,
     @Body request: SyncExportRequest
   ): SyncExportResult
 

@@ -279,7 +279,7 @@
     <LinearLayout
       android:id="@+id/settingsTheme"
       style="@style/Settings.ItemLayoutNoRipple"
-      app:layout_constraintBottom_toTopOf="@id/settingsMoviesEnabled"
+      app:layout_constraintBottom_toTopOf="@+id/settingsDateFormat"
       app:layout_constraintEnd_toStartOf="@id/settingsThemeValue"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsCountry"
@@ -318,7 +318,7 @@
       app:layout_constraintBottom_toTopOf="@+id/settingsNewsEnabled"
       app:layout_constraintEnd_toStartOf="@id/settingsMoviesEnabledSwitch"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsTheme"
+      app:layout_constraintTop_toBottomOf="@+id/settingsDateFormat"
       >
 
       <TextView
@@ -379,10 +379,10 @@
     <LinearLayout
       android:id="@+id/settingsDateFormat"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsSeparator1"
+      app:layout_constraintBottom_toTopOf="@id/settingsMoviesEnabled"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsIncludeArchivedStats"
+      app:layout_constraintTop_toBottomOf="@id/settingsTheme"
       >
 
       <TextView
@@ -404,7 +404,7 @@
       app:layout_constraintBottom_toTopOf="@id/settingsUpcomingSection"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@id/settingsDateFormat"
+      app:layout_constraintTop_toBottomOf="@id/settingsIncludeSpecials"
       />
 
     <LinearLayout
@@ -503,30 +503,9 @@
     </LinearLayout>
 
     <LinearLayout
-      android:id="@+id/settingsIncludeArchivedStats"
-      style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@id/settingsDateFormat"
-      app:layout_constraintEnd_toStartOf="@id/settingsIncludeArchivedStatsSwitch"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/settingsIncludeSpecials"
-      >
-
-      <TextView
-        style="@style/Settings.Title"
-        android:text="@string/textSettingsIncludeArchiveStatsTitle"
-        />
-
-      <TextView
-        style="@style/Settings.Summary"
-        android:text="@string/textSettingsIncludeArchiveStatsSummary"
-        />
-
-    </LinearLayout>
-
-    <LinearLayout
       android:id="@+id/settingsIncludeSpecials"
       style="@style/Settings.ItemLayout"
-      app:layout_constraintBottom_toTopOf="@+id/settingsIncludeArchivedStats"
+      app:layout_constraintBottom_toTopOf="@+id/settingsSeparator1"
       app:layout_constraintEnd_toStartOf="@id/settingsIncludeSpecialsSwitch"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@id/settingsStreamings"
@@ -585,17 +564,6 @@
       app:layout_constraintBottom_toBottomOf="@id/settingsStreamings"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="@id/settingsStreamings"
-      />
-
-    <androidx.appcompat.widget.SwitchCompat
-      android:id="@+id/settingsIncludeArchivedStatsSwitch"
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
-      android:layout_marginEnd="@dimen/spaceNormal"
-      android:checked="true"
-      app:layout_constraintBottom_toBottomOf="@id/settingsIncludeArchivedStats"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="@id/settingsIncludeArchivedStats"
       />
 
     <LinearLayout

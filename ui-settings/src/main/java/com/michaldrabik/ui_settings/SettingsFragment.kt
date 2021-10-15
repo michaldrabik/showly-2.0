@@ -225,11 +225,6 @@ class SettingsFragment : BaseFragment<SettingsViewModel>(R.layout.fragment_setti
       onClick { showWhenToNotifyDialog(settings) }
     }
 
-    settingsIncludeArchivedStatsSwitch
-      .setCheckedSilent(settings.archiveShowsIncludeStatistics) { _, isChecked ->
-        viewModel.enableArchivedStatistics(isChecked)
-      }
-
     settingsIncludeSpecialsSwitch
       .setCheckedSilent(settings.specialSeasonsEnabled) { _, isChecked ->
         viewModel.enableSpecialSeasons(isChecked)

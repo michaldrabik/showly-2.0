@@ -2,8 +2,7 @@
 <resources>
   <string name="menuMyShows">Mis Series</string>
   <string name="menuWatchlist">Pendientes</string>
-  <string name="menuArchive">Archivo</string>
+  <string name="menuHidden">Archivo</string>
   <string name="textMyShowsEmpty">Tu colección de programas está actualmente vacía.\n\nVisita la pestaña <b>Descubrir</b> para agregar tu primera serie.</string>
   <string name="textWatchlistEmpty">Tu lista <b>Pendientes</b> actualmente está vacía.\n\nVisita la pestaña<b>Descubrir</b> para añadir series que quizá desees ver en el futuro.</string>
-  <string name="textArchiveEmpty">Tu <b>Archivo</b> actualmente está vacío.\n\n<b>Archivo</b> es una lista de series que se han descartado, abandonado o que ya no te interesan.\n\nLas series archivadas ya no aparecerán en las secciones <b>Progreso</b>, <b>Descubrir</b> y <b>Mis Series</b> y también se omitirán durante la importación de Trakt.tv</string>
 </resources>

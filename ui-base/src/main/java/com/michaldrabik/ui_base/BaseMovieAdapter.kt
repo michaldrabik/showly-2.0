@@ -27,7 +27,7 @@ abstract class BaseMovieAdapter<Item : MovieListItem>(
 
   fun getItems(): List<Item> = asyncDiffer.currentList
 
-  fun indexOf(item: Item) = asyncDiffer.currentList.indexOfFirst { it.isSameAs(item) }
+  fun indexOf(item: Item) = asyncDiffer.currentList.indexOfFirst { it isSameAs item }
 
   override fun onCurrentListChanged(
     previousList: MutableList<Item>,

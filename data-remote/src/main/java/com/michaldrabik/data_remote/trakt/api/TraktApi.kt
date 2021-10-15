@@ -1,5 +1,6 @@
 package com.michaldrabik.data_remote.trakt.api
 
+import com.michaldrabik.data_remote.Config
 import com.michaldrabik.data_remote.Config.TRAKT_CLIENT_ID
 import com.michaldrabik.data_remote.Config.TRAKT_CLIENT_SECRET
 import com.michaldrabik.data_remote.Config.TRAKT_REDIRECT_URL
@@ -45,9 +46,11 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun fetchAnticipatedMovies(genres: String) = service.fetchAnticipatedMovies(genres).map { it.movie!! }
 
-  suspend fun fetchRelatedShows(traktId: Long) = service.fetchRelatedShows(traktId)
+  suspend fun fetchRelatedShows(traktId: Long, addToLimit: Int) =
+    service.fetchRelatedShows(traktId, Config.TRAKT_RELATED_SHOWS_LIMIT + addToLimit)
 
-  suspend fun fetchRelatedMovies(traktId: Long) = service.fetchRelatedMovies(traktId)
+  suspend fun fetchRelatedMovies(traktId: Long, addToLimit: Int) =
+    service.fetchRelatedMovies(traktId, Config.TRAKT_RELATED_MOVIES_LIMIT + addToLimit)
 
   suspend fun fetchNextEpisode(traktId: Long): Episode? {
     val response = service.fetchNextEpisode(traktId)
@@ -142,10 +145,24 @@ class TraktApi(private val service: TraktService) {
     service.fetchMyProfile("Bearer $token")
 
   suspend fun fetchHiddenShows(token: String) =
-    service.fetchHiddenShows("Bearer $token", pageLimit = 100)
+    service.fetchHiddenShows("Bearer $token", pageLimit = 250)
+
+  suspend fun postHiddenShows(
+    token: String,
+    shows: List<SyncExportItem> = emptyList()
+  ) {
+    service.postHiddenShows("Bearer $token", SyncExportRequest(shows = shows))
+  }
+
+  suspend fun postHiddenMovies(
+    token: String,
+    movies: List<SyncExportItem> = emptyList()
+  ) {
+    service.postHiddenMovies("Bearer $token", SyncExportRequest(movies = movies))
+  }
 
   suspend fun fetchHiddenMovies(token: String) =
-    service.fetchHiddenMovies("Bearer $token", pageLimit = 100)
+    service.fetchHiddenMovies("Bearer $token", pageLimit = 250)
 
   suspend fun fetchSyncWatchedShows(token: String, extended: String? = null) =
     service.fetchSyncWatched("Bearer $token", "shows", extended)
@@ -243,6 +260,12 @@ class TraktApi(private val service: TraktService) {
 
   suspend fun postDeleteWatchlist(token: String, request: SyncExportRequest) =
     service.deleteWatchlist("Bearer $token", request)
+
+  suspend fun deleteHiddenShow(token: String, request: SyncExportRequest) =
+    service.deleteHidden("Bearer $token", "progress_watched", request)
+
+  suspend fun deleteHiddenMovie(token: String, request: SyncExportRequest) =
+    service.deleteHidden("Bearer $token", "calendar", request)
 
   suspend fun deleteRating(token: String, show: Show) {
     val requestValue = RatingRequestValue(0, show.ids)

@@ -2,7 +2,7 @@
   package="com.michaldrabik.ui_base"
   >
 
-  <application>
+  <application android:theme="@style/AppTheme">
 
     <service
       android:name=".trakt.TraktSyncService"

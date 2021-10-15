@@ -65,6 +65,13 @@ object Analytics {
     }
   }
 
+  fun logMovieAddToArchive(movie: Movie) {
+    firebaseAnalytics.logEvent("movie_add_to_archive") {
+      param("movie_id_trakt", movie.traktId)
+      param("movie_title", movie.title)
+    }
+  }
+
   fun logShowTrailerClick(show: Show) {
     firebaseAnalytics.logEvent("show_click_trailer") {
       param("show_id_trakt", show.traktId)
@@ -252,12 +259,6 @@ object Analytics {
 
   fun logSettingsAnnouncements(enabled: Boolean) {
     firebaseAnalytics.logEvent("settings_announcements") {
-      param("enabled", enabled.toString())
-    }
-  }
-
-  fun logSettingsArchivedStats(enabled: Boolean) {
-    firebaseAnalytics.logEvent("settings_archived_stats") {
       param("enabled", enabled.toString())
     }
   }

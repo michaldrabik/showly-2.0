@@ -45,21 +45,6 @@
       tools:visibility="visible"
       />
 
-    <ImageView
-      android:id="@+id/viewMostWatchedItemArchivedIcon"
-      android:layout_width="18dp"
-      android:layout_height="0dp"
-      android:layout_marginStart="@dimen/spaceTiny"
-      android:translationY="2dp"
-      android:visibility="gone"
-      app:layout_constraintBottom_toBottomOf="@id/viewMostWatchedItemTitle"
-      app:layout_constraintStart_toEndOf="@id/viewMostWatchedItemTitle"
-      app:layout_constraintTop_toTopOf="@id/viewMostWatchedItemTitle"
-      app:srcCompat="@drawable/ic_archive"
-      app:tint="?android:attr/textColorSecondary"
-      tools:visibility="visible"
-      />
-
     <ProgressBar
       android:id="@+id/viewMostWatchedItemProgress"
       style="@style/ProgressBar.Dark"

@@ -111,7 +111,7 @@ class CalendarMoviesViewModel @Inject constructor(
 
   private fun updateItem(new: CalendarMovieListItem.MovieItem) {
     val currentItems = itemsState.value?.toMutableList() ?: mutableListOf()
-    currentItems.findReplace(new) { it.isSameAs(new) }
+    currentItems.findReplace(new) { it isSameAs new }
     itemsState.value = currentItems
     modeState.value = mode
   }

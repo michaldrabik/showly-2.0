@@ -1,7 +1,8 @@
 package com.michaldrabik.ui_movie
 
-import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.michaldrabik.common.Mode
+import com.michaldrabik.data_local.database.model.TraktSyncQueue
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.ui_base.Analytics
@@ -30,6 +31,7 @@ import com.michaldrabik.ui_model.Translation
 import com.michaldrabik.ui_movie.MovieDetailsUiState.FollowedState
 import com.michaldrabik.ui_movie.MovieDetailsUiState.StreamingsState
 import com.michaldrabik.ui_movie.cases.MovieDetailsActorsCase
+import com.michaldrabik.ui_movie.cases.MovieDetailsArchiveCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsCommentsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsListsCase
 import com.michaldrabik.ui_movie.cases.MovieDetailsMainCase
@@ -63,6 +65,7 @@ class MovieDetailsViewModel @Inject constructor(
   private val ratingsCase: MovieDetailsRatingCase,
   private val myMoviesCase: MovieDetailsMyMoviesCase,
   private val watchlistCase: MovieDetailsWatchlistCase,
+  private val archiveCase: MovieDetailsArchiveCase,
   private val listsCase: MovieDetailsListsCase,
   private val streamingCase: MovieDetailsStreamingCase,
   private val settingsRepository: SettingsRepository,
@@ -84,7 +87,6 @@ class MovieDetailsViewModel @Inject constructor(
   private val followedState = MutableStateFlow<FollowedState?>(null)
   private val ratingState = MutableStateFlow<RatingState?>(null)
   private val streamingsState = MutableStateFlow<StreamingsState?>(null)
-  private val traktLoadingState = MutableStateFlow(false)
   private val translationState = MutableStateFlow<Translation?>(null)
   private val countryState = MutableStateFlow<AppCountry?>(null)
   private val dateFormatState = MutableStateFlow<DateTimeFormatter?>(null)
@@ -92,8 +94,7 @@ class MovieDetailsViewModel @Inject constructor(
   private val premiumState = MutableStateFlow(false)
   private val listsCountState = MutableStateFlow(0)
 
-  private val removeTraktHistoryEvent = MutableStateFlow<Event<Boolean>?>(null)
-  private val removeTraktWatchlistEvent = MutableStateFlow<Event<Boolean>?>(null)
+  private val removeTraktEvent = MutableStateFlow<Event<Int>?>(null)
   private val finishedEvent = MutableStateFlow<Event<Boolean>?>(null)
 
   private var movie by notNull<Movie>()
@@ -110,9 +111,11 @@ class MovieDetailsViewModel @Inject constructor(
         val isSignedIn = userManager.isAuthorized()
         val isMyMovie = async { myMoviesCase.isMyMovie(movie) }
         val isWatchlist = async { watchlistCase.isWatchlist(movie) }
+        val isHidden = async { archiveCase.isArchived(movie) }
         val isFollowed = FollowedState(
           isMyMovie = isMyMovie.await(),
           isWatchlist = isWatchlist.await(),
+          isHidden = isHidden.await(),
           withAnimation = false
         )
 
@@ -315,7 +318,7 @@ class MovieDetailsViewModel @Inject constructor(
 
     fun updateItem(new: RelatedListItem) {
       val currentItems = uiState.value.relatedMovies?.toMutableList()
-      currentItems?.findReplace(new) { it.isSameAs(new) }
+      currentItems?.findReplace(new) { it isSameAs new }
       relatedState.value = currentItems
     }
 
@@ -397,7 +400,7 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  fun addFollowedMovie(context: Context) {
+  fun addFollowedMovie() {
     viewModelScope.launch {
       myMoviesCase.addToMyMovies(movie)
       quickSyncManager.scheduleMovies(listOf(movie.traktId))
@@ -407,7 +410,7 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
-  fun addWatchlistMovie(context: Context) {
+  fun addWatchlistMovie() {
     viewModelScope.launch {
       watchlistCase.addToWatchlist(movie)
       quickSyncManager.scheduleMoviesWatchlist(listOf(movie.traktId))
@@ -417,10 +420,20 @@ class MovieDetailsViewModel @Inject constructor(
     }
   }
 
+  fun addHiddenMovie() {
+    viewModelScope.launch {
+      archiveCase.addToArchive(movie)
+      quickSyncManager.scheduleHidden(movie.traktId, Mode.MOVIES, TraktSyncQueue.Operation.ADD)
+      followedState.value = FollowedState.inHidden()
+      Analytics.logMovieAddToArchive(movie)
+    }
+  }
+
   fun removeFromFollowed() {
     viewModelScope.launch {
       val isMyMovie = myMoviesCase.isMyMovie(movie)
       val isWatchlist = watchlistCase.isWatchlist(movie)
+      val isHidden = archiveCase.isArchived(movie)
 
       when {
         isMyMovie -> {
@@ -431,62 +444,39 @@ class MovieDetailsViewModel @Inject constructor(
           watchlistCase.removeFromWatchlist(movie)
           quickSyncManager.clearMoviesWatchlist(listOf(movie.traktId))
         }
+        isHidden -> {
+          archiveCase.removeFromArchive(movie)
+          quickSyncManager.clearHiddenMovies(listOf(movie.traktId))
+        }
       }
 
       val traktQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
       val showRemoveTrakt = userManager.isAuthorized() && traktQuickRemoveEnabled
 
       val state = FollowedState.idle()
-      val event = Event(showRemoveTrakt)
       when {
         isMyMovie -> {
           followedState.value = state
-          removeTraktHistoryEvent.value = event
+          if (showRemoveTrakt) {
+            removeTraktEvent.value = Event(R.id.actionMovieDetailsFragmentToRemoveTraktProgress)
+          }
         }
         isWatchlist -> {
           followedState.value = state
-          removeTraktWatchlistEvent.value = event
+          if (showRemoveTrakt) {
+            removeTraktEvent.value = Event(R.id.actionMovieDetailsFragmentToRemoveTraktWatchlist)
+          }
+        }
+        isHidden -> {
+          followedState.value = state
+          if (showRemoveTrakt) {
+            removeTraktEvent.value = Event(R.id.actionMovieDetailsFragmentToRemoveTraktHidden)
+          }
         }
         else -> error("Unexpected movie state.")
       }
 
       announcementManager.refreshMoviesAnnouncements()
-    }
-  }
-
-  fun removeFromTraktHistory() {
-    viewModelScope.launch {
-      try {
-        traktLoadingState.value = true
-        myMoviesCase.removeTraktHistory(movie)
-
-        traktLoadingState.value = false
-        removeTraktHistoryEvent.value = Event(false)
-        _messageState.emit(MessageEvent.info(R.string.textTraktSyncMovieRemovedFromTrakt))
-      } catch (error: Throwable) {
-        _messageState.emit(MessageEvent.error(R.string.errorTraktSyncGeneral))
-        traktLoadingState.value = false
-        Timber.e(error)
-        rethrowCancellation(error)
-      }
-    }
-  }
-
-  fun removeFromTraktWatchlist() {
-    viewModelScope.launch {
-      try {
-        traktLoadingState.value = true
-        watchlistCase.removeTraktWatchlist(movie)
-
-        traktLoadingState.value = false
-        removeTraktWatchlistEvent.value = Event(false)
-        _messageState.emit(MessageEvent.info(R.string.textTraktSyncMovieRemovedFromTrakt))
-      } catch (error: Throwable) {
-        _messageState.emit(MessageEvent.error(R.string.errorTraktSyncGeneral))
-        traktLoadingState.value = false
-        Timber.e(error)
-        rethrowCancellation(error)
-      }
     }
   }
 
@@ -515,17 +505,15 @@ class MovieDetailsViewModel @Inject constructor(
     followedState,
     ratingState,
     streamingsState,
-    traktLoadingState,
     translationState,
     countryState,
     dateFormatState,
     signedInState,
     premiumState,
     listsCountState,
-    removeTraktHistoryEvent,
-    removeTraktWatchlistEvent,
+    removeTraktEvent,
     finishedEvent
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20, s21 ->
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19 ->
     MovieDetailsUiState(
       movie = s1,
       movieLoading = s2,
@@ -538,16 +526,14 @@ class MovieDetailsViewModel @Inject constructor(
       followedState = s9,
       ratingState = s10,
       streamings = s11,
-      showFromTraktLoading = s12,
-      translation = s13,
-      country = s14,
-      dateFormat = s15,
-      isSignedIn = s16,
-      isPremium = s17,
-      listsCount = s18,
-      removeFromTraktHistory = s19,
-      removeFromTraktWatchlist = s20,
-      isFinished = s21
+      translation = s12,
+      country = s13,
+      dateFormat = s14,
+      isSignedIn = s15,
+      isPremium = s16,
+      listsCount = s17,
+      removeFromTrakt = s18,
+      isFinished = s19
     )
   }.stateIn(
     scope = viewModelScope,

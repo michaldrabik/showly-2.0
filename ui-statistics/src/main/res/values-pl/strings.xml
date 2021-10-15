@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textThisShowIsArchived">W Archiwum</string>
   <string name="textStatistics">Statystyki</string>
   <string name="textStatisticsEmpty">Dodaj przynajmniej jeden serial do <b>Kolekcji</b> aby zobaczyć statystyki</string>
   <string name="textStatisticsMostWatchedShows">Najwięcej Obejrzanych</string>
@@ -20,5 +19,4 @@
   <string name="textStatisticsHours">Godziny</string>
   <string name="textStatisticsEpisodes">Odcinki</string>
   <string name="textStatisticsSeasons">Sezony</string>
-  <string name="textArchivedShowsExcluded">Archiwalne seriale są pomijane</string>
 </resources>
