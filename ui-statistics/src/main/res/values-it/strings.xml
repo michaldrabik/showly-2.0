@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="textThisShowIsArchived">Questa serie TV è archiviata.</string>
   <string name="textStatistics">Statistiche</string>
   <string name="textStatisticsEmpty">Deve essere presente almeno una serie TV nella pagina <b>Mie Serie TV</b> per visualizzare le statistiche.</string>
   <string name="textStatisticsMostWatchedShows">Serie TV Più Viste</string>
@@ -20,5 +19,4 @@
   <string name="textStatisticsHours">Ore</string>
   <string name="textStatisticsEpisodes">Episodi</string>
   <string name="textStatisticsSeasons">Stagioni</string>
-  <string name="textArchivedShowsExcluded">Escluse le serie TV archiviate</string>
 </resources>
