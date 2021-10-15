@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="textAddToMyMovies">Zu Meinen Filmen</string>
-  <string name="textUpcoming">Demnächst</string>
   <string name="textMovieWatchLater">Für Später</string>
   <string name="textInMyMovies">In Meinen Filmen</string>
   <string name="textInMoviesWatchlist">Im Watchlist</string>
+  <string name="textInHidden">Hidden</string>
   <string name="textMovieActorsEmpty">Schauspieler sind nicht verfügbar.</string>
   <string name="textMovieTrailer">Trailer</string>
   <string name="textMovieRate">Bewerten</string>
   <string name="textMovieLink">Link</string>
   <string name="textMovieComments2">Kommentare</string>
-  <string name="textMovieShare">Teilen</string>
   <string name="textMovieYouMayAlsoLike">Vielleicht magst du auch:</string>
-  <string name="textMovieVotes">%.1f (%d Bewertungen)</string>
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
-  <string name="textMovieNotYetReleased">Dieser Film wurde bisher noch nicht veröffentlicht.</string>
   <string name="textMovieManageLists">Listen verwalten</string>
   <string name="textMovieManageListsCount">Listen verwalten (%d)</string>
   <string name="textTraktSyncMovieRemovedFromTrakt">Trakt.tv Synchronisation erfolgreich.</string>
