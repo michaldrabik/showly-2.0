@@ -37,8 +37,6 @@
   <string name="textSettingsMyShowsCountrySummary">Valitse suoratoistopalveluiden tiedoille käytettävä sijainti.</string>
   <string name="textSettingsMyShowsLanguageTitle">Kieli</string>
   <string name="textSettingsMyShowsLanguageSummary">Kuvaukset ja otsikot käännetään kun saatavilla. Sovellus käynnistyy uudelleen.</string>
-  <string name="textSettingsIncludeArchiveStatsTitle">Arkistoidut tilastot</string>
-  <string name="textSettingsIncludeArchiveStatsSummary">Sisällytä arkistoitujen sarjojen tiedot tilastoihin.</string>
   <string name="textSettingsDateFormatTitle">Päivämäärän/ajan muoto</string>
   <string name="textSettingsIncludeSpecialsTitle">Erikoiskaudet</string>
   <string name="textSettingsIncludeSpecialsSummary">Näytä erikoistuotantokaudet sarjojen tiedoissa.</string>
