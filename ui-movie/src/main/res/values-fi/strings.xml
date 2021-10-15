@@ -4,7 +4,7 @@
   <string name="textMovieWatchLater">Katsele myöhemmin</string>
   <string name="textInMyMovies">Lisätty omiin elokuviin</string>
   <string name="textInMoviesWatchlist">Lisätty katselulistalle</string>
-  <string name="textInHidden">Hidden</string>
+  <string name="textInHidden">Piilotetut</string>
   <string name="textMovieActorsEmpty">Näyttelijät eivät ole saatavilla</string>
   <string name="textMovieTrailer">Traileri</string>
   <string name="textMovieRate">Avioi</string>
