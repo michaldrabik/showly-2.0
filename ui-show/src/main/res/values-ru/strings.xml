@@ -5,7 +5,7 @@
   <string name="textNextEpisode">Следующий эпизод:</string>
   <string name="textInMyShows">Добавлено в мои сериалы</string>
   <string name="textInWatchlist">Добавлено в Буду смотреть</string>
-  <string name="textInArchive">Архивировано</string>
+  <string name="textInHidden">Hidden</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">Быстрый прогресс</string>
   <string name="textShowQuickProgressSubTitle">Выберите последний просмотренный эпизод, чтобы быстро отметить эпизоды.</string>
@@ -18,15 +18,9 @@
   <string name="textSeasonsEmpty">Сезоны недоступны.</string>
   <string name="textTrailer">Трейлер</string>
   <string name="textLink">Ссылка</string>
-  <string name="textShare">Поделиться</string>
   <string name="textYouMayAlsoLike">Вам также может понравиться:</string>
   <string name="textRuntimeLeftHours">~%sч %sм осталось</string>
   <string name="textRuntimeLeftMinutes">~%sм осталось</string>
-  <string name="textWhatIsArchive">Архив?</string>
-  <string name="textWhatIsArchiveFull">Что такое архив?</string>
-  <string name="textArchiveDescription"><b>Архив</b> это список сериалов, просмотр которых был брошен или которые вас больше не интересуют.\n\nАрхивные сериалы больше не будут отображаться в секциях <b>Прогресс</b>, <b>Открытия</b> и <b>Мои сериалы</b>, а также будут пропущены во время импорта в Trakt.tv.</string>
-  <string name="textArchiveConfirmationTitle">Архивировать сериал</string>
-  <string name="textArchiveConfirmationMessage">\nВы уверены, что хотите заархивировать этот сериал?\n</string>
   <string name="textShowManageLists">Управление списками</string>
   <string name="textShowManageListsCount">Управление списками (%d)</string>
 </resources>
