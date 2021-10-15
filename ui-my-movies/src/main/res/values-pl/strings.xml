@@ -2,6 +2,8 @@
 <resources>
   <string name="menuMyMovies">Moje Filmy</string>
   <string name="menuWatchlistMovies">Na Później</string>
+  <string name="menuHidden">Hidden</string>
   <string name="textMyMoviesEmpty">Kolekcja jest obecnie pusta.\n\nWybierz zakładkę <b>Odkrywaj</b> aby dodać swój pierwszy film.</string>
   <string name="textWatchlistMoviesEmpty">Kolekcja <b>Na Później</b> jest obecnie pusta.\n\nWybierz zakładkę <b>Odkrywaj</b> aby dodać filmy które chcesz obejrzeć w przyszłości.</string>
+  <string name="textHiddenEmpty">Your <b>Hidden</b> list is currently empty.\n\n<b>Hidden</b> is a list of items that you are not interested in.\n\nHidden items will no longer appear in <b>Progress</b>, <b>Discover</b> and other sections.</string>
 </resources>
