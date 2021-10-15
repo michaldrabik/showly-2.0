@@ -5,7 +5,7 @@
   <string name="textNextEpisode">Seuraava jakso:</string>
   <string name="textInMyShows">Lisätty omiin sarjoihin</string>
   <string name="textInWatchlist">Lisätty katselulistalle</string>
-  <string name="textInHidden">Hidden</string>
+  <string name="textInHidden">Piilotetut</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">Pikakatselutila</string>
   <string name="textShowQuickProgressSubTitle">Valitse viimeisin katseltu jakso saattaaksesi katselutila ajan tasalle nopeasti.</string>
