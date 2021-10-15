@@ -7,9 +7,4 @@
   <string name="textDiscoverMovies">إكتشف أفلام</string>
   <string name="textMoviesTraktSynchronize">إستيراد البيانات من Trakt.tv</string>
   <string name="textMoviesProgressEmpty">قائمة <b>مستوى التقدم</b> فارغة حالياً.\n\nإذهب إلى صفحة <b>إكتشف</b> لإضافة أفلام، أو اِستورد البيانات من Trakt.tv.</string>
-  <string name="textMoviesWatchlistToday">اليوم</string>
-  <string name="textMoviesWatchlistTomorrow">غداً</string>
-  <string name="textMoviesWatchlistThisWeek">هذا الإسبوع</string>
-  <string name="textMoviesWatchlistNextWeek">الإسبوع القادم</string>
-  <string name="textMoviesWatchlistLater">لاحقاً</string>
 </resources>
