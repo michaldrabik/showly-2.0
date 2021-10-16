@@ -11,8 +11,9 @@
   <string name="textSelect">Выбрать</string>
   <string name="textHot">Горячее</string>
   <string name="textSubmit">Отправить</string>
+  <string name="textHide">Скрыть</string>
   <string name="textEmptyResults">Ничего не найдено…</string>
-  <string name="textSearchFor">Поиск…</string>
+  <string name="textSearchFor">Поиск</string>
   <string name="textTip">Подсказка:</string>
   <string name="textSeason">Сезон %1$d</string>
   <string name="textSpecials">Спецвыпуски</string>
@@ -25,7 +26,6 @@
   <string name="textMovies">Фильмы</string>
   <string name="textLists">Списки</string>
   <string name="textMinutesShort">мин</string>
-  <string name="textRemoveFromTrakt">Удалить из Trakt.tv?</string>
   <string name="textNoDescription">Описание недоступно.</string>
   <string name="textPleaseWait">Подождите…</string>
   <string name="textRate">Оценить</string>
@@ -81,6 +81,10 @@
   <string name="textTraktSyncErrorFull">Сбой синхронизации Trakt.tv. Пожалуйста, проверьте подключение к Интернету и повторите попытку или свяжитесь с нами, если это повторится.</string>
   <string name="textTraktQuickSyncError">Ошибка мгновенной синхронизации.</string>
   <string name="textTraktQuickSyncErrorFull">Ошибка мгновенной синхронизации. Попробуем снова при следующем запуске приложения. Пожалуйста, проверьте подключение к Интернету.</string>
+  <string name="textRemoveFromTrakt">Удалить из Trakt.tv?</string>
+  <string name="textRemoveFromTraktHidden">Вы хотите удалить этот предмет из вашего аккаунта Trakt.tv \'Скрытые элементы\'?</string>
+  <string name="textRemoveFromTraktWatchlist">Вы хотите удалить этот предмет из вашего аккаунта Trakt.tv \'Буду смотреть\'?</string>
+  <string name="textRemoveFromTraktProgress">Вы хотите удалить этот предмет из вашего аккаунта Trakt.tv \'Прогресс\'?</string>
   <string name="menuPin">Закрепить</string>
   <string name="menuUnpin">Открепить</string>
   <string name="errorGeneral">Ой,… Что-то пошло не так.\nПожалуйста, свяжитесь с нами, если это повторится.</string>
