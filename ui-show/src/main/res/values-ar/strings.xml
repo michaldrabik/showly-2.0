@@ -5,7 +5,7 @@
   <string name="textNextEpisode">الحلقة التالية:</string>
   <string name="textInMyShows">تمت الإضافة إلى مسلسلاتي</string>
   <string name="textInWatchlist">تمت الإضافة إلى قائمة المشاهدة</string>
-  <string name="textInHidden">Hidden</string>
+  <string name="textInHidden">المخفية</string>
   <string name="textShowExtraInfo">%3$s %2$s %1$s | %6$s | %4$s %5$s</string>
   <string name="textShowQuickProgressTitle">مستوى التقدم السريع</string>
   <string name="textShowQuickProgressSubTitle">إختر آخر حلقة قمت بمتابعتها لتحديث قائمة مستوى التقدم بسرعة.</string>
