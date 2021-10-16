@@ -2,8 +2,8 @@
 <resources>
   <string name="menuMyMovies">I Miei Film</string>
   <string name="menuWatchlistMovies">Da Vedere</string>
-  <string name="menuHidden">Hidden</string>
+  <string name="menuHidden">Nascosto</string>
   <string name="textMyMoviesEmpty">La tua raccolta di film è vuota.\n\nVisita la pagina <b>Scopri</b> per aggiungere il tuo primo film.</string>
   <string name="textWatchlistMoviesEmpty">La tua lista <b>Da Vedere</b> è vuota.\n\nVisita la pagina <b>Scopri</b> per aggiungere i film che hai intenzione di vedere più avanti.</string>
-  <string name="textHiddenEmpty">Your <b>Hidden</b> list is currently empty.\n\n<b>Hidden</b> is a list of items that you are not interested in.\n\nHidden items will no longer appear in <b>Progress</b>, <b>Discover</b> and other sections.</string>
+  <string name="textHiddenEmpty">La tua lista <b>Nascosti</b> è attualmente vuota.\n\n<b>Nascosti</b> è un elenco di elementi a cui non sei interessato.\n\nGli elementi nascosti non appariranno più in <b>Progressi</b>, <b>Scopri</b> e altre sezioni.</string>
 </resources>
