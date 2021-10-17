@@ -34,6 +34,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import me.everything.android.ui.overscroll.IOverScrollState
+import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase.DEFAULT_DECELERATE_FACTOR
+import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase.DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK
 import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator
 
 @AndroidEntryPoint
@@ -100,7 +102,12 @@ class CalendarFragment :
 
   private fun setupOverscroll() {
     val adapt = TopOverscrollAdapter(progressCalendarRecycler)
-    val overscroll = VerticalOverScrollBounceEffectDecorator(adapt)
+    val overscroll = VerticalOverScrollBounceEffectDecorator(
+      adapt,
+      2F,
+      DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK,
+      DEFAULT_DECELERATE_FACTOR
+    )
     overscroll.setOverScrollUpdateListener { _, state, offset ->
       with(progressCalendarOverscrollIcon) {
         if (offset > 0) {
