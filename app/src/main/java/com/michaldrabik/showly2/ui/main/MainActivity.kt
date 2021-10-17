@@ -281,8 +281,10 @@ class MainActivity :
   private fun render(uiState: MainUiState) {
     uiState.run {
       isLoading.let {
-        viewMask.visibleIf(it)
         mainProgress.visibleIf(it)
+      }
+      showMask.let {
+        viewMask.visibleIf(it)
       }
       isInitialRun?.let {
         if (it.consume() == true) {

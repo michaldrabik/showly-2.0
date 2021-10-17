@@ -77,6 +77,7 @@ class ShowImagesProvider @Inject constructor(
     var typeImages = when (type) {
       POSTER -> images.posters ?: emptyList()
       FANART, FANART_WIDE -> images.backdrops ?: emptyList()
+      else -> throw Error("Invalid type")
     }
     // If requested poster is unavailable try backing up to a fanart
     if (typeImages.isEmpty() && type == POSTER) {
@@ -147,6 +148,7 @@ class ShowImagesProvider @Inject constructor(
     val typeImages = when (extraType) {
       POSTER -> images.posters ?: emptyList()
       FANART, FANART_WIDE -> images.backdrops ?: emptyList()
+      else -> throw Error("Invalid type")
     }
     findBestImage(typeImages, extraType)?.let {
       val extraImage = Image(-1, tvdbId, tmdbId, extraType, SHOW, it.file_path, "", AVAILABLE, TMDB)
@@ -160,6 +162,7 @@ class ShowImagesProvider @Inject constructor(
     val typeImages = when (type) {
       POSTER -> remoteImages.posters ?: emptyList()
       FANART, FANART_WIDE -> remoteImages.backdrops ?: emptyList()
+      else -> throw Error("Invalid type")
     }
 
     return typeImages

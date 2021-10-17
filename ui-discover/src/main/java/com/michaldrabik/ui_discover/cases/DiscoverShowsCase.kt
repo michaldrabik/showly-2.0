@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_discover.cases
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class DiscoverShowsCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val imagesProvider: ShowImagesProvider,
-  private val translationsRepository: TranslationsRepository
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository,
 ) {
 
   suspend fun isCacheValid() = showsRepository.discoverShows.isCacheValid()
@@ -70,6 +72,7 @@ class DiscoverShowsCase @Inject constructor(
     filters: DiscoverFilters?,
     language: String
   ) = coroutineScope {
+    val isTwitterAdEnabled = settingsRepository.isTwitterAdEnabled
     val collectionIds = myShowsIds + watchlistShowsIds + archiveShowsIds
     shows
       .filter { !archiveShowsIds.contains(it.traktId) }
@@ -81,7 +84,9 @@ class DiscoverShowsCase @Inject constructor(
       .mapIndexed { index, show ->
         async {
           val itemType = when (index) {
-            in (0..500 step 14) -> ImageType.FANART_WIDE
+            in (0..500 step 14) -> {
+              if (index == 14 && isTwitterAdEnabled) ImageType.TWITTER else ImageType.FANART_WIDE
+            }
             in (5..500 step 14), in (9..500 step 14) -> ImageType.FANART
             else -> ImageType.POSTER
           }

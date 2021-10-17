@@ -16,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.MAIN_GRID_SPAN
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
@@ -32,11 +33,13 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.invisible
 import com.michaldrabik.ui_base.utilities.extensions.onClick
+import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_base.utilities.extensions.withSpanSizeLookup
 import com.michaldrabik.ui_discover.recycler.DiscoverAdapter
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
+import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import dagger.hilt.android.AndroidEntryPoint
@@ -140,8 +143,15 @@ class DiscoverFragment :
     adapter = DiscoverAdapter().apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
-      itemClickListener = { navigateToDetails(it) }
+      itemClickListener = {
+        if (it.image.type == ImageType.TWITTER) {
+          openWebUrl(Config.TWITTER_URL)
+        } else {
+          navigateToDetails(it)
+        }
+      }
       listChangeListener = { discoverRecycler.scrollToPosition(0) }
+      twitterCancelClickListener = { viewModel.cancelTwitterAd() }
     }
     discoverRecycler.apply {
       adapter = this@DiscoverFragment.adapter

@@ -34,6 +34,7 @@ class SettingsRepository @Inject constructor(
     private const val MODE = "KEY_MOVIES_MODE"
     private const val MOVIES_ENABLED = "KEY_MOVIES_ENABLED"
     private const val NEWS_ENABLED = "KEY_NEWS_ENABLED"
+    private const val TWITTER_AD_ENABLED = "TWITTER_AD_ENABLED"
     private const val PREMIUM = "KEY_PREMIUM"
     private const val PROGRESS_PERCENT = "KEY_PROGRESS_PERCENT"
     private const val HIDDEN_MOVIES_SORT_ORDER = "HIDDEN_MOVIES_SORT_ORDER"
@@ -70,6 +71,7 @@ class SettingsRepository @Inject constructor(
   var streamingsEnabled by BooleanPreference(preferences, STREAMINGS_ENABLED, true)
   var isMoviesEnabled by BooleanPreference(preferences, MOVIES_ENABLED, true)
   var isNewsEnabled by BooleanPreference(preferences, NEWS_ENABLED)
+  var isTwitterAdEnabled by BooleanPreference(preferences, TWITTER_AD_ENABLED, true)
   var language by StringPreference(preferences, LANGUAGE, DEFAULT_LANGUAGE)
   var country by StringPreference(preferences, COUNTRY, DEFAULT_COUNTRY)
   var dateFormat by StringPreference(preferences, DATE_FORMAT, DEFAULT_DATE_FORMAT)

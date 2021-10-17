@@ -10,5 +10,6 @@ data class MainUiState(
   val showWhatsNew: Event<Boolean>? = null,
   val initialLanguage: Event<AppLanguage>? = null,
   val showRateApp: Event<Boolean>? = null,
+  val showMask: Boolean = false,
   val openLink: Event<DeepLinkBundle>? = null,
 )

@@ -35,6 +35,7 @@ class ArtGalleryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
   override fun getItemViewType(position: Int) = when (type) {
     POSTER -> VIEW_TYPE_POSTER
     FANART, FANART_WIDE -> VIEW_TYPE_FANART
+    else -> throw Error("Invalid type")
   }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =

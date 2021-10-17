@@ -8,4 +8,5 @@ enum class ImageType(
   POSTER(1, 1, "poster"),
   FANART(2, 2, "fanart"),
   FANART_WIDE(3, 3, "fanart"),
+  TWITTER(4, 3, "twitterAd")
 }

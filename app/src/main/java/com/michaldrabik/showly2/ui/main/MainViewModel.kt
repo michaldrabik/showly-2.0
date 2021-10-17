@@ -40,6 +40,7 @@ class MainViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   private val loadingState = MutableStateFlow(false)
+  private val maskState = MutableStateFlow(false)
   private val initialRunEvent = MutableStateFlow<Event<Boolean>?>(null)
   private val initialLanguageEvent = MutableStateFlow<Event<AppLanguage>?>(null)
   private val whatsNewEvent = MutableStateFlow<Event<Boolean>?>(null)
@@ -52,15 +53,17 @@ class MainViewModel @Inject constructor(
     whatsNewEvent,
     rateAppEvent,
     openLinkEvent,
-    loadingState
-  ) { s1, s2, s3, s4, s5, s6 ->
+    loadingState,
+    maskState
+  ) { s1, s2, s3, s4, s5, s6, s7 ->
     MainUiState(
       isInitialRun = s1,
       initialLanguage = s2,
       showWhatsNew = s3,
       showRateApp = s4,
       openLink = s5,
-      isLoading = s6
+      isLoading = s6,
+      showMask = s7
     )
   }.stateIn(
     scope = viewModelScope,
@@ -99,8 +102,11 @@ class MainViewModel @Inject constructor(
     initCase.setLanguage(appLanguage)
 
   fun checkInitialLanguage() {
-    val initialLanguage = initCase.checkInitialLanguage()
-    initialLanguageEvent.value = Event(initialLanguage)
+    viewModelScope.launch {
+      val initialLanguage = initCase.checkInitialLanguage()
+      initialLanguageEvent.value = Event(initialLanguage)
+      maskState.value = true
+    }
   }
 
   fun refreshAnnouncements() {
@@ -133,6 +139,7 @@ class MainViewModel @Inject constructor(
     viewModelScope.launch {
       val progressJob = launchDelayed(750) {
         loadingState.value = true
+        maskState.value = true
       }
       try {
         val result = when (source) {
@@ -141,6 +148,7 @@ class MainViewModel @Inject constructor(
           is DeepLinkResolver.TraktSource -> linksCase.findById(source.id, source.type)
         }
         loadingState.value = false
+        maskState.value = false
         openLinkEvent.value = Event(result)
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "MainViewModel::openDeepLink:$source")

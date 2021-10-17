@@ -72,6 +72,7 @@ class MovieImagesProvider @Inject constructor(
     val typeImages = when (type) {
       POSTER -> images.posters ?: emptyList()
       FANART, FANART_WIDE -> images.backdrops ?: emptyList()
+      else -> throw Error("Invalid type")
     }
 
     val remoteImage = findBestImage(typeImages, type)
@@ -104,6 +105,7 @@ class MovieImagesProvider @Inject constructor(
     val typeImages = when (extraType) {
       POSTER -> images.posters ?: emptyList()
       FANART, FANART_WIDE -> images.backdrops ?: emptyList()
+      else -> throw Error("Invalid type")
     }
     findBestImage(typeImages, extraType)?.let {
       val extraImage = Image(-1, tvdbId, tmdbId, extraType, MOVIE, it.file_path, "", AVAILABLE, TMDB)
@@ -117,6 +119,7 @@ class MovieImagesProvider @Inject constructor(
     val typeImages = when (type) {
       POSTER -> remoteImages.posters ?: emptyList()
       FANART, FANART_WIDE -> remoteImages.backdrops ?: emptyList()
+      else -> throw Error("Invalid type")
     }
     return typeImages.map {
       Image.createAvailable(movie.ids, type, MOVIE, it.file_path, TMDB)
