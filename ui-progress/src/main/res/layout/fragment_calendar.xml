@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/progressCalendarRoot"
   android:layout_width="match_parent"
@@ -43,6 +44,19 @@
     android:layout_marginStart="@dimen/spaceBig"
     android:layout_marginEnd="@dimen/spaceBig"
     android:visibility="gone"
+    />
+
+  <ImageView
+    android:id="@+id/progressCalendarOverscrollIcon"
+    android:layout_width="@dimen/progressCalendarOverscrollIcon"
+    android:layout_height="@dimen/progressCalendarOverscrollIcon"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="@dimen/progressCalendarOverscrollIconPadding"
+    android:alpha="0"
+    android:scaleX="0"
+    android:scaleY="0"
+    app:srcCompat="@drawable/ic_history"
+    app:tint="?android:attr/textColorPrimary"
     />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

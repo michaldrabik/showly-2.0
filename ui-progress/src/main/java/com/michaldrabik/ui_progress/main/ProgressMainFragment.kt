@@ -136,12 +136,7 @@ class ProgressMainFragment :
 
     with(progressMainCalendarIcon) {
       visibleIf(currentPage == 1)
-      onClick {
-        exitSearch()
-        onScrollReset()
-        resetTranslations()
-        viewModel.toggleCalendarMode()
-      }
+      onClick { toggleCalendarMode() }
     }
 
     with(progressMainSearchView) {
@@ -279,6 +274,13 @@ class ProgressMainFragment :
     }
     exSearchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
     showNavigation()
+  }
+
+  fun toggleCalendarMode() {
+    exitSearch()
+    onScrollReset()
+    resetTranslations()
+    viewModel.toggleCalendarMode()
   }
 
   override fun onShowsMoviesSyncFinished() = viewModel.loadProgress()

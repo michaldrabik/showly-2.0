@@ -124,12 +124,7 @@ class ProgressMoviesMainFragment :
 
     with(progressMoviesCalendarIcon) {
       visibleIf(currentPage == 1)
-      onClick {
-        exitSearch()
-        onScrollReset()
-        resetTranslations()
-        viewModel.toggleCalendarMode()
-      }
+      onClick { toggleCalendarMode() }
     }
 
     with(progressMoviesSearchView) {
@@ -226,6 +221,13 @@ class ProgressMoviesMainFragment :
     (exSearchViewIcon.drawable as Animatable).start()
     exSearchViewIcon.onClick { exitSearch() }
     hideNavigation(false)
+  }
+
+  fun toggleCalendarMode() {
+    exitSearch()
+    onScrollReset()
+    resetTranslations()
+    viewModel.toggleCalendarMode()
   }
 
   private fun exitSearch(showNavigation: Boolean = true) {

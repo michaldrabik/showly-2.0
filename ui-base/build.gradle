@@ -52,6 +52,7 @@ dependencies {
   api "androidx.work:work-runtime-ktx:$versions.androidWork"
   api "androidx.dynamicanimation:dynamicanimation:$versions.androidDynamicAnimation"
   api "com.google.android.material:material:$versions.androidMaterial"
+  api 'io.github.everythingme:overscroll-decor-android:1.1.1'
 
   api "com.google.firebase:firebase-crashlytics:$versions.firebaseCrashlytics"
   api "com.google.firebase:firebase-analytics-ktx:$versions.firebaseAnalytics"
