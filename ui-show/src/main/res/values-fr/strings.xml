@@ -5,7 +5,7 @@
   <string name="textNextEpisode">Prochain épisode:</string>
   <string name="textInMyShows">Ajouté à mes séries</string>
   <string name="textInWatchlist">Ajouté à la Watchlist</string>
-  <string name="textInHidden">Hidden</string>
+  <string name="textInHidden">Masqué</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
   <string name="textShowQuickProgressTitle">Progression Rapide</string>
   <string name="textShowQuickProgressSubTitle">Sélectionnez le dernier épisode vu pour mettre à jour rapidement votre progression.</string>
