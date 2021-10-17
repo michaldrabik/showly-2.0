@@ -33,7 +33,7 @@
   <string name="textAiredAlready">Вышло</string>
   <string name="textAirsNow">Уже вышло</string>
   <plurals name="textDaysToAir">
-    <item quantity="one">Выходит завтра</item>
+    <item quantity="one">Выходит через %d день</item>
     <item quantity="few">Выходит через %d дней</item>
     <item quantity="many">Выходит через %d дней</item>
     <item quantity="other">Выходит через %d дней</item>
