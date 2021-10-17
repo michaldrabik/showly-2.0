@@ -89,7 +89,7 @@ class CalendarMoviesFragment :
     val adapt = TopOverscrollAdapter(progressMoviesCalendarRecycler)
     val overscroll = VerticalOverScrollBounceEffectDecorator(
       adapt,
-      2F,
+      1.75F,
       DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK,
       DEFAULT_DECELERATE_FACTOR
     )

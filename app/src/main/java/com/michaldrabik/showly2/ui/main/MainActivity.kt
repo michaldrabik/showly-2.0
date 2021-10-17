@@ -169,6 +169,12 @@ class MainActivity :
 
         findNavControl()?.navigate(target)
         showNavigation(true)
+
+        if (item.itemId == R.id.menuDiscover) {
+          // Try showing rate app dialog when user navigates to Discover section.
+          viewModel.checkRateApp()
+        }
+
         return@setOnNavigationItemSelectedListener true
       }
       menu.findItem(R.id.menuNews).isVisible = viewModel.newsEnabled()
