@@ -10,5 +10,4 @@
   <string name="textTraktSynchronize">Importar de Trakt.tv</string>
   <string name="textProgressEmpty">Seu <b>Progresso</b> está vazio atualmente.\n\nVisite a guia <b>Explorar</b> para adicionar séries ou importar seu acervo de Trakt.tv.</string>
   <string name="textNewSeason">Pré estreia</string>
-  <string name="textSeasonEpisode">S.%02d E.%02d</string>
 </resources>
