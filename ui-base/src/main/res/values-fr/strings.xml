@@ -18,6 +18,7 @@
   <string name="textSeason">Saison %1$d</string>
   <string name="textSpecials">Hors-séries</string>
   <string name="textEpisode">Épisode %1$d</string>
+  <string name="textSeasonEpisode">S.%02d E.%02d</string>
   <string name="textSortBy">Trier par :</string>
   <string name="textSpoilersWarning">Ce commentaire contient des spoilers.\n Appuyez pour lire.</string>
   <string name="textCommentedOn">Commenté par %s</string>
