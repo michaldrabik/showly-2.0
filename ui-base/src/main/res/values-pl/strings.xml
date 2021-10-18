@@ -98,4 +98,5 @@
   <string name="errorTraktSyncGeneral">Błąd synchronizacji Trakt.tv\nSprawdź połączenie z internetem i spróbuj ponownie.</string>
   <string name="errorTraktLocked">Twoje konto Trakt.tv jest obecnie zablokowane.\nSkontaktuj się z obsługą Trakt.tv aby je odblokować: https://support.trakt.tv/</string>
   <string name="errorSubscriptionsNotAvailable">Subskrypcje Google Play nie są dostępne na tym urządzeniu.</string>
+  <string name="textSeasonEpisode">S.%02d E.%02d</string>
 </resources>

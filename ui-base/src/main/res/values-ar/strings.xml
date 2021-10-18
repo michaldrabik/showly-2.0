@@ -106,4 +106,5 @@
   <string name="errorTraktSyncGeneral">فشلت مزامنة Trakt.tv.\nرجاءً تحقق من إتصالك بالإنترنت ثم حاول مرة أخرى.</string>
   <string name="errorTraktLocked">حسابك في Trakt.tv مغلق. تواصل مع دعم Trakt.tv عبر الرابط https://support.trakt.tv/ لِفتح حسابك.</string>
   <string name="errorSubscriptionsNotAvailable">الدفع عبر Google Play غير متوفر على هذا الجهاز.</string>
+  <string name="textSeasonEpisode">S.%02d E.%02d</string>
 </resources>

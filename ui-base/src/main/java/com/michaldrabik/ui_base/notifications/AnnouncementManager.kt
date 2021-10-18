@@ -154,11 +154,10 @@ class AnnouncementManager @Inject constructor(
 
     val data = Data.Builder().apply {
       val title = if (translation?.hasTitle == true) translation.title else show.title
-      val season = context.getString(R.string.textSeason, episodeDb.seasonNumber)
-      val episode = context.getString(R.string.textEpisode, episodeDb.episodeNumber)
+      val episode = context.getString(R.string.textSeasonEpisode, episodeDb.seasonNumber, episodeDb.episodeNumber)
 
       putLong(DATA_SHOW_ID, showDb.idTrakt)
-      putString(DATA_TITLE, "$title - $season $episode")
+      putString(DATA_TITLE, "$title - $episode")
       putInt(DATA_THEME, settingsRepository.theme)
       putString(DATA_CHANNEL, NotificationChannel.EPISODES_ANNOUNCEMENTS.name)
 
