@@ -135,6 +135,10 @@ class MainViewModel @Inject constructor(
 
   fun completeAppRate() = rateAppCase.complete()
 
+  fun clearMask() {
+    maskState.value = false
+  }
+
   fun openDeepLink(source: DeepLinkResolver.Source) {
     viewModelScope.launch {
       val progressJob = launchDelayed(750) {

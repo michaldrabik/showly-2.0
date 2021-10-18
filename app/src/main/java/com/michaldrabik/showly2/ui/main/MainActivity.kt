@@ -51,7 +51,6 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
-import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
@@ -327,13 +326,13 @@ class MainActivity :
       fadeIn()
       onOkClickListener = {
         fadeOut()
-        viewMask.gone()
+        showMask(false)
         if (language != AppLanguage.ENGLISH) {
           showWelcomeLanguageDialog(language)
         }
       }
     }
-    viewMask.visible()
+    showMask(true)
   }
 
   private fun showWelcomeLanguageDialog(language: AppLanguage) {
@@ -343,7 +342,7 @@ class MainActivity :
       onYesClick = {
         viewModel.setLanguage(language)
         fadeOut()
-        viewMask.fadeOut()
+        showMask(false)
         postDelayed(
           {
             try {
@@ -357,10 +356,15 @@ class MainActivity :
       }
       onNoClick = {
         fadeOut()
-        viewMask.fadeOut()
+        showMask(false)
       }
     }
-    viewMask.visible()
+    showMask(true)
+  }
+
+  private fun showMask(show: Boolean) {
+    viewMask.visibleIf(show)
+    if (!show) viewModel.clearMask()
   }
 
   private fun launchInAppReview() {
