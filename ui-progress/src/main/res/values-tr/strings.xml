@@ -10,5 +10,4 @@
   <string name="textTraktSynchronize">Trakt.tv hizmetinden aktar</string>
   <string name="textProgressEmpty"><b>İlerlemeniz</b> şu anda boş.\n\nDiziler eklemek için <b>Keşfet</b> sekmesini ziyaret edin veya Trakt.tv koleksiyonunuzdan aktarın.</string>
   <string name="textNewSeason">Sezon Prömiyeri</string>
-  <string name="textSeasonEpisode">S.%02d B.%02d</string>
 </resources>
