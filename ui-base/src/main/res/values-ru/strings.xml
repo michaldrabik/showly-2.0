@@ -18,6 +18,7 @@
   <string name="textSeason">Сезон %1$d</string>
   <string name="textSpecials">Спецвыпуски</string>
   <string name="textEpisode">Эпизод %1$d</string>
+  <string name="textSeasonEpisode">S.%02d Е.%02d</string>
   <string name="textSortBy">Сортировать по:</string>
   <string name="textSpoilersWarning">Этот комментарий содержит спойлеры.\nНажмите, чтобы прочитать.</string>
   <string name="textCommentedOn">Прокомментировал %s</string>
