@@ -1,6 +1,12 @@
-* Added Finnish language
+* Archive has been remade into Hidden section which now allows to hide both Shows and Movies and will sync with Trakt Hidden Items section
 
-* Minor bugfixes and UI changes
+* Showly is now able to open external iMDB, TMDB and Trakt deep links for shows and movies
+
+* It is now possible to pull down Calendar list to quickly swap between modes
+
+* Renamed app from Showly 2.0 to Showly
+
+* Minor bugfixes and UI tweaks
 
 Do you enjoy Showly app and want to support the developer?
-Become a subscriber and gain access to cool bonus features! Check settings to learn more!
+Become a subscriber and gain access to cool bonus features! Check Settings to learn more!
