@@ -18,6 +18,7 @@
   <string name="textSeason">الموسم %1$d</string>
   <string name="textSpecials">الحلقات الخاصة</string>
   <string name="textEpisode">الحلقة %1$d</string>
+  <string name="textSeasonEpisode">S.%02d E.%02d</string>
   <string name="textSortBy">ترتيب حسب:</string>
   <string name="textSpoilersWarning">هذا التعليق يحتوى على حرق للأحداث.\nاضغط للقراءة.</string>
   <string name="textCommentedOn">تعليق بواسطة %s</string>
