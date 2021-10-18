@@ -18,6 +18,7 @@
   <string name="textSeason">Sezon %1$d</string>
   <string name="textSpecials">Specjalne</string>
   <string name="textEpisode">Odcinek %1$d</string>
+  <string name="textSeasonEpisode">S.%02d E.%02d</string>
   <string name="textSortBy">Sortuj:</string>
   <string name="textSpoilersWarning">Opinia zawiera spoilery.\nKliknij aby przeczytać.</string>
   <string name="textCommentedOn">Komentarz od %s</string>
