@@ -54,6 +54,7 @@
   <!--  Bottom Sheet Dialogs -->
 
   <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+    <item name="android:windowTranslucentStatus">false</item>
     <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
   </style>
 
