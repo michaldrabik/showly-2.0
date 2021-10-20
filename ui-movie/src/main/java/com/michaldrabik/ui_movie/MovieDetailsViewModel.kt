@@ -18,29 +18,10 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.extensions.combine
 import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_base.utilities.extensions.launchDelayed
-import com.michaldrabik.ui_model.Actor
-import com.michaldrabik.ui_model.Comment
-import com.michaldrabik.ui_model.IdTrakt
-import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_model.ImageType
-import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.RatingState
-import com.michaldrabik.ui_model.Ratings
-import com.michaldrabik.ui_model.TraktRating
-import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_model.*
 import com.michaldrabik.ui_movie.MovieDetailsUiState.FollowedState
 import com.michaldrabik.ui_movie.MovieDetailsUiState.StreamingsState
-import com.michaldrabik.ui_movie.cases.MovieDetailsActorsCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsArchiveCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsCommentsCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsListsCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsMainCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsMyMoviesCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsRatingCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsRelatedCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsStreamingCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsTranslationCase
-import com.michaldrabik.ui_movie.cases.MovieDetailsWatchlistCase
+import com.michaldrabik.ui_movie.cases.*
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
@@ -51,7 +32,7 @@ import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
 import java.time.format.DateTimeFormatter
-import java.util.Locale
+import java.util.*
 import javax.inject.Inject
 import kotlin.properties.Delegates.notNull
 
@@ -220,6 +201,7 @@ class MovieDetailsViewModel @Inject constructor(
   }
 
   fun loadComments() {
+    commentsState.value = null
     viewModelScope.launch {
       try {
         val comments = commentsCase.loadComments(movie)
