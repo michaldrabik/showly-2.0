@@ -67,13 +67,42 @@
       android:layout_marginStart="@dimen/spaceNormal"
       android:layout_marginEnd="@dimen/spaceMedium"
       app:layout_constraintBottom_toTopOf="@id/progressMovieItemSubtitle"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/progressMovieItemRatingStar"
       app:layout_constraintStart_toEndOf="@id/progressMovieItemImage"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_chainStyle="packed"
       app:layout_goneMarginEnd="@dimen/spaceMedium"
       tools:ignore="RtlSymmetry"
       tools:text="Breaking Bad"
+      />
+
+    <ImageView
+      android:id="@+id/progressMovieItemRatingStar"
+      android:layout_width="20dp"
+      android:layout_height="0dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@+id/progressMovieItemRating"
+      app:layout_constraintEnd_toStartOf="@id/progressMovieItemRating"
+      app:layout_constraintTop_toTopOf="@id/progressMovieItemRating"
+      app:srcCompat="@drawable/ic_star"
+      app:tint="?attr/colorAccent"
+      tools:visibility="visible"
+      />
+
+    <TextView
+      android:id="@+id/progressMovieItemRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:gravity="end"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@+id/progressMovieItemTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/progressMovieItemTitle"
+      tools:text="7.6"
+      tools:visibility="visible"
       />
 
     <TextView

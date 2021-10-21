@@ -15,9 +15,11 @@ import com.michaldrabik.ui_base.utilities.extensions.expandTouch
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
+import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem
 import kotlinx.android.synthetic.main.view_progress_movies_main_item.view.*
+import java.util.Locale
 
 @SuppressLint("SetTextI18n")
 class ProgressMoviesItemView : MovieView<ProgressMovieListItem.MovieItem> {
@@ -66,6 +68,9 @@ class ProgressMoviesItemView : MovieView<ProgressMovieListItem.MovieItem> {
         else -> translationOverview
       }
 
+    progressMovieItemRating.visibleIf(item.sortOrder == SortOrder.RATING)
+    progressMovieItemRatingStar.visibleIf(item.sortOrder == SortOrder.RATING)
+    progressMovieItemRating.text = String.format(Locale.ENGLISH, "%.1f", item.movie.rating)
     progressMovieItemPin.visibleIf(item.isPinned)
 
     progressMovieItemCheckButton.onClick {

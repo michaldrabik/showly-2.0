@@ -35,6 +35,7 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
+import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_progress.R
@@ -177,7 +178,7 @@ class ProgressFragment :
   }
 
   private fun openSortOrderDialog(order: SortOrder) {
-    val options = listOf(NAME, NEWEST, RECENTLY_WATCHED, EPISODES_LEFT)
+    val options = listOf(NAME, NEWEST, RATING, RECENTLY_WATCHED, EPISODES_LEFT)
     val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
 
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)

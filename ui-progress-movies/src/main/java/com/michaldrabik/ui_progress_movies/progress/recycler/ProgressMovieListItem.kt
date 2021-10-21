@@ -5,6 +5,7 @@ import com.michaldrabik.ui_base.common.MovieListItem
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.Translation
 import java.time.format.DateTimeFormatter
 
@@ -21,6 +22,7 @@ sealed class ProgressMovieListItem(
     val isPinned: Boolean,
     val translation: Translation? = null,
     val dateFormat: DateTimeFormatter? = null,
+    val sortOrder: SortOrder? = null,
   ) : ProgressMovieListItem(movie, image, isLoading)
 
   data class Header(
