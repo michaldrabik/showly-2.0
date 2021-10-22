@@ -16,7 +16,6 @@ import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @ViewModelScoped
