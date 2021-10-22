@@ -16,7 +16,7 @@ import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.ProgressType
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.SortOrder
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
