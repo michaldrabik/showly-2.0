@@ -9,13 +9,14 @@ import com.michaldrabik.common.Config.DEFAULT_DATE_FORMAT
 import com.michaldrabik.common.Config.DEFAULT_LANGUAGE
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.delegates.BooleanPreference
+import com.michaldrabik.common.delegates.LongPreference
 import com.michaldrabik.common.delegates.StringPreference
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.ProgressType
 import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.SortOrder
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Named
 import javax.inject.Singleton
@@ -35,6 +36,7 @@ class SettingsRepository @Inject constructor(
     private const val MOVIES_ENABLED = "KEY_MOVIES_ENABLED"
     private const val NEWS_ENABLED = "KEY_NEWS_ENABLED"
     private const val TWITTER_AD_ENABLED = "TWITTER_AD_ENABLED"
+    private const val TWITTER_AD_TIMESTAMP = "TWITTER_AD_TIMESTAMP"
     private const val PREMIUM = "KEY_PREMIUM"
     private const val PROGRESS_PERCENT = "KEY_PROGRESS_PERCENT"
     private const val HIDDEN_MOVIES_SORT_ORDER = "HIDDEN_MOVIES_SORT_ORDER"
@@ -72,6 +74,7 @@ class SettingsRepository @Inject constructor(
   var isMoviesEnabled by BooleanPreference(preferences, MOVIES_ENABLED, true)
   var isNewsEnabled by BooleanPreference(preferences, NEWS_ENABLED)
   var isTwitterAdEnabled by BooleanPreference(preferences, TWITTER_AD_ENABLED, true)
+  var twitterAdTimestamp by LongPreference(preferences, TWITTER_AD_TIMESTAMP, 0)
   var language by StringPreference(preferences, LANGUAGE, DEFAULT_LANGUAGE)
   var country by StringPreference(preferences, COUNTRY, DEFAULT_COUNTRY)
   var dateFormat by StringPreference(preferences, DATE_FORMAT, DEFAULT_DATE_FORMAT)

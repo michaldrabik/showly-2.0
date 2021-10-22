@@ -1,6 +1,7 @@
 package com.michaldrabik.ui_discover.cases
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.ConfigVariant
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
@@ -8,15 +9,14 @@ import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_discover.recycler.DiscoverListItem
 import com.michaldrabik.ui_model.DiscoverFilters
 import com.michaldrabik.ui_model.DiscoverSortOrder
-import com.michaldrabik.ui_model.DiscoverSortOrder.HOT
-import com.michaldrabik.ui_model.DiscoverSortOrder.NEWEST
-import com.michaldrabik.ui_model.DiscoverSortOrder.RATING
+import com.michaldrabik.ui_model.DiscoverSortOrder.*
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Show
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @ViewModelScoped
@@ -72,7 +72,7 @@ class DiscoverShowsCase @Inject constructor(
     filters: DiscoverFilters?,
     language: String
   ) = coroutineScope {
-    val isTwitterAdEnabled = settingsRepository.isTwitterAdEnabled
+    val isTwitterAd = showTwitterAd()
     val collectionIds = myShowsIds + watchlistShowsIds + archiveShowsIds
     shows
       .filter { !archiveShowsIds.contains(it.traktId) }
@@ -85,7 +85,11 @@ class DiscoverShowsCase @Inject constructor(
         async {
           val itemType = when (index) {
             in (0..500 step 14) -> {
-              if (index == 28 && isTwitterAdEnabled) ImageType.TWITTER else ImageType.FANART_WIDE
+              if (index == 28 && isTwitterAd) {
+                ImageType.TWITTER
+              } else {
+                ImageType.FANART_WIDE
+              }
             }
             in (5..500 step 14), in (9..500 step 14) -> ImageType.FANART
             else -> ImageType.POSTER
@@ -111,5 +115,25 @@ class DiscoverShowsCase @Inject constructor(
     HOT -> this
     RATING -> this.sortedWith(compareByDescending<Show> { it.votes }.thenBy { it.rating })
     NEWEST -> this.sortedByDescending { it.year }
+  }
+
+  private fun showTwitterAd(): Boolean {
+    val isTwitterAdEnabled = settingsRepository.isTwitterAdEnabled
+    val twitterAdTimestamp = settingsRepository.twitterAdTimestamp
+
+    if (!isTwitterAdEnabled) {
+      return false
+    }
+
+    if (twitterAdTimestamp == 0L) {
+      settingsRepository.twitterAdTimestamp = System.currentTimeMillis()
+      return false
+    }
+
+    if (System.currentTimeMillis() - twitterAdTimestamp < ConfigVariant.TWITTER_AD_DELAY) {
+      return false
+    }
+
+    return true
   }
 }
