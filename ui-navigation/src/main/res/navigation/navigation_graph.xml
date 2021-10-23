@@ -8,7 +8,7 @@
 
   <action
     android:id="@+id/actionNavigateProgressFragment"
-    app:destination="@id/progressFragment"
+    app:destination="@id/progressMainFragment"
     app:launchSingleTop="true"
     app:popUpTo="@id/navigationGraph"
     app:popUpToInclusive="true"
@@ -119,7 +119,7 @@
   </fragment>
 
   <fragment
-    android:id="@+id/progressFragment"
+    android:id="@+id/progressMainFragment"
     android:name="com.michaldrabik.ui_progress.main.ProgressMainFragment"
     android:label="fragmentProgressMain"
     >
@@ -240,6 +240,21 @@
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToRemoveTraktHidden"
+      app:destination="@id/removeTraktHiddenDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToRemoveTraktWatchlist"
+      app:destination="@id/removeTraktWatchlistDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToRemoveTraktProgress"
+      app:destination="@id/removeTraktProgressDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -283,6 +298,21 @@
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToRemoveTraktWatchlist"
+      app:destination="@id/removeTraktWatchlistDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToRemoveTraktProgress"
+      app:destination="@id/removeTraktProgressDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToRemoveTraktHidden"
+      app:destination="@id/removeTraktHiddenDialog"
+      app:launchSingleTop="true"
       />
   </fragment>
 
@@ -482,25 +512,6 @@
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
-    <!--    <action-->
-    <!--      android:id="@+id/actionListsFragmentToDetailsFragment"-->
-    <!--      app:destination="@id/listDetailsFragment"-->
-    <!--      app:enterAnim="@anim/anim_fade_in"-->
-    <!--      app:launchSingleTop="true"-->
-    <!--      app:popExitAnim="@anim/anim_fade_out"-->
-    <!--      />-->
-    <!--    <action-->
-    <!--      android:id="@+id/actionListsFragmentToSettingsFragment"-->
-    <!--      app:destination="@id/settingsFragment"-->
-    <!--      app:enterAnim="@anim/anim_fade_in"-->
-    <!--      app:launchSingleTop="true"-->
-    <!--      app:popExitAnim="@anim/anim_fade_out"-->
-    <!--      />-->
-    <!--    <action-->
-    <!--      android:id="@+id/actionListsFragmentToCreateListDialog"-->
-    <!--      app:destination="@id/createListDialog"-->
-    <!--      app:launchSingleTop="true"-->
-    <!--      />-->
   </fragment>
 
   <fragment
@@ -564,5 +575,23 @@
       app:launchSingleTop="true"
       />
   </dialog>
+
+  <dialog
+    android:id="@+id/removeTraktHiddenDialog"
+    android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt_hidden.RemoveTraktHiddenBottomSheet"
+    android:label="dialogRemoveTraktHidden"
+    />
+
+  <dialog
+    android:id="@+id/removeTraktWatchlistDialog"
+    android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt_watchlist.RemoveTraktWatchlistBottomSheet"
+    android:label="dialogRemoveTraktWatchlist"
+    />
+
+  <dialog
+    android:id="@+id/removeTraktProgressDialog"
+    android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt_progress.RemoveTraktProgressBottomSheet"
+    android:label="dialogRemoveTraktProgress"
+    />
 
 </navigation>

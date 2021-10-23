@@ -67,6 +67,33 @@
       />
 
     <ImageView
+      android:id="@+id/progressItemRatingStar"
+      android:layout_width="20dp"
+      android:layout_height="0dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@+id/progressItemRating"
+      app:layout_constraintEnd_toStartOf="@id/progressItemRating"
+      app:layout_constraintTop_toTopOf="@id/progressItemRating"
+      app:srcCompat="@drawable/ic_star"
+      app:tint="?attr/colorAccent"
+      />
+
+    <TextView
+      android:id="@+id/progressItemRating"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/spaceMedium"
+      android:gravity="end"
+      android:textColor="?android:attr/textColorSecondary"
+      android:textSize="12sp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@+id/progressItemTitle"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/progressItemTitle"
+      tools:text="7.6"
+      />
+
+    <ImageView
       android:id="@+id/progressItemPin"
       android:layout_width="20dp"
       android:layout_height="wrap_content"

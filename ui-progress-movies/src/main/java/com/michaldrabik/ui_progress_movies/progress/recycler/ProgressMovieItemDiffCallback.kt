@@ -11,5 +11,6 @@ class ProgressMovieItemDiffCallback : DiffUtil.ItemCallback<ProgressMovieListIte
     oldItem.isPinned == newItem.isPinned &&
       oldItem.image == newItem.image &&
       oldItem.movie == newItem.movie &&
+      oldItem.sortOrder == newItem.sortOrder &&
       oldItem.translation == newItem.translation
 }

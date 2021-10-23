@@ -45,14 +45,14 @@ class ShowDetailsRepositoryTest : BaseMockTest() {
         every { idTrakt } returns 1
         every { updatedAt } returns nowUtcMillis() - 100
       }
-      coEvery { showsDao.getById(any()) } returns showDb
+      coEvery { showsDao.getById(any<Long>()) } returns showDb
 
       val show = SUT.load(IdTrakt(1), false)
 
       assertThat(show.ids.trakt).isEqualTo(IdTrakt(1))
       coVerifySequence {
-        showsDao.getById(any())
-        traktApi.fetchShow(any()) wasNot Called
+        showsDao.getById(any<Long>())
+        traktApi.fetchShow(any<Long>()) wasNot Called
       }
     }
   }
@@ -63,17 +63,17 @@ class ShowDetailsRepositoryTest : BaseMockTest() {
       val showRemote = mockk<ShowRemote>(relaxed = true) {
         every { ids?.trakt } returns 1
       }
-      coEvery { showsDao.getById(any()) } returns null
+      coEvery { showsDao.getById(any<Long>()) } returns null
       coEvery { showsDao.upsert(any()) } just Runs
-      coEvery { traktApi.fetchShow(any()) } returns showRemote
+      coEvery { traktApi.fetchShow(any<Long>()) } returns showRemote
 
       val show = SUT.load(IdTrakt(1), true)
 
       assertThat(show.ids.trakt).isEqualTo(IdTrakt(1))
 
       coVerifySequence {
-        showsDao.getById(any())
-        traktApi.fetchShow(any())
+        showsDao.getById(any<Long>())
+        traktApi.fetchShow(any<Long>())
         showsDao.upsert(any())
       }
     }
@@ -85,17 +85,17 @@ class ShowDetailsRepositoryTest : BaseMockTest() {
       val showRemote = mockk<ShowRemote>(relaxed = true) {
         every { ids?.trakt } returns 1
       }
-      coEvery { showsDao.getById(any()) } returns null
+      coEvery { showsDao.getById(any<Long>()) } returns null
       coEvery { showsDao.upsert(any()) } just Runs
-      coEvery { traktApi.fetchShow(any()) } returns showRemote
+      coEvery { traktApi.fetchShow(any<Long>()) } returns showRemote
 
       val show = SUT.load(IdTrakt(1), false)
 
       assertThat(show.ids.trakt).isEqualTo(IdTrakt(1))
 
       coVerifySequence {
-        showsDao.getById(any())
-        traktApi.fetchShow(any())
+        showsDao.getById(any<Long>())
+        traktApi.fetchShow(any<Long>())
         showsDao.upsert(any())
       }
     }
@@ -111,17 +111,17 @@ class ShowDetailsRepositoryTest : BaseMockTest() {
       val showRemote = mockk<ShowRemote>(relaxed = true) {
         every { ids?.trakt } returns 1
       }
-      coEvery { showsDao.getById(any()) } returns showDb
+      coEvery { showsDao.getById(any<Long>()) } returns showDb
       coEvery { showsDao.upsert(any()) } just Runs
-      coEvery { traktApi.fetchShow(any()) } returns showRemote
+      coEvery { traktApi.fetchShow(any<Long>()) } returns showRemote
 
       val show = SUT.load(IdTrakt(1), false)
 
       assertThat(show.ids.trakt).isEqualTo(IdTrakt(1))
 
       coVerifySequence {
-        showsDao.getById(any())
-        traktApi.fetchShow(any())
+        showsDao.getById(any<Long>())
+        traktApi.fetchShow(any<Long>())
         showsDao.upsert(any())
       }
     }

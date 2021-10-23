@@ -13,4 +13,5 @@ object ConfigVariant {
   val STREAMINGS_CACHE_DURATION by lazy { MINUTES.toMillis(3) }
 
   val REMOTE_CONFIG_FETCH_INTERVAL by lazy { MINUTES.toSeconds(3) }
+  val TWITTER_AD_DELAY by lazy { MINUTES.toMillis(3) }
 }

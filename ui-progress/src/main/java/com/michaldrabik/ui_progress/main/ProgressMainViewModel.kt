@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress.main
 
-import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.utilities.Event
@@ -66,13 +65,13 @@ class ProgressMainViewModel @Inject constructor(
     calendarModeState.value = calendarMode
   }
 
-  fun setWatchedEpisode(context: Context, bundle: EpisodeBundle) {
+  fun setWatchedEpisode(bundle: EpisodeBundle) {
     viewModelScope.launch {
       if (!bundle.episode.hasAired(bundle.season)) {
         _messageState.emit(MessageEvent.info(R.string.errorEpisodeNotAired))
         return@launch
       }
-      episodesCase.setEpisodeWatched(context, bundle)
+      episodesCase.setEpisodeWatched(bundle)
       timestampState.value = System.currentTimeMillis()
       scrollState.value = Event(false)
     }

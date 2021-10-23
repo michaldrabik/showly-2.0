@@ -35,6 +35,7 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.EPISODES_LEFT
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
+import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_progress.R
@@ -110,7 +111,7 @@ class ProgressFragment :
           openRateDialog(it)
         } else {
           val bundle = EpisodeBundle(it.episode!!, it.season!!, it.show)
-          parentViewModel.setWatchedEpisode(requireAppContext(), bundle)
+          parentViewModel.setWatchedEpisode(bundle)
         }
       }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
@@ -169,7 +170,7 @@ class ProgressFragment :
       .setView(rateView)
       .setPositiveButton(R.string.textRate) { _, _ ->
         val bundle = EpisodeBundle(item.requireEpisode(), item.requireSeason(), item.show)
-        parentViewModel.setWatchedEpisode(requireAppContext(), bundle)
+        parentViewModel.setWatchedEpisode(bundle)
         viewModel.addRating(rateView.getRating(), item.requireEpisode(), item.show.ids.trakt)
       }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
@@ -177,7 +178,7 @@ class ProgressFragment :
   }
 
   private fun openSortOrderDialog(order: SortOrder) {
-    val options = listOf(NAME, NEWEST, RECENTLY_WATCHED, EPISODES_LEFT)
+    val options = listOf(NAME, RATING, NEWEST, RECENTLY_WATCHED, EPISODES_LEFT)
     val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
 
     MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)

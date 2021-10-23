@@ -22,6 +22,7 @@ import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Season
+import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.progress.recycler.ProgressListItem
 import kotlinx.android.synthetic.main.view_progress_item.view.*
@@ -84,6 +85,10 @@ class ProgressItemView : ShowView<ProgressListItem.Episode> {
       item.translations?.episode?.title?.isBlank() == false -> item.translations.episode.title
       else -> item.episode?.title
     }
+    val showRating = item.sortOrder == SortOrder.RATING && !item.isNew() && !item.isUpcoming
+    progressItemRating.visibleIf(showRating)
+    progressItemRatingStar.visibleIf(showRating)
+    progressItemRating.text = String.format(ENGLISH, "%.1f", item.show.rating)
     progressItemSubtitle2.text = episodeTitle
     progressItemNewBadge.visibleIf(item.isNew())
     progressItemPin.visibleIf(item.isPinned)

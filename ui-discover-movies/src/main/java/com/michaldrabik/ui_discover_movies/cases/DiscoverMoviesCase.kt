@@ -33,6 +33,7 @@ class DiscoverMoviesCase @Inject constructor(
   suspend fun loadCachedMovies(filters: DiscoverFilters) = coroutineScope {
     val myIds = async { moviesRepository.myMovies.loadAllIds() }
     val watchlistIds = async { moviesRepository.watchlistMovies.loadAllIds() }
+    val hiddenIds = async { moviesRepository.hiddenMovies.loadAllIds() }
     val cachedMovies = async { moviesRepository.discoverMovies.loadAllCached() }
     val language = translationsRepository.getLanguage()
 
@@ -40,36 +41,41 @@ class DiscoverMoviesCase @Inject constructor(
       cachedMovies.await(),
       myIds.await(),
       watchlistIds.await(),
+      hiddenIds.await(),
       filters,
       language
     )
   }
 
-  suspend fun loadRemoteMovies(filters: DiscoverFilters): List<DiscoverMovieListItem> {
+  suspend fun loadRemoteMovies(filters: DiscoverFilters) = coroutineScope {
     val showAnticipated = !filters.hideAnticipated
     val showCollection = !filters.hideCollection
     val genres = filters.genres.toList()
 
-    val myIds = moviesRepository.myMovies.loadAllIds()
-    val watchlistIds = moviesRepository.watchlistMovies.loadAllIds()
-    val collectionSize = myIds.size + watchlistIds.size
+    val myAsync = async { moviesRepository.myMovies.loadAllIds() }
+    val watchlistSync = async { moviesRepository.watchlistMovies.loadAllIds() }
+    val hiddenAsync = async { moviesRepository.hiddenMovies.loadAllIds() }
+    val (myIds, watchlistIds, hiddenIds) = awaitAll(myAsync, watchlistSync, hiddenAsync)
+    val collectionSize = myIds.size + watchlistIds.size + hiddenIds.size
 
     val remoteMovies = moviesRepository.discoverMovies.loadAllRemote(showAnticipated, showCollection, collectionSize, genres)
     val language = translationsRepository.getLanguage()
 
     moviesRepository.discoverMovies.cacheDiscoverMovies(remoteMovies)
-    return prepareItems(remoteMovies, myIds, watchlistIds, filters, language)
+    prepareItems(remoteMovies, myIds, watchlistIds, hiddenIds, filters, language)
   }
 
   private suspend fun prepareItems(
     movies: List<Movie>,
     myMoviesIds: List<Long>,
     watchlistMoviesIds: List<Long>,
+    hiddenMoviesIds: List<Long>,
     filters: DiscoverFilters?,
     language: String
   ) = coroutineScope {
     val collectionIds = myMoviesIds + watchlistMoviesIds
     movies
+      .filter { !hiddenMoviesIds.contains(it.traktId) }
       .filter {
         if (filters?.hideCollection == false) true
         else !collectionIds.contains(it.traktId)

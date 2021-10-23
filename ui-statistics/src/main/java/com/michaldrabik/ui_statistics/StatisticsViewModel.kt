@@ -5,7 +5,6 @@ import com.michaldrabik.common.Config
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.Episode
 import com.michaldrabik.data_local.database.model.Season
-import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.repository.shows.ShowsRepository
@@ -31,7 +30,6 @@ import javax.inject.Inject
 class StatisticsViewModel @Inject constructor(
   private val ratingsCase: StatisticsLoadRatingsCase,
   private val showsRepository: ShowsRepository,
-  private val settingsRepository: SettingsRepository,
   private val translationsRepository: TranslationsRepository,
   private val imagesProvider: ShowImagesProvider,
   private val database: AppDatabase,
@@ -45,7 +43,6 @@ class StatisticsViewModel @Inject constructor(
   private val totalWatchedEpisodesShowsState = MutableStateFlow<Int?>(null)
   private val topGenresState = MutableStateFlow<List<Genre>?>(null)
   private val ratingsState = MutableStateFlow<List<StatisticsRatingItem>?>(null)
-  private val archivedShowsState = MutableStateFlow(true)
 
   val uiState = combine(
     mostWatchedShowsState,
@@ -54,9 +51,8 @@ class StatisticsViewModel @Inject constructor(
     totalWatchedEpisodesState,
     totalWatchedEpisodesShowsState,
     topGenresState,
-    ratingsState,
-    archivedShowsState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8 ->
+    ratingsState
+  ) { s1, s2, s3, s4, s5, s6, s7 ->
     StatisticsUiState(
       mostWatchedShows = s1,
       mostWatchedTotalCount = s2,
@@ -64,8 +60,7 @@ class StatisticsViewModel @Inject constructor(
       totalWatchedEpisodes = s4,
       totalWatchedEpisodesShows = s5,
       topGenres = s6,
-      ratings = s7,
-      archivedShowsIncluded = s8
+      ratings = s7
     )
   }.stateIn(
     scope = viewModelScope,
@@ -78,31 +73,24 @@ class StatisticsViewModel @Inject constructor(
   fun loadMostWatchedShows(limit: Int = 0) {
     takeLimit += limit
     viewModelScope.launch {
-      val includeArchive = settingsRepository.load().archiveShowsIncludeStatistics
-      archivedShowsState.value = includeArchive
-
       val language = translationsRepository.getLanguage()
       val myShows = showsRepository.myShows.loadAll()
-      val archiveShows = if (includeArchive) showsRepository.archiveShows.loadAll() else emptyList()
+      val myShowsIds = myShows.map { it.traktId }
 
-      val allShows = (myShows + archiveShows).distinctBy { it.traktId }
-      val allShowsIds = allShows.map { it.traktId }
+      val episodes = batchEpisodes(myShowsIds)
+      val seasons = batchSeasons(myShowsIds)
 
-      val episodes = batchEpisodes(allShowsIds)
-      val seasons = batchSeasons(allShowsIds)
-
-      val genres = extractTopGenres(allShows)
-      val mostWatchedShows = allShows
+      val genres = extractTopGenres(myShows)
+      val mostWatchedShows = myShows
         .map { show ->
           val translation = loadTranslation(language, show)
           StatisticsMostWatchedItem(
-            show = allShows.first { it.traktId == show.traktId },
+            show = myShows.first { it.traktId == show.traktId },
             seasonsCount = seasons.filter { it.idShowTrakt == show.traktId }.count().toLong(),
             episodes = episodes
               .filter { it.idShowTrakt == show.traktId }
               .map { mappers.episode.fromDatabase(it) },
             image = Image.createUnknown(POSTER),
-            isArchived = archiveShows.any { it.traktId == show.traktId },
             translation = translation
           )
         }
@@ -115,7 +103,7 @@ class StatisticsViewModel @Inject constructor(
       delay(150) // Let transition finish peacefully.
 
       mostWatchedShowsState.value = mostWatchedShows
-      mostWatchedTotalCountState.value = allShowsIds.size
+      mostWatchedTotalCountState.value = myShowsIds.size
       totalTimeSpentMinutesState.value = episodes.sumOf { it.runtime }
       totalWatchedEpisodesState.value = episodes.count()
       totalWatchedEpisodesShowsState.value = episodes.distinctBy { it.idShowTrakt }.count()

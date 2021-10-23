@@ -87,7 +87,7 @@ abstract class BaseActivity : AppCompatActivity() {
           else -> {
             bottomNavigationView.selectedItemId = R.id.menuProgress
             val actionId = when (currentDestination?.id) {
-              R.id.progressFragment -> {
+              R.id.progressMainFragment -> {
                 if (isShow) R.id.actionProgressFragmentToShowDetailsFragment
                 else R.id.actionProgressFragmentToMovieDetailsFragment
               }
@@ -114,7 +114,9 @@ abstract class BaseActivity : AppCompatActivity() {
     findNavHostFragment()?.findNavController()?.currentDestination?.id?.let {
       val navHost = supportFragmentManager.findFragmentById(R.id.navigationHost)
       navHost?.childFragmentManager?.primaryNavigationFragment?.let {
-        (it as? OnTraktAuthorizeListener)?.onAuthorizationResult(authData)
+        if (authData.toString().startsWith("showly2://trakt")) {
+          (it as? OnTraktAuthorizeListener)?.onAuthorizationResult(authData)
+        }
       }
     }
   }

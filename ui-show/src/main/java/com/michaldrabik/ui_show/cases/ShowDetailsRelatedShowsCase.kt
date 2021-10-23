@@ -10,8 +10,11 @@ class ShowDetailsRelatedShowsCase @Inject constructor(
   private val showsRepository: ShowsRepository
 ) {
 
-  suspend fun loadRelatedShows(show: Show): List<Show> =
-    showsRepository.relatedShows.loadAll(show)
+  suspend fun loadRelatedShows(show: Show): List<Show> {
+    val archivedShowsIds = showsRepository.archiveShows.loadAllIds()
+    return showsRepository.relatedShows.loadAll(show, archivedShowsIds.size)
+      .filter { it.traktId !in archivedShowsIds }
       .sortedWith(compareBy({ it.votes }, { it.rating }))
       .reversed()
+  }
 }

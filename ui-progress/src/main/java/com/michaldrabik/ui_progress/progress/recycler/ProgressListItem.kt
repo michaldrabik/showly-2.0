@@ -10,6 +10,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
 import java.time.format.DateTimeFormatter
 import com.michaldrabik.ui_model.Episode as EpisodeModel
@@ -32,6 +33,7 @@ sealed class ProgressListItem(
     val isPinned: Boolean,
     val translations: TranslationsBundle? = null,
     val dateFormat: DateTimeFormatter? = null,
+    val sortOrder: SortOrder? = null,
   ) : ProgressListItem(show, image, isLoading) {
 
     fun isNew() = episode?.firstAired?.isBefore(nowUtc()) ?: false &&

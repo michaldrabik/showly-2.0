@@ -3,7 +3,7 @@ package com.michaldrabik.data_local.database.migrations
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-const val DATABASE_VERSION = 28
+const val DATABASE_VERSION = 29
 const val DATABASE_NAME = "SHOWLY2_DB_2"
 
 // TODO Split into separate files?
@@ -495,6 +495,30 @@ object Migrations {
     }
   }
 
+  private val MIGRATION_29 = object : Migration(28, 29) {
+    override fun migrate(database: SupportSQLiteDatabase) {
+      with(database) {
+        execSQL("ALTER TABLE movies ADD COLUMN created_at INTEGER NOT NULL DEFAULT -1")
+        val cursor = database.query("SELECT id_trakt, updated_at FROM movies")
+        while (cursor.moveToNext()) {
+          val id = cursor.getLong(cursor.getColumnIndexOrThrow("id_trakt"))
+          val updatedAt = cursor.getLong(cursor.getColumnIndexOrThrow("updated_at"))
+          execSQL("UPDATE movies SET created_at = $updatedAt WHERE id_trakt == $id")
+        }
+
+        execSQL(
+          "CREATE TABLE IF NOT EXISTS `movies_archive` (" +
+            "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+            "`id_trakt` INTEGER NOT NULL, " +
+            "`created_at` INTEGER NOT NULL, " +
+            "`updated_at` INTEGER NOT NULL, " +
+            "FOREIGN KEY(`id_trakt`) REFERENCES `movies`(`id_trakt`) ON DELETE CASCADE)"
+        )
+        execSQL("CREATE UNIQUE INDEX index_movies_archive_id_trakt ON movies_archive(id_trakt)")
+      }
+    }
+  }
+
   val MIGRATIONS = listOf(
     MIGRATION_2,
     MIGRATION_3,
@@ -522,6 +546,7 @@ object Migrations {
     MIGRATION_25,
     MIGRATION_26,
     MIGRATION_27,
-    MIGRATION_28
+    MIGRATION_28,
+    MIGRATION_29
   )
 }

@@ -95,4 +95,5 @@
   <string name="errorTraktSyncGeneral">Erro de sincronização Trakt.tv.\nPor favor, verifique sua conexão com a internet e tente novamente.</string>
   <string name="errorTraktLocked">Sua conta Trakt.tv está bloqueada no momento.\nPor favor, entre em contato com o suporte de Trakt.tv em https://support.trakt.tv/ para desbloquear sua conta.</string>
   <string name="errorSubscriptionsNotAvailable">As assinaturas do Google Play não estão disponíveis neste dispositivo.</string>
+  <string name="textSeasonEpisode">S.%02d E.%02d</string>
 </resources>

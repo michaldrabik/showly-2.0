@@ -116,7 +116,7 @@ class WatchlistViewModel @Inject constructor(
 
   private fun updateItem(new: WatchlistListItem) {
     val currentItems = uiState.value.items.toMutableList()
-    currentItems.findReplace(new) { it.isSameAs(new) }
+    currentItems.findReplace(new) { it isSameAs new }
     itemsState.value = currentItems
   }
 }

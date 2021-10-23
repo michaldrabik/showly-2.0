@@ -33,6 +33,7 @@ class ProgressMoviesItemsCase @Inject constructor(
   suspend fun loadItems(searchQuery: String) = withContext(Dispatchers.Default) {
     val language = translationsRepository.getLanguage()
     val dateFormat = dateFormatProvider.loadFullDayFormat()
+    val sortOrder = settingsRepository.load().progressMoviesSortBy
 
     val watchlistMovies = moviesRepository.watchlistMovies.loadAll()
     val items = watchlistMovies.map { movie ->
@@ -48,13 +49,14 @@ class ProgressMoviesItemsCase @Inject constructor(
           isLoading = false,
           isPinned = pinnedItemsRepository.isItemPinned(movie),
           translation = translation,
-          dateFormat = dateFormat
+          dateFormat = dateFormat,
+          sortOrder = sortOrder
         )
       }
     }.awaitAll()
 
     val filtered = filterItems(searchQuery, items)
-    val sorted = sortItems(filtered)
+    val sorted = sortItems(filtered, sortOrder)
     prepareItems(sorted)
   }
 
@@ -64,20 +66,20 @@ class ProgressMoviesItemsCase @Inject constructor(
         it.translation?.title?.contains(query, true) == true
     }
 
-  private suspend fun sortItems(items: List<ProgressMovieListItem.MovieItem>): List<ProgressMovieListItem.MovieItem> {
-    val sortOrder = settingsRepository.load().progressMoviesSortBy
-    return when (sortOrder) {
-      SortOrder.NAME -> items.sortedBy {
-        val translatedTitle = if (it.translation?.hasTitle == false) null else it.translation?.title
-        (translatedTitle ?: it.movie.titleNoThe).uppercase(Locale.ROOT)
-      }
-      SortOrder.DATE_ADDED -> items.sortedByDescending { it.movie.updatedAt }
-      SortOrder.RATING -> items.sortedByDescending { it.movie.rating }
-      SortOrder.NEWEST -> items.sortedWith(
-        compareByDescending<ProgressMovieListItem.MovieItem> { it.movie.released }.thenByDescending { it.movie.year }
-      )
-      else -> throw IllegalStateException("Invalid sort order")
+  private fun sortItems(
+    items: List<ProgressMovieListItem.MovieItem>,
+    sortOrder: SortOrder
+  ) = when (sortOrder) {
+    SortOrder.NAME -> items.sortedBy {
+      val translatedTitle = if (it.translation?.hasTitle == false) null else it.translation?.title
+      (translatedTitle ?: it.movie.titleNoThe).uppercase(Locale.ROOT)
     }
+    SortOrder.DATE_ADDED -> items.sortedByDescending { it.movie.updatedAt }
+    SortOrder.RATING -> items.sortedByDescending { it.movie.rating }
+    SortOrder.NEWEST -> items.sortedWith(
+      compareByDescending<ProgressMovieListItem.MovieItem> { it.movie.released }.thenByDescending { it.movie.year }
+    )
+    else -> throw IllegalStateException("Invalid sort order")
   }
 
   private fun prepareItems(items: List<ProgressMovieListItem.MovieItem>) =

@@ -136,12 +136,7 @@ class ProgressMainFragment :
 
     with(progressMainCalendarIcon) {
       visibleIf(currentPage == 1)
-      onClick {
-        exitSearch()
-        onScrollReset()
-        resetTranslations()
-        viewModel.toggleCalendarMode()
-      }
+      onClick { toggleCalendarMode() }
     }
 
     with(progressMainSearchView) {
@@ -216,7 +211,7 @@ class ProgressMainFragment :
     exitSearch()
     hideNavigation()
     progressMainRoot.fadeOut(150) {
-      if (findNavControl()?.currentDestination?.id == R.id.progressFragment) {
+      if (findNavControl()?.currentDestination?.id == R.id.progressMainFragment) {
         val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.traktId) }
         navigateTo(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
       } else {
@@ -227,7 +222,7 @@ class ProgressMainFragment :
   }
 
   fun openEpisodeDetails(show: Show, episode: Episode, season: Season) {
-    if (!checkNavigation(R.id.progressFragment)) return
+    if (!checkNavigation(R.id.progressMainFragment)) return
     setFragmentResultListener(REQUEST_EPISODE_DETAILS) { _, bundle ->
       when {
         bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
@@ -279,6 +274,13 @@ class ProgressMainFragment :
     }
     exSearchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
     showNavigation()
+  }
+
+  fun toggleCalendarMode() {
+    exitSearch()
+    onScrollReset()
+    resetTranslations()
+    viewModel.toggleCalendarMode()
   }
 
   override fun onShowsMoviesSyncFinished() = viewModel.loadProgress()

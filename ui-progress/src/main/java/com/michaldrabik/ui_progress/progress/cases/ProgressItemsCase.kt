@@ -78,7 +78,8 @@ class ProgressItemsCase @Inject constructor(
           watchedCount = 0,
           isUpcoming = isUpcoming,
           isPinned = false,
-          dateFormat = dateFormat
+          dateFormat = dateFormat,
+          sortOrder = sortOrder
         )
       }
     }.awaitAll()

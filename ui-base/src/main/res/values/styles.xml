@@ -54,6 +54,7 @@
   <!--  Bottom Sheet Dialogs -->
 
   <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+    <item name="android:windowTranslucentStatus">false</item>
     <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
   </style>
 
@@ -209,6 +210,10 @@
     <item name="android:textAlignment">viewStart</item>
     <item name="android:textColor">?android:attr/textColorSecondary</item>
     <item name="android:textSize">12sp</item>
+  </style>
+
+  <style name="ShowlyOutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+    <item name="strokeColor">@color/colorGrayLight</item>
   </style>
 
 </resources>

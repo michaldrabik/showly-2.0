@@ -50,7 +50,7 @@
   </LinearLayout>
 
   <com.google.android.material.button.MaterialButton
-    android:id="@+id/inMyMoviesButton"
+    android:id="@+id/addedToButton"
     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

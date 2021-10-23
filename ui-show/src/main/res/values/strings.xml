@@ -5,7 +5,7 @@
   <string name="textNextEpisode">Next Episode:</string>
   <string name="textInMyShows">Added to my shows</string>
   <string name="textInWatchlist">Added to watchlist</string>
-  <string name="textInArchive">Archived</string>
+  <string name="textInHidden">Hidden</string>
   <string name="textShowExtraInfo">%s %s %s | %s %s | %s</string>
 
   <string name="textShowQuickProgressTitle">Quick Progress</string>
@@ -20,16 +20,9 @@
   <string name="textSeasonsEmpty">Seasons not available.</string>
   <string name="textTrailer">Trailer</string>
   <string name="textLink">Link</string>
-  <string name="textShare">Share</string>
   <string name="textYouMayAlsoLike">You may also like:</string>
   <string name="textRuntimeLeftHours">~%sh %sm remaining</string>
   <string name="textRuntimeLeftMinutes">~%sm remaining</string>
-
-  <string name="textWhatIsArchive">Archive?</string>
-  <string name="textWhatIsArchiveFull">What\'s Archive?</string>
-  <string name="textArchiveDescription"><b>Archive</b> is a list of shows that have been dropped, abandoned or you are no longer interested in.\n\nArchived shows will no longer appear in <b>Progress</b>, <b>Discover</b> and <b>My Shows</b> sections and will also be skipped during Trakt.tv import.</string>
-  <string name="textArchiveConfirmationTitle">Archive Show</string>
-  <string name="textArchiveConfirmationMessage">\nAre you sure you want to archive this show?\n</string>
 
   <string name="textShowManageLists">Manage Lists</string>
   <string name="textShowManageListsCount">Manage Lists (%d)</string>

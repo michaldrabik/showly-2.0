@@ -25,9 +25,7 @@ data class MovieDetailsUiState(
   val ratingState: RatingState? = null,
   val ratings: Ratings? = null,
   val streamings: StreamingsState? = null,
-  val removeFromTraktHistory: Event<Boolean>? = null,
-  val removeFromTraktWatchlist: Event<Boolean>? = null,
-  val showFromTraktLoading: Boolean? = null,
+  val removeFromTrakt: Event<Int>? = null,
   val translation: Translation? = null,
   val country: AppCountry? = null,
   val dateFormat: DateTimeFormatter? = null,
@@ -45,13 +43,15 @@ data class MovieDetailsUiState(
   data class FollowedState(
     val isMyMovie: Boolean,
     val isWatchlist: Boolean,
+    val isHidden: Boolean,
     val withAnimation: Boolean,
   ) {
 
     companion object {
-      fun idle() = FollowedState(isMyMovie = false, isWatchlist = false, withAnimation = true)
-      fun inMyMovies() = FollowedState(isMyMovie = true, isWatchlist = false, withAnimation = true)
-      fun inWatchlist() = FollowedState(isMyMovie = false, isWatchlist = true, withAnimation = true)
+      fun idle() = FollowedState(isMyMovie = false, isWatchlist = false, isHidden = false, withAnimation = true)
+      fun inMyMovies() = FollowedState(isMyMovie = true, isWatchlist = false, isHidden = false, withAnimation = true)
+      fun inHidden() = FollowedState(isMyMovie = false, isWatchlist = false, isHidden = true, withAnimation = true)
+      fun inWatchlist() = FollowedState(isMyMovie = false, isWatchlist = true, isHidden = false, withAnimation = true)
     }
   }
 }

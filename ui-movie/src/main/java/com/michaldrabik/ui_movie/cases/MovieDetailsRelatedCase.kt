@@ -10,6 +10,7 @@ class MovieDetailsRelatedCase @Inject constructor(
   private val moviesRepository: MoviesRepository
 ) {
 
+  // TODO Add Hidden items
   suspend fun loadRelatedMovies(movie: Movie): List<Movie> =
     moviesRepository.relatedMovies.loadAll(movie)
       .sortedWith(compareBy({ it.votes }, { it.rating }))

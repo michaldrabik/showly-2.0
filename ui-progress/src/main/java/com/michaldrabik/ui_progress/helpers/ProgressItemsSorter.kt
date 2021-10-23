@@ -14,6 +14,7 @@ class ProgressItemsSorter @Inject constructor() {
       SortOrder.NAME -> compareBy { getTitle(it) }
       SortOrder.RECENTLY_WATCHED -> compareByDescending { it.show.updatedAt }
       SortOrder.NEWEST -> compareByDescending { it.episode?.firstAired?.toMillis() }
+      SortOrder.RATING -> compareByDescending { it.show.rating }
       SortOrder.EPISODES_LEFT -> compareBy<ProgressListItem.Episode> { it.totalCount - it.watchedCount }
         .thenBy { getTitle(it) }
       else -> throw IllegalStateException("Invalid sort order")

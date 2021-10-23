@@ -38,13 +38,13 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_progress_movies.*
+import kotlinx.android.synthetic.main.fragment_progress_main_movies.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProgressMoviesMainFragment :
-  BaseFragment<ProgressMoviesMainViewModel>(R.layout.fragment_progress_movies),
+  BaseFragment<ProgressMoviesMainViewModel>(R.layout.fragment_progress_main_movies),
   OnShowsMoviesSyncedListener,
   OnTabReselectedListener,
   OnTraktSyncListener {
@@ -124,12 +124,7 @@ class ProgressMoviesMainFragment :
 
     with(progressMoviesCalendarIcon) {
       visibleIf(currentPage == 1)
-      onClick {
-        exitSearch()
-        onScrollReset()
-        resetTranslations()
-        viewModel.toggleCalendarMode()
-      }
+      onClick { toggleCalendarMode() }
     }
 
     with(progressMoviesSearchView) {
@@ -226,6 +221,13 @@ class ProgressMoviesMainFragment :
     (exSearchViewIcon.drawable as Animatable).start()
     exSearchViewIcon.onClick { exitSearch() }
     hideNavigation(false)
+  }
+
+  fun toggleCalendarMode() {
+    exitSearch()
+    onScrollReset()
+    resetTranslations()
+    viewModel.toggleCalendarMode()
   }
 
   private fun exitSearch(showNavigation: Boolean = true) {

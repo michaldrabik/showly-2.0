@@ -43,8 +43,14 @@ interface TraktService {
   @GET("shows/{traktId}?extended=full")
   suspend fun fetchShow(@Path("traktId") traktId: Long): Show
 
+  @GET("shows/{traktSlug}?extended=full")
+  suspend fun fetchShow(@Path("traktSlug") traktSlug: String): Show
+
   @GET("movies/{traktId}?extended=full")
   suspend fun fetchMovie(@Path("traktId") traktId: Long): Movie
+
+  @GET("movies/{traktSlug}?extended=full")
+  suspend fun fetchMovie(@Path("traktSlug") traktSlug: String): Movie
 
   @GET("shows/popular?extended=full&limit=${Config.TRAKT_POPULAR_SHOWS_LIMIT}")
   suspend fun fetchPopularShows(
@@ -78,14 +84,17 @@ interface TraktService {
     @Query("genres") genres: String
   ): List<MovieResult>
 
-  @GET("shows/{traktId}/related?extended=full&limit=${Config.TRAKT_RELATED_SHOWS_LIMIT}")
-  suspend fun fetchRelatedShows(@Path("traktId") traktId: Long): List<Show>
+  @GET("shows/{traktId}/related?extended=full")
+  suspend fun fetchRelatedShows(@Path("traktId") traktId: Long, @Query("limit") limit: Int): List<Show>
 
-  @GET("movies/{traktId}/related?extended=full&limit=${Config.TRAKT_RELATED_MOVIES_LIMIT}")
-  suspend fun fetchRelatedMovies(@Path("traktId") traktId: Long): List<Movie>
+  @GET("movies/{traktId}/related?extended=full")
+  suspend fun fetchRelatedMovies(@Path("traktId") traktId: Long, @Query("limit") limit: Int): List<Movie>
 
   @GET("shows/{traktId}/next_episode?extended=full")
   suspend fun fetchNextEpisode(@Path("traktId") traktId: Long): Response<Episode>
+
+  @GET("search/{idType}/{id}?extended=full")
+  suspend fun fetchSearchId(@Path("idType") idType: String, @Path("id") id: String): List<SearchResult>
 
   @GET("search/show?extended=full&limit=${Config.TRAKT_SEARCH_LIMIT}")
   suspend fun fetchSearchResults(@Query("query") queryText: String): List<SearchResult>
@@ -188,13 +197,25 @@ interface TraktService {
 
   // Sync
 
-  @GET("users/hidden/progress_watched?type=show")
+  @GET("users/hidden/progress_watched?type=show&extended=full")
   suspend fun fetchHiddenShows(
     @Header("Authorization") authToken: String,
     @Query("limit") pageLimit: Int
   ): List<HiddenItem>
 
-  @GET("users/hidden/progress_watched?type=movie")
+  @POST("users/hidden/progress_watched")
+  suspend fun postHiddenShows(
+    @Header("Authorization") authToken: String,
+    @Body request: SyncExportRequest
+  ): SyncExportResult
+
+  @POST("users/hidden/calendar")
+  suspend fun postHiddenMovies(
+    @Header("Authorization") authToken: String,
+    @Body request: SyncExportRequest
+  ): SyncExportResult
+
+  @GET("users/hidden/calendar?type=movie&extended=full")
   suspend fun fetchHiddenMovies(
     @Header("Authorization") authToken: String,
     @Query("limit") pageLimit: Int
@@ -283,6 +304,13 @@ interface TraktService {
   @POST("sync/watchlist/remove")
   suspend fun deleteWatchlist(
     @Header("Authorization") authToken: String,
+    @Body request: SyncExportRequest
+  ): SyncExportResult
+
+  @POST("users/hidden/{section}/remove")
+  suspend fun deleteHidden(
+    @Header("Authorization") authToken: String,
+    @Path("section") section: String,
     @Body request: SyncExportRequest
   ): SyncExportResult
 

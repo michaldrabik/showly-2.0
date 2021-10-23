@@ -3,8 +3,6 @@ package com.michaldrabik.ui_movie.cases
 import androidx.room.withTransaction
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_remote.Cloud
-import com.michaldrabik.data_remote.trakt.model.SyncExportItem
-import com.michaldrabik.data_remote.trakt.model.SyncExportRequest
 import com.michaldrabik.repository.PinnedItemsRepository
 import com.michaldrabik.repository.UserTraktManager
 import com.michaldrabik.repository.movies.MoviesRepository
@@ -36,11 +34,5 @@ class MovieDetailsMyMoviesCase @Inject constructor(
       moviesRepository.myMovies.delete(movie.ids.trakt)
       pinnedItemsRepository.removePinnedItem(movie)
     }
-  }
-
-  suspend fun removeTraktHistory(movie: Movie) {
-    val token = userManager.checkAuthorization()
-    val request = SyncExportRequest(movies = listOf(SyncExportItem.create(movie.traktId)))
-    cloud.traktApi.postDeleteProgress(token.token, request)
   }
 }

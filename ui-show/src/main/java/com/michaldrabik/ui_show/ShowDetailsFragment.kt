@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
+import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -24,9 +25,6 @@ import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
@@ -60,6 +58,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
@@ -104,6 +103,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CUSTOM_IMAGE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_MANAGE_LISTS
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_REMOVE_TRAKT
 import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.ShowLink
@@ -121,7 +121,7 @@ import com.michaldrabik.ui_show.related.RelatedShowAdapter
 import com.michaldrabik.ui_show.seasons.SeasonListItem
 import com.michaldrabik.ui_show.seasons.SeasonsAdapter
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.ADD
-import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_ARCHIVE
+import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_HIDDEN
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_MY_SHOWS
 import com.michaldrabik.ui_show.views.AddToShowsButton.State.IN_WATCHLIST
 import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
@@ -131,7 +131,6 @@ import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
 import kotlinx.android.synthetic.main.view_links_menu.view.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import java.time.Duration
 import java.util.Locale.ENGLISH
 
@@ -171,19 +170,17 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     setupSeasonsList()
     setupStreamingsList()
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          launch { messageState.collect { renderSnack(it) } }
-          if (!isInitialized) {
-            loadDetails(showId)
-            isInitialized = true
-          }
-          loadPremium()
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      { viewModel.messageState.collect { renderSnack(it) } },
+      afterBlock = {
+        if (!isInitialized) {
+          viewModel.loadDetails(showId)
+          isInitialized = true
         }
+        viewModel.loadPremium()
       }
-    }
+    )
   }
 
   private fun setupView() {
@@ -222,15 +219,11 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     showDetailsAddButton.run {
       isEnabled = false
       onAddMyShowsClickListener = { viewModel.addFollowedShow() }
-      onAddWatchLaterClickListener = { viewModel.addWatchlistShow(requireAppContext()) }
-      onArchiveClickListener = { openArchiveConfirmationDialog() }
+      onAddWatchlistClickListener = { viewModel.addWatchlistShow() }
       onRemoveClickListener = { viewModel.removeFromFollowed() }
     }
-    showDetailsRemoveTraktButton.onNoClickListener = {
-      showDetailsAddButton.fadeIn()
-      showDetailsRemoveTraktButton.fadeOut()
-    }
     showDetailsManageListsLabel.onClick { openListsDialog() }
+    showDetailsHideLabel.onClick { viewModel.addHiddenShow() }
   }
 
   private fun setupStatusBar() {
@@ -282,7 +275,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     seasonsAdapter = SeasonsAdapter().apply {
       itemClickListener = { showEpisodesView(it) }
       itemCheckedListener = { item: SeasonListItem, isChecked: Boolean ->
-        viewModel.setWatchedSeason(requireAppContext(), item.season, isChecked)
+        viewModel.setWatchedSeason(item.season, isChecked)
       }
     }
     showDetailsSeasonsRecycler.apply {
@@ -311,10 +304,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       }
       startAnimation(animationEnterRight)
       itemCheckedListener = { episode, season, isChecked ->
-        viewModel.setWatchedEpisode(requireAppContext(), episode, season, isChecked)
+        viewModel.setWatchedEpisode(episode, season, isChecked)
       }
       seasonCheckedListener = { season, isChecked ->
-        viewModel.setWatchedSeason(requireAppContext(), season, isChecked)
+        viewModel.setWatchedSeason(season, isChecked)
       }
     }
     showDetailsMainLayout.run {
@@ -367,7 +360,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
           bundle.containsKey(ACTION_RATING_CHANGED) -> viewModel.refreshEpisodesRatings()
           bundle.containsKey(ACTION_EPISODE_WATCHED) -> {
             val watched = bundle.getBoolean(ACTION_EPISODE_WATCHED)
-            viewModel.setWatchedEpisode(requireAppContext(), episode, season, watched)
+            viewModel.setWatchedEpisode(episode, season, watched)
           }
           bundle.containsKey(ACTION_EPISODE_TAB_SELECTED) -> {
             val selectedEpisode = bundle.getParcelable<Episode>(ACTION_EPISODE_TAB_SELECTED)!!
@@ -537,9 +530,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         when {
           it.isMyShows -> showDetailsAddButton.setState(IN_MY_SHOWS, it.withAnimation)
           it.isWatchlist -> showDetailsAddButton.setState(IN_WATCHLIST, it.withAnimation)
-          it.isArchived -> showDetailsAddButton.setState(IN_ARCHIVE, it.withAnimation)
+          it.isHidden -> showDetailsAddButton.setState(IN_HIDDEN, it.withAnimation)
           else -> showDetailsAddButton.setState(ADD, it.withAnimation)
         }
+        showDetailsHideLabel.visibleIf(!it.isHidden)
       }
       listsCount?.let {
         val text =
@@ -567,27 +561,8 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
         if (isSignedIn) showDetailsCommentsView.showCommentButton()
       }
       ratingState?.let { renderRating(it) }
-      showFromTraktLoading?.let {
-        showDetailsRemoveTraktButton.isLoading = it
-        showDetailsAddButton.isEnabled = !it
-      }
-      removeFromTraktHistory?.let { event ->
-        event.consume()?.let {
-          showDetailsAddButton.fadeIf(!it, hardware = true)
-          showDetailsRemoveTraktButton.run {
-            fadeIf(it, hardware = true)
-            onYesClickListener = { viewModel.removeFromTraktHistory() }
-          }
-        }
-      }
-      removeFromTraktWatchlist?.let { event ->
-        event.consume()?.let {
-          showDetailsAddButton.fadeIf(!it, hardware = true)
-          showDetailsRemoveTraktButton.run {
-            fadeIf(it, hardware = true)
-            onYesClickListener = { viewModel.removeFromTraktWatchlist() }
-          }
-        }
+      removeFromTrakt?.let { event ->
+        event.consume()?.let { openRemoveTraktSheet(it) }
       }
       isFinished?.let { event ->
         event.consume()?.let {
@@ -841,6 +816,19 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
   }
 
+  private fun openRemoveTraktSheet(@IdRes action: Int) {
+    setFragmentResultListener(REQUEST_REMOVE_TRAKT) { _, _ ->
+      val text = resources.getString(R.string.textTraktSyncRemovedFromTrakt)
+      (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
+
+      if (action == R.id.actionShowDetailsFragmentToRemoveTraktProgress) {
+        viewModel.launchRefreshWatchedEpisodes()
+      }
+    }
+    val args = bundleOf(ARG_ID to showId.id, ARG_TYPE to Mode.SHOWS)
+    navigateTo(action, args)
+  }
+
   private fun openShareSheet(show: Show) {
     val intent = Intent().apply {
       action = Intent.ACTION_SEND
@@ -882,29 +870,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
       .setView(view)
       .setPositiveButton(R.string.textSelect) { _, _ ->
-        viewModel.setQuickProgress(requireAppContext(), view.getSelectedItem())
+        viewModel.setQuickProgress(view.getSelectedItem())
       }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
-      .show()
-  }
-
-  private fun openArchiveConfirmationDialog() {
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setTitle(R.string.textArchiveConfirmationTitle)
-      .setMessage(R.string.textArchiveConfirmationMessage)
-      .setPositiveButton(R.string.textYes) { _, _ -> viewModel.addArchiveShow() }
-      .setNegativeButton(R.string.textCancel) { _, _ -> }
-      .setNeutralButton(R.string.textWhatIsArchive) { _, _ -> openArchiveDescriptionDialog() }
-      .show()
-  }
-
-  private fun openArchiveDescriptionDialog() {
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setTitle(R.string.textWhatIsArchiveFull)
-      .setMessage(R.string.textArchiveDescription)
-      .setPositiveButton(R.string.textOk) { _, _ -> openArchiveConfirmationDialog() }
       .show()
   }
 

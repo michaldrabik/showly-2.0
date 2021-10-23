@@ -22,19 +22,31 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_progress.R
-import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
+import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode.PRESENT_FUTURE
+import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode.RECENTS
+import com.michaldrabik.ui_progress.calendar.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarAdapter
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_calendar.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import me.everything.android.ui.overscroll.IOverScrollState
+import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase.DEFAULT_DECELERATE_FACTOR
+import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase.DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK
+import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator
 
 @AndroidEntryPoint
 class CalendarFragment :
   BaseFragment<CalendarViewModel>(R.layout.fragment_calendar),
   OnScrollResetListener {
+
+  private companion object {
+    const val OVERSCROLL_OFFSET = 75F
+    const val OVERSCROLL_OFFSET_TRANSLATION = 5F
+  }
 
   override val viewModel by viewModels<CalendarViewModel>()
   private val parentViewModel by viewModels<ProgressMainViewModel>({ requireParentFragment() })
@@ -42,6 +54,7 @@ class CalendarFragment :
   private var adapter: CalendarAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
+  private var overscrollEnabled = true
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -74,7 +87,7 @@ class CalendarFragment :
         if (viewModel.isQuickRateEnabled) {
           openRateDialog(bundle)
         } else {
-          parentViewModel.setWatchedEpisode(requireAppContext(), bundle)
+          parentViewModel.setWatchedEpisode(bundle)
         }
       }
     }
@@ -83,6 +96,49 @@ class CalendarFragment :
       layoutManager = this@CalendarFragment.layoutManager
       (itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
       setHasFixedSize(true)
+    }
+    setupOverscroll()
+  }
+
+  private fun setupOverscroll() {
+    val adapt = TopOverscrollAdapter(progressCalendarRecycler)
+    val overscroll = VerticalOverScrollBounceEffectDecorator(
+      adapt,
+      1.75F,
+      DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK,
+      DEFAULT_DECELERATE_FACTOR
+    )
+    overscroll.setOverScrollUpdateListener { _, state, offset ->
+      with(progressCalendarOverscrollIcon) {
+        if (offset > 0) {
+          val value = (offset / OVERSCROLL_OFFSET).coerceAtMost(1F)
+          val valueTranslation = offset / OVERSCROLL_OFFSET_TRANSLATION
+          when (state) {
+            IOverScrollState.STATE_DRAG_START_SIDE -> {
+              alpha = value
+              scaleX = value
+              scaleY = value
+              translationY = valueTranslation
+              overscrollEnabled = true
+            }
+            IOverScrollState.STATE_BOUNCE_BACK -> {
+              alpha = value
+              scaleX = value
+              scaleY = value
+              translationY = valueTranslation
+              if (offset >= OVERSCROLL_OFFSET && overscrollEnabled) {
+                overscrollEnabled = false
+                (requireParentFragment() as ProgressMainFragment).toggleCalendarMode()
+              }
+            }
+          }
+        } else {
+          alpha = 0F
+          scaleX = 0F
+          scaleY = 0F
+          translationY = 0F
+        }
+      }
     }
   }
 
@@ -112,7 +168,7 @@ class CalendarFragment :
       .setBackground(ContextCompat.getDrawable(context, R.drawable.bg_dialog))
       .setView(rateView)
       .setPositiveButton(R.string.textRate) { _, _ ->
-        parentViewModel.setWatchedEpisode(requireAppContext(), bundle)
+        parentViewModel.setWatchedEpisode(bundle)
         viewModel.addRating(rateView.getRating(), bundle)
       }
       .setNegativeButton(R.string.textCancel) { _, _ -> }
@@ -124,8 +180,17 @@ class CalendarFragment :
       items?.let {
         adapter?.setItems(it)
         progressCalendarRecycler.fadeIn(150, withHardware = true)
-        progressCalendarEmptyFutureView.visibleIf(items.isEmpty() && mode == CalendarMode.PRESENT_FUTURE)
-        progressCalendarEmptyRecentsView.visibleIf(items.isEmpty() && mode == CalendarMode.RECENTS)
+        progressCalendarEmptyFutureView.visibleIf(items.isEmpty() && mode == PRESENT_FUTURE)
+        progressCalendarEmptyRecentsView.visibleIf(items.isEmpty() && mode == RECENTS)
+      }
+      mode.let {
+        viewLifecycleOwner.lifecycleScope.launch {
+          delay(300)
+          when (it) {
+            PRESENT_FUTURE -> progressCalendarOverscrollIcon.setImageResource(R.drawable.ic_history)
+            RECENTS -> progressCalendarOverscrollIcon.setImageResource(R.drawable.ic_calendar)
+          }
+        }
       }
     }
   }

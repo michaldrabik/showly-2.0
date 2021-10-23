@@ -10,6 +10,7 @@ enum class AppCountry(
   AUSTRIA("at", "Austria", "Suche"),
   BELGIUM("be", "Belgium", "recherche"),
   BRAZIL("br", "Brazil", "busca"),
+  BULGARIA("bg", "Bulgaria"),
   CANADA("ca", "Canada"),
   CHILE("cl", "Chile", "buscar"),
   COLOMBIA("co", "Colombia", "buscar"),

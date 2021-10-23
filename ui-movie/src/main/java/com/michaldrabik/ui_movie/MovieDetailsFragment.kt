@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.activity.addCallback
+import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -24,9 +25,6 @@ import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL
 import com.bumptech.glide.Glide
@@ -58,6 +56,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.screenHeight
@@ -92,8 +91,10 @@ import com.michaldrabik.ui_movie.helpers.MovieLink.TRAKT
 import com.michaldrabik.ui_movie.related.RelatedListItem
 import com.michaldrabik.ui_movie.related.RelatedMovieAdapter
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.ADD
+import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_HIDDEN
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_MY_MOVIES
 import com.michaldrabik.ui_movie.views.AddToMoviesButton.State.IN_WATCHLIST
+import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_NEW_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_COMMENT_ACTION
@@ -113,7 +114,6 @@ import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
 import kotlinx.android.synthetic.main.view_links_movie_menu.view.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import java.util.Locale.ENGLISH
 import java.util.Locale.ROOT
 
@@ -151,19 +151,17 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     setupStreamingsList()
     setupRelatedList()
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          launch { messageState.collect { renderSnack(it) } }
-          if (!isInitialized) {
-            loadDetails(movieId)
-            isInitialized = true
-          }
-          loadPremium()
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      { viewModel.messageState.collect { renderSnack(it) } },
+      afterBlock = {
+        if (!isInitialized) {
+          viewModel.loadDetails(movieId)
+          isInitialized = true
         }
+        viewModel.loadPremium()
       }
-    }
+    )
   }
 
   private fun setupView() {
@@ -195,16 +193,13 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     movieDetailsAddButton.run {
       isEnabled = false
       onAddMyMoviesClickListener = {
-        viewModel.addFollowedMovie(requireAppContext())
+        viewModel.addFollowedMovie()
       }
-      onAddWatchLaterClickListener = { viewModel.addWatchlistMovie(requireAppContext()) }
+      onAddWatchLaterClickListener = { viewModel.addWatchlistMovie() }
       onRemoveClickListener = { viewModel.removeFromFollowed() }
     }
-    movieDetailsRemoveTraktButton.onNoClickListener = {
-      movieDetailsAddButton.fadeIn(withHardware = true)
-      movieDetailsRemoveTraktButton.fadeOut(withHardware = true)
-    }
     movieDetailsManageListsLabel.onClick { openListsDialog() }
+    movieDetailsHideLabel.onClick { viewModel.addHiddenMovie() }
   }
 
   private fun setupStatusBar() {
@@ -438,8 +433,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         when {
           it.isMyMovie -> movieDetailsAddButton.setState(IN_MY_MOVIES, it.withAnimation)
           it.isWatchlist -> movieDetailsAddButton.setState(IN_WATCHLIST, it.withAnimation)
+          it.isHidden -> movieDetailsAddButton.setState(IN_HIDDEN, it.withAnimation)
           else -> movieDetailsAddButton.setState(ADD, it.withAnimation)
         }
+        movieDetailsHideLabel.visibleIf(!it.isHidden)
         (requireAppContext() as WidgetsProvider).requestMoviesWidgetsUpdate()
       }
       image?.let { renderImage(it) }
@@ -461,27 +458,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       }
       ratingState?.let { renderRating(it) }
       ratings?.let { renderRatings(it, movie) }
-      showFromTraktLoading?.let {
-        movieDetailsRemoveTraktButton.isLoading = it
-        movieDetailsAddButton.isEnabled = !it
-      }
-      removeFromTraktHistory?.let { event ->
-        event.consume()?.let {
-          movieDetailsAddButton.fadeIf(!it, hardware = true)
-          movieDetailsRemoveTraktButton.run {
-            fadeIf(it)
-            onYesClickListener = { viewModel.removeFromTraktHistory() }
-          }
-        }
-      }
-      removeFromTraktWatchlist?.let { event ->
-        event.consume()?.let {
-          movieDetailsAddButton.fadeIf(!it, hardware = true)
-          movieDetailsRemoveTraktButton.run {
-            fadeIf(it)
-            onYesClickListener = { viewModel.removeFromTraktWatchlist() }
-          }
-        }
+      removeFromTrakt?.let { event ->
+        event.consume()?.let { openRemoveTraktSheet(it) }
       }
       isFinished?.let { event ->
         event.consume()?.let {
@@ -669,6 +647,15 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         fadeOut(125)
       }
     }
+  }
+
+  private fun openRemoveTraktSheet(@IdRes action: Int) {
+    setFragmentResultListener(NavigationArgs.REQUEST_REMOVE_TRAKT) { _, _ ->
+      val text = resources.getString(R.string.textTraktSyncMovieRemovedFromTrakt)
+      (requireActivity() as SnackbarHost).provideSnackbarLayout().showInfoSnackbar(text)
+    }
+    val args = bundleOf(ARG_ID to movieId.id, ARG_TYPE to Mode.MOVIES)
+    navigateTo(action, args)
   }
 
   private fun openShareSheet(movie: Movie) {

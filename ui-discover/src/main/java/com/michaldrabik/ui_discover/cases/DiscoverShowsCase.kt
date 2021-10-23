@@ -1,6 +1,8 @@
 package com.michaldrabik.ui_discover.cases
 
 import com.michaldrabik.common.Config
+import com.michaldrabik.common.ConfigVariant
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.ShowImagesProvider
@@ -22,7 +24,8 @@ import javax.inject.Inject
 class DiscoverShowsCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val imagesProvider: ShowImagesProvider,
-  private val translationsRepository: TranslationsRepository
+  private val translationsRepository: TranslationsRepository,
+  private val settingsRepository: SettingsRepository,
 ) {
 
   suspend fun isCacheValid() = showsRepository.discoverShows.isCacheValid()
@@ -44,21 +47,22 @@ class DiscoverShowsCase @Inject constructor(
     )
   }
 
-  suspend fun loadRemoteShows(filters: DiscoverFilters): List<DiscoverListItem> {
+  suspend fun loadRemoteShows(filters: DiscoverFilters) = coroutineScope {
     val showAnticipated = !filters.hideAnticipated
     val showCollection = !filters.hideCollection
     val genres = filters.genres.toList()
 
-    val myShowsIds = showsRepository.myShows.loadAllIds()
-    val watchlistShowsIds = showsRepository.watchlistShows.loadAllIds()
-    val archiveShowsIds = showsRepository.archiveShows.loadAllIds()
-    val collectionSize = myShowsIds.size + watchlistShowsIds.size + archiveShowsIds.size
+    val myAsync = async { showsRepository.myShows.loadAllIds() }
+    val watchlistSync = async { showsRepository.watchlistShows.loadAllIds() }
+    val archiveAsync = async { showsRepository.archiveShows.loadAllIds() }
+    val (myIds, watchlistIds, archiveIds) = awaitAll(myAsync, watchlistSync, archiveAsync)
+    val collectionSize = myIds.size + watchlistIds.size + archiveIds.size
 
     val remoteShows = showsRepository.discoverShows.loadAllRemote(showAnticipated, showCollection, collectionSize, genres)
     val language = translationsRepository.getLanguage()
 
     showsRepository.discoverShows.cacheDiscoverShows(remoteShows)
-    return prepareItems(remoteShows, myShowsIds, watchlistShowsIds, archiveShowsIds, filters, language)
+    prepareItems(remoteShows, myIds, watchlistIds, archiveIds, filters, language)
   }
 
   private suspend fun prepareItems(
@@ -69,6 +73,7 @@ class DiscoverShowsCase @Inject constructor(
     filters: DiscoverFilters?,
     language: String
   ) = coroutineScope {
+    val isTwitterAd = showTwitterAd()
     val collectionIds = myShowsIds + watchlistShowsIds + archiveShowsIds
     shows
       .filter { !archiveShowsIds.contains(it.traktId) }
@@ -80,7 +85,13 @@ class DiscoverShowsCase @Inject constructor(
       .mapIndexed { index, show ->
         async {
           val itemType = when (index) {
-            in (0..500 step 14) -> ImageType.FANART_WIDE
+            in (0..500 step 14) -> {
+              if (index == 28 && isTwitterAd) {
+                ImageType.TWITTER
+              } else {
+                ImageType.FANART_WIDE
+              }
+            }
             in (5..500 step 14), in (9..500 step 14) -> ImageType.FANART
             else -> ImageType.POSTER
           }
@@ -105,5 +116,25 @@ class DiscoverShowsCase @Inject constructor(
     HOT -> this
     RATING -> this.sortedWith(compareByDescending<Show> { it.votes }.thenBy { it.rating })
     NEWEST -> this.sortedByDescending { it.year }
+  }
+
+  private fun showTwitterAd(): Boolean {
+    val isTwitterAdEnabled = settingsRepository.isTwitterAdEnabled
+    val twitterAdTimestamp = settingsRepository.twitterAdTimestamp
+
+    if (!isTwitterAdEnabled) {
+      return false
+    }
+
+    if (twitterAdTimestamp == 0L) {
+      settingsRepository.twitterAdTimestamp = System.currentTimeMillis()
+      return false
+    }
+
+    if (System.currentTimeMillis() - twitterAdTimestamp < ConfigVariant.TWITTER_AD_DELAY) {
+      return false
+    }
+
+    return true
   }
 }

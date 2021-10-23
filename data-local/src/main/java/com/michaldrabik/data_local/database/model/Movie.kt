@@ -24,5 +24,6 @@ data class Movie(
   @ColumnInfo(name = "votes", defaultValue = "-1") var votes: Long,
   @ColumnInfo(name = "comment_count", defaultValue = "-1") var commentCount: Long,
   @ColumnInfo(name = "genres", defaultValue = "") var genres: String,
-  @ColumnInfo(name = "updated_at", defaultValue = "-1") var updatedAt: Long
+  @ColumnInfo(name = "updated_at", defaultValue = "-1") var updatedAt: Long,
+  @ColumnInfo(name = "created_at", defaultValue = "-1") var createdAt: Long
 )

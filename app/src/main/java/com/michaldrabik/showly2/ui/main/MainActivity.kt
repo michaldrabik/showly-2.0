@@ -28,6 +28,7 @@ import com.michaldrabik.showly2.R
 import com.michaldrabik.showly2.ui.BillingActivity
 import com.michaldrabik.showly2.ui.views.WhatsNewView
 import com.michaldrabik.showly2.utilities.NetworkObserver
+import com.michaldrabik.showly2.utilities.deeplink.DeepLinkResolver
 import com.michaldrabik.ui_base.Analytics
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
@@ -50,7 +51,6 @@ import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.openWebUrl
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
-import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_model.Tip.MENU_DISCOVER
@@ -63,6 +63,7 @@ import kotlinx.android.synthetic.main.view_bottom_menu.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity :
@@ -91,6 +92,8 @@ class MainActivity :
     )
   }
 
+  @Inject lateinit var deepLinkResolver: DeepLinkResolver
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
@@ -115,6 +118,7 @@ class MainActivity :
     handleAppShortcut(intent)
     handleNotification(intent?.extras) { hideNavigation(false) }
     handleTraktAuthorization(intent?.data)
+    handleDeepLink(intent)
   }
 
   private fun setupViewModel() {
@@ -134,13 +138,14 @@ class MainActivity :
       isModeMenuEnabled = moviesEnabled()
       onModeSelected = { setMode(it) }
     }
+    viewMask.onClick { /* NOOP */ }
   }
 
   private fun setupNavigation() {
     findNavControl()?.run {
       val graph = navInflater.inflate(R.navigation.navigation_graph)
       graph.startDestination = when (viewModel.getMode()) {
-        SHOWS -> R.id.progressFragment
+        SHOWS -> R.id.progressMainFragment
         MOVIES -> R.id.progressMoviesMainFragment
         else -> throw IllegalStateException()
       }
@@ -163,6 +168,12 @@ class MainActivity :
 
         findNavControl()?.navigate(target)
         showNavigation(true)
+
+        if (item.itemId == R.id.menuDiscover) {
+          // Try showing rate app dialog when user navigates to Discover section.
+          viewModel.checkRateApp()
+        }
+
         return@setOnNavigationItemSelectedListener true
       }
       menu.findItem(R.id.menuNews).isVisible = viewModel.newsEnabled()
@@ -268,6 +279,12 @@ class MainActivity :
 
   private fun render(uiState: MainUiState) {
     uiState.run {
+      isLoading.let {
+        mainProgress.visibleIf(it)
+      }
+      showMask.let {
+        viewMask.visibleIf(it)
+      }
       isInitialRun?.let {
         if (it.consume() == true) {
           viewModel.checkInitialLanguage()
@@ -287,6 +304,18 @@ class MainActivity :
           showWelcomeDialog(it)
         }
       }
+      openLink?.let { event ->
+        event.consume()?.let { bundle ->
+          findNavHostFragment()?.findNavController()?.let { nav ->
+            bundle.show?.let {
+              deepLinkResolver.resolveDestination(nav, bottomNavigationView, it)
+            }
+            bundle.movie?.let {
+              deepLinkResolver.resolveDestination(nav, bottomNavigationView, it)
+            }
+          }
+        }
+      }
     }
   }
 
@@ -297,16 +326,13 @@ class MainActivity :
       fadeIn()
       onOkClickListener = {
         fadeOut()
-        welcomeViewMask.gone()
+        showMask(false)
         if (language != AppLanguage.ENGLISH) {
           showWelcomeLanguageDialog(language)
         }
       }
     }
-    with(welcomeViewMask) {
-      fadeIn()
-      onClick { /* NOOP */ }
-    }
+    showMask(true)
   }
 
   private fun showWelcomeLanguageDialog(language: AppLanguage) {
@@ -316,7 +342,7 @@ class MainActivity :
       onYesClick = {
         viewModel.setLanguage(language)
         fadeOut()
-        welcomeViewMask.fadeOut()
+        showMask(false)
         postDelayed(
           {
             try {
@@ -330,10 +356,15 @@ class MainActivity :
       }
       onNoClick = {
         fadeOut()
-        welcomeViewMask.fadeOut()
+        showMask(false)
       }
     }
-    welcomeViewMask.visible()
+    showMask(true)
+  }
+
+  private fun showMask(show: Boolean) {
+    viewMask.visibleIf(show)
+    if (!show) viewModel.clearMask()
   }
 
   private fun launchInAppReview() {
@@ -453,6 +484,12 @@ class MainActivity :
         BuildConfig.VERSION_CODE.toLong()
       )
       appUpdateManager.completeUpdate()
+    }
+  }
+
+  private fun handleDeepLink(intent: Intent?) {
+    deepLinkResolver.findSource(intent)?.let {
+      viewModel.openDeepLink(it)
     }
   }
 

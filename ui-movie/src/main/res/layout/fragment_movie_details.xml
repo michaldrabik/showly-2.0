@@ -142,14 +142,14 @@
         android:layout_marginBottom="@dimen/spaceSmall"
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="13sp"
-        app:layout_constraintBottom_toTopOf="@id/movieDetailsButtonsLayout"
+        app:layout_constraintBottom_toTopOf="@id/movieDetailsAddButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/movieDetailsExtraInfo"
         tools:text="Post Production"
         />
 
-      <FrameLayout
-        android:id="@+id/movieDetailsButtonsLayout"
+      <com.michaldrabik.ui_movie.views.AddToMoviesButton
+        android:id="@+id/movieDetailsAddButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
@@ -158,30 +158,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movieDetailsStatus"
-        >
-
-        <com.michaldrabik.ui_movie.views.AddToMoviesButton
-          android:id="@+id/movieDetailsAddButton"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          />
-
-        <com.michaldrabik.ui_base.common.views.RemoveFromTraktButton
-          android:id="@+id/movieDetailsRemoveTraktButton"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:visibility="gone"
-          tools:visibility="visible"
-          />
-
-      </FrameLayout>
+        />
 
       <TextView
         android:id="@+id/movieDetailsManageListsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginTop="@dimen/spaceMedium"
         android:drawablePadding="@dimen/spaceSmall"
         android:fontFamily="sans-serif-medium"
         android:gravity="start|center_vertical"
@@ -193,10 +177,32 @@
         app:drawableStartCompat="@drawable/ic_lists"
         app:drawableTint="?android:attr/textColorPrimary"
         app:layout_constraintBottom_toTopOf="@id/separator4"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/movieDetailsHideLabel"
         app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movieDetailsButtonsLayout"
+        app:layout_constraintTop_toBottomOf="@id/movieDetailsAddButton"
+        />
+
+      <TextView
+        android:id="@+id/movieDetailsHideLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:drawablePadding="6dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="start|center_vertical"
+        android:text="@string/textHide"
+        android:textAlignment="viewStart"
+        android:textAllCaps="true"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="13sp"
+        app:drawableStartCompat="@drawable/ic_eye_no"
+        app:drawableTint="?android:attr/textColorPrimary"
+        app:layout_constraintBottom_toBottomOf="@id/movieDetailsManageListsLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/movieDetailsManageListsLabel"
+        app:layout_constraintTop_toTopOf="@id/movieDetailsManageListsLabel"
         />
 
       <View
@@ -204,7 +210,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="18dp"
         android:layout_marginEnd="@dimen/spaceNormal"
         android:background="?attr/colorSeparator"
         app:layout_constraintBottom_toTopOf="@+id/movieDetailsRatings"
@@ -393,7 +399,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spaceNormal"
-        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginTop="@dimen/spaceMedium"
         android:text="@string/textMovieYouMayAlsoLike"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="16sp"
@@ -418,7 +424,7 @@
         android:id="@+id/movieDetailsRelatedRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spaceSmall"
+        android:layout_marginTop="@dimen/spaceMedium"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:overScrollMode="never"
