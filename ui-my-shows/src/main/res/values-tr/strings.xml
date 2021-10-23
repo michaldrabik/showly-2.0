@@ -2,8 +2,8 @@
 <resources>
   <string name="menuMyShows">Dizilerim</string>
   <string name="menuWatchlist">İstek Listesi</string>
-  <string name="menuArchive">Arşiv</string>
+  <string name="menuHidden">Gizlenmiş</string>
   <string name="textMyShowsEmpty">Dizi koleksiyonunuz şu anda boştur.\n\nİlk dizinizi eklemek için <b>Keşfet</b> sekmesini ziyaret edin.</string>
   <string name="textWatchlistEmpty"><b>İstek Listeniz</b> şu anda boştur.\n\nGelecekte izlemek isteyebileceğiniz dizileri eklemek için <b>Keşfet</b> sekmesini ziyaret edin.</string>
-  <string name="textArchiveEmpty"><b>Arşiviniz</b> şu anda boştur.\n\n<b>Arşiv</b>, izlemesi bırakılmış, terk edilmiş veya artık ilgilenmediğiniz dizilerin bir listesidir.\n\nArşivlenmiş diziler artık <b>İlerleme</b>, <b>Keşfet</b> ve <b>Dizilerim</b> bölümlerinde görünmez ve ayrıca Trakt.tv hizmetinden aktarım sırasında atlanacaktır.</string>
+  <string name="textHiddenEmpty">&lt;b&gt;Gizli&lt;/b&gt; listeniz şu anda boş.\n\n&lt;b&gt;Gizli&lt;/b&gt;, ilgilenmediğiniz öğelerin listesidir.\n\nGizli öğeler artık &lt;b içinde görünmeyecek &gt;İlerleme&lt;/b&gt;, &lt;b&gt;Keşfet&lt;/b&gt; ve diğer bölümler.</string>
 </resources>
