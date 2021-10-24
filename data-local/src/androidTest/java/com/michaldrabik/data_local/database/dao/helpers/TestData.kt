@@ -84,7 +84,7 @@ object TestData {
 
   fun createActor() = Actor(0, 1, 1, "imdb", 1, 1, 1, "Name", "Role", 1, "Image", 99, 99)
 
-  fun createEpisode() = Episode(1, 1, 1, 1, "", 1, 1, 1, "", "", null, 0, 0F, 60, 0, false, null)
+  fun createEpisode() = Episode(1, 1, 1, 1, "", 1, 1, 1, "", "", null, 0, 0F, 60, 0, false)
 
   fun createSeason() = Season(1, 1, 1, "", "", null, 0, 0, false)
 }
