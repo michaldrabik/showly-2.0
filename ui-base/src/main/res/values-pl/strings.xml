@@ -11,12 +11,14 @@
   <string name="textSelect">Wybierz</string>
   <string name="textHot">Gorące</string>
   <string name="textSubmit">Wyślij</string>
+  <string name="textHide">Ukryj</string>
   <string name="textEmptyResults">Brak wyników…</string>
   <string name="textSearchFor">Szukaj</string>
   <string name="textTip">Wskazówka:</string>
   <string name="textSeason">Sezon %1$d</string>
   <string name="textSpecials">Specjalne</string>
   <string name="textEpisode">Odcinek %1$d</string>
+  <string name="textSeasonEpisode">S.%02d E.%02d</string>
   <string name="textSortBy">Sortuj:</string>
   <string name="textSpoilersWarning">Opinia zawiera spoilery.\nKliknij aby przeczytać.</string>
   <string name="textCommentedOn">Komentarz od %s</string>
@@ -25,7 +27,6 @@
   <string name="textMovies">Filmy</string>
   <string name="textLists">Listy</string>
   <string name="textMinutesShort">min</string>
-  <string name="textRemoveFromTrakt">Usunąć z Trakt.tv?</string>
   <string name="textNoDescription">Opis niedostępny.</string>
   <string name="textPleaseWait">Proszę czekać…</string>
   <string name="textRate">Oceń</string>
@@ -81,6 +82,10 @@
   <string name="textTraktSyncErrorFull">Błąd synchronizacji Trakt.tv. Sprawdź połączenie z internetem lub skontaktuj się z nami jeżeli błąd się powtarza.</string>
   <string name="textTraktQuickSyncError">Błąd szybkiej synchronizacji.</string>
   <string name="textTraktQuickSyncErrorFull">Błąd szybkiej synchronizacji. Spróbujemy ponownie przy następnym uruchomieniu aplikacji.</string>
+  <string name="textRemoveFromTrakt">Usunąć z Trakt.tv?</string>
+  <string name="textRemoveFromTraktHidden">Czy chcesz usunąć ten element z sekcji \'Ukryte\' na twoim koncie Trakt.tv?</string>
+  <string name="textRemoveFromTraktWatchlist">Czy chcesz usunąć ten element z sekcji \'Na Później\' na twoim koncie Trakt.tv?</string>
+  <string name="textRemoveFromTraktProgress">Czy chcesz usunąć ten element z sekcji \'Postęp\' na twoim koncie Trakt.tv?</string>
   <string name="menuPin">Przypnij u góry</string>
   <string name="menuUnpin">Odepnij z góry</string>
   <string name="errorGeneral">Oj… Coś poszło nie tak.\nSkontaktuj się z nami jeżeli błąd się powtarza.</string>

@@ -11,12 +11,14 @@
   <string name="textSelect">Ausgewählt</string>
   <string name="textHot">Hot</string>
   <string name="textSubmit">Absenden</string>
+  <string name="textHide">Verstecken</string>
   <string name="textEmptyResults">Keine Ergebnisse…</string>
   <string name="textSearchFor">Suche</string>
   <string name="textTip">Tipp:</string>
   <string name="textSeason">Staffel %1$d</string>
   <string name="textSpecials">Specials</string>
   <string name="textEpisode">Folge %1$d</string>
+  <string name="textSeasonEpisode">S.%02d E.%02d</string>
   <string name="textSortBy">Sortiert nach:</string>
   <string name="textSpoilersWarning">Dieses Kommentar enthält Spoiler.\nTippen um zu lesen.</string>
   <string name="textCommentedOn">Kommentiert von %s</string>
@@ -25,7 +27,6 @@
   <string name="textMovies">Filme</string>
   <string name="textLists">Listen</string>
   <string name="textMinutesShort">min</string>
-  <string name="textRemoveFromTrakt">Von Trakt.tv entfernen?</string>
   <string name="textNoDescription">Übersicht nicht verfügbar.</string>
   <string name="textPleaseWait">Bitte warten…</string>
   <string name="textRate">Bewerten</string>
@@ -73,6 +74,10 @@
   <string name="textTraktSyncErrorFull">Trakt.tv Synchronisation fehlgeschlagen. Bitte überprüfe deine Internetverbindung und versuch es erneut oder kontaktiere uns, wenn der Fehler weiterhin besteht.</string>
   <string name="textTraktQuickSyncError">Sofortige Synchronisation fehlgeschlagen.</string>
   <string name="textTraktQuickSyncErrorFull">Sofortige Synchronisation fehlgeschlagen. Wir versuchen es beim nächsten öffnen der App. Bitte überprüfe deine Internetverbindung.</string>
+  <string name="textRemoveFromTrakt">Von Trakt.tv entfernen?</string>
+  <string name="textRemoveFromTraktHidden">Möchtest du dieses Element von deinem Trakt.tv-Account \'Versteckt\' entfernen?</string>
+  <string name="textRemoveFromTraktWatchlist">Möchtest du dieses Element von deinem Trakt.tv-Account \'Watchlist\' entfernen?</string>
+  <string name="textRemoveFromTraktProgress">Möchtest du dieses Element von deinem Trakt.tv-Account \'Fortschritt\' entfernen?</string>
   <string name="menuPin">Oben anpinnen</string>
   <string name="menuUnpin">Pin von Oben lösen</string>
   <string name="errorGeneral">Hoppla… Da ging etwas schief.\nBitte kontaktiere uns, wenn dies weiterhin geschieht.</string>

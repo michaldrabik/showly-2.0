@@ -4,6 +4,7 @@
   <string name="textMovieWatchLater">Sonra İzle</string>
   <string name="textInMyMovies">Filmlerime eklendi</string>
   <string name="textInMoviesWatchlist">İstek listesine eklendi</string>
+  <string name="textInHidden">Gizlenmiş</string>
   <string name="textMovieActorsEmpty">Oyuncular mevcut değil</string>
   <string name="textMovieTrailer">Fragman</string>
   <string name="textMovieRate">Oy Ver</string>

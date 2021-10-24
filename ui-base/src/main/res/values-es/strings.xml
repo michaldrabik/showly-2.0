@@ -11,12 +11,14 @@
   <string name="textSelect">Seleccionar</string>
   <string name="textHot">Tendencia</string>
   <string name="textSubmit">Enviar</string>
+  <string name="textHide">Ocultar</string>
   <string name="textEmptyResults">No hay resultados...</string>
   <string name="textSearchFor">Buscar</string>
   <string name="textTip">Consejo:</string>
   <string name="textSeason">Temporada %1$d</string>
   <string name="textSpecials">Especiales</string>
   <string name="textEpisode">Episodio %1$d</string>
+  <string name="textSeasonEpisode">T.%02d E.%02d</string>
   <string name="textSortBy">Ordenar por:</string>
   <string name="textSpoilersWarning">Este comentario contiene spoilers.\nTap para leer.</string>
   <string name="textCommentedOn">Comentado por %s</string>
@@ -25,7 +27,6 @@
   <string name="textMovies">Películas</string>
   <string name="textLists">Listas</string>
   <string name="textMinutesShort">min</string>
-  <string name="textRemoveFromTrakt">¿Eliminar de Trakt.tv?</string>
   <string name="textNoDescription">Resumen no disponible.</string>
   <string name="textPleaseWait">Espera, por favor…</string>
   <string name="textRate">Calificar</string>
@@ -73,6 +74,10 @@
   <string name="textTraktSyncErrorFull">Sincronización Trakt.tv fallida. Por favor compruebe su conexión a Internet y pruebe de nuevo o contáctenos si sigue sucediendo.</string>
   <string name="textTraktQuickSyncError">Sincronización instantánea fallida.</string>
   <string name="textTraktQuickSyncErrorFull">Sincronización instantánea fallida. Lo intentaremos de nuevo la próxima vez que abras la aplicación. Por favor revisa tu conexión a internet.</string>
+  <string name="textRemoveFromTrakt">¿Eliminar de Trakt.tv?</string>
+  <string name="textRemoveFromTraktHidden">¿Te gustaría eliminar este elemento de \'Elementos Ocultos\' de tu cuenta Trakt.tv?</string>
+  <string name="textRemoveFromTraktWatchlist">¿Te gustaría eliminar este elemento de \'Pendientes\' de tu cuenta Trakt.tv?</string>
+  <string name="textRemoveFromTraktProgress">¿Te gustaría eliminar este elemento de \'Progreso\' de tu cuenta Trakt.tv?</string>
   <string name="menuPin">Anclar a la parte superior</string>
   <string name="menuUnpin">Desanclar de la parte superior</string>
   <string name="errorGeneral">Ups… Algo salió mal.\nPor favor, contáctanos si esto sigue sucediendo.</string>

@@ -11,12 +11,14 @@
   <string name="textSelect">Seç</string>
   <string name="textHot">Popüler</string>
   <string name="textSubmit">Gönder</string>
+  <string name="textHide">Saklamak</string>
   <string name="textEmptyResults">Hiçbir sonuç bulunamadı…</string>
   <string name="textSearchFor">Ara</string>
   <string name="textTip">İpucu:</string>
   <string name="textSeason">%1$d. Sezon</string>
   <string name="textSpecials">Özeller</string>
   <string name="textEpisode">%1$d. Bölüm</string>
+  <string name="textSeasonEpisode">S.%02d B.%02d</string>
   <string name="textSortBy">Sırala:</string>
   <string name="textSpoilersWarning">Bu yorum sürpriz bozan içermektedir.\nOkumak için dokunun.</string>
   <string name="textCommentedOn">Yorum yapan: %s</string>
@@ -25,7 +27,6 @@
   <string name="textMovies">Filmler</string>
   <string name="textLists">Listeler</string>
   <string name="textMinutesShort">dk</string>
-  <string name="textRemoveFromTrakt">Trakt.tv\'den silinsin mi?</string>
   <string name="textNoDescription">Tanıtım mevcut değil.</string>
   <string name="textPleaseWait">Lütfen bekleyin…</string>
   <string name="textRate">Oy Ver</string>
@@ -73,6 +74,10 @@
   <string name="textTraktSyncErrorFull">Trakt.tv eşitlemesi başarısız oldu. Lütfen internet bağlantınızı kontrol edin ve tekrar deneyin veya bu sorun devam ederse bizimle iletişime geçin.</string>
   <string name="textTraktQuickSyncError">Anlık Eşitleme başarısız.</string>
   <string name="textTraktQuickSyncErrorFull">Anlık Eşitleme başarısız oldu. Uygulamayı bir sonraki başlattığınızda tekrar deneyeceğiz. Lütfen internet bağlantınızı kontrol edin.</string>
+  <string name="textRemoveFromTrakt">Trakt.tv\'den silinsin mi?</string>
+  <string name="textRemoveFromTraktHidden">Bu öğeyi Trakt.tv hesabınızdan \'Gizli\' kaldırmak ister misiniz?</string>
+  <string name="textRemoveFromTraktWatchlist">Bu öğeyi Trakt.tv hesabınızdaki \'Watchlist\' kaldırmak ister misiniz?</string>
+  <string name="textRemoveFromTraktProgress">Bu öğeyi Trakt.tv hesabınızdaki \'İlerleme\'den kaldırmak ister misiniz?</string>
   <string name="menuPin">En üste sabitle</string>
   <string name="menuUnpin">Sabitlemeyi kaldır</string>
   <string name="errorGeneral">Hay aksi… Bir şeyler ters gitti.\nBu sorun devam ederse lütfen bizimle iletişime geçin.</string>

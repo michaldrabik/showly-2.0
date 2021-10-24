@@ -11,12 +11,14 @@
   <string name="textSelect">Valitse</string>
   <string name="textHot">Kuuma</string>
   <string name="textSubmit">Lähetä</string>
+  <string name="textHide">Piilota</string>
   <string name="textEmptyResults">Ei tuloksia…</string>
-  <string name="textSearchFor">Hae</string>
+  <string name="textSearchFor">Haku</string>
   <string name="textTip">Vinkki:</string>
   <string name="textSeason">Kausi %1$d</string>
   <string name="textSpecials">Erikoisjaksot</string>
   <string name="textEpisode">Jakso %1$d</string>
+  <string name="textSeasonEpisode">K.%02d J.%02d</string>
   <string name="textSortBy">Lajittele:</string>
   <string name="textSpoilersWarning">Kommentti sisältää juonipaljastuksia.\nLue napauttamalla.</string>
   <string name="textCommentedOn">Kirjoittanut %s</string>
@@ -25,7 +27,6 @@
   <string name="textMovies">Elokuvat</string>
   <string name="textLists">Listat</string>
   <string name="textMinutesShort">min</string>
-  <string name="textRemoveFromTrakt">Poistetaanko Trakt.tv-kokoelmastasi?</string>
   <string name="textNoDescription">Yhteenvetoa ei ole saatavilla.</string>
   <string name="textPleaseWait">Odota…</string>
   <string name="textRate">Avioi</string>
@@ -73,6 +74,10 @@
   <string name="textTraktSyncErrorFull">Trakt.tv-synkronointi epäonnistui. Tarkista Internet-yhteytesi ja yritä uudelleen tai ota meihin yhteyttä, jos tämä jatkuu.</string>
   <string name="textTraktQuickSyncError">Pikasynkronointi epäonnistui.</string>
   <string name="textTraktQuickSyncErrorFull">Pikasynkronointi epäonnistui. Yritämme uudelleen, kun avaat sovelluksen seuraavan kerran. Tarkista Internet-yhteytesi.</string>
+  <string name="textRemoveFromTrakt">Poistetaanko Trakt.tv-kokoelmastasi?</string>
+  <string name="textRemoveFromTraktHidden">Haluatko poistaa kohteen Trakt.tv-tilisi \'Hidden Items\' (Piilotetut kohteet) -osiosta?</string>
+  <string name="textRemoveFromTraktWatchlist">Haluatko poistaa kohteen Trakt.tv-tilisi \'Watchlist\' (Katselulista) -osiosta?</string>
+  <string name="textRemoveFromTraktProgress">Haluatko poistaa kohteen Trakt.tv-tilisi \'Progress\' (Katselutilanne) -osiosta?</string>
   <string name="menuPin">Kiinnitä listan ylälaitaan</string>
   <string name="menuUnpin">Irrota listan ylälaidasta</string>
   <string name="errorGeneral">Hups… Jotain meni pieleen.\nOta meihin yhteyttä, jos tämä jatkuu.</string>

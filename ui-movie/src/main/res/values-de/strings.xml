@@ -4,6 +4,7 @@
   <string name="textMovieWatchLater">Für Später</string>
   <string name="textInMyMovies">In Meinen Filmen</string>
   <string name="textInMoviesWatchlist">Im Watchlist</string>
+  <string name="textInHidden">Versteckt</string>
   <string name="textMovieActorsEmpty">Schauspieler sind nicht verfügbar.</string>
   <string name="textMovieTrailer">Trailer</string>
   <string name="textMovieRate">Bewerten</string>

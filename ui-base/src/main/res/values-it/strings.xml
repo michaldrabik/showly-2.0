@@ -11,12 +11,14 @@
   <string name="textSelect">Seleziona</string>
   <string name="textHot">Famosi</string>
   <string name="textSubmit">Invia</string>
+  <string name="textHide">Nascondi</string>
   <string name="textEmptyResults">Non ci sono risultati...</string>
   <string name="textSearchFor">Cerca</string>
   <string name="textTip">Consiglio:</string>
   <string name="textSeason">Stagione %1$d</string>
   <string name="textSpecials">Speciali</string>
   <string name="textEpisode">Episodio %1$d</string>
+  <string name="textSeasonEpisode">S.%02d E.%02d</string>
   <string name="textSortBy">Ordina:</string>
   <string name="textSpoilersWarning">Questo commento contiene spoiler.\nTocca per leggerlo.</string>
   <string name="textCommentedOn">Commentato da %s</string>
@@ -25,7 +27,6 @@
   <string name="textMovies">Film</string>
   <string name="textLists">Liste</string>
   <string name="textMinutesShort">min</string>
-  <string name="textRemoveFromTrakt">Rimuovere da Trakt.tv?</string>
   <string name="textNoDescription">Panoramica non disponibile.</string>
   <string name="textPleaseWait">Attendere prego…</string>
   <string name="textRate">Valuta</string>
@@ -73,6 +74,10 @@
   <string name="textTraktSyncErrorFull">Sincronizzazione Trakt.tv fallita. Per favore controlla la tua connessione internet e riprova oppure contattaci se il problema persiste.</string>
   <string name="textTraktQuickSyncError">Sincronizzazione istantanea fallita.</string>
   <string name="textTraktQuickSyncErrorFull">Sincronizzazione istantanea fallita. Per favore controlla la tua connessione internet e riprova oppure contattaci se il problema persiste.</string>
+  <string name="textRemoveFromTrakt">Rimuovere da Trakt.tv?</string>
+  <string name="textRemoveFromTraktHidden">Vuoi rimuovere questo elemento dagli \"Elementi nascosti\" del tuo account Trakt.tv?</string>
+  <string name="textRemoveFromTraktWatchlist">Vuoi rimuovere questo elemento dalla \"Watchlist\" del tuo account Trakt.tv?</string>
+  <string name="textRemoveFromTraktProgress">Vuoi rimuovere questo elemento dai \"Progressi\" del tuo account Trakt.tv?</string>
   <string name="menuPin">Fissa in cima</string>
   <string name="menuUnpin">Rimuovi</string>
   <string name="errorGeneral">Oops... Qualcosa è andato storto.\nPer favore contattaci se il problema persiste.</string>
