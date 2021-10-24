@@ -51,6 +51,7 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
+import com.michaldrabik.ui_base.utilities.extensions.copyToClipboard
 import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -224,6 +225,10 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     }
     showDetailsManageListsLabel.onClick { openListsDialog() }
     showDetailsHideLabel.onClick { viewModel.addHiddenShow() }
+    showDetailsTitle.onClick {
+      requireContext().copyToClipboard(showDetailsTitle.text.toString())
+      showSnack(MessageEvent.info(R.string.textCopiedToClipboard))
+    }
   }
 
   private fun setupStatusBar() {

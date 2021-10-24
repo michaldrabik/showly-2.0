@@ -1,6 +1,8 @@
 package com.michaldrabik.ui_base.utilities.extensions
 
 import android.app.NotificationManager
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.res.ColorStateList
 import android.content.res.Configuration
@@ -16,6 +18,7 @@ import android.widget.ProgressBar
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.DimenRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.room.withTransaction
@@ -63,6 +66,14 @@ fun Context.getLocaleStringResource(requestedLocale: Locale?, resourceId: Int): 
   config.setLocale(requestedLocale)
   result = createConfigurationContext(config).getText(resourceId).toString()
   return result
+}
+
+fun Context.copyToClipboard(text: String) {
+  val clip = ClipData.newPlainText("label", text)
+  ContextCompat.getSystemService(this, ClipboardManager::class.java)
+    .apply {
+      this?.setPrimaryClip(clip)
+    }
 }
 
 fun screenWidth() = Resources.getSystem().displayMetrics.widthPixels

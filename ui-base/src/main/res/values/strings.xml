@@ -33,6 +33,7 @@
   <string name="textPleaseWait">Please wait…</string>
   <string name="textRate">Rate</string>
   <string name="textRateSaved">Your rating has been saved.</string>
+  <string name="textCopiedToClipboard" translatable="false">Title copied to clipboard.</string>
 
   <string name="textAiredAlready">Aired</string>
   <string name="textAirsNow">Airs Now</string>

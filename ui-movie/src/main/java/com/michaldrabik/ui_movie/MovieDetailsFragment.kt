@@ -49,6 +49,7 @@ import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
 import com.michaldrabik.ui_base.utilities.extensions.addDivider
 import com.michaldrabik.ui_base.utilities.extensions.capitalizeWords
+import com.michaldrabik.ui_base.utilities.extensions.copyToClipboard
 import com.michaldrabik.ui_base.utilities.extensions.crossfadeTo
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -200,6 +201,10 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     }
     movieDetailsManageListsLabel.onClick { openListsDialog() }
     movieDetailsHideLabel.onClick { viewModel.addHiddenMovie() }
+    movieDetailsTitle.onClick {
+      requireContext().copyToClipboard(movieDetailsTitle.text.toString())
+      showSnack(MessageEvent.info(R.string.textCopiedToClipboard))
+    }
   }
 
   private fun setupStatusBar() {
