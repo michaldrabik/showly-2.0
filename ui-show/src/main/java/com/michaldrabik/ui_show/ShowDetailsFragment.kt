@@ -831,8 +831,9 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
 
   private fun openShareSheet(show: Show) {
     val intent = Intent().apply {
+      val text = "Hey! Check out ${show.title}:\nhttps://trakt.tv/shows/${show.ids.slug.id}\nhttps://www.imdb.com/title/${show.ids.imdb.id}"
       action = Intent.ACTION_SEND
-      putExtra(Intent.EXTRA_TEXT, "Hey! Check out ${show.title}:\nhttp://www.imdb.com/title/${show.ids.imdb.id}")
+      putExtra(Intent.EXTRA_TEXT, text)
       type = "text/plain"
     }
 
