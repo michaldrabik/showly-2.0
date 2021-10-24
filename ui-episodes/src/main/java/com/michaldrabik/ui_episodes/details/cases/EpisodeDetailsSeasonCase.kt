@@ -16,6 +16,7 @@ class EpisodeDetailsSeasonCase @Inject constructor(
   suspend fun loadSeason(showId: IdTrakt, episode: Episode, seasonEpisodes: IntArray?): List<Episode> {
     val episodes = database.episodesDao().getAllByShowId(showId.id, episode.season)
       .map { mappers.episode.fromDatabase(it) }
+      .sortedBy { it.number }
 
     if (episodes.isNotEmpty()) return episodes
 
