@@ -32,6 +32,8 @@ jobs:
         run: ./gradlew :ui-discover:testDebugUnitTest
       - name: Run Unit Tests (ui-trakt-sync)
         run: ./gradlew :ui-trakt-sync:testDebugUnitTest
+      - name: Run Unit Tests (ui-statistics-movies)
+        run: ./gradlew :ui-statistics-movies:testDebugUnitTest
 
       - name: Build APK
         run: ./gradlew app:assembleRelease

@@ -27,12 +27,12 @@ class StatisticsMoviesViewModel @Inject constructor(
   private val topGenresState = MutableStateFlow<List<Genre>?>(null)
   private val ratingsState = MutableStateFlow<List<StatisticsMoviesRatingItem>?>(null)
 
-  fun loadMovies() {
+  fun loadMovies(initialDelay: Long = 150L) {
     viewModelScope.launch {
       val myMovies = moviesRepository.myMovies.loadAll().distinctBy { it.traktId }
       val genres = extractTopGenres(myMovies)
 
-      delay(150) // Let transition finish peacefully.
+      delay(initialDelay) // Let transition finish peacefully.
 
       totalWatchedMoviesState.value = myMovies.count()
       totalTimeSpentState.value = myMovies.sumOf { it.runtime }
@@ -42,12 +42,10 @@ class StatisticsMoviesViewModel @Inject constructor(
 
   fun loadRatings() {
     viewModelScope.launch {
-      viewModelScope.launch {
-        try {
-          ratingsState.value = ratingsCase.loadRatings()
-        } catch (t: Throwable) {
-          ratingsState.value = emptyList()
-        }
+      try {
+        ratingsState.value = ratingsCase.loadRatings()
+      } catch (t: Throwable) {
+        ratingsState.value = emptyList()
       }
     }
   }
