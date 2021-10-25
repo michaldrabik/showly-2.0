@@ -27,24 +27,6 @@ class StatisticsMoviesViewModel @Inject constructor(
   private val topGenresState = MutableStateFlow<List<Genre>?>(null)
   private val ratingsState = MutableStateFlow<List<StatisticsMoviesRatingItem>?>(null)
 
-  val uiState = combine(
-    totalWatchedMoviesState,
-    totalTimeSpentState,
-    topGenresState,
-    ratingsState,
-  ) { s1, s2, s3, s4 ->
-    StatisticsMoviesUiState(
-      totalWatchedMovies = s1,
-      totalTimeSpentMinutes = s2,
-      topGenres = s3,
-      ratings = s4,
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = StatisticsMoviesUiState()
-  )
-
   fun loadMovies() {
     viewModelScope.launch {
       val myMovies = moviesRepository.myMovies.loadAll().distinctBy { it.traktId }
@@ -81,4 +63,22 @@ class StatisticsMoviesViewModel @Inject constructor(
       .map { it.first }
       .toList()
       .filterNotNull()
+
+  val uiState = combine(
+    totalWatchedMoviesState,
+    totalTimeSpentState,
+    topGenresState,
+    ratingsState,
+  ) { s1, s2, s3, s4 ->
+    StatisticsMoviesUiState(
+      totalWatchedMovies = s1,
+      totalTimeSpentMinutes = s2,
+      topGenres = s3,
+      ratings = s4,
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = StatisticsMoviesUiState()
+  )
 }

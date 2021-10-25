@@ -44,48 +44,28 @@ class StatisticsViewModel @Inject constructor(
   private val topGenresState = MutableStateFlow<List<Genre>?>(null)
   private val ratingsState = MutableStateFlow<List<StatisticsRatingItem>?>(null)
 
-  val uiState = combine(
-    mostWatchedShowsState,
-    mostWatchedTotalCountState,
-    totalTimeSpentMinutesState,
-    totalWatchedEpisodesState,
-    totalWatchedEpisodesShowsState,
-    topGenresState,
-    ratingsState
-  ) { s1, s2, s3, s4, s5, s6, s7 ->
-    StatisticsUiState(
-      mostWatchedShows = s1,
-      mostWatchedTotalCount = s2,
-      totalTimeSpentMinutes = s3,
-      totalWatchedEpisodes = s4,
-      totalWatchedEpisodesShows = s5,
-      topGenres = s6,
-      ratings = s7
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = StatisticsUiState()
-  )
-
   private var takeLimit = 5
 
   fun loadMostWatchedShows(limit: Int = 0) {
     takeLimit += limit
     viewModelScope.launch {
       val language = translationsRepository.getLanguage()
+
       val myShows = showsRepository.myShows.loadAll()
-      val myShowsIds = myShows.map { it.traktId }
+      val hiddenShows = showsRepository.archiveShows.loadAll()
 
-      val episodes = batchEpisodes(myShowsIds)
-      val seasons = batchSeasons(myShowsIds)
+      val shows = (myShows + hiddenShows).distinctBy { it.traktId }
+      val showsIds = shows.map { it.traktId }
 
-      val genres = extractTopGenres(myShows)
-      val mostWatchedShows = myShows
+      val episodes = batchEpisodes(showsIds)
+      val seasons = batchSeasons(showsIds)
+
+      val genres = extractTopGenres(shows)
+      val mostWatchedShows = shows
         .map { show ->
           val translation = loadTranslation(language, show)
           StatisticsMostWatchedItem(
-            show = myShows.first { it.traktId == show.traktId },
+            show = shows.first { it.traktId == show.traktId },
             seasonsCount = seasons.filter { it.idShowTrakt == show.traktId }.count().toLong(),
             episodes = episodes
               .filter { it.idShowTrakt == show.traktId }
@@ -103,7 +83,7 @@ class StatisticsViewModel @Inject constructor(
       delay(150) // Let transition finish peacefully.
 
       mostWatchedShowsState.value = mostWatchedShows
-      mostWatchedTotalCountState.value = myShowsIds.size
+      mostWatchedTotalCountState.value = showsIds.size
       totalTimeSpentMinutesState.value = episodes.sumOf { it.runtime }
       totalWatchedEpisodesState.value = episodes.count()
       totalWatchedEpisodesShowsState.value = episodes.distinctBy { it.idShowTrakt }.count()
@@ -162,4 +142,28 @@ class StatisticsViewModel @Inject constructor(
   private suspend fun loadTranslation(language: String, show: Show) =
     if (language == Config.DEFAULT_LANGUAGE) null
     else translationsRepository.loadTranslation(show, language, true)
+
+  val uiState = combine(
+    mostWatchedShowsState,
+    mostWatchedTotalCountState,
+    totalTimeSpentMinutesState,
+    totalWatchedEpisodesState,
+    totalWatchedEpisodesShowsState,
+    topGenresState,
+    ratingsState
+  ) { s1, s2, s3, s4, s5, s6, s7 ->
+    StatisticsUiState(
+      mostWatchedShows = s1,
+      mostWatchedTotalCount = s2,
+      totalTimeSpentMinutes = s3,
+      totalWatchedEpisodes = s4,
+      totalWatchedEpisodesShows = s5,
+      topGenres = s6,
+      ratings = s7
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = StatisticsUiState()
+  )
 }
