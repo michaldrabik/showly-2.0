@@ -26,8 +26,8 @@ class StatisticsMoviesLoadRatingsCase @Inject constructor(
       return emptyList()
     }
 
-    val token = userTraktManager.checkAuthorization()
-    val ratings = ratingsRepository.movies.loadMoviesRatings(token.token)
+    val token = userTraktManager.checkAuthorization().token
+    val ratings = ratingsRepository.movies.loadMoviesRatings(token)
 
     val ratingsIds = ratings.map { it.idTrakt }
     val myMovies = moviesRepository.myMovies.loadAll(ratingsIds).distinctBy { it.traktId }
