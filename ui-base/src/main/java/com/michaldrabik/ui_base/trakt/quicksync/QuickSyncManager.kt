@@ -23,7 +23,7 @@ class QuickSyncManager @Inject constructor(
 ) {
 
   suspend fun scheduleEpisodes(episodesIds: List<Long>) {
-    if (!ensureQuickSync() || !ensureAuthorized()) return
+    if (!ensureQuickSync()) return
 
     val time = nowUtcMillis()
     val items = episodesIds.map { TraktSyncQueue.createEpisode(it, time, time) }
@@ -34,7 +34,7 @@ class QuickSyncManager @Inject constructor(
   }
 
   suspend fun scheduleMovies(moviesIds: List<Long>) {
-    if (!ensureQuickSync() || !ensureAuthorized()) return
+    if (!ensureQuickSync()) return
 
     val time = nowUtcMillis()
     val items = moviesIds.map { TraktSyncQueue.createMovie(it, time, time) }
@@ -45,7 +45,7 @@ class QuickSyncManager @Inject constructor(
   }
 
   suspend fun scheduleShowsWatchlist(showsIds: List<Long>) {
-    if (!ensureQuickSync() || !ensureAuthorized()) return
+    if (!ensureQuickSync()) return
 
     val time = nowUtcMillis()
     val items = showsIds.map { TraktSyncQueue.createShowWatchlist(it, time, time) }
@@ -56,7 +56,7 @@ class QuickSyncManager @Inject constructor(
   }
 
   suspend fun scheduleMoviesWatchlist(moviesIds: List<Long>) {
-    if (!ensureQuickSync() || !ensureAuthorized()) return
+    if (!ensureQuickSync()) return
 
     val time = nowUtcMillis()
     val items = moviesIds.map { TraktSyncQueue.createMovieWatchlist(it, time, time) }
@@ -67,7 +67,7 @@ class QuickSyncManager @Inject constructor(
   }
 
   suspend fun scheduleAddToList(idTrakt: Long, idList: Long, type: Mode) {
-    if (!ensureQuickSync() || !ensureAuthorized()) return
+    if (!ensureQuickSync()) return
 
     val time = nowUtcMillis()
     val item = when (type) {
@@ -93,15 +93,7 @@ class QuickSyncManager @Inject constructor(
   }
 
   suspend fun scheduleRemoveFromList(idTrakt: Long, idList: Long, type: Mode) {
-    val settings = settingsRepository.load()
-    if (!settings.traktQuickSyncEnabled) {
-      Timber.d("Quick Sync/Remove is disabled. Skipping...")
-      return
-    }
-    if (!userTraktManager.isAuthorized()) {
-      Timber.d("User not logged into Trakt. Skipping...")
-      return
-    }
+    if (!ensureQuickRemove()) return
 
     val time = nowUtcMillis()
     val item = when (type) {
@@ -117,7 +109,7 @@ class QuickSyncManager @Inject constructor(
     database.runTransaction {
       traktSyncQueueDao().delete(idTrakt, idList, itemType.slug, Operation.REMOVE.slug)
       val count = traktSyncQueueDao().delete(idTrakt, idList, itemType.slug, Operation.ADD.slug)
-      if (count == 0 && settings.traktQuickRemoveEnabled) {
+      if (count == 0 && ensureQuickRemove()) {
         traktSyncQueueDao().insert(listOf(item))
         Timber.d("Added ${type.type} list item into remove from list queue.")
       }
@@ -127,7 +119,7 @@ class QuickSyncManager @Inject constructor(
   }
 
   suspend fun scheduleHidden(idTrakt: Long, type: Mode, operation: Operation) {
-    if (!ensureQuickSync() || !ensureAuthorized()) return
+    if (!ensureQuickSync()) return
 
     val time = nowUtcMillis()
     val item = when (type) {
@@ -146,60 +138,70 @@ class QuickSyncManager @Inject constructor(
   }
 
   suspend fun clearEpisodes(episodesIds: List<Long>) {
-    if (!ensureQuickSync()) return
+    if (!ensureQuickRemove()) return
 
     val count = database.traktSyncQueueDao().deleteAll(episodesIds, Type.EPISODE.slug)
     Timber.d("Episodes removed from sync queue. Count: $count")
   }
 
   suspend fun clearMovies(moviesIds: List<Long>) {
-    if (!ensureQuickSync()) return
+    if (!ensureQuickRemove()) return
 
     database.traktSyncQueueDao().deleteAll(moviesIds, Type.MOVIE.slug)
     Timber.d("Movies removed from sync queue. Count: ${moviesIds.size}")
   }
 
   suspend fun clearShowsWatchlist(showsIds: List<Long>) {
-    if (!ensureQuickSync()) return
+    if (!ensureQuickRemove()) return
 
     database.traktSyncQueueDao().deleteAll(showsIds, Type.SHOW_WATCHLIST.slug)
     Timber.d("Shows removed from sync queue. Count: ${showsIds.size}")
   }
 
   suspend fun clearMoviesWatchlist(moviesIds: List<Long>) {
-    if (!ensureQuickSync()) return
+    if (!ensureQuickRemove()) return
 
     database.traktSyncQueueDao().deleteAll(moviesIds, Type.MOVIE_WATCHLIST.slug)
     Timber.d("Movies removed from sync queue. Count: ${moviesIds.size}")
   }
 
   suspend fun clearHiddenShows(ids: List<Long>) {
-    if (!ensureQuickSync()) return
+    if (!ensureQuickRemove()) return
 
     database.traktSyncQueueDao().deleteAll(ids, Type.HIDDEN_SHOW.slug)
     Timber.d("Hidden shows removed from sync queue. Count: ${ids.size}")
   }
 
   suspend fun clearHiddenMovies(ids: List<Long>) {
-    if (!ensureQuickSync()) return
+    if (!ensureQuickRemove()) return
 
     database.traktSyncQueueDao().deleteAll(ids, Type.HIDDEN_MOVIE.slug)
     Timber.d("Hidden shows removed from sync queue. Count: ${ids.size}")
   }
 
   suspend fun isAnyScheduled(): Boolean {
-    if (!userTraktManager.isAuthorized()) {
-      Timber.d("User not logged into Trakt. Skipping...")
-      return false
-    }
+    if (!ensureAuthorized()) return false
 
     return database.traktSyncQueueDao().getAll().isNotEmpty()
   }
 
   private suspend fun ensureQuickSync(): Boolean {
+    if (!ensureAuthorized()) return false
+
     val settings = settingsRepository.load()
     if (!settings.traktQuickSyncEnabled) {
       Timber.d("Quick Sync is disabled. Skipping...")
+      return false
+    }
+    return true
+  }
+
+  private suspend fun ensureQuickRemove(): Boolean {
+    if (!ensureAuthorized()) return false
+
+    val settings = settingsRepository.load()
+    if (!settings.traktQuickRemoveEnabled) {
+      Timber.d("Quick Remove is disabled. Skipping...")
       return false
     }
     return true

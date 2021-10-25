@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_lists.manage.cases
 
-import android.content.Context
 import com.michaldrabik.common.Mode
 import com.michaldrabik.repository.ListsRepository
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
@@ -30,7 +29,6 @@ class ManageListsCase @Inject constructor(
   }
 
   suspend fun addToList(
-    context: Context,
     itemId: IdTrakt,
     itemType: String,
     listItem: ManageListsItem,
@@ -40,7 +38,6 @@ class ManageListsCase @Inject constructor(
   }
 
   suspend fun removeFromList(
-    context: Context,
     itemId: IdTrakt,
     itemType: String,
     listItem: ManageListsItem,

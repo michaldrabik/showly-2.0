@@ -124,7 +124,7 @@ class ListDetailsFragment :
         if (isReorderMode) viewModel.updateRanks(list.id, it)
       },
       itemsSwipedListener = {
-        viewModel.deleteListItem(requireAppContext(), list.id, it)
+        viewModel.deleteListItem(list.id, it)
       },
       itemDragStartListener = this,
       itemSwipeStartListener = this

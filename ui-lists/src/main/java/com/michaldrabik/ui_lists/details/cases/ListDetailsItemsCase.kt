@@ -179,7 +179,8 @@ class ListDetailsItemsCase @Inject constructor(
     itemType: Mode,
   ) {
     listsRepository.removeFromList(listId, itemTraktId, itemType.type)
-    if (settingsRepository.load().traktQuickRemoveEnabled) {
+    val isQuickRemoveEnabled = settingsRepository.load().traktQuickRemoveEnabled
+    if (isQuickRemoveEnabled) {
       quickSyncManager.scheduleRemoveFromList(itemTraktId.id, listId, itemType)
     }
   }

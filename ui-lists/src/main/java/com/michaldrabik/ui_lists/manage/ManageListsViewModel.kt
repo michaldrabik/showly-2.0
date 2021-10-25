@@ -60,11 +60,11 @@ class ManageListsViewModel @Inject constructor(
     viewModelScope.launch {
       if (isChecked) {
         updateItem(listItem.copy(isEnabled = false, isChecked = true))
-        manageListsCase.addToList(context, itemId, itemType, listItem)
+        manageListsCase.addToList(itemId, itemType, listItem)
         updateItem(listItem.copy(isEnabled = true, isChecked = true))
       } else {
         updateItem(listItem.copy(isEnabled = false, isChecked = false))
-        manageListsCase.removeFromList(context, itemId, itemType, listItem)
+        manageListsCase.removeFromList(itemId, itemType, listItem)
         updateItem(listItem.copy(isEnabled = true, isChecked = false))
       }
     }
