@@ -156,6 +156,11 @@
       app:destination="@id/episodeDetailsDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionProgressFragmentToSortOrder"
+      app:destination="@id/sortOrderDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -592,6 +597,12 @@
     android:id="@+id/removeTraktProgressDialog"
     android:name="com.michaldrabik.ui_base.common.sheets.remove_trakt_progress.RemoveTraktProgressBottomSheet"
     android:label="dialogRemoveTraktProgress"
+    />
+
+  <dialog
+    android:id="@+id/sortOrderDialog"
+    android:name="com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet"
+    android:label="dialogSortOrder"
     />
 
 </navigation>

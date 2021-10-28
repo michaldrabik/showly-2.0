@@ -20,7 +20,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
+import com.michaldrabik.ui_base.common.OnSortOrderChangeListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
+import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.add
@@ -37,6 +39,7 @@ import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortOrder.RECENTLY_WATCHED
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Tip
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
@@ -54,7 +57,8 @@ import kotlinx.coroutines.launch
 class ProgressFragment :
   BaseFragment<ProgressViewModel>(R.layout.fragment_progress),
   OnSortClickListener,
-  OnScrollResetListener {
+  OnScrollResetListener,
+  OnSortOrderChangeListener {
 
   private val parentViewModel by viewModels<ProgressMainViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ProgressViewModel>()
@@ -179,16 +183,8 @@ class ProgressFragment :
 
   private fun openSortOrderDialog(order: SortOrder) {
     val options = listOf(NAME, RATING, NEWEST, RECENTLY_WATCHED, EPISODES_LEFT)
-    val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
-
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setTitle(R.string.textSortBy)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setSingleChoiceItems(optionsStrings, options.indexOf(order)) { dialog, index ->
-        viewModel.setSortOrder(options[index])
-        dialog.dismiss()
-      }
-      .show()
+    val args = SortOrderBottomSheet.createBundle(options, order, SortType.ASCENDING)
+    navigateTo(R.id.actionProgressFragmentToSortOrder, args)
   }
 
   private fun render(uiState: ProgressUiState) {
@@ -206,6 +202,8 @@ class ProgressFragment :
   }
 
   override fun onSortClick() = viewModel.loadSortOrder()
+
+  override fun onSortOrderChange(sortOrder: SortOrder, sortType: SortType) = viewModel.setSortOrder(sortOrder)
 
   override fun onScrollReset() = progressRecycler.smoothScrollToPosition(0)
 
