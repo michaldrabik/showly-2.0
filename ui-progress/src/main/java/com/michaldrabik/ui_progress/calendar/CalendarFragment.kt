@@ -44,7 +44,7 @@ class CalendarFragment :
   OnScrollResetListener {
 
   private companion object {
-    const val OVERSCROLL_OFFSET = 75F
+    const val OVERSCROLL_OFFSET = 100F
     const val OVERSCROLL_OFFSET_TRANSLATION = 5F
   }
 
