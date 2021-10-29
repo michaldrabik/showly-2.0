@@ -181,9 +181,9 @@ class ProgressFragment :
       .show()
   }
 
-  private fun openSortOrderDialog(order: SortOrder) {
+  private fun openSortOrderDialog(order: SortOrder, type: SortType) {
     val options = listOf(NAME, RATING, NEWEST, RECENTLY_WATCHED, EPISODES_LEFT)
-    val args = SortOrderBottomSheet.createBundle(options, order, SortType.ASCENDING)
+    val args = SortOrderBottomSheet.createBundle(options, order, type)
     navigateTo(R.id.actionProgressFragmentToSortOrder, args)
   }
 
@@ -197,13 +197,13 @@ class ProgressFragment :
         progressRecycler.fadeIn(withHardware = true).add(animations)
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
-      sortOrder?.let { event -> event.consume()?.let { openSortOrderDialog(it) } }
+      sortOrder?.let { event -> event.consume()?.let { openSortOrderDialog(it.first, it.second) } }
     }
   }
 
   override fun onSortClick() = viewModel.loadSortOrder()
 
-  override fun onSortOrderChange(sortOrder: SortOrder, sortType: SortType) = viewModel.setSortOrder(sortOrder)
+  override fun onSortOrderChange(sortOrder: SortOrder, sortType: SortType) = viewModel.setSortOrder(sortOrder, sortType)
 
   override fun onScrollReset() = progressRecycler.smoothScrollToPosition(0)
 

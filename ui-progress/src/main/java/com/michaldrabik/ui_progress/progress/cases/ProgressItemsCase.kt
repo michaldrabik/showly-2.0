@@ -15,6 +15,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ProgressType
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.helpers.ProgressItemsSorter
 import com.michaldrabik.ui_progress.helpers.TranslationsBundle
@@ -48,10 +49,12 @@ class ProgressItemsCase @Inject constructor(
   suspend fun loadItems(searchQuery: String): List<ProgressListItem> = withContext(Dispatchers.Default) {
     val settings = settingsRepository.load()
     val upcomingEnabled = settings.progressUpcomingEnabled
-    val sortOrder = settings.progressSortOrder
     val progressType = settingsRepository.progressPercentType
     val language = translationsRepository.getLanguage()
     val dateFormat = dateFormatProvider.loadFullHourFormat()
+
+    val sortOrder = settingsRepository.sortSettings.progressShowsSortOrder
+    val sortType = settingsRepository.sortSettings.progressShowsSortType
 
     val nowUtc = nowUtc()
     val upcomingLimit = nowUtc.plusMonths(UPCOMING_MONTHS_LIMIT).toMillis()
@@ -128,7 +131,7 @@ class ProgressItemsCase @Inject constructor(
       }.awaitAll()
 
     val filteredItems = filterByQuery(searchQuery, filledItems)
-    groupItems(filteredItems, sortOrder)
+    groupItems(filteredItems, sortOrder, sortType)
   }
 
   private fun filterByQuery(query: String, items: List<ProgressListItem.Episode>) =
@@ -142,16 +145,17 @@ class ProgressItemsCase @Inject constructor(
   private fun groupItems(
     input: List<ProgressListItem.Episode>,
     sortOrder: SortOrder,
+    sortType: SortType,
   ): List<ProgressListItem> {
     val pinnedItems = input
       .filter { it.isPinned }
-      .sortedWith(sorter.sort(sortOrder))
+      .sortedWith(sorter.sort(sortOrder, sortType))
 
     val groupedItems = (input - pinnedItems)
       .groupBy { !it.isUpcoming }
 
     val aired = ((groupedItems[true] ?: emptyList()))
-      .sortedWith(sorter.sort(sortOrder))
+      .sortedWith(sorter.sort(sortOrder, sortType))
 
     val upcoming = ((groupedItems[false] ?: emptyList()))
       .sortedBy { it.episode?.firstAired?.toMillis() }

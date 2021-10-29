@@ -23,9 +23,10 @@ import javax.inject.Singleton
 
 @Singleton
 class SettingsRepository @Inject constructor(
-  @Named("miscPreferences") private var preferences: SharedPreferences,
+  val sortSettings: SettingsSortRepository,
   private val database: AppDatabase,
   private val mappers: Mappers,
+  @Named("miscPreferences") private var preferences: SharedPreferences
 ) {
 
   companion object Key {

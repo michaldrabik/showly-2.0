@@ -17,6 +17,7 @@ import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.main.ProgressMainUiState
 import com.michaldrabik.ui_progress.progress.cases.ProgressItemsCase
@@ -46,7 +47,7 @@ class ProgressViewModel @Inject constructor(
   private val itemsState = MutableStateFlow<List<ProgressListItem>?>(null)
   private val loadingState = MutableStateFlow(false)
   private val scrollState = MutableStateFlow(Event(false))
-  private val sortOrderState = MutableStateFlow<Event<SortOrder>?>(null)
+  private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
 
   val uiState = combine(
     itemsState,
@@ -143,11 +144,9 @@ class ProgressViewModel @Inject constructor(
     }
   }
 
-  fun setSortOrder(sortOrder: SortOrder) {
-    viewModelScope.launch {
-      sortOrderCase.setSortOrder(sortOrder)
-      loadItems(resetScroll = true)
-    }
+  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+    sortOrderCase.setSortOrder(sortOrder, sortType)
+    loadItems(resetScroll = true)
   }
 
   fun togglePinItem(item: ProgressListItem.Episode) {
