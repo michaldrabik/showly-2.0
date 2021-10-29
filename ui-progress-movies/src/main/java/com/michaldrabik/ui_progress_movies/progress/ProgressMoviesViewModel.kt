@@ -16,6 +16,7 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainUiState
 import com.michaldrabik.ui_progress_movies.progress.cases.ProgressMoviesItemsCase
@@ -44,7 +45,7 @@ class ProgressMoviesViewModel @Inject constructor(
 
   private val itemsState = MutableStateFlow<List<ProgressMovieListItem.MovieItem>?>(null)
   private val scrollState = MutableStateFlow(Event(false))
-  private val sortOrderState = MutableStateFlow<Event<SortOrder>?>(null)
+  private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
 
   val uiState = combine(
     itemsState,
@@ -121,9 +122,9 @@ class ProgressMoviesViewModel @Inject constructor(
     }
   }
 
-  fun setSortOrder(sortOrder: SortOrder) {
+  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
     viewModelScope.launch {
-      sortCase.setSortOrder(sortOrder)
+      sortCase.setSortOrder(sortOrder, sortType)
       loadItems(resetScroll = true)
     }
   }

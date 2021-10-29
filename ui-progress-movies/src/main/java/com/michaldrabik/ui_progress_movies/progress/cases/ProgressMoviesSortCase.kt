@@ -1,8 +1,8 @@
 package com.michaldrabik.ui_progress_movies.progress.cases
 
 import com.michaldrabik.repository.SettingsRepository
-import com.michaldrabik.ui_model.Settings
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
@@ -11,15 +11,13 @@ class ProgressMoviesSortCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  suspend fun setSortOrder(sortOrder: SortOrder) {
-    val settings = settingsRepository.load()
-    settingsRepository.update(settings.copy(progressMoviesSortBy = sortOrder))
+  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+    settingsRepository.sortSettings.progressMoviesSortOrder = sortOrder
+    settingsRepository.sortSettings.progressMoviesSortType = sortType
   }
 
-  suspend fun loadSortOrder(): SortOrder {
-    if (!settingsRepository.isInitialized()) {
-      return Settings.createInitial().progressMoviesSortBy
-    }
-    return settingsRepository.load().progressMoviesSortBy
-  }
+  fun loadSortOrder() = Pair(
+    settingsRepository.sortSettings.progressMoviesSortOrder,
+    settingsRepository.sortSettings.progressMoviesSortType
+  )
 }

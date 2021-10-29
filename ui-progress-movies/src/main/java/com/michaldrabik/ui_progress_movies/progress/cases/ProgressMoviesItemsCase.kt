@@ -8,20 +8,20 @@ import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_model.ImageType
-import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_progress_movies.helpers.ProgressMoviesItemsSorter
 import com.michaldrabik.ui_progress_movies.progress.recycler.ProgressMovieListItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
-import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Suppress("UNCHECKED_CAST")
 @Singleton
 class ProgressMoviesItemsCase @Inject constructor(
+  private val sorter: ProgressMoviesItemsSorter,
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
@@ -33,7 +33,9 @@ class ProgressMoviesItemsCase @Inject constructor(
   suspend fun loadItems(searchQuery: String) = withContext(Dispatchers.Default) {
     val language = translationsRepository.getLanguage()
     val dateFormat = dateFormatProvider.loadFullDayFormat()
-    val sortOrder = settingsRepository.load().progressMoviesSortBy
+
+    val sortOrder = settingsRepository.sortSettings.progressMoviesSortOrder
+    val sortType = settingsRepository.sortSettings.progressMoviesSortType
 
     val watchlistMovies = moviesRepository.watchlistMovies.loadAll()
     val items = watchlistMovies.map { movie ->
@@ -56,7 +58,7 @@ class ProgressMoviesItemsCase @Inject constructor(
     }.awaitAll()
 
     val filtered = filterItems(searchQuery, items)
-    val sorted = sortItems(filtered, sortOrder)
+    val sorted = filtered.sortedWith(sorter.sort(sortOrder, sortType))
     prepareItems(sorted)
   }
 
@@ -65,22 +67,6 @@ class ProgressMoviesItemsCase @Inject constructor(
       it.movie.title.contains(query, true) ||
         it.translation?.title?.contains(query, true) == true
     }
-
-  private fun sortItems(
-    items: List<ProgressMovieListItem.MovieItem>,
-    sortOrder: SortOrder
-  ) = when (sortOrder) {
-    SortOrder.NAME -> items.sortedBy {
-      val translatedTitle = if (it.translation?.hasTitle == false) null else it.translation?.title
-      (translatedTitle ?: it.movie.titleNoThe).uppercase(Locale.ROOT)
-    }
-    SortOrder.DATE_ADDED -> items.sortedByDescending { it.movie.updatedAt }
-    SortOrder.RATING -> items.sortedByDescending { it.movie.rating }
-    SortOrder.NEWEST -> items.sortedWith(
-      compareByDescending<ProgressMovieListItem.MovieItem> { it.movie.released }.thenByDescending { it.movie.year }
-    )
-    else -> throw IllegalStateException("Invalid sort order")
-  }
 
   private fun prepareItems(items: List<ProgressMovieListItem.MovieItem>) =
     items

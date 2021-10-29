@@ -20,7 +20,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
+import com.michaldrabik.ui_base.common.OnSortOrderChangeListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
+import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.add
@@ -30,6 +32,11 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
+import com.michaldrabik.ui_model.SortOrder.NAME
+import com.michaldrabik.ui_model.SortOrder.NEWEST
+import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainFragment
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainViewModel
@@ -45,7 +52,8 @@ import kotlinx.coroutines.launch
 class ProgressMoviesFragment :
   BaseFragment<ProgressMoviesViewModel>(R.layout.fragment_progress_movies),
   OnSortClickListener,
-  OnScrollResetListener {
+  OnScrollResetListener,
+  OnSortOrderChangeListener {
 
   private val parentViewModel by viewModels<ProgressMoviesMainViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ProgressMoviesViewModel>()
@@ -154,18 +162,10 @@ class ProgressMoviesFragment :
       .show()
   }
 
-  private fun openSortOrderDialog(order: SortOrder) {
-    val options = listOf(SortOrder.NAME, SortOrder.RATING, SortOrder.NEWEST, SortOrder.DATE_ADDED)
-    val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
-
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setTitle(R.string.textSortBy)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setSingleChoiceItems(optionsStrings, options.indexOf(order)) { dialog, index ->
-        viewModel.setSortOrder(options[index])
-        dialog.dismiss()
-      }
-      .show()
+  private fun openSortOrderDialog(order: SortOrder, type: SortType) {
+    val options = listOf(NAME, RATING, NEWEST, DATE_ADDED)
+    val args = SortOrderBottomSheet.createBundle(options, order, type)
+    navigateTo(R.id.actionProgressMoviesFragmentToSortOrder, args)
   }
 
   override fun onScrollReset() = progressMoviesMainRecycler.smoothScrollToPosition(0)
@@ -181,7 +181,7 @@ class ProgressMoviesFragment :
         progressMoviesMainRecycler.fadeIn(withHardware = true).add(animations)
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
-      sortOrder?.let { event -> event.consume()?.let { openSortOrderDialog(it) } }
+      sortOrder?.let { event -> event.consume()?.let { openSortOrderDialog(it.first, it.second) } }
     }
   }
 
@@ -192,4 +192,7 @@ class ProgressMoviesFragment :
     layoutManager = null
     super.onDestroyView()
   }
+
+  override fun onSortOrderChange(sortOrder: SortOrder, sortType: SortType) =
+    viewModel.setSortOrder(sortOrder, sortType)
 }
