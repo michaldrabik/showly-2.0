@@ -17,8 +17,10 @@ import com.michaldrabik.ui_model.MyShowsSection.UPCOMING
 import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsLoadShowsCase
 import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsRatingsCase
+import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsSortingCase
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,25 +37,12 @@ import javax.inject.Inject
 @HiltViewModel
 class MyShowsViewModel @Inject constructor(
   private val loadShowsCase: MyShowsLoadShowsCase,
+  private val sortingCase: MyShowsSortingCase,
   private val ratingsCase: MyShowsRatingsCase,
 ) : BaseViewModel() {
 
   private val itemsState = MutableStateFlow<List<MyShowsItem>?>(null)
   private val itemsUpdateState = MutableStateFlow<Event<Boolean>?>(null)
-
-  val uiState = combine(
-    itemsState,
-    itemsUpdateState
-  ) { itemsState, itemsUpdateState ->
-    MyShowsUiState(
-      items = itemsState,
-      notifyListsUpdate = itemsUpdateState
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = MyShowsUiState()
-  )
 
   fun loadShows(notifyListsUpdate: Boolean = false) {
     viewModelScope.launch {
@@ -61,19 +50,32 @@ class MyShowsViewModel @Inject constructor(
       val shows = loadShowsCase.loadAllShows().map { toListItemAsync(Type.ALL_SHOWS_ITEM, it) }.awaitAll()
       val seasons = loadShowsCase.loadSeasonsForShows(shows.map { it.show.traktId })
 
-      val allShows = loadShowsCase.filterSectionShows(shows, seasons, ALL)
+      val sortingOrder = sortingCase.loadSectionSortOrder(ALL)
+      val allShows = loadShowsCase.filterSectionShows(shows, seasons, ALL, sortingOrder)
 
       val runningShows =
-        if (settings.myShowsRunningIsEnabled) loadShowsCase.filterSectionShows(shows, seasons, WATCHING)
-        else emptyList()
+        if (settings.myShowsRunningIsEnabled) {
+          val sortOrder = sortingCase.loadSectionSortOrder(WATCHING)
+          loadShowsCase.filterSectionShows(shows, seasons, WATCHING, sortOrder)
+        } else {
+          emptyList()
+        }
 
       val endedShows =
-        if (settings.myShowsEndedIsEnabled) loadShowsCase.filterSectionShows(shows, seasons, FINISHED)
-        else emptyList()
+        if (settings.myShowsEndedIsEnabled) {
+          val sortOrder = sortingCase.loadSectionSortOrder(FINISHED)
+          loadShowsCase.filterSectionShows(shows, seasons, FINISHED, sortOrder)
+        } else {
+          emptyList()
+        }
 
       val incomingShows =
-        if (settings.myShowsIncomingIsEnabled) loadShowsCase.filterSectionShows(shows, seasons, UPCOMING)
-        else emptyList()
+        if (settings.myShowsIncomingIsEnabled) {
+          val sortOrder = sortingCase.loadSectionSortOrder(UPCOMING)
+          loadShowsCase.filterSectionShows(shows, seasons, UPCOMING, sortOrder)
+        } else {
+          emptyList()
+        }
 
       val recentShows = if (settings.myShowsRecentIsEnabled) {
         loadShowsCase.loadRecentShows().map { toListItemAsync(Type.RECENT_SHOWS, it, ImageType.FANART) }.awaitAll()
@@ -88,19 +90,19 @@ class MyShowsViewModel @Inject constructor(
           add(MyShowsItem.createRecentsSection(recentShows))
         }
         if (runningShows.isNotEmpty()) {
-          add(MyShowsItem.createHeader(WATCHING, runningShows.count(), loadShowsCase.loadSortOrder(WATCHING)))
+          add(MyShowsItem.createHeader(WATCHING, runningShows.count(), sortingCase.loadSectionSortOrder(WATCHING)))
           add(MyShowsItem.createHorizontalSection(WATCHING, runningShows))
         }
         if (incomingShows.isNotEmpty()) {
-          add(MyShowsItem.createHeader(UPCOMING, incomingShows.count(), loadShowsCase.loadSortOrder(UPCOMING)))
+          add(MyShowsItem.createHeader(UPCOMING, incomingShows.count(), sortingCase.loadSectionSortOrder(UPCOMING)))
           add(MyShowsItem.createHorizontalSection(UPCOMING, incomingShows))
         }
         if (endedShows.isNotEmpty()) {
-          add(MyShowsItem.createHeader(FINISHED, endedShows.count(), loadShowsCase.loadSortOrder(FINISHED)))
+          add(MyShowsItem.createHeader(FINISHED, endedShows.count(), sortingCase.loadSectionSortOrder(FINISHED)))
           add(MyShowsItem.createHorizontalSection(FINISHED, endedShows))
         }
         if (allShows.isNotEmpty()) {
-          add(MyShowsItem.createHeader(ALL, allShows.count(), loadShowsCase.loadSortOrder(ALL)))
+          add(MyShowsItem.createHeader(ALL, allShows.count(), sortingCase.loadSectionSortOrder(ALL)))
           addAll(allShows)
         }
       }
@@ -124,9 +126,9 @@ class MyShowsViewModel @Inject constructor(
     }
   }
 
-  fun loadSortedSection(section: MyShowsSection, order: SortOrder) {
+  fun setSectionSortOrder(section: MyShowsSection, sortOrder: SortOrder, sortType: SortType) {
     viewModelScope.launch {
-      loadShowsCase.setSectionSortOrder(section, order)
+      sortingCase.setSectionSortOrder(section, sortOrder, sortType)
       loadShows(notifyListsUpdate = true)
     }
   }
@@ -196,4 +198,18 @@ class MyShowsViewModel @Inject constructor(
     val translation = loadShowsCase.loadTranslation(show, true)
     MyShowsItem(itemType, null, null, null, show, image, false, translation)
   }
+
+  val uiState = combine(
+    itemsState,
+    itemsUpdateState
+  ) { itemsState, itemsUpdateState ->
+    MyShowsUiState(
+      items = itemsState,
+      notifyListsUpdate = itemsUpdateState
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = MyShowsUiState()
+  )
 }

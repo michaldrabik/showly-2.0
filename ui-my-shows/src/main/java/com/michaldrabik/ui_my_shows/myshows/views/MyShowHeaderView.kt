@@ -10,6 +10,7 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.MyShowsSection.RECENTS
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import kotlinx.android.synthetic.main.view_my_shows_header.view.*
@@ -28,13 +29,13 @@ class MyShowHeaderView : FrameLayout {
     clipToPadding = false
   }
 
-  fun bind(item: MyShowsItem.Header, sortClickListener: ((MyShowsSection, SortOrder) -> Unit)?) {
+  fun bind(item: MyShowsItem.Header, sortClickListener: ((MyShowsSection, SortOrder, SortType) -> Unit)?) {
     bindLabel(item)
 
     item.sortOrder?.let {
       myShowsHeaderSortButton.visible()
       myShowsHeaderSortButton.onClick {
-        sortClickListener?.invoke(item.section, item.sortOrder)
+        sortClickListener?.invoke(item.section, item.sortOrder.first, item.sortOrder.second)
       }
     }
   }

@@ -2,8 +2,8 @@ package com.michaldrabik.ui_my_shows.myshows
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,10 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
+import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
@@ -26,9 +26,11 @@ import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsAdapter
+import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 import kotlinx.android.synthetic.main.fragment_watchlist.*
@@ -99,7 +101,7 @@ class MyShowsFragment :
       missingImageListener = { item, force -> viewModel.loadMissingImage(item, force) }
       missingTranslationListener = { viewModel.loadMissingTranslation(it) }
       sectionMissingImageListener = { item, section, force -> viewModel.loadSectionMissingItem(item, section, force) }
-      onSortOrderClickListener = { section, order -> showSortOrderDialog(section, order) }
+      onSortOrderClickListener = { section, order, type -> showSortOrderDialog(section, order, type) }
     }
     myShowsRecycler.apply {
       adapter = this@MyShowsFragment.adapter
@@ -122,18 +124,20 @@ class MyShowsFragment :
     }
   }
 
-  private fun showSortOrderDialog(section: MyShowsSection, order: SortOrder) {
+  private fun showSortOrderDialog(section: MyShowsSection, order: SortOrder, type: SortType) {
     val options = listOf(NAME, RATING, NEWEST, DATE_ADDED)
-    val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
+    val key = NavigationArgs.requestSortOrderSection(section.name)
+    val args = SortOrderBottomSheet.createBundle(options, order, type, key)
 
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setTitle(R.string.textSortBy)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setSingleChoiceItems(optionsStrings, options.indexOf(order)) { dialog, index ->
-        viewModel.loadSortedSection(section, options[index])
-        dialog.dismiss()
-      }
-      .show()
+    requireParentFragment().setFragmentResultListener(key) { requestKey, bundle ->
+      val sortOrder = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_ORDER) as SortOrder
+      val sortType = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_TYPE) as SortType
+      MyShowsSection.values()
+        .find { NavigationArgs.requestSortOrderSection(it.name) == requestKey }
+        ?.let { viewModel.setSectionSortOrder(it, sortOrder, sortType) }
+    }
+
+    navigateTo(R.id.actionFollowedShowsFragmentToSortOrder, args)
   }
 
   private fun render(uiState: MyShowsUiState) {

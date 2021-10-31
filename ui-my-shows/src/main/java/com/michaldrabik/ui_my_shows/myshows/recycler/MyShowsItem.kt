@@ -6,6 +6,7 @@ import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Translation
 
 data class MyShowsItem(
@@ -31,7 +32,7 @@ data class MyShowsItem(
   data class Header(
     val section: MyShowsSection,
     val itemCount: Int,
-    val sortOrder: SortOrder?
+    val sortOrder: Pair<SortOrder, SortType>?
   )
 
   data class RecentsSection(
@@ -47,7 +48,7 @@ data class MyShowsItem(
     fun createHeader(
       section: MyShowsSection,
       itemCount: Int,
-      sortOrder: SortOrder?
+      sortOrder: Pair<SortOrder, SortType>?
     ) = MyShowsItem(
       Type.HEADER,
       Header(section, itemCount, sortOrder),

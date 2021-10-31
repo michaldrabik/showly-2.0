@@ -10,24 +10,22 @@ import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.MyShowsSection
-import com.michaldrabik.ui_model.MyShowsSection.ALL
 import com.michaldrabik.ui_model.MyShowsSection.FINISHED
 import com.michaldrabik.ui_model.MyShowsSection.UPCOMING
 import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.ShowStatus.RETURNING
 import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
-import com.michaldrabik.ui_model.SortOrder.NAME
-import com.michaldrabik.ui_model.SortOrder.NEWEST
-import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_my_shows.helpers.MyShowsItemSorter
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 @ViewModelScoped
 class MyShowsLoadShowsCase @Inject constructor(
+  private val sorter: MyShowsItemSorter,
   private val imagesProvider: ShowImagesProvider,
   private val showsRepository: ShowsRepository,
   private val translationsRepository: TranslationsRepository,
@@ -50,12 +48,12 @@ class MyShowsLoadShowsCase @Inject constructor(
     return loadSeasonsForShows(traktIds.filter { it !in batch }, buffer)
   }
 
-  suspend fun filterSectionShows(
+  fun filterSectionShows(
     allShows: List<MyShowsItem>,
     allSeasons: List<Season>,
-    section: MyShowsSection
+    section: MyShowsSection,
+    sortOrder: Pair<SortOrder, SortType>,
   ): List<MyShowsItem> {
-    val sortOrder = loadSortOrder(section)
     val shows = allShows
       .filter {
         val seasons = allSeasons.filter { s -> s.idShowTrakt == it.show.traktId }
@@ -74,47 +72,12 @@ class MyShowsLoadShowsCase @Inject constructor(
           else -> true
         }
       }
-    return sortBy(sortOrder, shows)
+    return shows.sortedWith(sorter.sort(sortOrder.first, sortOrder.second))
   }
 
   suspend fun loadRecentShows(): List<Show> {
     val amount = loadSettings().myRecentsAmount
     return showsRepository.myShows.loadAllRecent(amount)
-  }
-
-  suspend fun loadSortOrder(section: MyShowsSection): SortOrder {
-    val settings = loadSettings()
-    return when (section) {
-      WATCHING -> settings.myShowsWatchingSortBy
-      UPCOMING -> settings.myShowsUpcomingSortBy
-      FINISHED -> settings.myShowsFinishedSortBy
-      ALL -> settings.myShowsAllSortBy
-      else -> error("Should not be used here.")
-    }
-  }
-
-  private fun sortBy(sortOrder: SortOrder, shows: List<MyShowsItem>) =
-    when (sortOrder) {
-      NAME -> shows.sortedBy {
-        val translatedTitle = if (it.translation?.hasTitle == false) null else it.translation?.title
-        translatedTitle ?: it.show.titleNoThe
-      }
-      NEWEST -> shows.sortedWith(compareByDescending<MyShowsItem> { it.show.firstAired }.thenByDescending { it.show.year })
-      RATING -> shows.sortedByDescending { it.show.rating }
-      DATE_ADDED -> shows.sortedByDescending { it.show.createdAt }
-      else -> error("Should not be used here.")
-    }
-
-  suspend fun setSectionSortOrder(section: MyShowsSection, order: SortOrder) {
-    val settings = loadSettings()
-    val newSettings = when (section) {
-      WATCHING -> settings.copy(myShowsWatchingSortBy = order)
-      FINISHED -> settings.copy(myShowsFinishedSortBy = order)
-      UPCOMING -> settings.copy(myShowsUpcomingSortBy = order)
-      ALL -> settings.copy(myShowsAllSortBy = order)
-      else -> error("Should not be used here.")
-    }
-    settingsRepository.update(newSettings)
   }
 
   suspend fun loadTranslation(show: Show, onlyLocal: Boolean): Translation? {

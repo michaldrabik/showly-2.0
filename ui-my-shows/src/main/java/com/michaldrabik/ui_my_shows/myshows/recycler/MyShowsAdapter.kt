@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseAdapter
 import com.michaldrabik.ui_model.MyShowsSection
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem.Type
 import com.michaldrabik.ui_my_shows.myshows.views.MyShowAllView
 import com.michaldrabik.ui_my_shows.myshows.views.MyShowHeaderView
@@ -23,7 +24,7 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
 
   override val asyncDiffer = AsyncListDiffer(this, MyShowsItemDiffCallback())
 
-  var onSortOrderClickListener: ((MyShowsSection, SortOrder) -> Unit)? = null
+  var onSortOrderClickListener: ((MyShowsSection, SortOrder, SortType) -> Unit)? = null
   var sectionMissingImageListener: ((MyShowsItem, MyShowsItem.HorizontalSection, Boolean) -> Unit)? = null
 
   var horizontalPositions = mutableMapOf<MyShowsSection, Pair<Int, Int>>()

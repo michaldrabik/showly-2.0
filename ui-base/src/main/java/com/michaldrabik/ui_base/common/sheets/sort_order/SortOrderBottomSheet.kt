@@ -16,6 +16,7 @@ import com.michaldrabik.ui_base.common.sheets.sort_order.views.SortOrderItemView
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_REQUEST_KEY
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SORT_ORDERS
@@ -31,16 +32,19 @@ class SortOrderBottomSheet : BaseBottomSheetFragment<SortOrderViewModel>() {
     fun createBundle(
       options: List<SortOrder>,
       selectedOrder: SortOrder,
-      selectedType: SortType
+      selectedType: SortType,
+      requestKey: String = REQUEST_SORT_ORDER
     ) = bundleOf(
       ARG_SORT_ORDERS to options.map { it.name },
       ARG_SELECTED_SORT_ORDER to selectedOrder,
-      ARG_SELECTED_SORT_TYPE to selectedType
+      ARG_SELECTED_SORT_TYPE to selectedType,
+      ARG_REQUEST_KEY to requestKey
     )
   }
 
   override val layoutResId = R.layout.view_sort_order
 
+  private val requestKey by lazy { requireArguments().getString(ARG_REQUEST_KEY) ?: REQUEST_SORT_ORDER }
   private val initialSortOrder by lazy { requireArguments().getSerializable(ARG_SELECTED_SORT_ORDER) as SortOrder }
   private val initialSortType by lazy { requireArguments().getSerializable(ARG_SELECTED_SORT_TYPE) as SortType }
   private val initialOptions by lazy {
@@ -110,9 +114,9 @@ class SortOrderBottomSheet : BaseBottomSheetFragment<SortOrderViewModel>() {
     if (selectedSortOrder != initialSortOrder || initialSortType != selectedSortType) {
       val result = bundleOf(
         ARG_SELECTED_SORT_ORDER to selectedSortOrder,
-        ARG_SELECTED_SORT_TYPE to selectedSortType
+        ARG_SELECTED_SORT_TYPE to selectedSortType,
       )
-      setFragmentResult(REQUEST_SORT_ORDER, result)
+      setFragmentResult(requestKey, result)
     }
     dismiss()
   }

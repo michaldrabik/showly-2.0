@@ -3,6 +3,7 @@ package com.michaldrabik.ui_my_shows.watchlist
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.updatePadding
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
-import com.michaldrabik.ui_base.common.OnSortOrderChangeListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -30,6 +30,9 @@ import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
 import com.michaldrabik.ui_my_shows.main.utilities.OnSortClickListener
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistAdapter
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDER
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_my_shows.*
 import kotlinx.android.synthetic.main.fragment_watchlist.*
@@ -41,8 +44,7 @@ class WatchlistFragment :
   BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
   OnScrollResetListener,
   OnTraktSyncListener,
-  OnSortClickListener,
-  OnSortOrderChangeListener {
+  OnSortClickListener {
 
   override val viewModel by viewModels<WatchlistViewModel>()
 
@@ -101,6 +103,13 @@ class WatchlistFragment :
   private fun showSortOrderDialog(order: SortOrder, type: SortType) {
     val options = listOf(NAME, RATING, NEWEST, DATE_ADDED)
     val args = SortOrderBottomSheet.createBundle(options, order, type)
+
+    requireParentFragment().setFragmentResultListener(REQUEST_SORT_ORDER) { _, bundle ->
+      val sortOrder = bundle.getSerializable(ARG_SELECTED_SORT_ORDER) as SortOrder
+      val sortType = bundle.getSerializable(ARG_SELECTED_SORT_TYPE) as SortType
+      viewModel.setSortOrder(sortOrder, sortType)
+    }
+
     navigateTo(R.id.actionFollowedShowsFragmentToSortOrder, args)
   }
 
@@ -122,8 +131,6 @@ class WatchlistFragment :
   }
 
   override fun onSortClick(page: Int) = viewModel.loadSortOrder()
-
-  override fun onSortOrderChange(sortOrder: SortOrder, sortType: SortType) = viewModel.setSortOrder(sortOrder, sortType)
 
   override fun onScrollReset() = watchlistRecycler.scrollToPosition(0)
 
