@@ -4,8 +4,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseMovieAdapter
-import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.mymovies.views.MyMovieAllView
 import com.michaldrabik.ui_my_movies.mymovies.views.MyMovieHeaderView
 import com.michaldrabik.ui_my_movies.mymovies.views.MyMoviesRecentsView
@@ -14,7 +14,7 @@ class MyMoviesAdapter(
   itemClickListener: (MyMoviesItem) -> Unit,
   missingImageListener: (MyMoviesItem, Boolean) -> Unit,
   missingTranslationListener: (MyMoviesItem) -> Unit,
-  val onSortOrderClickListener: (MyMoviesSection, SortOrder) -> Unit
+  val onSortOrderClickListener: (SortOrder, SortType) -> Unit
 ) : BaseMovieAdapter<MyMoviesItem>(
   itemClickListener = itemClickListener,
   missingImageListener = missingImageListener,

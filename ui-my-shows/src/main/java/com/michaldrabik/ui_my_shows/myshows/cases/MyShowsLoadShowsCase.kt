@@ -18,7 +18,7 @@ import com.michaldrabik.ui_model.ShowStatus.RETURNING
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Translation
-import com.michaldrabik.ui_my_shows.helpers.MyShowsItemSorter
+import com.michaldrabik.ui_my_shows.myshows.helpers.MyShowsItemSorter
 import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject

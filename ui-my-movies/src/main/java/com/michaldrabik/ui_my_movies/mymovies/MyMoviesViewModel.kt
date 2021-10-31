@@ -10,12 +10,13 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyMoviesSection.ALL
 import com.michaldrabik.ui_model.MyMoviesSection.RECENTS
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesLoadCase
 import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesRatingsCase
+import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesSortingCase
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem.Type.ALL_MOVIES_ITEM
@@ -36,6 +37,7 @@ import javax.inject.Inject
 class MyMoviesViewModel @Inject constructor(
   private val loadMoviesCase: MyMoviesLoadCase,
   private val ratingsCase: MyMoviesRatingsCase,
+  private val sortingCase: MyMoviesSortingCase,
 ) : BaseViewModel() {
 
   private val itemsState = MutableStateFlow<List<MyMoviesItem>?>(null)
@@ -59,8 +61,9 @@ class MyMoviesViewModel @Inject constructor(
       val settings = loadMoviesCase.loadSettings()
       val dateFormat = loadMoviesCase.loadDateFormat()
       val movies = loadMoviesCase.loadAll().map { toListItemAsync(ALL_MOVIES_ITEM, it, dateFormat) }.awaitAll()
+      val sortOrder = sortingCase.loadSortOrder()
 
-      val allMovies = loadMoviesCase.filterSectionMovies(movies, ALL)
+      val allMovies = loadMoviesCase.filterSectionMovies(movies, sortOrder)
       val recentMovies = if (settings.myMoviesRecentIsEnabled) {
         loadMoviesCase.loadRecentMovies().map { toListItemAsync(RECENT_MOVIE, it, dateFormat, ImageType.FANART) }.awaitAll()
       } else {
@@ -74,7 +77,7 @@ class MyMoviesViewModel @Inject constructor(
           add(MyMoviesItem.createRecentsSection(recentMovies))
         }
         if (allMovies.isNotEmpty()) {
-          add(MyMoviesItem.createHeader(ALL, allMovies.count(), loadMoviesCase.loadSortOrder(ALL)))
+          add(MyMoviesItem.createHeader(ALL, allMovies.count(), sortOrder))
           addAll(allMovies)
         }
       }
@@ -98,9 +101,9 @@ class MyMoviesViewModel @Inject constructor(
     }
   }
 
-  fun loadSortedSection(section: MyMoviesSection, order: SortOrder) {
+  fun setSortOrder(order: SortOrder, type: SortType) {
     viewModelScope.launch {
-      loadMoviesCase.setSectionSortOrder(section, order)
+      sortingCase.setSortOrder(order, type)
       loadMovies(notifyListsUpdate = true)
     }
   }

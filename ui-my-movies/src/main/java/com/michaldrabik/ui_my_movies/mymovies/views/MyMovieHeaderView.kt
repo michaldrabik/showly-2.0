@@ -7,9 +7,9 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
-import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.MyMoviesSection.RECENTS
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
 import kotlinx.android.synthetic.main.view_my_movies_header.view.*
@@ -28,13 +28,13 @@ class MyMovieHeaderView : FrameLayout {
     clipToPadding = false
   }
 
-  fun bind(item: MyMoviesItem.Header, sortClickListener: (MyMoviesSection, SortOrder) -> Unit) {
+  fun bind(item: MyMoviesItem.Header, sortClickListener: (SortOrder, SortType) -> Unit) {
     bindLabel(item)
 
     item.sortOrder?.let {
       myMoviesHeaderSortButton.visible()
       myMoviesHeaderSortButton.onClick {
-        sortClickListener(item.section, item.sortOrder)
+        sortClickListener(item.sortOrder.first, item.sortOrder.second)
       }
     }
   }

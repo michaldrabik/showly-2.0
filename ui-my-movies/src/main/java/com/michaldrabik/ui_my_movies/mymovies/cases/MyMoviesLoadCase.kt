@@ -8,20 +8,17 @@ import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_model.ImageType
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.MyMoviesSection
-import com.michaldrabik.ui_model.MyMoviesSection.ALL
 import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
-import com.michaldrabik.ui_model.SortOrder.NAME
-import com.michaldrabik.ui_model.SortOrder.NEWEST
-import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_my_movies.mymovies.helpers.MyMoviesSorter
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 @ViewModelScoped
 class MyMoviesLoadCase @Inject constructor(
+  private val sorter: MyMoviesSorter,
   private val imagesProvider: MovieImagesProvider,
   private val moviesRepository: MoviesRepository,
   private val dateFormatProvider: DateFormatProvider,
@@ -35,46 +32,14 @@ class MyMoviesLoadCase @Inject constructor(
 
   suspend fun loadAll() = moviesRepository.myMovies.loadAll()
 
-  suspend fun filterSectionMovies(
+  fun filterSectionMovies(
     allMovies: List<MyMoviesItem>,
-    section: MyMoviesSection
-  ): List<MyMoviesItem> {
-    val sortOrder = loadSortOrder(section)
-    return sortBy(sortOrder, allMovies)
-  }
+    sortOrder: Pair<SortOrder, SortType>
+  ) = allMovies.sortedWith(sorter.sort(sortOrder.first, sortOrder.second))
 
   suspend fun loadRecentMovies(): List<Movie> {
     val amount = loadSettings().myRecentsAmount
     return moviesRepository.myMovies.loadAllRecent(amount)
-  }
-
-  suspend fun loadSortOrder(section: MyMoviesSection): SortOrder {
-    val settings = loadSettings()
-    return when (section) {
-      ALL -> settings.myMoviesAllSortBy
-      else -> error("Should not be used here.")
-    }
-  }
-
-  private fun sortBy(sortOrder: SortOrder, movies: List<MyMoviesItem>) =
-    when (sortOrder) {
-      NAME -> movies.sortedBy {
-        val translatedTitle = if (it.translation?.hasTitle == false) null else it.translation?.title
-        translatedTitle ?: it.movie.titleNoThe
-      }
-      NEWEST -> movies.sortedWith(compareByDescending<MyMoviesItem> { it.movie.year }.thenByDescending { it.movie.released })
-      RATING -> movies.sortedByDescending { it.movie.rating }
-      DATE_ADDED -> movies.sortedByDescending { it.movie.updatedAt }
-      else -> error("Should not be used here.")
-    }
-
-  suspend fun setSectionSortOrder(section: MyMoviesSection, order: SortOrder) {
-    val settings = loadSettings()
-    val newSettings = when (section) {
-      ALL -> settings.copy(myMoviesAllSortBy = order)
-      else -> error("Should not be used here.")
-    }
-    settingsRepository.update(newSettings)
   }
 
   suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? {

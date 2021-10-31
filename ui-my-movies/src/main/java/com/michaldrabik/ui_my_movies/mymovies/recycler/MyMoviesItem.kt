@@ -6,6 +6,7 @@ import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.MyMoviesSection
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Translation
 import java.time.format.DateTimeFormatter
 
@@ -32,7 +33,7 @@ data class MyMoviesItem(
   data class Header(
     val section: MyMoviesSection,
     val itemCount: Int,
-    val sortOrder: SortOrder?
+    val sortOrder: Pair<SortOrder, SortType>?
   )
 
   data class RecentsSection(
@@ -48,7 +49,7 @@ data class MyMoviesItem(
     fun createHeader(
       section: MyMoviesSection,
       itemCount: Int,
-      sortOrder: SortOrder?
+      sortOrder: Pair<SortOrder, SortType>?
     ) = MyMoviesItem(
       Type.HEADER,
       Header(section, itemCount, sortOrder),

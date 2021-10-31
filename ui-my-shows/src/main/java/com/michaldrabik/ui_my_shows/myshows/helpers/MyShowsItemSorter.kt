@@ -1,4 +1,4 @@
-package com.michaldrabik.ui_my_shows.helpers
+package com.michaldrabik.ui_my_shows.myshows.helpers
 
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
@@ -25,7 +25,7 @@ class MyShowsItemSorter @Inject constructor() {
     NAME -> compareBy { getTitle(it) }
     RATING -> compareBy { it.show.rating }
     DATE_ADDED -> compareBy { it.show.createdAt }
-    NEWEST -> compareBy<MyShowsItem> { it.show.firstAired }.thenBy { it.show.year }
+    NEWEST -> compareBy<MyShowsItem> { it.show.year }.thenBy { it.show.firstAired }
     else -> throw IllegalStateException("Invalid sort order")
   }
 
@@ -33,7 +33,7 @@ class MyShowsItemSorter @Inject constructor() {
     NAME -> compareByDescending { getTitle(it) }
     RATING -> compareByDescending { it.show.rating }
     DATE_ADDED -> compareByDescending { it.show.createdAt }
-    NEWEST -> compareByDescending<MyShowsItem> { it.show.firstAired }.thenByDescending { it.show.year }
+    NEWEST -> compareByDescending<MyShowsItem> { it.show.year }.thenByDescending { it.show.firstAired }
     else -> throw IllegalStateException("Invalid sort order")
   }
 
