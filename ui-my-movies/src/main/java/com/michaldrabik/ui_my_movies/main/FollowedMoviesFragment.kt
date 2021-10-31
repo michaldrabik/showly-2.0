@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
@@ -42,7 +43,6 @@ import com.michaldrabik.ui_my_movies.mymovies.helpers.ResultType.NO_RESULTS
 import com.michaldrabik.ui_my_movies.mymovies.helpers.ResultType.RESULTS
 import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
 import com.michaldrabik.ui_my_movies.mymovies.views.MyMovieFanartView
-import com.michaldrabik.ui_my_movies.utilities.OnSortClickListener
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_followed_movies.*
@@ -124,7 +124,7 @@ class FollowedMoviesFragment :
       visibleIf(currentPage != 0)
       onClick {
         val currentIndex = followedMoviesPager.currentItem
-        (childFragmentManager.fragments[currentIndex] as? OnSortClickListener)?.onSortClick(currentIndex)
+        (childFragmentManager.fragments[currentIndex] as? OnSortClickListener)?.onSortClick()
       }
     }
     exSearchViewInput.run {

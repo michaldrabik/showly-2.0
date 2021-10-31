@@ -2,35 +2,34 @@ package com.michaldrabik.ui_my_movies.watchlist
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
+import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesFragment
-import com.michaldrabik.ui_my_movies.utilities.OnSortClickListener
 import com.michaldrabik.ui_my_movies.watchlist.recycler.WatchlistAdapter
+import com.michaldrabik.ui_navigation.java.NavigationArgs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_watchlist_movies.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class WatchlistFragment :
@@ -50,14 +49,10 @@ class WatchlistFragment :
     setupStatusBar()
     setupRecycler()
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          loadMovies()
-        }
-      }
-    }
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      afterBlock = { viewModel.loadMovies() }
+    )
   }
 
   private fun setupRecycler() {
@@ -90,18 +85,17 @@ class WatchlistFragment :
     }
   }
 
-  private fun showSortOrderDialog(order: SortOrder) {
+  private fun showSortOrderDialog(order: SortOrder, type: SortType) {
     val options = listOf(NAME, RATING, NEWEST, DATE_ADDED)
-    val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
+    val args = SortOrderBottomSheet.createBundle(options, order, type)
 
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setTitle(R.string.textSortBy)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setSingleChoiceItems(optionsStrings, options.indexOf(order)) { dialog, index ->
-        viewModel.setSortOrder(options[index])
-        dialog.dismiss()
-      }
-      .show()
+    requireParentFragment().setFragmentResultListener(NavigationArgs.REQUEST_SORT_ORDER) { _, bundle ->
+      val sortOrder = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_ORDER) as SortOrder
+      val sortType = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_TYPE) as SortType
+      viewModel.setSortOrder(sortOrder, sortType)
+    }
+
+    navigateTo(R.id.actionFollowedMoviesFragmentToSortOrder, args)
   }
 
   private fun render(uiState: WatchlistUiState) {
@@ -112,7 +106,7 @@ class WatchlistFragment :
         watchlistMoviesEmptyView.fadeIf(it.isEmpty())
       }
       sortOrder?.let { event ->
-        event.consume()?.let { showSortOrderDialog(it) }
+        event.consume()?.let { showSortOrderDialog(it.first, it.second) }
       }
     }
   }
@@ -121,11 +115,9 @@ class WatchlistFragment :
     (parentFragment as? FollowedMoviesFragment)?.openMovieDetails(movie)
   }
 
-  override fun onSortClick(page: Int) = viewModel.loadSortOrder()
+  override fun onSortClick() = viewModel.loadSortOrder()
 
-  override fun onScrollReset() {
-    watchlistMoviesRecycler.scrollToPosition(0)
-  }
+  override fun onScrollReset() = watchlistMoviesRecycler.scrollToPosition(0)
 
   override fun onTraktSyncComplete() = viewModel.loadMovies()
 

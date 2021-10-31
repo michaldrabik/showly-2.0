@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -29,7 +30,6 @@ import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveAdapter
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
-import com.michaldrabik.ui_my_shows.main.utilities.OnSortClickListener
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
@@ -130,7 +130,7 @@ class ArchiveFragment :
     (parentFragment as? FollowedShowsFragment)?.openShowDetails(show)
   }
 
-  override fun onSortClick(page: Int) = viewModel.loadSortOrder()
+  override fun onSortClick() = viewModel.loadSortOrder()
 
   override fun onScrollReset() = archiveRecycler.scrollToPosition(0)
 

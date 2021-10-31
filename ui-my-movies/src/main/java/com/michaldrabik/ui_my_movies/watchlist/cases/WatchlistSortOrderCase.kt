@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_movies.watchlist.cases
 
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
@@ -10,11 +11,13 @@ class WatchlistSortOrderCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {
 
-  suspend fun setSortOrder(sortOrder: SortOrder) {
-    val settings = settingsRepository.load()
-    settingsRepository.update(settings.copy(watchlistMoviesSortBy = sortOrder))
+  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+    settingsRepository.sortSettings.watchlistMoviesSortOrder = sortOrder
+    settingsRepository.sortSettings.watchlistMoviesSortType = sortType
   }
 
-  suspend fun loadSortOrder() =
-    settingsRepository.load().watchlistMoviesSortBy
+  fun loadSortOrder() = Pair(
+    settingsRepository.sortSettings.watchlistMoviesSortOrder,
+    settingsRepository.sortSettings.watchlistMoviesSortType
+  )
 }

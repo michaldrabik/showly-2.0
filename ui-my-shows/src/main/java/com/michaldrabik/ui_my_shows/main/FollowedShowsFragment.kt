@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
@@ -36,7 +37,6 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_my_shows.R
-import com.michaldrabik.ui_my_shows.main.utilities.OnSortClickListener
 import com.michaldrabik.ui_my_shows.myshows.helpers.MyShowsSearchResult
 import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.EMPTY
 import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.NO_RESULTS
@@ -125,7 +125,7 @@ class FollowedShowsFragment :
       visibleIf(currentPage != 0)
       onClick {
         val currentIndex = followedShowsPager.currentItem
-        (childFragmentManager.fragments[currentIndex] as? OnSortClickListener)?.onSortClick(currentIndex)
+        (childFragmentManager.fragments[currentIndex] as? OnSortClickListener)?.onSortClick()
       }
     }
     exSearchViewInput.run {

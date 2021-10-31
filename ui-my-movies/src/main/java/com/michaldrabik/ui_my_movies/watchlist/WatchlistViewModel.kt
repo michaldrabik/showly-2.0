@@ -10,6 +10,7 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistLoadMoviesCase
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistRatingsCase
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistSortOrderCase
@@ -31,24 +32,8 @@ class WatchlistViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   private val itemsState = MutableStateFlow<List<WatchlistListItem>>(emptyList())
-  private val sortOrderState = MutableStateFlow<Event<SortOrder>?>(null)
+  private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
-
-  val uiState = combine(
-    itemsState,
-    sortOrderState,
-    scrollState
-  ) { itemsState, sortOrderState, scrollState ->
-    WatchlistUiState(
-      items = itemsState,
-      sortOrder = sortOrderState,
-      resetScroll = scrollState
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = WatchlistUiState()
-  )
 
   fun loadMovies(resetScroll: Boolean = false) {
     viewModelScope.launch {
@@ -83,6 +68,13 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
+  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+    viewModelScope.launch {
+      sortOrderCase.setSortOrder(sortOrder, sortType)
+      loadMovies(resetScroll = true)
+    }
+  }
+
   fun loadMissingImage(item: WatchlistListItem, force: Boolean) {
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
@@ -107,16 +99,25 @@ class WatchlistViewModel @Inject constructor(
     }
   }
 
-  fun setSortOrder(sortOrder: SortOrder) {
-    viewModelScope.launch {
-      sortOrderCase.setSortOrder(sortOrder)
-      loadMovies(resetScroll = true)
-    }
-  }
-
   private fun updateItem(new: WatchlistListItem) {
     val currentItems = uiState.value.items.toMutableList()
     currentItems.findReplace(new) { it isSameAs new }
     itemsState.value = currentItems
   }
+
+  val uiState = combine(
+    itemsState,
+    sortOrderState,
+    scrollState
+  ) { itemsState, sortOrderState, scrollState ->
+    WatchlistUiState(
+      items = itemsState,
+      sortOrder = sortOrderState,
+      resetScroll = scrollState
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = WatchlistUiState()
+  )
 }

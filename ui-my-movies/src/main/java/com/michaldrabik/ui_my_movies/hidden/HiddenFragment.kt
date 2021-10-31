@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -25,7 +26,6 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_my_movies.R
 import com.michaldrabik.ui_my_movies.hidden.recycler.HiddenAdapter
 import com.michaldrabik.ui_my_movies.main.FollowedMoviesFragment
-import com.michaldrabik.ui_my_movies.utilities.OnSortClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_hidden_movies.*
 import kotlinx.coroutines.flow.collect
@@ -117,7 +117,7 @@ class HiddenFragment :
     (parentFragment as? FollowedMoviesFragment)?.openMovieDetails(movie)
   }
 
-  override fun onSortClick(page: Int) = viewModel.loadSortOrder()
+  override fun onSortClick() = viewModel.loadSortOrder()
 
   override fun onScrollReset() = hiddenMoviesRecycler.scrollToPosition(0)
 

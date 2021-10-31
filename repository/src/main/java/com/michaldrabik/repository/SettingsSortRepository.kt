@@ -31,6 +31,10 @@ class SettingsSortRepository @Inject constructor(
 
     private const val PROGRESS_MOVIES_SORT_ORDER = "PROGRESS_MOVIES_SORT_ORDER"
     private const val PROGRESS_MOVIES_SORT_TYPE = "PROGRESS_MOVIES_SORT_TYPE"
+    private const val WATCHLIST_MOVIES_SORT_ORDER = "WATCHLIST_MOVIES_SORT_ORDER"
+    private const val WATCHLIST_MOVIES_SORT_TYPE = "WATCHLIST_MOVIES_SORT_TYPE"
+    private const val HIDDEN_MOVIES_SORT_ORDER = "HIDDEN_MOVIES_SORT_ORDER"
+    private const val HIDDEN_MOVIES_SORT_TYPE = "HIDDEN_MOVIES_SORT_TYPE"
   }
 
   var progressShowsSortOrder by EnumPreference(preferences, PROGRESS_SHOWS_SORT_ORDER, SortOrder.NAME, SortOrder::class.java)
@@ -53,4 +57,10 @@ class SettingsSortRepository @Inject constructor(
 
   var progressMoviesSortOrder by EnumPreference(preferences, PROGRESS_MOVIES_SORT_ORDER, SortOrder.NAME, SortOrder::class.java)
   var progressMoviesSortType by EnumPreference(preferences, PROGRESS_MOVIES_SORT_TYPE, SortType.ASCENDING, SortType::class.java)
+
+  var watchlistMoviesSortOrder by EnumPreference(preferences, WATCHLIST_MOVIES_SORT_ORDER, SortOrder.NAME, SortOrder::class.java)
+  var watchlistMoviesSortType by EnumPreference(preferences, WATCHLIST_MOVIES_SORT_TYPE, SortType.ASCENDING, SortType::class.java)
+
+  var hiddenMoviesSortOrder by EnumPreference(preferences, HIDDEN_MOVIES_SORT_ORDER, SortOrder.NAME, SortOrder::class.java)
+  var hiddenMoviesSortType by EnumPreference(preferences, HIDDEN_MOVIES_SORT_TYPE, SortType.ASCENDING, SortType::class.java)
 }

@@ -6,16 +6,14 @@ import com.michaldrabik.repository.TranslationsRepository
 import com.michaldrabik.repository.movies.MoviesRepository
 import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
-import com.michaldrabik.ui_model.SortOrder.NAME
-import com.michaldrabik.ui_model.SortOrder.NEWEST
-import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.Translation
+import com.michaldrabik.ui_my_movies.utilities.FollowedMoviesItemSorter
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 @ViewModelScoped
 class WatchlistLoadMoviesCase @Inject constructor(
+  private val sorter: FollowedMoviesItemSorter,
   private val moviesRepository: MoviesRepository,
   private val translationsRepository: TranslationsRepository,
   private val dateFormatProvider: DateFormatProvider,
@@ -29,26 +27,13 @@ class WatchlistLoadMoviesCase @Inject constructor(
       if (language == Config.DEFAULT_LANGUAGE) emptyMap()
       else translationsRepository.loadAllMoviesLocal(language)
 
-    val sortType = settingsRepository.load().watchlistMoviesSortBy
+    val sortOrder = settingsRepository.sortSettings.watchlistMoviesSortOrder
+    val sortType = settingsRepository.sortSettings.watchlistMoviesSortType
+
     val movies = moviesRepository.watchlistMovies.loadAll()
       .map { it to translations[it.traktId] }
 
-    return when (sortType) {
-      NAME -> movies.sortedBy {
-        val translatedTitle = if (it.second?.hasTitle == false) null else it.second?.title
-        translatedTitle ?: it.first.titleNoThe
-      }
-      DATE_ADDED ->
-        movies.sortedByDescending { it.first.updatedAt }
-      RATING ->
-        movies.sortedByDescending { it.first.rating }
-      NEWEST ->
-        movies.sortedWith(
-          compareByDescending<Pair<Movie, Translation?>> { it.first.released }
-            .thenByDescending { it.first.year }
-        )
-      else -> error("Should not be used here.")
-    }
+    return movies.sortedWith(sorter.sort(sortOrder, sortType))
   }
 
   suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? {
