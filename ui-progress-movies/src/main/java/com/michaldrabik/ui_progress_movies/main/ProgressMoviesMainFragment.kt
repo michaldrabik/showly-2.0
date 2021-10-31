@@ -7,17 +7,12 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.view.updateMargins
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager.widget.ViewPager
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
-import com.michaldrabik.ui_base.common.OnSortOrderChangeListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
@@ -30,22 +25,19 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Movie
-import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortType
-import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.calendar.helpers.CalendarMode
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_main_movies.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProgressMoviesMainFragment :
@@ -82,17 +74,12 @@ class ProgressMoviesMainFragment :
     setupView()
     setupPager()
     setupStatusBar()
-    setupListeners()
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          launch { messageState.collect { showSnack(it) } }
-          loadProgress()
-        }
-      }
-    }
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      { viewModel.messageState.collect { showSnack(it) } },
+      afterBlock = { viewModel.loadProgress() }
+    )
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
@@ -182,16 +169,6 @@ class ProgressMoviesMainFragment :
     }
   }
 
-  private fun setupListeners() {
-    setFragmentResultListener(NavigationArgs.REQUEST_SORT_ORDER) { _, bundle ->
-      val sortOrder = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_ORDER) as SortOrder
-      val sortType = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_TYPE) as SortType
-      childFragmentManager.fragments.forEach {
-        (it as? OnSortOrderChangeListener)?.onSortOrderChange(sortOrder, sortType)
-      }
-    }
-  }
-
   override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
@@ -277,11 +254,15 @@ class ProgressMoviesMainFragment :
 
   fun resetTranslations(duration: Long = TRANSLATION_DURATION) {
     if (view == null) return
-    progressMoviesSearchView.animate().translationY(0F).setDuration(duration).add(animations)?.start()
-    progressMoviesTabs.animate().translationY(0F).setDuration(duration).add(animations)?.start()
-    progressMoviesModeTabs.animate().translationY(0F).setDuration(duration).add(animations)?.start()
-    progressMoviesSortIcon.animate().translationY(0F).setDuration(duration).add(animations)?.start()
-    progressMoviesCalendarIcon.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+    arrayOf(
+      progressMoviesSearchView,
+      progressMoviesTabs,
+      progressMoviesModeTabs,
+      progressMoviesSortIcon,
+      progressMoviesCalendarIcon
+    ).forEach {
+      it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+    }
   }
 
   private fun onScrollReset() =

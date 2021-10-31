@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -20,7 +21,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
-import com.michaldrabik.ui_base.common.OnSortOrderChangeListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.common.views.RateView
@@ -37,6 +37,9 @@ import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDER
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import com.michaldrabik.ui_progress_movies.R
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainFragment
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainViewModel
@@ -52,8 +55,7 @@ import kotlinx.coroutines.launch
 class ProgressMoviesFragment :
   BaseFragment<ProgressMoviesViewModel>(R.layout.fragment_progress_movies),
   OnSortClickListener,
-  OnScrollResetListener,
-  OnSortOrderChangeListener {
+  OnScrollResetListener {
 
   private val parentViewModel by viewModels<ProgressMoviesMainViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ProgressMoviesViewModel>()
@@ -165,6 +167,13 @@ class ProgressMoviesFragment :
   private fun openSortOrderDialog(order: SortOrder, type: SortType) {
     val options = listOf(NAME, RATING, NEWEST, DATE_ADDED)
     val args = SortOrderBottomSheet.createBundle(options, order, type)
+
+    requireParentFragment().setFragmentResultListener(REQUEST_SORT_ORDER) { _, bundle ->
+      val sortOrder = bundle.getSerializable(ARG_SELECTED_SORT_ORDER) as SortOrder
+      val sortType = bundle.getSerializable(ARG_SELECTED_SORT_TYPE) as SortType
+      viewModel.setSortOrder(sortOrder, sortType)
+    }
+
     navigateTo(R.id.actionProgressMoviesFragmentToSortOrder, args)
   }
 
@@ -192,7 +201,4 @@ class ProgressMoviesFragment :
     layoutManager = null
     super.onDestroyView()
   }
-
-  override fun onSortOrderChange(sortOrder: SortOrder, sortType: SortType) =
-    viewModel.setSortOrder(sortOrder, sortType)
 }

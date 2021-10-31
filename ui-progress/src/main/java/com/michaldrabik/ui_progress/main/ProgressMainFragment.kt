@@ -9,15 +9,11 @@ import androidx.core.view.updateMargins
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewpager.widget.ViewPager
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
-import com.michaldrabik.ui_base.common.OnSortOrderChangeListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
@@ -31,6 +27,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
@@ -40,21 +37,15 @@ import com.michaldrabik.ui_episodes.details.EpisodeDetailsBottomSheet
 import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
-import com.michaldrabik.ui_model.SortOrder
-import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ACTION_EPISODE_TAB_SELECTED
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDER
-import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_EPISODE_DETAILS
-import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode
 import com.michaldrabik.ui_progress.main.adapters.ProgressMainAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_progress_main.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ProgressMainFragment :
@@ -93,17 +84,12 @@ class ProgressMainFragment :
     setupView()
     setupPager()
     setupStatusBar()
-    setupListeners()
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          launch { messageState.collect { showSnack(it) } }
-          loadProgress()
-        }
-      }
-    }
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      { viewModel.messageState.collect { showSnack(it) } },
+      afterBlock = { viewModel.loadProgress() }
+    )
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
@@ -194,16 +180,6 @@ class ProgressMainFragment :
         .updateMargins(top = statusBarSize + dimenToPx(progressTabsMargin))
       (progressMainCalendarIcon.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(progressTabsMargin))
-    }
-  }
-
-  private fun setupListeners() {
-    setFragmentResultListener(REQUEST_SORT_ORDER) { _, bundle ->
-      val sortOrder = bundle.getSerializable(ARG_SELECTED_SORT_ORDER) as SortOrder
-      val sortType = bundle.getSerializable(ARG_SELECTED_SORT_TYPE) as SortType
-      childFragmentManager.fragments.forEach {
-        (it as? OnSortOrderChangeListener)?.onSortOrderChange(sortOrder, sortType)
-      }
     }
   }
 
@@ -318,11 +294,15 @@ class ProgressMainFragment :
 
   fun resetTranslations(duration: Long = TRANSLATION_DURATION) {
     if (view == null) return
-    progressMainSearchView.animate().translationY(0F).setDuration(duration).add(animations)?.start()
-    progressMainTabs.animate().translationY(0F).setDuration(duration).add(animations)?.start()
-    progressMainPagerModeTabs.animate().translationY(0F).setDuration(duration).add(animations)?.start()
-    progressMainSortIcon.animate().translationY(0F).setDuration(duration).add(animations)?.start()
-    progressMainCalendarIcon.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+    arrayOf(
+      progressMainSearchView,
+      progressMainTabs,
+      progressMainPagerModeTabs,
+      progressMainSortIcon,
+      progressMainCalendarIcon
+    ).forEach {
+      it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+    }
   }
 
   private fun onScrollReset() =
