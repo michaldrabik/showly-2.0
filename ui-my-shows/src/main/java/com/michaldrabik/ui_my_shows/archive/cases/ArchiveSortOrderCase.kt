@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_shows.archive.cases
 
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
@@ -10,12 +11,13 @@ class ArchiveSortOrderCase @Inject constructor(
   private val settingsRepository: SettingsRepository,
 ) {
 
-  suspend fun setSortOrder(sortOrder: SortOrder) {
-    val settings = settingsRepository.load()
-    settingsRepository.update(settings.copy(archiveShowsSortBy = sortOrder))
+  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+    settingsRepository.sortSettings.hiddenShowsSortOrder = sortOrder
+    settingsRepository.sortSettings.hiddenShowsSortType = sortType
   }
 
-  suspend fun loadSortOrder(): SortOrder {
-    return settingsRepository.load().archiveShowsSortBy
-  }
+  fun loadSortOrder() = Pair(
+    settingsRepository.sortSettings.hiddenShowsSortOrder,
+    settingsRepository.sortSettings.hiddenShowsSortType
+  )
 }

@@ -2,7 +2,6 @@ package com.michaldrabik.ui_my_shows.archive
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -12,10 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSortOrderChangeListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
+import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
@@ -25,6 +25,7 @@ import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
 import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveAdapter
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
@@ -40,7 +41,8 @@ class ArchiveFragment :
   BaseFragment<ArchiveViewModel>(R.layout.fragment_archive),
   OnScrollResetListener,
   OnTraktSyncListener,
-  OnSortClickListener {
+  OnSortClickListener,
+  OnSortOrderChangeListener {
 
   override val viewModel by viewModels<ArchiveViewModel>()
 
@@ -96,18 +98,10 @@ class ArchiveFragment :
     }
   }
 
-  private fun showSortOrderDialog(order: SortOrder) {
+  private fun showSortOrderDialog(order: SortOrder, type: SortType) {
     val options = listOf(NAME, RATING, NEWEST, DATE_ADDED)
-    val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
-
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setTitle(R.string.textSortBy)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setSingleChoiceItems(optionsStrings, options.indexOf(order)) { dialog, index ->
-        viewModel.setSortOrder(options[index])
-        dialog.dismiss()
-      }
-      .show()
+    val args = SortOrderBottomSheet.createBundle(options, order, type)
+    navigateTo(R.id.actionFollowedShowsFragmentToSortOrder, args)
   }
 
   private fun render(uiState: ArchiveUiState) {
@@ -118,7 +112,7 @@ class ArchiveFragment :
         archiveEmptyView.fadeIf(it.isEmpty())
       }
       sortOrder?.let { event ->
-        event.consume()?.let { showSortOrderDialog(it) }
+        event.consume()?.let { showSortOrderDialog(it.first, it.second) }
       }
     }
   }
@@ -128,6 +122,8 @@ class ArchiveFragment :
   }
 
   override fun onSortClick(page: Int) = viewModel.loadSortOrder()
+
+  override fun onSortOrderChange(sortOrder: SortOrder, sortType: SortType) = viewModel.setSortOrder(sortOrder, sortType)
 
   override fun onScrollReset() = archiveRecycler.scrollToPosition(0)
 

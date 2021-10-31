@@ -10,6 +10,7 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.archive.cases.ArchiveLoadShowsCase
 import com.michaldrabik.ui_my_shows.archive.cases.ArchiveRatingsCase
 import com.michaldrabik.ui_my_shows.archive.cases.ArchiveSortOrderCase
@@ -31,7 +32,7 @@ class ArchiveViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   private val itemsState = MutableStateFlow<List<ArchiveListItem>>(emptyList())
-  private val sortOrderState = MutableStateFlow<Event<SortOrder>?>(null)
+  private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
 
   val uiState = combine(
@@ -82,6 +83,13 @@ class ArchiveViewModel @Inject constructor(
     }
   }
 
+  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+    viewModelScope.launch {
+      sortOrderCase.setSortOrder(sortOrder, sortType)
+      loadShows(resetScroll = true)
+    }
+  }
+
   fun loadMissingImage(item: ArchiveListItem, force: Boolean) {
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
@@ -103,13 +111,6 @@ class ArchiveViewModel @Inject constructor(
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "ArchiveViewModel::loadMissingTranslation()")
       }
-    }
-  }
-
-  fun setSortOrder(sortOrder: SortOrder) {
-    viewModelScope.launch {
-      sortOrderCase.setSortOrder(sortOrder)
-      loadShows(resetScroll = true)
     }
   }
 

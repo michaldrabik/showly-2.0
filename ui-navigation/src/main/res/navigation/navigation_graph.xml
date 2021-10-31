@@ -358,6 +358,11 @@
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
+    <action
+      android:id="@+id/actionFollowedShowsFragmentToSortOrder"
+      app:destination="@id/sortOrderDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -385,6 +390,11 @@
       app:enterAnim="@anim/anim_fade_in"
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
+      />
+    <action
+      android:id="@+id/actionFollowedMoviesFragmentToSortOrder"
+      app:destination="@id/sortOrderDialog"
+      app:launchSingleTop="true"
       />
   </fragment>
 
