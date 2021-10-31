@@ -10,6 +10,7 @@ import com.michaldrabik.ui_base.utilities.extensions.findReplace
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_movies.hidden.cases.HiddenLoadMoviesCase
 import com.michaldrabik.ui_my_movies.hidden.cases.HiddenRatingsCase
 import com.michaldrabik.ui_my_movies.hidden.cases.HiddenSortOrderCase
@@ -31,24 +32,8 @@ class HiddenViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   private val itemsState = MutableStateFlow<List<HiddenListItem>>(emptyList())
-  private val sortOrderState = MutableStateFlow<Event<SortOrder>?>(null)
+  private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
-
-  val uiState = combine(
-    itemsState,
-    sortOrderState,
-    scrollState
-  ) { itemsState, sortOrderState, scrollState ->
-    HiddenUiState(
-      items = itemsState,
-      sortOrder = sortOrderState,
-      resetScroll = scrollState
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = HiddenUiState()
-  )
 
   fun loadMovies(resetScroll: Boolean = false) {
     viewModelScope.launch {
@@ -82,6 +67,13 @@ class HiddenViewModel @Inject constructor(
     }
   }
 
+  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+    viewModelScope.launch {
+      sortOrderCase.setSortOrder(sortOrder, sortType)
+      loadMovies(resetScroll = true)
+    }
+  }
+
   fun loadMissingImage(item: HiddenListItem, force: Boolean) {
     viewModelScope.launch {
       updateItem(item.copy(isLoading = true))
@@ -106,16 +98,25 @@ class HiddenViewModel @Inject constructor(
     }
   }
 
-  fun setSortOrder(sortOrder: SortOrder) {
-    viewModelScope.launch {
-      sortOrderCase.setSortOrder(sortOrder)
-      loadMovies(resetScroll = true)
-    }
-  }
-
   private fun updateItem(new: HiddenListItem) {
     val currentItems = uiState.value.items.toMutableList()
     currentItems.findReplace(new) { it isSameAs (new) }
     itemsState.value = currentItems
   }
+
+  val uiState = combine(
+    itemsState,
+    sortOrderState,
+    scrollState
+  ) { itemsState, sortOrderState, scrollState ->
+    HiddenUiState(
+      items = itemsState,
+      sortOrder = sortOrderState,
+      resetScroll = scrollState
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = HiddenUiState()
+  )
 }

@@ -15,7 +15,6 @@ import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.ProgressType
 import com.michaldrabik.ui_model.Settings
-import com.michaldrabik.ui_model.SortOrder
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Named
@@ -40,7 +39,6 @@ class SettingsRepository @Inject constructor(
     private const val TWITTER_AD_TIMESTAMP = "TWITTER_AD_TIMESTAMP"
     private const val PREMIUM = "KEY_PREMIUM"
     private const val PROGRESS_PERCENT = "KEY_PROGRESS_PERCENT"
-    private const val HIDDEN_MOVIES_SORT_ORDER = "HIDDEN_MOVIES_SORT_ORDER"
     private const val STREAMINGS_ENABLED = "KEY_STREAMINGS_ENABLED"
     private const val THEME = "KEY_THEME"
     private const val THEME_WIDGET = "KEY_THEME_WIDGET"
@@ -107,13 +105,6 @@ class SettingsRepository @Inject constructor(
       return ProgressType.valueOf(setting)
     }
     set(value) = preferences.edit(true) { putString(PROGRESS_PERCENT, value.name) }
-
-  var hiddenMoviesSortOrder: SortOrder
-    get() {
-      val setting = preferences.getString(HIDDEN_MOVIES_SORT_ORDER, SortOrder.NAME.name) ?: SortOrder.NAME.name
-      return SortOrder.valueOf(setting)
-    }
-    set(value) = preferences.edit(true) { putString(HIDDEN_MOVIES_SORT_ORDER, value.name) }
 
   val userId
     get() = when (val id = preferences.getString(USER_ID, null)) {
