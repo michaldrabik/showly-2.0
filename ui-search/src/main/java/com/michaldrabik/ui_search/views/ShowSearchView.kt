@@ -8,6 +8,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
@@ -28,9 +29,11 @@ class ShowSearchView : ShowView<SearchListItem> {
     showSearchRoot.onClick { itemClickListener?.invoke(item) }
   }
 
-  override val imageView: ImageView = showSearchImage
+  private val spaceNano by lazy { context.dimenToPx(R.dimen.spaceNano).toFloat() }
 
+  override val imageView: ImageView = showSearchImage
   override val placeholderView: ImageView = showSearchPlaceholder
+
   private lateinit var item: SearchListItem
 
   override fun bind(item: SearchListItem) {
@@ -47,16 +50,19 @@ class ShowSearchView : ShowView<SearchListItem> {
       if (translationOverview.isNullOrBlank()) item.overview
       else translationOverview
 
+    val year = if (item.year > 0) item.year.toString() else ""
     showSearchNetwork.text =
-      if (item.year > 0) context.getString(R.string.textNetwork, item.network, item.year.toString())
-      else String.format("%s", item.network)
+      if (item.network.isNotBlank()) context.getString(R.string.textNetwork, year, item.network)
+      else String.format("%s", year)
 
     showSearchDescription.visibleIf(item.overview.isNotBlank())
-    showSearchNetwork.visibleIf(item.network.isNotBlank())
     showSearchBadge.visibleIf(item.isFollowed)
     showSearchWatchlistBadge.visibleIf(item.isWatchlist)
 
-    if (item.isMovie) showSearchPlaceholder.setImageResource(R.drawable.ic_film)
+    showSearchPlaceholder.setImageResource(if (item.isMovie) R.drawable.ic_film else R.drawable.ic_television)
+    showSearchIcon.setImageResource(if (item.isMovie) R.drawable.ic_film else R.drawable.ic_television)
+    showSearchNetwork.translationY = if (item.isMovie) 0F else spaceNano
+
     loadImage(item)
   }
 
@@ -66,7 +72,6 @@ class ShowSearchView : ShowView<SearchListItem> {
     showSearchNetwork.text = ""
     showSearchPlaceholder.gone()
     showSearchBadge.gone()
-    showSearchPlaceholder.setImageResource(R.drawable.ic_television)
     Glide.with(this).clear(showSearchImage)
   }
 }

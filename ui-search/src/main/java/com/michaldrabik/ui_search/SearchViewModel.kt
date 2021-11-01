@@ -48,30 +48,6 @@ class SearchViewModel @Inject constructor(
   private val emptyState = MutableStateFlow(false)
   private val initialState = MutableStateFlow(false)
 
-  val uiState = combine(
-    searchItemsState,
-    searchItemsAnimateEvent,
-    recentSearchItemsState,
-    suggestionsItemsState,
-    searchingState,
-    emptyState,
-    initialState
-  ) { s1, s2, s3, s4, s5, s6, s7 ->
-    SearchUiState(
-      searchItems = s1,
-      searchItemsAnimate = s2,
-      recentSearchItems = s3,
-      suggestionsItems = s4,
-      isSearching = s5,
-      isEmpty = s6,
-      isInitial = s7
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = SearchUiState()
-  )
-
   private var isSearching = false
   private var suggestionsJob: Job? = null
 
@@ -279,4 +255,28 @@ class SearchViewModel @Inject constructor(
     suggestionsCase.clearCache()
     super.onCleared()
   }
+
+  val uiState = combine(
+    searchItemsState,
+    searchItemsAnimateEvent,
+    recentSearchItemsState,
+    suggestionsItemsState,
+    searchingState,
+    emptyState,
+    initialState
+  ) { s1, s2, s3, s4, s5, s6, s7 ->
+    SearchUiState(
+      searchItems = s1,
+      searchItemsAnimate = s2,
+      recentSearchItems = s3,
+      suggestionsItems = s4,
+      isSearching = s5,
+      isEmpty = s6,
+      isInitial = s7
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = SearchUiState()
+  )
 }
