@@ -20,8 +20,11 @@ import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageType
+import com.michaldrabik.ui_model.Movie
+import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_model.Translation
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -78,7 +81,6 @@ class ListDetailsItemsCase @Inject constructor(
     val itemsToDelete = Collections.synchronizedList(mutableListOf<CustomListItem>())
     val items = listItems.map { listItem ->
       async {
-        val isDragEnabled = false
         val listedAt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(listItem.listedAt), ZoneId.of("UTC"))
         when (listItem.type) {
           SHOWS.type -> {
@@ -88,24 +90,8 @@ class ListDetailsItemsCase @Inject constructor(
               return@async null
             }
             val show = mappers.show.fromDatabase(listShow)
-            val image = showImagesProvider.findCachedImage(show, ImageType.POSTER)
             val translation = showsTranslations[show.traktId]
-            ListDetailsItem(
-              id = listItem.id,
-              rank = listItem.rank,
-              rankDisplay = listItem.rank.toInt(),
-              show = show,
-              movie = null,
-              image = image,
-              translation = translation,
-              isLoading = false,
-              isRankDisplayed = isRankSort,
-              isManageMode = isDragEnabled,
-              isEnabled = true,
-              isWatched = showsRepository.myShows.exists(show.ids.trakt),
-              isWatchlist = showsRepository.watchlistShows.exists(show.ids.trakt),
-              listedAt = listedAt
-            )
+            createListDetailsItem(show, listItem, translation, isRankSort, listedAt)
           }
           MOVIES.type -> {
             val listMovie = movies.firstOrNull { it.idTrakt == listItem.idTrakt }
@@ -114,24 +100,8 @@ class ListDetailsItemsCase @Inject constructor(
               return@async null
             }
             val movie = mappers.movie.fromDatabase(listMovie)
-            val image = movieImagesProvider.findCachedImage(movie, ImageType.POSTER)
             val translation = moviesTranslations[movie.traktId]
-            ListDetailsItem(
-              id = listItem.id,
-              rank = listItem.rank,
-              rankDisplay = listItem.rank.toInt(),
-              show = null,
-              movie = movie,
-              image = image,
-              translation = translation,
-              isLoading = false,
-              isRankDisplayed = isRankSort,
-              isManageMode = isDragEnabled,
-              isEnabled = moviesEnabled,
-              isWatched = moviesRepository.myMovies.exists(movie.ids.trakt),
-              isWatchlist = moviesRepository.watchlistMovies.exists(movie.ids.trakt),
-              listedAt = listedAt
-            )
+            createListDetailsItem(movie, listItem, translation, isRankSort, listedAt, moviesEnabled)
           }
           else -> throw IllegalStateException("Unsupported list item type.")
         }
@@ -143,6 +113,59 @@ class ListDetailsItemsCase @Inject constructor(
     }
 
     sortItems(items.filterNotNull(), list.sortByLocal, list.sortHowLocal, list.filterTypeLocal)
+  }
+
+  private suspend fun createListDetailsItem(
+    movie: Movie,
+    listItem: CustomListItem,
+    translation: Translation?,
+    isRankSort: Boolean,
+    listedAt: ZonedDateTime,
+    moviesEnabled: Boolean
+  ): ListDetailsItem {
+    val image = movieImagesProvider.findCachedImage(movie, ImageType.POSTER)
+    return ListDetailsItem(
+      id = listItem.id,
+      rank = listItem.rank,
+      rankDisplay = listItem.rank.toInt(),
+      show = null,
+      movie = movie,
+      image = image,
+      translation = translation,
+      isLoading = false,
+      isRankDisplayed = isRankSort,
+      isManageMode = false,
+      isEnabled = moviesEnabled,
+      isWatched = moviesRepository.myMovies.exists(movie.ids.trakt),
+      isWatchlist = moviesRepository.watchlistMovies.exists(movie.ids.trakt),
+      listedAt = listedAt
+    )
+  }
+
+  private suspend fun createListDetailsItem(
+    show: Show,
+    listItem: CustomListItem,
+    translation: Translation?,
+    isRankSort: Boolean,
+    listedAt: ZonedDateTime
+  ): ListDetailsItem {
+    val image = showImagesProvider.findCachedImage(show, ImageType.POSTER)
+    return ListDetailsItem(
+      id = listItem.id,
+      rank = listItem.rank,
+      rankDisplay = listItem.rank.toInt(),
+      show = show,
+      movie = null,
+      image = image,
+      translation = translation,
+      isLoading = false,
+      isRankDisplayed = isRankSort,
+      isManageMode = false,
+      isEnabled = true,
+      isWatched = showsRepository.myShows.exists(show.ids.trakt),
+      isWatchlist = showsRepository.watchlistShows.exists(show.ids.trakt),
+      listedAt = listedAt
+    )
   }
 
   fun sortItems(
