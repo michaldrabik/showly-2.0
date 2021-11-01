@@ -12,6 +12,7 @@ import com.michaldrabik.ui_lists.lists.helpers.ListsItemImage
 import com.michaldrabik.ui_lists.lists.recycler.ListsItem
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -30,7 +31,7 @@ class ListsViewModel @Inject constructor(
 
   private val itemsState = MutableStateFlow<List<ListsItem>?>(null)
   private val scrollState = MutableStateFlow(Event(false))
-  private val sortOrderState = MutableStateFlow<Event<SortOrder>?>(null)
+  private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
 
   fun loadItems(resetScroll: Boolean, searchQuery: String? = null) {
     viewModelScope.launch {
@@ -47,9 +48,9 @@ class ListsViewModel @Inject constructor(
     }
   }
 
-  fun setSortOrder(sortOrder: SortOrder) {
+  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
     viewModelScope.launch {
-      sortCase.setSortOrder(sortOrder)
+      sortCase.setSortOrder(sortOrder, sortType)
       loadItems(resetScroll = true)
     }
   }

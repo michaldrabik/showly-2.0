@@ -11,6 +11,7 @@ import com.michaldrabik.ui_base.dates.DateFormatProvider
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_lists.lists.helpers.ListsItemImage
+import com.michaldrabik.ui_lists.lists.helpers.ListsSorter
 import com.michaldrabik.ui_lists.lists.recycler.ListsItem
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.Image
@@ -30,7 +31,8 @@ class MainListsCase @Inject constructor(
   private val dateProvider: DateFormatProvider,
   private val settingsRepository: SettingsRepository,
   private val showImagesProvider: ShowImagesProvider,
-  private val movieImagesProvider: MovieImagesProvider
+  private val movieImagesProvider: MovieImagesProvider,
+  private val sorter: ListsSorter,
 ) {
 
   companion object {
@@ -40,7 +42,10 @@ class MainListsCase @Inject constructor(
   suspend fun loadLists(searchQuery: String?) = coroutineScope {
     val lists = listsRepository.loadAll()
     val dateFormat = dateProvider.loadFullDayFormat()
-    val sortType = settingsRepository.load().listsSortBy
+    val sorting = Pair(
+      settingsRepository.sortSettings.listsAllSortOrder,
+      settingsRepository.sortSettings.listsAllSortType
+    )
 
     lists
       .filter {
@@ -51,7 +56,7 @@ class MainListsCase @Inject constructor(
             it.description?.contains(searchQuery, ignoreCase = true) == true
         }
       }
-      .sortedByType(sortType)
+      .sortedWith(sorter.sort(sorting.first, sorting.second))
       .map {
         async {
           val items = database.customListsItemsDao().getItemsForListImages(it.id, IMAGES_LIMIT)
@@ -63,7 +68,7 @@ class MainListsCase @Inject constructor(
           if (images.size < IMAGES_LIMIT) {
             (images.size..IMAGES_LIMIT).forEach { _ -> images.add(unavailable) }
           }
-          ListsItem(it, images, sortType, dateFormat)
+          ListsItem(it, images, sorting, dateFormat)
         }
       }.awaitAll()
   }

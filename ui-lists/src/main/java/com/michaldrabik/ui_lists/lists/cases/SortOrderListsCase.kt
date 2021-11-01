@@ -2,6 +2,7 @@ package com.michaldrabik.ui_lists.lists.cases
 
 import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
@@ -10,11 +11,13 @@ class SortOrderListsCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {
 
-  suspend fun setSortOrder(sortOrder: SortOrder) {
-    val settings = settingsRepository.load()
-    settingsRepository.update(settings.copy(listsSortBy = sortOrder))
+  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+    settingsRepository.sortSettings.listsAllSortOrder = sortOrder
+    settingsRepository.sortSettings.listsAllSortType = sortType
   }
 
-  suspend fun loadSortOrder() =
-    settingsRepository.load().listsSortBy
+  fun loadSortOrder() = Pair(
+    settingsRepository.sortSettings.listsAllSortOrder,
+    settingsRepository.sortSettings.listsAllSortType
+  )
 }

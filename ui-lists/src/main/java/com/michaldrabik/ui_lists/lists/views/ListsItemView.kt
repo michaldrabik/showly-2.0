@@ -47,8 +47,9 @@ class ListsItemView : FrameLayout {
       visibleIf(!item.list.description.isNullOrBlank())
     }
 
-    listsItemHeader.visibleIf(item.sortOrder != NAME)
-    listsItemHeader.text = when (item.sortOrder) {
+    val sortOrder = item.sortOrder.first
+    listsItemHeader.visibleIf(sortOrder != NAME)
+    listsItemHeader.text = when (sortOrder) {
       NAME -> ""
       NEWEST -> item.dateFormat?.format(item.list.createdAt)?.capitalizeWords()
       DATE_UPDATED -> item.dateFormat?.format(item.list.updatedAt)?.capitalizeWords()

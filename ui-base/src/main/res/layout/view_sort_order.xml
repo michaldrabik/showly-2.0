@@ -45,29 +45,11 @@
     />
 
   <com.google.android.material.button.MaterialButton
-    android:id="@+id/viewSortOrderButtonCancel"
-    style="@style/ShowlyOutlinedButton"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/spaceNormal"
-    android:layout_marginTop="@dimen/spaceNormal"
-    android:layout_marginEnd="@dimen/spaceSmall"
-    android:gravity="center"
-    android:text="@string/textCancel"
-    android:textColor="?android:attr/textColorSecondary"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toStartOf="@id/viewSortOrderButtonApply"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/viewSortOrderItemsLayout"
-    app:rippleColor="?android:attr/textColorPrimary"
-    />
-
-  <com.google.android.material.button.MaterialButton
     android:id="@+id/viewSortOrderButtonApply"
     style="@style/Widget.MaterialComponents.Button"
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/spaceSmall"
+    android:layout_marginStart="@dimen/spaceNormal"
     android:layout_marginTop="@dimen/spaceNormal"
     android:layout_marginEnd="@dimen/spaceNormal"
     android:backgroundTint="@color/selector_main_button"
@@ -76,7 +58,7 @@
     android:textColor="?attr/textColorOnSurface"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@id/viewSortOrderButtonCancel"
+    app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/viewSortOrderItemsLayout"
     app:rippleColor="?android:attr/textColorPrimary"
     />

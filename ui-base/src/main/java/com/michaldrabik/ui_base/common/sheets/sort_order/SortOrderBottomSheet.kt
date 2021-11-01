@@ -84,7 +84,6 @@ class SortOrderBottomSheet : BaseBottomSheetFragment<SortOrderViewModel>() {
       }
 
       viewSortOrderButtonApply.onClick { onApplySortOrder() }
-      viewSortOrderButtonCancel.onClick { dismiss() }
     }
   }
 

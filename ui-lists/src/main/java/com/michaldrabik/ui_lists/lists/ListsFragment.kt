@@ -7,7 +7,6 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
@@ -20,10 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
+import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
@@ -55,6 +54,8 @@ import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortOrder.DATE_UPDATED
 import com.michaldrabik.ui_model.SortOrder.NAME
 import com.michaldrabik.ui_model.SortOrder.NEWEST
+import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
 import dagger.hilt.android.AndroidEntryPoint
@@ -247,18 +248,17 @@ class ListsFragment :
     exSearchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
   }
 
-  private fun showSortOrderDialog(order: SortOrder) {
+  private fun showSortOrderDialog(sorting: Pair<SortOrder, SortType>) {
     val options = listOf(NAME, NEWEST, DATE_UPDATED)
-    val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
+    val args = SortOrderBottomSheet.createBundle(options, sorting.first, sorting.second)
 
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setTitle(R.string.textSortBy)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setSingleChoiceItems(optionsStrings, options.indexOf(order)) { dialog, index ->
-        viewModel.setSortOrder(options[index])
-        dialog.dismiss()
-      }
-      .show()
+    setFragmentResultListener(NavigationArgs.REQUEST_SORT_ORDER) { _, bundle ->
+      val sortOrder = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_ORDER) as SortOrder
+      val sortType = bundle.getSerializable(NavigationArgs.ARG_SELECTED_SORT_TYPE) as SortType
+      viewModel.setSortOrder(sortOrder, sortType)
+    }
+
+    navigateTo(R.id.actionListsFragmentToSortOrder, args)
   }
 
   private fun render(uiState: ListsUiState) {
