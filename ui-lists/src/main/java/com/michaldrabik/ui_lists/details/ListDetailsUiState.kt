@@ -9,6 +9,7 @@ data class ListDetailsUiState(
   val listItems: List<ListDetailsItem>? = null,
   val resetScroll: Event<Boolean>? = null,
   val deleteEvent: Event<Boolean>? = null,
+  val isFiltersVisible: Boolean = false,
   val isManageMode: Boolean = false,
   val isQuickRemoveEnabled: Boolean = false,
   val isLoading: Boolean = false,

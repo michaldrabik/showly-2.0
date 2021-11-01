@@ -25,8 +25,7 @@ class ListDetailsSortCase @Inject constructor(
     return mappers.customList.fromDatabase(list)
   }
 
-  suspend fun setSortTypes(listId: Long, types: List<Mode>): CustomList {
-    check(types.isNotEmpty()) { "Can't be empty" }
+  suspend fun setFilterTypes(listId: Long, types: List<Mode>): CustomList {
     database.customListsDao().updateFilterTypeLocal(
       listId,
       types.joinToString(",") { it.type },

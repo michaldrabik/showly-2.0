@@ -3,6 +3,8 @@ package com.michaldrabik.ui_lists.details
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Mode
+import com.michaldrabik.common.Mode.MOVIES
+import com.michaldrabik.common.Mode.SHOWS
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
@@ -47,6 +49,7 @@ class ListDetailsViewModel @Inject constructor(
   private val quickRemoveState = MutableStateFlow(false)
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
   private val loadingState = MutableStateFlow(false)
+  private val filtersVisibleState = MutableStateFlow(false)
 
   fun loadDetails(id: Long) {
     viewModelScope.launch {
@@ -56,6 +59,7 @@ class ListDetailsViewModel @Inject constructor(
       listDetailsState.value = list
       listItemsState.value = listItems
       manageModeState.value = false
+      filtersVisibleState.value = listItems.isNotEmpty()
       quickRemoveState.value = mainCase.isQuickRemoveEnabled(list)
 
       val tip = Tip.LIST_ITEM_SWIPE_DELETE
@@ -105,13 +109,15 @@ class ListDetailsViewModel @Inject constructor(
         val listItems = itemsCase.loadItems(list).map { it.copy(isManageMode = true) }
         listItemsState.value = listItems
         manageModeState.value = true
+        filtersVisibleState.value = false
         scrollState.value = Event(false)
       } else {
         val list = mainCase.loadDetails(listId)
         val listItems = itemsCase.loadItems(list).map { it.copy(isManageMode = false) }
         listItemsState.value = listItems
         manageModeState.value = false
-        scrollState.value = Event(false)
+        filtersVisibleState.value = true
+        scrollState.value = Event(true)
       }
     }
   }
@@ -136,15 +142,14 @@ class ListDetailsViewModel @Inject constructor(
     }
   }
 
-  fun setSortTypes(listId: Long, types: List<Mode>) {
-    if (types.isEmpty()) return
-
+  fun setFilterTypes(listId: Long, types: List<Mode>) {
     viewModelScope.launch {
-      val list = sortCase.setSortTypes(listId, types)
+      val list = sortCase.setFilterTypes(listId, types)
       val sortedItems = itemsCase.loadItems(list)
 
       listDetailsState.value = list
       listItemsState.value = sortedItems
+      filtersVisibleState.value = true
       scrollState.value = Event(true)
     }
   }
@@ -169,8 +174,8 @@ class ListDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       val type =
         when {
-          item.isShow() -> Mode.SHOWS
-          item.isMovie() -> Mode.MOVIES
+          item.isShow() -> SHOWS
+          item.isMovie() -> MOVIES
           else -> throw IllegalStateException()
         }
       itemsCase.deleteListItem(listId, item.getTraktId(), type)
@@ -191,16 +196,18 @@ class ListDetailsViewModel @Inject constructor(
     quickRemoveState,
     loadingState,
     listDeleteState,
-    scrollState
-  ) { listDetailsState, listItemsState, manageModeState, quickRemoveState, loadingState, listDeleteState, scrollState ->
+    scrollState,
+    filtersVisibleState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8 ->
     ListDetailsUiState(
-      listDetails = listDetailsState,
-      listItems = listItemsState,
-      deleteEvent = listDeleteState,
-      isManageMode = manageModeState,
-      isQuickRemoveEnabled = quickRemoveState,
-      isLoading = loadingState,
-      resetScroll = scrollState
+      listDetails = s1,
+      listItems = s2,
+      isManageMode = s3,
+      isQuickRemoveEnabled = s4,
+      isLoading = s5,
+      deleteEvent = s6,
+      resetScroll = s7,
+      isFiltersVisible = s8
     )
   }.stateIn(
     scope = viewModelScope,

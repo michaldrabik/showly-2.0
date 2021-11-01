@@ -62,7 +62,6 @@ class NewsFragment :
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-
     savedInstanceState?.let {
       headerTranslation = it.getFloat(ARG_HEADER_POSITION)
     }

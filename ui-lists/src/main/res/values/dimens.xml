@@ -14,4 +14,8 @@
 
   <dimen name="listDetailsItemImageWidth">80dp</dimen>
   <dimen name="listDetailsItemImageHeight">120dp</dimen>
+
+  <dimen name="listDetailsRecyclerTopPadding">54dp</dimen>
+  <dimen name="listDetailsChipsTopPadding">56dp</dimen>
+
 </resources>

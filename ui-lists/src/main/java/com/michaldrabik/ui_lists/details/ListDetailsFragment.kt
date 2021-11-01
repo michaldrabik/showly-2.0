@@ -2,7 +2,9 @@ package com.michaldrabik.ui_lists.details
 
 import android.os.Bundle
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
@@ -23,6 +25,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.utilities.extensions.add
+import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.enableUi
@@ -38,7 +41,6 @@ import com.michaldrabik.ui_lists.details.helpers.ReorderListCallbackAdapter
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsAdapter
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_lists.details.views.ListDetailsDeleteConfirmView
-import com.michaldrabik.ui_lists.details.views.ListDetailsFiltersView
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.SortOrderList
 import com.michaldrabik.ui_navigation.java.NavigationArgs
@@ -56,15 +58,30 @@ import kotlinx.coroutines.launch
 class ListDetailsFragment :
   BaseFragment<ListDetailsViewModel>(R.layout.fragment_list_details), ListItemDragListener, ListItemSwipeListener {
 
+  companion object {
+    private const val ARG_HEADER_TRANSLATION = "ARG_HEADER_TRANSLATION"
+  }
+
   override val viewModel by viewModels<ListDetailsViewModel>()
 
   private val list by lazy { requireArguments().getParcelable<CustomList>(ARG_LIST)!! }
+
+  private val recyclerPaddingBottom by lazy { requireContext().dimenToPx(R.dimen.spaceSmall) }
+  private val recyclerPaddingTop by lazy { requireContext().dimenToPx(R.dimen.listDetailsRecyclerTopPadding) }
 
   private var adapter: ListDetailsAdapter? = null
   private var touchHelper: ItemTouchHelper? = null
   private var layoutManager: LinearLayoutManager? = null
 
+  private var headerTranslation = 0F
   private var isReorderMode = false
+
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    savedInstanceState?.let {
+      headerTranslation = it.getFloat(ARG_HEADER_TRANSLATION)
+    }
+    return super.onCreateView(inflater, container, savedInstanceState)
+  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -89,6 +106,7 @@ class ListDetailsFragment :
 
   override fun onPause() {
     enableUi()
+    headerTranslation = fragmentListDetailsChipsView.translationY
     super.onPause()
   }
 
@@ -103,6 +121,10 @@ class ListDetailsFragment :
         if (isReorderMode) toggleReorderMode()
         else activity?.onBackPressed()
       }
+    }
+    with(fragmentListDetailsChipsView) {
+      onChipsChangeListener = { viewModel.setFilterTypes(list.id, it) }
+      translationY = headerTranslation
     }
     fragmentListDetailsManageButton.onClick { toggleReorderMode() }
   }
@@ -154,14 +176,7 @@ class ListDetailsFragment :
     }
   }
 
-  private fun showSortOrderDialog(order: SortOrderList, types: List<Mode>) {
-    val view = ListDetailsFiltersView(requireContext()).apply {
-      setTypes(types)
-      onChipsChangeListener = { types ->
-        viewModel.setSortTypes(list.id, types)
-      }
-    }
-
+  private fun showSortOrderDialog(order: SortOrderList) {
     val options = SortOrderList.values()
     val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
 
@@ -172,7 +187,6 @@ class ListDetailsFragment :
         viewModel.setSortOrder(list.id, options[index])
         dialog.dismiss()
       }
-      .setView(view)
       .show()
   }
 
@@ -243,8 +257,9 @@ class ListDetailsFragment :
           subtitle = details.description
         }
         val isQuickRemoveEnabled = isQuickRemoveEnabled
-        fragmentListDetailsSortButton.onClick { showSortOrderDialog(details.sortByLocal, details.filterTypeLocal) }
+        fragmentListDetailsSortButton.onClick { showSortOrderDialog(details.sortByLocal) }
         fragmentListDetailsMoreButton.onClick { openPopupMenu(isQuickRemoveEnabled) }
+        fragmentListDetailsChipsView.setTypes(details.filterTypeLocal)
       }
       listItems?.let {
         val isRealEmpty = it.isEmpty() && listDetails?.filterTypeLocal?.containsAll(Mode.getAll()) == true
@@ -266,10 +281,19 @@ class ListDetailsFragment :
         if (isEnabled) {
           fragmentListDetailsToolbar.title = getString(R.string.textChangeRanks)
           fragmentListDetailsToolbar.subtitle = getString(R.string.textChangeRanksSubtitle)
+          fragmentListDetailsRecycler.setPadding(0, 0, 0, recyclerPaddingBottom)
         } else {
           fragmentListDetailsToolbar.title = listDetails?.name ?: list.name
           fragmentListDetailsToolbar.subtitle = listDetails?.description
+          fragmentListDetailsRecycler.setPadding(0, recyclerPaddingTop, 0, recyclerPaddingBottom)
         }
+
+        if (resetScroll?.consume() == true) {
+          fragmentListDetailsRecycler.scrollToPosition(0)
+        }
+      }
+      isFiltersVisible.let {
+        fragmentListDetailsChipsView.visibleIf(it)
       }
       isLoading.let {
         fragmentListDetailsLoadingView.visibleIf(it)
@@ -285,6 +309,11 @@ class ListDetailsFragment :
 
   override fun onListItemSwipeStarted(viewHolder: RecyclerView.ViewHolder) {
     touchHelper?.startSwipe(viewHolder)
+  }
+
+  override fun onSaveInstanceState(outState: Bundle) {
+    super.onSaveInstanceState(outState)
+    outState.putFloat(ARG_HEADER_TRANSLATION, fragmentListDetailsChipsView?.translationY ?: 0F)
   }
 
   override fun onDestroyView() {

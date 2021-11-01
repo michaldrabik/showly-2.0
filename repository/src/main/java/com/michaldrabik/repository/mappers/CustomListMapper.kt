@@ -50,7 +50,10 @@ class CustomListMapper @Inject constructor() {
     sortHow = SortType.fromSlug(list.sortHow),
     sortByLocal = SortOrderList.fromSlug(list.sortByLocal) ?: SortOrderList.RANK,
     sortHowLocal = SortType.fromSlug(list.sortHowLocal),
-    filterTypeLocal = list.filterTypeLocal.split(",").map { Mode.fromType(it) },
+    filterTypeLocal = when {
+      list.filterTypeLocal.isEmpty() -> emptyList()
+      else -> list.filterTypeLocal.split(",").map { Mode.fromType(it) }
+    },
     itemCount = list.itemCount,
     commentCount = list.commentCount,
     likes = list.likes,

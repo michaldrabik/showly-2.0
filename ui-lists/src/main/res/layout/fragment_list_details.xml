@@ -7,7 +7,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:clipChildren="true"
-  android:clipToPadding="false"
+  android:clipToPadding="true"
   >
 
   <androidx.recyclerview.widget.RecyclerView
@@ -18,8 +18,18 @@
     android:clipChildren="false"
     android:clipToPadding="false"
     android:overScrollMode="never"
-    android:paddingTop="@dimen/spaceSmall"
+    android:paddingTop="@dimen/listDetailsRecyclerTopPadding"
     android:paddingBottom="@dimen/spaceSmall"
+    />
+
+  <com.michaldrabik.ui_lists.details.views.ListDetailsChipsView
+    android:id="@+id/fragmentListDetailsChipsView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/listDetailsChipsTopPadding"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:visibility="gone"
     />
 
   <androidx.appcompat.widget.Toolbar

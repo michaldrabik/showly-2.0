@@ -164,6 +164,9 @@ class ListDetailsItemsCase @Inject constructor(
     }
     return sorted
       .filter {
+        if (typeFilters.isEmpty()) {
+          return@filter true
+        }
         when {
           it.isShow() -> typeFilters.contains(SHOWS)
           it.isMovie() -> typeFilters.contains(MOVIES)
