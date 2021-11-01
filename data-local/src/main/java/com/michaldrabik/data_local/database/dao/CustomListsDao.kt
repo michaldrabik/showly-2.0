@@ -19,8 +19,8 @@ interface CustomListsDao : BaseDao<CustomList> {
   @Query("UPDATE custom_lists SET updated_at = :timestamp WHERE id == :id")
   suspend fun updateTimestamp(id: Long, timestamp: Long)
 
-  @Query("UPDATE custom_lists SET sort_by_local = :sortBy, updated_at = :timestamp WHERE id == :id")
-  suspend fun updateSortByLocal(id: Long, sortBy: String, timestamp: Long)
+  @Query("UPDATE custom_lists SET sort_by_local = :sortBy, sort_how_local = :sortHow, updated_at = :timestamp WHERE id == :id")
+  suspend fun updateSortByLocal(id: Long, sortBy: String, sortHow: String, timestamp: Long)
 
   @Query("UPDATE custom_lists SET filter_type_local = :filterType, updated_at = :timestamp WHERE id == :id")
   suspend fun updateFilterTypeLocal(id: Long, filterType: String, timestamp: Long)

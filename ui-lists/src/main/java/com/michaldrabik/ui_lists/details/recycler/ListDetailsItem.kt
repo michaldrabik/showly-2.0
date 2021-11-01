@@ -12,6 +12,7 @@ import java.time.ZonedDateTime
 data class ListDetailsItem(
   val id: Long,
   val rank: Long,
+  val rankDisplay: Int,
   val show: Show?,
   val movie: Movie?,
   val image: Image,

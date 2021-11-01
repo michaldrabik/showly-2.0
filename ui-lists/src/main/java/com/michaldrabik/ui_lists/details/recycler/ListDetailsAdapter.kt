@@ -74,8 +74,8 @@ class ListDetailsAdapter(
   override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
     val item = items[position]
     when (holder.itemViewType) {
-      VIEW_TYPE_SHOW -> (holder.itemView as ListDetailsShowItemView).bind(item, position)
-      VIEW_TYPE_MOVIE -> (holder.itemView as ListDetailsMovieItemView).bind(item, position)
+      VIEW_TYPE_SHOW -> (holder.itemView as ListDetailsShowItemView).bind(item)
+      VIEW_TYPE_MOVIE -> (holder.itemView as ListDetailsMovieItemView).bind(item)
       else -> throw IllegalStateException()
     }
   }

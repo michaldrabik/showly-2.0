@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
@@ -42,11 +43,20 @@ import com.michaldrabik.ui_lists.details.recycler.ListDetailsAdapter
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_lists.details.views.ListDetailsDeleteConfirmView
 import com.michaldrabik.ui_model.CustomList
-import com.michaldrabik.ui_model.SortOrderList
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortOrder.DATE_ADDED
+import com.michaldrabik.ui_model.SortOrder.NAME
+import com.michaldrabik.ui_model.SortOrder.NEWEST
+import com.michaldrabik.ui_model.SortOrder.RANK
+import com.michaldrabik.ui_model.SortOrder.RATING
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_navigation.java.NavigationArgs
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_LIST
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDER
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_list_details.*
 import kotlinx.android.synthetic.main.fragment_lists.*
@@ -141,6 +151,7 @@ class ListDetailsFragment :
       },
       itemsChangedListener = {
         fragmentListDetailsRecycler.scrollToPosition(0)
+        fragmentListDetailsChipsView.translationY = 0F
       },
       itemsClearedListener = {
         if (isReorderMode) viewModel.updateRanks(list.id, it)
@@ -176,18 +187,17 @@ class ListDetailsFragment :
     }
   }
 
-  private fun showSortOrderDialog(order: SortOrderList) {
-    val options = SortOrderList.values()
-    val optionsStrings = options.map { getString(it.displayString) }.toTypedArray()
+  private fun showSortOrderDialog(order: SortOrder, type: SortType) {
+    val options = listOf(RANK, NAME, NEWEST, RATING, DATE_ADDED)
+    val args = SortOrderBottomSheet.createBundle(options, order, type)
 
-    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
-      .setTitle(R.string.textSortBy)
-      .setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.bg_dialog))
-      .setSingleChoiceItems(optionsStrings, options.indexOf(order)) { dialog, index ->
-        viewModel.setSortOrder(list.id, options[index])
-        dialog.dismiss()
-      }
-      .show()
+    setFragmentResultListener(REQUEST_SORT_ORDER) { _, bundle ->
+      val sortOrder = bundle.getSerializable(ARG_SELECTED_SORT_ORDER) as SortOrder
+      val sortType = bundle.getSerializable(ARG_SELECTED_SORT_TYPE) as SortType
+      viewModel.setSortOrder(list.id, sortOrder, sortType)
+    }
+
+    navigateTo(R.id.actionListDetailsFragmentToSortOrder, args)
   }
 
   private fun showDeleteDialog(quickRemoveEnabled: Boolean) {
@@ -257,7 +267,7 @@ class ListDetailsFragment :
           subtitle = details.description
         }
         val isQuickRemoveEnabled = isQuickRemoveEnabled
-        fragmentListDetailsSortButton.onClick { showSortOrderDialog(details.sortByLocal) }
+        fragmentListDetailsSortButton.onClick { showSortOrderDialog(details.sortByLocal, details.sortHowLocal) }
         fragmentListDetailsMoreButton.onClick { openPopupMenu(isQuickRemoveEnabled) }
         fragmentListDetailsChipsView.setTypes(details.filterTypeLocal)
       }
@@ -290,6 +300,7 @@ class ListDetailsFragment :
 
         if (resetScroll?.consume() == true) {
           fragmentListDetailsRecycler.scrollToPosition(0)
+          fragmentListDetailsChipsView.translationY = 0F
         }
       }
       isFiltersVisible.let {

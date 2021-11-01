@@ -22,7 +22,8 @@ import com.michaldrabik.ui_lists.details.cases.ListDetailsTranslationsCase
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.Image
-import com.michaldrabik.ui_model.SortOrderList
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_model.Tip
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -103,7 +104,8 @@ class ListDetailsViewModel @Inject constructor(
     viewModelScope.launch {
       if (isReorderMode) {
         val list = mainCase.loadDetails(listId).copy(
-          sortByLocal = SortOrderList.RANK,
+          sortByLocal = SortOrder.RANK,
+          sortHowLocal = SortType.ASCENDING,
           filterTypeLocal = Mode.getAll()
         )
         val listItems = itemsCase.loadItems(list).map { it.copy(isManageMode = true) }
@@ -129,12 +131,17 @@ class ListDetailsViewModel @Inject constructor(
     }
   }
 
-  fun setSortOrder(id: Long, sortOrder: SortOrderList) {
+  fun setSortOrder(id: Long, sortOrder: SortOrder, sortType: SortType) {
     viewModelScope.launch {
-      val list = sortCase.setSortOrder(id, sortOrder)
+      val list = sortCase.setSortOrder(id, sortOrder, sortType)
 
       val currentItems = uiState.value.listItems?.toList() ?: emptyList()
-      val sortedItems = itemsCase.sortItems(currentItems, list.sortByLocal, list.filterTypeLocal)
+      val sortedItems = itemsCase.sortItems(
+        currentItems,
+        list.sortByLocal,
+        list.sortHowLocal,
+        list.filterTypeLocal
+      )
 
       listDetailsState.value = list
       listItemsState.value = sortedItems

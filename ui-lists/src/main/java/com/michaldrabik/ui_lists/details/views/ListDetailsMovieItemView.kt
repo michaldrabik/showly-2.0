@@ -71,8 +71,8 @@ class ListDetailsMovieItemView : ListDetailsItemView {
   override val imageView: ImageView = listDetailsMovieImage
   override val placeholderView: ImageView = listDetailsMoviePlaceholder
 
-  override fun bind(item: ListDetailsItem, position: Int) {
-    super.bind(item, position)
+  override fun bind(item: ListDetailsItem) {
+    super.bind(item)
     Glide.with(this).clear(listDetailsMovieImage)
     val movie = item.requireMovie()
 
@@ -95,7 +95,7 @@ class ListDetailsMovieItemView : ListDetailsItemView {
     listDetailsMovieRating.text = String.format(ENGLISH, "%.1f", movie.rating)
 
     listDetailsMovieRank.visibleIf(item.isRankDisplayed)
-    listDetailsMovieRank.text = String.format(ENGLISH, "%d", position + 1)
+    listDetailsMovieRank.text = String.format(ENGLISH, "%d", item.rankDisplay)
 
     listDetailsMovieHandle.visibleIf(item.isManageMode)
     listDetailsMovieStarIcon.visibleIf(!item.isManageMode)

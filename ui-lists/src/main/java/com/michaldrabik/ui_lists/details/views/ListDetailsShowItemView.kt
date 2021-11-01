@@ -70,8 +70,8 @@ class ListDetailsShowItemView : ListDetailsItemView {
   override val imageView: ImageView = listDetailsShowImage
   override val placeholderView: ImageView = listDetailsShowPlaceholder
 
-  override fun bind(item: ListDetailsItem, position: Int) {
-    super.bind(item, position)
+  override fun bind(item: ListDetailsItem) {
+    super.bind(item)
     Glide.with(this).clear(listDetailsShowImage)
 
     val show = item.requireShow()
@@ -98,7 +98,7 @@ class ListDetailsShowItemView : ListDetailsItemView {
     listDetailsShowRating.text = String.format(ENGLISH, "%.1f", show.rating)
 
     listDetailsShowRank.visibleIf(item.isRankDisplayed)
-    listDetailsShowRank.text = String.format(ENGLISH, "%d", position + 1)
+    listDetailsShowRank.text = String.format(ENGLISH, "%d", item.rankDisplay)
 
     listDetailsShowHandle.visibleIf(item.isManageMode)
     listDetailsShowStarIcon.visibleIf(!item.isManageMode)

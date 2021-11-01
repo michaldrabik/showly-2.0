@@ -3,7 +3,7 @@ package com.michaldrabik.repository.mappers
 import com.michaldrabik.common.Mode
 import com.michaldrabik.common.extensions.toMillis
 import com.michaldrabik.ui_model.CustomList
-import com.michaldrabik.ui_model.SortOrderList
+import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
 import java.time.Instant
 import java.time.ZoneId
@@ -25,9 +25,9 @@ class CustomListMapper @Inject constructor() {
     privacy = list.privacy,
     displayNumbers = list.display_numbers,
     allowComments = list.allow_comments,
-    sortBy = SortOrderList.fromSlug(list.sort_by) ?: SortOrderList.RANK,
+    sortBy = SortOrder.fromSlug(list.sort_by) ?: SortOrder.RANK,
     sortHow = SortType.fromSlug(list.sort_how),
-    sortByLocal = SortOrderList.RANK,
+    sortByLocal = SortOrder.RANK,
     sortHowLocal = SortType.ASCENDING,
     filterTypeLocal = Mode.getAll(),
     itemCount = list.item_count,
@@ -46,9 +46,9 @@ class CustomListMapper @Inject constructor() {
     privacy = list.privacy,
     displayNumbers = list.displayNumbers,
     allowComments = list.allowComments,
-    sortBy = SortOrderList.fromSlug(list.sortBy) ?: SortOrderList.RANK,
+    sortBy = SortOrder.fromSlug(list.sortBy) ?: SortOrder.RANK,
     sortHow = SortType.fromSlug(list.sortHow),
-    sortByLocal = SortOrderList.fromSlug(list.sortByLocal) ?: SortOrderList.RANK,
+    sortByLocal = SortOrder.fromSlug(list.sortByLocal) ?: SortOrder.RANK,
     sortHowLocal = SortType.fromSlug(list.sortHowLocal),
     filterTypeLocal = when {
       list.filterTypeLocal.isEmpty() -> emptyList()

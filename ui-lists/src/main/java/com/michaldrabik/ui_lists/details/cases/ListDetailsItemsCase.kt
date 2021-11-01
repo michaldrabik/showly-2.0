@@ -15,16 +15,13 @@ import com.michaldrabik.repository.shows.ShowsRepository
 import com.michaldrabik.ui_base.images.MovieImagesProvider
 import com.michaldrabik.ui_base.images.ShowImagesProvider
 import com.michaldrabik.ui_base.trakt.quicksync.QuickSyncManager
+import com.michaldrabik.ui_lists.details.helpers.ListDetailsSorter
 import com.michaldrabik.ui_lists.details.recycler.ListDetailsItem
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.IdTrakt
 import com.michaldrabik.ui_model.ImageType
-import com.michaldrabik.ui_model.SortOrderList
-import com.michaldrabik.ui_model.SortOrderList.DATE_ADDED
-import com.michaldrabik.ui_model.SortOrderList.NEWEST
-import com.michaldrabik.ui_model.SortOrderList.RANK
-import com.michaldrabik.ui_model.SortOrderList.RATING
-import com.michaldrabik.ui_model.SortOrderList.TITLE
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -47,6 +44,7 @@ class ListDetailsItemsCase @Inject constructor(
   private val translationsRepository: TranslationsRepository,
   private val settingsRepository: SettingsRepository,
   private val quickSyncManager: QuickSyncManager,
+  private val sorter: ListDetailsSorter,
 ) {
 
   private val language by lazy { translationsRepository.getLanguage() }
@@ -76,7 +74,7 @@ class ListDetailsItemsCase @Inject constructor(
     val (shows, movies) = Pair(showsAsync.await(), moviesAsync.await())
     val (showsTranslations, moviesTranslations) = Pair(showsTranslationsAsync.await(), moviesTranslationsAsync.await())
 
-    val isRankSort = list.sortByLocal == RANK
+    val isRankSort = list.sortByLocal == SortOrder.RANK
     val itemsToDelete = Collections.synchronizedList(mutableListOf<CustomListItem>())
     val items = listItems.map { listItem ->
       async {
@@ -95,6 +93,7 @@ class ListDetailsItemsCase @Inject constructor(
             ListDetailsItem(
               id = listItem.id,
               rank = listItem.rank,
+              rankDisplay = listItem.rank.toInt(),
               show = show,
               movie = null,
               image = image,
@@ -120,6 +119,7 @@ class ListDetailsItemsCase @Inject constructor(
             ListDetailsItem(
               id = listItem.id,
               rank = listItem.rank,
+              rankDisplay = listItem.rank.toInt(),
               show = null,
               movie = movie,
               image = image,
@@ -142,39 +142,33 @@ class ListDetailsItemsCase @Inject constructor(
       listsRepository.removeFromList(list.id, IdTrakt(it.idTrakt), it.type)
     }
 
-    sortItems(items.filterNotNull(), list.sortByLocal, list.filterTypeLocal)
+    sortItems(items.filterNotNull(), list.sortByLocal, list.sortHowLocal, list.filterTypeLocal)
   }
 
   fun sortItems(
     items: List<ListDetailsItem>,
-    sort: SortOrderList,
+    sort: SortOrder,
+    sortHow: SortType,
     typeFilters: List<Mode>,
-  ): List<ListDetailsItem> {
-    val sorted = when (sort) {
-      RANK -> items.sortedBy { it.rank }
-      TITLE -> items.sortedBy {
-        val translatedTitle =
-          if (it.translation?.hasTitle == false) null
-          else it.translation?.title
-        translatedTitle ?: it.getTitleNoThe()
+  ) = items
+    .filter {
+      if (typeFilters.isEmpty()) {
+        return@filter true
       }
-      NEWEST -> items.sortedWith(compareByDescending<ListDetailsItem> { it.getYear() }.thenByDescending { it.getDate() })
-      RATING -> items.sortedByDescending { it.getRating() }
-      DATE_ADDED -> items.sortedByDescending { it.listedAt }
+      when {
+        it.isShow() -> typeFilters.contains(SHOWS)
+        it.isMovie() -> typeFilters.contains(MOVIES)
+        else -> throw IllegalStateException()
+      }
     }
-    return sorted
-      .filter {
-        if (typeFilters.isEmpty()) {
-          return@filter true
-        }
-        when {
-          it.isShow() -> typeFilters.contains(SHOWS)
-          it.isMovie() -> typeFilters.contains(MOVIES)
-          else -> throw IllegalStateException()
-        }
-      }
-      .map { it.copy(isRankDisplayed = sort == RANK) }
-  }
+    .sortedWith(sorter.sort(sort, sortHow))
+    .mapIndexed { index, item ->
+      val rankDisplay = if (sortHow == SortType.ASCENDING) index + 1 else items.size - index
+      item.copy(
+        isRankDisplayed = sort == SortOrder.RANK,
+        rankDisplay = rankDisplay
+      )
+    }
 
   suspend fun deleteListItem(
     listId: Long,

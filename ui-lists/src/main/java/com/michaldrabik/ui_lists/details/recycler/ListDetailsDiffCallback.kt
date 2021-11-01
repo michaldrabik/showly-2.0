@@ -25,6 +25,7 @@ class ListDetailsDiffCallback(
           oldItem.translation == newItem.translation &&
           oldItem.image == newItem.image &&
           oldItem.listedAt == newItem.listedAt &&
+          oldItem.rankDisplay == newItem.rankDisplay &&
           oldItem.rank == newItem.rank
       }
       oldItem.isMovie() -> {
@@ -38,6 +39,7 @@ class ListDetailsDiffCallback(
           oldItem.translation == newItem.translation &&
           oldItem.image == newItem.image &&
           oldItem.listedAt == newItem.listedAt &&
+          oldItem.rankDisplay == newItem.rankDisplay &&
           oldItem.rank == newItem.rank
       }
       else -> throw IllegalStateException()

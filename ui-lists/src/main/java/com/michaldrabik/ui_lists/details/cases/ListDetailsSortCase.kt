@@ -5,7 +5,8 @@ import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.repository.mappers.Mappers
 import com.michaldrabik.ui_model.CustomList
-import com.michaldrabik.ui_model.SortOrderList
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
@@ -15,10 +16,11 @@ class ListDetailsSortCase @Inject constructor(
   private val mappers: Mappers
 ) {
 
-  suspend fun setSortOrder(listId: Long, sortOrder: SortOrderList): CustomList {
+  suspend fun setSortOrder(listId: Long, sortOrder: SortOrder, sortType: SortType): CustomList {
     database.customListsDao().updateSortByLocal(
       listId,
       sortOrder.slug,
+      sortType.slug,
       nowUtcMillis()
     )
     val list = database.customListsDao().getById(listId)!!
