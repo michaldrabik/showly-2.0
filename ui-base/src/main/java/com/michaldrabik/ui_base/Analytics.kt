@@ -188,12 +188,6 @@ object Analytics {
     }
   }
 
-  fun logSearchQuery(searchQuery: String) {
-    firebaseAnalytics.logEvent("search_query") {
-      param("search_text", searchQuery)
-    }
-  }
-
   // In App Rate
 
   fun logInAppRateDisplayed() =

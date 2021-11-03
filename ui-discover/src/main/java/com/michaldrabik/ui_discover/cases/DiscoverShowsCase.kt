@@ -86,11 +86,7 @@ class DiscoverShowsCase @Inject constructor(
         async {
           val itemType = when (index) {
             in (0..500 step 14) -> {
-              if (index == 28 && isTwitterAd) {
-                ImageType.TWITTER
-              } else {
-                ImageType.FANART_WIDE
-              }
+              if (index == 14 && isTwitterAd) ImageType.TWITTER else ImageType.FANART_WIDE
             }
             in (5..500 step 14), in (9..500 step 14) -> ImageType.FANART
             else -> ImageType.POSTER

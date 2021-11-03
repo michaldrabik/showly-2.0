@@ -3,15 +3,15 @@ package com.michaldrabik.ui_search
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.text.Editable
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
+import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
@@ -27,6 +27,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.shake
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
@@ -42,11 +43,15 @@ import com.michaldrabik.ui_search.utilities.TextWatcherAdapter
 import com.michaldrabik.ui_search.views.RecentSearchView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.view_search_filters.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), TextWatcherAdapter {
+
+  companion object {
+    private const val ARG_HEADER_TRANSLATION = "ARG_HEADER_TRANSLATION"
+  }
 
   override val viewModel by viewModels<SearchViewModel>()
 
@@ -57,6 +62,15 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
 
   private val swipeRefreshEndOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshEndOffset) }
   private val swipeRefreshStartOffset by lazy { requireContext().dimenToPx(R.dimen.swipeRefreshStartOffset) }
+
+  private var headerTranslation = 0F
+
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    savedInstanceState?.let {
+      headerTranslation = it.getFloat(ARG_HEADER_TRANSLATION)
+    }
+    return super.onCreateView(inflater, container, savedInstanceState)
+  }
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -70,18 +84,15 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
       isInitialized = true
     }
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          launch { messageState.collect { showSnack(it) } }
-        }
-      }
-    }
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      { viewModel.messageState.collect { showSnack(it) } }
+    )
   }
 
   override fun onPause() {
     enableUi()
+    headerTranslation = searchFiltersView.translationY
     super.onPause()
   }
 
@@ -130,6 +141,10 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
       exSearchViewInput.hideKeyboard()
       requireActivity().onBackPressed()
     }
+    with(searchFiltersView) {
+      onChipsChangeListener = { viewModel.setFilters(it) }
+      translationY = headerTranslation
+    }
   }
 
   private fun setupRecycler() {
@@ -137,12 +152,20 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     adapter = SearchAdapter().apply {
       itemClickListener = { openShowDetails(it) }
       missingImageListener = { ids, force -> viewModel.loadMissingImage(ids, force) }
+      listChangeListener = { searchRecycler.scrollToPosition(0) }
     }
     searchRecycler.apply {
       setHasFixedSize(true)
       adapter = this@SearchFragment.adapter
       layoutManager = this@SearchFragment.layoutManager
       itemAnimator = null
+      clearOnScrollListeners()
+      addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+          val value = searchFiltersView.translationY - dy
+          searchFiltersView.translationY = value.coerceAtMost(0F)
+        }
+      })
     }
 
     searchSwipeRefresh.apply {
@@ -200,9 +223,13 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
   private fun render(uiState: SearchUiState) {
     uiState.run {
       searchItems?.let {
-        adapter?.setItems(it)
+        val resetScroll = resetScroll?.consume() == true
+        adapter?.setItems(it, resetScroll)
         if (searchItemsAnimate?.consume() == true) {
           searchRecycler.scheduleLayoutAnimation()
+        }
+        if (resetScroll) {
+          searchFiltersView.translationY = 0F
         }
       }
       recentSearchItems?.let { renderRecentSearches(it) }
@@ -210,12 +237,16 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
         suggestionsAdapter?.setItems(it)
         suggestionsRecycler.visibleIf(it.isNotEmpty())
       }
+      searchOptions?.let {
+        searchFiltersView.setTypes(it.filters)
+      }
       isSearching.let {
         searchSwipeRefresh.isRefreshing = it
         searchViewLayout.isEnabled = !it
       }
       searchEmptyView.fadeIf(isEmpty)
       searchInitialView.fadeIf(isInitial)
+      searchFiltersView.visibleIf(!searchItems.isNullOrEmpty())
     }
   }
 

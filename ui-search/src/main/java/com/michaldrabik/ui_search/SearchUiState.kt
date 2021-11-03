@@ -3,13 +3,16 @@ package com.michaldrabik.ui_search
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_model.RecentSearch
 import com.michaldrabik.ui_search.recycler.SearchListItem
+import com.michaldrabik.ui_search.utilities.SearchOptions
 
 data class SearchUiState(
   val searchItems: List<SearchListItem>? = null,
   val searchItemsAnimate: Event<Boolean>? = null,
   val recentSearchItems: List<RecentSearch>? = null,
   val suggestionsItems: List<SearchListItem>? = null,
+  val searchOptions: SearchOptions? = null,
   val isSearching: Boolean = false,
   val isEmpty: Boolean = false,
   val isInitial: Boolean = false,
+  val resetScroll: Event<Boolean>? = null,
 )

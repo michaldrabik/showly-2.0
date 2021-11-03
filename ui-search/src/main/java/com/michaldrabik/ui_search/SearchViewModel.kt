@@ -3,6 +3,7 @@ package com.michaldrabik.ui_search
 import androidx.lifecycle.viewModelScope
 import com.michaldrabik.common.Config
 import com.michaldrabik.common.Config.SEARCH_RECENTS_AMOUNT
+import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseViewModel
 import com.michaldrabik.ui_base.Logger
 import com.michaldrabik.ui_base.images.MovieImagesProvider
@@ -17,10 +18,13 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RecentSearch
 import com.michaldrabik.ui_model.SearchResult
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_search.cases.SearchFiltersCase
 import com.michaldrabik.ui_search.cases.SearchMainCase
+import com.michaldrabik.ui_search.cases.SearchQueryCase
 import com.michaldrabik.ui_search.cases.SearchRecentsCase
 import com.michaldrabik.ui_search.cases.SearchSuggestionsCase
 import com.michaldrabik.ui_search.recycler.SearchListItem
+import com.michaldrabik.ui_search.utilities.SearchOptions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
@@ -33,6 +37,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
+  private val searchQueryCase: SearchQueryCase,
+  private val searchFiltersCase: SearchFiltersCase,
   private val searchMainCase: SearchMainCase,
   private val recentSearchesCase: SearchRecentsCase,
   private val suggestionsCase: SearchSuggestionsCase,
@@ -44,12 +50,15 @@ class SearchViewModel @Inject constructor(
   private val searchItemsAnimateEvent = MutableStateFlow<Event<Boolean>?>(null)
   private val recentSearchItemsState = MutableStateFlow<List<RecentSearch>?>(null)
   private val suggestionsItemsState = MutableStateFlow<List<SearchListItem>?>(null)
+  private val searchOptionsState = MutableStateFlow(SearchOptions())
   private val searchingState = MutableStateFlow(false)
   private val emptyState = MutableStateFlow(false)
   private val initialState = MutableStateFlow(false)
+  private val resetScrollEvent = MutableStateFlow<Event<Boolean>?>(null)
 
   private var isSearching = false
   private var suggestionsJob: Job? = null
+  private var currentSearch: List<SearchListItem>? = null
 
   fun preloadSuggestions() {
     viewModelScope.launch {
@@ -87,38 +96,43 @@ class SearchViewModel @Inject constructor(
         emptyState.value = false
         initialState.value = false
         suggestionsItemsState.value = emptyList()
+        searchOptionsState.value = SearchOptions()
+        currentSearch = null
 
-        val results = searchMainCase.searchByQuery(trimmed)
+        val results = searchQueryCase.searchByQuery(trimmed)
         val myShowsIds = searchMainCase.loadMyShowsIds()
         val watchlistShowsIds = searchMainCase.loadWatchlistShowsIds()
         val myMoviesIds = searchMainCase.loadMyMoviesIds()
         val watchlistMoviesIds = searchMainCase.loadWatchlistMoviesIds()
 
-        val items = results.map {
-          val translation = searchMainCase.loadTranslation(it)
+        val items = results
+          .map {
+            val translation = searchMainCase.loadTranslation(it)
 
-          val image =
-            if (it.isShow) showsImagesProvider.findCachedImage(it.show, POSTER)
-            else moviesImagesProvider.findCachedImage(it.movie, POSTER)
+            val image =
+              if (it.isShow) showsImagesProvider.findCachedImage(it.show, POSTER)
+              else moviesImagesProvider.findCachedImage(it.movie, POSTER)
 
-          val isFollowed =
-            if (it.isShow) it.traktId in myShowsIds
-            else it.traktId in myMoviesIds
+            val isFollowed =
+              if (it.isShow) it.traktId in myShowsIds
+              else it.traktId in myMoviesIds
 
-          val isWatchlist =
-            if (it.isShow) it.traktId in watchlistShowsIds
-            else it.traktId in watchlistMoviesIds
+            val isWatchlist =
+              if (it.isShow) it.traktId in watchlistShowsIds
+              else it.traktId in watchlistMoviesIds
 
-          SearchListItem(
-            UUID.randomUUID(),
-            it.show,
-            image,
-            movie = it.movie,
-            isFollowed = isFollowed,
-            isWatchlist = isWatchlist,
-            translation = translation
-          )
-        }
+            SearchListItem(
+              id = UUID.randomUUID(),
+              show = it.show,
+              movie = it.movie,
+              image = image,
+              isFollowed = isFollowed,
+              isWatchlist = isWatchlist,
+              translation = translation
+            )
+          }
+          .also { currentSearch = it }
+          .filter { searchFiltersCase.filter(SearchOptions(), it) }
 
         recentSearchesCase.saveRecentSearch(trimmed)
 
@@ -128,6 +142,7 @@ class SearchViewModel @Inject constructor(
         emptyState.value = items.isEmpty()
         initialState.value = false
         suggestionsItemsState.value = emptyList()
+        resetScrollEvent.value = Event(true)
       } catch (t: Throwable) {
         onError()
       } finally {
@@ -141,6 +156,16 @@ class SearchViewModel @Inject constructor(
     viewModelScope.launch {
       recentSearchesCase.saveRecentSearch(query)
     }
+  }
+
+  fun setFilters(filters: List<Mode>) {
+    val currentOptions = searchOptionsState.value
+    if (currentOptions.filters == filters) return
+    val newOptions = currentOptions.copy(filters = filters)
+
+    searchOptionsState.value = newOptions
+    searchItemsState.value = currentSearch?.filter { searchFiltersCase.filter(newOptions, it) }
+    resetScrollEvent.value = Event(true)
   }
 
   fun clearSuggestions() {
@@ -172,10 +197,10 @@ class SearchViewModel @Inject constructor(
           else moviesImagesProvider.findCachedImage(it.movie, POSTER)
         val translation = searchMainCase.loadTranslation(it)
         SearchListItem(
-          UUID.randomUUID(),
-          it.show,
-          image,
+          id = UUID.randomUUID(),
+          show = it.show,
           movie = it.movie,
+          image = image,
           isFollowed = false,
           isWatchlist = false,
           translation = translation
@@ -263,8 +288,10 @@ class SearchViewModel @Inject constructor(
     suggestionsItemsState,
     searchingState,
     emptyState,
-    initialState
-  ) { s1, s2, s3, s4, s5, s6, s7 ->
+    initialState,
+    resetScrollEvent,
+    searchOptionsState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9 ->
     SearchUiState(
       searchItems = s1,
       searchItemsAnimate = s2,
@@ -272,7 +299,9 @@ class SearchViewModel @Inject constructor(
       suggestionsItems = s4,
       isSearching = s5,
       isEmpty = s6,
-      isInitial = s7
+      isInitial = s7,
+      resetScroll = s8,
+      searchOptions = s9
     )
   }.stateIn(
     scope = viewModelScope,

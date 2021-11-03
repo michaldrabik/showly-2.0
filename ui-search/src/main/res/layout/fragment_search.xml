@@ -7,7 +7,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:clipChildren="false"
-  android:clipToPadding="false"
+  android:clipToPadding="true"
   >
 
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -25,7 +25,7 @@
       android:clipToPadding="false"
       android:layoutAnimation="@anim/anim_recycler_fall_down"
       android:overScrollMode="never"
-      android:paddingTop="@dimen/searchViewHeightPadded"
+      android:paddingTop="@dimen/searchRecyclerTopPadding"
       android:paddingBottom="@dimen/spaceMedium"
       android:scrollbars="vertical"
       tools:listitem="@layout/view_show_search"
@@ -33,10 +33,23 @@
 
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+  <com.michaldrabik.ui_search.views.SearchFiltersView
+    android:id="@+id/searchFiltersView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/searchChipsHorizontalPadding"
+    android:layout_marginTop="@dimen/spaceMedium"
+    android:layout_marginEnd="@dimen/searchChipsHorizontalPadding"
+    android:visibility="gone"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/searchViewLayout"
+    />
+
   <View
     android:id="@+id/separator"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/spaceSmall"
+    android:layout_height="@dimen/spaceNormal"
     android:background="?attr/colorPrimaryBackground"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
@@ -71,11 +84,12 @@
     android:layout_width="0dp"
     android:layout_height="@dimen/searchViewHeight"
     android:layout_marginLeft="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/spaceSmall"
     android:layout_marginRight="@dimen/spaceMedium"
     android:translationZ="3dp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/separator"
+    app:layout_constraintTop_toTopOf="parent"
     />
 
   <LinearLayout
