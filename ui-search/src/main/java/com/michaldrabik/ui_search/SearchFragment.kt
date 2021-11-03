@@ -8,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.updatePadding
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import com.michaldrabik.ui_base.BaseFragment
+import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewText
@@ -34,8 +36,13 @@ import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
 import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.RecentSearch
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDER
+import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
+import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import com.michaldrabik.ui_search.recycler.SearchAdapter
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.recycler.suggestions.SuggestionAdapter
@@ -145,6 +152,10 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
       onChipsChangeListener = { viewModel.setFilters(it) }
       translationY = headerTranslation
     }
+    with(searchSortButton) {
+      onClick { viewModel.loadSortOrder() }
+      translationY = headerTranslation
+    }
   }
 
   private fun setupRecycler() {
@@ -164,6 +175,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
           val value = searchFiltersView.translationY - dy
           searchFiltersView.translationY = value.coerceAtMost(0F)
+          searchSortButton.translationY = value.coerceAtMost(0F)
         }
       })
     }
@@ -203,6 +215,19 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
     }
   }
 
+  private fun openSortingDialog(order: SortOrder, type: SortType) {
+    val options = listOf(SortOrder.RANK, SortOrder.NAME, SortOrder.NEWEST)
+    val args = SortOrderBottomSheet.createBundle(options, order, type)
+
+    setFragmentResultListener(REQUEST_SORT_ORDER) { _, bundle ->
+      val sortOrder = bundle.getSerializable(ARG_SELECTED_SORT_ORDER) as SortOrder
+      val sortType = bundle.getSerializable(ARG_SELECTED_SORT_TYPE) as SortType
+      viewModel.setSortOrder(sortOrder, sortType)
+    }
+
+    navigateTo(R.id.actionSearchFragmentToSortOrder, args)
+  }
+
   private fun openShowDetails(item: SearchListItem) {
     disableUi()
     searchRoot?.fadeOut(150) {
@@ -230,6 +255,7 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
         }
         if (resetScroll) {
           searchFiltersView.translationY = 0F
+          searchSortButton.translationY = 0F
         }
       }
       recentSearchItems?.let { renderRecentSearches(it) }
@@ -244,9 +270,13 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
         searchSwipeRefresh.isRefreshing = it
         searchViewLayout.isEnabled = !it
       }
+      sortOrder?.let { event ->
+        event.consume()?.let { openSortingDialog(it.first, it.second) }
+      }
       searchEmptyView.fadeIf(isEmpty)
       searchInitialView.fadeIf(isInitial)
       searchFiltersView.visibleIf(!searchItems.isNullOrEmpty())
+      searchSortButton.visibleIf(!searchItems.isNullOrEmpty())
     }
   }
 

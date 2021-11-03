@@ -2,6 +2,8 @@ package com.michaldrabik.ui_search
 
 import com.michaldrabik.ui_base.utilities.Event
 import com.michaldrabik.ui_model.RecentSearch
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.utilities.SearchOptions
 
@@ -11,6 +13,7 @@ data class SearchUiState(
   val recentSearchItems: List<RecentSearch>? = null,
   val suggestionsItems: List<SearchListItem>? = null,
   val searchOptions: SearchOptions? = null,
+  val sortOrder: Event<Pair<SortOrder, SortType>>? = null,
   val isSearching: Boolean = false,
   val isEmpty: Boolean = false,
   val isInitial: Boolean = false,

@@ -46,6 +46,20 @@
     app:layout_constraintTop_toBottomOf="@id/searchViewLayout"
     />
 
+  <ImageView
+    android:id="@+id/searchSortButton"
+    android:layout_width="wrap_content"
+    android:layout_height="36dp"
+    android:layout_gravity="end"
+    android:layout_marginEnd="@dimen/spaceMedium"
+    android:visibility="gone"
+    app:layout_constraintBottom_toBottomOf="@id/searchFiltersView"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@id/searchFiltersView"
+    app:srcCompat="@drawable/ic_sort"
+    app:tint="?android:attr/textColorPrimary"
+    />
+
   <View
     android:id="@+id/separator"
     android:layout_width="match_parent"

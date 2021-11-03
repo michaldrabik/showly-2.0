@@ -19,7 +19,6 @@ class SearchQueryCase @Inject constructor(
 
   suspend fun searchByQuery(query: String): List<SearchResult> {
     val withMovies = settingsRepository.isMoviesEnabled
-
     val results = cloud.traktApi.fetchSearch(query, withMovies)
 
     return results

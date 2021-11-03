@@ -13,6 +13,7 @@ data class SearchListItem(
   override val image: Image,
   override val isLoading: Boolean = false,
   val movie: Movie,
+  val score: Float,
   val isFollowed: Boolean = false,
   val isWatchlist: Boolean = false,
   val translation: Translation? = null

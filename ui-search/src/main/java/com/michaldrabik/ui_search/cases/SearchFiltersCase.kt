@@ -2,13 +2,18 @@ package com.michaldrabik.ui_search.cases
 
 import com.michaldrabik.common.Mode.MOVIES
 import com.michaldrabik.common.Mode.SHOWS
+import com.michaldrabik.repository.SettingsRepository
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.utilities.SearchOptions
 import dagger.hilt.android.scopes.ViewModelScoped
 import javax.inject.Inject
 
 @ViewModelScoped
-class SearchFiltersCase @Inject constructor() {
+class SearchFiltersCase @Inject constructor(
+  private val settingsRepository: SettingsRepository
+) {
+
+  private val isMoviesEnabled by lazy { settingsRepository.isMoviesEnabled }
 
   fun filter(
     searchOptions: SearchOptions,
@@ -18,7 +23,7 @@ class SearchFiltersCase @Inject constructor() {
     return when {
       filterNone -> true
       searchOptions.filters.contains(SHOWS) -> item.isShow
-      searchOptions.filters.contains(MOVIES) -> item.isMovie
+      searchOptions.filters.contains(MOVIES) && isMoviesEnabled -> item.isMovie
       else -> true
     }
   }

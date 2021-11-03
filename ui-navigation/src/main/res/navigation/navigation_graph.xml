@@ -479,6 +479,11 @@
       app:launchSingleTop="true"
       app:popExitAnim="@anim/anim_fade_out"
       />
+    <action
+      android:id="@+id/actionSearchFragmentToSortOrder"
+      app:destination="@id/sortOrderDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment

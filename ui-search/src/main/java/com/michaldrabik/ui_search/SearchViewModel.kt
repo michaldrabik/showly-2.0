@@ -18,10 +18,13 @@ import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_model.RecentSearch
 import com.michaldrabik.ui_model.SearchResult
 import com.michaldrabik.ui_model.Show
+import com.michaldrabik.ui_model.SortOrder
+import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_search.cases.SearchFiltersCase
 import com.michaldrabik.ui_search.cases.SearchMainCase
 import com.michaldrabik.ui_search.cases.SearchQueryCase
 import com.michaldrabik.ui_search.cases.SearchRecentsCase
+import com.michaldrabik.ui_search.cases.SearchSortingCase
 import com.michaldrabik.ui_search.cases.SearchSuggestionsCase
 import com.michaldrabik.ui_search.recycler.SearchListItem
 import com.michaldrabik.ui_search.utilities.SearchOptions
@@ -39,6 +42,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
   private val searchQueryCase: SearchQueryCase,
   private val searchFiltersCase: SearchFiltersCase,
+  private val searchSortingCase: SearchSortingCase,
   private val searchMainCase: SearchMainCase,
   private val recentSearchesCase: SearchRecentsCase,
   private val suggestionsCase: SearchSuggestionsCase,
@@ -55,6 +59,7 @@ class SearchViewModel @Inject constructor(
   private val emptyState = MutableStateFlow(false)
   private val initialState = MutableStateFlow(false)
   private val resetScrollEvent = MutableStateFlow<Event<Boolean>?>(null)
+  private val sortOrderEvent = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
 
   private var isSearching = false
   private var suggestionsJob: Job? = null
@@ -126,13 +131,12 @@ class SearchViewModel @Inject constructor(
               show = it.show,
               movie = it.movie,
               image = image,
+              score = it.score,
               isFollowed = isFollowed,
               isWatchlist = isWatchlist,
               translation = translation
             )
-          }
-          .also { currentSearch = it }
-          .filter { searchFiltersCase.filter(SearchOptions(), it) }
+          }.also { currentSearch = it }
 
         recentSearchesCase.saveRecentSearch(trimmed)
 
@@ -164,8 +168,29 @@ class SearchViewModel @Inject constructor(
     val newOptions = currentOptions.copy(filters = filters)
 
     searchOptionsState.value = newOptions
-    searchItemsState.value = currentSearch?.filter { searchFiltersCase.filter(newOptions, it) }
+    searchItemsState.value = currentSearch
+      ?.filter { searchFiltersCase.filter(newOptions, it) }
+      ?.sortedWith(searchSortingCase.sort(newOptions))
     resetScrollEvent.value = Event(true)
+  }
+
+  fun setSortOrder(sortOrder: SortOrder, sortType: SortType) {
+    val currentOptions = searchOptionsState.value
+    if (currentOptions.sortOrder == sortOrder && currentOptions.sortType == sortType) {
+      return
+    }
+    val newOptions = currentOptions.copy(sortOrder = sortOrder, sortType = sortType)
+
+    searchOptionsState.value = newOptions
+    searchItemsState.value = currentSearch
+      ?.filter { searchFiltersCase.filter(newOptions, it) }
+      ?.sortedWith(searchSortingCase.sort(newOptions))
+    resetScrollEvent.value = Event(true)
+  }
+
+  fun loadSortOrder() {
+    val (_, order, type) = searchOptionsState.value
+    sortOrderEvent.value = Event(Pair(order, type))
   }
 
   fun clearSuggestions() {
@@ -201,6 +226,7 @@ class SearchViewModel @Inject constructor(
           show = it.show,
           movie = it.movie,
           image = image,
+          score = it.score,
           isFollowed = false,
           isWatchlist = false,
           translation = translation
@@ -290,8 +316,9 @@ class SearchViewModel @Inject constructor(
     emptyState,
     initialState,
     resetScrollEvent,
-    searchOptionsState
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9 ->
+    searchOptionsState,
+    sortOrderEvent
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10 ->
     SearchUiState(
       searchItems = s1,
       searchItemsAnimate = s2,
@@ -301,7 +328,8 @@ class SearchViewModel @Inject constructor(
       isEmpty = s6,
       isInitial = s7,
       resetScroll = s8,
-      searchOptions = s9
+      searchOptions = s9,
+      sortOrder = s10
     )
   }.stateIn(
     scope = viewModelScope,
