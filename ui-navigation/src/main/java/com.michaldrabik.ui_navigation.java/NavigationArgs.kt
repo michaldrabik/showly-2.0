@@ -6,6 +6,7 @@ object NavigationArgs {
   const val ARG_MOVIE_ID = "ARG_MOVIE_ID"
   const val ARG_EPISODE_ID = "ARG_EPISODE_ID"
   const val ARG_COMMENT_ID = "ARG_COMMENT_ID"
+  const val ARG_TITLE = "ARG_TITLE"
 
   const val ARG_LIST = "ARG_LIST"
   const val ARG_COMMENT = "ARG_COMMENT"

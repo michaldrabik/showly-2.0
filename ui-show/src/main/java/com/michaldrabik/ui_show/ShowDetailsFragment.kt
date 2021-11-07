@@ -11,7 +11,6 @@ import android.graphics.Typeface.NORMAL
 import android.net.Uri
 import android.os.Bundle
 import android.transition.TransitionManager
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.AnimationUtils
@@ -46,6 +45,7 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
+import com.michaldrabik.ui_base.common.sheets.links.LinksBottomSheet
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
@@ -109,12 +109,9 @@ import com.michaldrabik.ui_show.actors.ActorsAdapter
 import com.michaldrabik.ui_show.helpers.NextEpisodeBundle
 import com.michaldrabik.ui_show.helpers.ShowLink
 import com.michaldrabik.ui_show.helpers.ShowLink.IMDB
-import com.michaldrabik.ui_show.helpers.ShowLink.JUST_WATCH
 import com.michaldrabik.ui_show.helpers.ShowLink.METACRITIC
 import com.michaldrabik.ui_show.helpers.ShowLink.ROTTEN
-import com.michaldrabik.ui_show.helpers.ShowLink.TMDB
 import com.michaldrabik.ui_show.helpers.ShowLink.TRAKT
-import com.michaldrabik.ui_show.helpers.ShowLink.TVDB
 import com.michaldrabik.ui_show.helpers.StreamingsBundle
 import com.michaldrabik.ui_show.quickSetup.QuickSetupView
 import com.michaldrabik.ui_show.related.RelatedListItem
@@ -130,7 +127,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_show_details.*
 import kotlinx.android.synthetic.main.fragment_show_details_actor_full_view.*
 import kotlinx.android.synthetic.main.fragment_show_details_next_episode.*
-import kotlinx.android.synthetic.main.view_links_menu.view.*
 import kotlinx.coroutines.flow.collect
 import java.time.Duration
 import java.util.Locale.ENGLISH
@@ -514,16 +510,14 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
             Analytics.logShowTrailerClick(show)
           }
         }
-        showDetailsLinksButton.run {
-          onClick {
-            openLinksMenu(show, uiState.country ?: UNITED_STATES)
-            Analytics.logShowLinksClick(show)
-          }
-        }
-        separator4.visible()
         showDetailsCustomImagesLabel.visibleIf(Config.SHOW_PREMIUM)
         showDetailsCustomImagesLabel.onClick { showCustomImagesSheet(show.traktId, isPremium) }
+        showDetailsLinksButton.onClick {
+          val args = LinksBottomSheet.createBundle(show.ids, show.title, Mode.SHOWS)
+          navigateTo(R.id.actionShowDetailsFragmentToLinks, args)
+        }
         showDetailsAddButton.isEnabled = true
+        separator4.visible()
       }
       showLoading?.let {
         if (!showDetailsEpisodesView.isVisible && !showDetailsCommentsView.isVisible) {
@@ -779,45 +773,6 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
       openIMDbLink(IdImdb(id), "title")
     } else {
       openWebUrl(link.getUri(id, country)) ?: showSnack(MessageEvent.info(R.string.errorCouldNotFindApp))
-    }
-  }
-
-  @SuppressLint("ClickableViewAccessibility")
-  private fun openLinksMenu(show: Show, country: AppCountry) {
-    val ids = show.ids
-    showDetailsMainLayout.setOnTouchListener { _, event ->
-      if (event.action == MotionEvent.ACTION_DOWN) {
-        showDetailsLinksMenu.fadeOut()
-        showDetailsMainLayout.setOnTouchListener(null)
-      }
-      false
-    }
-    showDetailsLinksMenu.run {
-      fadeIn(125)
-      viewLinkTrakt.visibleIf(ids.trakt.id != -1L)
-      viewLinkTrakt.onClick {
-        openShowLink(TRAKT, ids.trakt.id.toString())
-        fadeOut(125)
-      }
-      viewLinkTmdb.visibleIf(ids.tmdb.id != -1L)
-      viewLinkTmdb.onClick {
-        openShowLink(TMDB, ids.tmdb.id.toString())
-        fadeOut(125)
-      }
-      viewLinkImdb.visibleIf(ids.imdb.id.isNotBlank())
-      viewLinkImdb.onClick {
-        openShowLink(IMDB, ids.imdb.id)
-        fadeOut(125)
-      }
-      viewLinkTvdb.visibleIf(ids.tvdb.id != -1L)
-      viewLinkTvdb.onClick {
-        openShowLink(TVDB, ids.tvdb.id.toString())
-        fadeOut(125)
-      }
-      viewLinkJustWatch.onClick {
-        openShowLink(JUST_WATCH, show.title, country)
-        fadeOut(125)
-      }
     }
   }
 

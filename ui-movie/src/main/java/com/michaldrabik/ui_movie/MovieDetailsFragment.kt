@@ -11,7 +11,6 @@ import android.graphics.Typeface.NORMAL
 import android.net.Uri
 import android.os.Bundle
 import android.transition.TransitionManager
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
@@ -44,6 +43,7 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.AppCountry
 import com.michaldrabik.ui_base.common.AppCountry.UNITED_STATES
 import com.michaldrabik.ui_base.common.WidgetsProvider
+import com.michaldrabik.ui_base.common.sheets.links.LinksBottomSheet
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.MessageEvent
 import com.michaldrabik.ui_base.utilities.SnackbarHost
@@ -85,7 +85,6 @@ import com.michaldrabik.ui_movie.MovieDetailsUiState.StreamingsState
 import com.michaldrabik.ui_movie.actors.ActorsAdapter
 import com.michaldrabik.ui_movie.helpers.MovieLink
 import com.michaldrabik.ui_movie.helpers.MovieLink.IMDB
-import com.michaldrabik.ui_movie.helpers.MovieLink.JUST_WATCH
 import com.michaldrabik.ui_movie.helpers.MovieLink.METACRITIC
 import com.michaldrabik.ui_movie.helpers.MovieLink.ROTTEN
 import com.michaldrabik.ui_movie.helpers.MovieLink.TRAKT
@@ -113,7 +112,6 @@ import com.michaldrabik.ui_streamings.recycler.StreamingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_details_actor_full_view.*
-import kotlinx.android.synthetic.main.view_links_movie_menu.view.*
 import kotlinx.coroutines.flow.collect
 import java.util.Locale.ENGLISH
 import java.util.Locale.ROOT
@@ -419,8 +417,8 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
         }
         movieDetailsLinksButton.run {
           onClick {
-            openLinksMenu(movie, uiState.country ?: UNITED_STATES)
-            Analytics.logMovieLinksClick(movie)
+            val args = LinksBottomSheet.createBundle(movie.ids, movie.title, Mode.MOVIES)
+            navigateTo(R.id.actionMovieDetailsFragmentToLinks, args)
           }
         }
         movieDetailsSeparator5.visible()
@@ -617,40 +615,6 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
       openIMDbLink(IdImdb(id), "title")
     } else {
       openWebUrl(link.getUri(id, country)) ?: showSnack(MessageEvent.info(R.string.errorCouldNotFindApp))
-    }
-  }
-
-  @SuppressLint("ClickableViewAccessibility")
-  private fun openLinksMenu(movie: Movie, country: AppCountry) {
-    val ids = movie.ids
-    movieDetailsMainLayout.setOnTouchListener { _, event ->
-      if (event.action == MotionEvent.ACTION_DOWN) {
-        movieDetailsLinksMenu.fadeOut()
-        movieDetailsMainLayout.setOnTouchListener(null)
-      }
-      false
-    }
-    movieDetailsLinksMenu.run {
-      fadeIn(125)
-      viewLinkTrakt.visibleIf(ids.trakt.id != -1L)
-      viewLinkTrakt.onClick {
-        openMovieLink(MovieLink.TRAKT, ids.trakt.id.toString())
-        fadeOut(125)
-      }
-      viewLinkTmdb.visibleIf(ids.tmdb.id != -1L)
-      viewLinkTmdb.onClick {
-        openMovieLink(MovieLink.TMDB, ids.tmdb.id.toString())
-        fadeOut(125)
-      }
-      viewLinkImdb.visibleIf(ids.imdb.id.isNotBlank())
-      viewLinkImdb.onClick {
-        openMovieLink(IMDB, ids.imdb.id)
-        fadeOut(125)
-      }
-      viewLinkJustWatch.onClick {
-        openMovieLink(JUST_WATCH, movie.title, country)
-        fadeOut(125)
-      }
     }
   }
 

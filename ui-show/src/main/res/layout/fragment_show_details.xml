@@ -553,15 +553,6 @@
         app:layout_constraintTop_toBottomOf="@id/separator4"
         />
 
-      <com.michaldrabik.ui_show.views.ShowLinksView
-        android:id="@+id/showDetailsLinksMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/showDetailsLinksButton"
-        app:layout_constraintEnd_toEndOf="@id/showDetailsLinksButton"
-        />
-
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/showDetailsRelatedRecycler"
         android:layout_width="0dp"

@@ -100,20 +100,6 @@ object Analytics {
     }
   }
 
-  fun logShowLinksClick(show: Show) {
-    firebaseAnalytics.logEvent("show_click_links") {
-      param("show_id_trakt", show.traktId)
-      param("show_title", show.title)
-    }
-  }
-
-  fun logMovieLinksClick(movie: Movie) {
-    firebaseAnalytics.logEvent("movie_click_links") {
-      param("movie_id_trakt", movie.traktId)
-      param("movie_title", movie.title)
-    }
-  }
-
   fun logShowShareClick(show: Show) {
     firebaseAnalytics.logEvent("show_click_share") {
       param("show_id_trakt", show.traktId)

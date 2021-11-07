@@ -45,6 +45,10 @@
   <dimen name="discoverRecyclerPadding">106dp</dimen>
   <dimen name="discoverRecyclerPaddingNoTabs">64dp</dimen>
 
+  <dimen name="linkItemTileHeight">42dp</dimen>
+  <dimen name="linkItemImageWidth">50dp</dimen>
+  <dimen name="linkItemImageHeight">26dp</dimen>
+
   <dimen name="swipeRefreshStartOffset">8dp</dimen>
   <dimen name="swipeRefreshEndOffset">140dp</dimen>
 

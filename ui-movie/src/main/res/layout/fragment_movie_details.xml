@@ -411,15 +411,6 @@
         app:layout_constraintTop_toBottomOf="@id/movieDetailsSeparator5"
         />
 
-      <com.michaldrabik.ui_movie.views.MovieLinksView
-        android:id="@+id/movieDetailsLinksMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/movieDetailsLinksButton"
-        app:layout_constraintEnd_toEndOf="@id/movieDetailsLinksButton"
-        />
-
       <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/movieDetailsRelatedRecycler"
         android:layout_width="0dp"

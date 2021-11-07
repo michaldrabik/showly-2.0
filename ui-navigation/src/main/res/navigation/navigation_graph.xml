@@ -265,6 +265,11 @@
       app:destination="@id/removeTraktProgressDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionShowDetailsFragmentToLinks"
+      app:destination="@id/linksDialog"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -322,6 +327,11 @@
     <action
       android:id="@+id/actionMovieDetailsFragmentToRemoveTraktHidden"
       app:destination="@id/removeTraktHiddenDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionMovieDetailsFragmentToLinks"
+      app:destination="@id/linksDialog"
       app:launchSingleTop="true"
       />
   </fragment>
@@ -633,6 +643,12 @@
     android:id="@+id/sortOrderDialog"
     android:name="com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet"
     android:label="dialogSortOrder"
+    />
+
+  <dialog
+    android:id="@+id/linksDialog"
+    android:name="com.michaldrabik.ui_base.common.sheets.links.LinksBottomSheet"
+    android:label="dialogLinks"
     />
 
 </navigation>
