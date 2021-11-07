@@ -17,7 +17,6 @@
   <string name="textSeasons">Kaudet:</string>
   <string name="textSeasonsEmpty">Tuotantokausia ei ole.</string>
   <string name="textTrailer">Traileri</string>
-  <string name="textLink">Linkki</string>
   <string name="textYouMayAlsoLike">Saattaisit pitää myös näistä:</string>
   <string name="textRuntimeLeftHours">~%s h %s m jäljellä</string>
   <string name="textRuntimeLeftMinutes">~%s m jäljellä</string>

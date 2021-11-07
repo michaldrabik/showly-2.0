@@ -8,7 +8,6 @@
   <string name="textMovieActorsEmpty">Obsada niedostępna</string>
   <string name="textMovieTrailer">Trailer</string>
   <string name="textMovieRate">Oceń</string>
-  <string name="textMovieLink">Link</string>
   <string name="textMovieComments2">Opinie</string>
   <string name="textMovieYouMayAlsoLike">Zobacz również:</string>
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>

@@ -352,7 +352,7 @@
       <TextView
         android:id="@+id/movieDetailsLinksButton"
         style="@style/MovieDetails.ExtraButton"
-        android:text="@string/textMovieLink"
+        android:text="@string/textLink"
         app:drawableTopCompat="@drawable/ic_link"
         app:layout_constraintBottom_toBottomOf="@id/movieDetailsCommentsButton"
         app:layout_constraintEnd_toEndOf="parent"

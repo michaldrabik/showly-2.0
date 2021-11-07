@@ -95,4 +95,5 @@
   <string name="errorTraktSyncGeneral">Trakt.tv-synkronointivirhe.\nTarkista Internet-yhteys ja yritä uudelleen.</string>
   <string name="errorTraktLocked">Trakt.tv-tilisi on lukittu.\nOta yhteyttä Trakt.tv:n tukeen osoitteessa https://support.trakt.tv/ poistaaksesi lukituksen.</string>
   <string name="errorSubscriptionsNotAvailable">Google Play -tilaukset eivät ole käytettävissä tällä laitteella.</string>
+  <string name="textLink">Linkki</string>
 </resources>
