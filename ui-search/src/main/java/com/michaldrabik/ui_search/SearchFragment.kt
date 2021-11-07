@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
+import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.common.views.exSearchViewIcon
@@ -272,6 +273,12 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
       }
       sortOrder?.let { event ->
         event.consume()?.let { openSortingDialog(it.first, it.second) }
+      }
+      isMoviesEnabled.let { isEnabled ->
+        val types = mutableListOf(Mode.SHOWS).apply {
+          if (isEnabled) add(Mode.MOVIES)
+        }
+        searchFiltersView.setEnabledTypes(types)
       }
       searchEmptyView.fadeIf(isEmpty)
       searchInitialView.fadeIf(isInitial)

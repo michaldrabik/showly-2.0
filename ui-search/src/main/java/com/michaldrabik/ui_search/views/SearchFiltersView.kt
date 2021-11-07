@@ -6,6 +6,7 @@ import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.michaldrabik.common.Mode
 import com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_search.R
 import kotlinx.android.synthetic.main.view_search_filters.view.*
 
@@ -46,6 +47,15 @@ class SearchFiltersView : FrameLayout, CoordinatorLayout.AttachedBehavior {
     viewSearchFiltersShowsChip.isChecked = Mode.SHOWS in types
     viewSearchFiltersMoviesChip.isChecked = Mode.MOVIES in types
     isListenerEnabled = true
+  }
+
+  fun setEnabledTypes(types: List<Mode>) {
+    val hasShows = types.contains(Mode.SHOWS)
+    val hasMovies = types.contains(Mode.MOVIES)
+    viewSearchFiltersShowsChip.isEnabled = hasShows
+    viewSearchFiltersShowsChip.visibleIf(hasShows)
+    viewSearchFiltersMoviesChip.isEnabled = hasMovies
+    viewSearchFiltersMoviesChip.visibleIf(hasMovies)
   }
 
   override fun getBehavior() = ScrollableViewBehaviour()

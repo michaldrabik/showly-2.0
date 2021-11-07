@@ -17,5 +17,6 @@ data class SearchUiState(
   val isSearching: Boolean = false,
   val isEmpty: Boolean = false,
   val isInitial: Boolean = false,
+  val isMoviesEnabled: Boolean = false,
   val resetScroll: Event<Boolean>? = null,
 )

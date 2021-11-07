@@ -13,7 +13,7 @@ class SearchFiltersCase @Inject constructor(
   private val settingsRepository: SettingsRepository
 ) {
 
-  private val isMoviesEnabled by lazy { settingsRepository.isMoviesEnabled }
+  val isMoviesEnabled by lazy { settingsRepository.isMoviesEnabled }
 
   fun filter(
     searchOptions: SearchOptions,

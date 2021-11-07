@@ -72,7 +72,7 @@ class LinksBottomSheet : BaseBottomSheetFragment<LinksViewModel>() {
       openWebUrl("https://www.youtube.com/results?search_query=${getQuery()}")
     }
     viewLinksWiki.onClick {
-      openWebUrl("https://wikipedia.org/w/index.php?search=${getQuery()}")
+      openWebUrl("https://en.wikipedia.org/w/index.php?search=${getQuery()}")
     }
     viewLinksGoogle.onClick {
       openWebUrl("https://www.google.com/search?q=${getQuery()}")
