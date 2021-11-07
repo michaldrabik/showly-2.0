@@ -36,6 +36,14 @@
   <string name="textRateSaved">Your rating has been saved.</string>
   <string name="textCopiedToClipboard" translatable="false">Title copied to clipboard.</string>
 
+  <string name="textPeople">People:</string>
+  <string name="textDirecting">Directing</string>
+  <string name="textDirector">Director</string>
+  <string name="textWriting">Writing</string>
+  <string name="textScreenplay">Screenplay</string>
+  <string name="textSound">Sound</string>
+  <string name="textMusic">Music</string>
+
   <string name="textAiredAlready">Aired</string>
   <string name="textAirsNow">Airs Now</string>
 
