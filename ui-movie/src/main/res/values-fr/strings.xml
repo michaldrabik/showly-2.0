@@ -8,7 +8,6 @@
   <string name="textMovieActorsEmpty">Acteurs non disponibles</string>
   <string name="textMovieTrailer">Bande\nAnnonce</string>
   <string name="textMovieRate">Noter</string>
-  <string name="textMovieLink">Lien</string>
   <string name="textMovieComments2">Commentaires</string>
   <string name="textMovieYouMayAlsoLike">Vous pourriez aussi aimer:</string>
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
