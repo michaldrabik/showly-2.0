@@ -21,6 +21,7 @@ class SettingsRepositoryTest : BaseMockTest() {
 
   @MockK lateinit var settingsDao: SettingsDao
   @MockK lateinit var sharedPreferences: SharedPreferences
+  @MockK lateinit var settingsSortRepository: SettingsSortRepository
 
   private lateinit var SUT: SettingsRepository
 
@@ -28,7 +29,7 @@ class SettingsRepositoryTest : BaseMockTest() {
   override fun setUp() {
     super.setUp()
     every { database.settingsDao() } returns settingsDao
-    SUT = SettingsRepository(sharedPreferences, database, mappers)
+    SUT = SettingsRepository(settingsSortRepository, database, mappers, sharedPreferences)
   }
 
   @Test
