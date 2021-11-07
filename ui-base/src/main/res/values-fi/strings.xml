@@ -30,7 +30,15 @@
   <string name="textNoDescription">Yhteenvetoa ei ole saatavilla.</string>
   <string name="textPleaseWait">Odota…</string>
   <string name="textRate">Avioi</string>
+  <string name="textLink">Linkki</string>
   <string name="textRateSaved">Arviosi tallennettiin.</string>
+  <string name="textPeople">Henkilöt:</string>
+  <string name="textDirecting">Ohjaus</string>
+  <string name="textDirector">Ohjaaja</string>
+  <string name="textWriting">Kirjoitus</string>
+  <string name="textScreenplay">Käsikirjoitus</string>
+  <string name="textSound">Ääni</string>
+  <string name="textMusic">Musiikki</string>
   <string name="textAiredAlready">Esitetty</string>
   <string name="textAirsNow">Esitetään nyt</string>
   <plurals name="textDaysToAir">
