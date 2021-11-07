@@ -8,7 +8,6 @@
   <string name="textMovieActorsEmpty">Актеры недоступны</string>
   <string name="textMovieTrailer">Трейлер</string>
   <string name="textMovieRate">Оценить</string>
-  <string name="textMovieLink">Ссылка</string>
   <string name="textMovieComments2">Мнения</string>
   <string name="textMovieYouMayAlsoLike">Вам также может понравиться:</string>
   <string name="textMovieExtraInfo">%s %s | %s %s | %s</string>
