@@ -76,8 +76,7 @@ class TraktExportWatchedRunner @Inject constructor(
         .filter { movie -> remoteMovies.none { it.movie?.ids?.trakt == movie.idTrakt } }
 
       localMyMovies.mapTo(movies) {
-        val timestamp = it.updatedAt
-        SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(timestamp))
+        SyncExportItem.create(it.idTrakt, dateIsoStringFromMillis(it.updatedAt))
       }
     }
 
