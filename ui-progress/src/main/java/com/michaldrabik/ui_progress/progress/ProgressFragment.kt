@@ -1,5 +1,6 @@
 package com.michaldrabik.ui_progress.progress
 
+import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -21,9 +22,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
+import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
 import com.michaldrabik.ui_base.common.views.RateView
+import com.michaldrabik.ui_base.trakt.TraktSyncService
 import com.michaldrabik.ui_base.utilities.NavigationHost
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
@@ -45,6 +48,7 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
 import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_SORT_ORDER
 import com.michaldrabik.ui_progress.R
+import com.michaldrabik.ui_progress.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
 import com.michaldrabik.ui_progress.progress.recycler.ProgressAdapter
@@ -55,6 +59,11 @@ import kotlinx.android.synthetic.main.fragment_progress.*
 import kotlinx.android.synthetic.main.layout_progress_empty.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import me.everything.android.ui.overscroll.IOverScrollDecor
+import me.everything.android.ui.overscroll.IOverScrollState
+import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase
+import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator
+import timber.log.Timber
 
 @AndroidEntryPoint
 class ProgressFragment :
@@ -62,12 +71,19 @@ class ProgressFragment :
   OnSortClickListener,
   OnScrollResetListener {
 
+  private companion object {
+    const val OVERSCROLL_OFFSET = 150F
+    const val OVERSCROLL_OFFSET_TRANSLATION = 5F
+  }
+
   private val parentViewModel by viewModels<ProgressMainViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<ProgressViewModel>()
 
   private var adapter: ProgressAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
+  private var overscroll: IOverScrollDecor? = null
   private var statusBarHeight = 0
+  private var overscrollEnabled = true
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -84,6 +100,7 @@ class ProgressFragment :
           launch { uiState.collect { render(it) } }
           launch { messageState.collect { showSnack(it) } }
           checkQuickRateEnabled()
+          checkOverscrollEnabled()
         }
       }
     }
@@ -149,6 +166,49 @@ class ProgressFragment :
     }
   }
 
+  private fun setupOverscroll() {
+    if (overscroll != null) return
+    val adapt = TopOverscrollAdapter(progressRecycler)
+    overscroll = VerticalOverScrollBounceEffectDecorator(
+      adapt,
+      1.75F,
+      OverScrollBounceEffectDecoratorBase.DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK,
+      OverScrollBounceEffectDecoratorBase.DEFAULT_DECELERATE_FACTOR
+    )
+    overscroll?.setOverScrollUpdateListener { _, state, offset ->
+      with(progressOverscrollIcon) {
+        if (offset > 0) {
+          val value = (offset / OVERSCROLL_OFFSET).coerceAtMost(1F)
+          val valueTranslation = offset / OVERSCROLL_OFFSET_TRANSLATION
+          when (state) {
+            IOverScrollState.STATE_DRAG_START_SIDE -> {
+              alpha = value
+              scaleX = value
+              scaleY = value
+              translationY = valueTranslation
+              overscrollEnabled = true
+            }
+            IOverScrollState.STATE_BOUNCE_BACK -> {
+              alpha = value
+              scaleX = value
+              scaleY = value
+              translationY = valueTranslation
+              if (offset >= OVERSCROLL_OFFSET && overscrollEnabled) {
+                overscrollEnabled = false
+                startTraktSync()
+              }
+            }
+          }
+        } else {
+          alpha = 0F
+          scaleX = 0F
+          scaleY = 0F
+          translationY = 0F
+        }
+      }
+    }
+  }
+
   private fun openPopupMenu(item: ProgressListItem.Episode, view: View) {
     val menu = PopupMenu(requireContext(), view, Gravity.CENTER)
     if (item.isPinned) {
@@ -206,7 +266,34 @@ class ProgressFragment :
         progressRecycler.fadeIn(withHardware = true).add(animations)
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
       }
+      isOverScrollEnabled.let {
+        if (it) {
+          setupOverscroll()
+        } else {
+          overscroll?.detach()
+          overscroll = null
+        }
+      }
       sortOrder?.let { event -> event.consume()?.let { openSortOrderDialog(it.first, it.second) } }
+    }
+  }
+
+  private fun startTraktSync() {
+    val context = requireAppContext()
+    if ((context as OnTraktSyncListener).isTraktSyncActive()) {
+      Timber.d("Trakt sync is already running.")
+      return
+    }
+    TraktSyncService.createIntent(
+      context,
+      isImport = true,
+      isExport = true
+    ).run {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        context.startForegroundService(this)
+      } else {
+        context.startService(this)
+      }
     }
   }
 
@@ -217,6 +304,7 @@ class ProgressFragment :
   override fun setupBackPressed() = Unit
 
   override fun onDestroyView() {
+    overscroll = null
     adapter?.listChangeListener = null
     adapter = null
     layoutManager = null

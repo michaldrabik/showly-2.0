@@ -42,7 +42,7 @@ abstract class TraktNotificationsService : Service() {
 
   protected fun createSuccessNotification(theme: Int) =
     createBaseNotification(theme)
-      .setTimeoutAfter(TimeUnit.SECONDS.toMillis(5))
+      .setTimeoutAfter(TimeUnit.SECONDS.toMillis(3))
       .setContentText(getString(R.string.textTraktSyncComplete))
       .setPriority(PRIORITY_HIGH)
       .build()

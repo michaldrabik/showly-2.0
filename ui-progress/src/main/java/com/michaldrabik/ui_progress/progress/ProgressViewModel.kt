@@ -46,6 +46,7 @@ class ProgressViewModel @Inject constructor(
 
   private val itemsState = MutableStateFlow<List<ProgressListItem>?>(null)
   private val loadingState = MutableStateFlow(false)
+  private val overscrollState = MutableStateFlow(false)
   private val scrollState = MutableStateFlow(Event(false))
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
 
@@ -53,13 +54,15 @@ class ProgressViewModel @Inject constructor(
     itemsState,
     scrollState,
     sortOrderState,
-    loadingState
-  ) { s1, s2, s3, s4 ->
+    loadingState,
+    overscrollState
+  ) { s1, s2, s3, s4, s5 ->
     ProgressUiState(
       items = s1,
       scrollReset = s2,
       sortOrder = s3,
-      isLoading = s4
+      isLoading = s4,
+      isOverScrollEnabled = s5
     )
   }.stateIn(
     scope = viewModelScope,
@@ -164,6 +167,12 @@ class ProgressViewModel @Inject constructor(
       val isPremium = settingsRepository.isPremium
       val isQuickRate = settingsRepository.load().traktQuickRateEnabled
       isQuickRateEnabled = isPremium && isSignedIn && isQuickRate
+    }
+  }
+
+  fun checkOverscrollEnabled() {
+    viewModelScope.launch {
+      overscrollState.value = userTraktManager.isAuthorized()
     }
   }
 

@@ -39,6 +39,7 @@ import com.michaldrabik.ui_base.events.ShowsMoviesSyncComplete
 import com.michaldrabik.ui_base.events.TraktQuickSyncSuccess
 import com.michaldrabik.ui_base.events.TraktSyncError
 import com.michaldrabik.ui_base.events.TraktSyncProgress
+import com.michaldrabik.ui_base.events.TraktSyncStart
 import com.michaldrabik.ui_base.events.TraktSyncSuccess
 import com.michaldrabik.ui_base.sync.ShowsMoviesSyncService
 import com.michaldrabik.ui_base.utilities.NavigationHost
@@ -415,6 +416,9 @@ class MainActivity :
         }
         is TraktSyncError -> {
           doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncComplete() }
+        }
+        is TraktSyncStart -> {
+          doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncProgress() }
         }
         is TraktSyncProgress -> {
           doForFragments { (it as? OnTraktSyncListener)?.onTraktSyncProgress() }

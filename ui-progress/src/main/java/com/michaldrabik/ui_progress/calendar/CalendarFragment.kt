@@ -24,7 +24,7 @@ import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode.PRESENT_FUTURE
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode.RECENTS
-import com.michaldrabik.ui_progress.calendar.helpers.TopOverscrollAdapter
+import com.michaldrabik.ui_progress.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarAdapter
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
