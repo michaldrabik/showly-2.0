@@ -24,11 +24,11 @@ data class MyShow(
 ) {
 
   companion object {
-    fun fromTraktId(traktId: Long, createdAt: Long, updatedAt: Long) =
+    fun fromTraktId(traktId: Long, timestamp: Long) =
       MyShow(
         idTrakt = traktId,
-        createdAt = createdAt,
-        updatedAt = updatedAt
+        createdAt = timestamp,
+        updatedAt = timestamp
       )
   }
 }
