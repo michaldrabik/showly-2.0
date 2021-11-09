@@ -28,9 +28,6 @@ interface MyMoviesDao {
   @Query("SELECT movies.* FROM movies INNER JOIN movies_my_movies USING(id_trakt) WHERE id_trakt == :traktId")
   suspend fun getById(traktId: Long): Movie?
 
-  @Query("UPDATE movies_my_movies SET updated_at = :updatedAt WHERE id_trakt == :traktId")
-  suspend fun updateTimestamp(traktId: Long, updatedAt: Long)
-
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insert(movies: List<MyMovie>)
 

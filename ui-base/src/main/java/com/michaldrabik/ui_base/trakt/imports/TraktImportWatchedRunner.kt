@@ -1,7 +1,6 @@
 package com.michaldrabik.ui_base.trakt.imports
 
 import androidx.room.withTransaction
-import com.michaldrabik.common.extensions.nowUtcMillis
 import com.michaldrabik.data_local.database.AppDatabase
 import com.michaldrabik.data_local.database.model.ArchiveMovie
 import com.michaldrabik.data_local.database.model.ArchiveShow
@@ -242,8 +241,7 @@ class TraktImportWatchedRunner @Inject constructor(
               val movie = mappers.movie.fromNetwork(result.movie!!)
               val movieDb = mappers.movie.toDatabase(movie)
 
-              val timestamp = result.lastWatchedMillis()
-              val myMovie = MyMovie.fromTraktId(movieDb.idTrakt, nowUtcMillis(), timestamp)
+              val myMovie = MyMovie.fromTraktId(movieDb.idTrakt, result.lastWatchedMillis())
               database.moviesDao().upsert(listOf(movieDb))
               database.myMoviesDao().insert(listOf(myMovie))
 

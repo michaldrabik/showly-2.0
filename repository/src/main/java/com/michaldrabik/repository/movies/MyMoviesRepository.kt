@@ -32,8 +32,7 @@ class MyMoviesRepository @Inject constructor(
   suspend fun loadAllIds() = database.myMoviesDao().getAllTraktIds()
 
   suspend fun insert(id: IdTrakt) {
-    val timestamp = nowUtcMillis()
-    val movie = MyMovie.fromTraktId(id.id, timestamp, timestamp)
+    val movie = MyMovie.fromTraktId(id.id, nowUtcMillis())
     database.myMoviesDao().insert(listOf(movie))
   }
 

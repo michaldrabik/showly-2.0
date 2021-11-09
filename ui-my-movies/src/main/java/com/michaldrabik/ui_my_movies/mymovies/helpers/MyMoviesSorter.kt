@@ -24,7 +24,7 @@ class MyMoviesSorter @Inject constructor() {
   private fun sortAscending(sortOrder: SortOrder) = when (sortOrder) {
     NAME -> compareBy { getTitle(it) }
     RATING -> compareBy { it.movie.rating }
-    DATE_ADDED -> compareBy { it.movie.createdAt }
+    DATE_ADDED -> compareBy { it.movie.updatedAt }
     NEWEST -> compareBy<MyMoviesItem> { it.movie.year }.thenBy { it.movie.released }
     else -> throw IllegalStateException("Invalid sort order")
   }
@@ -32,7 +32,7 @@ class MyMoviesSorter @Inject constructor() {
   private fun sortDescending(sortOrder: SortOrder) = when (sortOrder) {
     NAME -> compareByDescending { getTitle(it) }
     RATING -> compareByDescending { it.movie.rating }
-    DATE_ADDED -> compareByDescending { it.movie.createdAt }
+    DATE_ADDED -> compareByDescending { it.movie.updatedAt }
     NEWEST -> compareByDescending<MyMoviesItem> { it.movie.year }.thenByDescending { it.movie.released }
     else -> throw IllegalStateException("Invalid sort order")
   }
