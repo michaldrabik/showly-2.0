@@ -10,6 +10,9 @@
   <dimen name="progressMoviesImageHeight">120dp</dimen>
   <dimen name="progressMoviesImageWidth">80dp</dimen>
 
+  <dimen name="progressMoviesOverscrollIconPadding">156dp</dimen>
+  <dimen name="progressMoviesOverscrollIcon">36dp</dimen>
+
   <dimen name="progressMoviesCalendarOverscrollIconPadding">158dp</dimen>
   <dimen name="progressMoviesCalendarOverscrollIcon">36dp</dimen>
 

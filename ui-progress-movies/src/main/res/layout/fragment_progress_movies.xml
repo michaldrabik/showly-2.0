@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/progressMoviesMainRoot"
   android:layout_width="match_parent"
@@ -34,6 +35,19 @@
     android:layout_marginBottom="@dimen/bottomNavigationHeight"
     android:visibility="gone"
     tools:visibility="visible"
+    />
+
+  <ImageView
+    android:id="@+id/progressMoviesOverscrollIcon"
+    android:layout_width="@dimen/progressMoviesOverscrollIcon"
+    android:layout_height="@dimen/progressMoviesOverscrollIcon"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="@dimen/progressMoviesOverscrollIconPadding"
+    android:alpha="0"
+    android:scaleX="0"
+    android:scaleY="0"
+    app:srcCompat="@drawable/ic_trakt"
+    app:tint="?android:attr/textColorPrimary"
     />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

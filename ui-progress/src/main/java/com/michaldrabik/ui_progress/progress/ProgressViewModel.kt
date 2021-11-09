@@ -171,12 +171,6 @@ class ProgressViewModel @Inject constructor(
     }
   }
 
-  fun checkOverscrollEnabled() {
-    viewModelScope.launch {
-      overscrollState.value = userTraktManager.isAuthorized()
-    }
-  }
-
   private fun updateItem(new: ProgressListItem) {
     val currentItems = itemsState.value?.toMutableList() ?: mutableListOf()
     currentItems.findReplace(new) { it.isSameAs(new) }

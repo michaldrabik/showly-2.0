@@ -46,22 +46,7 @@ class ProgressMoviesViewModel @Inject constructor(
   private val itemsState = MutableStateFlow<List<ProgressMovieListItem.MovieItem>?>(null)
   private val scrollState = MutableStateFlow(Event(false))
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
-
-  val uiState = combine(
-    itemsState,
-    scrollState,
-    sortOrderState
-  ) { s1, s2, s3 ->
-    ProgressMoviesUiState(
-      items = s1,
-      scrollReset = s2,
-      sortOrder = s3
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ProgressMoviesUiState()
-  )
+  private val overscrollState = MutableStateFlow(false)
 
   private val language by lazy { translationsRepository.getLanguage() }
   private var searchQuery: String? = null
@@ -86,6 +71,7 @@ class ProgressMoviesViewModel @Inject constructor(
       val items = itemsCase.loadItems(searchQuery ?: "")
       itemsState.value = items
       scrollState.value = Event(resetScroll)
+      overscrollState.value = userTraktManager.isAuthorized() && items.isNotEmpty()
     }
   }
 
@@ -166,4 +152,22 @@ class ProgressMoviesViewModel @Inject constructor(
     itemsState.value = currentItems
     scrollState.value = Event(false)
   }
+
+  val uiState = combine(
+    itemsState,
+    scrollState,
+    sortOrderState,
+    overscrollState
+  ) { s1, s2, s3, s4 ->
+    ProgressMoviesUiState(
+      items = s1,
+      scrollReset = s2,
+      sortOrder = s3,
+      isOverScrollEnabled = s4
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = ProgressMoviesUiState()
+  )
 }
