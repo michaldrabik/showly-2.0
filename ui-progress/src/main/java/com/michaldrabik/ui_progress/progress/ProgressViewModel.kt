@@ -95,6 +95,7 @@ class ProgressViewModel @Inject constructor(
       itemsState.value = items
       loadingState.value = false
       scrollState.value = Event(resetScroll)
+      overscrollState.value = userTraktManager.isAuthorized() && items.isNotEmpty()
     }
   }
 

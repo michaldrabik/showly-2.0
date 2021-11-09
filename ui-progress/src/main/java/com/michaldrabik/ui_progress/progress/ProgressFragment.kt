@@ -72,7 +72,7 @@ class ProgressFragment :
   OnScrollResetListener {
 
   private companion object {
-    const val OVERSCROLL_OFFSET = 150F
+    const val OVERSCROLL_OFFSET = 200F
     const val OVERSCROLL_OFFSET_TRANSLATION = 5F
   }
 
@@ -100,7 +100,6 @@ class ProgressFragment :
           launch { uiState.collect { render(it) } }
           launch { messageState.collect { showSnack(it) } }
           checkQuickRateEnabled()
-          checkOverscrollEnabled()
         }
       }
     }
