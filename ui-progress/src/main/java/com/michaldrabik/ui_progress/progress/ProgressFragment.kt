@@ -73,7 +73,7 @@ class ProgressFragment :
 
   private companion object {
     const val OVERSCROLL_OFFSET = 200F
-    const val OVERSCROLL_OFFSET_TRANSLATION = 5F
+    const val OVERSCROLL_OFFSET_TRANSLATION = 4.5F
   }
 
   private val parentViewModel by viewModels<ProgressMainViewModel>({ requireParentFragment() })
