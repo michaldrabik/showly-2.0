@@ -120,7 +120,7 @@ class MyShowsRepositoryTest : BaseMockTest() {
         assertThat(id).isEqualTo(0)
         assertThat(idTrakt).isEqualTo(10)
         assertThat(createdAt).isGreaterThan(0)
-        assertThat(updatedAt).isEqualTo(0)
+        assertThat(updatedAt).isGreaterThan(0)
       }
       coVerify(exactly = 1) { myShowsDao.insert(any()) }
     }
