@@ -7,5 +7,7 @@ import com.michaldrabik.ui_model.Show
 data class RelatedListItem(
   override val show: Show,
   override val image: Image,
-  override var isLoading: Boolean = false
+  override var isLoading: Boolean = false,
+  val isFollowed: Boolean = false,
+  val isWatchlist: Boolean = false
 ) : ListItem

@@ -9,6 +9,9 @@ import com.michaldrabik.ui_model.Episode
 import com.michaldrabik.ui_model.Season
 import com.michaldrabik.ui_model.Show
 import dagger.hilt.android.scopes.ViewModelScoped
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import javax.inject.Inject
 import com.michaldrabik.data_local.database.model.Episode as EpisodeDb
 import com.michaldrabik.data_local.database.model.Season as SeasonDb
@@ -20,6 +23,14 @@ class ShowDetailsMyShowsCase @Inject constructor(
   private val showsRepository: ShowsRepository,
   private val pinnedItemsRepository: PinnedItemsRepository
 ) {
+
+  suspend fun getAllIds() = coroutineScope {
+    val (myShows, watchlistShows) = awaitAll(
+      async { showsRepository.myShows.loadAllIds() },
+      async { showsRepository.watchlistShows.loadAllIds() }
+    )
+    Pair(myShows, watchlistShows)
+  }
 
   suspend fun isMyShows(show: Show) =
     showsRepository.myShows.load(show.ids.trakt) != null

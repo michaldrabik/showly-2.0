@@ -252,9 +252,15 @@ class ShowDetailsViewModel @Inject constructor(
 
   private suspend fun loadRelatedShows(show: Show) {
     try {
+      val (myShows, watchlistShows) = myShowsCase.getAllIds()
       val relatedShows = relatedShowsCase.loadRelatedShows(show).map {
         val image = imagesProvider.findCachedImage(it, POSTER)
-        RelatedListItem(it, image)
+        RelatedListItem(
+          show = it,
+          image = image,
+          isFollowed = it.traktId in myShows,
+          isWatchlist = it.traktId in watchlistShows
+        )
       }
       relatedState.value = relatedShows
     } catch (error: Throwable) {

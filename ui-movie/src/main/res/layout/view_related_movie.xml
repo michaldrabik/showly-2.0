@@ -55,6 +55,18 @@
       tools:visibility="visible"
       />
 
+    <ImageView
+      android:id="@+id/relatedMovieBadge"
+      style="@style/Badge"
+      android:layout_width="22dp"
+      android:layout_height="22dp"
+      android:layout_marginEnd="@dimen/spaceMicro"
+      android:elevation="@dimen/elevationSmall"
+      android:translationY="-3dp"
+      app:srcCompat="@drawable/ic_bookmark_full"
+      tools:visibility="visible"
+      />
+
   </FrameLayout>
 
 </merge>

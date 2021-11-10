@@ -178,9 +178,15 @@ class MovieDetailsViewModel @Inject constructor(
 
   private suspend fun loadRelatedMovies(movie: Movie) {
     try {
+      val (myMovies, watchlistMovies) = myMoviesCase.getAllIds()
       val related = relatedCase.loadRelatedMovies(movie).map {
         val image = imagesProvider.findCachedImage(it, ImageType.POSTER)
-        RelatedListItem(it, image)
+        RelatedListItem(
+          movie = it,
+          image = image,
+          isFollowed = it.traktId in myMovies,
+          isWatchlist = it.traktId in watchlistMovies
+        )
       }
       relatedState.value = related
     } catch (error: Throwable) {

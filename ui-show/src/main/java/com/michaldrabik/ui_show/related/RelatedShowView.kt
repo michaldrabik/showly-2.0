@@ -1,14 +1,18 @@
 package com.michaldrabik.ui_show.related
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
 import com.bumptech.glide.Glide
 import com.michaldrabik.ui_base.common.views.ShowView
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.ImageStatus.AVAILABLE
 import com.michaldrabik.ui_model.ImageStatus.UNAVAILABLE
 import com.michaldrabik.ui_show.R
@@ -27,6 +31,9 @@ class RelatedShowView : ShowView<RelatedListItem> {
     onClick { itemClickListener?.invoke(item) }
   }
 
+  private val colorAccent by lazy { ContextCompat.getColor(context, R.color.colorAccent) }
+  private val colorGray by lazy { ContextCompat.getColor(context, R.color.colorGrayLight) }
+
   override val imageView: ImageView = relatedImage
   override val placeholderView: ImageView = relatedPlaceholder
 
@@ -36,6 +43,11 @@ class RelatedShowView : ShowView<RelatedListItem> {
     clear()
     this.item = item
     relatedTitle.text = item.show.title
+
+    relatedBadge.visibleIf(item.isFollowed || item.isWatchlist)
+    val color = if (item.isFollowed) colorAccent else colorGray
+    ImageViewCompat.setImageTintList(relatedBadge, ColorStateList.valueOf(color))
+
     loadImage(item)
   }
 
