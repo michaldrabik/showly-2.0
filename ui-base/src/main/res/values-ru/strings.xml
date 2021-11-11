@@ -30,7 +30,15 @@
   <string name="textNoDescription">Описание недоступно.</string>
   <string name="textPleaseWait">Подождите…</string>
   <string name="textRate">Оценить</string>
+  <string name="textLink">Ссылка</string>
   <string name="textRateSaved">Ваша оценка была сохранена.</string>
+  <string name="textPeople">Люди:</string>
+  <string name="textDirecting">Режиссура</string>
+  <string name="textDirector">Режиссер</string>
+  <string name="textWriting">Сценарий</string>
+  <string name="textScreenplay">Сценарист</string>
+  <string name="textSound">Звук</string>
+  <string name="textMusic">Музыка</string>
   <string name="textAiredAlready">Вышло</string>
   <string name="textAirsNow">Уже вышло</string>
   <plurals name="textDaysToAir">
@@ -83,7 +91,7 @@
   <string name="textTraktQuickSyncError">Ошибка мгновенной синхронизации.</string>
   <string name="textTraktQuickSyncErrorFull">Ошибка мгновенной синхронизации. Попробуем снова при следующем запуске приложения. Пожалуйста, проверьте подключение к Интернету.</string>
   <string name="textRemoveFromTrakt">Удалить из Trakt.tv?</string>
-  <string name="textRemoveFromTraktHidden">Вы хотите удалить этот предмет из вашего аккаунта Trakt.tv \'Скрытые элементы\'?</string>
+  <string name="textRemoveFromTraktHidden">Вы хотите удалить этот предмет из вашего аккаунта Trakt.tv \'Скрытое\'?</string>
   <string name="textRemoveFromTraktWatchlist">Вы хотите удалить этот предмет из вашего аккаунта Trakt.tv \'Буду смотреть\'?</string>
   <string name="textRemoveFromTraktProgress">Вы хотите удалить этот предмет из вашего аккаунта Trakt.tv \'Прогресс\'?</string>
   <string name="menuPin">Закрепить</string>
