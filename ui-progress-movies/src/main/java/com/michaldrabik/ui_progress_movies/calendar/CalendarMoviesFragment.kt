@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
@@ -25,6 +26,7 @@ import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainFragment
 import com.michaldrabik.ui_progress_movies.main.ProgressMoviesMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_calendar_movies.*
+import kotlinx.android.synthetic.main.fragment_progress_movies.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -36,6 +38,7 @@ import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorat
 @AndroidEntryPoint
 class CalendarMoviesFragment :
   BaseFragment<CalendarMoviesViewModel>(R.layout.fragment_calendar_movies),
+  OnSearchClickListener,
   OnScrollResetListener {
 
   private companion object {
@@ -50,6 +53,7 @@ class CalendarMoviesFragment :
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
   private var overscrollEnabled = true
+  private var isSearching = false
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -72,7 +76,7 @@ class CalendarMoviesFragment :
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = CalendarMoviesAdapter(
-      itemClickListener = { (requireParentFragment() as ProgressMoviesMainFragment).openMovieDetails(it.movie) },
+      itemClickListener = { requireMainFragment().openMovieDetails(it.movie) },
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
       missingTranslationListener = { item -> viewModel.findMissingTranslation(item) }
     )
@@ -113,7 +117,7 @@ class CalendarMoviesFragment :
               translationY = valueTranslation
               if (offset >= OVERSCROLL_OFFSET && overscrollEnabled) {
                 overscrollEnabled = false
-                (requireParentFragment() as ProgressMoviesMainFragment).toggleCalendarMode()
+                requireMainFragment().toggleCalendarMode()
               }
             }
           }
@@ -140,13 +144,25 @@ class CalendarMoviesFragment :
 
   override fun onScrollReset() = progressMoviesCalendarRecycler.smoothScrollToPosition(0)
 
+  override fun onEnterSearch() {
+    isSearching = true
+    progressMoviesCalendarRecycler.translationY = dimenToPx(R.dimen.progressMoviesSearchLocalOffset).toFloat()
+    progressMoviesCalendarRecycler.smoothScrollToPosition(0)
+  }
+
+  override fun onExitSearch() {
+    isSearching = false
+    progressMoviesCalendarRecycler.translationY = 0F
+    progressMoviesCalendarRecycler.smoothScrollToPosition(0)
+  }
+
   private fun render(uiState: CalendarMoviesUiState) {
     uiState.run {
       items?.let {
         adapter?.setItems(it)
         progressMoviesCalendarRecycler.fadeIn(150, withHardware = true)
-        progressMoviesCalendarEmptyFutureView.visibleIf(items.isEmpty() && mode == PRESENT_FUTURE)
-        progressMoviesCalendarEmptyRecentsView.visibleIf(items.isEmpty() && mode == RECENTS)
+        progressMoviesCalendarEmptyFutureView.visibleIf(items.isEmpty() && mode == PRESENT_FUTURE && !isSearching)
+        progressMoviesCalendarEmptyRecentsView.visibleIf(items.isEmpty() && mode == RECENTS && !isSearching)
       }
       mode.let {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -159,6 +175,8 @@ class CalendarMoviesFragment :
       }
     }
   }
+
+  private fun requireMainFragment() = (requireParentFragment() as ProgressMoviesMainFragment)
 
   override fun setupBackPressed() = Unit
 

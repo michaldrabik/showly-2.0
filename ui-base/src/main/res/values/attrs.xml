@@ -18,6 +18,9 @@
   <attr name="colorSearchViewBackground" format="color" />
   <attr name="colorSearchViewControl" format="color" />
 
+  <attr name="colorSearchLocalViewBackground" format="color" />
+  <attr name="colorSearchLocalViewControl" format="color" />
+
   <attr name="colorMask" format="color" />
   <attr name="colorSeparator" format="color" />
   <attr name="colorCardBackground" format="color" />

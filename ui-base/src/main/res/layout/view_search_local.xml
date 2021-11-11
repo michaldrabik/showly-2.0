@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/searchViewLocalRoot"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  app:cardBackgroundColor="?attr/colorSearchLocalViewBackground"
+  app:cardCornerRadius="@dimen/searchViewCorner"
+  app:cardElevation="@dimen/elevationSmall"
+  >
+
+  <FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="@dimen/spaceSmall"
+    android:layout_marginEnd="@dimen/spaceTiny"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    >
+
+    <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/searchViewLocalInput"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginStart="0dp"
+      android:layout_marginEnd="@dimen/spaceBig"
+      android:background="@android:color/transparent"
+      android:gravity="start|center_vertical"
+      android:hint="@string/textSearchFor"
+      android:imeOptions="actionSearch"
+      android:inputType="text"
+      android:maxLength="50"
+      android:maxLines="1"
+      android:selectAllOnFocus="true"
+      android:textAlignment="viewStart"
+      android:textColor="?android:attr/textColorPrimary"
+      android:textColorHint="?attr/colorSearchLocalViewControl"
+      android:textSize="12sp"
+      android:visibility="gone"
+      tools:visibility="visible"
+      />
+
+    <ImageView
+      android:id="@+id/searchViewLocalIcon"
+      android:layout_width="18dp"
+      android:layout_height="match_parent"
+      android:layout_gravity="end"
+      app:srcCompat="@drawable/ic_close"
+      app:tint="?attr/colorSearchLocalViewControl"
+      />
+
+  </FrameLayout>
+
+</com.google.android.material.card.MaterialCardView>

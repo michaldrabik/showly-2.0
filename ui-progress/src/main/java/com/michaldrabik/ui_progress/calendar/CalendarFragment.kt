@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -24,12 +25,13 @@ import com.michaldrabik.ui_model.EpisodeBundle
 import com.michaldrabik.ui_progress.R
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode.PRESENT_FUTURE
 import com.michaldrabik.ui_progress.calendar.helpers.CalendarMode.RECENTS
-import com.michaldrabik.ui_progress.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress.calendar.recycler.CalendarAdapter
+import com.michaldrabik.ui_progress.helpers.TopOverscrollAdapter
 import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_calendar.*
+import kotlinx.android.synthetic.main.fragment_progress.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -41,6 +43,7 @@ import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorat
 @AndroidEntryPoint
 class CalendarFragment :
   BaseFragment<CalendarViewModel>(R.layout.fragment_calendar),
+  OnSearchClickListener,
   OnScrollResetListener {
 
   private companion object {
@@ -55,6 +58,7 @@ class CalendarFragment :
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
   private var overscrollEnabled = true
+  private var isSearching = false
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -78,8 +82,8 @@ class CalendarFragment :
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = CalendarAdapter().apply {
-      itemClickListener = { (requireParentFragment() as ProgressMainFragment).openShowDetails(it.show) }
-      detailsClickListener = { (requireParentFragment() as ProgressMainFragment).openEpisodeDetails(it.show, it.episode, it.season) }
+      itemClickListener = { requireMainFragment().openShowDetails(it.show) }
+      detailsClickListener = { requireMainFragment().openEpisodeDetails(it.show, it.episode, it.season) }
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
       missingTranslationListener = { viewModel.findMissingTranslation(it) }
       checkClickListener = {
@@ -128,7 +132,7 @@ class CalendarFragment :
               translationY = valueTranslation
               if (offset >= OVERSCROLL_OFFSET && overscrollEnabled) {
                 overscrollEnabled = false
-                (requireParentFragment() as ProgressMainFragment).toggleCalendarMode()
+                requireMainFragment().toggleCalendarMode()
               }
             }
           }
@@ -175,13 +179,25 @@ class CalendarFragment :
       .show()
   }
 
+  override fun onEnterSearch() {
+    isSearching = true
+    progressCalendarRecycler.translationY = dimenToPx(R.dimen.progressSearchLocalOffset).toFloat()
+    progressCalendarRecycler.smoothScrollToPosition(0)
+  }
+
+  override fun onExitSearch() {
+    isSearching = false
+    progressCalendarRecycler.translationY = 0F
+    progressCalendarRecycler.smoothScrollToPosition(0)
+  }
+
   private fun render(uiState: CalendarUiState) {
     uiState.run {
       items?.let {
         adapter?.setItems(it)
         progressCalendarRecycler.fadeIn(150, withHardware = true)
-        progressCalendarEmptyFutureView.visibleIf(items.isEmpty() && mode == PRESENT_FUTURE)
-        progressCalendarEmptyRecentsView.visibleIf(items.isEmpty() && mode == RECENTS)
+        progressCalendarEmptyFutureView.visibleIf(items.isEmpty() && mode == PRESENT_FUTURE && !isSearching)
+        progressCalendarEmptyRecentsView.visibleIf(items.isEmpty() && mode == RECENTS && !isSearching)
       }
       mode.let {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -196,6 +212,8 @@ class CalendarFragment :
   }
 
   override fun onScrollReset() = progressCalendarRecycler.smoothScrollToPosition(0)
+
+  private fun requireMainFragment() = requireParentFragment() as ProgressMainFragment
 
   override fun onDestroyView() {
     adapter = null

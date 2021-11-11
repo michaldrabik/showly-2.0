@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress.main
 
-import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +11,12 @@ import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
-import com.michaldrabik.ui_base.common.views.exSearchViewIcon
-import com.michaldrabik.ui_base.common.views.exSearchViewInput
-import com.michaldrabik.ui_base.common.views.exSearchViewText
+import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -64,17 +62,16 @@ class ProgressMainFragment :
 
   private var searchViewTranslation = 0F
   private var tabsTranslation = 0F
-  private var sortIconTranslation = 0F
-  private var calendarIconTranslation = 0F
+  private var sideIconTranslation = 0F
   private var currentPage = 0
+  private var isSearching = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     savedInstanceState?.let {
       searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
       tabsTranslation = it.getFloat("ARG_TABS_POSITION")
-      sortIconTranslation = it.getFloat("ARG_SORT_ICON_POSITION")
-      calendarIconTranslation = it.getFloat("ARG_RECENTS_ICON_POSITION")
+      sideIconTranslation = it.getFloat("ARG_SIDE_ICON_POSITION")
       currentPage = it.getInt("ARG_PAGE")
     }
   }
@@ -96,8 +93,7 @@ class ProgressMainFragment :
     super.onSaveInstanceState(outState)
     outState.putFloat("ARG_SEARCH_POSITION", progressMainSearchView?.translationY ?: 0F)
     outState.putFloat("ARG_TABS_POSITION", progressMainTabs?.translationY ?: 0F)
-    outState.putFloat("ARG_SORT_ICON_POSITION", progressMainSortIcon?.translationY ?: 0F)
-    outState.putFloat("ARG_RECENTS_ICON_POSITION", progressMainCalendarIcon?.translationY ?: 0F)
+    outState.putFloat("ARG_SIDE_ICON_POSITION", progressMainSortIcon?.translationY ?: 0F)
     outState.putInt("ARG_PAGE", progressMainPager?.currentItem ?: 0)
   }
 
@@ -109,8 +105,7 @@ class ProgressMainFragment :
   override fun onPause() {
     tabsTranslation = progressMainTabs.translationY
     searchViewTranslation = progressMainSearchView.translationY
-    sortIconTranslation = progressMainSortIcon.translationY
-    calendarIconTranslation = progressMainCalendarIcon.translationY
+    sideIconTranslation = progressMainSortIcon.translationY
     super.onPause()
   }
 
@@ -126,10 +121,12 @@ class ProgressMainFragment :
       visibleIf(currentPage == 0)
       onClick { childFragmentManager.fragments.forEach { (it as? OnSortClickListener)?.onSortClick() } }
     }
-
     with(progressMainCalendarIcon) {
       visibleIf(currentPage == 1)
       onClick { toggleCalendarMode() }
+    }
+    with(progressMainSearchIcon) {
+      onClick { if (!isSearching) enterSearch() else exitSearch() }
     }
 
     with(progressMainSearchView) {
@@ -137,10 +134,14 @@ class ProgressMainFragment :
       settingsIconVisible = true
       traktIconVisible = true
       isClickable = false
-      onClick { enterSearch() }
+//      onClick { if (!isSearching) enterSearch() else exitSearch() }
       onSettingsClickListener = { openSettings() }
       onTraktClickListener = { navigateTo(R.id.actionProgressFragmentToTraktSyncFragment) }
       if (isTraktSyncing()) setTraktProgress(true)
+    }
+
+    with(progressMainSearchLocalView) {
+      onCloseClickListener = { exitSearch() }
     }
 
     with(progressMainPagerModeTabs) {
@@ -152,8 +153,9 @@ class ProgressMainFragment :
     progressMainTabs.translationY = tabsTranslation
     progressMainPagerModeTabs.translationY = tabsTranslation
     progressMainSearchView.translationY = searchViewTranslation
-    progressMainSortIcon.translationY = sortIconTranslation
-    progressMainCalendarIcon.translationY = calendarIconTranslation
+    progressMainSortIcon.translationY = sideIconTranslation
+    progressMainCalendarIcon.translationY = sideIconTranslation
+    progressMainSearchIcon.translationY = sideIconTranslation
   }
 
   private fun setupPager() {
@@ -170,16 +172,22 @@ class ProgressMainFragment :
     progressMainRoot.doOnApplyWindowInsets { _, insets, _, _ ->
       val statusBarSize = insets.systemWindowInsetTop
       val progressTabsMargin = if (moviesEnabled) R.dimen.progressSearchViewPadding else R.dimen.progressSearchViewPaddingNoModes
+      val progressMainSearchLocalMargin = if (moviesEnabled) R.dimen.progressSearchLocalViewPadding else R.dimen.progressSearchLocalViewPaddingNoModes
       (progressMainSearchView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
-      (progressMainTabs.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(progressTabsMargin))
+      (progressMainSearchLocalView.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarSize + dimenToPx(progressMainSearchLocalMargin))
       (progressMainPagerModeTabs.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
-      (progressMainSortIcon.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(progressTabsMargin))
-      (progressMainCalendarIcon.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(progressTabsMargin))
+      arrayOf(
+        progressMainTabs,
+        progressMainSortIcon,
+        progressMainCalendarIcon,
+        progressMainSearchIcon
+      ).forEach {
+        val margin = statusBarSize + dimenToPx(progressTabsMargin)
+        (it.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = margin)
+      }
     }
   }
 
@@ -197,16 +205,17 @@ class ProgressMainFragment :
 
   fun openTraktSync() {
     hideNavigation()
+    exitSearch()
     navigateTo(R.id.actionProgressFragmentToTraktSyncFragment)
   }
 
   fun openShowDetails(show: Show) {
-    exitSearch()
     hideNavigation()
     progressMainRoot.fadeOut(150) {
       if (findNavControl()?.currentDestination?.id == R.id.progressMainFragment) {
         val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.traktId) }
         navigateTo(R.id.actionProgressFragmentToShowDetailsFragment, bundle)
+        exitSearch()
       } else {
         showNavigation()
         progressMainRoot.fadeIn(50).add(animations)
@@ -237,37 +246,36 @@ class ProgressMainFragment :
 
   private fun openSettings() {
     hideNavigation()
+    exitSearch()
     navigateTo(R.id.actionProgressFragmentToSettingsFragment)
   }
 
   private fun enterSearch() {
-    if (progressMainSearchView.isSearching) return
-    progressMainSearchView.isSearching = true
-    exSearchViewText.gone()
-    exSearchViewInput.run {
+    progressMainSearchLocalView.fadeIn(150)
+    with(exSearchLocalViewInput) {
       setText("")
       doAfterTextChanged { viewModel.onSearchQuery(it?.toString() ?: "") }
       visible()
       showKeyboard()
       requestFocus()
     }
-    (exSearchViewIcon.drawable as Animatable).start()
-    exSearchViewIcon.onClick { exitSearch() }
-    hideNavigation(false)
+    isSearching = true
+    childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onEnterSearch() }
   }
 
   private fun exitSearch() {
-    progressMainSearchView.isSearching = false
-    exSearchViewText.visible()
-    exSearchViewInput.run {
+    isSearching = false
+    childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onExitSearch() }
+    progressMainSearchLocalView.gone()
+    with(exSearchLocalViewInput) {
       setText("")
       gone()
       hideKeyboard()
       clearFocus()
     }
-    exSearchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
-    showNavigation()
   }
+
+  fun showSearchIcon(show: Boolean) = progressMainSearchIcon.visibleIf(show)
 
   fun toggleCalendarMode() {
     exitSearch()
@@ -299,7 +307,8 @@ class ProgressMainFragment :
       progressMainTabs,
       progressMainPagerModeTabs,
       progressMainSortIcon,
-      progressMainCalendarIcon
+      progressMainCalendarIcon,
+      progressMainSearchIcon
     ).forEach {
       it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
     }

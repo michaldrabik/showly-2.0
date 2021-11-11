@@ -1,6 +1,5 @@
 package com.michaldrabik.ui_progress_movies.main
 
-import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -11,17 +10,17 @@ import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnShowsMoviesSyncedListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
-import com.michaldrabik.ui_base.common.views.exSearchViewIcon
-import com.michaldrabik.ui_base.common.views.exSearchViewInput
-import com.michaldrabik.ui_base.common.views.exSearchViewText
+import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
@@ -54,17 +53,16 @@ class ProgressMoviesMainFragment :
 
   private var searchViewTranslation = 0F
   private var tabsTranslation = 0F
-  private var sortIconTranslation = 0F
-  private var calendarIconTranslation = 0F
+  private var sideIconTranslation = 0F
   private var currentPage = 0
+  private var isSearching = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     savedInstanceState?.let {
       searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
       tabsTranslation = it.getFloat("ARG_TABS_POSITION")
-      sortIconTranslation = it.getFloat("ARG_ICON_POSITION")
-      calendarIconTranslation = it.getFloat("ARG_RECENTS_ICON_POSITION")
+      sideIconTranslation = it.getFloat("ARG_SIDE_ICON_POSITION")
       currentPage = it.getInt("ARG_PAGE")
     }
   }
@@ -86,8 +84,7 @@ class ProgressMoviesMainFragment :
     super.onSaveInstanceState(outState)
     outState.putFloat("ARG_SEARCH_POSITION", progressMoviesSearchView?.translationY ?: 0F)
     outState.putFloat("ARG_TABS_POSITION", progressMoviesTabs?.translationY ?: 0F)
-    outState.putFloat("ARG_ICON_POSITION", progressMoviesSortIcon?.translationY ?: 0F)
-    outState.putFloat("ARG_RECENTS_ICON_POSITION", progressMoviesCalendarIcon?.translationY ?: 0F)
+    outState.putFloat("ARG_SIDE_ICON_POSITION", progressMoviesSortIcon?.translationY ?: 0F)
     outState.putInt("ARG_PAGE", progressMoviesPager?.currentItem ?: 0)
   }
 
@@ -99,8 +96,7 @@ class ProgressMoviesMainFragment :
   override fun onPause() {
     tabsTranslation = progressMoviesTabs.translationY
     searchViewTranslation = progressMoviesSearchView.translationY
-    sortIconTranslation = progressMoviesSortIcon.translationY
-    calendarIconTranslation = progressMoviesCalendarIcon.translationY
+    sideIconTranslation = progressMoviesSortIcon.translationY
     super.onPause()
   }
 
@@ -120,12 +116,16 @@ class ProgressMoviesMainFragment :
       onClick { toggleCalendarMode() }
     }
 
+    with(progressMoviesSearchIcon) {
+      onClick { if (!isSearching) enterSearch() else exitSearch() }
+    }
+
     with(progressMoviesSearchView) {
       hint = getString(R.string.textSearchFor)
       settingsIconVisible = true
       traktIconVisible = true
       isClickable = false
-      onClick { enterSearch() }
+//      onClick { enterSearch() }
       onSettingsClickListener = { openSettings() }
       onTraktClickListener = { navigateTo(R.id.actionProgressMoviesFragmentToTraktSyncFragment) }
       if (isTraktSyncing()) setTraktProgress(true)
@@ -137,11 +137,16 @@ class ProgressMoviesMainFragment :
       selectMovies()
     }
 
+    with(progressMoviesSearchLocalView) {
+      onCloseClickListener = { exitSearch() }
+    }
+
     progressMoviesTabs.translationY = tabsTranslation
     progressMoviesModeTabs.translationY = tabsTranslation
     progressMoviesSearchView.translationY = searchViewTranslation
-    progressMoviesSortIcon.translationY = sortIconTranslation
-    progressMoviesCalendarIcon.translationY = calendarIconTranslation
+    progressMoviesSortIcon.translationY = sideIconTranslation
+    progressMoviesCalendarIcon.translationY = sideIconTranslation
+    progressMoviesSearchIcon.translationY = sideIconTranslation
   }
 
   private fun setupPager() {
@@ -158,14 +163,19 @@ class ProgressMoviesMainFragment :
       val statusBarSize = insets.systemWindowInsetTop
       (progressMoviesSearchView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.spaceSmall))
-      (progressMoviesTabs.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchViewPadding))
       (progressMoviesModeTabs.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
-      (progressMoviesSortIcon.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchViewPadding))
-      (progressMoviesCalendarIcon.layoutParams as ViewGroup.MarginLayoutParams)
-        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchViewPadding))
+      (progressMoviesSearchLocalView.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchLocalViewPadding))
+      arrayOf(
+        progressMoviesSortIcon,
+        progressMoviesCalendarIcon,
+        progressMoviesSearchIcon,
+        progressMoviesTabs
+      ).forEach {
+        val margin = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchViewPadding)
+        (it.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = margin)
+      }
     }
   }
 
@@ -182,58 +192,58 @@ class ProgressMoviesMainFragment :
   }
 
   fun openMovieDetails(movie: Movie) {
-    exitSearch()
     hideNavigation()
     progressMoviesRoot.fadeOut(150) {
       val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, movie.ids.trakt.id) }
       navigateTo(R.id.actionProgressMoviesFragmentToMovieDetailsFragment, bundle)
+      exitSearch()
     }.add(animations)
   }
 
   private fun openSettings() {
     hideNavigation()
+    exitSearch()
     navigateTo(R.id.actionProgressMoviesFragmentToSettingsFragment)
   }
 
   fun openTraktSync() {
     hideNavigation()
+    exitSearch()
     navigateTo(R.id.actionProgressMoviesFragmentToTraktSyncFragment)
   }
 
   private fun enterSearch() {
-    if (progressMoviesSearchView.isSearching) return
-    progressMoviesSearchView.isSearching = true
-    exSearchViewText.gone()
-    exSearchViewInput.run {
+    progressMoviesSearchLocalView.fadeIn(150)
+    with(exSearchLocalViewInput) {
       setText("")
       doAfterTextChanged { viewModel.onSearchQuery(it?.toString() ?: "") }
       visible()
       showKeyboard()
       requestFocus()
     }
-    (exSearchViewIcon.drawable as Animatable).start()
-    exSearchViewIcon.onClick { exitSearch() }
-    hideNavigation(false)
+    isSearching = true
+    childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onEnterSearch() }
   }
+
+  private fun exitSearch() {
+    isSearching = false
+    childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onExitSearch() }
+    progressMoviesSearchLocalView.gone()
+    with(exSearchLocalViewInput) {
+      setText("")
+      gone()
+      hideKeyboard()
+      clearFocus()
+    }
+  }
+
+  fun showSearchIcon(show: Boolean) = progressMoviesSearchIcon.visibleIf(show)
 
   fun toggleCalendarMode() {
     exitSearch()
     onScrollReset()
     resetTranslations()
     viewModel.toggleCalendarMode()
-  }
-
-  private fun exitSearch(showNavigation: Boolean = true) {
-    progressMoviesSearchView.isSearching = false
-    exSearchViewText.visible()
-    exSearchViewInput.run {
-      setText("")
-      gone()
-      hideKeyboard()
-      clearFocus()
-    }
-    exSearchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
-    if (showNavigation) showNavigation()
   }
 
   override fun onShowsMoviesSyncFinished() = viewModel.loadProgress()
@@ -259,7 +269,8 @@ class ProgressMoviesMainFragment :
       progressMoviesTabs,
       progressMoviesModeTabs,
       progressMoviesSortIcon,
-      progressMoviesCalendarIcon
+      progressMoviesCalendarIcon,
+      progressMoviesSearchIcon
     ).forEach {
       it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
     }

@@ -41,6 +41,9 @@
     <item name="colorSearchViewBackground">@color/colorWhite</item>
     <item name="colorSearchViewControl">@color/colorBlue</item>
 
+    <item name="colorSearchLocalViewBackground">@color/colorPrimaryDark</item>
+    <item name="colorSearchLocalViewControl">@color/colorBlue</item>
+
     <item name="colorPlaceholderBackground">@color/colorPrimaryDark</item>
     <item name="colorPlaceholderStroke">@color/colorAccent</item>
     <item name="colorPlaceholderIcon">@color/colorAccent</item>

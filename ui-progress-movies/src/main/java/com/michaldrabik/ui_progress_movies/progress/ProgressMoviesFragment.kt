@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
@@ -65,6 +66,7 @@ import timber.log.Timber
 class ProgressMoviesFragment :
   BaseFragment<ProgressMoviesViewModel>(R.layout.fragment_progress_movies),
   OnSortClickListener,
+  OnSearchClickListener,
   OnScrollResetListener {
 
   private companion object {
@@ -80,6 +82,7 @@ class ProgressMoviesFragment :
   private var statusBarHeight = 0
   private var overscroll: IOverScrollDecor? = null
   private var overscrollEnabled = true
+  private var isSearching = false
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -102,7 +105,7 @@ class ProgressMoviesFragment :
   }
 
   private fun setupView() {
-    progressMoviesEmptyTraktButton.onClick { (parentFragment as ProgressMoviesMainFragment).openTraktSync() }
+    progressMoviesEmptyTraktButton.onClick { requireMainFragment().openTraktSync() }
     progressMoviesEmptyDiscoverButton.onClick {
       (requireActivity() as NavigationHost).openDiscoverTab()
     }
@@ -111,12 +114,12 @@ class ProgressMoviesFragment :
   private fun setupRecycler() {
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = ProgressMoviesAdapter(
-      itemClickListener = { (requireParentFragment() as ProgressMoviesMainFragment).openMovieDetails(it.movie) },
+      itemClickListener = { requireMainFragment().openMovieDetails(it.movie) },
       itemLongClickListener = { item, view -> openPopupMenu(item, view) },
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) },
       missingTranslationListener = { item -> viewModel.findMissingTranslation(item) },
       listChangeListener = {
-        (requireParentFragment() as ProgressMoviesMainFragment).resetTranslations()
+        requireMainFragment().resetTranslations()
         layoutManager?.scrollToPosition(0)
       },
       checkClickListener = {
@@ -237,6 +240,18 @@ class ProgressMoviesFragment :
     navigateTo(R.id.actionProgressMoviesFragmentToSortOrder, args)
   }
 
+  override fun onEnterSearch() {
+    isSearching = true
+    progressMoviesMainRecycler.translationY = dimenToPx(R.dimen.progressMoviesSearchLocalOffset).toFloat()
+    progressMoviesMainRecycler.smoothScrollToPosition(0)
+  }
+
+  override fun onExitSearch() {
+    isSearching = false
+    progressMoviesMainRecycler.translationY = 0F
+    progressMoviesMainRecycler.smoothScrollToPosition(0)
+  }
+
   private fun startTraktSync() {
     val context = requireAppContext()
     if ((context as OnTraktSyncListener).isTraktSyncActive()) {
@@ -265,9 +280,10 @@ class ProgressMoviesFragment :
       items?.let {
         val resetScroll = scrollReset?.consume() == true
         adapter?.setItems(it, resetScroll)
-        progressMoviesEmptyView.fadeIf(items.isEmpty())
+        progressMoviesEmptyView.fadeIf(items.isEmpty() && !isSearching)
         progressMoviesMainRecycler.fadeIn(withHardware = true).add(animations)
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
+        requireMainFragment().showSearchIcon(it.isNotEmpty() && !isSearching)
       }
       isOverScrollEnabled.let {
         if (it) {
@@ -280,6 +296,8 @@ class ProgressMoviesFragment :
       sortOrder?.let { event -> event.consume()?.let { openSortOrderDialog(it.first, it.second) } }
     }
   }
+
+  private fun requireMainFragment() = (requireParentFragment() as ProgressMoviesMainFragment)
 
   override fun setupBackPressed() = Unit
 

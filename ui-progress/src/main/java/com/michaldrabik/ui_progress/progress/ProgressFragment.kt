@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.WidgetsProvider
@@ -69,6 +70,7 @@ import timber.log.Timber
 class ProgressFragment :
   BaseFragment<ProgressViewModel>(R.layout.fragment_progress),
   OnSortClickListener,
+  OnSearchClickListener,
   OnScrollResetListener {
 
   private companion object {
@@ -84,6 +86,7 @@ class ProgressFragment :
   private var overscroll: IOverScrollDecor? = null
   private var statusBarHeight = 0
   private var overscrollEnabled = true
+  private var isSearching = false
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -106,7 +109,7 @@ class ProgressFragment :
   }
 
   private fun setupView() {
-    progressEmptyTraktButton.onClick { (parentFragment as ProgressMainFragment).openTraktSync() }
+    progressEmptyTraktButton.onClick { requireMainFragment().openTraktSync() }
     progressEmptyDiscoverButton.onClick {
       (requireActivity() as NavigationHost).openDiscoverTab()
     }
@@ -120,13 +123,13 @@ class ProgressFragment :
     layoutManager = LinearLayoutManager(context, VERTICAL, false)
     adapter = ProgressAdapter().apply {
       itemClickListener = {
-        (requireParentFragment() as ProgressMainFragment).openShowDetails(it.show)
+        requireMainFragment().openShowDetails(it.show)
       }
       itemLongClickListener = { item, view ->
         openPopupMenu(item, view)
       }
       detailsClickListener = {
-        (requireParentFragment() as ProgressMainFragment).openEpisodeDetails(it.show, it.requireEpisode(), it.requireSeason())
+        requireMainFragment().openEpisodeDetails(it.show, it.requireEpisode(), it.requireSeason())
       }
       checkClickListener = {
         if (viewModel.isQuickRateEnabled) {
@@ -139,7 +142,7 @@ class ProgressFragment :
       missingImageListener = { item, force -> viewModel.findMissingImage(item, force) }
       missingTranslationListener = { viewModel.findMissingTranslation(it) }
       listChangeListener = {
-        (requireParentFragment() as ProgressMainFragment).resetTranslations()
+        requireMainFragment().resetTranslations()
         layoutManager?.scrollToPosition(0)
       }
     }
@@ -255,15 +258,28 @@ class ProgressFragment :
     navigateTo(R.id.actionProgressFragmentToSortOrder, args)
   }
 
+  override fun onEnterSearch() {
+    isSearching = true
+    progressRecycler.translationY = dimenToPx(R.dimen.progressSearchLocalOffset).toFloat()
+    progressRecycler.smoothScrollToPosition(0)
+  }
+
+  override fun onExitSearch() {
+    isSearching = false
+    progressRecycler.translationY = 0F
+    progressRecycler.smoothScrollToPosition(0)
+  }
+
   private fun render(uiState: ProgressUiState) {
     uiState.run {
       items?.let {
         val resetScroll = scrollReset?.consume() == true
         adapter?.setItems(it, resetScroll)
-        progressEmptyView.visibleIf(it.isEmpty() && !isLoading)
+        progressEmptyView.visibleIf(it.isEmpty() && !isLoading && !isSearching)
         progressTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
         progressRecycler.fadeIn(withHardware = true).add(animations)
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
+        requireMainFragment().showSearchIcon(it.isNotEmpty() && !isSearching)
       }
       isOverScrollEnabled.let {
         if (it) {
@@ -299,6 +315,8 @@ class ProgressFragment :
   override fun onSortClick() = viewModel.loadSortOrder()
 
   override fun onScrollReset() = progressRecycler.smoothScrollToPosition(0)
+
+  private fun requireMainFragment() = requireParentFragment() as ProgressMainFragment
 
   override fun setupBackPressed() = Unit
 
