@@ -30,7 +30,15 @@
   <string name="textNoDescription">Opis niedostępny.</string>
   <string name="textPleaseWait">Proszę czekać…</string>
   <string name="textRate">Oceń</string>
+  <string name="textLink">Link</string>
   <string name="textRateSaved">Ocena została zapisana.</string>
+  <string name="textPeople">Osoby:</string>
+  <string name="textDirecting">Reżyseria</string>
+  <string name="textDirector">Reżyseria</string>
+  <string name="textWriting">Scenariusz</string>
+  <string name="textScreenplay">Scenariusz</string>
+  <string name="textSound">Dźwięk</string>
+  <string name="textMusic">Muzyka</string>
   <string name="textAiredAlready">Po premierze</string>
   <string name="textAirsNow">Premiera teraz</string>
   <plurals name="textDaysToAir">
