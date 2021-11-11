@@ -30,7 +30,15 @@
   <string name="textNoDescription">Resumen no disponible.</string>
   <string name="textPleaseWait">Espera, por favor…</string>
   <string name="textRate">Calificar</string>
+  <string name="textLink">Enlace</string>
   <string name="textRateSaved">Tu calificación se ha guardado.</string>
+  <string name="textPeople">Personas:</string>
+  <string name="textDirecting">Dirección</string>
+  <string name="textDirector">Director</string>
+  <string name="textWriting">Escritores</string>
+  <string name="textScreenplay">Guión</string>
+  <string name="textSound">Sonido</string>
+  <string name="textMusic">Música</string>
   <string name="textAiredAlready">Emitido</string>
   <string name="textAirsNow">Se emite ahora</string>
   <plurals name="textDaysToAir">
