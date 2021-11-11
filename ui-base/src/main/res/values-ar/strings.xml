@@ -30,7 +30,15 @@
   <string name="textNoDescription">لا يتوفر وصف.</string>
   <string name="textPleaseWait">الرجاء الانتظار…</string>
   <string name="textRate">قيم</string>
+  <string name="textLink">إفتح في</string>
   <string name="textRateSaved">حُفظ تقييمك.</string>
+  <string name="textPeople">الأشخاص:</string>
+  <string name="textDirecting">اخراج</string>
+  <string name="textDirector">المخرج</string>
+  <string name="textWriting">الكتابة</string>
+  <string name="textScreenplay">النص السينمائي</string>
+  <string name="textSound">الصوت</string>
+  <string name="textMusic">موسيقى</string>
   <string name="textAiredAlready">بُثت</string>
   <string name="textAirsNow">يُبث الآن</string>
   <plurals name="textDaysToAir">
