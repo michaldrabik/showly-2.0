@@ -19,7 +19,9 @@ import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.enableUi
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
@@ -93,7 +95,7 @@ class ProgressMainFragment :
     super.onSaveInstanceState(outState)
     outState.putFloat("ARG_SEARCH_POSITION", progressMainSearchView?.translationY ?: 0F)
     outState.putFloat("ARG_TABS_POSITION", progressMainTabs?.translationY ?: 0F)
-    outState.putFloat("ARG_SIDE_ICON_POSITION", progressMainSortIcon?.translationY ?: 0F)
+    outState.putFloat("ARG_SIDE_ICON_POSITION", progressMainSideIcons?.translationY ?: 0F)
     outState.putInt("ARG_PAGE", progressMainPager?.currentItem ?: 0)
   }
 
@@ -103,9 +105,10 @@ class ProgressMainFragment :
   }
 
   override fun onPause() {
+    enableUi()
     tabsTranslation = progressMainTabs.translationY
     searchViewTranslation = progressMainSearchView.translationY
-    sideIconTranslation = progressMainSortIcon.translationY
+    sideIconTranslation = progressMainSideIcons.translationY
     super.onPause()
   }
 
@@ -134,7 +137,7 @@ class ProgressMainFragment :
       settingsIconVisible = true
       traktIconVisible = true
       isClickable = false
-//      onClick { if (!isSearching) enterSearch() else exitSearch() }
+      onClick { openMainSearch() }
       onSettingsClickListener = { openSettings() }
       onTraktClickListener = { navigateTo(R.id.actionProgressFragmentToTraktSyncFragment) }
       if (isTraktSyncing()) setTraktProgress(true)
@@ -153,9 +156,7 @@ class ProgressMainFragment :
     progressMainTabs.translationY = tabsTranslation
     progressMainPagerModeTabs.translationY = tabsTranslation
     progressMainSearchView.translationY = searchViewTranslation
-    progressMainSortIcon.translationY = sideIconTranslation
-    progressMainCalendarIcon.translationY = sideIconTranslation
-    progressMainSearchIcon.translationY = sideIconTranslation
+    progressMainSideIcons.translationY = sideIconTranslation
   }
 
   private fun setupPager() {
@@ -179,12 +180,7 @@ class ProgressMainFragment :
         .updateMargins(top = statusBarSize + dimenToPx(progressMainSearchLocalMargin))
       (progressMainPagerModeTabs.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
-      arrayOf(
-        progressMainTabs,
-        progressMainSortIcon,
-        progressMainCalendarIcon,
-        progressMainSearchIcon
-      ).forEach {
+      arrayOf(progressMainTabs, progressMainSideIcons).forEach {
         val margin = statusBarSize + dimenToPx(progressTabsMargin)
         (it.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = margin)
       }
@@ -194,13 +190,26 @@ class ProgressMainFragment :
   override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
-      if (progressMainSearchView.isSearching) {
+      if (isSearching) {
         exitSearch()
       } else {
         isEnabled = false
         activity?.onBackPressed()
       }
     }
+  }
+
+  private fun openMainSearch() {
+    disableUi()
+    hideNavigation()
+    exitSearch()
+    resetTranslations(100)
+    progressMainPagerModeTabs.fadeOut(duration = 200).add(animations)
+    progressMainTabs.fadeOut(duration = 200).add(animations)
+    progressMainSideIcons.fadeOut(duration = 200).add(animations)
+    progressMainPager.fadeOut(duration = 200) {
+      super.navigateTo(R.id.actionProgressFragmentToSearch, null)
+    }.add(animations)
   }
 
   fun openTraktSync() {
@@ -306,9 +315,7 @@ class ProgressMainFragment :
       progressMainSearchView,
       progressMainTabs,
       progressMainPagerModeTabs,
-      progressMainSortIcon,
-      progressMainCalendarIcon,
-      progressMainSearchIcon
+      progressMainSideIcons
     ).forEach {
       it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
     }

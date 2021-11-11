@@ -156,8 +156,11 @@ class ProgressFragment :
 
   private fun setupStatusBar() {
     val recyclerPadding = if (moviesEnabled) R.dimen.progressTabsViewPadding else R.dimen.progressTabsViewPaddingNoModes
+    val overscrollPadding = if (moviesEnabled) R.dimen.progressOverscrollIconPadding else R.dimen.progressOverscrollIconPaddingNoModes
     if (statusBarHeight != 0) {
       progressRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
+      (progressOverscrollIcon.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))
       return
     }
     progressRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
@@ -165,6 +168,8 @@ class ProgressFragment :
       view.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
       (progressEmptyView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarHeight + dimenToPx(R.dimen.spaceBig))
+      (progressOverscrollIcon.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))
     }
   }
 

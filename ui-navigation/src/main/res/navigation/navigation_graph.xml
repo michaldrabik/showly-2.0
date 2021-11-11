@@ -161,6 +161,11 @@
       app:destination="@id/sortOrderDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionProgressFragmentToSearch"
+      app:destination="@id/searchFragment"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment
@@ -199,6 +204,11 @@
     <action
       android:id="@+id/actionProgressMoviesFragmentToSortOrder"
       app:destination="@id/sortOrderDialog"
+      app:launchSingleTop="true"
+      />
+    <action
+      android:id="@+id/actionProgressMoviesFragmentToSearch"
+      app:destination="@id/searchFragment"
       app:launchSingleTop="true"
       />
   </fragment>

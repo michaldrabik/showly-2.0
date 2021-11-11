@@ -18,7 +18,9 @@ import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
+import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
+import com.michaldrabik.ui_base.utilities.extensions.enableUi
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
 import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
@@ -84,7 +86,7 @@ class ProgressMoviesMainFragment :
     super.onSaveInstanceState(outState)
     outState.putFloat("ARG_SEARCH_POSITION", progressMoviesSearchView?.translationY ?: 0F)
     outState.putFloat("ARG_TABS_POSITION", progressMoviesTabs?.translationY ?: 0F)
-    outState.putFloat("ARG_SIDE_ICON_POSITION", progressMoviesSortIcon?.translationY ?: 0F)
+    outState.putFloat("ARG_SIDE_ICON_POSITION", progressMoviesSideIcons?.translationY ?: 0F)
     outState.putInt("ARG_PAGE", progressMoviesPager?.currentItem ?: 0)
   }
 
@@ -94,9 +96,10 @@ class ProgressMoviesMainFragment :
   }
 
   override fun onPause() {
+    enableUi()
     tabsTranslation = progressMoviesTabs.translationY
     searchViewTranslation = progressMoviesSearchView.translationY
-    sideIconTranslation = progressMoviesSortIcon.translationY
+    sideIconTranslation = progressMoviesSideIcons.translationY
     super.onPause()
   }
 
@@ -125,7 +128,7 @@ class ProgressMoviesMainFragment :
       settingsIconVisible = true
       traktIconVisible = true
       isClickable = false
-//      onClick { enterSearch() }
+      onClick { openMainSearch() }
       onSettingsClickListener = { openSettings() }
       onTraktClickListener = { navigateTo(R.id.actionProgressMoviesFragmentToTraktSyncFragment) }
       if (isTraktSyncing()) setTraktProgress(true)
@@ -144,9 +147,7 @@ class ProgressMoviesMainFragment :
     progressMoviesTabs.translationY = tabsTranslation
     progressMoviesModeTabs.translationY = tabsTranslation
     progressMoviesSearchView.translationY = searchViewTranslation
-    progressMoviesSortIcon.translationY = sideIconTranslation
-    progressMoviesCalendarIcon.translationY = sideIconTranslation
-    progressMoviesSearchIcon.translationY = sideIconTranslation
+    progressMoviesSideIcons.translationY = sideIconTranslation
   }
 
   private fun setupPager() {
@@ -167,12 +168,7 @@ class ProgressMoviesMainFragment :
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.collectionTabsMargin))
       (progressMoviesSearchLocalView.layoutParams as ViewGroup.MarginLayoutParams)
         .updateMargins(top = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchLocalViewPadding))
-      arrayOf(
-        progressMoviesSortIcon,
-        progressMoviesCalendarIcon,
-        progressMoviesSearchIcon,
-        progressMoviesTabs
-      ).forEach {
+      arrayOf(progressMoviesSideIcons, progressMoviesTabs).forEach {
         val margin = statusBarSize + dimenToPx(R.dimen.progressMoviesSearchViewPadding)
         (it.layoutParams as ViewGroup.MarginLayoutParams).updateMargins(top = margin)
       }
@@ -182,7 +178,7 @@ class ProgressMoviesMainFragment :
   override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
-      if (progressMoviesSearchView.isSearching) {
+      if (isSearching) {
         exitSearch()
       } else {
         isEnabled = false
@@ -210,6 +206,19 @@ class ProgressMoviesMainFragment :
     hideNavigation()
     exitSearch()
     navigateTo(R.id.actionProgressMoviesFragmentToTraktSyncFragment)
+  }
+
+  private fun openMainSearch() {
+    disableUi()
+    hideNavigation()
+    exitSearch()
+    resetTranslations(100)
+    progressMoviesModeTabs.fadeOut(duration = 200).add(animations)
+    progressMoviesTabs.fadeOut(duration = 200).add(animations)
+    progressMoviesSideIcons.fadeOut(duration = 200).add(animations)
+    progressMoviesPager.fadeOut(duration = 200) {
+      super.navigateTo(R.id.actionProgressMoviesFragmentToSearch, null)
+    }.add(animations)
   }
 
   private fun enterSearch() {
@@ -268,9 +277,7 @@ class ProgressMoviesMainFragment :
       progressMoviesSearchView,
       progressMoviesTabs,
       progressMoviesModeTabs,
-      progressMoviesSortIcon,
-      progressMoviesCalendarIcon,
-      progressMoviesSearchIcon
+      progressMoviesSideIcons
     ).forEach {
       it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
     }

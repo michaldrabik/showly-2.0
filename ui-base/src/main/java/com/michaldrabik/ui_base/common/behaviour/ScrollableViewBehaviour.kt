@@ -1,5 +1,7 @@
 package com.michaldrabik.ui_base.common.behaviour
 
+import android.content.Context
+import android.util.AttributeSet
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
@@ -10,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
  * Note: some extra work is added because of an issue:
  * https://gist.github.com/erikhuizinga/edf408167b46eb5b1568424563ca4e59?ts=2
  */
-class ScrollableViewBehaviour : CoordinatorLayout.Behavior<View>() {
+class ScrollableViewBehaviour : CoordinatorLayout.Behavior<View> {
+
+  constructor() : super()
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
   override fun layoutDependsOn(parent: CoordinatorLayout, child: View, dependency: View) =
     dependency is RecyclerView

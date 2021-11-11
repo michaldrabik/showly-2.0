@@ -12,7 +12,7 @@
 
   <dimen name="progressMoviesSearchLocalViewPaddingNoModes">110dp</dimen>
   <dimen name="progressMoviesSearchLocalViewPadding">146dp</dimen>
-  <dimen name="progressMoviesSearchLocalOffset">36dp</dimen>
+  <dimen name="progressMoviesSearchLocalOffset">40dp</dimen>
 
   <dimen name="progressMoviesOverscrollIconPadding">156dp</dimen>
   <dimen name="progressMoviesOverscrollIcon">36dp</dimen>

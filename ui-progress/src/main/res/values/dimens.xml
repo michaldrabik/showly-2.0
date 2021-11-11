@@ -8,7 +8,7 @@
 
   <dimen name="progressSearchLocalViewPaddingNoModes">110dp</dimen>
   <dimen name="progressSearchLocalViewPadding">146dp</dimen>
-  <dimen name="progressSearchLocalOffset">36dp</dimen>
+  <dimen name="progressSearchLocalOffset">40dp</dimen>
 
   <dimen name="progressTabsViewPaddingNoModes">108dp</dimen>
   <dimen name="progressTabsViewPadding">144dp</dimen>
@@ -16,7 +16,8 @@
   <dimen name="progressCalendarTabsViewPaddingNoModes">92dp</dimen>
   <dimen name="progressCalendarTabsViewPadding">128dp</dimen>
 
-  <dimen name="progressOverscrollIconPadding">156dp</dimen>
+  <dimen name="progressOverscrollIconPadding">130dp</dimen>
+  <dimen name="progressOverscrollIconPaddingNoModes">94dp</dimen>
   <dimen name="progressOverscrollIcon">36dp</dimen>
 
   <dimen name="progressCalendarOverscrollIconPadding">158dp</dimen>

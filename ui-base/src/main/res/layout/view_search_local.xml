@@ -15,7 +15,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginStart="@dimen/spaceSmall"
-    android:layout_marginEnd="@dimen/spaceTiny"
+    android:layout_marginEnd="@dimen/spaceSmall"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     >
@@ -25,7 +25,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_marginStart="0dp"
-      android:layout_marginEnd="@dimen/spaceBig"
+      android:layout_marginEnd="@dimen/spaceHuge"
       android:background="@android:color/transparent"
       android:gravity="start|center_vertical"
       android:hint="@string/textSearchFor"
@@ -37,14 +37,14 @@
       android:textAlignment="viewStart"
       android:textColor="?android:attr/textColorPrimary"
       android:textColorHint="?attr/colorSearchLocalViewControl"
-      android:textSize="12sp"
+      android:textSize="13sp"
       android:visibility="gone"
       tools:visibility="visible"
       />
 
     <ImageView
       android:id="@+id/searchViewLocalIcon"
-      android:layout_width="18dp"
+      android:layout_width="20dp"
       android:layout_height="match_parent"
       android:layout_gravity="end"
       app:srcCompat="@drawable/ic_close"

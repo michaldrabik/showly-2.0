@@ -2,8 +2,10 @@ package com.michaldrabik.ui_progress.calendar
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
+import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.views.RateView
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
@@ -30,6 +33,7 @@ import com.michaldrabik.ui_progress.main.ProgressMainFragment
 import com.michaldrabik.ui_progress.main.ProgressMainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_calendar.*
+import kotlinx.android.synthetic.main.fragment_progress.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -145,18 +149,21 @@ class CalendarFragment :
   }
 
   private fun setupStatusBar() {
-    val recyclerPadding =
-      if (moviesEnabled) R.dimen.progressCalendarTabsViewPadding
-      else R.dimen.progressCalendarTabsViewPaddingNoModes
+    val recyclerPadding = if (moviesEnabled) R.dimen.progressCalendarTabsViewPadding else R.dimen.progressCalendarTabsViewPaddingNoModes
+    val overscrollPadding = if (moviesEnabled) R.dimen.progressOverscrollIconPadding else R.dimen.progressOverscrollIconPaddingNoModes
 
     if (statusBarHeight != 0) {
       progressCalendarRecycler.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
+      (progressCalendarOverscrollIcon.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))
       return
     }
 
     progressCalendarRecycler.doOnApplyWindowInsets { view, insets, _, _ ->
       statusBarHeight = insets.systemWindowInsetTop
       view.updatePadding(top = statusBarHeight + dimenToPx(recyclerPadding))
+      (progressCalendarOverscrollIcon.layoutParams as ViewGroup.MarginLayoutParams)
+        .updateMargins(top = statusBarHeight + dimenToPx(overscrollPadding))
     }
   }
 

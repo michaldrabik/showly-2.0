@@ -78,10 +78,7 @@ abstract class BaseFragment<T : BaseViewModel>(@LayoutRes contentLayoutId: Int) 
     }
   }
 
-  protected fun navigateTo(
-    @IdRes destination: Int,
-    bundle: Bundle? = null,
-  ) {
+  protected fun navigateTo(@IdRes destination: Int, bundle: Bundle? = null) {
     findNavControl()?.navigate(destination, bundle)
   }
 
