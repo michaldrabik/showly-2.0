@@ -282,8 +282,8 @@ class SearchFragment : BaseFragment<SearchViewModel>(R.layout.fragment_search), 
       }
       searchEmptyView.fadeIf(isEmpty)
       searchInitialView.fadeIf(isInitial)
-      searchFiltersView.visibleIf(!searchItems.isNullOrEmpty())
-      searchSortButton.visibleIf(!searchItems.isNullOrEmpty())
+      searchFiltersView.visibleIf(isFiltersVisible)
+      searchSortButton.visibleIf(isFiltersVisible)
     }
   }
 

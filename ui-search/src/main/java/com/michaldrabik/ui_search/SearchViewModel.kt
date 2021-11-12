@@ -58,6 +58,7 @@ class SearchViewModel @Inject constructor(
   private val searchingState = MutableStateFlow(false)
   private val emptyState = MutableStateFlow(false)
   private val initialState = MutableStateFlow(false)
+  private val filtersVisibleState = MutableStateFlow(false)
   private val moviesEnabledState = MutableStateFlow(true)
   private val resetScrollEvent = MutableStateFlow<Event<Boolean>?>(null)
   private val sortOrderEvent = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
@@ -101,6 +102,7 @@ class SearchViewModel @Inject constructor(
         searchingState.value = true
         emptyState.value = false
         initialState.value = false
+        filtersVisibleState.value = false
         suggestionsItemsState.value = emptyList()
         searchOptionsState.value = SearchOptions()
         currentSearch = null
@@ -147,6 +149,7 @@ class SearchViewModel @Inject constructor(
         searchingState.value = false
         emptyState.value = items.isEmpty()
         initialState.value = false
+        filtersVisibleState.value = items.isNotEmpty()
         moviesEnabledState.value = isMoviesEnabled
         suggestionsItemsState.value = emptyList()
         resetScrollEvent.value = Event(true)
@@ -321,8 +324,9 @@ class SearchViewModel @Inject constructor(
     moviesEnabledState,
     resetScrollEvent,
     searchOptionsState,
-    sortOrderEvent
-  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11 ->
+    sortOrderEvent,
+    filtersVisibleState
+  ) { s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12 ->
     SearchUiState(
       searchItems = s1,
       searchItemsAnimate = s2,
@@ -334,7 +338,8 @@ class SearchViewModel @Inject constructor(
       isMoviesEnabled = s8,
       resetScroll = s9,
       searchOptions = s10,
-      sortOrder = s11
+      sortOrder = s11,
+      isFiltersVisible = s12
     )
   }.stateIn(
     scope = viewModelScope,
