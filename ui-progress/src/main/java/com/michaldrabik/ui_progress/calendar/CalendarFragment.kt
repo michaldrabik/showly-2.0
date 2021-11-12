@@ -37,6 +37,7 @@ import kotlinx.android.synthetic.main.fragment_progress.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import me.everything.android.ui.overscroll.IOverScrollDecor
 import me.everything.android.ui.overscroll.IOverScrollState
 import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase.DEFAULT_DECELERATE_FACTOR
 import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase.DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK
@@ -58,6 +59,7 @@ class CalendarFragment :
 
   private var adapter: CalendarAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
+  private var overscroll: IOverScrollDecor? = null
   private var statusBarHeight = 0
   private var overscrollEnabled = true
   private var isSearching = false
@@ -107,42 +109,44 @@ class CalendarFragment :
   }
 
   private fun setupOverscroll() {
+    if (overscroll != null) return
     val adapt = TopOverscrollAdapter(progressCalendarRecycler)
-    val overscroll = VerticalOverScrollBounceEffectDecorator(
+    overscroll = VerticalOverScrollBounceEffectDecorator(
       adapt,
       1.75F,
       DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK,
       DEFAULT_DECELERATE_FACTOR
-    )
-    overscroll.setOverScrollUpdateListener { _, state, offset ->
-      with(progressCalendarOverscrollIcon) {
-        if (offset > 0) {
-          val value = (offset / OVERSCROLL_OFFSET).coerceAtMost(1F)
-          val valueTranslation = offset / OVERSCROLL_OFFSET_TRANSLATION
-          when (state) {
-            IOverScrollState.STATE_DRAG_START_SIDE -> {
-              alpha = value
-              scaleX = value
-              scaleY = value
-              translationY = valueTranslation
-              overscrollEnabled = true
-            }
-            IOverScrollState.STATE_BOUNCE_BACK -> {
-              alpha = value
-              scaleX = value
-              scaleY = value
-              translationY = valueTranslation
-              if (offset >= OVERSCROLL_OFFSET && overscrollEnabled) {
-                overscrollEnabled = false
-                requireMainFragment().toggleCalendarMode()
+    ).apply {
+      setOverScrollUpdateListener { _, state, offset ->
+        with(progressCalendarOverscrollIcon) {
+          if (offset > 0) {
+            val value = (offset / OVERSCROLL_OFFSET).coerceAtMost(1F)
+            val valueTranslation = offset / OVERSCROLL_OFFSET_TRANSLATION
+            when (state) {
+              IOverScrollState.STATE_DRAG_START_SIDE -> {
+                alpha = value
+                scaleX = value
+                scaleY = value
+                translationY = valueTranslation
+                overscrollEnabled = true
+              }
+              IOverScrollState.STATE_BOUNCE_BACK -> {
+                alpha = value
+                scaleX = value
+                scaleY = value
+                translationY = valueTranslation
+                if (offset >= OVERSCROLL_OFFSET && overscrollEnabled) {
+                  overscrollEnabled = false
+                  requireMainFragment().toggleCalendarMode()
+                }
               }
             }
+          } else {
+            alpha = 0F
+            scaleX = 0F
+            scaleY = 0F
+            translationY = 0F
           }
-        } else {
-          alpha = 0F
-          scaleX = 0F
-          scaleY = 0F
-          translationY = 0F
         }
       }
     }
@@ -186,14 +190,21 @@ class CalendarFragment :
 
   override fun onEnterSearch() {
     isSearching = true
+
     progressCalendarRecycler.translationY = dimenToPx(R.dimen.progressSearchLocalOffset).toFloat()
     progressCalendarRecycler.smoothScrollToPosition(0)
+
+    overscroll?.detach()
+    overscroll = null
   }
 
   override fun onExitSearch() {
     isSearching = false
+
     progressCalendarRecycler.translationY = 0F
     progressCalendarRecycler.smoothScrollToPosition(0)
+
+    setupOverscroll()
   }
 
   private fun render(uiState: CalendarUiState) {
@@ -221,6 +232,7 @@ class CalendarFragment :
   private fun requireMainFragment() = requireParentFragment() as ProgressMainFragment
 
   override fun onDestroyView() {
+    overscroll = null
     adapter = null
     layoutManager = null
     super.onDestroyView()

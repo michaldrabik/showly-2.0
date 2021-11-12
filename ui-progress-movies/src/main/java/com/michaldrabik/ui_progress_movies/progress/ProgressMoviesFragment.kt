@@ -70,7 +70,7 @@ class ProgressMoviesFragment :
   OnScrollResetListener {
 
   private companion object {
-    const val OVERSCROLL_OFFSET = 200F
+    const val OVERSCROLL_OFFSET = 250F
     const val OVERSCROLL_OFFSET_TRANSLATION = 4.5F
   }
 
@@ -146,36 +146,37 @@ class ProgressMoviesFragment :
       1.75F,
       OverScrollBounceEffectDecoratorBase.DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK,
       OverScrollBounceEffectDecoratorBase.DEFAULT_DECELERATE_FACTOR
-    )
-    overscroll?.setOverScrollUpdateListener { _, state, offset ->
-      with(progressMoviesOverscrollIcon) {
-        if (offset > 0) {
-          val value = (offset / OVERSCROLL_OFFSET).coerceAtMost(1F)
-          val valueTranslation = offset / OVERSCROLL_OFFSET_TRANSLATION
-          when (state) {
-            STATE_DRAG_START_SIDE -> {
-              alpha = value
-              scaleX = value
-              scaleY = value
-              translationY = valueTranslation
-              overscrollEnabled = true
-            }
-            STATE_BOUNCE_BACK -> {
-              alpha = value
-              scaleX = value
-              scaleY = value
-              translationY = valueTranslation
-              if (offset >= OVERSCROLL_OFFSET && overscrollEnabled) {
-                overscrollEnabled = false
-                startTraktSync()
+    ).apply {
+      setOverScrollUpdateListener { _, state, offset ->
+        with(progressMoviesOverscrollIcon) {
+          if (offset > 0) {
+            val value = (offset / OVERSCROLL_OFFSET).coerceAtMost(1F)
+            val valueTranslation = offset / OVERSCROLL_OFFSET_TRANSLATION
+            when (state) {
+              STATE_DRAG_START_SIDE -> {
+                alpha = value
+                scaleX = value
+                scaleY = value
+                translationY = valueTranslation
+                overscrollEnabled = true
+              }
+              STATE_BOUNCE_BACK -> {
+                alpha = value
+                scaleX = value
+                scaleY = value
+                translationY = valueTranslation
+                if (offset >= OVERSCROLL_OFFSET && overscrollEnabled) {
+                  overscrollEnabled = false
+                  startTraktSync()
+                }
               }
             }
+          } else {
+            alpha = 0F
+            scaleX = 0F
+            scaleY = 0F
+            translationY = 0F
           }
-        } else {
-          alpha = 0F
-          scaleX = 0F
-          scaleY = 0F
-          translationY = 0F
         }
       }
     }
@@ -242,14 +243,21 @@ class ProgressMoviesFragment :
 
   override fun onEnterSearch() {
     isSearching = true
+
     progressMoviesMainRecycler.translationY = dimenToPx(R.dimen.progressMoviesSearchLocalOffset).toFloat()
     progressMoviesMainRecycler.smoothScrollToPosition(0)
+
+    overscroll?.detach()
+    overscroll = null
   }
 
   override fun onExitSearch() {
     isSearching = false
+
     progressMoviesMainRecycler.translationY = 0F
     progressMoviesMainRecycler.smoothScrollToPosition(0)
+
+    setupOverscroll()
   }
 
   private fun startTraktSync() {

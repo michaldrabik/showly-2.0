@@ -14,8 +14,8 @@
   <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginStart="@dimen/spaceSmall"
-    android:layout_marginEnd="@dimen/spaceSmall"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="6dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     >
@@ -44,9 +44,10 @@
 
     <ImageView
       android:id="@+id/searchViewLocalIcon"
-      android:layout_width="20dp"
+      android:layout_width="30dp"
       android:layout_height="match_parent"
       android:layout_gravity="end"
+      android:paddingStart="9dp"
       app:srcCompat="@drawable/ic_close"
       app:tint="?attr/colorSearchLocalViewControl"
       />

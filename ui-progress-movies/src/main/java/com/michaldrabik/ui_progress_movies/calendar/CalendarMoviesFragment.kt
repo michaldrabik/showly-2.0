@@ -30,6 +30,7 @@ import kotlinx.android.synthetic.main.fragment_progress_movies.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import me.everything.android.ui.overscroll.IOverScrollDecor
 import me.everything.android.ui.overscroll.IOverScrollState
 import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase.DEFAULT_DECELERATE_FACTOR
 import me.everything.android.ui.overscroll.OverScrollBounceEffectDecoratorBase.DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK
@@ -51,8 +52,9 @@ class CalendarMoviesFragment :
 
   private var adapter: CalendarMoviesAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
-  private var statusBarHeight = 0
+  private var overscroll: IOverScrollDecor? = null
   private var overscrollEnabled = true
+  private var statusBarHeight = 0
   private var isSearching = false
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -91,41 +93,42 @@ class CalendarMoviesFragment :
 
   private fun setupOverscroll() {
     val adapt = TopOverscrollAdapter(progressMoviesCalendarRecycler)
-    val overscroll = VerticalOverScrollBounceEffectDecorator(
+    overscroll = VerticalOverScrollBounceEffectDecorator(
       adapt,
       1.75F,
       DEFAULT_TOUCH_DRAG_MOVE_RATIO_BCK,
       DEFAULT_DECELERATE_FACTOR
-    )
-    overscroll.setOverScrollUpdateListener { _, state, offset ->
-      with(progressMoviesCalendarOverscrollIcon) {
-        if (offset > 0) {
-          val value = (offset / OVERSCROLL_OFFSET).coerceAtMost(1F)
-          val valueTranslation = offset / OVERSCROLL_OFFSET_TRANSLATION
-          when (state) {
-            IOverScrollState.STATE_DRAG_START_SIDE -> {
-              alpha = value
-              scaleX = value
-              scaleY = value
-              translationY = valueTranslation
-              overscrollEnabled = true
-            }
-            IOverScrollState.STATE_BOUNCE_BACK -> {
-              alpha = value
-              scaleX = value
-              scaleY = value
-              translationY = valueTranslation
-              if (offset >= OVERSCROLL_OFFSET && overscrollEnabled) {
-                overscrollEnabled = false
-                requireMainFragment().toggleCalendarMode()
+    ).apply {
+      setOverScrollUpdateListener { _, state, offset ->
+        with(progressMoviesCalendarOverscrollIcon) {
+          if (offset > 0) {
+            val value = (offset / OVERSCROLL_OFFSET).coerceAtMost(1F)
+            val valueTranslation = offset / OVERSCROLL_OFFSET_TRANSLATION
+            when (state) {
+              IOverScrollState.STATE_DRAG_START_SIDE -> {
+                alpha = value
+                scaleX = value
+                scaleY = value
+                translationY = valueTranslation
+                overscrollEnabled = true
+              }
+              IOverScrollState.STATE_BOUNCE_BACK -> {
+                alpha = value
+                scaleX = value
+                scaleY = value
+                translationY = valueTranslation
+                if (offset >= OVERSCROLL_OFFSET && overscrollEnabled) {
+                  overscrollEnabled = false
+                  requireMainFragment().toggleCalendarMode()
+                }
               }
             }
+          } else {
+            alpha = 0F
+            scaleX = 0F
+            scaleY = 0F
+            translationY = 0F
           }
-        } else {
-          alpha = 0F
-          scaleX = 0F
-          scaleY = 0F
-          translationY = 0F
         }
       }
     }
@@ -146,14 +149,21 @@ class CalendarMoviesFragment :
 
   override fun onEnterSearch() {
     isSearching = true
+
     progressMoviesCalendarRecycler.translationY = dimenToPx(R.dimen.progressMoviesSearchLocalOffset).toFloat()
     progressMoviesCalendarRecycler.smoothScrollToPosition(0)
+
+    overscroll?.detach()
+    overscroll = null
   }
 
   override fun onExitSearch() {
     isSearching = false
+
     progressMoviesCalendarRecycler.translationY = 0F
     progressMoviesCalendarRecycler.smoothScrollToPosition(0)
+
+    setupOverscroll()
   }
 
   private fun render(uiState: CalendarMoviesUiState) {
@@ -181,6 +191,7 @@ class CalendarMoviesFragment :
   override fun setupBackPressed() = Unit
 
   override fun onDestroyView() {
+    overscroll = null
     adapter = null
     layoutManager = null
     super.onDestroyView()

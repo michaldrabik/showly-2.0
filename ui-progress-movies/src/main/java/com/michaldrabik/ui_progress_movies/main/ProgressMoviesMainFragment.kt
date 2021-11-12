@@ -223,6 +223,7 @@ class ProgressMoviesMainFragment :
 
   private fun enterSearch() {
     progressMoviesSearchLocalView.fadeIn(150)
+    resetTranslations()
     with(exSearchLocalViewInput) {
       setText("")
       doAfterTextChanged { viewModel.onSearchQuery(it?.toString() ?: "") }
@@ -238,6 +239,7 @@ class ProgressMoviesMainFragment :
     isSearching = false
     childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onExitSearch() }
     progressMoviesSearchLocalView.gone()
+    resetTranslations()
     with(exSearchLocalViewInput) {
       setText("")
       gone()

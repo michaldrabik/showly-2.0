@@ -260,6 +260,7 @@ class ProgressMainFragment :
   }
 
   private fun enterSearch() {
+    resetTranslations()
     progressMainSearchLocalView.fadeIn(150)
     with(exSearchLocalViewInput) {
       setText("")
@@ -275,6 +276,7 @@ class ProgressMainFragment :
   private fun exitSearch() {
     isSearching = false
     childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onExitSearch() }
+    resetTranslations()
     progressMainSearchLocalView.gone()
     with(exSearchLocalViewInput) {
       setText("")
