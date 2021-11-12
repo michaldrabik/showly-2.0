@@ -47,7 +47,7 @@
       android:layout_width="30dp"
       android:layout_height="match_parent"
       android:layout_gravity="end"
-      android:paddingStart="9dp"
+      android:paddingStart="10dp"
       app:srcCompat="@drawable/ic_close"
       app:tint="?attr/colorSearchLocalViewControl"
       />
