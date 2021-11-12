@@ -30,7 +30,15 @@
   <string name="textNoDescription">Panoramica non disponibile.</string>
   <string name="textPleaseWait">Attendere prego…</string>
   <string name="textRate">Valuta</string>
+  <string name="textLink">Link</string>
   <string name="textRateSaved">La tua valutazione è stata salvata.</string>
+  <string name="textPeople">Persone:</string>
+  <string name="textDirecting">Regia</string>
+  <string name="textDirector">Regista</string>
+  <string name="textWriting">Scrittura</string>
+  <string name="textScreenplay">Sceneggiatura</string>
+  <string name="textSound">Suono</string>
+  <string name="textMusic">Musica</string>
   <string name="textAiredAlready">Trasmesso</string>
   <string name="textAirsNow">Trasmesso ora</string>
   <plurals name="textDaysToAir">
