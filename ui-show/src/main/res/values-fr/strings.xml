@@ -14,7 +14,7 @@
   <string name="textEpisodeTitle">S.%02d E.%02d - \'%s\'</string>
   <string name="textTraktSyncRemovedFromTrakt">Succès de la synchronisation avec Track.tv.</string>
   <string name="textActorsEmpty">Acteurs non disponibles</string>
-  <string name="textSeasons">Saisons:</string>
+  <string name="textSeasons">Saisons :</string>
   <string name="textSeasonsEmpty">Saisons non disponibles.</string>
   <string name="textTrailer">Bande\nAnnonce</string>
   <string name="textYouMayAlsoLike">Vous pourriez aussi aimer:</string>
