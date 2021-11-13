@@ -170,7 +170,7 @@ class ShowDetailsFragment : BaseFragment<ShowDetailsViewModel>(R.layout.fragment
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
       { viewModel.messageState.collect { renderSnack(it) } },
-      afterBlock = {
+      doAfterLaunch = {
         if (!isInitialized) {
           viewModel.loadDetails(showId)
           isInitialized = true

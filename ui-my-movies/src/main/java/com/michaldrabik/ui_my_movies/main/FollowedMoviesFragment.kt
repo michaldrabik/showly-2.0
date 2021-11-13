@@ -75,7 +75,7 @@ class FollowedMoviesFragment :
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      afterBlock = { viewModel.clearCache() }
+      doAfterLaunch = { viewModel.clearCache() }
     )
   }
 

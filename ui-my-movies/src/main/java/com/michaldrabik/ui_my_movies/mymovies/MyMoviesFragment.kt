@@ -49,7 +49,7 @@ class MyMoviesFragment :
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      afterBlock = { viewModel.loadMovies() }
+      doAfterLaunch = { viewModel.loadMovies() }
     )
   }
 
@@ -98,13 +98,13 @@ class MyMoviesFragment :
       items?.let {
         adapter?.setItems(it)
         myMoviesEmptyView.fadeIf(it.isEmpty())
-        (parentFragment as FollowedMoviesFragment).enableSearch(it.isNotEmpty())
+        (requireParentFragment() as FollowedMoviesFragment).enableSearch(it.isNotEmpty())
       }
     }
   }
 
   private fun openMovieDetails(movie: Movie) {
-    (parentFragment as? FollowedMoviesFragment)?.openMovieDetails(movie)
+    (requireParentFragment() as? FollowedMoviesFragment)?.openMovieDetails(movie)
   }
 
   override fun onScrollReset() = myMoviesRecycler.scrollToPosition(0)

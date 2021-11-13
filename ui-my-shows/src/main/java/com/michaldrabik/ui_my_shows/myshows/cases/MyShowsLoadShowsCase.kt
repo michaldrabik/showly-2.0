@@ -53,6 +53,7 @@ class MyShowsLoadShowsCase @Inject constructor(
     allSeasons: List<Season>,
     section: MyShowsSection,
     sortOrder: Pair<SortOrder, SortType>,
+    searchQuery: String? = null
   ): List<MyShowsItem> {
     val shows = allShows
       .filter {
@@ -72,7 +73,18 @@ class MyShowsLoadShowsCase @Inject constructor(
           else -> true
         }
       }
-    return shows.sortedWith(sorter.sort(sortOrder.first, sortOrder.second))
+
+    return shows
+      .filterByQuery(searchQuery)
+      .sortedWith(sorter.sort(sortOrder.first, sortOrder.second))
+  }
+
+  private fun List<MyShowsItem>.filterByQuery(query: String?) = when {
+    query.isNullOrBlank() -> this
+    else -> this.filter {
+      it.show.title.contains(query, true) ||
+        it.translation?.title?.contains(query, true) == true
+    }
   }
 
   suspend fun loadRecentShows(): List<Show> {

@@ -18,6 +18,7 @@ import com.michaldrabik.ui_model.MyShowsSection.WATCHING
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
 import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsLoadShowsCase
 import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsRatingsCase
 import com.michaldrabik.ui_my_shows.myshows.cases.MyShowsSortingCase
@@ -44,14 +45,25 @@ class MyShowsViewModel @Inject constructor(
   private val itemsState = MutableStateFlow<List<MyShowsItem>?>(null)
   private val itemsUpdateState = MutableStateFlow<Event<Boolean>?>(null)
 
-  fun loadShows(notifyListsUpdate: Boolean = false) {
+  private var searchQuery: String? = null
+
+  fun onParentState(state: FollowedShowsUiState) {
+    when {
+      this.searchQuery != state.searchQuery -> {
+        this.searchQuery = state.searchQuery
+        loadShows(resetScroll = state.searchQuery.isNullOrBlank())
+      }
+    }
+  }
+
+  fun loadShows(resetScroll: Boolean = false) {
     viewModelScope.launch {
       val settings = loadShowsCase.loadSettings()
       val shows = loadShowsCase.loadAllShows().map { toListItemAsync(Type.ALL_SHOWS_ITEM, it) }.awaitAll()
       val seasons = loadShowsCase.loadSeasonsForShows(shows.map { it.show.traktId })
 
       val sortingOrder = sortingCase.loadSectionSortOrder(ALL)
-      val allShows = loadShowsCase.filterSectionShows(shows, seasons, ALL, sortingOrder)
+      val allShows = loadShowsCase.filterSectionShows(shows, seasons, ALL, sortingOrder, searchQuery)
 
       val runningShows =
         if (settings.myShowsRunningIsEnabled) {
@@ -83,21 +95,22 @@ class MyShowsViewModel @Inject constructor(
         emptyList()
       }
 
+      val isNotSearching = searchQuery.isNullOrBlank()
       val listItems = mutableListOf<MyShowsItem>()
       listItems.run {
-        if (recentShows.isNotEmpty()) {
+        if (isNotSearching && recentShows.isNotEmpty()) {
           add(MyShowsItem.createHeader(RECENTS, recentShows.count(), null))
           add(MyShowsItem.createRecentsSection(recentShows))
         }
-        if (runningShows.isNotEmpty()) {
+        if (isNotSearching && runningShows.isNotEmpty()) {
           add(MyShowsItem.createHeader(WATCHING, runningShows.count(), sortingCase.loadSectionSortOrder(WATCHING)))
           add(MyShowsItem.createHorizontalSection(WATCHING, runningShows))
         }
-        if (incomingShows.isNotEmpty()) {
+        if (isNotSearching && incomingShows.isNotEmpty()) {
           add(MyShowsItem.createHeader(UPCOMING, incomingShows.count(), sortingCase.loadSectionSortOrder(UPCOMING)))
           add(MyShowsItem.createHorizontalSection(UPCOMING, incomingShows))
         }
-        if (endedShows.isNotEmpty()) {
+        if (isNotSearching && endedShows.isNotEmpty()) {
           add(MyShowsItem.createHeader(FINISHED, endedShows.count(), sortingCase.loadSectionSortOrder(FINISHED)))
           add(MyShowsItem.createHorizontalSection(FINISHED, endedShows))
         }
@@ -108,7 +121,7 @@ class MyShowsViewModel @Inject constructor(
       }
 
       itemsState.value = listItems
-      itemsUpdateState.value = Event(notifyListsUpdate)
+      itemsUpdateState.value = Event(resetScroll)
 
       loadRatings(listItems)
     }
@@ -129,7 +142,7 @@ class MyShowsViewModel @Inject constructor(
   fun setSectionSortOrder(section: MyShowsSection, sortOrder: SortOrder, sortType: SortType) {
     viewModelScope.launch {
       sortingCase.setSectionSortOrder(section, sortOrder, sortType)
-      loadShows(notifyListsUpdate = true)
+      loadShows(resetScroll = true)
     }
   }
 

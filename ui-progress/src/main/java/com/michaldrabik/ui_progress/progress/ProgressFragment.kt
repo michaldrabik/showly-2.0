@@ -292,7 +292,6 @@ class ProgressFragment :
         progressTipItem.visibleIf(it.count() >= 3 && !isTipShown(Tip.WATCHLIST_ITEM_PIN))
         progressRecycler.fadeIn(withHardware = true).add(animations)
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
-        requireMainFragment().showSearchIcon(it.isNotEmpty() || isSearching)
       }
       isOverScrollEnabled.let {
         if (it) {

@@ -51,7 +51,7 @@ class WatchlistFragment :
 
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
-      afterBlock = { viewModel.loadMovies() }
+      doAfterLaunch = { viewModel.loadMovies() }
     )
   }
 
@@ -112,7 +112,7 @@ class WatchlistFragment :
   }
 
   private fun openMovieDetails(movie: Movie) {
-    (parentFragment as? FollowedMoviesFragment)?.openMovieDetails(movie)
+    (requireParentFragment() as? FollowedMoviesFragment)?.openMovieDetails(movie)
   }
 
   override fun onSortClick() = viewModel.loadSortOrder()

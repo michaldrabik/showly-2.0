@@ -1,34 +1,30 @@
 package com.michaldrabik.ui_my_shows.main
 
-import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.inputmethod.EditorInfo
-import android.widget.FrameLayout
-import android.widget.GridLayout
 import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
-import com.michaldrabik.ui_base.common.views.exSearchViewIcon
+import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.common.views.exSearchViewInput
-import com.michaldrabik.ui_base.common.views.exSearchViewText
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.enableUi
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
-import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
@@ -37,16 +33,9 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Show
 import com.michaldrabik.ui_my_shows.R
-import com.michaldrabik.ui_my_shows.myshows.helpers.MyShowsSearchResult
-import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.EMPTY
-import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.NO_RESULTS
-import com.michaldrabik.ui_my_shows.myshows.helpers.ResultType.RESULTS
-import com.michaldrabik.ui_my_shows.myshows.recycler.MyShowsItem
-import com.michaldrabik.ui_my_shows.myshows.views.MyShowFanartView
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SHOW_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_followed_shows.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class FollowedShowsFragment :
@@ -54,15 +43,23 @@ class FollowedShowsFragment :
   OnTabReselectedListener,
   OnTraktSyncListener {
 
+  companion object {
+    private const val TRANSLATION_DURATION = 225L
+  }
+
   override val viewModel by viewModels<FollowedShowsViewModel>()
+
+  private var searchViewTranslation = 0F
+  private var tabsViewTranslation = 0F
   private var currentPage = 0
+  private var isSearching = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     savedInstanceState?.let {
-      viewModel.searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
-      viewModel.tabsTranslation = it.getFloat("ARG_TABS_POSITION")
+      searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
+      tabsViewTranslation = it.getFloat("ARG_TABS_POSITION")
       currentPage = it.getInt("ARG_PAGE")
     }
   }
@@ -72,11 +69,6 @@ class FollowedShowsFragment :
     setupView()
     setupPager()
     setupStatusBar()
-
-    launchAndRepeatStarted(
-      { viewModel.uiState.collect { render(it) } },
-      afterBlock = { viewModel.clearCache() }
-    )
   }
 
   override fun onResume() {
@@ -95,8 +87,8 @@ class FollowedShowsFragment :
 
   override fun onPause() {
     enableUi()
-    viewModel.tabsTranslation = followedShowsTabs.translationY
-    viewModel.searchViewTranslation = followedShowsSearchView.translationY
+    tabsViewTranslation = followedShowsTabs.translationY
+    searchViewTranslation = followedShowsSearchView.translationY
     super.onPause()
   }
 
@@ -109,10 +101,13 @@ class FollowedShowsFragment :
     followedShowsSearchView.run {
       hint = getString(R.string.textSearchFor)
       statsIconVisible = true
-      onClick { enterSearch() }
+      onClick { openMainSearch() }
       onSettingsClickListener = { openSettings() }
       onStatsClickListener = { openStatistics() }
       if (isTraktSyncing()) setTraktProgress(true)
+    }
+    with(followedShowsSearchLocalView) {
+      onCloseClickListener = { exitSearch() }
     }
     followedShowsModeTabs.run {
       onModeSelected = { mode = it }
@@ -128,6 +123,9 @@ class FollowedShowsFragment :
         (childFragmentManager.fragments[currentIndex] as? OnSortClickListener)?.onSortClick()
       }
     }
+    followedShowsSearchIcon.run {
+      onClick { if (!isSearching) enterSearch() else exitSearch() }
+    }
     exSearchViewInput.run {
       imeOptions = EditorInfo.IME_ACTION_DONE
       setOnEditorActionListener { _, _, _ ->
@@ -137,10 +135,10 @@ class FollowedShowsFragment :
       }
     }
 
-    followedShowsTabs.translationY = viewModel.tabsTranslation
-    followedShowsModeTabs.translationY = viewModel.tabsTranslation
-    followedShowsSearchView.translationY = viewModel.searchViewTranslation
-    followedShowsSortIcon.translationY = viewModel.tabsTranslation
+    followedShowsSearchView.translationY = searchViewTranslation
+    followedShowsTabs.translationY = tabsViewTranslation
+    followedShowsModeTabs.translationY = tabsViewTranslation
+    followedShowsIcons.translationY = tabsViewTranslation
   }
 
   private fun setupPager() {
@@ -159,16 +157,15 @@ class FollowedShowsFragment :
       followedShowsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
       followedShowsModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
       followedShowsTabs.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
-      followedShowsSortIcon.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
-      followedShowsSearchEmptyView.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
-      followedShowsSearchWrapper.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
+      followedShowsIcons.updateTopMargin(dimenToPx(R.dimen.myShowsSearchViewPadding) + statusBarSize)
+      followedShowsSearchLocalView.updateTopMargin(dimenToPx(R.dimen.myShowsSearchLocalViewPadding) + statusBarSize)
     }
   }
 
   override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
-      if (followedShowsSearchView.isSearching) {
+      if (isSearching) {
         exitSearch()
       } else {
         isEnabled = false
@@ -178,118 +175,64 @@ class FollowedShowsFragment :
   }
 
   private fun enterSearch() {
-    if (followedShowsSearchView.isSearching) return
-    followedShowsSearchView.isSearching = true
-    exSearchViewText.gone()
-    exSearchViewInput.run {
+    resetTranslations()
+    followedShowsSearchLocalView.fadeIn(150)
+    with(exSearchLocalViewInput) {
       setText("")
-      doAfterTextChanged { viewModel.searchFollowedShows(it?.toString() ?: "") }
+      doAfterTextChanged { viewModel.onSearchQuery(it?.toString()) }
       visible()
       showKeyboard()
       requestFocus()
     }
-    (exSearchViewIcon.drawable as Animatable).start()
-    exSearchViewIcon.onClick { exitSearch() }
-    hideNavigation(false)
+    isSearching = true
+    childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onEnterSearch() }
   }
 
-  private fun exitSearch(showNavigation: Boolean = true) {
-    followedShowsSearchView.isSearching = false
-    exSearchViewText.visible()
-    exSearchViewInput.run {
+  private fun exitSearch() {
+    isSearching = false
+    childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onExitSearch() }
+    resetTranslations()
+    followedShowsSearchLocalView.gone()
+    with(exSearchLocalViewInput) {
       setText("")
       gone()
       hideKeyboard()
       clearFocus()
     }
-    exSearchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
-    if (showNavigation) showNavigation()
   }
 
-  private fun render(uiState: FollowedShowsUiState) {
-    uiState.run {
-      searchResult?.let { renderSearchResults(it) }
-    }
-  }
-
-  private fun renderSearchResults(result: MyShowsSearchResult) {
-    when (result.type) {
-      RESULTS -> {
-        followedShowsSearchWrapper.visible()
-        followedShowsPager.gone()
-        followedShowsTabs.gone()
-        followedShowsModeTabs.gone()
-        followedShowsSearchEmptyView.gone()
-        renderSearchContainer(result.items)
-      }
-      NO_RESULTS -> {
-        followedShowsSearchWrapper.gone()
-        followedShowsPager.gone()
-        followedShowsTabs.gone()
-        followedShowsModeTabs.gone()
-        followedShowsSearchEmptyView.visible()
-      }
-      EMPTY -> {
-        followedShowsSearchWrapper.gone()
-        followedShowsPager.visible()
-        followedShowsTabs.visible()
-        followedShowsModeTabs.visible()
-        followedShowsSearchEmptyView.gone()
-      }
-    }
-
-    if (result.type != EMPTY) {
-      resetTranslations()
-      childFragmentManager.fragments.forEach {
-        (it as? OnScrollResetListener)?.onScrollReset()
-      }
-    }
-  }
-
-  private fun renderSearchContainer(items: List<MyShowsItem>) {
-    followedShowsSearchContainer.removeAllViews()
-
-    val context = requireContext()
-    val itemHeight = context.dimenToPx(R.dimen.myShowsFanartHeight)
-    val itemMargin = context.dimenToPx(R.dimen.spaceTiny)
-
-    val clickListener: (MyShowsItem) -> Unit = {
-      followedShowsRoot.hideKeyboard()
-      openShowDetails(it.show)
-    }
-
-    items.forEachIndexed { index, item ->
-      val view = MyShowFanartView(context).apply {
-        layoutParams = FrameLayout.LayoutParams(0, MATCH_PARENT)
-        bind(item, clickListener)
-      }
-      val layoutParams = GridLayout.LayoutParams().apply {
-        width = 0
-        height = itemHeight
-        columnSpec = GridLayout.spec(index % 2, 1F)
-        setMargins(itemMargin, itemMargin, itemMargin, itemMargin)
-      }
-      followedShowsSearchContainer.addView(view, layoutParams)
-    }
+  private fun openMainSearch() {
+    disableUi()
+    hideNavigation()
+    exitSearch()
+    resetTranslations(100)
+    followedShowsModeTabs.fadeOut(duration = 200).add(animations)
+    followedShowsTabs.fadeOut(duration = 200).add(animations)
+    followedShowsIcons.fadeOut(duration = 200).add(animations)
+    followedShowsPager.fadeOut(duration = 200) {
+      super.navigateTo(R.id.actionFollowedShowsFragmentToSearch, null)
+    }.add(animations)
   }
 
   fun openShowDetails(show: Show) {
     disableUi()
     hideNavigation()
     followedShowsRoot.fadeOut(150) {
-      exitSearch(false)
       val bundle = Bundle().apply { putLong(ARG_SHOW_ID, show.traktId) }
       navigateTo(R.id.actionFollowedShowsFragmentToShowDetailsFragment, bundle)
+      exitSearch()
     }.add(animations)
   }
 
   private fun openSettings() {
     hideNavigation()
+    exitSearch()
     navigateTo(R.id.actionFollowedShowsFragmentToSettingsFragment)
   }
 
   private fun openStatistics() {
     hideNavigation()
+    exitSearch()
     navigateTo(R.id.actionFollowedShowsFragmentToStatisticsFragment)
   }
 
@@ -299,18 +242,24 @@ class FollowedShowsFragment :
   }
 
   override fun onTabReselected() {
-    resetTranslations()
+    resetTranslations(duration = 0)
     followedShowsPager.nextPage()
     childFragmentManager.fragments.forEach {
       (it as? OnScrollResetListener)?.onScrollReset()
     }
   }
 
-  fun resetTranslations() {
-    followedShowsSearchView.translationY = 0F
-    followedShowsTabs.translationY = 0F
-    followedShowsModeTabs.translationY = 0F
-    followedShowsSortIcon.translationY = 0F
+  fun resetTranslations(duration: Long = TRANSLATION_DURATION) {
+    if (view == null) return
+    arrayOf(
+      followedShowsSearchView,
+      followedShowsTabs,
+      followedShowsModeTabs,
+      followedShowsIcons,
+      followedShowsSearchLocalView
+    ).forEach {
+      it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
+    }
   }
 
   override fun onTraktSyncProgress() =
@@ -324,20 +273,16 @@ class FollowedShowsFragment :
   }
 
   private val pageChangeListener = object : ViewPager.OnPageChangeListener {
+
     override fun onPageSelected(position: Int) {
       if (currentPage == position) return
 
       followedShowsSortIcon.fadeIf(position != 0, duration = 150)
       if (followedShowsTabs.translationY != 0F) {
-        followedShowsSearchView.animate().translationY(0F).setDuration(225L).start()
-        followedShowsTabs.animate().translationY(0F).setDuration(225L).start()
-        followedShowsModeTabs.animate().translationY(0F).setDuration(225L).start()
-        followedShowsSortIcon.animate().translationY(0F).setDuration(225L).start()
+        resetTranslations()
         requireView().postDelayed(
           {
-            childFragmentManager.fragments.forEach {
-              (it as? OnScrollResetListener)?.onScrollReset()
-            }
+            childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
           },
           225L
         )

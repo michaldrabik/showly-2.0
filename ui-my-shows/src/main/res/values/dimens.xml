@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <dimen name="myShowsTabsTranslation">-7dp</dimen>
-
   <dimen name="myShowsSearchViewPadding">96dp</dimen>
-
   <dimen name="myShowsTabsViewPadding">124dp</dimen>
+
+  <dimen name="myShowsSearchLocalViewPadding">146dp</dimen>
+  <dimen name="myShowsSearchLocalOffset">40dp</dimen>
 
   <dimen name="myShowsBottomPadding">68dp</dimen>
   <dimen name="myShowsFanartCorner">4dp</dimen>

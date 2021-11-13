@@ -53,8 +53,8 @@ class ProgressMainViewModel @Inject constructor(
     }
   }
 
-  fun onSearchQuery(searchQuery: String) {
-    searchQueryState.value = searchQuery
+  fun onSearchQuery(searchQuery: String?) {
+    searchQueryState.value = searchQuery ?: ""
   }
 
   fun toggleCalendarMode() {

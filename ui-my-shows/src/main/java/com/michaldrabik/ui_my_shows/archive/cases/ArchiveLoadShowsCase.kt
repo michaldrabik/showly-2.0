@@ -20,7 +20,7 @@ class ArchiveLoadShowsCase @Inject constructor(
 
   val language by lazy { translationsRepository.getLanguage() }
 
-  suspend fun loadShows(): List<Pair<Show, Translation?>> {
+  suspend fun loadShows(searchQuery: String): List<Pair<Show, Translation?>> {
     val translations =
       if (language == Config.DEFAULT_LANGUAGE) emptyMap()
       else translationsRepository.loadAllShowsLocal(language)
@@ -28,11 +28,17 @@ class ArchiveLoadShowsCase @Inject constructor(
     val sortOrder = settingsRepository.sortSettings.hiddenShowsSortOrder
     val sortType = settingsRepository.sortSettings.hiddenShowsSortType
 
-    val shows = showsRepository.archiveShows.loadAll()
+    return showsRepository.archiveShows.loadAll()
       .map { it to translations[it.traktId] }
-
-    return shows.sortedWith(sorter.sort(sortOrder, sortType))
+      .filterByQuery(searchQuery)
+      .sortedWith(sorter.sort(sortOrder, sortType))
   }
+
+  private fun List<Pair<Show, Translation?>>.filterByQuery(query: String) =
+    this.filter {
+      it.first.title.contains(query, true) ||
+        it.second?.title?.contains(query, true) == true
+    }
 
   suspend fun loadTranslation(show: Show, onlyLocal: Boolean): Translation? {
     if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY

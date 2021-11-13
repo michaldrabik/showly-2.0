@@ -15,6 +15,7 @@ import com.michaldrabik.ui_my_shows.archive.cases.ArchiveLoadShowsCase
 import com.michaldrabik.ui_my_shows.archive.cases.ArchiveRatingsCase
 import com.michaldrabik.ui_my_shows.archive.cases.ArchiveSortOrderCase
 import com.michaldrabik.ui_my_shows.archive.recycler.ArchiveListItem
+import com.michaldrabik.ui_my_shows.main.FollowedShowsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -35,28 +36,24 @@ class ArchiveViewModel @Inject constructor(
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
 
-  val uiState = combine(
-    itemsState,
-    sortOrderState,
-    scrollState
-  ) { itemsState, sortOrderState, scrollState ->
-    ArchiveUiState(
-      items = itemsState,
-      sortOrder = sortOrderState,
-      resetScroll = scrollState
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = ArchiveUiState()
-  )
+  private var searchQuery: String? = null
+
+  fun onParentState(state: FollowedShowsUiState) {
+    when {
+      this.searchQuery != state.searchQuery -> {
+        this.searchQuery = state.searchQuery
+        loadShows(resetScroll = state.searchQuery.isNullOrBlank())
+      }
+    }
+  }
 
   fun loadShows(resetScroll: Boolean = false) {
     viewModelScope.launch {
-      val items = loadShowsCase.loadShows().map {
-        val image = imagesProvider.findCachedImage(it.first, POSTER)
-        ArchiveListItem(it.first, image, false, it.second)
-      }
+      val items = loadShowsCase.loadShows(searchQuery ?: "")
+        .map {
+          val image = imagesProvider.findCachedImage(it.first, POSTER)
+          ArchiveListItem(it.first, image, false, it.second)
+        }
       itemsState.value = items
       scrollState.value = Event(resetScroll)
       loadRatings(items, resetScroll)
@@ -119,4 +116,20 @@ class ArchiveViewModel @Inject constructor(
     currentItems.findReplace(new) { it.isSameAs(new) }
     itemsState.value = currentItems
   }
+
+  val uiState = combine(
+    itemsState,
+    sortOrderState,
+    scrollState
+  ) { itemsState, sortOrderState, scrollState ->
+    ArchiveUiState(
+      items = itemsState,
+      sortOrder = sortOrderState,
+      resetScroll = scrollState
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = ArchiveUiState()
+  )
 }

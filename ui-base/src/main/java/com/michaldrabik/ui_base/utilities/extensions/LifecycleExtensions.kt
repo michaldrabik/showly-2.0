@@ -8,14 +8,14 @@ import kotlinx.coroutines.launch
 
 fun Fragment.launchAndRepeatStarted(
   vararg launchBlock: suspend () -> Unit,
-  afterBlock: (() -> Unit)? = null
+  doAfterLaunch: (() -> Unit)? = null
 ) {
   viewLifecycleOwner.lifecycleScope.launch {
     repeatOnLifecycle(Lifecycle.State.STARTED) {
       launchBlock.forEach {
         launch { it.invoke() }
       }
-      afterBlock?.invoke()
+      doAfterLaunch?.invoke()
     }
   }
 }

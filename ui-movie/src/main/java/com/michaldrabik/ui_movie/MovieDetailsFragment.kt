@@ -153,7 +153,7 @@ class MovieDetailsFragment : BaseFragment<MovieDetailsViewModel>(R.layout.fragme
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
       { viewModel.messageState.collect { renderSnack(it) } },
-      afterBlock = {
+      doAfterLaunch = {
         if (!isInitialized) {
           viewModel.loadDetails(movieId)
           isInitialized = true

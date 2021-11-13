@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/followedShowsRoot"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
@@ -36,52 +37,50 @@
     app:tabTextAppearance="@style/ScrollableTabTextStyle"
     />
 
-  <com.michaldrabik.ui_base.common.views.ScrollableImageView
-    android:id="@+id/followedShowsSortIcon"
+  <FrameLayout
+    android:id="@+id/followedShowsIcons"
     android:layout_width="wrap_content"
-    android:layout_height="36dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="end"
     android:layout_marginTop="@dimen/myShowsSearchViewPadding"
     android:layout_marginEnd="@dimen/spaceMedium"
-    android:visibility="gone"
-    app:srcCompat="@drawable/ic_sort"
-    app:tint="?android:attr/textColorPrimary"
-    />
-
-  <ScrollView
-    android:id="@+id/followedShowsSearchWrapper"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/searchViewHeightPadded"
-    android:clipChildren="false"
-    android:fillViewport="true"
-    android:overScrollMode="never"
-    android:scrollbars="none"
+    app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
+    tools:visibility="visible"
     >
 
-    <GridLayout
-      android:id="@+id/followedShowsSearchContainer"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:clipChildren="false"
-      android:clipToPadding="false"
-      android:columnCount="2"
-      android:divider="@drawable/divider_my_shows_fanart"
-      android:paddingStart="@dimen/spaceSmall"
-      android:paddingEnd="@dimen/spaceSmall"
-      android:paddingBottom="@dimen/spaceSmall"
-      android:showDividers="middle"
+    <com.michaldrabik.ui_base.common.views.ScrollableImageView
+      android:id="@+id/followedShowsSortIcon"
+      android:layout_width="36dp"
+      android:layout_height="36dp"
+      android:layout_marginEnd="40dp"
+      android:paddingStart="12dp"
+      android:visibility="gone"
+      app:srcCompat="@drawable/ic_sort"
+      app:tint="?android:attr/textColorPrimary"
+      tools:visibility="visible"
       />
 
-  </ScrollView>
+    <com.michaldrabik.ui_base.common.views.ScrollableImageView
+      android:id="@+id/followedShowsSearchIcon"
+      android:layout_width="36dp"
+      android:layout_height="36dp"
+      android:layout_gravity="end"
+      android:paddingStart="12dp"
+      app:srcCompat="@drawable/ic_search"
+      app:tint="?android:attr/textColorPrimary"
+      />
 
-  <com.michaldrabik.ui_base.common.views.EmptySearchView
-    android:id="@+id/followedShowsSearchEmptyView"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:layout_marginTop="@dimen/searchViewHeightPadded"
+  </FrameLayout>
+
+  <com.michaldrabik.ui_base.common.views.SearchLocalView
+    android:id="@+id/followedShowsSearchLocalView"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/searchLocalViewHeight"
+    android:layout_marginLeft="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/myShowsSearchLocalViewPadding"
+    android:layout_marginRight="@dimen/spaceMedium"
     android:visibility="gone"
+    tools:visibility="visible"
     />
 
   <com.michaldrabik.ui_base.common.views.SearchView

@@ -78,7 +78,7 @@ class ProgressMoviesMainFragment :
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
       { viewModel.messageState.collect { showSnack(it) } },
-      afterBlock = { viewModel.loadProgress() }
+      doAfterLaunch = { viewModel.loadProgress() }
     )
   }
 
@@ -279,7 +279,8 @@ class ProgressMoviesMainFragment :
       progressMoviesSearchView,
       progressMoviesTabs,
       progressMoviesModeTabs,
-      progressMoviesSideIcons
+      progressMoviesSideIcons,
+      progressMoviesSearchLocalView
     ).forEach {
       it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
     }

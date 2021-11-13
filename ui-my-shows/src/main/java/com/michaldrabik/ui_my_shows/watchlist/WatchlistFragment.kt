@@ -2,6 +2,7 @@ package com.michaldrabik.ui_my_shows.watchlist
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.postDelayed
 import androidx.core.view.updatePadding
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter.StateRestorationPolicy
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
@@ -27,6 +29,7 @@ import com.michaldrabik.ui_model.SortOrder.RATING
 import com.michaldrabik.ui_model.SortType
 import com.michaldrabik.ui_my_shows.R
 import com.michaldrabik.ui_my_shows.main.FollowedShowsFragment
+import com.michaldrabik.ui_my_shows.main.FollowedShowsViewModel
 import com.michaldrabik.ui_my_shows.watchlist.recycler.WatchlistAdapter
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_ORDER
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_SELECTED_SORT_TYPE
@@ -41,13 +44,16 @@ class WatchlistFragment :
   BaseFragment<WatchlistViewModel>(R.layout.fragment_watchlist),
   OnScrollResetListener,
   OnTraktSyncListener,
+  OnSearchClickListener,
   OnSortClickListener {
 
+  private val parentViewModel by viewModels<FollowedShowsViewModel>({ requireParentFragment() })
   override val viewModel by viewModels<WatchlistViewModel>()
 
   private var adapter: WatchlistAdapter? = null
   private var layoutManager: LinearLayoutManager? = null
   private var statusBarHeight = 0
+  private var isSearching = false
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
@@ -55,8 +61,9 @@ class WatchlistFragment :
     setupRecycler()
 
     launchAndRepeatStarted(
+      { parentViewModel.uiState.collect { viewModel.onParentState(it) } },
       { viewModel.uiState.collect { render(it) } },
-      afterBlock = { viewModel.loadShows() }
+      doAfterLaunch = { viewModel.loadShows() }
     )
   }
 
@@ -111,7 +118,7 @@ class WatchlistFragment :
       items.let {
         val notifyChange = resetScroll?.consume() == true
         adapter?.setItems(it, notifyChange = notifyChange)
-        watchlistEmptyView.fadeIf(it.isEmpty())
+        watchlistEmptyView.fadeIf(it.isEmpty() && !isSearching)
       }
       sortOrder?.let { event ->
         event.consume()?.let { showSortOrderDialog(it.first, it.second) }
@@ -120,7 +127,21 @@ class WatchlistFragment :
   }
 
   private fun openShowDetails(show: Show) {
-    (parentFragment as? FollowedShowsFragment)?.openShowDetails(show)
+    (requireParentFragment() as? FollowedShowsFragment)?.openShowDetails(show)
+  }
+
+  override fun onEnterSearch() {
+    isSearching = true
+    watchlistRecycler.translationY = dimenToPx(R.dimen.myShowsSearchLocalOffset).toFloat()
+    watchlistRecycler.smoothScrollToPosition(0)
+  }
+
+  override fun onExitSearch() {
+    isSearching = false
+    with(watchlistRecycler) {
+      translationY = 0F
+      postDelayed(250) { scrollToPosition(0) }
+    }
   }
 
   override fun onSortClick() = viewModel.loadSortOrder()

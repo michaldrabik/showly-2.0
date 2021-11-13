@@ -87,7 +87,7 @@ class ProgressMainFragment :
     launchAndRepeatStarted(
       { viewModel.uiState.collect { render(it) } },
       { viewModel.messageState.collect { showSnack(it) } },
-      afterBlock = { viewModel.loadProgress() }
+      doAfterLaunch = { viewModel.loadProgress() }
     )
   }
 
@@ -264,7 +264,7 @@ class ProgressMainFragment :
     progressMainSearchLocalView.fadeIn(150)
     with(exSearchLocalViewInput) {
       setText("")
-      doAfterTextChanged { viewModel.onSearchQuery(it?.toString() ?: "") }
+      doAfterTextChanged { viewModel.onSearchQuery(it?.toString()) }
       visible()
       showKeyboard()
       requestFocus()
@@ -285,8 +285,6 @@ class ProgressMainFragment :
       clearFocus()
     }
   }
-
-  fun showSearchIcon(show: Boolean) = progressMainSearchIcon.visibleIf(show)
 
   fun toggleCalendarMode() {
     exitSearch()
@@ -317,7 +315,8 @@ class ProgressMainFragment :
       progressMainSearchView,
       progressMainTabs,
       progressMainPagerModeTabs,
-      progressMainSideIcons
+      progressMainSideIcons,
+      progressMainSearchLocalView
     ).forEach {
       it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
     }
