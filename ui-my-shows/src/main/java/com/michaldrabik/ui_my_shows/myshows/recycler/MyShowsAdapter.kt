@@ -28,7 +28,13 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
   var sectionMissingImageListener: ((MyShowsItem, MyShowsItem.HorizontalSection, Boolean) -> Unit)? = null
 
   var horizontalPositions = mutableMapOf<MyShowsSection, Pair<Int, Int>>()
-  var notifyListsUpdate = false
+  var resetScrolls = listOf<Type>()
+
+  fun setItems(newItems: List<MyShowsItem>, notifyChangeList: List<Type>?) {
+    resetScrolls = notifyChangeList?.toList() ?: emptyList()
+    val notifyChange = notifyChangeList?.contains(Type.ALL_SHOWS_ITEM) == true
+    super.setItems(newItems, notifyChange)
+  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {
@@ -61,13 +67,16 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
         itemClickListener
       )
       VIEW_TYPE_SHOW_ITEM -> (holder.itemView as MyShowAllView).bind(item)
-      VIEW_TYPE_HORIZONTAL_SECTION -> (holder.itemView as MyShowsSectionView).bind(
-        item.horizontalSection!!,
-        horizontalPositions[item.horizontalSection.section] ?: Pair(0, 0),
-        notifyListsUpdate,
-        itemClickListener,
-        sectionMissingImageListener
-      )
+      VIEW_TYPE_HORIZONTAL_SECTION -> {
+        val notifyChange = resetScrolls.contains(Type.HORIZONTAL_SHOWS)
+        (holder.itemView as MyShowsSectionView).bind(
+          item.horizontalSection!!,
+          horizontalPositions[item.horizontalSection.section] ?: Pair(0, 0),
+          notifyChange,
+          itemClickListener,
+          sectionMissingImageListener
+        )
+      }
     }
   }
 
@@ -77,6 +86,5 @@ class MyShowsAdapter : BaseAdapter<MyShowsItem>() {
       Type.ALL_SHOWS_ITEM -> VIEW_TYPE_SHOW_ITEM
       Type.RECENT_SHOWS -> VIEW_TYPE_RECENTS_SECTION
       Type.HORIZONTAL_SHOWS -> VIEW_TYPE_HORIZONTAL_SECTION
-      else -> throw IllegalStateException()
     }
 }

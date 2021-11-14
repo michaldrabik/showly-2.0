@@ -140,7 +140,7 @@ class WatchlistFragment :
     isSearching = false
     with(watchlistRecycler) {
       translationY = 0F
-      postDelayed(250) { scrollToPosition(0) }
+      postDelayed(200) { layoutManager?.scrollToPosition(0) }
     }
   }
 

@@ -24,10 +24,9 @@ class FollowedShowsViewModel @Inject constructor() : BaseViewModel() {
     FollowedShowsUiState(
       searchQuery = s1[0]
     )
-  }
-    .stateIn(
-      scope = viewModelScope,
-      started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-      initialValue = FollowedShowsUiState()
-    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = FollowedShowsUiState()
+  )
 }

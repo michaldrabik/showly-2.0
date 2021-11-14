@@ -43,7 +43,7 @@ class MyShowsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
   private val itemsState = MutableStateFlow<List<MyShowsItem>?>(null)
-  private val itemsUpdateState = MutableStateFlow<Event<Boolean>?>(null)
+  private val itemsUpdateState = MutableStateFlow<Event<List<Type>?>?>(null)
 
   private var searchQuery: String? = null
 
@@ -51,12 +51,15 @@ class MyShowsViewModel @Inject constructor(
     when {
       this.searchQuery != state.searchQuery -> {
         this.searchQuery = state.searchQuery
-        loadShows(resetScroll = state.searchQuery.isNullOrBlank())
+        val resetScrolls =
+          if (state.searchQuery.isNullOrBlank()) listOf(Type.ALL_SHOWS_ITEM)
+          else emptyList()
+        loadShows(resetScroll = resetScrolls)
       }
     }
   }
 
-  fun loadShows(resetScroll: Boolean = false) {
+  fun loadShows(resetScroll: List<Type>? = null) {
     viewModelScope.launch {
       val settings = loadShowsCase.loadSettings()
       val shows = loadShowsCase.loadAllShows().map { toListItemAsync(Type.ALL_SHOWS_ITEM, it) }.awaitAll()
@@ -123,16 +126,17 @@ class MyShowsViewModel @Inject constructor(
       itemsState.value = listItems
       itemsUpdateState.value = Event(resetScroll)
 
-      loadRatings(listItems)
+      loadRatings(listItems, resetScroll)
     }
   }
 
-  private fun loadRatings(items: List<MyShowsItem>) {
+  private fun loadRatings(items: List<MyShowsItem>, resetScroll: List<Type>?) {
     if (items.isEmpty()) return
     viewModelScope.launch {
       try {
         val listItems = ratingsCase.loadRatings(items)
         itemsState.value = listItems
+        itemsUpdateState.value = Event(resetScroll)
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "MyShowsViewModel::loadRatings()")
       }
@@ -142,7 +146,7 @@ class MyShowsViewModel @Inject constructor(
   fun setSectionSortOrder(section: MyShowsSection, sortOrder: SortOrder, sortType: SortType) {
     viewModelScope.launch {
       sortingCase.setSectionSortOrder(section, sortOrder, sortType)
-      loadShows(resetScroll = true)
+      loadShows(resetScroll = listOf(Type.HORIZONTAL_SHOWS))
     }
   }
 
@@ -218,7 +222,7 @@ class MyShowsViewModel @Inject constructor(
   ) { itemsState, itemsUpdateState ->
     MyShowsUiState(
       items = itemsState,
-      notifyListsUpdate = itemsUpdateState
+      resetScrollMap = itemsUpdateState
     )
   }.stateIn(
     scope = viewModelScope,

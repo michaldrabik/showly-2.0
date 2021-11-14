@@ -14,11 +14,13 @@ class MyMoviesAdapter(
   itemClickListener: (MyMoviesItem) -> Unit,
   missingImageListener: (MyMoviesItem, Boolean) -> Unit,
   missingTranslationListener: (MyMoviesItem) -> Unit,
+  listChangeListener: (() -> Unit),
   val onSortOrderClickListener: (SortOrder, SortType) -> Unit
 ) : BaseMovieAdapter<MyMoviesItem>(
   itemClickListener = itemClickListener,
   missingImageListener = missingImageListener,
-  missingTranslationListener = missingTranslationListener
+  missingTranslationListener = missingTranslationListener,
+  listChangeListener = listChangeListener
 ) {
 
   companion object {
@@ -32,11 +34,6 @@ class MyMoviesAdapter(
   }
 
   override val asyncDiffer = AsyncListDiffer(this, MyMoviesItemDiffCallback())
-  var notifyListsUpdate = false
-
-  override fun setItems(newItems: List<MyMoviesItem>, notifyChange: Boolean) {
-    super.setItems(newItems, notifyListsUpdate)
-  }
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
     when (viewType) {

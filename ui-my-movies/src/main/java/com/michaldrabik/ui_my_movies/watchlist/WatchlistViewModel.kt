@@ -11,6 +11,7 @@ import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistLoadMoviesCase
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistRatingsCase
 import com.michaldrabik.ui_my_movies.watchlist.cases.WatchlistSortOrderCase
@@ -35,13 +36,25 @@ class WatchlistViewModel @Inject constructor(
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
   private val scrollState = MutableStateFlow<Event<Boolean>?>(null)
 
+  private var searchQuery: String? = null
+
+  fun onParentState(state: FollowedMoviesUiState) {
+    when {
+      this.searchQuery != state.searchQuery -> {
+        this.searchQuery = state.searchQuery
+        loadMovies(resetScroll = state.searchQuery.isNullOrBlank())
+      }
+    }
+  }
+
   fun loadMovies(resetScroll: Boolean = false) {
     viewModelScope.launch {
       val dateFormat = loadMoviesCase.loadDateFormat()
-      val items = loadMoviesCase.loadMovies().map {
-        val image = imagesProvider.findCachedImage(it.first, POSTER)
-        WatchlistListItem(it.first, image, false, it.second, null, dateFormat)
-      }
+      val items = loadMoviesCase.loadMovies(searchQuery ?: "")
+        .map {
+          val image = imagesProvider.findCachedImage(it.first, POSTER)
+          WatchlistListItem(it.first, image, false, it.second, null, dateFormat)
+        }
       itemsState.value = items
       scrollState.value = Event(resetScroll)
       loadRatings(items, resetScroll)

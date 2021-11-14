@@ -20,7 +20,7 @@ class HiddenLoadMoviesCase @Inject constructor(
 
   val language by lazy { translationsRepository.getLanguage() }
 
-  suspend fun loadMovies(): List<Pair<Movie, Translation?>> {
+  suspend fun loadMovies(searchQuery: String): List<Pair<Movie, Translation?>> {
     val translations =
       if (language == Config.DEFAULT_LANGUAGE) emptyMap()
       else translationsRepository.loadAllMoviesLocal(language)
@@ -28,11 +28,17 @@ class HiddenLoadMoviesCase @Inject constructor(
     val sortOrder = settingsRepository.sortSettings.hiddenMoviesSortOrder
     val sortType = settingsRepository.sortSettings.hiddenMoviesSortType
 
-    val movies = moviesRepository.hiddenMovies.loadAll()
+    return moviesRepository.hiddenMovies.loadAll()
       .map { it to translations[it.traktId] }
-
-    return movies.sortedWith(sorter.sort(sortOrder, sortType))
+      .filterByQuery(searchQuery)
+      .sortedWith(sorter.sort(sortOrder, sortType))
   }
+
+  private fun List<Pair<Movie, Translation?>>.filterByQuery(query: String) =
+    this.filter {
+      it.first.title.contains(query, true) ||
+        it.second?.title?.contains(query, true) == true
+    }
 
   suspend fun loadTranslation(movie: Movie, onlyLocal: Boolean): Translation? {
     if (language == Config.DEFAULT_LANGUAGE) return Translation.EMPTY

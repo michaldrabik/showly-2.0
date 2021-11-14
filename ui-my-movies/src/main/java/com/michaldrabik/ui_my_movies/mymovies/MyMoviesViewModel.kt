@@ -14,6 +14,7 @@ import com.michaldrabik.ui_model.MyMoviesSection.ALL
 import com.michaldrabik.ui_model.MyMoviesSection.RECENTS
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
+import com.michaldrabik.ui_my_movies.main.FollowedMoviesUiState
 import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesLoadCase
 import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesRatingsCase
 import com.michaldrabik.ui_my_movies.mymovies.cases.MyMoviesSortingCase
@@ -43,18 +44,16 @@ class MyMoviesViewModel @Inject constructor(
   private val itemsState = MutableStateFlow<List<MyMoviesItem>?>(null)
   private val itemsUpdateState = MutableStateFlow<Event<Boolean>?>(null)
 
-  val uiState = combine(
-    itemsState,
-    itemsUpdateState
-  ) { itemsState, _ ->
-    MyMoviesUiState(
-      items = itemsState
-    )
-  }.stateIn(
-    scope = viewModelScope,
-    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
-    initialValue = MyMoviesUiState()
-  )
+  private var searchQuery: String? = null
+
+  fun onParentState(state: FollowedMoviesUiState) {
+    when {
+      this.searchQuery != state.searchQuery -> {
+        this.searchQuery = state.searchQuery
+        loadMovies(notifyListsUpdate = state.searchQuery.isNullOrBlank())
+      }
+    }
+  }
 
   fun loadMovies(notifyListsUpdate: Boolean = false) {
     viewModelScope.launch {
@@ -63,16 +62,17 @@ class MyMoviesViewModel @Inject constructor(
       val movies = loadMoviesCase.loadAll().map { toListItemAsync(ALL_MOVIES_ITEM, it, dateFormat) }.awaitAll()
       val sortOrder = sortingCase.loadSortOrder()
 
-      val allMovies = loadMoviesCase.filterSectionMovies(movies, sortOrder)
+      val allMovies = loadMoviesCase.filterSectionMovies(movies, sortOrder, searchQuery)
       val recentMovies = if (settings.myMoviesRecentIsEnabled) {
         loadMoviesCase.loadRecentMovies().map { toListItemAsync(RECENT_MOVIE, it, dateFormat, ImageType.FANART) }.awaitAll()
       } else {
         emptyList()
       }
 
+      val isNotSearching = searchQuery.isNullOrBlank()
       val listItems = mutableListOf<MyMoviesItem>()
       listItems.run {
-        if (recentMovies.isNotEmpty()) {
+        if (isNotSearching && recentMovies.isNotEmpty()) {
           add(MyMoviesItem.createHeader(RECENTS, recentMovies.count(), null))
           add(MyMoviesItem.createRecentsSection(recentMovies))
         }
@@ -85,16 +85,17 @@ class MyMoviesViewModel @Inject constructor(
       itemsState.value = listItems
       itemsUpdateState.value = Event(notifyListsUpdate)
 
-      loadRatings(listItems)
+      loadRatings(listItems, notifyListsUpdate)
     }
   }
 
-  private fun loadRatings(items: MutableList<MyMoviesItem>) {
+  private fun loadRatings(items: MutableList<MyMoviesItem>, notifyListsUpdate: Boolean) {
     if (items.isEmpty()) return
     viewModelScope.launch {
       try {
         val listItems = ratingsCase.loadRatings(items)
         itemsState.value = listItems
+        itemsUpdateState.value = Event(notifyListsUpdate)
       } catch (error: Throwable) {
         Logger.record(error, "Source" to "MyMoviesViewModel::loadRatings()")
       }
@@ -148,4 +149,18 @@ class MyMoviesViewModel @Inject constructor(
     val translation = loadMoviesCase.loadTranslation(movie, true)
     MyMoviesItem(itemType, null, null, null, movie, image, false, translation, null, dateFormat)
   }
+
+  val uiState = combine(
+    itemsState,
+    itemsUpdateState
+  ) { itemsState, itemsUpdateState ->
+    MyMoviesUiState(
+      items = itemsState,
+      resetScroll = itemsUpdateState
+    )
+  }.stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(SUBSCRIBE_STOP_TIMEOUT),
+    initialValue = MyMoviesUiState()
+  )
 }

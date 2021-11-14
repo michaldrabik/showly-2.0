@@ -52,7 +52,7 @@
       android:id="@+id/followedShowsSortIcon"
       android:layout_width="36dp"
       android:layout_height="36dp"
-      android:layout_marginEnd="40dp"
+      android:layout_marginEnd="38dp"
       android:paddingStart="12dp"
       android:visibility="gone"
       app:srcCompat="@drawable/ic_sort"
@@ -65,7 +65,7 @@
       android:layout_width="36dp"
       android:layout_height="36dp"
       android:layout_gravity="end"
-      android:paddingStart="12dp"
+      android:paddingStart="14dp"
       app:srcCompat="@drawable/ic_search"
       app:tint="?android:attr/textColorPrimary"
       />

@@ -2,7 +2,6 @@ package com.michaldrabik.ui_my_shows.main
 
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
@@ -14,7 +13,6 @@ import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
-import com.michaldrabik.ui_base.common.views.exSearchViewInput
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
@@ -71,13 +69,6 @@ class FollowedShowsFragment :
     setupStatusBar()
   }
 
-  override fun onResume() {
-    super.onResume()
-    if (!followedShowsSearchView.isSearching) {
-      showNavigation()
-    }
-  }
-
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
     outState.putFloat("ARG_SEARCH_POSITION", followedShowsSearchView?.translationY ?: 0F)
@@ -125,14 +116,6 @@ class FollowedShowsFragment :
     }
     followedShowsSearchIcon.run {
       onClick { if (!isSearching) enterSearch() else exitSearch() }
-    }
-    exSearchViewInput.run {
-      imeOptions = EditorInfo.IME_ACTION_DONE
-      setOnEditorActionListener { _, _, _ ->
-        clearFocus()
-        hideKeyboard()
-        true
-      }
     }
 
     followedShowsSearchView.translationY = searchViewTranslation
@@ -234,11 +217,6 @@ class FollowedShowsFragment :
     hideNavigation()
     exitSearch()
     navigateTo(R.id.actionFollowedShowsFragmentToStatisticsFragment)
-  }
-
-  fun enableSearch(enable: Boolean) {
-    followedShowsSearchView.isClickable = enable
-    followedShowsSearchView.isEnabled = enable
   }
 
   override fun onTabReselected() {

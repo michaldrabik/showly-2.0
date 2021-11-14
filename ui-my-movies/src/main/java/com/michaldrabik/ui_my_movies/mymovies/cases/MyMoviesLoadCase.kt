@@ -34,8 +34,19 @@ class MyMoviesLoadCase @Inject constructor(
 
   fun filterSectionMovies(
     allMovies: List<MyMoviesItem>,
-    sortOrder: Pair<SortOrder, SortType>
-  ) = allMovies.sortedWith(sorter.sort(sortOrder.first, sortOrder.second))
+    sortOrder: Pair<SortOrder, SortType>,
+    searchQuery: String? = null
+  ) = allMovies
+    .filterByQuery(searchQuery)
+    .sortedWith(sorter.sort(sortOrder.first, sortOrder.second))
+
+  private fun List<MyMoviesItem>.filterByQuery(query: String?) = when {
+    query.isNullOrBlank() -> this
+    else -> this.filter {
+      it.movie.title.contains(query, true) ||
+        it.translation?.title?.contains(query, true) == true
+    }
+  }
 
   suspend fun loadRecentMovies(): List<Movie> {
     val amount = loadSettings().myRecentsAmount

@@ -6,7 +6,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.FrameLayout
 import com.michaldrabik.ui_base.utilities.extensions.onClick
-import com.michaldrabik.ui_base.utilities.extensions.visible
+import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.MyMoviesSection.RECENTS
 import com.michaldrabik.ui_model.SortOrder
 import com.michaldrabik.ui_model.SortType
@@ -31,10 +31,10 @@ class MyMovieHeaderView : FrameLayout {
   fun bind(item: MyMoviesItem.Header, sortClickListener: (SortOrder, SortType) -> Unit) {
     bindLabel(item)
 
-    item.sortOrder?.let {
-      myMoviesHeaderSortButton.visible()
+    myMoviesHeaderSortButton.visibleIf(item.sortOrder != null)
+    item.sortOrder?.let { sortOrder ->
       myMoviesHeaderSortButton.onClick {
-        sortClickListener(item.sortOrder.first, item.sortOrder.second)
+        sortClickListener(sortOrder.first, sortOrder.second)
       }
     }
   }

@@ -14,7 +14,7 @@ abstract class BaseAdapter<Item : ListItem> : RecyclerView.Adapter<RecyclerView.
   var itemClickListener: (Item) -> Unit = { }
   var listChangeListener: (() -> Unit)? = null
 
-  private var notifyChange = false
+  protected var notifyChange = false
 
   open fun setItems(newItems: List<Item>, notifyChange: Boolean = false) {
     this.notifyChange = notifyChange

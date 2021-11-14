@@ -421,6 +421,11 @@
       app:destination="@id/sortOrderDialog"
       app:launchSingleTop="true"
       />
+    <action
+      android:id="@+id/actionFollowedMoviesFragmentToSearch"
+      app:destination="@id/searchFragment"
+      app:launchSingleTop="true"
+      />
   </fragment>
 
   <fragment

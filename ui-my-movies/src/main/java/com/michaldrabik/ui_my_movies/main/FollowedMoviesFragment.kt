@@ -1,34 +1,28 @@
 package com.michaldrabik.ui_my_movies.main
 
-import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.inputmethod.EditorInfo
-import android.widget.FrameLayout
-import android.widget.GridLayout
 import androidx.activity.addCallback
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.viewpager.widget.ViewPager
 import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnScrollResetListener
+import com.michaldrabik.ui_base.common.OnSearchClickListener
 import com.michaldrabik.ui_base.common.OnSortClickListener
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
-import com.michaldrabik.ui_base.common.views.exSearchViewIcon
-import com.michaldrabik.ui_base.common.views.exSearchViewInput
-import com.michaldrabik.ui_base.common.views.exSearchViewText
+import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.utilities.extensions.add
 import com.michaldrabik.ui_base.utilities.extensions.dimenToPx
 import com.michaldrabik.ui_base.utilities.extensions.disableUi
 import com.michaldrabik.ui_base.utilities.extensions.doOnApplyWindowInsets
 import com.michaldrabik.ui_base.utilities.extensions.enableUi
 import com.michaldrabik.ui_base.utilities.extensions.fadeIf
+import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
-import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.nextPage
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
@@ -37,16 +31,9 @@ import com.michaldrabik.ui_base.utilities.extensions.visible
 import com.michaldrabik.ui_base.utilities.extensions.visibleIf
 import com.michaldrabik.ui_model.Movie
 import com.michaldrabik.ui_my_movies.R
-import com.michaldrabik.ui_my_movies.mymovies.helpers.MyMoviesSearchResult
-import com.michaldrabik.ui_my_movies.mymovies.helpers.ResultType.EMPTY
-import com.michaldrabik.ui_my_movies.mymovies.helpers.ResultType.NO_RESULTS
-import com.michaldrabik.ui_my_movies.mymovies.helpers.ResultType.RESULTS
-import com.michaldrabik.ui_my_movies.mymovies.recycler.MyMoviesItem
-import com.michaldrabik.ui_my_movies.mymovies.views.MyMovieFanartView
 import com.michaldrabik.ui_navigation.java.NavigationArgs.ARG_MOVIE_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_followed_movies.*
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class FollowedMoviesFragment :
@@ -54,15 +41,23 @@ class FollowedMoviesFragment :
   OnTabReselectedListener,
   OnTraktSyncListener {
 
+  companion object {
+    private const val TRANSLATION_DURATION = 225L
+  }
+
   override val viewModel by viewModels<FollowedMoviesViewModel>()
+
+  private var searchViewTranslation = 0F
+  private var tabsViewTranslation = 0F
   private var currentPage = 0
+  private var isSearching = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     savedInstanceState?.let {
-      viewModel.searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
-      viewModel.tabsTranslation = it.getFloat("ARG_TABS_POSITION")
+      searchViewTranslation = it.getFloat("ARG_SEARCH_POSITION")
+      tabsViewTranslation = it.getFloat("ARG_TABS_POSITION")
       currentPage = it.getInt("ARG_PAGE")
     }
   }
@@ -72,18 +67,6 @@ class FollowedMoviesFragment :
     setupView()
     setupPager()
     setupStatusBar()
-
-    launchAndRepeatStarted(
-      { viewModel.uiState.collect { render(it) } },
-      doAfterLaunch = { viewModel.clearCache() }
-    )
-  }
-
-  override fun onResume() {
-    super.onResume()
-    if (!followedMoviesSearchView.isSearching) {
-      showNavigation()
-    }
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
@@ -95,8 +78,8 @@ class FollowedMoviesFragment :
 
   override fun onPause() {
     enableUi()
-    viewModel.tabsTranslation = followedMoviesTabs.translationY
-    viewModel.searchViewTranslation = followedMoviesSearchView.translationY
+    tabsViewTranslation = followedMoviesTabs.translationY
+    searchViewTranslation = followedMoviesSearchView.translationY
     super.onPause()
   }
 
@@ -109,10 +92,13 @@ class FollowedMoviesFragment :
     followedMoviesSearchView.run {
       hint = getString(R.string.textSearchFor)
       statsIconVisible = true
-      onClick { enterSearch() }
+      onClick { openMainSearch() }
       onSettingsClickListener = { openSettings() }
       onStatsClickListener = { openStatistics() }
       if (isTraktSyncing()) setTraktProgress(true)
+    }
+    with(followedMoviesSearchLocalView) {
+      onCloseClickListener = { exitSearch() }
     }
     followedMoviesModeTabs.run {
       onModeSelected = { mode = it }
@@ -127,19 +113,14 @@ class FollowedMoviesFragment :
         (childFragmentManager.fragments[currentIndex] as? OnSortClickListener)?.onSortClick()
       }
     }
-    exSearchViewInput.run {
-      imeOptions = EditorInfo.IME_ACTION_DONE
-      setOnEditorActionListener { _, _, _ ->
-        clearFocus()
-        hideKeyboard()
-        true
-      }
+    followedMoviesSearchIcon.run {
+      onClick { if (!isSearching) enterSearch() else exitSearch() }
     }
 
-    followedMoviesTabs.translationY = viewModel.tabsTranslation
-    followedMoviesModeTabs.translationY = viewModel.tabsTranslation
-    followedMoviesSearchView.translationY = viewModel.searchViewTranslation
-    followedMoviesSortIcon.translationY = viewModel.tabsTranslation
+    followedMoviesSearchView.translationY = searchViewTranslation
+    followedMoviesTabs.translationY = tabsViewTranslation
+    followedMoviesModeTabs.translationY = tabsViewTranslation
+    followedMoviesIcons.translationY = tabsViewTranslation
   }
 
   private fun setupPager() {
@@ -158,16 +139,17 @@ class FollowedMoviesFragment :
       followedMoviesSearchView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
       followedMoviesTabs.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchViewPadding) + statusBarSize)
       followedMoviesModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
-      followedMoviesSortIcon.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchViewPadding) + statusBarSize)
+      followedMoviesIcons.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchViewPadding) + statusBarSize)
       followedMoviesSearchEmptyView.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
       followedMoviesSearchWrapper.updateTopMargin(dimenToPx(R.dimen.searchViewHeightPadded) + statusBarSize)
+      followedMoviesSearchLocalView.updateTopMargin(dimenToPx(R.dimen.myMoviesSearchLocalViewPadding) + statusBarSize)
     }
   }
 
   override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
-      if (followedMoviesSearchView.isSearching) {
+      if (isSearching) {
         exitSearch()
       } else {
         isEnabled = false
@@ -177,131 +159,85 @@ class FollowedMoviesFragment :
   }
 
   private fun enterSearch() {
-    if (followedMoviesSearchView.isSearching) return
-    followedMoviesSearchView.isSearching = true
-    exSearchViewText.gone()
-    exSearchViewInput.run {
+    resetTranslations()
+    followedMoviesSearchLocalView.fadeIn(150)
+    with(exSearchLocalViewInput) {
       setText("")
-      doAfterTextChanged { viewModel.searchMovies(it?.toString() ?: "") }
+      doAfterTextChanged { viewModel.onSearchQuery(it?.toString()) }
       visible()
       showKeyboard()
       requestFocus()
     }
-    (exSearchViewIcon.drawable as Animatable).start()
-    exSearchViewIcon.onClick { exitSearch() }
-    hideNavigation(false)
+    isSearching = true
+    childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onEnterSearch() }
   }
 
-  private fun exitSearch(showNavigation: Boolean = true) {
-    followedMoviesSearchView.isSearching = false
-    exSearchViewText.visible()
-    exSearchViewInput.run {
+  private fun exitSearch() {
+    isSearching = false
+    childFragmentManager.fragments.forEach { (it as? OnSearchClickListener)?.onExitSearch() }
+    resetTranslations()
+    followedMoviesSearchLocalView.gone()
+    with(exSearchLocalViewInput) {
       setText("")
       gone()
       hideKeyboard()
       clearFocus()
     }
-    exSearchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
-    if (showNavigation) showNavigation()
   }
 
-  private fun render(uiState: FollowedMoviesUiState) {
-    uiState.run {
-      searchResult?.let { renderSearchResults(it) }
-    }
-  }
-
-  private fun renderSearchResults(result: MyMoviesSearchResult) {
-    when (result.type) {
-      RESULTS -> {
-        followedMoviesSearchWrapper.visible()
-        followedMoviesPager.gone()
-        followedMoviesTabs.gone()
-        followedMoviesModeTabs.gone()
-        followedMoviesSearchEmptyView.gone()
-        renderSearchContainer(result.items)
-      }
-      NO_RESULTS -> {
-        followedMoviesSearchWrapper.gone()
-        followedMoviesPager.gone()
-        followedMoviesTabs.gone()
-        followedMoviesModeTabs.gone()
-        followedMoviesSearchEmptyView.visible()
-      }
-      EMPTY -> {
-        followedMoviesSearchWrapper.gone()
-        followedMoviesPager.visible()
-        followedMoviesTabs.visible()
-        followedMoviesModeTabs.visible()
-        followedMoviesSearchEmptyView.gone()
-      }
-    }
-
-    if (result.type != EMPTY) {
-      resetTranslations()
-      childFragmentManager.fragments.forEach {
-        (it as? OnScrollResetListener)?.onScrollReset()
-      }
-    }
-  }
-
-  private fun renderSearchContainer(items: List<MyMoviesItem>) {
-    followedMoviesSearchContainer.removeAllViews()
-
-    val context = requireContext()
-    val itemHeight = context.dimenToPx(R.dimen.myMoviesFanartHeight)
-    val itemMargin = context.dimenToPx(R.dimen.spaceTiny)
-
-    val clickListener: (MyMoviesItem) -> Unit = {
-      followedMoviesRoot.hideKeyboard()
-      openMovieDetails(it.movie)
-    }
-
-    items.forEachIndexed { index, item ->
-      val view = MyMovieFanartView(context).apply {
-        layoutParams = FrameLayout.LayoutParams(0, MATCH_PARENT)
-        bind(item, clickListener)
-      }
-      val layoutParams = GridLayout.LayoutParams().apply {
-        width = 0
-        height = itemHeight
-        columnSpec = GridLayout.spec(index % 2, 1F)
-        setMargins(itemMargin, itemMargin, itemMargin, itemMargin)
-      }
-      followedMoviesSearchContainer.addView(view, layoutParams)
-    }
+  private fun openMainSearch() {
+    disableUi()
+    hideNavigation()
+    exitSearch()
+    resetTranslations(100)
+    followedMoviesModeTabs.fadeOut(duration = 200).add(animations)
+    followedMoviesTabs.fadeOut(duration = 200).add(animations)
+    followedMoviesIcons.fadeOut(duration = 200).add(animations)
+    followedMoviesPager.fadeOut(duration = 200) {
+      super.navigateTo(R.id.actionFollowedMoviesFragmentToSearch, null)
+    }.add(animations)
   }
 
   fun openMovieDetails(movie: Movie) {
     disableUi()
     hideNavigation()
     followedMoviesRoot.fadeOut(150) {
-      exitSearch(false)
-      val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, movie.ids.trakt.id) }
+      val bundle = Bundle().apply { putLong(ARG_MOVIE_ID, movie.traktId) }
       navigateTo(R.id.actionFollowedMoviesFragmentToMovieDetailsFragment, bundle)
+      exitSearch()
     }.add(animations)
   }
 
   private fun openSettings() {
     hideNavigation()
+    exitSearch()
     navigateTo(R.id.actionFollowedMoviesFragmentToSettingsFragment)
   }
 
   private fun openStatistics() {
     hideNavigation()
+    exitSearch()
     navigateTo(R.id.actionFollowedMoviesFragmentToStatisticsFragment)
   }
 
-  fun enableSearch(enable: Boolean) {
-    followedMoviesSearchView.isClickable = enable
-    followedMoviesSearchView.isEnabled = enable
-  }
-
   override fun onTabReselected() {
-    resetTranslations()
+    resetTranslations(duration = 0)
     followedMoviesPager.nextPage()
     childFragmentManager.fragments.forEach {
       (it as? OnScrollResetListener)?.onScrollReset()
+    }
+  }
+
+  fun resetTranslations(duration: Long = TRANSLATION_DURATION) {
+    if (view == null) return
+    arrayOf(
+      followedMoviesSearchView,
+      followedMoviesTabs,
+      followedMoviesModeTabs,
+      followedMoviesIcons,
+      followedMoviesSearchLocalView
+    ).forEach {
+      it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
     }
   }
 
@@ -315,28 +251,16 @@ class FollowedMoviesFragment :
     }
   }
 
-  fun resetTranslations() {
-    followedMoviesSearchView.translationY = 0F
-    followedMoviesTabs.translationY = 0F
-    followedMoviesModeTabs.translationY = 0F
-    followedMoviesSortIcon.translationY = 0F
-  }
-
   private val pageChangeListener = object : ViewPager.OnPageChangeListener {
     override fun onPageSelected(position: Int) {
       if (currentPage == position) return
 
       followedMoviesSortIcon.fadeIf(position != 0, duration = 150)
       if (followedMoviesTabs.translationY != 0F) {
-        followedMoviesSearchView.animate().translationY(0F).setDuration(225L).start()
-        followedMoviesTabs.animate().translationY(0F).setDuration(225L).start()
-        followedMoviesModeTabs.animate().translationY(0F).setDuration(225L).start()
-        followedMoviesSortIcon.animate().translationY(0F).setDuration(225L).start()
+        resetTranslations()
         requireView().postDelayed(
           {
-            childFragmentManager.fragments.forEach {
-              (it as? OnScrollResetListener)?.onScrollReset()
-            }
+            childFragmentManager.fragments.forEach { (it as? OnScrollResetListener)?.onScrollReset() }
           },
           225L
         )

@@ -69,7 +69,7 @@ class MyShowsSectionView : FrameLayout {
       setItems(section.items, notifyChange = notifyListsUpdate)
       itemClickListener = { clickListener(it) }
       missingImageListener = { item, force -> sectionImageListener?.invoke(item, section, force) }
-      listChangeListener = { myShowsSectionRecycler.scrollToPosition(0) }
+      listChangeListener = { layoutManager.scrollToPosition(0) }
     }
     restoreScrollPosition(scrollPosition)
   }

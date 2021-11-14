@@ -26,7 +26,6 @@ data class MyShowsItem(
     RECENT_SHOWS,
     HORIZONTAL_SHOWS,
     ALL_SHOWS_ITEM,
-    SEARCH_SHOWS_ITEM
   }
 
   data class Header(
@@ -82,21 +81,6 @@ data class MyShowsItem(
       Show.EMPTY,
       Image.createUnavailable(POSTER),
       false
-    )
-
-    fun createSearchItem(
-      show: Show,
-      image: Image,
-      translation: Translation? = null
-    ) = MyShowsItem(
-      Type.SEARCH_SHOWS_ITEM,
-      null,
-      null,
-      null,
-      show,
-      image,
-      false,
-      translation
     )
   }
 }

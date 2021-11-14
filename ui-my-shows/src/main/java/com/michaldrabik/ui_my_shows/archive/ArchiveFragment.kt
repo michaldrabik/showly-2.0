@@ -140,7 +140,7 @@ class ArchiveFragment :
     isSearching = false
     with(archiveRecycler) {
       translationY = 0F
-      postDelayed(250) { scrollToPosition(0) }
+      postDelayed(200) { layoutManager?.scrollToPosition(0) }
     }
   }
 

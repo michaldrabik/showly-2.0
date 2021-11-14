@@ -102,6 +102,10 @@ class MyShowsFragment :
       missingTranslationListener = { viewModel.loadMissingTranslation(it) }
       sectionMissingImageListener = { item, section, force -> viewModel.loadSectionMissingItem(item, section, force) }
       onSortOrderClickListener = { section, order, type -> showSortOrderDialog(section, order, type) }
+      listChangeListener = {
+        layoutManager?.scrollToPosition(0)
+        (requireParentFragment() as FollowedShowsFragment).resetTranslations()
+      }
     }
     myShowsRecycler.apply {
       adapter = this@MyShowsFragment.adapter
@@ -143,11 +147,9 @@ class MyShowsFragment :
   private fun render(uiState: MyShowsUiState) {
     uiState.run {
       items?.let {
-        val notifyUpdate = notifyListsUpdate?.consume() == true
-        adapter?.notifyListsUpdate = notifyUpdate
-        adapter?.setItems(it)
+        val notifyChangeList = resetScrollMap?.consume()
+        adapter?.setItems(it, notifyChangeList)
         myShowsEmptyView.fadeIf(it.isEmpty() && !isSearching)
-        (requireParentFragment() as FollowedShowsFragment).enableSearch(it.isNotEmpty())
       }
     }
   }
@@ -166,7 +168,7 @@ class MyShowsFragment :
     isSearching = false
     with(myShowsRecycler) {
       translationY = 0F
-      postDelayed(250) { scrollToPosition(0) }
+      postDelayed(200) { layoutManager?.scrollToPosition(0) }
     }
   }
 

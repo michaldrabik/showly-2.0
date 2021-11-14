@@ -8,6 +8,9 @@
   <dimen name="myMoviesFanartCorner">4dp</dimen>
   <dimen name="myMoviesFanartHeight">126dp</dimen>
 
+  <dimen name="myMoviesSearchLocalViewPadding">146dp</dimen>
+  <dimen name="myMoviesSearchLocalOffset">40dp</dimen>
+
   <dimen name="myMovieAllImageHeight">120dp</dimen>
   <dimen name="myMovieAllImageWidth">80dp</dimen>
   <dimen name="myMovieAllMarginHorizontal">12dp</dimen>
