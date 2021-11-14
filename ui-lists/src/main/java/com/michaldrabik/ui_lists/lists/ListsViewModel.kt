@@ -33,7 +33,10 @@ class ListsViewModel @Inject constructor(
   private val scrollState = MutableStateFlow(Event(false))
   private val sortOrderState = MutableStateFlow<Event<Pair<SortOrder, SortType>>?>(null)
 
-  fun loadItems(resetScroll: Boolean, searchQuery: String? = null) {
+  fun loadItems(
+    resetScroll: Boolean,
+    searchQuery: String? = null
+  ) {
     viewModelScope.launch {
       val items = mainCase.loadLists(searchQuery)
       itemsState.value = items

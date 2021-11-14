@@ -248,8 +248,6 @@ class ProgressMoviesMainFragment :
     }
   }
 
-  fun showSearchIcon(show: Boolean) = progressMoviesSearchIcon.visibleIf(show)
-
   fun toggleCalendarMode() {
     exitSearch()
     onScrollReset()

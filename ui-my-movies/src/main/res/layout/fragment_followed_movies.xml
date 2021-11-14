@@ -45,7 +45,6 @@
     android:layout_marginTop="@dimen/myMoviesSearchViewPadding"
     android:layout_marginEnd="@dimen/spaceMedium"
     app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
-    tools:visibility="visible"
     >
 
     <com.michaldrabik.ui_base.common.views.ScrollableImageView

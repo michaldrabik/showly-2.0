@@ -291,7 +291,6 @@ class ProgressMoviesFragment :
         progressMoviesEmptyView.fadeIf(items.isEmpty() && !isSearching)
         progressMoviesMainRecycler.fadeIn(withHardware = true).add(animations)
         (requireAppContext() as WidgetsProvider).requestShowsWidgetsUpdate()
-        requireMainFragment().showSearchIcon(it.isNotEmpty() || isSearching)
       }
       isOverScrollEnabled.let {
         if (it) {

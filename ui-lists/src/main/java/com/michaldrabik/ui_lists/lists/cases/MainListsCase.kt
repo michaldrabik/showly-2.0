@@ -16,7 +16,6 @@ import com.michaldrabik.ui_lists.lists.recycler.ListsItem
 import com.michaldrabik.ui_model.CustomList
 import com.michaldrabik.ui_model.Image
 import com.michaldrabik.ui_model.ImageType.POSTER
-import com.michaldrabik.ui_model.SortOrder
 import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -48,14 +47,7 @@ class MainListsCase @Inject constructor(
     )
 
     lists
-      .filter {
-        if (searchQuery.isNullOrBlank()) {
-          true
-        } else {
-          it.name.contains(searchQuery, ignoreCase = true) ||
-            it.description?.contains(searchQuery, ignoreCase = true) == true
-        }
-      }
+      .filterByQuery(searchQuery)
       .sortedWith(sorter.sort(sorting.first, sorting.second))
       .map {
         async {
@@ -71,6 +63,14 @@ class MainListsCase @Inject constructor(
           ListsItem(it, images, sorting, dateFormat)
         }
       }.awaitAll()
+  }
+
+  private fun List<CustomList>.filterByQuery(query: String?) = when {
+    query.isNullOrBlank() -> this
+    else -> this.filter {
+      it.name.contains(query, ignoreCase = true) ||
+        it.description?.contains(query, ignoreCase = true) == true
+    }
   }
 
   private suspend fun findImage(item: CustomListItem) =
@@ -92,13 +92,5 @@ class MainListsCase @Inject constructor(
         }
       }
       else -> throw IllegalStateException()
-    }
-
-  private fun List<CustomList>.sortedByType(sortType: SortOrder) =
-    when (sortType) {
-      SortOrder.NAME -> this.sortedBy { it.name }
-      SortOrder.NEWEST -> this.sortedByDescending { it.createdAt }
-      SortOrder.DATE_UPDATED -> this.sortedByDescending { it.updatedAt }
-      else -> error("Should not be used here.")
     }
 }

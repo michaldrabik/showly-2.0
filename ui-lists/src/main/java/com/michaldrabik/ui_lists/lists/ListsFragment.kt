@@ -1,19 +1,15 @@
 package com.michaldrabik.ui_lists.lists
 
-import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.inputmethod.EditorInfo
 import androidx.activity.addCallback
 import androidx.core.os.bundleOf
+import androidx.core.view.postDelayed
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
@@ -23,9 +19,7 @@ import com.michaldrabik.ui_base.BaseFragment
 import com.michaldrabik.ui_base.common.OnTabReselectedListener
 import com.michaldrabik.ui_base.common.OnTraktSyncListener
 import com.michaldrabik.ui_base.common.sheets.sort_order.SortOrderBottomSheet
-import com.michaldrabik.ui_base.common.views.exSearchViewIcon
-import com.michaldrabik.ui_base.common.views.exSearchViewInput
-import com.michaldrabik.ui_base.common.views.exSearchViewText
+import com.michaldrabik.ui_base.common.views.exSearchLocalViewInput
 import com.michaldrabik.ui_base.events.Event
 import com.michaldrabik.ui_base.events.EventObserver
 import com.michaldrabik.ui_base.events.TraktListQuickSyncSuccess
@@ -41,6 +35,7 @@ import com.michaldrabik.ui_base.utilities.extensions.fadeIn
 import com.michaldrabik.ui_base.utilities.extensions.fadeOut
 import com.michaldrabik.ui_base.utilities.extensions.gone
 import com.michaldrabik.ui_base.utilities.extensions.hideKeyboard
+import com.michaldrabik.ui_base.utilities.extensions.launchAndRepeatStarted
 import com.michaldrabik.ui_base.utilities.extensions.onClick
 import com.michaldrabik.ui_base.utilities.extensions.showInfoSnackbar
 import com.michaldrabik.ui_base.utilities.extensions.showKeyboard
@@ -61,7 +56,6 @@ import com.michaldrabik.ui_navigation.java.NavigationArgs.REQUEST_CREATE_LIST
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_lists.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ListsFragment :
@@ -69,6 +63,10 @@ class ListsFragment :
   OnTraktSyncListener,
   OnTabReselectedListener,
   EventObserver {
+
+  companion object {
+    private const val TRANSLATION_DURATION = 225L
+  }
 
   override val viewModel by viewModels<ListsViewModel>()
 
@@ -78,6 +76,7 @@ class ListsFragment :
   private var searchViewTranslation = 0F
   private var tabsTranslation = 0F
   private var isFabHidden = false
+  private var isSearching = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -95,14 +94,10 @@ class ListsFragment :
     setupStatusBar()
     setupRecycler()
 
-    viewLifecycleOwner.lifecycleScope.launch {
-      repeatOnLifecycle(Lifecycle.State.STARTED) {
-        with(viewModel) {
-          launch { uiState.collect { render(it) } }
-          loadItems(resetScroll = false)
-        }
-      }
-    }
+    launchAndRepeatStarted(
+      { viewModel.uiState.collect { render(it) } },
+      doAfterLaunch = { viewModel.loadItems(resetScroll = false) }
+    )
   }
 
   override fun onResume() {
@@ -130,6 +125,9 @@ class ListsFragment :
       onSettingsClickListener = { openSettings() }
       if (isTraktSyncing()) setTraktProgress(true)
     }
+    with(fragmentListsSearchLocalView) {
+      onCloseClickListener = { exitSearch() }
+    }
     fragmentListsModeTabs.run {
       onModeSelected = { (requireActivity() as NavigationHost).setMode(it, force = true) }
       showMovies(moviesEnabled)
@@ -143,19 +141,14 @@ class ListsFragment :
     fragmentListsSortButton.onClick {
       viewModel.loadSortOrder()
     }
-    fragmentListsSearchView.onClick { enterSearch() }
-    exSearchViewInput.run {
-      imeOptions = EditorInfo.IME_ACTION_DONE
-      setOnEditorActionListener { _, _, _ ->
-        clearFocus()
-        hideKeyboard()
-        true
-      }
+    fragmentListsSearchButton.run {
+      onClick { if (!isSearching) enterSearch() else exitSearch() }
     }
+    fragmentListsSearchView.onClick { openMainSearch() }
 
     fragmentListsSearchView.translationY = searchViewTranslation
     fragmentListsModeTabs.translationY = tabsTranslation
-    fragmentListsSortButton.translationY = tabsTranslation
+    fragmentListsIcons.translationY = tabsTranslation
   }
 
   private fun setupStatusBar() {
@@ -164,7 +157,8 @@ class ListsFragment :
       fragmentListsSearchView.applyWindowInsetBehaviour(dimenToPx(R.dimen.spaceNormal) + statusBarSize)
       fragmentListsSearchView.updateTopMargin(dimenToPx(R.dimen.spaceSmall) + statusBarSize)
       fragmentListsModeTabs.updateTopMargin(dimenToPx(R.dimen.collectionTabsMargin) + statusBarSize)
-      fragmentListsSortButton.updateTopMargin(dimenToPx(R.dimen.listsSortIconPadding) + statusBarSize)
+      fragmentListsIcons.updateTopMargin(dimenToPx(R.dimen.listsIconsPadding) + statusBarSize)
+      fragmentListsSearchLocalView.updateTopMargin(dimenToPx(R.dimen.listsSearchLocalViewPadding) + statusBarSize)
       fragmentListsEmptyView.updateTopMargin(statusBarSize)
     }
   }
@@ -174,7 +168,10 @@ class ListsFragment :
     adapter = ListsAdapter().apply {
       stateRestorationPolicy = StateRestorationPolicy.PREVENT_WHEN_EMPTY
       itemClickListener = { openListDetails(it) }
-      itemsChangedListener = { scrollToTop(smooth = false) }
+      itemsChangedListener = {
+        resetTranslations()
+        layoutManager?.scrollToPosition(0)
+      }
       missingImageListener = { item, itemImage, force ->
         viewModel.loadMissingImage(item, itemImage, force)
       }
@@ -210,7 +207,7 @@ class ListsFragment :
   override fun setupBackPressed() {
     val dispatcher = requireActivity().onBackPressedDispatcher
     dispatcher.addCallback(viewLifecycleOwner) {
-      if (fragmentListsSearchView.isSearching) {
+      if (isSearching) {
         exitSearch()
       } else {
         isEnabled = false
@@ -220,32 +217,37 @@ class ListsFragment :
   }
 
   private fun enterSearch() {
-    if (fragmentListsSearchView.isSearching) return
-    fragmentListsSearchView.isSearching = true
-    exSearchViewText.gone()
-    exSearchViewInput.run {
+    resetTranslations()
+    fragmentListsSearchLocalView.fadeIn(150)
+    fragmentListsRecycler.translationY = dimenToPx(R.dimen.listsSearchLocalOffset).toFloat()
+    fragmentListsRecycler.smoothScrollToPosition(0)
+    with(exSearchLocalViewInput) {
       setText("")
       doAfterTextChanged {
-        viewModel.loadItems(searchQuery = it.toString().trim(), resetScroll = true)
+        viewModel.loadItems(
+          searchQuery = it.toString().trim(),
+          resetScroll = true
+        )
       }
       visible()
       showKeyboard()
       requestFocus()
     }
-    (exSearchViewIcon.drawable as Animatable).start()
-    exSearchViewIcon.onClick { exitSearch() }
+    isSearching = true
   }
 
   private fun exitSearch() {
-    fragmentListsSearchView.isSearching = false
-    exSearchViewText.visible()
-    exSearchViewInput.run {
+    isSearching = false
+    resetTranslations()
+    fragmentListsSearchLocalView.gone()
+    fragmentListsRecycler.translationY = 0F
+    fragmentListsRecycler.postDelayed(200) { layoutManager?.scrollToPosition(0) }
+    with(exSearchLocalViewInput) {
       setText("")
       gone()
       hideKeyboard()
       clearFocus()
     }
-    exSearchViewIcon.setImageResource(R.drawable.ic_anim_search_to_close)
   }
 
   private fun showSortOrderDialog(sorting: Pair<SortOrder, SortType>) {
@@ -264,15 +266,9 @@ class ListsFragment :
   private fun render(uiState: ListsUiState) {
     uiState.run {
       items?.let {
-        val isSearching = fragmentListsSearchView.isSearching
         fragmentListsEmptyView.fadeIf(it.isEmpty() && !isSearching)
-        fragmentListsSortButton.visibleIf(it.isNotEmpty())
-        fragmentListsSortButton.isEnabled = it.isNotEmpty() && !isSearching
-
-        if (!isSearching) {
-          fragmentListsSearchView.isClickable = it.isNotEmpty()
-          fragmentListsSearchView.isEnabled = it.isNotEmpty()
-        }
+        fragmentListsSortButton.visibleIf(it.isNotEmpty() || isSearching)
+        fragmentListsSearchButton.visibleIf(it.isNotEmpty() || isSearching)
 
         val resetScroll = resetScroll.consume() == true
         adapter?.setItems(it, resetScroll)
@@ -283,18 +279,31 @@ class ListsFragment :
     }
   }
 
+  private fun openMainSearch() {
+    disableUi()
+    hideNavigation()
+    exitSearch()
+    resetTranslations(100)
+    fragmentListsModeTabs.fadeOut(duration = 200).add(animations)
+    fragmentListsIcons.fadeOut(duration = 200).add(animations)
+    fragmentListsRecycler.fadeOut(duration = 200) {
+      super.navigateTo(R.id.actionListsFragmentToSearch, null)
+    }.add(animations)
+  }
+
   private fun openListDetails(listItem: ListsItem) {
     disableUi()
     hideNavigation()
     fragmentListsRoot.fadeOut(150) {
-      exitSearch()
       val bundle = bundleOf(ARG_LIST to listItem.list)
       navigateTo(R.id.actionListsFragmentToDetailsFragment, bundle)
+      exitSearch()
     }.add(animations)
   }
 
   private fun openSettings() {
     hideNavigation()
+    exitSearch()
     navigateTo(R.id.actionListsFragmentToSettingsFragment)
   }
 
@@ -303,13 +312,15 @@ class ListsFragment :
     navigateTo(R.id.actionListsFragmentToCreateListDialog, bundleOf())
   }
 
-  private fun scrollToTop(smooth: Boolean = true) {
-    fragmentListsModeTabs.animate().translationY(0F).start()
-    fragmentListsSearchView.animate().translationY(0F).start()
-    fragmentListsSortButton.animate().translationY(0F).start()
-    when {
-      smooth -> fragmentListsRecycler.smoothScrollToPosition(0)
-      else -> fragmentListsRecycler.scrollToPosition(0)
+  private fun resetTranslations(duration: Long = TRANSLATION_DURATION) {
+    if (view == null) return
+    arrayOf(
+      fragmentListsSearchView,
+      fragmentListsModeTabs,
+      fragmentListsIcons,
+      fragmentListsSearchLocalView
+    ).forEach {
+      it.animate().translationY(0F).setDuration(duration).add(animations)?.start()
     }
   }
 
@@ -337,7 +348,10 @@ class ListsFragment :
     }
   }
 
-  override fun onTabReselected() = scrollToTop()
+  override fun onTabReselected() {
+    resetTranslations()
+    fragmentListsRecycler.smoothScrollToPosition(0)
+  }
 
   override fun onDestroyView() {
     adapter = null

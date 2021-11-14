@@ -33,17 +33,37 @@
     tools:visibility="visible"
     />
 
-  <com.michaldrabik.ui_base.common.views.ScrollableImageView
-    android:id="@+id/fragmentListsSortButton"
+  <FrameLayout
+    android:id="@+id/fragmentListsIcons"
     android:layout_width="wrap_content"
-    android:layout_height="36dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="end"
-    android:layout_marginTop="@dimen/listsSortIconPadding"
+    android:layout_marginTop="@dimen/listsIconsPadding"
     android:layout_marginEnd="@dimen/spaceMedium"
-    android:visibility="gone"
-    app:srcCompat="@drawable/ic_sort"
-    app:tint="?android:attr/textColorPrimary"
-    />
+    app:layout_behavior="com.michaldrabik.ui_base.common.behaviour.ScrollableViewBehaviour"
+    >
+
+    <com.michaldrabik.ui_base.common.views.ScrollableImageView
+      android:id="@+id/fragmentListsSortButton"
+      android:layout_width="36dp"
+      android:layout_height="36dp"
+      android:layout_marginEnd="38dp"
+      android:paddingStart="12dp"
+      app:srcCompat="@drawable/ic_sort"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+    <com.michaldrabik.ui_base.common.views.ScrollableImageView
+      android:id="@+id/fragmentListsSearchButton"
+      android:layout_width="36dp"
+      android:layout_height="36dp"
+      android:layout_gravity="end"
+      android:paddingStart="14dp"
+      app:srcCompat="@drawable/ic_search"
+      app:tint="?android:attr/textColorPrimary"
+      />
+
+  </FrameLayout>
 
   <com.michaldrabik.ui_base.common.views.ModeTabsView
     android:id="@+id/fragmentListsModeTabs"
@@ -52,6 +72,17 @@
     android:layout_marginStart="@dimen/spaceMedium"
     android:layout_marginTop="@dimen/collectionTabsMargin"
     android:layout_marginEnd="@dimen/spaceMedium"
+    />
+
+  <com.michaldrabik.ui_base.common.views.SearchLocalView
+    android:id="@+id/fragmentListsSearchLocalView"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/searchLocalViewHeight"
+    android:layout_marginLeft="@dimen/spaceMedium"
+    android:layout_marginTop="@dimen/listsSearchLocalViewPadding"
+    android:layout_marginRight="@dimen/spaceMedium"
+    android:visibility="gone"
+    tools:visibility="visible"
     />
 
   <com.michaldrabik.ui_base.common.views.SearchView
